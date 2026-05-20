@@ -69,17 +69,17 @@ export function PlatformLogos() {
   return (
     <section className="py-20 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
-        <p className="text-white/30 text-xs font-semibold tracking-widest uppercase mb-8 text-center">
+        <p className="text-white/50 text-xs font-semibold tracking-widest uppercase mb-8 text-center">
           Works with your website — no developer needed
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-8">
           {platforms.map((p) => (
-            <div key={p.name} className="flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity duration-200">
+            <div key={p.name} className="flex flex-col items-center gap-2 opacity-80 hover:opacity-100 transition-opacity duration-200">
               <div className={p.color}>
                 <p.Svg />
               </div>
-              <span className="text-white/40 text-xs font-medium">{p.name}</span>
+              <span className="text-white/60 text-xs font-medium">{p.name}</span>
             </div>
           ))}
         </div>
