@@ -1,10 +1,23 @@
-import { NextRequest, NextResponse } from "next/server"
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 
-// In production with real Clerk keys, replace this file with the full Clerk middleware.
-// For local dev without Clerk keys, this passes all requests through.
-export default function middleware(_req: NextRequest) {
-  return NextResponse.next()
-}
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/pricing",
+  "/how-it-works",
+  "/scan(.*)",
+  "/login(.*)",
+  "/signup(.*)",
+  "/terms",
+  "/privacy",
+  "/api/scan(.*)",
+  "/api/webhooks/(.*)",
+])
+
+export default clerkMiddleware(async (auth, req) => {
+  if (!isPublicRoute(req)) {
+    await auth.protect()
+  }
+})
 
 export const config = {
   matcher: [
