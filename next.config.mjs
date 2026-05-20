@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  output: 'standalone',
+  images: {
+    domains: ['img.clerk.com', 'images.clerk.dev'],
+  },
+}
 
-export default nextConfig;
+export default nextConfig

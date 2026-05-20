@@ -2,22 +2,155 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Font imports ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@1&display=swap');
+
+/* Geist Mono via CDN */
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap');
+
+/* ── CSS Variables ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds */
+  --bg-primary: #0A0806;
+  --bg-secondary: #13100C;
+  --bg-tertiary: #1F1812;
+
+  /* Brand */
+  --orange: #FF6B1A;
+  --orange-light: #FF8845;
+  --orange-glow: rgba(255, 107, 26, 0.4);
+
+  /* Surfaces */
+  --cream: #F5EDE0;
+
+  /* Text */
+  --text-primary: #FFFFFF;
+  --text-secondary: #A8A29E;
+  --text-on-cream: #1A1410;
+
+  /* Status */
+  --success: #22C55E;
+  --warning: #FBBF24;
+  --error: #EF4444;
+
+  /* Cards */
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.03);
+
+  /* Fonts */
+  --font-inter-tight: 'Inter Tight', system-ui, sans-serif;
+  --font-instrument-serif: 'Instrument Serif', Georgia, serif;
+  --font-geist-mono: 'Geist Mono', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-inter-tight);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Dot grid texture ── */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.03;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Radial warm background ── */
+.radial-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, #1F1812 0%, #0A0806 70%),
+    #0A0806;
+}
+
+/* ── Glass card ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Orange glow button ── */
+.btn-orange {
+  background: var(--orange);
+  color: #fff;
+  border-radius: 100px;
+  font-weight: 600;
+  transition: all 200ms ease;
+  box-shadow: 0 0 30px rgba(255, 107, 26, 0.35);
+}
+.btn-orange:hover {
+  background: var(--orange-light);
+  box-shadow: 0 0 50px rgba(255, 107, 26, 0.55);
+  transform: translateY(-1px);
+}
+
+/* ── Ghost button ── */
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 100px;
+  font-weight: 500;
+  transition: all 200ms ease;
+}
+.btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Focus ring ── */
+*:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Serif italic accent ── */
+.serif-italic {
+  font-family: var(--font-instrument-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ── Mono numbers ── */
+.mono {
+  font-family: var(--font-geist-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 @layer utilities {

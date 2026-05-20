@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                   String    @id @default(cuid())
+  clerkId              String    @unique
+  email                String    @unique
+  fullName             String?
+  businessName         String?
+  businessType         String?
+  city                 String?
+  state                String?
+  zip                  String?
+  websiteUrl           String?
+  voiceDescription     String?
+  topicsToAvoid        String?
+  onboardingCompleted  Boolean   @default(false)
+  onboardingStep       Int       @default(0)
+  stripeCustomerId     String?   @unique
+  stripeSubscriptionId String?
+  subscriptionStatus   String    @default("trialing")
+  plan                 String    @default("none")
+  trialEndsAt          DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  audits       Audit[]
+  scanLeads    ScanLead[]
+  mockActivity MockActivity[]
+  reports      Report[]
+}
+
+model Audit {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  visibilityScore   Int
+  issues            Json
+  competitorInsight String?
+  aiSearchStatus    Json?
+  rawResponse       String?
+  createdAt         DateTime @default(now())
+
+  reports Report[]
+
+  @@index([userId])
+}
+
+model ScanLead {
+  id              String   @id @default(cuid())
+  email           String
+  businessName    String?
+  businessUrl     String?
+  visibilityScore Int?
+  issues          Json?
+  aiSearchStatus  Json?
+  converted       Boolean  @default(false)
+  userId          String?
+  user            User?    @relation(fields: [userId], references: [id])
+  createdAt       DateTime @default(now())
+
+  @@index([email])
+}
+
+model MockActivity {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String
+  title       String
+  description String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  auditId   String?
+  audit     Audit?   @relation(fields: [auditId], references: [id])
+  type      String
+  pdfUrl    String?
+  sentAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
