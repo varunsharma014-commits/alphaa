@@ -1,5 +1,6 @@
 import { ScanForm } from "@/components/scan/ScanForm"
 import { SectionLabel } from "@/components/common/SectionLabel"
+import { Users } from "lucide-react"
 
 export const metadata = { title: "Free Visibility Scan" }
 
@@ -7,16 +8,25 @@ export default function ScanPage() {
   return (
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-xl mx-auto">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <SectionLabel className="mb-3 block">Free scan</SectionLabel>
           <h1 className="text-[32px] sm:text-[40px] font-semibold text-white leading-tight mb-4">
-            See why customers can't{" "}
-            <span className="serif-italic text-brand-orange">find you</span>
+            See your free{" "}
+            <span className="serif-italic text-brand-orange">visibility score</span>
           </h1>
           <p className="text-muted text-base">
-            Enter your business info. We'll check Google, ChatGPT, Maps, and your website — and show you exactly what's missing. Takes 60 seconds.
+            We check Google, ChatGPT, Maps, and your website — and show you exactly what's stopping customers from finding you. Takes 60 seconds.
           </p>
         </div>
+
+        {/* Social proof above form */}
+        <div className="flex items-center justify-center gap-2 mb-6">
+          <Users className="w-4 h-4 text-brand-orange" />
+          <p className="text-muted/70 text-xs">
+            <span className="text-white font-medium">1,247 businesses</span> scanned this month
+          </p>
+        </div>
+
         <ScanForm />
         <p className="text-center text-muted/50 text-xs mt-6">
           No signup required · Results emailed to you · No credit card

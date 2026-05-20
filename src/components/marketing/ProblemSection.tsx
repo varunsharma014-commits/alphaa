@@ -5,18 +5,21 @@ import { AlertCircle, Eye, Clock } from "lucide-react"
 const problems = [
   {
     icon: AlertCircle,
+    stat: "$6,000/year",
     headline: "Paying $500+/month to an agency you don't trust?",
-    body: "They send reports full of graphs you can't read, terms you don't understand, and results you can't verify. Meanwhile, your check clears every month.",
+    body: "They send reports full of graphs you can't read and results you can't verify. Meanwhile, your check clears every month — no questions asked.",
   },
   {
     icon: Eye,
+    stat: "1 in 3 searches",
     headline: "Customers finding your competitors on ChatGPT instead of you?",
-    body: "More and more people search on ChatGPT, Perplexity, and Google AI. If your business isn't showing up there, you're invisible to a growing chunk of customers.",
+    body: "1 in 3 local searches now happens on AI tools. If your business isn't in the answer, you're invisible to a fast-growing chunk of buyers.",
   },
   {
     icon: Clock,
+    stat: "10 hrs/week",
     headline: "No time to post on Google or update your website?",
-    body: "You're running a business. You can't spend 10 hours a week on marketing. But if you don't post consistently, Google stops showing you to new customers.",
+    body: "Google rewards businesses that post consistently. But you're running a business — you can't spend 10 hours a week on content nobody reads.",
   },
 ]
 
@@ -35,8 +38,13 @@ export function ProblemSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {problems.map((p) => (
             <GlassCard key={p.headline} hover className="flex flex-col gap-4">
-              <div className="w-10 h-10 rounded-xl bg-brand-orange/10 flex items-center justify-center">
-                <p.icon className="w-5 h-5 text-brand-orange" />
+              <div className="flex items-start justify-between gap-2">
+                <div className="w-10 h-10 rounded-xl bg-brand-orange/10 flex items-center justify-center flex-shrink-0">
+                  <p.icon className="w-5 h-5 text-brand-orange" />
+                </div>
+                <span className="text-xs font-bold text-red-400 bg-red-400/10 px-2 py-1 rounded-full whitespace-nowrap">
+                  {p.stat}
+                </span>
               </div>
               <h3 className="text-white font-semibold text-base leading-snug">{p.headline}</h3>
               <p className="text-muted text-sm leading-relaxed">{p.body}</p>

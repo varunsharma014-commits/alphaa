@@ -7,22 +7,30 @@ export function CtaBanner() {
         <div
           className="glass-card rounded-card p-12 relative overflow-hidden"
           style={{
-            background: "radial-gradient(ellipse at 50% 100%, rgba(255,107,26,0.12) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse at 50% 100%, rgba(255,107,26,0.14) 0%, transparent 70%)",
           }}
         >
           <div className="absolute inset-0 border border-brand-orange/20 rounded-card pointer-events-none" />
+
+          {/* Urgency pill */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-medium mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
+            1,247 businesses scanned this month
+          </div>
+
           <h2 className="text-[32px] sm:text-[40px] font-semibold text-white leading-tight mb-4 text-balance">
-            Stop paying for SEO that{" "}
-            <span className="serif-italic text-brand-orange">doesn't work.</span>
+            Your competitors are already on{" "}
+            <span className="serif-italic text-brand-orange">ChatGPT.</span>{" "}
+            Are you?
           </h2>
           <p className="text-muted text-lg mb-8">
-            Start showing up on Google and ChatGPT today. 14-day free trial. No credit card required.
+            See your free visibility score in 60 seconds. No signup. No credit card. Just the truth about why customers can't find you.
           </p>
           <OrangePillButton href="/scan" size="lg">
-            Get your free visibility scan →
+            Get your free visibility score →
           </OrangePillButton>
           <p className="mt-4 text-muted/60 text-xs">
-            Takes 60 seconds · No signup required to see your score
+            Takes 60 seconds · No signup required · 14-day free trial if you want fixes
           </p>
         </div>
       </div>

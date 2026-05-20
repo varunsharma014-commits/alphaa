@@ -2,10 +2,12 @@ import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { MonoNumber } from "@/components/common/MonoNumber"
 
 const stats = [
-  { value: "1,200+", label: "local businesses" },
+  { value: "1,200+", label: "businesses using Alphaa" },
   { value: "$500", label: "avg monthly savings" },
-  { value: "30 days", label: "to first results" },
+  { value: "2 weeks", label: "to first results" },
 ]
+
+const platforms = ["Google", "ChatGPT", "Perplexity", "Maps"]
 
 export function HeroSection() {
   return (
@@ -23,7 +25,7 @@ export function HeroSection() {
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-medium mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
-          No SEO agency required
+          Replaces your $500/month SEO agency
         </div>
 
         {/* Headline */}
@@ -33,27 +35,39 @@ export function HeroSection() {
           ChatGPT — automatically.
         </h1>
 
-        {/* Sub-headline */}
-        <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
-          Alphaa replaces your $500/month SEO agency. We automatically optimize your Google Business Profile, website, and content so people searching for what you do — on Google, ChatGPT, Perplexity, or Maps — actually find you.{" "}
-          <span className="text-white font-medium">$99/month. No contracts.</span>
+        {/* Sub-headline — one punchy line */}
+        <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-xl mx-auto mb-3">
+          We handle everything — posting, content, and AI search — so customers searching for what you do actually find{" "}
+          <span className="text-white font-medium">you</span>, not your competitors.
         </p>
+
+        {/* Platform trust badges */}
+        <div className="flex items-center justify-center gap-2 flex-wrap mb-10">
+          {platforms.map((p) => (
+            <span
+              key={p}
+              className="inline-flex items-center px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/[0.1] text-white/60 text-xs font-medium"
+            >
+              {p}
+            </span>
+          ))}
+        </div>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <OrangePillButton href="/scan" size="lg">
-            Get your free visibility scan →
+            Get your free visibility score →
           </OrangePillButton>
           <a
             href="/how-it-works"
-            className="text-sm font-medium text-muted hover:text-white transition-colors duration-200"
+            className="text-sm font-medium text-white/50 hover:text-white transition-colors duration-200 border border-white/10 hover:border-white/20 px-5 py-2.5 rounded-full"
           >
             See how it works ↓
           </a>
         </div>
 
         {/* Trust line */}
-        <p className="mt-6 text-muted/60 text-xs">
+        <p className="mt-5 text-muted/60 text-xs">
           14-day free trial · No credit card required · Cancel anytime
         </p>
 

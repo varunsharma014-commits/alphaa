@@ -41,7 +41,7 @@ const faqs = [
 ]
 
 export function FaqSection() {
-  const [open, setOpen] = useState<number | null>(null)
+  const [open, setOpen] = useState<number | null>(0)
 
   return (
     <section className="py-20 px-4 sm:px-6">

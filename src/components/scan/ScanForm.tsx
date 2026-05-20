@@ -52,11 +52,15 @@ export function ScanForm() {
     label: string,
     key: keyof FormData,
     placeholder: string,
-    type = "text"
+    type = "text",
+    hint?: string
   ) {
     return (
       <div>
-        <label className="block text-white text-sm font-medium mb-1.5">{label}</label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="block text-white text-sm font-medium">{label}</label>
+          {hint && <span className="text-muted/50 text-xs">{hint}</span>}
+        </div>
         <input
           type={type}
           value={form[key]}
@@ -77,15 +81,15 @@ export function ScanForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         {field("Business name", "businessName", "Downtown Dental, ABC Plumbing…")}
         {field("City", "city", "Austin, TX")}
-        {field("Website URL", "websiteUrl", "yoursite.com (optional)")}
         {field("Your email", "email", "you@yourbusiness.com", "email")}
+        {field("Website URL", "websiteUrl", "yoursite.com", "text", "optional")}
         <OrangePillButton
           type="submit"
           loading={loading}
           className="w-full justify-center mt-2"
           size="lg"
         >
-          Scan my business →
+          {loading ? "Scanning your business…" : "Get my free visibility score →"}
         </OrangePillButton>
       </form>
     </GlassCard>
