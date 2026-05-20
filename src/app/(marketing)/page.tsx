@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/marketing/HeroSection"
+import { PlatformLogos } from "@/components/marketing/PlatformLogos"
 import { AiShiftSection } from "@/components/marketing/AiShiftSection"
 import { AgencySection } from "@/components/marketing/AgencySection"
 import { AllEnginesSection } from "@/components/marketing/AllEnginesSection"
@@ -13,6 +14,7 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
+      <PlatformLogos />
       <AiShiftSection />
       <AgencySection />
       <AllEnginesSection />
