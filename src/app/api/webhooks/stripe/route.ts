@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
 import { db } from "@/lib/db"
+import { sendPaymentFailureEmail } from "@/lib/email"
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
@@ -52,6 +53,27 @@ export async function POST(req: NextRequest) {
         where: { stripeCustomerId: sub.customer as string },
         data: { subscriptionStatus: "active" },
       })
+      break
+    }
+    case "invoice.payment_failed": {
+      const user = await db.user.findFirst({ where: { stripeCustomerId: sub.customer as string } })
+      if (user?.email) {
+        const amount = `$${((sub.amount_due ?? 0) / 100).toFixed(2)}`
+        const retryDate = sub.next_payment_attempt
+          ? new Date(sub.next_payment_attempt * 1000).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+          : "soon"
+        try {
+          await sendPaymentFailureEmail(user.email, {
+            firstName: user.fullName?.split(" ")[0] ?? "there",
+            businessName: user.fullName ?? "your business",
+            amount,
+            retryDate,
+            updateUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`,
+          })
+        } catch (e) {
+          console.error("Payment failure email failed:", e)
+        }
+      }
       break
     }
   }

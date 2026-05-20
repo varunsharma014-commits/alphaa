@@ -4,8 +4,10 @@ import { Sparkles } from "lucide-react"
 const footerLinks = {
   Product: [
     { href: "/how-it-works", label: "How it works" },
+    { href: "/case-studies", label: "Case studies" },
     { href: "/pricing", label: "Pricing" },
     { href: "/scan", label: "Free visibility scan" },
+    { href: "/refer", label: "Refer & Earn" },
   ],
   Company: [
     { href: "/terms", label: "Terms of Service" },
@@ -58,9 +60,18 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="border-t border-white/[0.06] pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-white/25 text-xs">© {new Date().getFullYear()} Alphaa. All rights reserved.</p>
-          <p className="text-white/25 text-xs text-center">Not affiliated with OpenAI, Anthropic, Google, Microsoft, or Perplexity.</p>
+        <div className="border-t border-white/[0.06] pt-8 space-y-4">
+          <div className="border-t border-white/[0.04] pt-4 flex flex-col gap-2">
+            <p className="text-white/20 text-xs text-center">
+              AI visibility results vary by business, location, and industry. No specific rankings or revenue outcomes are guaranteed.
+            </p>
+            <p className="text-white/20 text-xs text-center">
+              Alphaa is not affiliated with, endorsed by, or sponsored by OpenAI, Anthropic, Google LLC, Microsoft Corporation, or Perplexity AI.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-white/25 text-xs">© {new Date().getFullYear()} Alphaa. All rights reserved.</p>
+          </div>
         </div>
       </div>
     </footer>

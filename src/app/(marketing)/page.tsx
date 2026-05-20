@@ -7,6 +7,7 @@ import { SolutionSection } from "@/components/marketing/SolutionSection"
 import { HowItWorksSection } from "@/components/marketing/HowItWorksSection"
 import { SocialProof } from "@/components/marketing/SocialProof"
 import { ComparisonTable } from "@/components/marketing/ComparisonTable"
+import { CaseStudiesSection } from "@/components/marketing/CaseStudiesSection"
 import { FaqSection } from "@/components/marketing/FaqSection"
 import { CtaBanner } from "@/components/marketing/CtaBanner"
 
@@ -22,6 +23,7 @@ export default function HomePage() {
       <HowItWorksSection />
       <SocialProof />
       <ComparisonTable />
+      <CaseStudiesSection />
       <FaqSection />
       <CtaBanner />
     </>
