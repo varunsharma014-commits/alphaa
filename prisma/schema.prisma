@@ -237,6 +237,9 @@ model ScanLead {
   visibilityScore Int?
   issues          Json?
   aiSearchStatus  Json?
+  city            String?
+  ogData          Json?
+  engineResponses Json?
   converted       Boolean  @default(false)
   userId          String?
   user            User?    @relation(fields: [userId], references: [id])

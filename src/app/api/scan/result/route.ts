@@ -17,8 +17,13 @@ export async function GET(req: NextRequest) {
         scanId: lead.id,
         visibilityScore: lead.visibilityScore,
         issues: lead.issues,
-        competitorInsight: (lead.issues as any)?.[0]?.competitor_insight ?? "Local competitors are outranking you.",
+        competitorInsight: "",
         aiSearchStatus: lead.aiSearchStatus,
+        businessName: lead.businessName ?? "",
+        city: (lead as any).city ?? "",
+        businessUrl: lead.businessUrl ?? "",
+        ogData: (lead as any).ogData ?? null,
+        engineResponses: (lead as any).engineResponses ?? null,
       },
     })
   } catch {

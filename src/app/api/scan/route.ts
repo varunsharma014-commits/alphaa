@@ -6,6 +6,27 @@ import { anthropic, buildAuditPrompt } from "@/lib/claude"
 import { scanAllEngines } from "@/lib/ai-engines"
 import type { AiSearchStatus } from "@/types/audit"
 
+async function fetchOgData(websiteUrl: string) {
+  if (!websiteUrl) return null
+  try {
+    const url = websiteUrl.startsWith("http") ? websiteUrl : `https://${websiteUrl}`
+    const res = await fetch(url, { signal: AbortSignal.timeout(5000), headers: { "User-Agent": "Mozilla/5.0" } })
+    const html = await res.text()
+    const { load } = await import("cheerio")
+    const $ = load(html)
+    const domain = new URL(url).hostname
+    return {
+      title: $('meta[property="og:title"]').attr("content") || $("title").text().trim() || "",
+      description: $('meta[property="og:description"]').attr("content") || $('meta[name="description"]').attr("content") || "",
+      image: $('meta[property="og:image"]').attr("content") || null,
+      favicon: `https://www.google.com/s2/favicons?domain=${domain}&sz=64`,
+      domain,
+    }
+  } catch {
+    return null
+  }
+}
+
 export const maxDuration = 90
 
 const schema = z.object({
@@ -23,19 +44,20 @@ export async function POST(req: NextRequest) {
 
     // Create scan lead immediately (so result polling can find it)
     const lead = await db.scanLead.create({
-      data: { email: input.email, businessName: input.businessName, businessUrl: input.websiteUrl },
+      data: { email: input.email, businessName: input.businessName, businessUrl: input.websiteUrl, city: input.city },
     })
 
     // Run Claude audit and AI engine scan in parallel
     const prompt = buildAuditPrompt(input.businessName, input.city, input.websiteUrl)
 
-    const [claudeResult, engineScan] = await Promise.allSettled([
+    const [claudeResult, engineScan, ogResult] = await Promise.allSettled([
       anthropic.messages.create({
         model: "claude-sonnet-4-6",
         max_tokens: 1500,
         messages: [{ role: "user", content: prompt }],
       }),
       scanAllEngines(input.businessName, input.businessType, input.city, input.websiteUrl),
+      fetchOgData(input.websiteUrl),
     ])
 
     // Parse Claude audit result
@@ -73,6 +95,16 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Extract engine response texts
+    const engineResponses: Record<string, string> = {}
+    if (engineScan.status === "fulfilled") {
+      for (const r of engineScan.value.results) {
+        if (r.response) engineResponses[r.engine] = r.response.slice(0, 800)
+      }
+    }
+
+    const ogData = ogResult.status === "fulfilled" ? ogResult.value : null
+
     // Update lead with results
     await db.scanLead.update({
       where: { id: lead.id },
@@ -80,6 +112,8 @@ export async function POST(req: NextRequest) {
         visibilityScore: auditResult.visibility_score,
         issues: auditResult.issues,
         aiSearchStatus,
+        ogData: ogData ?? undefined,
+        engineResponses,
       },
     })
 
@@ -92,6 +126,11 @@ export async function POST(req: NextRequest) {
         issues: auditResult.issues,
         competitorInsight: auditResult.competitor_insight,
         aiSearchStatus,
+        businessName: input.businessName,
+        city: input.city,
+        businessUrl: input.websiteUrl,
+        ogData,
+        engineResponses,
       },
     })
   } catch (err: unknown) {
