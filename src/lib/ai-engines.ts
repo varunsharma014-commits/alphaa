@@ -101,7 +101,7 @@ async function scanClaude(
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
     const message = await withTimeout(
       client.messages.create({
-        model: "claude-haiku-4-5-20251001",
+        model: "claude-haiku-4-5",
         max_tokens: 600,
         messages: [{ role: "user", content: query }],
       }),

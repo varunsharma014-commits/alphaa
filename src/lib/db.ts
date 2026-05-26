@@ -7,9 +7,8 @@ declare global {
 }
 
 function createPrismaClient() {
-  const connectionString = process.env.DATABASE_URL!
-  const adapter = new PrismaPg({ connectionString })
-  return new PrismaClient({ adapter } as any)
+  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
+  return new PrismaClient({ adapter })
 }
 
 export const db = globalThis.prisma ?? createPrismaClient()
