@@ -95,11 +95,12 @@ export async function POST(req: NextRequest) {
       },
     })
   } catch (err: unknown) {
-    console.error("Scan error:", err)
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error("Scan error:", msg)
     if (err && typeof err === "object" && "name" in err && err.name === "ZodError") {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 })
     }
-    return NextResponse.json({ error: "Scan failed. Please try again." }, { status: 500 })
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
 
