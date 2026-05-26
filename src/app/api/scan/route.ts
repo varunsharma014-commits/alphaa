@@ -3,12 +3,15 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { anthropic, buildAuditPrompt } from "@/lib/claude"
+import { scanAllEngines } from "@/lib/ai-engines"
+import type { AiSearchStatus } from "@/types/audit"
 
-export const maxDuration = 60
+export const maxDuration = 90
 
 const schema = z.object({
   businessName: z.string().min(1),
   city: z.string().min(1),
+  businessType: z.string().optional().default("business"),
   websiteUrl: z.string().optional().default(""),
   email: z.string().email(),
 })
@@ -23,23 +26,51 @@ export async function POST(req: NextRequest) {
       data: { email: input.email, businessName: input.businessName, businessUrl: input.websiteUrl },
     })
 
-    // Call Claude
+    // Run Claude audit and AI engine scan in parallel
     const prompt = buildAuditPrompt(input.businessName, input.city, input.websiteUrl)
-    let auditResult
 
-    try {
-      const message = await anthropic.messages.create({
+    const [claudeResult, engineScan] = await Promise.allSettled([
+      anthropic.messages.create({
         model: "claude-sonnet-4-6",
         max_tokens: 1500,
         messages: [{ role: "user", content: prompt }],
-      })
-      const raw = message.content[0].type === "text" ? message.content[0].text : ""
-      // Strip markdown code fences if present
-      const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim()
-      auditResult = JSON.parse(cleaned)
-    } catch (claudeErr) {
-      // Fallback audit if Claude fails
+      }),
+      scanAllEngines(input.businessName, input.businessType, input.city, input.websiteUrl),
+    ])
+
+    // Parse Claude audit result
+    let auditResult: ReturnType<typeof getFallbackAudit>
+    if (claudeResult.status === "fulfilled") {
+      try {
+        const raw = claudeResult.value.content[0].type === "text" ? claudeResult.value.content[0].text : ""
+        const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim()
+        auditResult = JSON.parse(cleaned)
+      } catch {
+        auditResult = getFallbackAudit(input.businessName, input.city)
+      }
+    } else {
       auditResult = getFallbackAudit(input.businessName, input.city)
+    }
+
+    // Merge real engine results into aiSearchStatus (overwrite Claude estimates where we have real data)
+    const aiSearchStatus: Record<string, AiSearchStatus> = { ...auditResult.ai_search_status }
+
+    if (engineScan.status === "fulfilled") {
+      for (const result of engineScan.value.results) {
+        if (result.status === "not_configured") continue
+        // Map engine name to aiSearchStatus key
+        const key = result.engine === "claude" ? "google_ai" : result.engine
+        if (result.status === "appeared") {
+          aiSearchStatus[key] = "occasionally"
+        } else if (result.status === "not_appearing" || result.status === "error") {
+          aiSearchStatus[key] = "not_appearing"
+        }
+      }
+      // Special case: use Claude engine result for google_ai only if chatgpt/gemini covered
+      const claudeEngineResult = engineScan.value.results.find((r) => r.engine === "claude")
+      if (claudeEngineResult && claudeEngineResult.status !== "not_configured") {
+        aiSearchStatus["google_ai"] = claudeEngineResult.appeared ? "occasionally" : "not_appearing"
+      }
     }
 
     // Update lead with results
@@ -48,7 +79,7 @@ export async function POST(req: NextRequest) {
       data: {
         visibilityScore: auditResult.visibility_score,
         issues: auditResult.issues,
-        aiSearchStatus: auditResult.ai_search_status,
+        aiSearchStatus,
       },
     })
 
@@ -60,12 +91,12 @@ export async function POST(req: NextRequest) {
         visibilityScore: auditResult.visibility_score,
         issues: auditResult.issues,
         competitorInsight: auditResult.competitor_insight,
-        aiSearchStatus: auditResult.ai_search_status,
+        aiSearchStatus,
       },
     })
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Scan error:", err)
-    if (err.name === "ZodError") {
+    if (err && typeof err === "object" && "name" in err && err.name === "ZodError") {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 })
     }
     return NextResponse.json({ error: "Scan failed. Please try again." }, { status: 500 })
@@ -84,6 +115,6 @@ function getFallbackAudit(businessName: string, city: string) {
       { severity: "improvement", headline: "Review velocity has slowed", explanation: "Your last few reviews are older than 60 days. Fresh reviews signal to Google that your business is active and trustworthy.", fix_summary: "Alphaa monitors your reviews and sends weekly summary reports." },
     ],
     competitor_insight: `At least 3 competitors in ${city} are posting to Google weekly and appearing on ChatGPT. They're getting customers you're missing.`,
-    ai_search_status: { chatgpt: "not_appearing", perplexity: "not_appearing", google_ai: "occasionally", gemini: "not_appearing" },
+    ai_search_status: { chatgpt: "not_appearing", perplexity: "not_appearing", google_ai: "occasionally", gemini: "not_appearing" } as Record<string, AiSearchStatus>,
   }
 }

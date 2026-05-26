@@ -29,10 +29,15 @@ model User {
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 
-  audits       Audit[]
-  scanLeads    ScanLead[]
-  mockActivity MockActivity[]
-  reports      Report[]
+  audits             Audit[]
+  scanLeads          ScanLead[]
+  mockActivity       MockActivity[]
+  reports            Report[]
+  integration        Integration?
+  keywordRankings    KeywordRanking[]
+  analyticsSnapshots AnalyticsSnapshot[]
+  gmbReviews         GmbReview[]
+  crawlResults       CrawlResult[]
 }
 
 model Audit {
@@ -46,7 +51,107 @@ model Audit {
   rawResponse       String?
   createdAt         DateTime @default(now())
 
-  reports Report[]
+  reports         Report[]
+  aiEngineResults AiEngineResult[]
+
+  @@index([userId])
+}
+
+// Stores actual responses from each AI engine during a visibility scan
+model AiEngineResult {
+  id        String   @id @default(cuid())
+  auditId   String
+  audit     Audit    @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  engine    String   // "chatgpt" | "claude" | "gemini" | "perplexity"
+  query     String   @db.Text
+  response  String   @db.Text
+  appeared  Boolean  @default(false)
+  position  Int?     // which mention (1 = first mention in response)
+  snippet   String?  @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([auditId])
+}
+
+// Google OAuth tokens + selected property IDs for a user
+model Integration {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken     String    @db.Text
+  refreshToken    String?   @db.Text
+  expiresAt       DateTime?
+  gaPropertyId    String?
+  gaPropertyName  String?
+  gscSiteUrl      String?
+  gmbAccountId    String?
+  gmbLocationId   String?
+  gmbLocationName String?
+  connectedAt     DateTime  @default(now())
+  lastSyncedAt    DateTime?
+}
+
+model KeywordRanking {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  query       String
+  clicks      Int      @default(0)
+  impressions Int      @default(0)
+  ctr         Float    @default(0)
+  position    Float    @default(0)
+  date        DateTime
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, date])
+}
+
+model AnalyticsSnapshot {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessions           Int      @default(0)
+  pageViews          Int      @default(0)
+  bounceRate         Float    @default(0)
+  avgSessionDuration Float    @default(0)
+  organicSessions    Int      @default(0)
+  topPages           Json
+  trafficSources     Json
+  date               DateTime
+  createdAt          DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, date])
+}
+
+model GmbReview {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviewId    String
+  authorName  String
+  rating      Int
+  comment     String?  @db.Text
+  reply       String?  @db.Text
+  publishedAt DateTime
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, reviewId])
+  @@index([userId])
+}
+
+model CrawlResult {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url           String
+  pagesScanned  Int      @default(0)
+  issues        Json
+  schemaFound   String[]
+  schemaMissing String[]
+  metaIssues    Json
+  crawledAt     DateTime @default(now())
 
   @@index([userId])
 }
@@ -81,15 +186,15 @@ model MockActivity {
 }
 
 model Report {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   auditId   String?
-  audit     Audit?   @relation(fields: [auditId], references: [id])
+  audit     Audit?    @relation(fields: [auditId], references: [id])
   type      String
   pdfUrl    String?
   sentAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
   @@index([userId])
 }
