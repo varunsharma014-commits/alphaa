@@ -25,7 +25,7 @@ export async function sendWelcomeEmail(to: string, props: {
 
 export async function sendWeeklyReportEmail(to: string, props: Parameters<typeof WeeklyReportEmail>[0]) {
   const html = await render(WeeklyReportEmail(props))
-  await send(to, `Your AI visibility report for ${props.weekOf} — ${props.businessName}`, html)
+  await send(to, `Your weekly Alphaa report — ${props.businessName}`, html)
 }
 
 export async function sendAuditResultsEmail(to: string, props: Parameters<typeof AuditResultsEmail>[0]) {

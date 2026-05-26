@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Sparkles, LayoutDashboard, Search, Zap, Globe, MapPin, FileText, TrendingUp, Star, BarChart3, Settings, ChevronRight } from "lucide-react"
+import { Sparkles, LayoutDashboard, Search, Zap, Globe, MapPin, FileText, TrendingUp, Star, BarChart3, Settings, ChevronRight, Users } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -13,6 +13,7 @@ const navItems = [
   { href: "/dashboard/visibility", label: "AI Visibility", icon: Globe },
   { href: "/dashboard/posts", label: "Google Posts", icon: MapPin },
   { href: "/dashboard/content-gaps", label: "Content Gaps", icon: FileText },
+  { href: "/dashboard/competitors", label: "Competitors", icon: Users },
   { href: "/dashboard/content-plan", label: "Content Plan", icon: BarChart3 },
   { href: "/dashboard/reviews", label: "Reviews", icon: Star },
   { href: "/dashboard/reports", label: "Reports", icon: BarChart3 },
