@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useUser } from "@clerk/nextjs"
 import { Sparkles, ChevronRight, ChevronLeft, Check } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { GlassCard } from "@/components/common/GlassCard"
@@ -181,7 +182,8 @@ function Step3({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
 }
 
 function Step4({ data, update }: { data: OnboardingData; update: (p: Partial<OnboardingData>) => void }) {
-  const snippet = `<script async src="https://cdn.alphaa.app/tag.js?id=YOUR_ID"></script>`
+  const { user } = useUser()
+  const snippet = `<script async src="https://cdn.alphaa.app/tag.js?id=${user?.id ?? ''}"></script>`
   return (
     <GlassCard>
       <h2 className="text-white font-semibold text-xl mb-1">Add Alphaa to your website</h2>
