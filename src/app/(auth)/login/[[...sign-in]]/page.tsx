@@ -3,6 +3,7 @@ import { SignIn } from "@clerk/nextjs"
 export default function LoginPage() {
   return (
     <SignIn
+      forceRedirectUrl="/dashboard"
       appearance={{
         variables: {
           colorPrimary: "#FF6B1A",
