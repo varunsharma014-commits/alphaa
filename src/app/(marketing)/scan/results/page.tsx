@@ -5,20 +5,96 @@ import { useSearchParams } from "next/navigation"
 import { ScanLoader } from "@/components/scan/ScanLoader"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import type { ScanResult } from "@/types/scan"
+import {
+  Bot, MapPin, Star, LayoutGrid, HelpCircle,
+  AlertCircle, AlertTriangle, Lightbulb,
+  Globe, Sparkles, MessageSquare, Search,
+  Building2, Rocket, Wand2, ArrowRight, Check,
+} from "lucide-react"
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+function getInitials(name: string): string {
+  return name
+    .split(/[\s._\-]+/)
+    .map((w) => w[0] ?? "")
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase()
+}
+
+const ISSUE_ICONS = [Bot, MapPin, Star, LayoutGrid, HelpCircle]
+
+function getIssueIcon(severity: string, index: number) {
+  if (index < ISSUE_ICONS.length) return ISSUE_ICONS[index]
+  if (severity === "critical") return AlertCircle
+  if (severity === "warning") return AlertTriangle
+  return Lightbulb
+}
+
+const dotGrid = {
+  backgroundImage:
+    "radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)",
+  backgroundSize: "28px 28px",
+} as const
+
+const ENGINES = [
+  {
+    key: "chatgpt",
+    responseKey: "chatgpt",
+    name: "ChatGPT",
+    Icon: MessageSquare,
+    iconBg: "#1a1a2e",
+    iconColor: "#22c55e",
+  },
+  {
+    key: "google_ai",
+    responseKey: "claude",
+    name: "Google AI",
+    Icon: Globe,
+    iconBg: "#fff1f2",
+    iconColor: "#dc2626",
+  },
+  {
+    key: "perplexity",
+    responseKey: "perplexity",
+    name: "Perplexity",
+    Icon: Search,
+    iconBg: "#eef2ff",
+    iconColor: "#4f46e5",
+  },
+  {
+    key: "gemini",
+    responseKey: "gemini",
+    name: "Gemini",
+    Icon: Sparkles,
+    iconBg: "#fffbeb",
+    iconColor: "#d97706",
+  },
+]
+
+const SEVERITY_STYLE = {
+  critical:    { iconBg: "#fef2f2", iconColor: "#dc2626" },
+  warning:     { iconBg: "#fffbeb", iconColor: "#d97706" },
+  improvement: { iconBg: "#eff6ff", iconColor: "#2563eb" },
+} as const
+
+// ── Main component ─────────────────────────────────────────────────────────
 
 function ScanResultsContent() {
-  const params = useSearchParams()
-  const scanId = params.get("id")
-  const [result, setResult] = useState<ScanResult | null>(null)
+  const params  = useSearchParams()
+  const scanId  = params.get("id")
+  const [result, setResult]   = useState<ScanResult | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const [error, setError]     = useState(false)
 
   useEffect(() => {
     if (!scanId) { setError(true); setLoading(false); return }
     let attempts = 0
     const poll = async () => {
       try {
-        const res = await fetch(`/api/scan/result?id=${scanId}`)
+        const res  = await fetch(`/api/scan/result?id=${scanId}`)
         if (res.ok) {
           const data = await res.json()
           if (data.ready) { setResult(data.result); setLoading(false); return }
@@ -46,218 +122,366 @@ function ScanResultsContent() {
     )
   }
 
-  const isBelow = result.visibilityScore < 55
-  const scoreLabel = result.visibilityScore < 55 ? "Below average" : result.visibilityScore < 70 ? "Average" : "Good"
-  const scoreColor = result.visibilityScore < 55 ? "text-red-400" : result.visibilityScore < 70 ? "text-yellow-400" : "text-green-400"
-  const criticalCount = result.issues.filter(i => i.severity === "critical").length
-  const engines = [
-    { key: "chatgpt", label: "ChatGPT", icon: "🤖", responseKey: "chatgpt" },
-    { key: "perplexity", label: "Perplexity", icon: "🔍", responseKey: "perplexity" },
-    { key: "google_ai", label: "Google AI", icon: "🌐", responseKey: "claude" },
-    { key: "gemini", label: "Gemini", icon: "✨", responseKey: "gemini" },
-  ]
-  const aiStatus = result.aiSearchStatus as Record<string, string>
-  const allNotAppearing = engines.every(e => aiStatus[e.key] === "not_appearing")
+  // ── Derived data ──────────────────────────────────────────────────────
+  const aiStatus       = result.aiSearchStatus as Record<string, string>
+  const engineResponses = result.engineResponses ?? {}
+  const businessName   = result.businessName || result.businessUrl
+  const initials       = getInitials(businessName)
+  const issueCount     = result.issues.length
+
+  const engineData = ENGINES.map((e) => {
+    const status = aiStatus[e.key]
+    const found  = status === "occasionally" || status === "frequently"
+    const raw    = engineResponses[e.responseKey]
+    const detail = found
+      ? (raw?.slice(0, 140) ?? `${businessName} was mentioned by ${e.name}.`)
+      : `${e.name} searched for businesses like yours in ${result.city}. Yours wasn't mentioned.`
+    return { ...e, found, detail }
+  })
+
+  const aiMentions = engineData.filter((e) => e.found).length
 
   return (
-    <div className="pt-24 pb-20 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="pt-20 pb-20 px-4 sm:px-6" style={{ fontFamily: "system-ui, 'Inter', sans-serif" }}>
+      <div className="max-w-2xl mx-auto space-y-4">
 
-        {/* PERSONAL HEADER */}
-        <div className="flex items-center gap-3">
-          {result.ogData?.favicon && (
-            <img src={result.ogData.favicon} alt="" className="w-8 h-8 rounded" onError={(e) => (e.currentTarget.style.display="none")} />
-          )}
-          <div>
-            <h1 className="text-white font-semibold text-lg">{result.businessName || result.businessUrl}</h1>
-            <p className="text-white/40 text-xs">{result.city}{result.ogData?.domain ? ` · ${result.ogData.domain}` : ""}</p>
-          </div>
-          <div className="ml-auto">
-            <span className={`text-xs font-semibold px-2 py-1 rounded-full ${isBelow ? "bg-red-500/20 text-red-400" : "bg-yellow-500/20 text-yellow-400"}`}>
-              {scoreLabel}
-            </span>
-          </div>
-        </div>
-
-        {/* AI ENGINES — THE BIG HOOK */}
-        <div className="rounded-2xl border border-red-500/30 bg-red-500/5 p-6">
-          <div className="mb-4">
-            <h2 className="text-white font-bold text-xl mb-1">
-              {result.businessName ? `${result.businessName} is invisible on AI search` : "You're invisible on AI search"}
-            </h2>
-            <p className="text-white/50 text-sm">We searched for your business on 4 AI engines. Here&apos;s what we found:</p>
+        {/* ── 1. Business header bar ─────────────────────────────── */}
+        <div
+          className="flex items-center gap-3"
+          style={{ background: "#fff", border: "0.5px solid rgba(0,0,0,0.1)", borderRadius: 12, padding: "14px 18px" }}
+        >
+          {/* Avatar */}
+          <div
+            className="flex items-center justify-center flex-shrink-0"
+            style={{ width: 40, height: 40, borderRadius: 8, background: "#e05a2b" }}
+          >
+            {result.ogData?.favicon ? (
+              <img
+                src={result.ogData.favicon}
+                alt=""
+                className="w-5 h-5 rounded"
+                onError={(e) => { e.currentTarget.style.display = "none" }}
+              />
+            ) : (
+              <span style={{ color: "#fff", fontSize: 13, fontWeight: 700 }}>{initials}</span>
+            )}
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            {engines.map(engine => {
-              const status = aiStatus[engine.key]
-              const appeared = status === "occasionally" || status === "frequently"
-              const snippet = result.engineResponses?.[engine.responseKey]?.slice(0, 120)
-              return (
-                <div key={engine.key} className={`rounded-xl p-4 border ${appeared ? "border-green-500/30 bg-green-500/5" : "border-white/10 bg-white/5"}`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl">{engine.icon}</span>
-                      <span className="text-white text-sm font-medium">{engine.label}</span>
-                    </div>
-                    {appeared
-                      ? <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full font-medium">Found ✓</span>
-                      : <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-medium">Not found</span>
-                    }
-                  </div>
-                  {snippet && (
-                    <div className="bg-black/40 rounded-lg px-3 py-2">
-                      <p className="text-white/30 text-[10px] mb-1 uppercase tracking-wide">What AI said</p>
-                      <p className="text-white/60 text-xs leading-relaxed italic">&ldquo;{snippet}&hellip;&rdquo;</p>
-                    </div>
-                  )}
-                  {!snippet && (
-                    <p className="text-white/30 text-xs">No mention of {result.businessName || "your business"}</p>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-
-          {allNotAppearing && (
-            <div className="border-l-4 border-orange-500 bg-orange-500/10 rounded-r-xl px-4 py-3">
-              <p className="text-orange-300 text-sm font-medium">
-                ⚠ Right now, someone in {result.city || "your city"} is asking ChatGPT for your services.
-              </p>
-              <p className="text-orange-300/70 text-sm mt-0.5">A competitor is getting that customer. You&apos;re not.</p>
-            </div>
-          )}
-        </div>
-
-        {/* YOUR WEBSITE */}
-        {(result.ogData || result.businessUrl) && (
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <p className="text-white/40 text-xs uppercase tracking-wide mb-3">Your website</p>
-            <div className="flex gap-4">
-              {result.ogData?.image && (
-                <img
-                  src={result.ogData.image}
-                  alt=""
-                  className="w-24 h-16 object-cover rounded-lg flex-shrink-0"
-                  onError={(e) => (e.currentTarget.style.display="none")}
-                />
+          {/* Name + location */}
+          <div className="flex-1 min-w-0">
+            <p className="truncate" style={{ fontSize: 15, fontWeight: 500, color: "#111", margin: 0 }}>
+              {businessName}
+            </p>
+            <div className="flex items-center gap-1" style={{ marginTop: 2 }}>
+              <MapPin style={{ width: 11, height: 11, color: "#9ca3af" }} />
+              <span style={{ fontSize: 12, color: "#9ca3af" }}>{result.city}</span>
+              {result.ogData?.domain && (
+                <span style={{ fontSize: 12, color: "#9ca3af" }}>&nbsp;· {result.ogData.domain}</span>
               )}
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-medium text-sm truncate">{result.ogData?.title || result.businessName}</p>
-                {result.ogData?.description && (
-                  <p className="text-white/50 text-xs mt-1 leading-relaxed line-clamp-2">{result.ogData.description}</p>
-                )}
-                <p className="text-orange-400 text-xs mt-2">{result.ogData?.domain || result.businessUrl}</p>
-              </div>
-            </div>
-            <div className="mt-3 pt-3 border-t border-white/10">
-              <p className="text-white/40 text-xs">
-                <span className="text-red-400 font-medium">How AI sees your site: </span>
-                Missing structured data, no AI-optimized content, thin authority signals.
-              </p>
             </div>
           </div>
-        )}
 
-        {/* SCORE */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <div className="flex items-center gap-6">
-            <div className="text-center flex-shrink-0">
-              <div className="w-20 h-20 rounded-full border-4 border-white/10 flex items-center justify-center"
-                style={{ borderColor: result.visibilityScore < 55 ? "rgba(239,68,68,0.4)" : result.visibilityScore < 70 ? "rgba(251,191,36,0.4)" : "rgba(34,197,94,0.4)" }}>
-                <span className={`text-2xl font-bold ${scoreColor}`}>{result.visibilityScore}</span>
+          {/* Scan complete badge */}
+          <div
+            className="flex items-center gap-1.5 flex-shrink-0"
+            style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 20, padding: "4px 10px" }}
+          >
+            <Check style={{ width: 12, height: 12, color: "#16a34a" }} />
+            <span style={{ fontSize: 12, fontWeight: 500, color: "#16a34a" }}>Scan complete</span>
+          </div>
+        </div>
+
+        {/* ── 2. Hero ───────────────────────────────────────────────── */}
+        <div style={{ background: "#0f0f0f", borderRadius: 20, padding: "36px 28px", position: "relative", overflow: "hidden" }}>
+          <div style={{ ...dotGrid, position: "absolute", inset: 0, pointerEvents: "none" }} />
+          <div style={{ position: "relative", zIndex: 1 }}>
+
+            {/* Pill badge */}
+            <div className="flex justify-center mb-5">
+              <div
+                className="inline-flex items-center gap-2"
+                style={{ background: "#161616", border: "1px solid #222", borderRadius: 20, padding: "5px 12px" }}
+              >
+                <span style={{
+                  width: 7, height: 7, borderRadius: "50%", background: "#22c55e",
+                  display: "inline-block", boxShadow: "0 0 0 2px rgba(34,197,94,0.25)",
+                }} />
+                <span style={{ fontSize: 12, color: "#9ca3af" }}>alphaa AI · scanned just now</span>
               </div>
             </div>
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2 mb-1">
-                <span className={`text-3xl font-bold ${scoreColor}`}>{result.visibilityScore}</span>
-                <span className="text-white/40 text-sm">/100</span>
-                <span className={`text-sm font-medium ${scoreColor}`}>— {scoreLabel}</span>
-              </div>
-              <p className="text-white/50 text-xs mb-3">The average competitor in {result.city || "your area"} scores <span className="text-white">68/100</span></p>
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs text-white/40">
-                  <span>You</span><span>Competitors (avg)</span>
+
+            {/* Headline */}
+            <h1 style={{ fontSize: 26, fontWeight: 700, color: "#fff", textAlign: "center", lineHeight: 1.3, margin: "0 0 12px" }}>
+              We found exactly what&apos;s holding{" "}
+              <span style={{ color: "#e05a2b" }}>{businessName}</span>{" "}
+              back.
+            </h1>
+
+            {/* Subline */}
+            <p style={{
+              fontSize: 14, color: "#6b7280", textAlign: "center", lineHeight: 1.6,
+              margin: "0 auto 28px", maxWidth: 420,
+            }}>
+              Our AI checked your business across the whole internet in 60 seconds. Here&apos;s
+              the honest picture — in plain English, no tech-speak.
+            </p>
+
+            {/* 3-col stat grid */}
+            <div className="grid grid-cols-3 gap-3">
+              {([
+                { Icon: Bot,           color: "#dc2626", value: `${aiMentions} / 4`, label: "AI assistants mention you" },
+                { Icon: Star,          color: "#d97706", value: "0",                 label: "Recent customer reviews" },
+                { Icon: AlertTriangle, color: "#dc2626", value: String(issueCount),  label: "Things losing you customers" },
+              ] as const).map((stat, i) => (
+                <div key={i} style={{ background: "#161616", border: "1px solid #222", borderRadius: 12, padding: "16px 10px", textAlign: "center" }}>
+                  <stat.Icon style={{ width: 20, height: 20, color: stat.color, margin: "0 auto 8px" }} />
+                  <div style={{ fontSize: 22, fontWeight: 700, color: "#fff", lineHeight: 1 }}>{stat.value}</div>
+                  <div style={{ fontSize: 11, color: "#6b7280", marginTop: 4, lineHeight: 1.4 }}>{stat.label}</div>
                 </div>
-                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-red-500 to-orange-500 rounded-full" style={{width: `${result.visibilityScore}%`}} />
-                </div>
-                <div className="relative h-3">
-                  <div className="absolute top-0 w-0.5 h-3 bg-white/40" style={{left: "68%"}} />
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* ISSUES */}
+        {/* ── 3. AI Engines ─────────────────────────────────────────── */}
         <div>
-          <h2 className="text-white font-semibold text-base mb-3">
-            {result.issues.length} reasons customers can&apos;t find {result.businessName ? `${result.businessName}` : "you"}
-            {criticalCount > 0 && <span className="ml-2 text-red-400 text-xs font-normal">({criticalCount} critical)</span>}
-          </h2>
-          <div className="space-y-2">
-            {result.issues.map((issue, i) => {
-              const colors: Record<string, { border: string; badge: string }> = {
-                critical: { border: "border-red-500/30", badge: "bg-red-500/20 text-red-400" },
-                warning: { border: "border-yellow-500/30", badge: "bg-yellow-500/20 text-yellow-400" },
-                improvement: { border: "border-blue-500/30", badge: "bg-blue-500/20 text-blue-400" },
-              }
-              const c = colors[issue.severity] ?? colors.improvement
-              return (
-                <div key={i} className={`rounded-xl border ${c.border} bg-white/5 px-4 py-3`}>
-                  <div className="flex items-start gap-3">
-                    <span className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full flex-shrink-0 mt-0.5 ${c.badge}`}>
-                      {issue.severity}
-                    </span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-medium leading-snug">{issue.headline}</p>
-                      <p className="text-white/50 text-xs mt-0.5 leading-relaxed">{issue.explanation.split(".")[0]}.</p>
-                      <p className="text-green-400 text-xs mt-1.5 flex items-center gap-1">
-                        <span>✓</span> <span>{issue.fix_summary}</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+          {/* Section label */}
+          <div className="flex items-center gap-3 mb-4">
+            <span style={{ fontSize: 12, fontWeight: 600, color: "#6b7280", whiteSpace: "nowrap" }}>
+              When a customer asks AI &ldquo;who does this in {result.city}?&rdquo;
+            </span>
+            <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.08)" }} />
           </div>
-        </div>
 
-        {/* SOCIAL PROOF */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <div className="flex gap-1 mb-3">{"★★★★★".split("").map((s, i) => <span key={i} className="text-orange-400 text-sm">{s}</span>)}</div>
-          <p className="text-white/80 text-sm leading-relaxed italic mb-3">
-            &ldquo;I was paying $1,400/month to an SEO agency and invisible on ChatGPT. Switched to Alphaa, appeared on ChatGPT in 11 days, cancelled the agency.&rdquo;
-          </p>
-          <p className="text-white/40 text-xs">— Sarah K., General Dentist · Austin, TX</p>
-        </div>
-
-        {/* CTA */}
-        <div className="rounded-2xl p-6 text-center" style={{background: "radial-gradient(ellipse at 50% 100%, rgba(255,107,26,0.15) 0%, rgba(0,0,0,0.4) 70%)", border: "1px solid rgba(255,107,26,0.2)"}}>
-          <h2 className="text-white font-bold text-xl mb-2">
-            Get {result.businessName ? result.businessName : "your business"} found on ChatGPT in 14 days
-          </h2>
-          <p className="text-white/50 text-sm mb-4">Everything Alphaa does — automatically, every week:</p>
-          <div className="space-y-2 mb-6 text-left max-w-xs mx-auto">
-            {[
-              "Optimize your profile across all 6 AI engines",
-              "Post to Google Business Profile 4× weekly",
-              "Generate content that AI tools cite and recommend",
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <span className="text-green-400 text-sm">✓</span>
-                <span className="text-white/70 text-sm">{item}</span>
+          {/* 2×2 grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {engineData.map((engine) => (
+              <div
+                key={engine.key}
+                style={{ background: "#fff", border: "0.5px solid rgba(0,0,0,0.1)", borderRadius: 12, padding: 16 }}
+              >
+                {/* Top row: icon + name + status */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="flex items-center justify-center flex-shrink-0"
+                      style={{ width: 28, height: 28, borderRadius: 8, background: engine.iconBg }}
+                    >
+                      <engine.Icon style={{ width: 15, height: 15, color: engine.iconColor }} />
+                    </div>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: "#111" }}>{engine.name}</span>
+                  </div>
+                  {engine.found ? (
+                    <span style={{
+                      fontSize: 11, fontWeight: 600, color: "#16a34a",
+                      background: "#f0fdf4", border: "1px solid #bbf7d0",
+                      borderRadius: 20, padding: "3px 8px",
+                    }}>
+                      You&apos;re here! ✓
+                    </span>
+                  ) : (
+                    <span style={{
+                      fontSize: 11, fontWeight: 600, color: "#dc2626",
+                      background: "#fef2f2", border: "1px solid #fecaca",
+                      borderRadius: 20, padding: "3px 8px",
+                    }}>
+                      Not you
+                    </span>
+                  )}
+                </div>
+                {/* Detail text */}
+                <p style={{ fontSize: 12, color: "#6b7280", lineHeight: 1.6, margin: 0 }}>
+                  {engine.found ? <em>{engine.detail}</em> : engine.detail}
+                </p>
               </div>
             ))}
           </div>
-          <OrangePillButton href="/signup" size="lg" className="w-full justify-center">
-            Start my free 14-day trial →
-          </OrangePillButton>
-          <p className="text-white/30 text-xs mt-3">No credit card · Cancel anytime · Setup in 2 minutes</p>
-          <p className="text-white/20 text-xs mt-1">
-            Every day without Alphaa, a competitor in {result.city || "your city"} gets the customer instead.
-          </p>
+        </div>
+
+        {/* ── 4. Issues ─────────────────────────────────────────────── */}
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <span style={{ fontSize: 12, fontWeight: 600, color: "#6b7280", whiteSpace: "nowrap" }}>
+              What&apos;s actually costing you customers right now
+            </span>
+            <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.08)" }} />
+          </div>
+
+          {issueCount === 0 ? (
+            <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 12, padding: "24px", textAlign: "center" }}>
+              <Check style={{ width: 24, height: 24, color: "#16a34a", margin: "0 auto 8px" }} />
+              <p style={{ fontSize: 15, fontWeight: 600, color: "#166534", margin: 0 }}>
+                Great news — no major issues found!
+              </p>
+              <p style={{ fontSize: 13, color: "#16a34a", marginTop: 4, marginBottom: 0 }}>
+                Your business looks healthy across all our checks.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {result.issues.map((issue, i) => {
+                const sev   = issue.severity as keyof typeof SEVERITY_STYLE
+                const style = SEVERITY_STYLE[sev] ?? SEVERITY_STYLE.improvement
+                const Icon  = getIssueIcon(issue.severity, i)
+                return (
+                  <div
+                    key={i}
+                    style={{ background: "#fff", border: "0.5px solid rgba(0,0,0,0.1)", borderRadius: 12, padding: 16 }}
+                  >
+                    <div className="flex gap-3">
+                      {/* Icon tile */}
+                      <div
+                        className="flex items-center justify-center flex-shrink-0"
+                        style={{ width: 48, height: 48, borderRadius: 12, background: style.iconBg }}
+                      >
+                        <Icon style={{ width: 22, height: 22, color: style.iconColor }} />
+                      </div>
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <p style={{ fontSize: 14, fontWeight: 500, color: "#111", margin: "0 0 6px", lineHeight: 1.4 }}>
+                          {issue.headline}
+                        </p>
+                        <p style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.6, margin: "0 0 10px" }}>
+                          {issue.explanation}
+                        </p>
+                        {/* Fix row */}
+                        <div
+                          className="flex items-start gap-2"
+                          style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 8, padding: "8px 12px" }}
+                        >
+                          <Wand2 style={{ width: 13, height: 13, color: "#16a34a", flexShrink: 0, marginTop: 1 }} />
+                          <p style={{ fontSize: 12, color: "#166534", margin: 0, lineHeight: 1.5 }}>
+                            {issue.fix_summary}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* ── 5. CTA block ──────────────────────────────────────────── */}
+        <div style={{ background: "#0f0f0f", borderRadius: 20, padding: "36px 28px", position: "relative", overflow: "hidden" }}>
+          <div style={{ ...dotGrid, position: "absolute", inset: 0, pointerEvents: "none" }} />
+          <div style={{ position: "relative", zIndex: 1 }}>
+
+            {/* Eyebrow */}
+            <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+              Here&apos;s the good news
+            </p>
+
+            {/* Headline */}
+            <h2 style={{ fontSize: 24, fontWeight: 700, color: "#fff", textAlign: "center", margin: "0 0 12px", lineHeight: 1.3 }}>
+              alphaa fixes <span style={{ color: "#e05a2b" }}>all of this.</span>
+              <br />
+              <span style={{ fontWeight: 400, fontSize: 19 }}>Automatically. While you sleep.</span>
+            </h2>
+
+            {/* Subline */}
+            <p style={{
+              fontSize: 13, color: "#6b7280", textAlign: "center", lineHeight: 1.6,
+              margin: "0 auto 28px", maxWidth: 400,
+            }}>
+              You tell alphaa about your business once. It posts to Google, improves your AI
+              visibility, handles reviews, and sends you weekly progress reports — forever, on autopilot.
+            </p>
+
+            {/* 3-step flow */}
+            <div className="flex flex-col sm:flex-row items-stretch gap-2 mb-6">
+              {([
+                { num: 1, Icon: Building2, label: "Tell alphaa about your business" },
+                { num: 2, Icon: Globe,     label: "Connect Google with one click" },
+                { num: 3, Icon: Rocket,    label: "alphaa runs everything from here" },
+              ] as const).map((step, i) => (
+                <div key={i} className="flex-1 flex items-center gap-2">
+                  <div
+                    style={{ background: "#161616", border: "1px solid #222", borderRadius: 12, padding: "16px 12px", flex: 1, textAlign: "center" }}
+                  >
+                    <div style={{ fontSize: 10, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
+                      Step {step.num}
+                    </div>
+                    <step.Icon style={{ width: 22, height: 22, color: "#e05a2b", margin: "0 auto 8px" }} />
+                    <p style={{ fontSize: 12, color: "#9ca3af", margin: 0, lineHeight: 1.5 }}>{step.label}</p>
+                  </div>
+                  {i < 2 && (
+                    <ArrowRight style={{ width: 14, height: 14, color: "#333", flexShrink: 0 }} className="hidden sm:block" />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* CTA button */}
+            <div style={{ maxWidth: 400, margin: "0 auto 10px" }}>
+              <a
+                href="https://alphaa.app/signup"
+                style={{
+                  display: "block", width: "100%", background: "#e05a2b", color: "#fff",
+                  fontSize: 16, fontWeight: 600, textAlign: "center",
+                  padding: "14px 24px", borderRadius: 12, textDecoration: "none",
+                }}
+              >
+                Start my free 14-day trial →
+              </a>
+            </div>
+
+            {/* Fine print */}
+            <p style={{ fontSize: 12, color: "#6b7280", textAlign: "center", margin: "0 0 24px" }}>
+              No credit card · Cancel anytime · First post goes live within 24 hours
+            </p>
+
+            {/* Divider */}
+            <div style={{ height: 1, background: "#1e1e1e", marginBottom: 24 }} />
+
+            {/* 3-col social proof */}
+            <div
+              className="grid grid-cols-3"
+              style={{ borderTop: "1px solid #1e1e1e", borderBottom: "1px solid #1e1e1e", padding: "20px 0", marginBottom: 24 }}
+            >
+              {([
+                { value: "1,200+",  label: "businesses on alphaa" },
+                { value: "4.9 / 5", label: "average rating" },
+                { value: "$500/mo", label: "avg saved vs. agency" },
+              ] as const).map((item, i) => (
+                <div
+                  key={i}
+                  style={{ textAlign: "center", borderRight: i < 2 ? "1px solid #1e1e1e" : "none" }}
+                >
+                  <div style={{ fontSize: 20, fontWeight: 700, color: "#fff" }}>{item.value}</div>
+                  <div style={{ fontSize: 11, color: "#6b7280", marginTop: 3 }}>{item.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Testimonial */}
+            <div style={{ background: "#161616", borderRadius: 12, padding: 20 }}>
+              <div className="flex gap-0.5 mb-3">
+                {"★★★★★".split("").map((s, i) => (
+                  <span key={i} style={{ color: "#f59e0b", fontSize: 14 }}>{s}</span>
+                ))}
+              </div>
+              <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.7, fontStyle: "italic", margin: "0 0 14px" }}>
+                &ldquo;I was paying $1,400 a month to an SEO agency and ChatGPT had never heard of
+                me. I tried alphaa, appeared on ChatGPT in 11 days, and cancelled the agency the
+                same week.&rdquo;
+              </p>
+              <div className="flex items-center gap-3">
+                <div
+                  className="flex items-center justify-center flex-shrink-0"
+                  style={{ width: 34, height: 34, borderRadius: "50%", background: "#e05a2b" }}
+                >
+                  <span style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>SK</span>
+                </div>
+                <div>
+                  <p style={{ fontSize: 13, fontWeight: 500, color: "#fff", margin: 0 }}>Sarah K.</p>
+                  <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>General Dentist, Austin TX</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
 
       </div>
