@@ -75,7 +75,7 @@ export function DashboardSidebar() {
             )}
             <div className="space-y-0.5">
               {group.items.map((item) => {
-                const active = isActive(item.href, item.exact)
+                const active = isActive(item.href, (item as { exact?: boolean }).exact)
                 return (
                   <Link
                     key={item.href}

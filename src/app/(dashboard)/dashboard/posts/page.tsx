@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
-import { GlassCard } from "@/components/common/GlassCard"
 import { FileText, CheckCircle2, Clock } from "lucide-react"
 import { GeneratePostButton } from "./GeneratePostButton"
 import { PublishPostButton } from "./PublishPostButton"
@@ -81,7 +80,6 @@ export default async function PostsPage() {
 
   const posts = user?.gbpPosts ?? []
   const totalPosts = posts.length
-  const postedCount = posts.filter((p) => p.status === "posted").length
   const draftCount = posts.filter((p) => p.status === "draft").length
   const thisMonthPosted = getThisMonthPosted(posts)
 

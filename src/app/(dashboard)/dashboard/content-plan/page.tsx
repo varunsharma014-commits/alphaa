@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic"
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
 import { GlassCard } from "@/components/common/GlassCard"
-import { CalendarDays, CheckCircle2, Clock, AlertCircle, Info } from "lucide-react"
+import { CalendarDays, CheckCircle2, Clock, Info } from "lucide-react"
 import { GenerateMonthButton } from "./GenerateMonthButton"
 
 export const metadata = { title: "Content Plan" }

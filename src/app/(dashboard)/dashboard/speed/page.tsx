@@ -6,7 +6,6 @@ import { GlassCard } from "@/components/common/GlassCard"
 import { ScoreRing } from "@/components/common/ScoreRing"
 import { ReCrawlButton } from "./ReCrawlButton"
 import {
-  Gauge,
   AlertTriangle,
   CheckCircle2,
   XCircle,
@@ -74,21 +73,10 @@ function scoreColor(score: number): string {
   return "text-red-400"
 }
 
-function scoreBg(score: number): string {
-  if (score >= 0.9) return "bg-green-400"
-  if (score >= 0.5) return "bg-amber-400"
-  return "bg-red-400"
-}
-
 function scoreLabel(score: number): string {
   if (score >= 0.9) return "Good"
   if (score >= 0.5) return "Needs Improvement"
   return "Poor"
-}
-
-function cwvPasses(auditId: string, score: number | null): boolean {
-  if (score === null) return false
-  return score >= 0.9
 }
 
 function perfScoreLabel(pct: number): string {
@@ -262,7 +250,6 @@ export default async function SpeedPage() {
   const issues = (crawlResult?.issues ?? []) as CrawlIssue[]
   const criticalCount = issues.filter((i) => i.severity === "critical").length
   const warningCount = issues.filter((i) => i.severity === "warning").length
-  const improvementCount = issues.filter((i) => i.severity === "improvement").length
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">

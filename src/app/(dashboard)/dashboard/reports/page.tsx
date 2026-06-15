@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
-import { GlassCard } from "@/components/common/GlassCard"
 import {
   BarChart3, FileText, Mail, CheckCircle2,
   TrendingUp, TrendingDown, Minus, Star, MapPin,

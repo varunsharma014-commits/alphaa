@@ -5,7 +5,6 @@ import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { GlassCard } from "@/components/common/GlassCard"
 import { MonoNumber } from "@/components/common/MonoNumber"
-import { IssueCard } from "@/components/scan/IssueCard"
 import { formatDate } from "@/lib/utils"
 import GenerateSchemaButton from "./GenerateSchemaButton"
 import CopyButton from "./CopyButton"
@@ -58,7 +57,7 @@ export default async function AuditPage() {
     (i) => (i as { severity: string }).severity === "warning"
   ).length
   const passedCount = allIssues.filter(
-    (i) => (i as { severity: string }).severity === "improvement" || (i as { severity: string }).severity === "info"
+    (i) => (i as { severity: string }).severity === "improvement"
   ).length
 
   const totalIssueCount = criticalCount + warningCount + passedCount
@@ -279,11 +278,11 @@ export default async function AuditPage() {
                     <div className="flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="text-white text-sm font-medium">{issue.title}</p>
-                        <p className="text-white/50 text-xs mt-1 leading-relaxed">{issue.description}</p>
-                        {issue.fix && (
+                        <p className="text-white text-sm font-medium">{issue.headline}</p>
+                        <p className="text-white/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
+                        {issue.fix_summary && (
                           <p className="text-green-400 text-xs mt-2 leading-relaxed">
-                            Fix: {issue.fix}
+                            Fix: {issue.fix_summary}
                           </p>
                         )}
                       </div>
@@ -312,11 +311,11 @@ export default async function AuditPage() {
                     <div className="flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="text-white text-sm font-medium">{issue.title}</p>
-                        <p className="text-white/50 text-xs mt-1 leading-relaxed">{issue.description}</p>
-                        {issue.fix && (
+                        <p className="text-white text-sm font-medium">{issue.headline}</p>
+                        <p className="text-white/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
+                        {issue.fix_summary && (
                           <p className="text-green-400 text-xs mt-2 leading-relaxed">
-                            Fix: {issue.fix}
+                            Fix: {issue.fix_summary}
                           </p>
                         )}
                       </div>
@@ -327,16 +326,16 @@ export default async function AuditPage() {
           )}
 
           {/* Info / improvement audit issues */}
-          {auditIssues.filter((i) => i.severity === "info").length > 0 && (
+          {auditIssues.filter((i) => i.severity === "improvement").length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-blue-400" />
                 <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider">
-                  Info ({auditIssues.filter((i) => i.severity === "info").length})
+                  Improvements ({auditIssues.filter((i) => i.severity === "improvement").length})
                 </p>
               </div>
               {auditIssues
-                .filter((i) => i.severity === "info")
+                .filter((i) => i.severity === "improvement")
                 .map((issue, i) => (
                   <div
                     key={i}
@@ -345,11 +344,11 @@ export default async function AuditPage() {
                     <div className="flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="text-white text-sm font-medium">{issue.title}</p>
-                        <p className="text-white/50 text-xs mt-1 leading-relaxed">{issue.description}</p>
-                        {issue.fix && (
+                        <p className="text-white text-sm font-medium">{issue.headline}</p>
+                        <p className="text-white/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
+                        {issue.fix_summary && (
                           <p className="text-green-400 text-xs mt-2 leading-relaxed">
-                            Fix: {issue.fix}
+                            Fix: {issue.fix_summary}
                           </p>
                         )}
                       </div>

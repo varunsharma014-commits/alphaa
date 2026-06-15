@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
-import { GlassCard } from "@/components/common/GlassCard"
 import { Star, MessageSquare } from "lucide-react"
 import { GenerateReplyButton } from "./GenerateReplyButton"
 import { SyncReviewsButton } from "./SyncReviewsButton"

@@ -46,12 +46,6 @@ function positionBarWidth(pos: number): string {
   return `${pct.toFixed(0)}%`
 }
 
-function positionBg(pos: number): string {
-  if (pos <= 3) return 'bg-green-500/10'
-  if (pos < 10) return 'bg-teal-500/10'
-  if (pos <= 30) return 'bg-amber-500/10'
-  return 'bg-red-500/10'
-}
 
 function formatNumber(n: number): string {
   if (n >= 1000) return `${(n / 1000).toFixed(1)}k`
