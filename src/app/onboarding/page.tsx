@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
-import { Sparkles, ChevronRight, ChevronLeft, Check, Mail, Send } from "lucide-react"
+import { Sparkles, ChevronRight, ChevronLeft, Check, Mail, Send, Wand2 } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { GlassCard } from "@/components/common/GlassCard"
 import { BUSINESS_TYPES } from "@/lib/constants"
@@ -28,6 +28,9 @@ export default function OnboardingPage() {
   const router = useRouter()
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [aiAnalyzing, setAiAnalyzing] = useState(false)
+  const [aiPrefilled, setAiPrefilled] = useState(false)
+  const analyzeCalledRef = useRef(false)
   const [data, setData] = useState<OnboardingData>({
     businessType: "",
     city: "",
@@ -42,6 +45,44 @@ export default function OnboardingPage() {
 
   function update(patch: Partial<OnboardingData>) {
     setData((d) => ({ ...d, ...patch }))
+  }
+
+  // Called when user clicks Continue on Step 3 (website URL step)
+  async function analyzeWebsite(url: string) {
+    if (!url || analyzeCalledRef.current) return
+    analyzeCalledRef.current = true
+    setAiAnalyzing(true)
+    try {
+      const res = await fetch("/api/onboarding/analyze-website", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ websiteUrl: url }),
+      })
+      if (!res.ok) return
+      const { analysis } = await res.json()
+      if (!analysis) return
+
+      // Pre-fill only if fields are currently empty
+      update({
+        ...(analysis.businessType && !data.businessType ? { businessType: analysis.businessType } : {}),
+        ...(analysis.city && !data.city           ? { city: analysis.city }           : {}),
+        ...(analysis.state && !data.state         ? { state: analysis.state }         : {}),
+        ...(analysis.voiceDescription             ? { voiceDescription: analysis.voiceDescription } : {}),
+        ...(analysis.topicsToAvoid                ? { topicsToAvoid: analysis.topicsToAvoid }       : {}),
+      })
+      setAiPrefilled(true)
+    } catch {
+      // Silent fail — user can fill manually
+    } finally {
+      setAiAnalyzing(false)
+    }
+  }
+
+  function handleContinue() {
+    if (step === 3 && data.websiteUrl && data.hasWebsite) {
+      analyzeWebsite(data.websiteUrl)
+    }
+    setStep((s) => s + 1)
   }
 
   async function finish() {
@@ -87,7 +128,7 @@ export default function OnboardingPage() {
         {step === 2 && <Step2 data={data} update={update} />}
         {step === 3 && <Step3 data={data} update={update} />}
         {step === 4 && <Step4 data={data} update={update} />}
-        {step === 5 && <Step5 data={data} update={update} />}
+        {step === 5 && <Step5 data={data} update={update} aiAnalyzing={aiAnalyzing} aiPrefilled={aiPrefilled} />}
         {step === 6 && <Step6 />}
       </div>
 
@@ -99,7 +140,7 @@ export default function OnboardingPage() {
           </button>
         )}
         {step < TOTAL_STEPS && (
-          <OrangePillButton onClick={() => setStep((s) => s + 1)} size="md">
+          <OrangePillButton onClick={handleContinue} size="md">
             Continue <ChevronRight className="w-4 h-4" />
           </OrangePillButton>
         )}
@@ -266,30 +307,56 @@ function Step4({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
   )
 }
 
-function Step5({ data, update }: { data: OnboardingData; update: (p: Partial<OnboardingData>) => void }) {
+function Step5({
+  data, update, aiAnalyzing, aiPrefilled,
+}: {
+  data: OnboardingData
+  update: (p: Partial<OnboardingData>) => void
+  aiAnalyzing: boolean
+  aiPrefilled: boolean
+}) {
   return (
     <GlassCard>
       <h2 className="text-white font-semibold text-xl mb-1">Tell us about your business</h2>
-      <p className="text-muted text-sm mb-5">We use this to write content in your voice, not generic AI copy.</p>
+      <p className="text-muted text-sm mb-4">We use this to write content in your voice, not generic AI copy.</p>
+
+      {/* AI status banner */}
+      {aiAnalyzing && (
+        <div className="flex items-center gap-2.5 bg-brand-orange/10 border border-brand-orange/20 rounded-xl px-4 py-3 mb-4">
+          <div className="w-3.5 h-3.5 rounded-full border-2 border-brand-orange border-t-transparent animate-spin flex-shrink-0" />
+          <p className="text-brand-orange text-xs font-medium">Reading your website and filling this in for you…</p>
+        </div>
+      )}
+      {aiPrefilled && !aiAnalyzing && (
+        <div className="flex items-center gap-2.5 bg-green-500/10 border border-green-500/20 rounded-xl px-4 py-3 mb-4">
+          <Wand2 className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+          <p className="text-green-400 text-xs font-medium">alphaa read your website and pre-filled this. Edit anything that&apos;s not quite right.</p>
+        </div>
+      )}
+
       <div className="space-y-4">
         <div>
           <label className="block text-white text-sm font-medium mb-1.5">What makes your business different?</label>
           <textarea
             value={data.voiceDescription}
             onChange={(e) => update({ voiceDescription: e.target.value })}
-            placeholder="We're a family-owned practice focused on gentle, judgment-free care. 15 years in Austin. Patients often mention our friendly staff and no-wait appointments."
-            rows={4}
-            className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange resize-none"
+            placeholder={aiAnalyzing ? "Filling in from your website…" : "We're a family-owned practice focused on gentle, judgment-free care. 15 years in Austin. Patients often mention our friendly staff and no-wait appointments."}
+            rows={5}
+            disabled={aiAnalyzing}
+            className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange resize-none disabled:opacity-50"
           />
         </div>
         <div>
-          <label className="block text-white text-sm font-medium mb-1.5">Any topics to avoid? <span className="text-muted font-normal">(optional)</span></label>
+          <label className="block text-white text-sm font-medium mb-1.5">
+            Any topics to avoid? <span className="text-muted font-normal">(optional)</span>
+          </label>
           <textarea
             value={data.topicsToAvoid}
             onChange={(e) => update({ topicsToAvoid: e.target.value })}
-            placeholder="Don't mention pricing. Avoid comparing us to specific competitors by name."
+            placeholder={aiAnalyzing ? "Filling in from your website…" : "Don't mention pricing. Avoid comparing us to specific competitors by name."}
             rows={2}
-            className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange resize-none"
+            disabled={aiAnalyzing}
+            className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange resize-none disabled:opacity-50"
           />
         </div>
       </div>
