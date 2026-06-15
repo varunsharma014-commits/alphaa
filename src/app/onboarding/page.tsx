@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
-import { Sparkles, ChevronRight, ChevronLeft, Check } from "lucide-react"
+import { Sparkles, ChevronRight, ChevronLeft, Check, Mail, Send } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { GlassCard } from "@/components/common/GlassCard"
 import { BUSINESS_TYPES } from "@/lib/constants"
@@ -183,22 +183,84 @@ function Step3({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
 
 function Step4({ data, update }: { data: OnboardingData; update: (p: Partial<OnboardingData>) => void }) {
   const { user } = useUser()
+  const [showEmail, setShowEmail] = useState(false)
+  const [devEmail, setDevEmail] = useState("")
   const snippet = `<script async src="https://cdn.alphaa.app/tag.js?id=${user?.id ?? ''}"></script>`
+
+  function sendTodev() {
+    if (!devEmail) return
+    const subject = encodeURIComponent("Quick task: Add one snippet to our website (2 min)")
+    const body = encodeURIComponent(
+      `Hi,\n\nCan you add this snippet to our website before the </head> tag? It takes about 2 minutes.\n\n${snippet}\n\nJust paste it before the closing </head> tag on every page (or in the site-wide header template).\n\nThanks!`
+    )
+    window.open(`mailto:${devEmail}?subject=${subject}&body=${body}`)
+    toast.success("Email client opened!")
+    update({ snippetAdded: true })
+  }
+
   return (
     <GlassCard>
       <h2 className="text-white font-semibold text-xl mb-1">Add Alphaa to your website</h2>
-      <p className="text-muted text-sm mb-5">Paste this one snippet before your &lt;/head&gt; tag. Works on any website. Forward to your developer if needed — takes 2 minutes.</p>
+      <p className="text-muted text-sm mb-5">
+        Paste this one snippet before your &lt;/head&gt; tag. Works on any website — or forward it to your developer in one click.
+      </p>
+
+      {/* Snippet block */}
       <div className="bg-bg-primary rounded-xl p-4 border border-white/[0.08] mb-4">
         <code className="text-brand-orange text-xs font-mono break-all">{snippet}</code>
       </div>
+
+      {/* Primary: copy */}
       <button
         onClick={() => { navigator.clipboard.writeText(snippet); update({ snippetAdded: true }); toast.success("Copied to clipboard!") }}
         className="btn-ghost w-full py-2.5 text-sm mb-3"
       >
         Copy snippet
       </button>
-      <button onClick={() => update({ snippetAdded: true })} className="text-muted text-sm hover:text-white transition-colors block text-center w-full">
-        I'll add this later →
+
+      {/* Secondary: email to developer */}
+      {!showEmail ? (
+        <button
+          onClick={() => setShowEmail(true)}
+          className="w-full flex items-center justify-center gap-2 py-2.5 text-sm text-muted hover:text-white border border-white/[0.08] hover:border-white/20 rounded-full transition-colors mb-3"
+        >
+          <Mail className="w-4 h-4" />
+          Email to my developer
+        </button>
+      ) : (
+        <div className="mb-3 space-y-2">
+          <p className="text-muted text-xs text-center">Enter your developer&apos;s email — we&apos;ll pre-write the whole message.</p>
+          <div className="flex gap-2">
+            <input
+              type="email"
+              placeholder="developer@yourcompany.com"
+              value={devEmail}
+              onChange={(e) => setDevEmail(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendTodev()}
+              autoFocus
+              className="flex-1 bg-bg-tertiary border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+            />
+            <button
+              onClick={sendTodev}
+              disabled={!devEmail}
+              className="bg-brand-orange hover:bg-brand-orange-light disabled:opacity-40 text-white px-4 py-2.5 rounded-xl transition-colors flex items-center gap-1.5 text-sm font-medium"
+            >
+              <Send className="w-3.5 h-3.5" />
+              Send
+            </button>
+          </div>
+          <button onClick={() => setShowEmail(false)} className="text-muted/50 text-xs hover:text-muted transition-colors block text-center w-full">
+            Cancel
+          </button>
+        </div>
+      )}
+
+      {/* Skip */}
+      <button
+        onClick={() => update({ snippetAdded: true })}
+        className="text-muted text-sm hover:text-white transition-colors block text-center w-full"
+      >
+        I&apos;ll add this later →
       </button>
     </GlassCard>
   )
