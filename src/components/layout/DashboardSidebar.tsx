@@ -2,21 +2,48 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Sparkles, LayoutDashboard, Search, Zap, Globe, MapPin, FileText, TrendingUp, Star, BarChart3, Settings, ChevronRight, Users } from "lucide-react"
+import {
+  Sparkles, Home, Bot, TrendingUp, Activity, MapPin, Star,
+  CalendarDays, Lightbulb, Users, BarChart3, Settings, ChevronRight, Zap,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 
-const navItems = [
-  { href: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
-  { href: "/dashboard/audit", label: "Technical Audit", icon: Search },
-  { href: "/dashboard/keywords", label: "Keyword Scan", icon: TrendingUp },
-  { href: "/dashboard/speed", label: "Site Speed & Factors", icon: Zap },
-  { href: "/dashboard/visibility", label: "AI Visibility", icon: Globe },
-  { href: "/dashboard/posts", label: "Google Posts", icon: MapPin },
-  { href: "/dashboard/content-gaps", label: "Content Gaps", icon: FileText },
-  { href: "/dashboard/competitors", label: "Competitors", icon: Users },
-  { href: "/dashboard/content-plan", label: "Content Plan", icon: BarChart3 },
-  { href: "/dashboard/reviews", label: "Reviews", icon: Star },
-  { href: "/dashboard/reports", label: "Reports", icon: BarChart3 },
+const navGroups = [
+  {
+    items: [
+      { href: "/dashboard", label: "Home", icon: Home, exact: true },
+    ],
+  },
+  {
+    label: "Getting Found",
+    items: [
+      { href: "/dashboard/visibility", label: "AI Engines", icon: Bot },
+      { href: "/dashboard/keywords", label: "Search Rankings", icon: TrendingUp },
+      { href: "/dashboard/audit", label: "Website Issues", icon: Activity },
+      { href: "/dashboard/speed", label: "Page Speed", icon: Zap },
+    ],
+  },
+  {
+    label: "Your Reputation",
+    items: [
+      { href: "/dashboard/posts", label: "Google Posts", icon: MapPin },
+      { href: "/dashboard/reviews", label: "Customer Reviews", icon: Star },
+    ],
+  },
+  {
+    label: "Content",
+    items: [
+      { href: "/dashboard/content-plan", label: "Content Plan", icon: CalendarDays },
+      { href: "/dashboard/content-gaps", label: "Topic Ideas", icon: Lightbulb },
+    ],
+  },
+  {
+    label: "Research",
+    items: [
+      { href: "/dashboard/competitors", label: "Competitors", icon: Users },
+      { href: "/dashboard/reports", label: "Reports", icon: BarChart3 },
+    ],
+  },
 ]
 
 export function DashboardSidebar() {
@@ -28,55 +55,75 @@ export function DashboardSidebar() {
   }
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-bg-secondary border-r border-white/[0.06] flex flex-col h-full">
+    <aside className="w-56 flex-shrink-0 bg-bg-secondary border-r border-white/[0.06] flex flex-col h-full">
       {/* Logo */}
-      <div className="h-16 px-5 flex items-center border-b border-white/[0.06]">
+      <div className="h-14 px-4 flex items-center border-b border-white/[0.06]">
         <Link href="/" className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-brand-orange" />
-          <span className="text-white font-semibold text-lg">alphaa</span>
+          <Sparkles className="w-4 h-4 text-brand-orange" />
+          <span className="text-white font-semibold text-base tracking-tight">alphaa</span>
         </Link>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-0.5">
-        {navItems.map((item) => {
-          const active = isActive(item.href, item.exact)
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group",
-                active
-                  ? "bg-brand-orange/15 text-brand-orange border-l-2 border-brand-orange pl-[10px]"
-                  : "text-muted hover:text-white hover:bg-white/[0.04]"
-              )}
-            >
-              <item.icon className={cn("w-4 h-4 flex-shrink-0", active ? "text-brand-orange" : "text-muted group-hover:text-white")} />
-              <span className="truncate">{item.label}</span>
-            </Link>
-          )
-        })}
+      <nav className="flex-1 overflow-y-auto py-3 px-2">
+        {navGroups.map((group, groupIdx) => (
+          <div key={groupIdx} className={groupIdx > 0 ? "mt-5" : ""}>
+            {group.label && (
+              <p className="px-2.5 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/25 select-none">
+                {group.label}
+              </p>
+            )}
+            <div className="space-y-0.5">
+              {group.items.map((item) => {
+                const active = isActive(item.href, item.exact)
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150 group",
+                      active
+                        ? "bg-brand-orange/15 text-brand-orange font-medium"
+                        : "text-white/40 hover:text-white/80 hover:bg-white/[0.04] font-normal"
+                    )}
+                  >
+                    <item.icon
+                      className={cn(
+                        "w-4 h-4 flex-shrink-0 transition-colors",
+                        active
+                          ? "text-brand-orange"
+                          : "text-white/25 group-hover:text-white/60"
+                      )}
+                    />
+                    <span className="truncate leading-none">{item.label}</span>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* Bottom */}
-      <div className="p-3 border-t border-white/[0.06] space-y-0.5">
+      <div className="px-2 pb-3 pt-2 border-t border-white/[0.06] space-y-0.5">
         <Link
           href="/dashboard/settings"
           className={cn(
-            "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
-            pathname.startsWith("/dashboard/settings") ? "bg-brand-orange/15 text-brand-orange" : "text-muted hover:text-white hover:bg-white/[0.04]"
+            "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150",
+            pathname.startsWith("/dashboard/settings")
+              ? "bg-brand-orange/15 text-brand-orange font-medium"
+              : "text-white/40 hover:text-white/80 hover:bg-white/[0.04]"
           )}
         >
-          <Settings className="w-4 h-4" />
-          Settings
+          <Settings className="w-4 h-4 flex-shrink-0" />
+          <span>Settings</span>
         </Link>
         <Link
           href="/pricing"
-          className="flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-brand-orange/10 text-brand-orange hover:bg-brand-orange/20 transition-colors"
+          className="flex items-center justify-between gap-2.5 px-2.5 py-2 rounded-lg text-sm font-semibold bg-brand-orange text-white hover:bg-brand-orange-light transition-colors"
         >
           <span>Upgrade plan</span>
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronRight className="w-3.5 h-3.5 opacity-80" />
         </Link>
       </div>
     </aside>
