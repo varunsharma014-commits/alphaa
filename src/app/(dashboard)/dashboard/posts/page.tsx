@@ -14,11 +14,16 @@ function PostTypeBadge({ type }: { type: string }) {
     OFFER: "bg-green-500/10 border-green-500/20 text-green-400",
     EVENT: "bg-purple-500/10 border-purple-500/20 text-purple-400",
   }
+  const labels: Record<string, string> = {
+    UPDATE: "Update",
+    OFFER: "Offer",
+    EVENT: "Event",
+  }
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded-md border text-xs font-medium ${styles[type] ?? styles.UPDATE}`}
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-lg border text-xs font-medium ${styles[type] ?? styles.UPDATE}`}
     >
-      {type}
+      {labels[type] ?? type}
     </span>
   )
 }
@@ -30,11 +35,17 @@ function StatusBadge({ status }: { status: string }) {
     failed: "bg-red-500/10 border-red-500/20 text-red-400",
     scheduled: "bg-blue-500/10 border-blue-500/20 text-blue-400",
   }
+  const labels: Record<string, string> = {
+    draft: "Draft",
+    posted: "Published",
+    failed: "Failed",
+    scheduled: "Scheduled",
+  }
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded-md border text-xs font-medium ${styles[status] ?? styles.draft}`}
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-lg border text-xs font-medium ${styles[status] ?? styles.draft}`}
     >
-      {status}
+      {labels[status] ?? status}
     </span>
   )
 }
@@ -45,6 +56,17 @@ function formatDate(date: Date) {
     day: "numeric",
     year: "numeric",
   }).format(new Date(date))
+}
+
+function getThisMonthPosted(posts: { status: string; postedAt: Date | null }[]) {
+  const now = new Date()
+  return posts.filter(
+    (p) =>
+      p.status === "posted" &&
+      p.postedAt &&
+      new Date(p.postedAt).getMonth() === now.getMonth() &&
+      new Date(p.postedAt).getFullYear() === now.getFullYear()
+  ).length
 }
 
 export default async function PostsPage() {
@@ -61,6 +83,7 @@ export default async function PostsPage() {
   const totalPosts = posts.length
   const postedCount = posts.filter((p) => p.status === "posted").length
   const draftCount = posts.filter((p) => p.status === "draft").length
+  const thisMonthPosted = getThisMonthPosted(posts)
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
@@ -68,73 +91,88 @@ export default async function PostsPage() {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-white font-semibold text-2xl">GBP Posts</h1>
-          <p className="text-muted text-sm mt-1">
-            Manage your Google Business Profile content
+          <p className="text-white/50 text-sm mt-1">
+            {totalPosts > 0
+              ? `${totalPosts} post${totalPosts !== 1 ? "s" : ""} · ${draftCount} draft${draftCount !== 1 ? "s" : ""} ready`
+              : "Manage your Google Business Profile content"}
           </p>
         </div>
         <GeneratePostButton />
       </div>
 
-      {/* Stats row */}
+      {/* Stats strip */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-bg-tertiary rounded-xl p-4 space-y-1">
-          <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-muted" />
+        {/* Published this month */}
+        <div className="relative overflow-hidden rounded-2xl border border-green-500/20 bg-gradient-to-br from-green-500/[0.10] via-transparent to-transparent p-5">
+          <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-green-500/10 blur-2xl pointer-events-none" />
+          <div className="relative">
+            <CheckCircle2 className="w-4 h-4 text-green-400 mb-2" />
+            <p className="text-3xl font-bold font-mono text-white">{thisMonthPosted}</p>
+            <p className="text-white/50 text-xs mt-1">Published this month</p>
           </div>
-          <p className="text-white text-xl font-semibold font-mono">{totalPosts}</p>
-          <p className="text-muted text-xs">Total Posts</p>
         </div>
-        <div className="bg-bg-tertiary rounded-xl p-4 space-y-1">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-muted" />
+
+        {/* Drafts ready */}
+        <div className="relative overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.10] via-transparent to-transparent p-5">
+          <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-amber-500/10 blur-2xl pointer-events-none" />
+          <div className="relative">
+            <Clock className="w-4 h-4 text-amber-400 mb-2" />
+            <p className="text-3xl font-bold font-mono text-white">{draftCount}</p>
+            <p className="text-white/50 text-xs mt-1">Drafts ready to publish</p>
           </div>
-          <p className="text-white text-xl font-semibold font-mono">{postedCount}</p>
-          <p className="text-muted text-xs">Published</p>
         </div>
-        <div className="bg-bg-tertiary rounded-xl p-4 space-y-1">
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-muted" />
+
+        {/* Total posts */}
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] via-transparent to-transparent p-5">
+          <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+          <div className="relative">
+            <FileText className="w-4 h-4 text-white/40 mb-2" />
+            <p className="text-3xl font-bold font-mono text-white">{totalPosts}</p>
+            <p className="text-white/50 text-xs mt-1">Total posts created</p>
           </div>
-          <p className="text-white text-xl font-semibold font-mono">{draftCount}</p>
-          <p className="text-muted text-xs">Drafts</p>
         </div>
       </div>
 
       {/* Posts list */}
       {posts.length === 0 ? (
-        <GlassCard className="flex flex-col items-center text-center py-12 gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-bg-tertiary border border-white/10 flex items-center justify-center">
-            <FileText className="w-5 h-5 text-muted" />
+        <div className="relative overflow-hidden rounded-2xl border border-[#FF6B1A]/20 bg-gradient-to-br from-[#FF6B1A]/[0.08] via-transparent to-transparent p-8">
+          <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[#FF6B1A]/10 blur-3xl pointer-events-none" />
+          <div className="relative flex flex-col items-center text-center gap-4 py-8">
+            <span className="text-5xl">📍</span>
+            <div className="space-y-1.5 max-w-xs">
+              <h2 className="text-white font-semibold text-lg">No posts yet</h2>
+              <p className="text-white/50 text-sm leading-relaxed">
+                Generate your first GBP post using the button above. Alphaa will
+                create compelling, local content for your Google Business Profile.
+              </p>
+            </div>
+            <GeneratePostButton />
           </div>
-          <div className="space-y-1.5 max-w-xs">
-            <h2 className="text-white font-semibold">No posts yet</h2>
-            <p className="text-muted text-sm">
-              Generate your first GBP post using the button above. Alphaa will
-              create compelling, local content for your Google Business Profile.
-            </p>
-          </div>
-        </GlassCard>
+        </div>
       ) : (
         <div className="space-y-3">
           {posts.map((post) => (
-            <GlassCard key={post.id} className="p-5">
-              <div className="flex items-start gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <PostTypeBadge type={post.postType} />
-                    <StatusBadge status={post.status} />
-                    <span className="text-muted text-xs ml-auto">
-                      {formatDate(post.createdAt)}
-                    </span>
-                  </div>
-                  <p className="text-white/80 text-sm leading-relaxed">
-                    {post.content.length > 120
-                      ? post.content.slice(0, 120) + "…"
-                      : post.content}
-                  </p>
-                </div>
+            <div
+              key={post.id}
+              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5"
+            >
+              {/* Top row: badges + date */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <PostTypeBadge type={post.postType} />
+                <StatusBadge status={post.status} />
+                <span className="text-white/30 text-xs ml-auto whitespace-nowrap">
+                  {formatDate(post.createdAt)}
+                </span>
               </div>
 
+              {/* Content preview */}
+              <p className="text-white/80 text-sm leading-relaxed mt-3">
+                {post.content.length > 200
+                  ? post.content.slice(0, 200) + "…"
+                  : post.content}
+              </p>
+
+              {/* Bottom actions */}
               {post.status === "draft" && (
                 <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/[0.06]">
                   <PublishPostButton postId={post.id} />
@@ -143,16 +181,22 @@ export default async function PostsPage() {
               )}
 
               {post.status === "posted" && post.postedAt && (
-                <p className="text-muted text-xs mt-3 pt-3 border-t border-white/[0.06]">
+                <p className="text-white/30 text-xs mt-3 pt-3 border-t border-white/[0.06]">
                   Published {formatDate(post.postedAt)}
                   {post.gmbPostId && (
-                    <span className="ml-2 font-mono text-white/30">
+                    <span className="ml-2 font-mono text-white/20">
                       #{post.gmbPostId.slice(-8)}
                     </span>
                   )}
                 </p>
               )}
-            </GlassCard>
+
+              {post.status === "failed" && (
+                <p className="text-red-400/60 text-xs mt-3 pt-3 border-t border-white/[0.06]">
+                  Failed to publish — try deleting and regenerating
+                </p>
+              )}
+            </div>
           ))}
         </div>
       )}

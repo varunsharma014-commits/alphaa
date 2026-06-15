@@ -3,7 +3,10 @@ export const dynamic = "force-dynamic"
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
 import { GlassCard } from "@/components/common/GlassCard"
-import { FileText, Mail, CheckCircle2, TrendingUp, TrendingDown, Minus } from "lucide-react"
+import {
+  BarChart3, FileText, Mail, CheckCircle2,
+  TrendingUp, TrendingDown, Minus, Star, MapPin,
+} from "lucide-react"
 
 export const metadata = { title: "Reports" }
 
@@ -16,38 +19,30 @@ type KeywordMover = {
 
 type VisibilityDelta = Record<string, number>
 
-const ENGINE_LABELS: Record<string, string> = {
-  chatgpt: "ChatGPT",
-  perplexity: "Perplexity",
-  google_ai: "Google AI",
-  gemini: "Gemini",
+const ENGINE_META: Record<string, { label: string; emoji: string }> = {
+  chatgpt:    { label: "ChatGPT",    emoji: "🤖" },
+  perplexity: { label: "Perplexity", emoji: "🔍" },
+  google_ai:  { label: "Google AI",  emoji: "🌐" },
+  gemini:     { label: "Gemini",     emoji: "✨" },
 }
 
-function formatWeekLabel(date: Date): string {
-  return new Date(date).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  })
+function formatWeek(date: Date): string {
+  return new Date(date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
 }
 
-function DeltaBadge({ value }: { value: number }) {
-  if (value > 0) {
-    return (
-      <span className="inline-flex items-center gap-0.5 text-green-400 text-xs font-medium">
-        <TrendingUp className="w-3 h-3" />+{value}
-      </span>
-    )
-  }
-  if (value < 0) {
-    return (
-      <span className="inline-flex items-center gap-0.5 text-red-400 text-xs font-medium">
-        <TrendingDown className="w-3 h-3" />{value}
-      </span>
-    )
-  }
+function DeltaChip({ value }: { value: number }) {
+  if (value > 0) return (
+    <span className="inline-flex items-center gap-1 text-green-400 text-xs font-semibold bg-green-500/10 px-2 py-0.5 rounded-full border border-green-500/20">
+      <TrendingUp className="w-3 h-3" />+{value}
+    </span>
+  )
+  if (value < 0) return (
+    <span className="inline-flex items-center gap-1 text-red-400 text-xs font-semibold bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/20">
+      <TrendingDown className="w-3 h-3" />{value}
+    </span>
+  )
   return (
-    <span className="inline-flex items-center gap-0.5 text-white/30 text-xs font-medium">
+    <span className="inline-flex items-center gap-1 text-white/30 text-xs bg-white/[0.04] px-2 py-0.5 rounded-full">
       <Minus className="w-3 h-3" />—
     </span>
   )
@@ -68,144 +63,177 @@ export default async function ReportsPage() {
       })
     : []
 
-  const latestReport = reports[0] ?? null
-
-  const stats = [
-    {
-      label: "Total Reports",
-      value: reports.length,
-      icon: FileText,
-    },
-    {
-      label: "Posts Published (latest)",
-      value: latestReport?.postsPublished ?? "—",
-      icon: CheckCircle2,
-    },
-    {
-      label: "New Reviews (latest)",
-      value: latestReport?.reviewsNew ?? "—",
-      icon: TrendingUp,
-    },
-  ]
+  const latest = reports[0] ?? null
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-white font-semibold text-2xl">Reports</h1>
-        <p className="text-white/50 text-sm mt-0.5">Your weekly performance summaries</p>
-      </div>
+    <div className="max-w-5xl mx-auto space-y-6">
 
-      {/* Stats row */}
-      <div className="grid grid-cols-3 gap-4">
-        {stats.map((s) => (
-          <GlassCard key={s.label} className="flex flex-col gap-2">
-            <div className="flex items-center gap-2 text-white/40">
-              <s.icon className="w-4 h-4" />
-              <span className="text-xs">{s.label}</span>
-            </div>
-            <span className="text-white text-2xl font-semibold mono">{s.value}</span>
-          </GlassCard>
-        ))}
-      </div>
-
-      {/* Reports list */}
-      {reports.length === 0 ? (
-        <GlassCard className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-5">
-            <FileText className="w-7 h-7 text-white/30" />
+      {/* ── Hero ─────────────────────────────────── */}
+      <div className="relative overflow-hidden rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/[0.10] via-transparent to-transparent p-6 md:p-8">
+        <div className="absolute -top-20 -right-20 w-52 h-52 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
+        <div className="relative">
+          <div className="flex items-center gap-2 mb-2">
+            <BarChart3 className="w-4 h-4 text-blue-400" />
+            <span className="text-blue-400 text-xs font-semibold uppercase tracking-widest">Weekly Reports</span>
           </div>
-          <h2 className="text-white font-semibold text-lg mb-2">No reports yet</h2>
-          <p className="text-white/50 text-sm max-w-xs">
-            Your first weekly report will be generated automatically every Monday morning.
-          </p>
-        </GlassCard>
-      ) : (
+          <h1 className="text-white font-bold text-3xl">
+            {reports.length} <span className="text-white/50 font-normal text-2xl">reports generated</span>
+          </h1>
+          <p className="text-white/40 text-sm mt-1">Delivered every Monday morning · automatically</p>
+
+          {latest && (
+            <div className="flex items-center gap-6 mt-5 pt-5 border-t border-white/[0.08]">
+              <div>
+                <p className="text-white/30 text-xs mb-0.5">Latest week</p>
+                <p className="text-white/80 text-sm font-medium">{formatWeek(latest.createdAt)}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-400" />
+                <span className="text-white/60 text-sm">{latest.postsPublished} posts published</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Star className="w-4 h-4 text-yellow-400" />
+                <span className="text-white/60 text-sm">{latest.reviewsNew} new reviews</span>
+              </div>
+              {latest.emailSent && (
+                <div className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-2.5 py-1 rounded-full border border-green-500/20">
+                  <Mail className="w-3 h-3" />
+                  Email sent
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Empty state ───────────────────────────── */}
+      {reports.length === 0 && (
+        <div className="flex flex-col items-center text-center gap-5 py-16 px-6 rounded-2xl border border-white/[0.06] bg-white/[0.01]">
+          <div className="w-14 h-14 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
+            <FileText className="w-7 h-7 text-white/25" />
+          </div>
+          <div className="max-w-xs">
+            <h2 className="text-white font-semibold text-lg">No reports yet</h2>
+            <p className="text-white/40 text-sm mt-1 leading-relaxed">
+              Your first weekly report will be generated automatically every Monday. It'll include posts published, reviews received, and AI visibility changes.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ── Report cards ──────────────────────────── */}
+      {reports.length > 0 && (
         <div className="space-y-4">
-          {reports.map((report) => {
+          {reports.map((report, idx) => {
             const visibilityDelta = (report.visibilityDelta ?? {}) as VisibilityDelta
-            const keywordMovers = (report.keywordMovers ?? []) as KeywordMover[]
-            const topMovers = keywordMovers.slice(0, 3)
+            const keywordMovers   = (report.keywordMovers ?? [])  as KeywordMover[]
+            const topMovers       = keywordMovers.slice(0, 4)
+            const isLatest        = idx === 0
 
             return (
-              <GlassCard key={report.id} hover>
-                <div className="flex items-start justify-between gap-4 mb-4">
+              <div
+                key={report.id}
+                className={`relative overflow-hidden rounded-2xl border ${
+                  isLatest ? "border-blue-500/20 bg-gradient-to-br from-blue-500/[0.06] to-transparent" : "border-white/[0.07] bg-white/[0.02]"
+                }`}
+              >
+                {/* Card header */}
+                <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-white/[0.06]">
                   <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-white font-medium text-sm">
-                        Week of {formatWeekLabel(report.createdAt)}
-                      </h3>
-                      {report.emailSent && (
-                        <span className="inline-flex items-center gap-1 text-xs text-green-400 bg-green-400/10 px-2 py-0.5 rounded-full">
-                          <Mail className="w-3 h-3" />
-                          Email sent
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-white font-semibold text-sm">{formatWeek(report.createdAt)}</h3>
+                      {isLatest && (
+                        <span className="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full uppercase tracking-widest">
+                          Latest
                         </span>
                       )}
                     </div>
                     {report.summary && (
-                      <p className="text-white/50 text-sm leading-relaxed max-w-2xl">
+                      <p className="text-white/40 text-xs mt-0.5 leading-relaxed max-w-xl">
                         {report.summary}
                       </p>
                     )}
                   </div>
+                  {report.emailSent && (
+                    <div className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-2.5 py-1 rounded-full border border-green-500/20 flex-shrink-0">
+                      <Mail className="w-3 h-3" />
+                      Emailed
+                    </div>
+                  )}
                 </div>
 
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  {/* Stats */}
-                  <div className="bg-white/[0.03] rounded-xl p-3">
-                    <p className="text-white/30 text-xs mb-1">Posts published</p>
-                    <p className="text-white font-semibold mono text-lg">{report.postsPublished}</p>
-                  </div>
-                  <div className="bg-white/[0.03] rounded-xl p-3">
-                    <p className="text-white/30 text-xs mb-1">New reviews</p>
-                    <p className="text-white font-semibold mono text-lg">{report.reviewsNew}</p>
+                {/* Card body */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-x divide-white/[0.06]">
+
+                  {/* Posts */}
+                  <div className="p-4">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <MapPin className="w-3.5 h-3.5 text-white/25" />
+                      <span className="text-white/30 text-xs">Posts published</span>
+                    </div>
+                    <p className="text-white font-bold text-3xl font-mono">{report.postsPublished}</p>
                   </div>
 
-                  {/* Visibility delta */}
-                  <div className="bg-white/[0.03] rounded-xl p-3">
-                    <p className="text-white/30 text-xs mb-2">AI visibility</p>
-                    <div className="space-y-1">
-                      {Object.entries(visibilityDelta).map(([engine, delta]) => (
-                        <div key={engine} className="flex items-center justify-between">
-                          <span className="text-white/50 text-xs">
-                            {ENGINE_LABELS[engine] ?? engine}
-                          </span>
-                          <DeltaBadge value={delta} />
-                        </div>
-                      ))}
-                      {Object.keys(visibilityDelta).length === 0 && (
-                        <p className="text-white/30 text-xs">No data</p>
-                      )}
+                  {/* Reviews */}
+                  <div className="p-4">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Star className="w-3.5 h-3.5 text-white/25" />
+                      <span className="text-white/30 text-xs">New reviews</span>
                     </div>
+                    <p className="text-white font-bold text-3xl font-mono">{report.reviewsNew}</p>
+                  </div>
+
+                  {/* AI Visibility */}
+                  <div className="p-4">
+                    <div className="flex items-center gap-1.5 mb-2.5">
+                      <TrendingUp className="w-3.5 h-3.5 text-white/25" />
+                      <span className="text-white/30 text-xs">AI visibility</span>
+                    </div>
+                    {Object.keys(visibilityDelta).length > 0 ? (
+                      <div className="space-y-1.5">
+                        {Object.entries(visibilityDelta).map(([engine, delta]) => {
+                          const meta = ENGINE_META[engine]
+                          return (
+                            <div key={engine} className="flex items-center justify-between gap-2">
+                              <span className="text-white/45 text-xs flex items-center gap-1">
+                                {meta?.emoji && <span className="text-sm leading-none">{meta.emoji}</span>}
+                                {meta?.label ?? engine}
+                              </span>
+                              <DeltaChip value={delta} />
+                            </div>
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <p className="text-white/25 text-xs">No changes</p>
+                    )}
                   </div>
 
                   {/* Keyword movers */}
-                  <div className="bg-white/[0.03] rounded-xl p-3">
-                    <p className="text-white/30 text-xs mb-2">Keyword movers</p>
-                    <div className="space-y-1">
-                      {topMovers.map((k) => (
-                        <div key={k.query} className="flex items-center justify-between gap-2">
-                          <span className="text-white/50 text-xs truncate">{k.query}</span>
-                          <span
-                            className={`text-xs mono font-medium flex-shrink-0 ${
-                              k.change > 0
-                                ? "text-green-400"
-                                : k.change < 0
-                                ? "text-red-400"
-                                : "text-white/30"
-                            }`}
-                          >
-                            {k.change > 0 ? "+" : ""}{k.change}
-                          </span>
-                        </div>
-                      ))}
-                      {topMovers.length === 0 && (
-                        <p className="text-white/30 text-xs">No movement tracked</p>
-                      )}
+                  <div className="p-4">
+                    <div className="flex items-center gap-1.5 mb-2.5">
+                      <BarChart3 className="w-3.5 h-3.5 text-white/25" />
+                      <span className="text-white/30 text-xs">Keyword movers</span>
                     </div>
+                    {topMovers.length > 0 ? (
+                      <div className="space-y-1.5">
+                        {topMovers.map((k) => (
+                          <div key={k.query} className="flex items-center justify-between gap-2">
+                            <span className="text-white/50 text-xs truncate flex-1">{k.query}</span>
+                            <span className={`text-xs font-mono font-semibold flex-shrink-0 ${
+                              k.change > 0 ? "text-green-400" : k.change < 0 ? "text-red-400" : "text-white/30"
+                            }`}>
+                              {k.change > 0 ? "+" : ""}{k.change}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-white/25 text-xs">No movement</p>
+                    )}
                   </div>
                 </div>
-              </GlassCard>
+              </div>
             )
           })}
         </div>

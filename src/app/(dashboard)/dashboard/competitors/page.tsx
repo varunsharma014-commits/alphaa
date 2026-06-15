@@ -3,13 +3,11 @@ export const dynamic = "force-dynamic"
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
 import { GlassCard } from "@/components/common/GlassCard"
-import { Globe, Users } from "lucide-react"
+import { Globe, Users, Zap, AlertCircle, CheckCircle2, TrendingUp } from "lucide-react"
 import { AddCompetitorButton } from "./AddCompetitorButton"
 import { DeleteCompetitorButton } from "./DeleteCompetitorButton"
 
-export const metadata = { title: "Competitor Analysis" }
-
-// ─── Types ────────────────────────────────────────────────────────────────────
+export const metadata = { title: "Competitors" }
 
 interface CompetitorCrawlData {
   pagesFound: number
@@ -30,101 +28,82 @@ interface CompetitorRow {
   createdAt: Date
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function frequencyBadge(freq: string) {
-  const map: Record<string, { bg: string; text: string }> = {
-    Daily: { bg: "bg-green-500/10 border-green-500/20", text: "text-green-400" },
-    Weekly: { bg: "bg-blue-500/10 border-blue-500/20", text: "text-blue-400" },
-    Monthly: { bg: "bg-amber-500/10 border-amber-500/20", text: "text-amber-400" },
-    Rarely: { bg: "bg-red-500/10 border-red-500/20", text: "text-red-400" },
-  }
-  const style = map[freq] ?? map.Monthly
-  return (
-    <span
-      className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium ${style.bg} ${style.text}`}
-    >
-      {freq}
-    </span>
-  )
+function displayDomain(url: string): string {
+  try { return new URL(url).hostname.replace(/^www\./, "") }
+  catch { return url }
 }
 
 function formatDate(date: Date | null): string {
   if (!date) return "Never"
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(date))
+  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(date))
 }
 
-function displayDomain(url: string): string {
-  try {
-    return new URL(url).hostname.replace(/^www\./, "")
-  } catch {
-    return url
-  }
+const FREQ_META: Record<string, { label: string; badge: string; score: number }> = {
+  Daily:   { label: "Posts Daily",   badge: "bg-green-500/10 border-green-500/20 text-green-400",   score: 100 },
+  Weekly:  { label: "Posts Weekly",  badge: "bg-blue-500/10 border-blue-500/20 text-blue-400",     score: 70  },
+  Monthly: { label: "Posts Monthly", badge: "bg-amber-500/10 border-amber-500/20 text-amber-400",  score: 40  },
+  Rarely:  { label: "Posts Rarely",  badge: "bg-red-500/10 border-red-500/20 text-red-400",        score: 15  },
 }
-
-// ─── Competitor Card ──────────────────────────────────────────────────────────
 
 function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
   const data = competitor.crawlData
   const domain = displayDomain(competitor.url)
-  const name = competitor.name ?? domain
+  const name   = competitor.name ?? domain
+  const freq   = FREQ_META[data?.estimatedPostingFrequency ?? ""] ?? FREQ_META.Monthly
 
   return (
-    <GlassCard className="space-y-4">
-      {/* Header row */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <Globe className="w-4 h-4 text-muted flex-shrink-0" />
-            <h3 className="text-white font-semibold text-base truncate">{name}</h3>
+    <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.03] to-transparent">
+      {/* Card header */}
+      <div className="flex items-start justify-between gap-3 p-5 pb-4 border-b border-white/[0.06]">
+        <div className="flex items-center gap-3">
+          {/* Domain avatar */}
+          <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center flex-shrink-0">
+            <Globe className="w-5 h-5 text-white/40" />
           </div>
-          <a
-            href={competitor.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted text-xs hover:text-white/70 transition-colors mt-0.5 block truncate"
-          >
-            {competitor.url}
-          </a>
+          <div className="min-w-0">
+            <h3 className="text-white font-semibold text-base truncate">{name}</h3>
+            <a
+              href={competitor.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/35 text-xs hover:text-white/60 transition-colors truncate block"
+            >
+              {domain}
+            </a>
+          </div>
         </div>
         <DeleteCompetitorButton id={competitor.id} />
       </div>
 
       {data ? (
-        <>
-          {/* Stats row */}
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-1.5">
-              <span className="text-muted text-xs">Pages:</span>
-              <span className="text-white font-mono text-xs font-medium">{data.pagesFound}</span>
+        <div className="p-5 space-y-5">
+          {/* Quick stats */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-black/20 rounded-xl p-3 text-center">
+              <p className="text-white font-bold text-xl font-mono">{data.pagesFound}</p>
+              <p className="text-white/35 text-xs mt-0.5">Pages</p>
             </div>
-            {data.schemaTypes.length > 0 && (
-              <div className="flex items-center gap-1.5">
-                <span className="text-muted text-xs">Schema:</span>
-                <span className="text-white/80 text-xs">{data.schemaTypes.slice(0, 3).join(", ")}{data.schemaTypes.length > 3 ? ` +${data.schemaTypes.length - 3}` : ""}</span>
-              </div>
-            )}
-            <div className="flex items-center gap-1.5">
-              <span className="text-muted text-xs">Posting:</span>
-              {frequencyBadge(data.estimatedPostingFrequency)}
+            <div className="bg-black/20 rounded-xl p-3 text-center">
+              <p className="text-white font-bold text-xl font-mono">{data.schemaTypes.length}</p>
+              <p className="text-white/35 text-xs mt-0.5">Schema types</p>
+            </div>
+            <div className="bg-black/20 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1">
+              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${freq.badge}`}>
+                {data.estimatedPostingFrequency}
+              </span>
+              <p className="text-white/35 text-[10px]">Posting</p>
             </div>
           </div>
 
           {/* Key topics */}
           {data.keyTopics.length > 0 && (
             <div>
-              <p className="text-muted text-xs mb-1.5">Key Topics</p>
+              <p className="text-white/30 text-xs font-semibold uppercase tracking-wider mb-2">Key Topics</p>
               <div className="flex flex-wrap gap-1.5">
                 {data.keyTopics.map((topic) => (
                   <span
                     key={topic}
-                    className="px-2 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.08] text-white/70 text-xs"
+                    className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-white/60 text-xs"
                   >
                     {topic}
                   </span>
@@ -133,16 +112,19 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
             </div>
           )}
 
-          {/* Strengths + Weaknesses */}
+          {/* Strengths / Weaknesses */}
           {(data.strengths.length > 0 || data.weaknesses.length > 0) && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {data.strengths.length > 0 && (
-                <div>
-                  <p className="text-muted text-xs mb-1.5">Strengths</p>
-                  <ul className="space-y-1">
+                <div className="bg-green-500/[0.05] border border-green-500/[0.12] rounded-xl p-4">
+                  <div className="flex items-center gap-1.5 mb-2.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
+                    <p className="text-green-400 text-xs font-semibold">Their strengths</p>
+                  </div>
+                  <ul className="space-y-1.5">
                     {data.strengths.map((s) => (
-                      <li key={s} className="flex items-start gap-2 text-xs text-white/80">
-                        <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
+                      <li key={s} className="flex items-start gap-2 text-xs text-white/65">
+                        <span className="mt-1.5 w-1 h-1 rounded-full bg-green-400/60 flex-shrink-0" />
                         {s}
                       </li>
                     ))}
@@ -150,12 +132,15 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                 </div>
               )}
               {data.weaknesses.length > 0 && (
-                <div>
-                  <p className="text-muted text-xs mb-1.5">Weaknesses</p>
-                  <ul className="space-y-1">
+                <div className="bg-red-500/[0.05] border border-red-500/[0.12] rounded-xl p-4">
+                  <div className="flex items-center gap-1.5 mb-2.5">
+                    <AlertCircle className="w-3.5 h-3.5 text-red-400" />
+                    <p className="text-red-400 text-xs font-semibold">Their weaknesses</p>
+                  </div>
+                  <ul className="space-y-1.5">
                     {data.weaknesses.map((w) => (
-                      <li key={w} className="flex items-start gap-2 text-xs text-white/80">
-                        <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+                      <li key={w} className="flex items-start gap-2 text-xs text-white/65">
+                        <span className="mt-1.5 w-1 h-1 rounded-full bg-red-400/60 flex-shrink-0" />
                         {w}
                       </li>
                     ))}
@@ -167,83 +152,91 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
 
           {/* AI Summary */}
           {data.aiSummary && (
-            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] px-4 py-3">
-              <p className="text-white/70 text-xs leading-relaxed">{data.aiSummary}</p>
+            <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl px-4 py-3">
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <Zap className="w-3 h-3 text-brand-orange" />
+                <span className="text-brand-orange text-xs font-semibold">alphaa's take</span>
+              </div>
+              <p className="text-white/60 text-sm leading-relaxed">{data.aiSummary}</p>
             </div>
           )}
-        </>
-      ) : (
-        <p className="text-muted text-sm">No analysis data yet.</p>
-      )}
 
-      {/* Footer */}
-      <p className="text-white/25 text-xs">
-        Last analyzed: {formatDate(competitor.analyzedAt)}
-      </p>
-    </GlassCard>
+          <p className="text-white/20 text-xs">Last analyzed: {formatDate(competitor.analyzedAt)}</p>
+        </div>
+      ) : (
+        <div className="p-5">
+          <div className="flex items-center gap-2 py-4">
+            <div className="w-4 h-4 rounded-full border-2 border-brand-orange border-t-transparent animate-spin flex-shrink-0" />
+            <p className="text-white/40 text-sm">Analysis in progress…</p>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function CompetitorsPage() {
   const { userId: clerkId } = await auth()
 
   const user = await db.user.findUnique({
     where: { clerkId: clerkId! },
-    include: {
-      competitors: {
-        orderBy: { createdAt: "desc" },
-      },
-    },
+    include: { competitors: { orderBy: { createdAt: "desc" } } },
   })
 
   const competitors = (user?.competitors ?? []) as unknown as CompetitorRow[]
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
+
+      {/* ── Header ─────────────────────────────────── */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-white font-semibold text-2xl">Competitor Analysis</h1>
-          <p className="text-muted text-sm mt-1">
-            Track your competitors&apos; online presence and find opportunities to outrank them.
+          <h1 className="text-white font-bold text-2xl">Competitors</h1>
+          <p className="text-white/40 text-sm mt-1">
+            {competitors.length > 0
+              ? `Tracking ${competitors.length} competitor${competitors.length !== 1 ? "s" : ""} — alphaa watches their moves`
+              : "Track competitors and find opportunities to outrank them"}
           </p>
         </div>
         {competitors.length > 0 && (
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/[0.08] text-muted text-xs">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-white/35 text-xs">
             <Users className="w-3 h-3" />
-            {competitors.length} competitor{competitors.length !== 1 ? "s" : ""} tracked
+            {competitors.length} tracked
           </div>
         )}
       </div>
 
-      {/* Add competitor form */}
+      {/* ── Add Competitor ─────────────────────────── */}
       <GlassCard>
-        <p className="text-white font-medium text-sm mb-3">Add a Competitor</p>
+        <div className="flex items-center gap-2 mb-3">
+          <TrendingUp className="w-4 h-4 text-brand-orange" />
+          <p className="text-white font-semibold text-sm">Add a Competitor</p>
+        </div>
         <AddCompetitorButton />
-        <p className="text-white/25 text-xs mt-2">
-          Alphaa will crawl up to 20 pages and use AI to summarize their strengths, weaknesses, and content strategy.
+        <p className="text-white/25 text-xs mt-2.5 leading-relaxed">
+          alphaa crawls up to 20 pages and uses AI to identify their strengths, weaknesses, posting frequency, and content topics.
         </p>
       </GlassCard>
 
-      {/* Competitor list or empty state */}
+      {/* ── Competitors / Empty state ───────────────── */}
       {competitors.length === 0 ? (
-        <GlassCard className="flex flex-col items-center text-center py-12 gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-bg-tertiary border border-white/10 flex items-center justify-center">
-            <Users className="w-6 h-6 text-muted" />
+        <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.03] to-transparent p-10">
+          <div className="flex flex-col items-center text-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
+              <Users className="w-7 h-7 text-white/25" />
+            </div>
+            <div className="max-w-sm">
+              <h2 className="text-white font-semibold text-lg">No competitors yet</h2>
+              <p className="text-white/40 text-sm mt-1 leading-relaxed">
+                Add a competitor's website above. alphaa will analyze what makes them successful — and find your opportunities.
+              </p>
+            </div>
           </div>
-          <div className="space-y-1.5 max-w-sm">
-            <h2 className="text-white font-semibold text-lg">No competitors tracked yet</h2>
-            <p className="text-muted text-sm leading-relaxed">
-              Track your competitors&apos; online presence. Add their website above to see how they compare — pages, topics, posting frequency, and where they fall short.
-            </p>
-          </div>
-        </GlassCard>
+        </div>
       ) : (
         <div className="space-y-4">
-          {competitors.map((competitor) => (
-            <CompetitorCard key={competitor.id} competitor={competitor} />
+          {competitors.map((c) => (
+            <CompetitorCard key={c.id} competitor={c} />
           ))}
         </div>
       )}
