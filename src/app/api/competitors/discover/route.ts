@@ -29,12 +29,31 @@ export async function POST(): Promise<NextResponse> {
     )
   }
 
+  // Manual re-run: clear previously auto-discovered competitors so the fresh
+  // (better-targeted) results replace the old ones. Manually-added competitors
+  // are kept.
+  const existing = await db.competitor.findMany({ where: { userId: user.id } })
+  const autoIds = existing
+    .filter((c) => {
+      const cd = c.crawlData
+      return (
+        typeof cd === "object" &&
+        cd !== null &&
+        (cd as Record<string, unknown>).source === "auto_discovered"
+      )
+    })
+    .map((c) => c.id)
+  if (autoIds.length > 0) {
+    await db.competitor.deleteMany({ where: { id: { in: autoIds } } })
+  }
+
   const result = await runAutoDiscovery({
     id: user.id,
     businessName: user.businessName,
     businessType: user.businessType,
     city: user.city,
     websiteUrl: user.websiteUrl,
+    voiceDescription: user.voiceDescription,
   })
 
   return NextResponse.json({ success: true, ...result })

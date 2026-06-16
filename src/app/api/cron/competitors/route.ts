@@ -21,7 +21,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const users = await db.user.findMany({
     where: { businessType: { not: null }, city: { not: null } },
-    select: { id: true, businessName: true, businessType: true, city: true, websiteUrl: true },
+    select: { id: true, businessName: true, businessType: true, city: true, websiteUrl: true, voiceDescription: true },
   })
 
   let processed = 0

@@ -6,8 +6,9 @@ import { db } from "@/lib/db"
 import { googleSearch } from "@/lib/apify-search"
 import { analyzeCompetitor } from "@/lib/competitor-analyzer"
 import { analyzeContentGaps } from "@/lib/content-gaps"
+import { anthropic } from "@/lib/claude"
 
-// Hosts that are directories / aggregators / social — not direct competitors.
+// Hosts that are directories / aggregators / social / wikis — not real competitors.
 const DIRECTORY_HOSTS = [
   "yelp.", "google.", "maps.", "bing.", "duckduckgo.", "facebook.", "instagram.",
   "linkedin.", "twitter.", "x.com", "tiktok.", "pinterest.", "youtube.", "reddit.",
@@ -17,6 +18,8 @@ const DIRECTORY_HOSTS = [
   "manta.", "chamberofcommerce.", "superpages.", "citysearch.", "local.com",
   "merchantcircle.", "apple.com", "opentable.", "doordash.", "ubereats.",
   "grubhub.", "healthgrades.", "zocdoc.", "avvo.", "findlaw.", "justia.",
+  "fandom.", "wikia.", "wiki.", "quora.", "imdb.", "wattpad.", "pinterest.",
+  "medium.com", "substack.", "blogspot.", "wordpress.com",
 ]
 
 export type DiscoverUser = {
@@ -25,6 +28,46 @@ export type DiscoverUser = {
   businessType: string | null
   city: string | null
   websiteUrl: string | null
+  voiceDescription?: string | null
+}
+
+// Build a real Google query that surfaces direct competitors. A concrete
+// business type (e.g. "Dentist") is a fine query as-is; for generic/"Other"
+// types we ask the model for a sensible query from the profile, so we never
+// search nonsense like "Other Kanata".
+async function buildCompetitorQuery(user: DiscoverUser): Promise<string> {
+  const city = (user.city ?? "").trim()
+  const fallback = `${user.businessType ?? "local business"} ${city}`.trim()
+  const type = (user.businessType ?? "").trim().toLowerCase()
+  if (type && type !== "other") return fallback
+
+  try {
+    const about = (user.voiceDescription ?? "").slice(0, 400)
+    const msg = await anthropic.messages.create({
+      model: "claude-haiku-4-5",
+      max_tokens: 40,
+      messages: [
+        {
+          role: "user",
+          content:
+            `Find direct competitors of a business with a single Google search.\n` +
+            `Business: ${user.businessName ?? "unknown"}\n` +
+            `Website: ${user.websiteUrl ?? "unknown"}\n` +
+            `What they do: ${about || "unknown"}\n` +
+            `Location: ${city || "their area"}\n\n` +
+            `Reply with ONLY the Google search query someone would type to find this kind of business (include the location if it's a local business). No quotes, no explanation. Examples: emergency plumber Austin TX, growth marketing agency Ottawa, family law firm Kanata.`,
+        },
+      ],
+    })
+    const block = msg.content.find((b) => b.type === "text")
+    const q =
+      block && block.type === "text"
+        ? block.text.trim().split("\n")[0].replace(/^["']+|["']+$/g, "").trim()
+        : ""
+    return q.length >= 3 ? q : fallback
+  } catch {
+    return fallback
+  }
 }
 
 function hostOf(url: string): string | null {
@@ -46,7 +89,8 @@ export async function discoverCompetitors(user: DiscoverUser, max = 5): Promise<
   if (!process.env.APIFY_TOKEN) return 0
   if (!user.businessType || !user.city) return 0
 
-  const results = await googleSearch(`${user.businessType} ${user.city}`, { results: 10 })
+  const query = await buildCompetitorQuery(user)
+  const results = await googleSearch(query, { results: 10 })
   if (results.length === 0) return 0
 
   const ownHost = user.websiteUrl ? hostOf(user.websiteUrl) : null

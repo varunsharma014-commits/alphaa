@@ -46,6 +46,7 @@ export async function PATCH(req: NextRequest) {
       businessType: user.businessType,
       city: user.city,
       websiteUrl: user.websiteUrl,
+      voiceDescription: user.voiceDescription,
     }).catch(() => {})
   }
 
