@@ -120,15 +120,21 @@ export default async function AuditPage() {
     where: { userId: user.id },
     orderBy: { generatedAt: "desc" },
   })
-  const schemas = (latestSchema?.schemas as unknown as SchemaItem[]) ?? []
+  const schemas = Array.isArray(latestSchema?.schemas)
+    ? (latestSchema.schemas as unknown as SchemaItem[])
+    : []
 
   // Fetch latest crawl result
   const latestCrawl = await db.crawlResult.findFirst({
     where: { userId: user.id },
     orderBy: { crawledAt: "desc" },
   })
-  const crawlIssues = (latestCrawl?.issues as unknown as CrawlIssue[]) ?? []
-  const metaIssues = (latestCrawl?.metaIssues as unknown as CrawlIssue[]) ?? []
+  const crawlIssues = Array.isArray(latestCrawl?.issues)
+    ? (latestCrawl.issues as unknown as CrawlIssue[])
+    : []
+  const metaIssues = Array.isArray(latestCrawl?.metaIssues)
+    ? (latestCrawl.metaIssues as unknown as CrawlIssue[])
+    : []
   const allCrawlIssues = [...crawlIssues, ...metaIssues]
 
   // Fetch latest audit issues
@@ -136,7 +142,9 @@ export default async function AuditPage() {
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
   })
-  const auditIssues = (latestAudit?.issues as unknown as AuditIssue[]) ?? []
+  const auditIssues = Array.isArray(latestAudit?.issues)
+    ? (latestAudit.issues as unknown as AuditIssue[])
+    : []
 
   // Combined plain-English issue list (crawl + AI audit), sorted by severity.
   const sevRank: Record<string, number> = { critical: 0, warning: 1, improvement: 2 }
@@ -159,7 +167,7 @@ export default async function AuditPage() {
       const psUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(
         user.websiteUrl
       )}&strategy=mobile`
-      const psRes = await fetch(psUrl, { cache: "no-store" })
+      const psRes = await fetch(psUrl, { cache: "no-store", signal: AbortSignal.timeout(5000) })
       if (psRes.ok) {
         pageSpeed = (await psRes.json()) as PageSpeedResult
         speedAvailable = true

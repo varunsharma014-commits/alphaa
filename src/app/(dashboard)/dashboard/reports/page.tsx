@@ -101,7 +101,7 @@ export default async function ReportsPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {reports.map((report, idx) => {
               const visibilityDelta = (report.visibilityDelta ?? {}) as VisibilityDelta
-              const keywordMovers   = (report.keywordMovers ?? [])  as KeywordMover[]
+              const keywordMovers   = Array.isArray(report.keywordMovers) ? (report.keywordMovers as KeywordMover[]) : []
               const topMovers       = keywordMovers.slice(0, 4)
               const isLatest        = idx === 0
 

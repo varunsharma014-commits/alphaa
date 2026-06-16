@@ -34,7 +34,9 @@ export default async function ContentGapsPage() {
     orderBy: { analyzedAt: "desc" },
   })
 
-  const gaps = (latestGap?.gaps as unknown as GapItem[]) ?? []
+  const gaps = Array.isArray(latestGap?.gaps)
+    ? (latestGap.gaps as unknown as GapItem[])
+    : []
 
   const highGaps   = gaps.filter((g) => g.priority === "high")
   const mediumGaps = gaps.filter((g) => g.priority === "medium")
@@ -138,7 +140,7 @@ export default async function ContentGapsPage() {
                       </h3>
 
                       {/* Outline */}
-                      {gap.suggestedOutline.length > 0 && (
+                      {Array.isArray(gap.suggestedOutline) && gap.suggestedOutline.length > 0 && (
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "12px" }}>
                           {gap.suggestedOutline.map((point, j) => (
                             <div key={j} style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>

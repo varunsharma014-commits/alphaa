@@ -135,13 +135,15 @@ export default async function SpeedPage() {
   let pageSpeed: PageSpeedResult | null = null
   let speedAvailable = false
   try {
-    const psUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(
-      user.websiteUrl
-    )}&strategy=mobile`
-    const psRes = await fetch(psUrl, { cache: "no-store" })
-    if (psRes.ok) {
-      pageSpeed = (await psRes.json()) as PageSpeedResult
-      speedAvailable = true
+    if (user.websiteUrl) {
+      const psUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(
+        user.websiteUrl
+      )}&strategy=mobile`
+      const psRes = await fetch(psUrl, { cache: "no-store", signal: AbortSignal.timeout(5000) })
+      if (psRes.ok) {
+        pageSpeed = (await psRes.json()) as PageSpeedResult
+        speedAvailable = true
+      }
     }
   } catch {
     speedAvailable = false
@@ -163,7 +165,7 @@ export default async function SpeedPage() {
     speedAvailable = false
   }
 
-  const issues = (crawlResult?.issues ?? []) as CrawlIssue[]
+  const issues = Array.isArray(crawlResult?.issues) ? (crawlResult.issues as CrawlIssue[]) : []
   const criticalCount = issues.filter((i) => i.severity === "critical").length
   const warningCount = issues.filter((i) => i.severity === "warning").length
 
