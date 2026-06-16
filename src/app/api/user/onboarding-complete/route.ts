@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
+import { discoverCompetitors } from "@/lib/discover-competitors"
 
 export async function PATCH(req: NextRequest) {
   const { userId } = await auth()
@@ -33,6 +34,19 @@ export async function PATCH(req: NextRequest) {
         { userId: user.id, type: "citation_found", title: "Business found in Google AI results", description: "You appeared in a Google AI search for your category." },
       ],
     })
+  }
+
+  // Kick off competitor auto-discovery in the background (no-op until APIFY_TOKEN
+  // is set). Railway runs a persistent server, so this fire-and-forget promise
+  // completes after the response is sent — onboarding never waits on it.
+  if (user?.businessType && user.city) {
+    void discoverCompetitors({
+      id: user.id,
+      businessName: user.businessName,
+      businessType: user.businessType,
+      city: user.city,
+      websiteUrl: user.websiteUrl,
+    }).catch(() => {})
   }
 
   return NextResponse.json({ success: true })
