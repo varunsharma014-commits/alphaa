@@ -15,7 +15,7 @@ import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import { DsCard } from "@/components/dashboard/DsCard"
 import { EmptyState } from "@/components/dashboard/EmptyState"
 import { humanizeIssue } from "@/lib/humanize"
-import { CheckCircle2, Gauge, Wrench, Code2 } from "lucide-react"
+import { CheckCircle2, Gauge, Wrench, Code2, AlertCircle } from "lucide-react"
 
 export const metadata = { title: "Website health" }
 
@@ -146,17 +146,22 @@ export default async function AuditPage() {
     ? (latestAudit.issues as unknown as AuditIssue[])
     : []
 
+  // AI-crawler blocks (robots.txt audit) get their own prominent card above
+  // everything else — the most impactful AEO finding.
+  const aiCrawlerBlocks = allCrawlIssues.filter((i) => i.type === "ai_crawler_blocked")
+  const regularCrawlIssues = allCrawlIssues.filter((i) => i.type !== "ai_crawler_blocked")
+
   // Combined plain-English issue list (crawl + AI audit), sorted by severity.
   const sevRank: Record<string, number> = { critical: 0, warning: 1, improvement: 2 }
   const combinedIssues: { severity: string; text: string }[] = [
-    ...allCrawlIssues.map((i) => ({ severity: i.severity, text: issueText(i) })),
+    ...regularCrawlIssues.map((i) => ({ severity: i.severity, text: issueText(i) })),
     ...auditIssues.map((i) => ({ severity: i.severity, text: i.headline })),
   ].sort((a, b) => (sevRank[a.severity] ?? 1) - (sevRank[b.severity] ?? 1))
 
   // Stat-row numbers (plain English).
   const pagesChecked = latestCrawl?.pagesScanned ?? 0
-  const brokenLinks = allCrawlIssues.filter((i) => i.severity === "critical").length
-  const missingDescriptions = allCrawlIssues.filter((i) => i.severity === "warning").length
+  const brokenLinks = regularCrawlIssues.filter((i) => i.severity === "critical").length
+  const missingDescriptions = regularCrawlIssues.filter((i) => i.severity === "warning").length
   const issuesFixed = auditIssues.filter((i) => i.fix_summary).length
 
   // PageSpeed data — fetched safely, never leaks raw errors to the user.
@@ -192,6 +197,38 @@ export default async function AuditPage() {
   return (
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
       <AutopilotBar message="alphaa crawled your site today and flagged issues in plain English below" />
+
+      {/* ── AI crawler blocks — most critical, shown first ──── */}
+      {aiCrawlerBlocks.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "18px" }}>
+          {aiCrawlerBlocks.map((issue, i) => {
+            const engine = String(issue.engine ?? "an AI engine")
+            return (
+              <DsCard key={`ai-block-${i}`} accent="#dc2626" style={{ background: "#1a0808" }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                  <AlertCircle size={18} color="#dc2626" style={{ flexShrink: 0, marginTop: "1px" }} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+                      Your website is blocking {engine} from reading your content
+                    </p>
+                    <p style={{ fontSize: "13px", color: "#d6b8b8", lineHeight: 1.6, marginTop: "4px" }}>
+                      This means {engine} literally cannot see your website — which is why you don&apos;t appear in its results.
+                    </p>
+                    <details style={{ marginTop: "10px" }}>
+                      <summary style={{ cursor: "pointer", color: "#e05a2b", fontSize: "13px", fontWeight: 500 }}>
+                        Show me how to fix this →
+                      </summary>
+                      <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "8px" }}>
+                        {String(issue.fix ?? "")}
+                      </p>
+                    </details>
+                  </div>
+                </div>
+              </DsCard>
+            )
+          })}
+        </div>
+      )}
 
       {/* ── Header ──────────────────────────────────────────── */}
       <div

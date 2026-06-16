@@ -12,6 +12,8 @@ export type CrawlIssue = {
   url: string
   description: string
   fix: string
+  // Set on AI-crawler-block issues so the UI can render a per-engine card.
+  engine?: string
 }
 
 export type CrawlOutput = {
@@ -361,6 +363,102 @@ function buildIssues(pages: PageData[]): CrawlIssue[] {
   return issues
 }
 
+// ── AI crawler / robots.txt audit ──────────────────────────────────────────
+// Detect whether the site's robots.txt blocks the major AI crawlers from
+// reading the content (Disallow: / for their user-agent). This is the single
+// most impactful AEO problem — if blocked, the engine literally can't see them.
+
+const AI_CRAWLERS: { userAgent: string; engine: string }[] = [
+  { userAgent: "GPTBot", engine: "ChatGPT" },
+  { userAgent: "OAI-SearchBot", engine: "ChatGPT" },
+  { userAgent: "ClaudeBot", engine: "Claude" },
+  { userAgent: "anthropic-ai", engine: "Claude" },
+  { userAgent: "Google-Extended", engine: "Gemini" },
+  { userAgent: "PerplexityBot", engine: "Perplexity" },
+  { userAgent: "cohere-ai", engine: "Cohere" },
+]
+
+type RobotsGroup = { agents: string[]; disallow: string[]; allow: string[] }
+
+function parseRobots(txt: string): RobotsGroup[] {
+  const groups: RobotsGroup[] = []
+  let current: RobotsGroup | null = null
+  let lastWasAgent = false
+  for (const rawLine of txt.split(/\r?\n/)) {
+    const line = rawLine.replace(/#.*$/, "").trim()
+    if (!line) continue
+    const idx = line.indexOf(":")
+    if (idx === -1) continue
+    const field = line.slice(0, idx).trim().toLowerCase()
+    const value = line.slice(idx + 1).trim()
+    if (field === "user-agent") {
+      // Consecutive user-agent lines share the following rule block.
+      if (!current || !lastWasAgent) {
+        current = { agents: [], disallow: [], allow: [] }
+        groups.push(current)
+      }
+      current.agents.push(value.toLowerCase())
+      lastWasAgent = true
+    } else if (field === "disallow") {
+      if (current) current.disallow.push(value)
+      lastWasAgent = false
+    } else if (field === "allow") {
+      if (current) current.allow.push(value)
+      lastWasAgent = false
+    } else {
+      lastWasAgent = false
+    }
+  }
+  return groups
+}
+
+function groupForAgent(groups: RobotsGroup[], agent: string): RobotsGroup | null {
+  const a = agent.toLowerCase()
+  const specific = groups.find((g) => g.agents.includes(a))
+  if (specific) return specific
+  return groups.find((g) => g.agents.includes("*")) ?? null
+}
+
+// "Disallow: /" with no overriding "Allow: /" = the whole site is blocked.
+function isFullyBlocked(group: RobotsGroup | null): boolean {
+  if (!group) return false
+  const blocksRoot = group.disallow.some((d) => d === "/")
+  const allowsRoot = group.allow.some((a) => a === "/")
+  return blocksRoot && !allowsRoot
+}
+
+async function checkAiCrawlerBlocks(
+  origin: string,
+): Promise<{ engine: string; agents: string[] }[]> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+  let txt = ""
+  try {
+    const res = await fetch(`${origin}/robots.txt`, {
+      headers: { "User-Agent": USER_AGENT },
+      signal: controller.signal,
+    })
+    clearTimeout(timer)
+    // No robots.txt (or unreadable) means nothing is blocked — AI can crawl.
+    if (!res.ok) return []
+    txt = await res.text()
+  } catch {
+    clearTimeout(timer)
+    return []
+  }
+
+  const groups = parseRobots(txt)
+  const byEngine = new Map<string, string[]>()
+  for (const { userAgent, engine } of AI_CRAWLERS) {
+    if (isFullyBlocked(groupForAgent(groups, userAgent))) {
+      const arr = byEngine.get(engine) ?? []
+      arr.push(userAgent)
+      byEngine.set(engine, arr)
+    }
+  }
+  return Array.from(byEngine, ([engine, agents]) => ({ engine, agents }))
+}
+
 export async function crawlWebsite(url: string, maxPages = 40): Promise<CrawlOutput> {
   // Normalize the seed URL
   const seedUrl = normalizeUrl(url, url) ?? url
@@ -396,6 +494,20 @@ export async function crawlWebsite(url: string, maxPages = 40): Promise<CrawlOut
   }
 
   const issues = buildIssues(pages)
+
+  // robots.txt AI-crawler audit — surfaced first as the most critical finding.
+  const aiBlocks = await checkAiCrawlerBlocks(baseOrigin)
+  for (const { engine, agents } of aiBlocks) {
+    const agentList = agents.map((a) => `"User-agent: ${a}"`).join(" and ")
+    issues.unshift({
+      type: "ai_crawler_blocked",
+      severity: "critical",
+      url: "robots.txt",
+      engine,
+      description: `Your website is blocking ${engine} from reading your content. This means ${engine} literally cannot see your website — which is why you don't appear in its results.`,
+      fix: `In your robots.txt file, change the "Disallow: /" rule under ${agentList} to "Allow: /" (or remove it). If a developer manages your website, forward them this note.`,
+    })
+  }
 
   // Aggregate schema info
   const schemaFoundSet = new Set<string>()
