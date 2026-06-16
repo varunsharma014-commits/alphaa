@@ -3,7 +3,6 @@
 import { UserButton } from "@clerk/nextjs"
 import { Bell } from "lucide-react"
 import type { AppUser } from "@/types/user"
-import { ThemeToggle } from "@/components/common/ThemeToggle"
 
 export function DashboardTopBar({ user }: { user: AppUser }) {
   const isTrialing = user.subscriptionStatus === "trialing"
@@ -50,7 +49,6 @@ export function DashboardTopBar({ user }: { user: AppUser }) {
 
       {/* Right: actions */}
       <div className="flex items-center gap-1.5">
-        <ThemeToggle />
         <button className="w-8 h-8 rounded-lg flex items-center justify-center text-fg/30 hover:text-fg/80 hover:bg-fg/[0.06] transition-colors">
           <Bell className="w-4 h-4" />
         </button>

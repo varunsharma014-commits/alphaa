@@ -27,7 +27,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!user.onboardingCompleted) redirect("/onboarding")
 
   return (
-    <div className="flex h-screen bg-bg-primary overflow-hidden">
+    <div data-theme="dark" className="flex h-screen bg-bg-primary overflow-hidden">
       <DashboardSidebar />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <DashboardTopBar user={user} />

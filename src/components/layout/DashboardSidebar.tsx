@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   Sparkles, Home, Bot, TrendingUp, Activity, MapPin, Star,
-  CalendarDays, Lightbulb, Users, BarChart3, Settings, ChevronRight, Zap,
+  CalendarDays, Lightbulb, Users, BarChart3, Settings, ChevronRight,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -17,31 +17,30 @@ const navGroups = [
   {
     label: "Getting Found",
     items: [
-      { href: "/dashboard/visibility", label: "AI Engines", icon: Bot },
-      { href: "/dashboard/keywords", label: "Search Rankings", icon: TrendingUp },
-      { href: "/dashboard/audit", label: "Website Issues", icon: Activity },
-      { href: "/dashboard/speed", label: "Page Speed", icon: Zap },
+      { href: "/dashboard/visibility", label: "AI Visibility", icon: Bot },
+      { href: "/dashboard/keywords", label: "Google Rankings", icon: TrendingUp },
+      { href: "/dashboard/audit", label: "Website Health", icon: Activity },
     ],
   },
   {
     label: "Your Reputation",
     items: [
-      { href: "/dashboard/posts", label: "Google Posts", icon: MapPin },
-      { href: "/dashboard/reviews", label: "Customer Reviews", icon: Star },
+      { href: "/dashboard/posts", label: "Google Listing", icon: MapPin },
+      { href: "/dashboard/reviews", label: "Reviews", icon: Star },
     ],
   },
   {
     label: "Content",
     items: [
-      { href: "/dashboard/content-plan", label: "Content Plan", icon: CalendarDays },
-      { href: "/dashboard/content-gaps", label: "Topic Ideas", icon: Lightbulb },
+      { href: "/dashboard/content-plan", label: "Content Calendar", icon: CalendarDays },
+      { href: "/dashboard/content-gaps", label: "Content Ideas", icon: Lightbulb },
     ],
   },
   {
     label: "Research",
     items: [
-      { href: "/dashboard/competitors", label: "Competitors", icon: Users },
-      { href: "/dashboard/reports", label: "Reports", icon: BarChart3 },
+      { href: "/dashboard/competitors", label: "Competitor Intel", icon: Users },
+      { href: "/dashboard/reports", label: "Weekly Reports", icon: BarChart3 },
     ],
   },
 ]

@@ -203,6 +203,12 @@ body {
   background: rgb(var(--fg-rgb) / 0.2);
 }
 
+/* ── Autopilot status-dot pulse (used across dashboard screens) ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
