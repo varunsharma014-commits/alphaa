@@ -5,6 +5,7 @@
 import { db } from "@/lib/db"
 import { googleSearch } from "@/lib/apify-search"
 import { analyzeCompetitor } from "@/lib/competitor-analyzer"
+import { analyzeContentGaps } from "@/lib/content-gaps"
 
 // Hosts that are directories / aggregators / social — not direct competitors.
 const DIRECTORY_HOSTS = [
@@ -94,4 +95,47 @@ export async function discoverCompetitors(user: DiscoverUser, max = 5): Promise<
   }
 
   return created
+}
+
+// Discover competitors AND auto-generate content gaps from the top one
+// (Change 1 + Change 2 in one pass). Best-effort: gap generation never blocks
+// or fails the discovery result.
+export async function runAutoDiscovery(
+  user: DiscoverUser,
+): Promise<{ discovered: number; gapsGenerated: number }> {
+  const discovered = await discoverCompetitors(user)
+
+  let gapsGenerated = 0
+  if (user.websiteUrl && user.businessType && user.city) {
+    try {
+      const top = await db.competitor.findFirst({
+        where: { userId: user.id },
+        orderBy: { createdAt: "desc" },
+      })
+      if (top) {
+        const { gaps, summary } = await analyzeContentGaps(
+          user.websiteUrl,
+          top.url,
+          user.businessName ?? "",
+          user.businessType,
+          user.city,
+        )
+        if (gaps.length > 0) {
+          await db.contentGap.create({
+            data: {
+              userId: user.id,
+              competitorUrl: top.url,
+              gaps: gaps as object,
+              summary,
+            },
+          })
+          gapsGenerated = gaps.length
+        }
+      }
+    } catch {
+      // gaps are best-effort — discovery still succeeds
+    }
+  }
+
+  return { discovered, gapsGenerated }
 }

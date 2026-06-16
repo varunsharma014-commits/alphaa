@@ -3,7 +3,7 @@ export const maxDuration = 300
 
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
-import { discoverCompetitors } from "@/lib/discover-competitors"
+import { runAutoDiscovery } from "@/lib/discover-competitors"
 
 // Weekly auto-discovery. Runs competitor discovery for businesses that have a
 // type + city but no competitors yet (new accounts whose onboarding-time
@@ -30,7 +30,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const existing = await db.competitor.count({ where: { userId: u.id } })
     if (existing > 0) continue // already has competitors — skip to save SERP spend
     try {
-      discovered += await discoverCompetitors(u)
+      const r = await runAutoDiscovery(u)
+      discovered += r.discovered
       processed++
     } catch {
       // Skip this user on failure; keep going.

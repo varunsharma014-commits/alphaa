@@ -3,24 +3,29 @@ export const dynamic = "force-dynamic"
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { Lightbulb, TrendingUp } from "lucide-react"
+import { Lightbulb, Search } from "lucide-react"
 import AnalyzeGapsButton from "./AnalyzeGapsButton"
+import AddToCalendarButton from "./AddToCalendarButton"
 import type { GapItem } from "@/lib/content-gaps"
-import { formatDate } from "@/lib/utils"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
 import { StatusPill } from "@/components/dashboard/StatusPill"
-import { StatBox } from "@/components/dashboard/StatBox"
 import { EmptyState } from "@/components/dashboard/EmptyState"
 import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import { DsCard } from "@/components/dashboard/DsCard"
+import type { PillVariant } from "@/components/dashboard/StatusPill"
 
 export const metadata = { title: "Content ideas" }
 
-const PRIORITY_META = {
-  high:   { label: "High priority",   accent: "#dc2626", pill: "error"   as const, divider: "Worth doing first" },
-  medium: { label: "Medium priority", accent: "#f59e0b", pill: "warning" as const, divider: "Good to cover next" },
-  low:    { label: "Low priority",    accent: "#3b82f6", pill: "info"    as const, divider: "Nice to have" },
-} as const
+const PRIORITY_META: Record<
+  GapItem["priority"],
+  { label: string; pill: PillVariant; accent: string }
+> = {
+  high:   { label: "High opportunity", pill: "found",   accent: "#22c55e" },
+  medium: { label: "Medium",           pill: "warning", accent: "#f59e0b" },
+  low:    { label: "Lower priority",   pill: "neutral", accent: "#3b3b3b" },
+}
+
+const PRIORITY_ORDER: GapItem["priority"][] = ["high", "medium", "low"]
 
 export default async function ContentGapsPage() {
   const { userId: clerkId } = await auth()
@@ -38,9 +43,13 @@ export default async function ContentGapsPage() {
     ? (latestGap.gaps as unknown as GapItem[])
     : []
 
-  const highGaps   = gaps.filter((g) => g.priority === "high")
-  const mediumGaps = gaps.filter((g) => g.priority === "medium")
-  const lowGaps    = gaps.filter((g) => g.priority === "low")
+  const hasGaps = gaps.length > 0
+
+  // Sort gaps high → medium → low for presentation.
+  const sortedGaps = [...gaps].sort(
+    (a, b) =>
+      PRIORITY_ORDER.indexOf(a.priority) - PRIORITY_ORDER.indexOf(b.priority)
+  )
 
   return (
     <div style={{ maxWidth: "896px", margin: "0 auto" }}>
@@ -54,116 +63,107 @@ export default async function ContentGapsPage() {
         </p>
       </div>
 
-      {!latestGap ? (
-        /* ── Empty state ─────────────────────────── */
+      {!hasGaps ? (
+        /* ── Auto-analyzing / loading state (no input) ─────────── */
         <DsCard style={{ padding: 0 }}>
           <EmptyState
             icon={Lightbulb}
-            title="alphaa will find content topics your competitors rank for"
-            body="Paste a competitor's website and alphaa surfaces the topics they show up for that you are missing — with suggested titles and outlines ready to use."
-          >
-            <div style={{ width: "100%", maxWidth: "560px", marginTop: "6px" }}>
-              <AnalyzeGapsButton prominent />
-            </div>
-          </EmptyState>
+            title="alphaa is analyzing your competitors' content…"
+            body="We'll have your content gaps ready in a few minutes — topics your competitors rank for that you're missing, with suggested titles and outlines ready to use."
+          />
         </DsCard>
       ) : (
         <>
-          {/* ── Results summary ─────────────────────── */}
-          <DsCard style={{ marginBottom: "16px" }}>
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
-                  <Lightbulb size={15} color="#e05a2b" />
-                  <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
-                    alphaa found {gaps.length} topic{gaps.length !== 1 ? "s" : ""} for you
-                  </span>
-                </div>
-                <p style={{ fontSize: "11px", color: "#555555", lineHeight: 1.6 }}>
-                  Compared against <span style={{ color: "#888888" }}>{latestGap.competitorUrl}</span> · {formatDate(latestGap.analyzedAt)}
+          {/* ── Hero heading ───────────────────────── */}
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "18px" }}>
+            <div
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "8px",
+                background: "#1a1a1a",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <Lightbulb size={17} color="#e05a2b" />
+            </div>
+            <h2 style={{ fontSize: "16px", fontWeight: 500, color: "#ffffff", lineHeight: 1.45, marginTop: "4px" }}>
+              alphaa found {gaps.length} content gap{gaps.length !== 1 ? "s" : ""} — topics your competitors rank for that you&apos;re missing.
+            </h2>
+          </div>
+
+          {/* ── Gap cards ──────────────────────────── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {sortedGaps.map((gap, i) => {
+              const meta = PRIORITY_META[gap.priority] ?? PRIORITY_META.medium
+              const outline = Array.isArray(gap.suggestedOutline)
+                ? gap.suggestedOutline.slice(0, 2)
+                : []
+              return (
+                <DsCard key={i} accent={meta.accent}>
+                  {/* Priority pill */}
+                  <div style={{ marginBottom: "10px" }}>
+                    <StatusPill variant={meta.pill}>{meta.label}</StatusPill>
+                  </div>
+
+                  {/* Suggested title */}
+                  <h3 style={{ fontSize: "15px", fontWeight: 600, color: "#ffffff", lineHeight: 1.4, marginBottom: "8px" }}>
+                    {gap.suggestedTitle}
+                  </h3>
+
+                  {/* First 1–2 outline lines */}
+                  {outline.length > 0 && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginBottom: "10px" }}>
+                      {outline.map((point, j) => (
+                        <p key={j} style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
+                          {point}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Generic competitor line (no fabricated counts) */}
+                  <p style={{ fontSize: "11px", color: "#555555", lineHeight: 1.6, marginBottom: "14px" }}>
+                    Your competitors rank for this — you don&apos;t yet.
+                  </p>
+
+                  {/* Add to calendar */}
+                  <AddToCalendarButton title={gap.suggestedTitle} />
+                </DsCard>
+              )
+            })}
+          </div>
+
+          {/* ── Secondary: analyze a specific competitor ─── */}
+          <SectionDivider>More</SectionDivider>
+          <DsCard>
+            <details>
+              <summary
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "#cccccc",
+                  listStyle: "none",
+                }}
+              >
+                <Search size={14} color="#888888" />
+                Analyze a specific competitor
+              </summary>
+              <div style={{ marginTop: "14px" }}>
+                <AnalyzeGapsButton />
+                <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px", lineHeight: 1.6 }}>
+                  Paste a competitor&apos;s website and alphaa will find the topics they rank for that you are missing.
                 </p>
               </div>
-              <StatusPill variant="found">Up to date</StatusPill>
-            </div>
-
-            {/* Priority breakdown */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginTop: "16px" }}>
-              <StatBox value={highGaps.length}   label="High priority"   tone="danger" />
-              <StatBox value={mediumGaps.length} label="Medium priority" tone="warning" />
-              <StatBox value={lowGaps.length}    label="Low priority"    tone="default" />
-            </div>
-
-            {latestGap.summary && (
-              <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "16px", paddingTop: "16px", borderTop: "0.5px solid #222222" }}>
-                {latestGap.summary}
-              </p>
-            )}
+            </details>
           </DsCard>
-
-          {/* ── Re-check against another competitor ─── */}
-          <DsCard style={{ marginBottom: "16px" }}>
-            <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", color: "#444444", marginBottom: "8px" }}>
-              Find topics your competitors rank for
-            </p>
-            <AnalyzeGapsButton />
-            <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px", lineHeight: 1.6 }}>
-              alphaa will find topics they rank for that you are missing — with suggested titles and outlines ready to use.
-            </p>
-          </DsCard>
-
-          {/* ── Gap groups ──────────────────────────── */}
-          {([
-            { priority: "high",   items: highGaps   },
-            { priority: "medium", items: mediumGaps },
-            { priority: "low",    items: lowGaps    },
-          ] as const).map(({ priority, items }) => {
-            if (items.length === 0) return null
-            const meta = PRIORITY_META[priority]
-            return (
-              <div key={priority}>
-                <SectionDivider>{meta.label}</SectionDivider>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                  {items.map((gap, i) => (
-                    <DsCard key={i} accent={meta.accent}>
-                      {/* Topic + priority */}
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "10px" }}>
-                        <StatusPill variant={meta.pill}>{meta.label}</StatusPill>
-                        {gap.topic && (
-                          <span style={{ fontSize: "11px", color: "#555555" }}>{gap.topic}</span>
-                        )}
-                      </div>
-
-                      {/* Suggested title */}
-                      <h3 style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff", lineHeight: 1.4, marginBottom: "12px" }}>
-                        {gap.suggestedTitle}
-                      </h3>
-
-                      {/* Outline */}
-                      {Array.isArray(gap.suggestedOutline) && gap.suggestedOutline.length > 0 && (
-                        <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "12px" }}>
-                          {gap.suggestedOutline.map((point, j) => (
-                            <div key={j} style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
-                              <span style={{ fontSize: "11px", color: "#444444", marginTop: "2px", flexShrink: 0 }}>{j + 1}.</span>
-                              <span style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>{point}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Impact */}
-                      {gap.estimatedImpact && (
-                        <div style={{ display: "flex", alignItems: "center", gap: "6px", paddingTop: "12px", borderTop: "0.5px solid #222222" }}>
-                          <TrendingUp size={13} color="#555555" />
-                          <span style={{ fontSize: "11px", color: "#555555" }}>{gap.estimatedImpact}</span>
-                        </div>
-                      )}
-                    </DsCard>
-                  ))}
-                </div>
-              </div>
-            )
-          })}
         </>
       )}
     </div>

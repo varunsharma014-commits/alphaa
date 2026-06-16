@@ -51,7 +51,7 @@ export function AddCompetitorButton() {
           placeholder="https://competitor.com"
           disabled={loading}
           className="flex-1 rounded-[8px] px-4 focus:outline-none disabled:opacity-50 transition-colors"
-          style={{ background: "#1a1a1a", border: "1px solid #222", color: "#fff", fontSize: 13, paddingTop: 8, paddingBottom: 8 }}
+          style={{ background: "#1a1a1a", border: ".5px solid #222", color: "#fff", fontSize: 13, paddingTop: 8, paddingBottom: 8 }}
           required
         />
         <button

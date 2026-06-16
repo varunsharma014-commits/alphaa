@@ -2,12 +2,14 @@ export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
-import { Globe, Users, Zap, AlertCircle, CheckCircle2, TrendingUp } from "lucide-react"
+import { Globe, Users, Zap, AlertCircle, CheckCircle2, TrendingUp, Search } from "lucide-react"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
+import { DsCard } from "@/components/dashboard/DsCard"
 import { StatusPill } from "@/components/dashboard/StatusPill"
 import { EmptyState } from "@/components/dashboard/EmptyState"
 import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import { AddCompetitorButton } from "./AddCompetitorButton"
+import { FindCompetitorsButton } from "./FindCompetitorsButton"
 import { DeleteCompetitorButton } from "./DeleteCompetitorButton"
 
 export const metadata = { title: "Competitors" }
@@ -36,6 +38,14 @@ function displayDomain(url: string): string {
   catch { return url }
 }
 
+// crawlData is JSON (possibly null). Auto-discovered competitors carry a
+// top-level { source: "auto_discovered" }. Read it defensively — never crash.
+function isAutoDiscovered(crawlData: unknown): boolean {
+  if (typeof crawlData !== "object" || crawlData === null) return false
+  const source = (crawlData as Record<string, unknown>).source
+  return typeof source === "string" && source === "auto_discovered"
+}
+
 function formatDate(date: Date | null): string {
   if (!date) return "Never"
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(date))
@@ -53,6 +63,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
   const domain = displayDomain(competitor.url)
   const name   = competitor.name ?? domain
   const freq   = FREQ_META[data?.estimatedPostingFrequency ?? ""] ?? FREQ_META.Monthly
+  const autoDiscovered = isAutoDiscovered(competitor.crawlData)
 
   return (
     <div
@@ -83,6 +94,13 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
             >
               {domain}
             </a>
+            <div style={{ marginTop: 6 }}>
+              {autoDiscovered ? (
+                <StatusPill variant="neutral">Auto-discovered by alphaa</StatusPill>
+              ) : (
+                <StatusPill variant="neutral">Added by you</StatusPill>
+              )}
+            </div>
           </div>
         </div>
         <DeleteCompetitorButton id={competitor.id} />
@@ -97,7 +115,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
               <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Pages crawled</p>
             </div>
             <div className="rounded-[8px] p-3 text-center" style={{ background: "#1a1a1a", border: ".5px solid #222" }}>
-              <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{data.schemaTypes.length}</p>
+              <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{Array.isArray(data.schemaTypes) ? data.schemaTypes.length : 0}</p>
               <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Schema types</p>
             </div>
             <div className="rounded-[8px] p-3 text-center flex flex-col items-center justify-center gap-1.5" style={{ background: "#1a1a1a", border: ".5px solid #222" }}>
@@ -107,7 +125,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
           </div>
 
           {/* Key topics */}
-          {data.keyTopics.length > 0 && (
+          {Array.isArray(data.keyTopics) && data.keyTopics.length > 0 && (
             <div>
               <p style={{ color: "#444", fontSize: 10, fontWeight: 500, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>What they write about</p>
               <div className="flex flex-wrap gap-1.5">
@@ -196,6 +214,8 @@ export default async function CompetitorsPage() {
   })
 
   const competitors = (user?.competitors ?? []) as unknown as CompetitorRow[]
+  const city = user?.city ?? null
+  const cityLabel = city ?? "your area"
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -221,27 +241,18 @@ export default async function CompetitorsPage() {
         )}
       </div>
 
-      {/* ── Add Competitor ─────────────────────────── */}
-      <div className="rounded-[10px]" style={{ background: "#161616", border: ".5px solid #222", padding: "1rem 1.25rem" }}>
-        <div className="flex items-center gap-2 mb-3">
-          <TrendingUp className="w-4 h-4" style={{ color: "#e05a2b" }} />
-          <p style={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>Track a competitor</p>
-        </div>
-        <AddCompetitorButton />
-        <p style={{ color: "#555", fontSize: 11, lineHeight: 1.6, marginTop: 10 }}>
-          alphaa crawls up to 20 pages and identifies their strengths, content topics, and posting frequency — updated automatically every week.
-        </p>
-      </div>
-
-      {/* ── Competitors / Empty state ───────────────── */}
+      {/* ── Competitors / Discovery state ───────────── */}
       {competitors.length === 0 ? (
-        <EmptyState
-          icon={Users}
-          title="Know exactly what your competitors are doing"
-          body="Add a competitor website and alphaa will analyze what makes them rank — so you can find the gaps and move ahead of them."
-        >
-          <AddCompetitorButton />
-        </EmptyState>
+        <DsCard>
+          <EmptyState
+            icon={Search}
+            title={`alphaa is finding your competitors in ${cityLabel}…`}
+            body="We're analyzing who ranks above you — this takes about 2 minutes."
+            sub="You don't have to do anything. Want to kick it off right now?"
+          >
+            <FindCompetitorsButton city={city} />
+          </EmptyState>
+        </DsCard>
       ) : (
         <div className="space-y-4">
           <SectionDivider>Competitors on autopilot</SectionDivider>
@@ -250,6 +261,23 @@ export default async function CompetitorsPage() {
           ))}
         </div>
       )}
+
+      {/* ── Manual tracking (secondary, collapsed) ──── */}
+      <details className="rounded-[10px]" style={{ background: "#161616", border: ".5px solid #222" }}>
+        <summary
+          className="flex items-center gap-2 cursor-pointer select-none list-none"
+          style={{ padding: "0.85rem 1.25rem", color: "#888", fontSize: 13, fontWeight: 500 }}
+        >
+          <TrendingUp className="w-4 h-4" style={{ color: "#e05a2b" }} />
+          Track a specific competitor
+        </summary>
+        <div style={{ padding: "0 1.25rem 1.25rem" }}>
+          <AddCompetitorButton />
+          <p style={{ color: "#555", fontSize: 11, lineHeight: 1.6, marginTop: 10 }}>
+            alphaa crawls up to 20 pages and identifies their strengths, content topics, and posting frequency — updated automatically every week.
+          </p>
+        </div>
+      </details>
     </div>
   )
 }
