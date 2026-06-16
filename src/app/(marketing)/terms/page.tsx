@@ -181,9 +181,14 @@ Non-material changes (such as typographical corrections, formatting updates, or 
     title: "17. Contact",
     body: `If you have any questions, concerns, or requests regarding these Terms of Service, please contact us at:
 
-Email: legal@alphaa.app
+Email: hi@alphaa.app
+Website: https://alphaa.app
+
+Mailing address:
 Alphaa
-Legal Department`,
+1000 Innovation Dr
+Kanata, ON K2K 3E7
+Canada`,
   },
 ]
 
@@ -192,14 +197,7 @@ export default function TermsPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-white text-3xl font-semibold mb-2">Terms of Service</h1>
-        <p className="text-white/40 text-sm mb-10">
-          Last updated:{" "}
-          {new Date().toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </p>
+        <p className="text-white/40 text-sm mb-10">Last updated: June 15, 2026</p>
 
         <p className="text-white/50 text-sm leading-relaxed mb-10 p-4 border border-white/[0.08] rounded-lg bg-white/[0.02]">
           These Terms of Service govern your access to and use of the Alphaa platform. By creating an account or using the Service, you agree to be bound by these Terms. Please read them carefully.
