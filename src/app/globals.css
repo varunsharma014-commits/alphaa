@@ -61,7 +61,7 @@
 
   --fg-rgb: 26 20 16;
   --line-rgb: 26 20 16;
-  --muted-rgb: 120 113 108;
+  --muted-rgb: 107 99 94;
   --dot-rgb: 26 20 16;
 
   --card-bg: #FFFFFF;
@@ -71,6 +71,25 @@
   --text-primary: #1A1410;
   --text-secondary: #78716C;
 }
+
+/* ── Light-mode text contrast remap ──
+   The opacity hierarchy that reads well as white-on-dark is too faint as
+   near-black-on-light (e.g. text-fg/40 ≈ 2.5:1, fails WCAG AA). In light mode
+   only, lift each foreground opacity step to a darker effective alpha so body
+   text stays legible. Surfaces/borders (bg-fg, border-line) are left subtle. */
+[data-theme="light"] .text-fg\/20 { color: rgb(var(--fg-rgb) / 0.42); }
+[data-theme="light"] .text-fg\/25 { color: rgb(var(--fg-rgb) / 0.46); }
+[data-theme="light"] .text-fg\/30 { color: rgb(var(--fg-rgb) / 0.52); }
+[data-theme="light"] .text-fg\/35 { color: rgb(var(--fg-rgb) / 0.56); }
+[data-theme="light"] .text-fg\/40 { color: rgb(var(--fg-rgb) / 0.60); }
+[data-theme="light"] .text-fg\/45 { color: rgb(var(--fg-rgb) / 0.64); }
+[data-theme="light"] .text-fg\/50 { color: rgb(var(--fg-rgb) / 0.68); }
+[data-theme="light"] .text-fg\/55 { color: rgb(var(--fg-rgb) / 0.72); }
+[data-theme="light"] .text-fg\/60 { color: rgb(var(--fg-rgb) / 0.76); }
+[data-theme="light"] .text-fg\/65 { color: rgb(var(--fg-rgb) / 0.80); }
+[data-theme="light"] .text-fg\/70 { color: rgb(var(--fg-rgb) / 0.84); }
+[data-theme="light"] .text-fg\/75 { color: rgb(var(--fg-rgb) / 0.87); }
+[data-theme="light"] .text-fg\/80 { color: rgb(var(--fg-rgb) / 0.90); }
 
 /* ── Base reset ── */
 *, *::before, *::after {
