@@ -25,6 +25,12 @@ ${topicLine}
 
 Write a compelling Google Business Profile post that is 150-200 words. Make it sound natural, warm, and local. Mention the city and business naturally. Include a clear call to action.
 
+AEO (AI-engine optimization) hard rules — these are mandatory and apply even within the short word count. Do NOT add a multi-question FAQ section (it will not fit a short GBP post):
+1. Open with a clear question that a customer might ask an AI engine, e.g. "Looking for the best ${businessType} in ${city}?" or "What is the best ${businessType} in ${city}?"
+2. Answer that question directly in the first 1-2 sentences — AI engines favor direct, up-front answers. Lead with "${businessName} in ${city}" as the answer.
+3. Include the business name (${businessName}) and city (${city}) naturally in the first paragraph.
+4. End with a single short NAP line stating the business Name, Address, and Phone in a consistent format (e.g. "${businessName} · [address], ${city} · [phone]"). If the address or phone are unknown, write them as placeholders the owner can fill in.
+
 Return ONLY valid JSON with this exact structure — no markdown, no explanation:
 {
   "content": "<the full post text, 150-200 words>",

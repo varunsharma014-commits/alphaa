@@ -66,10 +66,13 @@ export default async function KeywordsPage() {
   const header = (
     <div style={{ marginBottom: '20px' }}>
       <h1 style={{ fontSize: '20px', fontWeight: 500, color: '#ffffff' }}>
-        Google Rankings
+        Google rankings
       </h1>
       <p style={{ fontSize: '13px', color: '#888888', marginTop: '4px', lineHeight: 1.6 }}>
         Keywords people use to find businesses like yours — and where you rank.
+      </p>
+      <p style={{ fontSize: '12px', color: '#555555', marginTop: '8px', lineHeight: 1.6 }}>
+        Google rankings still matter — but AI visibility is where new customers increasingly come from.
       </p>
     </div>
   )

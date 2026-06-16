@@ -8,6 +8,7 @@ import GenerateSchemaButton from "./GenerateSchemaButton"
 import CopyButton from "./CopyButton"
 import type { AuditIssue } from "@/types/audit"
 import type { SchemaItem } from "@/lib/schema-generator"
+import { generateLlmsTxt } from "@/lib/llms-txt"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
 import { StatBox } from "@/components/dashboard/StatBox"
 import { StatusPill } from "@/components/dashboard/StatusPill"
@@ -193,6 +194,9 @@ export default async function AuditPage() {
   }
 
   const hasAnyData = Boolean(latestCrawl || latestAudit)
+
+  // llms.txt — alphaa auto-generates this from the user's business profile.
+  const llmsTxt = generateLlmsTxt(user)
 
   return (
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
@@ -484,6 +488,59 @@ export default async function AuditPage() {
           })}
         </div>
       )}
+
+      {/* ── llms.txt — AI instructions ───────────────────────── */}
+      <SectionDivider>AI INSTRUCTIONS (LLMS.TXT)</SectionDivider>
+      <DsCard>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            marginBottom: "12px",
+            flexWrap: "wrap",
+          }}
+        >
+          <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+            llms.txt — tells AI engines who you are
+          </span>
+          <StatusPill variant="found">Generated</StatusPill>
+        </div>
+        <p
+          style={{
+            fontSize: "11px",
+            color: "#555555",
+            fontFamily: "monospace",
+            marginBottom: "12px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Hosted at: alphaa.app/llms/{user.id}
+        </p>
+        <pre
+          style={{
+            background: "#0a0a0a",
+            border: "1px solid #222222",
+            borderRadius: "8px",
+            padding: "12px",
+            fontSize: "11px",
+            color: "#888888",
+            fontFamily: "monospace",
+            overflowX: "auto",
+            lineHeight: 1.6,
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+          }}
+        >
+          {llmsTxt}
+        </pre>
+        <p style={{ fontSize: "11px", color: "#555555", marginTop: "10px", lineHeight: 1.6 }}>
+          alphaa keeps this updated automatically. You can also add it to your own website at
+          yourdomain.com/llms.txt — alphaa shows you how.
+        </p>
+      </DsCard>
     </div>
   )
 }

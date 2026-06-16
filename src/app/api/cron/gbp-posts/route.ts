@@ -39,6 +39,12 @@ Rules:
 - Write in first-person plural ("We", "Our", "Us")
 - Sound like a real small business owner, not marketing copy
 
+AEO (AI-engine optimization) hard rules — mandatory, applied within the short word count. Do NOT add a multi-question FAQ section (it will not fit a short GBP post):
+- Open with a clear question a customer might ask an AI engine, e.g. "Looking for the best ${businessType ?? "local service"} in ${city ?? "your area"}?"
+- Answer that question directly in the first 1-2 sentences — AI engines favor direct, up-front answers.
+- Include the business name (${businessName}) and city${city ? ` (${city})` : ""} naturally in the first paragraph.
+- End with a single short NAP line stating the business Name, Address, and Phone in a consistent format (e.g. "${businessName} · [address]${city ? `, ${city}` : ""} · [phone]"). Use placeholders for any unknown address or phone.
+
 Return ONLY the post text, no extra commentary.`,
       },
     ],

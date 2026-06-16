@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  Sparkles, Home, Bot, TrendingUp, Activity, MapPin, Star,
+  Sparkles, Home, Bot, Globe, Globe2, Search, TrendingUp, Activity, MapPin, Star,
   CalendarDays, Lightbulb, Users, BarChart3, Settings, ChevronRight,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -15,32 +15,41 @@ const navGroups = [
     ],
   },
   {
-    label: "Getting Found",
+    label: "Getting Found on AI",
     items: [
-      { href: "/dashboard/visibility", label: "AI Visibility", icon: Bot },
-      { href: "/dashboard/keywords", label: "Google Rankings", icon: TrendingUp },
-      { href: "/dashboard/audit", label: "Website Health", icon: Activity },
+      { href: "/dashboard/visibility/chatgpt", label: "ChatGPT", icon: Bot },
+      { href: "/dashboard/visibility/claude", label: "Claude", icon: Globe },
+      { href: "/dashboard/visibility/gemini", label: "Gemini", icon: Sparkles },
+      { href: "/dashboard/visibility/perplexity", label: "Perplexity", icon: Search },
+      { href: "/dashboard/visibility/google-ai", label: "Google AI", icon: Globe2 },
+    ],
+  },
+  {
+    label: "Getting Found on Google",
+    items: [
+      { href: "/dashboard/keywords", label: "Google rankings", icon: TrendingUp },
+      { href: "/dashboard/audit", label: "Website health", icon: Activity },
     ],
   },
   {
     label: "Your Reputation",
     items: [
-      { href: "/dashboard/posts", label: "Google Listing", icon: MapPin },
+      { href: "/dashboard/posts", label: "Google listing", icon: MapPin },
       { href: "/dashboard/reviews", label: "Reviews", icon: Star },
     ],
   },
   {
     label: "Content",
     items: [
-      { href: "/dashboard/content-plan", label: "Content Calendar", icon: CalendarDays },
-      { href: "/dashboard/content-gaps", label: "Content Ideas", icon: Lightbulb },
+      { href: "/dashboard/content-plan", label: "Content calendar", icon: CalendarDays },
+      { href: "/dashboard/content-gaps", label: "Content ideas", icon: Lightbulb },
     ],
   },
   {
     label: "Research",
     items: [
-      { href: "/dashboard/competitors", label: "Competitor Intel", icon: Users },
-      { href: "/dashboard/reports", label: "Weekly Reports", icon: BarChart3 },
+      { href: "/dashboard/competitors", label: "Competitor intel", icon: Users },
+      { href: "/dashboard/reports", label: "Weekly reports", icon: BarChart3 },
     ],
   },
 ]
