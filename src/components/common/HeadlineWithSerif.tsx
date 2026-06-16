@@ -17,7 +17,7 @@ export function HeadlineWithSerif({
   as: Tag = "h2",
 }: HeadlineWithSerifProps) {
   return (
-    <Tag className={cn("text-white text-balance", className)}>
+    <Tag className={cn("text-fg text-balance", className)}>
       {before && <span>{before} </span>}
       <span className="serif-italic text-brand-orange">{serifWord}</span>
       {after && <span> {after}</span>}

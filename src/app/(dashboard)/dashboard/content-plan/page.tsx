@@ -77,16 +77,16 @@ export default async function ContentPlanPage() {
               <CalendarDays className="w-4 h-4 text-brand-orange" />
               <span className="text-brand-orange text-xs font-semibold uppercase tracking-widest">Content Plan</span>
             </div>
-            <h1 className="text-white font-bold text-3xl">{monthName}</h1>
-            <p className="text-white/40 text-sm mt-1">2 posts per week, automated by alphaa</p>
+            <h1 className="text-fg font-bold text-3xl">{monthName}</h1>
+            <p className="text-fg/40 text-sm mt-1">2 posts per week, automated by alphaa</p>
 
             {/* Progress bar */}
             <div className="mt-4 max-w-xs">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-white/50 text-xs">{publishedCount} of {targetPerMonth} posts published</span>
+                <span className="text-fg/50 text-xs">{publishedCount} of {targetPerMonth} posts published</span>
                 <span className="text-brand-orange text-xs font-semibold">{progressPct}%</span>
               </div>
-              <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden">
+              <div className="h-2 rounded-full bg-fg/[0.08] overflow-hidden">
                 <div
                   className="h-full rounded-full bg-brand-orange transition-all duration-700"
                   style={{ width: `${progressPct}%` }}
@@ -98,25 +98,25 @@ export default async function ContentPlanPage() {
         </div>
 
         {/* Quick stats */}
-        <div className="relative flex items-center gap-6 mt-6 pt-6 border-t border-white/[0.08]">
+        <div className="relative flex items-center gap-6 mt-6 pt-6 border-t border-line/[0.08]">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-green-400" />
-            <span className="text-white/70 text-sm">{publishedCount} published</span>
+            <span className="text-fg/70 text-sm">{publishedCount} published</span>
           </div>
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-amber-400" />
-            <span className="text-white/70 text-sm">{draftCount} drafts ready</span>
+            <span className="text-fg/70 text-sm">{draftCount} drafts ready</span>
           </div>
           <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-white/25" />
-            <span className="text-white/35 text-sm text-xs">Posts on Mon + Thu each week</span>
+            <Info className="w-4 h-4 text-fg/25" />
+            <span className="text-fg/35 text-sm text-xs">Posts on Mon + Thu each week</span>
           </div>
         </div>
       </div>
 
       {/* ── 4-Week Calendar ──────────────────────────── */}
       <div>
-        <h2 className="text-white font-semibold text-lg mb-3">This Month at a Glance</h2>
+        <h2 className="text-fg font-semibold text-lg mb-3">This Month at a Glance</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {weeks.map((week, i) => {
             const weekPosts = posts.filter((p) => {
@@ -133,7 +133,7 @@ export default async function ContentPlanPage() {
                 className={`relative rounded-2xl p-4 border transition-all ${
                   isCurrentWeek
                     ? "border-brand-orange/30 bg-brand-orange/[0.06]"
-                    : "border-white/[0.06] bg-white/[0.02]"
+                    : "border-line/[0.06] bg-fg/[0.02]"
                 }`}
               >
                 {isCurrentWeek && (
@@ -141,8 +141,8 @@ export default async function ContentPlanPage() {
                     Now
                   </span>
                 )}
-                <p className="text-white font-semibold text-sm">Week {i + 1}</p>
-                <p className="text-white/35 text-xs mt-0.5">
+                <p className="text-fg font-semibold text-sm">Week {i + 1}</p>
+                <p className="text-fg/35 text-xs mt-0.5">
                   {formatDate(week.start)} – {formatDate(week.end)}
                 </p>
 
@@ -150,22 +150,22 @@ export default async function ContentPlanPage() {
                 <div className="flex items-center gap-1.5 mt-3">
                   {[0, 1].map((slot) => {
                     const post = weekPosts[slot]
-                    if (!post) return <span key={slot} className="w-3 h-3 rounded-full bg-white/[0.08] border border-white/10" />
+                    if (!post) return <span key={slot} className="w-3 h-3 rounded-full bg-fg/[0.08] border border-line/10" />
                     const s = STATUS_META[post.status as PostStatus] ?? STATUS_META.draft
                     return <span key={slot} className={`w-3 h-3 rounded-full ${s.dot}`} title={s.label} />
                   })}
                   {weekPosts.length > 2 && (
-                    <span className="text-white/30 text-xs">+{weekPosts.length - 2}</span>
+                    <span className="text-fg/30 text-xs">+{weekPosts.length - 2}</span>
                   )}
                 </div>
 
-                <p className="text-white/50 text-xs mt-2">
+                <p className="text-fg/50 text-xs mt-2">
                   {weekPosts.length === 0 ? (
-                    <span className="text-white/25">No posts yet</span>
+                    <span className="text-fg/25">No posts yet</span>
                   ) : (
                     <>
                       {postedInWeek > 0 && <span className="text-green-400">{postedInWeek} published</span>}
-                      {postedInWeek > 0 && draftInWeek > 0 && <span className="text-white/20"> · </span>}
+                      {postedInWeek > 0 && draftInWeek > 0 && <span className="text-fg/20"> · </span>}
                       {draftInWeek > 0  && <span className="text-amber-400">{draftInWeek} draft</span>}
                     </>
                   )}
@@ -181,11 +181,11 @@ export default async function ContentPlanPage() {
             { dot: "bg-green-400", label: "Published" },
             { dot: "bg-amber-400", label: "Draft" },
             { dot: "bg-blue-400",  label: "Scheduled" },
-            { dot: "bg-white/[0.08] border border-white/10", label: "Empty slot" },
+            { dot: "bg-fg/[0.08] border border-line/10", label: "Empty slot" },
           ].map((l) => (
             <div key={l.label} className="flex items-center gap-1.5">
               <span className={`w-2.5 h-2.5 rounded-full ${l.dot}`} />
-              <span className="text-white/30 text-xs">{l.label}</span>
+              <span className="text-fg/30 text-xs">{l.label}</span>
             </div>
           ))}
         </div>
@@ -193,9 +193,9 @@ export default async function ContentPlanPage() {
 
       {/* ── All Posts Table ───────────────────────────── */}
       <GlassCard className="p-0 overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
-          <h2 className="text-white font-semibold text-sm">
-            All Posts <span className="text-white/30 font-normal">({posts.length})</span>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-line/[0.06]">
+          <h2 className="text-fg font-semibold text-sm">
+            All Posts <span className="text-fg/30 font-normal">({posts.length})</span>
           </h2>
         </div>
 
@@ -205,26 +205,26 @@ export default async function ContentPlanPage() {
               <CalendarDays className="w-6 h-6 text-brand-orange" />
             </div>
             <div className="max-w-xs">
-              <p className="text-white font-semibold">No posts yet</p>
-              <p className="text-white/40 text-sm mt-1 leading-relaxed">
+              <p className="text-fg font-semibold">No posts yet</p>
+              <p className="text-fg/40 text-sm mt-1 leading-relaxed">
                 Use "Auto-Generate Month" to create your first batch. alphaa writes them in your voice.
               </p>
             </div>
             <GenerateMonthButton />
           </div>
         ) : (
-          <div className="divide-y divide-white/[0.04]">
+          <div className="divide-y divide-line/[0.04]">
             {posts.slice(0, 20).map((post) => {
               const s = STATUS_META[post.status as PostStatus] ?? STATUS_META.draft
               const t = TYPE_META[post.postType as PostType] ?? TYPE_META.UPDATE
               return (
-                <div key={post.id} className="px-5 py-4 flex items-start gap-4 hover:bg-white/[0.02] transition-colors">
+                <div key={post.id} className="px-5 py-4 flex items-start gap-4 hover:bg-fg/[0.02] transition-colors">
                   <div className={`w-2 h-2 rounded-full flex-shrink-0 mt-2 ${s.dot}`} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-white/80 text-sm leading-relaxed line-clamp-2">
+                    <p className="text-fg/80 text-sm leading-relaxed line-clamp-2">
                       {post.content.slice(0, 180)}{post.content.length > 180 ? "…" : ""}
                     </p>
-                    <p className="text-white/30 text-xs mt-1">{formatDateLong(post.createdAt)}</p>
+                    <p className="text-fg/30 text-xs mt-1">{formatDateLong(post.createdAt)}</p>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-md border text-xs font-medium ${t.badge}`}>

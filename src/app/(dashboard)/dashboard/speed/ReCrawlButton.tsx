@@ -33,7 +33,7 @@ export function ReCrawlButton() {
       <button
         onClick={handleCrawl}
         disabled={loading || done}
-        className="inline-flex items-center gap-2 bg-white/[0.06] hover:bg-white/[0.1] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors border border-white/[0.08]"
+        className="inline-flex items-center gap-2 bg-fg/[0.06] hover:bg-fg/[0.1] disabled:opacity-50 disabled:cursor-not-allowed text-fg text-sm font-medium px-4 py-2 rounded-lg transition-colors border border-line/[0.08]"
       >
         <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
         {done ? "Crawl started!" : loading ? "Crawling…" : "Re-crawl site"}

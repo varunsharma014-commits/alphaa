@@ -343,10 +343,10 @@ export default function IntegrationsPage() {
       return (
         <GlassCard>
           <div className="flex items-center gap-3 animate-pulse">
-            <div className="w-10 h-10 rounded-xl bg-white/5" />
+            <div className="w-10 h-10 rounded-xl bg-fg/5" />
             <div className="space-y-2 flex-1">
-              <div className="h-4 w-48 rounded bg-white/5" />
-              <div className="h-3 w-72 rounded bg-white/5" />
+              <div className="h-4 w-48 rounded bg-fg/5" />
+              <div className="h-3 w-72 rounded bg-fg/5" />
             </div>
           </div>
         </GlassCard>
@@ -360,13 +360,13 @@ export default function IntegrationsPage() {
             {/* Google logo with ambient glow */}
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-2xl scale-[2]" />
-              <div className="relative w-16 h-16 rounded-2xl bg-bg-tertiary border border-white/10 flex items-center justify-center">
+              <div className="relative w-16 h-16 rounded-2xl bg-bg-tertiary border border-line/10 flex items-center justify-center">
                 <GoogleLogo size={32} />
               </div>
             </div>
 
             <div className="space-y-2 max-w-md">
-              <h2 className="text-white font-semibold text-xl">
+              <h2 className="text-fg font-semibold text-xl">
                 Connect Google in one click
               </h2>
               <p className="text-muted text-sm leading-relaxed">
@@ -379,7 +379,7 @@ export default function IntegrationsPage() {
             <button
               onClick={handleConnect}
               disabled={connecting}
-              className="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-lg"
+              className="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-white text-gray-900 font-semibold text-sm border border-line/15 hover:bg-gray-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-lg"
             >
               {connecting ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -398,7 +398,7 @@ export default function IntegrationsPage() {
               ].map((chip) => (
                 <div
                   key={chip.label}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-tertiary border border-white/10 text-white/70 text-xs"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-tertiary border border-line/10 text-fg/70 text-xs"
                 >
                   <span>{chip.icon}</span>
                   <span>{chip.label}</span>
@@ -423,7 +423,7 @@ export default function IntegrationsPage() {
               <CheckCircle2 className="w-4 h-4 text-green-400" />
             </div>
             <div>
-              <h2 className="text-white font-semibold text-base">
+              <h2 className="text-fg font-semibold text-base">
                 Google connected — choose your properties
               </h2>
               <p className="text-muted text-xs mt-0.5">
@@ -446,14 +446,14 @@ export default function IntegrationsPage() {
             <div className="space-y-4">
               {/* GA Property */}
               <div className="space-y-1.5">
-                <label className="text-white/60 text-xs font-medium uppercase tracking-wider">
+                <label className="text-fg/60 text-xs font-medium uppercase tracking-wider">
                   📊 Google Analytics Property
                 </label>
                 <div className="relative">
                   <select
                     value={selectedGa}
                     onChange={(e) => setSelectedGa(e.target.value)}
-                    className="w-full appearance-none bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white text-sm pr-10 focus:outline-none focus:border-white/30 transition-colors"
+                    className="w-full appearance-none bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg text-sm pr-10 focus:outline-none focus:border-line/30 transition-colors"
                   >
                     <option value="">— Skip for now —</option>
                     {properties?.gaProperties.map((p) => (
@@ -468,14 +468,14 @@ export default function IntegrationsPage() {
 
               {/* GSC Site */}
               <div className="space-y-1.5">
-                <label className="text-white/60 text-xs font-medium uppercase tracking-wider">
+                <label className="text-fg/60 text-xs font-medium uppercase tracking-wider">
                   🔍 Search Console Site
                 </label>
                 <div className="relative">
                   <select
                     value={selectedGsc}
                     onChange={(e) => setSelectedGsc(e.target.value)}
-                    className="w-full appearance-none bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white text-sm pr-10 focus:outline-none focus:border-white/30 transition-colors"
+                    className="w-full appearance-none bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg text-sm pr-10 focus:outline-none focus:border-line/30 transition-colors"
                   >
                     <option value="">— Skip for now —</option>
                     {properties?.gscSites.map((s) => (
@@ -490,14 +490,14 @@ export default function IntegrationsPage() {
 
               {/* GMB Location */}
               <div className="space-y-1.5">
-                <label className="text-white/60 text-xs font-medium uppercase tracking-wider">
+                <label className="text-fg/60 text-xs font-medium uppercase tracking-wider">
                   🗺️ Business Profile Location
                 </label>
                 <div className="relative">
                   <select
                     value={selectedGmbLocation}
                     onChange={(e) => setSelectedGmbLocation(e.target.value)}
-                    className="w-full appearance-none bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white text-sm pr-10 focus:outline-none focus:border-white/30 transition-colors"
+                    className="w-full appearance-none bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg text-sm pr-10 focus:outline-none focus:border-line/30 transition-colors"
                   >
                     <option value="">— Skip for now —</option>
                     {properties?.gmbLocations.map((l) => (
@@ -513,7 +513,7 @@ export default function IntegrationsPage() {
               <button
                 onClick={handleSaveProperties}
                 disabled={saving}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-orange hover:bg-brand-orange-light text-white font-semibold text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-orange hover:bg-brand-orange-light text-fg font-semibold text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
               >
                 {saving ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -539,12 +539,12 @@ export default function IntegrationsPage() {
       <GlassCard>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-bg-tertiary border border-white/10 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-bg-tertiary border border-line/10 flex items-center justify-center flex-shrink-0">
               <GoogleLogo size={22} />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-white font-semibold text-base">Google</h2>
+                <h2 className="text-fg font-semibold text-base">Google</h2>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium">
                   <CheckCircle2 className="w-3 h-3" /> Connected
                 </span>
@@ -567,7 +567,7 @@ export default function IntegrationsPage() {
             <button
               onClick={handleSyncNow}
               disabled={syncing}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-white/10 text-white/80 hover:text-white hover:border-white/30 text-xs font-medium transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-line/10 text-fg/80 hover:text-fg hover:border-line/30 text-xs font-medium transition-colors disabled:opacity-50"
             >
               <RefreshCw
                 className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`}
@@ -612,7 +612,7 @@ export default function IntegrationsPage() {
                 {item.icon} {item.label}
               </p>
               {item.value ? (
-                <p className="text-white text-xs font-medium truncate">
+                <p className="text-fg text-xs font-medium truncate">
                   {item.value}
                 </p>
               ) : (
@@ -652,7 +652,7 @@ export default function IntegrationsPage() {
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-white font-semibold text-2xl">Integrations</h1>
+        <h1 className="text-fg font-semibold text-2xl">Integrations</h1>
         <p className="text-muted text-sm mt-1">
           Connect your tools so Alphaa can pull data automatically.
         </p>
@@ -674,7 +674,7 @@ export default function IntegrationsPage() {
 
       {/* ── Google ─────────────────────────────────────────────────────────── */}
       <section className="space-y-3">
-        <h2 className="text-white/50 text-xs font-semibold uppercase tracking-wider px-1">
+        <h2 className="text-fg/50 text-xs font-semibold uppercase tracking-wider px-1">
           Google
         </h2>
         {renderGoogleSection()}
@@ -682,18 +682,18 @@ export default function IntegrationsPage() {
 
       {/* ── Website Scanner ─────────────────────────────────────────────────── */}
       <section className="space-y-3">
-        <h2 className="text-white/50 text-xs font-semibold uppercase tracking-wider px-1">
+        <h2 className="text-fg/50 text-xs font-semibold uppercase tracking-wider px-1">
           Website Scanner
         </h2>
 
         <GlassCard>
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-bg-tertiary border border-white/10 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-bg-tertiary border border-line/10 flex items-center justify-center">
                 <Globe className="w-4 h-4 text-muted" />
               </div>
               <div>
-                <h3 className="text-white font-medium text-sm">
+                <h3 className="text-fg font-medium text-sm">
                   Website Crawl
                 </h3>
                 {crawlLoading ? (
@@ -716,7 +716,7 @@ export default function IntegrationsPage() {
             <button
               onClick={handleCrawl}
               disabled={crawling}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-white/10 text-white/80 hover:text-white hover:border-white/30 text-xs font-medium transition-colors disabled:opacity-50 flex-shrink-0"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-line/10 text-fg/80 hover:text-fg hover:border-line/30 text-xs font-medium transition-colors disabled:opacity-50 flex-shrink-0"
             >
               {crawling ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -729,7 +729,7 @@ export default function IntegrationsPage() {
 
           {/* Scanning in progress */}
           {crawling && (
-            <div className="mt-5 flex flex-col items-center gap-3 py-8 border-t border-white/[0.06]">
+            <div className="mt-5 flex flex-col items-center gap-3 py-8 border-t border-line/[0.06]">
               <Loader2 className="w-6 h-6 text-brand-orange animate-spin" />
               <p className="text-muted text-sm">
                 Crawling your website — this takes 15–60 seconds…
@@ -747,10 +747,10 @@ export default function IntegrationsPage() {
 
           {/* Crawl results */}
           {!crawling && crawlData && issueCounts && (
-            <div className="mt-5 border-t border-white/[0.06] pt-5 space-y-4">
+            <div className="mt-5 border-t border-line/[0.06] pt-5 space-y-4">
               {/* Summary chips */}
               <div className="flex flex-wrap gap-2">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-tertiary border border-white/10 text-white text-xs">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-tertiary border border-line/10 text-fg text-xs">
                   <Globe className="w-3 h-3 text-muted" />
                   <span className="font-mono">{crawlData.pagesScanned}</span>{' '}
                   pages scanned
@@ -783,7 +783,7 @@ export default function IntegrationsPage() {
               {/* Top critical issues */}
               {criticalIssues.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-white/50 text-xs font-medium uppercase tracking-wider">
+                  <p className="text-fg/50 text-xs font-medium uppercase tracking-wider">
                     Top Issues
                   </p>
                   {criticalIssues.map((issue, idx) => (
@@ -792,7 +792,7 @@ export default function IntegrationsPage() {
                       className="bg-bg-tertiary rounded-xl p-3 space-y-2"
                     >
                       <div className="flex items-start justify-between gap-3 flex-wrap">
-                        <p className="text-white text-xs font-medium">
+                        <p className="text-fg text-xs font-medium">
                           {issue.description}
                         </p>
                         <SeverityBadge severity={issue.severity} />
@@ -802,7 +802,7 @@ export default function IntegrationsPage() {
                         {issue.fix}
                       </p>
                       {issue.url && issue.url !== 'site-wide' && (
-                        <p className="text-white/30 text-xs font-mono truncate">
+                        <p className="text-fg/30 text-xs font-mono truncate">
                           {issue.url}
                         </p>
                       )}

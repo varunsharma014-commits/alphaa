@@ -41,7 +41,7 @@ function DeltaChip({ value }: { value: number }) {
     </span>
   )
   return (
-    <span className="inline-flex items-center gap-1 text-white/30 text-xs bg-white/[0.04] px-2 py-0.5 rounded-full">
+    <span className="inline-flex items-center gap-1 text-fg/30 text-xs bg-fg/[0.04] px-2 py-0.5 rounded-full">
       <Minus className="w-3 h-3" />—
     </span>
   )
@@ -75,24 +75,24 @@ export default async function ReportsPage() {
             <BarChart3 className="w-4 h-4 text-blue-400" />
             <span className="text-blue-400 text-xs font-semibold uppercase tracking-widest">Weekly Reports</span>
           </div>
-          <h1 className="text-white font-bold text-3xl">
-            {reports.length} <span className="text-white/50 font-normal text-2xl">reports generated</span>
+          <h1 className="text-fg font-bold text-3xl">
+            {reports.length} <span className="text-fg/50 font-normal text-2xl">reports generated</span>
           </h1>
-          <p className="text-white/40 text-sm mt-1">Delivered every Monday morning · automatically</p>
+          <p className="text-fg/40 text-sm mt-1">Delivered every Monday morning · automatically</p>
 
           {latest && (
-            <div className="flex items-center gap-6 mt-5 pt-5 border-t border-white/[0.08]">
+            <div className="flex items-center gap-6 mt-5 pt-5 border-t border-line/[0.08]">
               <div>
-                <p className="text-white/30 text-xs mb-0.5">Latest week</p>
-                <p className="text-white/80 text-sm font-medium">{formatWeek(latest.createdAt)}</p>
+                <p className="text-fg/30 text-xs mb-0.5">Latest week</p>
+                <p className="text-fg/80 text-sm font-medium">{formatWeek(latest.createdAt)}</p>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-400" />
-                <span className="text-white/60 text-sm">{latest.postsPublished} posts published</span>
+                <span className="text-fg/60 text-sm">{latest.postsPublished} posts published</span>
               </div>
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4 text-yellow-400" />
-                <span className="text-white/60 text-sm">{latest.reviewsNew} new reviews</span>
+                <span className="text-fg/60 text-sm">{latest.reviewsNew} new reviews</span>
               </div>
               {latest.emailSent && (
                 <div className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-2.5 py-1 rounded-full border border-green-500/20">
@@ -107,13 +107,13 @@ export default async function ReportsPage() {
 
       {/* ── Empty state ───────────────────────────── */}
       {reports.length === 0 && (
-        <div className="flex flex-col items-center text-center gap-5 py-16 px-6 rounded-2xl border border-white/[0.06] bg-white/[0.01]">
-          <div className="w-14 h-14 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
-            <FileText className="w-7 h-7 text-white/25" />
+        <div className="flex flex-col items-center text-center gap-5 py-16 px-6 rounded-2xl border border-line/[0.06] bg-fg/[0.01]">
+          <div className="w-14 h-14 rounded-2xl bg-fg/[0.04] border border-line/[0.08] flex items-center justify-center">
+            <FileText className="w-7 h-7 text-fg/25" />
           </div>
           <div className="max-w-xs">
-            <h2 className="text-white font-semibold text-lg">No reports yet</h2>
-            <p className="text-white/40 text-sm mt-1 leading-relaxed">
+            <h2 className="text-fg font-semibold text-lg">No reports yet</h2>
+            <p className="text-fg/40 text-sm mt-1 leading-relaxed">
               Your first weekly report will be generated automatically every Monday. It'll include posts published, reviews received, and AI visibility changes.
             </p>
           </div>
@@ -133,14 +133,14 @@ export default async function ReportsPage() {
               <div
                 key={report.id}
                 className={`relative overflow-hidden rounded-2xl border ${
-                  isLatest ? "border-blue-500/20 bg-gradient-to-br from-blue-500/[0.06] to-transparent" : "border-white/[0.07] bg-white/[0.02]"
+                  isLatest ? "border-blue-500/20 bg-gradient-to-br from-blue-500/[0.06] to-transparent" : "border-line/[0.07] bg-fg/[0.02]"
                 }`}
               >
                 {/* Card header */}
-                <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-white/[0.06]">
+                <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-line/[0.06]">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-white font-semibold text-sm">{formatWeek(report.createdAt)}</h3>
+                      <h3 className="text-fg font-semibold text-sm">{formatWeek(report.createdAt)}</h3>
                       {isLatest && (
                         <span className="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full uppercase tracking-widest">
                           Latest
@@ -148,7 +148,7 @@ export default async function ReportsPage() {
                       )}
                     </div>
                     {report.summary && (
-                      <p className="text-white/40 text-xs mt-0.5 leading-relaxed max-w-xl">
+                      <p className="text-fg/40 text-xs mt-0.5 leading-relaxed max-w-xl">
                         {report.summary}
                       </p>
                     )}
@@ -162,31 +162,31 @@ export default async function ReportsPage() {
                 </div>
 
                 {/* Card body */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-x divide-white/[0.06]">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-x divide-line/[0.06]">
 
                   {/* Posts */}
                   <div className="p-4">
                     <div className="flex items-center gap-1.5 mb-2">
-                      <MapPin className="w-3.5 h-3.5 text-white/25" />
-                      <span className="text-white/30 text-xs">Posts published</span>
+                      <MapPin className="w-3.5 h-3.5 text-fg/25" />
+                      <span className="text-fg/30 text-xs">Posts published</span>
                     </div>
-                    <p className="text-white font-bold text-3xl font-mono">{report.postsPublished}</p>
+                    <p className="text-fg font-bold text-3xl font-mono">{report.postsPublished}</p>
                   </div>
 
                   {/* Reviews */}
                   <div className="p-4">
                     <div className="flex items-center gap-1.5 mb-2">
-                      <Star className="w-3.5 h-3.5 text-white/25" />
-                      <span className="text-white/30 text-xs">New reviews</span>
+                      <Star className="w-3.5 h-3.5 text-fg/25" />
+                      <span className="text-fg/30 text-xs">New reviews</span>
                     </div>
-                    <p className="text-white font-bold text-3xl font-mono">{report.reviewsNew}</p>
+                    <p className="text-fg font-bold text-3xl font-mono">{report.reviewsNew}</p>
                   </div>
 
                   {/* AI Visibility */}
                   <div className="p-4">
                     <div className="flex items-center gap-1.5 mb-2.5">
-                      <TrendingUp className="w-3.5 h-3.5 text-white/25" />
-                      <span className="text-white/30 text-xs">AI visibility</span>
+                      <TrendingUp className="w-3.5 h-3.5 text-fg/25" />
+                      <span className="text-fg/30 text-xs">AI visibility</span>
                     </div>
                     {Object.keys(visibilityDelta).length > 0 ? (
                       <div className="space-y-1.5">
@@ -194,7 +194,7 @@ export default async function ReportsPage() {
                           const meta = ENGINE_META[engine]
                           return (
                             <div key={engine} className="flex items-center justify-between gap-2">
-                              <span className="text-white/45 text-xs flex items-center gap-1">
+                              <span className="text-fg/45 text-xs flex items-center gap-1">
                                 {meta?.emoji && <span className="text-sm leading-none">{meta.emoji}</span>}
                                 {meta?.label ?? engine}
                               </span>
@@ -204,23 +204,23 @@ export default async function ReportsPage() {
                         })}
                       </div>
                     ) : (
-                      <p className="text-white/25 text-xs">No changes</p>
+                      <p className="text-fg/25 text-xs">No changes</p>
                     )}
                   </div>
 
                   {/* Keyword movers */}
                   <div className="p-4">
                     <div className="flex items-center gap-1.5 mb-2.5">
-                      <BarChart3 className="w-3.5 h-3.5 text-white/25" />
-                      <span className="text-white/30 text-xs">Keyword movers</span>
+                      <BarChart3 className="w-3.5 h-3.5 text-fg/25" />
+                      <span className="text-fg/30 text-xs">Keyword movers</span>
                     </div>
                     {topMovers.length > 0 ? (
                       <div className="space-y-1.5">
                         {topMovers.map((k) => (
                           <div key={k.query} className="flex items-center justify-between gap-2">
-                            <span className="text-white/50 text-xs truncate flex-1">{k.query}</span>
+                            <span className="text-fg/50 text-xs truncate flex-1">{k.query}</span>
                             <span className={`text-xs font-mono font-semibold flex-shrink-0 ${
-                              k.change > 0 ? "text-green-400" : k.change < 0 ? "text-red-400" : "text-white/30"
+                              k.change > 0 ? "text-green-400" : k.change < 0 ? "text-red-400" : "text-fg/30"
                             }`}>
                               {k.change > 0 ? "+" : ""}{k.change}
                             </span>
@@ -228,7 +228,7 @@ export default async function ReportsPage() {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-white/25 text-xs">No movement</p>
+                      <p className="text-fg/25 text-xs">No movement</p>
                     )}
                   </div>
                 </div>

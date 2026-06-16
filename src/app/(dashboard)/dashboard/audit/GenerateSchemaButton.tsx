@@ -40,8 +40,8 @@ export default function GenerateSchemaButton({ prominent }: Props) {
         disabled={loading}
         className={
           prominent
-            ? "bg-orange-500 hover:bg-orange-400 disabled:bg-orange-500/40 text-white font-medium text-sm px-6 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed"
-            : "bg-white/10 hover:bg-white/15 disabled:bg-white/5 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed border border-white/10"
+            ? "bg-orange-500 hover:bg-orange-400 disabled:bg-orange-500/40 text-fg font-medium text-sm px-6 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed"
+            : "bg-fg/10 hover:bg-fg/15 disabled:bg-fg/5 text-fg font-medium text-sm px-5 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed border border-line/10"
         }
       >
         {loading ? "Generating..." : prominent ? "Generate Schema Markup" : "Regenerate"}

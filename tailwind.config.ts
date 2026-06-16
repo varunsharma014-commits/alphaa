@@ -15,16 +15,19 @@ const config: Config = {
           "orange-light": "#FF8845",
           "orange-glow": "rgba(255, 107, 26, 0.4)",
         },
-        // Backgrounds
+        // Backgrounds (theme-aware via CSS vars; rgb-triple so /opacity works)
         bg: {
-          primary: "#0A0806",
-          secondary: "#13100C",
-          tertiary: "#1F1812",
+          primary: "rgb(var(--bg-primary-rgb) / <alpha-value>)",
+          secondary: "rgb(var(--bg-secondary-rgb) / <alpha-value>)",
+          tertiary: "rgb(var(--bg-tertiary-rgb) / <alpha-value>)",
         },
         // Surfaces
         cream: "#F5EDE0",
-        // Text
-        muted: "#A8A29E",
+        // Theme-aware foreground / border / muted.
+        // Opacity modifiers work: text-fg/40, border-line/[0.08], text-muted.
+        fg: "rgb(var(--fg-rgb) / <alpha-value>)",
+        line: "rgb(var(--line-rgb) / <alpha-value>)",
+        muted: "rgb(var(--muted-rgb) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-inter-tight)", "system-ui", "sans-serif"],

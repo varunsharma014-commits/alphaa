@@ -52,21 +52,21 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
   const freq   = FREQ_META[data?.estimatedPostingFrequency ?? ""] ?? FREQ_META.Monthly
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.03] to-transparent">
+    <div className="relative overflow-hidden rounded-2xl border border-line/[0.08] bg-gradient-to-br from-fg/[0.03] to-transparent">
       {/* Card header */}
-      <div className="flex items-start justify-between gap-3 p-5 pb-4 border-b border-white/[0.06]">
+      <div className="flex items-start justify-between gap-3 p-5 pb-4 border-b border-line/[0.06]">
         <div className="flex items-center gap-3">
           {/* Domain avatar */}
-          <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center flex-shrink-0">
-            <Globe className="w-5 h-5 text-white/40" />
+          <div className="w-10 h-10 rounded-xl bg-fg/[0.06] border border-line/[0.08] flex items-center justify-center flex-shrink-0">
+            <Globe className="w-5 h-5 text-fg/40" />
           </div>
           <div className="min-w-0">
-            <h3 className="text-white font-semibold text-base truncate">{name}</h3>
+            <h3 className="text-fg font-semibold text-base truncate">{name}</h3>
             <a
               href={competitor.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/35 text-xs hover:text-white/60 transition-colors truncate block"
+              className="text-fg/35 text-xs hover:text-fg/60 transition-colors truncate block"
             >
               {domain}
             </a>
@@ -80,30 +80,30 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
           {/* Quick stats */}
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-black/20 rounded-xl p-3 text-center">
-              <p className="text-white font-bold text-xl font-mono">{data.pagesFound}</p>
-              <p className="text-white/35 text-xs mt-0.5">Pages</p>
+              <p className="text-fg font-bold text-xl font-mono">{data.pagesFound}</p>
+              <p className="text-fg/35 text-xs mt-0.5">Pages</p>
             </div>
             <div className="bg-black/20 rounded-xl p-3 text-center">
-              <p className="text-white font-bold text-xl font-mono">{data.schemaTypes.length}</p>
-              <p className="text-white/35 text-xs mt-0.5">Schema types</p>
+              <p className="text-fg font-bold text-xl font-mono">{data.schemaTypes.length}</p>
+              <p className="text-fg/35 text-xs mt-0.5">Schema types</p>
             </div>
             <div className="bg-black/20 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1">
               <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${freq.badge}`}>
                 {data.estimatedPostingFrequency}
               </span>
-              <p className="text-white/35 text-[10px]">Posting</p>
+              <p className="text-fg/35 text-[10px]">Posting</p>
             </div>
           </div>
 
           {/* Key topics */}
           {data.keyTopics.length > 0 && (
             <div>
-              <p className="text-white/30 text-xs font-semibold uppercase tracking-wider mb-2">Key Topics</p>
+              <p className="text-fg/30 text-xs font-semibold uppercase tracking-wider mb-2">Key Topics</p>
               <div className="flex flex-wrap gap-1.5">
                 {data.keyTopics.map((topic) => (
                   <span
                     key={topic}
-                    className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.07] text-white/60 text-xs"
+                    className="px-2.5 py-1 rounded-lg bg-fg/[0.04] border border-line/[0.07] text-fg/60 text-xs"
                   >
                     {topic}
                   </span>
@@ -123,7 +123,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                   </div>
                   <ul className="space-y-1.5">
                     {data.strengths.map((s) => (
-                      <li key={s} className="flex items-start gap-2 text-xs text-white/65">
+                      <li key={s} className="flex items-start gap-2 text-xs text-fg/65">
                         <span className="mt-1.5 w-1 h-1 rounded-full bg-green-400/60 flex-shrink-0" />
                         {s}
                       </li>
@@ -139,7 +139,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                   </div>
                   <ul className="space-y-1.5">
                     {data.weaknesses.map((w) => (
-                      <li key={w} className="flex items-start gap-2 text-xs text-white/65">
+                      <li key={w} className="flex items-start gap-2 text-xs text-fg/65">
                         <span className="mt-1.5 w-1 h-1 rounded-full bg-red-400/60 flex-shrink-0" />
                         {w}
                       </li>
@@ -152,22 +152,22 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
 
           {/* AI Summary */}
           {data.aiSummary && (
-            <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl px-4 py-3">
+            <div className="bg-fg/[0.02] border border-line/[0.06] rounded-xl px-4 py-3">
               <div className="flex items-center gap-1.5 mb-1.5">
                 <Zap className="w-3 h-3 text-brand-orange" />
                 <span className="text-brand-orange text-xs font-semibold">alphaa's take</span>
               </div>
-              <p className="text-white/60 text-sm leading-relaxed">{data.aiSummary}</p>
+              <p className="text-fg/60 text-sm leading-relaxed">{data.aiSummary}</p>
             </div>
           )}
 
-          <p className="text-white/20 text-xs">Last analyzed: {formatDate(competitor.analyzedAt)}</p>
+          <p className="text-fg/20 text-xs">Last analyzed: {formatDate(competitor.analyzedAt)}</p>
         </div>
       ) : (
         <div className="p-5">
           <div className="flex items-center gap-2 py-4">
             <div className="w-4 h-4 rounded-full border-2 border-brand-orange border-t-transparent animate-spin flex-shrink-0" />
-            <p className="text-white/40 text-sm">Analysis in progress…</p>
+            <p className="text-fg/40 text-sm">Analysis in progress…</p>
           </div>
         </div>
       )}
@@ -191,15 +191,15 @@ export default async function CompetitorsPage() {
       {/* ── Header ─────────────────────────────────── */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-white font-bold text-2xl">Competitors</h1>
-          <p className="text-white/40 text-sm mt-1">
+          <h1 className="text-fg font-bold text-2xl">Competitors</h1>
+          <p className="text-fg/40 text-sm mt-1">
             {competitors.length > 0
               ? `Tracking ${competitors.length} competitor${competitors.length !== 1 ? "s" : ""} — alphaa watches their moves`
               : "Track competitors and find opportunities to outrank them"}
           </p>
         </div>
         {competitors.length > 0 && (
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-white/35 text-xs">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-fg/[0.04] border border-line/[0.08] text-fg/35 text-xs">
             <Users className="w-3 h-3" />
             {competitors.length} tracked
           </div>
@@ -210,24 +210,24 @@ export default async function CompetitorsPage() {
       <GlassCard>
         <div className="flex items-center gap-2 mb-3">
           <TrendingUp className="w-4 h-4 text-brand-orange" />
-          <p className="text-white font-semibold text-sm">Add a Competitor</p>
+          <p className="text-fg font-semibold text-sm">Add a Competitor</p>
         </div>
         <AddCompetitorButton />
-        <p className="text-white/25 text-xs mt-2.5 leading-relaxed">
+        <p className="text-fg/25 text-xs mt-2.5 leading-relaxed">
           alphaa crawls up to 20 pages and uses AI to identify their strengths, weaknesses, posting frequency, and content topics.
         </p>
       </GlassCard>
 
       {/* ── Competitors / Empty state ───────────────── */}
       {competitors.length === 0 ? (
-        <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.03] to-transparent p-10">
+        <div className="relative overflow-hidden rounded-2xl border border-line/[0.08] bg-gradient-to-br from-fg/[0.03] to-transparent p-10">
           <div className="flex flex-col items-center text-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
-              <Users className="w-7 h-7 text-white/25" />
+            <div className="w-14 h-14 rounded-2xl bg-fg/[0.05] border border-line/[0.08] flex items-center justify-center">
+              <Users className="w-7 h-7 text-fg/25" />
             </div>
             <div className="max-w-sm">
-              <h2 className="text-white font-semibold text-lg">No competitors yet</h2>
-              <p className="text-white/40 text-sm mt-1 leading-relaxed">
+              <h2 className="text-fg font-semibold text-lg">No competitors yet</h2>
+              <p className="text-fg/40 text-sm mt-1 leading-relaxed">
                 Add a competitor's website above. alphaa will analyze what makes them successful — and find your opportunities.
               </p>
             </div>

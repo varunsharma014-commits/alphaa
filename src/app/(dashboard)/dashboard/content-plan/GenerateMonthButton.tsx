@@ -40,10 +40,10 @@ export function GenerateMonthButton() {
       <button
         onClick={handleGenerate}
         disabled={loading}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-orange hover:bg-brand-orange-light text-white font-semibold text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-orange hover:bg-brand-orange-light text-fg font-semibold text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? (
-          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          <div className="w-4 h-4 border-2 border-line/30 border-t-white rounded-full animate-spin" />
         ) : (
           <CalendarDays className="w-4 h-4" />
         )}

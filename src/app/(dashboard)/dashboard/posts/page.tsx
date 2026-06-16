@@ -88,8 +88,8 @@ export default async function PostsPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-white font-semibold text-2xl">GBP Posts</h1>
-          <p className="text-white/50 text-sm mt-1">
+          <h1 className="text-fg font-semibold text-2xl">GBP Posts</h1>
+          <p className="text-fg/50 text-sm mt-1">
             {totalPosts > 0
               ? `${totalPosts} post${totalPosts !== 1 ? "s" : ""} · ${draftCount} draft${draftCount !== 1 ? "s" : ""} ready`
               : "Manage your Google Business Profile content"}
@@ -105,8 +105,8 @@ export default async function PostsPage() {
           <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-green-500/10 blur-2xl pointer-events-none" />
           <div className="relative">
             <CheckCircle2 className="w-4 h-4 text-green-400 mb-2" />
-            <p className="text-3xl font-bold font-mono text-white">{thisMonthPosted}</p>
-            <p className="text-white/50 text-xs mt-1">Published this month</p>
+            <p className="text-3xl font-bold font-mono text-fg">{thisMonthPosted}</p>
+            <p className="text-fg/50 text-xs mt-1">Published this month</p>
           </div>
         </div>
 
@@ -115,18 +115,18 @@ export default async function PostsPage() {
           <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-amber-500/10 blur-2xl pointer-events-none" />
           <div className="relative">
             <Clock className="w-4 h-4 text-amber-400 mb-2" />
-            <p className="text-3xl font-bold font-mono text-white">{draftCount}</p>
-            <p className="text-white/50 text-xs mt-1">Drafts ready to publish</p>
+            <p className="text-3xl font-bold font-mono text-fg">{draftCount}</p>
+            <p className="text-fg/50 text-xs mt-1">Drafts ready to publish</p>
           </div>
         </div>
 
         {/* Total posts */}
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] via-transparent to-transparent p-5">
-          <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+        <div className="relative overflow-hidden rounded-2xl border border-line/10 bg-gradient-to-br from-fg/[0.05] via-transparent to-transparent p-5">
+          <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-fg/5 blur-2xl pointer-events-none" />
           <div className="relative">
-            <FileText className="w-4 h-4 text-white/40 mb-2" />
-            <p className="text-3xl font-bold font-mono text-white">{totalPosts}</p>
-            <p className="text-white/50 text-xs mt-1">Total posts created</p>
+            <FileText className="w-4 h-4 text-fg/40 mb-2" />
+            <p className="text-3xl font-bold font-mono text-fg">{totalPosts}</p>
+            <p className="text-fg/50 text-xs mt-1">Total posts created</p>
           </div>
         </div>
       </div>
@@ -138,8 +138,8 @@ export default async function PostsPage() {
           <div className="relative flex flex-col items-center text-center gap-4 py-8">
             <span className="text-5xl">📍</span>
             <div className="space-y-1.5 max-w-xs">
-              <h2 className="text-white font-semibold text-lg">No posts yet</h2>
-              <p className="text-white/50 text-sm leading-relaxed">
+              <h2 className="text-fg font-semibold text-lg">No posts yet</h2>
+              <p className="text-fg/50 text-sm leading-relaxed">
                 Generate your first GBP post using the button above. Alphaa will
                 create compelling, local content for your Google Business Profile.
               </p>
@@ -152,19 +152,19 @@ export default async function PostsPage() {
           {posts.map((post) => (
             <div
               key={post.id}
-              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5"
+              className="bg-fg/[0.03] border border-line/[0.06] rounded-2xl p-5"
             >
               {/* Top row: badges + date */}
               <div className="flex items-center gap-2 flex-wrap">
                 <PostTypeBadge type={post.postType} />
                 <StatusBadge status={post.status} />
-                <span className="text-white/30 text-xs ml-auto whitespace-nowrap">
+                <span className="text-fg/30 text-xs ml-auto whitespace-nowrap">
                   {formatDate(post.createdAt)}
                 </span>
               </div>
 
               {/* Content preview */}
-              <p className="text-white/80 text-sm leading-relaxed mt-3">
+              <p className="text-fg/80 text-sm leading-relaxed mt-3">
                 {post.content.length > 200
                   ? post.content.slice(0, 200) + "…"
                   : post.content}
@@ -172,17 +172,17 @@ export default async function PostsPage() {
 
               {/* Bottom actions */}
               {post.status === "draft" && (
-                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/[0.06]">
+                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-line/[0.06]">
                   <PublishPostButton postId={post.id} />
                   <DeletePostButton postId={post.id} />
                 </div>
               )}
 
               {post.status === "posted" && post.postedAt && (
-                <p className="text-white/30 text-xs mt-3 pt-3 border-t border-white/[0.06]">
+                <p className="text-fg/30 text-xs mt-3 pt-3 border-t border-line/[0.06]">
                   Published {formatDate(post.postedAt)}
                   {post.gmbPostId && (
-                    <span className="ml-2 font-mono text-white/20">
+                    <span className="ml-2 font-mono text-fg/20">
                       #{post.gmbPostId.slice(-8)}
                     </span>
                   )}
@@ -190,7 +190,7 @@ export default async function PostsPage() {
               )}
 
               {post.status === "failed" && (
-                <p className="text-red-400/60 text-xs mt-3 pt-3 border-t border-white/[0.06]">
+                <p className="text-red-400/60 text-xs mt-3 pt-3 border-t border-line/[0.06]">
                   Failed to publish — try deleting and regenerating
                 </p>
               )}

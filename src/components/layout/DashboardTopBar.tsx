@@ -3,6 +3,7 @@
 import { UserButton } from "@clerk/nextjs"
 import { Bell } from "lucide-react"
 import type { AppUser } from "@/types/user"
+import { ThemeToggle } from "@/components/common/ThemeToggle"
 
 export function DashboardTopBar({ user }: { user: AppUser }) {
   const isTrialing = user.subscriptionStatus === "trialing"
@@ -17,14 +18,14 @@ export function DashboardTopBar({ user }: { user: AppUser }) {
   const locationLabel = [user.city, user.state].filter(Boolean).join(", ")
 
   return (
-    <header className="h-14 px-5 flex items-center justify-between border-b border-white/[0.06] bg-bg-secondary/60 backdrop-blur-sm flex-shrink-0">
+    <header className="h-14 px-5 flex items-center justify-between border-b border-line/[0.06] bg-bg-secondary/60 backdrop-blur-sm flex-shrink-0">
       {/* Left: business context */}
       <div className="flex items-center gap-3">
         {businessLabel && (
           <div className="flex items-center gap-2">
-            <span className="text-white/85 text-sm font-medium">{businessLabel}</span>
+            <span className="text-fg/85 text-sm font-medium">{businessLabel}</span>
             {locationLabel && (
-              <span className="text-white/30 text-xs hidden sm:inline">{locationLabel}</span>
+              <span className="text-fg/30 text-xs hidden sm:inline">{locationLabel}</span>
             )}
           </div>
         )}
@@ -39,7 +40,7 @@ export function DashboardTopBar({ user }: { user: AppUser }) {
             </span>
             <a
               href="/pricing"
-              className="text-xs text-white/60 hover:text-white underline ml-0.5 transition-colors"
+              className="text-xs text-fg/60 hover:text-fg underline ml-0.5 transition-colors"
             >
               Upgrade →
             </a>
@@ -49,7 +50,8 @@ export function DashboardTopBar({ user }: { user: AppUser }) {
 
       {/* Right: actions */}
       <div className="flex items-center gap-1.5">
-        <button className="w-8 h-8 rounded-lg flex items-center justify-center text-white/30 hover:text-white/80 hover:bg-white/[0.06] transition-colors">
+        <ThemeToggle />
+        <button className="w-8 h-8 rounded-lg flex items-center justify-center text-fg/30 hover:text-fg/80 hover:bg-fg/[0.06] transition-colors">
           <Bell className="w-4 h-4" />
         </button>
         <UserButton

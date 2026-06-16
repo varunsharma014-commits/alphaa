@@ -18,7 +18,7 @@ export default function BillingSettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-white font-semibold text-2xl">Billing</h1>
+      <h1 className="text-fg font-semibold text-2xl">Billing</h1>
 
       <GlassCard>
         <div className="flex items-center gap-3 mb-5">
@@ -26,7 +26,7 @@ export default function BillingSettingsPage() {
             <CreditCard className="w-5 h-5 text-brand-orange" />
           </div>
           <div>
-            <h2 className="text-white font-medium">Subscription</h2>
+            <h2 className="text-fg font-medium">Subscription</h2>
             <p className="text-muted text-sm">Manage your plan, payment method, and invoices.</p>
           </div>
         </div>
@@ -37,13 +37,13 @@ export default function BillingSettingsPage() {
       </GlassCard>
 
       <GlassCard>
-        <h2 className="text-white font-medium mb-2">Cancel subscription</h2>
+        <h2 className="text-fg font-medium mb-2">Cancel subscription</h2>
         <p className="text-muted text-sm leading-relaxed mb-4">
           Before you go — would you like to pause your account for one month at no charge? Your data stays safe and you can reactivate anytime.
         </p>
         <div className="flex items-center gap-3">
           <OrangePillButton href="/pricing" size="sm">Keep my plan</OrangePillButton>
-          <button onClick={openPortal} className="text-muted text-sm hover:text-white transition-colors">
+          <button onClick={openPortal} className="text-muted text-sm hover:text-fg transition-colors">
             Cancel anyway →
           </button>
         </div>

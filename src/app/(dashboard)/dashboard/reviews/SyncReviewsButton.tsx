@@ -34,7 +34,7 @@ export function SyncReviewsButton() {
       <button
         onClick={handleSync}
         disabled={loading}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-fg/5 hover:bg-fg/10 border border-line/10 text-fg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
         {loading ? "Syncing…" : "Sync Reviews"}

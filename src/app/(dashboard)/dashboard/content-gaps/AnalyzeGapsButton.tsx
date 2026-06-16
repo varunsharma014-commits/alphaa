@@ -52,15 +52,15 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
           placeholder="https://competitor.com"
           required
           disabled={loading}
-          className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:bg-white/[0.07] transition-colors disabled:opacity-50"
+          className="flex-1 bg-fg/5 border border-line/10 rounded-xl px-4 py-2.5 text-fg text-sm placeholder:text-fg/30 focus:outline-none focus:border-line/20 focus:bg-fg/[0.07] transition-colors disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={loading || !competitorUrl.trim()}
           className={
             prominent
-              ? "bg-orange-500 hover:bg-orange-400 disabled:bg-orange-500/40 text-white font-medium text-sm px-6 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed"
-              : "bg-white/10 hover:bg-white/15 disabled:bg-white/5 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed border border-white/10"
+              ? "bg-orange-500 hover:bg-orange-400 disabled:bg-orange-500/40 text-fg font-medium text-sm px-6 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed"
+              : "bg-fg/10 hover:bg-fg/15 disabled:bg-fg/5 text-fg font-medium text-sm px-5 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed border border-line/10"
           }
         >
           {loading ? "Analyzing..." : "Analyze"}

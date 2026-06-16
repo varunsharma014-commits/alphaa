@@ -55,12 +55,12 @@ export function DashboardSidebar() {
   }
 
   return (
-    <aside className="w-56 flex-shrink-0 bg-bg-secondary border-r border-white/[0.06] flex flex-col h-full">
+    <aside className="w-56 flex-shrink-0 bg-bg-secondary border-r border-line/[0.06] flex flex-col h-full">
       {/* Logo */}
-      <div className="h-14 px-4 flex items-center border-b border-white/[0.06]">
+      <div className="h-14 px-4 flex items-center border-b border-line/[0.06]">
         <Link href="/" className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-brand-orange" />
-          <span className="text-white font-semibold text-base tracking-tight">alphaa</span>
+          <span className="text-fg font-semibold text-base tracking-tight">alphaa</span>
         </Link>
       </div>
 
@@ -69,7 +69,7 @@ export function DashboardSidebar() {
         {navGroups.map((group, groupIdx) => (
           <div key={groupIdx} className={groupIdx > 0 ? "mt-5" : ""}>
             {group.label && (
-              <p className="px-2.5 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/25 select-none">
+              <p className="px-2.5 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-fg/25 select-none">
                 {group.label}
               </p>
             )}
@@ -84,7 +84,7 @@ export function DashboardSidebar() {
                       "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150 group",
                       active
                         ? "bg-brand-orange/15 text-brand-orange font-medium"
-                        : "text-white/40 hover:text-white/80 hover:bg-white/[0.04] font-normal"
+                        : "text-fg/40 hover:text-fg/80 hover:bg-fg/[0.04] font-normal"
                     )}
                   >
                     <item.icon
@@ -92,7 +92,7 @@ export function DashboardSidebar() {
                         "w-4 h-4 flex-shrink-0 transition-colors",
                         active
                           ? "text-brand-orange"
-                          : "text-white/25 group-hover:text-white/60"
+                          : "text-fg/25 group-hover:text-fg/60"
                       )}
                     />
                     <span className="truncate leading-none">{item.label}</span>
@@ -105,14 +105,14 @@ export function DashboardSidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="px-2 pb-3 pt-2 border-t border-white/[0.06] space-y-0.5">
+      <div className="px-2 pb-3 pt-2 border-t border-line/[0.06] space-y-0.5">
         <Link
           href="/dashboard/settings"
           className={cn(
             "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150",
             pathname.startsWith("/dashboard/settings")
               ? "bg-brand-orange/15 text-brand-orange font-medium"
-              : "text-white/40 hover:text-white/80 hover:bg-white/[0.04]"
+              : "text-fg/40 hover:text-fg/80 hover:bg-fg/[0.04]"
           )}
         >
           <Settings className="w-4 h-4 flex-shrink-0" />
@@ -120,7 +120,7 @@ export function DashboardSidebar() {
         </Link>
         <Link
           href="/pricing"
-          className="flex items-center justify-between gap-2.5 px-2.5 py-2 rounded-lg text-sm font-semibold bg-brand-orange text-white hover:bg-brand-orange-light transition-colors"
+          className="flex items-center justify-between gap-2.5 px-2.5 py-2 rounded-lg text-sm font-semibold bg-brand-orange text-fg hover:bg-brand-orange-light transition-colors"
         >
           <span>Upgrade plan</span>
           <ChevronRight className="w-3.5 h-3.5 opacity-80" />

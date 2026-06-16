@@ -83,8 +83,8 @@ export default async function AuditPage() {
           <div className="relative">
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-white font-semibold text-2xl">Site Audit</h1>
-                <p className="text-white/40 text-sm mt-0.5">
+                <h1 className="text-fg font-semibold text-2xl">Site Audit</h1>
+                <p className="text-fg/40 text-sm mt-0.5">
                   {latestCrawl
                     ? `Last crawled ${formatDate(latestCrawl.crawledAt)} · runs automatically weekly`
                     : "AI visibility and schema audit"}
@@ -97,8 +97,8 @@ export default async function AuditPage() {
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-black/20 rounded-2xl p-5 text-center">
                 <p className="text-4xl font-bold font-mono text-red-400">{criticalCount}</p>
-                <p className="text-white/50 text-xs mt-1">Critical</p>
-                <div className="mt-2 h-1 rounded-full bg-white/[0.06]">
+                <p className="text-fg/50 text-xs mt-1">Critical</p>
+                <div className="mt-2 h-1 rounded-full bg-fg/[0.06]">
                   <div
                     className="h-full rounded-full bg-red-400"
                     style={{ width: totalIssueCount > 0 ? `${(criticalCount / totalIssueCount) * 100}%` : "0%" }}
@@ -107,8 +107,8 @@ export default async function AuditPage() {
               </div>
               <div className="bg-black/20 rounded-2xl p-5 text-center">
                 <p className="text-4xl font-bold font-mono text-amber-400">{warningCount}</p>
-                <p className="text-white/50 text-xs mt-1">Warnings</p>
-                <div className="mt-2 h-1 rounded-full bg-white/[0.06]">
+                <p className="text-fg/50 text-xs mt-1">Warnings</p>
+                <div className="mt-2 h-1 rounded-full bg-fg/[0.06]">
                   <div
                     className="h-full rounded-full bg-amber-400"
                     style={{ width: totalIssueCount > 0 ? `${(warningCount / totalIssueCount) * 100}%` : "0%" }}
@@ -117,8 +117,8 @@ export default async function AuditPage() {
               </div>
               <div className="bg-black/20 rounded-2xl p-5 text-center">
                 <p className="text-4xl font-bold font-mono text-green-400">{passedCount}</p>
-                <p className="text-white/50 text-xs mt-1">Improvements</p>
-                <div className="mt-2 h-1 rounded-full bg-white/[0.06]">
+                <p className="text-fg/50 text-xs mt-1">Improvements</p>
+                <div className="mt-2 h-1 rounded-full bg-fg/[0.06]">
                   <div
                     className="h-full rounded-full bg-green-400"
                     style={{ width: totalIssueCount > 0 ? `${(passedCount / totalIssueCount) * 100}%` : "0%" }}
@@ -128,7 +128,7 @@ export default async function AuditPage() {
             </div>
 
             {totalIssueCount > 0 && (
-              <p className="text-white/30 text-xs mt-4 text-center">
+              <p className="text-fg/30 text-xs mt-4 text-center">
                 {totalIssueCount} total issues found across crawl and AI audit
               </p>
             )}
@@ -143,8 +143,8 @@ export default async function AuditPage() {
           <div className="relative flex flex-col items-center text-center gap-5 py-6">
             <span className="text-5xl">🔍</span>
             <div className="space-y-2 max-w-sm">
-              <h1 className="text-white font-semibold text-xl">No audit data yet</h1>
-              <p className="text-white/50 text-sm leading-relaxed">
+              <h1 className="text-fg font-semibold text-xl">No audit data yet</h1>
+              <p className="text-fg/50 text-sm leading-relaxed">
                 Generate schema markup to get started. A full site crawl runs automatically
                 in the background.
               </p>
@@ -157,9 +157,9 @@ export default async function AuditPage() {
       {/* ── Crawl Issues by category ─────────────────────────── */}
       {allCrawlIssues.length > 0 && (
         <div className="space-y-4">
-          <h2 className="text-white font-semibold text-xl flex items-center gap-2">
+          <h2 className="text-fg font-semibold text-xl flex items-center gap-2">
             Website Issues
-            <span className="text-white/30 font-normal text-sm">
+            <span className="text-fg/30 font-normal text-sm">
               ({allCrawlIssues.length})
             </span>
           </h2>
@@ -178,10 +178,10 @@ export default async function AuditPage() {
                 .map((issue, i) => (
                   <div
                     key={i}
-                    className="bg-white/[0.03] border border-red-500/20 rounded-xl p-4 flex items-start gap-3"
+                    className="bg-fg/[0.03] border border-red-500/20 rounded-xl p-4 flex items-start gap-3"
                   >
                     <div className="w-2 h-2 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
-                    <p className="text-white/70 text-sm leading-relaxed">{issue.message}</p>
+                    <p className="text-fg/70 text-sm leading-relaxed">{issue.message}</p>
                   </div>
                 ))}
             </div>
@@ -201,10 +201,10 @@ export default async function AuditPage() {
                 .map((issue, i) => (
                   <div
                     key={i}
-                    className="bg-white/[0.03] border border-amber-500/20 rounded-xl p-4 flex items-start gap-3"
+                    className="bg-fg/[0.03] border border-amber-500/20 rounded-xl p-4 flex items-start gap-3"
                   >
                     <div className="w-2 h-2 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />
-                    <p className="text-white/70 text-sm leading-relaxed">{issue.message}</p>
+                    <p className="text-fg/70 text-sm leading-relaxed">{issue.message}</p>
                   </div>
                 ))}
             </div>
@@ -224,10 +224,10 @@ export default async function AuditPage() {
                 .map((issue, i) => (
                   <div
                     key={i}
-                    className="bg-white/[0.03] border border-blue-500/20 rounded-xl p-4 flex items-start gap-3"
+                    className="bg-fg/[0.03] border border-blue-500/20 rounded-xl p-4 flex items-start gap-3"
                   >
                     <div className="w-2 h-2 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
-                    <p className="text-white/70 text-sm leading-relaxed">{issue.message}</p>
+                    <p className="text-fg/70 text-sm leading-relaxed">{issue.message}</p>
                   </div>
                 ))}
             </div>
@@ -240,8 +240,8 @@ export default async function AuditPage() {
               <div className="relative flex flex-col items-center text-center gap-3 py-4">
                 <span className="text-5xl">✅</span>
                 <div className="space-y-1.5">
-                  <h3 className="text-white font-semibold text-lg">Everything looks good!</h3>
-                  <p className="text-white/50 text-sm">No crawl issues found. Your site is clean.</p>
+                  <h3 className="text-fg font-semibold text-lg">Everything looks good!</h3>
+                  <p className="text-fg/50 text-sm">No crawl issues found. Your site is clean.</p>
                 </div>
               </div>
             </div>
@@ -252,9 +252,9 @@ export default async function AuditPage() {
       {/* ── AI Audit Issues ───────────────────────────────────── */}
       {auditIssues.length > 0 && (
         <div className="space-y-4">
-          <div className="border-t border-white/[0.06] pt-6">
-            <h2 className="text-white font-semibold text-xl">AI Visibility Issues</h2>
-            <p className="text-white/40 text-sm mt-0.5">
+          <div className="border-t border-line/[0.06] pt-6">
+            <h2 className="text-fg font-semibold text-xl">AI Visibility Issues</h2>
+            <p className="text-fg/40 text-sm mt-0.5">
               From your latest visibility audit · {auditIssues.length} issues
             </p>
           </div>
@@ -273,13 +273,13 @@ export default async function AuditPage() {
                 .map((issue, i) => (
                   <div
                     key={i}
-                    className="bg-white/[0.03] border border-red-500/20 rounded-xl p-4"
+                    className="bg-fg/[0.03] border border-red-500/20 rounded-xl p-4"
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="text-white text-sm font-medium">{issue.headline}</p>
-                        <p className="text-white/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
+                        <p className="text-fg text-sm font-medium">{issue.headline}</p>
+                        <p className="text-fg/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
                         {issue.fix_summary && (
                           <p className="text-green-400 text-xs mt-2 leading-relaxed">
                             Fix: {issue.fix_summary}
@@ -306,13 +306,13 @@ export default async function AuditPage() {
                 .map((issue, i) => (
                   <div
                     key={i}
-                    className="bg-white/[0.03] border border-amber-500/20 rounded-xl p-4"
+                    className="bg-fg/[0.03] border border-amber-500/20 rounded-xl p-4"
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="text-white text-sm font-medium">{issue.headline}</p>
-                        <p className="text-white/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
+                        <p className="text-fg text-sm font-medium">{issue.headline}</p>
+                        <p className="text-fg/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
                         {issue.fix_summary && (
                           <p className="text-green-400 text-xs mt-2 leading-relaxed">
                             Fix: {issue.fix_summary}
@@ -339,13 +339,13 @@ export default async function AuditPage() {
                 .map((issue, i) => (
                   <div
                     key={i}
-                    className="bg-white/[0.03] border border-blue-500/20 rounded-xl p-4"
+                    className="bg-fg/[0.03] border border-blue-500/20 rounded-xl p-4"
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="text-white text-sm font-medium">{issue.headline}</p>
-                        <p className="text-white/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
+                        <p className="text-fg text-sm font-medium">{issue.headline}</p>
+                        <p className="text-fg/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
                         {issue.fix_summary && (
                           <p className="text-green-400 text-xs mt-2 leading-relaxed">
                             Fix: {issue.fix_summary}
@@ -364,38 +364,38 @@ export default async function AuditPage() {
       {latestCrawl && (
         <div className="grid grid-cols-4 gap-3">
           <GlassCard className="text-center py-4">
-            <MonoNumber className="text-white text-2xl font-medium block">
+            <MonoNumber className="text-fg text-2xl font-medium block">
               {latestCrawl.pagesScanned}
             </MonoNumber>
-            <span className="text-white/50 text-xs">Pages scanned</span>
+            <span className="text-fg/50 text-xs">Pages scanned</span>
           </GlassCard>
           <GlassCard className="text-center py-4">
-            <MonoNumber className="text-white text-2xl font-medium block">
+            <MonoNumber className="text-fg text-2xl font-medium block">
               {allCrawlIssues.filter((i) => i.severity === "critical").length}
             </MonoNumber>
-            <span className="text-white/50 text-xs">Critical issues</span>
+            <span className="text-fg/50 text-xs">Critical issues</span>
           </GlassCard>
           <GlassCard className="text-center py-4">
-            <MonoNumber className="text-white text-2xl font-medium block">
+            <MonoNumber className="text-fg text-2xl font-medium block">
               {latestCrawl.schemaFound?.length ?? 0}
             </MonoNumber>
-            <span className="text-white/50 text-xs">Schema found</span>
+            <span className="text-fg/50 text-xs">Schema found</span>
           </GlassCard>
           <GlassCard className="text-center py-4">
-            <MonoNumber className="text-white text-2xl font-medium block">
+            <MonoNumber className="text-fg text-2xl font-medium block">
               {latestCrawl.schemaMissing?.length ?? 0}
             </MonoNumber>
-            <span className="text-white/50 text-xs">Schema missing</span>
+            <span className="text-fg/50 text-xs">Schema missing</span>
           </GlassCard>
         </div>
       )}
 
       {/* ── Schema Markup section ───────────────────────────── */}
       <div className="space-y-4">
-        <div className="border-t border-white/[0.06] pt-6 flex items-start justify-between gap-4">
+        <div className="border-t border-line/[0.06] pt-6 flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-white font-semibold text-xl">Schema Markup</h2>
-            <p className="text-white/40 text-sm mt-0.5">
+            <h2 className="text-fg font-semibold text-xl">Schema Markup</h2>
+            <p className="text-fg/40 text-sm mt-0.5">
               JSON-LD structured data — helps Google and AI understand your business
             </p>
           </div>
@@ -408,8 +408,8 @@ export default async function AuditPage() {
             <div className="relative flex flex-col items-center text-center gap-5 py-6">
               <span className="text-5xl">🏷️</span>
               <div className="space-y-2 max-w-sm">
-                <h3 className="text-white font-semibold text-lg">No schema markup yet</h3>
-                <p className="text-white/50 text-sm leading-relaxed">
+                <h3 className="text-fg font-semibold text-lg">No schema markup yet</h3>
+                <p className="text-fg/50 text-sm leading-relaxed">
                   Generate JSON-LD structured data for your website. Paste it into your pages to help
                   Google and AI engines understand your business.
                 </p>
@@ -419,7 +419,7 @@ export default async function AuditPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            <p className="text-white/30 text-xs">
+            <p className="text-fg/30 text-xs">
               Generated {formatDate(latestSchema.generatedAt)} · {schemas.length} schema{schemas.length !== 1 ? "s" : ""}
             </p>
             {schemas.map((schema, i) => {
@@ -427,18 +427,18 @@ export default async function AuditPage() {
               return (
                 <div
                   key={i}
-                  className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 space-y-3"
+                  className="bg-fg/[0.03] border border-line/[0.06] rounded-2xl p-5 space-y-3"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <span className="bg-[#FF6B1A]/20 text-[#FF6B1A] border border-[#FF6B1A]/30 text-xs font-medium px-2.5 py-0.5 rounded-full">
                         {schema.type}
                       </span>
-                      <span className="text-white/30 text-xs font-mono">{schema.pageUrl}</span>
+                      <span className="text-fg/30 text-xs font-mono">{schema.pageUrl}</span>
                     </div>
                     <CopyButton text={`<script type="application/ld+json">\n${jsonStr}\n</script>`} />
                   </div>
-                  <pre className="bg-black/30 rounded-xl p-4 text-xs text-white/60 font-mono overflow-x-auto leading-relaxed whitespace-pre-wrap break-all">
+                  <pre className="bg-black/30 rounded-xl p-4 text-xs text-fg/60 font-mono overflow-x-auto leading-relaxed whitespace-pre-wrap break-all">
                     {jsonStr}
                   </pre>
                 </div>

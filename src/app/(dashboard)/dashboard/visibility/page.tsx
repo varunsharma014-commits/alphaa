@@ -54,8 +54,8 @@ function getStatusMeta(status: string | undefined | null): {
   }
   return {
     label: "Not yet",
-    pillClass: "bg-white/[0.06] border border-white/10 text-white/40",
-    dotClass: "bg-white/20",
+    pillClass: "bg-fg/[0.06] border border-line/10 text-fg/40",
+    dotClass: "bg-fg/20",
     barColor: "bg-red-400",
     barWidth: "0%",
   }
@@ -105,8 +105,8 @@ export default async function VisibilityPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Page header */}
         <div>
-          <h1 className="text-white font-semibold text-2xl">AI Visibility</h1>
-          <p className="text-white/40 text-sm mt-0.5">
+          <h1 className="text-fg font-semibold text-2xl">AI Visibility</h1>
+          <p className="text-fg/40 text-sm mt-0.5">
             Where your business shows up when people search on AI tools.
           </p>
         </div>
@@ -117,8 +117,8 @@ export default async function VisibilityPage() {
           <div className="relative text-center space-y-5 max-w-md mx-auto">
             <p className="text-6xl">🔍</p>
             <div className="space-y-2">
-              <h2 className="text-white font-bold text-2xl">No AI scan yet</h2>
-              <p className="text-white/50 text-sm leading-relaxed">
+              <h2 className="text-fg font-bold text-2xl">No AI scan yet</h2>
+              <p className="text-fg/50 text-sm leading-relaxed">
                 Find out if ChatGPT, Gemini, Perplexity, and Claude mention your business
                 when customers search for services like yours. Takes about 30 seconds.
               </p>
@@ -136,8 +136,8 @@ export default async function VisibilityPage() {
             return (
               <GlassCard key={key} className="p-4 flex flex-col items-center gap-2 text-center">
                 <span className="text-3xl">{meta.icon}</span>
-                <p className="text-white/70 text-sm font-medium">{meta.label}</p>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-white/30">
+                <p className="text-fg/70 text-sm font-medium">{meta.label}</p>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-fg/[0.06] border border-line/10 text-fg/30">
                   Not scanned
                 </span>
               </GlassCard>
@@ -153,8 +153,8 @@ export default async function VisibilityPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="text-white font-semibold text-2xl">AI Visibility</h1>
-        <p className="text-white/40 text-sm mt-0.5">
+        <h1 className="text-fg font-semibold text-2xl">AI Visibility</h1>
+        <p className="text-fg/40 text-sm mt-0.5">
           Where your business shows up when people search on AI tools.
         </p>
       </div>
@@ -166,12 +166,12 @@ export default async function VisibilityPage() {
           {/* Left: headline */}
           <div className="space-y-3">
             <div>
-              <p className="text-white/50 text-xs font-medium uppercase tracking-wider mb-1">
+              <p className="text-fg/50 text-xs font-medium uppercase tracking-wider mb-1">
                 AI Reach
               </p>
-              <p className="text-white font-bold text-3xl leading-tight">
+              <p className="text-fg font-bold text-3xl leading-tight">
                 {appearedCount} of 4{" "}
-                <span className="text-white/50 font-normal text-xl">AI engines know about you</span>
+                <span className="text-fg/50 font-normal text-xl">AI engines know about you</span>
               </p>
             </div>
             {/* 4 status dots */}
@@ -193,16 +193,16 @@ export default async function VisibilityPage() {
                           ? "bg-green-400"
                           : isPartial
                           ? "bg-amber-400"
-                          : "bg-white/20"
+                          : "bg-fg/20"
                       }`}
                     />
-                    <span className="text-white/50 text-xs">{meta.label}</span>
+                    <span className="text-fg/50 text-xs">{meta.label}</span>
                   </div>
                 )
               })}
             </div>
             {lastScanDate && (
-              <p className="text-white/30 text-xs">Last scanned {lastScanDate}</p>
+              <p className="text-fg/30 text-xs">Last scanned {lastScanDate}</p>
             )}
           </div>
           {/* Right: scan button */}
@@ -230,11 +230,11 @@ export default async function VisibilityPage() {
                 <div className="flex items-center gap-3">
                   <span className="text-4xl">{meta.icon}</span>
                   <div>
-                    <h3 className="text-white font-semibold text-lg leading-tight">
+                    <h3 className="text-fg font-semibold text-lg leading-tight">
                       {meta.label}
                     </h3>
                     {isNotConfigured ? null : (
-                      <p className="text-white/40 text-xs mt-0.5">AI search engine</p>
+                      <p className="text-fg/40 text-xs mt-0.5">AI search engine</p>
                     )}
                   </div>
                 </div>
@@ -269,18 +269,18 @@ export default async function VisibilityPage() {
                   {/* Mention frequency bar */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <p className="text-white/40 text-xs font-medium">Mention frequency</p>
+                      <p className="text-fg/40 text-xs font-medium">Mention frequency</p>
                       <p className={`text-xs font-medium ${
                         appeared || rawStatus === "frequently" || rawStatus === "appeared"
                           ? "text-green-400"
                           : rawStatus === "occasionally"
                           ? "text-amber-400"
-                          : "text-white/30"
+                          : "text-fg/30"
                       }`}>
                         {getStatusLabel(rawStatus)}
                       </p>
                     </div>
-                    <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                    <div className="h-1.5 rounded-full bg-fg/[0.06] overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all ${statusMeta.barColor}`}
                         style={{ width: statusMeta.barWidth }}
@@ -294,7 +294,7 @@ export default async function VisibilityPage() {
                       <p className="text-green-400 text-xs font-medium mb-2">
                         Mentioned in response
                       </p>
-                      <p className="text-white/70 text-xs leading-relaxed italic">
+                      <p className="text-fg/70 text-xs leading-relaxed italic">
                         &ldquo;{snippet}&rdquo;
                       </p>
                     </div>
@@ -313,27 +313,27 @@ export default async function VisibilityPage() {
             <span className="text-base">📡</span>
           </div>
           <div>
-            <h2 className="text-white font-semibold">How we check</h2>
-            <p className="text-white/40 text-xs mt-0.5">
+            <h2 className="text-fg font-semibold">How we check</h2>
+            <p className="text-fg/40 text-xs mt-0.5">
               Alphaa asks each AI engine the same questions your customers might type.
             </p>
           </div>
         </div>
-        <p className="text-white/50 text-sm leading-relaxed mb-4">
+        <p className="text-fg/50 text-sm leading-relaxed mb-4">
           We query ChatGPT, Perplexity, Gemini, and Google AI with searches relevant to your
           business and city, then check each response to see if your business is mentioned —
           and extract the exact quote when it appears.
         </p>
         {audit.aiEngineResults.length > 0 && (
           <div className="space-y-2">
-            <p className="text-white/30 text-xs font-medium uppercase tracking-wider">
+            <p className="text-fg/30 text-xs font-medium uppercase tracking-wider">
               Queries we sent
             </p>
             <div className="flex flex-wrap gap-2">
               {Array.from(new Set(audit.aiEngineResults.map((r) => r.query))).map((q) => (
                 <span
                   key={q}
-                  className="inline-block text-white/50 text-xs leading-relaxed bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-1.5 font-mono"
+                  className="inline-block text-fg/50 text-xs leading-relaxed bg-fg/[0.05] border border-line/[0.08] rounded-lg px-3 py-1.5 font-mono"
                 >
                   {q}
                 </span>

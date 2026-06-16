@@ -32,17 +32,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          {/* Set theme before first paint to avoid a flash of the wrong theme */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(){try{var t=localStorage.getItem('alphaa-theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`,
+            }}
+          />
         </head>
-        <body className="bg-bg-primary text-white font-sans antialiased">
+        <body className="bg-bg-primary text-fg font-sans antialiased">
           <div className="dot-grid" aria-hidden="true" />
           {children}
           <Toaster
             position="bottom-right"
             toastOptions={{
               style: {
-                background: "#13100C",
-                border: "1px solid rgba(255,255,255,0.08)",
-                color: "#fff",
+                background: "rgb(var(--bg-secondary-rgb))",
+                border: "1px solid var(--card-border)",
+                color: "rgb(var(--fg-rgb))",
               },
             }}
           />

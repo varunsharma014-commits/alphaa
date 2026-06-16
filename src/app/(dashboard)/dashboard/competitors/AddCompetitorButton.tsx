@@ -50,13 +50,13 @@ export function AddCompetitorButton() {
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://competitor.com"
           disabled={loading}
-          className="flex-1 bg-bg-tertiary border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 disabled:opacity-50 transition-colors"
+          className="flex-1 bg-bg-tertiary border border-line/10 rounded-xl px-4 py-2.5 text-sm text-fg placeholder:text-fg/30 focus:outline-none focus:border-line/20 disabled:opacity-50 transition-colors"
           required
         />
         <button
           type="submit"
           disabled={loading || !url.trim()}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-light disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-sm transition-colors whitespace-nowrap"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-light disabled:opacity-50 disabled:cursor-not-allowed text-fg font-semibold text-sm transition-colors whitespace-nowrap"
         >
           {loading ? (
             <>

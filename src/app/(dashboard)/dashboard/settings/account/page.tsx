@@ -5,7 +5,7 @@ export const metadata = { title: "Account Settings" }
 export default function AccountSettingsPage() {
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-white font-semibold text-2xl mb-6">Account</h1>
+      <h1 className="text-fg font-semibold text-2xl mb-6">Account</h1>
       <UserProfile
         appearance={{
           variables: {
@@ -16,7 +16,7 @@ export default function AccountSettingsPage() {
             colorTextSecondary: "#A8A29E",
             borderRadius: "12px",
           },
-          elements: { card: "shadow-none border border-white/[0.08] bg-bg-secondary" },
+          elements: { card: "shadow-none border border-line/[0.08] bg-bg-secondary" },
         }}
       />
     </div>

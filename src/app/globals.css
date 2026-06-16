@@ -8,13 +8,8 @@
 /* Geist Mono via CDN */
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap');
 
-/* ── CSS Variables ── */
+/* ── Theme-independent tokens ── */
 :root {
-  /* Backgrounds */
-  --bg-primary: #0A0806;
-  --bg-secondary: #13100C;
-  --bg-tertiary: #1F1812;
-
   /* Brand */
   --orange: #FF6B1A;
   --orange-light: #FF8845;
@@ -22,10 +17,6 @@
 
   /* Surfaces */
   --cream: #F5EDE0;
-
-  /* Text */
-  --text-primary: #FFFFFF;
-  --text-secondary: #A8A29E;
   --text-on-cream: #1A1410;
 
   /* Status */
@@ -33,14 +24,52 @@
   --warning: #FBBF24;
   --error: #EF4444;
 
-  /* Cards */
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-bg: rgba(255, 255, 255, 0.03);
-
   /* Fonts */
   --font-inter-tight: 'Inter Tight', system-ui, sans-serif;
   --font-instrument-serif: 'Instrument Serif', Georgia, serif;
   --font-geist-mono: 'Geist Mono', monospace;
+}
+
+/* ── Dark theme (default) ──
+   fg/line/muted/dot are RGB triples so Tailwind's /opacity modifier works:
+   text-fg/40 → rgb(var(--fg-rgb) / 0.4). Flip the triple and the whole
+   opacity hierarchy flips with it. */
+:root,
+[data-theme="dark"] {
+  --bg-primary-rgb: 10 8 6;
+  --bg-secondary-rgb: 19 16 12;
+  --bg-tertiary-rgb: 31 24 18;
+
+  --fg-rgb: 255 255 255;
+  --line-rgb: 255 255 255;
+  --muted-rgb: 168 162 158;
+  --dot-rgb: 255 255 255;
+
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.08);
+
+  /* legacy aliases */
+  --text-primary: #FFFFFF;
+  --text-secondary: #A8A29E;
+}
+
+/* ── Light theme ── */
+[data-theme="light"] {
+  --bg-primary-rgb: 250 247 242;
+  --bg-secondary-rgb: 255 255 255;
+  --bg-tertiary-rgb: 241 236 228;
+
+  --fg-rgb: 26 20 16;
+  --line-rgb: 26 20 16;
+  --muted-rgb: 120 113 108;
+  --dot-rgb: 26 20 16;
+
+  --card-bg: #FFFFFF;
+  --card-border: rgba(26, 20, 16, 0.08);
+
+  /* legacy aliases */
+  --text-primary: #1A1410;
+  --text-secondary: #78716C;
 }
 
 /* ── Base reset ── */
@@ -56,16 +85,17 @@ html {
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: rgb(var(--bg-primary-rgb));
+  color: rgb(var(--fg-rgb));
   font-family: var(--font-inter-tight);
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 200ms ease, color 200ms ease;
 }
 
 /* ── Dot grid texture ── */
 .dot-grid {
-  background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgb(var(--dot-rgb) / 0.15) 1px, transparent 1px);
   background-size: 28px 28px;
   opacity: 0.03;
   position: fixed;
@@ -77,14 +107,14 @@ body {
 /* ── Radial warm background ── */
 .radial-bg {
   background:
-    radial-gradient(ellipse 80% 60% at 50% 100%, #1F1812 0%, #0A0806 70%),
-    #0A0806;
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgb(var(--bg-tertiary-rgb)) 0%, rgb(var(--bg-primary-rgb)) 70%),
+    rgb(var(--bg-primary-rgb));
 }
 
 /* ── Glass card ── */
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -144,14 +174,14 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: rgb(var(--bg-primary-rgb));
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgb(var(--fg-rgb) / 0.1);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgb(var(--fg-rgb) / 0.2);
 }
 
 @layer utilities {

@@ -38,8 +38,8 @@ export default async function ContentGapsPage() {
     return (
       <div className="max-w-4xl mx-auto space-y-6">
         <div>
-          <h1 className="text-white font-bold text-2xl">Topic Ideas</h1>
-          <p className="text-white/40 text-sm mt-1">Topics your competitors rank for that you're missing</p>
+          <h1 className="text-fg font-bold text-2xl">Topic Ideas</h1>
+          <p className="text-fg/40 text-sm mt-1">Topics your competitors rank for that you're missing</p>
         </div>
         <div className="relative overflow-hidden rounded-2xl border border-brand-orange/20 bg-gradient-to-br from-brand-orange/[0.08] via-transparent to-transparent p-10">
           <div className="absolute -top-20 -right-20 w-52 h-52 rounded-full bg-brand-orange/10 blur-3xl pointer-events-none" />
@@ -48,8 +48,8 @@ export default async function ContentGapsPage() {
               <Lightbulb className="w-8 h-8 text-brand-orange" />
             </div>
             <div className="max-w-sm">
-              <h2 className="text-white font-bold text-xl">Discover content opportunities</h2>
-              <p className="text-white/50 text-sm mt-2 leading-relaxed">
+              <h2 className="text-fg font-bold text-xl">Discover content opportunities</h2>
+              <p className="text-fg/50 text-sm mt-2 leading-relaxed">
                 Enter a competitor's website and alphaa finds the topics they rank for that you should cover — with suggested titles and outlines ready to use.
               </p>
             </div>
@@ -72,26 +72,26 @@ export default async function ContentGapsPage() {
               <Lightbulb className="w-4 h-4 text-brand-orange" />
               <span className="text-brand-orange text-xs font-semibold uppercase tracking-widest">Topic Ideas</span>
             </div>
-            <h1 className="text-white font-bold text-3xl">
-              {gaps.length} <span className="text-white/50 font-normal">opportunities found</span>
+            <h1 className="text-fg font-bold text-3xl">
+              {gaps.length} <span className="text-fg/50 font-normal">opportunities found</span>
             </h1>
-            <p className="text-white/40 text-sm mt-1">
-              vs <span className="text-white/60 font-mono">{latestGap.competitorUrl}</span> · {formatDate(latestGap.analyzedAt)}
+            <p className="text-fg/40 text-sm mt-1">
+              vs <span className="text-fg/60 font-mono">{latestGap.competitorUrl}</span> · {formatDate(latestGap.analyzedAt)}
             </p>
 
             {/* Priority breakdown */}
             <div className="flex items-center gap-4 mt-4">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-red-400" />
-                <span className="text-white/60 text-xs">{highGaps.length} high</span>
+                <span className="text-fg/60 text-xs">{highGaps.length} high</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-amber-400" />
-                <span className="text-white/60 text-xs">{mediumGaps.length} medium</span>
+                <span className="text-fg/60 text-xs">{mediumGaps.length} medium</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-blue-400" />
-                <span className="text-white/60 text-xs">{lowGaps.length} low</span>
+                <span className="text-fg/60 text-xs">{lowGaps.length} low</span>
               </div>
             </div>
           </div>
@@ -99,8 +99,8 @@ export default async function ContentGapsPage() {
         </div>
 
         {latestGap.summary && (
-          <div className="relative mt-5 pt-5 border-t border-white/[0.08]">
-            <p className="text-white/60 text-sm leading-relaxed">{latestGap.summary}</p>
+          <div className="relative mt-5 pt-5 border-t border-line/[0.08]">
+            <p className="text-fg/60 text-sm leading-relaxed">{latestGap.summary}</p>
           </div>
         )}
       </div>
@@ -118,8 +118,8 @@ export default async function ContentGapsPage() {
             {/* Section header */}
             <div className="flex items-center gap-3">
               <span className={`w-2 h-2 rounded-full ${meta.dot}`} />
-              <h2 className="text-white font-semibold text-sm">{meta.label}</h2>
-              <span className="text-white/25 text-xs">{items.length} topic{items.length !== 1 ? "s" : ""}</span>
+              <h2 className="text-fg font-semibold text-sm">{meta.label}</h2>
+              <span className="text-fg/25 text-xs">{items.length} topic{items.length !== 1 ? "s" : ""}</span>
             </div>
 
             {/* Cards */}
@@ -135,13 +135,13 @@ export default async function ContentGapsPage() {
                       {meta.label}
                     </span>
                     {gap.topic && (
-                      <span className="text-white/35 text-xs">{gap.topic}</span>
+                      <span className="text-fg/35 text-xs">{gap.topic}</span>
                     )}
                   </div>
                 </div>
 
                 {/* Suggested title */}
-                <h3 className="text-white font-semibold text-base leading-snug mb-3">
+                <h3 className="text-fg font-semibold text-base leading-snug mb-3">
                   {gap.suggestedTitle}
                 </h3>
 
@@ -150,8 +150,8 @@ export default async function ContentGapsPage() {
                   <div className="space-y-1.5 mb-3">
                     {gap.suggestedOutline.map((point, j) => (
                       <div key={j} className="flex items-start gap-2">
-                        <span className="text-white/20 text-xs mt-0.5 flex-shrink-0">{j + 1}.</span>
-                        <span className="text-white/55 text-sm leading-relaxed">{point}</span>
+                        <span className="text-fg/20 text-xs mt-0.5 flex-shrink-0">{j + 1}.</span>
+                        <span className="text-fg/55 text-sm leading-relaxed">{point}</span>
                       </div>
                     ))}
                   </div>
@@ -159,9 +159,9 @@ export default async function ContentGapsPage() {
 
                 {/* Impact */}
                 {gap.estimatedImpact && (
-                  <div className="flex items-center gap-2 pt-3 border-t border-white/[0.06]">
-                    <TrendingUp className="w-3 h-3 text-white/25" />
-                    <span className="text-white/40 text-xs">{gap.estimatedImpact}</span>
+                  <div className="flex items-center gap-2 pt-3 border-t border-line/[0.06]">
+                    <TrendingUp className="w-3 h-3 text-fg/25" />
+                    <span className="text-fg/40 text-xs">{gap.estimatedImpact}</span>
                   </div>
                 )}
               </div>

@@ -138,7 +138,7 @@ function cwvCardStatus(auditId: string, displayValue: string | undefined) {
   if (auditId === "largest-contentful-paint") return lcpStatus(displayValue)
   if (auditId === "total-blocking-time") return tbtStatus(displayValue)
   if (auditId === "cumulative-layout-shift") return clsStatus(displayValue)
-  return { label: "Unknown", color: "text-white/40", barColor: "bg-white/20", barPct: 50 }
+  return { label: "Unknown", color: "text-fg/40", barColor: "bg-fg/20", barPct: 50 }
 }
 
 function cwvCardGradient(label: string): string {
@@ -179,22 +179,22 @@ export default async function SpeedPage() {
     return (
       <div className="max-w-6xl mx-auto space-y-6">
         <div>
-          <h1 className="text-white font-semibold text-2xl">Speed & Performance</h1>
-          <p className="text-white/50 text-sm mt-0.5">Website performance and crawl health</p>
+          <h1 className="text-fg font-semibold text-2xl">Speed & Performance</h1>
+          <p className="text-fg/50 text-sm mt-0.5">Website performance and crawl health</p>
         </div>
         <div className="relative overflow-hidden rounded-2xl border border-[#FF6B1A]/20 bg-gradient-to-br from-[#FF6B1A]/[0.08] via-transparent to-transparent p-8">
           <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[#FF6B1A]/10 blur-3xl pointer-events-none" />
           <div className="relative flex flex-col items-center text-center gap-5 py-8">
             <span className="text-5xl">🌐</span>
             <div className="space-y-2 max-w-xs">
-              <h2 className="text-white font-semibold text-xl">No website URL set</h2>
-              <p className="text-white/50 text-sm leading-relaxed">
+              <h2 className="text-fg font-semibold text-xl">No website URL set</h2>
+              <p className="text-fg/50 text-sm leading-relaxed">
                 Add your website URL in Settings to get performance scores and technical SEO insights.
               </p>
             </div>
             <a
               href="/dashboard/settings"
-              className="inline-flex items-center gap-2 bg-[#FF6B1A] hover:bg-[#e85c00] text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 bg-[#FF6B1A] hover:bg-[#e85c00] text-fg text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
             >
               <Settings className="w-4 h-4" />
               Go to Settings
@@ -256,8 +256,8 @@ export default async function SpeedPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-white font-semibold text-2xl">Speed & Performance</h1>
-          <p className="text-white/50 text-sm mt-0.5">
+          <h1 className="text-fg font-semibold text-2xl">Speed & Performance</h1>
+          <p className="text-fg/50 text-sm mt-0.5">
             Performance for{" "}
             <a
               href={user.websiteUrl}
@@ -279,8 +279,8 @@ export default async function SpeedPage() {
           <div className="relative flex items-center gap-4">
             <AlertTriangle className="w-8 h-8 text-amber-400 flex-shrink-0" />
             <div>
-              <p className="text-white font-medium">PageSpeed data unavailable</p>
-              <p className="text-white/40 text-sm mt-0.5">{pageSpeedError}</p>
+              <p className="text-fg font-medium">PageSpeed data unavailable</p>
+              <p className="text-fg/40 text-sm mt-0.5">{pageSpeedError}</p>
             </div>
           </div>
         </div>
@@ -295,7 +295,7 @@ export default async function SpeedPage() {
                 <p className={`text-lg font-bold ${perfScoreColor(perfPct)}`}>
                   {perfScoreLabel(perfPct)}
                 </p>
-                <p className="text-white/40 text-xs">Performance Score</p>
+                <p className="text-fg/40 text-xs">Performance Score</p>
               </div>
             </div>
 
@@ -305,8 +305,8 @@ export default async function SpeedPage() {
                 const audit = audits[id]
                 if (!audit) return null
                 return (
-                  <div key={id} className="bg-white/[0.04] rounded-xl p-4 text-center">
-                    <p className="text-white/40 text-xs mb-1">{EXTRA_LABELS[id]}</p>
+                  <div key={id} className="bg-fg/[0.04] rounded-xl p-4 text-center">
+                    <p className="text-fg/40 text-xs mb-1">{EXTRA_LABELS[id]}</p>
                     <p className={`text-lg font-bold font-mono ${scoreColor(audit.score ?? 0)}`}>
                       {audit.displayValue ?? "—"}
                     </p>
@@ -322,8 +322,8 @@ export default async function SpeedPage() {
       ) : (
         <GlassCard>
           <div className="flex items-center justify-center py-10 gap-3">
-            <div className="w-6 h-6 border-2 border-white/20 border-t-[#FF6B1A] rounded-full animate-spin" />
-            <p className="text-white/40 text-sm">Loading performance data…</p>
+            <div className="w-6 h-6 border-2 border-line/20 border-t-[#FF6B1A] rounded-full animate-spin" />
+            <p className="text-fg/40 text-sm">Loading performance data…</p>
           </div>
         </GlassCard>
       )}
@@ -333,8 +333,8 @@ export default async function SpeedPage() {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Zap className="w-4 h-4 text-[#FF6B1A]" />
-            <h2 className="text-white font-semibold">Core Web Vitals</h2>
-            <span className="text-white/30 text-xs">— Google's key speed signals</span>
+            <h2 className="text-fg font-semibold">Core Web Vitals</h2>
+            <span className="text-fg/30 text-xs">— Google's key speed signals</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {CWV_AUDIT_IDS.map((id) => {
@@ -347,15 +347,15 @@ export default async function SpeedPage() {
                   key={id}
                   className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br ${gradCls} via-transparent to-transparent p-5`}
                 >
-                  <p className="text-white/50 text-xs mb-1">{cwvFriendlyName(id)}</p>
-                  <p className="text-3xl font-bold font-mono text-white">
+                  <p className="text-fg/50 text-xs mb-1">{cwvFriendlyName(id)}</p>
+                  <p className="text-3xl font-bold font-mono text-fg">
                     {audit.displayValue ?? "—"}
                   </p>
                   <p className={`text-xs font-medium mt-1 ${status.color}`}>{status.label}</p>
-                  <p className="text-white/30 text-xs mt-0.5 leading-relaxed">
+                  <p className="text-fg/30 text-xs mt-0.5 leading-relaxed">
                     {cwvSubtitle(id)}
                   </p>
-                  <div className="mt-3 h-1.5 rounded-full bg-white/[0.06]">
+                  <div className="mt-3 h-1.5 rounded-full bg-fg/[0.06]">
                     <div
                       className={`h-full rounded-full ${status.barColor}`}
                       style={{ width: `${status.barPct}%` }}
@@ -372,11 +372,11 @@ export default async function SpeedPage() {
       <div>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Globe className="w-4 h-4 text-white/40" />
-            <h2 className="text-white font-semibold">Crawl Health</h2>
+            <Globe className="w-4 h-4 text-fg/40" />
+            <h2 className="text-fg font-semibold">Crawl Health</h2>
           </div>
           {crawlResult && (
-            <span className="text-white/30 text-xs">
+            <span className="text-fg/30 text-xs">
               Last crawled{" "}
               {new Date(crawlResult.crawledAt).toLocaleDateString("en-US", {
                 month: "short",
@@ -388,11 +388,11 @@ export default async function SpeedPage() {
         </div>
 
         {!crawlResult ? (
-          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent p-8">
+          <div className="relative overflow-hidden rounded-2xl border border-line/10 bg-gradient-to-br from-fg/[0.04] via-transparent to-transparent p-8">
             <div className="flex flex-col items-center text-center gap-3 py-4">
               <span className="text-4xl">🔍</span>
-              <p className="text-white/50 text-sm">No crawl data yet</p>
-              <p className="text-white/30 text-xs max-w-xs leading-relaxed">
+              <p className="text-fg/50 text-sm">No crawl data yet</p>
+              <p className="text-fg/30 text-xs max-w-xs leading-relaxed">
                 Click &ldquo;Re-crawl site&rdquo; to scan your website for technical SEO issues.
               </p>
               <ReCrawlButton />
@@ -400,31 +400,31 @@ export default async function SpeedPage() {
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
-              <p className="text-white/40 text-xs mb-2">Pages Found</p>
-              <p className="text-3xl font-bold font-mono text-white">{crawlResult.pagesScanned}</p>
-              <div className="mt-3 h-1.5 rounded-full bg-white/[0.06]">
-                <div className="h-full rounded-full bg-white/20" style={{ width: "100%" }} />
+            <div className="bg-fg/[0.03] border border-line/[0.06] rounded-2xl p-5">
+              <p className="text-fg/40 text-xs mb-2">Pages Found</p>
+              <p className="text-3xl font-bold font-mono text-fg">{crawlResult.pagesScanned}</p>
+              <div className="mt-3 h-1.5 rounded-full bg-fg/[0.06]">
+                <div className="h-full rounded-full bg-fg/20" style={{ width: "100%" }} />
               </div>
             </div>
-            <div className="bg-white/[0.03] border border-red-500/[0.12] rounded-2xl p-5">
-              <p className="text-white/40 text-xs mb-2">Broken Links</p>
+            <div className="bg-fg/[0.03] border border-red-500/[0.12] rounded-2xl p-5">
+              <p className="text-fg/40 text-xs mb-2">Broken Links</p>
               <p className={`text-3xl font-bold font-mono ${criticalCount > 0 ? "text-red-400" : "text-green-400"}`}>
                 {criticalCount}
               </p>
-              <div className="mt-3 h-1.5 rounded-full bg-white/[0.06]">
+              <div className="mt-3 h-1.5 rounded-full bg-fg/[0.06]">
                 <div
                   className={`h-full rounded-full ${criticalCount > 0 ? "bg-red-400" : "bg-green-400"}`}
                   style={{ width: criticalCount > 0 ? "100%" : "0%" }}
                 />
               </div>
             </div>
-            <div className="bg-white/[0.03] border border-amber-500/[0.12] rounded-2xl p-5">
-              <p className="text-white/40 text-xs mb-2">Missing Meta Tags</p>
+            <div className="bg-fg/[0.03] border border-amber-500/[0.12] rounded-2xl p-5">
+              <p className="text-fg/40 text-xs mb-2">Missing Meta Tags</p>
               <p className={`text-3xl font-bold font-mono ${warningCount > 0 ? "text-amber-400" : "text-green-400"}`}>
                 {warningCount}
               </p>
-              <div className="mt-3 h-1.5 rounded-full bg-white/[0.06]">
+              <div className="mt-3 h-1.5 rounded-full bg-fg/[0.06]">
                 <div
                   className={`h-full rounded-full ${warningCount > 0 ? "bg-amber-400" : "bg-green-400"}`}
                   style={{ width: warningCount > 0 ? `${Math.min(100, (warningCount / Math.max(crawlResult.pagesScanned, 1)) * 100 * 3)}%` : "0%" }}
@@ -446,7 +446,7 @@ export default async function SpeedPage() {
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {crawlResult.schemaFound.map((s) => (
-                  <span key={s} className="text-xs text-white/60 bg-white/5 border border-white/[0.06] px-2 py-0.5 rounded-full">
+                  <span key={s} className="text-xs text-fg/60 bg-fg/5 border border-line/[0.06] px-2 py-0.5 rounded-full">
                     {s}
                   </span>
                 ))}
@@ -461,7 +461,7 @@ export default async function SpeedPage() {
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {crawlResult.schemaMissing.map((s) => (
-                  <span key={s} className="text-xs text-white/60 bg-white/5 border border-white/[0.06] px-2 py-0.5 rounded-full">
+                  <span key={s} className="text-xs text-fg/60 bg-fg/5 border border-line/[0.06] px-2 py-0.5 rounded-full">
                     {s}
                   </span>
                 ))}
@@ -476,8 +476,8 @@ export default async function SpeedPage() {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <AlertTriangle className="w-4 h-4 text-amber-400" />
-            <h2 className="text-white font-semibold">Top Speed Opportunities</h2>
-            <span className="text-white/30 text-xs">— things to fix for a faster site</span>
+            <h2 className="text-fg font-semibold">Top Speed Opportunities</h2>
+            <span className="text-fg/30 text-xs">— things to fix for a faster site</span>
           </div>
           <div className="space-y-3">
             {opportunities.map((opp) => {
@@ -485,19 +485,19 @@ export default async function SpeedPage() {
               return (
                 <div
                   key={opp.id}
-                  className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 flex items-start gap-4"
+                  className="bg-fg/[0.03] border border-line/[0.06] rounded-2xl p-5 flex items-start gap-4"
                 >
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-lg border text-xs font-medium flex-shrink-0 ${impact.cls}`}>
                     {impact.label} impact
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-white text-sm font-medium">{opp.title}</p>
-                    <p className="text-white/40 text-xs mt-1 leading-relaxed line-clamp-2">
+                    <p className="text-fg text-sm font-medium">{opp.title}</p>
+                    <p className="text-fg/40 text-xs mt-1 leading-relaxed line-clamp-2">
                       {opp.description}
                     </p>
                   </div>
                   {opp.displayValue && (
-                    <span className="text-white/40 text-xs font-mono flex-shrink-0">
+                    <span className="text-fg/40 text-xs font-mono flex-shrink-0">
                       {opp.displayValue}
                     </span>
                   )}
@@ -511,9 +511,9 @@ export default async function SpeedPage() {
       {/* Crawl issues list */}
       {crawlResult && issues.length > 0 && (
         <div>
-          <h2 className="text-white font-semibold mb-3">
+          <h2 className="text-fg font-semibold mb-3">
             All Issues
-            <span className="text-white/30 font-normal text-sm ml-2">({issues.length})</span>
+            <span className="text-fg/30 font-normal text-sm ml-2">({issues.length})</span>
           </h2>
           <div className="space-y-2">
             {issues.slice(0, 8).map((issue, i) => {
@@ -524,13 +524,13 @@ export default async function SpeedPage() {
               }
               const c = colorMap[issue.severity] ?? colorMap.warning
               return (
-                <div key={i} className={`bg-white/[0.03] border ${c.border} rounded-xl p-4 flex items-start gap-3`}>
+                <div key={i} className={`bg-fg/[0.03] border ${c.border} rounded-xl p-4 flex items-start gap-3`}>
                   <div className={`w-2 h-2 rounded-full ${c.dot} mt-1.5 flex-shrink-0`} />
                   <div className="flex-1 min-w-0">
                     <span className={`text-xs font-medium uppercase tracking-wide ${c.label}`}>
                       {issue.severity}
                     </span>
-                    <p className="text-white/60 text-sm mt-0.5 leading-relaxed">
+                    <p className="text-fg/60 text-sm mt-0.5 leading-relaxed">
                       {issue.message ?? issue.type ?? JSON.stringify(issue)}
                     </p>
                   </div>
@@ -538,7 +538,7 @@ export default async function SpeedPage() {
               )
             })}
             {issues.length > 8 && (
-              <p className="text-white/30 text-xs pt-1 pl-1">+{issues.length - 8} more issues</p>
+              <p className="text-fg/30 text-xs pt-1 pl-1">+{issues.length - 8} more issues</p>
             )}
           </div>
         </div>

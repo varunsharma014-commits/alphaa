@@ -14,7 +14,7 @@ export function GlassCard({ children, className, hover, glow, style }: GlassCard
       style={style}
       className={cn(
         "glass-card rounded-2xl p-6",
-        hover && "transition-all duration-200 hover:border-white/[0.15] hover:bg-white/[0.05]",
+        hover && "transition-all duration-200 hover:border-line/[0.15] hover:bg-fg/[0.05]",
         glow && "hover:shadow-glow-sm",
         className
       )}

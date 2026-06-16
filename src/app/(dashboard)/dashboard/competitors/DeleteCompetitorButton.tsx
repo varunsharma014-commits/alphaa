@@ -25,7 +25,7 @@ export function DeleteCompetitorButton({ id }: { id: string }) {
       onClick={handleDelete}
       disabled={loading}
       title="Remove competitor"
-      className="p-1.5 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 disabled:opacity-40 transition-colors"
+      className="p-1.5 rounded-lg text-fg/30 hover:text-red-400 hover:bg-red-500/10 disabled:opacity-40 transition-colors"
     >
       {loading ? (
         <Loader2 className="w-4 h-4 animate-spin" />

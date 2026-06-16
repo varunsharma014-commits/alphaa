@@ -108,7 +108,7 @@ export default function OnboardingPage() {
       {/* Logo */}
       <div className="flex items-center gap-2 mb-8">
         <Sparkles className="w-5 h-5 text-brand-orange" />
-        <span className="text-white font-semibold text-xl">alphaa</span>
+        <span className="text-fg font-semibold text-xl">alphaa</span>
       </div>
 
       {/* Progress */}
@@ -117,7 +117,7 @@ export default function OnboardingPage() {
           <span className="text-muted text-xs">Step {step} of {TOTAL_STEPS}</span>
           <span className="text-muted text-xs">{Math.round(progress)}% complete</span>
         </div>
-        <div className="h-1 bg-white/5 rounded-full">
+        <div className="h-1 bg-fg/5 rounded-full">
           <div className="h-full bg-brand-orange rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
         </div>
       </div>
@@ -157,7 +157,7 @@ export default function OnboardingPage() {
 function Step1({ data, update }: { data: OnboardingData; update: (p: Partial<OnboardingData>) => void }) {
   return (
     <GlassCard>
-      <h2 className="text-white font-semibold text-xl mb-1">What kind of business do you run?</h2>
+      <h2 className="text-fg font-semibold text-xl mb-1">What kind of business do you run?</h2>
       <p className="text-muted text-sm mb-5">We use this to customize your content and audit.</p>
       <div className="grid grid-cols-2 gap-2">
         {BUSINESS_TYPES.map((type) => (
@@ -167,8 +167,8 @@ function Step1({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
             className={cn(
               "p-3 rounded-xl text-sm text-left transition-all border",
               data.businessType === type
-                ? "bg-brand-orange/20 border-brand-orange text-white"
-                : "bg-white/[0.03] border-white/[0.08] text-muted hover:text-white hover:border-white/20"
+                ? "bg-brand-orange/20 border-brand-orange text-fg"
+                : "bg-fg/[0.03] border-line/[0.08] text-muted hover:text-fg hover:border-line/20"
             )}
           >
             {type}
@@ -182,13 +182,13 @@ function Step1({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
 function Step2({ data, update }: { data: OnboardingData; update: (p: Partial<OnboardingData>) => void }) {
   return (
     <GlassCard>
-      <h2 className="text-white font-semibold text-xl mb-1">Where is your business located?</h2>
+      <h2 className="text-fg font-semibold text-xl mb-1">Where is your business located?</h2>
       <p className="text-muted text-sm mb-5">We use this to target local searches in your area.</p>
       <div className="space-y-4">
-        <input placeholder="City" value={data.city} onChange={(e) => update({ city: e.target.value })} className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange" />
+        <input placeholder="City" value={data.city} onChange={(e) => update({ city: e.target.value })} className="w-full bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange" />
         <div className="grid grid-cols-2 gap-3">
-          <input placeholder="State" value={data.state} onChange={(e) => update({ state: e.target.value })} className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange" />
-          <input placeholder="ZIP" value={data.zip} onChange={(e) => update({ zip: e.target.value })} className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange" />
+          <input placeholder="State" value={data.state} onChange={(e) => update({ state: e.target.value })} className="w-full bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange" />
+          <input placeholder="ZIP" value={data.zip} onChange={(e) => update({ zip: e.target.value })} className="w-full bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange" />
         </div>
       </div>
     </GlassCard>
@@ -198,7 +198,7 @@ function Step2({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
 function Step3({ data, update }: { data: OnboardingData; update: (p: Partial<OnboardingData>) => void }) {
   return (
     <GlassCard>
-      <h2 className="text-white font-semibold text-xl mb-1">What's your website?</h2>
+      <h2 className="text-fg font-semibold text-xl mb-1">What's your website?</h2>
       <p className="text-muted text-sm mb-5">We'll audit it and use it to generate content.</p>
       <div className="space-y-3">
         <input
@@ -206,14 +206,14 @@ function Step3({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
           value={data.websiteUrl}
           onChange={(e) => update({ websiteUrl: e.target.value, hasWebsite: true })}
           disabled={!data.hasWebsite}
-          className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange disabled:opacity-50"
+          className="w-full bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange disabled:opacity-50"
         />
         <label className="flex items-center gap-2 cursor-pointer">
           <div
             onClick={() => update({ hasWebsite: !data.hasWebsite, websiteUrl: "" })}
-            className={cn("w-5 h-5 rounded border flex items-center justify-center transition-colors", !data.hasWebsite ? "bg-brand-orange border-brand-orange" : "border-white/20")}
+            className={cn("w-5 h-5 rounded border flex items-center justify-center transition-colors", !data.hasWebsite ? "bg-brand-orange border-brand-orange" : "border-line/20")}
           >
-            {!data.hasWebsite && <Check className="w-3 h-3 text-white" />}
+            {!data.hasWebsite && <Check className="w-3 h-3 text-fg" />}
           </div>
           <span className="text-muted text-sm">I don't have a website yet</span>
         </label>
@@ -241,13 +241,13 @@ function Step4({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
 
   return (
     <GlassCard>
-      <h2 className="text-white font-semibold text-xl mb-1">Add Alphaa to your website</h2>
+      <h2 className="text-fg font-semibold text-xl mb-1">Add Alphaa to your website</h2>
       <p className="text-muted text-sm mb-5">
         Paste this one snippet before your &lt;/head&gt; tag. Works on any website — or forward it to your developer in one click.
       </p>
 
       {/* Snippet block */}
-      <div className="bg-bg-primary rounded-xl p-4 border border-white/[0.08] mb-4">
+      <div className="bg-bg-primary rounded-xl p-4 border border-line/[0.08] mb-4">
         <code className="text-brand-orange text-xs font-mono break-all">{snippet}</code>
       </div>
 
@@ -263,7 +263,7 @@ function Step4({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
       {!showEmail ? (
         <button
           onClick={() => setShowEmail(true)}
-          className="w-full flex items-center justify-center gap-2 py-2.5 text-sm text-muted hover:text-white border border-white/[0.08] hover:border-white/20 rounded-full transition-colors mb-3"
+          className="w-full flex items-center justify-center gap-2 py-2.5 text-sm text-muted hover:text-fg border border-line/[0.08] hover:border-line/20 rounded-full transition-colors mb-3"
         >
           <Mail className="w-4 h-4" />
           Email to my developer
@@ -279,12 +279,12 @@ function Step4({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
               onChange={(e) => setDevEmail(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendTodev()}
               autoFocus
-              className="flex-1 bg-bg-tertiary border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+              className="flex-1 bg-bg-tertiary border border-line/10 rounded-xl px-4 py-2.5 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
             />
             <button
               onClick={sendTodev}
               disabled={!devEmail}
-              className="bg-brand-orange hover:bg-brand-orange-light disabled:opacity-40 text-white px-4 py-2.5 rounded-xl transition-colors flex items-center gap-1.5 text-sm font-medium"
+              className="bg-brand-orange hover:bg-brand-orange-light disabled:opacity-40 text-fg px-4 py-2.5 rounded-xl transition-colors flex items-center gap-1.5 text-sm font-medium"
             >
               <Send className="w-3.5 h-3.5" />
               Send
@@ -299,7 +299,7 @@ function Step4({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
       {/* Skip */}
       <button
         onClick={() => update({ snippetAdded: true })}
-        className="text-muted text-sm hover:text-white transition-colors block text-center w-full"
+        className="text-muted text-sm hover:text-fg transition-colors block text-center w-full"
       >
         I&apos;ll add this later →
       </button>
@@ -317,7 +317,7 @@ function Step5({
 }) {
   return (
     <GlassCard>
-      <h2 className="text-white font-semibold text-xl mb-1">Tell us about your business</h2>
+      <h2 className="text-fg font-semibold text-xl mb-1">Tell us about your business</h2>
       <p className="text-muted text-sm mb-4">We use this to write content in your voice, not generic AI copy.</p>
 
       {/* AI status banner */}
@@ -336,18 +336,18 @@ function Step5({
 
       <div className="space-y-4">
         <div>
-          <label className="block text-white text-sm font-medium mb-1.5">What makes your business different?</label>
+          <label className="block text-fg text-sm font-medium mb-1.5">What makes your business different?</label>
           <textarea
             value={data.voiceDescription}
             onChange={(e) => update({ voiceDescription: e.target.value })}
             placeholder={aiAnalyzing ? "Filling in from your website…" : "We're a family-owned practice focused on gentle, judgment-free care. 15 years in Austin. Patients often mention our friendly staff and no-wait appointments."}
             rows={5}
             disabled={aiAnalyzing}
-            className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange resize-none disabled:opacity-50"
+            className="w-full bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange resize-none disabled:opacity-50"
           />
         </div>
         <div>
-          <label className="block text-white text-sm font-medium mb-1.5">
+          <label className="block text-fg text-sm font-medium mb-1.5">
             Any topics to avoid? <span className="text-muted font-normal">(optional)</span>
           </label>
           <textarea
@@ -356,7 +356,7 @@ function Step5({
             placeholder={aiAnalyzing ? "Filling in from your website…" : "Don't mention pricing. Avoid comparing us to specific competitors by name."}
             rows={2}
             disabled={aiAnalyzing}
-            className="w-full bg-bg-tertiary border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange resize-none disabled:opacity-50"
+            className="w-full bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange resize-none disabled:opacity-50"
           />
         </div>
       </div>
@@ -370,7 +370,7 @@ function Step6() {
       <div className="w-16 h-16 rounded-full bg-brand-orange/20 flex items-center justify-center mx-auto mb-6">
         <Check className="w-8 h-8 text-brand-orange" />
       </div>
-      <h2 className="text-white font-semibold text-2xl mb-3">You're all set.</h2>
+      <h2 className="text-fg font-semibold text-2xl mb-3">You're all set.</h2>
       <p className="text-muted text-base mb-2">We're running your first audit and preparing your dashboard.</p>
       <p className="text-muted/60 text-sm">Your first Google Business Profile post goes out within 24 hours.</p>
     </GlassCard>
