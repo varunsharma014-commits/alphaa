@@ -58,7 +58,7 @@ Write a professional, genuine, and warm reply from the business owner.
 Keep it 2-4 sentences. Sound human, not robotic. Do not use markdown. Return only the reply text.`
 
     const message = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
+      model: "claude-sonnet-4-6",
       max_tokens: 512,
       messages: [{ role: "user", content: prompt }],
     })

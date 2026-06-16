@@ -88,7 +88,7 @@ Rules:
 - Do NOT use the words: schema, AEO, LLM, entity, structured data, semantic, generative engine`
 
   const message = await anthropic.messages.create({
-    model: "claude-sonnet-4-5",
+    model: "claude-sonnet-4-6",
     max_tokens: 1024,
     messages: [{ role: "user", content: prompt }],
   })

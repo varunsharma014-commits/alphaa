@@ -1,0 +1,32 @@
+# Alphaa
+
+> Alphaa is an AI search visibility platform for local businesses. It helps small and medium-sized businesses get found on AI-powered search engines — ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews — by automatically optimizing their Google Business Profile, generating structured content, tracking AI citations, and delivering weekly visibility reports.
+
+Alphaa is built for local business owners who want to be recommended by AI assistants when potential customers ask questions like "best dentist near me" or "top-rated plumber in [city]."
+
+## Pages
+
+- [Home](https://alphaa.app/): Overview of Alphaa's AI search visibility platform for local businesses.
+- [How It Works](https://alphaa.app/how-it-works): Step-by-step explanation of how Alphaa optimizes a business's AI search presence.
+- [Pricing](https://alphaa.app/pricing): Subscription plans — Starter ($99/month) and Pro ($199/month), with a 14-day free trial. No credit card required to start.
+- [Free Visibility Scan](https://alphaa.app/scan): Enter your business name and website to get a free AI search visibility score showing how your business appears across ChatGPT, Claude, Gemini, and Perplexity.
+- [Case Studies](https://alphaa.app/case-studies): Real examples of local businesses that improved their AI search visibility using Alphaa.
+- [Referral Program](https://alphaa.app/refer): Earn 30% recurring commission by referring local businesses to Alphaa.
+- [Privacy Policy](https://alphaa.app/privacy): How Alphaa collects, uses, and protects user data.
+- [Terms of Service](https://alphaa.app/terms): Legal terms governing use of the Alphaa platform.
+
+## Product Features
+
+- AI Search Visibility Score: Tracks how often and how accurately your business is cited by ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews.
+- Google Business Profile Automation: Generates and publishes optimized posts, responds to reviews, and keeps your profile active — all automatically.
+- Website SEO Audit: Crawls your website to identify on-page SEO issues, missing schema markup, and technical problems.
+- Schema Markup Generation: Creates and deploys JSON-LD structured data to help AI search engines understand your business.
+- Keyword Rankings: Syncs with Google Search Console to track your organic keyword positions.
+- Competitor Analysis: Analyzes competitor websites to identify content gaps and ranking opportunities.
+- Weekly Reports: Automated email reports summarizing your visibility score, new posts, review activity, and keyword movements.
+
+## Contact
+
+- Website: https://alphaa.app
+- Email: hi@alphaa.app
+- Address: 1000 Innovation Dr, Kanata, ON K2K 3E7, Canada

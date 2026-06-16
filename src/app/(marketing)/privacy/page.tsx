@@ -83,19 +83,30 @@ We do not share your personal information with any other third parties except as
   },
   {
     title: "5. Google API Limited Use Disclosure",
-    body: `This section constitutes our required disclosure under Google's API Services User Data Policy.
+    body: `This section constitutes our required disclosure under Google's API Services User Data Policy (https://developers.google.com/terms/api-services-user-data-policy).
 
 Alphaa's use of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements.
 
-Specifically:
+OAuth Scopes We Request and Why:
+
+• https://www.googleapis.com/auth/business.manage (Google Business Profile)
+  We use this scope to read your business profile information (name, address, hours, category), retrieve existing posts and performance metrics (impressions, clicks, calls), publish new posts you generate through Alphaa, and fetch customer reviews so you can monitor and respond to them from within the Alphaa dashboard.
+
+• https://www.googleapis.com/auth/webmasters.readonly (Google Search Console)
+  We use this scope to retrieve your website's keyword ranking data, including search queries, click-through rates, impressions, and average position. This data is displayed in your Alphaa Keywords dashboard to help you understand your organic search performance.
+
+• https://www.googleapis.com/auth/analytics.readonly (Google Analytics)
+  We use this scope to retrieve traffic data including sessions, page views, bounce rate, average session duration, and traffic source breakdown. This data is displayed in your Alphaa dashboard to help you understand how users are finding and engaging with your website.
+
+Limited Use Commitments:
 • We access Google user data solely to provide the features and functionality of the Alphaa Service that you have explicitly requested and authorized.
 • We do not use Google user data to develop, improve, or train generalized AI or machine learning models.
 • We do not sell Google user data to any third parties.
 • We do not use or transfer Google user data for advertising purposes or to brokers.
-• We do not allow humans to read Google user data except: (a) with your explicit consent; (b) where necessary for security purposes and to investigate suspected abuse; (c) to comply with applicable law; or (d) where the data has been aggregated and anonymized.
-• We store Google API data only as long as necessary to provide the Service.
+• We do not allow humans to read your Google user data except: (a) with your explicit consent; (b) where necessary for security purposes and to investigate suspected abuse; (c) to comply with applicable law; or (d) where the data has been aggregated and anonymized and is no longer linkable to you.
+• We store Google API data only as long as necessary to provide the Service, and delete it within 30 days of account deletion or revocation of access.
 
-You may revoke Alphaa's access to your Google data at any time by visiting https://myaccount.google.com/permissions and removing Alphaa's access.`,
+You may revoke Alphaa's access to your Google data at any time by visiting https://myaccount.google.com/permissions and removing Alphaa's access. Revoking access will disable features that depend on Google integrations but will not affect your Alphaa account otherwise.`,
   },
   {
     title: "6. Cookies and Tracking",
@@ -178,8 +189,15 @@ Your continued use of the Service after the effective date of any changes consti
     title: "13. Contact Us",
     body: `If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact our Privacy team:
 
-Email: privacy@alphaa.app
+Email: hi@alphaa.app
 Subject line: Privacy Request — [your request type]
+Website: https://alphaa.app
+
+Mailing address:
+Alphaa
+1000 Innovation Dr
+Kanata, ON K2K 3E7
+Canada
 
 We will respond to your inquiry within 30 days.`,
   },
@@ -190,14 +208,7 @@ export default function PrivacyPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-white text-3xl font-semibold mb-2">Privacy Policy</h1>
-        <p className="text-white/40 text-sm mb-10">
-          Last updated:{" "}
-          {new Date().toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </p>
+        <p className="text-white/40 text-sm mb-10">Last updated: June 15, 2026</p>
 
         <p className="text-white/50 text-sm leading-relaxed mb-10 p-4 border border-white/[0.08] rounded-lg bg-white/[0.02]">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.
