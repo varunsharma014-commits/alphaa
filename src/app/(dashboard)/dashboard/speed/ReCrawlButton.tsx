@@ -29,16 +29,29 @@ export function ReCrawlButton() {
   }
 
   return (
-    <div className="flex flex-col items-end gap-1">
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
       <button
         onClick={handleCrawl}
         disabled={loading || done}
-        className="inline-flex items-center gap-2 bg-fg/[0.06] hover:bg-fg/[0.1] disabled:opacity-50 disabled:cursor-not-allowed text-fg text-sm font-medium px-4 py-2 rounded-lg transition-colors border border-line/[0.08]"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          background: "transparent",
+          border: "1px solid #333333",
+          color: "#888888",
+          fontSize: "13px",
+          fontWeight: 500,
+          padding: "8px 16px",
+          borderRadius: "8px",
+          cursor: loading || done ? "not-allowed" : "pointer",
+          opacity: loading || done ? 0.6 : 1,
+        }}
       >
-        <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-        {done ? "Crawl started!" : loading ? "Crawling…" : "Re-crawl site"}
+        <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
+        {done ? "Check started" : loading ? "Checking…" : "Check my site now"}
       </button>
-      {error && <p className="text-red-400 text-xs">{error}</p>}
+      {error && <p style={{ color: "#888888", fontSize: "11px" }}>alphaa will retry this automatically.</p>}
     </div>
   )
 }

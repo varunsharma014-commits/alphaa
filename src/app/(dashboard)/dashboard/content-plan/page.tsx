@@ -2,8 +2,13 @@ export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
-import { GlassCard } from "@/components/common/GlassCard"
-import { CalendarDays, CheckCircle2, Clock, Info } from "lucide-react"
+import { Wand2 } from "lucide-react"
+import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
+import { StatBox } from "@/components/dashboard/StatBox"
+import { StatusPill } from "@/components/dashboard/StatusPill"
+import { SectionDivider } from "@/components/dashboard/SectionDivider"
+import { DsCard } from "@/components/dashboard/DsCard"
+import { EmptyState } from "@/components/dashboard/EmptyState"
 import { GenerateMonthButton } from "./GenerateMonthButton"
 
 export const metadata = { title: "Content Plan" }
@@ -16,20 +21,29 @@ function formatDateLong(date: Date) {
   return new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric" }).format(new Date(date))
 }
 
+function formatWeekday(date: Date) {
+  return new Intl.DateTimeFormat("en-US", { weekday: "long", month: "short", day: "numeric" }).format(
+    new Date(date)
+  )
+}
+
 type PostStatus = "posted" | "draft" | "failed" | "scheduled"
 type PostType = "UPDATE" | "OFFER" | "EVENT"
 
-const STATUS_META: Record<PostStatus, { label: string; dot: string; badge: string }> = {
-  posted:    { label: "Published", dot: "bg-green-400",  badge: "bg-green-500/10 border-green-500/20 text-green-400"  },
-  draft:     { label: "Draft",     dot: "bg-amber-400",  badge: "bg-amber-500/10 border-amber-500/20 text-amber-400"  },
-  scheduled: { label: "Scheduled", dot: "bg-blue-400",   badge: "bg-blue-500/10 border-blue-500/20 text-blue-400"    },
-  failed:    { label: "Failed",    dot: "bg-red-400",    badge: "bg-red-500/10 border-red-500/20 text-red-400"        },
+const STATUS_META: Record<
+  PostStatus,
+  { label: string; dot: string; variant: "found" | "warning" | "info" | "error" }
+> = {
+  posted: { label: "Published", dot: "#22c55e", variant: "found" },
+  draft: { label: "Draft", dot: "#f59e0b", variant: "warning" },
+  scheduled: { label: "Scheduled", dot: "#3b82f6", variant: "info" },
+  failed: { label: "Needs attention", dot: "#dc2626", variant: "error" },
 }
 
-const TYPE_META: Record<PostType, { label: string; badge: string }> = {
-  UPDATE: { label: "Update", badge: "bg-blue-500/10 border-blue-500/20 text-blue-400"     },
-  OFFER:  { label: "Offer",  badge: "bg-green-500/10 border-green-500/20 text-green-400"  },
-  EVENT:  { label: "Event",  badge: "bg-purple-500/10 border-purple-500/20 text-purple-400" },
+const TYPE_META: Record<PostType, { label: string; variant: "info" | "found" | "neutral" }> = {
+  UPDATE: { label: "Update", variant: "info" },
+  OFFER: { label: "Offer", variant: "found" },
+  EVENT: { label: "Event", variant: "neutral" },
 }
 
 export default async function ContentPlanPage() {
@@ -61,185 +75,264 @@ export default async function ContentPlanPage() {
     return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
   })
   const publishedCount = thisMonth.filter((p) => p.status === "posted").length
-  const draftCount     = thisMonth.filter((p) => p.status === "draft").length
+  const draftCount = thisMonth.filter((p) => p.status === "draft").length
   const targetPerMonth = 8
-  const progressPct    = Math.min(100, Math.round((publishedCount / targetPerMonth) * 100))
+  const progressPct = Math.min(100, Math.round((publishedCount / targetPerMonth) * 100))
+
+  // Next scheduled / upcoming post (first non-published, soonest)
+  const upcoming = thisMonth
+    .filter((p) => p.status !== "posted" && p.status !== "failed")
+    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())[0]
+  const nextPostLabel = upcoming ? formatWeekday(upcoming.createdAt) : "Planned automatically"
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+      <AutopilotBar message="alphaa auto-generates and posts content — you can review drafts or let it run" />
 
-      {/* ── Hero ─────────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-2xl border border-brand-orange/20 bg-gradient-to-br from-brand-orange/[0.10] via-transparent to-transparent p-6 md:p-8">
-        <div className="absolute -top-20 -right-20 w-52 h-52 rounded-full bg-brand-orange/10 blur-3xl pointer-events-none" />
-        <div className="relative flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <CalendarDays className="w-4 h-4 text-brand-orange" />
-              <span className="text-brand-orange text-xs font-semibold uppercase tracking-widest">Content Plan</span>
-            </div>
-            <h1 className="text-fg font-bold text-3xl">{monthName}</h1>
-            <p className="text-fg/40 text-sm mt-1">2 posts per week, automated by alphaa</p>
-
-            {/* Progress bar */}
-            <div className="mt-4 max-w-xs">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-fg/50 text-xs">{publishedCount} of {targetPerMonth} posts published</span>
-                <span className="text-brand-orange text-xs font-semibold">{progressPct}%</span>
-              </div>
-              <div className="h-2 rounded-full bg-fg/[0.08] overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-brand-orange transition-all duration-700"
-                  style={{ width: `${progressPct}%` }}
-                />
-              </div>
-            </div>
-          </div>
-          <GenerateMonthButton />
+      {/* ── Header ─────────────────────────────────────── */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: "16px",
+          flexWrap: "wrap",
+          marginBottom: "20px",
+        }}
+      >
+        <div>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>Content calendar</h1>
+          <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "4px", maxWidth: "560px" }}>
+            alphaa plans, writes, and schedules your content — you can approve each post or let it go out
+            automatically.
+          </p>
+          <p style={{ fontSize: "11px", color: "#555555", marginTop: "6px" }}>{monthName}</p>
         </div>
-
-        {/* Quick stats */}
-        <div className="relative flex items-center gap-6 mt-6 pt-6 border-t border-line/[0.08]">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-green-400" />
-            <span className="text-fg/70 text-sm">{publishedCount} published</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-amber-400" />
-            <span className="text-fg/70 text-sm">{draftCount} drafts ready</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-fg/25" />
-            <span className="text-fg/35 text-sm text-xs">Posts on Mon + Thu each week</span>
-          </div>
-        </div>
+        <GenerateMonthButton />
       </div>
 
-      {/* ── 4-Week Calendar ──────────────────────────── */}
-      <div>
-        <h2 className="text-fg font-semibold text-lg mb-3">This Month at a Glance</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {weeks.map((week, i) => {
-            const weekPosts = posts.filter((p) => {
-              const d = new Date(p.createdAt)
-              return d >= week.start && d < week.end
-            })
-            const postedInWeek  = weekPosts.filter((p) => p.status === "posted").length
-            const draftInWeek   = weekPosts.filter((p) => p.status === "draft").length
-            const isCurrentWeek = now >= week.start && now < week.end
+      {/* ── Stats row ──────────────────────────────────── */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "10px",
+          marginBottom: "20px",
+        }}
+      >
+        <StatBox
+          value={`${publishedCount} of ${targetPerMonth}`}
+          label="Published this month"
+          tone="success"
+        />
+        <StatBox value={draftCount} label="Drafts ready to review" tone={draftCount > 0 ? "warning" : "muted"} />
+        <StatBox value={nextPostLabel} label="Next post" tone="default" />
+        <StatBox value="Yes" label="Posts on autopilot" tone="success" />
+      </div>
 
+      {/* ── Progress bar ───────────────────────────────── */}
+      <DsCard>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
+          <span style={{ fontSize: "13px", color: "#ffffff", fontWeight: 500 }}>
+            {publishedCount} of {targetPerMonth} posts published this month
+          </span>
+          <span style={{ fontSize: "13px", color: "#e05a2b", fontWeight: 500 }}>{progressPct}%</span>
+        </div>
+        <div style={{ height: "8px", borderRadius: "20px", background: "#1a1a1a", overflow: "hidden" }}>
+          <div
+            style={{
+              height: "100%",
+              borderRadius: "20px",
+              background: "#e05a2b",
+              width: `${progressPct}%`,
+              transition: "width 700ms",
+            }}
+          />
+        </div>
+        <p style={{ fontSize: "11px", color: "#555555", marginTop: "10px", lineHeight: 1.6 }}>
+          alphaa keeps publishing for you — about 2 posts per week, no action needed on your part.
+        </p>
+      </DsCard>
+
+      {/* ── 4-Week Calendar ──────────────────────────── */}
+      <SectionDivider>THIS MONTH AT A GLANCE</SectionDivider>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "10px",
+        }}
+      >
+        {weeks.map((week, i) => {
+          const weekPosts = posts.filter((p) => {
+            const d = new Date(p.createdAt)
+            return d >= week.start && d < week.end
+          })
+          const postedInWeek = weekPosts.filter((p) => p.status === "posted").length
+          const draftInWeek = weekPosts.filter((p) => p.status === "draft").length
+          const isCurrentWeek = now >= week.start && now < week.end
+
+          return (
+            <div
+              key={i}
+              style={{
+                position: "relative",
+                borderRadius: "10px",
+                padding: "14px",
+                background: isCurrentWeek ? "#1a1208" : "#161616",
+                border: isCurrentWeek ? "1px solid #e05a2b" : ".5px solid #222222",
+              }}
+            >
+              {isCurrentWeek && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "12px",
+                    right: "12px",
+                    fontSize: "9px",
+                    fontWeight: 500,
+                    color: "#e05a2b",
+                    textTransform: "uppercase",
+                    letterSpacing: ".08em",
+                  }}
+                >
+                  Now
+                </span>
+              )}
+              <p style={{ fontSize: "13px", fontWeight: 500, color: "#ffffff" }}>Week {i + 1}</p>
+              <p style={{ fontSize: "11px", color: "#555555", marginTop: "2px" }}>
+                {formatDate(week.start)} – {formatDate(week.end)}
+              </p>
+
+              {/* Slot dots */}
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "12px" }}>
+                {[0, 1].map((slot) => {
+                  const post = weekPosts[slot]
+                  if (!post)
+                    return (
+                      <span
+                        key={slot}
+                        style={{
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          background: "#1a1a1a",
+                          border: "1px solid #2a2a2a",
+                        }}
+                      />
+                    )
+                  const s = STATUS_META[post.status as PostStatus] ?? STATUS_META.draft
+                  return (
+                    <span
+                      key={slot}
+                      title={s.label}
+                      style={{ width: "10px", height: "10px", borderRadius: "50%", background: s.dot }}
+                    />
+                  )
+                })}
+                {weekPosts.length > 2 && (
+                  <span style={{ fontSize: "11px", color: "#555555" }}>+{weekPosts.length - 2}</span>
+                )}
+              </div>
+
+              <p style={{ fontSize: "11px", marginTop: "10px", lineHeight: 1.5 }}>
+                {weekPosts.length === 0 ? (
+                  <span style={{ color: "#555555" }}>
+                    alphaa will generate posts for this week automatically
+                  </span>
+                ) : (
+                  <>
+                    {postedInWeek > 0 && <span style={{ color: "#22c55e" }}>{postedInWeek} published</span>}
+                    {postedInWeek > 0 && draftInWeek > 0 && <span style={{ color: "#444444" }}> · </span>}
+                    {draftInWeek > 0 && <span style={{ color: "#f59e0b" }}>{draftInWeek} draft</span>}
+                  </>
+                )}
+              </p>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Legend */}
+      <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "12px", flexWrap: "wrap" }}>
+        {[
+          { dot: "#22c55e", label: "Published" },
+          { dot: "#f59e0b", label: "Draft" },
+          { dot: "#3b82f6", label: "Scheduled" },
+          { dot: "#1a1a1a", label: "Empty slot", border: true },
+        ].map((l) => (
+          <div key={l.label} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <span
+              style={{
+                width: "9px",
+                height: "9px",
+                borderRadius: "50%",
+                background: l.dot,
+                border: l.border ? "1px solid #2a2a2a" : undefined,
+              }}
+            />
+            <span style={{ fontSize: "11px", color: "#555555" }}>{l.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* ── All Posts ───────────────────────────── */}
+      <SectionDivider>ALL POSTS ({posts.length})</SectionDivider>
+
+      {posts.length === 0 ? (
+        <DsCard>
+          <EmptyState
+            icon={Wand2}
+            title="alphaa will handle your content calendar"
+            body="Click below and alphaa writes a full month of Google posts tailored to your business. It keeps generating them every month automatically."
+          >
+            <GenerateMonthButton />
+          </EmptyState>
+        </DsCard>
+      ) : (
+        <DsCard style={{ padding: 0, overflow: "hidden" }}>
+          {posts.slice(0, 20).map((post, idx) => {
+            const s = STATUS_META[post.status as PostStatus] ?? STATUS_META.draft
+            const t = TYPE_META[post.postType as PostType] ?? TYPE_META.UPDATE
             return (
               <div
-                key={i}
-                className={`relative rounded-2xl p-4 border transition-all ${
-                  isCurrentWeek
-                    ? "border-brand-orange/30 bg-brand-orange/[0.06]"
-                    : "border-line/[0.06] bg-fg/[0.02]"
-                }`}
+                key={post.id}
+                style={{
+                  padding: "16px 20px",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "14px",
+                  borderTop: idx === 0 ? undefined : ".5px solid #222222",
+                }}
               >
-                {isCurrentWeek && (
-                  <span className="absolute top-3 right-3 text-[10px] font-semibold text-brand-orange uppercase tracking-widest">
-                    Now
-                  </span>
-                )}
-                <p className="text-fg font-semibold text-sm">Week {i + 1}</p>
-                <p className="text-fg/35 text-xs mt-0.5">
-                  {formatDate(week.start)} – {formatDate(week.end)}
-                </p>
-
-                {/* Slot dots */}
-                <div className="flex items-center gap-1.5 mt-3">
-                  {[0, 1].map((slot) => {
-                    const post = weekPosts[slot]
-                    if (!post) return <span key={slot} className="w-3 h-3 rounded-full bg-fg/[0.08] border border-line/10" />
-                    const s = STATUS_META[post.status as PostStatus] ?? STATUS_META.draft
-                    return <span key={slot} className={`w-3 h-3 rounded-full ${s.dot}`} title={s.label} />
-                  })}
-                  {weekPosts.length > 2 && (
-                    <span className="text-fg/30 text-xs">+{weekPosts.length - 2}</span>
-                  )}
+                <span
+                  style={{
+                    width: "8px",
+                    height: "8px",
+                    borderRadius: "50%",
+                    flexShrink: 0,
+                    marginTop: "6px",
+                    background: s.dot,
+                  }}
+                />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
+                    {post.content.slice(0, 180)}
+                    {post.content.length > 180 ? "…" : ""}
+                  </p>
+                  <p style={{ fontSize: "11px", color: "#555555", marginTop: "4px" }}>
+                    {formatDateLong(post.createdAt)}
+                  </p>
                 </div>
-
-                <p className="text-fg/50 text-xs mt-2">
-                  {weekPosts.length === 0 ? (
-                    <span className="text-fg/25">No posts yet</span>
-                  ) : (
-                    <>
-                      {postedInWeek > 0 && <span className="text-green-400">{postedInWeek} published</span>}
-                      {postedInWeek > 0 && draftInWeek > 0 && <span className="text-fg/20"> · </span>}
-                      {draftInWeek > 0  && <span className="text-amber-400">{draftInWeek} draft</span>}
-                    </>
-                  )}
-                </p>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+                  <StatusPill variant={t.variant}>{t.label}</StatusPill>
+                  <StatusPill variant={s.variant}>{s.label}</StatusPill>
+                </div>
               </div>
             )
           })}
-        </div>
-
-        {/* Legend */}
-        <div className="flex items-center gap-5 mt-3 px-1">
-          {[
-            { dot: "bg-green-400", label: "Published" },
-            { dot: "bg-amber-400", label: "Draft" },
-            { dot: "bg-blue-400",  label: "Scheduled" },
-            { dot: "bg-fg/[0.08] border border-line/10", label: "Empty slot" },
-          ].map((l) => (
-            <div key={l.label} className="flex items-center gap-1.5">
-              <span className={`w-2.5 h-2.5 rounded-full ${l.dot}`} />
-              <span className="text-fg/30 text-xs">{l.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── All Posts Table ───────────────────────────── */}
-      <GlassCard className="p-0 overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-line/[0.06]">
-          <h2 className="text-fg font-semibold text-sm">
-            All Posts <span className="text-fg/30 font-normal">({posts.length})</span>
-          </h2>
-        </div>
-
-        {posts.length === 0 ? (
-          <div className="flex flex-col items-center gap-4 py-14 text-center px-6">
-            <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center">
-              <CalendarDays className="w-6 h-6 text-brand-orange" />
-            </div>
-            <div className="max-w-xs">
-              <p className="text-fg font-semibold">No posts yet</p>
-              <p className="text-fg/40 text-sm mt-1 leading-relaxed">
-                Use "Auto-Generate Month" to create your first batch. alphaa writes them in your voice.
-              </p>
-            </div>
-            <GenerateMonthButton />
-          </div>
-        ) : (
-          <div className="divide-y divide-line/[0.04]">
-            {posts.slice(0, 20).map((post) => {
-              const s = STATUS_META[post.status as PostStatus] ?? STATUS_META.draft
-              const t = TYPE_META[post.postType as PostType] ?? TYPE_META.UPDATE
-              return (
-                <div key={post.id} className="px-5 py-4 flex items-start gap-4 hover:bg-fg/[0.02] transition-colors">
-                  <div className={`w-2 h-2 rounded-full flex-shrink-0 mt-2 ${s.dot}`} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-fg/80 text-sm leading-relaxed line-clamp-2">
-                      {post.content.slice(0, 180)}{post.content.length > 180 ? "…" : ""}
-                    </p>
-                    <p className="text-fg/30 text-xs mt-1">{formatDateLong(post.createdAt)}</p>
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md border text-xs font-medium ${t.badge}`}>
-                      {t.label}
-                    </span>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md border text-xs font-medium ${s.badge}`}>
-                      {s.label}
-                    </span>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </GlassCard>
+        </DsCard>
+      )}
     </div>
   )
 }

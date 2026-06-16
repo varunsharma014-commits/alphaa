@@ -36,22 +36,43 @@ export function GenerateMonthButton() {
   }
 
   return (
-    <div className="flex items-center gap-3">
+    <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
       <button
         onClick={handleGenerate}
         disabled={loading}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-orange hover:bg-brand-orange-light text-fg font-semibold text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          background: "#e05a2b",
+          color: "#ffffff",
+          border: "none",
+          borderRadius: "8px",
+          padding: "8px 18px",
+          fontSize: "13px",
+          fontWeight: 500,
+          cursor: loading ? "not-allowed" : "pointer",
+          opacity: loading ? 0.5 : 1,
+          transition: "opacity 200ms",
+        }}
       >
         {loading ? (
-          <div className="w-4 h-4 border-2 border-line/30 border-t-white rounded-full animate-spin" />
+          <div
+            style={{
+              width: "16px",
+              height: "16px",
+              border: "2px solid rgba(255,255,255,0.3)",
+              borderTopColor: "#ffffff",
+              borderRadius: "50%",
+              animation: "spin 0.7s linear infinite",
+            }}
+          />
         ) : (
-          <CalendarDays className="w-4 h-4" />
+          <CalendarDays style={{ width: "16px", height: "16px" }} />
         )}
-        {loading ? "Generating…" : "Auto-Generate Month"}
+        {loading ? "Generating…" : "Generate my first month →"}
       </button>
-      {message && (
-        <span className="text-muted text-xs">{message}</span>
-      )}
+      {message && <span style={{ fontSize: "11px", color: "#888888" }}>{message}</span>}
     </div>
   )
 }

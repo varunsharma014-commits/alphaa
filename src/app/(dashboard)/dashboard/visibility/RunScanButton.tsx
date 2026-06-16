@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { RefreshCw } from "lucide-react"
 
 interface RunScanButtonProps {
   prominent?: boolean
@@ -28,9 +29,23 @@ export default function RunScanButton({ prominent = false }: RunScanButtonProps)
       <button
         onClick={handleScan}
         disabled={loading}
-        className="bg-orange-500 hover:bg-orange-400 disabled:opacity-60 text-fg font-semibold rounded-xl px-6 py-3 transition-colors text-sm"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          background: "#e05a2b",
+          color: "#ffffff",
+          fontSize: "13px",
+          fontWeight: 500,
+          borderRadius: "8px",
+          padding: "9px 18px",
+          border: "none",
+          cursor: loading ? "default" : "pointer",
+          opacity: loading ? 0.6 : 1,
+        }}
       >
-        {loading ? "Scanning…" : "Run AI Scan"}
+        {loading && <RefreshCw size={13} className="animate-spin" />}
+        {loading ? "Re-checking the AI engines…" : "Check the AI engines now"}
       </button>
     )
   }
@@ -39,9 +54,24 @@ export default function RunScanButton({ prominent = false }: RunScanButtonProps)
     <button
       onClick={handleScan}
       disabled={loading}
-      className="bg-fg/10 hover:bg-fg/15 disabled:opacity-60 text-fg font-medium rounded-xl px-4 py-2 transition-colors text-sm border border-line/10 whitespace-nowrap"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "7px",
+        background: "transparent",
+        color: "#888888",
+        fontSize: "13px",
+        fontWeight: 500,
+        borderRadius: "8px",
+        padding: "8px 16px",
+        border: "1px solid #333333",
+        whiteSpace: "nowrap",
+        cursor: loading ? "default" : "pointer",
+        opacity: loading ? 0.6 : 1,
+      }}
     >
-      {loading ? "Scanning…" : "Run scan"}
+      {loading && <RefreshCw size={12} className="animate-spin" />}
+      {loading ? "Re-checking…" : "Check again now"}
     </button>
   )
 }

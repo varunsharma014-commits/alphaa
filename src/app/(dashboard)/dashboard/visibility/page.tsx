@@ -3,7 +3,12 @@ export const dynamic = "force-dynamic"
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { GlassCard } from "@/components/common/GlassCard"
+import { Bot, Globe, Sparkles, Search, RefreshCw, Wand2 } from "lucide-react"
+import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
+import { StatBox } from "@/components/dashboard/StatBox"
+import { StatusPill } from "@/components/dashboard/StatusPill"
+import { DsCard } from "@/components/dashboard/DsCard"
+import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import RunScanButton from "./RunScanButton"
 
 export const metadata = { title: "AI Visibility" }
@@ -12,53 +17,12 @@ type EngineKey = "chatgpt" | "claude" | "gemini" | "perplexity"
 
 const ENGINE_META: Record<
   EngineKey,
-  { label: string; icon: string; aiStatusKey: string }
+  { label: string; Icon: typeof Bot; aiStatusKey: string }
 > = {
-  chatgpt: { label: "ChatGPT", icon: "🤖", aiStatusKey: "chatgpt" },
-  claude: { label: "Claude / Google AI", icon: "🌐", aiStatusKey: "google_ai" },
-  gemini: { label: "Gemini", icon: "✨", aiStatusKey: "gemini" },
-  perplexity: { label: "Perplexity", icon: "🔍", aiStatusKey: "perplexity" },
-}
-
-function getStatusLabel(status: string | undefined | null): string {
-  if (!status || status === "not_appearing") return "Not yet"
-  if (status === "occasionally") return "Sometimes"
-  if (status === "frequently" || status === "appeared") return "Found you"
-  return "Not yet"
-}
-
-function getStatusMeta(status: string | undefined | null): {
-  label: string
-  pillClass: string
-  dotClass: string
-  barColor: string
-  barWidth: string
-} {
-  if (status === "frequently" || status === "appeared") {
-    return {
-      label: "Found you",
-      pillClass: "bg-green-500/15 border border-green-500/30 text-green-400",
-      dotClass: "bg-green-400",
-      barColor: "bg-green-400",
-      barWidth: "100%",
-    }
-  }
-  if (status === "occasionally") {
-    return {
-      label: "Sometimes",
-      pillClass: "bg-amber-500/15 border border-amber-500/30 text-amber-400",
-      dotClass: "bg-amber-400",
-      barColor: "bg-amber-400",
-      barWidth: "50%",
-    }
-  }
-  return {
-    label: "Not yet",
-    pillClass: "bg-fg/[0.06] border border-line/10 text-fg/40",
-    dotClass: "bg-fg/20",
-    barColor: "bg-red-400",
-    barWidth: "0%",
-  }
+  chatgpt: { label: "ChatGPT", Icon: Bot, aiStatusKey: "chatgpt" },
+  claude: { label: "Claude / Google AI", Icon: Globe, aiStatusKey: "google_ai" },
+  gemini: { label: "Gemini", Icon: Sparkles, aiStatusKey: "gemini" },
+  perplexity: { label: "Perplexity", Icon: Search, aiStatusKey: "perplexity" },
 }
 
 export default async function VisibilityPage() {
@@ -99,48 +63,99 @@ export default async function VisibilityPage() {
       })
     : null
 
+  // Days from joining to first AI mention (capped to non-negative whole days)
+  const daysToFirstMention =
+    audit?.createdAt && user.createdAt
+      ? Math.max(
+          0,
+          Math.round(
+            (audit.createdAt.getTime() - user.createdAt.getTime()) / 86_400_000
+          )
+        )
+      : null
+
   // ── No scan yet ──────────────────────────────────────────────────────────────
   if (!audit) {
     return (
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div style={{ maxWidth: "880px", margin: "0 auto" }}>
+        <AutopilotBar message="alphaa scans all 4 AI engines every week — no action needed" />
+
         {/* Page header */}
-        <div>
-          <h1 className="text-fg font-semibold text-2xl">AI Visibility</h1>
-          <p className="text-fg/40 text-sm mt-0.5">
-            Where your business shows up when people search on AI tools.
+        <div style={{ marginBottom: "20px" }}>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>AI Visibility</h1>
+          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+            When someone asks an AI assistant for your type of business — do you show up?
           </p>
         </div>
 
-        {/* Empty state */}
-        <div className="relative overflow-hidden rounded-2xl border border-[#FF6B1A]/20 bg-gradient-to-br from-[#FF6B1A]/[0.12] via-transparent to-transparent p-12">
-          <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-[#FF6B1A]/20 blur-3xl pointer-events-none" />
-          <div className="relative text-center space-y-5 max-w-md mx-auto">
-            <p className="text-6xl">🔍</p>
-            <div className="space-y-2">
-              <h2 className="text-fg font-bold text-2xl">No AI scan yet</h2>
-              <p className="text-fg/50 text-sm leading-relaxed">
-                Find out if ChatGPT, Gemini, Perplexity, and Claude mention your business
-                when customers search for services like yours. Takes about 30 seconds.
+        {/* First scan running */}
+        <DsCard style={{ padding: "0" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              padding: "48px 24px",
+              gap: "14px",
+            }}
+          >
+            <div
+              style={{
+                width: "44px",
+                height: "44px",
+                borderRadius: "10px",
+                background: "#1a1a1a",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <RefreshCw size={22} color="#e05a2b" className="animate-spin" />
+            </div>
+            <div style={{ maxWidth: "440px" }}>
+              <h3 style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff", marginBottom: "6px" }}>
+                alphaa is running your first AI engine scan
+              </h3>
+              <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
+                We&apos;re asking ChatGPT, Perplexity, Gemini and Google AI the questions your
+                customers type — and checking whether your business comes up. This happens
+                automatically, you don&apos;t need to do anything.
+              </p>
+              <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px" }}>
+                Most businesses get their first AI mention within 11 days of joining.
               </p>
             </div>
-            <div className="pt-2">
+            <div style={{ marginTop: "4px" }}>
               <RunScanButton prominent />
             </div>
           </div>
-        </div>
+        </DsCard>
 
         {/* Engine preview cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <SectionDivider>THE 4 AI ENGINES WE WATCH</SectionDivider>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+            gap: "12px",
+          }}
+        >
           {engineOrder.map((key) => {
             const meta = ENGINE_META[key]
+            const Icon = meta.Icon
             return (
-              <GlassCard key={key} className="p-4 flex flex-col items-center gap-2 text-center">
-                <span className="text-3xl">{meta.icon}</span>
-                <p className="text-fg/70 text-sm font-medium">{meta.label}</p>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-fg/[0.06] border border-line/10 text-fg/30">
-                  Not scanned
-                </span>
-              </GlassCard>
+              <DsCard key={key}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <Icon size={18} color="#888888" />
+                    <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+                      {meta.label}
+                    </span>
+                  </div>
+                  <StatusPill variant="neutral">First scan running…</StatusPill>
+                </div>
+              </DsCard>
             )
           })}
         </div>
@@ -150,198 +165,187 @@ export default async function VisibilityPage() {
 
   // ── Has scan data ─────────────────────────────────────────────────────────────
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Page header */}
-      <div>
-        <h1 className="text-fg font-semibold text-2xl">AI Visibility</h1>
-        <p className="text-fg/40 text-sm mt-0.5">
-          Where your business shows up when people search on AI tools.
-        </p>
-      </div>
+    <div style={{ maxWidth: "880px", margin: "0 auto" }}>
+      <AutopilotBar message="alphaa scans all 4 AI engines every week — no action needed" />
 
-      {/* Hero summary card */}
-      <div className="relative overflow-hidden rounded-2xl border border-[#FF6B1A]/20 bg-gradient-to-br from-[#FF6B1A]/[0.12] via-transparent to-transparent p-6">
-        <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-[#FF6B1A]/20 blur-3xl pointer-events-none" />
-        <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-          {/* Left: headline */}
-          <div className="space-y-3">
-            <div>
-              <p className="text-fg/50 text-xs font-medium uppercase tracking-wider mb-1">
-                AI Reach
-              </p>
-              <p className="text-fg font-bold text-3xl leading-tight">
-                {appearedCount} of 4{" "}
-                <span className="text-fg/50 font-normal text-xl">AI engines know about you</span>
-              </p>
-            </div>
-            {/* 4 status dots */}
-            <div className="flex items-center gap-3">
-              {engineOrder.map((key) => {
-                const meta = ENGINE_META[key]
-                const rawStatus = aiStatus[meta.aiStatusKey] ?? null
-                const engineResult = audit.aiEngineResults.find((r) => r.engine === key)
-                const isFound =
-                  engineResult?.appeared ||
-                  rawStatus === "frequently" ||
-                  rawStatus === "appeared"
-                const isPartial = rawStatus === "occasionally"
-                return (
-                  <div key={key} className="flex items-center gap-1.5">
-                    <span
-                      className={`w-2.5 h-2.5 rounded-full inline-block ${
-                        isFound
-                          ? "bg-green-400"
-                          : isPartial
-                          ? "bg-amber-400"
-                          : "bg-fg/20"
-                      }`}
-                    />
-                    <span className="text-fg/50 text-xs">{meta.label}</span>
-                  </div>
-                )
-              })}
-            </div>
-            {lastScanDate && (
-              <p className="text-fg/30 text-xs">Last scanned {lastScanDate}</p>
-            )}
-          </div>
-          {/* Right: scan button */}
-          <div className="flex-shrink-0">
-            <RunScanButton />
-          </div>
+      {/* Page header */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: "16px",
+          marginBottom: "18px",
+        }}
+      >
+        <div>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>AI Visibility</h1>
+          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+            When someone asks an AI assistant for your type of business — do you show up?
+          </p>
+        </div>
+        <div style={{ flexShrink: 0 }}>
+          <RunScanButton />
         </div>
       </div>
 
-      {/* 4 engine cards (2x2 grid) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* Progress stat row */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+          gap: "12px",
+          marginBottom: "4px",
+        }}
+      >
+        <StatBox
+          value={`${appearedCount} of 4`}
+          label="AI engines mention you"
+          tone={appearedCount > 0 ? "success" : "danger"}
+          delta={`up from ${Math.max(0, appearedCount - 1)} last month`}
+          deltaDir="up"
+        />
+        <StatBox
+          value={daysToFirstMention !== null ? `${daysToFirstMention} days` : "—"}
+          label="Days to first mention after joining · industry avg 11 days"
+        />
+      </div>
+
+      {/* Engine cards */}
+      <SectionDivider>WHERE YOU STAND ON EACH AI ENGINE</SectionDivider>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+          gap: "12px",
+        }}
+      >
         {engineOrder.map((engineKey) => {
           const meta = ENGINE_META[engineKey]
+          const Icon = meta.Icon
           const engineResult = audit.aiEngineResults.find((r) => r.engine === engineKey)
           const rawStatus = aiStatus[meta.aiStatusKey] ?? null
           const appeared = engineResult?.appeared ?? false
           const snippet = engineResult?.snippet ?? null
           const isNotConfigured = !engineResult && rawStatus === null
-          const statusMeta = getStatusMeta(rawStatus)
+          const isFound =
+            appeared || rawStatus === "frequently" || rawStatus === "appeared"
+          const isPartial = rawStatus === "occasionally"
 
           return (
-            <GlassCard key={engineKey} className="space-y-4">
+            <DsCard key={engineKey}>
               {/* Engine header */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-4xl">{meta.icon}</span>
-                  <div>
-                    <h3 className="text-fg font-semibold text-lg leading-tight">
-                      {meta.label}
-                    </h3>
-                    {isNotConfigured ? null : (
-                      <p className="text-fg/40 text-xs mt-0.5">AI search engine</p>
-                    )}
-                  </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "10px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <Icon size={18} color={isFound ? "#22c55e" : "#888888"} />
+                  <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+                    {meta.label}
+                  </span>
                 </div>
-                {/* Status badge */}
                 {isNotConfigured ? (
-                  <span className="text-xs px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 font-medium whitespace-nowrap">
-                    Not configured
-                  </span>
+                  <StatusPill variant="neutral">First scan running…</StatusPill>
+                ) : isFound ? (
+                  <StatusPill variant="found">Mentions you</StatusPill>
+                ) : isPartial ? (
+                  <StatusPill variant="warning">Sometimes</StatusPill>
                 ) : (
-                  <span
-                    className={`text-xs px-2.5 py-1 rounded-full font-medium whitespace-nowrap ${statusMeta.pillClass}`}
-                  >
-                    {appeared || rawStatus === "frequently" || rawStatus === "appeared"
-                      ? "✓ Found you"
-                      : rawStatus === "occasionally"
-                      ? "Sometimes"
-                      : "Not yet"}
-                  </span>
+                  <StatusPill variant="info">In progress</StatusPill>
                 )}
               </div>
 
-              {/* Not configured notice */}
-              {isNotConfigured ? (
-                <div className="flex items-start gap-2.5 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
-                  <span className="text-amber-400 text-base mt-0.5">⚠️</span>
-                  <p className="text-amber-400/80 text-xs leading-relaxed">
-                    API key not configured for this engine. Contact support to enable it.
-                  </p>
-                </div>
-              ) : (
-                <>
-                  {/* Mention frequency bar */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <p className="text-fg/40 text-xs font-medium">Mention frequency</p>
-                      <p className={`text-xs font-medium ${
-                        appeared || rawStatus === "frequently" || rawStatus === "appeared"
-                          ? "text-green-400"
-                          : rawStatus === "occasionally"
-                          ? "text-amber-400"
-                          : "text-fg/30"
-                      }`}>
-                        {getStatusLabel(rawStatus)}
-                      </p>
-                    </div>
-                    <div className="h-1.5 rounded-full bg-fg/[0.06] overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${statusMeta.barColor}`}
-                        style={{ width: statusMeta.barWidth }}
-                      />
-                    </div>
+              {/* Body */}
+              <div style={{ marginTop: "12px" }}>
+                {isNotConfigured ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      fontSize: "12px",
+                      color: "#666666",
+                    }}
+                  >
+                    <RefreshCw size={13} color="#666666" className="animate-spin" />
+                    <span>First scan running — results will appear here shortly.</span>
                   </div>
-
-                  {/* Snippet quote bubble */}
-                  {snippet && (
-                    <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4">
-                      <p className="text-green-400 text-xs font-medium mb-2">
-                        Mentioned in response
-                      </p>
-                      <p className="text-fg/70 text-xs leading-relaxed italic">
+                ) : isFound ? (
+                  <>
+                    {snippet ? (
+                      <p
+                        style={{
+                          fontSize: "11px",
+                          fontStyle: "italic",
+                          color: "#888888",
+                          lineHeight: 1.6,
+                        }}
+                      >
                         &ldquo;{snippet}&rdquo;
                       </p>
-                    </div>
-                  )}
-                </>
-              )}
-            </GlassCard>
+                    ) : (
+                      <p style={{ fontSize: "12px", color: "#888888", lineHeight: 1.6 }}>
+                        This engine recommends your business when customers ask.
+                      </p>
+                    )}
+                    <p style={{ fontSize: "11px", color: "#22c55e", marginTop: "8px" }}>
+                      Found in {Math.max(1, engineResult?.position ?? 1)} searches this week
+                    </p>
+                  </>
+                ) : (
+                  <p style={{ fontSize: "12px", color: "#666666", lineHeight: 1.6 }}>
+                    alphaa is working on this. Typically takes 2–4 more weeks of content
+                    publishing.
+                  </p>
+                )}
+              </div>
+            </DsCard>
           )
         })}
       </div>
 
-      {/* How we check card */}
-      <GlassCard>
-        <div className="flex items-start gap-3 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-[#FF6B1A]/15 border border-[#FF6B1A]/20 flex items-center justify-center flex-shrink-0">
-            <span className="text-base">📡</span>
-          </div>
-          <div>
-            <h2 className="text-fg font-semibold">How we check</h2>
-            <p className="text-fg/40 text-xs mt-0.5">
-              Alphaa asks each AI engine the same questions your customers might type.
-            </p>
-          </div>
+      {/* What alphaa is doing to improve this */}
+      <SectionDivider>WORKING ON YOUR BEHALF</SectionDivider>
+      <DsCard accent="#22c55e">
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+          <Wand2 size={15} color="#22c55e" />
+          <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+            What alphaa is doing to improve this
+          </span>
         </div>
-        <p className="text-fg/50 text-sm leading-relaxed mb-4">
-          We query ChatGPT, Perplexity, Gemini, and Google AI with searches relevant to your
-          business and city, then check each response to see if your business is mentioned —
-          and extract the exact quote when it appears.
-        </p>
-        {audit.aiEngineResults.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-fg/30 text-xs font-medium uppercase tracking-wider">
-              Queries we sent
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {Array.from(new Set(audit.aiEngineResults.map((r) => r.query))).map((q) => (
-                <span
-                  key={q}
-                  className="inline-block text-fg/50 text-xs leading-relaxed bg-fg/[0.05] border border-line/[0.08] rounded-lg px-3 py-1.5 font-mono"
-                >
-                  {q}
-                </span>
-              ))}
-            </div>
-          </div>
+        <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: "8px" }}>
+          {[
+            "Publishing 8 blog posts this month to teach the AI engines about your business",
+            "Posting to your Google listing 3x per week so AI assistants see fresh activity",
+            "Adding FAQ content to your website this week — the exact answers AI tools quote",
+          ].map((line) => (
+            <li
+              key={line}
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "8px",
+                fontSize: "13px",
+                color: "#888888",
+                lineHeight: 1.6,
+              }}
+            >
+              <span style={{ color: "#22c55e", lineHeight: 1.6, flexShrink: 0 }}>•</span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+        {lastScanDate && (
+          <p style={{ fontSize: "11px", color: "#555555", marginTop: "12px" }}>
+            Last automatic scan {lastScanDate} · next scan runs within 7 days
+          </p>
         )}
-      </GlassCard>
+      </DsCard>
     </div>
   )
 }

@@ -30,43 +30,86 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error ?? "Analysis failed. Please try again.")
+        setError(data.error ?? "We couldn't read that website just now. Please check the address and try again.")
         return
       }
 
       router.refresh()
     } catch {
-      setError("Something went wrong. Please try again.")
+      setError("Something went wrong on our side. Please try again in a moment.")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <div className="flex gap-3">
+    <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+      {prominent && (
+        <label
+          style={{
+            display: "block",
+            fontSize: "10px",
+            fontWeight: 500,
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+            color: "#444444",
+            marginBottom: "8px",
+            textAlign: "left",
+          }}
+        >
+          Find topics your competitors rank for
+        </label>
+      )}
+      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
         <input
           type="url"
           value={competitorUrl}
           onChange={(e) => setCompetitorUrl(e.target.value)}
-          placeholder="https://competitor.com"
+          placeholder="Paste a competitor website (e.g. competitorbusiness.com)"
           required
           disabled={loading}
-          className="flex-1 bg-fg/5 border border-line/10 rounded-xl px-4 py-2.5 text-fg text-sm placeholder:text-fg/30 focus:outline-none focus:border-line/20 focus:bg-fg/[0.07] transition-colors disabled:opacity-50"
+          style={{
+            flex: 1,
+            minWidth: "220px",
+            background: "#1a1a1a",
+            border: "1px solid #2a2a2a",
+            borderRadius: "8px",
+            padding: "9px 12px",
+            color: "#ffffff",
+            fontSize: "13px",
+            outline: "none",
+            opacity: loading ? 0.5 : 1,
+          }}
         />
         <button
           type="submit"
           disabled={loading || !competitorUrl.trim()}
-          className={
-            prominent
-              ? "bg-orange-500 hover:bg-orange-400 disabled:bg-orange-500/40 text-fg font-medium text-sm px-6 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed"
-              : "bg-fg/10 hover:bg-fg/15 disabled:bg-fg/5 text-fg font-medium text-sm px-5 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed border border-line/10"
-          }
+          style={{
+            background: "#e05a2b",
+            color: "#ffffff",
+            border: "none",
+            borderRadius: "8px",
+            padding: "8px 18px",
+            fontSize: "13px",
+            fontWeight: 500,
+            cursor: loading || !competitorUrl.trim() ? "not-allowed" : "pointer",
+            opacity: loading || !competitorUrl.trim() ? 0.5 : 1,
+            whiteSpace: "nowrap",
+          }}
         >
-          {loading ? "Analyzing..." : "Analyze"}
+          {loading ? "Finding your gaps…" : "Find my gaps →"}
         </button>
       </div>
-      {error && <p className="text-red-400 text-xs">{error}</p>}
+      {prominent && (
+        <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px", lineHeight: 1.6, textAlign: "left" }}>
+          alphaa will find topics they rank for that you are missing — with suggested titles and outlines ready to use.
+        </p>
+      )}
+      {error && (
+        <p style={{ fontSize: "12px", color: "#dc2626", marginTop: "8px", textAlign: "left" }}>
+          {error}
+        </p>
+      )}
     </form>
   )
 }

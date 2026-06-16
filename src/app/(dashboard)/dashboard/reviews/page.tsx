@@ -2,16 +2,27 @@ export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
-import { Star, MessageSquare } from "lucide-react"
+import { Star, Globe } from "lucide-react"
 import { GenerateReplyButton } from "./GenerateReplyButton"
 import { SyncReviewsButton } from "./SyncReviewsButton"
+import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
+import { StatBox } from "@/components/dashboard/StatBox"
+import { DsCard } from "@/components/dashboard/DsCard"
+import { EmptyState } from "@/components/dashboard/EmptyState"
+import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import Link from "next/link"
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <span className="text-sm">
-      {"⭐".repeat(rating)}
-      {"☆".repeat(Math.max(0, 5 - rating))}
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "2px" }}>
+      {[1, 2, 3, 4, 5].map((n) => (
+        <Star
+          key={n}
+          size={13}
+          color={n <= rating ? "#f59e0b" : "#333333"}
+          fill={n <= rating ? "#f59e0b" : "none"}
+        />
+      ))}
     </span>
   )
 }
@@ -54,179 +65,251 @@ export default async function ReviewsPage() {
     totalReviews > 0
       ? reviews.reduce((s, r) => s + r.rating, 0) / totalReviews
       : 0
+  const repliedCount = reviews.filter((r) => r.reply).length
 
-  // Rating distribution
-  const ratingCounts = [5, 4, 3, 2, 1].map((n) => ({
-    star: n,
-    count: reviews.filter((r) => r.rating === n).length,
-  }))
-  const maxCount = Math.max(...ratingCounts.map((r) => r.count), 1)
+  // New this week
+  const weekAgo = new Date()
+  weekAgo.setDate(weekAgo.getDate() - 7)
+  const newThisWeek = reviews.filter((r) => {
+    const d = r.publishedAt ?? r.createdAt
+    return d ? new Date(d) >= weekAgo : false
+  }).length
+
+  // Split: needs a reply first, answered after
+  const needsReply = reviews.filter((r) => !r.reply)
+  const answered = reviews.filter((r) => r.reply)
 
   if (!hasGmb) {
     return (
-      <div className="max-w-3xl mx-auto space-y-6">
-        <div>
-          <h1 className="text-fg font-semibold text-2xl">Reviews</h1>
-          <p className="text-fg/50 text-sm mt-1">
-            Manage and respond to your Google Business Profile reviews
+      <div className="max-w-3xl mx-auto">
+        <AutopilotBar message="alphaa monitors new reviews daily and drafts replies for you" />
+
+        <div className="mb-6">
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>
+            Customer reviews
+          </h1>
+          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+            alphaa monitors your Google reviews daily and drafts professional replies — you just approve.
           </p>
         </div>
 
-        <div className="relative overflow-hidden rounded-2xl border border-yellow-500/20 bg-gradient-to-br from-yellow-500/[0.12] via-transparent to-transparent p-8">
-          <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-yellow-500/15 blur-3xl pointer-events-none" />
-          <div className="relative flex flex-col items-center text-center gap-5 py-6">
-            <span className="text-6xl">⭐</span>
-            <div className="space-y-2 max-w-sm">
-              <h2 className="text-fg font-semibold text-xl">
-                Connect Google to see your reviews
-              </h2>
-              <p className="text-fg/50 text-sm leading-relaxed">
-                Once your Google Business Profile is connected, Alphaa pulls your
-                reviews here and helps you respond professionally with AI.
-              </p>
-            </div>
+        <DsCard>
+          <EmptyState
+            icon={Globe}
+            title="Connect Google to see your reviews"
+            body="Once connected, alphaa pulls in every review, tracks your rating over time, and writes reply drafts so you never leave a review unanswered."
+          >
             <Link
               href="/dashboard/settings/integrations"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#FF6B1A] hover:bg-[#e85c00] text-fg font-semibold text-sm transition-colors"
+              style={{
+                background: "#e05a2b",
+                color: "#ffffff",
+                borderRadius: "8px",
+                padding: "8px 18px",
+                fontSize: "13px",
+                fontWeight: 500,
+                display: "inline-block",
+                marginTop: "4px",
+              }}
             >
-              Connect Google Account
+              Connect Google Account →
             </Link>
-          </div>
-        </div>
+          </EmptyState>
+        </DsCard>
       </div>
     )
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
-      {/* Hero card */}
-      <div className="relative overflow-hidden rounded-2xl border border-yellow-500/20 bg-gradient-to-br from-yellow-500/[0.12] via-transparent to-transparent p-6 md:p-8">
-        <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-yellow-500/15 blur-3xl pointer-events-none" />
-        <div className="relative">
-          {/* Top row: title + sync button */}
-          <div className="flex items-start justify-between gap-4 mb-6">
-            <div>
-              <h1 className="text-fg font-semibold text-2xl">Reviews</h1>
-              <p className="text-fg/50 text-sm mt-0.5">
-                Your Google Business Profile reviews
-                {integration.gmbLocationName && (
-                  <span className="ml-1 text-fg/30">· {integration.gmbLocationName}</span>
-                )}
-              </p>
-            </div>
-            <SyncReviewsButton />
-          </div>
+    <div className="max-w-5xl mx-auto">
+      <AutopilotBar message="alphaa monitors new reviews daily and drafts replies for you" />
 
-          {/* Stats + distribution */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10">
-            {/* Left: average + total */}
-            <div className="flex items-center gap-6">
-              <div>
-                <p className="text-7xl font-bold font-mono text-fg leading-none">
-                  {totalReviews > 0 ? avgRating.toFixed(1) : "—"}
-                </p>
-                <div className="mt-2">
-                  <StarRating rating={Math.round(avgRating)} />
-                </div>
-                <p className="text-fg/40 text-xs mt-1">Average rating</p>
-              </div>
-              <div className="pl-6 border-l border-line/[0.08]">
-                <p className="text-4xl font-bold font-mono text-fg">{totalReviews}</p>
-                <p className="text-fg/40 text-xs mt-1">reviews monitored</p>
-                <div className="flex items-center gap-1.5 mt-3">
-                  <MessageSquare className="w-3.5 h-3.5 text-yellow-400" />
-                  <span className="text-yellow-400 text-xs font-medium">
-                    {reviews.filter((r) => !r.reply).length} need replies
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: rating distribution bars */}
-            <div className="space-y-2">
-              {ratingCounts.map(({ star, count }) => (
-                <div key={star} className="flex items-center gap-3">
-                  <span className="text-xs text-fg/50 w-4 text-right">{star}</span>
-                  <Star className="w-3 h-3 text-yellow-400 flex-shrink-0" />
-                  <div className="flex-1 h-1.5 rounded-full bg-fg/[0.06]">
-                    <div
-                      className="h-full rounded-full bg-yellow-400"
-                      style={{ width: `${totalReviews > 0 ? (count / maxCount) * 100 : 0}%` }}
-                    />
-                  </div>
-                  <span className="text-xs text-fg/40 w-6 text-right">{count}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* Header */}
+      <div className="flex items-start justify-between gap-4 mb-5">
+        <div>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>
+            Customer reviews
+          </h1>
+          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+            alphaa monitors your Google reviews daily and drafts professional replies — you just approve.
+            {integration.gmbLocationName && (
+              <span style={{ color: "#555555" }}> · {integration.gmbLocationName}</span>
+            )}
+          </p>
         </div>
+        <SyncReviewsButton />
       </div>
 
-      {/* Reviews list */}
+      {/* Stat row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-2">
+        <StatBox
+          value={totalReviews > 0 ? avgRating.toFixed(1) : "—"}
+          label="Average rating"
+          tone="warning"
+        />
+        <StatBox value={totalReviews} label="Total reviews" tone="default" />
+        <StatBox
+          value={`${repliedCount}/${totalReviews}`}
+          label="Replied"
+          tone={repliedCount === totalReviews && totalReviews > 0 ? "success" : "default"}
+        />
+        <StatBox value={newThisWeek} label="New this week" tone="muted" />
+      </div>
+
       {reviews.length === 0 ? (
-        <div className="relative overflow-hidden rounded-2xl border border-yellow-500/20 bg-gradient-to-br from-yellow-500/[0.08] via-transparent to-transparent p-8">
-          <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-yellow-500/10 blur-3xl pointer-events-none" />
-          <div className="relative flex flex-col items-center text-center gap-4 py-8">
-            <span className="text-5xl">⭐</span>
-            <div className="space-y-1.5 max-w-xs">
-              <h2 className="text-fg font-semibold text-lg">No reviews synced yet</h2>
-              <p className="text-fg/50 text-sm leading-relaxed">
-                Click &ldquo;Sync Reviews&rdquo; above to pull your latest Google Business
-                Profile reviews.
-              </p>
-            </div>
-          </div>
-        </div>
+        <DsCard>
+          <EmptyState
+            icon={Star}
+            title="alphaa will collect your reviews automatically"
+            body="As soon as a customer leaves a Google review, alphaa pulls it in here and drafts a professional reply for you to approve. Nothing to do — we check daily."
+          />
+        </DsCard>
       ) : (
-        <div className="space-y-4">
-          {reviews.map((review) => (
-            <div
-              key={review.id}
-              className="bg-fg/[0.03] border border-line/[0.06] rounded-2xl p-5"
-            >
-              {/* Top row: avatar + name + date */}
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-[#FF6B1A]/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-[#FF6B1A] text-xs font-bold">
-                      {getInitials(review.authorName)}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-fg font-medium text-sm leading-tight">
-                      {review.authorName}
-                    </p>
-                    <div className="mt-0.5">
-                      <StarRating rating={review.rating} />
+        <>
+          {/* Reviews needing a reply — prominent, first */}
+          {needsReply.length > 0 && (
+            <>
+              <SectionDivider>Needs your approval</SectionDivider>
+              <div className="space-y-3">
+                {needsReply.map((review) => (
+                  <DsCard key={review.id} accent="#f59e0b">
+                    {/* Reviewer row */}
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div
+                          style={{
+                            width: "34px",
+                            height: "34px",
+                            borderRadius: "50%",
+                            background: "#1a1200",
+                            border: "1px solid #78350f",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <span style={{ color: "#f59e0b", fontSize: "11px", fontWeight: 600 }}>
+                            {getInitials(review.authorName)}
+                          </span>
+                        </div>
+                        <div>
+                          <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff", lineHeight: 1.2 }}>
+                            {review.authorName}
+                          </p>
+                          <div style={{ marginTop: "3px" }}>
+                            <StarRating rating={review.rating} />
+                          </div>
+                        </div>
+                      </div>
+                      <span style={{ fontSize: "11px", color: "#555555", whiteSpace: "nowrap" }}>
+                        {review.publishedAt ? formatDate(review.publishedAt) : formatDate(review.createdAt)}
+                      </span>
                     </div>
-                  </div>
-                </div>
-                <span className="text-fg/30 text-xs whitespace-nowrap">
-                  {review.publishedAt ? formatDate(review.publishedAt) : formatDate(review.createdAt)}
-                </span>
+
+                    {/* Review text */}
+                    {review.comment && (
+                      <p
+                        style={{
+                          fontSize: "13px",
+                          color: "#888888",
+                          lineHeight: 1.6,
+                          marginTop: "12px",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {review.comment}
+                      </p>
+                    )}
+
+                    {/* alphaa drafted reply */}
+                    <GenerateReplyButton reviewId={review.id} />
+                  </DsCard>
+                ))}
               </div>
+            </>
+          )}
 
-              {/* Comment */}
-              {review.comment && (
-                <p className="text-fg/70 text-sm leading-relaxed mt-3">
-                  {review.comment}
-                </p>
-              )}
+          {/* Answered reviews */}
+          {answered.length > 0 && (
+            <>
+              <SectionDivider>Already replied for you</SectionDivider>
+              <div className="space-y-3">
+                {answered.map((review) => (
+                  <DsCard key={review.id}>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div
+                          style={{
+                            width: "34px",
+                            height: "34px",
+                            borderRadius: "50%",
+                            background: "#1a1a1a",
+                            border: "1px solid #2a2a2a",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <span style={{ color: "#888888", fontSize: "11px", fontWeight: 600 }}>
+                            {getInitials(review.authorName)}
+                          </span>
+                        </div>
+                        <div>
+                          <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff", lineHeight: 1.2 }}>
+                            {review.authorName}
+                          </p>
+                          <div style={{ marginTop: "3px" }}>
+                            <StarRating rating={review.rating} />
+                          </div>
+                        </div>
+                      </div>
+                      <span style={{ fontSize: "11px", color: "#555555", whiteSpace: "nowrap" }}>
+                        {review.publishedAt ? formatDate(review.publishedAt) : formatDate(review.createdAt)}
+                      </span>
+                    </div>
 
-              {/* Reply */}
-              {review.reply ? (
-                <div className="ml-4 mt-3 pl-4 border-l-2 border-[#FF6B1A]/30 bg-[#FF6B1A]/[0.05] rounded-r-xl p-3">
-                  <p className="text-[#FF6B1A] text-xs font-medium mb-1">Our response</p>
-                  <p className="text-fg/70 text-sm leading-relaxed">{review.reply}</p>
-                </div>
-              ) : (
-                <div className="pt-3 mt-3 border-t border-line/[0.06]">
-                  <GenerateReplyButton reviewId={review.id} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+                    {review.comment && (
+                      <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "12px" }}>
+                        {review.comment}
+                      </p>
+                    )}
+
+                    <div
+                      style={{
+                        marginTop: "12px",
+                        background: "#1a1a1a",
+                        border: "1px solid #222222",
+                        borderRadius: "8px",
+                        padding: "10px 12px",
+                      }}
+                    >
+                      <p
+                        style={{
+                          fontSize: "10px",
+                          fontWeight: 500,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.08em",
+                          color: "#e05a2b",
+                          marginBottom: "6px",
+                        }}
+                      >
+                        Your reply (sent by alphaa)
+                      </p>
+                      <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
+                        {review.reply}
+                      </p>
+                    </div>
+                  </DsCard>
+                ))}
+              </div>
+            </>
+          )}
+        </>
       )}
     </div>
   )

@@ -22,9 +22,19 @@ export default function CopyButton({ text }: Props) {
   return (
     <button
       onClick={handleCopy}
-      className="text-xs text-fg/40 hover:text-fg/70 transition-colors px-2 py-1 rounded-lg hover:bg-fg/5"
+      style={{
+        background: "transparent",
+        border: "1px solid #333333",
+        color: copied ? "#22c55e" : "#888888",
+        fontSize: "11px",
+        fontWeight: 500,
+        padding: "4px 12px",
+        borderRadius: "8px",
+        cursor: "pointer",
+        whiteSpace: "nowrap",
+      }}
     >
-      {copied ? "Copied!" : "Copy"}
+      {copied ? "Copied" : "Copy code"}
     </button>
   )
 }

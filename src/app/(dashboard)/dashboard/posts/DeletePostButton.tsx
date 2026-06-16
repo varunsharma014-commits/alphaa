@@ -23,14 +23,27 @@ export function DeletePostButton({ postId }: { postId: string }) {
     <button
       onClick={handleDelete}
       disabled={loading}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "6px",
+        background: "transparent",
+        border: "1px solid #333333",
+        color: "#888888",
+        borderRadius: "8px",
+        padding: "6px 12px",
+        fontSize: "11px",
+        fontWeight: 500,
+        cursor: loading ? "not-allowed" : "pointer",
+        opacity: loading ? 0.5 : 1,
+      }}
     >
       {loading ? (
         <div className="w-3 h-3 border-2 border-red-400/30 border-t-red-400 rounded-full animate-spin" />
       ) : (
         <Trash2 className="w-3 h-3" />
       )}
-      {loading ? "Deleting…" : "Delete"}
+      {loading ? "Deleting…" : "Discard"}
     </button>
   )
 }

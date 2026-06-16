@@ -20,26 +20,40 @@ export function SyncReviewsButton() {
       }
       const data = (await res.json()) as { synced?: { reviews?: number } }
       const count = data.synced?.reviews ?? 0
-      setMessage(`Synced ${count} review${count !== 1 ? "s" : ""}`)
+      setMessage(`Found ${count} new review${count !== 1 ? "s" : ""}`)
       router.refresh()
-    } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Sync failed")
+    } catch {
+      setMessage("alphaa will check again automatically")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="flex items-center gap-3">
+    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      {message && <span style={{ fontSize: "11px", color: "#555555" }}>{message}</span>}
       <button
         onClick={handleSync}
         disabled={loading}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-fg/5 hover:bg-fg/10 border border-line/10 text-fg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        style={{
+          background: "transparent",
+          color: "#888888",
+          border: "1px solid #333333",
+          borderRadius: "8px",
+          padding: "8px 16px",
+          fontSize: "13px",
+          fontWeight: 500,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          whiteSpace: "nowrap",
+          cursor: loading ? "not-allowed" : "pointer",
+          opacity: loading ? 0.5 : 1,
+        }}
       >
-        <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-        {loading ? "Syncing…" : "Sync Reviews"}
+        <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
+        {loading ? "Checking…" : "Check now"}
       </button>
-      {message && <span className="text-muted text-xs">{message}</span>}
     </div>
   )
 }

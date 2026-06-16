@@ -28,7 +28,7 @@ export function AddCompetitorButton() {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error ?? "Something went wrong. Please try again.")
+        setError(data.error ?? "We couldn't reach that site just now. Please double-check the address and try again.")
         return
       }
 
@@ -50,13 +50,15 @@ export function AddCompetitorButton() {
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://competitor.com"
           disabled={loading}
-          className="flex-1 bg-bg-tertiary border border-line/10 rounded-xl px-4 py-2.5 text-sm text-fg placeholder:text-fg/30 focus:outline-none focus:border-line/20 disabled:opacity-50 transition-colors"
+          className="flex-1 rounded-[8px] px-4 focus:outline-none disabled:opacity-50 transition-colors"
+          style={{ background: "#1a1a1a", border: "1px solid #222", color: "#fff", fontSize: 13, paddingTop: 8, paddingBottom: 8 }}
           required
         />
         <button
           type="submit"
           disabled={loading || !url.trim()}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-light disabled:opacity-50 disabled:cursor-not-allowed text-fg font-semibold text-sm transition-colors whitespace-nowrap"
+          className="flex items-center gap-2 rounded-[8px] disabled:opacity-50 disabled:cursor-not-allowed transition-opacity whitespace-nowrap"
+          style={{ background: "#e05a2b", color: "#fff", fontSize: 13, fontWeight: 500, padding: "8px 18px" }}
         >
           {loading ? (
             <>
@@ -72,7 +74,7 @@ export function AddCompetitorButton() {
         </button>
       </form>
       {error && (
-        <p className="text-red-400 text-xs pl-1">{error}</p>
+        <p className="pl-1" style={{ color: "#f87171", fontSize: 11 }}>{error}</p>
       )}
     </div>
   )

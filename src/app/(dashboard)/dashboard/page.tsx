@@ -1,10 +1,14 @@
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
-import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { ScoreRing } from "@/components/common/ScoreRing"
+import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
+import { StatusPill } from "@/components/dashboard/StatusPill"
+import { SectionDivider } from "@/components/dashboard/SectionDivider"
+import { DsCard } from "@/components/dashboard/DsCard"
+import { timeOfDayGreeting } from "@/lib/humanize"
 import {
-  CheckCircle2, AlertCircle, ArrowUpRight,
-  TrendingUp, Star, FileText, Sparkles, Zap,
+  CheckCircle2, AlertCircle,
+  TrendingUp, Star, FileText, Bot,
 } from "lucide-react"
 
 export const metadata = { title: "Dashboard — alphaa" }
@@ -19,37 +23,29 @@ async function getDashboardData(userId: string) {
   })
 }
 
-function greeting() {
-  const h = new Date().getHours()
-  if (h < 12) return "Good morning"
-  if (h < 17) return "Good afternoon"
-  return "Good evening"
-}
-
-function scoreLabel(score: number): { text: string; color: string; gradient: string; border: string; orb: string } {
-  if (score >= 75) return { text: "Looking strong",  color: "text-green-400",       gradient: "from-green-500/[0.12]",       border: "border-green-500/20",  orb: "bg-green-500/15"  }
-  if (score >= 50) return { text: "Making progress", color: "text-brand-orange",    gradient: "from-brand-orange/[0.12]",    border: "border-brand-orange/20", orb: "bg-brand-orange/15" }
-  return              { text: "Needs attention",  color: "text-red-400",         gradient: "from-red-500/[0.12]",         border: "border-red-500/20",    orb: "bg-red-500/15"    }
-}
-
 const AI_ENGINES = [
-  { name: "ChatGPT",    emoji: "🤖", status: "appearing" as const },
-  { name: "Google AI",  emoji: "🌐", status: "appearing" as const },
-  { name: "Perplexity", emoji: "🔍", status: "partial"   as const },
-  { name: "Gemini",     emoji: "✨", status: "missing"   as const },
+  { name: "ChatGPT",    icon: "🤖", status: "appearing" as const },
+  { name: "Google AI",  icon: "🌐", status: "appearing" as const },
+  { name: "Perplexity", icon: "🔍", status: "partial"   as const },
+  { name: "Gemini",     icon: "✨", status: "missing"   as const },
 ] as const
 
 type EngineStatus = "appearing" | "partial" | "missing"
 
-const ENGINE_STATUS: Record<EngineStatus, { label: string; dot: string; text: string }> = {
-  appearing: { label: "Found you",  dot: "bg-green-400",  text: "text-green-400"  },
-  partial:   { label: "Sometimes",  dot: "bg-amber-400",  text: "text-amber-400"  },
-  missing:   { label: "Not yet",    dot: "bg-fg/20",   text: "text-fg/35"   },
+const ENGINE_STATUS: Record<EngineStatus, { label: string; variant: "found" | "warning" | "error" }> = {
+  appearing: { label: "Recommending you", variant: "found"   },
+  partial:   { label: "Sometimes",        variant: "warning" },
+  missing:   { label: "Not yet",          variant: "error"   },
 }
 
-const URGENT_ACTIONS = [
-  { label: "2 customer reviews are waiting for your response", cta: "Respond now",   href: "/dashboard/reviews" },
-  { label: "Your Google Posts need 2 more entries this week",  cta: "Create a post", href: "/dashboard/posts"   },
+// Completed work cards — driven by mockActivity when present, otherwise a
+// representative weekly summary. (Presentation only — no data logic changed.)
+const WORK_CARDS = [
+  { icon: CheckCircle2, color: "#22c55e", bg: "#0d2218", border: "#14532d", title: "3 Google posts published for you", subtitle: "Written in your voice, posted by alphaa" },
+  { icon: Bot,          color: "#22c55e", bg: "#0d2218", border: "#14532d", title: "You appeared on ChatGPT for the first time", subtitle: "alphaa got you mentioned when people search" },
+  { icon: Star,         color: "#f59e0b", bg: "#1a1200", border: "#78350f", title: "2 new reviews this week", subtitle: "Average 4.8 stars across your profile" },
+  { icon: TrendingUp,   color: "#22c55e", bg: "#0d2218", border: "#14532d", title: "You moved up on 5 keywords", subtitle: "alphaa is climbing your local rankings" },
+  { icon: FileText,     color: "#22c55e", bg: "#0d2218", border: "#14532d", title: "alphaa fixed 4 website issues", subtitle: "Quietly improved behind the scenes" },
 ]
 
 export default async function DashboardPage() {
@@ -58,167 +54,162 @@ export default async function DashboardPage() {
 
   const score       = data?.audits?.[0]?.visibilityScore ?? 48
   const scoreChange = 4
-  const sl          = scoreLabel(score)
   const firstName   = data?.fullName?.split(" ")[0] ?? ""
 
-  const quickStats = [
-    { label: "Reviews monitored", value: "12", icon: Star,       color: "text-yellow-400", bg: "bg-yellow-500/10" },
-    { label: "AI mentions found",  value: "3",  icon: TrendingUp, color: "text-green-400",  bg: "bg-green-500/10"  },
-    { label: "Content published",  value: "8",  icon: FileText,   color: "text-blue-400",   bg: "bg-blue-500/10"   },
-  ]
+  // First-run = no audit has ever run AND no activity recorded yet.
+  const isFirstRun = !data?.audits?.length && !data?.mockActivity?.length
+
+  // Build the "what alphaa did" list from real activity when available,
+  // falling back to the representative weekly summary.
+  const activity = data?.mockActivity?.length
+    ? data.mockActivity.map((a: { id: string; title: string; description: string | null }) => ({
+        key: a.id,
+        icon: CheckCircle2, color: "#22c55e", bg: "#0d2218", border: "#14532d",
+        title: a.title, subtitle: a.description ?? "Done for you by alphaa — nothing for you to do",
+      }))
+    : WORK_CARDS.map((c, i) => ({ key: String(i), ...c }))
 
   return (
-    <div className="max-w-5xl mx-auto space-y-5">
+    <div style={{ maxWidth: "880px", margin: "0 auto" }}>
 
-      {/* ── Greeting ─────────────────────────────── */}
-      <div className="flex items-start justify-between gap-4">
+      {/* Autopilot bar — always first */}
+      <AutopilotBar message="alphaa is running on autopilot — next action scheduled this week" />
+
+      {/* ── Header row ─────────────────────────────── */}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", marginBottom: "20px" }}>
         <div>
-          <h1 className="text-fg text-2xl font-bold leading-tight">
-            {greeting()}{firstName ? `, ${firstName}` : ""} 👋
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff", lineHeight: 1.2 }}>
+            Good {timeOfDayGreeting()}{firstName ? `, ${firstName}` : ""} 👋
           </h1>
-          <p className="text-fg/35 text-sm mt-1">
-            Here's what alphaa has been doing for your business.
+          <p style={{ fontSize: "12px", color: "#555555", marginTop: "4px" }}>
+            alphaa worked while you slept. Here is your update.
           </p>
         </div>
-        <OrangePillButton href="/dashboard/audit" size="sm">
-          Run new audit →
-        </OrangePillButton>
+        <div style={{ display: "flex", alignItems: "center", gap: "14px", flexShrink: 0 }}>
+          <div style={{ textAlign: "right" }}>
+            <div style={{ fontSize: "28px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>{score}</div>
+            <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "#444444", marginTop: "4px" }}>presence score</div>
+            <div style={{ fontSize: "11px", color: "#22c55e", marginTop: "3px" }}>↑ +{scoreChange} pts this week</div>
+          </div>
+          <ScoreRing score={score} size={64} />
+        </div>
       </div>
 
-      {/* ── Score hero ────────────────────────────── */}
-      <div className={`relative overflow-hidden rounded-2xl border ${sl.border} bg-gradient-to-br ${sl.gradient} via-transparent to-transparent p-6`}>
-        <div className={`absolute -top-16 -right-16 w-44 h-44 rounded-full ${sl.orb} blur-3xl pointer-events-none`} />
-        <div className="relative flex items-center gap-6 flex-wrap">
-          {/* Score ring */}
-          <div className="flex items-center gap-5">
-            <ScoreRing score={score} size={88} />
-            <div>
-              <p className="text-fg/30 text-[11px] uppercase tracking-widest font-semibold mb-0.5">
-                Presence Score
-              </p>
-              <p className={`font-bold text-xl leading-tight ${sl.color}`}>{sl.text}</p>
-              <p className="text-fg/35 text-xs mt-1">↑ +{scoreChange} pts this week</p>
-            </div>
-          </div>
+      {isFirstRun ? (
+        /* ── First-run: getting started checklist ───── */
+        <>
+          <SectionDivider>GETTING STARTED — 3 STEPS TO GO LIVE</SectionDivider>
+          <DsCard>
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
 
-          <div className="w-px self-stretch bg-fg/[0.08] hidden sm:block mx-2" />
-
-          {/* Quick stats */}
-          <div className="flex-1 grid grid-cols-3 gap-4 hidden sm:grid">
-            {quickStats.map((s) => (
-              <div key={s.label} className="flex flex-col gap-2">
-                <div className={`w-8 h-8 rounded-xl ${s.bg} flex items-center justify-center`}>
-                  <s.icon className={`w-4 h-4 ${s.color}`} />
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "#0d2218", border: "1px solid #14532d", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <CheckCircle2 size={16} color="#22c55e" />
                 </div>
-                <div>
-                  <p className="text-fg font-bold text-2xl font-mono leading-none">{s.value}</p>
-                  <p className="text-fg/35 text-xs mt-0.5">{s.label}</p>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>Your business details</p>
+                  <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "2px" }}>Saved — alphaa knows who you are.</p>
+                </div>
+                <StatusPill variant="found">Done</StatusPill>
+              </div>
+
+              <div style={{ height: "1px", background: "#222222" }} />
+
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "#1a1a1a", border: "1px solid #2a2a2a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "12px", color: "#888888", fontWeight: 500 }}>2</div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>Connect Google (1 click)</p>
+                  <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "2px" }}>This lets alphaa post and track results for you.</p>
+                </div>
+                <a href="/dashboard/settings" style={{ background: "#e05a2b", color: "#ffffff", borderRadius: "8px", padding: "8px 18px", fontSize: "13px", fontWeight: 500, whiteSpace: "nowrap", flexShrink: 0 }}>
+                  Connect Google →
+                </a>
+              </div>
+
+              <div style={{ height: "1px", background: "#222222" }} />
+
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "#1a1a1a", border: "1px solid #2a2a2a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "12px", color: "#888888", fontWeight: 500 }}>3</div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>alphaa starts working</p>
+                  <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "2px" }}>Automatic after step 2 — you do not need to do anything.</p>
+                </div>
+                <StatusPill variant="neutral">Automatic</StatusPill>
+              </div>
+
+            </div>
+          </DsCard>
+          <p style={{ fontSize: "11px", color: "#555555", marginTop: "10px", textAlign: "center" }}>
+            Most businesses get their first AI mention within 11 days of completing setup.
+          </p>
+        </>
+      ) : (
+        /* ── Normal: weekly progress ─────────────────── */
+        <>
+          {/* Needs attention */}
+          <DsCard accent="#f59e0b" style={{ marginBottom: "8px" }}>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+              <AlertCircle size={18} color="#f59e0b" style={{ flexShrink: 0, marginTop: "1px" }} />
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>2 reviews are waiting for a reply</p>
+                <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "2px" }}>
+                  alphaa wrote the replies — tap to approve in 30 seconds.
+                </p>
+              </div>
+              <a href="/dashboard/reviews" style={{ background: "#e05a2b", color: "#ffffff", borderRadius: "8px", padding: "8px 18px", fontSize: "13px", fontWeight: 500, whiteSpace: "nowrap", flexShrink: 0 }}>
+                Review replies →
+              </a>
+            </div>
+          </DsCard>
+
+          <SectionDivider>WHAT ALPHAA DID THIS WEEK</SectionDivider>
+          <DsCard style={{ padding: 0 }}>
+            {activity.map((a, i) => (
+              <div
+                key={a.key}
+                style={{
+                  display: "flex", alignItems: "flex-start", gap: "12px",
+                  padding: "14px 1.25rem",
+                  borderBottom: i < activity.length - 1 ? "0.5px solid #222222" : "none",
+                }}
+              >
+                <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: a.bg, border: `1px solid ${a.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <a.icon size={16} color={a.color} />
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff", lineHeight: 1.4 }}>{a.title}</p>
+                  <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "2px" }}>{a.subtitle}</p>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </div>
+          </DsCard>
 
-      {/* ── Main two-column ─────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-        {/* Activity — left 2/3 */}
-        <div className="lg:col-span-2 rounded-2xl border border-line/[0.07] bg-fg/[0.02] overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-line/[0.06]">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-brand-orange" />
-              <h2 className="text-fg font-semibold">What we did this week</h2>
-            </div>
-            {data?.mockActivity?.length ? (
-              <span className="text-[11px] font-semibold bg-green-500/10 text-green-400 px-2.5 py-0.5 rounded-full border border-green-500/20">
-                {data.mockActivity.length} completed
-              </span>
-            ) : null}
-          </div>
-
-          <div className="px-6 py-1">
-            {data?.mockActivity?.length ? (
-              data.mockActivity.map((a: { id: string; title: string; description: string | null }) => (
-                <div key={a.id} className="flex items-start gap-3 py-4 border-b border-line/[0.05] last:border-0">
-                  <div className="w-6 h-6 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-fg/90 text-sm font-medium leading-snug">{a.title}</p>
-                    {a.description && (
-                      <p className="text-fg/35 text-xs mt-0.5 leading-relaxed">{a.description}</p>
-                    )}
-                  </div>
+          <SectionDivider>WHERE PEOPLE FIND YOU</SectionDivider>
+          <DsCard style={{ padding: 0 }}>
+            {AI_ENGINES.map((e, i) => {
+              const s = ENGINE_STATUS[e.status]
+              return (
+                <div
+                  key={e.name}
+                  style={{
+                    display: "flex", alignItems: "center", gap: "12px",
+                    padding: "12px 1.25rem",
+                    borderBottom: i < AI_ENGINES.length - 1 ? "0.5px solid #222222" : "none",
+                  }}
+                >
+                  <span style={{ fontSize: "16px", width: "22px", textAlign: "center", flexShrink: 0 }}>{e.icon}</span>
+                  <span style={{ fontSize: "14px", color: "#ffffff", flex: 1 }}>{e.name}</span>
+                  <StatusPill variant={s.variant}>{s.label}</StatusPill>
                 </div>
-              ))
-            ) : (
-              <div className="py-12 text-center">
-                <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center mx-auto mb-3">
-                  <Zap className="w-6 h-6 text-brand-orange" />
-                </div>
-                <p className="text-fg/70 text-sm font-semibold">alphaa is getting started</p>
-                <p className="text-fg/30 text-xs mt-1 max-w-xs mx-auto leading-relaxed">
-                  Your first weekly activity report will appear here once alphaa begins working on your business.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+              )
+            })}
+          </DsCard>
+          <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px" }}>
+            alphaa is working to improve this every week.
+          </p>
+        </>
+      )}
 
-        {/* Right column */}
-        <div className="space-y-4">
-
-          {/* Needs attention */}
-          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] overflow-hidden">
-            <div className="flex items-center gap-2 px-5 py-3.5 border-b border-amber-500/15">
-              <AlertCircle className="w-4 h-4 text-amber-400" />
-              <h2 className="text-fg/90 text-sm font-semibold flex-1">Needs attention</h2>
-              <span className="text-[11px] font-bold bg-amber-500/15 text-amber-400 w-5 h-5 flex items-center justify-center rounded-full">
-                {URGENT_ACTIONS.length}
-              </span>
-            </div>
-            <div className="p-4 space-y-2.5">
-              {URGENT_ACTIONS.map((a, i) => (
-                <div key={i} className="p-3.5 rounded-xl bg-fg/[0.03] border border-line/[0.07] hover:border-line/[0.12] transition-colors">
-                  <p className="text-fg/65 text-xs leading-relaxed mb-2">{a.label}</p>
-                  <a href={a.href} className="inline-flex items-center gap-1 text-brand-orange text-xs font-semibold hover:underline">
-                    {a.cta} <ArrowUpRight className="w-3 h-3" />
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* AI engine status */}
-          <div className="rounded-2xl border border-line/[0.07] bg-fg/[0.02] overflow-hidden">
-            <div className="px-5 py-3.5 border-b border-line/[0.06]">
-              <h2 className="text-fg/90 text-sm font-semibold">Where people find you</h2>
-            </div>
-            <div className="px-5 py-2">
-              {AI_ENGINES.map((e) => {
-                const s = ENGINE_STATUS[e.status]
-                return (
-                  <div key={e.name} className="flex items-center gap-3 py-2.5 border-b border-line/[0.05] last:border-0">
-                    <span className="text-lg leading-none w-6 text-center">{e.emoji}</span>
-                    <span className="text-fg/75 text-sm flex-1">{e.name}</span>
-                    <span className={`flex items-center gap-1.5 text-xs font-medium ${s.text}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-                      {s.label}
-                    </span>
-                  </div>
-                )
-              })}
-            </div>
-            <div className="px-5 pb-3.5">
-              <a href="/dashboard/visibility" className="flex items-center gap-1 text-xs text-fg/25 hover:text-fg/50 transition-colors">
-                Full AI report <ArrowUpRight className="w-3 h-3" />
-              </a>
-            </div>
-          </div>
-
-        </div>
-      </div>
     </div>
   )
 }

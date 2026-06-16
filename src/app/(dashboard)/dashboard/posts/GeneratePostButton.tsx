@@ -36,37 +36,82 @@ export function GeneratePostButton() {
   }
 
   return (
-    <div className="relative">
+    <div style={{ position: "relative" }}>
       <button
         onClick={() => setOpen(!open)}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-orange hover:bg-brand-orange-light text-fg font-semibold text-sm transition-colors"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          background: "#e05a2b",
+          color: "#ffffff",
+          borderRadius: "8px",
+          padding: "8px 18px",
+          fontSize: "13px",
+          fontWeight: 500,
+          border: "none",
+          cursor: "pointer",
+        }}
       >
         <Sparkles className="w-4 h-4" />
-        Generate Post
+        Generate posts
         <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 z-20 w-80 glass-card rounded-2xl p-5 shadow-xl">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-fg font-medium text-sm">Generate a new post</h3>
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            top: "100%",
+            marginTop: "8px",
+            zIndex: 20,
+            width: "320px",
+            background: "#161616",
+            border: "0.5px solid #222222",
+            borderRadius: "10px",
+            padding: "16px",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+            <h3 style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>Generate a new post</h3>
             <button
               onClick={() => setOpen(false)}
-              className="text-muted hover:text-fg transition-colors"
+              style={{ color: "#888888", background: "none", border: "none", cursor: "pointer", display: "flex" }}
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="space-y-4">
+          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
             <div>
-              <label className="block text-muted text-xs mb-1.5 font-medium uppercase tracking-wider">
+              <label
+                style={{
+                  display: "block",
+                  color: "#444444",
+                  fontSize: "10px",
+                  marginBottom: "6px",
+                  fontWeight: 500,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                }}
+              >
                 Post Type
               </label>
               <select
                 value={postType}
                 onChange={(e) => setPostType(e.target.value)}
-                className="w-full bg-bg-tertiary border border-line/10 rounded-xl px-3 py-2 text-fg text-sm focus:outline-none focus:border-line/20"
+                style={{
+                  width: "100%",
+                  background: "#1a1a1a",
+                  border: "1px solid #222222",
+                  borderRadius: "8px",
+                  padding: "8px 12px",
+                  color: "#ffffff",
+                  fontSize: "13px",
+                  outline: "none",
+                }}
               >
                 <option value="UPDATE">Update</option>
                 <option value="OFFER">Offer</option>
@@ -75,26 +120,58 @@ export function GeneratePostButton() {
             </div>
 
             <div>
-              <label className="block text-muted text-xs mb-1.5 font-medium uppercase tracking-wider">
-                Topic <span className="text-fg/30 normal-case">(optional)</span>
+              <label
+                style={{
+                  display: "block",
+                  color: "#444444",
+                  fontSize: "10px",
+                  marginBottom: "6px",
+                  fontWeight: 500,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                }}
+              >
+                Topic <span style={{ color: "#555555", textTransform: "none", letterSpacing: 0 }}>(optional)</span>
               </label>
               <input
                 type="text"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 placeholder="e.g. summer sale, new menu items..."
-                className="w-full bg-bg-tertiary border border-line/10 rounded-xl px-3 py-2 text-fg text-sm placeholder:text-fg/30 focus:outline-none focus:border-line/20"
+                style={{
+                  width: "100%",
+                  background: "#1a1a1a",
+                  border: "1px solid #222222",
+                  borderRadius: "8px",
+                  padding: "8px 12px",
+                  color: "#ffffff",
+                  fontSize: "13px",
+                  outline: "none",
+                }}
               />
             </div>
 
-            {error && (
-              <p className="text-red-400 text-xs">{error}</p>
-            )}
+            {error && <p style={{ color: "#dc2626", fontSize: "11px" }}>{error}</p>}
 
             <button
               onClick={handleGenerate}
               disabled={loading}
-              className="w-full px-4 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-light disabled:opacity-50 disabled:cursor-not-allowed text-fg font-semibold text-sm transition-colors flex items-center justify-center gap-2"
+              style={{
+                width: "100%",
+                background: "#e05a2b",
+                color: "#ffffff",
+                borderRadius: "8px",
+                padding: "10px 18px",
+                fontSize: "13px",
+                fontWeight: 500,
+                border: "none",
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.5 : 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}
             >
               {loading ? (
                 <>

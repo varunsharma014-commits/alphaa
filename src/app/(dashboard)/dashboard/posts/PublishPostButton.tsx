@@ -32,16 +32,29 @@ export function PublishPostButton({ postId }: { postId: string }) {
       <button
         onClick={handlePublish}
         disabled={loading}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/20 text-green-400 text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "6px",
+          background: "#0d2218",
+          border: "1px solid #14532d",
+          color: "#22c55e",
+          borderRadius: "8px",
+          padding: "6px 12px",
+          fontSize: "11px",
+          fontWeight: 500,
+          cursor: loading ? "not-allowed" : "pointer",
+          opacity: loading ? 0.5 : 1,
+        }}
       >
         {loading ? (
           <div className="w-3 h-3 border-2 border-green-400/30 border-t-green-400 rounded-full animate-spin" />
         ) : (
           <Send className="w-3 h-3" />
         )}
-        {loading ? "Publishing…" : "Publish"}
+        {loading ? "Publishing…" : "Publish now"}
       </button>
-      {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
+      {error && <p style={{ color: "#dc2626", fontSize: "11px", marginTop: "4px" }}>{error}</p>}
     </div>
   )
 }

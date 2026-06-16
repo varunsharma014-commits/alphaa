@@ -3,19 +3,109 @@ export const dynamic = "force-dynamic"
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { GlassCard } from "@/components/common/GlassCard"
-import { MonoNumber } from "@/components/common/MonoNumber"
 import { formatDate } from "@/lib/utils"
 import GenerateSchemaButton from "./GenerateSchemaButton"
 import CopyButton from "./CopyButton"
 import type { AuditIssue } from "@/types/audit"
 import type { SchemaItem } from "@/lib/schema-generator"
+import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
+import { StatBox } from "@/components/dashboard/StatBox"
+import { StatusPill } from "@/components/dashboard/StatusPill"
+import { SectionDivider } from "@/components/dashboard/SectionDivider"
+import { DsCard } from "@/components/dashboard/DsCard"
+import { EmptyState } from "@/components/dashboard/EmptyState"
+import { humanizeIssue } from "@/lib/humanize"
+import { CheckCircle2, Gauge, Wrench, Code2 } from "lucide-react"
 
-export const metadata = { title: "Schema Markup & Audit" }
+export const metadata = { title: "Website health" }
 
 type CrawlIssue = {
   severity: "critical" | "warning" | "improvement"
-  message: string
+  message?: string
+  type?: string
+  code?: string
+  [key: string]: unknown
+}
+
+// PageSpeed API types
+type PageSpeedAudit = {
+  id: string
+  title: string
+  description: string
+  score: number | null
+  displayValue?: string
+}
+
+type PageSpeedResult = {
+  lighthouseResult: {
+    categories: { performance: { score: number } }
+    audits: Record<string, PageSpeedAudit>
+  }
+}
+
+const CWV_AUDIT_IDS = [
+  "largest-contentful-paint",
+  "total-blocking-time",
+  "cumulative-layout-shift",
+] as const
+
+function cwvFriendlyName(id: string): string {
+  if (id === "largest-contentful-paint") return "Page load speed"
+  if (id === "total-blocking-time") return "Responsiveness"
+  if (id === "cumulative-layout-shift") return "Layout stability"
+  return id
+}
+
+function cwvSubtitle(id: string): string {
+  if (id === "largest-contentful-paint") return "How fast the main content appears"
+  if (id === "total-blocking-time") return "How quickly your page reacts to taps"
+  if (id === "cumulative-layout-shift") return "How steady the page is while loading"
+  return ""
+}
+
+// Plain-English label + tone for a Core Web Vital value.
+function cwvStatus(id: string, displayValue: string | undefined): {
+  label: string
+  variant: "found" | "warning" | "error"
+} {
+  const val = parseFloat(displayValue ?? "")
+  if (Number.isNaN(val)) return { label: "Checking", variant: "warning" }
+  if (id === "largest-contentful-paint") {
+    if (val <= 2.5) return { label: "Good", variant: "found" }
+    if (val <= 4) return { label: "Could be faster", variant: "warning" }
+    return { label: "Needs work", variant: "error" }
+  }
+  if (id === "total-blocking-time") {
+    if (val <= 100) return { label: "Good", variant: "found" }
+    if (val <= 300) return { label: "Could be faster", variant: "warning" }
+    return { label: "Needs work", variant: "error" }
+  }
+  if (id === "cumulative-layout-shift") {
+    if (val <= 0.1) return { label: "Good", variant: "found" }
+    if (val <= 0.25) return { label: "Could be steadier", variant: "warning" }
+    return { label: "Needs work", variant: "error" }
+  }
+  return { label: "Checking", variant: "warning" }
+}
+
+const SEV_DOT: Record<string, string> = {
+  critical: "#dc2626",
+  warning: "#f59e0b",
+  improvement: "#3b82f6",
+}
+
+// Map an issue to a plain-English line. Prefer humanizing a code; otherwise use
+// the human-written message already stored on the issue.
+function issueText(issue: CrawlIssue): string {
+  const code = issue.code ?? issue.type
+  if (code && typeof code === "string") {
+    const humanized = humanizeIssue(code)
+    // humanizeIssue returns a generic fallback for unknown codes — in that case
+    // prefer the stored message if we have one.
+    if (issue.message && humanized.startsWith("A technical issue")) return issue.message
+    return humanized
+  }
+  return issue.message ?? "A technical issue was found on your site — alphaa is working on a fix"
 }
 
 export default async function AuditPage() {
@@ -48,405 +138,307 @@ export default async function AuditPage() {
   })
   const auditIssues = (latestAudit?.issues as unknown as AuditIssue[]) ?? []
 
-  // Combined issue counts
-  const allIssues = [...allCrawlIssues, ...auditIssues]
-  const criticalCount = allIssues.filter(
-    (i) => (i as { severity: string }).severity === "critical"
-  ).length
-  const warningCount = allIssues.filter(
-    (i) => (i as { severity: string }).severity === "warning"
-  ).length
-  const passedCount = allIssues.filter(
-    (i) => (i as { severity: string }).severity === "improvement"
-  ).length
+  // Combined plain-English issue list (crawl + AI audit), sorted by severity.
+  const sevRank: Record<string, number> = { critical: 0, warning: 1, improvement: 2 }
+  const combinedIssues: { severity: string; text: string }[] = [
+    ...allCrawlIssues.map((i) => ({ severity: i.severity, text: issueText(i) })),
+    ...auditIssues.map((i) => ({ severity: i.severity, text: i.headline })),
+  ].sort((a, b) => (sevRank[a.severity] ?? 1) - (sevRank[b.severity] ?? 1))
 
-  const totalIssueCount = criticalCount + warningCount + passedCount
-  const hasCritical = criticalCount > 0
-  const heroGradient = hasCritical
-    ? "from-red-500/[0.12] border-red-500/20"
-    : warningCount > 0
-    ? "from-amber-500/[0.12] border-amber-500/20"
-    : "from-green-500/[0.12] border-green-500/20"
-  const heroOrb = hasCritical
-    ? "bg-red-500/15"
-    : warningCount > 0
-    ? "bg-amber-500/15"
-    : "bg-green-500/15"
+  // Stat-row numbers (plain English).
+  const pagesChecked = latestCrawl?.pagesScanned ?? 0
+  const brokenLinks = allCrawlIssues.filter((i) => i.severity === "critical").length
+  const missingDescriptions = allCrawlIssues.filter((i) => i.severity === "warning").length
+  const issuesFixed = auditIssues.filter((i) => i.fix_summary).length
+
+  // PageSpeed data — fetched safely, never leaks raw errors to the user.
+  let pageSpeed: PageSpeedResult | null = null
+  let speedAvailable = false
+  try {
+    if (user.websiteUrl) {
+      const psUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(
+        user.websiteUrl
+      )}&strategy=mobile`
+      const psRes = await fetch(psUrl, { cache: "no-store" })
+      if (psRes.ok) {
+        pageSpeed = (await psRes.json()) as PageSpeedResult
+        speedAvailable = true
+      }
+    }
+  } catch {
+    speedAvailable = false
+  }
+
+  let audits: Record<string, PageSpeedAudit> = {}
+  let perfPct: number | null = null
+  try {
+    audits = pageSpeed?.lighthouseResult?.audits ?? {}
+    const perfScore = pageSpeed?.lighthouseResult?.categories?.performance?.score ?? null
+    perfPct = perfScore !== null ? Math.round(perfScore * 100) : null
+  } catch {
+    speedAvailable = false
+  }
+
+  const hasAnyData = Boolean(latestCrawl || latestAudit)
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div style={{ maxWidth: "880px", margin: "0 auto" }}>
+      <AutopilotBar message="alphaa crawled your site today and flagged issues in plain English below" />
 
-      {/* ── Issue Summary Hero ───────────────────────────────── */}
-      {(latestCrawl || latestAudit) && (
-        <div className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br ${heroGradient} via-transparent to-transparent p-6 md:p-8`}>
-          <div className={`absolute -top-20 -right-20 w-48 h-48 rounded-full ${heroOrb} blur-3xl pointer-events-none`} />
-          <div className="relative">
-            <div className="flex items-start justify-between gap-4 mb-6">
-              <div>
-                <h1 className="text-fg font-semibold text-2xl">Site Audit</h1>
-                <p className="text-fg/40 text-sm mt-0.5">
-                  {latestCrawl
-                    ? `Last crawled ${formatDate(latestCrawl.crawledAt)} · runs automatically weekly`
-                    : "AI visibility and schema audit"}
-                </p>
-              </div>
-              <GenerateSchemaButton />
-            </div>
+      {/* ── Header ──────────────────────────────────────────── */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: "16px",
+          marginBottom: "18px",
+        }}
+      >
+        <div>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>Website health</h1>
+          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+            alphaa checks your site every week and flags anything that could hurt your visibility.
+            {latestCrawl ? ` Last checked ${formatDate(latestCrawl.crawledAt)}.` : ""}
+          </p>
+        </div>
+        <GenerateSchemaButton />
+      </div>
 
-            {/* 3 big numbers */}
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-black/20 rounded-2xl p-5 text-center">
-                <p className="text-4xl font-bold font-mono text-red-400">{criticalCount}</p>
-                <p className="text-fg/50 text-xs mt-1">Critical</p>
-                <div className="mt-2 h-1 rounded-full bg-fg/[0.06]">
-                  <div
-                    className="h-full rounded-full bg-red-400"
-                    style={{ width: totalIssueCount > 0 ? `${(criticalCount / totalIssueCount) * 100}%` : "0%" }}
-                  />
-                </div>
-              </div>
-              <div className="bg-black/20 rounded-2xl p-5 text-center">
-                <p className="text-4xl font-bold font-mono text-amber-400">{warningCount}</p>
-                <p className="text-fg/50 text-xs mt-1">Warnings</p>
-                <div className="mt-2 h-1 rounded-full bg-fg/[0.06]">
-                  <div
-                    className="h-full rounded-full bg-amber-400"
-                    style={{ width: totalIssueCount > 0 ? `${(warningCount / totalIssueCount) * 100}%` : "0%" }}
-                  />
-                </div>
-              </div>
-              <div className="bg-black/20 rounded-2xl p-5 text-center">
-                <p className="text-4xl font-bold font-mono text-green-400">{passedCount}</p>
-                <p className="text-fg/50 text-xs mt-1">Improvements</p>
-                <div className="mt-2 h-1 rounded-full bg-fg/[0.06]">
-                  <div
-                    className="h-full rounded-full bg-green-400"
-                    style={{ width: totalIssueCount > 0 ? `${(passedCount / totalIssueCount) * 100}%` : "0%" }}
-                  />
-                </div>
-              </div>
-            </div>
+      {/* ── Stat row ────────────────────────────────────────── */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", marginBottom: "8px" }}>
+        <StatBox value={pagesChecked} label="Pages checked" tone="default" />
+        <StatBox
+          value={brokenLinks}
+          label="Broken links"
+          tone={brokenLinks > 0 ? "danger" : "success"}
+        />
+        <StatBox
+          value={missingDescriptions}
+          label="Missing descriptions"
+          tone={missingDescriptions > 0 ? "warning" : "success"}
+        />
+        <StatBox value={issuesFixed} label="Issues fixed this month" tone="success" />
+      </div>
 
-            {totalIssueCount > 0 && (
-              <p className="text-fg/30 text-xs mt-4 text-center">
-                {totalIssueCount} total issues found across crawl and AI audit
-              </p>
+      {/* ── Page speed ──────────────────────────────────────── */}
+      <SectionDivider>PAGE SPEED</SectionDivider>
+      {speedAvailable && Object.keys(audits).length > 0 ? (
+        <DsCard>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginBottom: "14px",
+            }}
+          >
+            <Gauge size={15} color="#e05a2b" />
+            <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+              How fast your site feels to visitors
+            </span>
+            {perfPct !== null && (
+              <StatusPill variant={perfPct >= 70 ? "found" : perfPct >= 50 ? "warning" : "error"}>
+                {perfPct >= 70 ? "Fast" : perfPct >= 50 ? "Okay" : "Slow"} · {perfPct}/100
+              </StatusPill>
             )}
           </div>
-        </div>
-      )}
-
-      {/* ── No audit state ───────────────────────────────────── */}
-      {!latestCrawl && !latestAudit && (
-        <div className="relative overflow-hidden rounded-2xl border border-[#FF6B1A]/20 bg-gradient-to-br from-[#FF6B1A]/[0.08] via-transparent to-transparent p-8">
-          <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[#FF6B1A]/10 blur-3xl pointer-events-none" />
-          <div className="relative flex flex-col items-center text-center gap-5 py-6">
-            <span className="text-5xl">🔍</span>
-            <div className="space-y-2 max-w-sm">
-              <h1 className="text-fg font-semibold text-xl">No audit data yet</h1>
-              <p className="text-fg/50 text-sm leading-relaxed">
-                Generate schema markup to get started. A full site crawl runs automatically
-                in the background.
-              </p>
-            </div>
-            <GenerateSchemaButton prominent />
-          </div>
-        </div>
-      )}
-
-      {/* ── Crawl Issues by category ─────────────────────────── */}
-      {allCrawlIssues.length > 0 && (
-        <div className="space-y-4">
-          <h2 className="text-fg font-semibold text-xl flex items-center gap-2">
-            Website Issues
-            <span className="text-fg/30 font-normal text-sm">
-              ({allCrawlIssues.length})
-            </span>
-          </h2>
-
-          {/* Critical */}
-          {allCrawlIssues.filter((i) => i.severity === "critical").length > 0 && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-red-400" />
-                <p className="text-red-400 text-xs font-semibold uppercase tracking-wider">
-                  Critical ({allCrawlIssues.filter((i) => i.severity === "critical").length})
-                </p>
-              </div>
-              {allCrawlIssues
-                .filter((i) => i.severity === "critical")
-                .map((issue, i) => (
-                  <div
-                    key={i}
-                    className="bg-fg/[0.03] border border-red-500/20 rounded-xl p-4 flex items-start gap-3"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
-                    <p className="text-fg/70 text-sm leading-relaxed">{issue.message}</p>
-                  </div>
-                ))}
-            </div>
-          )}
-
-          {/* Warning */}
-          {allCrawlIssues.filter((i) => i.severity === "warning").length > 0 && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-amber-400" />
-                <p className="text-amber-400 text-xs font-semibold uppercase tracking-wider">
-                  Warnings ({allCrawlIssues.filter((i) => i.severity === "warning").length})
-                </p>
-              </div>
-              {allCrawlIssues
-                .filter((i) => i.severity === "warning")
-                .map((issue, i) => (
-                  <div
-                    key={i}
-                    className="bg-fg/[0.03] border border-amber-500/20 rounded-xl p-4 flex items-start gap-3"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />
-                    <p className="text-fg/70 text-sm leading-relaxed">{issue.message}</p>
-                  </div>
-                ))}
-            </div>
-          )}
-
-          {/* Improvement */}
-          {allCrawlIssues.filter((i) => i.severity === "improvement").length > 0 && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-400" />
-                <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider">
-                  Improvements ({allCrawlIssues.filter((i) => i.severity === "improvement").length})
-                </p>
-              </div>
-              {allCrawlIssues
-                .filter((i) => i.severity === "improvement")
-                .map((issue, i) => (
-                  <div
-                    key={i}
-                    className="bg-fg/[0.03] border border-blue-500/20 rounded-xl p-4 flex items-start gap-3"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
-                    <p className="text-fg/70 text-sm leading-relaxed">{issue.message}</p>
-                  </div>
-                ))}
-            </div>
-          )}
-
-          {/* No issues state */}
-          {allCrawlIssues.length === 0 && latestCrawl && (
-            <div className="relative overflow-hidden rounded-2xl border border-green-500/20 bg-gradient-to-br from-green-500/[0.10] via-transparent to-transparent p-8">
-              <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-green-500/15 blur-3xl pointer-events-none" />
-              <div className="relative flex flex-col items-center text-center gap-3 py-4">
-                <span className="text-5xl">✅</span>
-                <div className="space-y-1.5">
-                  <h3 className="text-fg font-semibold text-lg">Everything looks good!</h3>
-                  <p className="text-fg/50 text-sm">No crawl issues found. Your site is clean.</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ── AI Audit Issues ───────────────────────────────────── */}
-      {auditIssues.length > 0 && (
-        <div className="space-y-4">
-          <div className="border-t border-line/[0.06] pt-6">
-            <h2 className="text-fg font-semibold text-xl">AI Visibility Issues</h2>
-            <p className="text-fg/40 text-sm mt-0.5">
-              From your latest visibility audit · {auditIssues.length} issues
-            </p>
-          </div>
-
-          {/* Critical audit issues */}
-          {auditIssues.filter((i) => i.severity === "critical").length > 0 && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-red-400" />
-                <p className="text-red-400 text-xs font-semibold uppercase tracking-wider">
-                  Critical ({auditIssues.filter((i) => i.severity === "critical").length})
-                </p>
-              </div>
-              {auditIssues
-                .filter((i) => i.severity === "critical")
-                .map((issue, i) => (
-                  <div
-                    key={i}
-                    className="bg-fg/[0.03] border border-red-500/20 rounded-xl p-4"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="text-fg text-sm font-medium">{issue.headline}</p>
-                        <p className="text-fg/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
-                        {issue.fix_summary && (
-                          <p className="text-green-400 text-xs mt-2 leading-relaxed">
-                            Fix: {issue.fix_summary}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          )}
-
-          {/* Warning audit issues */}
-          {auditIssues.filter((i) => i.severity === "warning").length > 0 && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-amber-400" />
-                <p className="text-amber-400 text-xs font-semibold uppercase tracking-wider">
-                  Warnings ({auditIssues.filter((i) => i.severity === "warning").length})
-                </p>
-              </div>
-              {auditIssues
-                .filter((i) => i.severity === "warning")
-                .map((issue, i) => (
-                  <div
-                    key={i}
-                    className="bg-fg/[0.03] border border-amber-500/20 rounded-xl p-4"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="text-fg text-sm font-medium">{issue.headline}</p>
-                        <p className="text-fg/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
-                        {issue.fix_summary && (
-                          <p className="text-green-400 text-xs mt-2 leading-relaxed">
-                            Fix: {issue.fix_summary}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          )}
-
-          {/* Info / improvement audit issues */}
-          {auditIssues.filter((i) => i.severity === "improvement").length > 0 && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-400" />
-                <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider">
-                  Improvements ({auditIssues.filter((i) => i.severity === "improvement").length})
-                </p>
-              </div>
-              {auditIssues
-                .filter((i) => i.severity === "improvement")
-                .map((issue, i) => (
-                  <div
-                    key={i}
-                    className="bg-fg/[0.03] border border-blue-500/20 rounded-xl p-4"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="text-fg text-sm font-medium">{issue.headline}</p>
-                        <p className="text-fg/50 text-xs mt-1 leading-relaxed">{issue.explanation}</p>
-                        {issue.fix_summary && (
-                          <p className="text-green-400 text-xs mt-2 leading-relaxed">
-                            Fix: {issue.fix_summary}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ── Crawl Stats row ───────────────────────────────────── */}
-      {latestCrawl && (
-        <div className="grid grid-cols-4 gap-3">
-          <GlassCard className="text-center py-4">
-            <MonoNumber className="text-fg text-2xl font-medium block">
-              {latestCrawl.pagesScanned}
-            </MonoNumber>
-            <span className="text-fg/50 text-xs">Pages scanned</span>
-          </GlassCard>
-          <GlassCard className="text-center py-4">
-            <MonoNumber className="text-fg text-2xl font-medium block">
-              {allCrawlIssues.filter((i) => i.severity === "critical").length}
-            </MonoNumber>
-            <span className="text-fg/50 text-xs">Critical issues</span>
-          </GlassCard>
-          <GlassCard className="text-center py-4">
-            <MonoNumber className="text-fg text-2xl font-medium block">
-              {latestCrawl.schemaFound?.length ?? 0}
-            </MonoNumber>
-            <span className="text-fg/50 text-xs">Schema found</span>
-          </GlassCard>
-          <GlassCard className="text-center py-4">
-            <MonoNumber className="text-fg text-2xl font-medium block">
-              {latestCrawl.schemaMissing?.length ?? 0}
-            </MonoNumber>
-            <span className="text-fg/50 text-xs">Schema missing</span>
-          </GlassCard>
-        </div>
-      )}
-
-      {/* ── Schema Markup section ───────────────────────────── */}
-      <div className="space-y-4">
-        <div className="border-t border-line/[0.06] pt-6 flex items-start justify-between gap-4">
-          <div>
-            <h2 className="text-fg font-semibold text-xl">Schema Markup</h2>
-            <p className="text-fg/40 text-sm mt-0.5">
-              JSON-LD structured data — helps Google and AI understand your business
-            </p>
-          </div>
-          {latestSchema && <GenerateSchemaButton />}
-        </div>
-
-        {!latestSchema ? (
-          <div className="relative overflow-hidden rounded-2xl border border-[#FF6B1A]/20 bg-gradient-to-br from-[#FF6B1A]/[0.08] via-transparent to-transparent p-8">
-            <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[#FF6B1A]/10 blur-3xl pointer-events-none" />
-            <div className="relative flex flex-col items-center text-center gap-5 py-6">
-              <span className="text-5xl">🏷️</span>
-              <div className="space-y-2 max-w-sm">
-                <h3 className="text-fg font-semibold text-lg">No schema markup yet</h3>
-                <p className="text-fg/50 text-sm leading-relaxed">
-                  Generate JSON-LD structured data for your website. Paste it into your pages to help
-                  Google and AI engines understand your business.
-                </p>
-              </div>
-              <GenerateSchemaButton prominent />
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <p className="text-fg/30 text-xs">
-              Generated {formatDate(latestSchema.generatedAt)} · {schemas.length} schema{schemas.length !== 1 ? "s" : ""}
-            </p>
-            {schemas.map((schema, i) => {
-              const jsonStr = JSON.stringify(schema.jsonLd, null, 2)
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+            {CWV_AUDIT_IDS.map((id) => {
+              const audit = audits[id]
+              if (!audit) return null
+              const status = cwvStatus(id, audit.displayValue)
               return (
                 <div
-                  key={i}
-                  className="bg-fg/[0.03] border border-line/[0.06] rounded-2xl p-5 space-y-3"
+                  key={id}
+                  style={{
+                    background: "#1a1a1a",
+                    border: "1px solid #222222",
+                    borderRadius: "8px",
+                    padding: "12px",
+                  }}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="bg-[#FF6B1A]/20 text-[#FF6B1A] border border-[#FF6B1A]/30 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                        {schema.type}
-                      </span>
-                      <span className="text-fg/30 text-xs font-mono">{schema.pageUrl}</span>
-                    </div>
-                    <CopyButton text={`<script type="application/ld+json">\n${jsonStr}\n</script>`} />
+                  <div style={{ fontSize: "11px", color: "#888888", marginBottom: "4px" }}>
+                    {cwvFriendlyName(id)}
                   </div>
-                  <pre className="bg-black/30 rounded-xl p-4 text-xs text-fg/60 font-mono overflow-x-auto leading-relaxed whitespace-pre-wrap break-all">
-                    {jsonStr}
-                  </pre>
+                  <div style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff", lineHeight: 1.1 }}>
+                    {audit.displayValue ?? "—"}
+                  </div>
+                  <div style={{ marginTop: "8px" }}>
+                    <StatusPill variant={status.variant}>{status.label}</StatusPill>
+                  </div>
+                  <div style={{ fontSize: "11px", color: "#555555", marginTop: "8px", lineHeight: 1.5 }}>
+                    {cwvSubtitle(id)}
+                  </div>
                 </div>
               )
             })}
           </div>
-        )}
-      </div>
+        </DsCard>
+      ) : (
+        <DsCard>
+          <div style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
+            Speed data updates shortly — we check this weekly and you will see it here next time.
+          </div>
+        </DsCard>
+      )}
+
+      {/* ── Issues list ─────────────────────────────────────── */}
+      <SectionDivider>WHAT WE FOUND</SectionDivider>
+      {combinedIssues.length > 0 ? (
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          {combinedIssues.map((issue, i) => {
+            // "Improvement"/"warning" crawl + AI items are handled automatically by
+            // alphaa. Critical items may need owner input.
+            const automatic = issue.severity !== "critical"
+            return (
+              <DsCard key={i}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                  <span
+                    style={{
+                      width: "8px",
+                      height: "8px",
+                      borderRadius: "50%",
+                      background: SEV_DOT[issue.severity] ?? "#f59e0b",
+                      flexShrink: 0,
+                      marginTop: "5px",
+                    }}
+                  />
+                  <p style={{ flex: 1, fontSize: "13px", color: "#cccccc", lineHeight: 1.6 }}>
+                    {issue.text}
+                  </p>
+                  {automatic ? (
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "5px",
+                        fontSize: "11px",
+                        fontWeight: 500,
+                        color: "#22c55e",
+                        whiteSpace: "nowrap",
+                        flexShrink: 0,
+                        marginTop: "1px",
+                      }}
+                    >
+                      <Wrench size={12} color="#22c55e" />
+                      alphaa fixing
+                    </span>
+                  ) : (
+                    <a
+                      href="/dashboard/settings"
+                      style={{
+                        background: "#e05a2b",
+                        color: "#fff",
+                        fontSize: "11px",
+                        fontWeight: 500,
+                        padding: "5px 12px",
+                        borderRadius: "8px",
+                        whiteSpace: "nowrap",
+                        flexShrink: 0,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Action needed
+                    </a>
+                  )}
+                </div>
+              </DsCard>
+            )
+          })}
+        </div>
+      ) : hasAnyData ? (
+        <DsCard>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <CheckCircle2 size={18} color="#22c55e" />
+            <div>
+              <div style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+                Your site is in great shape
+              </div>
+              <div style={{ fontSize: "13px", color: "#888888", marginTop: "2px", lineHeight: 1.6 }}>
+                alphaa checked every page and found nothing that needs your attention.
+              </div>
+            </div>
+          </div>
+        </DsCard>
+      ) : (
+        <EmptyState
+          icon={CheckCircle2}
+          title="alphaa will check your whole site for you"
+          body="The first crawl runs automatically in the background — there is nothing you need to do. Your results will appear here within a day."
+          sub="We re-check your site every week and flag anything new."
+        />
+      )}
+
+      {/* ── Schema markup ───────────────────────────────────── */}
+      <SectionDivider>STRUCTURED DATA</SectionDivider>
+      {!latestSchema ? (
+        <EmptyState
+          icon={Code2}
+          title="alphaa generates structured data so Google and AI understand your business"
+          body="This is the behind-the-scenes code that helps search engines and AI assistants describe your business correctly. alphaa can create it for you."
+          sub="Most sites benefit from this — it only takes a moment."
+        >
+          <GenerateSchemaButton prominent />
+        </EmptyState>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <p style={{ fontSize: "11px", color: "#555555" }}>
+            Generated {formatDate(latestSchema.generatedAt)} · {schemas.length} item
+            {schemas.length !== 1 ? "s" : ""} ready to use
+          </p>
+          {schemas.map((schema, i) => {
+            const jsonStr = JSON.stringify(schema.jsonLd, null, 2)
+            return (
+              <DsCard key={i}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "10px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
+                    <StatusPill variant="info">{schema.type}</StatusPill>
+                    <span
+                      style={{
+                        fontSize: "11px",
+                        color: "#555555",
+                        fontFamily: "monospace",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {schema.pageUrl}
+                    </span>
+                  </div>
+                  <CopyButton text={`<script type="application/ld+json">\n${jsonStr}\n</script>`} />
+                </div>
+                <pre
+                  style={{
+                    background: "#0a0a0a",
+                    border: "1px solid #222222",
+                    borderRadius: "8px",
+                    padding: "12px",
+                    fontSize: "11px",
+                    color: "#888888",
+                    fontFamily: "monospace",
+                    overflowX: "auto",
+                    lineHeight: 1.6,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {jsonStr}
+                </pre>
+              </DsCard>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

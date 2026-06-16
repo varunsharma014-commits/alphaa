@@ -2,18 +2,22 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { GlassCard } from '@/components/common/GlassCard'
+import { AutopilotBar } from '@/components/dashboard/AutopilotBar'
+import { DsCard } from '@/components/dashboard/DsCard'
+import { StatusPill } from '@/components/dashboard/StatusPill'
+import { SectionDivider } from '@/components/dashboard/SectionDivider'
 import {
   CheckCircle2,
   RefreshCw,
   Unlink,
   ChevronDown,
-  AlertTriangle,
+  AlertCircle,
   Globe,
   Loader2,
   Zap,
   Clock,
   XCircle,
+  AlertTriangle,
 } from 'lucide-react'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -93,24 +97,12 @@ function GoogleLogo({ size = 24 }: { size?: number }) {
 
 function SeverityBadge({ severity }: { severity: CrawlIssue['severity'] }) {
   if (severity === 'critical') {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
-        <XCircle className="w-3 h-3" /> Critical
-      </span>
-    )
+    return <StatusPill variant="error">Critical</StatusPill>
   }
   if (severity === 'warning') {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium">
-        <AlertTriangle className="w-3 h-3" /> Warning
-      </span>
-    )
+    return <StatusPill variant="warning">Warning</StatusPill>
   }
-  return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium">
-      <Zap className="w-3 h-3" /> Improve
-    </span>
-  )
+  return <StatusPill variant="info">Improve</StatusPill>
 }
 
 // ─── Main page ────────────────────────────────────────────────────────────────
@@ -125,6 +117,7 @@ export default function IntegrationsPage() {
   const [syncing, setSyncing] = useState(false)
   const [disconnecting, setDisconnecting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [justConnected, setJustConnected] = useState(false)
 
   // Property selection state
   const [properties, setProperties] = useState<Properties | null>(null)
@@ -157,7 +150,7 @@ export default function IntegrationsPage() {
       }
     } catch {
       setState('not_connected')
-      setError('Could not load integration status.')
+      setError('We could not check your Google connection just now. Your data is safe — try refreshing in a moment.')
     }
   }, [])
 
@@ -184,7 +177,7 @@ export default function IntegrationsPage() {
       const data: Properties = await res.json()
       setProperties(data)
     } catch {
-      setError('Could not load Google properties. Try reconnecting.')
+      setError('We could not load your Google properties. Try reconnecting and we will take it from there.')
     } finally {
       setPropsLoading(false)
     }
@@ -195,7 +188,7 @@ export default function IntegrationsPage() {
     const oauthError = searchParams.get('error')
 
     if (oauthError) {
-      setError(`Google connection failed: ${oauthError.replace(/_/g, ' ')}`)
+      setError('Google connection did not finish. No problem — just click Connect to try again.')
       setState('not_connected')
       setCrawlLoading(false)
       fetchCrawl()
@@ -204,6 +197,7 @@ export default function IntegrationsPage() {
 
     if (connected === 'true') {
       // Just returned from OAuth — go straight to property selection
+      setJustConnected(true)
       setState('selecting_properties')
       setCrawlLoading(false)
       fetchProperties()
@@ -235,7 +229,7 @@ export default function IntegrationsPage() {
       const { authUrl } = (await res.json()) as { authUrl: string }
       window.location.href = authUrl
     } catch {
-      setError('Could not start Google connection. Try again.')
+      setError('We could not open the Google connection screen. Please try again in a moment.')
       setConnecting(false)
     }
   }
@@ -261,7 +255,7 @@ export default function IntegrationsPage() {
       if (!res.ok) throw new Error('Failed to save properties')
       await fetchStatus()
     } catch {
-      setError('Could not save properties. Try again.')
+      setError('We could not save your choices just now. Please try again.')
     } finally {
       setSaving(false)
     }
@@ -275,7 +269,7 @@ export default function IntegrationsPage() {
       if (!res.ok) throw new Error('Sync failed')
       await fetchStatus()
     } catch {
-      setError('Sync failed. Try again in a moment.')
+      setError('The sync did not finish. We will keep trying automatically — or click Sync now to retry.')
     } finally {
       setSyncing(false)
     }
@@ -302,7 +296,7 @@ export default function IntegrationsPage() {
       setSelectedGmbLocation('')
       setState('not_connected')
     } catch {
-      setError('Could not disconnect. Try again.')
+      setError('We could not disconnect just now. Please try again.')
     } finally {
       setDisconnecting(false)
     }
@@ -318,7 +312,7 @@ export default function IntegrationsPage() {
       setCrawlData(result)
     } catch {
       setCrawlError(
-        'Scan failed. Make sure your website URL is set in Account settings.',
+        'We could not scan your website this time. Make sure your website address is saved in Account settings, then try again.',
       )
     } finally {
       setCrawling(false)
@@ -336,99 +330,131 @@ export default function IntegrationsPage() {
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   }
 
+  // ── Shared styles ──────────────────────────────────────────────────────────
+  const labelStyle: React.CSSProperties = {
+    fontSize: '10px',
+    fontWeight: 500,
+    textTransform: 'uppercase',
+    letterSpacing: '.08em',
+    color: '#444',
+  }
+  const selectClass =
+    'w-full appearance-none rounded-lg px-3 py-2.5 text-[13px] pr-9 focus:outline-none transition-colors'
+  const selectStyle: React.CSSProperties = {
+    backgroundColor: '#1a1a1a',
+    border: '.5px solid #222',
+    color: '#fff',
+  }
+  const primaryBtnStyle: React.CSSProperties = {
+    backgroundColor: '#e05a2b',
+    color: '#fff',
+    borderRadius: '8px',
+    fontSize: '13px',
+    fontWeight: 500,
+  }
+  const secondaryBtnStyle: React.CSSProperties = {
+    backgroundColor: 'transparent',
+    border: '1px solid #333',
+    color: '#888',
+    borderRadius: '8px',
+    fontSize: '13px',
+    fontWeight: 500,
+  }
+
   // ── Google section renderer ────────────────────────────────────────────────
 
   const renderGoogleSection = () => {
     if (state === 'loading') {
       return (
-        <GlassCard>
+        <DsCard>
           <div className="flex items-center gap-3 animate-pulse">
-            <div className="w-10 h-10 rounded-xl bg-fg/5" />
+            <div className="w-10 h-10 rounded-xl" style={{ backgroundColor: '#1a1a1a' }} />
             <div className="space-y-2 flex-1">
-              <div className="h-4 w-48 rounded bg-fg/5" />
-              <div className="h-3 w-72 rounded bg-fg/5" />
+              <div className="h-4 w-48 rounded" style={{ backgroundColor: '#1a1a1a' }} />
+              <div className="h-3 w-72 rounded" style={{ backgroundColor: '#1a1a1a' }} />
             </div>
           </div>
-        </GlassCard>
+        </DsCard>
       )
     }
 
     if (state === 'not_connected') {
       return (
-        <GlassCard>
-          <div className="flex flex-col items-center text-center py-6 gap-6">
-            {/* Google logo with ambient glow */}
-            <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-2xl scale-[2]" />
-              <div className="relative w-16 h-16 rounded-2xl bg-bg-tertiary border border-line/10 flex items-center justify-center">
-                <GoogleLogo size={32} />
-              </div>
+        <DsCard>
+          <div className="flex flex-col items-center text-center py-4 gap-5">
+            {/* Google logo tile */}
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center"
+              style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
+            >
+              <GoogleLogo size={30} />
             </div>
 
             <div className="space-y-2 max-w-md">
-              <h2 className="text-fg font-semibold text-xl">
-                Connect Google in one click
+              <h2 className="text-[15px] font-medium" style={{ color: '#fff' }}>
+                Connect Google so alphaa can work for you
               </h2>
-              <p className="text-muted text-sm leading-relaxed">
-                Link your Google Analytics, Search Console, and Business Profile
-                — we pull data automatically so you never have to log in
-                separately.
+              <p className="text-[13px]" style={{ color: '#888', lineHeight: 1.6 }}>
+                Link your Google Business Profile, Search Console, and Analytics
+                once. After that, alphaa pulls your data, posts on your behalf,
+                and watches your rankings automatically — you never log in again.
               </p>
             </div>
 
             <button
               onClick={handleConnect}
               disabled={connecting}
-              className="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-white text-gray-900 font-semibold text-sm border border-line/15 hover:bg-gray-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-lg"
+              className="flex items-center gap-2.5 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              style={{ ...primaryBtnStyle, padding: '8px 18px' }}
             >
               {connecting ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 <GoogleLogo size={18} />
               )}
-              {connecting ? 'Redirecting to Google…' : 'Connect Google'}
+              {connecting ? 'Opening Google…' : 'Connect Google'}
             </button>
 
             {/* What gets connected chips */}
             <div className="flex flex-wrap justify-center gap-2">
-              {[
-                { icon: '📊', label: 'Google Analytics' },
-                { icon: '🔍', label: 'Search Console' },
-                { icon: '🗺️', label: 'Business Profile' },
-              ].map((chip) => (
+              {['Business Profile', 'Search Console', 'Analytics'].map((chip) => (
                 <div
-                  key={chip.label}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-tertiary border border-line/10 text-fg/70 text-xs"
+                  key={chip}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                  style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222', color: '#888' }}
                 >
-                  <span>{chip.icon}</span>
-                  <span>{chip.label}</span>
+                  <CheckCircle2 className="w-3 h-3" style={{ color: '#22c55e' }} />
+                  <span>{chip}</span>
                 </div>
               ))}
             </div>
 
-            <p className="text-muted text-xs max-w-sm">
-              We request read-only access. Your data stays private and is never
-              shared.
+            <p className="text-[11px] max-w-sm" style={{ color: '#555' }}>
+              alphaa only requests the access it needs. Your data stays private
+              and is never shared.
             </p>
           </div>
-        </GlassCard>
+        </DsCard>
       )
     }
 
     if (state === 'selecting_properties') {
       return (
-        <GlassCard>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-9 h-9 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4 text-green-400" />
+        <DsCard>
+          <div className="flex items-center gap-3 mb-5">
+            <div
+              className="w-9 h-9 rounded-lg flex items-center justify-center"
+              style={{ backgroundColor: '#0d2218', border: '1px solid #14532d' }}
+            >
+              <CheckCircle2 className="w-4 h-4" style={{ color: '#22c55e' }} />
             </div>
             <div>
-              <h2 className="text-fg font-semibold text-base">
-                Google connected — choose your properties
+              <h2 className="text-[14px] font-medium" style={{ color: '#fff' }}>
+                Google is connected — pick what alphaa should manage
               </h2>
-              <p className="text-muted text-xs mt-0.5">
-                Select which accounts to pull data from. You can skip any for
-                now.
+              <p className="text-[12px] mt-0.5" style={{ color: '#888' }}>
+                Choose your accounts below. You can leave any on “Set up later”
+                and alphaa will remind you when it needs them.
               </p>
             </div>
           </div>
@@ -438,126 +464,127 @@ export default function IntegrationsPage() {
               {[0, 1, 2].map((i) => (
                 <div
                   key={i}
-                  className="h-12 rounded-xl bg-bg-tertiary animate-pulse"
+                  className="h-11 rounded-lg animate-pulse"
+                  style={{ backgroundColor: '#1a1a1a' }}
                 />
               ))}
             </div>
           ) : (
             <div className="space-y-4">
-              {/* GA Property */}
+              {/* GMB Location — most important, first */}
               <div className="space-y-1.5">
-                <label className="text-fg/60 text-xs font-medium uppercase tracking-wider">
-                  📊 Google Analytics Property
-                </label>
-                <div className="relative">
-                  <select
-                    value={selectedGa}
-                    onChange={(e) => setSelectedGa(e.target.value)}
-                    className="w-full appearance-none bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg text-sm pr-10 focus:outline-none focus:border-line/30 transition-colors"
-                  >
-                    <option value="">— Skip for now —</option>
-                    {properties?.gaProperties.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.name} ({p.id})
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
-                </div>
-              </div>
-
-              {/* GSC Site */}
-              <div className="space-y-1.5">
-                <label className="text-fg/60 text-xs font-medium uppercase tracking-wider">
-                  🔍 Search Console Site
-                </label>
-                <div className="relative">
-                  <select
-                    value={selectedGsc}
-                    onChange={(e) => setSelectedGsc(e.target.value)}
-                    className="w-full appearance-none bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg text-sm pr-10 focus:outline-none focus:border-line/30 transition-colors"
-                  >
-                    <option value="">— Skip for now —</option>
-                    {properties?.gscSites.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
-                </div>
-              </div>
-
-              {/* GMB Location */}
-              <div className="space-y-1.5">
-                <label className="text-fg/60 text-xs font-medium uppercase tracking-wider">
-                  🗺️ Business Profile Location
-                </label>
+                <label style={labelStyle}>Business Profile Location</label>
                 <div className="relative">
                   <select
                     value={selectedGmbLocation}
                     onChange={(e) => setSelectedGmbLocation(e.target.value)}
-                    className="w-full appearance-none bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg text-sm pr-10 focus:outline-none focus:border-line/30 transition-colors"
+                    className={selectClass}
+                    style={selectStyle}
                   >
-                    <option value="">— Skip for now —</option>
+                    <option value="">— Set up later —</option>
                     {properties?.gmbLocations.map((l) => (
                       <option key={l.locationId} value={l.locationId}>
                         {l.locationName} — {l.address}
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: '#555' }} />
+                </div>
+              </div>
+
+              {/* GSC Site */}
+              <div className="space-y-1.5">
+                <label style={labelStyle}>Search Console Site</label>
+                <div className="relative">
+                  <select
+                    value={selectedGsc}
+                    onChange={(e) => setSelectedGsc(e.target.value)}
+                    className={selectClass}
+                    style={selectStyle}
+                  >
+                    <option value="">— Set up later —</option>
+                    {properties?.gscSites.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: '#555' }} />
+                </div>
+              </div>
+
+              {/* GA Property */}
+              <div className="space-y-1.5">
+                <label style={labelStyle}>Google Analytics Property</label>
+                <div className="relative">
+                  <select
+                    value={selectedGa}
+                    onChange={(e) => setSelectedGa(e.target.value)}
+                    className={selectClass}
+                    style={selectStyle}
+                  >
+                    <option value="">— Set up later —</option>
+                    {properties?.gaProperties.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name} ({p.id})
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: '#555' }} />
                 </div>
               </div>
 
               <button
                 onClick={handleSaveProperties}
                 disabled={saving}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-orange hover:bg-brand-orange-light text-fg font-semibold text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+                className="w-full flex items-center justify-center gap-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-1"
+                style={{ ...primaryBtnStyle, padding: '10px 18px' }}
               >
                 {saving ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
                   <Zap className="w-4 h-4" />
                 )}
-                {saving ? 'Saving…' : 'Save & Start Syncing'}
+                {saving ? 'Saving…' : 'Save & let alphaa take over'}
               </button>
 
               {!selectedGa && !selectedGsc && !selectedGmbLocation && (
-                <p className="text-muted text-xs text-center">
-                  You can skip all and come back to configure later.
+                <p className="text-[11px] text-center" style={{ color: '#555' }}>
+                  You can set everything up later — alphaa will guide you when
+                  it needs each one.
                 </p>
               )}
             </div>
           )}
-        </GlassCard>
+        </DsCard>
       )
     }
 
     // connected state
     return (
-      <GlassCard>
+      <DsCard>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-bg-tertiary border border-line/10 flex items-center justify-center flex-shrink-0">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
+            >
               <GoogleLogo size={22} />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-fg font-semibold text-base">Google</h2>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium">
-                  <CheckCircle2 className="w-3 h-3" /> Connected
-                </span>
+                <h2 className="text-[14px] font-medium" style={{ color: '#fff' }}>Google</h2>
+                <StatusPill variant="found">Connected</StatusPill>
               </div>
               {status?.lastSyncedAt && (
-                <p className="text-muted text-xs mt-0.5 flex items-center gap-1">
-                  <Clock className="w-3 h-3" /> Last synced{' '}
+                <p className="text-[11px] mt-0.5 flex items-center gap-1" style={{ color: '#555' }}>
+                  <Clock className="w-3 h-3" /> alphaa last synced your data{' '}
                   {formatTime(status.lastSyncedAt)}
                 </p>
               )}
               {!status?.lastSyncedAt && (
-                <p className="text-muted text-xs mt-0.5">
-                  Never synced — click Sync Now to pull your data.
+                <p className="text-[11px] mt-0.5" style={{ color: '#555' }}>
+                  alphaa is preparing your first sync — nothing for you to do.
                 </p>
               )}
             </div>
@@ -567,17 +594,19 @@ export default function IntegrationsPage() {
             <button
               onClick={handleSyncNow}
               disabled={syncing}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-line/10 text-fg/80 hover:text-fg hover:border-line/30 text-xs font-medium transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3.5 py-2 transition-colors disabled:opacity-50"
+              style={{ ...secondaryBtnStyle, fontSize: '11px' }}
             >
               <RefreshCw
                 className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`}
               />
-              {syncing ? 'Syncing…' : 'Sync Now'}
+              {syncing ? 'Syncing…' : 'Sync now'}
             </button>
             <button
               onClick={handleDisconnect}
               disabled={disconnecting}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-red-500/20 text-red-400 hover:bg-red-500/10 text-xs font-medium transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3.5 py-2 transition-colors disabled:opacity-50"
+              style={{ backgroundColor: 'transparent', border: '1px solid #7f1d1d', color: '#dc2626', borderRadius: '8px', fontSize: '11px', fontWeight: 500 }}
             >
               <Unlink className="w-3.5 h-3.5" />
               {disconnecting ? 'Disconnecting…' : 'Disconnect'}
@@ -589,44 +618,41 @@ export default function IntegrationsPage() {
         <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             {
-              icon: '📊',
-              label: 'Google Analytics',
-              value: status?.gaPropertyName ?? status?.gaPropertyId ?? null,
+              label: 'Business Profile',
+              value: status?.gmbLocationName ?? null,
             },
             {
-              icon: '🔍',
               label: 'Search Console',
               value: status?.gscSiteUrl ?? null,
             },
             {
-              icon: '🗺️',
-              label: 'Business Profile',
-              value: status?.gmbLocationName ?? null,
+              label: 'Google Analytics',
+              value: status?.gaPropertyName ?? status?.gaPropertyId ?? null,
             },
           ].map((item) => (
             <div
               key={item.label}
-              className="bg-bg-tertiary rounded-xl p-3 space-y-1"
+              className="rounded-lg p-3 space-y-1.5"
+              style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
             >
-              <p className="text-muted text-xs">
-                {item.icon} {item.label}
-              </p>
+              <p style={labelStyle}>{item.label}</p>
               {item.value ? (
-                <p className="text-fg text-xs font-medium truncate">
+                <p className="text-[12px] font-medium truncate" style={{ color: '#fff' }}>
                   {item.value}
                 </p>
               ) : (
                 <button
                   onClick={() => setState('selecting_properties')}
-                  className="text-brand-orange text-xs hover:underline"
+                  className="text-[12px] hover:underline"
+                  style={{ color: '#e05a2b' }}
                 >
-                  Not set — configure
+                  Set up →
                 </button>
               )}
             </div>
           ))}
         </div>
-      </GlassCard>
+      </DsCard>
     )
   }
 
@@ -646,26 +672,93 @@ export default function IntegrationsPage() {
       }
     : null
 
+  // Show the loud action-needed banner only once we know Google is not connected
+  const showConnectBanner =
+    state === 'not_connected' && !justConnected
+
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto space-y-6" style={{ fontFamily: 'system-ui' }}>
+      <AutopilotBar message="alphaa runs your Google presence on autopilot. Connect your accounts once and we handle the rest — no daily logins needed." />
+
       {/* Header */}
       <div>
-        <h1 className="text-fg font-semibold text-2xl">Integrations</h1>
-        <p className="text-muted text-sm mt-1">
-          Connect your tools so Alphaa can pull data automatically.
+        <h1 className="font-medium" style={{ fontSize: '20px', color: '#fff' }}>
+          Integrations
+        </h1>
+        <p className="text-[13px] mt-1" style={{ color: '#888', lineHeight: 1.6 }}>
+          Connect your tools once. From there, alphaa pulls your data and works
+          for you automatically.
         </p>
       </div>
 
+      {/* Success banner after OAuth return */}
+      {justConnected && (
+        <div
+          className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-[13px]"
+          style={{ backgroundColor: '#0d2218', border: '1px solid #14532d', color: '#22c55e' }}
+        >
+          <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+          <span className="flex-1">
+            Google connected successfully! alphaa is now syncing your data —
+            just pick what to manage below.
+          </span>
+        </div>
+      )}
+
+      {/* LOUD action-needed banner when Google is not connected */}
+      {showConnectBanner && (
+        <div
+          className="rounded-lg p-4 sm:p-5"
+          style={{ backgroundColor: '#1a0808', border: '1px solid #7f1d1d' }}
+        >
+          <div className="flex items-start gap-3">
+            <div
+              className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: '#240a0a', border: '1px solid #7f1d1d' }}
+            >
+              <AlertCircle className="w-5 h-5" style={{ color: '#dc2626' }} />
+            </div>
+            <div className="flex-1 space-y-2">
+              <h2 className="text-[14px] font-medium" style={{ color: '#fff' }}>
+                Action needed: Connect your Google Business Profile
+              </h2>
+              <p className="text-[13px]" style={{ color: '#888', lineHeight: 1.6 }}>
+                This is the most important step. Without it, alphaa cannot post
+                to your Google listing, monitor your reviews, or track your
+                local rankings.
+              </p>
+              <button
+                onClick={handleConnect}
+                disabled={connecting}
+                className="flex items-center gap-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-1"
+                style={{ ...primaryBtnStyle, padding: '10px 20px', fontSize: '13px' }}
+              >
+                {connecting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <GoogleLogo size={16} />
+                )}
+                {connecting ? 'Opening Google…' : 'Connect now — takes 2 minutes →'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Error banner */}
       {error && (
-        <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+        <div
+          className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-[13px]"
+          style={{ backgroundColor: '#1a1200', border: '1px solid #78350f', color: '#f59e0b' }}
+        >
           <AlertTriangle className="w-4 h-4 flex-shrink-0" />
           <span className="flex-1">{error}</span>
           <button
             onClick={() => setError(null)}
-            className="text-red-400/60 hover:text-red-400 text-xs ml-2"
+            className="text-[11px] ml-2 hover:underline"
+            style={{ color: '#f59e0b' }}
           >
             Dismiss
           </button>
@@ -674,40 +767,38 @@ export default function IntegrationsPage() {
 
       {/* ── Google ─────────────────────────────────────────────────────────── */}
       <section className="space-y-3">
-        <h2 className="text-fg/50 text-xs font-semibold uppercase tracking-wider px-1">
-          Google
-        </h2>
+        <SectionDivider>Google</SectionDivider>
         {renderGoogleSection()}
       </section>
 
       {/* ── Website Scanner ─────────────────────────────────────────────────── */}
       <section className="space-y-3">
-        <h2 className="text-fg/50 text-xs font-semibold uppercase tracking-wider px-1">
-          Website Scanner
-        </h2>
+        <SectionDivider>Website Scanner</SectionDivider>
 
-        <GlassCard>
+        <DsCard>
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-bg-tertiary border border-line/10 flex items-center justify-center">
-                <Globe className="w-4 h-4 text-muted" />
+              <div
+                className="w-9 h-9 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
+              >
+                <Globe className="w-4 h-4" style={{ color: '#888' }} />
               </div>
               <div>
-                <h3 className="text-fg font-medium text-sm">
-                  Website Crawl
+                <h3 className="text-[14px] font-medium" style={{ color: '#fff' }}>
+                  Website health check
                 </h3>
                 {crawlLoading ? (
-                  <p className="text-muted text-xs mt-0.5">Loading…</p>
+                  <p className="text-[11px] mt-0.5" style={{ color: '#555' }}>Loading…</p>
                 ) : crawlData ? (
-                  <p className="text-muted text-xs mt-0.5 flex items-center gap-1">
+                  <p className="text-[11px] mt-0.5 flex items-center gap-1" style={{ color: '#555' }}>
                     <Clock className="w-3 h-3" />
-                    Last scanned {formatTime(crawlData.crawledAt)} ·{' '}
-                    <span className="font-mono">{crawlData.pagesScanned}</span>{' '}
-                    pages
+                    Last checked {formatTime(crawlData.crawledAt)} ·{' '}
+                    {crawlData.pagesScanned} pages
                   </p>
                 ) : (
-                  <p className="text-muted text-xs mt-0.5">
-                    No scan yet — run one to find issues.
+                  <p className="text-[11px] mt-0.5" style={{ color: '#555' }}>
+                    alphaa will check your site for issues that hurt your ranking.
                   </p>
                 )}
               </div>
@@ -716,30 +807,37 @@ export default function IntegrationsPage() {
             <button
               onClick={handleCrawl}
               disabled={crawling}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-line/10 text-fg/80 hover:text-fg hover:border-line/30 text-xs font-medium transition-colors disabled:opacity-50 flex-shrink-0"
+              className="flex items-center gap-1.5 px-3.5 py-2 transition-colors disabled:opacity-50 flex-shrink-0"
+              style={{ ...secondaryBtnStyle, fontSize: '11px' }}
             >
               {crawling ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
                 <RefreshCw className="w-3.5 h-3.5" />
               )}
-              {crawling ? 'Scanning…' : 'Scan My Website'}
+              {crawling ? 'Checking…' : 'Check my website'}
             </button>
           </div>
 
           {/* Scanning in progress */}
           {crawling && (
-            <div className="mt-5 flex flex-col items-center gap-3 py-8 border-t border-line/[0.06]">
-              <Loader2 className="w-6 h-6 text-brand-orange animate-spin" />
-              <p className="text-muted text-sm">
-                Crawling your website — this takes 15–60 seconds…
+            <div
+              className="mt-5 flex flex-col items-center gap-3 py-8"
+              style={{ borderTop: '.5px solid #222' }}
+            >
+              <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#e05a2b' }} />
+              <p className="text-[13px]" style={{ color: '#888' }}>
+                alphaa is checking your website — this takes 15–60 seconds.
               </p>
             </div>
           )}
 
-          {/* Crawl error */}
+          {/* Crawl error — friendly fallback */}
           {!crawling && crawlError && (
-            <div className="mt-4 flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+            <div
+              className="mt-4 flex items-center gap-2 p-3 rounded-lg text-[12px]"
+              style={{ backgroundColor: '#1a1200', border: '1px solid #78350f', color: '#f59e0b' }}
+            >
               <AlertTriangle className="w-4 h-4 flex-shrink-0" />
               {crawlError}
             </div>
@@ -747,35 +845,41 @@ export default function IntegrationsPage() {
 
           {/* Crawl results */}
           {!crawling && crawlData && issueCounts && (
-            <div className="mt-5 border-t border-line/[0.06] pt-5 space-y-4">
+            <div className="mt-5 pt-5 space-y-4" style={{ borderTop: '.5px solid #222' }}>
               {/* Summary chips */}
               <div className="flex flex-wrap gap-2">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-tertiary border border-line/10 text-fg text-xs">
-                  <Globe className="w-3 h-3 text-muted" />
-                  <span className="font-mono">{crawlData.pagesScanned}</span>{' '}
-                  pages scanned
+                <div
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                  style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222', color: '#fff' }}
+                >
+                  <Globe className="w-3 h-3" style={{ color: '#888' }} />
+                  {crawlData.pagesScanned} pages checked
                 </div>
                 {issueCounts.critical > 0 && (
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+                  <div
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                    style={{ backgroundColor: '#1a0808', border: '1px solid #7f1d1d', color: '#dc2626' }}
+                  >
                     <XCircle className="w-3 h-3" />
-                    <span className="font-mono">{issueCounts.critical}</span>{' '}
-                    critical
+                    {issueCounts.critical} critical
                   </div>
                 )}
                 {issueCounts.warning > 0 && (
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs">
+                  <div
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                    style={{ backgroundColor: '#1a1200', border: '1px solid #78350f', color: '#f59e0b' }}
+                  >
                     <AlertTriangle className="w-3 h-3" />
-                    <span className="font-mono">{issueCounts.warning}</span>{' '}
-                    warnings
+                    {issueCounts.warning} warnings
                   </div>
                 )}
                 {issueCounts.improvement > 0 && (
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs">
+                  <div
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                    style={{ backgroundColor: '#0d1520', border: '1px solid #1e2d45', color: '#3b82f6' }}
+                  >
                     <Zap className="w-3 h-3" />
-                    <span className="font-mono">
-                      {issueCounts.improvement}
-                    </span>{' '}
-                    improvements
+                    {issueCounts.improvement} improvements
                   </div>
                 )}
               </div>
@@ -783,26 +887,25 @@ export default function IntegrationsPage() {
               {/* Top critical issues */}
               {criticalIssues.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-fg/50 text-xs font-medium uppercase tracking-wider">
-                    Top Issues
-                  </p>
+                  <p style={labelStyle}>What needs attention</p>
                   {criticalIssues.map((issue, idx) => (
                     <div
                       key={idx}
-                      className="bg-bg-tertiary rounded-xl p-3 space-y-2"
+                      className="rounded-lg p-3 space-y-2"
+                      style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
                     >
                       <div className="flex items-start justify-between gap-3 flex-wrap">
-                        <p className="text-fg text-xs font-medium">
+                        <p className="text-[12px] font-medium" style={{ color: '#fff' }}>
                           {issue.description}
                         </p>
                         <SeverityBadge severity={issue.severity} />
                       </div>
-                      <p className="text-muted text-xs leading-relaxed">
-                        <span className="text-blue-400 font-medium">Fix: </span>
+                      <p className="text-[12px]" style={{ color: '#888', lineHeight: 1.6 }}>
+                        <span className="font-medium" style={{ color: '#3b82f6' }}>How alphaa fixes it: </span>
                         {issue.fix}
                       </p>
                       {issue.url && issue.url !== 'site-wide' && (
-                        <p className="text-fg/30 text-xs font-mono truncate">
+                        <p className="text-[11px] truncate" style={{ color: '#444' }}>
                           {issue.url}
                         </p>
                       )}
@@ -812,14 +915,17 @@ export default function IntegrationsPage() {
               )}
 
               {issues.length === 0 && (
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
+                <div
+                  className="flex items-center gap-2 p-3 rounded-lg text-[13px]"
+                  style={{ backgroundColor: '#0d2218', border: '1px solid #14532d', color: '#22c55e' }}
+                >
                   <CheckCircle2 className="w-4 h-4" />
-                  No issues found — your site looks great!
+                  Great news — alphaa found no issues on your site.
                 </div>
               )}
             </div>
           )}
-        </GlassCard>
+        </DsCard>
       </section>
 
     </div>

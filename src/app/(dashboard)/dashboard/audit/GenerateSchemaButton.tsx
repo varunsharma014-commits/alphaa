@@ -34,19 +34,39 @@ export default function GenerateSchemaButton({ prominent }: Props) {
   }
 
   return (
-    <div className="space-y-2">
+    <div style={{ display: "flex", flexDirection: "column", gap: "8px", alignItems: prominent ? "center" : "flex-end" }}>
       <button
         onClick={handleGenerate}
         disabled={loading}
-        className={
+        style={
           prominent
-            ? "bg-orange-500 hover:bg-orange-400 disabled:bg-orange-500/40 text-fg font-medium text-sm px-6 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed"
-            : "bg-fg/10 hover:bg-fg/15 disabled:bg-fg/5 text-fg font-medium text-sm px-5 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed border border-line/10"
+            ? {
+                background: "#e05a2b",
+                color: "#fff",
+                fontSize: "13px",
+                fontWeight: 500,
+                padding: "8px 18px",
+                borderRadius: "8px",
+                border: "none",
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.6 : 1,
+              }
+            : {
+                background: "transparent",
+                color: "#888888",
+                fontSize: "13px",
+                fontWeight: 500,
+                padding: "8px 16px",
+                borderRadius: "8px",
+                border: "1px solid #333333",
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.6 : 1,
+              }
         }
       >
-        {loading ? "Generating..." : prominent ? "Generate Schema Markup" : "Regenerate"}
+        {loading ? "Generating…" : prominent ? "Generate structured data" : "Regenerate"}
       </button>
-      {error && <p className="text-red-400 text-xs">{error}</p>}
+      {error && <p style={{ color: "#dc2626", fontSize: "11px" }}>{error}</p>}
     </div>
   )
 }

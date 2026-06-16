@@ -3,9 +3,15 @@ export const dynamic = "force-dynamic"
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
 import {
-  BarChart3, FileText, Mail, CheckCircle2,
-  TrendingUp, TrendingDown, Minus, Star, MapPin,
+  Mail, CheckCircle2, TrendingUp, TrendingDown, Minus,
+  FileText, ArrowRight,
 } from "lucide-react"
+import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
+import { StatBox } from "@/components/dashboard/StatBox"
+import { StatusPill } from "@/components/dashboard/StatusPill"
+import { EmptyState } from "@/components/dashboard/EmptyState"
+import { SectionDivider } from "@/components/dashboard/SectionDivider"
+import { DsCard } from "@/components/dashboard/DsCard"
 
 export const metadata = { title: "Reports" }
 
@@ -18,31 +24,31 @@ type KeywordMover = {
 
 type VisibilityDelta = Record<string, number>
 
-const ENGINE_META: Record<string, { label: string; emoji: string }> = {
-  chatgpt:    { label: "ChatGPT",    emoji: "🤖" },
-  perplexity: { label: "Perplexity", emoji: "🔍" },
-  google_ai:  { label: "Google AI",  emoji: "🌐" },
-  gemini:     { label: "Gemini",     emoji: "✨" },
+const ENGINE_META: Record<string, { label: string }> = {
+  chatgpt:    { label: "ChatGPT" },
+  perplexity: { label: "Perplexity" },
+  google_ai:  { label: "Google AI" },
+  gemini:     { label: "Gemini" },
 }
 
 function formatWeek(date: Date): string {
   return new Date(date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
 }
 
-function DeltaChip({ value }: { value: number }) {
+function DeltaText({ value }: { value: number }) {
   if (value > 0) return (
-    <span className="inline-flex items-center gap-1 text-green-400 text-xs font-semibold bg-green-500/10 px-2 py-0.5 rounded-full border border-green-500/20">
-      <TrendingUp className="w-3 h-3" />+{value}
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "#22c55e", fontSize: "11px", fontWeight: 500 }}>
+      <TrendingUp size={12} />+{value}
     </span>
   )
   if (value < 0) return (
-    <span className="inline-flex items-center gap-1 text-red-400 text-xs font-semibold bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/20">
-      <TrendingDown className="w-3 h-3" />{value}
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "#dc2626", fontSize: "11px", fontWeight: 500 }}>
+      <TrendingDown size={12} />{value}
     </span>
   )
   return (
-    <span className="inline-flex items-center gap-1 text-fg/30 text-xs bg-fg/[0.04] px-2 py-0.5 rounded-full">
-      <Minus className="w-3 h-3" />—
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "#555555", fontSize: "11px" }}>
+      <Minus size={12} />no change
     </span>
   )
 }
@@ -52,7 +58,7 @@ export default async function ReportsPage() {
 
   const user = await db.user.findUnique({
     where: { clerkId: clerkId! },
-    select: { id: true, businessName: true },
+    select: { id: true, businessName: true, email: true },
   })
 
   const reports = user
@@ -62,180 +68,166 @@ export default async function ReportsPage() {
       })
     : []
 
-  const latest = reports[0] ?? null
-
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div style={{ maxWidth: "960px", margin: "0 auto" }}>
 
-      {/* ── Hero ─────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/[0.10] via-transparent to-transparent p-6 md:p-8">
-        <div className="absolute -top-20 -right-20 w-52 h-52 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
-        <div className="relative">
-          <div className="flex items-center gap-2 mb-2">
-            <BarChart3 className="w-4 h-4 text-blue-400" />
-            <span className="text-blue-400 text-xs font-semibold uppercase tracking-widest">Weekly Reports</span>
-          </div>
-          <h1 className="text-fg font-bold text-3xl">
-            {reports.length} <span className="text-fg/50 font-normal text-2xl">reports generated</span>
-          </h1>
-          <p className="text-fg/40 text-sm mt-1">Delivered every Monday morning · automatically</p>
+      <AutopilotBar message="Reports are generated and emailed to you automatically every Monday morning" />
 
-          {latest && (
-            <div className="flex items-center gap-6 mt-5 pt-5 border-t border-line/[0.08]">
-              <div>
-                <p className="text-fg/30 text-xs mb-0.5">Latest week</p>
-                <p className="text-fg/80 text-sm font-medium">{formatWeek(latest.createdAt)}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-green-400" />
-                <span className="text-fg/60 text-sm">{latest.postsPublished} posts published</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Star className="w-4 h-4 text-yellow-400" />
-                <span className="text-fg/60 text-sm">{latest.reviewsNew} new reviews</span>
-              </div>
-              {latest.emailSent && (
-                <div className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-2.5 py-1 rounded-full border border-green-500/20">
-                  <Mail className="w-3 h-3" />
-                  Email sent
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+      {/* ── Page heading ─────────────────────────── */}
+      <div style={{ marginBottom: "20px" }}>
+        <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>Weekly reports</h1>
+        <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "4px" }}>
+          Every Monday morning, alphaa sends you a plain-English summary of the week. No login needed.
+        </p>
       </div>
 
       {/* ── Empty state ───────────────────────────── */}
       {reports.length === 0 && (
-        <div className="flex flex-col items-center text-center gap-5 py-16 px-6 rounded-2xl border border-line/[0.06] bg-fg/[0.01]">
-          <div className="w-14 h-14 rounded-2xl bg-fg/[0.04] border border-line/[0.08] flex items-center justify-center">
-            <FileText className="w-7 h-7 text-fg/25" />
-          </div>
-          <div className="max-w-xs">
-            <h2 className="text-fg font-semibold text-lg">No reports yet</h2>
-            <p className="text-fg/40 text-sm mt-1 leading-relaxed">
-              Your first weekly report will be generated automatically every Monday. It'll include posts published, reviews received, and AI visibility changes.
-            </p>
-          </div>
-        </div>
+        <DsCard>
+          <EmptyState
+            icon={Mail}
+            title="Your first report arrives Monday"
+            body="Every Monday alphaa emails you a summary: posts published, reviews received, keywords moved, AI visibility changes. Everything in plain English — no login required to read it."
+            sub={`Reports delivered to: ${user?.email ?? "your inbox"}`}
+          />
+        </DsCard>
       )}
 
-      {/* ── Report cards ──────────────────────────── */}
+      {/* ── Report list ───────────────────────────── */}
       {reports.length > 0 && (
-        <div className="space-y-4">
-          {reports.map((report, idx) => {
-            const visibilityDelta = (report.visibilityDelta ?? {}) as VisibilityDelta
-            const keywordMovers   = (report.keywordMovers ?? [])  as KeywordMover[]
-            const topMovers       = keywordMovers.slice(0, 4)
-            const isLatest        = idx === 0
+        <>
+          <SectionDivider>YOUR WEEKLY SUMMARIES</SectionDivider>
 
-            return (
-              <div
-                key={report.id}
-                className={`relative overflow-hidden rounded-2xl border ${
-                  isLatest ? "border-blue-500/20 bg-gradient-to-br from-blue-500/[0.06] to-transparent" : "border-line/[0.07] bg-fg/[0.02]"
-                }`}
-              >
-                {/* Card header */}
-                <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-line/[0.06]">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-fg font-semibold text-sm">{formatWeek(report.createdAt)}</h3>
-                      {isLatest && (
-                        <span className="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full uppercase tracking-widest">
-                          Latest
-                        </span>
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {reports.map((report, idx) => {
+              const visibilityDelta = (report.visibilityDelta ?? {}) as VisibilityDelta
+              const keywordMovers   = (report.keywordMovers ?? [])  as KeywordMover[]
+              const topMovers       = keywordMovers.slice(0, 4)
+              const isLatest        = idx === 0
+
+              return (
+                <DsCard key={report.id}>
+                  {/* Header */}
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <FileText size={14} color="#888888" />
+                        <h3 style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+                          Week of {formatWeek(report.createdAt)}
+                        </h3>
+                        {isLatest && <StatusPill variant="info">Latest</StatusPill>}
+                      </div>
+                      {report.summary && (
+                        <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "6px", maxWidth: "560px" }}>
+                          {report.summary}
+                        </p>
                       )}
                     </div>
-                    {report.summary && (
-                      <p className="text-fg/40 text-xs mt-0.5 leading-relaxed max-w-xl">
-                        {report.summary}
-                      </p>
+                    {report.emailSent && (
+                      <StatusPill variant="found">
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                          <Mail size={11} /> Emailed to you
+                        </span>
+                      </StatusPill>
                     )}
                   </div>
-                  {report.emailSent && (
-                    <div className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-2.5 py-1 rounded-full border border-green-500/20 flex-shrink-0">
-                      <Mail className="w-3 h-3" />
-                      Emailed
-                    </div>
-                  )}
-                </div>
 
-                {/* Card body */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-x divide-line/[0.06]">
-
-                  {/* Posts */}
-                  <div className="p-4">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <MapPin className="w-3.5 h-3.5 text-fg/25" />
-                      <span className="text-fg/30 text-xs">Posts published</span>
-                    </div>
-                    <p className="text-fg font-bold text-3xl font-mono">{report.postsPublished}</p>
+                  {/* Stats */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(2, 1fr)",
+                      gap: "8px",
+                      marginTop: "14px",
+                    }}
+                  >
+                    <StatBox value={report.postsPublished} label="Posts published" tone="default" />
+                    <StatBox value={report.reviewsNew} label="New reviews" tone="default" />
                   </div>
 
-                  {/* Reviews */}
-                  <div className="p-4">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <Star className="w-3.5 h-3.5 text-fg/25" />
-                      <span className="text-fg/30 text-xs">New reviews</span>
-                    </div>
-                    <p className="text-fg font-bold text-3xl font-mono">{report.reviewsNew}</p>
-                  </div>
-
-                  {/* AI Visibility */}
-                  <div className="p-4">
-                    <div className="flex items-center gap-1.5 mb-2.5">
-                      <TrendingUp className="w-3.5 h-3.5 text-fg/25" />
-                      <span className="text-fg/30 text-xs">AI visibility</span>
-                    </div>
-                    {Object.keys(visibilityDelta).length > 0 ? (
-                      <div className="space-y-1.5">
+                  {/* AI visibility */}
+                  {Object.keys(visibilityDelta).length > 0 && (
+                    <div style={{ marginTop: "14px" }}>
+                      <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", color: "#444444", marginBottom: "8px" }}>
+                        AI visibility this week
+                      </p>
+                      <div
+                        style={{
+                          background: "#1a1a1a",
+                          border: "1px solid #222222",
+                          borderRadius: "8px",
+                          padding: "10px 12px",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
+                        }}
+                      >
                         {Object.entries(visibilityDelta).map(([engine, delta]) => {
                           const meta = ENGINE_META[engine]
                           return (
-                            <div key={engine} className="flex items-center justify-between gap-2">
-                              <span className="text-fg/45 text-xs flex items-center gap-1">
-                                {meta?.emoji && <span className="text-sm leading-none">{meta.emoji}</span>}
-                                {meta?.label ?? engine}
-                              </span>
-                              <DeltaChip value={delta} />
+                            <div key={engine} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+                              <span style={{ fontSize: "13px", color: "#888888" }}>{meta?.label ?? engine}</span>
+                              <DeltaText value={delta} />
                             </div>
                           )
                         })}
                       </div>
-                    ) : (
-                      <p className="text-fg/25 text-xs">No changes</p>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   {/* Keyword movers */}
-                  <div className="p-4">
-                    <div className="flex items-center gap-1.5 mb-2.5">
-                      <BarChart3 className="w-3.5 h-3.5 text-fg/25" />
-                      <span className="text-fg/30 text-xs">Keyword movers</span>
-                    </div>
-                    {topMovers.length > 0 ? (
-                      <div className="space-y-1.5">
+                  {topMovers.length > 0 && (
+                    <div style={{ marginTop: "14px" }}>
+                      <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", color: "#444444", marginBottom: "8px" }}>
+                        Keywords on the move
+                      </p>
+                      <div
+                        style={{
+                          background: "#1a1a1a",
+                          border: "1px solid #222222",
+                          borderRadius: "8px",
+                          padding: "10px 12px",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
+                        }}
+                      >
                         {topMovers.map((k) => (
-                          <div key={k.query} className="flex items-center justify-between gap-2">
-                            <span className="text-fg/50 text-xs truncate flex-1">{k.query}</span>
-                            <span className={`text-xs font-mono font-semibold flex-shrink-0 ${
-                              k.change > 0 ? "text-green-400" : k.change < 0 ? "text-red-400" : "text-fg/30"
-                            }`}>
+                          <div key={k.query} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+                            <span style={{ fontSize: "13px", color: "#888888", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>
+                              {k.query}
+                            </span>
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: 500,
+                                flexShrink: 0,
+                                color: k.change > 0 ? "#22c55e" : k.change < 0 ? "#dc2626" : "#555555",
+                              }}
+                            >
                               {k.change > 0 ? "+" : ""}{k.change}
                             </span>
                           </div>
                         ))}
                       </div>
-                    ) : (
-                      <p className="text-fg/25 text-xs">No movement</p>
-                    )}
+                    </div>
+                  )}
+
+                  {/* Footer */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", marginTop: "14px", paddingTop: "12px", borderTop: "0.5px solid #222222" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", color: "#555555" }}>
+                      <CheckCircle2 size={12} color="#22c55e" />
+                      Generated automatically — nothing needed from you
+                    </span>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "13px", fontWeight: 500, color: "#e05a2b" }}>
+                      View report <ArrowRight size={13} />
+                    </span>
                   </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+                </DsCard>
+              )
+            })}
+          </div>
+        </>
       )}
     </div>
   )
