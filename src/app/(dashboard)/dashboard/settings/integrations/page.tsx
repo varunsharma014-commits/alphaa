@@ -166,8 +166,8 @@ export default function IntegrationsPage() {
     try {
       const res = await fetch('/api/crawl/latest')
       if (res.ok) {
-        const data: CrawlSummary = await res.json()
-        if (data?.crawledAt) setCrawlData(data)
+        const { result } = (await res.json()) as { result: CrawlSummary | null }
+        if (result?.crawledAt) setCrawlData(result)
       }
     } catch {
       // no crawl data yet — silent
@@ -314,8 +314,8 @@ export default function IntegrationsPage() {
     try {
       const res = await fetch('/api/crawl', { method: 'POST' })
       if (!res.ok) throw new Error('Crawl failed')
-      const data: CrawlSummary = await res.json()
-      setCrawlData(data)
+      const { result } = (await res.json()) as { result: CrawlSummary }
+      setCrawlData(result)
     } catch {
       setCrawlError(
         'Scan failed. Make sure your website URL is set in Account settings.',
@@ -632,17 +632,17 @@ export default function IntegrationsPage() {
 
   // ── Crawl helpers ─────────────────────────────────────────────────────────
 
-  const criticalIssues = (crawlData?.issues ?? [])
+  const issues = Array.isArray(crawlData?.issues) ? crawlData.issues : []
+
+  const criticalIssues = issues
     .filter((i) => i.severity === 'critical')
     .slice(0, 5)
 
   const issueCounts = crawlData
     ? {
-        critical: crawlData.issues.filter((i) => i.severity === 'critical').length,
-        warning: crawlData.issues.filter((i) => i.severity === 'warning').length,
-        improvement: crawlData.issues.filter(
-          (i) => i.severity === 'improvement',
-        ).length,
+        critical: issues.filter((i) => i.severity === 'critical').length,
+        warning: issues.filter((i) => i.severity === 'warning').length,
+        improvement: issues.filter((i) => i.severity === 'improvement').length,
       }
     : null
 
@@ -811,7 +811,7 @@ export default function IntegrationsPage() {
                 </div>
               )}
 
-              {crawlData.issues.length === 0 && (
+              {issues.length === 0 && (
                 <div className="flex items-center gap-2 p-3 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
                   <CheckCircle2 className="w-4 h-4" />
                   No issues found — your site looks great!
@@ -822,45 +822,6 @@ export default function IntegrationsPage() {
         </GlassCard>
       </section>
 
-      {/* ── Coming Soon ─────────────────────────────────────────────────────── */}
-      <section className="space-y-3">
-        <h2 className="text-white/50 text-xs font-semibold uppercase tracking-wider px-1">
-          Coming Soon
-        </h2>
-        <div className="space-y-3 opacity-50 pointer-events-none select-none">
-          {[
-            {
-              icon: '🤖',
-              name: 'OpenAI / ChatGPT',
-              description:
-                'Track how often ChatGPT recommends your business.',
-            },
-            {
-              icon: '📧',
-              name: 'Mailchimp',
-              description: 'Connect email campaigns to SEO performance.',
-            },
-          ].map((item) => (
-            <GlassCard
-              key={item.name}
-              className="flex items-center justify-between gap-4"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{item.icon}</span>
-                <div>
-                  <h3 className="text-white font-medium text-sm">
-                    {item.name}
-                  </h3>
-                  <p className="text-muted text-xs">{item.description}</p>
-                </div>
-              </div>
-              <span className="flex-shrink-0 px-3 py-1.5 rounded-full border border-white/10 text-muted text-xs font-medium">
-                Coming soon
-              </span>
-            </GlassCard>
-          ))}
-        </div>
-      </section>
     </div>
   )
 }
