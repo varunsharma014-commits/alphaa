@@ -38,6 +38,22 @@ const faqs = [
     q: "What kinds of businesses is this for?",
     a: "Any business that wants to be found — local or online. Dentists, lawyers, contractors, salons, and restaurants serving a city, plus ecommerce brands, SaaS and B2B companies, agencies, and online services selling regionally, nationally, or worldwide.",
   },
+  {
+    q: "Do I need to give you my website login or hosting passwords?",
+    a: "No. You connect Google with one secure OAuth click — you approve the access, and you can revoke it anytime — and optionally paste one small read-only snippet on your site. Alphaa never needs your website or hosting passwords.",
+  },
+  {
+    q: "How do you post to my Google Business Profile automatically?",
+    a: "Through Google's official Business Profile API, after you connect with OAuth. You authorize it once; Alphaa then publishes posts on your schedule (Mon + Thu). You can review drafts first or let it run on autopilot.",
+  },
+  {
+    q: "Are AI search rankings guaranteed?",
+    a: "No — and be wary of anyone who promises that. AI engines like ChatGPT and Gemini control their own results. Alphaa does the proven work consistently — content, structured data, Google Business Profile, llms.txt — and tracks your visibility so you can see real progress.",
+  },
+  {
+    q: "How is this different from tools like Yext?",
+    a: "Yext syncs your business listing across directories. Alphaa optimizes you to be found and recommended by AI answer engines like ChatGPT, Claude, Gemini, and Perplexity, plus Google — generating content, schema, and posts automatically. Different job, built for AI search.",
+  },
 ]
 
 export function FaqSection() {

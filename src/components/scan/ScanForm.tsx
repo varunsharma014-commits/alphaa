@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { GlassCard } from "@/components/common/GlassCard"
@@ -19,6 +19,13 @@ export function ScanForm() {
   const [form, setForm] = useState<FormData>({ businessName: "", city: "", websiteUrl: "", email: "" })
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Partial<FormData>>({})
+
+  // Prefill the website URL when arriving from the hero scan field (/scan?url=…).
+  // Read from window.location to avoid a useSearchParams Suspense boundary.
+  useEffect(() => {
+    const url = new URLSearchParams(window.location.search).get("url")
+    if (url) setForm((f) => (f.websiteUrl ? f : { ...f, websiteUrl: url }))
+  }, [])
 
   function validate() {
     const e: Partial<FormData> = {}

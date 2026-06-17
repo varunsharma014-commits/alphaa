@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Star } from "lucide-react"
-import { OrangePillButton } from "@/components/common/OrangePillButton"
+import { HeroScanInput } from "@/components/marketing/HeroScanInput"
 import { MonoNumber } from "@/components/common/MonoNumber"
 
 const stats = [
@@ -57,11 +57,14 @@ export function HeroSection() {
           ))}
         </div>
 
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-          <OrangePillButton href="/scan" size="lg">
-            See if AI knows your business →
-          </OrangePillButton>
+        {/* Primary CTA — embedded scan to reduce friction */}
+        <div className="mb-3">
+          <HeroScanInput />
+        </div>
+        <p className="text-white/40 text-xs mb-4">
+          Takes 60 seconds · No signup or credit card to see your score
+        </p>
+        <div className="flex items-center justify-center mb-2">
           <a
             href="/pricing"
             className="text-sm font-medium text-white/50 hover:text-white transition-colors duration-200 border border-white/10 hover:border-white/20 px-5 py-2.5 rounded-full"
@@ -69,10 +72,6 @@ export function HeroSection() {
             View pricing →
           </a>
         </div>
-
-        <p className="text-white/30 text-xs">
-          Free scan — no signup required · 14-day trial · Cancel anytime
-        </p>
 
         {/* Social proof */}
         <div className="mt-10 flex items-center justify-center gap-3 flex-wrap">
