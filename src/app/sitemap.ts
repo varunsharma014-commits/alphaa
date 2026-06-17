@@ -1,8 +1,16 @@
 import { MetadataRoute } from "next"
+import { getAllPosts } from "@/content/blog"
 
 const BASE_URL = "https://alphaa.app"
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const blogPosts: MetadataRoute.Sitemap = getAllPosts().map((p) => ({
+    url: `${BASE_URL}/blog/${p.meta.slug}`,
+    lastModified: new Date(p.meta.date),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }))
+
   return [
     {
       url: BASE_URL,
@@ -10,6 +18,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    ...blogPosts,
     {
       url: `${BASE_URL}/pricing`,
       lastModified: new Date(),
