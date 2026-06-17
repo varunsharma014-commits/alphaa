@@ -33,11 +33,11 @@ export function HeroSection() {
         </div>
 
         {/* Headline */}
-        <h1 className="text-[42px] sm:text-[60px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-8 text-balance">
-          If you're not found on{" "}
-          <span className="serif-italic text-brand-orange">AI search,</span>
+        <h1 className="text-[34px] sm:text-[50px] font-semibold leading-[1.08] tracking-[-0.02em] text-white mb-8 text-balance">
+          Your customers are NOT on Google anymore. They&apos;re on{" "}
+          <span className="serif-italic text-brand-orange">ChatGPT, Claude, Gemini.</span>
           <br />
-          you're losing customers right now.
+          Are you showing up in their answers?
         </h1>
 
         {/* Sub-headline */}
