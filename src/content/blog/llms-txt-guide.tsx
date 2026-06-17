@@ -1,3 +1,4 @@
+import Link from "next/link"
 import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
@@ -128,7 +129,7 @@ Email: hello@yourdomain.com`}</code></pre>
         <strong>Want this done for you?</strong> Alphaa automatically generates and hosts an{" "}
         <code>llms.txt</code> for your business from your profile, keeps it current, and optimizes the other
         signals AI engines read — schema, Google Business Profile, and content.{" "}
-        <a href="/scan">Run a free AI visibility scan →</a>
+        <Link href="/scan">Run a free AI visibility scan →</Link>
       </p>
     </div>
   )

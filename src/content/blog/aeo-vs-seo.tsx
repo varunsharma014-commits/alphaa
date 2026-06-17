@@ -1,3 +1,4 @@
+import Link from "next/link"
 import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
@@ -107,7 +108,7 @@ export function Body() {
         AI assistants answer using a mix of what they&apos;ve indexed and live web retrieval (RAG). They favor
         sources that are clear, consistent, and easy to cite. AEO improves exactly those signals — accurate
         schema, an{" "}
-        <a href="/blog/how-to-create-llms-txt-file">llms.txt</a>, an active Google Business Profile, and
+        <Link href="/blog/how-to-create-llms-txt-file">llms.txt</Link>, an active Google Business Profile, and
         on-topic content — so when an engine summarizes the web to answer a question, your business is the
         obvious, well-described option. No one can edit an AI model&apos;s internals; you influence the public
         signals it reads.
@@ -123,7 +124,7 @@ export function Body() {
       <hr />
       <p>
         <strong>Curious where you stand?</strong>{" "}
-        <a href="/scan">Run a free 60-second AI visibility scan →</a> and see whether ChatGPT, Gemini, and
+        <Link href="/scan">Run a free 60-second AI visibility scan →</Link> and see whether ChatGPT, Gemini, and
         Perplexity already know your business.
       </p>
     </div>
