@@ -42,7 +42,7 @@ export function HeroSection() {
 
         {/* Sub-headline */}
         <p className="text-white/60 text-xl leading-relaxed max-w-2xl mx-auto mb-4">
-          ChatGPT, Claude, Gemini, Perplexity — billions of people now ask AI instead of Googling. Alphaa gets your business into every AI answer, automatically, for $99/month.
+          Alphaa gets your business into AI answers automatically. Why pay an agency $1,000/month when AI can do it for $99/mo?
         </p>
 
         {/* AI engines row */}
