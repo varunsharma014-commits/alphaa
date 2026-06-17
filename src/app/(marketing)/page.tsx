@@ -1,4 +1,6 @@
 import { HeroSection } from "@/components/marketing/HeroSection"
+import { AiAnswerMockup } from "@/components/marketing/AiAnswerMockup"
+import { DashboardPreview } from "@/components/marketing/DashboardPreview"
 import { PlatformLogos } from "@/components/marketing/PlatformLogos"
 import { AiShiftSection } from "@/components/marketing/AiShiftSection"
 import { AgencySection } from "@/components/marketing/AgencySection"
@@ -17,10 +19,12 @@ export default function HomePage() {
       <HeroSection />
       <PlatformLogos />
       <AiShiftSection />
+      <AiAnswerMockup />
       <AgencySection />
       <AllEnginesSection />
       <SolutionSection />
       <HowItWorksSection />
+      <DashboardPreview />
       <SocialProof />
       <ComparisonTable />
       <CaseStudiesSection />
