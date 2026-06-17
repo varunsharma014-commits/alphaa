@@ -44,7 +44,7 @@ const WORK_CARDS = [
   { icon: CheckCircle2, color: "#22c55e", bg: "#0d2218", border: "#14532d", title: "3 Google posts published for you", subtitle: "Written in your voice, posted by alphaa" },
   { icon: Bot,          color: "#22c55e", bg: "#0d2218", border: "#14532d", title: "You appeared on ChatGPT for the first time", subtitle: "alphaa got you mentioned when people search" },
   { icon: Star,         color: "#f59e0b", bg: "#1a1200", border: "#78350f", title: "2 new reviews this week", subtitle: "Average 4.8 stars across your profile" },
-  { icon: TrendingUp,   color: "#22c55e", bg: "#0d2218", border: "#14532d", title: "You moved up on 5 keywords", subtitle: "alphaa is climbing your local rankings" },
+  { icon: TrendingUp,   color: "#22c55e", bg: "#0d2218", border: "#14532d", title: "You moved up on 5 keywords", subtitle: "alphaa is climbing your search rankings" },
   { icon: FileText,     color: "#22c55e", bg: "#0d2218", border: "#14532d", title: "alphaa fixed 4 website issues", subtitle: "Quietly improved behind the scenes" },
 ]
 

@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "What's this 'AI search' thing?",
-    a: "More and more people search on ChatGPT, Perplexity, and Google AI instead of regular Google. If your business isn't showing up there, you're invisible to a growing chunk of customers. Alphaa tracks and improves your presence across all of them.",
+    a: "More and more people search on ChatGPT, Perplexity, and Google AI instead of regular Google — whether they're looking for a shop down the street or a vendor anywhere in the world. If your business isn't showing up there, you're invisible to a growing chunk of customers. Alphaa tracks and improves your presence across all of them.",
   },
   {
     q: "Will I see results in the first month?",
@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     q: "What kinds of businesses is this for?",
-    a: "Local service businesses with a physical address or service area. Dentists, lawyers, medical practices, contractors, salons, restaurants, real estate agents, and similar.",
+    a: "Any business that wants to be found — local or online. Dentists, lawyers, contractors, salons, and restaurants serving a city, plus ecommerce brands, SaaS and B2B companies, agencies, and online services selling regionally, nationally, or worldwide.",
   },
 ]
 

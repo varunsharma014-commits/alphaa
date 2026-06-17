@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s | Alphaa",
   },
   description:
-    "Alphaa replaces your SEO agency. Automatically optimize your Google Business Profile, website, and content so people find you on Google, ChatGPT, and Maps. $99/month, no contracts.",
+    "Alphaa replaces your SEO agency. Automatically optimize your Google Business Profile, website, and content so customers find you on Google, ChatGPT, and AI search — whether you serve your town or the whole world. $99/month, no contracts.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"),
   openGraph: {
     title: "Alphaa — Get Found on Google and ChatGPT",

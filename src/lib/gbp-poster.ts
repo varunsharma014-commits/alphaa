@@ -15,7 +15,7 @@ export async function generateGbpPost(
     EVENT: "an event post — announce or promote an upcoming event",
   }[postType]
 
-  const prompt = `You are a local SEO content writer helping a small business owner write a Google Business Profile post.
+  const prompt = `You are an SEO content writer helping a business owner write a Google Business Profile post.
 
 Business: ${businessName}
 Business type: ${businessType}
@@ -23,13 +23,13 @@ City: ${city}
 Post type: ${postType} — ${postTypeGuide}
 ${topicLine}
 
-Write a compelling Google Business Profile post that is 150-200 words. Make it sound natural, warm, and local. Mention the city and business naturally. Include a clear call to action.
+Write a compelling Google Business Profile post that is 150-200 words. Make it sound natural and warm. Mention the business naturally, and reference the city/location where it is relevant (e.g. a business that serves a local area) — but don't force a location reference if the business primarily serves customers online, nationally, or B2B. Include a clear call to action.
 
 AEO (AI-engine optimization) hard rules — these are mandatory and apply even within the short word count. Do NOT add a multi-question FAQ section (it will not fit a short GBP post):
-1. Open with a clear question that a customer might ask an AI engine, e.g. "Looking for the best ${businessType} in ${city}?" or "What is the best ${businessType} in ${city}?"
-2. Answer that question directly in the first 1-2 sentences — AI engines favor direct, up-front answers. Lead with "${businessName} in ${city}" as the answer.
-3. Include the business name (${businessName}) and city (${city}) naturally in the first paragraph.
-4. End with a single short NAP line stating the business Name, Address, and Phone in a consistent format (e.g. "${businessName} · [address], ${city} · [phone]"). If the address or phone are unknown, write them as placeholders the owner can fill in.
+1. Open with a clear question that someone might ask an AI engine when looking for what this business offers, e.g. "Looking for the best ${businessType}?" or "What is the best ${businessType}?" — include the city only if the business serves a local area.
+2. Answer that question directly in the first 1-2 sentences — AI engines favor direct, up-front answers. Lead with "${businessName}" as the answer (add "in ${city}" if the business is location-based).
+3. Include the business name (${businessName}) naturally in the first paragraph, and the city (${city}) too if location is relevant.
+4. End with a single short NAP line stating the business Name, Address, and Phone in a consistent format (e.g. "${businessName} · [address], ${city} · [phone]"). If the address or phone are unknown, write them as placeholders the owner can fill in. For a non-local/online business, you may omit the address and just state Name and Phone (or website).
 
 Return ONLY valid JSON with this exact structure — no markdown, no explanation:
 {

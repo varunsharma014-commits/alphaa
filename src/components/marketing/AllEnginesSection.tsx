@@ -49,7 +49,7 @@ export function AllEnginesSection() {
           <h3 className="text-white text-2xl font-semibold mb-8 text-center">How we get you into AI answers</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { step: "01", title: "Build your AI profile", body: "We create the structured data, citations, and content that AI engines pull from when answering questions about local businesses." },
+              { step: "01", title: "Build your AI profile", body: "We create the structured data, citations, and content that AI engines pull from when answering questions about businesses like yours." },
               { step: "02", title: "Keep it fresh, every week", body: "AI engines rank businesses that are active. We post, update, and publish content to every relevant source — automatically, weekly." },
               { step: "03", title: "Track every AI mention", body: "We query each AI engine about businesses like yours, every week, and report exactly where you appear — and where you don't yet." },
             ].map((item) => (

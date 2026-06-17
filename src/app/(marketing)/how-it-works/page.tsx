@@ -9,7 +9,7 @@ const sections = [
     icon: Search,
     title: "The audit — free, 60 seconds",
     body: [
-      "Before anything else, we scan your business. Enter your business name, city, and website. In under 60 seconds, we check 47 factors: your Google Business Profile activity, whether you appear on ChatGPT and Perplexity, your website's content gaps, your review velocity, and how you compare to the top 3 competitors in your area.",
+      "Before anything else, we scan your business. Enter your business name, your market (a city or 'online / national'), and website. In under 60 seconds, we check 47 factors: your Google Business Profile activity, whether you appear on ChatGPT and Perplexity, your website's content gaps, your review velocity, and how you compare to the top 3 competitors in your space.",
       "You get a visibility score from 0–100 and a plain-English breakdown of exactly what's wrong and what it costs you in customers. No jargon. No PDF you'll never open. Just a score and a list.",
     ],
   },
@@ -27,7 +27,7 @@ const sections = [
     icon: CalendarCheck,
     title: "The weekly work — what we do for you",
     body: [
-      "Every week, Alphaa publishes posts to your Google Business Profile, generates AI-written blog content specific to your business and city, monitors your reviews across Google and Yelp, and checks whether your business is appearing when people ask ChatGPT or Perplexity for local services like yours.",
+      "Every week, Alphaa publishes posts to your Google Business Profile, generates AI-written blog content specific to your business and market, monitors your reviews across Google and Yelp, and checks whether your business is appearing when people ask ChatGPT or Perplexity for businesses like yours.",
       "Specific weekly tasks: 2–4 Google Business Profile posts, 1–2 blog drafts (Pro: auto-published, Starter: one-click approval), review monitoring and response drafts, AI search citation tracking across ChatGPT, Perplexity, Google AI, and Gemini.",
     ],
   },
@@ -36,7 +36,7 @@ const sections = [
     icon: BarChart3,
     title: "The dashboard — what you see",
     body: [
-      "Your dashboard shows your visibility score, what changed this week, whether you appeared on AI search tools, and what Alphaa did for you. You don't have to do anything. But you can see everything.",
+      "Your dashboard shows your visibility score, what changed this week, whether you appeared on AI search tools, and what Alphaa did for you. Whether you serve one neighborhood or sell to the whole country, you don't have to do anything. But you can see everything.",
       "If you want to review content before it posts, you can. If you want to approve things automatically, turn on auto-approval in settings. The dashboard is for your peace of mind — not for you to manage manually.",
     ],
   },
@@ -45,8 +45,8 @@ const sections = [
     icon: TrendingUp,
     title: "The results — what changes",
     body: [
-      "Within 7 days: your Google Business Profile becomes active. Google notices. Local rankings start to shift.",
-      "Within 30 days: your website has fresh, locally-relevant content. ChatGPT and Perplexity start pulling it in responses. Your review count grows.",
+      "Within 7 days: your Google Business Profile becomes active. Google notices. Rankings start to shift — on Maps if you're local, in organic search if you're online.",
+      "Within 30 days: your website has fresh, relevant content. ChatGPT and Perplexity start pulling it in responses. Your review count grows.",
       "Within 60–90 days: sustained visibility on Google Maps, organic search, and AI search tools. Customers start saying 'I found you on ChatGPT.'",
     ],
   },

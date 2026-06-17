@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Could not fetch website" }, { status: 422 })
     }
 
-    const prompt = `You are analyzing a local business website to help pre-fill their marketing onboarding.
+    const prompt = `You are analyzing a business website to help pre-fill their marketing onboarding.
 
 Website URL: ${websiteUrl}
 
@@ -55,7 +55,7 @@ ${pageText}
 Extract the following and return ONLY valid JSON — no markdown, no explanation:
 {
   "businessName": "<the business name, or empty string if unclear>",
-  "businessType": "<one of these exact values if you can determine it: Dentist, Law Firm, Med Spa, HVAC, Plumbing, Electrician, General Contractor, Real Estate, Restaurant, Retail Store, Chiropractor, Physical Therapy, Accounting/CPA, Insurance, Salon/Barber, Auto Repair, Landscaping, Cleaning Service, Photography, or Other>",
+  "businessType": "<one of these exact values if you can determine it: Dentist, Lawyer / Law Firm, Med Spa, Plumber, Electrician, HVAC, General Contractor, Real Estate Agent, Restaurant, Retail Store, Chiropractor, Physical Therapist, Accountant / CPA, Insurance Agent, Salon / Barbershop, Auto Repair, Landscaping, Cleaning Service, Photographer, SaaS / Software, Marketing or Ad Agency, Ecommerce / Online Store, Consulting, Professional Services, B2B Services, Agency, Online Education, Media / Publishing, Financial Services, Manufacturing, Nonprofit, or Other>",
   "city": "<city the business is in, or empty string>",
   "state": "<2-letter state abbreviation, or empty string>",
   "voiceDescription": "<2-4 sentences written AS the business owner describing what makes their business different, using the actual details from their website: years in business, specialties, unique approach, team culture, customer experience. Sound natural and human, not corporate. Example: 'We're a family-owned dental practice that's been serving Austin families for 15 years. Our patients always comment on how we make even nervous patients feel comfortable. We specialize in cosmetic work and same-day appointments.'>",

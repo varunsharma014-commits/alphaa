@@ -49,6 +49,18 @@ export const BUSINESS_TYPES = [
   "Landscaping",
   "Cleaning Service",
   "Photographer",
+  "SaaS / Software",
+  "Marketing or Ad Agency",
+  "Ecommerce / Online Store",
+  "Consulting",
+  "Professional Services",
+  "B2B Services",
+  "Agency",
+  "Online Education",
+  "Media / Publishing",
+  "Financial Services",
+  "Manufacturing",
+  "Nonprofit",
   "Other",
 ] as const
 

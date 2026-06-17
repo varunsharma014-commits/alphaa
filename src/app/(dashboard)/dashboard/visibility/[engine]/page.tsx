@@ -47,7 +47,7 @@ const CONFIG: Record<
     statusKey: "google_ai",
     Icon: Globe,
     explainer:
-      "Claude cites authoritative, well-structured local sources. Clear service pages and an llms.txt file help Claude find and describe your business accurately.",
+      "Claude cites authoritative, well-structured sources. Clear service pages and an llms.txt file help Claude find and describe your business accurately.",
     actions: [
       "Generating and hosting your llms.txt so Claude understands your business",
       "Publishing authoritative, well-structured service pages",
@@ -60,11 +60,11 @@ const CONFIG: Record<
     statusKey: "gemini",
     Icon: Sparkles,
     explainer:
-      "Gemini uses Google's index. Your Google Business Profile and local keywords matter most here.",
+      "Gemini uses Google's index. Your Google presence and the keywords your customers search matter most here.",
     actions: [
       "Keeping your Google Business Profile active with weekly posts",
-      "Targeting local keywords across your content",
-      "Adding LocalBusiness schema so Google understands your business",
+      "Targeting the keywords your customers actually search",
+      "Adding structured data so Google understands your business",
     ],
   },
   perplexity: {
@@ -86,10 +86,10 @@ const CONFIG: Record<
     statusKey: "gemini",
     Icon: Globe2,
     explainer:
-      "Google AI Overviews are powered by Gemini and Google's index. A complete Google Business Profile and local keyword content are what move the needle here.",
+      "Google AI Overviews are powered by Gemini and Google's index. A complete Google presence and content built around the keywords your customers search are what move the needle here.",
     actions: [
       "Keeping your Google Business Profile complete and active",
-      "Publishing local keyword content for your service area",
+      "Publishing content around the keywords your customers search",
       "Adding structured data so Google can summarize your business",
     ],
   },

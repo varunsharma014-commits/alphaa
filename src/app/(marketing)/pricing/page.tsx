@@ -13,7 +13,7 @@ const plans = [
     name: "Starter",
     monthly: 99,
     annual: 79,
-    description: "For one-location businesses ready to stop being invisible.",
+    description: "For a single business ready to stop being invisible.",
     highlight: false,
     features: [
       "1 business location",
@@ -31,7 +31,7 @@ const plans = [
     name: "Pro",
     monthly: 199,
     annual: 159,
-    description: "For businesses serious about dominating local search.",
+    description: "For businesses serious about dominating Google and AI search.",
     highlight: true,
     badge: "Most popular",
     features: [

@@ -375,12 +375,12 @@ export default function ReferPage() {
               {
                 icon: "📊",
                 title: "Marketing consultants",
-                desc: "Add AI visibility to your service stack. White-label available. Offer it as a premium add-on to every local business client.",
+                desc: "Add AI visibility to your service stack. White-label available. Offer it as a premium add-on to every client — local shop or online brand.",
               },
               {
                 icon: "🎙️",
                 title: "Content creators & bloggers",
-                desc: "If your audience includes local business owners, this converts. Write one honest review and earn for months.",
+                desc: "If your audience includes business owners — local or online — this converts. Write one honest review and earn for months.",
               },
             ].map((p) => (
               <div
@@ -404,7 +404,7 @@ export default function ReferPage() {
               <h2 className="text-2xl font-semibold mb-6">What you need</h2>
               <ul className="space-y-3 text-white/60 text-sm">
                 {[
-                  "An audience that includes local business owners OR direct relationships with SMBs",
+                  "An audience that includes business owners (local or online) OR direct relationships with companies that want to be found",
                   "A Stripe-connected account (US, Canada, UK, EU supported)",
                   "Minimum payout balance of $50",
                 ].map((item) => (

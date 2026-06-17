@@ -727,7 +727,7 @@ export default function IntegrationsPage() {
               <p className="text-[13px]" style={{ color: '#888', lineHeight: 1.6 }}>
                 This is the most important step. Without it, alphaa cannot post
                 to your Google listing, monitor your reviews, or track your
-                local rankings.
+                search rankings.
               </p>
               <button
                 onClick={handleConnect}

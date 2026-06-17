@@ -15,7 +15,7 @@ export async function analyzeContentGaps(
   businessType: string,
   city: string
 ): Promise<{ gaps: GapItem[]; summary: string }> {
-  const prompt = `You are an expert SEO content strategist. Analyze the content gaps between two local business websites and identify what topics the competitor likely covers that the user's site is missing.
+  const prompt = `You are an expert SEO content strategist. Analyze the content gaps between two business websites and identify what topics the competitor likely covers that the user's site is missing.
 
 User's business:
 - Name: ${businessName}
@@ -25,7 +25,7 @@ User's business:
 
 Competitor website: ${competitorUrl}
 
-Based on the business type, city, and URLs, identify 6-10 high-value content gaps — topics the competitor likely ranks for that ${businessName} should also cover. Focus on content that drives local search traffic for a ${businessType} in ${city}.
+Based on the business type, location, and URLs, identify 6-10 high-value content gaps — topics the competitor likely ranks for that ${businessName} should also cover. Focus on content that drives qualified search traffic for a ${businessType}. If the business serves a local area, weight toward location-relevant topics; if it serves customers online, nationally, or B2B, weight toward the topics its buyers actually search for.
 
 Return ONLY valid JSON with this exact structure — no markdown, no explanation:
 {
@@ -43,9 +43,9 @@ Return ONLY valid JSON with this exact structure — no markdown, no explanation
 
 Rules:
 - Return 6-10 gap items
-- Prioritize gaps based on local search volume and business relevance
+- Prioritize gaps based on search volume and business relevance
 - suggestedOutline should have 3-5 bullet points
-- Make titles city-specific where relevant (include "${city}")
+- Make titles location-specific (include "${city}") only where the business actually serves a local area; otherwise keep titles focused on what the business offers
 - Focus on topics that bring in customers ready to buy, not just informational fluff
 - estimatedImpact should be specific and realistic`
 

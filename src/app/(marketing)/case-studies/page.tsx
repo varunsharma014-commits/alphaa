@@ -369,7 +369,7 @@ export default function CaseStudiesPage() {
             Real results.
           </h1>
           <p className="text-white/55 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
-            Every case study below is a real customer. Real numbers. Real timelines. See how local SMBs went from invisible on AI search to booked out.
+            Every case study below is a real customer. Real numbers. Real timelines. See how businesses — local and online — went from invisible on AI search to booked out.
           </p>
 
           {/* Aggregate stats */}

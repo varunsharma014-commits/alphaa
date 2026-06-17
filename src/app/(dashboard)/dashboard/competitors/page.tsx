@@ -215,7 +215,6 @@ export default async function CompetitorsPage() {
 
   const competitors = (user?.competitors ?? []) as unknown as CompetitorRow[]
   const city = user?.city ?? null
-  const cityLabel = city ?? "your area"
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -246,7 +245,7 @@ export default async function CompetitorsPage() {
         <DsCard>
           <EmptyState
             icon={Search}
-            title={`alphaa is finding your competitors in ${cityLabel}…`}
+            title={city ? `alphaa is finding your competitors in ${city}…` : "alphaa is finding your competitors…"}
             body="We're analyzing who ranks above you — this takes about 2 minutes."
             sub="You don't have to do anything. Want to kick it off right now?"
           >

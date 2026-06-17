@@ -13,13 +13,13 @@ const problems = [
     icon: Eye,
     stat: "1 in 3 searches",
     headline: "Customers finding your competitors on ChatGPT instead of you?",
-    body: "1 in 3 local searches now happens on AI tools. If your business isn't in the answer, you're invisible to a fast-growing chunk of buyers.",
+    body: "1 in 3 searches now happens on AI tools. If your business isn't in the answer, you're invisible to a fast-growing chunk of buyers — local or worldwide.",
   },
   {
     icon: Clock,
     stat: "10 hrs/week",
     headline: "No time to post on Google or update your website?",
-    body: "Google rewards businesses that post consistently. But you're running a business — you can't spend 10 hours a week on content nobody reads.",
+    body: "Google and AI engines reward businesses that publish consistently. But you're running a business — you can't spend 10 hours a week on content nobody reads.",
   },
 ]
 
@@ -30,7 +30,7 @@ export function ProblemSection() {
         <div className="text-center mb-12">
           <SectionLabel className="mb-3 block">The problem</SectionLabel>
           <h2 className="text-section-mobile md:text-section font-semibold text-white text-balance">
-            Local marketing is{" "}
+            Getting found is{" "}
             <span className="serif-italic text-brand-orange">broken</span>
           </h2>
         </div>
