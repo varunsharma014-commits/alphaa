@@ -6,6 +6,7 @@ import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
 import GenerateSchemaButton from "./GenerateSchemaButton"
 import CopyButton from "./CopyButton"
+import { DownloadLlmsButton } from "./DownloadLlmsButton"
 import type { AuditIssue } from "@/types/audit"
 import type { SchemaItem } from "@/lib/schema-generator"
 import { generateLlmsTxt } from "@/lib/llms-txt"
@@ -197,6 +198,10 @@ export default async function AuditPage() {
 
   // llms.txt — alphaa auto-generates this from the user's business profile.
   const llmsTxt = generateLlmsTxt(user)
+
+  // One-line snippet that auto-injects (and keeps updated) the business schema.
+  const appBase = process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"
+  const tagSnippet = `<script async src="${appBase}/tag.js?id=${user.id}"></script>`
 
   return (
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
@@ -536,9 +541,47 @@ export default async function AuditPage() {
         >
           {llmsTxt}
         </pre>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "12px", flexWrap: "wrap" }}>
+          <DownloadLlmsButton content={llmsTxt} />
+          <span style={{ fontSize: "11px", color: "#555555", lineHeight: 1.6 }}>
+            alphaa keeps this updated automatically. To add it to your own site, download it and
+            upload to yourdomain.com/llms.txt.
+          </span>
+        </div>
+      </DsCard>
+
+      {/* ── Auto-update snippet (schema injection) ──────────────── */}
+      <SectionDivider>AUTO-UPDATE (ONE-LINE SNIPPET)</SectionDivider>
+      <DsCard>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+            Hands-off schema — paste once, alphaa keeps it current
+          </span>
+        </div>
+        <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginBottom: "12px" }}>
+          Add this one line before your site&apos;s &lt;/head&gt; tag. alphaa then keeps your
+          structured data up to date automatically — no re-pasting when your details change.
+        </p>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "10px",
+            background: "#0a0a0a",
+            border: "1px solid #222222",
+            borderRadius: "8px",
+            padding: "10px 12px",
+          }}
+        >
+          <code style={{ fontSize: "11px", color: "#888888", fontFamily: "monospace", overflowX: "auto", whiteSpace: "nowrap" }}>
+            {tagSnippet}
+          </code>
+          <CopyButton text={tagSnippet} />
+        </div>
         <p style={{ fontSize: "11px", color: "#555555", marginTop: "10px", lineHeight: 1.6 }}>
-          alphaa keeps this updated automatically. You can also add it to your own website at
-          yourdomain.com/llms.txt — alphaa shows you how.
+          Prefer maximum coverage? The copy-paste schema above is read by every crawler; the snippet
+          is read by AI/search engines that run JavaScript. Use whichever fits your site — or both.
         </p>
       </DsCard>
     </div>

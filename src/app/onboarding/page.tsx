@@ -226,7 +226,8 @@ function Step4({ data, update }: { data: OnboardingData; update: (p: Partial<Onb
   const { user } = useUser()
   const [showEmail, setShowEmail] = useState(false)
   const [devEmail, setDevEmail] = useState("")
-  const snippet = `<script async src="https://cdn.alphaa.app/tag.js?id=${user?.id ?? ''}"></script>`
+  const appBase = process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"
+  const snippet = `<script async src="${appBase}/tag.js?id=${user?.id ?? ''}"></script>`
 
   function sendTodev() {
     if (!devEmail) return
