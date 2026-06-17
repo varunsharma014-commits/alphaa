@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Star } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { MonoNumber } from "@/components/common/MonoNumber"
@@ -8,14 +9,10 @@ const stats = [
   { value: "2 min", label: "to get started" },
 ]
 
-// Social-proof figures — update to your real numbers.
-const SOCIAL = { count: "8,000+", rating: "4.9" }
-const AVATAR_GRADIENTS = [
-  "linear-gradient(135deg,#f59e0b,#e05a2b)",
-  "linear-gradient(135deg,#6366f1,#8b5cf6)",
-  "linear-gradient(135deg,#ec4899,#f43f5e)",
-  "linear-gradient(135deg,#10b981,#22c55e)",
-]
+// Social-proof — update to your real numbers, and swap these placeholder
+// portraits in /public/avatars for real customer photos when you have them.
+const SOCIAL = { count: "1,000+", noun: "customers", rating: "4.9" }
+const AVATARS = ["/avatars/a1.jpg", "/avatars/a2.jpg", "/avatars/a3.jpg", "/avatars/a4.jpg"]
 
 export function HeroSection() {
   return (
@@ -80,18 +77,22 @@ export function HeroSection() {
         {/* Social proof */}
         <div className="mt-10 flex items-center justify-center gap-3 flex-wrap">
           <div className="flex items-center">
-            {AVATAR_GRADIENTS.map((bg, i) => (
-              <span
-                key={i}
-                className="w-8 h-8 rounded-full ring-2 ring-[#0a0806]"
-                style={{ background: bg, marginLeft: i === 0 ? 0 : "-10px" }}
+            {AVATARS.map((src, i) => (
+              <Image
+                key={src}
+                src={src}
+                width={32}
+                height={32}
+                alt=""
                 aria-hidden="true"
+                className="w-8 h-8 rounded-full ring-2 ring-[#0a0806] object-cover"
+                style={{ marginLeft: i === 0 ? 0 : "-10px" }}
               />
             ))}
           </div>
           <div className="text-left">
             <p className="text-sm leading-tight">
-              <span className="font-semibold text-white">{SOCIAL.count} businesses</span>
+              <span className="font-semibold text-white">{SOCIAL.count} {SOCIAL.noun}</span>
               <span className="text-white/50"> getting found on AI with alphaa</span>
             </p>
             <div className="flex items-center gap-2 mt-1">
