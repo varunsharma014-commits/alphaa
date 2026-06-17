@@ -22,9 +22,9 @@ export async function POST(): Promise<NextResponse> {
       { status: 503 },
     )
   }
-  if (!user.businessType || !user.city) {
+  if (!user.businessType) {
     return NextResponse.json(
-      { error: "Add your business type and city in settings first." },
+      { error: "Add your business details in settings first." },
       { status: 400 },
     )
   }

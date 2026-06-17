@@ -39,7 +39,7 @@ export async function PATCH(req: NextRequest) {
   // Kick off competitor auto-discovery in the background (no-op until APIFY_TOKEN
   // is set). Railway runs a persistent server, so this fire-and-forget promise
   // completes after the response is sent — onboarding never waits on it.
-  if (user?.businessType && user.city) {
+  if (user?.businessType) {
     void runAutoDiscovery({
       id: user.id,
       businessName: user.businessName,

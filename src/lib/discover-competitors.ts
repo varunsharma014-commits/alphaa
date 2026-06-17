@@ -31,18 +31,17 @@ export type DiscoverUser = {
   voiceDescription?: string | null
 }
 
-// Build a real Google query that surfaces direct competitors. A concrete
-// business type (e.g. "Dentist") is a fine query as-is; for generic/"Other"
-// types we ask the model for a sensible query from the profile, so we never
-// search nonsense like "Other Kanata".
+// Build a real Google query that surfaces direct competitors — for ANY kind of
+// business. The model decides whether the business is LOCAL (geo-target the
+// query) or NON-LOCAL / online / B2B (query by category, no city), so we never
+// search nonsense like "Other Kanata" and don't force a city onto a national
+// business.
 async function buildCompetitorQuery(user: DiscoverUser): Promise<string> {
   const city = (user.city ?? "").trim()
-  const fallback = `${user.businessType ?? "local business"} ${city}`.trim()
-  const type = (user.businessType ?? "").trim().toLowerCase()
-  if (type && type !== "other") return fallback
+  const fallback = `${user.businessType ?? "business"} ${city}`.trim()
 
   try {
-    const about = (user.voiceDescription ?? "").slice(0, 400)
+    const about = (user.voiceDescription ?? "").slice(0, 500)
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5",
       max_tokens: 40,
@@ -50,12 +49,16 @@ async function buildCompetitorQuery(user: DiscoverUser): Promise<string> {
         {
           role: "user",
           content:
-            `Find direct competitors of a business with a single Google search.\n` +
-            `Business: ${user.businessName ?? "unknown"}\n` +
+            `Build ONE Google search query that surfaces the direct competitors of this business.\n` +
+            `Business name: ${user.businessName ?? "unknown"}\n` +
+            `Type: ${user.businessType ?? "unknown"}\n` +
             `Website: ${user.websiteUrl ?? "unknown"}\n` +
             `What they do: ${about || "unknown"}\n` +
-            `Location: ${city || "their area"}\n\n` +
-            `Reply with ONLY the Google search query someone would type to find this kind of business (include the location if it's a local business). No quotes, no explanation. Examples: emergency plumber Austin TX, growth marketing agency Ottawa, family law firm Kanata.`,
+            `Location: ${city || "unknown"}\n\n` +
+            `First decide: is this a LOCAL business (serves one area — dentist, plumber, restaurant, law firm) or a NON-LOCAL business (serves customers anywhere — SaaS, marketing/ad agency, online store, consultancy, B2B service)?\n` +
+            `- LOCAL: include the city in the query (e.g. "family dentist Kanata").\n` +
+            `- NON-LOCAL: do NOT include the city; query by category/niche (e.g. "B2B growth marketing agency", "project management software", "ecommerce SEO agency").\n` +
+            `Reply with ONLY the search query — no quotes, no explanation.`,
         },
       ],
     })
@@ -87,7 +90,7 @@ function isDirectory(host: string): boolean {
 // Returns the number of new competitors discovered + stored.
 export async function discoverCompetitors(user: DiscoverUser, max = 5): Promise<number> {
   if (!process.env.APIFY_TOKEN) return 0
-  if (!user.businessType || !user.city) return 0
+  if (!user.businessType) return 0
 
   const query = await buildCompetitorQuery(user)
   const results = await googleSearch(query, { results: 10 })
@@ -116,7 +119,7 @@ export async function discoverCompetitors(user: DiscoverUser, max = 5): Promise<
     if (existing) continue
 
     try {
-      const analysis = await analyzeCompetitor(url, "", user.businessType, user.city)
+      const analysis = await analyzeCompetitor(url, "", user.businessType, user.city ?? "")
       await db.competitor.create({
         data: {
           userId: user.id,
@@ -150,7 +153,7 @@ export async function runAutoDiscovery(
   const discovered = await discoverCompetitors(user)
 
   let gapsGenerated = 0
-  if (user.websiteUrl && user.businessType && user.city) {
+  if (user.websiteUrl && user.businessType) {
     try {
       const top = await db.competitor.findFirst({
         where: { userId: user.id },
@@ -162,7 +165,7 @@ export async function runAutoDiscovery(
           top.url,
           user.businessName ?? "",
           user.businessType,
-          user.city,
+          user.city ?? "",
         )
         if (gaps.length > 0) {
           await db.contentGap.create({
