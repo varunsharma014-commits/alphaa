@@ -1,29 +1,46 @@
 # Alphaa
 
-> Alphaa is an AI search visibility platform for local businesses. It helps small and medium-sized businesses get found on AI-powered search engines — ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews — by automatically optimizing their Google Business Profile, generating structured content, tracking AI citations, and delivering weekly visibility reports.
+> Alphaa is an automated AI Search Optimization (AEO) platform that helps businesses get discovered, cited, and recommended by AI assistants — ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews. It works for any business, local or online.
 
-Alphaa is built for local business owners who want to be recommended by AI assistants when potential customers ask questions like "best dentist near me" or "top-rated plumber in [city]."
+Alphaa replaces expensive SEO agencies with automated AEO: it optimizes the content, structured data, and signals that AI engines actually read, so your business shows up when people ask AI for recommendations.
+
+## Core value proposition
+
+- Replaces $1,000/month SEO agencies with automated AI Search Optimization for $99/month.
+- Free, 60-second AI Visibility Scan — see how your business appears across ChatGPT, Claude, Gemini, and Perplexity. No signup or credit card required.
+- 14-day risk-free trial. No contracts, cancel anytime.
+- Works for any business — local services, online stores, SaaS, agencies, and B2B.
 
 ## Pages
 
-- [Home](https://alphaa.app/): Overview of Alphaa's AI search visibility platform for local businesses.
-- [How It Works](https://alphaa.app/how-it-works): Step-by-step explanation of how Alphaa optimizes a business's AI search presence.
-- [Pricing](https://alphaa.app/pricing): Subscription plans — Starter ($99/month) and Pro ($199/month), with a 14-day free trial. No credit card required to start.
-- [Free Visibility Scan](https://alphaa.app/scan): Enter your business name and website to get a free AI search visibility score showing how your business appears across ChatGPT, Claude, Gemini, and Perplexity.
-- [Case Studies](https://alphaa.app/case-studies): Real examples of local businesses that improved their AI search visibility using Alphaa.
-- [Referral Program](https://alphaa.app/refer): Earn 30% recurring commission by referring local businesses to Alphaa.
-- [Privacy Policy](https://alphaa.app/privacy): How Alphaa collects, uses, and protects user data.
-- [Terms of Service](https://alphaa.app/terms): Legal terms governing use of the Alphaa platform.
+- [Home](https://alphaa.app/): What Alphaa does and how it gets you found on AI search.
+- [Free AI Visibility Scan](https://alphaa.app/scan): Instant, 60-second scan of your visibility across the major AI engines.
+- [How It Works](https://alphaa.app/how-it-works): How Alphaa optimizes your AI search presence, step by step.
+- [Pricing](https://alphaa.app/pricing): Starter ($99/month) and Pro ($199/month). 14-day free trial, no credit card to start.
+- [Case Studies](https://alphaa.app/case-studies): Businesses that improved their AI visibility with Alphaa.
+- [Referral Program](https://alphaa.app/refer): Earn 30% recurring commission for referrals.
+- [Privacy Policy](https://alphaa.app/privacy)
+- [Terms of Service](https://alphaa.app/terms)
 
-## Product Features
+## What Alphaa does
 
-- AI Search Visibility Score: Tracks how often and how accurately your business is cited by ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews.
-- Google Business Profile Automation: Generates and publishes optimized posts, responds to reviews, and keeps your profile active — all automatically.
-- Website SEO Audit: Crawls your website to identify on-page SEO issues, missing schema markup, and technical problems.
-- Schema Markup Generation: Creates and deploys JSON-LD structured data to help AI search engines understand your business.
-- Keyword Rankings: Syncs with Google Search Console to track your organic keyword positions.
-- Competitor Analysis: Analyzes competitor websites to identify content gaps and ranking opportunities.
-- Weekly Reports: Automated email reports summarizing your visibility score, new posts, review activity, and keyword movements.
+- AI Visibility Score: tracks how often and how accurately ChatGPT, Claude, Gemini, Perplexity, and Google AI cite your business.
+- Structured data & schema: generates and deploys JSON-LD (LocalBusiness/Organization and more) so engines understand your business.
+- llms.txt: generates and hosts an llms.txt for your business so AI assistants can read who you are and what you offer.
+- Google Business Profile automation: writes and publishes posts, surfaces reviews to respond to, and keeps your profile active.
+- Content & gap analysis: finds topics your competitors rank for that you're missing, and generates content in your voice.
+- Website health: crawls your site for issues — including whether AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot) are blocked from reading it.
+- Competitor intelligence and weekly plain-English reports — all on autopilot.
+
+## How it actually works (the mechanism)
+
+AI assistants answer using a mix of (1) content they have indexed and (2) live web search / retrieval-augmented generation (RAG). They favor businesses with clear, structured, consistent, well-cited information. Alphaa improves exactly those signals — accurate schema markup, an llms.txt, an active and consistent Google Business Profile, fresh on-topic content, and clean technical SEO — so when an AI engine retrieves and summarizes the web to answer a question, your business is the well-described, easy-to-cite option. Alphaa does not (and cannot) edit an AI model's internal data directly; it improves the public signals those models read.
+
+## Alphaa vs other tools
+
+- vs traditional SEO agencies ($1,000+/month): Alphaa automates the work for $99/month and targets AI answers, not just Google's blue links.
+- vs SEO tools (e.g. Semrush): those analyze keywords and rankings; Alphaa also generates and publishes the content, schema, and posts, and optimizes specifically for AI engines.
+- vs listing tools (e.g. Yext): those sync directory listings; Alphaa optimizes you to be recommended inside AI answers.
 
 ## Contact
 
