@@ -1,3 +1,4 @@
+import { Star } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { MonoNumber } from "@/components/common/MonoNumber"
 
@@ -5,6 +6,15 @@ const stats = [
   { value: "1B+", label: "daily AI searches" },
   { value: "6", label: "AI engines we optimize for" },
   { value: "2 min", label: "to get started" },
+]
+
+// Social-proof figures — update to your real numbers.
+const SOCIAL = { count: "8,000+", rating: "4.9" }
+const AVATAR_GRADIENTS = [
+  "linear-gradient(135deg,#f59e0b,#e05a2b)",
+  "linear-gradient(135deg,#6366f1,#8b5cf6)",
+  "linear-gradient(135deg,#ec4899,#f43f5e)",
+  "linear-gradient(135deg,#10b981,#22c55e)",
 ]
 
 export function HeroSection() {
@@ -66,6 +76,34 @@ export function HeroSection() {
         <p className="text-white/30 text-xs">
           Free scan — no signup required · 14-day trial · Cancel anytime
         </p>
+
+        {/* Social proof */}
+        <div className="mt-10 flex items-center justify-center gap-3 flex-wrap">
+          <div className="flex items-center">
+            {AVATAR_GRADIENTS.map((bg, i) => (
+              <span
+                key={i}
+                className="w-8 h-8 rounded-full ring-2 ring-[#0a0806]"
+                style={{ background: bg, marginLeft: i === 0 ? 0 : "-10px" }}
+                aria-hidden="true"
+              />
+            ))}
+          </div>
+          <div className="text-left">
+            <p className="text-sm leading-tight">
+              <span className="font-semibold text-white">{SOCIAL.count} businesses</span>
+              <span className="text-white/50"> getting found on AI with alphaa</span>
+            </p>
+            <div className="flex items-center gap-2 mt-1">
+              <div className="flex">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <Star key={i} className="w-3.5 h-3.5 text-brand-orange" fill="currentColor" />
+                ))}
+              </div>
+              <span className="text-white/40 text-xs">Rated {SOCIAL.rating} average</span>
+            </div>
+          </div>
+        </div>
 
         {/* Stats */}
         <div className="mt-16 grid grid-cols-3 gap-6 max-w-lg mx-auto">
