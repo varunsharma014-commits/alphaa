@@ -16,6 +16,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/tag/(.*)",
   "/api/scan(.*)",
   "/api/webhooks/(.*)",
+  "/api/cron/(.*)",
 ])
 
 const isAuthRoute = createRouteMatcher(["/login(.*)", "/signup(.*)"])
