@@ -57,14 +57,15 @@ export default function HomePage() {
       <AiShiftSection />
       <AiAnswerMockup />
       <AgencySection />
+      {/* Proof, moved up: real businesses fixed this, right after the pain/savings */}
+      <CaseStudiesSection />
+      <SocialProof />
       <AllEnginesSection />
       <SolutionSection />
       <HowItWorksSection />
       <MechanismSection />
       <DashboardPreview />
-      <SocialProof />
       <ComparisonTable />
-      <CaseStudiesSection />
       <FaqSection />
       <CtaBanner />
     </>

@@ -18,19 +18,27 @@ export function AiShiftSection() {
         </h2>
 
         {/* Two column truth */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
-          <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-8">
-            <p className="text-red-400 text-xs font-semibold tracking-widest uppercase mb-4">Then (Google era)</p>
-            <ul className="space-y-3 text-white/60 text-base">
-              <li className="flex gap-3"><span className="text-red-400 mt-0.5">✕</span> Customer types "best dentist Austin TX" into Google</li>
-              <li className="flex gap-3"><span className="text-red-400 mt-0.5">✕</span> Clicks through 10 blue links</li>
-              <li className="flex gap-3"><span className="text-red-400 mt-0.5">✕</span> SEO agencies charge $1,000/mo to game this</li>
-              <li className="flex gap-3"><span className="text-red-400 mt-0.5">✕</span> Google Search traffic declining every quarter</li>
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-stretch gap-4 md:gap-3 mb-16">
+          <div className="rounded-2xl border border-red-500/15 bg-red-500/[0.03] p-8">
+            <p className="text-red-400/80 text-xs font-semibold tracking-widest uppercase mb-4">Then (Google era)</p>
+            <ul className="space-y-3 text-white/45 text-base">
+              <li className="flex gap-3"><span className="text-red-400/70 mt-0.5">✕</span> Customer types "best dentist Austin TX" into Google</li>
+              <li className="flex gap-3"><span className="text-red-400/70 mt-0.5">✕</span> Clicks through 10 blue links</li>
+              <li className="flex gap-3"><span className="text-red-400/70 mt-0.5">✕</span> SEO agencies charge $1,000/mo to game this</li>
+              <li className="flex gap-3"><span className="text-red-400/70 mt-0.5">✕</span> Google Search traffic declining every quarter</li>
             </ul>
           </div>
-          <div className="rounded-2xl border border-brand-orange/30 bg-brand-orange/5 p-8">
+
+          {/* Shift arrow */}
+          <div className="flex items-center justify-center py-1 md:py-0">
+            <div className="w-11 h-11 rounded-full border border-brand-orange/40 bg-bg-secondary flex items-center justify-center text-brand-orange text-lg shadow-glow-sm rotate-90 md:rotate-0">
+              →
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-brand-orange/40 bg-brand-orange/[0.08] p-8 shadow-glow-sm">
             <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-4">Now (AI era)</p>
-            <ul className="space-y-3 text-white/80 text-base">
+            <ul className="space-y-3 text-white/85 text-base">
               <li className="flex gap-3"><span className="text-brand-orange mt-0.5">→</span> Customer asks ChatGPT "who's the best dentist in Austin?"</li>
               <li className="flex gap-3"><span className="text-brand-orange mt-0.5">→</span> AI gives one direct answer — or two</li>
               <li className="flex gap-3"><span className="text-brand-orange mt-0.5">→</span> If you're not in that answer, you don't exist</li>
