@@ -7,6 +7,7 @@ import { AgencySection } from "@/components/marketing/AgencySection"
 import { AllEnginesSection } from "@/components/marketing/AllEnginesSection"
 import { SolutionSection } from "@/components/marketing/SolutionSection"
 import { HowItWorksSection } from "@/components/marketing/HowItWorksSection"
+import { MechanismSection } from "@/components/marketing/MechanismSection"
 import { SocialProof } from "@/components/marketing/SocialProof"
 import { ComparisonTable } from "@/components/marketing/ComparisonTable"
 import { CaseStudiesSection } from "@/components/marketing/CaseStudiesSection"
@@ -59,6 +60,7 @@ export default function HomePage() {
       <AllEnginesSection />
       <SolutionSection />
       <HowItWorksSection />
+      <MechanismSection />
       <DashboardPreview />
       <SocialProof />
       <ComparisonTable />
