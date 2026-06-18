@@ -64,7 +64,7 @@ export function HeroSection() {
           <span className="relative whitespace-nowrap">
             <span className="relative z-10">NOT</span>
             <span
-              className="absolute inset-x-[-2px] bottom-[0.12em] h-[0.32em] bg-brand-orange/25 -rotate-1 z-0"
+              className="absolute left-0 right-0 bottom-[-0.06em] h-[5px] sm:h-[6px] rounded-full bg-brand-orange z-0"
               aria-hidden="true"
             />
           </span>{" "}
