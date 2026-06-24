@@ -38,6 +38,8 @@ export function startCron(): void {
     if (key === lastFired) return
     lastFired = key
 
+    // Daily 05:00 UTC — pull GSC keywords + GA snapshot for every connected account
+    if (hour === 5) hit("/api/cron/seo-sync")
     // Mon 13:00 UTC — weekly reports
     if (dow === 1 && hour === 13) hit("/api/cron/weekly")
     // Mon & Thu 13:00 UTC — GBP posts
