@@ -38,13 +38,19 @@ export function startCron(): void {
     if (key === lastFired) return
     lastFired = key
 
-    // Daily 05:00 UTC — pull GSC keywords + GA snapshot for every connected account
+    // Daily 05:00 UTC — pull GSC keywords + GA snapshot for every connected account.
+    // (Google APIs only — no Anthropic spend — so left running.)
     if (hour === 5) hit("/api/cron/seo-sync")
-    // Mon 13:00 UTC — weekly reports
-    if (dow === 1 && hour === 13) hit("/api/cron/weekly")
-    // Mon & Thu 13:00 UTC — GBP posts
-    if ((dow === 1 || dow === 4) && hour === 13) hit("/api/cron/gbp-posts")
-    // Sun 06:00 UTC — competitor discovery / refresh
-    if (dow === 0 && hour === 6) hit("/api/cron/competitors")
+
+    // ── PAUSED: the crons below trigger Anthropic API calls. Disabled to stop all
+    //    autonomous Claude spend (see src/lib/ai-paused.ts). To re-enable, set
+    //    AI_PAUSED=false AND uncomment these lines. ───────────────────────────────
+    // // Mon 13:00 UTC — weekly reports (Anthropic)
+    // if (dow === 1 && hour === 13) hit("/api/cron/weekly")
+    // // Mon & Thu 13:00 UTC — GBP posts (Anthropic)
+    // if ((dow === 1 || dow === 4) && hour === 13) hit("/api/cron/gbp-posts")
+    // // Sun 06:00 UTC — competitor discovery / refresh (Anthropic)
+    // if (dow === 0 && hour === 6) hit("/api/cron/competitors")
+    void dow // keep `dow` referenced now that the weekly/competitor crons are off
   }, 60_000)
 }

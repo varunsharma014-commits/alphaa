@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk"
+import { installPauseGuard } from "./ai-paused"
 import OpenAI from "openai"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 
@@ -99,6 +100,7 @@ async function scanClaude(
   const query = queries[0]
   try {
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+    installPauseGuard(client)
     const message = await withTimeout(
       client.messages.create({
         model: "claude-haiku-4-5",
