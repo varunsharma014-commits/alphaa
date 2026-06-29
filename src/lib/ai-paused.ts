@@ -12,7 +12,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const AI_PAUSED =
-  process.env.AI_PAUSED === "false" ? false : true // default: PAUSED
+  process.env.AI_PAUSED === "true" ? true : false // default: ACTIVE (resumed)
 
 /**
  * Replaces `client.messages.create` with a function that throws, so any code path
