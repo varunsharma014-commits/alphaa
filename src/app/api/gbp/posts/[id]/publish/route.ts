@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
 import { postToGmb } from "@/lib/gbp-poster"
+import { logActivity } from "@/lib/activity"
 
 export const dynamic = "force-dynamic"
 
@@ -70,6 +71,13 @@ export async function POST(
         postedAt: new Date(),
       },
     })
+
+    await logActivity(
+      user.id,
+      "gbp_post",
+      "alphaa published a Google post for you",
+      `${post.content.slice(0, 60)}${post.content.length > 60 ? "…" : ""}`
+    )
 
     return NextResponse.json({ post: updated })
   } catch (err) {

@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { sendEmail } from "@/lib/resend"
+import { logActivity } from "@/lib/activity"
 import WeeklyReportEmail from "@/emails/WeeklyReportEmail"
 import React from "react"
 
@@ -153,6 +154,13 @@ Write in a positive, encouraging tone. Be specific. No lists, just flowing prose
       emailSent: false,
     },
   })
+
+  await logActivity(
+    user.id,
+    "weekly_report",
+    "Your weekly report is ready",
+    summary ? `${summary.slice(0, 120)}${summary.length > 120 ? "…" : ""}` : undefined
+  )
 
   // 7. Send email
   try {

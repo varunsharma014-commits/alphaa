@@ -24,17 +24,7 @@ export async function PATCH(req: NextRequest) {
     },
   })
 
-  // Seed mock activity so dashboard isn't empty
   const user = await db.user.findUnique({ where: { clerkId: userId } })
-  if (user) {
-    await db.mockActivity.createMany({
-      data: [
-        { userId: user.id, type: "audit_completed", title: "Initial visibility audit completed", description: "Your baseline visibility score has been set." },
-        { userId: user.id, type: "post_published", title: "First Google Business Profile post published", description: "Your first post is live on Google." },
-        { userId: user.id, type: "citation_found", title: "Business found in Google AI results", description: "You appeared in a Google AI search for your category." },
-      ],
-    })
-  }
 
   // Kick off competitor auto-discovery in the background (no-op until APIFY_TOKEN
   // is set). Railway runs a persistent server, so this fire-and-forget promise

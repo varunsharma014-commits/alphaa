@@ -5,6 +5,7 @@ import WeeklyReportEmail from "@/emails/WeeklyReportEmail"
 import AuditResultsEmail from "@/emails/AuditResultsEmail"
 import TrialEndingEmail from "@/emails/TrialEndingEmail"
 import PaymentFailureEmail from "@/emails/PaymentFailureEmail"
+import ReconnectEmail from "@/emails/ReconnectEmail"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.RESEND_FROM_EMAIL ?? "hello@alphaa.app"
@@ -45,4 +46,9 @@ export async function sendTrialEndingEmail(to: string, props: Parameters<typeof 
 export async function sendPaymentFailureEmail(to: string, props: Parameters<typeof PaymentFailureEmail>[0]) {
   const html = await render(PaymentFailureEmail(props))
   await send(to, "Action required: your Alphaa payment failed", html)
+}
+
+export async function sendReconnectEmail(to: string, props: Parameters<typeof ReconnectEmail>[0]) {
+  const html = await render(ReconnectEmail(props))
+  await send(to, "alphaa lost access to your Google account", html)
 }

@@ -4,32 +4,56 @@ import { exchangeCodeForTokens } from '@/lib/google'
 
 export const dynamic = 'force-dynamic'
 
+type ReturnTo = 'onboarding' | 'integrations'
+
+function buildRedirect(returnTo: ReturnTo, params: Record<string, string>) {
+  const base = process.env.NEXT_PUBLIC_APP_URL ?? ''
+  const url = new URL(
+    returnTo === 'onboarding' ? '/onboarding' : '/dashboard/settings/integrations',
+    base,
+  )
+  if (returnTo === 'onboarding') url.searchParams.set('step', '3')
+  for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v)
+  return url.toString()
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
   const state = searchParams.get('state')
   const error = searchParams.get('error')
 
-  const redirectBase = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/integrations`
+  // Try to recover returnTo from state even on error paths so the user lands
+  // back where they started. Defaults to the settings integrations page.
+  let returnTo: ReturnTo = 'integrations'
+  let clerkId: string | null = null
+  if (state) {
+    try {
+      const parsed = JSON.parse(Buffer.from(state, 'base64url').toString()) as {
+        userId: string
+        nonce: string
+        returnTo?: string
+      }
+      clerkId = parsed.userId
+      if (parsed.returnTo === 'onboarding') returnTo = 'onboarding'
+    } catch {
+      // invalid state — handled below
+    }
+  }
 
   if (error) {
     console.error('[Google Callback] OAuth error from Google:', error)
-    return NextResponse.redirect(`${redirectBase}?error=${encodeURIComponent(error)}`)
+    return NextResponse.redirect(
+      buildRedirect(returnTo, { error: encodeURIComponent(error) }),
+    )
   }
 
   if (!code || !state) {
-    return NextResponse.redirect(`${redirectBase}?error=missing_params`)
+    return NextResponse.redirect(buildRedirect(returnTo, { error: 'missing_params' }))
   }
 
-  let clerkId: string
-  try {
-    const parsed = JSON.parse(Buffer.from(state, 'base64url').toString()) as {
-      userId: string
-      nonce: string
-    }
-    clerkId = parsed.userId
-  } catch {
-    return NextResponse.redirect(`${redirectBase}?error=invalid_state`)
+  if (!clerkId) {
+    return NextResponse.redirect(buildRedirect(returnTo, { error: 'invalid_state' }))
   }
 
   try {
@@ -38,7 +62,9 @@ export async function GET(request: NextRequest) {
 
     const user = await db.user.findUnique({ where: { clerkId } })
     if (!user) {
-      return NextResponse.redirect(`${redirectBase}?error=user_not_found`)
+      return NextResponse.redirect(
+        buildRedirect(returnTo, { error: 'user_not_found' }),
+      )
     }
 
     await db.integration.upsert({
@@ -66,9 +92,11 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    return NextResponse.redirect(`${redirectBase}?connected=true`)
+    return NextResponse.redirect(buildRedirect(returnTo, { connected: 'true' }))
   } catch (err) {
     console.error('[Google Callback] Token exchange / DB error:', err)
-    return NextResponse.redirect(`${redirectBase}?error=token_exchange_failed`)
+    return NextResponse.redirect(
+      buildRedirect(returnTo, { error: 'token_exchange_failed' }),
+    )
   }
 }

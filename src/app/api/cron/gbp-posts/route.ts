@@ -4,6 +4,7 @@ export const maxDuration = 300
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
+import { logActivity } from "@/lib/activity"
 
 type Integration = {
   accessToken: string
@@ -156,6 +157,7 @@ async function processUser(user: {
   // Attempt GMB post
   let gmbPostId: string | null = null
   let status = "failed"
+  let failReason = ""
 
   try {
     gmbPostId = await postToGmb(
@@ -169,6 +171,7 @@ async function processUser(user: {
     const message = err instanceof Error ? err.message : String(err)
     console.error(`[gbp-posts-cron] GMB post error for user ${user.id}:`, message)
     status = "failed"
+    failReason = message.slice(0, 120)
   }
 
   await db.gbpPost.create({
@@ -181,6 +184,22 @@ async function processUser(user: {
       postedAt: status === "posted" ? new Date() : null,
     },
   })
+
+  if (status === "posted") {
+    await logActivity(
+      user.id,
+      "gbp_post",
+      "alphaa published a Google post for you",
+      `${content.slice(0, 60)}${content.length > 60 ? "…" : ""}`
+    )
+  } else {
+    await logActivity(
+      user.id,
+      "gbp_post_failed",
+      "A Google post needs attention",
+      failReason || "Google didn't accept the post — we'll retry on the next run"
+    )
+  }
 
   return { status, gmbPostId }
 }

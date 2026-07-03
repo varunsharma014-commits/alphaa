@@ -55,14 +55,14 @@ export function HeroSection() {
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-500/40 bg-red-500/10 text-red-400 text-xs font-medium mb-7">
           <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
-          Your customers stopped Googling. They&apos;re asking AI.
+          Your customers are asking AI, not just Google.
         </div>
 
         {/* Headline — statement, then the question as the punchline */}
         <h1 className="text-[32px] sm:text-[46px] font-semibold leading-[1.07] tracking-[-0.02em] text-white mb-5 text-balance">
-          Your customers are{" "}
+          Your customers aren&apos;t{" "}
           <span className="relative whitespace-nowrap">
-            <span className="relative z-10">NOT</span>
+            <span className="relative z-10">JUST</span>
             <span
               className="absolute left-0 right-0 bottom-[-0.06em] h-[5px] sm:h-[6px] rounded-full bg-brand-orange z-0"
               aria-hidden="true"

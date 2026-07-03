@@ -7,6 +7,7 @@ import { googleSearch } from "@/lib/apify-search"
 import { analyzeCompetitor } from "@/lib/competitor-analyzer"
 import { analyzeContentGaps } from "@/lib/content-gaps"
 import { anthropic } from "@/lib/claude"
+import { logActivity } from "@/lib/activity"
 
 // Hosts that are directories / aggregators / social / wikis — not real competitors.
 const DIRECTORY_HOSTS = [
@@ -152,6 +153,29 @@ export async function runAutoDiscovery(
 ): Promise<{ discovered: number; gapsGenerated: number }> {
   const discovered = await discoverCompetitors(user)
 
+  if (discovered > 0) {
+    // Pull the names of the competitors just stored so the activity feed can
+    // show who alphaa is now watching.
+    let names = ""
+    try {
+      const recent = await db.competitor.findMany({
+        where: { userId: user.id },
+        orderBy: { createdAt: "desc" },
+        take: discovered,
+        select: { name: true },
+      })
+      names = recent.map((c) => c.name).filter(Boolean).join(", ")
+    } catch {
+      // names are decorative — the count alone is fine
+    }
+    await logActivity(
+      user.id,
+      "competitors",
+      `alphaa found ${discovered} competitor${discovered === 1 ? "" : "s"} to track`,
+      names || `${discovered} local competitor${discovered === 1 ? "" : "s"} now being watched`
+    )
+  }
+
   let gapsGenerated = 0
   if (user.websiteUrl && user.businessType) {
     try {
@@ -177,6 +201,12 @@ export async function runAutoDiscovery(
             },
           })
           gapsGenerated = gaps.length
+          await logActivity(
+            user.id,
+            "content_gaps",
+            `alphaa found ${gapsGenerated} content opportunit${gapsGenerated === 1 ? "y" : "ies"}`,
+            "Topics your competitors cover that you don't — ready in your content plan"
+          )
         }
       }
     } catch {
