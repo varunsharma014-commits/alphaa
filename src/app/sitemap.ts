@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next"
 import { getAllPosts } from "@/content/blog"
+import { VERTICALS } from "@/content/verticals"
 
 const BASE_URL = "https://alphaa.app"
 
@@ -9,6 +10,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(p.meta.date),
     changeFrequency: "monthly",
     priority: 0.7,
+  }))
+
+  const verticalPages: MetadataRoute.Sitemap = VERTICALS.map((v) => ({
+    url: `${BASE_URL}/for/${v.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.8,
   }))
 
   return [
@@ -25,6 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     ...blogPosts,
+    ...verticalPages,
     {
       url: `${BASE_URL}/pricing`,
       lastModified: new Date(),

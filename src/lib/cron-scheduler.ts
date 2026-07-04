@@ -42,6 +42,9 @@ export function startCron(): void {
     // (Google APIs only — no Anthropic spend — so left running.)
     if (hour === 5) hit("/api/cron/seo-sync")
 
+    // Daily 14:00 UTC — lifecycle emails (connect nudges + week-one recap; Resend only)
+    if (hour === 14) hit("/api/cron/lifecycle")
+
     // Mon 13:00 UTC — weekly reports (Anthropic)
     if (dow === 1 && hour === 13) hit("/api/cron/weekly")
     // Mon & Thu 13:00 UTC — GBP posts (Anthropic)

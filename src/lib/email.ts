@@ -6,6 +6,8 @@ import AuditResultsEmail from "@/emails/AuditResultsEmail"
 import TrialEndingEmail from "@/emails/TrialEndingEmail"
 import PaymentFailureEmail from "@/emails/PaymentFailureEmail"
 import ReconnectEmail from "@/emails/ReconnectEmail"
+import ConnectGoogleNudgeEmail from "@/emails/ConnectGoogleNudgeEmail"
+import WeekOneRecapEmail from "@/emails/WeekOneRecapEmail"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.RESEND_FROM_EMAIL ?? "hello@alphaa.app"
@@ -51,4 +53,14 @@ export async function sendPaymentFailureEmail(to: string, props: Parameters<type
 export async function sendReconnectEmail(to: string, props: Parameters<typeof ReconnectEmail>[0]) {
   const html = await render(ReconnectEmail(props))
   await send(to, "alphaa lost access to your Google account", html)
+}
+
+export async function sendConnectGoogleNudgeEmail(to: string, props: Parameters<typeof ConnectGoogleNudgeEmail>[0]) {
+  const html = await render(ConnectGoogleNudgeEmail(props))
+  await send(to, "alphaa is ready — one click to switch it on", html)
+}
+
+export async function sendWeekOneRecapEmail(to: string, props: Parameters<typeof WeekOneRecapEmail>[0]) {
+  const html = await render(WeekOneRecapEmail(props))
+  await send(to, `Your first week with alphaa — ${props.businessName}`, html)
 }
