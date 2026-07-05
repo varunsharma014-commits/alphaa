@@ -14,8 +14,9 @@ export function FloatingCta() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  // Don't show on scan page — they already have the form
-  if (pathname === "/scan") return null
+  // Don't show on scan pages (they already have the form / the results page has
+  // its own dominant signup CTA) or on /for/* (they have their own sticky bar).
+  if (pathname.startsWith("/scan") || pathname.startsWith("/for/")) return null
 
   return (
     <div
@@ -25,10 +26,11 @@ export function FloatingCta() {
     >
       <Link
         href="/scan"
-        className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-2xl font-semibold text-white text-sm shadow-2xl"
+        className="w-full flex flex-col items-center justify-center py-3.5 px-6 rounded-2xl font-semibold text-white text-sm shadow-2xl"
         style={{ background: "linear-gradient(135deg, #ff6b1a 0%, #e55a0e 100%)" }}
       >
-        Get your free visibility score →
+        <span>Run my free AI scan →</span>
+        <span className="text-[11px] font-normal text-white/70">60 seconds · no signup · no credit card</span>
       </Link>
     </div>
   )

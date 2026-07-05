@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import { GlassCard } from "@/components/common/GlassCard"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { cn } from "@/lib/utils"
+import { track } from "@/lib/gtag"
 
 interface FormData {
   businessName: string
@@ -40,6 +41,7 @@ export function ScanForm() {
     const e = validate()
     if (Object.keys(e).length) { setErrors(e); return }
     setLoading(true)
+    track("scan_started")
     try {
       const res = await fetch("/api/scan", {
         method: "POST",

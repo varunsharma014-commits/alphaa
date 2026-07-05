@@ -67,7 +67,7 @@ export default function PricingPage() {
         {/* Launch banner */}
         <div className="mb-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-sm font-medium">
-            🔥 Launch offer: First 100 customers get $79/month locked for life — <span className="text-white">23 spots remaining</span>
+            🔥 Launch pricing: early customers lock in <span className="text-white">$79/month for life</span> with the annual plan
           </div>
         </div>
 

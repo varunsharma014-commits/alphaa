@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { ChevronRight, ChevronLeft, Check, Sparkles, Loader2, Wand2, ChevronDown } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
+import { ConversionTracker } from "@/components/common/ConversionTracker"
 import { GlassCard } from "@/components/common/GlassCard"
 import { BUSINESS_TYPES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
@@ -435,6 +436,8 @@ export default function OnboardingPage() {
 
   return (
     <div className="radial-bg min-h-screen flex flex-col items-center justify-center px-4 py-12">
+      {/* GA4: onboarding mount = a completed signup */}
+      <ConversionTracker event="sign_up" />
       {/* Logo */}
       <div className="flex items-center gap-2 mb-8">
         <Sparkles className="w-5 h-5 text-brand-orange" />

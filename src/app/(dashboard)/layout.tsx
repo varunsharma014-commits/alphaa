@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { DashboardSidebar } from "@/components/layout/DashboardSidebar"
 import { DashboardTopBar } from "@/components/layout/DashboardTopBar"
+import { ConversionTracker } from "@/components/common/ConversionTracker"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { userId } = await auth()
@@ -28,6 +29,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div data-theme="dark" className="flex h-screen bg-bg-primary overflow-hidden">
+      {/* GA4: fires trial_start once when landing with ?upgraded=true (Stripe success redirect) */}
+      <ConversionTracker event="trial_start" whenQueryParam="upgraded" />
       <DashboardSidebar />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <DashboardTopBar user={user} />

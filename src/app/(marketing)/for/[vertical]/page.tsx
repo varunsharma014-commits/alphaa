@@ -5,6 +5,8 @@ import { ArrowRight, CheckCircle2 } from "lucide-react"
 import { VERTICALS, getVertical } from "@/content/verticals"
 import { getPost } from "@/content/blog"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
+import { HeroScanInput } from "@/components/marketing/HeroScanInput"
+import { StickyScanCta } from "@/components/marketing/StickyScanCta"
 
 const ALPHAA_ANNUAL = 1188 // $99/mo × 12
 
@@ -108,10 +110,22 @@ export default async function VerticalPage({
             Alphaa gets your {v.noun} recommended by ChatGPT, Gemini &amp; Google AI automatically —
             $99/mo, no agency retainer.
           </p>
-          <OrangePillButton href="/scan" size="lg">
-            Run a free AI visibility scan →
-          </OrangePillButton>
-          <p className="mt-5 text-white/40 text-xs">60 seconds · no signup</p>
+          <div id="scan-input" className="scroll-mt-28">
+            <HeroScanInput
+              compact
+              source={`vertical_${v.slug}`}
+              ctaLabel="Run my free AI scan →"
+            />
+          </div>
+          <p className="mt-5 text-white/40 text-xs">60 seconds · no signup · no credit card</p>
+          <p className="mt-2 text-xs">
+            <Link
+              href="/scan"
+              className="text-white/40 hover:text-white/70 underline underline-offset-4 transition-colors duration-200"
+            >
+              No website? Start the scan with just your business name →
+            </Link>
+          </p>
         </div>
       </section>
 
@@ -287,12 +301,15 @@ export default async function VerticalPage({
               ask about {v.plural} like you.
             </p>
             <OrangePillButton href="/scan" size="lg">
-              Run a free AI visibility scan →
+              Run my free AI scan →
             </OrangePillButton>
             <p className="mt-6 text-white/25 text-sm">60 seconds · no signup · no credit card</p>
           </div>
         </div>
       </section>
+
+      {/* Sticky mobile CTA — jumps back to the embedded scan input */}
+      <StickyScanCta />
     </>
   )
 }

@@ -16,6 +16,7 @@ interface KeywordRow {
   impressions: number
   ctr: number
   position: number
+  prevPosition: number | null // from the batch ~7+ days earlier; null = new/no baseline
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -43,24 +44,51 @@ export default async function KeywordsPage() {
 
   const user = await db.user.findUnique({
     where: { clerkId: clerkId! },
-    include: {
-      integration: true,
-      keywordRankings: {
-        orderBy: { impressions: 'desc' },
-        take: 50,
-      },
-    },
+    include: { integration: true },
   })
 
   const integration = user?.integration ?? null
   const hasGsc = !!(integration?.gscSiteUrl)
-  const rankings: KeywordRow[] = (user?.keywordRankings ?? []).map((r) => ({
-    query: r.query,
-    clicks: r.clicks,
-    impressions: r.impressions,
-    ctr: r.ctr,
-    position: r.position,
-  }))
+
+  // Rankings come in daily batches (one set of rows per sync date). Show only
+  // the LATEST batch, and compare against a batch ~7+ days earlier for deltas.
+  let rankings: KeywordRow[] = []
+  if (user) {
+    const batches = await db.keywordRanking.groupBy({
+      by: ['date'],
+      where: { userId: user.id },
+      orderBy: { date: 'desc' },
+      take: 30,
+    })
+    if (batches.length > 0) {
+      const latestDate = batches[0].date
+      const weekAgo = new Date(latestDate.getTime() - 7 * 24 * 60 * 60 * 1000)
+      const baselineDate =
+        batches.length > 1
+          ? (batches.find((b) => b.date <= weekAgo)?.date ?? batches[batches.length - 1].date)
+          : null
+
+      const [currRows, prevRows] = await Promise.all([
+        db.keywordRanking.findMany({
+          where: { userId: user.id, date: latestDate },
+          orderBy: { impressions: 'desc' },
+          take: 50,
+        }),
+        baselineDate && baselineDate.getTime() !== latestDate.getTime()
+          ? db.keywordRanking.findMany({ where: { userId: user.id, date: baselineDate } })
+          : Promise.resolve([]),
+      ])
+      const prevByQuery = new Map(prevRows.map((r) => [r.query, r.position]))
+      rankings = currRows.map((r) => ({
+        query: r.query,
+        clicks: r.clicks,
+        impressions: r.impressions,
+        ctr: r.ctr,
+        position: r.position,
+        prevPosition: prevByQuery.get(r.query) ?? null,
+      }))
+    }
+  }
 
   // Header (shared across all states)
   const header = (
@@ -272,8 +300,22 @@ export default async function KeywordsPage() {
                     </span>
                   </td>
 
-                  {/* Change — no historical delta available in current sync */}
-                  <td style={{ padding: '12px 16px', color: '#555555' }}>—</td>
+                  {/* Change vs the batch ~7 days earlier (lower position = better) */}
+                  <td style={{ padding: '12px 16px' }}>
+                    {row.prevPosition === null ? (
+                      <span style={{ color: '#555555' }}>—</span>
+                    ) : Math.round(row.prevPosition) === Math.round(row.position) ? (
+                      <span style={{ color: '#555555' }}>steady</span>
+                    ) : row.position < row.prevPosition ? (
+                      <span style={{ color: '#22c55e', fontWeight: 500 }}>
+                        ↑ {formatPosition(row.prevPosition)} → {formatPosition(row.position)}
+                      </span>
+                    ) : (
+                      <span style={{ color: '#dc2626' }}>
+                        ↓ {formatPosition(row.prevPosition)} → {formatPosition(row.position)}
+                      </span>
+                    )}
+                  </td>
 
                   {/* Clicks */}
                   <td

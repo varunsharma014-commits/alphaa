@@ -1,9 +1,11 @@
 "use client"
 
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { useSearchParams } from "next/navigation"
+import Link from "next/link"
 import { ScanLoader } from "@/components/scan/ScanLoader"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
+import { track } from "@/lib/gtag"
 import type { ScanResult } from "@/types/scan"
 import {
   Bot, MapPin, Star, LayoutGrid, HelpCircle,
@@ -80,6 +82,50 @@ const SEVERITY_STYLE = {
   improvement: { iconBg: "#eff6ff", iconColor: "#2563eb" },
 } as const
 
+function scoreColor(score: number): string {
+  if (score >= 75) return "#22c55e"
+  if (score >= 50) return "#e05a2b"
+  return "#dc2626"
+}
+
+// Plain-English verdict — the number alone doesn't sell the gap.
+function buildVerdict(
+  aiMentions: number,
+  chatgptFound: boolean,
+  businessName: string
+): string {
+  if (aiMentions === 0)
+    return `When customers ask AI who to call, ${businessName} never comes up. They're being sent to your competitors instead.`
+  if (!chatgptFound)
+    return `ChatGPT doesn't mention ${businessName} when customers ask. ${aiMentions} of 4 AI assistants know you — the rest recommend someone else.`
+  if (aiMentions < 4)
+    return `${aiMentions} of 4 AI assistants mention ${businessName}. The other ${4 - aiMentions} are still sending customers elsewhere.`
+  return `AI assistants know ${businessName} today — the work now is staying in the answer as competitors catch on.`
+}
+
+// ── Shared CTA block (used top + bottom — one dominant action) ─────────────
+
+function SignupCta({ compact = false }: { compact?: boolean }) {
+  return (
+    <div style={{ maxWidth: 440, margin: "0 auto" }}>
+      <Link
+        href="/signup"
+        onClick={() => track("results_cta_click", { placement: compact ? "top" : "bottom" })}
+        style={{
+          display: "block", width: "100%", background: "#e05a2b", color: "#fff",
+          fontSize: 16, fontWeight: 600, textAlign: "center",
+          padding: "14px 24px", borderRadius: 12, textDecoration: "none",
+        }}
+      >
+        Fix this automatically — start free →
+      </Link>
+      <p style={{ fontSize: 12, color: "#6b7280", textAlign: "center", margin: "10px 0 0", lineHeight: 1.6 }}>
+        $99/mo · replaces a $1,000+/mo agency · cancel anytime · set up in 2 minutes
+      </p>
+    </div>
+  )
+}
+
 // ── Main component ─────────────────────────────────────────────────────────
 
 function ScanResultsContent() {
@@ -88,36 +134,79 @@ function ScanResultsContent() {
   const [result, setResult]   = useState<ScanResult | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState(false)
+  const [retryKey, setRetryKey] = useState(0)
+  const completedFired = useRef(false)
 
   useEffect(() => {
     if (!scanId) { setError(true); setLoading(false); return }
+    let cancelled = false
     let attempts = 0
     const poll = async () => {
+      if (cancelled) return
       try {
         const res  = await fetch(`/api/scan/result?id=${scanId}`)
         if (res.ok) {
           const data = await res.json()
-          if (data.ready) { setResult(data.result); setLoading(false); return }
+          if (data.ready) {
+            if (!cancelled) { setResult(data.result); setLoading(false) }
+            return
+          }
         }
         attempts++
-        if (attempts < 30) setTimeout(poll, 2000)
-        else { setError(true); setLoading(false) }
+        if (attempts < 45) setTimeout(poll, 2000)
+        else if (!cancelled) { setError(true); setLoading(false) }
       } catch {
         attempts++
-        if (attempts < 30) setTimeout(poll, 2000)
-        else { setError(true); setLoading(false) }
+        if (attempts < 45) setTimeout(poll, 2000)
+        else if (!cancelled) { setError(true); setLoading(false) }
       }
     }
     poll()
-  }, [scanId])
+    return () => { cancelled = true }
+  }, [scanId, retryKey])
+
+  // Primary ad-conversion event — fire exactly once per scan.
+  useEffect(() => {
+    if (!result || completedFired.current) return
+    completedFired.current = true
+    const key = `ga4-scan-completed-${scanId}`
+    try {
+      if (sessionStorage.getItem(key)) return
+      sessionStorage.setItem(key, "1")
+    } catch {
+      // storage unavailable — fire anyway
+    }
+    track("scan_completed", { score: result.visibilityScore })
+  }, [result, scanId])
+
+  const retry = useCallback(() => {
+    setError(false)
+    setLoading(true)
+    setRetryKey((k) => k + 1)
+  }, [])
 
   if (loading) return <ScanLoader />
 
   if (error || !result) {
     return (
-      <div className="pt-24 pb-20 px-4 text-center">
-        <p className="text-white text-lg mb-4">We couldn&apos;t complete your scan.</p>
-        <OrangePillButton href="/scan">Try again →</OrangePillButton>
+      <div className="pt-24 pb-20 px-4 text-center max-w-md mx-auto">
+        <AlertTriangle className="w-8 h-8 text-brand-orange mx-auto mb-4" />
+        <p className="text-white text-lg font-medium mb-2">
+          Your scan is taking longer than usual.
+        </p>
+        <p className="text-muted text-sm mb-6">
+          {scanId
+            ? "AI engines can be slow at peak times — your results may still be on the way. Check again, or start a fresh scan."
+            : "We couldn't find that scan. Start a fresh one — it only takes 60 seconds."}
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          {scanId && (
+            <OrangePillButton onClick={retry}>Check again →</OrangePillButton>
+          )}
+          <OrangePillButton href="/scan" variant={scanId ? "ghost" : "primary"}>
+            Run a new scan
+          </OrangePillButton>
+        </div>
       </div>
     )
   }
@@ -128,6 +217,7 @@ function ScanResultsContent() {
   const businessName   = result.businessName || result.businessUrl
   const initials       = getInitials(businessName)
   const issueCount     = result.issues.length
+  const score          = result.visibilityScore
 
   const engineData = ENGINES.map((e) => {
     const status = aiStatus[e.key]
@@ -139,7 +229,9 @@ function ScanResultsContent() {
     return { ...e, found, detail }
   })
 
-  const aiMentions = engineData.filter((e) => e.found).length
+  const aiMentions   = engineData.filter((e) => e.found).length
+  const chatgptFound = engineData.find((e) => e.key === "chatgpt")?.found ?? false
+  const verdict      = buildVerdict(aiMentions, chatgptFound, businessName)
 
   return (
     <div className="pt-20 pb-20 px-4 sm:px-6" style={{ fontFamily: "system-ui, 'Inter', sans-serif" }}>
@@ -191,7 +283,7 @@ function ScanResultsContent() {
           </div>
         </div>
 
-        {/* ── 2. Hero ───────────────────────────────────────────────── */}
+        {/* ── 2. Hero: score + plain-English verdict ────────────────── */}
         <div style={{ background: "#0f0f0f", borderRadius: 20, padding: "36px 28px", position: "relative", overflow: "hidden" }}>
           <div style={{ ...dotGrid, position: "absolute", inset: 0, pointerEvents: "none" }} />
           <div style={{ position: "relative", zIndex: 1 }}>
@@ -210,28 +302,28 @@ function ScanResultsContent() {
               </div>
             </div>
 
-            {/* Headline */}
-            <h1 style={{ fontSize: 26, fontWeight: 700, color: "#fff", textAlign: "center", lineHeight: 1.3, margin: "0 0 12px" }}>
-              We found exactly what&apos;s holding{" "}
-              <span style={{ color: "#e05a2b" }}>{businessName}</span>{" "}
-              back.
-            </h1>
+            {/* Score */}
+            <div style={{ textAlign: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 12, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                Your AI visibility score
+              </div>
+              <div style={{ fontSize: 56, fontWeight: 700, lineHeight: 1, color: scoreColor(score) }}>
+                {score}
+                <span style={{ fontSize: 22, fontWeight: 500, color: "#6b7280" }}>/100</span>
+              </div>
+            </div>
 
-            {/* Subline */}
-            <p style={{
-              fontSize: 14, color: "#6b7280", textAlign: "center", lineHeight: 1.6,
-              margin: "0 auto 28px", maxWidth: 420,
-            }}>
-              Our AI checked your business across the whole internet in 60 seconds. Here&apos;s
-              the honest picture — in plain English, no tech-speak.
-            </p>
+            {/* Verdict headline */}
+            <h1 style={{ fontSize: 22, fontWeight: 700, color: "#fff", textAlign: "center", lineHeight: 1.4, margin: "0 auto 28px", maxWidth: 480 }}>
+              {verdict}
+            </h1>
 
             {/* 3-col stat grid */}
             <div className="grid grid-cols-3 gap-3">
               {([
-                { Icon: Bot,           color: "#dc2626", value: `${aiMentions} / 4`, label: "AI assistants mention you" },
-                { Icon: Star,          color: "#d97706", value: "0",                 label: "Recent customer reviews" },
-                { Icon: AlertTriangle, color: "#dc2626", value: String(issueCount),  label: "Things losing you customers" },
+                { Icon: Bot,           color: aiMentions === 0 ? "#dc2626" : aiMentions === 4 ? "#22c55e" : "#d97706", value: `${aiMentions} / 4`, label: "AI assistants mention you" },
+                { Icon: Star,          color: scoreColor(score),  value: `${score}/100`,      label: "Visibility score" },
+                { Icon: AlertTriangle, color: issueCount > 0 ? "#dc2626" : "#22c55e", value: String(issueCount),  label: "Things losing you customers" },
               ] as const).map((stat, i) => (
                 <div key={i} style={{ background: "#161616", border: "1px solid #222", borderRadius: 12, padding: "16px 10px", textAlign: "center" }}>
                   <stat.Icon style={{ width: 20, height: 20, color: stat.color, margin: "0 auto 8px" }} />
@@ -239,6 +331,11 @@ function ScanResultsContent() {
                   <div style={{ fontSize: 11, color: "#6b7280", marginTop: 4, lineHeight: 1.4 }}>{stat.label}</div>
                 </div>
               ))}
+            </div>
+
+            {/* Top CTA — dominant action visible without scrolling past the emotion */}
+            <div style={{ marginTop: 28 }}>
+              <SignupCta compact />
             </div>
           </div>
         </div>
@@ -298,11 +395,11 @@ function ScanResultsContent() {
           </div>
         </div>
 
-        {/* ── 4. Issues ─────────────────────────────────────────────── */}
+        {/* ── 4. Issues — framed as alphaa's first week of work ─────── */}
         <div>
           <div className="flex items-center gap-3 mb-4">
             <span style={{ fontSize: 12, fontWeight: 600, color: "#6b7280", whiteSpace: "nowrap" }}>
-              What&apos;s actually costing you customers right now
+              What alphaa would fix this week
             </span>
             <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.08)" }} />
           </div>
@@ -351,7 +448,7 @@ function ScanResultsContent() {
                         >
                           <Wand2 style={{ width: 13, height: 13, color: "#16a34a", flexShrink: 0, marginTop: 1 }} />
                           <p style={{ fontSize: 12, color: "#166534", margin: 0, lineHeight: 1.5 }}>
-                            {issue.fix_summary}
+                            <span style={{ fontWeight: 600 }}>alphaa&apos;s fix:</span> {issue.fix_summary}
                           </p>
                         </div>
                       </div>
@@ -413,76 +510,21 @@ function ScanResultsContent() {
               ))}
             </div>
 
-            {/* CTA button */}
-            <div style={{ maxWidth: 400, margin: "0 auto 10px" }}>
-              <a
-                href="https://alphaa.app/signup"
-                style={{
-                  display: "block", width: "100%", background: "#e05a2b", color: "#fff",
-                  fontSize: 16, fontWeight: 600, textAlign: "center",
-                  padding: "14px 24px", borderRadius: 12, textDecoration: "none",
-                }}
-              >
-                Start my free 14-day trial →
-              </a>
-            </div>
+            {/* CTA button — same dominant action as the top */}
+            <SignupCta />
 
             {/* Fine print */}
-            <p style={{ fontSize: 12, color: "#6b7280", textAlign: "center", margin: "0 0 24px" }}>
-              No credit card · Cancel anytime · First post goes live within 24 hours
+            <p style={{ fontSize: 12, color: "#6b7280", textAlign: "center", margin: "16px 0 0" }}>
+              14-day free trial · No credit card to start · First post goes live within 24 hours
             </p>
-
-            {/* Divider */}
-            <div style={{ height: 1, background: "#1e1e1e", marginBottom: 24 }} />
-
-            {/* 3-col social proof */}
-            <div
-              className="grid grid-cols-3"
-              style={{ borderTop: "1px solid #1e1e1e", borderBottom: "1px solid #1e1e1e", padding: "20px 0", marginBottom: 24 }}
-            >
-              {([
-                { value: "1,200+",  label: "businesses on alphaa" },
-                { value: "4.9 / 5", label: "average rating" },
-                { value: "$500/mo", label: "avg saved vs. agency" },
-              ] as const).map((item, i) => (
-                <div
-                  key={i}
-                  style={{ textAlign: "center", borderRight: i < 2 ? "1px solid #1e1e1e" : "none" }}
-                >
-                  <div style={{ fontSize: 20, fontWeight: 700, color: "#fff" }}>{item.value}</div>
-                  <div style={{ fontSize: 11, color: "#6b7280", marginTop: 3 }}>{item.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Testimonial */}
-            <div style={{ background: "#161616", borderRadius: 12, padding: 20 }}>
-              <div className="flex gap-0.5 mb-3">
-                {"★★★★★".split("").map((s, i) => (
-                  <span key={i} style={{ color: "#f59e0b", fontSize: 14 }}>{s}</span>
-                ))}
-              </div>
-              <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.7, fontStyle: "italic", margin: "0 0 14px" }}>
-                &ldquo;I was paying $1,400 a month to an SEO agency and ChatGPT had never heard of
-                me. I tried alphaa, appeared on ChatGPT in 11 days, and cancelled the agency the
-                same week.&rdquo;
-              </p>
-              <div className="flex items-center gap-3">
-                <div
-                  className="flex items-center justify-center flex-shrink-0"
-                  style={{ width: 34, height: 34, borderRadius: "50%", background: "#e05a2b" }}
-                >
-                  <span style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>SK</span>
-                </div>
-                <div>
-                  <p style={{ fontSize: 13, fontWeight: 500, color: "#fff", margin: 0 }}>Sarah K.</p>
-                  <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>General Dentist, Austin TX</p>
-                </div>
-              </div>
-            </div>
 
           </div>
         </div>
+
+        {/* Honest urgency close */}
+        <p style={{ fontSize: 13, color: "#6b7280", textAlign: "center", lineHeight: 1.6, margin: "8px auto 0", maxWidth: 400 }}>
+          Every week you wait is another week AI recommends someone else.
+        </p>
 
       </div>
     </div>

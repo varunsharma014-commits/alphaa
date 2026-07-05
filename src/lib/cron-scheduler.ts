@@ -51,5 +51,7 @@ export function startCron(): void {
     if ((dow === 1 || dow === 4) && hour === 13) hit("/api/cron/gbp-posts")
     // Sun 06:00 UTC — competitor discovery / refresh (Anthropic)
     if (dow === 0 && hour === 6) hit("/api/cron/competitors")
+    // Wed 09:00 UTC — weekly AI visibility re-scan (Anthropic + engine APIs)
+    if (dow === 3 && hour === 9) hit("/api/cron/visibility-scan")
   }, 60_000)
 }

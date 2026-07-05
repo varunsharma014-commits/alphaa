@@ -6,6 +6,7 @@ import { StatusPill, type PillVariant } from "@/components/dashboard/StatusPill"
 import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import { DsCard } from "@/components/dashboard/DsCard"
 import { SetupHealth } from "@/components/dashboard/SetupHealth"
+import { ProgressCard, type AuditPoint, type KeywordDelta } from "@/components/dashboard/ProgressCard"
 import { timeOfDayGreeting } from "@/lib/humanize"
 import type { LucideIcon } from "lucide-react"
 import {
@@ -20,13 +21,56 @@ async function getDashboardData(userId: string) {
     include: {
       audits: {
         orderBy: { createdAt: "desc" },
-        take: 2,
+        take: 8,
         include: { aiEngineResults: true },
       },
       mockActivity: { orderBy: { createdAt: "desc" }, take: 8 },
       integration: true,
     },
   })
+}
+
+// Compare the newest keyword batch against one ~7+ days older (or the oldest
+// distinct batch). Returns top improved / declined queries with real positions.
+async function getKeywordDeltas(internalUserId: string): Promise<{
+  improved: KeywordDelta[]
+  declined: KeywordDelta[]
+}> {
+  const none = { improved: [], declined: [] }
+  try {
+    const batches = await db.keywordRanking.groupBy({
+      by: ["date"],
+      where: { userId: internalUserId },
+      orderBy: { date: "desc" },
+      take: 30,
+    })
+    if (batches.length < 2) return none
+    const latestDate = batches[0].date
+    const weekAgo = new Date(latestDate.getTime() - 7 * 24 * 60 * 60 * 1000)
+    const baseline =
+      batches.find((b) => b.date <= weekAgo)?.date ?? batches[batches.length - 1].date
+    if (baseline.getTime() === latestDate.getTime()) return none
+
+    const [currRows, prevRows] = await Promise.all([
+      db.keywordRanking.findMany({ where: { userId: internalUserId, date: latestDate } }),
+      db.keywordRanking.findMany({ where: { userId: internalUserId, date: baseline } }),
+    ])
+    const prevByQuery = new Map(prevRows.map((r) => [r.query, r.position]))
+    const deltas: KeywordDelta[] = []
+    for (const row of currRows) {
+      const prev = prevByQuery.get(row.query)
+      if (prev === undefined) continue
+      const prevPos = Math.round(prev)
+      const currPos = Math.round(row.position)
+      if (prevPos !== currPos) deltas.push({ query: row.query, prev: prevPos, curr: currPos })
+    }
+    // Lower position = better. Improved = position went down.
+    const improved = deltas.filter((d) => d.curr < d.prev).sort((a, b) => (b.prev - b.curr) - (a.prev - a.curr)).slice(0, 3)
+    const declined = deltas.filter((d) => d.curr > d.prev).sort((a, b) => (b.curr - b.prev) - (a.curr - a.prev)).slice(0, 2)
+    return { improved, declined }
+  } catch {
+    return none
+  }
 }
 
 // The four engines alphaa actually scans, mapped to the real audit data.
@@ -112,6 +156,21 @@ export default async function DashboardPage() {
   const integration = data?.integration ?? null
   const connected = Boolean(integration)
 
+  // ── Progress trends: audits oldest→newest + keyword batch comparison. ──
+  const auditPoints: AuditPoint[] = [...audits]
+    .reverse()
+    .map((a) => ({
+      score: a.visibilityScore,
+      createdAt: a.createdAt,
+      appeared: Array.isArray(a.aiEngineResults)
+        ? a.aiEngineResults.filter((r) => Boolean(r.appeared)).length
+        : 0,
+      total: Array.isArray(a.aiEngineResults) ? a.aiEngineResults.length : 0,
+    }))
+  const { improved, declined } = data
+    ? await getKeywordDeltas(data.id)
+    : { improved: [] as KeywordDelta[], declined: [] as KeywordDelta[] }
+
   return (
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
 
@@ -168,6 +227,10 @@ export default async function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* ── Progress — measured proof it's working ── */}
+      <SectionDivider>YOUR PROGRESS</SectionDivider>
+      <ProgressCard auditPoints={auditPoints} improved={improved} declined={declined} />
 
       {/* ── What alphaa did — real activity ledger only ── */}
       {activityRows.length > 0 ? (
