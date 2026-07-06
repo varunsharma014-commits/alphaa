@@ -10,6 +10,8 @@ import { meta as perplexityMeta, Body as PerplexityBody } from "./how-to-get-cit
 import { meta as schemaMeta, Body as SchemaBody } from "./schema-markup-for-ai-search"
 import { meta as restaurantsMeta, Body as RestaurantsBody } from "./ai-recommendations-for-restaurants"
 import { meta as saasMeta, Body as SaasBody } from "./aeo-for-saas-b2b"
+import { meta as chatgptSaysMeta, Body as ChatgptSaysBody } from "./how-to-see-what-chatgpt-says-about-your-business"
+import { meta as bestToolsMeta, Body as BestToolsBody } from "./best-aeo-tools-2026"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -25,6 +27,8 @@ export const POSTS: Post[] = [
   { meta: saasMeta, Body: SaasBody },
   { meta: aeoVsSeoMeta, Body: AeoVsSeoBody },
   { meta: llmsTxtMeta, Body: LlmsTxtBody },
+  { meta: chatgptSaysMeta, Body: ChatgptSaysBody },
+  { meta: bestToolsMeta, Body: BestToolsBody },
 ]
 
 export function getAllPosts(): Post[] {
