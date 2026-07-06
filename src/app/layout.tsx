@@ -42,7 +42,7 @@ const orgSchema = {
   email: "hi@alphaa.app",
   description:
     "Alphaa is an AI search optimization (AEO) platform that automatically gets businesses found, cited, and recommended on Google, ChatGPT, Claude, Gemini, and Perplexity.",
-  // logo: "https://alphaa.app/logo.png",   // add a 112x112+ PNG
+  logo: "https://alphaa.app/logo.png",
   // sameAs: ["https://www.linkedin.com/company/alphaa", "https://x.com/alphaa", ...],
 }
 
