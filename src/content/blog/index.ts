@@ -12,6 +12,8 @@ import { meta as restaurantsMeta, Body as RestaurantsBody } from "./ai-recommend
 import { meta as saasMeta, Body as SaasBody } from "./aeo-for-saas-b2b"
 import { meta as chatgptSaysMeta, Body as ChatgptSaysBody } from "./how-to-see-what-chatgpt-says-about-your-business"
 import { meta as bestToolsMeta, Body as BestToolsBody } from "./best-aeo-tools-2026"
+import { meta as aiOverviewsLocalMeta, Body as AiOverviewsLocalBody } from "./google-ai-overviews-local-business"
+import { meta as dentistsMeta, Body as DentistsBody } from "./how-dentists-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -29,6 +31,8 @@ export const POSTS: Post[] = [
   { meta: llmsTxtMeta, Body: LlmsTxtBody },
   { meta: chatgptSaysMeta, Body: ChatgptSaysBody },
   { meta: bestToolsMeta, Body: BestToolsBody },
+  { meta: aiOverviewsLocalMeta, Body: AiOverviewsLocalBody },
+  { meta: dentistsMeta, Body: DentistsBody },
 ]
 
 export function getAllPosts(): Post[] {
