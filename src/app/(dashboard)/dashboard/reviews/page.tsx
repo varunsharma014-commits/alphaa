@@ -298,7 +298,7 @@ export default async function ReviewsPage() {
                           marginBottom: "6px",
                         }}
                       >
-                        Your reply (sent by alphaa)
+                        Your reply
                       </p>
                       <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
                         {review.reply}

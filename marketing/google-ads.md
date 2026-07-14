@@ -239,7 +239,7 @@ Descriptions:
 1. New patients ask AI "best dentist near me." Alphaa makes sure you're in the answer.
 2. Free scan shows your practice's visibility on ChatGPT, Gemini, Perplexity & Google AI.
 3. Posts, content, schema, reviews — handled automatically for $99/mo. No agency retainer.
-4. 14-day free trial, no credit card. One weekly email tells you exactly what improved.
+4. 14-day free trial — cancel anytime in two clicks. One weekly email tells you exactly what improved.
 
 **RSA 2 (agency-switch angle — HVAC version shown)** — Final URL: vertical page
 

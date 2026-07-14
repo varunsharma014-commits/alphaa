@@ -4,21 +4,21 @@ import { auth } from "@clerk/nextjs/server"
 import { redirect, notFound } from "next/navigation"
 import { db } from "@/lib/db"
 import type { LucideIcon } from "lucide-react"
-import { Bot, Globe, Globe2, Sparkles, Search, Wand2, RefreshCw } from "lucide-react"
+import { Bot, Globe, Sparkles, Search, Wand2, RefreshCw } from "lucide-react"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
 import { DsCard } from "@/components/dashboard/DsCard"
 import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import RunScanButton from "../RunScanButton"
 
-type EngineSlug = "chatgpt" | "claude" | "gemini" | "perplexity" | "google-ai"
 type EngineKey = "chatgpt" | "claude" | "gemini" | "perplexity"
 
-// Each per-engine screen maps to the real scan data:
-// aiEngineResults.engine ∈ {chatgpt, claude, gemini, perplexity};
-// aiSearchStatus keys are {chatgpt, google_ai (Claude), gemini, perplexity}.
-// "Google AI" reuses Gemini's data, since Gemini powers Google's AI Overviews.
+// One page per engine the scan actually runs (see src/lib/visibility-scan.ts).
+// aiEngineResults.engine ∈ {chatgpt, claude, gemini, perplexity} — unambiguous,
+// so it is always preferred. aiSearchStatus is only a fallback; its keys are
+// {chatgpt, google_ai, gemini, perplexity}, and by a legacy quirk the scan
+// writes Claude's status under the "google_ai" key.
 const CONFIG: Record<
-  EngineSlug,
+  EngineKey,
   {
     label: string
     engineKey: EngineKey
@@ -80,19 +80,6 @@ const CONFIG: Record<
       "Keeping your content recent and well-sourced",
     ],
   },
-  "google-ai": {
-    label: "Google AI",
-    engineKey: "gemini",
-    statusKey: "gemini",
-    Icon: Globe2,
-    explainer:
-      "Google AI Overviews are powered by Gemini and Google's index. A complete Google presence and content built around the keywords your customers search are what move the needle here.",
-    actions: [
-      "Keeping your Google Business Profile complete and active",
-      "Publishing content around the keywords your customers search",
-      "Adding structured data so Google can summarize your business",
-    ],
-  },
 }
 
 export default async function EngineVisibilityPage({
@@ -101,7 +88,10 @@ export default async function EngineVisibilityPage({
   params: Promise<{ engine: string }>
 }) {
   const { engine } = await params
-  const config = CONFIG[engine as EngineSlug]
+  // The retired "Google AI" page reused Gemini's data (Gemini powers Google's
+  // AI Overviews) — send old links there instead of 404ing.
+  if (engine === "google-ai") redirect("/dashboard/visibility/gemini")
+  const config = CONFIG[engine as EngineKey]
   if (!config) notFound()
 
   const { userId: clerkId } = await auth()

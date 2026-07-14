@@ -94,7 +94,7 @@ Sequence targets `ScanLead` where `converted = false`. Stop the sequence immedia
 >
 > And if you're paying nobody right now? $99/month is the price of not being invisible while your competitors figure this out.
 >
-> There's a 14-day free trial and no credit card required, so the worst case is you spent two minutes connecting your Google account.
+> There's a 14-day free trial you can cancel anytime, so the worst case is you spent two minutes connecting your Google account.
 >
 > **[Start my free trial →](.../signup?...&utm_content=day5)**
 >

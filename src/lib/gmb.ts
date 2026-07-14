@@ -191,6 +191,50 @@ export async function getReviews(
   }
 }
 
+// Posts (or updates) the owner's reply on a Google review.
+// GMB v4: PUT accounts/{account}/locations/{location}/reviews/{reviewId}/reply
+export async function postReviewReply(
+  integration: StoredIntegration & {
+    gmbAccountId?: string | null
+    gmbLocationId?: string | null
+  },
+  reviewId: string,
+  comment: string,
+): Promise<{ success: boolean; error?: string }> {
+  if (!integration.gmbAccountId || !integration.gmbLocationId) {
+    return {
+      success: false,
+      error: 'Google Business Profile location is not configured',
+    }
+  }
+
+  try {
+    const accessToken = await resolveAccessToken(integration)
+    const url = `${BUSINESS_BASE}/accounts/${integration.gmbAccountId}/locations/${integration.gmbLocationId}/reviews/${reviewId}/reply`
+
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ comment }),
+    })
+
+    if (!response.ok) {
+      const errorBody = await response.text()
+      console.error('[GMB] postReviewReply error:', response.status, errorBody)
+      return { success: false, error: `GMB API error ${response.status}` }
+    }
+
+    return { success: true }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[GMB] postReviewReply unexpected error:', message)
+    return { success: false, error: message }
+  }
+}
+
 export async function getLocationInfo(
   integration: StoredIntegration & {
     gmbAccountId?: string | null

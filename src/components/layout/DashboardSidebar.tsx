@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  Sparkles, Home, Bot, Globe, Globe2, Search, TrendingUp, Activity, Gauge, MapPin, Star,
+  Sparkles, Home, Bot, Globe, Search, TrendingUp, Activity, Gauge, MapPin, Star,
   CalendarDays, Lightbulb, Users, BarChart3, Settings, ChevronRight, LifeBuoy,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -21,7 +21,6 @@ const navGroups = [
       { href: "/dashboard/visibility/claude", label: "Claude", icon: Globe },
       { href: "/dashboard/visibility/gemini", label: "Gemini", icon: Sparkles },
       { href: "/dashboard/visibility/perplexity", label: "Perplexity", icon: Search },
-      { href: "/dashboard/visibility/google-ai", label: "Google AI", icon: Globe2 },
     ],
   },
   {

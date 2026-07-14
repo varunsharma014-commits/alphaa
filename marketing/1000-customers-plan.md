@@ -23,7 +23,7 @@ Funnel assumptions (targets, unproven): visitor→scan **8%**, scan→signup **2
 |---|---|---|
 | Google OAuth token refresh (GSC/GA4 never synced) | Measurement layer is blind | Open (growth review #1) |
 | `/refer` 404 in prod + remove fabricated stats on that page | Growth loop dead + FTC risk | Open (see referral-viral.md) |
-| Reconcile "no credit card" copy vs card-upfront trial | Ads/emails currently say "no card needed" — deceptive if card is now required. Update google-ads.md RSAs, email-flows.md, pricing FAQ, or reverse the policy | Open — decide this week |
+| Reconcile "no credit card" copy vs card-upfront trial | Ads/emails currently say "no card needed" — deceptive if card is now required. Update google-ads.md RSAs, email-flows.md, pricing FAQ, or reverse the policy | ✅ RESOLVED 2026-07-14: card-upfront trial kept; all 'no credit card' trial claims purged (scan claims remain — the scan truly needs no card) |
 | GA4 events + Ads conversion import | Ads without tracking = burning money | Open (launch-checklist Day 1–2) |
 | Scan-lead nurture unsubscribe infra | Blocks all cold + nurture email | Open (email-flows.md §B) |
 

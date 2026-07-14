@@ -15,12 +15,15 @@ export const metadata = { title: "AI Visibility" }
 
 type EngineKey = "chatgpt" | "claude" | "gemini" | "perplexity"
 
+// The 4 engines the scan actually runs. aiEngineResults.engine names are
+// unambiguous and preferred; aiStatusKey is the aiSearchStatus fallback key —
+// legacy quirk: the scan writes Claude's status under "google_ai".
 const ENGINE_META: Record<
   EngineKey,
   { label: string; Icon: typeof Bot; aiStatusKey: string }
 > = {
   chatgpt: { label: "ChatGPT", Icon: Bot, aiStatusKey: "chatgpt" },
-  claude: { label: "Claude / Google AI", Icon: Globe, aiStatusKey: "google_ai" },
+  claude: { label: "Claude", Icon: Globe, aiStatusKey: "google_ai" },
   gemini: { label: "Gemini", Icon: Sparkles, aiStatusKey: "gemini" },
   perplexity: { label: "Perplexity", Icon: Search, aiStatusKey: "perplexity" },
 }
@@ -135,7 +138,7 @@ export default async function VisibilityPage() {
                 alphaa is running your first AI engine scan
               </h3>
               <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
-                We&apos;re asking ChatGPT, Perplexity, Gemini and Google AI the questions your
+                We&apos;re asking ChatGPT, Claude, Gemini and Perplexity the questions your
                 customers type — and checking whether your business comes up. This happens
                 automatically, you don&apos;t need to do anything.
               </p>
