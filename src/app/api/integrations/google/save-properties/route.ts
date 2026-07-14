@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
           // server-side here, so we use a shared secret to authenticate the
           // sync endpoint when called internally.
           'x-internal-user-id': user.id,
+          Authorization: `Bearer ${process.env.CRON_SECRET ?? ''}`,
         },
       }).catch((err) => {
         console.error('[Save Properties] Background sync error:', err)

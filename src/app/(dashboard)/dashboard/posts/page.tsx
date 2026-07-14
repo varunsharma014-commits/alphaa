@@ -86,7 +86,13 @@ export default async function PostsPage() {
 
   return (
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
-      <AutopilotBar message="alphaa publishes to your Google listing automatically on Mon + Thu" />
+      <AutopilotBar
+        message={
+          gbpConnected
+            ? "alphaa publishes to your Google listing automatically every Monday and Thursday"
+            : "Connect your Google listing once and alphaa posts to it automatically from then on"
+        }
+      />
 
       {/* Header */}
       <div
@@ -123,7 +129,7 @@ export default async function PostsPage() {
                 minutes to set up and unlocks the most important features.
               </p>
               <Link
-                href="/dashboard/settings"
+                href="/dashboard/settings/integrations"
                 style={{
                   display: "inline-block",
                   marginTop: "14px",

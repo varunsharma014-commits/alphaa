@@ -9,6 +9,8 @@ const isPublicRoute = createRouteMatcher([
   "/blog(.*)",
   "/case-studies(.*)",
   "/scan(.*)",
+  "/w(.*)",
+  "/refer",
   "/login(.*)",
   "/signup(.*)",
   "/terms",
@@ -19,6 +21,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/scan(.*)",
   "/api/webhooks/(.*)",
   "/api/cron/(.*)",
+  "/api/integrations/sync",
 ])
 
 const isAuthRoute = createRouteMatcher(["/login(.*)", "/signup(.*)"])

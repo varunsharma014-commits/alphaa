@@ -1,6 +1,6 @@
 import { ScanForm } from "@/components/scan/ScanForm"
 import { SectionLabel } from "@/components/common/SectionLabel"
-import { Users } from "lucide-react"
+import { Bot } from "lucide-react"
 
 export const metadata = { title: "Free Visibility Scan" }
 
@@ -19,11 +19,11 @@ export default function ScanPage() {
           </p>
         </div>
 
-        {/* Social proof above form */}
+        {/* What the scan checks — honest, no invented numbers */}
         <div className="flex items-center justify-center gap-2 mb-6">
-          <Users className="w-4 h-4 text-brand-orange" />
+          <Bot className="w-4 h-4 text-brand-orange" />
           <p className="text-muted/70 text-xs">
-            <span className="text-white font-medium">1,247 businesses</span> scanned this month
+            Live check across <span className="text-white font-medium">4 AI assistants</span> plus your website
           </p>
         </div>
 

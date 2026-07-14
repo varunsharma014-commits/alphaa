@@ -112,10 +112,10 @@ function issueText(issue: CrawlIssue): string {
 
 export default async function AuditPage() {
   const { userId: clerkId } = await auth()
-  if (!clerkId) redirect("/sign-in")
+  if (!clerkId) redirect("/login")
 
   const user = await db.user.findUnique({ where: { clerkId } })
-  if (!user) redirect("/sign-in")
+  if (!user) redirect("/login")
 
   // Fetch latest schema markup
   const latestSchema = await db.schemaMarkup.findFirst({
@@ -205,7 +205,13 @@ export default async function AuditPage() {
 
   return (
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
-      <AutopilotBar message="alphaa crawled your site today and flagged issues in plain English below" />
+      <AutopilotBar
+        message={
+          latestCrawl
+            ? "alphaa checks your site every week and explains anything it finds in plain English"
+            : "alphaa's first website check is on its way — everything it finds appears here in plain English"
+        }
+      />
 
       {/* ── AI crawler blocks — most critical, shown first ──── */}
       {aiCrawlerBlocks.length > 0 && (
@@ -264,15 +270,19 @@ export default async function AuditPage() {
         <StatBox value={pagesChecked} label="Pages checked" tone="default" />
         <StatBox
           value={brokenLinks}
-          label="Broken links"
+          label="Serious issues"
           tone={brokenLinks > 0 ? "danger" : "success"}
         />
         <StatBox
           value={missingDescriptions}
-          label="Missing descriptions"
+          label="Smaller issues"
           tone={missingDescriptions > 0 ? "warning" : "success"}
         />
-        <StatBox value={issuesFixed} label="Issues fixed this month" tone="success" />
+        <StatBox
+          value={issuesFixed}
+          label="Issues alphaa has a fix for"
+          tone={issuesFixed > 0 ? "success" : "muted"}
+        />
       </div>
 
       {/* ── Page speed ──────────────────────────────────────── */}
@@ -380,7 +390,7 @@ export default async function AuditPage() {
                     </span>
                   ) : (
                     <a
-                      href="/dashboard/settings"
+                      href="mailto:hi@alphaa.app?subject=Help%20with%20a%20website%20issue"
                       style={{
                         background: "#e05a2b",
                         color: "#fff",
@@ -393,7 +403,7 @@ export default async function AuditPage() {
                         textDecoration: "none",
                       }}
                     >
-                      Action needed
+                      Ask us how to fix it
                     </a>
                   )}
                 </div>

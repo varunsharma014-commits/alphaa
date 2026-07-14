@@ -312,7 +312,7 @@ export default function IntegrationsPage() {
       setCrawlData(result)
     } catch {
       setCrawlError(
-        'We could not scan your website this time. Make sure your website address is saved in Account settings, then try again.',
+        'We could not scan your website this time. Check that your website address is saved under Settings → Business details, then try again.',
       )
     } finally {
       setCrawling(false)

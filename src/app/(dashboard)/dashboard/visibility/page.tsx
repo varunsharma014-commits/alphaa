@@ -25,35 +25,63 @@ const ENGINE_META: Record<
   perplexity: { label: "Perplexity", Icon: Search, aiStatusKey: "perplexity" },
 }
 
+// Count engines that mentioned the business in a given audit (guarded JSON).
+function countAppeared(
+  audit: {
+    aiSearchStatus: unknown
+    aiEngineResults: { engine: string; appeared: boolean }[]
+  },
+  engineOrder: EngineKey[]
+): number {
+  const status: Record<string, unknown> =
+    typeof audit.aiSearchStatus === "object" &&
+    audit.aiSearchStatus !== null &&
+    !Array.isArray(audit.aiSearchStatus)
+      ? (audit.aiSearchStatus as Record<string, unknown>)
+      : {}
+  return engineOrder.filter((key) => {
+    const meta = ENGINE_META[key]
+    const raw = status[meta.aiStatusKey]
+    const rawStatus = typeof raw === "string" ? raw : null
+    const engineResult = audit.aiEngineResults.find((r) => r.engine === key)
+    return Boolean(engineResult?.appeared) || rawStatus === "frequently" || rawStatus === "appeared"
+  }).length
+}
+
 export default async function VisibilityPage() {
   const { userId: clerkId } = await auth()
-  if (!clerkId) redirect("/sign-in")
+  if (!clerkId) redirect("/login")
 
   const user = await db.user.findUnique({ where: { clerkId } })
-  if (!user) redirect("/sign-in")
+  if (!user) redirect("/login")
 
-  const audit = await db.audit.findFirst({
+  // Latest two audits: the newest drives the page, the previous one gives a
+  // real (never invented) week-over-week comparison.
+  const audits = await db.audit.findMany({
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
+    take: 2,
     include: {
       aiEngineResults: {
         orderBy: { createdAt: "asc" },
       },
     },
   })
+  const audit = audits[0] ?? null
+  const prevAudit = audits[1] ?? null
 
-  const aiStatus = (audit?.aiSearchStatus ?? {}) as Record<string, string>
+  const aiStatus: Record<string, string> =
+    audit &&
+    typeof audit.aiSearchStatus === "object" &&
+    audit.aiSearchStatus !== null &&
+    !Array.isArray(audit.aiSearchStatus)
+      ? (audit.aiSearchStatus as Record<string, string>)
+      : {}
   const engineOrder: EngineKey[] = ["chatgpt", "perplexity", "gemini", "claude"]
 
-  // Count how many engines found the business
-  const appearedCount = audit
-    ? engineOrder.filter((key) => {
-        const meta = ENGINE_META[key]
-        const rawStatus = aiStatus[meta.aiStatusKey] ?? null
-        const engineResult = audit.aiEngineResults.find((r) => r.engine === key)
-        return engineResult?.appeared || rawStatus === "frequently" || rawStatus === "appeared"
-      }).length
-    : 0
+  // Count how many engines found the business — now and at the previous check.
+  const appearedCount = audit ? countAppeared(audit, engineOrder) : 0
+  const prevAppearedCount = prevAudit ? countAppeared(prevAudit, engineOrder) : null
 
   const lastScanDate = audit?.createdAt
     ? audit.createdAt.toLocaleDateString("en-US", {
@@ -62,17 +90,6 @@ export default async function VisibilityPage() {
         year: "numeric",
       })
     : null
-
-  // Days from joining to first AI mention (capped to non-negative whole days)
-  const daysToFirstMention =
-    audit?.createdAt && user.createdAt
-      ? Math.max(
-          0,
-          Math.round(
-            (audit.createdAt.getTime() - user.createdAt.getTime()) / 86_400_000
-          )
-        )
-      : null
 
   // ── No scan yet ──────────────────────────────────────────────────────────────
   if (!audit) {
@@ -123,7 +140,8 @@ export default async function VisibilityPage() {
                 automatically, you don&apos;t need to do anything.
               </p>
               <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px" }}>
-                Most businesses get their first AI mention within 11 days of joining.
+                The first scan usually finishes within a few minutes. alphaa re-checks every week
+                after that.
               </p>
             </div>
             <div style={{ marginTop: "4px" }}>
@@ -202,12 +220,18 @@ export default async function VisibilityPage() {
           value={`${appearedCount} of 4`}
           label="AI engines mention you"
           tone={appearedCount > 0 ? "success" : "danger"}
-          delta={`up from ${Math.max(0, appearedCount - 1)} last month`}
-          deltaDir="up"
+          delta={
+            prevAppearedCount !== null && prevAppearedCount !== appearedCount
+              ? `was ${prevAppearedCount} of 4 at the last check`
+              : undefined
+          }
+          deltaDir={
+            prevAppearedCount !== null && appearedCount < prevAppearedCount ? "down" : "up"
+          }
         />
         <StatBox
-          value={daysToFirstMention !== null ? `${daysToFirstMention} days` : "—"}
-          label="Days to first mention after joining · industry avg 11 days"
+          value={lastScanDate ?? "—"}
+          label="Last checked · alphaa re-checks every week"
         />
       </div>
 
@@ -293,9 +317,11 @@ export default async function VisibilityPage() {
                         This engine recommends your business when customers ask.
                       </p>
                     )}
-                    <p style={{ fontSize: "11px", color: "#22c55e", marginTop: "8px" }}>
-                      Found in {Math.max(1, engineResult?.position ?? 1)} searches this week
-                    </p>
+                    {engineResult?.query && (
+                      <p style={{ fontSize: "11px", color: "#22c55e", marginTop: "8px" }}>
+                        Mentioned when we asked: &ldquo;{engineResult.query}&rdquo;
+                      </p>
+                    )}
                   </>
                 ) : (
                   <p style={{ fontSize: "12px", color: "#666666", lineHeight: 1.6 }}>
@@ -320,9 +346,9 @@ export default async function VisibilityPage() {
         </div>
         <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: "8px" }}>
           {[
-            "Publishing 8 blog posts this month to teach the AI engines about your business",
-            "Posting to your Google listing 3x per week so AI assistants see fresh activity",
-            "Adding FAQ content to your website this week — the exact answers AI tools quote",
+            "Keeping your Google listing active with fresh posts so AI assistants see activity",
+            "Publishing content that teaches the AI engines what your business does",
+            "Keeping your business details consistent everywhere so AI can trust them",
           ].map((line) => (
             <li
               key={line}

@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
+import Link from "next/link"
 import { ReCrawlButton } from "./ReCrawlButton"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
 import { StatBox } from "@/components/dashboard/StatBox"
@@ -95,7 +96,7 @@ export default async function SpeedPage() {
   if (!user?.websiteUrl) {
     return (
       <div style={{ maxWidth: "880px", margin: "0 auto" }}>
-        <AutopilotBar message="alphaa crawled your site today and flagged issues in plain English below" />
+        <AutopilotBar message="alphaa checks your site speed automatically once it knows your website address" />
         <div style={{ marginBottom: "18px" }}>
           <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>Page speed</h1>
           <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
@@ -105,11 +106,11 @@ export default async function SpeedPage() {
         <EmptyState
           icon={Settings}
           title="alphaa will track your site speed once we know your website"
-          body="Add your website address in Settings and alphaa will start checking how fast your site loads for visitors — automatically, every week."
+          body="Add your website address in your business details and alphaa will start checking how fast your site loads for visitors — automatically, every week."
           sub="It only takes a moment to set up."
         >
-          <a
-            href="/dashboard/settings"
+          <Link
+            href="/dashboard/settings/business"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -124,8 +125,8 @@ export default async function SpeedPage() {
             }}
           >
             <Settings size={15} />
-            Go to settings
-          </a>
+            Add my website address
+          </Link>
         </EmptyState>
       </div>
     )
@@ -171,7 +172,13 @@ export default async function SpeedPage() {
 
   return (
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
-      <AutopilotBar message="alphaa crawled your site today and flagged issues in plain English below" />
+      <AutopilotBar
+        message={
+          crawlResult
+            ? "alphaa checks your site every week and explains anything it finds in plain English"
+            : "alphaa's first website check is on its way — results appear here automatically"
+        }
+      />
 
       {/* Header */}
       <div
@@ -194,15 +201,19 @@ export default async function SpeedPage() {
 
       {/* Stat row */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "8px" }}>
-        <StatBox value={crawlResult?.pagesScanned ?? 0} label="Pages checked" tone="default" />
         <StatBox
-          value={criticalCount}
-          label="Broken links"
+          value={crawlResult ? crawlResult.pagesScanned : "—"}
+          label="Pages checked"
+          tone="default"
+        />
+        <StatBox
+          value={crawlResult ? criticalCount : "—"}
+          label="Serious issues"
           tone={criticalCount > 0 ? "danger" : "success"}
         />
         <StatBox
-          value={warningCount}
-          label="Missing descriptions"
+          value={crawlResult ? warningCount : "—"}
+          label="Smaller issues"
           tone={warningCount > 0 ? "warning" : "success"}
         />
       </div>

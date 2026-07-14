@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
 import {
   Mail, CheckCircle2, TrendingUp, TrendingDown, Minus,
-  FileText, ArrowRight,
+  FileText,
 } from "lucide-react"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
 import { StatBox } from "@/components/dashboard/StatBox"
@@ -100,7 +100,13 @@ export default async function ReportsPage() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {reports.map((report, idx) => {
-              const visibilityDelta = (report.visibilityDelta ?? {}) as VisibilityDelta
+              // Guarded JSON reads — these are Json columns and must never crash the page.
+              const visibilityDelta: VisibilityDelta =
+                typeof report.visibilityDelta === "object" &&
+                report.visibilityDelta !== null &&
+                !Array.isArray(report.visibilityDelta)
+                  ? (report.visibilityDelta as VisibilityDelta)
+                  : {}
               const keywordMovers   = Array.isArray(report.keywordMovers) ? (report.keywordMovers as KeywordMover[]) : []
               const topMovers       = keywordMovers.slice(0, 4)
               const isLatest        = idx === 0
@@ -214,13 +220,10 @@ export default async function ReportsPage() {
                   )}
 
                   {/* Footer */}
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", marginTop: "14px", paddingTop: "12px", borderTop: "0.5px solid #222222" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "14px", paddingTop: "12px", borderTop: "0.5px solid #222222" }}>
                     <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", color: "#555555" }}>
                       <CheckCircle2 size={12} color="#22c55e" />
                       Generated automatically — nothing needed from you
-                    </span>
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "13px", fontWeight: 500, color: "#e05a2b" }}>
-                      View report <ArrowRight size={13} />
                     </span>
                   </div>
                 </DsCard>

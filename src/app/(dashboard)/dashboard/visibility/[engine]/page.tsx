@@ -116,7 +116,14 @@ export default async function EngineVisibilityPage({
   })
 
   const noScan = !audit
-  const aiStatus = (audit?.aiSearchStatus ?? {}) as Record<string, string>
+  // Guarded JSON read — aiSearchStatus is a Json column and must never crash the page.
+  const aiStatus: Record<string, string> =
+    audit &&
+    typeof audit.aiSearchStatus === "object" &&
+    audit.aiSearchStatus !== null &&
+    !Array.isArray(audit.aiSearchStatus)
+      ? (audit.aiSearchStatus as Record<string, string>)
+      : {}
   const result = audit?.aiEngineResults.find((r) => r.engine === config.engineKey) ?? null
   const status = aiStatus[config.statusKey] ?? null
   const isFound = Boolean(result?.appeared) || status === "frequently" || status === "appeared"

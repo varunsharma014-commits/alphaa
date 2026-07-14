@@ -7,13 +7,25 @@ import { ExternalLink, CreditCard } from "lucide-react"
 
 export default function BillingSettingsPage() {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   async function openPortal() {
     setLoading(true)
-    const res = await fetch("/api/stripe/portal", { method: "POST" })
-    const data = await res.json()
-    if (data.url) window.location.href = data.url
-    else setLoading(false)
+    setError(null)
+    try {
+      const res = await fetch("/api/stripe/portal", { method: "POST" })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+        return
+      }
+      throw new Error()
+    } catch {
+      setError(
+        "We couldn't open your billing page — this usually means your trial hasn't been converted to a paid plan yet. Email hi@alphaa.app and we'll sort it out right away."
+      )
+      setLoading(false)
+    }
   }
 
   return (
@@ -32,21 +44,30 @@ export default function BillingSettingsPage() {
         </div>
         <OrangePillButton onClick={openPortal} loading={loading} variant="ghost" size="sm">
           <ExternalLink className="w-3.5 h-3.5" />
-          Open billing portal
+          Manage my plan
         </OrangePillButton>
+        <p className="text-muted/70 text-xs mt-3">
+          Opens a secure Stripe page where you can change your card, download invoices, or
+          switch plans.
+        </p>
+        {error && (
+          <p className="text-amber-400 text-xs mt-3 leading-relaxed">{error}</p>
+        )}
       </GlassCard>
 
       <GlassCard>
         <h2 className="text-fg font-medium mb-2">Cancel subscription</h2>
         <p className="text-muted text-sm leading-relaxed mb-4">
-          Before you go — would you like to pause your account for one month at no charge? Your data stays safe and you can reactivate anytime.
+          You can cancel anytime — your plan stays active until the end of the billing period,
+          and your data is kept safe if you come back. Questions before you go? Email{" "}
+          <a href="mailto:hi@alphaa.app" className="text-brand-orange hover:underline">
+            hi@alphaa.app
+          </a>{" "}
+          — we read every message.
         </p>
-        <div className="flex items-center gap-3">
-          <OrangePillButton href="/pricing" size="sm">Keep my plan</OrangePillButton>
-          <button onClick={openPortal} className="text-muted text-sm hover:text-fg transition-colors">
-            Cancel anyway →
-          </button>
-        </div>
+        <button onClick={openPortal} className="text-muted text-sm hover:text-fg transition-colors">
+          Cancel my subscription →
+        </button>
       </GlassCard>
     </div>
   )

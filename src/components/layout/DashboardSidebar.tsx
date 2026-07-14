@@ -3,8 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  Sparkles, Home, Bot, Globe, Globe2, Search, TrendingUp, Activity, MapPin, Star,
-  CalendarDays, Lightbulb, Users, BarChart3, Settings, ChevronRight,
+  Sparkles, Home, Bot, Globe, Globe2, Search, TrendingUp, Activity, Gauge, MapPin, Star,
+  CalendarDays, Lightbulb, Users, BarChart3, Settings, ChevronRight, LifeBuoy,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -29,6 +29,7 @@ const navGroups = [
     items: [
       { href: "/dashboard/keywords", label: "Google rankings", icon: TrendingUp },
       { href: "/dashboard/audit", label: "Website health", icon: Activity },
+      { href: "/dashboard/speed", label: "Site speed", icon: Gauge },
     ],
   },
   {
@@ -126,6 +127,13 @@ export function DashboardSidebar() {
           <Settings className="w-4 h-4 flex-shrink-0" />
           <span>Settings</span>
         </Link>
+        <a
+          href="mailto:hi@alphaa.app?subject=Help%20with%20my%20alphaa%20account"
+          className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-fg/40 hover:text-fg/80 hover:bg-fg/[0.04] transition-all duration-150"
+        >
+          <LifeBuoy className="w-4 h-4 flex-shrink-0" />
+          <span>Email support</span>
+        </a>
         <Link
           href="/pricing"
           className="flex items-center justify-between gap-2.5 px-2.5 py-2 rounded-lg text-sm font-semibold bg-brand-orange text-fg hover:bg-brand-orange-light transition-colors"

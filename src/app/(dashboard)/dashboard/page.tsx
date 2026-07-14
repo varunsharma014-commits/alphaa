@@ -7,10 +7,11 @@ import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import { DsCard } from "@/components/dashboard/DsCard"
 import { SetupHealth } from "@/components/dashboard/SetupHealth"
 import { ProgressCard, type AuditPoint, type KeywordDelta } from "@/components/dashboard/ProgressCard"
+import { ShareWinButton } from "@/components/dashboard/ShareWinButton"
 import { timeOfDayGreeting } from "@/lib/humanize"
 import type { LucideIcon } from "lucide-react"
 import {
-  CheckCircle2, TrendingUp, Star, FileText, Bot, Globe, Sparkles, Search, Clock,
+  CheckCircle2, TrendingUp, Star, FileText, Bot, Globe, Sparkles, Search, Clock, PartyPopper,
 } from "lucide-react"
 
 export const metadata = { title: "Dashboard — alphaa" }
@@ -96,6 +97,7 @@ const ENGINE_PILL: Record<EngineState, { label: string; variant: PillVariant }> 
 // Icon for a real activity row, picked from its type string.
 function activityIcon(type: string): { Icon: LucideIcon; color: string; bg: string; border: string } {
   const t = type.toLowerCase()
+  if (t.includes("win"))    return { Icon: PartyPopper, color: "#ff6b1a", bg: "#1f1206", border: "#7c3a10" }
   if (t.includes("review")) return { Icon: Star,        color: "#f59e0b", bg: "#1a1200", border: "#78350f" }
   if (t.includes("post"))   return { Icon: FileText,    color: "#22c55e", bg: "#0d2218", border: "#14532d" }
   if (t.includes("keyword") || t.includes("rank")) return { Icon: TrendingUp, color: "#22c55e", bg: "#0d2218", border: "#14532d" }
@@ -109,7 +111,7 @@ function activityIcon(type: string): { Icon: LucideIcon; color: string; bg: stri
 const SCHEDULED_ITEMS = [
   { title: "First website audit",       when: "running now" },
   { title: "First Google post",         when: "within 24 hours" },
-  { title: "Weekly AI visibility check", when: "every Monday" },
+  { title: "Weekly AI visibility check", when: "every Wednesday" },
   { title: "Keyword sync",              when: "daily" },
 ]
 
@@ -256,6 +258,11 @@ export default async function DashboardPage() {
                     <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "2px" }}>
                       {a.description ?? "Done for you by alphaa — nothing for you to do"}
                     </p>
+                    {a.type === "win" && (
+                      <div style={{ marginTop: "8px" }}>
+                        <ShareWinButton winId={a.id} headline={a.title.replace(/^🎉\s*/u, "")} />
+                      </div>
+                    )}
                   </div>
                   <span style={{ fontSize: "11px", color: "#555555", flexShrink: 0, marginTop: "2px" }}>
                     {a.createdAt.toLocaleDateString("en-US", { month: "short", day: "numeric" })}

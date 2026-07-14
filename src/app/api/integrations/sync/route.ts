@@ -63,10 +63,17 @@ async function handleAuthFailure(userId: string): Promise<void> {
 }
 
 async function resolveUserId(request: NextRequest): Promise<string | null> {
-  // Allow internal calls from save-properties (fire-and-forget) via header
+  // Internal calls (seo-sync cron, save-properties fire-and-forget) pass the
+  // target user via header. The route is exempt from Clerk middleware so these
+  // server-to-server calls work — the CRON_SECRET bearer is what stops anyone
+  // else from triggering syncs for arbitrary users.
   const internalUserId = request.headers.get('x-internal-user-id')
   if (internalUserId) {
-    return internalUserId
+    const bearer = request.headers.get('authorization')
+    if (process.env.CRON_SECRET && bearer === `Bearer ${process.env.CRON_SECRET}`) {
+      return internalUserId
+    }
+    return null
   }
 
   // Normal Clerk-authenticated call

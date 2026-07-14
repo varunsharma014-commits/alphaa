@@ -51,7 +51,12 @@ export function ReCrawlButton() {
         <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
         {done ? "Check started" : loading ? "Checking…" : "Check my site now"}
       </button>
-      {error && <p style={{ color: "#888888", fontSize: "11px" }}>alphaa will retry this automatically.</p>}
+      {error && (
+        <p style={{ color: "#f59e0b", fontSize: "11px", maxWidth: "260px", textAlign: "right", lineHeight: 1.5 }}>
+          The check didn&apos;t finish this time. Please try again in a minute — alphaa also checks
+          your site automatically every week.
+        </p>
+      )}
     </div>
   )
 }

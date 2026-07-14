@@ -2,7 +2,8 @@ export const dynamic = 'force-dynamic'
 
 import { auth } from '@clerk/nextjs/server'
 import { db } from '@/lib/db'
-import { RefreshCw } from 'lucide-react'
+import Link from 'next/link'
+import { RefreshCw, Globe } from 'lucide-react'
 import { AutopilotBar } from '@/components/dashboard/AutopilotBar'
 import { StatBox } from '@/components/dashboard/StatBox'
 import { EmptyState } from '@/components/dashboard/EmptyState'
@@ -105,11 +106,50 @@ export default async function KeywordsPage() {
     </div>
   )
 
-  // ── No data yet (Search Console not synced, or no rows returned) ────────────
-  if (!integration || !hasGsc || rankings.length === 0) {
+  // ── Google not connected yet — be honest, don't pretend a sync is running ──
+  if (!integration || !hasGsc) {
     return (
       <div style={{ maxWidth: '960px', margin: '0 auto' }}>
-        <AutopilotBar message="alphaa pulls your keyword data from Google automatically every week" />
+        <AutopilotBar message="Connect Google once and alphaa tracks your rankings automatically from then on" />
+        {header}
+        <div
+          style={{
+            background: '#161616',
+            border: '0.5px solid #222222',
+            borderRadius: '10px',
+          }}
+        >
+          <EmptyState
+            icon={Globe}
+            title="Connect Google to see your rankings"
+            body="Your rankings live in Google's search data. Connect your Google account once and alphaa pulls in every keyword people use to find you — updated daily, nothing else to do."
+          >
+            <Link
+              href="/dashboard/settings/integrations"
+              style={{
+                background: '#e05a2b',
+                color: '#ffffff',
+                borderRadius: '8px',
+                padding: '8px 18px',
+                fontSize: '13px',
+                fontWeight: 500,
+                display: 'inline-block',
+                textDecoration: 'none',
+              }}
+            >
+              Connect Google →
+            </Link>
+          </EmptyState>
+        </div>
+      </div>
+    )
+  }
+
+  // ── Connected but no rows yet — the first sync really is on its way ────────
+  if (rankings.length === 0) {
+    return (
+      <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+        <AutopilotBar message="alphaa pulls your keyword data from Google automatically every day" />
         {header}
         <div
           style={{
@@ -120,8 +160,9 @@ export default async function KeywordsPage() {
         >
           <EmptyState
             icon={RefreshCw}
-            title="Syncing your keyword data from Google"
-            body="This takes a few minutes the first time. We will show your rankings as soon as they are ready."
+            title="Google is connected — your first keyword sync is on its way"
+            body="alphaa syncs your rankings from Google every morning. Your keywords appear here after the first sync — nothing for you to do."
+            sub="If nothing shows after a day or two, your website may be new to Google's search data — alphaa keeps checking automatically."
           />
         </div>
       </div>
@@ -146,7 +187,7 @@ export default async function KeywordsPage() {
   // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div style={{ maxWidth: '960px', margin: '0 auto' }}>
-      <AutopilotBar message="alphaa pulls your keyword data from Google automatically every week" />
+      <AutopilotBar message="alphaa pulls your keyword data from Google automatically every day" />
       {header}
 
       {/* Plain-English summary line */}
@@ -187,7 +228,7 @@ export default async function KeywordsPage() {
           tone={avgPosition <= 10 ? 'success' : avgPosition <= 30 ? 'warning' : 'danger'}
         />
         <StatBox value={top10} label="In top 10" tone="success" />
-        <StatBox value={formatNumber(totalClicks)} label="Clicks this month" />
+        <StatBox value={formatNumber(totalClicks)} label="Visits from Google (last 28 days)" />
       </div>
 
       <SectionDivider>YOUR KEYWORDS</SectionDivider>

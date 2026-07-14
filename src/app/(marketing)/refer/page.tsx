@@ -146,7 +146,7 @@ function ApplyForm() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    window.location.href = `mailto:partners@alphaa.ai?subject=Partner Application — ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}`
+    window.location.href = `mailto:hi@alphaa.app?subject=Partner Application — ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}`
     setSubmitted(true)
   }
 
@@ -242,7 +242,7 @@ export default function ReferPage() {
           </OrangePillButton>
 
           <p className="text-white/30 text-xs mt-4">
-            Instant access · No approval wait · 47 partners already earning
+            Founding partner program — early spots open now
           </p>
         </div>
       </section>
@@ -435,41 +435,6 @@ export default function ReferPage() {
         </div>
       </section>
 
-      {/* ── 7. Social Proof ─────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-white/[0.06]">
-        <div className="max-w-4xl mx-auto">
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-6 max-w-md mx-auto mb-14 text-center">
-            <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-6">
-              <div className="text-brand-orange font-bold text-4xl">47</div>
-              <div className="text-white/40 text-xs mt-1">active partners</div>
-            </div>
-            <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-6">
-              <div className="text-brand-orange font-bold text-4xl">$840</div>
-              <div className="text-white/40 text-xs mt-1">avg. partner earnings/mo after 6 months</div>
-            </div>
-          </div>
-
-          {/* Quote */}
-          <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-8 max-w-2xl mx-auto text-center">
-            <p className="text-white/80 text-lg leading-relaxed italic mb-6">
-              "I added Alphaa as an upsell to every new website I build. Made{" "}
-              <span className="text-brand-orange font-semibold not-italic">$2,400 last month</span>{" "}
-              without doing anything extra."
-            </p>
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-brand-orange/20 flex items-center justify-center text-brand-orange font-semibold text-sm">
-                J
-              </div>
-              <div className="text-left">
-                <div className="text-white text-sm font-medium">Jason M.</div>
-                <div className="text-white/40 text-xs">Web designer · Partner since Jan 2025</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── 8. FAQ ──────────────────────────────────────────────── */}
       <section className="py-20 px-4 sm:px-6 border-t border-white/[0.06]">
         <div className="max-w-2xl mx-auto">
@@ -529,7 +494,7 @@ export default function ReferPage() {
           <ApplyForm />
 
           <p className="text-white/25 text-xs mt-5">
-            Instant access · No approval wait · 47 partners already earning
+            Founding partner program — early spots open now
           </p>
         </div>
       </section>

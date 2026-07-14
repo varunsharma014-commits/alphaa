@@ -211,12 +211,18 @@ function ScanResultsContent() {
     )
   }
 
-  // ── Derived data ──────────────────────────────────────────────────────
-  const aiStatus       = result.aiSearchStatus as Record<string, string>
+  // ── Derived data (guarded — these come from Json columns) ─────────────
+  const aiStatus: Record<string, string> =
+    typeof result.aiSearchStatus === "object" &&
+    result.aiSearchStatus !== null &&
+    !Array.isArray(result.aiSearchStatus)
+      ? (result.aiSearchStatus as Record<string, string>)
+      : {}
   const engineResponses = result.engineResponses ?? {}
   const businessName   = result.businessName || result.businessUrl
   const initials       = getInitials(businessName)
-  const issueCount     = result.issues.length
+  const issues         = Array.isArray(result.issues) ? result.issues : []
+  const issueCount     = issues.length
   const score          = result.visibilityScore
 
   const engineData = ENGINES.map((e) => {
@@ -416,7 +422,7 @@ function ScanResultsContent() {
             </div>
           ) : (
             <div className="space-y-3">
-              {result.issues.map((issue, i) => {
+              {issues.map((issue, i) => {
                 const sev   = issue.severity as keyof typeof SEVERITY_STYLE
                 const style = SEVERITY_STYLE[sev] ?? SEVERITY_STYLE.improvement
                 const Icon  = getIssueIcon(issue.severity, i)

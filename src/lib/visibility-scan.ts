@@ -6,6 +6,7 @@
 import { db } from "@/lib/db"
 import { anthropic, buildAuditPrompt } from "@/lib/claude"
 import { scanAllEngines } from "@/lib/ai-engines"
+import { processWinsForAudit } from "@/lib/wins"
 import type { AiSearchStatus } from "@/types/audit"
 
 // `userId` is the internal User.id (NOT the clerkId).
@@ -117,6 +118,24 @@ export async function runVisibilityScan(userId: string) {
     where: { id: audit.id },
     include: { aiEngineResults: true },
   })
+
+  // Win detection + notification vs the previous audit — strictly best-effort,
+  // must never break the scan (processWinsForAudit also swallows internally).
+  try {
+    await processWinsForAudit(
+      {
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
+        businessName: user.businessName,
+        businessType: user.businessType,
+        city: user.city,
+      },
+      audit.id,
+    )
+  } catch (err) {
+    console.error(`[wins] post-scan win processing failed for user ${user.id}:`, err)
+  }
 
   return {
     success: true,

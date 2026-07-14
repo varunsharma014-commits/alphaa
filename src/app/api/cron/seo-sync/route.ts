@@ -33,7 +33,10 @@ export async function GET(request: NextRequest) {
     try {
       const res = await fetch(`${base}/api/integrations/sync`, {
         method: "POST",
-        headers: { "x-internal-user-id": userId },
+        headers: {
+          "x-internal-user-id": userId,
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
+        },
       })
       if (res.ok) ok++
       else {

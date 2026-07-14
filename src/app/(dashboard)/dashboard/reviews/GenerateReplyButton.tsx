@@ -55,8 +55,8 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
         </div>
         <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
           {editing
-            ? "Open this review in Google Business Profile to fine-tune the wording, or approve below to let alphaa post its draft for you."
-            : "alphaa has written a warm, professional reply for this customer. Approve it and we'll post it to Google for you — no typing needed."}
+            ? "To write the reply yourself, open this review on your Google listing and reply there. Otherwise, approve below and alphaa writes and posts one for you."
+            : "Approve below and alphaa writes a warm, professional reply and posts it to Google for you — no typing needed."}
         </p>
       </div>
 
@@ -117,7 +117,8 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
 
       {error && (
         <p style={{ fontSize: "11px", color: "#dc2626", marginTop: "8px" }}>
-          We couldn&apos;t post that reply just now — alphaa will try again shortly.
+          We couldn&apos;t post that reply just now. Please try again in a moment — or reply
+          directly on your Google listing.
         </p>
       )}
     </div>

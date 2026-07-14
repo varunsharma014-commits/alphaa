@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
+import Link from "next/link"
 import { Wand2 } from "lucide-react"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
 import { StatBox } from "@/components/dashboard/StatBox"
@@ -51,10 +52,12 @@ export default async function ContentPlanPage() {
 
   const user = await db.user.findUnique({
     where: { clerkId: clerkId! },
-    include: { gbpPosts: { orderBy: { createdAt: "desc" } } },
+    include: { gbpPosts: { orderBy: { createdAt: "desc" } }, integration: true },
   })
 
   const posts = user?.gbpPosts ?? []
+  // Autopilot publishing only works once a Google Business Profile location is linked.
+  const gbpConnected = Boolean(user?.integration?.gmbLocationId)
 
   const now = new Date()
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
@@ -127,8 +130,41 @@ export default async function ContentPlanPage() {
         />
         <StatBox value={draftCount} label="Drafts ready to review" tone={draftCount > 0 ? "warning" : "muted"} />
         <StatBox value={nextPostLabel} label="Next post" tone="default" />
-        <StatBox value="Yes" label="Posts on autopilot" tone="success" />
+        <StatBox
+          value={gbpConnected ? "On" : "Paused"}
+          label="Posts on autopilot"
+          tone={gbpConnected ? "success" : "warning"}
+        />
       </div>
+
+      {/* Honest notice: autopilot can't publish until Google is connected */}
+      {!gbpConnected && (
+        <DsCard accent="#f59e0b" style={{ marginBottom: "16px" }}>
+          <p style={{ fontSize: "13px", color: "#ffffff", fontWeight: 500 }}>
+            Autopilot is paused — your Google listing isn&apos;t connected yet
+          </p>
+          <p style={{ fontSize: "12px", color: "#888888", lineHeight: 1.6, marginTop: "4px" }}>
+            alphaa can write your posts now, but it can&apos;t publish them to Google until your
+            listing is connected. It takes about 2 minutes.
+          </p>
+          <Link
+            href="/dashboard/settings/integrations"
+            style={{
+              display: "inline-block",
+              marginTop: "10px",
+              background: "#e05a2b",
+              color: "#ffffff",
+              borderRadius: "8px",
+              padding: "7px 16px",
+              fontSize: "12px",
+              fontWeight: 500,
+              textDecoration: "none",
+            }}
+          >
+            Connect Google listing →
+          </Link>
+        </DsCard>
+      )}
 
       {/* ── Progress bar ───────────────────────────────── */}
       <DsCard>

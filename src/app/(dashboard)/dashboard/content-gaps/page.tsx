@@ -29,10 +29,10 @@ const PRIORITY_ORDER: GapItem["priority"][] = ["high", "medium", "low"]
 
 export default async function ContentGapsPage() {
   const { userId: clerkId } = await auth()
-  if (!clerkId) redirect("/sign-in")
+  if (!clerkId) redirect("/login")
 
   const user = await db.user.findUnique({ where: { clerkId } })
-  if (!user) redirect("/sign-in")
+  if (!user) redirect("/login")
 
   const latestGap = await db.contentGap.findFirst({
     where: { userId: user.id },
@@ -64,14 +64,24 @@ export default async function ContentGapsPage() {
       </div>
 
       {!hasGaps ? (
-        /* ── Auto-analyzing / loading state (no input) ─────────── */
-        <DsCard style={{ padding: 0 }}>
-          <EmptyState
-            icon={Lightbulb}
-            title="alphaa is analyzing your competitors' content…"
-            body="We'll have your content gaps ready in a few minutes — topics your competitors rank for that you're missing, with suggested titles and outlines ready to use."
-          />
-        </DsCard>
+        /* ── No ideas yet — say what will appear + offer the one available action ── */
+        <>
+          <DsCard style={{ padding: 0 }}>
+            <EmptyState
+              icon={Lightbulb}
+              title="Your content ideas will appear here"
+              body="As alphaa studies your competitors, it lists the topics they rank for that you're missing — each with a ready-to-use title. This happens automatically once alphaa finds your competitors."
+              sub="Nothing to do — but if you want ideas right now, point alphaa at a competitor below."
+            />
+          </DsCard>
+          <SectionDivider>GET IDEAS NOW</SectionDivider>
+          <DsCard>
+            <p style={{ fontSize: "13px", fontWeight: 500, color: "#cccccc", marginBottom: "10px" }}>
+              Know a competitor? Paste their website and alphaa finds your gaps in about a minute.
+            </p>
+            <AnalyzeGapsButton />
+          </DsCard>
+        </>
       ) : (
         <>
           {/* ── Hero heading ───────────────────────── */}

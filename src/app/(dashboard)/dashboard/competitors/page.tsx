@@ -62,8 +62,25 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
   const data = competitor.crawlData
   const domain = displayDomain(competitor.url)
   const name   = competitor.name ?? domain
-  const freq   = FREQ_META[data?.estimatedPostingFrequency ?? ""] ?? FREQ_META.Monthly
   const autoDiscovered = isAutoDiscovered(competitor.crawlData)
+
+  // crawlData is a Json column — read every field defensively so a partial
+  // record (e.g. an auto-discovered row that hasn't been analyzed yet) can
+  // never crash the page.
+  const strengths  = Array.isArray(data?.strengths)  ? data.strengths.filter((s): s is string => typeof s === "string")  : []
+  const weaknesses = Array.isArray(data?.weaknesses) ? data.weaknesses.filter((w): w is string => typeof w === "string") : []
+  const keyTopics  = Array.isArray(data?.keyTopics)  ? data.keyTopics.filter((t): t is string => typeof t === "string")  : []
+  const schemaCount = Array.isArray(data?.schemaTypes) ? data.schemaTypes.length : 0
+  const pagesFound  = typeof data?.pagesFound === "number" ? data.pagesFound : null
+  const postingFreq = typeof data?.estimatedPostingFrequency === "string" ? data.estimatedPostingFrequency : null
+  const aiSummary   = typeof data?.aiSummary === "string" ? data.aiSummary : null
+  const freq        = FREQ_META[postingFreq ?? ""] ?? FREQ_META.Monthly
+
+  // A crawlData object that only carries bookkeeping (e.g. { source }) means
+  // the analysis hasn't run yet — show the honest in-progress state.
+  const analyzed = Boolean(
+    data && (pagesFound !== null || aiSummary || strengths.length > 0 || keyTopics.length > 0)
+  )
 
   return (
     <div
@@ -106,30 +123,30 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
         <DeleteCompetitorButton id={competitor.id} />
       </div>
 
-      {data ? (
+      {analyzed ? (
         <div className="space-y-5" style={{ padding: "1.25rem" }}>
           {/* Quick stats */}
           <div className="grid grid-cols-3 gap-3">
             <div className="rounded-[8px] p-3 text-center" style={{ background: "#1a1a1a", border: ".5px solid #222" }}>
-              <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{data.pagesFound}</p>
-              <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Pages crawled</p>
+              <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{pagesFound ?? "—"}</p>
+              <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Pages reviewed</p>
             </div>
             <div className="rounded-[8px] p-3 text-center" style={{ background: "#1a1a1a", border: ".5px solid #222" }}>
-              <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{Array.isArray(data.schemaTypes) ? data.schemaTypes.length : 0}</p>
-              <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Schema types</p>
+              <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{schemaCount}</p>
+              <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Search-friendly signals</p>
             </div>
             <div className="rounded-[8px] p-3 text-center flex flex-col items-center justify-center gap-1.5" style={{ background: "#1a1a1a", border: ".5px solid #222" }}>
-              <StatusPill variant={freq.variant}>{data.estimatedPostingFrequency}</StatusPill>
-              <p style={{ color: "#555", fontSize: 10 }}>Posting</p>
+              <StatusPill variant={freq.variant}>{postingFreq ?? "Unknown"}</StatusPill>
+              <p style={{ color: "#555", fontSize: 10 }}>How often they post</p>
             </div>
           </div>
 
           {/* Key topics */}
-          {Array.isArray(data.keyTopics) && data.keyTopics.length > 0 && (
+          {keyTopics.length > 0 && (
             <div>
               <p style={{ color: "#444", fontSize: 10, fontWeight: 500, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>What they write about</p>
               <div className="flex flex-wrap gap-1.5">
-                {data.keyTopics.map((topic) => (
+                {keyTopics.map((topic) => (
                   <span
                     key={topic}
                     className="px-2.5 py-1 rounded-[8px]"
@@ -143,16 +160,16 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
           )}
 
           {/* Strengths / Weaknesses */}
-          {(data.strengths.length > 0 || data.weaknesses.length > 0) && (
+          {(strengths.length > 0 || weaknesses.length > 0) && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {data.strengths.length > 0 && (
+              {strengths.length > 0 && (
                 <div className="rounded-[8px] p-4" style={{ background: "#0d2218", border: ".5px solid #14532d" }}>
                   <div className="flex items-center gap-1.5" style={{ marginBottom: 10 }}>
                     <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "#22c55e" }} />
                     <p style={{ color: "#22c55e", fontSize: 11, fontWeight: 500 }}>What's working for them</p>
                   </div>
                   <ul className="space-y-1.5">
-                    {data.strengths.map((s) => (
+                    {strengths.map((s) => (
                       <li key={s} className="flex items-start gap-2" style={{ color: "#888", fontSize: 11, lineHeight: 1.6 }}>
                         <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#22c55e" }} />
                         {s}
@@ -161,14 +178,14 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                   </ul>
                 </div>
               )}
-              {data.weaknesses.length > 0 && (
+              {weaknesses.length > 0 && (
                 <div className="rounded-[8px] p-4" style={{ background: "#1a0808", border: ".5px solid #7f1d1d" }}>
                   <div className="flex items-center gap-1.5" style={{ marginBottom: 10 }}>
                     <AlertCircle className="w-3.5 h-3.5" style={{ color: "#dc2626" }} />
                     <p style={{ color: "#f87171", fontSize: 11, fontWeight: 500 }}>Gaps you can win on</p>
                   </div>
                   <ul className="space-y-1.5">
-                    {data.weaknesses.map((w) => (
+                    {weaknesses.map((w) => (
                       <li key={w} className="flex items-start gap-2" style={{ color: "#888", fontSize: 11, lineHeight: 1.6 }}>
                         <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#dc2626" }} />
                         {w}
@@ -181,13 +198,13 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
           )}
 
           {/* AI Summary */}
-          {data.aiSummary && (
+          {aiSummary && (
             <div className="rounded-[8px] px-4 py-3" style={{ background: "#1a1a1a", border: ".5px solid #2a2a2a" }}>
               <div className="flex items-center gap-1.5" style={{ marginBottom: 6 }}>
                 <Zap className="w-3 h-3" style={{ color: "#e05a2b" }} />
                 <span style={{ color: "#e05a2b", fontSize: 11, fontWeight: 500 }}>alphaa&apos;s take</span>
               </div>
-              <p style={{ color: "#888", fontSize: 13, lineHeight: 1.6 }}>{data.aiSummary}</p>
+              <p style={{ color: "#888", fontSize: 13, lineHeight: 1.6 }}>{aiSummary}</p>
             </div>
           )}
 

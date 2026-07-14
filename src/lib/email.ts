@@ -8,6 +8,7 @@ import PaymentFailureEmail from "@/emails/PaymentFailureEmail"
 import ReconnectEmail from "@/emails/ReconnectEmail"
 import ConnectGoogleNudgeEmail from "@/emails/ConnectGoogleNudgeEmail"
 import WeekOneRecapEmail from "@/emails/WeekOneRecapEmail"
+import WinEmail from "@/emails/WinEmail"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.RESEND_FROM_EMAIL ?? "hello@alphaa.app"
@@ -63,4 +64,9 @@ export async function sendConnectGoogleNudgeEmail(to: string, props: Parameters<
 export async function sendWeekOneRecapEmail(to: string, props: Parameters<typeof WeekOneRecapEmail>[0]) {
   const html = await render(WeekOneRecapEmail(props))
   await send(to, `Your first week with alphaa — ${props.businessName}`, html)
+}
+
+export async function sendWinEmail(to: string, props: Parameters<typeof WinEmail>[0]) {
+  const html = await render(WinEmail(props))
+  await send(to, `🎉 ${props.headline}`, html)
 }
