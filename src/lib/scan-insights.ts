@@ -256,7 +256,7 @@ export async function extractMentionedBusinesses(
       // Accept both the new object shape and a bare-string fallback.
       const entries: Array<{ name: string; domain: unknown }> = Array.isArray(raw)
         ? raw
-            .map((item) => {
+            .map((item): { name: string; domain: unknown } | null => {
               if (typeof item === "string") return { name: item.trim(), domain: null }
               if (typeof item === "object" && item !== null && typeof (item as { name?: unknown }).name === "string") {
                 return { name: (item as { name: string }).name.trim(), domain: (item as { domain?: unknown }).domain ?? null }
