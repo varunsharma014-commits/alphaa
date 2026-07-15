@@ -13,6 +13,7 @@ import {
   appendSerpCompetitors,
   fetchKeywordSerp,
   fallbackKeyword,
+  inferCountryCode,
   type BusinessProfile,
 } from "@/lib/scan-insights"
 import type { AiSearchStatus } from "@/types/audit"
@@ -176,7 +177,7 @@ export async function POST(req: NextRequest) {
     const [mentionedSettled, lossSettled, serpSettled] = await Promise.allSettled([
       extractMentionedBusinesses(engineResults, input.businessName, input.websiteUrl),
       industry ? estimateMonthlyLoss(industry, isLocal, input.city, keyword) : Promise.resolve(null),
-      keyword ? fetchKeywordSerp(keyword) : Promise.resolve<ScanSerp | null>(null),
+      keyword ? fetchKeywordSerp(keyword, inferCountryCode(input.city, input.websiteUrl)) : Promise.resolve<ScanSerp | null>(null),
     ])
     const extraction =
       mentionedSettled.status === "fulfilled" ? mentionedSettled.value : { mentioned: {}, domains: {} }

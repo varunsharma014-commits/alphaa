@@ -387,17 +387,33 @@ function hostOf(url: string): string {
   }
 }
 
+// Geo-match the SERP to the business so "your Google rank" reflects what THEIR
+// customers see (an Ottawa business is judged on google.ca, not US google.com).
+// Deterministic: Canadian province / UK / AU markers in the city string, then
+// the site TLD, else US.
+export function inferCountryCode(city: string, websiteUrl: string): string {
+  const c = (city || "").toUpperCase()
+  if (/,\s*(ON|QC|BC|AB|MB|SK|NS|NB|NL|PE|YT|NT|NU)\b/.test(c) || /\bCANADA\b/.test(c)) return "ca"
+  if (/\b(UK|UNITED KINGDOM|ENGLAND|SCOTLAND|WALES)\b/.test(c)) return "gb"
+  if (/,\s*(NSW|VIC|QLD|WA|SA|TAS|ACT|NT)\b/.test(c) || /\bAUSTRALIA\b/.test(c)) return "au"
+  const host = websiteUrl ? hostOf(websiteUrl) : ""
+  if (host.endsWith(".ca")) return "ca"
+  if (host.endsWith(".co.uk") || host.endsWith(".uk")) return "gb"
+  if (host.endsWith(".com.au") || host.endsWith(".au")) return "au"
+  return "us"
+}
+
 // The scan route calls this at most ONCE per scan (cost control — the Apify
 // account has a monthly cap). Returns null whenever real SERP evidence isn't
 // available: APIFY_TOKEN unset, SCAN_SERP_DISABLED=1, run failed, timed out
 // (20s), or came back empty — the results page hides the block on null.
-export async function fetchKeywordSerp(keyword: string): Promise<ScanSerp | null> {
+export async function fetchKeywordSerp(keyword: string, countryCode = "us"): Promise<ScanSerp | null> {
   const kw = keyword.trim()
   if (!kw) return null
   if (process.env.SCAN_SERP_DISABLED === "1") return null
   if (!isSearchConfigured()) return null
   try {
-    const raw = await googleSearch(kw, { results: 10, timeoutMs: 20_000 })
+    const raw = await googleSearch(kw, { results: 10, timeoutMs: 20_000, country: countryCode })
     const results: SerpEntry[] = raw.slice(0, 10).flatMap((r, i) => {
       const domain = hostOf(r.url)
       // position is the true organic slot (index in the returned list), kept
@@ -406,7 +422,7 @@ export async function fetchKeywordSerp(keyword: string): Promise<ScanSerp | null
     })
     // googleSearch swallows its own failures into [] — treat empty as
     // unavailable rather than pretending page one of Google is blank.
-    return results.length > 0 ? { keyword: kw, results } : null
+    return results.length > 0 ? { keyword: kw, results, countryCode } : null
   } catch (err) {
     console.error("fetchKeywordSerp error:", err)
     return null

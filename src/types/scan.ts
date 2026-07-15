@@ -28,6 +28,8 @@ export interface SerpEntry {
 export interface ScanSerp {
   keyword: string
   results: SerpEntry[]
+  // ISO country code the SERP was fetched for (e.g. "ca") — google.com when absent.
+  countryCode?: string
 }
 
 // Per-competitor intelligence (v2 scans). One entry per v1 competitor name.

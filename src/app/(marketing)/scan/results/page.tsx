@@ -67,6 +67,13 @@ interface SerpEntry {
   domain: string
 }
 
+function readSerpCountry(insights: ScanInsights | null): string | null {
+  if (!insights) return null
+  const raw = (insights as unknown as Record<string, unknown>).serp
+  if (!isRecord(raw)) return null
+  return typeof raw.countryCode === "string" && raw.countryCode.length === 2 ? raw.countryCode : null
+}
+
 function readSerp(insights: ScanInsights | null): SerpEntry[] | null {
   if (!insights) return null
   const raw = (insights as unknown as Record<string, unknown>).serp
@@ -610,13 +617,17 @@ function CompetitorIntelTable({
   totalEngines,
   keyword,
   serpCount,
+  serpCountry,
 }: {
   competitors: CompetitorDetail[]
   you: { name: string; aiMentions: number; googleRank: number | null }
   totalEngines: number
   keyword: string | null
   serpCount: number | null
+  serpCountry: string | null
 }) {
+  const googleLabel = serpCountry && serpCountry !== "us" ? `google.${serpCountry}` : "Google"
+
   return (
     <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl overflow-hidden">
       {/* Column header */}
@@ -676,7 +687,7 @@ function CompetitorIntelTable({
               <GoogleRankCell rank={you.googleRank} keyword={keyword} />
             ) : serpCount !== null ? (
               <span className="text-red-400/80 text-xs leading-snug">
-                Not in Google&apos;s top {serpCount}
+                Not in {googleLabel}&apos;s top {serpCount}
                 {keyword ? <> for &ldquo;{keyword}&rdquo;</> : null}
               </span>
             ) : (
@@ -689,7 +700,10 @@ function CompetitorIntelTable({
       <p className="text-white/30 text-[11px] leading-relaxed px-4 sm:px-5 py-3 border-t border-white/[0.06] m-0">
         AI mentions from this live scan
         {serpCount !== null && keyword ? (
-          <> · Google positions from a live search for &ldquo;{keyword}&rdquo;</>
+          <>
+            {" "}· Positions from a live, non-personalized search on {googleLabel} for &ldquo;{keyword}&rdquo; — your
+            own Google results are personalized and may rank you differently
+          </>
         ) : null}
         .
       </p>
@@ -1245,6 +1259,7 @@ function ScanResultsContent() {
               totalEngines={totalEngines}
               keyword={keyword}
               serpCount={serpResults ? serpResults.length : null}
+              serpCountry={readSerpCountry(insights)}
             />
           </div>
         ) : showChartFallback ? (
