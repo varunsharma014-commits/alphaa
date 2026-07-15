@@ -103,6 +103,8 @@ Limited Use Commitments:
 • We do not use Google user data to develop, improve, or train generalized AI or machine learning models.
 • We do not sell Google user data to any third parties.
 • We do not use or transfer Google user data for advertising purposes or to brokers.
+• We do not transfer Google user data to any third party except as necessary to provide or improve the user-facing features you have authorized, for security purposes, to comply with applicable law, or as part of a merger or acquisition with prior notice to you.
+• Google user data is protected with encryption in transit (TLS) and at rest; OAuth access and refresh tokens are stored encrypted and are accessible only to your own account's server-side integration — never exposed to other users or third parties.
 • We do not allow humans to read your Google user data except: (a) with your explicit consent; (b) where necessary for security purposes and to investigate suspected abuse; (c) to comply with applicable law; or (d) where the data has been aggregated and anonymized and is no longer linkable to you.
 • We store Google API data only as long as necessary to provide the Service, and delete it within 30 days of account deletion or revocation of access.
 
