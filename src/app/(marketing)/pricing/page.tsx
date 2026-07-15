@@ -51,9 +51,9 @@ const plans = [
 ]
 
 const billingFaqs = [
-  { q: "Is there a free trial?", a: "Yes — 14 days free. No credit card required to start." },
+  { q: "Is there a free trial?", a: "Yes — 14 days free. You add a card to start but pay nothing until the trial ends, and you can cancel anytime in two clicks." },
   { q: "Can I cancel anytime?", a: "Yes. One click in your dashboard. No phone calls, no contracts." },
-  { q: "What happens after the trial?", a: "We'll ask for a payment method on day 13. If you don't add one, your account pauses — nothing is deleted." },
+  { q: "What happens after the trial?", a: "Your subscription starts automatically on day 15 unless you cancel first. We email you before that happens — no surprises." },
   { q: "Can I switch plans?", a: "Yes. Upgrade or downgrade anytime from your billing settings." },
   { q: "Do you offer refunds?", a: "We offer a full refund within 7 days of your first charge if you're not satisfied. No questions asked." },
 ]
@@ -78,7 +78,7 @@ export default function PricingPage() {
             From $99/month.{" "}
             <span className="serif-italic text-brand-orange">No contracts.</span>
           </h1>
-          <p className="text-muted text-lg">14-day free trial. No credit card required to start. Cancel anytime.</p>
+          <p className="text-muted text-lg">14-day free trial. $0 today. Cancel anytime before day 15 and pay nothing.</p>
         </div>
 
         {/* Toggle */}

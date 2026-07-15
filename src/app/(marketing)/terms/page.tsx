@@ -28,9 +28,9 @@ If you are accepting these Terms on behalf of a business, "you" refers to that b
   },
   {
     title: "4. Free Trial",
-    body: `Alphaa offers a 14-day free trial for new accounts. No credit card is required to begin the free trial. During the trial period, you will have access to the features specified on the applicable trial plan page.
+    body: `Alphaa offers a 14-day free trial for new accounts. A valid payment method is required to begin the free trial, but you will not be charged during the trial period. During the trial period, you will have access to the features specified on the applicable trial plan page.
 
-The free trial automatically expires at the end of the 14-day period. Alphaa does NOT automatically charge you or convert your trial into a paid subscription. To continue using the Service after the trial expires, you must affirmatively select a paid subscription plan and provide valid payment information.
+Unless you cancel before the end of the 14-day trial period, your trial converts to a paid subscription and the payment method on file is charged for your selected plan. You may cancel at any time during the trial from your dashboard at no cost, and we send a reminder email before the trial ends.
 
 Alphaa reserves the right to modify or discontinue the free trial offering at any time without notice. Only one free trial is permitted per person, business, or email domain. Any attempt to circumvent this limitation (including by creating multiple accounts) may result in termination of all associated accounts.`,
   },

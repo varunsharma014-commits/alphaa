@@ -27,6 +27,19 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   if (!user.onboardingCompleted) redirect("/onboarding")
 
+  // Card-upfront trial gate: onboarded users who never started a Stripe trial
+  // go to /start-trial (outside this layout — no redirect loop). The webhook
+  // sets stripeSubscriptionId + "trialing" seconds after checkout completes.
+  // Founder account bypasses so the owner can always dogfood.
+  const FOUNDER_EMAILS = ["varunsharma014@gmail.com"]
+  if (
+    !["active", "trialing"].includes(user.subscriptionStatus) &&
+    !user.stripeSubscriptionId &&
+    !FOUNDER_EMAILS.includes(user.email)
+  ) {
+    redirect("/start-trial")
+  }
+
   return (
     <div data-theme="dark" className="flex h-screen bg-bg-primary overflow-hidden">
       {/* GA4: fires trial_start once when landing with ?upgraded=true (Stripe success redirect) */}

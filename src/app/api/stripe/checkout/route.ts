@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     line_items: [{ price: priceId, quantity: 1 }],
     mode: "subscription",
     subscription_data: { trial_period_days: 14 },
-    payment_method_collection: "if_required",
+    payment_method_collection: "always",
     success_url: `${appUrl}/dashboard?upgraded=true`,
     cancel_url: `${appUrl}/pricing`,
   })

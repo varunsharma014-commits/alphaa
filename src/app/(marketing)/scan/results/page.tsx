@@ -521,7 +521,7 @@ function ScanResultsContent() {
 
             {/* Fine print */}
             <p style={{ fontSize: 12, color: "#6b7280", textAlign: "center", margin: "16px 0 0" }}>
-              14-day free trial · No credit card to start · First post goes live within 24 hours
+              14-day free trial · $0 today, cancel anytime · First post goes live within 24 hours
             </p>
 
           </div>
