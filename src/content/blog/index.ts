@@ -14,6 +14,7 @@ import { meta as chatgptSaysMeta, Body as ChatgptSaysBody } from "./how-to-see-w
 import { meta as bestToolsMeta, Body as BestToolsBody } from "./best-aeo-tools-2026"
 import { meta as aiOverviewsLocalMeta, Body as AiOverviewsLocalBody } from "./google-ai-overviews-local-business"
 import { meta as dentistsMeta, Body as DentistsBody } from "./how-dentists-get-recommended-by-ai"
+import { meta as hvacPlumbingMeta, Body as HvacPlumbingBody } from "./how-hvac-plumbing-companies-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -33,6 +34,7 @@ export const POSTS: Post[] = [
   { meta: bestToolsMeta, Body: BestToolsBody },
   { meta: aiOverviewsLocalMeta, Body: AiOverviewsLocalBody },
   { meta: dentistsMeta, Body: DentistsBody },
+  { meta: hvacPlumbingMeta, Body: HvacPlumbingBody },
 ]
 
 export function getAllPosts(): Post[] {
