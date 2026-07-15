@@ -63,7 +63,7 @@ export function SolutionSection() {
             <br />
             within <span className="text-brand-orange">2 weeks</span> of joining.
           </p>
-          <p className="text-white/40 text-base mt-4 mb-8">14-day free trial. No credit card. Cancel if it doesn't work.</p>
+          <p className="text-white/40 text-base mt-4 mb-8">14-day free trial. $0 today. Cancel anytime if it doesn't work.</p>
           <OrangePillButton href="/signup" size="lg">
             Start your free trial →
           </OrangePillButton>

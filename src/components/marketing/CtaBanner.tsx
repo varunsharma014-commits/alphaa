@@ -46,7 +46,7 @@ export function CtaBanner() {
             <ShieldCheck className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
             <p className="text-white/55 text-sm leading-relaxed">
               <span className="text-white/85 font-medium">Try alphaa risk-free for 14 days.</span>{" "}
-              No credit card to start, cancel anytime. If alphaa isn&apos;t growing your AI visibility, you don&apos;t pay.
+              $0 today — cancel anytime before day 14 and you never pay a cent.
             </p>
           </div>
         </div>

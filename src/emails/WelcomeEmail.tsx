@@ -47,7 +47,7 @@ export default function WelcomeEmail({ firstName, businessName, trialEndDate }: 
             <Hr style={hr} />
 
             <Text style={smallText}>
-              Your free trial runs until <strong>{trialEndDate}</strong>. No credit card will be charged automatically — you choose to upgrade when you're ready.
+              Your free trial runs until <strong>{trialEndDate}</strong> — you pay $0 until then, and we'll email you before it ends. Cancel anytime in Billing.
             </Text>
             <Text style={smallText}>
               Questions? Reply to this email or email us at <Link href="mailto:support@alphaa.app" style={link}>support@alphaa.app</Link>
