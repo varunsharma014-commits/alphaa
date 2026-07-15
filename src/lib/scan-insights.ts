@@ -183,18 +183,42 @@ export function fallbackKeyword(industry: string, isLocal: boolean, city: string
 // 2. Which businesses each engine actually recommended (ONE batched call)
 // ─────────────────────────────────────────────────────────────────────────────
 
+// A domain claimed by the extractor is only trusted when it visibly matches
+// the business name (seedinvest.com ⊂ "SeedInvest") — this makes LLM domain
+// recall safe to link: a hallucinated domain won't contain the name.
+function validatedDomain(name: string, domain: unknown): string | null {
+  if (typeof domain !== "string") return null
+  const host = hostOf(domain)
+  if (!host || host.length < 4 || !host.includes(".")) return null
+  if (isAggregator(host)) return null
+  const key = normalizeName(name)
+  const base = normalizeName(host.split(".")[0])
+  if (key.length < 4 || base.length < 4) return null
+  return base.includes(key) || key.includes(base) ? host : null
+}
+
+export interface MentionExtraction {
+  mentioned: Record<string, string[]>
+  // normalizeName(business) -> validated domain, for link fallback when the
+  // SERP produced no confident match.
+  domains: Record<string, string>
+}
+
 export async function extractMentionedBusinesses(
   results: Array<Pick<EngineResult, "engine" | "query" | "response">>,
   businessName: string,
   websiteUrl: string
-): Promise<Record<string, string[]>> {
+): Promise<MentionExtraction> {
+  const empty: MentionExtraction = { mentioned: {}, domains: {} }
   const answered = results.filter((r) => r.response && r.response.trim().length > 0)
-  if (answered.length === 0) return {}
+  if (answered.length === 0) return empty
   try {
     const sections = answered
       .map((r) => `### ${r.engine}\nQuestion asked: ${r.query}\nAnswer:\n${r.response.slice(0, 1500)}`)
       .join("\n\n")
-    const keysExample = answered.map((r) => `"${r.engine}": ["Name One", "Name Two"]`).join(", ")
+    const keysExample = answered
+      .map((r) => `"${r.engine}": [{"name": "Name One", "domain": "nameone.com"}, {"name": "Name Two", "domain": null}]`)
+      .join(", ")
 
     const msg = await withTimeout(
       anthropic.messages.create({
@@ -207,9 +231,10 @@ export async function extractMentionedBusinesses(
               `You are auditing answers from AI assistants to see which businesses each one recommended.\n\n` +
               `The business being scanned is "${businessName}". NEVER include it in your lists.\n\n` +
               `${sections}\n\n` +
-              `For EACH assistant above, extract the names of the specific businesses, brands, products, or companies it actually recommended or presented as options.\n` +
+              `For EACH assistant above, extract the specific businesses, brands, products, or companies it actually recommended or presented as options.\n` +
               `Rules:\n` +
               `- Use the exact name as written in the answer.\n` +
+              `- For "domain": the business's official website domain (e.g. "seedinvest.com") ONLY if you are confident you know it; otherwise null. Never guess.\n` +
               `- Skip generic phrases ("local dentists", "several options", "many clinics").\n` +
               `- Skip platforms/directories mentioned only as places to search (Google Maps, Yelp, Reddit).\n` +
               `- Skip "${businessName}" itself.\n` +
@@ -222,30 +247,44 @@ export async function extractMentionedBusinesses(
       12000
     )
     const parsed = JSON.parse(stripFences(textOf(msg)))
-    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) return {}
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) return empty
 
     const out: Record<string, string[]> = {}
+    const domains: Record<string, string> = {}
     for (const r of answered) {
       const raw = (parsed as Record<string, unknown>)[r.engine]
-      const names = Array.isArray(raw)
-        ? raw.filter((n): n is string => typeof n === "string").map((n) => n.trim())
+      // Accept both the new object shape and a bare-string fallback.
+      const entries: Array<{ name: string; domain: unknown }> = Array.isArray(raw)
+        ? raw
+            .map((item) => {
+              if (typeof item === "string") return { name: item.trim(), domain: null }
+              if (typeof item === "object" && item !== null && typeof (item as { name?: unknown }).name === "string") {
+                return { name: (item as { name: string }).name.trim(), domain: (item as { domain?: unknown }).domain ?? null }
+              }
+              return null
+            })
+            .filter((e): e is { name: string; domain: unknown } => e !== null)
         : []
       const seen = new Set<string>()
-      out[r.engine] = names
-        .filter((n) => {
+      out[r.engine] = entries
+        .filter((e) => {
+          const n = e.name
           if (n.length < 2 || n.length > 80) return false
           if (isSelfMention(n, businessName, websiteUrl)) return false
           const key = normalizeName(n)
           if (!key || seen.has(key)) return false
           seen.add(key)
+          const dom = validatedDomain(n, e.domain)
+          if (dom && !domains[key]) domains[key] = dom
           return true
         })
+        .map((e) => e.name)
         .slice(0, 10)
     }
-    return out
+    return { mentioned: out, domains }
   } catch (err) {
     console.error("extractMentionedBusinesses error:", err)
-    return {}
+    return empty
   }
 }
 
@@ -406,7 +445,10 @@ export function buildCompetitorDetails(
   competitors: string[],
   mentionedByEngine: Record<string, string[]>,
   serp: ScanSerp | null,
-  websiteUrl: string
+  websiteUrl: string,
+  // Extraction-recalled domains (already name-validated) — link fallback when
+  // the SERP has no confident match. Never provides a googleRank.
+  knownDomains: Record<string, string> = {}
 ): CompetitorDetail[] {
   const own = websiteUrl ? hostOf(websiteUrl) : ""
   return competitors.slice(0, 5).map((name) => {
@@ -442,10 +484,16 @@ export function buildCompetitorDetails(
       }
     }
 
+    // Link fallback: validated extraction domain (never the scanned business's
+    // own site), rank stays null — we only claim ranks the SERP proved.
+    const fallback = !match && key ? knownDomains[key] : undefined
+    const own2 = own && fallback ? fallback === own || fallback.endsWith(`.${own}`) : false
+    const fallbackDomain = fallback && !own2 ? fallback : null
+
     return {
       name,
-      domain: match ? match.domain : null,
-      url: match ? match.url : null,
+      domain: match ? match.domain : fallbackDomain,
+      url: match ? match.url : fallbackDomain ? `https://${fallbackDomain}` : null,
       aiMentions,
       googleRank: match ? match.position : null,
     }

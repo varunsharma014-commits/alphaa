@@ -177,7 +177,9 @@ export async function POST(req: NextRequest) {
       industry ? estimateMonthlyLoss(industry, isLocal, input.city, keyword) : Promise.resolve(null),
       keyword ? fetchKeywordSerp(keyword) : Promise.resolve<ScanSerp | null>(null),
     ])
-    const mentionedByEngine = mentionedSettled.status === "fulfilled" ? mentionedSettled.value : {}
+    const extraction =
+      mentionedSettled.status === "fulfilled" ? mentionedSettled.value : { mentioned: {}, domains: {} }
+    const mentionedByEngine = extraction.mentioned
     const monthlyLoss = lossSettled.status === "fulfilled" ? lossSettled.value : null
     const serp = serpSettled.status === "fulfilled" ? serpSettled.value : null
 
@@ -199,7 +201,7 @@ export async function POST(req: NextRequest) {
     const competitors = buildCompetitorList(mentionedByEngine)
     let competitorDetails: CompetitorDetail[] = []
     try {
-      competitorDetails = buildCompetitorDetails(competitors, mentionedByEngine, serp, input.websiteUrl)
+      competitorDetails = buildCompetitorDetails(competitors, mentionedByEngine, serp, input.websiteUrl, extraction.domains)
     } catch {
       competitorDetails = []
     }
