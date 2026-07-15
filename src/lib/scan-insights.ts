@@ -499,3 +499,36 @@ export function buildCompetitorDetails(
     }
   })
 }
+
+// The AI engines and Google's top-10 rarely name the same businesses. Google's
+// top rankers for the keyword are competitor evidence in their own right —
+// guaranteed real link + rank — so surface the top few as extra rows
+// (aiMentions 0, which the table renders honestly as "0 of 4").
+export function appendSerpCompetitors(
+  details: CompetitorDetail[],
+  serp: ScanSerp | null,
+  websiteUrl: string,
+  maxExtras = 3
+): CompetitorDetail[] {
+  if (!serp || serp.results.length === 0) return details
+  const own = websiteUrl ? hostOf(websiteUrl) : ""
+  const taken = new Set(details.filter((d) => d.domain).map((d) => d.domain as string))
+  const extras: CompetitorDetail[] = []
+  for (const r of serp.results) {
+    if (extras.length >= maxExtras) break
+    const domain = r.domain
+    if (!domain || taken.has(domain)) continue
+    if (own && (domain === own || domain.endsWith(`.${own}`))) continue
+    if (isAggregator(domain)) continue
+    // Pretty name: first segment of the title, else capitalized domain base.
+    const titleHead = r.title.split(/[|–—-]/)[0].trim()
+    const base = domain.split(".")[0]
+    const name =
+      titleHead.length >= 3 && titleHead.length <= 60
+        ? titleHead
+        : base.charAt(0).toUpperCase() + base.slice(1)
+    taken.add(domain)
+    extras.push({ name, domain, url: r.url, aiMentions: 0, googleRank: r.position })
+  }
+  return [...details, ...extras].slice(0, 8)
+}

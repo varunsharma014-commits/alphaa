@@ -10,6 +10,7 @@ import {
   estimateMonthlyLoss,
   buildCompetitorList,
   buildCompetitorDetails,
+  appendSerpCompetitors,
   fetchKeywordSerp,
   fallbackKeyword,
   type BusinessProfile,
@@ -201,7 +202,11 @@ export async function POST(req: NextRequest) {
     const competitors = buildCompetitorList(mentionedByEngine)
     let competitorDetails: CompetitorDetail[] = []
     try {
-      competitorDetails = buildCompetitorDetails(competitors, mentionedByEngine, serp, input.websiteUrl, extraction.domains)
+      competitorDetails = appendSerpCompetitors(
+        buildCompetitorDetails(competitors, mentionedByEngine, serp, input.websiteUrl, extraction.domains),
+        serp,
+        input.websiteUrl
+      )
     } catch {
       competitorDetails = []
     }
