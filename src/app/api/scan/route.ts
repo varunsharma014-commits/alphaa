@@ -9,10 +9,13 @@ import {
   extractMentionedBusinesses,
   estimateMonthlyLoss,
   buildCompetitorList,
+  buildCompetitorDetails,
+  fetchKeywordSerp,
+  fallbackKeyword,
   type BusinessProfile,
 } from "@/lib/scan-insights"
 import type { AiSearchStatus } from "@/types/audit"
-import type { EngineEvidence, ScanInsights } from "@/types/scan"
+import type { EngineEvidence, ScanInsights, ScanSerp, CompetitorDetail } from "@/types/scan"
 
 type SiteOg = {
   title: string
@@ -159,14 +162,24 @@ export async function POST(req: NextRequest) {
     const industry = profile?.industry || auditIndustry || typedIndustry
     const isLocal = profile?.isLocal ?? (typeof auditResult.is_local === "boolean" ? auditResult.is_local : true)
 
-    // Post-engine intelligence: mention extraction + loss estimate, in parallel.
-    // Both are best-effort — failures degrade to []/null, never break the scan.
-    const [mentionedSettled, lossSettled] = await Promise.allSettled([
+    // The customer-facing Google search phrase (2-4 words). Comes from the
+    // same haiku profile that drove the engine queries; derived from industry
+    // when the profile failed. Empty only when industry is empty (insights
+    // will be null then anyway — no keyword, no SERP run).
+    const keyword = profile?.keyword || fallbackKeyword(industry, isLocal, input.city)
+
+    // Post-engine intelligence: mention extraction + loss estimate + Google
+    // SERP evidence for the keyword, all in parallel. SERP is the scan's ONE
+    // Apify run (20s cap inside fetchKeywordSerp). Everything is best-effort —
+    // failures degrade to []/null, never break the scan.
+    const [mentionedSettled, lossSettled, serpSettled] = await Promise.allSettled([
       extractMentionedBusinesses(engineResults, input.businessName, input.websiteUrl),
-      industry ? estimateMonthlyLoss(industry, isLocal, input.city) : Promise.resolve(null),
+      industry ? estimateMonthlyLoss(industry, isLocal, input.city, keyword) : Promise.resolve(null),
+      keyword ? fetchKeywordSerp(keyword) : Promise.resolve<ScanSerp | null>(null),
     ])
     const mentionedByEngine = mentionedSettled.status === "fulfilled" ? mentionedSettled.value : {}
     const monthlyLoss = lossSettled.status === "fulfilled" ? lossSettled.value : null
+    const serp = serpSettled.status === "fulfilled" ? serpSettled.value : null
 
     // New-contract engine responses: { query, response (<=900), appeared, mentioned }
     const engineResponses: Record<string, EngineEvidence> = {}
@@ -180,13 +193,27 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // v1 competitor names (unchanged shape) + v2 enrichment: each name matched
+    // against the SERP for link + Google-rank evidence. Pure code, but guarded
+    // anyway — competitor intel must never fail the scan.
+    const competitors = buildCompetitorList(mentionedByEngine)
+    let competitorDetails: CompetitorDetail[] = []
+    try {
+      competitorDetails = buildCompetitorDetails(competitors, mentionedByEngine, serp, input.websiteUrl)
+    } catch {
+      competitorDetails = []
+    }
+
     // insights is null only when we couldn't determine a real industry at all —
     // the results page hides the block in that case.
     const insights: ScanInsights | null = industry
       ? {
           industry,
           isLocal,
-          competitors: buildCompetitorList(mentionedByEngine),
+          competitors,
+          keyword,
+          serp,
+          competitorDetails,
           estimatedMonthlyLoss: monthlyLoss,
         }
       : null

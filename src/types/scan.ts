@@ -14,11 +14,42 @@ export interface EngineEvidence {
   mentioned: string[]
 }
 
+// One organic Google result captured for the scan keyword (v2 scans).
+export interface SerpEntry {
+  position: number
+  title: string
+  url: string
+  domain: string
+}
+
+// Top organic Google results (max 10) for the customer-facing keyword.
+// null when SERP evidence wasn't available (no APIFY_TOKEN, SCAN_SERP_DISABLED,
+// Apify run failed, or the 20s cap was hit).
+export interface ScanSerp {
+  keyword: string
+  results: SerpEntry[]
+}
+
+// Per-competitor intelligence (v2 scans). One entry per v1 competitor name.
+// domain/url/googleRank are null when no confident SERP match was found.
+export interface CompetitorDetail {
+  name: string
+  domain: string | null
+  url: string | null
+  aiMentions: number // how many AI engines (0-4) recommended this competitor
+  googleRank: number | null // organic position for the scan keyword, if matched
+}
+
 // Optional insights block inside ogData (new scans only).
+// v2 adds keyword/serp/competitorDetails — rows written before v2 lack them,
+// so runtime-guard before use (same rule as engineResponses below).
 export interface ScanInsights {
   industry: string
   isLocal: boolean
   competitors: string[]
+  keyword: string
+  serp: ScanSerp | null
+  competitorDetails: CompetitorDetail[]
   estimatedMonthlyLoss: { low: number; high: number; basis: string } | null
 }
 

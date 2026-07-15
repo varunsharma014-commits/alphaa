@@ -9,7 +9,8 @@ import { track } from "@/lib/gtag"
 import type { ScanResult, EngineEvidence, ScanInsights } from "@/types/scan"
 import {
   MapPin, AlertTriangle, Globe, Sparkles, MessageSquare, Search,
-  Check, Mail, Wand2, ChevronDown, ChevronUp, Bot,
+  Check, Mail, Wand2, ChevronDown, ChevronUp, Bot, X, ExternalLink,
+  Lock, BarChart3,
 } from "lucide-react"
 
 // ── Runtime guards (Json columns — old rows store strings) ─────────────────
@@ -33,7 +34,9 @@ function readInsights(og: ScanResult["ogData"]): ScanInsights | null {
   return raw as unknown as ScanInsights
 }
 
-function readLoss(insights: ScanInsights | null) {
+type LossInfo = { low: number; high: number; basis: string }
+
+function readLoss(insights: ScanInsights | null): LossInfo | null {
   const raw = insights?.estimatedMonthlyLoss
   if (!isRecord(raw)) return null
   if (typeof raw.low !== "number" || typeof raw.high !== "number") return null
@@ -49,6 +52,86 @@ function readCompetitors(insights: ScanInsights | null): string[] {
   return insights.competitors
     .filter((c): c is string => typeof c === "string" && c.trim().length > 1)
     .slice(0, 5)
+}
+
+// New contract fields (pipeline may not ship them yet — guard everything).
+
+function readKeyword(insights: ScanInsights | null): string | null {
+  if (!insights) return null
+  const raw = (insights as unknown as Record<string, unknown>).keyword
+  return typeof raw === "string" && raw.trim().length > 1 ? raw.trim() : null
+}
+
+interface SerpEntry {
+  position: number
+  domain: string
+}
+
+function readSerp(insights: ScanInsights | null): SerpEntry[] | null {
+  if (!insights) return null
+  const raw = (insights as unknown as Record<string, unknown>).serp
+  if (!isRecord(raw) || !Array.isArray(raw.results)) return null
+  const entries = raw.results
+    .filter(isRecord)
+    .map((r) => ({
+      position:
+        typeof r.position === "number" && Number.isFinite(r.position)
+          ? Math.round(r.position)
+          : 0,
+      domain:
+        typeof r.domain === "string"
+          ? r.domain.trim().toLowerCase().replace(/^www\./, "")
+          : "",
+    }))
+    .filter((r) => r.position >= 1 && r.domain.length > 0)
+  return entries.length > 0 ? entries : null
+}
+
+interface CompetitorDetail {
+  name: string
+  domain: string | null
+  url: string | null
+  aiMentions: number
+  googleRank: number | null
+}
+
+function readCompetitorDetails(insights: ScanInsights | null): CompetitorDetail[] {
+  if (!insights) return []
+  const raw = (insights as unknown as Record<string, unknown>).competitorDetails
+  if (!Array.isArray(raw)) return []
+  const out: CompetitorDetail[] = []
+  for (const item of raw) {
+    if (!isRecord(item)) continue
+    if (typeof item.name !== "string" || item.name.trim().length < 2) continue
+    out.push({
+      name: item.name.trim(),
+      domain:
+        typeof item.domain === "string" && item.domain.trim().length > 0
+          ? item.domain.trim().replace(/^https?:\/\//i, "").replace(/\/.*$/, "")
+          : null,
+      url:
+        typeof item.url === "string" && /^https?:\/\//i.test(item.url.trim())
+          ? item.url.trim()
+          : null,
+      aiMentions:
+        typeof item.aiMentions === "number" && Number.isFinite(item.aiMentions)
+          ? Math.max(0, Math.round(item.aiMentions))
+          : 0,
+      googleRank:
+        typeof item.googleRank === "number" &&
+        Number.isFinite(item.googleRank) &&
+        item.googleRank >= 1
+          ? Math.round(item.googleRank)
+          : null,
+    })
+  }
+  return out
+    .sort(
+      (a, b) =>
+        b.aiMentions - a.aiMentions ||
+        (a.googleRank ?? 999) - (b.googleRank ?? 999)
+    )
+    .slice(0, 6)
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -77,6 +160,14 @@ function truncateAtWord(text: string, max: number): string {
   const cut = text.slice(0, max)
   const lastSpace = cut.lastIndexOf(" ")
   return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut) + "…"
+}
+
+function hostFromUrl(url: string): string | null {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "")
+  } catch {
+    return null
+  }
 }
 
 // Highlights competitor names (orange) and the business's own name (green)
@@ -112,7 +203,7 @@ function scoreColor(score: number): string {
   return "#EF4444"
 }
 
-// Plain-English verdict — the number alone doesn't sell the gap.
+// Plain-English verdict — hero fallback when no search estimate exists.
 function buildVerdict(aiMentions: number, total: number, businessName: string): string {
   if (aiMentions === 0)
     return `When customers ask AI who to call, ${businessName} never comes up. They're being sent to your competitors instead.`
@@ -174,7 +265,36 @@ function ScoreGaugeBig({ score }: { score: number }) {
   )
 }
 
-// ── Primary CTA (used top + bottom — one dominant action) ───────────────────
+// ── Trust strip — honest items only, shown near every CTA ───────────────────
+
+const TRUST_ITEMS = [
+  { Icon: Check,     text: "$0 today · 14-day free trial" },
+  { Icon: Check,     text: "Cancel anytime in two clicks" },
+  { Icon: Lock,      text: "Payments secured by Stripe" },
+  { Icon: BarChart3, text: "Weekly progress report — measured, not promised" },
+] as const
+
+function TrustStrip({ compact = false }: { compact?: boolean }) {
+  if (compact) {
+    return (
+      <p className="text-white/35 text-[11px] text-center leading-relaxed mt-3 mb-0">
+        $0 today · 14-day free trial · cancel anytime in two clicks · payments secured by Stripe
+      </p>
+    )
+  }
+  return (
+    <div className="grid grid-cols-2 gap-x-5 gap-y-2 mt-4">
+      {TRUST_ITEMS.map(({ Icon, text }) => (
+        <div key={text} className="flex items-start gap-1.5">
+          <Icon className="w-3 h-3 text-green-400/80 flex-shrink-0 mt-[3px]" />
+          <span className="text-white/45 text-[11px] leading-snug">{text}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ── Primary CTA (hero + decision block) ─────────────────────────────────────
 
 function SignupCta({ placement }: { placement: string }) {
   return (
@@ -186,9 +306,86 @@ function SignupCta({ placement }: { placement: string }) {
       >
         Fix this automatically — start free →
       </Link>
-      <p className="text-white/40 text-xs text-center mt-2.5 leading-relaxed">
-        $99/mo after a 14-day free trial · $0 today · cancel anytime
-      </p>
+      <p className="text-white/35 text-[11px] text-center mt-2 mb-0">then $99/mo</p>
+      <TrustStrip />
+    </div>
+  )
+}
+
+// ── Mid-page CTA (between evidence and findings) ────────────────────────────
+
+function MidCta() {
+  return (
+    <div className="bg-bg-secondary border border-brand-orange/20 rounded-2xl px-5 py-5 sm:px-6">
+      <div className="sm:flex sm:items-center sm:gap-5">
+        <p className="text-white text-[15px] font-semibold leading-snug m-0 sm:flex-1">
+          Everything above is fixable — alphaa does the work for you from $99/mo.
+        </p>
+        <Link
+          href="/signup"
+          onClick={() => track("results_cta_click", { placement: "mid" })}
+          className="btn-orange block sm:inline-block text-center text-sm font-semibold px-6 py-2.5 !rounded-xl mt-3 sm:mt-0 flex-shrink-0"
+        >
+          Start free →
+        </Link>
+      </div>
+      <TrustStrip compact />
+    </div>
+  )
+}
+
+// ── Sticky bottom CTA bar (appears after ~800px scroll, dismissible) ────────
+
+function StickyCtaBar({
+  businessName,
+  losing,
+}: {
+  businessName: string
+  losing: boolean
+}) {
+  const [visible, setVisible] = useState(false)
+  const [dismissed, setDismissed] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 800)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  if (dismissed) return null
+
+  return (
+    <div
+      className={`fixed bottom-0 inset-x-0 z-50 transition-all duration-300 ${
+        visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 pointer-events-none"
+      }`}
+    >
+      <div className="mx-auto max-w-2xl px-4 pb-4">
+        <div className="flex items-center gap-3 bg-bg-tertiary/95 backdrop-blur-md border border-white/[0.12] rounded-2xl pl-4 pr-2 py-2.5 shadow-2xl">
+          <p className="flex-1 min-w-0 text-white/80 text-[13px] leading-snug m-0">
+            <span className="text-white font-semibold">{businessName}</span>
+            {losing
+              ? ", AI is recommending your competitors — fix it from $99/mo"
+              : ", AI knows you today — keep it that way from $99/mo"}
+          </p>
+          <Link
+            href="/signup"
+            onClick={() => track("results_cta_click", { placement: "sticky_bar" })}
+            className="btn-orange flex-shrink-0 text-[13px] font-semibold px-4 py-2 !rounded-lg whitespace-nowrap"
+          >
+            Start free →
+          </Link>
+          <button
+            type="button"
+            aria-label="Dismiss"
+            onClick={() => setDismissed(true)}
+            className="flex-shrink-0 p-1.5 text-white/40 hover:text-white transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
@@ -201,6 +398,75 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
       </span>
       <div className="flex-1 h-px bg-white/[0.08]" />
     </div>
+  )
+}
+
+// ── Hero headline — the FOMO line IS the hero ───────────────────────────────
+
+function HeroHeadline({
+  loss,
+  keyword,
+  searchesLabel,
+  isLocal,
+  city,
+  aiMentions,
+  totalEngines,
+  verdict,
+}: {
+  loss: LossInfo | null
+  keyword: string | null
+  searchesLabel: string
+  isLocal: boolean
+  city: string
+  aiMentions: number
+  totalEngines: number
+  verdict: string
+}) {
+  const mentionsClass =
+    aiMentions === 0
+      ? "text-red-400"
+      : aiMentions === totalEngines
+        ? "text-green-400"
+        : "text-white"
+
+  if (loss) {
+    return (
+      <h1 className="text-white text-[26px] sm:text-[32px] font-bold leading-[1.3] m-0">
+        An estimated{" "}
+        <span className="mono whitespace-nowrap">
+          {loss.low.toLocaleString("en-US")}–{loss.high.toLocaleString("en-US")}
+        </span>{" "}
+        people searched AI assistants for{" "}
+        {keyword ? (
+          <span className="text-brand-orange">&ldquo;{keyword}&rdquo;</span>
+        ) : (
+          <>
+            {searchesLabel} {isLocal ? "in or near" : "in"} {city}
+          </>
+        )}{" "}
+        in the last 30 days. You appeared in{" "}
+        <span className={`mono ${mentionsClass}`}>
+          {aiMentions} of {totalEngines}
+        </span>{" "}
+        answers we checked.
+      </h1>
+    )
+  }
+
+  // Fallback (old rows / null estimate): strong verdict from what exists.
+  return (
+    <>
+      <h1 className="text-white text-2xl sm:text-[28px] font-bold leading-snug m-0">
+        {verdict}
+      </h1>
+      <p className="text-white/50 text-sm mt-3 mb-0">
+        Mentioned in{" "}
+        <span className={`mono font-bold ${mentionsClass}`}>
+          {aiMentions} of {totalEngines}
+        </span>{" "}
+        AI answers we checked.
+      </p>
+    </>
   )
 }
 
@@ -291,7 +557,147 @@ function EvidenceCard({
   )
 }
 
-// ── Competitor bar chart (inline SVG, no libraries) ─────────────────────────
+// ── Competitor intel table (new contract) ───────────────────────────────────
+
+function MentionsPill({
+  count,
+  total,
+  tone,
+}: {
+  count: number
+  total: number
+  tone: "competitor" | "you"
+}) {
+  // Competitors: orange = threat (never green). You: red when absent, green when everywhere.
+  const cls =
+    tone === "you"
+      ? count === 0
+        ? "text-red-400 bg-red-500/10 border-red-500/25"
+        : count === total
+          ? "text-green-400 bg-green-500/10 border-green-500/25"
+          : "text-brand-orange bg-brand-orange/10 border-brand-orange/25"
+      : count === 0
+        ? "text-white/40 bg-white/[0.04] border-white/[0.1]"
+        : "text-brand-orange bg-brand-orange/10 border-brand-orange/25"
+  return (
+    <span className={`inline-flex items-center whitespace-nowrap text-[11px] font-medium border rounded-full px-2.5 py-1 ${cls}`}>
+      Mentioned by&nbsp;<span className="mono font-bold">{count}</span>&nbsp;of {total} AI assistants
+    </span>
+  )
+}
+
+function GoogleRankCell({
+  rank,
+  keyword,
+}: {
+  rank: number | null
+  keyword: string | null
+}) {
+  if (rank === null) return <span className="text-white/25 text-xs">—</span>
+  return (
+    <span className="text-white/55 text-xs leading-snug">
+      Ranks <span className="mono text-white font-semibold">#{rank}</span> on Google
+      {keyword ? <> for &ldquo;{keyword}&rdquo;</> : null}
+    </span>
+  )
+}
+
+const INTEL_GRID = "sm:grid sm:grid-cols-[minmax(0,1fr)_215px_170px] sm:gap-x-4 sm:items-center"
+
+function CompetitorIntelTable({
+  competitors,
+  you,
+  totalEngines,
+  keyword,
+  serpCount,
+}: {
+  competitors: CompetitorDetail[]
+  you: { name: string; aiMentions: number; googleRank: number | null }
+  totalEngines: number
+  keyword: string | null
+  serpCount: number | null
+}) {
+  return (
+    <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl overflow-hidden">
+      {/* Column header */}
+      <div className={`hidden ${INTEL_GRID} px-5 py-2.5 border-b border-white/[0.06] bg-white/[0.02]`}>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/30">Business</span>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/30">AI mentions</span>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/30">Google rank</span>
+      </div>
+
+      <div className="divide-y divide-white/[0.06]">
+        {competitors.map((c, i) => {
+          const href = c.url ?? (c.domain ? `https://${c.domain}` : null)
+          const linkLabel = c.domain ?? (c.url ? hostFromUrl(c.url) : null)
+          return (
+            <div key={`${c.name}-${i}`} className={`${INTEL_GRID} px-4 sm:px-5 py-3.5`}>
+              <div className="min-w-0">
+                <p className="text-white text-sm font-semibold truncate m-0">{c.name}</p>
+                {href && linkLabel && (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="inline-flex items-center gap-1 text-[11px] text-white/40 hover:text-brand-orange transition-colors"
+                  >
+                    <span className="truncate max-w-[220px]">{linkLabel}</span>
+                    <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                  </a>
+                )}
+              </div>
+              <div className="mt-2 sm:mt-0">
+                <MentionsPill count={c.aiMentions} total={totalEngines} tone="competitor" />
+              </div>
+              <div className="mt-1.5 sm:mt-0">
+                <GoogleRankCell rank={c.googleRank} keyword={keyword} />
+              </div>
+            </div>
+          )
+        })}
+
+        {/* The scanned business — contrasting bottom row */}
+        <div
+          className={`${INTEL_GRID} px-4 sm:px-5 py-3.5 ${
+            you.aiMentions === 0 ? "bg-red-500/[0.05]" : "bg-white/[0.02]"
+          }`}
+        >
+          <div className="min-w-0 flex items-center gap-2">
+            <p className="text-white text-sm font-semibold truncate m-0">{you.name}</p>
+            <span className="flex-shrink-0 text-[10px] font-semibold uppercase tracking-wider text-white/50 border border-white/[0.18] rounded px-1.5 py-0.5">
+              You
+            </span>
+          </div>
+          <div className="mt-2 sm:mt-0">
+            <MentionsPill count={you.aiMentions} total={totalEngines} tone="you" />
+          </div>
+          <div className="mt-1.5 sm:mt-0">
+            {you.googleRank !== null ? (
+              <GoogleRankCell rank={you.googleRank} keyword={keyword} />
+            ) : serpCount !== null ? (
+              <span className="text-red-400/80 text-xs leading-snug">
+                Not in Google&apos;s top {serpCount}
+                {keyword ? <> for &ldquo;{keyword}&rdquo;</> : null}
+              </span>
+            ) : (
+              <span className="text-white/25 text-xs">—</span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <p className="text-white/30 text-[11px] leading-relaxed px-4 sm:px-5 py-3 border-t border-white/[0.06] m-0">
+        AI mentions from this live scan
+        {serpCount !== null && keyword ? (
+          <> · Google positions from a live search for &ldquo;{keyword}&rdquo;</>
+        ) : null}
+        .
+      </p>
+    </div>
+  )
+}
+
+// ── Competitor bar chart (v1 fallback — inline SVG, no libraries) ───────────
 
 function CompetitorChart({
   rows,
@@ -486,9 +892,41 @@ function FixTimeline() {
         ))}
       </ol>
       <p className="text-white/30 text-[11px] leading-relaxed mt-5 mb-0">
-        No ranking guarantees — AI results vary by business and market. What alphaa controls is the
-        work: the posts, the fixes, and the weekly proof of where you stand.
+        No ranking guarantees — alphaa controls the work and shows you the movement weekly.
       </p>
+    </div>
+  )
+}
+
+// ── First-week strip (before the final CTA) ─────────────────────────────────
+
+const FIRST_WEEK = [
+  { title: "First Google post",  body: "Your first Google Business post goes live." },
+  { title: "Profile fixes",      body: "The gaps this scan found get corrected." },
+  { title: "Content signals",    body: "Fresh content AI reads starts publishing." },
+  { title: "First AI re-check",  body: "We re-run this scan Wednesday and email you the result." },
+] as const
+
+function FirstWeekStrip() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {FIRST_WEEK.map((item, i) => (
+        <div
+          key={item.title}
+          className="flex items-start gap-3 bg-bg-secondary border border-white/[0.08] rounded-xl px-4 py-3.5"
+        >
+          <span
+            className="mono flex-shrink-0 w-6 h-6 rounded-full bg-brand-orange/15 border border-brand-orange/30 text-brand-orange text-[11px] font-bold flex items-center justify-center mt-0.5"
+            aria-hidden
+          >
+            {i + 1}
+          </span>
+          <div className="min-w-0">
+            <p className="text-white text-[13px] font-semibold m-0">{item.title}</p>
+            <p className="text-white/45 text-xs leading-relaxed mt-0.5 mb-0">{item.body}</p>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
@@ -637,6 +1075,9 @@ function ScanResultsContent() {
   const insights     = readInsights(result.ogData)
   const loss         = readLoss(insights)
   const competitors  = readCompetitors(insights)
+  const keyword      = readKeyword(insights)
+  const serpResults  = readSerp(insights)
+  const competitorDetails = readCompetitorDetails(insights)
   const industry     =
     insights && typeof insights.industry === "string" && insights.industry.trim()
       ? insights.industry.trim()
@@ -664,9 +1105,20 @@ function ScanResultsContent() {
   const aiMentions   = engineData.filter((e) => e.appeared).length
   const verdict      = buildVerdict(aiMentions, totalEngines, businessName)
 
-  // Competitor mention counts — computable only on new-shape rows.
+  // The scanned business's own Google position, from live SERP data if present.
+  const ownDomain =
+    result.ogData && typeof result.ogData.domain === "string" && result.ogData.domain.trim()
+      ? result.ogData.domain.trim().toLowerCase().replace(/^www\./, "")
+      : null
+  const youGoogleRank =
+    ownDomain && serpResults
+      ? serpResults.find((r) => r.domain === ownDomain)?.position ?? null
+      : null
+
+  // v1 fallback: competitor mention counts — computable only on new-shape rows.
+  const hasIntelTable = competitorDetails.length > 0
   const hasEvidence = engineData.some((e) => e.evidence !== null)
-  const competitorRows = hasEvidence
+  const competitorRows = !hasIntelTable && hasEvidence
     ? competitors
         .map((name) => ({
           name,
@@ -681,8 +1133,8 @@ function ScanResultsContent() {
         }))
         .sort((a, b) => b.count - a.count)
     : []
-  const showCompetitorPanel = competitorRows.some((r) => r.count > 0)
-  const chartRows = showCompetitorPanel
+  const showChartFallback = competitorRows.some((r) => r.count > 0)
+  const chartRows = showChartFallback
     ? [...competitorRows, { name: businessName, isYou: true, count: aiMentions }]
     : []
 
@@ -722,47 +1174,44 @@ function ScanResultsContent() {
           </div>
         </div>
 
-        {/* ── 1. HERO — the verdict ───────────────────────────────── */}
-        <div className="relative overflow-hidden bg-bg-secondary border border-white/[0.08] rounded-2xl px-6 py-9 sm:px-9 !mt-4">
+        {/* ── 1. HERO — the FOMO number is the headline ───────────── */}
+        <div className="relative overflow-hidden bg-bg-secondary border border-white/[0.08] rounded-2xl px-6 py-8 sm:px-8 sm:py-9 !mt-4">
           <div
             className="absolute inset-0 pointer-events-none"
             style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,107,26,0.10), transparent 70%)" }}
             aria-hidden
           />
           <div className="relative">
-            <p className="text-center text-xs uppercase tracking-[0.16em] text-white/40 mb-5">
-              Your AI visibility score
-            </p>
-            <ScoreGaugeBig score={score} />
-
-            <h1 className="text-white text-[21px] sm:text-2xl font-bold text-center leading-snug max-w-md mx-auto mt-6 mb-0">
-              {verdict}
-            </h1>
-
-            {/* FOMO — the emotional center, only when real estimates exist */}
-            {loss && (
-              <div className="mt-6 bg-bg-tertiary border border-brand-orange/25 rounded-xl px-5 py-4 max-w-lg mx-auto">
-                <p className="text-white/85 text-[15px] leading-relaxed text-center m-0">
-                  An estimated{" "}
-                  <span className="text-brand-orange font-bold mono">
-                    {loss.low.toLocaleString("en-US")}–{loss.high.toLocaleString("en-US")}
-                  </span>{" "}
-                  people searched AI assistants for {searchesLabel}{" "}
-                  {isLocal ? "in or near" : "in"} {result.city} last month. You appeared in{" "}
-                  <span className={aiMentions === 0 ? "text-red-400 font-bold" : "text-white font-bold"}>
-                    {aiMentions} of {totalEngines}
-                  </span>{" "}
-                  of the answers we checked.
+            <div className="sm:flex sm:items-center sm:gap-8 text-center sm:text-left">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs uppercase tracking-[0.16em] text-white/40 mb-4">
+                  Your free AI visibility scan
                 </p>
-                {loss.basis && (
-                  <p className="text-white/30 text-[11px] text-center mt-2 m-0">
-                    (estimate — {loss.basis})
+                <HeroHeadline
+                  loss={loss}
+                  keyword={keyword}
+                  searchesLabel={searchesLabel}
+                  isLocal={isLocal}
+                  city={result.city}
+                  aiMentions={aiMentions}
+                  totalEngines={totalEngines}
+                  verdict={verdict}
+                />
+                {loss && loss.basis && (
+                  <p className="text-white/30 text-[11px] leading-relaxed mt-3 mb-0">
+                    Estimate — {loss.basis}
                   </p>
                 )}
               </div>
-            )}
+              <div className="mt-7 sm:mt-0 flex-shrink-0">
+                <ScoreGaugeBig score={score} />
+                <p className="text-white/40 text-[11px] text-center mt-2 mb-0">
+                  AI visibility score
+                </p>
+              </div>
+            </div>
 
-            <div className="mt-7">
+            <div className="mt-8">
               <SignupCta placement="top" />
             </div>
           </div>
@@ -772,8 +1221,7 @@ function ScanResultsContent() {
         <div>
           <SectionHeading>What AI actually said</SectionHeading>
           <p className="text-white/50 text-sm leading-relaxed mb-4 -mt-1">
-            We asked {totalEngines} AI assistants the kind of question your customers ask.
-            These are the real responses, word for word.
+            The real answers from {totalEngines} AI assistants, word for word.
           </p>
           <div className="space-y-3">
             {engineData.map((engine) => (
@@ -787,8 +1235,19 @@ function ScanResultsContent() {
           </div>
         </div>
 
-        {/* ── 3. COMPETITOR PANEL ─────────────────────────────────── */}
-        {showCompetitorPanel && (
+        {/* ── 3. COMPETITOR INTEL (table → chart fallback → omit) ── */}
+        {hasIntelTable ? (
+          <div>
+            <SectionHeading>Who AI recommends instead</SectionHeading>
+            <CompetitorIntelTable
+              competitors={competitorDetails}
+              you={{ name: businessName, aiMentions, googleRank: youGoogleRank }}
+              totalEngines={totalEngines}
+              keyword={keyword}
+              serpCount={serpResults ? serpResults.length : null}
+            />
+          </div>
+        ) : showChartFallback ? (
           <div>
             <SectionHeading>Who AI recommends instead</SectionHeading>
             <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl p-5 sm:p-6">
@@ -798,16 +1257,15 @@ function ScanResultsContent() {
               <CompetitorChart rows={chartRows} totalEngines={totalEngines} />
               <p className="text-white/40 text-xs leading-relaxed mt-4 mb-0">
                 How many of the {totalEngines} AI answers named each business.
-                {" "}
-                {aiMentions === 0
-                  ? `Every customer who asked got someone else's name — never ${businessName}.`
-                  : `${businessName} was named in ${aiMentions} of ${totalEngines} — the rest of the time, customers heard these names instead.`}
               </p>
             </div>
           </div>
-        )}
+        ) : null}
 
-        {/* ── 4. FINDINGS ─────────────────────────────────────────── */}
+        {/* ── 4. MID-PAGE CTA (between evidence and findings) ─────── */}
+        <MidCta />
+
+        {/* ── 5. FINDINGS ─────────────────────────────────────────── */}
         {issues.length > 0 && (
           <div>
             <SectionHeading>Why this is happening</SectionHeading>
@@ -815,13 +1273,19 @@ function ScanResultsContent() {
           </div>
         )}
 
-        {/* ── 5. HOW IT GETS FIXED ────────────────────────────────── */}
+        {/* ── 6. HOW IT GETS FIXED ────────────────────────────────── */}
         <div>
           <SectionHeading>How alphaa fixes it</SectionHeading>
           <FixTimeline />
         </div>
 
-        {/* ── 6. DECISION BLOCK ───────────────────────────────────── */}
+        {/* ── 7. FIRST WEEK (before the final CTA) ────────────────── */}
+        <div>
+          <SectionHeading>What alphaa does in your first week</SectionHeading>
+          <FirstWeekStrip />
+        </div>
+
+        {/* ── 8. DECISION BLOCK ───────────────────────────────────── */}
         <div className="relative overflow-hidden bg-bg-secondary border border-white/[0.08] rounded-2xl px-6 py-9 sm:px-9">
           <div
             className="absolute inset-0 pointer-events-none"
@@ -836,18 +1300,16 @@ function ScanResultsContent() {
             </h2>
 
             <p className="text-white/50 text-sm text-center leading-relaxed max-w-md mx-auto mt-4 mb-6">
-              An agency charges $1,000–$2,000/mo for this work. alphaa is $99 — up to{" "}
-              <span className="text-white font-semibold">$22,800/year</span> back in your pocket,
-              with a weekly report proving where you stand on AI.
+              Agencies charge $1,000–$2,000/mo for this work — alphaa is $99, with a weekly
+              report proving where you stand.
             </p>
 
             {/* Honest proof — no invented customers */}
             <div className="flex items-start gap-3 bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3.5 max-w-md mx-auto mb-7">
               <Bot className="w-4 h-4 text-brand-orange flex-shrink-0 mt-0.5" />
               <p className="text-white/60 text-[13px] leading-relaxed m-0">
-                alphaa runs on alphaa. Ask ChatGPT what tools improve AI search visibility for
-                local businesses — the same system you just watched grade your business is how
-                we show up there.
+                alphaa runs on alphaa — ask ChatGPT what tools improve AI search visibility for
+                local businesses.
               </p>
             </div>
 
@@ -865,6 +1327,9 @@ function ScanResultsContent() {
         </p>
 
       </div>
+
+      {/* Sticky bottom CTA — appears after ~800px scroll, dismissible */}
+      <StickyCtaBar businessName={businessName} losing={aiMentions < totalEngines} />
     </div>
   )
 }

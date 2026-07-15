@@ -16,7 +16,7 @@ export function isSearchConfigured(): boolean {
 
 export async function googleSearch(
   query: string,
-  opts?: { results?: number; country?: string },
+  opts?: { results?: number; country?: string; timeoutMs?: number },
 ): Promise<SerpResult[]> {
   const token = process.env.APIFY_TOKEN
   if (!token) return []
@@ -39,7 +39,8 @@ export async function googleSearch(
       headers: { "content-type": "application/json" },
       body: JSON.stringify(body),
       // SERP scrapes can take ~30–60s; cap so we never hang a request.
-      signal: AbortSignal.timeout(120_000),
+      // Callers on a tight budget (the synchronous public scan) pass a lower cap.
+      signal: AbortSignal.timeout(opts?.timeoutMs ?? 120_000),
     })
     if (!res.ok) return []
 
