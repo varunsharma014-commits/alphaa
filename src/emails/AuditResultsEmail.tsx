@@ -22,13 +22,14 @@ export default function AuditResultsEmail({
   businessName, city, overallScore, engines, topIssue, isSubscriber,
 }: AuditResultsEmailProps) {
   const found = engines.filter((e) => e.found).length
+  const total = engines.length
   const scoreColor = overallScore >= 70 ? "#22c55e" : overallScore >= 40 ? "#f59e0b" : "#ef4444"
   const scoreLabel = overallScore >= 70 ? "Good" : overallScore >= 40 ? "Needs work" : "Critical gaps"
 
   return (
     <Html>
       <Head />
-      <Preview>{businessName}: your AI visibility score is {String(overallScore)}/100 — {String(found)}/6 engines found you</Preview>
+      <Preview>{businessName}: your AI visibility score is {String(overallScore)}/100 — {String(found)}/{String(total)} engines found you</Preview>
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
@@ -38,7 +39,7 @@ export default function AuditResultsEmail({
           <Section style={content}>
             <Heading style={h1}>Your free AI visibility scan is ready</Heading>
             <Text style={paragraph}>
-              We scanned {businessName} ({city}) across all 6 major AI search engines. Here's what we found.
+              We scanned {businessName} ({city}) across {String(total)} major AI assistants. Here's what we found.
             </Text>
 
             {/* Score */}
@@ -51,8 +52,8 @@ export default function AuditResultsEmail({
                 </Column>
                 <Column style={{ textAlign: "center" as const }}>
                   <Text style={scoreLabel2}>ENGINES FOUND YOU</Text>
-                  <Text style={scoreValue}>{found}<span style={scoreUnit}>/6</span></Text>
-                  <Text style={scoreBadge2}>{6 - found} still missing you</Text>
+                  <Text style={scoreValue}>{found}<span style={scoreUnit}>/{total}</span></Text>
+                  <Text style={scoreBadge2}>{total - found} still missing you</Text>
                 </Column>
               </Row>
             </Section>
@@ -86,12 +87,12 @@ export default function AuditResultsEmail({
               <>
                 <Text style={ctaHeading}>Fix your AI visibility in 2 weeks.</Text>
                 <Text style={paragraph}>
-                  Alphaa automatically builds your AI citation profile, posts weekly content, and tracks your visibility across all 6 engines. Most businesses see their first AI mention within 14 days.
+                  Alphaa automatically builds your AI citation profile, posts weekly content, and re-checks your visibility across every major AI assistant each week.
                 </Text>
                 <Button style={button} href={`${process.env.NEXT_PUBLIC_APP_URL}/pricing`}>
                   Start free 14-day trial →
                 </Button>
-                <Text style={trialNote}>No credit card required. Cancel anytime.</Text>
+                <Text style={trialNote}>$99/mo after a 14-day free trial. $0 today. Cancel anytime.</Text>
               </>
             )}
 

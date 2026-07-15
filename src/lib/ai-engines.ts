@@ -294,9 +294,16 @@ export async function scanAllEngines(
   businessName: string,
   businessType: string,
   city: string,
-  _websiteUrl?: string
+  _websiteUrl?: string,
+  // Optional business-specific customer question (built by the public-scan
+  // pipeline via claude-haiku). When provided, ALL engines are asked this one
+  // question. When absent, falls back to the generic buildQueries() behavior.
+  customQuery?: string
 ): Promise<ScanEngineResults> {
-  const queries = buildQueries(businessType, city)
+  const queries =
+    customQuery && customQuery.trim().length > 0
+      ? [customQuery.trim(), customQuery.trim(), customQuery.trim()]
+      : buildQueries(businessType, city)
 
   const settled = await Promise.allSettled([
     scanClaude(businessName, businessType, city, queries),

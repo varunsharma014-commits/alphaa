@@ -35,7 +35,7 @@ export async function sendWeeklyReportEmail(to: string, props: Parameters<typeof
 export async function sendAuditResultsEmail(to: string, props: Parameters<typeof AuditResultsEmail>[0]) {
   const html = await render(AuditResultsEmail(props))
   const found = props.engines.filter((e) => e.found).length
-  await send(to, `${props.businessName}: AI visibility score ${props.overallScore}/100 (${found}/6 engines found you)`, html)
+  await send(to, `${props.businessName}: AI visibility score ${props.overallScore}/100 (${found}/${props.engines.length} engines found you)`, html)
 }
 
 export async function sendTrialEndingEmail(to: string, props: Parameters<typeof TrialEndingEmail>[0]) {

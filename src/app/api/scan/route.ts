@@ -3,11 +3,29 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { anthropic, buildAuditPrompt } from "@/lib/claude"
-import { scanAllEngines } from "@/lib/ai-engines"
+import { scanAllEngines, type EngineResult } from "@/lib/ai-engines"
+import {
+  inferBusinessProfile,
+  extractMentionedBusinesses,
+  estimateMonthlyLoss,
+  buildCompetitorList,
+  type BusinessProfile,
+} from "@/lib/scan-insights"
 import type { AiSearchStatus } from "@/types/audit"
+import type { EngineEvidence, ScanInsights } from "@/types/scan"
 
-async function fetchOgData(websiteUrl: string) {
-  if (!websiteUrl) return null
+type SiteOg = {
+  title: string
+  description: string
+  image: string | null
+  favicon: string
+  domain: string
+}
+
+// Fetch the site once: OG metadata for the results page + a text excerpt that
+// grounds the business-profile inference (so queries match what the site sells).
+async function fetchSiteData(websiteUrl: string): Promise<{ og: SiteOg | null; text: string }> {
+  if (!websiteUrl) return { og: null, text: "" }
   try {
     const url = websiteUrl.startsWith("http") ? websiteUrl : `https://${websiteUrl}`
     const res = await fetch(url, { signal: AbortSignal.timeout(5000), headers: { "User-Agent": "Mozilla/5.0" } })
@@ -15,15 +33,18 @@ async function fetchOgData(websiteUrl: string) {
     const { load } = await import("cheerio")
     const $ = load(html)
     const domain = new URL(url).hostname
-    return {
+    const og: SiteOg = {
       title: $('meta[property="og:title"]').attr("content") || $("title").text().trim() || "",
       description: $('meta[property="og:description"]').attr("content") || $('meta[name="description"]').attr("content") || "",
       image: $('meta[property="og:image"]').attr("content") || null,
       favicon: `https://www.google.com/s2/favicons?domain=${domain}&sz=64`,
       domain,
     }
+    $("script, style, noscript, svg").remove()
+    const text = $("body").text().replace(/\s+/g, " ").trim().slice(0, 1200)
+    return { og, text }
   } catch {
-    return null
+    return { og: null, text: "" }
   }
 }
 
@@ -47,17 +68,45 @@ export async function POST(req: NextRequest) {
       data: { email: input.email, businessName: input.businessName, businessUrl: input.websiteUrl, city: input.city },
     })
 
-    // Run Claude audit and AI engine scan in parallel
     const prompt = buildAuditPrompt(input.businessName, input.city, input.websiteUrl)
 
-    const [claudeResult, engineScan, ogResult] = await Promise.allSettled([
+    // Engine pipeline: site fetch → business profile (haiku) → engine scan with
+    // ONE business-specific customer question. If profile inference fails,
+    // scanAllEngines falls back to its generic queries (old behavior).
+    // Runs in parallel with the sonnet audit, which usually takes longer.
+    const enginePipeline = (async () => {
+      const site = await fetchSiteData(input.websiteUrl)
+      let profile: BusinessProfile | null = null
+      try {
+        profile = await inferBusinessProfile({
+          businessName: input.businessName,
+          businessType: input.businessType,
+          city: input.city,
+          websiteUrl: input.websiteUrl,
+          siteTitle: site.og?.title,
+          siteDescription: site.og?.description,
+          siteText: site.text,
+        })
+      } catch {
+        profile = null
+      }
+      const scan = await scanAllEngines(
+        input.businessName,
+        input.businessType,
+        input.city,
+        input.websiteUrl,
+        profile?.query
+      )
+      return { site, profile, scan }
+    })()
+
+    const [claudeResult, pipelineSettled] = await Promise.allSettled([
       anthropic.messages.create({
         model: "claude-sonnet-4-6",
         max_tokens: 1500,
         messages: [{ role: "user", content: prompt }],
       }),
-      scanAllEngines(input.businessName, input.businessType, input.city, input.websiteUrl),
-      fetchOgData(input.websiteUrl),
+      enginePipeline,
     ])
 
     // Parse Claude audit result
@@ -68,42 +117,83 @@ export async function POST(req: NextRequest) {
         const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim()
         auditResult = JSON.parse(cleaned)
       } catch {
-        auditResult = getFallbackAudit(input.businessName, input.city)
+        auditResult = getFallbackAudit(input.businessName, input.city, input.businessType)
       }
     } else {
-      auditResult = getFallbackAudit(input.businessName, input.city)
+      auditResult = getFallbackAudit(input.businessName, input.city, input.businessType)
     }
+
+    const pipeline = pipelineSettled.status === "fulfilled" ? pipelineSettled.value : null
+    const profile = pipeline?.profile ?? null
+    const engineResults: EngineResult[] = pipeline?.scan.results ?? []
+    const site = pipeline?.site ?? { og: null, text: "" }
 
     // Merge real engine results into aiSearchStatus (overwrite Claude estimates where we have real data)
     const aiSearchStatus: Record<string, AiSearchStatus> = { ...auditResult.ai_search_status }
 
-    if (engineScan.status === "fulfilled") {
-      for (const result of engineScan.value.results) {
-        if (result.status === "not_configured") continue
-        // Map engine name to aiSearchStatus key
-        const key = result.engine === "claude" ? "google_ai" : result.engine
-        if (result.status === "appeared") {
-          aiSearchStatus[key] = "occasionally"
-        } else if (result.status === "not_appearing" || result.status === "error") {
-          aiSearchStatus[key] = "not_appearing"
+    for (const result of engineResults) {
+      if (result.status === "not_configured") continue
+      // Map engine name to aiSearchStatus key
+      const key = result.engine === "claude" ? "google_ai" : result.engine
+      if (result.status === "appeared") {
+        aiSearchStatus[key] = "occasionally"
+      } else if (result.status === "not_appearing" || result.status === "error") {
+        aiSearchStatus[key] = "not_appearing"
+      }
+    }
+    // Special case: use Claude engine result for google_ai only if chatgpt/gemini covered
+    const claudeEngineResult = engineResults.find((r) => r.engine === "claude")
+    if (claudeEngineResult && claudeEngineResult.status !== "not_configured") {
+      aiSearchStatus["google_ai"] = claudeEngineResult.appeared ? "occasionally" : "not_appearing"
+    }
+
+    // Resolve industry + locality: the profile that actually drove the queries
+    // wins; the audit's inference is the fallback; a real user-supplied business
+    // type is the last resort. The generic default "business" is never used.
+    const auditIndustry =
+      typeof auditResult.industry === "string" && auditResult.industry.trim().toLowerCase() !== "business"
+        ? auditResult.industry.trim()
+        : ""
+    const typedIndustry =
+      input.businessType && input.businessType.trim().toLowerCase() !== "business" ? input.businessType.trim() : ""
+    const industry = profile?.industry || auditIndustry || typedIndustry
+    const isLocal = profile?.isLocal ?? (typeof auditResult.is_local === "boolean" ? auditResult.is_local : true)
+
+    // Post-engine intelligence: mention extraction + loss estimate, in parallel.
+    // Both are best-effort — failures degrade to []/null, never break the scan.
+    const [mentionedSettled, lossSettled] = await Promise.allSettled([
+      extractMentionedBusinesses(engineResults, input.businessName, input.websiteUrl),
+      industry ? estimateMonthlyLoss(industry, isLocal, input.city) : Promise.resolve(null),
+    ])
+    const mentionedByEngine = mentionedSettled.status === "fulfilled" ? mentionedSettled.value : {}
+    const monthlyLoss = lossSettled.status === "fulfilled" ? lossSettled.value : null
+
+    // New-contract engine responses: { query, response (<=900), appeared, mentioned }
+    const engineResponses: Record<string, EngineEvidence> = {}
+    for (const r of engineResults) {
+      if (r.status === "not_configured" || !r.response) continue
+      engineResponses[r.engine] = {
+        query: r.query,
+        response: r.response.slice(0, 900),
+        appeared: r.appeared,
+        mentioned: mentionedByEngine[r.engine] ?? [],
+      }
+    }
+
+    // insights is null only when we couldn't determine a real industry at all —
+    // the results page hides the block in that case.
+    const insights: ScanInsights | null = industry
+      ? {
+          industry,
+          isLocal,
+          competitors: buildCompetitorList(mentionedByEngine),
+          estimatedMonthlyLoss: monthlyLoss,
         }
-      }
-      // Special case: use Claude engine result for google_ai only if chatgpt/gemini covered
-      const claudeEngineResult = engineScan.value.results.find((r) => r.engine === "claude")
-      if (claudeEngineResult && claudeEngineResult.status !== "not_configured") {
-        aiSearchStatus["google_ai"] = claudeEngineResult.appeared ? "occasionally" : "not_appearing"
-      }
-    }
+      : null
 
-    // Extract engine response texts
-    const engineResponses: Record<string, string> = {}
-    if (engineScan.status === "fulfilled") {
-      for (const r of engineScan.value.results) {
-        if (r.response) engineResponses[r.engine] = r.response.slice(0, 800)
-      }
-    }
-
-    const ogData = ogResult.status === "fulfilled" ? ogResult.value : null
+    // ogData is ALWAYS an object for new scans and always carries `insights`
+    // (possibly null), even when the OG fetch itself failed.
+    const ogData = { ...(site.og ?? {}), insights }
 
     // Update lead with results
     await db.scanLead.update({
@@ -112,8 +202,8 @@ export async function POST(req: NextRequest) {
         visibilityScore: auditResult.visibility_score,
         issues: auditResult.issues,
         aiSearchStatus,
-        ogData: ogData ?? undefined,
-        engineResponses,
+        ogData: ogData as object,
+        engineResponses: engineResponses as object,
       },
     })
 
@@ -143,7 +233,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-function getFallbackAudit(businessName: string, city: string) {
+function getFallbackAudit(businessName: string, city: string, businessType: string) {
   return {
     visibility_score: 42,
     issues: [
@@ -156,5 +246,7 @@ function getFallbackAudit(businessName: string, city: string) {
     ],
     competitor_insight: `At least 3 competitors in ${city} are posting to Google weekly and appearing on ChatGPT. They're getting customers you're missing.`,
     ai_search_status: { chatgpt: "not_appearing", perplexity: "not_appearing", google_ai: "occasionally", gemini: "not_appearing" } as Record<string, AiSearchStatus>,
+    industry: businessType && businessType.toLowerCase() !== "business" ? businessType : "",
+    is_local: true,
   }
 }

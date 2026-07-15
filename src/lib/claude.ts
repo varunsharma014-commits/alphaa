@@ -30,11 +30,14 @@ Return ONLY valid JSON with this exact structure — no markdown, no explanation
     "perplexity": "not_appearing" | "occasionally" | "frequently",
     "google_ai": "not_appearing" | "occasionally" | "frequently",
     "gemini": "not_appearing" | "occasionally" | "frequently"
-  }
+  },
+  "industry": "<plain-English industry this business is in, e.g. \\"dental practice\\", \\"AI marketing software\\", \\"family law firm\\">",
+  "is_local": <true if the business serves one local area (dentist, plumber, restaurant, clinic), false if it serves customers online, nationally, or B2B (SaaS, software, online store, national agency)>
 }
 
 Rules:
 - Exactly 6 issues
+- "industry" must describe what THIS business actually sells, in plain English a customer would use — never the word "business" alone
 - Weight score toward 38-58 range to feel realistic, not too bad or too good
 - Issues must be specific to the business type — mention it by name. If the business serves a local area, also reference the city by name; if it serves customers online, nationally, or B2B, focus on its audience and offering instead of a city
 - NEVER use words: schema, AEO, LLM, entity, structured data, semantic, generative engine

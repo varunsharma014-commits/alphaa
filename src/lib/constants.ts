@@ -71,7 +71,7 @@ export const SCAN_MESSAGES = [
   "Asking ChatGPT about your business…",
   "Scanning your website for issues…",
   "Analyzing local competitors…",
-  "Testing 47 visibility factors…",
+  "Reading the answers AI gives about your area…",
   "Checking AI search citations…",
   "Comparing you to top-ranked locals…",
   "Generating your visibility score…",
