@@ -227,6 +227,15 @@ const ENGINES = [
   { key: "gemini",     responseKey: "gemini",     name: "Gemini",     Icon: Sparkles,      iconColor: "#f59e0b" },
 ] as const
 
+// Business owners may not know what Perplexity or Gemini are — a one-line
+// credibility tag under each engine name explains why missing from it matters.
+const ENGINE_SUBS: Record<string, string> = {
+  "ChatGPT":    "the world's most-used AI assistant",
+  "Google AI":  "AI answers shown in Google Search",
+  "Perplexity": "the leading AI search engine",
+  "Gemini":     "Google's AI assistant",
+}
+
 interface EngineRow {
   key: string
   name: string
@@ -268,6 +277,11 @@ function ScoreGaugeBig({ score }: { score: number }) {
           {score}
         </span>
         <span className="text-white/40 text-sm mt-1">/100</span>
+        {/* Plain-language severity — "44" alone doesn't tell a business owner
+            whether that's fine or a fire. */}
+        <span className="text-[10px] font-semibold uppercase tracking-wider mt-1" style={{ color }}>
+          {score < 50 ? "Critical" : score < 75 ? "Needs work" : "Strong"}
+        </span>
       </div>
     </div>
   )
@@ -444,7 +458,7 @@ function HeroHeadline({
         <span className="mono whitespace-nowrap">
           {loss.low.toLocaleString("en-US")}–{loss.high.toLocaleString("en-US")}
         </span>{" "}
-        people searched AI assistants for{" "}
+        high-intent buyers asked AI assistants for{" "}
         {keyword ? (
           <span className="text-brand-orange">&ldquo;{keyword}&rdquo;</span>
         ) : (
@@ -456,7 +470,14 @@ function HeroHeadline({
         <span className={`mono ${mentionsClass}`}>
           {aiMentions} of {totalEngines}
         </span>{" "}
-        answers we checked.
+        answers we checked
+        {aiMentions === 0 ? (
+          <>
+            {" "}&mdash; <span className="text-red-400">you missed 100% of them.</span>
+          </>
+        ) : (
+          "."
+        )}
       </h1>
     )
   }
@@ -509,7 +530,14 @@ function EvidenceCard({
           <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center flex-shrink-0">
             <engine.Icon className="w-4 h-4" style={{ color: engine.iconColor }} />
           </div>
-          <span className="text-white text-sm font-semibold truncate">{engine.name}</span>
+          <div className="min-w-0">
+            <span className="text-white text-sm font-semibold truncate block">{engine.name}</span>
+            {ENGINE_SUBS[engine.name] && (
+              <span className="text-white/35 text-[11px] leading-tight truncate block">
+                {ENGINE_SUBS[engine.name]}
+              </span>
+            )}
+          </div>
         </div>
         {engine.appeared ? (
           <span className="flex-shrink-0 text-[11px] font-semibold text-green-400 bg-green-500/10 border border-green-500/25 rounded-full px-2.5 py-1">
