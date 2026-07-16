@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { fbTrack } from "@/lib/pixel"
 
 export function StartTrialButton({ priceId, label }: { priceId: string; label: string }) {
   const [loading, setLoading] = useState(false)
@@ -10,6 +11,7 @@ export function StartTrialButton({ priceId, label }: { priceId: string; label: s
     setLoading(true)
     setError(null)
     try {
+      fbTrack("InitiateCheckout", { value: 99, currency: "USD" })
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -6,6 +6,7 @@ import Link from "next/link"
 import { ScanLoader } from "@/components/scan/ScanLoader"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { track } from "@/lib/gtag"
+import { fbTrack } from "@/lib/pixel"
 import type { ScanResult, EngineEvidence, ScanInsights } from "@/types/scan"
 import {
   MapPin, AlertTriangle, Globe, Sparkles, MessageSquare, Search,
@@ -1043,6 +1044,8 @@ function ScanResultsContent() {
       // storage unavailable — fire anyway
     }
     track("scan_completed", { score: result.visibilityScore })
+    // Report viewed — the qualified-intent signal for Meta retargeting.
+    fbTrack("ViewContent", { content_name: "scan_results", value: result.visibilityScore })
   }, [result, scanId])
 
   const retry = useCallback(() => {

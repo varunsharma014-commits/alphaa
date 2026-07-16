@@ -2,15 +2,20 @@
 
 import { useEffect } from "react"
 import { track } from "@/lib/gtag"
+import { fbTrack, type MetaEvent } from "@/lib/pixel"
 
-// Fires a GA4 conversion event once per browser session. Drop into any page/
-// layout: <ConversionTracker event="sign_up" />. With `whenQueryParam`, only
-// fires when that param is present in the URL (e.g. ?upgraded=true).
+// Fires a conversion event once per browser session — GA4 always, Meta Pixel
+// too when `metaEvent` is given. Drop into any page/layout:
+// <ConversionTracker event="sign_up" metaEvent="CompleteRegistration" />.
+// With `whenQueryParam`, only fires when that param is present in the URL
+// (e.g. ?upgraded=true).
 export function ConversionTracker({
   event,
+  metaEvent,
   whenQueryParam,
 }: {
   event: string
+  metaEvent?: MetaEvent
   whenQueryParam?: string
 }) {
   useEffect(() => {
@@ -26,7 +31,8 @@ export function ConversionTracker({
       // storage unavailable — fire anyway
     }
     track(event)
-  }, [event, whenQueryParam])
+    if (metaEvent) fbTrack(metaEvent)
+  }, [event, metaEvent, whenQueryParam])
 
   return null
 }

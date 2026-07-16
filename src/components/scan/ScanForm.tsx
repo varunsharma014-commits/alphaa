@@ -7,6 +7,7 @@ import { GlassCard } from "@/components/common/GlassCard"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { cn } from "@/lib/utils"
 import { track } from "@/lib/gtag"
+import { fbTrack } from "@/lib/pixel"
 
 interface FormData {
   businessName: string
@@ -42,6 +43,8 @@ export function ScanForm() {
     if (Object.keys(e).length) { setErrors(e); return }
     setLoading(true)
     track("scan_started")
+    // Email is captured at this submit — this is the lead moment Meta optimizes on.
+    fbTrack("Lead")
     try {
       const res = await fetch("/api/scan", {
         method: "POST",
