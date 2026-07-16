@@ -40,6 +40,45 @@
 
 Format rules per post: direct answer in the first 80 words (AEO dogfooding), FAQ section with schema, one honest-mechanism paragraph, scan CTA mid + end, internal links to 2–3 sibling posts.
 
+## "Death of the Blue Link" series (queue after the next-10, or interleave 1 per week)
+
+Narrative series on the shift from ranked links to AI answers. Every stat below is verified (Jul 2026) — use ONLY these figures with these attributions; never round up or drop the qualifier.
+
+| # | Working title | Target query | Stat to anchor on |
+|---|---|---|---|
+| S1 | The Death of the Blue Link: Why Ranking #1 on Google No Longer Brings the Customers It Used To | "is seo dead 2026", "death of the blue link" | ~68% of Google searches end without a click to any website (SparkToro/Similarweb, 2026) |
+| S2 | Zero-Click Search: Two Thirds of Google Searches Now End Without a Website Visit | "zero click searches statistics" | Same SparkToro/Similarweb figure, up from ~60% in 2024 |
+| S3 | Your Next Customer Is Asking ChatGPT First | "do people use chatgpt to find businesses" | ChatGPT: 800M+ weekly active users, billions of queries daily (OpenAI via TechCrunch, Oct 2025); 65% of consumers use AI to research products before buying (Clutch, 2026) |
+| S4 | AI Overviews Are Answering Your Customers Before They Reach Your Website | "ai overviews impact local business traffic" | AI Overviews appear in up to ~48% of commercial-intent searches (BrightEdge, 2026). NOT "half of all searches" — broad-panel studies (Semrush) measured ~16–25% of all queries |
+| S5 | From SEO to AEO: The 90-Day Playbook for Getting Recommended by AI | "how to switch from seo to aeo" | AI-referred traffic to retail sites grew 1,200%+ in under a year, and converts better than search traffic (Adobe Analytics, 2025–26) |
+
+### Verified stats bank (safe phrasings, with sources)
+
+- "Roughly two-thirds of Google searches now end without a single click to a website (SparkToro/Similarweb, 2026)."
+- "65% of consumers now use AI tools to research products before buying (Clutch, 2026)."
+- "ChatGPT serves 800M+ weekly active users, handling billions of queries every day (OpenAI, 2025)."
+- "AI Overviews now appear in up to ~48% of commercial-intent searches (BrightEdge, 2026)."
+- "Traffic to retail sites from AI assistants grew over 1,200% in under a year, and those visitors convert better than traditional search traffic (Adobe Analytics, 2025–26)."
+- DO NOT USE: "AI Overviews in 50% of all searches" (unsupported), "ChatGPT processes 700M weekly queries" (wrong unit — that was users, and it's outdated).
+
+### Ready-to-post social drafts (verified stats only)
+
+**LinkedIn (founder voice):**
+> Two thirds of Google searches now end without a single click to a website (SparkToro/Similarweb, 2026).
+> Your customers still search. They just get the answer on the results page, or they skip Google entirely and ask ChatGPT, which now serves 800M+ people every week.
+> For a local business this changes the question from "do I rank?" to "do the AI engines recommend me?"
+> We built a free scan that checks exactly that across ChatGPT, Claude, Gemini and Perplexity. Link in comments.
+
+**X/Twitter thread opener:**
+> The blue link is dying.
+> 68% of Google searches end with zero clicks (SparkToro, 2026).
+> 65% of consumers research products with AI before buying (Clutch, 2026).
+> AI Overviews show up in nearly half of commercial searches (BrightEdge, 2026).
+> Here's what that means for your business: 🧵
+
+**Reddit-style answer (r/smallbusiness, only under a relevant question):**
+> Worth knowing: most searches never produce a website click anymore (SparkToro puts it at ~68% in 2026), and AI assistants are picking up the slack. The practical move isn't more blog posts, it's making sure your business details, reviews and structured data are consistent everywhere AI looks. You can check what ChatGPT actually says about your business for free in a couple of minutes.
+
 ## Distribution checklist (every post, ~20 min)
 
 - [ ] Founder post on **X**: the core insight as a 3–6 tweet thread, link at end
