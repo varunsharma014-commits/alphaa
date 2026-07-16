@@ -95,9 +95,6 @@ OAuth Scopes We Request and Why:
 • https://www.googleapis.com/auth/webmasters.readonly (Google Search Console)
   We use this scope to retrieve your website's keyword ranking data, including search queries, click-through rates, impressions, and average position. This data is displayed in your Alphaa Keywords dashboard to help you understand your organic search performance.
 
-• https://www.googleapis.com/auth/analytics.readonly (Google Analytics)
-  We use this scope to retrieve traffic data including sessions, page views, bounce rate, average session duration, and traffic source breakdown. This data is displayed in your Alphaa dashboard to help you understand how users are finding and engaging with your website.
-
 Limited Use Commitments:
 • We access Google user data solely to provide the features and functionality of the Alphaa Service that you have explicitly requested and authorized.
 • We do not use Google user data to develop, improve, or train generalized AI or machine learning models.

@@ -2,7 +2,10 @@ import { google } from 'googleapis'
 import { OAuth2Client } from 'google-auth-library'
 
 export const SCOPES = [
-  'https://www.googleapis.com/auth/analytics.readonly',
+  // analytics.readonly was removed (Jul 2026): GA data was synced but never
+  // surfaced in any user-facing feature, and Google's OAuth verification
+  // flagged it under least-privilege. Re-add only once a traffic dashboard
+  // ships (requires re-verification of the scope).
   'https://www.googleapis.com/auth/webmasters.readonly',
   'https://www.googleapis.com/auth/business.manage',
   'openid',
