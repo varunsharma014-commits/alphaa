@@ -18,14 +18,34 @@ export async function GET(): Promise<Response> {
     var id = (src.split('id=')[1] || '').split('&')[0];
     if (!id) return;
     var origin = new URL(src).origin;
+    var inject = function (jsonLd) {
+      if (!jsonLd || !jsonLd['@type']) return;
+      var el = document.createElement('script');
+      el.type = 'application/ld+json';
+      el.text = JSON.stringify(jsonLd);
+      document.head.appendChild(el);
+    };
+    var norm = function (p) {
+      p = (p || '/').split('?')[0].split('#')[0];
+      if (p.length > 1) p = p.replace(/\\/+$/, '');
+      return p || '/';
+    };
     fetch(origin + '/api/tag/schema?id=' + encodeURIComponent(id))
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (data) {
-        if (!data || !data['@type']) return;
-        var el = document.createElement('script');
-        el.type = 'application/ld+json';
-        el.text = JSON.stringify(data);
-        document.head.appendChild(el);
+        if (!data) return;
+        if (data.v === 2 && data.schemas) {
+          // v2: one entry per page. "/" entries apply site-wide; page-specific
+          // entries (e.g. an FAQPage for /services) only inject on that page.
+          var here = norm(window.location.pathname);
+          for (var i = 0; i < data.schemas.length; i++) {
+            var item = data.schemas[i] || {};
+            var target = norm(item.pageUrl);
+            if (target === '/' || target === here) inject(item.jsonLd);
+          }
+        } else {
+          inject(data); // v1: a single bare JSON-LD object
+        }
       })
       .catch(function () {});
   } catch (e) {}

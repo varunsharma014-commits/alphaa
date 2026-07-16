@@ -10,6 +10,7 @@ import { StatusPill } from "@/components/dashboard/StatusPill"
 import { DsCard } from "@/components/dashboard/DsCard"
 import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import RunScanButton from "./RunScanButton"
+import { VisibilityTrend } from "@/components/dashboard/VisibilityTrend"
 
 export const metadata = { title: "AI Visibility" }
 
@@ -58,12 +59,12 @@ export default async function VisibilityPage() {
   const user = await db.user.findUnique({ where: { clerkId } })
   if (!user) redirect("/login")
 
-  // Latest two audits: the newest drives the page, the previous one gives a
-  // real (never invented) week-over-week comparison.
+  // Newest audit drives the page, the previous one gives a real (never
+  // invented) week-over-week comparison; the rest feed the trend graph.
   const audits = await db.audit.findMany({
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
-    take: 2,
+    take: 12,
     include: {
       aiEngineResults: {
         orderBy: { createdAt: "asc" },
@@ -85,6 +86,13 @@ export default async function VisibilityPage() {
   // Count how many engines found the business — now and at the previous check.
   const appearedCount = audit ? countAppeared(audit, engineOrder) : 0
   const prevAppearedCount = prevAudit ? countAppeared(prevAudit, engineOrder) : null
+
+  // Oldest-first points for the share-of-voice trend (needs 2+ scans to draw).
+  const trendPoints = [...audits].reverse().map((a) => ({
+    date: a.createdAt,
+    appearedCount: countAppeared(a, engineOrder),
+    totalEngines: engineOrder.length,
+  }))
 
   const lastScanDate = audit?.createdAt
     ? audit.createdAt.toLocaleDateString("en-US", {
@@ -237,6 +245,16 @@ export default async function VisibilityPage() {
           label="Last checked · alphaa re-checks every week"
         />
       </div>
+
+      {/* Share-of-voice trend — only once there's a real history to show */}
+      {trendPoints.length >= 2 && (
+        <>
+          <SectionDivider>YOUR TREND</SectionDivider>
+          <DsCard>
+            <VisibilityTrend points={trendPoints} />
+          </DsCard>
+        </>
+      )}
 
       {/* Engine cards */}
       <SectionDivider>WHERE YOU STAND ON EACH AI ENGINE</SectionDivider>

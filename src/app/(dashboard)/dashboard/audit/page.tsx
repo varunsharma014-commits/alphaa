@@ -570,7 +570,9 @@ export default async function AuditPage() {
         </div>
         <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginBottom: "12px" }}>
           Add this one line before your site&apos;s &lt;/head&gt; tag. alphaa then keeps your
-          structured data up to date automatically — no re-pasting when your details change.
+          structured data up to date automatically — your business details plus any schema
+          generated here (FAQ, services, and more), published to the right pages. No
+          re-pasting when anything changes.
         </p>
         <div
           style={{
