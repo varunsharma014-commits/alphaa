@@ -64,7 +64,9 @@ Crawl results for ${competitorUrl}:
 The website ${competitorUrl} could not be crawled. Analyze based on the URL and business context only.
 `
 
-  const prompt = `You are an SEO analyst helping a ${businessType} business in ${city} understand their competitor at ${competitorUrl}.
+  const prompt = `You are advising a business owner directly about one of their competitors. Speak TO them as "you" and "your business" — never describe their business type in the third person (never write "For a ${businessType}, this means…"; write "For you, this means…").
+
+The owner runs a ${businessType} in ${city}. Their competitor is ${competitorUrl}.
 
 ${crawlContext}
 
@@ -75,14 +77,19 @@ Based on this data, return ONLY valid JSON — no markdown, no explanation:
   "keyTopics": ["<topic 1>", "<topic 2>", "<topic 3>", "<topic 4>", "<topic 5>"],
   "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
   "weaknesses": ["<weakness 1>", "<weakness 2>", "<weakness 3>"],
-  "aiSummary": "<2-3 sentence plain-English summary of this competitor's online presence and what it means for the ${businessType} business in ${city}>"
+  "aiSummary": "<2-3 sentences spoken directly to the owner as 'you', covering what this competitor is doing online and where your opening is. No jargon.>"
 }
 
 Rules:
 - estimatedPostingFrequency: base it on pages found (20+ = Daily, 10-19 = Weekly, 3-9 = Monthly, 0-2 = Rarely). If crawl failed, infer from business type.
 - keyTopics: infer from the competitor URL, domain name, and business type — what they likely write about
-- strengths: what they appear to do well based on schema types, page count, and issue profile
-- weaknesses: areas where they fall short based on issues found (missing titles, missing schema, etc.)
+- strengths: what this competitor genuinely does well — i.e. what you are up against
+- weaknesses: real openings YOU can win, phrased as your advantage
+- PLAIN ENGLISH ONLY. The reader is a busy owner, not a marketer. NEVER use the words: schema, alt text, crawlable, crawl, H1, meta description, SEO issues, indexed, structured data, organic visibility. Translate every technical fact into what it means for winning customers:
+  - "no missing alt text" -> "their photos are labelled so Google and AI can understand them"
+  - "minimal crawlable pages" -> "AI engines can only read a small part of their site — that is an opening for you"
+  - "missing schema" -> "they have not told AI what their business actually does"
+  - "six SEO issues on two pages" -> "their site has basic problems that hold it back in search"
 - aiSummary: written for a non-technical business owner, no jargon like "schema" or "SEO score" — say "Google-friendly setup" instead
 - All arrays must have exactly the number of items specified above
 - Do NOT use the words: schema, AEO, LLM, entity, structured data, semantic, generative engine`
