@@ -11,7 +11,7 @@ import type { ScanResult, EngineEvidence, ScanInsights } from "@/types/scan"
 import {
   MapPin, AlertTriangle, Globe, Sparkles, MessageSquare, Search,
   Check, Mail, Wand2, ChevronDown, ChevronUp, Bot, X, ExternalLink,
-  Lock, BarChart3,
+  Lock, BarChart3, Copy, Gift,
 } from "lucide-react"
 
 // ── Runtime guards (Json columns — old rows store strings) ─────────────────
@@ -1021,6 +1021,203 @@ function EmailReportButton({ scanId }: { scanId: string }) {
   )
 }
 
+// ── Quick fix (the free, paste-ready gift — generated on view) ──────────────
+
+interface QuickFix {
+  faqHtml: string
+  jsonLd: string
+  targetQuestion: string
+}
+
+function CopyBlock({
+  label,
+  code,
+  kind,
+}: {
+  label: string
+  code: string
+  kind: string
+}) {
+  const [copied, setCopied] = useState(false)
+
+  const copy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+    } catch {
+      return // clipboard blocked — the code is selectable in the block below
+    }
+    setCopied(true)
+    track("quickfix_copied", { kind })
+    setTimeout(() => setCopied(false), 2000)
+  }, [code, kind])
+
+  return (
+    <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl overflow-hidden">
+      <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-white/[0.06] bg-white/[0.02]">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40 truncate">
+          {label}
+        </span>
+        <button
+          type="button"
+          onClick={copy}
+          className="inline-flex items-center gap-1.5 flex-shrink-0 text-[11px] font-semibold text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] rounded-lg px-2.5 py-1.5 transition-colors"
+        >
+          {copied ? (
+            <><Check className="w-3 h-3 text-green-400" /> Copied</>
+          ) : (
+            <><Copy className="w-3 h-3" /> Copy</>
+          )}
+        </button>
+      </div>
+      <pre className="m-0 px-4 py-3.5 overflow-x-auto max-h-72 text-[11.5px] leading-relaxed text-white/70 mono">
+        <code>{code}</code>
+      </pre>
+    </div>
+  )
+}
+
+function QuickFixSection({ scanId }: { scanId: string }) {
+  const [fix, setFix] = useState<QuickFix | null>(null)
+  const [failed, setFailed] = useState(false)
+  const requested = useRef(false)
+
+  useEffect(() => {
+    if (requested.current) return
+    requested.current = true
+    let cancelled = false
+
+    ;(async () => {
+      try {
+        const res = await fetch("/api/scan/quick-fix", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ scanId }),
+        })
+        if (!res.ok) throw new Error("generate failed")
+        const data = await res.json()
+        if (
+          typeof data?.faqHtml !== "string" ||
+          typeof data?.jsonLd !== "string" ||
+          !data.faqHtml.trim() ||
+          !data.jsonLd.trim()
+        ) {
+          throw new Error("bad shape")
+        }
+        if (cancelled) return
+        setFix({
+          faqHtml: data.faqHtml,
+          jsonLd: data.jsonLd,
+          targetQuestion: typeof data.targetQuestion === "string" ? data.targetQuestion : "",
+        })
+        track("quickfix_generated")
+        // Strong intent signal — someone who received real work from us.
+        fbTrack("ViewContent", { content_name: "quick_fix" })
+      } catch {
+        if (!cancelled) setFailed(true)
+      }
+    })()
+
+    return () => { cancelled = true }
+  }, [scanId])
+
+  // Generation failed → hide the section entirely rather than show a broken box.
+  if (failed) return null
+
+  if (!fix) {
+    return (
+      <div>
+        <SectionHeading>Your free fix</SectionHeading>
+        <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl px-5 py-8 text-center">
+          <Sparkles className="w-5 h-5 text-brand-orange mx-auto mb-3 animate-pulse" />
+          <p className="text-white/50 text-[13px] m-0">
+            Writing a fix you can paste on your site today…
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <SectionHeading>Your free fix</SectionHeading>
+
+      <div className="relative overflow-hidden bg-bg-secondary border border-brand-orange/25 rounded-2xl px-5 py-6 sm:px-6">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,107,26,0.10), transparent 70%)" }}
+          aria-hidden
+        />
+        <div className="relative">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-brand-orange/15 border border-brand-orange/30 flex items-center justify-center flex-shrink-0">
+              <Gift className="w-4 h-4 text-brand-orange" />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-white text-xl sm:text-[22px] font-bold leading-snug m-0">
+                Here&apos;s a fix you can use right now &mdash;{" "}
+                <span className="text-brand-orange">free</span>
+              </h2>
+              <p className="text-white/50 text-[13px] leading-relaxed mt-2 mb-0">
+                No signup, no card. Paste this on your site and it&apos;s yours to keep, whether or
+                not you ever use alphaa.
+              </p>
+            </div>
+          </div>
+
+          {fix.targetQuestion && (
+            <div className="mt-5 bg-bg-tertiary border border-white/[0.06] rounded-xl px-4 py-3">
+              <p className="text-[10px] uppercase tracking-wider text-white/30 mb-1 mt-0">
+                The customer question this answers
+              </p>
+              <p className="text-white/85 text-[13px] leading-relaxed m-0">
+                &ldquo;{fix.targetQuestion}&rdquo;
+              </p>
+            </div>
+          )}
+
+          <div className="mt-4 space-y-3">
+            <CopyBlock label="1. FAQ block — paste into your page" code={fix.faqHtml} kind="faq_html" />
+            <CopyBlock label="2. Matching JSON-LD — paste before </head>" code={fix.jsonLd} kind="json_ld" />
+          </div>
+
+          {/* Honest explainer — plain English, no invented jargon. */}
+          <div className="mt-4 bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3.5 space-y-2">
+            <p className="text-white/60 text-[13px] leading-relaxed m-0">
+              <span className="text-white font-semibold">Why this works:</span> this is the text AI
+              reads about you. When your page answers a customer&apos;s question in plain words,
+              ChatGPT, Claude and Perplexity can quote that answer back to whoever asks. Right now
+              there&apos;s nothing on your page for them to quote.
+            </p>
+            <p className="text-white/60 text-[13px] leading-relaxed m-0">
+              <span className="text-white font-semibold">Why it&apos;s HTML, not a script:</span>{" "}
+              those assistants only read the plain page &mdash; they don&apos;t run JavaScript. So
+              the words have to be in the HTML itself, which is why you paste this rather than
+              install something.
+            </p>
+            <p className="text-amber-400/90 text-[13px] leading-relaxed m-0">
+              <span className="font-semibold">Before you paste:</span> fill in anything in
+              [square brackets] with your real details. We left those blank on purpose &mdash;
+              we&apos;d rather hand you a gap than make something up about your business.
+            </p>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-5 pt-5 border-t border-white/[0.08]">
+            <p className="text-white text-[15px] font-semibold leading-snug text-center m-0">
+              That&apos;s one page. alphaa does this for every page.
+            </p>
+            <p className="text-white/50 text-[13px] leading-relaxed text-center max-w-md mx-auto mt-2 mb-5">
+              We write it, keep it current as your business changes, and re-check every week
+              whether AI actually picked it up.
+            </p>
+            <SignupCta placement="quick_fix" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── Main component ───────────────────────────────────────────────────────────
 
 function ScanResultsContent() {
@@ -1280,7 +1477,10 @@ function ScanResultsContent() {
           </div>
         </div>
 
-        {/* ── 3. COMPETITOR INTEL (table → chart fallback → omit) ── */}
+        {/* ── 3. THE FREE FIX — proof of competence, before the ask ── */}
+        <QuickFixSection scanId={result.scanId} />
+
+        {/* ── 4. COMPETITOR INTEL (table → chart fallback → omit) ── */}
         {hasIntelTable ? (
           <div>
             <SectionHeading>Who AI recommends instead</SectionHeading>
@@ -1308,10 +1508,10 @@ function ScanResultsContent() {
           </div>
         ) : null}
 
-        {/* ── 4. MID-PAGE CTA (between evidence and findings) ─────── */}
+        {/* ── 5. MID-PAGE CTA (between evidence and findings) ─────── */}
         <MidCta />
 
-        {/* ── 5. FINDINGS ─────────────────────────────────────────── */}
+        {/* ── 6. FINDINGS ─────────────────────────────────────────── */}
         {issues.length > 0 && (
           <div>
             <SectionHeading>Why this is happening</SectionHeading>
@@ -1319,19 +1519,19 @@ function ScanResultsContent() {
           </div>
         )}
 
-        {/* ── 6. HOW IT GETS FIXED ────────────────────────────────── */}
+        {/* ── 7. HOW IT GETS FIXED ────────────────────────────────── */}
         <div>
           <SectionHeading>How alphaa fixes it</SectionHeading>
           <FixTimeline />
         </div>
 
-        {/* ── 7. FIRST WEEK (before the final CTA) ────────────────── */}
+        {/* ── 8. FIRST WEEK (before the final CTA) ────────────────── */}
         <div>
           <SectionHeading>What alphaa does in your first week</SectionHeading>
           <FirstWeekStrip />
         </div>
 
-        {/* ── 8. DECISION BLOCK ───────────────────────────────────── */}
+        {/* ── 9. DECISION BLOCK ───────────────────────────────────── */}
         <div className="relative overflow-hidden bg-bg-secondary border border-white/[0.08] rounded-2xl px-6 py-9 sm:px-9">
           <div
             className="absolute inset-0 pointer-events-none"

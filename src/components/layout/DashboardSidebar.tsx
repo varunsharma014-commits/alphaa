@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import {
   Sparkles, Home, Bot, Globe, Search, TrendingUp, Activity, Gauge, MapPin, Star,
   CalendarDays, Lightbulb, Users, BarChart3, Settings, ChevronRight, LifeBuoy,
+  MessagesSquare,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -17,6 +18,7 @@ const navGroups = [
   {
     label: "Getting Found on AI",
     items: [
+      { href: "/dashboard/sandbox", label: "Ask the AIs", icon: MessagesSquare },
       { href: "/dashboard/visibility/chatgpt", label: "ChatGPT", icon: Bot },
       { href: "/dashboard/visibility/claude", label: "Claude", icon: Globe },
       { href: "/dashboard/visibility/gemini", label: "Gemini", icon: Sparkles },
