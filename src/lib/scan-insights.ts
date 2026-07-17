@@ -223,7 +223,14 @@ export async function extractMentionedBusinesses(
     const msg = await withTimeout(
       anthropic.messages.create({
         model: HAIKU,
-        max_tokens: 700,
+        // 700 was too tight and failed SILENTLY: a real 4-engine extraction needs
+        // ~717 output tokens, so the JSON was cut mid-structure, JSON.parse threw,
+        // and the catch below returned `empty` — every engine showed zero mentions
+        // even though the answers named plenty of firms. Measured, not guessed:
+        // at 700, stop_reason came back "max_tokens" on every run; at 2000 it is
+        // "end_turn" at ~717 tokens. The ceiling is ~3x worst-case observed usage
+        // so a verbose answer set can't quietly re-break this.
+        max_tokens: 2000,
         messages: [
           {
             role: "user",
@@ -234,6 +241,8 @@ export async function extractMentionedBusinesses(
               `For EACH assistant above, extract the specific businesses, brands, products, or companies it actually recommended or presented as options.\n` +
               `Rules:\n` +
               `- Use the exact name as written in the answer.\n` +
+              // Bounds the output alongside max_tokens, and mirrors the .slice(0, 10) below.
+              `- List at most 10 businesses per assistant; if there are more, keep the ones presented most prominently.\n` +
               `- For "domain": the business's official website domain (e.g. "seedinvest.com") ONLY if you are confident you know it; otherwise null. Never guess.\n` +
               `- Skip generic phrases ("local dentists", "several options", "many clinics").\n` +
               `- Skip platforms/directories mentioned only as places to search (Google Maps, Yelp, Reddit).\n` +
@@ -246,6 +255,15 @@ export async function extractMentionedBusinesses(
       }),
       12000
     )
+    // A truncated response is unparseable, and the catch below turns that into a
+    // silent "nobody was mentioned". Name the real cause in the log so the next
+    // occurrence is one grep away instead of another investigation.
+    if (msg.stop_reason === "max_tokens") {
+      console.error(
+        `extractMentionedBusinesses: response hit max_tokens (${msg.usage?.output_tokens} tokens) — ` +
+          `JSON is truncated and mentions will be dropped. Raise max_tokens.`
+      )
+    }
     const parsed = JSON.parse(stripFences(textOf(msg)))
     if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) return empty
 
