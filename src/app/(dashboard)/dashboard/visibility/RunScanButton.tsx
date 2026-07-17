@@ -27,7 +27,7 @@ export default function RunScanButton({ prominent = false }: RunScanButtonProps)
   }
 
   const errorNote = error ? (
-    <p style={{ fontSize: "11px", color: "#f59e0b", marginTop: "6px", maxWidth: "260px", textAlign: "right", lineHeight: 1.5 }}>
+    <p style={{ fontSize: "11px", color: "var(--ds-warn)", marginTop: "6px", maxWidth: "260px", textAlign: "right", lineHeight: 1.5 }}>
       {error}
     </p>
   ) : null
@@ -42,8 +42,8 @@ export default function RunScanButton({ prominent = false }: RunScanButtonProps)
           display: "inline-flex",
           alignItems: "center",
           gap: "8px",
-          background: "#e05a2b",
-          color: "#ffffff",
+          background: "var(--ds-accent)",
+          color: "var(--ds-text)",
           fontSize: "13px",
           fontWeight: 500,
           borderRadius: "8px",
@@ -71,12 +71,12 @@ export default function RunScanButton({ prominent = false }: RunScanButtonProps)
         alignItems: "center",
         gap: "7px",
         background: "transparent",
-        color: "#888888",
+        color: "var(--ds-text-mute)",
         fontSize: "13px",
         fontWeight: 500,
         borderRadius: "8px",
         padding: "8px 16px",
-        border: "1px solid #333333",
+        border: "1px solid var(--ds-border-3)",
         whiteSpace: "nowrap",
         cursor: loading ? "default" : "pointer",
         opacity: loading ? 0.6 : 1,

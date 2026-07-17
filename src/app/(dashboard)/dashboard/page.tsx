@@ -97,12 +97,12 @@ const ENGINE_PILL: Record<EngineState, { label: string; variant: PillVariant }> 
 // Icon for a real activity row, picked from its type string.
 function activityIcon(type: string): { Icon: LucideIcon; color: string; bg: string; border: string } {
   const t = type.toLowerCase()
-  if (t.includes("win"))    return { Icon: PartyPopper, color: "#ff6b1a", bg: "#1f1206", border: "#7c3a10" }
-  if (t.includes("review")) return { Icon: Star,        color: "#f59e0b", bg: "#1a1200", border: "#78350f" }
-  if (t.includes("post"))   return { Icon: FileText,    color: "#22c55e", bg: "#0d2218", border: "#14532d" }
-  if (t.includes("keyword") || t.includes("rank")) return { Icon: TrendingUp, color: "#22c55e", bg: "#0d2218", border: "#14532d" }
-  if (t.includes("audit") || t.includes("scan") || t.includes("visibility")) return { Icon: Bot, color: "#22c55e", bg: "#0d2218", border: "#14532d" }
-  return { Icon: CheckCircle2, color: "#22c55e", bg: "#0d2218", border: "#14532d" }
+  if (t.includes("win"))    return { Icon: PartyPopper, color: "var(--ds-accent)", bg: "var(--ds-warn-bg)", border: "var(--ds-warn-border)" }
+  if (t.includes("review")) return { Icon: Star,        color: "var(--ds-warn)", bg: "var(--ds-warn-bg)", border: "var(--ds-warn-border)" }
+  if (t.includes("post"))   return { Icon: FileText,    color: "var(--ds-ok)", bg: "var(--ds-ok-bg)", border: "var(--ds-ok-border)" }
+  if (t.includes("keyword") || t.includes("rank")) return { Icon: TrendingUp, color: "var(--ds-ok)", bg: "var(--ds-ok-bg)", border: "var(--ds-ok-border)" }
+  if (t.includes("audit") || t.includes("scan") || t.includes("visibility")) return { Icon: Bot, color: "var(--ds-ok)", bg: "var(--ds-ok-bg)", border: "var(--ds-ok-border)" }
+  return { Icon: CheckCircle2, color: "var(--ds-ok)", bg: "var(--ds-ok-bg)", border: "var(--ds-ok-border)" }
 }
 
 // What alphaa has actually scheduled — shown honestly as "coming up", never as done.
@@ -197,10 +197,10 @@ export default async function DashboardPage() {
       {/* ── Header row ─────────────────────────────── */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", marginBottom: "20px" }}>
         <div>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff", lineHeight: 1.2 }}>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.2 }}>
             Good {timeOfDayGreeting()}{firstName ? `, ${firstName}` : ""} 👋
           </h1>
-          <p style={{ fontSize: "12px", color: "#555555", marginTop: "4px" }}>
+          <p style={{ fontSize: "12px", color: "var(--ds-text-faint)", marginTop: "4px" }}>
             {activityRows.length > 0
               ? "Here is what alphaa has been doing for you."
               : "alphaa is getting to know your business."}
@@ -209,10 +209,10 @@ export default async function DashboardPage() {
         {score !== null ? (
           <div style={{ display: "flex", alignItems: "center", gap: "14px", flexShrink: 0 }}>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: "28px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>{score}</div>
-              <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "#444444", marginTop: "4px" }}>presence score</div>
+              <div style={{ fontSize: "28px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1 }}>{score}</div>
+              <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginTop: "4px" }}>presence score</div>
               {scoreDelta !== null && scoreDelta !== 0 && (
-                <div style={{ fontSize: "11px", color: scoreDelta > 0 ? "#22c55e" : "#dc2626", marginTop: "3px" }}>
+                <div style={{ fontSize: "11px", color: scoreDelta > 0 ? "var(--ds-ok)" : "var(--ds-bad)", marginTop: "3px" }}>
                   {scoreDelta > 0 ? `↑ +${scoreDelta}` : `↓ ${scoreDelta}`} pts since last check
                 </div>
               )}
@@ -221,9 +221,9 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div style={{ textAlign: "right", flexShrink: 0 }}>
-            <div style={{ fontSize: "28px", fontWeight: 500, color: "#444444", lineHeight: 1 }}>&mdash;</div>
-            <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "#444444", marginTop: "4px" }}>presence score</div>
-            <div style={{ fontSize: "11px", color: "#555555", marginTop: "3px", maxWidth: "180px" }}>
+            <div style={{ fontSize: "28px", fontWeight: 500, color: "var(--ds-text-ghost)", lineHeight: 1 }}>&mdash;</div>
+            <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginTop: "4px" }}>presence score</div>
+            <div style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "3px", maxWidth: "180px" }}>
               First audit running &mdash; your score appears here shortly
             </div>
           </div>
@@ -247,15 +247,15 @@ export default async function DashboardPage() {
                   style={{
                     display: "flex", alignItems: "flex-start", gap: "12px",
                     padding: "14px 1.25rem",
-                    borderBottom: i < activityRows.length - 1 ? "0.5px solid #222222" : "none",
+                    borderBottom: i < activityRows.length - 1 ? "0.5px solid var(--ds-border)" : "none",
                   }}
                 >
                   <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: style.bg, border: `1px solid ${style.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <style.Icon size={16} color={style.color} />
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
-                    <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff", lineHeight: 1.4 }}>{a.title}</p>
-                    <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "2px" }}>
+                    <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.4 }}>{a.title}</p>
+                    <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "2px" }}>
                       {a.description ?? "Done for you by alphaa — nothing for you to do"}
                     </p>
                     {a.type === "win" && (
@@ -264,7 +264,7 @@ export default async function DashboardPage() {
                       </div>
                     )}
                   </div>
-                  <span style={{ fontSize: "11px", color: "#555555", flexShrink: 0, marginTop: "2px" }}>
+                  <span style={{ fontSize: "11px", color: "var(--ds-text-faint)", flexShrink: 0, marginTop: "2px" }}>
                     {a.createdAt.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                   </span>
                 </div>
@@ -277,11 +277,11 @@ export default async function DashboardPage() {
         <>
           <SectionDivider>WEEK 1 — ALPHAA IS LEARNING YOUR BUSINESS</SectionDivider>
           <DsCard style={{ padding: 0 }}>
-            <div style={{ padding: "14px 1.25rem", borderBottom: "0.5px solid #222222" }}>
-              <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+            <div style={{ padding: "14px 1.25rem", borderBottom: "0.5px solid var(--ds-border)" }}>
+              <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                 Nothing to report yet &mdash; and that&apos;s normal
               </p>
-              <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "2px" }}>
+              <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "2px" }}>
                 alphaa is learning your business. Every action it takes will show up here, so
                 you always know exactly what was done. Here&apos;s what&apos;s coming up:
               </p>
@@ -292,21 +292,21 @@ export default async function DashboardPage() {
                 style={{
                   display: "flex", alignItems: "center", gap: "12px",
                   padding: "12px 1.25rem",
-                  borderBottom: i < SCHEDULED_ITEMS.length - 1 ? "0.5px solid #222222" : "none",
+                  borderBottom: i < SCHEDULED_ITEMS.length - 1 ? "0.5px solid var(--ds-border)" : "none",
                 }}
               >
-                <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "#1a1a1a", border: "1px solid #2a2a2a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <Clock size={14} color="#888888" />
+                <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "var(--ds-surface)", border: "1px solid var(--ds-border-2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <Clock size={14} color="var(--ds-text-mute)" />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff", lineHeight: 1.4 }}>{item.title}</p>
-                  <p style={{ fontSize: "12px", color: "#888888", marginTop: "1px" }}>{item.when}</p>
+                  <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.4 }}>{item.title}</p>
+                  <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", marginTop: "1px" }}>{item.when}</p>
                 </div>
                 <StatusPill variant="neutral">Scheduled</StatusPill>
               </div>
             ))}
           </DsCard>
-          <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px" }}>
+          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px" }}>
             Scheduled means coming up &mdash; not done yet. Completed work appears here as it happens.
           </p>
         </>
@@ -324,17 +324,17 @@ export default async function DashboardPage() {
               style={{
                 display: "flex", alignItems: "center", gap: "12px",
                 padding: "12px 1.25rem",
-                borderBottom: i < AI_ENGINES.length - 1 ? "0.5px solid #222222" : "none",
+                borderBottom: i < AI_ENGINES.length - 1 ? "0.5px solid var(--ds-border)" : "none",
               }}
             >
-              <e.Icon size={16} color={state === "found" ? "#22c55e" : "#888888"} style={{ flexShrink: 0 }} />
-              <span style={{ fontSize: "14px", color: "#ffffff", flex: 1 }}>{e.name}</span>
+              <e.Icon size={16} color={state === "found" ? "var(--ds-ok)" : "var(--ds-text-mute)"} style={{ flexShrink: 0 }} />
+              <span style={{ fontSize: "14px", color: "var(--ds-text)", flex: 1 }}>{e.name}</span>
               <StatusPill variant={pill.variant}>{pill.label}</StatusPill>
             </div>
           )
         })}
       </DsCard>
-      <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px" }}>
+      <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px" }}>
         {latestAudit
           ? "Based on your latest visibility check. alphaa re-checks every week."
           : "Your first visibility check is running — results appear here shortly."}

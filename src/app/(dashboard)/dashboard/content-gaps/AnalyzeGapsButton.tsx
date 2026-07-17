@@ -52,7 +52,7 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
             fontWeight: 500,
             textTransform: "uppercase",
             letterSpacing: "0.08em",
-            color: "#444444",
+            color: "var(--ds-text-ghost)",
             marginBottom: "8px",
             textAlign: "left",
           }}
@@ -71,11 +71,11 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
           style={{
             flex: 1,
             minWidth: "220px",
-            background: "#1a1a1a",
-            border: "1px solid #2a2a2a",
+            background: "var(--ds-surface)",
+            border: "1px solid var(--ds-border-2)",
             borderRadius: "8px",
             padding: "9px 12px",
-            color: "#ffffff",
+            color: "var(--ds-text)",
             fontSize: "13px",
             outline: "none",
             opacity: loading ? 0.5 : 1,
@@ -85,8 +85,8 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
           type="submit"
           disabled={loading || !competitorUrl.trim()}
           style={{
-            background: "#e05a2b",
-            color: "#ffffff",
+            background: "var(--ds-accent)",
+            color: "var(--ds-text)",
             border: "none",
             borderRadius: "8px",
             padding: "8px 18px",
@@ -101,12 +101,12 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
         </button>
       </div>
       {prominent && (
-        <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px", lineHeight: 1.6, textAlign: "left" }}>
+        <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.6, textAlign: "left" }}>
           alphaa will find topics they rank for that you are missing — with suggested titles and outlines ready to use.
         </p>
       )}
       {error && (
-        <p style={{ fontSize: "12px", color: "#dc2626", marginTop: "8px", textAlign: "left" }}>
+        <p style={{ fontSize: "12px", color: "var(--ds-bad)", marginTop: "8px", textAlign: "left" }}>
           {error}
         </p>
       )}

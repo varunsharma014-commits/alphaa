@@ -106,8 +106,8 @@ export default async function PostsPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>Google listing</h1>
-          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6, maxWidth: "560px" }}>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>Google listing</h1>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6, maxWidth: "560px" }}>
             alphaa posts to your Google Business Profile automatically — keeping it active so more
             customers find you.
           </p>
@@ -117,14 +117,14 @@ export default async function PostsPage() {
 
       {!gbpConnected ? (
         // LOUD not-connected banner.
-        <DsCard accent="#dc2626" style={{ background: "#1a0808", border: "1px solid #7f1d1d", borderRadius: "10px" }}>
+        <DsCard accent="var(--ds-bad)" style={{ background: "var(--ds-bad-bg)", border: "1px solid var(--ds-bad-border)", borderRadius: "10px" }}>
           <div style={{ display: "flex", gap: "14px", alignItems: "flex-start" }}>
-            <AlertCircle size={22} color="#dc2626" style={{ flexShrink: 0, marginTop: "2px" }} />
+            <AlertCircle size={22} color="var(--ds-bad)" style={{ flexShrink: 0, marginTop: "2px" }} />
             <div style={{ flex: 1 }}>
-              <h2 style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+              <h2 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                 Google Business Profile is not connected yet
               </h2>
-              <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "6px", maxWidth: "560px" }}>
+              <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "6px", maxWidth: "560px" }}>
                 Without this, alphaa cannot post to your listing or monitor reviews. This takes 2
                 minutes to set up and unlocks the most important features.
               </p>
@@ -133,8 +133,8 @@ export default async function PostsPage() {
                 style={{
                   display: "inline-block",
                   marginTop: "14px",
-                  background: "#e05a2b",
-                  color: "#ffffff",
+                  background: "var(--ds-accent)",
+                  color: "var(--ds-text)",
                   borderRadius: "8px",
                   padding: "8px 18px",
                   fontSize: "13px",
@@ -175,13 +175,13 @@ export default async function PostsPage() {
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                     <PostTypeBadge type={post.postType} />
                     <StatusBadge status={post.status} />
-                    <span style={{ fontSize: "11px", color: "#555555", marginLeft: "auto", whiteSpace: "nowrap" }}>
+                    <span style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginLeft: "auto", whiteSpace: "nowrap" }}>
                       {formatDate(post.createdAt)}
                     </span>
                   </div>
 
                   {/* Content preview */}
-                  <p style={{ fontSize: "13px", color: "#cccccc", lineHeight: 1.6, marginTop: "12px" }}>
+                  <p style={{ fontSize: "13px", color: "var(--ds-text-strong)", lineHeight: 1.6, marginTop: "12px" }}>
                     {post.content.length > 200 ? post.content.slice(0, 200) + "…" : post.content}
                   </p>
 
@@ -194,7 +194,7 @@ export default async function PostsPage() {
                         gap: "8px",
                         marginTop: "14px",
                         paddingTop: "14px",
-                        borderTop: "1px solid #222222",
+                        borderTop: "1px solid var(--ds-border)",
                       }}
                     >
                       <PublishPostButton postId={post.id} />
@@ -206,10 +206,10 @@ export default async function PostsPage() {
                     <p
                       style={{
                         fontSize: "11px",
-                        color: "#555555",
+                        color: "var(--ds-text-faint)",
                         marginTop: "12px",
                         paddingTop: "12px",
-                        borderTop: "1px solid #222222",
+                        borderTop: "1px solid var(--ds-border)",
                       }}
                     >
                       Published {formatDate(post.postedAt)}
@@ -220,10 +220,10 @@ export default async function PostsPage() {
                     <p
                       style={{
                         fontSize: "11px",
-                        color: "#555555",
+                        color: "var(--ds-text-faint)",
                         marginTop: "12px",
                         paddingTop: "12px",
-                        borderTop: "1px solid #222222",
+                        borderTop: "1px solid var(--ds-border)",
                       }}
                     >
                       Scheduled for {formatDate(post.scheduledFor)}
@@ -234,10 +234,10 @@ export default async function PostsPage() {
                     <p
                       style={{
                         fontSize: "11px",
-                        color: "#dc2626",
+                        color: "var(--ds-bad)",
                         marginTop: "12px",
                         paddingTop: "12px",
-                        borderTop: "1px solid #222222",
+                        borderTop: "1px solid var(--ds-border)",
                       }}
                     >
                       alphaa couldn&apos;t publish this one — it will retry automatically on the next run.

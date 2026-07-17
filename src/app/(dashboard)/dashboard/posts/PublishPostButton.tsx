@@ -36,9 +36,9 @@ export function PublishPostButton({ postId }: { postId: string }) {
           display: "inline-flex",
           alignItems: "center",
           gap: "6px",
-          background: "#0d2218",
-          border: "1px solid #14532d",
-          color: "#22c55e",
+          background: "var(--ds-ok-bg)",
+          border: "1px solid var(--ds-ok-border)",
+          color: "var(--ds-ok)",
           borderRadius: "8px",
           padding: "6px 12px",
           fontSize: "11px",
@@ -54,7 +54,7 @@ export function PublishPostButton({ postId }: { postId: string }) {
         )}
         {loading ? "Publishing…" : "Publish now"}
       </button>
-      {error && <p style={{ color: "#dc2626", fontSize: "11px", marginTop: "4px" }}>{error}</p>}
+      {error && <p style={{ color: "var(--ds-bad)", fontSize: "11px", marginTop: "4px" }}>{error}</p>}
     </div>
   )
 }

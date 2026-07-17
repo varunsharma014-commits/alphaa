@@ -126,12 +126,12 @@ export default async function EngineVisibilityPage({
 
   // Hero state
   const hero = noScan
-    ? { accent: "#444444", label: "First scan running…", color: "#888888", sub: "alphaa is asking " + config.label + " the questions your customers type. Results appear here shortly." }
+    ? { accent: "var(--ds-text-ghost)", label: "First scan running…", color: "var(--ds-text-mute)", sub: "alphaa is asking " + config.label + " the questions your customers type. Results appear here shortly." }
     : isFound
-      ? { accent: "#22c55e", label: "Mentioned", color: "#22c55e", sub: "Customers can find you on " + config.label + " when they ask." }
+      ? { accent: "var(--ds-ok)", label: "Mentioned", color: "var(--ds-ok)", sub: "Customers can find you on " + config.label + " when they ask." }
       : isPartial
-        ? { accent: "#f59e0b", label: "Sometimes", color: "#f59e0b", sub: config.label + " mentions you for some searches — alphaa is working to make it consistent." }
-        : { accent: "#444444", label: "Not yet", color: "#888888", sub: "alphaa is working to get you mentioned on " + config.label + "." }
+        ? { accent: "var(--ds-warn)", label: "Sometimes", color: "var(--ds-warn)", sub: config.label + " mentions you for some searches — alphaa is working to make it consistent." }
+        : { accent: "var(--ds-text-ghost)", label: "Not yet", color: "var(--ds-text-mute)", sub: "alphaa is working to get you mentioned on " + config.label + "." }
 
   return (
     <div style={{ maxWidth: "760px", margin: "0 auto" }}>
@@ -140,8 +140,8 @@ export default async function EngineVisibilityPage({
       {/* Header */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", marginBottom: "16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Icon size={20} color={isFound ? "#22c55e" : "#888888"} />
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>{config.label} visibility</h1>
+          <Icon size={20} color={isFound ? "var(--ds-ok)" : "var(--ds-text-mute)"} />
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>{config.label} visibility</h1>
         </div>
         <div style={{ flexShrink: 0 }}>
           <RunScanButton />
@@ -151,10 +151,10 @@ export default async function EngineVisibilityPage({
       {/* Hero stat */}
       <DsCard accent={hero.accent} style={{ marginBottom: "16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          {noScan && <RefreshCw size={22} color="#e05a2b" className="animate-spin" />}
+          {noScan && <RefreshCw size={22} color="var(--ds-accent)" className="animate-spin" />}
           <div>
             <div style={{ fontSize: "26px", fontWeight: 600, color: hero.color, lineHeight: 1.1 }}>{hero.label}</div>
-            <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "4px" }}>{hero.sub}</p>
+            <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>{hero.sub}</p>
           </div>
         </div>
       </DsCard>
@@ -163,21 +163,21 @@ export default async function EngineVisibilityPage({
       {isFound && (result?.snippet || result?.query) && (
         <DsCard style={{ marginBottom: "16px" }}>
           {result?.snippet && (
-            <p style={{ fontSize: "13px", fontStyle: "italic", color: "#cccccc", lineHeight: 1.7 }}>
+            <p style={{ fontSize: "13px", fontStyle: "italic", color: "var(--ds-text-strong)", lineHeight: 1.7 }}>
               &ldquo;{result.snippet}&rdquo;
             </p>
           )}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", marginTop: result?.snippet ? "12px" : 0 }}>
             {result?.query && (
               <div>
-                <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "#444444" }}>Triggered by</div>
-                <div style={{ fontSize: "13px", color: "#888888", marginTop: "2px" }}>&ldquo;{result.query}&rdquo;</div>
+                <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)" }}>Triggered by</div>
+                <div style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "2px" }}>&ldquo;{result.query}&rdquo;</div>
               </div>
             )}
             {foundDate && (
               <div>
-                <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "#444444" }}>Found</div>
-                <div style={{ fontSize: "13px", color: "#888888", marginTop: "2px" }}>{foundDate}</div>
+                <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)" }}>Found</div>
+                <div style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "2px" }}>{foundDate}</div>
               </div>
             )}
           </div>
@@ -186,21 +186,21 @@ export default async function EngineVisibilityPage({
 
       {/* What alphaa is doing */}
       <SectionDivider>WHAT ALPHAA IS DOING FOR {config.label.toUpperCase()}</SectionDivider>
-      <DsCard accent="#22c55e">
+      <DsCard accent="var(--ds-ok)">
         <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
-          <Wand2 size={15} color="#22c55e" />
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>Working on your behalf</span>
+          <Wand2 size={15} color="var(--ds-ok)" />
+          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>Working on your behalf</span>
         </div>
         <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: "8px" }}>
           {config.actions.map((line) => (
-            <li key={line} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
-              <span style={{ color: "#22c55e", flexShrink: 0 }}>•</span>
+            <li key={line} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+              <span style={{ color: "var(--ds-ok)", flexShrink: 0 }}>•</span>
               <span>{line}</span>
             </li>
           ))}
         </ul>
         {foundDate && (
-          <p style={{ fontSize: "11px", color: "#555555", marginTop: "12px" }}>
+          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "12px" }}>
             Last automatic scan {foundDate} · next scan runs within 7 days
           </p>
         )}
@@ -209,7 +209,7 @@ export default async function EngineVisibilityPage({
       {/* How this engine finds businesses */}
       <SectionDivider>HOW {config.label.toUpperCase()} FINDS BUSINESSES LIKE YOURS</SectionDivider>
       <DsCard>
-        <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.7 }}>{config.explainer}</p>
+        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.7 }}>{config.explainer}</p>
       </DsCard>
     </div>
   )

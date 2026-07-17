@@ -110,8 +110,8 @@ export default async function VisibilityPage() {
 
         {/* Page header */}
         <div style={{ marginBottom: "20px" }}>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>AI Visibility</h1>
-          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>AI Visibility</h1>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             When someone asks an AI assistant for your type of business — do you show up?
           </p>
         </div>
@@ -133,24 +133,24 @@ export default async function VisibilityPage() {
                 width: "44px",
                 height: "44px",
                 borderRadius: "10px",
-                background: "#1a1a1a",
+                background: "var(--ds-surface)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <RefreshCw size={22} color="#e05a2b" className="animate-spin" />
+              <RefreshCw size={22} color="var(--ds-accent)" className="animate-spin" />
             </div>
             <div style={{ maxWidth: "440px" }}>
-              <h3 style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff", marginBottom: "6px" }}>
+              <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)", marginBottom: "6px" }}>
                 alphaa is running your first AI engine scan
               </h3>
-              <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
+              <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
                 We&apos;re asking ChatGPT, Claude, Gemini and Perplexity the questions your
                 customers type — and checking whether your business comes up. This happens
                 automatically, you don&apos;t need to do anything.
               </p>
-              <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px" }}>
+              <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px" }}>
                 The first scan usually finishes within a few minutes. alphaa re-checks every week
                 after that.
               </p>
@@ -177,8 +177,8 @@ export default async function VisibilityPage() {
               <DsCard key={key}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <Icon size={18} color="#888888" />
-                    <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+                    <Icon size={18} color="var(--ds-text-mute)" />
+                    <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                       {meta.label}
                     </span>
                   </div>
@@ -208,8 +208,8 @@ export default async function VisibilityPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>AI Visibility</h1>
-          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>AI Visibility</h1>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             When someone asks an AI assistant for your type of business — do you show up?
           </p>
         </div>
@@ -289,8 +289,8 @@ export default async function VisibilityPage() {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <Icon size={18} color={isFound ? "#22c55e" : "#888888"} />
-                  <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+                  <Icon size={18} color={isFound ? "var(--ds-ok)" : "var(--ds-text-mute)"} />
+                  <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                     {meta.label}
                   </span>
                 </div>
@@ -314,10 +314,10 @@ export default async function VisibilityPage() {
                       alignItems: "center",
                       gap: "8px",
                       fontSize: "12px",
-                      color: "#666666",
+                      color: "var(--ds-text-soft)",
                     }}
                   >
-                    <RefreshCw size={13} color="#666666" className="animate-spin" />
+                    <RefreshCw size={13} color="var(--ds-text-soft)" className="animate-spin" />
                     <span>First scan running — results will appear here shortly.</span>
                   </div>
                 ) : isFound ? (
@@ -327,25 +327,25 @@ export default async function VisibilityPage() {
                         style={{
                           fontSize: "11px",
                           fontStyle: "italic",
-                          color: "#888888",
+                          color: "var(--ds-text-mute)",
                           lineHeight: 1.6,
                         }}
                       >
                         &ldquo;{snippet}&rdquo;
                       </p>
                     ) : (
-                      <p style={{ fontSize: "12px", color: "#888888", lineHeight: 1.6 }}>
+                      <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
                         This engine recommends your business when customers ask.
                       </p>
                     )}
                     {engineResult?.query && (
-                      <p style={{ fontSize: "11px", color: "#22c55e", marginTop: "8px" }}>
+                      <p style={{ fontSize: "11px", color: "var(--ds-ok)", marginTop: "8px" }}>
                         Mentioned when we asked: &ldquo;{engineResult.query}&rdquo;
                       </p>
                     )}
                   </>
                 ) : (
-                  <p style={{ fontSize: "12px", color: "#666666", lineHeight: 1.6 }}>
+                  <p style={{ fontSize: "12px", color: "var(--ds-text-soft)", lineHeight: 1.6 }}>
                     alphaa is working on this. Typically takes 2–4 more weeks of content
                     publishing.
                   </p>
@@ -358,10 +358,10 @@ export default async function VisibilityPage() {
 
       {/* What alphaa is doing to improve this */}
       <SectionDivider>WORKING ON YOUR BEHALF</SectionDivider>
-      <DsCard accent="#22c55e">
+      <DsCard accent="var(--ds-ok)">
         <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
-          <Wand2 size={15} color="#22c55e" />
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+          <Wand2 size={15} color="var(--ds-ok)" />
+          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
             What alphaa is doing to improve this
           </span>
         </div>
@@ -378,17 +378,17 @@ export default async function VisibilityPage() {
                 alignItems: "flex-start",
                 gap: "8px",
                 fontSize: "13px",
-                color: "#888888",
+                color: "var(--ds-text-mute)",
                 lineHeight: 1.6,
               }}
             >
-              <span style={{ color: "#22c55e", lineHeight: 1.6, flexShrink: 0 }}>•</span>
+              <span style={{ color: "var(--ds-ok)", lineHeight: 1.6, flexShrink: 0 }}>•</span>
               <span>{line}</span>
             </li>
           ))}
         </ul>
         {lastScanDate && (
-          <p style={{ fontSize: "11px", color: "#555555", marginTop: "12px" }}>
+          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "12px" }}>
             Last automatic scan {lastScanDate} · next scan runs within 7 days
           </p>
         )}

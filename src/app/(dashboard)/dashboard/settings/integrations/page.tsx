@@ -341,12 +341,12 @@ export default function IntegrationsPage() {
   const selectClass =
     'w-full appearance-none rounded-lg px-3 py-2.5 text-[13px] pr-9 focus:outline-none transition-colors'
   const selectStyle: React.CSSProperties = {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: 'var(--ds-surface)',
     border: '.5px solid #222',
     color: '#fff',
   }
   const primaryBtnStyle: React.CSSProperties = {
-    backgroundColor: '#e05a2b',
+    backgroundColor: 'var(--ds-accent)',
     color: '#fff',
     borderRadius: '8px',
     fontSize: '13px',
@@ -368,10 +368,10 @@ export default function IntegrationsPage() {
       return (
         <DsCard>
           <div className="flex items-center gap-3 animate-pulse">
-            <div className="w-10 h-10 rounded-xl" style={{ backgroundColor: '#1a1a1a' }} />
+            <div className="w-10 h-10 rounded-xl" style={{ backgroundColor: 'var(--ds-surface)' }} />
             <div className="space-y-2 flex-1">
-              <div className="h-4 w-48 rounded" style={{ backgroundColor: '#1a1a1a' }} />
-              <div className="h-3 w-72 rounded" style={{ backgroundColor: '#1a1a1a' }} />
+              <div className="h-4 w-48 rounded" style={{ backgroundColor: 'var(--ds-surface)' }} />
+              <div className="h-3 w-72 rounded" style={{ backgroundColor: 'var(--ds-surface)' }} />
             </div>
           </div>
         </DsCard>
@@ -385,7 +385,7 @@ export default function IntegrationsPage() {
             {/* Google logo tile */}
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
+              style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid #222' }}
             >
               <GoogleLogo size={30} />
             </div>
@@ -421,9 +421,9 @@ export default function IntegrationsPage() {
                 <div
                   key={chip}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
-                  style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222', color: '#888' }}
+                  style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid #222', color: '#888' }}
                 >
-                  <CheckCircle2 className="w-3 h-3" style={{ color: '#22c55e' }} />
+                  <CheckCircle2 className="w-3 h-3" style={{ color: 'var(--ds-ok)' }} />
                   <span>{chip}</span>
                 </div>
               ))}
@@ -444,9 +444,9 @@ export default function IntegrationsPage() {
           <div className="flex items-center gap-3 mb-5">
             <div
               className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ backgroundColor: '#0d2218', border: '1px solid #14532d' }}
+              style={{ backgroundColor: 'var(--ds-ok-bg)', border: '1px solid var(--ds-ok-border)' }}
             >
-              <CheckCircle2 className="w-4 h-4" style={{ color: '#22c55e' }} />
+              <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--ds-ok)' }} />
             </div>
             <div>
               <h2 className="text-[14px] font-medium" style={{ color: '#fff' }}>
@@ -465,7 +465,7 @@ export default function IntegrationsPage() {
                 <div
                   key={i}
                   className="h-11 rounded-lg animate-pulse"
-                  style={{ backgroundColor: '#1a1a1a' }}
+                  style={{ backgroundColor: 'var(--ds-surface)' }}
                 />
               ))}
             </div>
@@ -567,7 +567,7 @@ export default function IntegrationsPage() {
           <div className="flex items-center gap-3">
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
+              style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid #222' }}
             >
               <GoogleLogo size={22} />
             </div>
@@ -606,7 +606,7 @@ export default function IntegrationsPage() {
               onClick={handleDisconnect}
               disabled={disconnecting}
               className="flex items-center gap-1.5 px-3.5 py-2 transition-colors disabled:opacity-50"
-              style={{ backgroundColor: 'transparent', border: '1px solid #7f1d1d', color: '#dc2626', borderRadius: '8px', fontSize: '11px', fontWeight: 500 }}
+              style={{ backgroundColor: 'transparent', border: '1px solid var(--ds-bad-border)', color: 'var(--ds-bad)', borderRadius: '8px', fontSize: '11px', fontWeight: 500 }}
             >
               <Unlink className="w-3.5 h-3.5" />
               {disconnecting ? 'Disconnecting…' : 'Disconnect'}
@@ -633,7 +633,7 @@ export default function IntegrationsPage() {
             <div
               key={item.label}
               className="rounded-lg p-3 space-y-1.5"
-              style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
+              style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid #222' }}
             >
               <p style={labelStyle}>{item.label}</p>
               {item.value ? (
@@ -644,7 +644,7 @@ export default function IntegrationsPage() {
                 <button
                   onClick={() => setState('selecting_properties')}
                   className="text-[12px] hover:underline"
-                  style={{ color: '#e05a2b' }}
+                  style={{ color: 'var(--ds-accent)' }}
                 >
                   Set up →
                 </button>
@@ -697,7 +697,7 @@ export default function IntegrationsPage() {
       {justConnected && (
         <div
           className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-[13px]"
-          style={{ backgroundColor: '#0d2218', border: '1px solid #14532d', color: '#22c55e' }}
+          style={{ backgroundColor: 'var(--ds-ok-bg)', border: '1px solid var(--ds-ok-border)', color: 'var(--ds-ok)' }}
         >
           <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
           <span className="flex-1">
@@ -711,14 +711,14 @@ export default function IntegrationsPage() {
       {showConnectBanner && (
         <div
           className="rounded-lg p-4 sm:p-5"
-          style={{ backgroundColor: '#1a0808', border: '1px solid #7f1d1d' }}
+          style={{ backgroundColor: 'var(--ds-bad-bg)', border: '1px solid var(--ds-bad-border)' }}
         >
           <div className="flex items-start gap-3">
             <div
               className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: '#240a0a', border: '1px solid #7f1d1d' }}
+              style={{ backgroundColor: 'var(--ds-bad-bg)', border: '1px solid var(--ds-bad-border)' }}
             >
-              <AlertCircle className="w-5 h-5" style={{ color: '#dc2626' }} />
+              <AlertCircle className="w-5 h-5" style={{ color: 'var(--ds-bad)' }} />
             </div>
             <div className="flex-1 space-y-2">
               <h2 className="text-[14px] font-medium" style={{ color: '#fff' }}>
@@ -751,14 +751,14 @@ export default function IntegrationsPage() {
       {error && (
         <div
           className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-[13px]"
-          style={{ backgroundColor: '#1a1200', border: '1px solid #78350f', color: '#f59e0b' }}
+          style={{ backgroundColor: 'var(--ds-warn-bg)', border: '1px solid var(--ds-warn-border)', color: 'var(--ds-warn)' }}
         >
           <AlertTriangle className="w-4 h-4 flex-shrink-0" />
           <span className="flex-1">{error}</span>
           <button
             onClick={() => setError(null)}
             className="text-[11px] ml-2 hover:underline"
-            style={{ color: '#f59e0b' }}
+            style={{ color: 'var(--ds-warn)' }}
           >
             Dismiss
           </button>
@@ -780,7 +780,7 @@ export default function IntegrationsPage() {
             <div className="flex items-center gap-3">
               <div
                 className="w-9 h-9 rounded-lg flex items-center justify-center"
-                style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
+                style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid #222' }}
               >
                 <Globe className="w-4 h-4" style={{ color: '#888' }} />
               </div>
@@ -825,7 +825,7 @@ export default function IntegrationsPage() {
               className="mt-5 flex flex-col items-center gap-3 py-8"
               style={{ borderTop: '.5px solid #222' }}
             >
-              <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#e05a2b' }} />
+              <Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--ds-accent)' }} />
               <p className="text-[13px]" style={{ color: '#888' }}>
                 alphaa is checking your website — this takes 15–60 seconds.
               </p>
@@ -836,7 +836,7 @@ export default function IntegrationsPage() {
           {!crawling && crawlError && (
             <div
               className="mt-4 flex items-center gap-2 p-3 rounded-lg text-[12px]"
-              style={{ backgroundColor: '#1a1200', border: '1px solid #78350f', color: '#f59e0b' }}
+              style={{ backgroundColor: 'var(--ds-warn-bg)', border: '1px solid var(--ds-warn-border)', color: 'var(--ds-warn)' }}
             >
               <AlertTriangle className="w-4 h-4 flex-shrink-0" />
               {crawlError}
@@ -850,7 +850,7 @@ export default function IntegrationsPage() {
               <div className="flex flex-wrap gap-2">
                 <div
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
-                  style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222', color: '#fff' }}
+                  style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid #222', color: '#fff' }}
                 >
                   <Globe className="w-3 h-3" style={{ color: '#888' }} />
                   {crawlData.pagesScanned} pages checked
@@ -858,7 +858,7 @@ export default function IntegrationsPage() {
                 {issueCounts.critical > 0 && (
                   <div
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
-                    style={{ backgroundColor: '#1a0808', border: '1px solid #7f1d1d', color: '#dc2626' }}
+                    style={{ backgroundColor: 'var(--ds-bad-bg)', border: '1px solid var(--ds-bad-border)', color: 'var(--ds-bad)' }}
                   >
                     <XCircle className="w-3 h-3" />
                     {issueCounts.critical} critical
@@ -867,7 +867,7 @@ export default function IntegrationsPage() {
                 {issueCounts.warning > 0 && (
                   <div
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
-                    style={{ backgroundColor: '#1a1200', border: '1px solid #78350f', color: '#f59e0b' }}
+                    style={{ backgroundColor: 'var(--ds-warn-bg)', border: '1px solid var(--ds-warn-border)', color: 'var(--ds-warn)' }}
                   >
                     <AlertTriangle className="w-3 h-3" />
                     {issueCounts.warning} warnings
@@ -876,7 +876,7 @@ export default function IntegrationsPage() {
                 {issueCounts.improvement > 0 && (
                   <div
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
-                    style={{ backgroundColor: '#0d1520', border: '1px solid #1e2d45', color: '#3b82f6' }}
+                    style={{ backgroundColor: 'var(--ds-info-bg)', border: '1px solid var(--ds-info-border)', color: 'var(--ds-info)' }}
                   >
                     <Zap className="w-3 h-3" />
                     {issueCounts.improvement} improvements
@@ -892,7 +892,7 @@ export default function IntegrationsPage() {
                     <div
                       key={idx}
                       className="rounded-lg p-3 space-y-2"
-                      style={{ backgroundColor: '#1a1a1a', border: '.5px solid #222' }}
+                      style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid #222' }}
                     >
                       <div className="flex items-start justify-between gap-3 flex-wrap">
                         <p className="text-[12px] font-medium" style={{ color: '#fff' }}>
@@ -901,7 +901,7 @@ export default function IntegrationsPage() {
                         <SeverityBadge severity={issue.severity} />
                       </div>
                       <p className="text-[12px]" style={{ color: '#888', lineHeight: 1.6 }}>
-                        <span className="font-medium" style={{ color: '#3b82f6' }}>How alphaa fixes it: </span>
+                        <span className="font-medium" style={{ color: 'var(--ds-info)' }}>How alphaa fixes it: </span>
                         {issue.fix}
                       </p>
                       {issue.url && issue.url !== 'site-wide' && (
@@ -917,7 +917,7 @@ export default function IntegrationsPage() {
               {issues.length === 0 && (
                 <div
                   className="flex items-center gap-2 p-3 rounded-lg text-[13px]"
-                  style={{ backgroundColor: '#0d2218', border: '1px solid #14532d', color: '#22c55e' }}
+                  style={{ backgroundColor: 'var(--ds-ok-bg)', border: '1px solid var(--ds-ok-border)', color: 'var(--ds-ok)' }}
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   Great news — alphaa found no issues on your site.

@@ -24,8 +24,8 @@ export default function CopyButton({ text }: Props) {
       onClick={handleCopy}
       style={{
         background: "transparent",
-        border: "1px solid #333333",
-        color: copied ? "#22c55e" : "#888888",
+        border: "1px solid var(--ds-border-3)",
+        color: copied ? "var(--ds-ok)" : "var(--ds-text-mute)",
         fontSize: "11px",
         fontWeight: 500,
         padding: "4px 12px",

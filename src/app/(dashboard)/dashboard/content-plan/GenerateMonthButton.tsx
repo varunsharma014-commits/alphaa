@@ -44,8 +44,8 @@ export function GenerateMonthButton() {
           display: "inline-flex",
           alignItems: "center",
           gap: "8px",
-          background: "#e05a2b",
-          color: "#ffffff",
+          background: "var(--ds-accent)",
+          color: "var(--ds-text)",
           border: "none",
           borderRadius: "8px",
           padding: "8px 18px",
@@ -62,7 +62,7 @@ export function GenerateMonthButton() {
               width: "16px",
               height: "16px",
               border: "2px solid rgba(255,255,255,0.3)",
-              borderTopColor: "#ffffff",
+              borderTopColor: "var(--ds-text)",
               borderRadius: "50%",
               animation: "spin 0.7s linear infinite",
             }}
@@ -72,7 +72,7 @@ export function GenerateMonthButton() {
         )}
         {loading ? "Generating…" : "Generate my first month →"}
       </button>
-      {message && <span style={{ fontSize: "11px", color: "#888888" }}>{message}</span>}
+      {message && <span style={{ fontSize: "11px", color: "var(--ds-text-mute)" }}>{message}</span>}
     </div>
   )
 }

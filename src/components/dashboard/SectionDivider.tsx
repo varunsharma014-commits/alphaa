@@ -10,13 +10,13 @@ export function SectionDivider({ children }: { children: ReactNode }) {
           fontWeight: 500,
           textTransform: "uppercase",
           letterSpacing: "0.08em",
-          color: "#444444",
+          color: "var(--ds-text-ghost)",
           whiteSpace: "nowrap",
         }}
       >
         {children}
       </span>
-      <span style={{ flex: 1, height: "1px", background: "#222222" }} />
+      <span style={{ flex: 1, height: "1px", background: "var(--ds-border)" }} />
     </div>
   )
 }

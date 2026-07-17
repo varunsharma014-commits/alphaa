@@ -31,14 +31,14 @@ export function SyncReviewsButton() {
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-      {message && <span style={{ fontSize: "11px", color: "#555555" }}>{message}</span>}
+      {message && <span style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>{message}</span>}
       <button
         onClick={handleSync}
         disabled={loading}
         style={{
           background: "transparent",
-          color: "#888888",
-          border: "1px solid #333333",
+          color: "var(--ds-text-mute)",
+          border: "1px solid var(--ds-border-3)",
           borderRadius: "8px",
           padding: "8px 16px",
           fontSize: "13px",

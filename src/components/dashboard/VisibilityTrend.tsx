@@ -55,13 +55,13 @@ export function VisibilityTrend({ points }: { points: TrendPoint[] }) {
           marginBottom: "8px",
         }}
       >
-        <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+        <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
           Your AI share of voice over time
         </span>
         <span
           style={{
             fontSize: "12px",
-            color: delta > 0 ? "#22c55e" : delta < 0 ? "#ef4444" : "#888888",
+            color: delta > 0 ? "var(--ds-ok)" : delta < 0 ? "var(--ds-bad)" : "var(--ds-text-mute)",
           }}
         >
           {delta > 0 ? `▲ up ${delta} pts` : delta < 0 ? `▼ down ${Math.abs(delta)} pts` : "holding steady"}{" "}
@@ -82,7 +82,7 @@ export function VisibilityTrend({ points }: { points: TrendPoint[] }) {
               x2={W - PAD_R}
               y1={y(pct)}
               y2={y(pct)}
-              stroke="#ffffff"
+              stroke="var(--ds-text)"
               strokeOpacity={0.07}
             />
             <text
@@ -90,26 +90,26 @@ export function VisibilityTrend({ points }: { points: TrendPoint[] }) {
               y={y(pct) + 3}
               textAnchor="end"
               fontSize="10"
-              fill="#666666"
+              fill="var(--ds-text-soft)"
             >
               {pct}%
             </text>
           </g>
         ))}
 
-        <path d={areaPath} fill="#e05a2b" fillOpacity={0.12} />
-        <path d={linePath} fill="none" stroke="#e05a2b" strokeWidth={2} strokeLinejoin="round" />
+        <path d={areaPath} fill="var(--ds-accent)" fillOpacity={0.12} />
+        <path d={linePath} fill="none" stroke="var(--ds-accent)" strokeWidth={2} strokeLinejoin="round" />
 
         {points.map((p, i) => (
           <g key={p.date.getTime()}>
-            <circle cx={x(i)} cy={y(pcts[i])} r={3.5} fill="#e05a2b" />
+            <circle cx={x(i)} cy={y(pcts[i])} r={3.5} fill="var(--ds-accent)" />
             {i % labelEvery === 0 || i === points.length - 1 ? (
               <text
                 x={x(i)}
                 y={H - 8}
                 textAnchor="middle"
                 fontSize="10"
-                fill="#666666"
+                fill="var(--ds-text-soft)"
               >
                 {fmt(p.date)}
               </text>
@@ -117,7 +117,7 @@ export function VisibilityTrend({ points }: { points: TrendPoint[] }) {
           </g>
         ))}
       </svg>
-      <p style={{ fontSize: "11px", color: "#555555", marginTop: "6px" }}>
+      <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "6px" }}>
         Share of voice = the portion of the 4 AI engines (ChatGPT, Claude, Gemini,
         Perplexity) that mention your business when asked. Updated with every weekly scan.
       </p>

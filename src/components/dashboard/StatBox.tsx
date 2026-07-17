@@ -3,11 +3,11 @@ import type { ReactNode } from "react"
 export type StatTone = "default" | "success" | "warning" | "danger" | "muted"
 
 const TONE_COLOR: Record<StatTone, string> = {
-  default: "#ffffff",
-  success: "#22c55e",
-  warning: "#f59e0b",
-  danger: "#dc2626",
-  muted: "#888888",
+  default: "var(--ds-text)",
+  success: "var(--ds-ok)",
+  warning: "var(--ds-warn)",
+  danger: "var(--ds-bad)",
+  muted: "var(--ds-text-mute)",
 }
 
 export function StatBox({
@@ -26,8 +26,8 @@ export function StatBox({
   return (
     <div
       style={{
-        background: "#1a1a1a",
-        border: "1px solid #222222",
+        background: "var(--ds-surface)",
+        border: "1px solid var(--ds-border)",
         borderRadius: "8px",
         padding: "10px",
         textAlign: "center",
@@ -36,7 +36,7 @@ export function StatBox({
       <div style={{ fontSize: "22px", fontWeight: 500, color: TONE_COLOR[tone], lineHeight: 1.1 }}>
         {value}
       </div>
-      <div style={{ fontSize: "10px", color: "#555555", marginTop: "2px", lineHeight: 1.3 }}>
+      <div style={{ fontSize: "10px", color: "var(--ds-text-faint)", marginTop: "2px", lineHeight: 1.3 }}>
         {label}
       </div>
       {delta && (
@@ -44,7 +44,7 @@ export function StatBox({
           style={{
             fontSize: "10px",
             marginTop: "2px",
-            color: deltaDir === "down" ? "#dc2626" : "#22c55e",
+            color: deltaDir === "down" ? "var(--ds-bad)" : "var(--ds-ok)",
           }}
         >
           {deltaDir === "down" ? "↓" : "↑"} {delta}

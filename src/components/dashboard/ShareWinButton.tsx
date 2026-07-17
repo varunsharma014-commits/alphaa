@@ -17,7 +17,7 @@ interface ShareWinButtonProps {
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://alphaa.app"
 
 const pillClass =
-  "inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-xs font-medium text-white/60 transition-all duration-200 hover:border-brand-orange/50 hover:text-brand-orange"
+  "inline-flex items-center gap-1.5 rounded-full border border-line/15 px-3 py-1.5 text-xs font-medium text-fg/60 transition-all duration-200 hover:border-brand-orange/50 hover:text-brand-orange"
 
 export function ShareWinButton({ winId, headline, align = "left" }: ShareWinButtonProps) {
   // navigator.share only exists in some browsers — detect after mount so the

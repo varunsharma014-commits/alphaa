@@ -38,8 +38,8 @@ export default function AddToCalendarButton({ title }: Props) {
   if (state === "done") {
     return (
       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-        <Check size={14} color="#22c55e" />
-        <span style={{ fontSize: "12px", fontWeight: 500, color: "#22c55e" }}>
+        <Check size={14} color="var(--ds-ok)" />
+        <span style={{ fontSize: "12px", fontWeight: 500, color: "var(--ds-ok)" }}>
           Added to your content calendar
         </span>
       </div>
@@ -56,8 +56,8 @@ export default function AddToCalendarButton({ title }: Props) {
           display: "inline-flex",
           alignItems: "center",
           gap: "6px",
-          background: "#e05a2b",
-          color: "#ffffff",
+          background: "var(--ds-accent)",
+          color: "var(--ds-text)",
           border: "none",
           borderRadius: "8px",
           padding: "7px 14px",
@@ -72,7 +72,7 @@ export default function AddToCalendarButton({ title }: Props) {
         {state === "loading" ? "Adding…" : "Add to content calendar →"}
       </button>
       {state === "error" && (
-        <p style={{ fontSize: "11px", color: "#888888", marginTop: "6px", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "11px", color: "var(--ds-text-mute)", marginTop: "6px", lineHeight: 1.6 }}>
           We couldn&apos;t add that just now. Please try again in a moment.
         </p>
       )}

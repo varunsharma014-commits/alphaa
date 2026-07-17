@@ -1,9 +1,10 @@
 "use client"
 
 import { UserButton } from "@clerk/nextjs"
+import { ThemeToggle, type DashboardTheme } from "@/components/dashboard/ThemeToggle"
 import type { AppUser } from "@/types/user"
 
-export function DashboardTopBar({ user }: { user: AppUser }) {
+export function DashboardTopBar({ user, theme }: { user: AppUser; theme: DashboardTheme }) {
   const isTrialing = user.subscriptionStatus === "trialing"
   const trialDaysLeft = user.trialEndsAt
     ? Math.max(0, Math.ceil((new Date(user.trialEndsAt).getTime() - Date.now()) / 86400000))
@@ -47,7 +48,8 @@ export function DashboardTopBar({ user }: { user: AppUser }) {
       </div>
 
       {/* Right: actions */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
+        <ThemeToggle initial={theme} />
         <UserButton
           appearance={{
             variables: { colorPrimary: "#FF6B1A" },

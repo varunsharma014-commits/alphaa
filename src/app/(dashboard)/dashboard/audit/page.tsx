@@ -91,9 +91,9 @@ function cwvStatus(id: string, displayValue: string | undefined): {
 }
 
 const SEV_DOT: Record<string, string> = {
-  critical: "#dc2626",
-  warning: "#f59e0b",
-  improvement: "#3b82f6",
+  critical: "var(--ds-bad)",
+  warning: "var(--ds-warn)",
+  improvement: "var(--ds-info)",
 }
 
 // Map an issue to a plain-English line. Prefer humanizing a code; otherwise use
@@ -219,21 +219,21 @@ export default async function AuditPage() {
           {aiCrawlerBlocks.map((issue, i) => {
             const engine = String(issue.engine ?? "an AI engine")
             return (
-              <DsCard key={`ai-block-${i}`} accent="#dc2626" style={{ background: "#1a0808" }}>
+              <DsCard key={`ai-block-${i}`} accent="var(--ds-bad)" style={{ background: "var(--ds-bad-bg)" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                  <AlertCircle size={18} color="#dc2626" style={{ flexShrink: 0, marginTop: "1px" }} />
+                  <AlertCircle size={18} color="var(--ds-bad)" style={{ flexShrink: 0, marginTop: "1px" }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+                    <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                       Your website is blocking {engine} from reading your content
                     </p>
-                    <p style={{ fontSize: "13px", color: "#d6b8b8", lineHeight: 1.6, marginTop: "4px" }}>
+                    <p style={{ fontSize: "13px", color: "var(--ds-bad-soft)", lineHeight: 1.6, marginTop: "4px" }}>
                       This means {engine} literally cannot see your website — which is why you don&apos;t appear in its results.
                     </p>
                     <details style={{ marginTop: "10px" }}>
-                      <summary style={{ cursor: "pointer", color: "#e05a2b", fontSize: "13px", fontWeight: 500 }}>
+                      <summary style={{ cursor: "pointer", color: "var(--ds-accent)", fontSize: "13px", fontWeight: 500 }}>
                         Show me how to fix this →
                       </summary>
-                      <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "8px" }}>
+                      <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "8px" }}>
                         {String(issue.fix ?? "")}
                       </p>
                     </details>
@@ -256,8 +256,8 @@ export default async function AuditPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>Website health</h1>
-          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>Website health</h1>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             alphaa checks your site every week and flags anything that could hurt your visibility.
             {latestCrawl ? ` Last checked ${formatDate(latestCrawl.crawledAt)}.` : ""}
           </p>
@@ -297,8 +297,8 @@ export default async function AuditPage() {
               marginBottom: "14px",
             }}
           >
-            <Gauge size={15} color="#e05a2b" />
-            <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+            <Gauge size={15} color="var(--ds-accent)" />
+            <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
               How fast your site feels to visitors
             </span>
             {perfPct !== null && (
@@ -316,22 +316,22 @@ export default async function AuditPage() {
                 <div
                   key={id}
                   style={{
-                    background: "#1a1a1a",
-                    border: "1px solid #222222",
+                    background: "var(--ds-surface)",
+                    border: "1px solid var(--ds-border)",
                     borderRadius: "8px",
                     padding: "12px",
                   }}
                 >
-                  <div style={{ fontSize: "11px", color: "#888888", marginBottom: "4px" }}>
+                  <div style={{ fontSize: "11px", color: "var(--ds-text-mute)", marginBottom: "4px" }}>
                     {cwvFriendlyName(id)}
                   </div>
-                  <div style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff", lineHeight: 1.1 }}>
+                  <div style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.1 }}>
                     {audit.displayValue ?? "—"}
                   </div>
                   <div style={{ marginTop: "8px" }}>
                     <StatusPill variant={status.variant}>{status.label}</StatusPill>
                   </div>
-                  <div style={{ fontSize: "11px", color: "#555555", marginTop: "8px", lineHeight: 1.5 }}>
+                  <div style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.5 }}>
                     {cwvSubtitle(id)}
                   </div>
                 </div>
@@ -341,7 +341,7 @@ export default async function AuditPage() {
         </DsCard>
       ) : (
         <DsCard>
-          <div style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
+          <div style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
             Speed data updates shortly — we check this weekly and you will see it here next time.
           </div>
         </DsCard>
@@ -363,12 +363,12 @@ export default async function AuditPage() {
                       width: "8px",
                       height: "8px",
                       borderRadius: "50%",
-                      background: SEV_DOT[issue.severity] ?? "#f59e0b",
+                      background: SEV_DOT[issue.severity] ?? "var(--ds-warn)",
                       flexShrink: 0,
                       marginTop: "5px",
                     }}
                   />
-                  <p style={{ flex: 1, fontSize: "13px", color: "#cccccc", lineHeight: 1.6 }}>
+                  <p style={{ flex: 1, fontSize: "13px", color: "var(--ds-text-strong)", lineHeight: 1.6 }}>
                     {issue.text}
                   </p>
                   {automatic ? (
@@ -379,20 +379,20 @@ export default async function AuditPage() {
                         gap: "5px",
                         fontSize: "11px",
                         fontWeight: 500,
-                        color: "#22c55e",
+                        color: "var(--ds-ok)",
                         whiteSpace: "nowrap",
                         flexShrink: 0,
                         marginTop: "1px",
                       }}
                     >
-                      <Wrench size={12} color="#22c55e" />
+                      <Wrench size={12} color="var(--ds-ok)" />
                       alphaa fixing
                     </span>
                   ) : (
                     <a
                       href="mailto:hi@alphaa.app?subject=Help%20with%20a%20website%20issue"
                       style={{
-                        background: "#e05a2b",
+                        background: "var(--ds-accent)",
                         color: "#fff",
                         fontSize: "11px",
                         fontWeight: 500,
@@ -414,12 +414,12 @@ export default async function AuditPage() {
       ) : hasAnyData ? (
         <DsCard>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <CheckCircle2 size={18} color="#22c55e" />
+            <CheckCircle2 size={18} color="var(--ds-ok)" />
             <div>
-              <div style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+              <div style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                 Your site is in great shape
               </div>
-              <div style={{ fontSize: "13px", color: "#888888", marginTop: "2px", lineHeight: 1.6 }}>
+              <div style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "2px", lineHeight: 1.6 }}>
                 alphaa checked every page and found nothing that needs your attention.
               </div>
             </div>
@@ -447,7 +447,7 @@ export default async function AuditPage() {
         </EmptyState>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          <p style={{ fontSize: "11px", color: "#555555" }}>
+          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>
             Generated {formatDate(latestSchema.generatedAt)} · {schemas.length} item
             {schemas.length !== 1 ? "s" : ""} ready to use
           </p>
@@ -469,7 +469,7 @@ export default async function AuditPage() {
                     <span
                       style={{
                         fontSize: "11px",
-                        color: "#555555",
+                        color: "var(--ds-text-faint)",
                         fontFamily: "monospace",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -483,12 +483,12 @@ export default async function AuditPage() {
                 </div>
                 <pre
                   style={{
-                    background: "#0a0a0a",
-                    border: "1px solid #222222",
+                    background: "var(--ds-bg)",
+                    border: "1px solid var(--ds-border)",
                     borderRadius: "8px",
                     padding: "12px",
                     fontSize: "11px",
-                    color: "#888888",
+                    color: "var(--ds-text-mute)",
                     fontFamily: "monospace",
                     overflowX: "auto",
                     lineHeight: 1.6,
@@ -516,7 +516,7 @@ export default async function AuditPage() {
             flexWrap: "wrap",
           }}
         >
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
             llms.txt — tells AI engines who you are
           </span>
           <StatusPill variant="found">Generated</StatusPill>
@@ -524,7 +524,7 @@ export default async function AuditPage() {
         <p
           style={{
             fontSize: "11px",
-            color: "#555555",
+            color: "var(--ds-text-faint)",
             fontFamily: "monospace",
             marginBottom: "12px",
             overflow: "hidden",
@@ -536,12 +536,12 @@ export default async function AuditPage() {
         </p>
         <pre
           style={{
-            background: "#0a0a0a",
-            border: "1px solid #222222",
+            background: "var(--ds-bg)",
+            border: "1px solid var(--ds-border)",
             borderRadius: "8px",
             padding: "12px",
             fontSize: "11px",
-            color: "#888888",
+            color: "var(--ds-text-mute)",
             fontFamily: "monospace",
             overflowX: "auto",
             lineHeight: 1.6,
@@ -553,7 +553,7 @@ export default async function AuditPage() {
         </pre>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "12px", flexWrap: "wrap" }}>
           <DownloadLlmsButton content={llmsTxt} />
-          <span style={{ fontSize: "11px", color: "#555555", lineHeight: 1.6 }}>
+          <span style={{ fontSize: "11px", color: "var(--ds-text-faint)", lineHeight: 1.6 }}>
             alphaa keeps this updated automatically. To add it to your own site, download it and
             upload to yourdomain.com/llms.txt.
           </span>
@@ -564,11 +564,11 @@ export default async function AuditPage() {
       <SectionDivider>AUTO-UPDATE (ONE-LINE SNIPPET)</SectionDivider>
       <DsCard>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px", flexWrap: "wrap" }}>
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
             Hands-off schema — paste once, alphaa keeps it current
           </span>
         </div>
-        <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginBottom: "12px" }}>
+        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "12px" }}>
           Add this one line before your site&apos;s &lt;/head&gt; tag. alphaa then keeps your
           structured data up to date automatically — your business details plus any schema
           generated here (FAQ, services, and more), published to the right pages. No
@@ -580,18 +580,18 @@ export default async function AuditPage() {
             alignItems: "center",
             justifyContent: "space-between",
             gap: "10px",
-            background: "#0a0a0a",
-            border: "1px solid #222222",
+            background: "var(--ds-bg)",
+            border: "1px solid var(--ds-border)",
             borderRadius: "8px",
             padding: "10px 12px",
           }}
         >
-          <code style={{ fontSize: "11px", color: "#888888", fontFamily: "monospace", overflowX: "auto", whiteSpace: "nowrap" }}>
+          <code style={{ fontSize: "11px", color: "var(--ds-text-mute)", fontFamily: "monospace", overflowX: "auto", whiteSpace: "nowrap" }}>
             {tagSnippet}
           </code>
           <CopyButton text={tagSnippet} />
         </div>
-        <p style={{ fontSize: "11px", color: "#555555", marginTop: "10px", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "10px", lineHeight: 1.6 }}>
           Prefer maximum coverage? The copy-paste schema above is read by every crawler; the snippet
           is read by AI/search engines that run JavaScript. Use whichever fits your site — or both.
         </p>

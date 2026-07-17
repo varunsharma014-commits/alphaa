@@ -51,6 +51,47 @@
   /* legacy aliases */
   --text-primary: #FFFFFF;
   --text-secondary: #A8A29E;
+
+  /* ── Dashboard ("ds") tokens ──
+     The dashboard uses its own neutral scale (not the warm marketing surfaces).
+     These dark values are exactly the hexes the dashboard shipped with, so dark
+     mode is pixel-identical; only the light overrides below are new. Used from
+     inline styles as var(--ds-*), which resolve against the [data-theme] wrapper
+     in (dashboard)/layout.tsx — so the theme is scoped to the app, and the
+     marketing site stays dark regardless. */
+  --ds-bg: #0a0a0a;
+  --ds-surface: #1a1a1a;
+  --ds-surface-2: #161616;
+  --ds-border: #222222;
+  --ds-border-2: #2a2a2a;
+  --ds-border-3: #333333;
+
+  --ds-text: #ffffff;
+  --ds-text-strong: #cccccc;
+  --ds-text-mute: #888888;
+  --ds-text-soft: #666666;
+  --ds-text-faint: #555555;
+  --ds-text-ghost: #444444;
+
+  --ds-ok: #22c55e;
+  --ds-ok-strong: #16a34a;
+  --ds-ok-bg: #0d2218;
+  --ds-ok-border: #14532d;
+
+  --ds-warn: #f59e0b;
+  --ds-warn-bg: #1a1200;
+  --ds-warn-border: #78350f;
+
+  --ds-bad: #dc2626;
+  --ds-bad-soft: #f87171;
+  --ds-bad-bg: #1a0808;
+  --ds-bad-border: #7f1d1d;
+
+  --ds-accent: #e05a2b;
+
+  --ds-info: #3b82f6;
+  --ds-info-bg: #0d1520;
+  --ds-info-border: #1e2d45;
 }
 
 /* ── Light theme ── */
@@ -70,6 +111,44 @@
   /* legacy aliases */
   --text-primary: #1A1410;
   --text-secondary: #78716C;
+
+  /* ── Dashboard ("ds") tokens — light ──
+     Same roles as the dark set above. Text steps are darkened (not just
+     inverted) so each keeps AA contrast on light surfaces, and the status hues
+     are deepened for the same reason (#22c55e on white is ~2.3:1 and fails). */
+  --ds-bg: #f7f5f2;
+  --ds-surface: #ffffff;
+  --ds-surface-2: #f4f1ed;
+  --ds-border: #e8e3db;
+  --ds-border-2: #ded8ce;
+  --ds-border-3: #cfc8bd;
+
+  --ds-text: #1a1410;
+  --ds-text-strong: #3a352f;
+  --ds-text-mute: #6b635e;
+  --ds-text-soft: #7d746e;
+  --ds-text-faint: #8f867f;
+  --ds-text-ghost: #a39a93;
+
+  --ds-ok: #15803d;
+  --ds-ok-strong: #166534;
+  --ds-ok-bg: #edfaf1;
+  --ds-ok-border: #b8e6c8;
+
+  --ds-warn: #b45309;
+  --ds-warn-bg: #fdf6e8;
+  --ds-warn-border: #f0dcb0;
+
+  --ds-bad: #b91c1c;
+  --ds-bad-soft: #dc2626;
+  --ds-bad-bg: #fdeeee;
+  --ds-bad-border: #f3c6c6;
+
+  --ds-accent: #c2410c;
+
+  --ds-info: #1d4ed8;
+  --ds-info-bg: #eef4fd;
+  --ds-info-border: #c3d8f7;
 }
 
 /* ── Light-mode text contrast remap ──

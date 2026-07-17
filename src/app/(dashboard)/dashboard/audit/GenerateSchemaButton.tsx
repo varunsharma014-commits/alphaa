@@ -41,7 +41,7 @@ export default function GenerateSchemaButton({ prominent }: Props) {
         style={
           prominent
             ? {
-                background: "#e05a2b",
+                background: "var(--ds-accent)",
                 color: "#fff",
                 fontSize: "13px",
                 fontWeight: 500,
@@ -53,12 +53,12 @@ export default function GenerateSchemaButton({ prominent }: Props) {
               }
             : {
                 background: "transparent",
-                color: "#888888",
+                color: "var(--ds-text-mute)",
                 fontSize: "13px",
                 fontWeight: 500,
                 padding: "8px 16px",
                 borderRadius: "8px",
-                border: "1px solid #333333",
+                border: "1px solid var(--ds-border-3)",
                 cursor: loading ? "not-allowed" : "pointer",
                 opacity: loading ? 0.6 : 1,
               }
@@ -66,7 +66,7 @@ export default function GenerateSchemaButton({ prominent }: Props) {
       >
         {loading ? "Generating…" : prominent ? "Generate structured data" : "Regenerate"}
       </button>
-      {error && <p style={{ color: "#dc2626", fontSize: "11px" }}>{error}</p>}
+      {error && <p style={{ color: "var(--ds-bad)", fontSize: "11px" }}>{error}</p>}
     </div>
   )
 }

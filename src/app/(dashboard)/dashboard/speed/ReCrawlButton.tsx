@@ -38,8 +38,8 @@ export function ReCrawlButton() {
           alignItems: "center",
           gap: "8px",
           background: "transparent",
-          border: "1px solid #333333",
-          color: "#888888",
+          border: "1px solid var(--ds-border-3)",
+          color: "var(--ds-text-mute)",
           fontSize: "13px",
           fontWeight: 500,
           padding: "8px 16px",
@@ -52,7 +52,7 @@ export function ReCrawlButton() {
         {done ? "Check started" : loading ? "Checking…" : "Check my site now"}
       </button>
       {error && (
-        <p style={{ color: "#f59e0b", fontSize: "11px", maxWidth: "260px", textAlign: "right", lineHeight: 1.5 }}>
+        <p style={{ color: "var(--ds-warn)", fontSize: "11px", maxWidth: "260px", textAlign: "right", lineHeight: 1.5 }}>
           The check didn&apos;t finish this time. Please try again in a minute — alphaa also checks
           your site automatically every week.
         </p>

@@ -20,9 +20,9 @@ const PRIORITY_META: Record<
   GapItem["priority"],
   { label: string; pill: PillVariant; accent: string }
 > = {
-  high:   { label: "High opportunity", pill: "found",   accent: "#22c55e" },
-  medium: { label: "Medium",           pill: "warning", accent: "#f59e0b" },
-  low:    { label: "Lower priority",   pill: "neutral", accent: "#3b3b3b" },
+  high:   { label: "High opportunity", pill: "found",   accent: "var(--ds-ok)" },
+  medium: { label: "Medium",           pill: "warning", accent: "var(--ds-warn)" },
+  low:    { label: "Lower priority",   pill: "neutral", accent: "var(--ds-border-3)" },
 }
 
 const PRIORITY_ORDER: GapItem["priority"][] = ["high", "medium", "low"]
@@ -57,8 +57,8 @@ export default async function ContentGapsPage() {
 
       {/* ── Page header ──────────────────────────── */}
       <div style={{ marginBottom: "20px" }}>
-        <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>Content ideas</h1>
-        <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6, marginTop: "4px" }}>
+        <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>Content ideas</h1>
+        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>
           Topics your competitors rank for that you are missing. alphaa finds the gaps.
         </p>
       </div>
@@ -76,7 +76,7 @@ export default async function ContentGapsPage() {
           </DsCard>
           <SectionDivider>GET IDEAS NOW</SectionDivider>
           <DsCard>
-            <p style={{ fontSize: "13px", fontWeight: 500, color: "#cccccc", marginBottom: "10px" }}>
+            <p style={{ fontSize: "13px", fontWeight: 500, color: "var(--ds-text-strong)", marginBottom: "10px" }}>
               Know a competitor? Paste their website and alphaa finds your gaps in about a minute.
             </p>
             <AnalyzeGapsButton />
@@ -91,16 +91,16 @@ export default async function ContentGapsPage() {
                 width: "32px",
                 height: "32px",
                 borderRadius: "8px",
-                background: "#1a1a1a",
+                background: "var(--ds-surface)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
               }}
             >
-              <Lightbulb size={17} color="#e05a2b" />
+              <Lightbulb size={17} color="var(--ds-accent)" />
             </div>
-            <h2 style={{ fontSize: "16px", fontWeight: 500, color: "#ffffff", lineHeight: 1.45, marginTop: "4px" }}>
+            <h2 style={{ fontSize: "16px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.45, marginTop: "4px" }}>
               alphaa found {gaps.length} content gap{gaps.length !== 1 ? "s" : ""} — topics your competitors rank for that you&apos;re missing.
             </h2>
           </div>
@@ -120,7 +120,7 @@ export default async function ContentGapsPage() {
                   </div>
 
                   {/* Suggested title */}
-                  <h3 style={{ fontSize: "15px", fontWeight: 600, color: "#ffffff", lineHeight: 1.4, marginBottom: "8px" }}>
+                  <h3 style={{ fontSize: "15px", fontWeight: 600, color: "var(--ds-text)", lineHeight: 1.4, marginBottom: "8px" }}>
                     {gap.suggestedTitle}
                   </h3>
 
@@ -128,7 +128,7 @@ export default async function ContentGapsPage() {
                   {outline.length > 0 && (
                     <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginBottom: "10px" }}>
                       {outline.map((point, j) => (
-                        <p key={j} style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
+                        <p key={j} style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
                           {point}
                         </p>
                       ))}
@@ -136,7 +136,7 @@ export default async function ContentGapsPage() {
                   )}
 
                   {/* Generic competitor line (no fabricated counts) */}
-                  <p style={{ fontSize: "11px", color: "#555555", lineHeight: 1.6, marginBottom: "14px" }}>
+                  <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", lineHeight: 1.6, marginBottom: "14px" }}>
                     Your competitors rank for this — you don&apos;t yet.
                   </p>
 
@@ -159,16 +159,16 @@ export default async function ContentGapsPage() {
                   cursor: "pointer",
                   fontSize: "13px",
                   fontWeight: 500,
-                  color: "#cccccc",
+                  color: "var(--ds-text-strong)",
                   listStyle: "none",
                 }}
               >
-                <Search size={14} color="#888888" />
+                <Search size={14} color="var(--ds-text-mute)" />
                 Analyze a specific competitor
               </summary>
               <div style={{ marginTop: "14px" }}>
                 <AnalyzeGapsButton />
-                <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px", lineHeight: 1.6 }}>
+                <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.6 }}>
                   Paste a competitor&apos;s website and alphaa will find the topics they rank for that you are missing.
                 </p>
               </div>

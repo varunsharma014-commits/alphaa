@@ -51,14 +51,14 @@ export function AddCompetitorButton() {
           placeholder="https://competitor.com"
           disabled={loading}
           className="flex-1 rounded-[8px] px-4 focus:outline-none disabled:opacity-50 transition-colors"
-          style={{ background: "#1a1a1a", border: ".5px solid #222", color: "#fff", fontSize: 13, paddingTop: 8, paddingBottom: 8 }}
+          style={{ background: "var(--ds-surface)", border: ".5px solid #222", color: "#fff", fontSize: 13, paddingTop: 8, paddingBottom: 8 }}
           required
         />
         <button
           type="submit"
           disabled={loading || !url.trim()}
           className="flex items-center gap-2 rounded-[8px] disabled:opacity-50 disabled:cursor-not-allowed transition-opacity whitespace-nowrap"
-          style={{ background: "#e05a2b", color: "#fff", fontSize: 13, fontWeight: 500, padding: "8px 18px" }}
+          style={{ background: "var(--ds-accent)", color: "#fff", fontSize: 13, fontWeight: 500, padding: "8px 18px" }}
         >
           {loading ? (
             <>
@@ -74,7 +74,7 @@ export function AddCompetitorButton() {
         </button>
       </form>
       {error && (
-        <p className="pl-1" style={{ color: "#f87171", fontSize: 11 }}>{error}</p>
+        <p className="pl-1" style={{ color: "var(--ds-bad-soft)", fontSize: 11 }}>{error}</p>
       )}
     </div>
   )

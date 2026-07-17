@@ -43,8 +43,8 @@ export function GeneratePostButton() {
           display: "inline-flex",
           alignItems: "center",
           gap: "8px",
-          background: "#e05a2b",
-          color: "#ffffff",
+          background: "var(--ds-accent)",
+          color: "var(--ds-text)",
           borderRadius: "8px",
           padding: "8px 18px",
           fontSize: "13px",
@@ -67,18 +67,18 @@ export function GeneratePostButton() {
             marginTop: "8px",
             zIndex: 20,
             width: "320px",
-            background: "#161616",
-            border: "0.5px solid #222222",
+            background: "var(--ds-surface-2)",
+            border: "0.5px solid var(--ds-border)",
             borderRadius: "10px",
             padding: "16px",
             boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
-            <h3 style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>Generate a new post</h3>
+            <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>Generate a new post</h3>
             <button
               onClick={() => setOpen(false)}
-              style={{ color: "#888888", background: "none", border: "none", cursor: "pointer", display: "flex" }}
+              style={{ color: "var(--ds-text-mute)", background: "none", border: "none", cursor: "pointer", display: "flex" }}
             >
               <X className="w-4 h-4" />
             </button>
@@ -89,7 +89,7 @@ export function GeneratePostButton() {
               <label
                 style={{
                   display: "block",
-                  color: "#444444",
+                  color: "var(--ds-text-ghost)",
                   fontSize: "10px",
                   marginBottom: "6px",
                   fontWeight: 500,
@@ -104,11 +104,11 @@ export function GeneratePostButton() {
                 onChange={(e) => setPostType(e.target.value)}
                 style={{
                   width: "100%",
-                  background: "#1a1a1a",
-                  border: "1px solid #222222",
+                  background: "var(--ds-surface)",
+                  border: "1px solid var(--ds-border)",
                   borderRadius: "8px",
                   padding: "8px 12px",
-                  color: "#ffffff",
+                  color: "var(--ds-text)",
                   fontSize: "13px",
                   outline: "none",
                 }}
@@ -123,7 +123,7 @@ export function GeneratePostButton() {
               <label
                 style={{
                   display: "block",
-                  color: "#444444",
+                  color: "var(--ds-text-ghost)",
                   fontSize: "10px",
                   marginBottom: "6px",
                   fontWeight: 500,
@@ -131,7 +131,7 @@ export function GeneratePostButton() {
                   letterSpacing: "0.08em",
                 }}
               >
-                Topic <span style={{ color: "#555555", textTransform: "none", letterSpacing: 0 }}>(optional)</span>
+                Topic <span style={{ color: "var(--ds-text-faint)", textTransform: "none", letterSpacing: 0 }}>(optional)</span>
               </label>
               <input
                 type="text"
@@ -140,26 +140,26 @@ export function GeneratePostButton() {
                 placeholder="e.g. summer sale, new menu items..."
                 style={{
                   width: "100%",
-                  background: "#1a1a1a",
-                  border: "1px solid #222222",
+                  background: "var(--ds-surface)",
+                  border: "1px solid var(--ds-border)",
                   borderRadius: "8px",
                   padding: "8px 12px",
-                  color: "#ffffff",
+                  color: "var(--ds-text)",
                   fontSize: "13px",
                   outline: "none",
                 }}
               />
             </div>
 
-            {error && <p style={{ color: "#dc2626", fontSize: "11px" }}>{error}</p>}
+            {error && <p style={{ color: "var(--ds-bad)", fontSize: "11px" }}>{error}</p>}
 
             <button
               onClick={handleGenerate}
               disabled={loading}
               style={{
                 width: "100%",
-                background: "#e05a2b",
-                color: "#ffffff",
+                background: "var(--ds-accent)",
+                color: "var(--ds-text)",
                 borderRadius: "8px",
                 padding: "10px 18px",
                 fontSize: "13px",

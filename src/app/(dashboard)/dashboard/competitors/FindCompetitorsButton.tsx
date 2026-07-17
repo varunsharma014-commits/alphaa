@@ -36,7 +36,7 @@ export function FindCompetitorsButton({ city }: { city?: string | null }) {
         onClick={handleClick}
         disabled={loading}
         className="flex items-center gap-2 rounded-[8px] disabled:opacity-50 disabled:cursor-not-allowed transition-opacity whitespace-nowrap"
-        style={{ background: "#e05a2b", color: "#fff", fontSize: 13, fontWeight: 500, padding: "9px 20px" }}
+        style={{ background: "var(--ds-accent)", color: "#fff", fontSize: 13, fontWeight: 500, padding: "9px 20px" }}
       >
         {loading ? (
           <>
@@ -51,7 +51,7 @@ export function FindCompetitorsButton({ city }: { city?: string | null }) {
         )}
       </button>
       {error && (
-        <p className="pl-1" style={{ color: "#f87171", fontSize: 11, lineHeight: 1.6 }}>{error}</p>
+        <p className="pl-1" style={{ color: "var(--ds-bad-soft)", fontSize: 11, lineHeight: 1.6 }}>{error}</p>
       )}
     </div>
   )

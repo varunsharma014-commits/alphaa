@@ -31,11 +31,11 @@ const STALE_MS = 48 * 60 * 60 * 1000
 type Tone = "good" | "bad" | "warn" | "neutral" | "muted"
 
 const TONE_ICON_COLOR: Record<Tone, string> = {
-  good: "#22c55e",
-  bad: "#dc2626",
-  warn: "#f59e0b",
-  neutral: "#666666",
-  muted: "#555555",
+  good: "var(--ds-ok)",
+  bad: "var(--ds-bad)",
+  warn: "var(--ds-warn)",
+  neutral: "var(--ds-text-soft)",
+  muted: "var(--ds-text-faint)",
 }
 
 function Row({
@@ -61,14 +61,14 @@ function Row({
         alignItems: "center",
         gap: "10px",
         padding: "10px 1.25rem",
-        borderBottom: last ? "none" : "0.5px solid #222222",
+        borderBottom: last ? "none" : "0.5px solid var(--ds-border)",
       }}
     >
       <Icon size={15} color={TONE_ICON_COLOR[tone]} style={{ flexShrink: 0 }} />
       <span
         style={{
           fontSize: "13px",
-          color: tone === "muted" ? "#666666" : "#cccccc",
+          color: tone === "muted" ? "var(--ds-text-soft)" : "var(--ds-text-strong)",
           flex: 1,
           lineHeight: 1.5,
         }}
@@ -105,8 +105,8 @@ export function SetupHealth({
     return (
       <div
         style={{
-          background: "#0d2218",
-          border: "1px solid #14532d",
+          background: "var(--ds-ok-bg)",
+          border: "1px solid var(--ds-ok-border)",
           borderRadius: "8px",
           padding: "8px 14px",
           display: "flex",
@@ -115,12 +115,12 @@ export function SetupHealth({
           marginBottom: "16px",
         }}
       >
-        <CheckCircle2 size={14} color="#22c55e" style={{ flexShrink: 0 }} />
-        <span style={{ fontSize: "12px", color: "#16a34a", fontWeight: 500, flex: 1 }}>
+        <CheckCircle2 size={14} color="var(--ds-ok)" style={{ flexShrink: 0 }} />
+        <span style={{ fontSize: "12px", color: "var(--ds-ok-strong)", fontWeight: 500, flex: 1 }}>
           Everything connected — alphaa is running on autopilot
         </span>
         {connected && lastSyncedAt === null && (
-          <span style={{ fontSize: "11px", color: "#555555" }}>First sync scheduled</span>
+          <span style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>First sync scheduled</span>
         )}
       </div>
     )
@@ -138,7 +138,7 @@ export function SetupHealth({
   return (
     <>
       <SectionDivider>SETUP — WHAT ALPHAA NEEDS TO WORK FOR YOU</SectionDivider>
-      <DsCard accent={!connected ? "#dc2626" : "#f59e0b"} style={{ padding: 0, marginBottom: "16px" }}>
+      <DsCard accent={!connected ? "var(--ds-bad)" : "var(--ds-warn)"} style={{ padding: 0, marginBottom: "16px" }}>
         {/* Header with the single primary CTA */}
         <div
           style={{
@@ -146,16 +146,16 @@ export function SetupHealth({
             alignItems: "center",
             gap: "12px",
             padding: "14px 1.25rem",
-            borderBottom: "0.5px solid #222222",
+            borderBottom: "0.5px solid var(--ds-border)",
           }}
         >
           <div style={{ flex: 1 }}>
-            <p style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+            <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
               {!connected
                 ? "Connect Google so alphaa can work for you"
                 : "One more step to finish your setup"}
             </p>
-            <p style={{ fontSize: "12px", color: "#888888", marginTop: "2px", lineHeight: 1.5 }}>
+            <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", marginTop: "2px", lineHeight: 1.5 }}>
               {!connected
                 ? "One click — this lets alphaa post updates and track your results."
                 : "alphaa is connected to Google but needs a little more to run fully."}
@@ -164,8 +164,8 @@ export function SetupHealth({
           <Link
             href={cta.href}
             style={{
-              background: "#e05a2b",
-              color: "#ffffff",
+              background: "var(--ds-accent)",
+              color: "var(--ds-text)",
               borderRadius: "8px",
               padding: "8px 18px",
               fontSize: "13px",
@@ -259,10 +259,10 @@ export function SetupHealth({
             padding: "10px 1.25rem",
           }}
         >
-          <Sparkles size={15} color="#555555" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: "13px", color: "#666666", flex: 1, lineHeight: 1.5 }}>
+          <Sparkles size={15} color="var(--ds-text-faint)" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: "13px", color: "var(--ds-text-soft)", flex: 1, lineHeight: 1.5 }}>
             Optional booster:{" "}
-            <Link href="/dashboard/audit" style={{ color: "#888888", textDecoration: "underline" }}>
+            <Link href="/dashboard/audit" style={{ color: "var(--ds-text-mute)", textDecoration: "underline" }}>
               add the alphaa snippet
             </Link>{" "}
             for automatic website fixes

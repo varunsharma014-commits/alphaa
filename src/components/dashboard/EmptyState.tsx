@@ -34,21 +34,21 @@ export function EmptyState({
           width: "44px",
           height: "44px",
           borderRadius: "10px",
-          background: "#1a1a1a",
+          background: "var(--ds-surface)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           flexShrink: 0,
         }}
       >
-        <Icon size={22} color="#e05a2b" />
+        <Icon size={22} color="var(--ds-accent)" />
       </div>
       <div style={{ maxWidth: "420px" }}>
-        <h3 style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff", marginBottom: "6px" }}>
+        <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)", marginBottom: "6px" }}>
           {title}
         </h3>
-        <p style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>{body}</p>
-        {sub && <p style={{ fontSize: "11px", color: "#555555", marginTop: "8px" }}>{sub}</p>}
+        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>{body}</p>
+        {sub && <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px" }}>{sub}</p>}
       </div>
       {children}
     </div>

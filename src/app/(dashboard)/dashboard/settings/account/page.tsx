@@ -9,11 +9,11 @@ export default function AccountSettingsPage() {
       <UserProfile
         appearance={{
           variables: {
-            colorPrimary: "#FF6B1A",
-            colorBackground: "#13100C",
-            colorInputBackground: "#1F1812",
-            colorText: "#ffffff",
-            colorTextSecondary: "#A8A29E",
+            colorPrimary: "var(--ds-accent)",
+            colorBackground: "var(--ds-surface)",
+            colorInputBackground: "var(--ds-surface-2)",
+            colorText: "var(--ds-text)",
+            colorTextSecondary: "var(--ds-text-mute)",
             borderRadius: "12px",
           },
           elements: { card: "shadow-none border border-line/[0.08] bg-bg-secondary" },

@@ -28,9 +28,9 @@ function formatPosition(pos: number): string {
 
 // Position = colored number: green if <=10, amber 11-30, red if >30.
 function positionColor(pos: number): string {
-  if (pos <= 10) return '#22c55e'
-  if (pos <= 30) return '#f59e0b'
-  return '#dc2626'
+  if (pos <= 10) return 'var(--ds-ok)'
+  if (pos <= 30) return 'var(--ds-warn)'
+  return 'var(--ds-bad)'
 }
 
 function formatNumber(n: number): string {
@@ -94,13 +94,13 @@ export default async function KeywordsPage() {
   // Header (shared across all states)
   const header = (
     <div style={{ marginBottom: '20px' }}>
-      <h1 style={{ fontSize: '20px', fontWeight: 500, color: '#ffffff' }}>
+      <h1 style={{ fontSize: '20px', fontWeight: 500, color: 'var(--ds-text)' }}>
         Google rankings
       </h1>
-      <p style={{ fontSize: '13px', color: '#888888', marginTop: '4px', lineHeight: 1.6 }}>
+      <p style={{ fontSize: '13px', color: 'var(--ds-text-mute)', marginTop: '4px', lineHeight: 1.6 }}>
         Keywords people use to find businesses like yours — and where you rank.
       </p>
-      <p style={{ fontSize: '12px', color: '#555555', marginTop: '8px', lineHeight: 1.6 }}>
+      <p style={{ fontSize: '12px', color: 'var(--ds-text-faint)', marginTop: '8px', lineHeight: 1.6 }}>
         Google rankings still matter — but AI visibility is where new customers increasingly come from.
       </p>
     </div>
@@ -114,8 +114,8 @@ export default async function KeywordsPage() {
         {header}
         <div
           style={{
-            background: '#161616',
-            border: '0.5px solid #222222',
+            background: 'var(--ds-surface-2)',
+            border: '0.5px solid var(--ds-border)',
             borderRadius: '10px',
           }}
         >
@@ -127,8 +127,8 @@ export default async function KeywordsPage() {
             <Link
               href="/dashboard/settings/integrations"
               style={{
-                background: '#e05a2b',
-                color: '#ffffff',
+                background: 'var(--ds-accent)',
+                color: 'var(--ds-text)',
                 borderRadius: '8px',
                 padding: '8px 18px',
                 fontSize: '13px',
@@ -153,8 +153,8 @@ export default async function KeywordsPage() {
         {header}
         <div
           style={{
-            background: '#161616',
-            border: '0.5px solid #222222',
+            background: 'var(--ds-surface-2)',
+            border: '0.5px solid var(--ds-border)',
             borderRadius: '10px',
           }}
         >
@@ -194,17 +194,17 @@ export default async function KeywordsPage() {
       <p
         style={{
           fontSize: '13px',
-          color: '#888888',
+          color: 'var(--ds-text-mute)',
           lineHeight: 1.6,
           marginBottom: '16px',
         }}
       >
         You rank for{' '}
-        <span style={{ color: '#ffffff', fontWeight: 500 }}>
+        <span style={{ color: 'var(--ds-text)', fontWeight: 500 }}>
           {totalKeywords} keyword{totalKeywords !== 1 ? 's' : ''}
         </span>
         . Your best performer is{' '}
-        <span style={{ color: '#ffffff', fontWeight: 500 }}>“{best.query}”</span>{' '}
+        <span style={{ color: 'var(--ds-text)', fontWeight: 500 }}>“{best.query}”</span>{' '}
         at position{' '}
         <span style={{ color: positionColor(best.position), fontWeight: 500 }}>
           {formatPosition(best.position)}
@@ -236,8 +236,8 @@ export default async function KeywordsPage() {
       {/* Keywords table */}
       <div
         style={{
-          background: '#161616',
-          border: '0.5px solid #222222',
+          background: 'var(--ds-surface-2)',
+          border: '0.5px solid var(--ds-border)',
           borderRadius: '10px',
           overflow: 'hidden',
           marginTop: '12px',
@@ -246,7 +246,7 @@ export default async function KeywordsPage() {
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid #222222' }}>
+              <tr style={{ borderBottom: '1px solid var(--ds-border)' }}>
                 <th
                   style={{
                     textAlign: 'left',
@@ -255,7 +255,7 @@ export default async function KeywordsPage() {
                     fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
-                    color: '#444444',
+                    color: 'var(--ds-text-ghost)',
                     whiteSpace: 'nowrap',
                   }}
                 >
@@ -269,7 +269,7 @@ export default async function KeywordsPage() {
                     fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
-                    color: '#444444',
+                    color: 'var(--ds-text-ghost)',
                     whiteSpace: 'nowrap',
                   }}
                 >
@@ -283,7 +283,7 @@ export default async function KeywordsPage() {
                     fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
-                    color: '#444444',
+                    color: 'var(--ds-text-ghost)',
                     whiteSpace: 'nowrap',
                   }}
                 >
@@ -297,7 +297,7 @@ export default async function KeywordsPage() {
                     fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
-                    color: '#444444',
+                    color: 'var(--ds-text-ghost)',
                     whiteSpace: 'nowrap',
                   }}
                 >
@@ -311,7 +311,7 @@ export default async function KeywordsPage() {
                   key={idx}
                   style={{
                     borderBottom:
-                      idx === rankings.length - 1 ? 'none' : '1px solid #1a1a1a',
+                      idx === rankings.length - 1 ? 'none' : '1px solid var(--ds-surface)',
                   }}
                 >
                   {/* Keyword */}
@@ -322,7 +322,7 @@ export default async function KeywordsPage() {
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
-                      color: '#ffffff',
+                      color: 'var(--ds-text)',
                     }}
                     title={row.query}
                   >
@@ -344,15 +344,15 @@ export default async function KeywordsPage() {
                   {/* Change vs the batch ~7 days earlier (lower position = better) */}
                   <td style={{ padding: '12px 16px' }}>
                     {row.prevPosition === null ? (
-                      <span style={{ color: '#555555' }}>—</span>
+                      <span style={{ color: 'var(--ds-text-faint)' }}>—</span>
                     ) : Math.round(row.prevPosition) === Math.round(row.position) ? (
-                      <span style={{ color: '#555555' }}>steady</span>
+                      <span style={{ color: 'var(--ds-text-faint)' }}>steady</span>
                     ) : row.position < row.prevPosition ? (
-                      <span style={{ color: '#22c55e', fontWeight: 500 }}>
+                      <span style={{ color: 'var(--ds-ok)', fontWeight: 500 }}>
                         ↑ {formatPosition(row.prevPosition)} → {formatPosition(row.position)}
                       </span>
                     ) : (
-                      <span style={{ color: '#dc2626' }}>
+                      <span style={{ color: 'var(--ds-bad)' }}>
                         ↓ {formatPosition(row.prevPosition)} → {formatPosition(row.position)}
                       </span>
                     )}
@@ -363,7 +363,7 @@ export default async function KeywordsPage() {
                     style={{
                       padding: '12px 16px',
                       textAlign: 'right',
-                      color: '#888888',
+                      color: 'var(--ds-text-mute)',
                     }}
                   >
                     {row.clicks.toLocaleString()}

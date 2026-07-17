@@ -85,7 +85,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
   return (
     <div
       className="overflow-hidden rounded-[10px]"
-      style={{ background: "#161616", border: ".5px solid #222" }}
+      style={{ background: "var(--ds-surface-2)", border: ".5px solid #222" }}
     >
       {/* Card header */}
       <div
@@ -96,7 +96,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
           {/* Domain avatar */}
           <div
             className="w-10 h-10 rounded-[8px] flex items-center justify-center flex-shrink-0"
-            style={{ background: "#1a1a1a", border: ".5px solid #2a2a2a" }}
+            style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border-2)" }}
           >
             <Globe className="w-5 h-5" style={{ color: "#555" }} />
           </div>
@@ -106,7 +106,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
               href={competitor.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="truncate block transition-colors hover:text-white"
+              className="truncate block transition-colors hover:text-fg"
               style={{ color: "#555", fontSize: 11 }}
             >
               {domain}
@@ -127,15 +127,15 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
         <div className="space-y-5" style={{ padding: "1.25rem" }}>
           {/* Quick stats */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-[8px] p-3 text-center" style={{ background: "#1a1a1a", border: ".5px solid #222" }}>
+            <div className="rounded-[8px] p-3 text-center" style={{ background: "var(--ds-surface)", border: ".5px solid #222" }}>
               <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{pagesFound ?? "—"}</p>
               <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Pages reviewed</p>
             </div>
-            <div className="rounded-[8px] p-3 text-center" style={{ background: "#1a1a1a", border: ".5px solid #222" }}>
+            <div className="rounded-[8px] p-3 text-center" style={{ background: "var(--ds-surface)", border: ".5px solid #222" }}>
               <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{schemaCount}</p>
               <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Search-friendly signals</p>
             </div>
-            <div className="rounded-[8px] p-3 text-center flex flex-col items-center justify-center gap-1.5" style={{ background: "#1a1a1a", border: ".5px solid #222" }}>
+            <div className="rounded-[8px] p-3 text-center flex flex-col items-center justify-center gap-1.5" style={{ background: "var(--ds-surface)", border: ".5px solid #222" }}>
               <StatusPill variant={freq.variant}>{postingFreq ?? "Unknown"}</StatusPill>
               <p style={{ color: "#555", fontSize: 10 }}>How often they post</p>
             </div>
@@ -150,7 +150,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                   <span
                     key={topic}
                     className="px-2.5 py-1 rounded-[8px]"
-                    style={{ background: "#1a1a1a", border: ".5px solid #2a2a2a", color: "#888", fontSize: 11 }}
+                    style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border-2)", color: "#888", fontSize: 11 }}
                   >
                     {topic}
                   </span>
@@ -163,15 +163,15 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
           {(strengths.length > 0 || weaknesses.length > 0) && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {strengths.length > 0 && (
-                <div className="rounded-[8px] p-4" style={{ background: "#0d2218", border: ".5px solid #14532d" }}>
+                <div className="rounded-[8px] p-4" style={{ background: "var(--ds-ok-bg)", border: ".5px solid var(--ds-ok-border)" }}>
                   <div className="flex items-center gap-1.5" style={{ marginBottom: 10 }}>
-                    <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "#22c55e" }} />
-                    <p style={{ color: "#22c55e", fontSize: 11, fontWeight: 500 }}>What's working for them</p>
+                    <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "var(--ds-ok)" }} />
+                    <p style={{ color: "var(--ds-ok)", fontSize: 11, fontWeight: 500 }}>What's working for them</p>
                   </div>
                   <ul className="space-y-1.5">
                     {strengths.map((s) => (
                       <li key={s} className="flex items-start gap-2" style={{ color: "#888", fontSize: 11, lineHeight: 1.6 }}>
-                        <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#22c55e" }} />
+                        <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-ok)" }} />
                         {s}
                       </li>
                     ))}
@@ -179,15 +179,15 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                 </div>
               )}
               {weaknesses.length > 0 && (
-                <div className="rounded-[8px] p-4" style={{ background: "#1a0808", border: ".5px solid #7f1d1d" }}>
+                <div className="rounded-[8px] p-4" style={{ background: "var(--ds-bad-bg)", border: ".5px solid var(--ds-bad-border)" }}>
                   <div className="flex items-center gap-1.5" style={{ marginBottom: 10 }}>
-                    <AlertCircle className="w-3.5 h-3.5" style={{ color: "#dc2626" }} />
-                    <p style={{ color: "#f87171", fontSize: 11, fontWeight: 500 }}>Gaps you can win on</p>
+                    <AlertCircle className="w-3.5 h-3.5" style={{ color: "var(--ds-bad)" }} />
+                    <p style={{ color: "var(--ds-bad-soft)", fontSize: 11, fontWeight: 500 }}>Gaps you can win on</p>
                   </div>
                   <ul className="space-y-1.5">
                     {weaknesses.map((w) => (
                       <li key={w} className="flex items-start gap-2" style={{ color: "#888", fontSize: 11, lineHeight: 1.6 }}>
-                        <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#dc2626" }} />
+                        <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-bad)" }} />
                         {w}
                       </li>
                     ))}
@@ -199,10 +199,10 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
 
           {/* AI Summary */}
           {aiSummary && (
-            <div className="rounded-[8px] px-4 py-3" style={{ background: "#1a1a1a", border: ".5px solid #2a2a2a" }}>
+            <div className="rounded-[8px] px-4 py-3" style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border-2)" }}>
               <div className="flex items-center gap-1.5" style={{ marginBottom: 6 }}>
-                <Zap className="w-3 h-3" style={{ color: "#e05a2b" }} />
-                <span style={{ color: "#e05a2b", fontSize: 11, fontWeight: 500 }}>alphaa&apos;s take</span>
+                <Zap className="w-3 h-3" style={{ color: "var(--ds-accent)" }} />
+                <span style={{ color: "var(--ds-accent)", fontSize: 11, fontWeight: 500 }}>alphaa&apos;s take</span>
               </div>
               <p style={{ color: "#888", fontSize: 13, lineHeight: 1.6 }}>{aiSummary}</p>
             </div>
@@ -213,7 +213,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
       ) : (
         <div style={{ padding: "1.25rem" }}>
           <div className="flex items-center gap-2 py-4">
-            <div className="w-4 h-4 rounded-full animate-spin flex-shrink-0" style={{ border: "2px solid #e05a2b", borderTopColor: "transparent" }} />
+            <div className="w-4 h-4 rounded-full animate-spin flex-shrink-0" style={{ border: "2px solid var(--ds-accent)", borderTopColor: "transparent" }} />
             <p style={{ color: "#888", fontSize: 13 }}>alphaa is analyzing this competitor for you — sit tight.</p>
           </div>
         </div>
@@ -249,7 +249,7 @@ export default async function CompetitorsPage() {
         {competitors.length > 0 && (
           <div
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-            style={{ background: "#161616", border: ".5px solid #222", color: "#888", fontSize: 11 }}
+            style={{ background: "var(--ds-surface-2)", border: ".5px solid #222", color: "#888", fontSize: 11 }}
           >
             <Users className="w-3 h-3" />
             {competitors.length} tracked on autopilot
@@ -279,12 +279,12 @@ export default async function CompetitorsPage() {
       )}
 
       {/* ── Manual tracking (secondary, collapsed) ──── */}
-      <details className="rounded-[10px]" style={{ background: "#161616", border: ".5px solid #222" }}>
+      <details className="rounded-[10px]" style={{ background: "var(--ds-surface-2)", border: ".5px solid #222" }}>
         <summary
           className="flex items-center gap-2 cursor-pointer select-none list-none"
           style={{ padding: "0.85rem 1.25rem", color: "#888", fontSize: 13, fontWeight: 500 }}
         >
-          <TrendingUp className="w-4 h-4" style={{ color: "#e05a2b" }} />
+          <TrendingUp className="w-4 h-4" style={{ color: "var(--ds-accent)" }} />
           Track a specific competitor
         </summary>
         <div style={{ padding: "0 1.25rem 1.25rem" }}>

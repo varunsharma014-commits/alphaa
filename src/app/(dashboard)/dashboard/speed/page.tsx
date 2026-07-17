@@ -98,8 +98,8 @@ export default async function SpeedPage() {
       <div style={{ maxWidth: "880px", margin: "0 auto" }}>
         <AutopilotBar message="alphaa checks your site speed automatically once it knows your website address" />
         <div style={{ marginBottom: "18px" }}>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>Page speed</h1>
-          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>Page speed</h1>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             alphaa checks how fast your site feels to visitors every week.
           </p>
         </div>
@@ -115,7 +115,7 @@ export default async function SpeedPage() {
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              background: "#e05a2b",
+              background: "var(--ds-accent)",
               color: "#fff",
               fontSize: "13px",
               fontWeight: 500,
@@ -191,8 +191,8 @@ export default async function SpeedPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>Page speed</h1>
-          <p style={{ fontSize: "13px", color: "#888888", marginTop: "4px", lineHeight: 1.6 }}>
+          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>Page speed</h1>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             alphaa checks how fast your site feels to visitors every week.
           </p>
         </div>
@@ -223,8 +223,8 @@ export default async function SpeedPage() {
       {speedAvailable && Object.keys(audits).length > 0 ? (
         <DsCard>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-            <Gauge size={15} color="#e05a2b" />
-            <span style={{ fontSize: "14px", fontWeight: 500, color: "#ffffff" }}>
+            <Gauge size={15} color="var(--ds-accent)" />
+            <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
               How fast your site feels to visitors
             </span>
             {perfPct !== null && (
@@ -242,22 +242,22 @@ export default async function SpeedPage() {
                 <div
                   key={id}
                   style={{
-                    background: "#1a1a1a",
-                    border: "1px solid #222222",
+                    background: "var(--ds-surface)",
+                    border: "1px solid var(--ds-border)",
                     borderRadius: "8px",
                     padding: "12px",
                   }}
                 >
-                  <div style={{ fontSize: "11px", color: "#888888", marginBottom: "4px" }}>
+                  <div style={{ fontSize: "11px", color: "var(--ds-text-mute)", marginBottom: "4px" }}>
                     {cwvFriendlyName(id)}
                   </div>
-                  <div style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff", lineHeight: 1.1 }}>
+                  <div style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.1 }}>
                     {audit.displayValue ?? "—"}
                   </div>
                   <div style={{ marginTop: "8px" }}>
                     <StatusPill variant={status.variant}>{status.label}</StatusPill>
                   </div>
-                  <div style={{ fontSize: "11px", color: "#555555", marginTop: "8px", lineHeight: 1.5 }}>
+                  <div style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.5 }}>
                     {cwvSubtitle(id)}
                   </div>
                 </div>
@@ -267,7 +267,7 @@ export default async function SpeedPage() {
         </DsCard>
       ) : (
         <DsCard>
-          <div style={{ fontSize: "13px", color: "#888888", lineHeight: 1.6 }}>
+          <div style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
             Speed data updates shortly — we check this weekly and you will see it here next time.
           </div>
         </DsCard>

@@ -6,8 +6,8 @@ export function AutopilotBar({ message }: { message: string }) {
   return (
     <div
       style={{
-        background: "#0d2218",
-        border: "1px solid #14532d",
+        background: "var(--ds-ok-bg)",
+        border: "1px solid var(--ds-ok-border)",
         borderRadius: "8px",
         padding: "8px 14px",
         display: "flex",
@@ -21,12 +21,12 @@ export function AutopilotBar({ message }: { message: string }) {
           width: "7px",
           height: "7px",
           borderRadius: "50%",
-          background: "#22c55e",
+          background: "var(--ds-ok)",
           flexShrink: 0,
           animation: "pulse 2s infinite",
         }}
       />
-      <span style={{ fontSize: "12px", color: "#16a34a", fontWeight: 500 }}>
+      <span style={{ fontSize: "12px", color: "var(--ds-ok-strong)", fontWeight: 500 }}>
         {message}
       </span>
     </div>
