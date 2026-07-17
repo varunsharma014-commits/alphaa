@@ -26,7 +26,7 @@ export function DeleteCompetitorButton({ id }: { id: string }) {
       disabled={loading}
       title="Remove competitor"
       className="p-1.5 rounded-[8px] disabled:opacity-40 transition-colors hover:bg-[var(--ds-bad-bg)] hover:text-[var(--ds-bad)]"
-      style={{ color: "#555" }}
+      style={{ color: "var(--ds-text-faint)" }}
     >
       {loading ? (
         <Loader2 className="w-4 h-4 animate-spin" />

@@ -85,12 +85,12 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
   return (
     <div
       className="overflow-hidden rounded-[10px]"
-      style={{ background: "var(--ds-surface-2)", border: ".5px solid #222" }}
+      style={{ background: "var(--ds-surface-2)", border: ".5px solid var(--ds-border)" }}
     >
       {/* Card header */}
       <div
         className="flex items-start justify-between gap-3"
-        style={{ padding: "1rem 1.25rem", borderBottom: ".5px solid #222" }}
+        style={{ padding: "1rem 1.25rem", borderBottom: ".5px solid var(--ds-border)" }}
       >
         <div className="flex items-center gap-3 min-w-0">
           {/* Domain avatar */}
@@ -98,16 +98,16 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
             className="w-10 h-10 rounded-[8px] flex items-center justify-center flex-shrink-0"
             style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border-2)" }}
           >
-            <Globe className="w-5 h-5" style={{ color: "#555" }} />
+            <Globe className="w-5 h-5" style={{ color: "var(--ds-text-faint)" }} />
           </div>
           <div className="min-w-0">
-            <h3 className="truncate" style={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>{name}</h3>
+            <h3 className="truncate" style={{ color: "var(--ds-text)", fontSize: 14, fontWeight: 500 }}>{name}</h3>
             <a
               href={competitor.url}
               target="_blank"
               rel="noopener noreferrer"
               className="truncate block transition-colors hover:text-fg"
-              style={{ color: "#555", fontSize: 11 }}
+              style={{ color: "var(--ds-text-faint)", fontSize: 11 }}
             >
               {domain}
             </a>
@@ -127,30 +127,30 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
         <div className="space-y-5" style={{ padding: "1.25rem" }}>
           {/* Quick stats */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-[8px] p-3 text-center" style={{ background: "var(--ds-surface)", border: ".5px solid #222" }}>
-              <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{pagesFound ?? "—"}</p>
-              <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Pages reviewed</p>
+            <div className="rounded-[8px] p-3 text-center" style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border)" }}>
+              <p style={{ color: "var(--ds-text)", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{pagesFound ?? "—"}</p>
+              <p style={{ color: "var(--ds-text-faint)", fontSize: 11, marginTop: 2 }}>Pages reviewed</p>
             </div>
-            <div className="rounded-[8px] p-3 text-center" style={{ background: "var(--ds-surface)", border: ".5px solid #222" }}>
-              <p style={{ color: "#fff", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{schemaCount}</p>
-              <p style={{ color: "#555", fontSize: 11, marginTop: 2 }}>Search-friendly signals</p>
+            <div className="rounded-[8px] p-3 text-center" style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border)" }}>
+              <p style={{ color: "var(--ds-text)", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{schemaCount}</p>
+              <p style={{ color: "var(--ds-text-faint)", fontSize: 11, marginTop: 2 }}>Search-friendly signals</p>
             </div>
-            <div className="rounded-[8px] p-3 text-center flex flex-col items-center justify-center gap-1.5" style={{ background: "var(--ds-surface)", border: ".5px solid #222" }}>
+            <div className="rounded-[8px] p-3 text-center flex flex-col items-center justify-center gap-1.5" style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border)" }}>
               <StatusPill variant={freq.variant}>{postingFreq ?? "Unknown"}</StatusPill>
-              <p style={{ color: "#555", fontSize: 10 }}>How often they post</p>
+              <p style={{ color: "var(--ds-text-faint)", fontSize: 10 }}>How often they post</p>
             </div>
           </div>
 
           {/* Key topics */}
           {keyTopics.length > 0 && (
             <div>
-              <p style={{ color: "#444", fontSize: 10, fontWeight: 500, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>What they write about</p>
+              <p style={{ color: "var(--ds-text-ghost)", fontSize: 10, fontWeight: 500, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>What they write about</p>
               <div className="flex flex-wrap gap-1.5">
                 {keyTopics.map((topic) => (
                   <span
                     key={topic}
                     className="px-2.5 py-1 rounded-[8px]"
-                    style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border-2)", color: "#888", fontSize: 11 }}
+                    style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border-2)", color: "var(--ds-text-mute)", fontSize: 11 }}
                   >
                     {topic}
                   </span>
@@ -170,7 +170,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                   </div>
                   <ul className="space-y-1.5">
                     {strengths.map((s) => (
-                      <li key={s} className="flex items-start gap-2" style={{ color: "#888", fontSize: 11, lineHeight: 1.6 }}>
+                      <li key={s} className="flex items-start gap-2" style={{ color: "var(--ds-text-mute)", fontSize: 11, lineHeight: 1.6 }}>
                         <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-ok)" }} />
                         {s}
                       </li>
@@ -186,7 +186,7 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                   </div>
                   <ul className="space-y-1.5">
                     {weaknesses.map((w) => (
-                      <li key={w} className="flex items-start gap-2" style={{ color: "#888", fontSize: 11, lineHeight: 1.6 }}>
+                      <li key={w} className="flex items-start gap-2" style={{ color: "var(--ds-text-mute)", fontSize: 11, lineHeight: 1.6 }}>
                         <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-bad)" }} />
                         {w}
                       </li>
@@ -204,17 +204,17 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                 <Zap className="w-3 h-3" style={{ color: "var(--ds-accent)" }} />
                 <span style={{ color: "var(--ds-accent)", fontSize: 11, fontWeight: 500 }}>alphaa&apos;s take</span>
               </div>
-              <p style={{ color: "#888", fontSize: 13, lineHeight: 1.6 }}>{aiSummary}</p>
+              <p style={{ color: "var(--ds-text-mute)", fontSize: 13, lineHeight: 1.6 }}>{aiSummary}</p>
             </div>
           )}
 
-          <p style={{ color: "#444", fontSize: 11 }}>Last refreshed automatically: {formatDate(competitor.analyzedAt)}</p>
+          <p style={{ color: "var(--ds-text-ghost)", fontSize: 11 }}>Last refreshed automatically: {formatDate(competitor.analyzedAt)}</p>
         </div>
       ) : (
         <div style={{ padding: "1.25rem" }}>
           <div className="flex items-center gap-2 py-4">
             <div className="w-4 h-4 rounded-full animate-spin flex-shrink-0" style={{ border: "2px solid var(--ds-accent)", borderTopColor: "transparent" }} />
-            <p style={{ color: "#888", fontSize: 13 }}>alphaa is analyzing this competitor for you — sit tight.</p>
+            <p style={{ color: "var(--ds-text-mute)", fontSize: 13 }}>alphaa is analyzing this competitor for you — sit tight.</p>
           </div>
         </div>
       )}
@@ -241,15 +241,15 @@ export default async function CompetitorsPage() {
       {/* ── Header ─────────────────────────────────── */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 style={{ color: "#fff", fontSize: 20, fontWeight: 500 }}>Competitor intel</h1>
-          <p style={{ color: "#888", fontSize: 13, lineHeight: 1.6, marginTop: 4 }}>
+          <h1 style={{ color: "var(--ds-text)", fontSize: 20, fontWeight: 500 }}>Competitor intel</h1>
+          <p style={{ color: "var(--ds-text-mute)", fontSize: 13, lineHeight: 1.6, marginTop: 4 }}>
             See what is working for your competitors — so you can do it better.
           </p>
         </div>
         {competitors.length > 0 && (
           <div
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-            style={{ background: "var(--ds-surface-2)", border: ".5px solid #222", color: "#888", fontSize: 11 }}
+            style={{ background: "var(--ds-surface-2)", border: ".5px solid var(--ds-border)", color: "var(--ds-text-mute)", fontSize: 11 }}
           >
             <Users className="w-3 h-3" />
             {competitors.length} tracked on autopilot
@@ -279,17 +279,17 @@ export default async function CompetitorsPage() {
       )}
 
       {/* ── Manual tracking (secondary, collapsed) ──── */}
-      <details className="rounded-[10px]" style={{ background: "var(--ds-surface-2)", border: ".5px solid #222" }}>
+      <details className="rounded-[10px]" style={{ background: "var(--ds-surface-2)", border: ".5px solid var(--ds-border)" }}>
         <summary
           className="flex items-center gap-2 cursor-pointer select-none list-none"
-          style={{ padding: "0.85rem 1.25rem", color: "#888", fontSize: 13, fontWeight: 500 }}
+          style={{ padding: "0.85rem 1.25rem", color: "var(--ds-text-mute)", fontSize: 13, fontWeight: 500 }}
         >
           <TrendingUp className="w-4 h-4" style={{ color: "var(--ds-accent)" }} />
           Track a specific competitor
         </summary>
         <div style={{ padding: "0 1.25rem 1.25rem" }}>
           <AddCompetitorButton />
-          <p style={{ color: "#555", fontSize: 11, lineHeight: 1.6, marginTop: 10 }}>
+          <p style={{ color: "var(--ds-text-faint)", fontSize: 11, lineHeight: 1.6, marginTop: 10 }}>
             alphaa crawls up to 20 pages and identifies their strengths, content topics, and posting frequency — updated automatically every week.
           </p>
         </div>

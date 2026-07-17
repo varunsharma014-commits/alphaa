@@ -42,7 +42,7 @@ export default function GenerateSchemaButton({ prominent }: Props) {
           prominent
             ? {
                 background: "var(--ds-accent)",
-                color: "#fff",
+                color: "var(--ds-text)",
                 fontSize: "13px",
                 fontWeight: 500,
                 padding: "8px 18px",

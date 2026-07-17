@@ -116,7 +116,7 @@ export default async function SpeedPage() {
               alignItems: "center",
               gap: "8px",
               background: "var(--ds-accent)",
-              color: "#fff",
+              color: "var(--ds-text)",
               fontSize: "13px",
               fontWeight: 500,
               padding: "8px 18px",
