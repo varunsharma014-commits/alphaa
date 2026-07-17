@@ -27,6 +27,51 @@ const PRIORITY_META: Record<
 
 const PRIORITY_ORDER: GapItem["priority"][] = ["high", "medium", "low"]
 
+// ContentGap.gaps is an untyped Json array holding two different item shapes:
+// the original idea items (GapItem) and drafts written from the Competitors
+// page (WinGapItem — identified by a `draft` string). Read both defensively so
+// a stray or partial item can never crash this page.
+type DraftItem = {
+  gap: string
+  title: string
+  format: string
+  targetQuestion: string
+  draft: string
+}
+
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null && !Array.isArray(v)
+}
+
+function asDraftItem(v: unknown): DraftItem | null {
+  if (!isRecord(v)) return null
+  if (typeof v.draft !== "string" || !v.draft.trim()) return null
+  return {
+    gap: typeof v.gap === "string" ? v.gap : "",
+    title: typeof v.title === "string" && v.title.trim() ? v.title : "Untitled draft",
+    format: typeof v.format === "string" ? v.format : "Blog post",
+    targetQuestion: typeof v.targetQuestion === "string" ? v.targetQuestion : "",
+    draft: v.draft,
+  }
+}
+
+function asIdeaItem(v: unknown): GapItem | null {
+  if (!isRecord(v)) return null
+  if (typeof v.draft === "string") return null // it's a draft, not an idea
+  if (typeof v.suggestedTitle !== "string" || !v.suggestedTitle.trim()) return null
+  return {
+    topic: typeof v.topic === "string" ? v.topic : "",
+    priority: (["high", "medium", "low"].includes(String(v.priority))
+      ? v.priority
+      : "medium") as GapItem["priority"],
+    suggestedTitle: v.suggestedTitle,
+    suggestedOutline: Array.isArray(v.suggestedOutline)
+      ? v.suggestedOutline.filter((o): o is string => typeof o === "string")
+      : [],
+    estimatedImpact: typeof v.estimatedImpact === "string" ? v.estimatedImpact : "",
+  }
+}
+
 export default async function ContentGapsPage() {
   const { userId: clerkId } = await auth()
   if (!clerkId) redirect("/login")
@@ -34,16 +79,27 @@ export default async function ContentGapsPage() {
   const user = await db.user.findUnique({ where: { clerkId } })
   if (!user) redirect("/login")
 
-  const latestGap = await db.contentGap.findFirst({
+  const records = await db.contentGap.findMany({
     where: { userId: user.id },
     orderBy: { analyzedAt: "desc" },
   })
 
-  const gaps = Array.isArray(latestGap?.gaps)
-    ? (latestGap.gaps as unknown as GapItem[])
-    : []
+  const latestGap = records[0]
 
-  const hasGaps = gaps.length > 0
+  // Ideas come from the most recent analysis run.
+  const gaps: GapItem[] = (Array.isArray(latestGap?.gaps) ? (latestGap.gaps as unknown[]) : [])
+    .map(asIdeaItem)
+    .filter((g): g is GapItem => g !== null)
+
+  // Drafts written from the Competitors page can live on any row (one row per
+  // competitor URL), so collect them across every record.
+  const drafts: DraftItem[] = records.flatMap((r) =>
+    (Array.isArray(r.gaps) ? (r.gaps as unknown[]) : [])
+      .map(asDraftItem)
+      .filter((d): d is DraftItem => d !== null)
+  )
+
+  const hasGaps = gaps.length > 0 || drafts.length > 0
 
   // Sort gaps high → medium → low for presentation.
   const sortedGaps = [...gaps].sort(
@@ -85,27 +141,80 @@ export default async function ContentGapsPage() {
       ) : (
         <>
           {/* ── Hero heading ───────────────────────── */}
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "18px" }}>
-            <div
-              style={{
-                width: "32px",
-                height: "32px",
-                borderRadius: "8px",
-                background: "var(--ds-surface)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
-              <Lightbulb size={17} color="var(--ds-accent)" />
+          {gaps.length > 0 && (
+            <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "18px" }}>
+              <div
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "8px",
+                  background: "var(--ds-surface)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <Lightbulb size={17} color="var(--ds-accent)" />
+              </div>
+              <h2 style={{ fontSize: "16px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.45, marginTop: "4px" }}>
+                alphaa found {gaps.length} content gap{gaps.length !== 1 ? "s" : ""} — topics your competitors rank for that you&apos;re missing.
+              </h2>
             </div>
-            <h2 style={{ fontSize: "16px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.45, marginTop: "4px" }}>
-              alphaa found {gaps.length} content gap{gaps.length !== 1 ? "s" : ""} — topics your competitors rank for that you&apos;re missing.
-            </h2>
-          </div>
+          )}
+
+          {/* ── Drafts written to win a competitor gap ── */}
+          {drafts.length > 0 && (
+            <>
+              <SectionDivider>Drafts alphaa wrote for you</SectionDivider>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "8px" }}>
+                {drafts.map((d, i) => (
+                  <DsCard key={`draft-${i}`} accent="var(--ds-accent)">
+                    <div style={{ marginBottom: "10px" }}>
+                      <StatusPill variant="info">{d.format}</StatusPill>
+                    </div>
+                    <h3 style={{ fontSize: "15px", fontWeight: 600, color: "var(--ds-text)", lineHeight: 1.4, marginBottom: "8px" }}>
+                      {d.title}
+                    </h3>
+                    {d.targetQuestion && (
+                      <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "8px" }}>
+                        Answers the customer question: &quot;{d.targetQuestion}&quot;
+                      </p>
+                    )}
+                    <details>
+                      <summary style={{ cursor: "pointer", fontSize: "12px", fontWeight: 500, color: "var(--ds-accent)", listStyle: "none" }}>
+                        Read the draft
+                      </summary>
+                      <pre
+                        style={{
+                          fontSize: "12px",
+                          color: "var(--ds-text-mute)",
+                          lineHeight: 1.7,
+                          marginTop: "10px",
+                          whiteSpace: "pre-wrap",
+                          wordBreak: "break-word",
+                          fontFamily: "inherit",
+                          background: "var(--ds-surface)",
+                          border: ".5px solid var(--ds-border)",
+                          borderRadius: "8px",
+                          padding: "10px",
+                        }}
+                      >
+                        {d.draft}
+                      </pre>
+                    </details>
+                    <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", lineHeight: 1.6, marginTop: "12px" }}>
+                      alphaa can&apos;t publish to your website. Copy this into your site, or send it to
+                      whoever manages your website. Fill in anything in [square brackets] first.
+                    </p>
+                  </DsCard>
+                ))}
+              </div>
+            </>
+          )}
 
           {/* ── Gap cards ──────────────────────────── */}
+          {gaps.length > 0 && <SectionDivider>Content ideas</SectionDivider>}
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {sortedGaps.map((gap, i) => {
               const meta = PRIORITY_META[gap.priority] ?? PRIORITY_META.medium

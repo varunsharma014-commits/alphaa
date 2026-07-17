@@ -11,6 +11,7 @@ import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import { AddCompetitorButton } from "./AddCompetitorButton"
 import { FindCompetitorsButton } from "./FindCompetitorsButton"
 import { DeleteCompetitorButton } from "./DeleteCompetitorButton"
+import { WinGapButton } from "./WinGapButton"
 
 export const metadata = { title: "Competitors" }
 
@@ -184,11 +185,16 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                     <AlertCircle className="w-3.5 h-3.5" style={{ color: "var(--ds-bad)" }} />
                     <p style={{ color: "var(--ds-bad-soft)", fontSize: 11, fontWeight: 500 }}>Gaps you can win on</p>
                   </div>
-                  <ul className="space-y-1.5">
+                  <ul className="space-y-3">
                     {weaknesses.map((w) => (
-                      <li key={w} className="flex items-start gap-2" style={{ color: "var(--ds-text-mute)", fontSize: 11, lineHeight: 1.6 }}>
-                        <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-bad)" }} />
-                        {w}
+                      <li key={w} style={{ color: "var(--ds-text-mute)", fontSize: 11, lineHeight: 1.6 }}>
+                        <div className="flex items-start gap-2">
+                          <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-bad)" }} />
+                          {w}
+                        </div>
+                        <div style={{ paddingLeft: 12 }}>
+                          <WinGapButton competitorId={competitor.id} gap={w} />
+                        </div>
                       </li>
                     ))}
                   </ul>
