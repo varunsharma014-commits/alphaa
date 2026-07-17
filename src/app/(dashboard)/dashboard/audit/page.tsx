@@ -592,8 +592,11 @@ export default async function AuditPage() {
           <CopyButton text={tagSnippet} />
         </div>
         <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "10px", lineHeight: 1.6 }}>
-          Prefer maximum coverage? The copy-paste schema above is read by every crawler; the snippet
-          is read by AI/search engines that run JavaScript. Use whichever fits your site — or both.
+          Important: this snippet adds your details using JavaScript, and only Google (and Google&apos;s
+          AI) runs JavaScript when it reads your site. ChatGPT, Claude and Perplexity read the plain
+          page only — so to be understood by those, use the copy-paste version above (or ask whoever
+          manages your website to add it). The snippet is still worth using: alphaa keeps it current
+          for Google automatically.
         </p>
       </DsCard>
     </div>

@@ -6,9 +6,13 @@ export const dynamic = "force-dynamic"
 // injects it into the page — so alphaa can update the schema anytime without
 // the customer re-doing anything.
 //
-// Note: JS-injected JSON-LD is only read by crawlers that execute JavaScript.
-// For the strongest coverage, customers can also copy-paste the schema into
-// their HTML directly (shown on Website Health).
+// IMPORTANT — the limit of this approach (verified July 2026):
+// GPTBot, ClaudeBot and PerplexityBot do NOT execute JavaScript; they read the
+// raw HTML only. So schema injected by this snippet reaches Google (and Gemini,
+// which uses Google's rendering service) but is INVISIBLE to ChatGPT, Claude and
+// Perplexity. To be understood by those engines the JSON-LD must be server-
+// rendered into the page's HTML: the copy-paste block on Website Health, or a
+// CMS plugin. Keep the user-facing copy on Website Health honest about this.
 export async function GET(): Promise<Response> {
   const js = `(function () {
   try {
