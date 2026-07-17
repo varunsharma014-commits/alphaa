@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk"
 import { installPauseGuard } from "./ai-paused"
 import OpenAI from "openai"
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import { GoogleGenerativeAI, type GenerationConfig } from "@google/generative-ai"
 
 export type EngineResult = {
   engine: "chatgpt" | "claude" | "gemini" | "perplexity"
@@ -107,7 +107,7 @@ async function scanClaude(
         max_tokens: 600,
         messages: [{ role: "user", content: query }],
       }),
-      10000
+      20000
     )
     const response = message.content[0].type === "text" ? message.content[0].text : ""
     const { appeared, position, snippet } = checkAppearance(response, businessName)
@@ -160,7 +160,7 @@ async function scanChatGPT(
         max_tokens: 600,
         messages: [{ role: "user", content: query }],
       }),
-      10000
+      20000
     )
     const response = completion.choices[0]?.message?.content ?? ""
     const { appeared, position, snippet } = checkAppearance(response, businessName)
@@ -210,8 +210,18 @@ async function scanGemini(
     // Verified against the live API (July 2026): gemini-1.5/2.0/2.5-flash all
     // return 404 ("no longer available"). Model names churn — if this engine
     // starts returning "error", re-probe ListModels before assuming a key issue.
-    const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" })
-    const result = await withTimeout(model.generateContent(query), 10000)
+    const model = genAI.getGenerativeModel({
+      model: "gemini-3-flash-preview",
+      // thinkingBudget 0 is load-bearing, not a tweak. Gemini 3 reasons before
+      // answering: left on, it takes ~11.5s and blows the timeout (engine looks
+      // dead); capped, it answers in ~5.4s. Setting maxOutputTokens alone is
+      // worse than useless — the thinking consumes the budget and you get a
+      // ~90-char stub instead of an answer. Measured, not guessed.
+      // Cast: SDK 0.24.1's GenerationConfig type predates thinkingConfig, but the
+      // API honours it (verified live against the prod key).
+      generationConfig: { thinkingConfig: { thinkingBudget: 0 }, maxOutputTokens: 600 } as unknown as GenerationConfig,
+    })
+    const result = await withTimeout(model.generateContent(query), 20000)
     const response = result.response.text()
     const { appeared, position, snippet } = checkAppearance(response, businessName)
     return {
@@ -267,7 +277,7 @@ async function scanPerplexity(
         max_tokens: 600,
         messages: [{ role: "user", content: query }],
       }),
-      10000
+      20000
     )
     const response = completion.choices[0]?.message?.content ?? ""
     const { appeared, position, snippet } = checkAppearance(response, businessName)
