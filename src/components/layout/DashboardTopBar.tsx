@@ -1,7 +1,8 @@
 "use client"
 
 import { UserButton } from "@clerk/nextjs"
-import { ThemeToggle, type DashboardTheme } from "@/components/dashboard/ThemeToggle"
+import { ThemeToggle } from "@/components/dashboard/ThemeToggle"
+import type { DashboardTheme } from "@/lib/theme"
 import type { AppUser } from "@/types/user"
 
 export function DashboardTopBar({ user, theme }: { user: AppUser; theme: DashboardTheme }) {

@@ -2,9 +2,7 @@
 
 import { useState } from "react"
 import { Moon, Sun } from "lucide-react"
-
-export type DashboardTheme = "light" | "dark"
-export const THEME_COOKIE = "alphaa-dashboard-theme"
+import { THEME_COOKIE, type DashboardTheme } from "@/lib/theme"
 
 // Light/dark switch for the app only. The preference lives in a cookie so the
 // server renders the right theme on first paint (no flash), and it's applied to

@@ -6,7 +6,7 @@ import { db } from "@/lib/db"
 import { DashboardSidebar } from "@/components/layout/DashboardSidebar"
 import { DashboardTopBar } from "@/components/layout/DashboardTopBar"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
-import { THEME_COOKIE, type DashboardTheme } from "@/components/dashboard/ThemeToggle"
+import { THEME_COOKIE, type DashboardTheme } from "@/lib/theme"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { userId } = await auth()
