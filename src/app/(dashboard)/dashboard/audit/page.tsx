@@ -4,12 +4,9 @@ import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
+import Link from "next/link"
 import GenerateSchemaButton from "./GenerateSchemaButton"
-import CopyButton from "./CopyButton"
-import { DownloadLlmsButton } from "./DownloadLlmsButton"
 import type { AuditIssue } from "@/types/audit"
-import type { SchemaItem } from "@/lib/schema-generator"
-import { generateLlmsTxt } from "@/lib/llms-txt"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
 import { StatBox } from "@/components/dashboard/StatBox"
 import { StatusPill } from "@/components/dashboard/StatusPill"
@@ -17,7 +14,7 @@ import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import { DsCard } from "@/components/dashboard/DsCard"
 import { EmptyState } from "@/components/dashboard/EmptyState"
 import { humanizeIssue } from "@/lib/humanize"
-import { CheckCircle2, Gauge, Wrench, Code2, AlertCircle } from "lucide-react"
+import { CheckCircle2, Gauge, Wrench, AlertCircle, ArrowRight } from "lucide-react"
 
 export const metadata = { title: "Website health" }
 
@@ -117,15 +114,6 @@ export default async function AuditPage() {
   const user = await db.user.findUnique({ where: { clerkId } })
   if (!user) redirect("/login")
 
-  // Fetch latest schema markup
-  const latestSchema = await db.schemaMarkup.findFirst({
-    where: { userId: user.id },
-    orderBy: { generatedAt: "desc" },
-  })
-  const schemas = Array.isArray(latestSchema?.schemas)
-    ? (latestSchema.schemas as unknown as SchemaItem[])
-    : []
-
   // Fetch latest crawl result
   const latestCrawl = await db.crawlResult.findFirst({
     where: { userId: user.id },
@@ -195,13 +183,6 @@ export default async function AuditPage() {
   }
 
   const hasAnyData = Boolean(latestCrawl || latestAudit)
-
-  // llms.txt — alphaa auto-generates this from the user's business profile.
-  const llmsTxt = generateLlmsTxt(user)
-
-  // One-line snippet that auto-injects (and keeps updated) the business schema.
-  const appBase = process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"
-  const tagSnippet = `<script async src="${appBase}/tag.js?id=${user.id}"></script>`
 
   return (
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
@@ -434,170 +415,38 @@ export default async function AuditPage() {
         />
       )}
 
-      {/* ── Schema markup ───────────────────────────────────── */}
-      <SectionDivider>STRUCTURED DATA</SectionDivider>
-      {!latestSchema ? (
-        <EmptyState
-          icon={Code2}
-          title="alphaa generates structured data so Google and AI understand your business"
-          body="This is the behind-the-scenes code that helps search engines and AI assistants describe your business correctly. alphaa can create it for you."
-          sub="Most sites benefit from this — it only takes a moment."
-        >
-          <GenerateSchemaButton prominent />
-        </EmptyState>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>
-            Generated {formatDate(latestSchema.generatedAt)} · {schemas.length} item
-            {schemas.length !== 1 ? "s" : ""} ready to use
-          </p>
-          {schemas.map((schema, i) => {
-            const jsonStr = JSON.stringify(schema.jsonLd, null, 2)
-            return (
-              <DsCard key={i}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: "10px",
-                    marginBottom: "10px",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
-                    <StatusPill variant="info">{schema.type}</StatusPill>
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        color: "var(--ds-text-faint)",
-                        fontFamily: "monospace",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {schema.pageUrl}
-                    </span>
-                  </div>
-                  <CopyButton text={`<script type="application/ld+json">\n${jsonStr}\n</script>`} />
-                </div>
-                <pre
-                  style={{
-                    background: "var(--ds-bg)",
-                    border: "1px solid var(--ds-border)",
-                    borderRadius: "8px",
-                    padding: "12px",
-                    fontSize: "11px",
-                    color: "var(--ds-text-mute)",
-                    fontFamily: "monospace",
-                    overflowX: "auto",
-                    lineHeight: 1.6,
-                    whiteSpace: "pre-wrap",
-                    wordBreak: "break-all",
-                  }}
-                >
-                  {jsonStr}
-                </pre>
-              </DsCard>
-            )
-          })}
-        </div>
-      )}
-
-      {/* ── llms.txt — AI instructions ───────────────────────── */}
-      <SectionDivider>AI INSTRUCTIONS (LLMS.TXT)</SectionDivider>
+      {/* ── The one high-value action — lives on its own page now ── */}
+      <SectionDivider>THE MOST IMPORTANT THING</SectionDivider>
       <DsCard>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            marginBottom: "12px",
-            flexWrap: "wrap",
-          }}
-        >
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
-            llms.txt — tells AI engines who you are
-          </span>
-          <StatusPill variant="found">Generated</StatusPill>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "14px", flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: "240px" }}>
+            <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+              Make AI read your business — the most important thing you can do
+            </p>
+            <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>
+              ChatGPT, Claude and Perplexity read the plain code of your site. Copy the code alphaa
+              wrote for you and paste it onto your website — we show you exactly where.
+            </p>
+          </div>
+          <Link
+            href="/dashboard/vault"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              background: "var(--ds-accent)",
+              color: "var(--ds-text)",
+              fontSize: "13px",
+              fontWeight: 500,
+              padding: "8px 16px",
+              borderRadius: "8px",
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+            }}
+          >
+            What AI reads about you <ArrowRight size={14} />
+          </Link>
         </div>
-        <p
-          style={{
-            fontSize: "11px",
-            color: "var(--ds-text-faint)",
-            fontFamily: "monospace",
-            marginBottom: "12px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          Hosted at: alphaa.app/llms/{user.id}
-        </p>
-        <pre
-          style={{
-            background: "var(--ds-bg)",
-            border: "1px solid var(--ds-border)",
-            borderRadius: "8px",
-            padding: "12px",
-            fontSize: "11px",
-            color: "var(--ds-text-mute)",
-            fontFamily: "monospace",
-            overflowX: "auto",
-            lineHeight: 1.6,
-            whiteSpace: "pre-wrap",
-            wordBreak: "break-word",
-          }}
-        >
-          {llmsTxt}
-        </pre>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "12px", flexWrap: "wrap" }}>
-          <DownloadLlmsButton content={llmsTxt} />
-          <span style={{ fontSize: "11px", color: "var(--ds-text-faint)", lineHeight: 1.6 }}>
-            alphaa keeps this updated automatically. To add it to your own site, download it and
-            upload to yourdomain.com/llms.txt.
-          </span>
-        </div>
-      </DsCard>
-
-      {/* ── Auto-update snippet (schema injection) ──────────────── */}
-      <SectionDivider>AUTO-UPDATE (ONE-LINE SNIPPET)</SectionDivider>
-      <DsCard>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px", flexWrap: "wrap" }}>
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
-            Hands-off schema — paste once, alphaa keeps it current
-          </span>
-        </div>
-        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "12px" }}>
-          Add this one line before your site&apos;s &lt;/head&gt; tag. alphaa then keeps your
-          structured data up to date automatically — your business details plus any schema
-          generated here (FAQ, services, and more), published to the right pages. No
-          re-pasting when anything changes.
-        </p>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "10px",
-            background: "var(--ds-bg)",
-            border: "1px solid var(--ds-border)",
-            borderRadius: "8px",
-            padding: "10px 12px",
-          }}
-        >
-          <code style={{ fontSize: "11px", color: "var(--ds-text-mute)", fontFamily: "monospace", overflowX: "auto", whiteSpace: "nowrap" }}>
-            {tagSnippet}
-          </code>
-          <CopyButton text={tagSnippet} />
-        </div>
-        <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "10px", lineHeight: 1.6 }}>
-          Important: this snippet adds your details using JavaScript, and only Google (and Google&apos;s
-          AI) runs JavaScript when it reads your site. ChatGPT, Claude and Perplexity read the plain
-          page only — so to be understood by those, use the copy-paste version above (or ask whoever
-          manages your website to add it). The snippet is still worth using: alphaa keeps it current
-          for Google automatically.
-        </p>
       </DsCard>
     </div>
   )

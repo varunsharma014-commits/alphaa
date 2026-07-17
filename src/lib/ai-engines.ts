@@ -207,7 +207,10 @@ async function scanGemini(
   }
   try {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+    // Verified against the live API (July 2026): gemini-1.5/2.0/2.5-flash all
+    // return 404 ("no longer available"). Model names churn — if this engine
+    // starts returning "error", re-probe ListModels before assuming a key issue.
+    const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" })
     const result = await withTimeout(model.generateContent(query), 10000)
     const response = result.response.text()
     const { appeared, position, snippet } = checkAppearance(response, businessName)
@@ -259,7 +262,8 @@ async function scanPerplexity(
     })
     const completion = await withTimeout(
       client.chat.completions.create({
-        model: "llama-3.1-sonar-small-128k-online",
+        // Verified live (July 2026): the llama-3.1-sonar-* names are gone; "sonar" is current.
+        model: "sonar",
         max_tokens: 600,
         messages: [{ role: "user", content: query }],
       }),
