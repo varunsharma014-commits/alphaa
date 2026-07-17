@@ -15,6 +15,7 @@ import { meta as bestToolsMeta, Body as BestToolsBody } from "./best-aeo-tools-2
 import { meta as aiOverviewsLocalMeta, Body as AiOverviewsLocalBody } from "./google-ai-overviews-local-business"
 import { meta as dentistsMeta, Body as DentistsBody } from "./how-dentists-get-recommended-by-ai"
 import { meta as hvacPlumbingMeta, Body as HvacPlumbingBody } from "./how-hvac-plumbing-companies-get-recommended-by-ai"
+import { meta as blueLinkMeta, Body as BlueLinkBody } from "./death-of-the-blue-link"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -35,6 +36,7 @@ export const POSTS: Post[] = [
   { meta: aiOverviewsLocalMeta, Body: AiOverviewsLocalBody },
   { meta: dentistsMeta, Body: DentistsBody },
   { meta: hvacPlumbingMeta, Body: HvacPlumbingBody },
+  { meta: blueLinkMeta, Body: BlueLinkBody },
 ]
 
 export function getAllPosts(): Post[] {
