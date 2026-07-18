@@ -206,7 +206,7 @@ export default function ReferPage() {
             Partner Program · Open now
           </div>
 
-          <h1 className="text-[42px] sm:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-6 text-balance">
+          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-6 text-balance">
             Get paid every month.{" "}
             <span className="italic text-brand-orange" style={{ fontFamily: "Georgia, serif" }}>
               Forever.

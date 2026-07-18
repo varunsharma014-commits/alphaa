@@ -27,7 +27,7 @@ export default function BlogIndexPage() {
           <p className="text-brand-orange text-xs font-semibold uppercase tracking-[0.18em] mb-3">
             The alphaa blog
           </p>
-          <h1 className="text-white text-[34px] sm:text-[44px] font-semibold leading-tight tracking-[-0.02em]">
+          <h1 className="text-white text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-balance">
             Getting found in the age of{" "}
             <span className="serif-italic text-brand-orange">AI search</span>
           </h1>

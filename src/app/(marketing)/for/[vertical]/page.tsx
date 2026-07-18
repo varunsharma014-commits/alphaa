@@ -97,11 +97,11 @@ export default async function VerticalPage({
           }}
           aria-hidden="true"
         />
-        <div className="relative max-w-4xl mx-auto text-center">
+        <div className="relative max-w-5xl mx-auto text-center">
           <p className="text-xs font-medium tracking-[0.18em] uppercase text-brand-orange mb-6">
             AI search for {v.plural}
           </p>
-          <h1 className="text-[32px] sm:text-[46px] font-semibold leading-[1.1] tracking-[-0.02em] text-white mb-6 text-balance">
+          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-6 text-balance">
             When someone asks ChatGPT{" "}
             <span className="serif-italic text-brand-orange">&quot;{v.examplePrompt}&quot;</span>
             <br className="hidden sm:block" /> — are you the answer?

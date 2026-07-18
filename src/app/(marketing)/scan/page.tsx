@@ -7,10 +7,10 @@ export const metadata = { title: "Free Visibility Scan" }
 export default function ScanPage() {
   return (
     <div className="pt-24 pb-20 px-4 sm:px-6">
-      <div className="max-w-xl mx-auto">
+      <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <SectionLabel className="mb-3 block">Free scan</SectionLabel>
-          <h1 className="text-[32px] sm:text-[40px] font-semibold text-white leading-tight mb-4">
+          <h1 className="text-[34px] sm:text-[48px] font-semibold text-white leading-[1.08] tracking-[-0.02em] mb-4 text-balance">
             See your free{" "}
             <span className="serif-italic text-brand-orange">visibility score</span>
           </h1>

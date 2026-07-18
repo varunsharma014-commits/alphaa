@@ -79,7 +79,7 @@ export default async function BlogPostPage({
           </span>
         </div>
 
-        <h1 className="text-white text-[30px] sm:text-[40px] font-semibold leading-[1.12] tracking-[-0.02em] mb-8 text-balance">
+        <h1 className="text-white text-[34px] sm:text-[48px] lg:text-[52px] font-semibold leading-[1.1] tracking-[-0.02em] mb-8 text-balance">
           {meta.title}
         </h1>
 

@@ -206,7 +206,7 @@ export default function PrivacyPage() {
   return (
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-white text-3xl font-semibold mb-2">Privacy Policy</h1>
+        <h1 className="text-white text-[32px] sm:text-[42px] font-semibold tracking-[-0.02em] mb-2">Privacy Policy</h1>
         <p className="text-white/40 text-sm mb-10">Last updated: June 15, 2026</p>
 
         <p className="text-white/50 text-sm leading-relaxed mb-10 p-4 border border-white/[0.08] rounded-lg bg-white/[0.02]">

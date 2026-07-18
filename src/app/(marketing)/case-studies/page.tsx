@@ -358,11 +358,11 @@ export default function CaseStudiesPage() {
           style={{ background: "radial-gradient(ellipse at center bottom, rgba(255,107,26,0.15) 0%, transparent 70%)" }}
           aria-hidden="true"
         />
-        <div className="relative max-w-4xl mx-auto text-center">
+        <div className="relative max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-semibold mb-7 tracking-wide uppercase">
             Case Studies
           </div>
-          <h1 className="text-[40px] sm:text-[58px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-5 text-balance">
+          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-5 text-balance">
             Real businesses.{" "}
             <span className="text-brand-orange">Real AI visibility.</span>
             <br />
