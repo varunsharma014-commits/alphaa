@@ -51,7 +51,7 @@ export function HeroSection() {
         aria-hidden="true"
       />
 
-      <div className="relative max-w-4xl mx-auto text-center">
+      <div className="relative max-w-5xl mx-auto text-center">
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-500/40 bg-red-500/10 text-red-400 text-xs font-medium mb-7">
           <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
@@ -59,18 +59,20 @@ export function HeroSection() {
         </div>
 
         {/* Headline — statement, then the question as the punchline */}
-        <h1 className="text-[32px] sm:text-[46px] font-semibold leading-[1.07] tracking-[-0.02em] text-white mb-5 text-balance">
+        <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-5 text-balance">
           Your customers aren&apos;t{" "}
           <span className="relative whitespace-nowrap">
             <span className="relative z-10">JUST</span>
             <span
-              className="absolute left-0 right-0 bottom-[-0.06em] h-[5px] sm:h-[6px] rounded-full bg-brand-orange z-0"
+              className="absolute left-0 right-0 bottom-[-0.06em] h-[6px] sm:h-[8px] rounded-full bg-brand-orange z-0"
               aria-hidden="true"
             />
           </span>{" "}
           on Google anymore.
-          <br className="hidden sm:block" /> They&apos;re on{" "}
-          <span className="serif-italic text-brand-orange">ChatGPT, Claude, Gemini.</span>
+          <span className="block mt-5 sm:mt-7">
+            They&apos;re on{" "}
+            <span className="serif-italic text-brand-orange">ChatGPT, Claude, Gemini.</span>
+          </span>
         </h1>
         <p className="text-[22px] sm:text-[30px] font-semibold leading-[1.12] tracking-[-0.01em] text-white/85 mb-6 text-balance">
           Are you showing up in their answers?
