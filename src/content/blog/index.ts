@@ -17,6 +17,8 @@ import { meta as dentistsMeta, Body as DentistsBody } from "./how-dentists-get-r
 import { meta as hvacPlumbingMeta, Body as HvacPlumbingBody } from "./how-hvac-plumbing-companies-get-recommended-by-ai"
 import { meta as blueLinkMeta, Body as BlueLinkBody } from "./death-of-the-blue-link"
 import { meta as lawFirmsMeta, Body as LawFirmsBody } from "./how-law-firms-get-recommended-by-ai"
+import { meta as medSpasMeta, Body as MedSpasBody } from "./how-med-spas-get-recommended-by-ai"
+import { meta as zeroClickMeta, Body as ZeroClickBody } from "./zero-click-search"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -39,6 +41,8 @@ export const POSTS: Post[] = [
   { meta: hvacPlumbingMeta, Body: HvacPlumbingBody },
   { meta: blueLinkMeta, Body: BlueLinkBody },
   { meta: lawFirmsMeta, Body: LawFirmsBody },
+  { meta: medSpasMeta, Body: MedSpasBody },
+  { meta: zeroClickMeta, Body: ZeroClickBody },
 ]
 
 export function getAllPosts(): Post[] {
