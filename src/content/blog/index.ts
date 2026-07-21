@@ -19,6 +19,8 @@ import { meta as blueLinkMeta, Body as BlueLinkBody } from "./death-of-the-blue-
 import { meta as lawFirmsMeta, Body as LawFirmsBody } from "./how-law-firms-get-recommended-by-ai"
 import { meta as medSpasMeta, Body as MedSpasBody } from "./how-med-spas-get-recommended-by-ai"
 import { meta as zeroClickMeta, Body as ZeroClickBody } from "./zero-click-search"
+import { meta as agencyWorthItMeta, Body as AgencyWorthItBody } from "./is-your-seo-agency-worth-it"
+import { meta as askingChatgptFirstMeta, Body as AskingChatgptFirstBody } from "./your-next-customer-is-asking-chatgpt-first"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -43,6 +45,8 @@ export const POSTS: Post[] = [
   { meta: lawFirmsMeta, Body: LawFirmsBody },
   { meta: medSpasMeta, Body: MedSpasBody },
   { meta: zeroClickMeta, Body: ZeroClickBody },
+  { meta: agencyWorthItMeta, Body: AgencyWorthItBody },
+  { meta: askingChatgptFirstMeta, Body: AskingChatgptFirstBody },
 ]
 
 export function getAllPosts(): Post[] {
