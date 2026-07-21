@@ -36,3 +36,6 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# Never commit .env — the rule above only covers .env*.local, and this repo is public.
+.env

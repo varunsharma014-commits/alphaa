@@ -96,7 +96,10 @@ alphaa/
 │   │   ├── stripe.ts          # Stripe singleton (lazy), STRIPE_PRICE_IDS
 │   │   ├── email.ts           # Resend wrappers (sendWelcomeEmail, etc.)
 │   │   ├── resend.ts          # Low-level Resend sendEmail()
-│   │   ├── constants.ts       # TRIAL_DAYS, PLANS, PLAN_PRICES, BUSINESS_TYPES, ROUTES
+│   │   ├── engine-evidence.ts # getEngineEvidence() — merges weekly/scan/sandbox evidence per engine
+│   │   ├── pagespeed.ts      # fetchPageSpeed() — shared PSI helper (protocol fix, 25s, 6h cache)
+│   │   ├── scan-insights.ts  # business profile, mention extraction, loss estimate, SERP
+│   │   ├── constants.ts       # TRIAL_DAYS, PLANS, PLAN_PRICES, SETUP_FEE_USD, CONCIERGE_SLA, SUPPORT_EMAIL
 │   │   └── utils.ts           # cn(), formatCurrency(), formatDate(), slugify(), truncate()
 │   └── types/
 │       ├── user.ts            # AppUser interface
@@ -167,6 +170,10 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 | `GEMINI_API_KEY` | Gemini 1.5 Flash for AI engine scan (optional) |
 | `PERPLEXITY_API_KEY` | Perplexity for AI engine scan (optional — uses OpenAI SDK compat) |
 | `CRON_SECRET` | Bearer token protecting `/api/cron/*` endpoints from unauthorized invocation |
+| `STRIPE_SETUP_FEE_PRICE_ID` | One-time $149 white-glove setup (checkout mode `payment`) |
+| `STRIPE_FULLSERVICE_MONTHLY_PRICE_ID` | $299/mo Full Service subscription (human-fulfilled, no trial) |
+| `PAGESPEED_API_KEY` | Optional. Google PageSpeed Insights key. **Without it the keyless quota 429s permanently and the speed page shows its honest failure state.** |
+| `APIFY_TOKEN` | Google SERP scraping for scan competitor evidence (optional; scan degrades without it) |
 
 ---
 
@@ -244,6 +251,8 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 | GET | `/api/stripe/trial-status` | Clerk | Return trial days remaining + subscription status |
 | POST | `/api/user/onboarding-complete` | Clerk | Mark `onboardingCompleted = true` |
 | GET | `/api/reports` | Clerk | List reports for user |
+| POST | `/api/concierge` | Clerk | "Do it for me" intake — logs `concierge_request` activity + emails SUPPORT_EMAIL. Called BEFORE Stripe so abandoned checkouts still leave a lead |
+| POST | `/api/sandbox/ask` | Clerk | Live multi-engine question. Rate-limited via `sandbox_query` activity rows; persists verdicts as `sandbox_result` rows (evidence source) |
 | POST | `/api/webhooks/clerk` | Svix-verified | Handle Clerk user lifecycle events |
 | POST | `/api/webhooks/stripe` | Stripe-verified | Handle Stripe billing events |
 | GET | `/api/cron/weekly` | Bearer token | Generate weekly reports + send emails |
@@ -350,7 +359,19 @@ Status colors (not in Tailwind config, use standard Tailwind): `text-green-500` 
 
 17. **`src/lib/resend.ts` vs `src/lib/email.ts`:** `resend.ts` is a low-level `sendEmail({ to, subject, react })` function. `email.ts` is higher-level wrappers (sendWelcomeEmail, etc.) that render React Email templates and call `send()`. Use the typed wrappers in `email.ts` unless you need to send ad-hoc email.
 
-18. **`src/app/api/audit/` directory exists** but there is no `route.ts` in it at the top level — audits are triggered from `/api/dashboard/scan`. Do not confuse the directory name with a standalone audit endpoint.
+18. **Engine verdicts must come from `getEngineEvidence()`** (`src/lib/engine-evidence.ts`), never from a single source. It merges the weekly Audit, public ScanLeads matched by email, and sandbox results, and returns `found | partial | missing | unknown`. **`unknown` (no data anywhere) must never render as "Not yet"** — "we don't know" and "you're not mentioned" are different claims to a paying customer.
+
+19. **Never interpolate an empty `city` into a prompt or template.** An unset profile city produced "based right here in [City]" in a GBP draft and `Services in | Business` titles. Guard with `city.trim()` and branch the prompt. `containsPlaceholders()` in `src/lib/gbp-poster.ts` gates BOTH the autopilot cron and the manual publish route — bracket text must never reach Google.
+
+20. **Generated schema must not invent facts.** `schema-generator.ts` derives `addressCountry` from the state/province (never hardcodes "US"), omits unknown address fields, forbids `sameAs` in the prompt, and strips any off-domain `sameAs` from model output.
+
+21. **`user.websiteUrl` is stored WITHOUT a protocol** ("growthturbine.com"). `new URL()` throws on it — this silently broke every crawl and every PageSpeed call. Always normalize with `https://` first (see `crawler.ts` and `lib/pagespeed.ts`).
+
+22. **`POST /api/scan` returns immediately** and runs the pipeline in a background `processScan()` (safe on Railway's persistent process). The client redirects to `/scan/results` and polls. Failures write a fallback so polling always terminates.
+
+23. **The `claude` engine is stored under the `google_ai` key** in `aiSearchStatus` (Audit + ScanLead) for legacy reasons, and reports label that key "Google AI". Known misattribution — not yet fixed.
+
+24. **`src/app/api/audit/` directory exists** but there is no `route.ts` in it at the top level — audits are triggered from `/api/dashboard/scan`. Do not confuse the directory name with a standalone audit endpoint.
 
 ---
 
