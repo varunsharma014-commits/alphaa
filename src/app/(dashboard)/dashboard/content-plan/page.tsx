@@ -163,6 +163,13 @@ export default async function ContentPlanPage() {
           >
             Connect Google listing →
           </Link>
+          <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", marginTop: "10px", lineHeight: 1.6 }}>
+            Prefer a human?{" "}
+            <Link href="/dashboard/concierge" style={{ color: "var(--ds-accent)", fontWeight: 500 }}>
+              We&apos;ll set everything up for you →
+            </Link>{" "}
+            — a real person, within 2 business days.
+          </p>
         </DsCard>
       )}
 

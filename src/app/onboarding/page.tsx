@@ -511,9 +511,20 @@ export default function OnboardingPage() {
           </OrangePillButton>
         )}
         {step === 4 && (
-          <OrangePillButton onClick={finish} loading={loading} size="md">
-            Go to my dashboard →
-          </OrangePillButton>
+          <div className="flex flex-col items-center gap-3">
+            <OrangePillButton onClick={finish} loading={loading} size="md">
+              Go to my dashboard →
+            </OrangePillButton>
+            {/* Stall-point rescue: the one manual task ahead of them is pasting
+                code onto their site. Offer the human option before they meet it. */}
+            <p className="text-muted text-xs text-center leading-relaxed">
+              Never want to touch code? A real person from alphaa can install everything
+              on your site within 2 business days —{" "}
+              <a href="/dashboard/concierge" className="text-brand-orange font-medium hover:underline">
+                we&apos;ll do it for you →
+              </a>
+            </p>
+          </div>
         )}
       </div>
     </div>

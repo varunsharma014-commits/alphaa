@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
 import { db } from "@/lib/db"
 import { sendPaymentFailureEmail } from "@/lib/email"
+import { resend } from "@/lib/resend"
+import { logActivity } from "@/lib/activity"
+import { SUPPORT_EMAIL } from "@/lib/constants"
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
@@ -26,10 +29,40 @@ export async function POST(req: NextRequest) {
         const trialEnd = subscription.trial_end ? new Date(subscription.trial_end * 1000) : null
         const priceId = subscription.items.data[0]?.price.id ?? ""
         const plan = getPlanFromPriceId(priceId)
+        // Full Service checkouts carry no trial, so their status is active.
         await db.user.updateMany({
           where: { stripeCustomerId: customerId },
-          data: { stripeSubscriptionId: subscriptionId, subscriptionStatus: "trialing", plan, trialEndsAt: trialEnd },
+          data: {
+            stripeSubscriptionId: subscriptionId,
+            subscriptionStatus: trialEnd ? "trialing" : "active",
+            plan,
+            trialEndsAt: trialEnd,
+          },
         })
+      } else if (sub.mode === "payment" && sub.metadata?.purpose === "concierge_setup") {
+        // One-time white-glove setup fee paid — a human owes this customer a
+        // completed installation within the stated SLA. Record it and alert
+        // the team; the intake details arrived via /api/concierge.
+        const user = await db.user.findFirst({ where: { stripeCustomerId: customerId } })
+        if (user) {
+          await logActivity(
+            user.id,
+            "concierge_paid",
+            "White-glove setup booked",
+            "A real person from alphaa will install your code within 2 business days.",
+            { checkoutSessionId: sub.id }
+          )
+          try {
+            await resend.emails.send({
+              from: `Alphaa <${process.env.RESEND_FROM_EMAIL}>`,
+              to: SUPPORT_EMAIL,
+              subject: `💰 White-glove setup PAID — ${user.businessName ?? user.email}`,
+              text: `${user.businessName ?? "Unknown business"} (${user.email}) paid the $149 setup fee.\n\nSLA: install + verify within 2 business days.\nIntake details: see the "concierge_request" activity for user ${user.id} (or the earlier intake email).\nWebsite: ${user.websiteUrl ?? "not set"}`,
+            })
+          } catch (e) {
+            console.error("Concierge notification email failed:", e)
+          }
+        }
       }
       break
     }
@@ -87,6 +120,7 @@ function getPlanFromPriceId(priceId: string) {
     [process.env.STRIPE_STARTER_ANNUAL_PRICE_ID!]: "starter",
     [process.env.STRIPE_PRO_MONTHLY_PRICE_ID!]: "pro",
     [process.env.STRIPE_PRO_ANNUAL_PRICE_ID!]: "pro",
+    [process.env.STRIPE_FULLSERVICE_MONTHLY_PRICE_ID!]: "fullservice",
   }
   return ids[priceId] ?? "starter"
 }

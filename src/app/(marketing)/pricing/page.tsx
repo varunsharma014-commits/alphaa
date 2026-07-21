@@ -48,6 +48,26 @@ const plans = [
     cta: "Start free trial",
     priceId: { monthly: "pro_monthly", annual: "pro_annual" },
   },
+  {
+    name: "Full Service",
+    monthly: 299,
+    annual: 299,
+    monthlyOnly: true,
+    description: "Everything in Pro — plus a real person does all the website work for you.",
+    highlight: false,
+    badge: "Done for you",
+    features: [
+      "Everything in Pro",
+      "White-glove setup included — we install all code on your site",
+      "A human publishes your monthly blogs & FAQs to your website",
+      "Schema & llms.txt maintained for you",
+      "Invite-based access — never your passwords",
+      "Human turnaround within 2 business days",
+    ],
+    cta: "Get Full Service",
+    href: "/dashboard/concierge",
+    priceId: { monthly: "fullservice_monthly", annual: "fullservice_monthly" },
+  },
 ]
 
 const billingFaqs = [
@@ -104,7 +124,7 @@ export default function PricingPage() {
         </div>
 
         {/* Plan cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
           {plans.map((plan) => (
             <div
               key={plan.name}
@@ -113,9 +133,9 @@ export default function PricingPage() {
                 plan.highlight && "border-brand-orange/30 shadow-glow-sm"
               )}
             >
-              {plan.highlight && (
+              {"badge" in plan && plan.badge && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="px-3 py-1 rounded-full bg-brand-orange text-white text-xs font-semibold">
+                  <span className={plan.highlight ? "px-3 py-1 rounded-full bg-brand-orange text-white text-xs font-semibold" : "px-3 py-1 rounded-full border border-brand-orange/40 bg-brand-orange/10 text-brand-orange text-xs font-semibold"}>
                     {plan.badge}
                   </span>
                 </div>
@@ -133,8 +153,11 @@ export default function PricingPage() {
                   </span>
                   <span className="text-muted text-sm">/month</span>
                 </div>
-                {annual && (
+                {annual && !("monthlyOnly" in plan && plan.monthlyOnly) && (
                   <p className="text-muted/60 text-xs mt-1">Billed annually (${(annual ? plan.annual : plan.monthly) * 12}/yr)</p>
+                )}
+                {"monthlyOnly" in plan && plan.monthlyOnly && (
+                  <p className="text-muted/60 text-xs mt-1">Monthly only — human-fulfilled service</p>
                 )}
               </div>
 
@@ -148,7 +171,7 @@ export default function PricingPage() {
               </ul>
 
               <OrangePillButton
-                href={`/signup?plan=${plan.priceId[annual ? "annual" : "monthly"]}`}
+                href={"href" in plan && plan.href ? plan.href : `/signup?plan=${plan.priceId[annual ? "annual" : "monthly"]}`}
                 variant={plan.highlight ? "primary" : "ghost"}
                 className="w-full justify-center"
                 size="md"

@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { LocalDate } from "@/components/dashboard/LocalDate"
@@ -330,6 +331,32 @@ Thank you!`
 
       {/* ── Step 2 — where to paste it ──────────────────────── */}
       <SectionDivider>STEP 2 — PASTE IT ONTO YOUR SITE</SectionDivider>
+
+      {/* Stall-point rescue: this exact step is where non-technical owners
+          freeze ("log in to your WordPress admin…"). Offer the human option
+          BEFORE the instructions, not after they've given up. */}
+      <DsCard accent="var(--ds-accent)" style={{ marginBottom: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "14px", flexWrap: "wrap" }}>
+          <div>
+            <p style={{ fontSize: "14px", fontWeight: 600, color: "var(--ds-text)", margin: 0 }}>
+              Don&apos;t want to touch code? We&apos;ll install it for you.
+            </p>
+            <p style={{ fontSize: "12.5px", color: "var(--ds-text-mute)", margin: "4px 0 0", lineHeight: 1.6 }}>
+              A real person from alphaa sets up everything on this page within 2 business days — $149 one-time.
+            </p>
+          </div>
+          <Link
+            href="/dashboard/concierge"
+            style={{
+              flexShrink: 0, padding: "9px 18px", borderRadius: "999px", background: "var(--ds-accent)",
+              color: "#fff", fontSize: "13px", fontWeight: 600, textDecoration: "none",
+            }}
+          >
+            Do this for me →
+          </Link>
+        </div>
+      </DsCard>
+
       <DsCard>
         <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "14px" }}>
           Pick how your website was built and follow the three steps. If you&apos;re not sure, ask
