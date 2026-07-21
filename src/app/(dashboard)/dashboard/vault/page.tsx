@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic"
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { formatDate } from "@/lib/utils"
+import { LocalDate } from "@/components/dashboard/LocalDate"
 import GenerateSchemaButton from "../audit/GenerateSchemaButton"
 import CopyButton from "../audit/CopyButton"
 import { DownloadLlmsButton } from "../audit/DownloadLlmsButton"
@@ -238,7 +238,7 @@ Thank you!`
 
         {latestCrawl && (
           <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "10px" }}>
-            Based on alphaa&apos;s check of {latestCrawl.url} on {formatDate(latestCrawl.crawledAt)}.
+            Based on alphaa&apos;s check of {latestCrawl.url} on <LocalDate iso={latestCrawl.crawledAt.toISOString()} />.
           </p>
         )}
       </DsCard>
@@ -266,7 +266,7 @@ Thank you!`
             }}
           >
             <p style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>
-              Written {formatDate(latestSchema.generatedAt)} · {schemas.length} block
+              Written <LocalDate iso={latestSchema.generatedAt.toISOString()} /> · {schemas.length} block
               {schemas.length !== 1 ? "s" : ""} ready to paste
             </p>
             <GenerateSchemaButton />

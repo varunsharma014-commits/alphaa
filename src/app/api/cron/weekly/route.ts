@@ -104,7 +104,9 @@ async function processUser(
     const positionBefore = records[1].position
     const positionAfter = records[0].position
     // Lower position = better ranking, so improvement = negative change
-    const change = positionBefore - positionAfter
+    // Round to 1 decimal — GSC positions are long floats and the raw delta
+    // (-2.214285714285708) was rendered straight into the customer report.
+    const change = Math.round((positionBefore - positionAfter) * 10) / 10
     movers.push({ query, positionBefore, positionAfter, change })
   }
 

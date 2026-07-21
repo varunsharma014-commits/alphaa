@@ -15,12 +15,18 @@ export async function analyzeContentGaps(
   businessType: string,
   city: string
 ): Promise<{ gaps: GapItem[]; summary: string }> {
+  // Empty-city guard: the fallback title below once rendered as
+  // "Marketing or Ad Agency Services in | Growth Turbine" on the live
+  // dashboard — a dangling "in" from an unset profile city. Treat empty as
+  // "no location" everywhere in this file, never interpolate it raw.
+  const locality = city.trim()
+
   const prompt = `You are an expert SEO content strategist. Analyze the content gaps between two business websites and identify what topics the competitor likely covers that the user's site is missing.
 
 User's business:
 - Name: ${businessName}
 - Type: ${businessType}
-- City: ${city}
+${locality ? `- City: ${locality}` : ""}
 - Website: ${userUrl}
 
 Competitor website: ${competitorUrl}
@@ -45,7 +51,7 @@ Rules:
 - Return 6-10 gap items
 - Prioritize gaps based on search volume and business relevance
 - suggestedOutline should have 3-5 bullet points
-- Make titles location-specific (include "${city}") only where the business actually serves a local area; otherwise keep titles focused on what the business offers
+${locality ? `- Make titles location-specific (include "${locality}") only where the business actually serves a local area; otherwise keep titles focused on what the business offers` : "- The business location is not known. Do NOT include any city or region in titles — keep them focused on what the business offers."}
 - Focus on topics that bring in customers ready to buy, not just informational fluff
 - estimatedImpact should be specific and realistic`
 
@@ -83,12 +89,14 @@ Rules:
     return {
       gaps: [
         {
-          topic: "Local Service Pages",
+          topic: locality ? "Local Service Pages" : "Service Pages",
           priority: "high",
-          suggestedTitle: `${businessType} Services in ${city} | ${businessName}`,
+          suggestedTitle: locality
+            ? `${businessType} Services in ${locality} | ${businessName}`
+            : `${businessType} Services | ${businessName}`,
           suggestedOutline: [
             "What we offer",
-            "Why choose us in " + city,
+            locality ? `Why choose us in ${locality}` : "Why choose us",
             "Pricing & booking",
             "Customer reviews",
           ],

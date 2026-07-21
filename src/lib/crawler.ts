@@ -460,8 +460,13 @@ async function checkAiCrawlerBlocks(
 }
 
 export async function crawlWebsite(url: string, maxPages = 40): Promise<CrawlOutput> {
+  // Users type their site as "growthturbine.com" — without a protocol,
+  // `new URL()` throws and every crawl 500s before fetching a single page
+  // (which is why "Check my site now" always failed and Website health showed
+  // "0 pages checked" forever). Default to https before anything else.
+  const withProtocol = /^https?:\/\//i.test(url.trim()) ? url.trim() : `https://${url.trim()}`
   // Normalize the seed URL
-  const seedUrl = normalizeUrl(url, url) ?? url
+  const seedUrl = normalizeUrl(withProtocol, withProtocol) ?? withProtocol
   const baseOrigin = new URL(seedUrl).origin
 
   const queue: string[] = [seedUrl]

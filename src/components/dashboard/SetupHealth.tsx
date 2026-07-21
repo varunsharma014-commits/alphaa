@@ -182,7 +182,7 @@ export function SetupHealth({
         {/* Row 1 — Google connection */}
         <Row
           tone={connected ? "good" : "bad"}
-          title={connected ? "Google connected" : "Connect Google so alphaa can post for you"}
+          title={connected ? "Google account connected (Analytics & Search)" : "Connect Google so alphaa can post for you"}
           pill={connected ? "Connected" : "Not connected"}
           pillVariant={connected ? "found" : "error"}
           href={connected ? undefined : SETTINGS_HREF}

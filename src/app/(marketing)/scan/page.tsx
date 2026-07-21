@@ -23,7 +23,7 @@ export default function ScanPage() {
         <div className="flex items-center justify-center gap-2 mb-6">
           <Bot className="w-4 h-4 text-brand-orange" />
           <p className="text-muted/70 text-xs">
-            Live check across <span className="text-white font-medium">4 AI assistants</span> plus your website
+            Live check across <span className="text-white font-medium">ChatGPT, Claude, Gemini &amp; Perplexity</span> plus your website
           </p>
         </div>
 

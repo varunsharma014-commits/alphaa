@@ -152,15 +152,15 @@ export default function BusinessSettingsPage() {
             <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "10px" }}>
               <div>
                 <label style={labelStyle}>City</label>
-                <input style={inputStyle} value={form.city} onChange={(e) => update({ city: e.target.value })} placeholder="Austin" />
+                <input style={inputStyle} value={form.city} onChange={(e) => update({ city: e.target.value })} placeholder="Austin or Ottawa" />
               </div>
               <div>
-                <label style={labelStyle}>State</label>
-                <input style={inputStyle} value={form.state} onChange={(e) => update({ state: e.target.value })} placeholder="TX" />
+                <label style={labelStyle}>State / Province</label>
+                <input style={inputStyle} value={form.state} onChange={(e) => update({ state: e.target.value })} placeholder="TX or ON" />
               </div>
               <div>
-                <label style={labelStyle}>ZIP</label>
-                <input style={inputStyle} value={form.zip} onChange={(e) => update({ zip: e.target.value })} placeholder="78701" />
+                <label style={labelStyle}>ZIP / Postal code</label>
+                <input style={inputStyle} value={form.zip} onChange={(e) => update({ zip: e.target.value })} placeholder="78701 or K1A 0A6" />
               </div>
             </div>
 

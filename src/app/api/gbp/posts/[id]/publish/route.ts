@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
-import { postToGmb } from "@/lib/gbp-poster"
+import { postToGmb, containsPlaceholders } from "@/lib/gbp-poster"
 import { logActivity } from "@/lib/activity"
 
 export const dynamic = "force-dynamic"
@@ -34,6 +34,15 @@ export async function POST(
 
     if (!post || post.userId !== user.id) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 })
+    }
+
+    // Refuse to publish drafts that still contain bracket placeholders like
+    // "[City]" — those are unfilled facts, not content.
+    if (containsPlaceholders(post.content)) {
+      return NextResponse.json(
+        { error: "This draft still has placeholders like [City] — edit it before publishing." },
+        { status: 400 }
+      )
     }
 
     const integration = user.integration

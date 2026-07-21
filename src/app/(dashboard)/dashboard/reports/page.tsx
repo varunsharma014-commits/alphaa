@@ -211,7 +211,7 @@ export default async function ReportsPage() {
                                 color: k.change > 0 ? "var(--ds-ok)" : k.change < 0 ? "var(--ds-bad)" : "var(--ds-text-faint)",
                               }}
                             >
-                              {k.change > 0 ? "+" : ""}{k.change}
+                              {k.change > 0 ? "+" : ""}{Number(k.change).toFixed(1)}
                             </span>
                           </div>
                         ))}

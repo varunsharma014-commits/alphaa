@@ -73,6 +73,43 @@ export async function POST(req: NextRequest) {
       data: { email: input.email, businessName: input.businessName, businessUrl: input.websiteUrl, city: input.city },
     })
 
+    // Kick off the scan WITHOUT awaiting it. The POST used to block for the
+    // full pipeline (~35s), leaving the visitor staring at a button spinner
+    // through the most anxious moment of the funnel. Now the client redirects
+    // to /scan/results immediately and its poller + ScanLoader take over.
+    // Safe on Railway (persistent Node process, not a serverless freeze);
+    // processScan writes a fallback result on any failure so polling always
+    // terminates instead of stranding the visitor at the 90s timeout.
+    void processScan(lead.id, input).catch(async (err) => {
+      console.error("Scan pipeline error:", err instanceof Error ? err.message : err)
+      try {
+        const fallback = getFallbackAudit(input.businessName, input.city, input.businessType)
+        await db.scanLead.update({
+          where: { id: lead.id },
+          data: {
+            visibilityScore: fallback.visibility_score,
+            issues: fallback.issues,
+            aiSearchStatus: fallback.ai_search_status,
+          },
+        })
+      } catch (updateErr) {
+        console.error("Scan fallback write failed:", updateErr)
+      }
+    })
+
+    return NextResponse.json({ scanId: lead.id, ready: false })
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error("Scan error:", msg)
+    if (err && typeof err === "object" && "name" in err && err.name === "ZodError") {
+      return NextResponse.json({ error: "Invalid input" }, { status: 400 })
+    }
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
+}
+
+async function processScan(leadId: string, input: z.infer<typeof schema>) {
+  {
     const prompt = buildAuditPrompt(input.businessName, input.city, input.websiteUrl)
 
     // Engine pipeline: site fetch → business profile (haiku) → engine scan with
@@ -230,9 +267,10 @@ export async function POST(req: NextRequest) {
     // (possibly null), even when the OG fetch itself failed.
     const ogData = { ...(site.og ?? {}), insights }
 
-    // Update lead with results
+    // Update lead with results — this write is what flips the result poller
+    // from { ready: false } to { ready: true }.
     await db.scanLead.update({
-      where: { id: lead.id },
+      where: { id: leadId },
       data: {
         visibilityScore: auditResult.visibility_score,
         issues: auditResult.issues,
@@ -241,30 +279,6 @@ export async function POST(req: NextRequest) {
         engineResponses: engineResponses as object,
       },
     })
-
-    return NextResponse.json({
-      scanId: lead.id,
-      ready: true,
-      result: {
-        scanId: lead.id,
-        visibilityScore: auditResult.visibility_score,
-        issues: auditResult.issues,
-        competitorInsight: auditResult.competitor_insight,
-        aiSearchStatus,
-        businessName: input.businessName,
-        city: input.city,
-        businessUrl: input.websiteUrl,
-        ogData,
-        engineResponses,
-      },
-    })
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error("Scan error:", msg)
-    if (err && typeof err === "object" && "name" in err && err.name === "ZodError") {
-      return NextResponse.json({ error: "Invalid input" }, { status: 400 })
-    }
-    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
 

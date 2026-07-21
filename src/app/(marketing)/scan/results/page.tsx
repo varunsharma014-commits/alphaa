@@ -1069,7 +1069,11 @@ function CopyBlock({
           )}
         </button>
       </div>
-      <pre className="m-0 px-4 py-3.5 overflow-x-auto max-h-72 text-[11.5px] leading-relaxed text-white/70 mono">
+      {/* No max-height here on purpose: a vertical clamp makes the <pre> a nested
+          scroll container (overflow-x:auto forces overflow-y:auto too), which
+          swallows wheel events and traps visitors mid-page. Full height + page
+          scroll; horizontal overflow only. */}
+      <pre className="m-0 px-4 py-3.5 overflow-x-auto text-[11.5px] leading-relaxed text-white/70 mono">
         <code>{code}</code>
       </pre>
     </div>

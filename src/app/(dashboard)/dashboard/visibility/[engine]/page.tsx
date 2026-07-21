@@ -9,6 +9,7 @@ import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
 import { DsCard } from "@/components/dashboard/DsCard"
 import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import RunScanButton from "../RunScanButton"
+import { getEngineEvidence, SOURCE_LABEL } from "@/lib/engine-evidence"
 
 type EngineKey = "chatgpt" | "claude" | "gemini" | "perplexity"
 
@@ -106,32 +107,43 @@ export default async function EngineVisibilityPage({
   })
 
   const noScan = !audit
-  // Guarded JSON read — aiSearchStatus is a Json column and must never crash the page.
-  const aiStatus: Record<string, string> =
-    audit &&
-    typeof audit.aiSearchStatus === "object" &&
-    audit.aiSearchStatus !== null &&
-    !Array.isArray(audit.aiSearchStatus)
-      ? (audit.aiSearchStatus as Record<string, string>)
-      : {}
   const result = audit?.aiEngineResults.find((r) => r.engine === config.engineKey) ?? null
-  const status = aiStatus[config.statusKey] ?? null
-  const isFound = Boolean(result?.appeared) || status === "frequently" || status === "appeared"
-  const isPartial = status === "occasionally"
+
+  // Merge ALL evidence sources (weekly audit, public scans by this email,
+  // sandbox questions) and use the freshest verdict. The old code read only
+  // the weekly audit, so an engine whose weekly data was missing showed
+  // "Not yet" (= not mentioned) while the same day's free scan showed the
+  // engine naming the business — three surfaces, three verdicts. "unknown"
+  // (no data anywhere) now renders as its own state, never as "Not yet".
+  const evidence = await getEngineEvidence({ id: user.id, email: user.email })
+  const engineEvidence = evidence[config.engineKey]
+  const isFound = engineEvidence.state === "found"
+  const isPartial = engineEvidence.state === "partial"
+  const isUnknown = engineEvidence.state === "unknown"
   const Icon = config.Icon
 
+  const evidenceDate = engineEvidence.at
+    ? engineEvidence.at.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    : null
   const foundDate = audit?.createdAt
     ? audit.createdAt.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
     : null
+  const evidenceCaption =
+    engineEvidence.source && evidenceDate
+      ? `From ${SOURCE_LABEL[engineEvidence.source]} · ${evidenceDate}`
+      : null
 
-  // Hero state
+  // Hero state — "no data" (noScan/unknown) is deliberately distinct from
+  // "checked and not mentioned".
   const hero = noScan
     ? { accent: "var(--ds-text-ghost)", label: "First scan running…", color: "var(--ds-text-mute)", sub: "alphaa is asking " + config.label + " the questions your customers type. Results appear here shortly." }
     : isFound
       ? { accent: "var(--ds-ok)", label: "Mentioned", color: "var(--ds-ok)", sub: "Customers can find you on " + config.label + " when they ask." }
       : isPartial
         ? { accent: "var(--ds-warn)", label: "Sometimes", color: "var(--ds-warn)", sub: config.label + " mentions you for some searches — alphaa is working to make it consistent." }
-        : { accent: "var(--ds-text-ghost)", label: "Not yet", color: "var(--ds-text-mute)", sub: "alphaa is working to get you mentioned on " + config.label + "." }
+        : isUnknown
+          ? { accent: "var(--ds-warn)", label: "No data yet", color: "var(--ds-text-mute)", sub: "alphaa hasn't been able to check " + config.label + " recently — the next automatic check runs this week. Use “Check again now” or ask a live question to get a fresh answer." }
+          : { accent: "var(--ds-text-ghost)", label: "Not yet", color: "var(--ds-text-mute)", sub: "alphaa is working to get you mentioned on " + config.label + "." }
 
   return (
     <div style={{ maxWidth: "760px", margin: "0 auto" }}>
@@ -155,6 +167,9 @@ export default async function EngineVisibilityPage({
           <div>
             <div style={{ fontSize: "26px", fontWeight: 600, color: hero.color, lineHeight: 1.1 }}>{hero.label}</div>
             <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>{hero.sub}</p>
+            {!noScan && !isUnknown && evidenceCaption && (
+              <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "6px" }}>{evidenceCaption}</p>
+            )}
           </div>
         </div>
       </DsCard>

@@ -15,6 +15,8 @@ import { DsCard } from "@/components/dashboard/DsCard"
 import { EmptyState } from "@/components/dashboard/EmptyState"
 import { humanizeIssue } from "@/lib/humanize"
 import { CheckCircle2, Gauge, Wrench, AlertCircle, ArrowRight } from "lucide-react"
+import { fetchPageSpeed } from "@/lib/pagespeed"
+import { AutoCrawl } from "./AutoCrawl"
 
 export const metadata = { title: "Website health" }
 
@@ -154,23 +156,10 @@ export default async function AuditPage() {
   const missingDescriptions = regularCrawlIssues.filter((i) => i.severity === "warning").length
   const issuesFixed = auditIssues.filter((i) => i.fix_summary).length
 
-  // PageSpeed data — fetched safely, never leaks raw errors to the user.
-  let pageSpeed: PageSpeedResult | null = null
-  let speedAvailable = false
-  try {
-    if (user.websiteUrl) {
-      const psUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(
-        user.websiteUrl
-      )}&strategy=mobile`
-      const psRes = await fetch(psUrl, { cache: "no-store", signal: AbortSignal.timeout(5000) })
-      if (psRes.ok) {
-        pageSpeed = (await psRes.json()) as PageSpeedResult
-        speedAvailable = true
-      }
-    }
-  } catch {
-    speedAvailable = false
-  }
+  // PageSpeed data — shared helper (protocol fix, 25s budget, optional API
+  // key, 6h cache). Never leaks raw errors to the user.
+  const pageSpeed = (user.websiteUrl ? await fetchPageSpeed(user.websiteUrl) : null) as PageSpeedResult | null
+  let speedAvailable = pageSpeed !== null
 
   let audits: Record<string, PageSpeedAudit> = {}
   let perfPct: number | null = null
@@ -186,11 +175,12 @@ export default async function AuditPage() {
 
   return (
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
+      {!latestCrawl && <AutoCrawl />}
       <AutopilotBar
         message={
           latestCrawl
             ? "alphaa checks your site every week and explains anything it finds in plain English"
-            : "alphaa's first website check is on its way — everything it finds appears here in plain English"
+            : "alphaa's first website check is running now — everything it finds appears here in plain English"
         }
       />
 
@@ -246,18 +236,22 @@ export default async function AuditPage() {
         <GenerateSchemaButton />
       </div>
 
-      {/* ── Stat row ────────────────────────────────────────── */}
+      {/* ── Stat row ─────────────────────────────────────────
+          Before the first crawl the crawl-derived tiles show "—", not 0.
+          "0 pages checked" directly above a list of findings read as
+          fabrication; "—" reads as what it is: the check hasn't run yet.
+          (The findings below come from the AI visibility audit.) */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", marginBottom: "8px" }}>
-        <StatBox value={pagesChecked} label="Pages checked" tone="default" />
+        <StatBox value={latestCrawl ? pagesChecked : "—"} label="Pages checked" tone={latestCrawl ? "default" : "muted"} />
         <StatBox
-          value={brokenLinks}
+          value={latestCrawl ? brokenLinks : "—"}
           label="Serious issues"
-          tone={brokenLinks > 0 ? "danger" : "success"}
+          tone={!latestCrawl ? "muted" : brokenLinks > 0 ? "danger" : "success"}
         />
         <StatBox
-          value={missingDescriptions}
+          value={latestCrawl ? missingDescriptions : "—"}
           label="Smaller issues"
-          tone={missingDescriptions > 0 ? "warning" : "success"}
+          tone={!latestCrawl ? "muted" : missingDescriptions > 0 ? "warning" : "success"}
         />
         <StatBox
           value={issuesFixed}
@@ -330,6 +324,11 @@ export default async function AuditPage() {
 
       {/* ── Issues list ─────────────────────────────────────── */}
       <SectionDivider>WHAT WE FOUND</SectionDivider>
+      {!latestCrawl && combinedIssues.length > 0 && (
+        <p style={{ fontSize: "11.5px", color: "var(--ds-text-faint)", margin: "0 0 10px", lineHeight: 1.5 }}>
+          These findings come from your AI visibility audit. Page-by-page website results appear above once the first site check finishes.
+        </p>
+      )}
       {combinedIssues.length > 0 ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           {combinedIssues.map((issue, i) => {

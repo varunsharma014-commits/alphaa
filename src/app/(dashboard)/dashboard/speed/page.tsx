@@ -11,6 +11,7 @@ import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import { DsCard } from "@/components/dashboard/DsCard"
 import { EmptyState } from "@/components/dashboard/EmptyState"
 import { Gauge, Settings } from "lucide-react"
+import { fetchPageSpeed } from "@/lib/pagespeed"
 
 export const metadata = { title: "Page speed" }
 
@@ -133,22 +134,10 @@ export default async function SpeedPage() {
   }
 
   // Fetch PageSpeed data server-side — never leak raw errors to the user.
-  let pageSpeed: PageSpeedResult | null = null
-  let speedAvailable = false
-  try {
-    if (user.websiteUrl) {
-      const psUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(
-        user.websiteUrl
-      )}&strategy=mobile`
-      const psRes = await fetch(psUrl, { cache: "no-store", signal: AbortSignal.timeout(5000) })
-      if (psRes.ok) {
-        pageSpeed = (await psRes.json()) as PageSpeedResult
-        speedAvailable = true
-      }
-    }
-  } catch {
-    speedAvailable = false
-  }
+  // Shared helper handles protocol normalization, the 25s Lighthouse budget,
+  // the optional PAGESPEED_API_KEY, and 6h caching.
+  const pageSpeed = (user.websiteUrl ? await fetchPageSpeed(user.websiteUrl) : null) as PageSpeedResult | null
+  let speedAvailable = pageSpeed !== null
 
   // Latest crawl result
   const crawlResult = await db.crawlResult.findFirst({
@@ -268,7 +257,9 @@ export default async function SpeedPage() {
       ) : (
         <DsCard>
           <div style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
-            Speed data updates shortly — we check this weekly and you will see it here next time.
+            We couldn&apos;t get speed data from Google this time — it happens when their
+            PageSpeed service is busy. Reload this page in a minute to try again; alphaa
+            also re-checks automatically every week.
           </div>
         </DsCard>
       )}

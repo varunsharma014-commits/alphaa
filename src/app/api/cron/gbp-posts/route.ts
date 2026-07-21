@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { logActivity } from "@/lib/activity"
+import { containsPlaceholders } from "@/lib/gbp-poster"
 
 type Integration = {
   accessToken: string
@@ -41,10 +42,10 @@ Rules:
 - Sound like a real small business owner, not marketing copy
 
 AEO (AI-engine optimization) hard rules — mandatory, applied within the short word count. Do NOT add a multi-question FAQ section (it will not fit a short GBP post):
-- Open with a clear question a customer might ask an AI engine, e.g. "Looking for the best ${businessType ?? "local service"} in ${city ?? "your area"}?"
+- Open with a clear question a customer might ask an AI engine, e.g. "Looking for the best ${businessType ?? "local service"}${city ? ` in ${city}` : ""}?"
 - Answer that question directly in the first 1-2 sentences — AI engines favor direct, up-front answers.
-- Include the business name (${businessName}) and city${city ? ` (${city})` : ""} naturally in the first paragraph.
-- End with a single short NAP line stating the business Name, Address, and Phone in a consistent format (e.g. "${businessName} · [address]${city ? `, ${city}` : ""} · [phone]"). Use placeholders for any unknown address or phone.
+- Include the business name (${businessName})${city ? ` and city (${city})` : ""} naturally in the first paragraph.
+- End with a single short line stating the business name${city ? ` and city` : ""}. NEVER invent an address or phone number, and NEVER write bracket placeholders like "[address]" or "[phone]" — this post is published automatically with no human review, so if you don't know a fact, leave it out entirely.${city ? "" : "\n- The city is not known. Do NOT reference any city, neighborhood, or 'your area'."}
 
 Return ONLY the post text, no extra commentary.`,
       },
@@ -128,6 +129,17 @@ async function processUser(user: {
   // Generate post content
   const content = await generatePost(businessName, user.businessType, user.city)
   if (!content) throw new Error("Claude returned empty post content")
+
+  // Publish gate: this cron posts straight to Google with no human review.
+  // Content with unfilled placeholders ("[City]", "[phone]") must never go
+  // live — park it as a draft the owner can fix instead.
+  if (containsPlaceholders(content)) {
+    await db.gbpPost.create({
+      data: { userId: user.id, content, postType: "UPDATE", status: "draft" },
+    })
+    console.error(`[gbp-posts-cron] placeholder content blocked from publishing for user ${user.id}`)
+    return { status: "draft" }
+  }
 
   const hasGmb =
     user.integration?.gmbAccountId && user.integration?.gmbLocationId

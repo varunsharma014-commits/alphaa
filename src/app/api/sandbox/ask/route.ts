@@ -145,5 +145,22 @@ export async function POST(req: Request) {
     }
   })
 
+  // Persist the per-engine verdicts so the dashboard's engine pages can use
+  // live questions as evidence (see lib/engine-evidence.ts). Deliberately a
+  // DIFFERENT activity type from the sandbox_query reservation above — the
+  // daily rate limit counts sandbox_query rows, and a second row of that type
+  // would make every ask count twice.
+  const named = results.filter((r) => r.appeared).map((r) => r.engine)
+  await logActivity(
+    user.id,
+    "sandbox_result",
+    named.length > 0 ? `The AI engines answered — ${named.join(", ")} named you` : "The AI engines answered your question",
+    raw.slice(0, 200),
+    {
+      question: raw,
+      results: results.map((r) => ({ engine: r.engine, appeared: r.appeared, status: r.status })),
+    }
+  )
+
   return NextResponse.json({ question: raw, results, remaining, limit: SANDBOX_DAILY_LIMIT })
 }

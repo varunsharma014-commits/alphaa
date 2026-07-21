@@ -9,9 +9,23 @@ export function ChatGPTLogo({ className = "w-7 h-7" }: { className?: string }) {
 }
 
 export function ClaudeLogo({ className = "w-7 h-7" }: { className?: string }) {
+  // Twelve-ray starburst reminiscent of Claude's sunburst mark. The previous
+  // path drew glyphs that read literally as the text "VI" on the engine grid.
   return (
     <svg className={className} viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
-      <path d="M32.73 15.1 23.08 40H18.4L9.27 15.1h4.57l6.65 18.84h.16L27.3 15.1h5.43zm3.15 0H40V40h-4.12V15.1z" fill="currentColor"/>
+      <g fill="currentColor">
+        {Array.from({ length: 12 }, (_, i) => (
+          <rect
+            key={i}
+            x={21.4}
+            y={4}
+            width={3.2}
+            height={13}
+            rx={1.6}
+            transform={`rotate(${i * 30} 23 23)`}
+          />
+        ))}
+      </g>
     </svg>
   )
 }

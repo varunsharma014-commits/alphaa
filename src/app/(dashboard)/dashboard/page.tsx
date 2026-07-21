@@ -9,6 +9,7 @@ import { SetupHealth } from "@/components/dashboard/SetupHealth"
 import { ProgressCard, type AuditPoint, type KeywordDelta } from "@/components/dashboard/ProgressCard"
 import { ShareWinButton } from "@/components/dashboard/ShareWinButton"
 import { timeOfDayGreeting } from "@/lib/humanize"
+import { getEngineEvidence, type EngineKey as EngineEvidenceKey } from "@/lib/engine-evidence"
 import type { LucideIcon } from "lucide-react"
 import {
   CheckCircle2, TrendingUp, Star, FileText, Bot, Globe, Sparkles, Search, Clock, PartyPopper,
@@ -132,26 +133,16 @@ export default async function DashboardPage() {
   // ── Activity: real ledger rows only. ──
   const activityRows = Array.isArray(data?.mockActivity) ? data.mockActivity : []
 
-  // ── AI engine statuses from the latest audit (guarded JSON). ──
-  const aiStatus: Record<string, unknown> =
-    latestAudit &&
-    typeof latestAudit.aiSearchStatus === "object" &&
-    latestAudit.aiSearchStatus !== null &&
-    !Array.isArray(latestAudit.aiSearchStatus)
-      ? (latestAudit.aiSearchStatus as Record<string, unknown>)
-      : {}
-  const engineResults = Array.isArray(latestAudit?.aiEngineResults)
-    ? latestAudit.aiEngineResults
-    : []
+  // ── AI engine statuses from ALL evidence sources (weekly audit, public
+  // scans by this email, sandbox questions) — freshest verdict wins. An
+  // engine with no data anywhere renders "Checking…", never "Not yet":
+  // "we don't know" and "you're not mentioned" are different claims.
+  const evidence = data ? await getEngineEvidence({ id: data.id, email: data.email }) : null
 
-  function engineState(engineKey: string, statusKey: string): EngineState {
-    if (!latestAudit) return "checking"
-    const result = engineResults.find((r) => r.engine === engineKey)
-    const raw = aiStatus[statusKey]
-    const status = typeof raw === "string" ? raw : null
-    if (Boolean(result?.appeared) || status === "frequently" || status === "appeared") return "found"
-    if (status === "occasionally") return "partial"
-    return "missing"
+  function engineState(engineKey: string): EngineState {
+    const e = evidence?.[engineKey as EngineEvidenceKey]
+    if (!e || e.state === "unknown") return "checking"
+    return e.state
   }
 
   // ── Setup health inputs (real Integration row). ──
@@ -316,7 +307,7 @@ export default async function DashboardPage() {
       <SectionDivider>WHERE PEOPLE FIND YOU</SectionDivider>
       <DsCard style={{ padding: 0 }}>
         {AI_ENGINES.map((e, i) => {
-          const state = engineState(e.engineKey, e.statusKey)
+          const state = engineState(e.engineKey)
           const pill = ENGINE_PILL[state]
           return (
             <div
