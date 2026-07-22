@@ -21,6 +21,8 @@ import { meta as medSpasMeta, Body as MedSpasBody } from "./how-med-spas-get-rec
 import { meta as zeroClickMeta, Body as ZeroClickBody } from "./zero-click-search"
 import { meta as agencyWorthItMeta, Body as AgencyWorthItBody } from "./is-your-seo-agency-worth-it"
 import { meta as askingChatgptFirstMeta, Body as AskingChatgptFirstBody } from "./your-next-customer-is-asking-chatgpt-first"
+import { meta as reviewsAiVisibilityMeta, Body as ReviewsAiVisibilityBody } from "./google-reviews-ai-visibility"
+import { meta as aiOverviewsAnsweringMeta, Body as AiOverviewsAnsweringBody } from "./ai-overviews-answering-your-customers"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -47,6 +49,8 @@ export const POSTS: Post[] = [
   { meta: zeroClickMeta, Body: ZeroClickBody },
   { meta: agencyWorthItMeta, Body: AgencyWorthItBody },
   { meta: askingChatgptFirstMeta, Body: AskingChatgptFirstBody },
+  { meta: reviewsAiVisibilityMeta, Body: ReviewsAiVisibilityBody },
+  { meta: aiOverviewsAnsweringMeta, Body: AiOverviewsAnsweringBody },
 ]
 
 export function getAllPosts(): Post[] {
