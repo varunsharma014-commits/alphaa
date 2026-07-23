@@ -23,6 +23,8 @@ import { meta as agencyWorthItMeta, Body as AgencyWorthItBody } from "./is-your-
 import { meta as askingChatgptFirstMeta, Body as AskingChatgptFirstBody } from "./your-next-customer-is-asking-chatgpt-first"
 import { meta as reviewsAiVisibilityMeta, Body as ReviewsAiVisibilityBody } from "./google-reviews-ai-visibility"
 import { meta as aiOverviewsAnsweringMeta, Body as AiOverviewsAnsweringBody } from "./ai-overviews-answering-your-customers"
+import { meta as aiSearchStatsMeta, Body as AiSearchStatsBody } from "./ai-search-statistics-2026"
+import { meta as seoToAeoPlaybookMeta, Body as SeoToAeoPlaybookBody } from "./seo-to-aeo-90-day-playbook"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -51,6 +53,8 @@ export const POSTS: Post[] = [
   { meta: askingChatgptFirstMeta, Body: AskingChatgptFirstBody },
   { meta: reviewsAiVisibilityMeta, Body: ReviewsAiVisibilityBody },
   { meta: aiOverviewsAnsweringMeta, Body: AiOverviewsAnsweringBody },
+  { meta: aiSearchStatsMeta, Body: AiSearchStatsBody },
+  { meta: seoToAeoPlaybookMeta, Body: SeoToAeoPlaybookBody },
 ]
 
 export function getAllPosts(): Post[] {
