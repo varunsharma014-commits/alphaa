@@ -59,8 +59,8 @@ function WixStudioSvg() {
 const platforms = [
   { name: "WordPress",    Svg: WordPressSvg,   color: "text-[#21759b]" },
   { name: "Webflow",      Svg: WebflowSvg,     color: "text-[#4353ff]" },
-  { name: "Squarespace",  Svg: SquarespaceSvg, color: "text-white/70" },
-  { name: "Wix",          Svg: WixSvg,         color: "text-white/70" },
+  { name: "Squarespace",  Svg: SquarespaceSvg, color: "text-fg/70" },
+  { name: "Wix",          Svg: WixSvg,         color: "text-fg/70" },
   { name: "Shopify",      Svg: ShopifySvg,     color: "text-[#96bf48]" },
   { name: "GoDaddy",      Svg: GoDaddySvg,     color: "text-[#1bdbdb]" },
 ]
@@ -69,7 +69,7 @@ export function PlatformLogos() {
   return (
     <section className="py-20 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
-        <p className="text-white/50 text-xs font-semibold tracking-widest uppercase mb-8 text-center">
+        <p className="text-fg/50 text-xs font-semibold tracking-widest uppercase mb-8 text-center">
           Works with your website — no developer needed
         </p>
 
@@ -79,7 +79,7 @@ export function PlatformLogos() {
               <div className={p.color}>
                 <p.Svg />
               </div>
-              <span className="text-white/60 text-xs font-medium">{p.name}</span>
+              <span className="text-fg/60 text-xs font-medium">{p.name}</span>
             </div>
           ))}
         </div>

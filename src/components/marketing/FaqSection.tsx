@@ -64,7 +64,7 @@ export function FaqSection() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <SectionLabel className="mb-3 block">FAQ</SectionLabel>
-          <h2 className="text-section-mobile md:text-[36px] font-semibold text-white">
+          <h2 className="text-section-mobile md:text-[36px] font-semibold text-fg">
             Common questions
           </h2>
         </div>
@@ -76,7 +76,7 @@ export function FaqSection() {
                 onClick={() => setOpen(open === i ? null : i)}
                 className="w-full flex items-center justify-between p-5 text-left"
               >
-                <span className="text-white font-medium text-sm pr-4">{faq.q}</span>
+                <span className="text-fg font-medium text-sm pr-4">{faq.q}</span>
                 <ChevronDown
                   className={cn(
                     "w-4 h-4 text-muted flex-shrink-0 transition-transform duration-200",

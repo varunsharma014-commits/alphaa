@@ -34,7 +34,7 @@ export function MarketingNav() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           scrolled
-            ? "bg-bg-primary/90 backdrop-blur-xl border-b border-white/[0.06]"
+            ? "bg-bg-primary/90 backdrop-blur-xl border-b border-line/[0.06]"
             : "bg-bg-primary/60 backdrop-blur-sm"
         )}
       >
@@ -44,7 +44,7 @@ export function MarketingNav() {
             <div className="w-6 h-6 relative flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-brand-orange group-hover:scale-110 transition-transform" />
             </div>
-            <span className="text-white font-semibold text-lg tracking-tight font-sans">
+            <span className="text-fg font-semibold text-lg tracking-tight font-sans">
               alphaa
             </span>
           </Link>
@@ -58,8 +58,8 @@ export function MarketingNav() {
                 className={cn(
                   "text-sm font-medium transition-colors duration-200",
                   pathname === link.href
-                    ? "text-white"
-                    : "text-muted hover:text-white"
+                    ? "text-fg"
+                    : "text-muted hover:text-fg"
                 )}
               >
                 {link.label}
@@ -67,7 +67,7 @@ export function MarketingNav() {
             ))}
             <Link
               href="/login"
-              className="text-sm font-medium text-muted hover:text-white transition-colors"
+              className="text-sm font-medium text-muted hover:text-fg transition-colors"
             >
               Login
             </Link>
@@ -82,7 +82,7 @@ export function MarketingNav() {
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden text-muted hover:text-white transition-colors"
+            className="md:hidden text-muted hover:text-fg transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -98,12 +98,12 @@ export function MarketingNav() {
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="absolute top-16 left-0 right-0 bg-bg-secondary border-b border-white/[0.08] p-6 flex flex-col gap-4">
+          <div className="absolute top-16 left-0 right-0 bg-bg-secondary border-b border-line/[0.08] p-6 flex flex-col gap-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-base font-medium text-white py-2 border-b border-white/[0.06] last:border-0"
+                className="text-base font-medium text-fg py-2 border-b border-line/[0.06] last:border-0"
               >
                 {link.label}
               </Link>

@@ -18,34 +18,34 @@ export function CtaBanner() {
             1,247 businesses scanned this month
           </div>
 
-          <h2 className="text-[36px] sm:text-[52px] font-semibold text-white leading-[1.1] tracking-tight mb-6 text-balance">
+          <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
             Every day you wait,
             <br />
             your competitors get{" "}
             <span className="serif-italic text-brand-orange">found instead.</span>
           </h2>
 
-          <p className="text-white/50 text-xl mb-6 max-w-xl mx-auto">
+          <p className="text-fg/50 text-xl mb-6 max-w-xl mx-auto">
             See your free AI visibility score in 60 seconds. No signup. No credit card. Just the truth about where you stand.
           </p>
 
-          <p className="text-white/40 text-base mb-10 max-w-xl mx-auto">
+          <p className="text-fg/40 text-base mb-10 max-w-xl mx-auto">
             The scan is free. The fixes are{" "}
-            <span className="text-white/70 font-medium">$99/month</span> — no agency, no contracts, cancel anytime.
+            <span className="text-fg/70 font-medium">$99/month</span> — no agency, no contracts, cancel anytime.
           </p>
 
           <OrangePillButton href="/scan" size="lg">
             See if AI knows your business →
           </OrangePillButton>
 
-          <p className="mt-6 text-white/25 text-sm">
+          <p className="mt-6 text-fg/25 text-sm">
             Takes 60 seconds · No signup · 14-day free trial if you want fixes
           </p>
 
           <div className="mt-10 max-w-xl mx-auto flex items-start gap-3.5 rounded-2xl border border-brand-orange/20 bg-brand-orange/5 px-5 py-4 text-left">
             <ShieldCheck className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-            <p className="text-white/55 text-sm leading-relaxed">
-              <span className="text-white/85 font-medium">Try alphaa risk-free for 14 days.</span>{" "}
+            <p className="text-fg/55 text-sm leading-relaxed">
+              <span className="text-fg/85 font-medium">Try alphaa risk-free for 14 days.</span>{" "}
               $0 today — cancel anytime before day 14 and you never pay a cent.
             </p>
           </div>

@@ -20,14 +20,14 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section className="py-28 px-4 sm:px-6 border-y border-white/[0.06]">
+    <section className="py-28 px-4 sm:px-6 border-y border-line/[0.06]">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <SectionLabel className="mb-3 block">How it works</SectionLabel>
-          <h2 className="text-[36px] sm:text-[52px] font-semibold text-white leading-[1.1] tracking-tight text-balance">
+          <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight text-balance">
             Simple enough that a dentist
             <br />
-            <span className="text-white/40">can set it up in their lunch break.</span>
+            <span className="text-fg/40">can set it up in their lunch break.</span>
           </h2>
         </div>
 
@@ -39,8 +39,8 @@ export function HowItWorksSection() {
               <div className="relative z-10 w-16 h-16 rounded-full border border-brand-orange/30 bg-bg-secondary flex items-center justify-center mb-6">
                 <span className="mono text-brand-orange text-xl font-medium">{step.num}</span>
               </div>
-              <h3 className="text-white font-semibold text-lg mb-3">{step.headline}</h3>
-              <p className="text-white/50 text-sm leading-relaxed">{step.body}</p>
+              <h3 className="text-fg font-semibold text-lg mb-3">{step.headline}</h3>
+              <p className="text-fg/50 text-sm leading-relaxed">{step.body}</p>
             </div>
           ))}
         </div>

@@ -169,6 +169,8 @@
 [data-theme="light"] .text-fg\/70 { color: rgb(var(--fg-rgb) / 0.84); }
 [data-theme="light"] .text-fg\/75 { color: rgb(var(--fg-rgb) / 0.87); }
 [data-theme="light"] .text-fg\/80 { color: rgb(var(--fg-rgb) / 0.90); }
+[data-theme="light"] .text-fg\/85 { color: rgb(var(--fg-rgb) / 0.93); }
+[data-theme="light"] .text-fg\/90 { color: rgb(var(--fg-rgb) / 0.95); }
 
 /* ── Base reset ── */
 *, *::before, *::after {

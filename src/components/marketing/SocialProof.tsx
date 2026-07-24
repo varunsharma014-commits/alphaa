@@ -66,25 +66,25 @@ const testimonials = [
 
 export function SocialProof() {
   return (
-    <section className="py-28 px-4 sm:px-6 border-y border-white/[0.06]">
+    <section className="py-28 px-4 sm:px-6 border-y border-line/[0.06]">
       <div className="max-w-6xl mx-auto">
 
         <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">
           Real results
         </p>
 
-        <h2 className="text-[36px] sm:text-[52px] font-semibold text-white leading-[1.1] tracking-tight text-center mb-6 text-balance">
+        <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
           1,200+ businesses stopped
           <br />
-          <span className="text-white/40">paying for SEO that didn't work.</span>
+          <span className="text-fg/40">paying for SEO that didn't work.</span>
         </h2>
 
         {/* Metrics bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
           {metrics.map((m) => (
-            <div key={m.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 text-center">
-              <p className="text-3xl font-bold text-white mb-1">{m.value}</p>
-              <p className="text-white/40 text-sm">{m.label}</p>
+            <div key={m.label} className="rounded-2xl border border-line/[0.08] bg-fg/[0.03] p-6 text-center">
+              <p className="text-3xl font-bold text-fg mb-1">{m.value}</p>
+              <p className="text-fg/40 text-sm">{m.label}</p>
             </div>
           ))}
         </div>
@@ -94,7 +94,7 @@ export function SocialProof() {
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className={`rounded-2xl border border-white/[0.08] bg-gradient-to-b ${t.bg} to-transparent p-6 flex flex-col gap-4`}
+              className={`rounded-2xl border border-line/[0.08] bg-gradient-to-b ${t.bg} to-transparent p-6 flex flex-col gap-4`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex gap-0.5">
@@ -106,17 +106,17 @@ export function SocialProof() {
                   {t.result}
                 </span>
               </div>
-              <p className="text-white/75 text-sm leading-relaxed flex-1">"{t.quote}"</p>
-              <div className="flex items-center gap-3 pt-3 border-t border-white/[0.06]">
+              <p className="text-fg/75 text-sm leading-relaxed flex-1">"{t.quote}"</p>
+              <div className="flex items-center gap-3 pt-3 border-t border-line/[0.06]">
                 <div className="w-9 h-9 rounded-full bg-brand-orange/20 flex items-center justify-center text-brand-orange text-xs font-bold flex-shrink-0">
                   {t.initials}
                 </div>
                 <div>
                   <div className="flex items-center gap-1">
-                    <p className="text-white text-sm font-semibold">{t.name}</p>
+                    <p className="text-fg text-sm font-semibold">{t.name}</p>
                     <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
                   </div>
-                  <p className="text-white/40 text-xs">{t.role} · {t.location}</p>
+                  <p className="text-fg/40 text-xs">{t.role} · {t.location}</p>
                 </div>
               </div>
             </div>

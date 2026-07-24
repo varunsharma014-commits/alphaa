@@ -30,14 +30,14 @@ export function AgencySection() {
           The agency problem
         </p>
 
-        <h2 className="text-[36px] sm:text-[52px] font-semibold text-white leading-[1.1] tracking-tight text-center mb-6 text-balance">
+        <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
           Your SEO agency is charging you{" "}
           <span className="serif-italic text-brand-orange">$1,000–$2,000/month</span>
           <br />
           for a strategy that's becoming obsolete.
         </h2>
 
-        <p className="text-white/50 text-xl text-center mb-16 max-w-2xl mx-auto">
+        <p className="text-fg/50 text-xl text-center mb-16 max-w-2xl mx-auto">
           Even if your agency was doing a good job at Google SEO — and let's be honest, most of them aren't — you still have zero presence on AI search. That's a whole new problem they have no idea how to solve.
         </p>
 
@@ -51,39 +51,39 @@ export function AgencySection() {
                 </div>
                 <span className="text-red-400/40 text-4xl font-bold leading-none">{number}</span>
               </div>
-              <h3 className="text-white font-semibold text-lg mb-3">{crime}</h3>
-              <p className="text-white/50 text-sm leading-relaxed">{body}</p>
+              <h3 className="text-fg font-semibold text-lg mb-3">{crime}</h3>
+              <p className="text-fg/50 text-sm leading-relaxed">{body}</p>
             </div>
           ))}
         </div>
 
         {/* The kicker — do the math */}
         <div className="rounded-2xl border border-brand-orange/20 bg-brand-orange/[0.06] p-8 sm:p-10">
-          <p className="text-center text-white/40 text-xs uppercase tracking-widest font-semibold mb-8">
+          <p className="text-center text-fg/40 text-xs uppercase tracking-widest font-semibold mb-8">
             Do the math
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-6 sm:gap-8 max-w-3xl mx-auto">
             <div className="text-center">
               <p className="text-red-400/70 text-xs font-semibold uppercase tracking-widest mb-3">Your SEO agency</p>
-              <p className="text-white/40 text-4xl sm:text-5xl font-bold leading-none line-through decoration-red-500/50 decoration-2">
+              <p className="text-fg/40 text-4xl sm:text-5xl font-bold leading-none line-through decoration-red-500/50 decoration-2">
                 $24,000<span className="text-xl">/yr</span>
               </p>
-              <p className="text-white/30 text-xs mt-3">~$2,000/mo · and still invisible on AI</p>
+              <p className="text-fg/30 text-xs mt-3">~$2,000/mo · and still invisible on AI</p>
             </div>
             <div className="flex items-center justify-center text-brand-orange/60 text-3xl rotate-90 sm:rotate-0">→</div>
             <div className="text-center">
               <p className="text-brand-orange text-xs font-semibold uppercase tracking-widest mb-3">Alphaa</p>
-              <p className="text-white text-4xl sm:text-5xl font-bold leading-none">
-                $1,188<span className="text-xl text-white/50">/yr</span>
+              <p className="text-fg text-4xl sm:text-5xl font-bold leading-none">
+                $1,188<span className="text-xl text-fg/50">/yr</span>
               </p>
-              <p className="text-white/30 text-xs mt-3">$99/mo · found on every AI engine</p>
+              <p className="text-fg/30 text-xs mt-3">$99/mo · found on every AI engine</p>
             </div>
           </div>
-          <div className="text-center mt-9 pt-9 border-t border-white/[0.08]">
-            <p className="text-white text-[28px] sm:text-[40px] font-semibold leading-tight">
+          <div className="text-center mt-9 pt-9 border-t border-line/[0.08]">
+            <p className="text-fg text-[28px] sm:text-[40px] font-semibold leading-tight">
               Save up to <span className="text-brand-orange">$22,800/year</span>
             </p>
-            <p className="text-white/50 text-base sm:text-lg mt-2">
+            <p className="text-fg/50 text-base sm:text-lg mt-2">
               …and actually show up where your customers now search.
             </p>
           </div>
