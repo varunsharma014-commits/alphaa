@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -129,13 +129,27 @@ const CSS = `
 .nh-marquee:hover { animation-play-state: paused; }
 .nh-reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
 .nh-reveal.nh-in { opacity: 1; transform: none; }
+@keyframes nhWordIn { from { opacity: 0; transform: translateY(.28em); } to { opacity: 1; transform: none; } }
+.nh-word { display: inline-block; animation: nhWordIn .5s cubic-bezier(.16,1,.3,1); }
 @media (prefers-reduced-motion: reduce) {
   .nh-float, .nh-marquee { animation: none; }
+  .nh-word { animation: none; }
   .nh-reveal { opacity: 1; transform: none; transition: none; }
 }
 `
 
+const HERO_WORDS = ["ChatGPT", "Gemini", "Claude", "Perplexity"]
+
 export default function NewHomePage() {
+  const [wordIndex, setWordIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((i) => (i + 1) % HERO_WORDS.length)
+    }, 2200)
+    return () => clearInterval(interval)
+  }, [])
+
   useEffect(() => {
     const els = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"))
     const io = new IntersectionObserver(
@@ -182,7 +196,12 @@ export default function NewHomePage() {
             </div>
             <h1 className="text-[44px] sm:text-[72px] lg:text-[84px] font-semibold leading-[1.03] tracking-[-0.03em] text-[#1d1d1f] max-w-4xl mx-auto">
               Get found on{" "}
-              <span className="bg-gradient-to-r from-[#0071e3] to-[#8e5cff] bg-clip-text text-transparent">AI search.</span>
+              <span
+                key={HERO_WORDS[wordIndex]}
+                className="nh-word bg-gradient-to-r from-[#0071e3] to-[#8e5cff] bg-clip-text text-transparent"
+              >
+                {HERO_WORDS[wordIndex]}.
+              </span>
             </h1>
             <p className="text-[19px] sm:text-[24px] leading-[1.4] text-[#6e6e73] max-w-2xl mx-auto mt-6">
               We get your business cited by ChatGPT, Gemini and Google AI — automatically. For $99 a month, not $1,000.
