@@ -1,14 +1,14 @@
 import { HeroSection } from "@/components/marketing/HeroSection"
 import { AiAnswerMockup } from "@/components/marketing/AiAnswerMockup"
-import { DashboardPreview } from "@/components/marketing/DashboardPreview"
 import { PlatformLogos } from "@/components/marketing/PlatformLogos"
-import { AiShiftSection } from "@/components/marketing/AiShiftSection"
 import { AgencySection } from "@/components/marketing/AgencySection"
 import { AllEnginesSection } from "@/components/marketing/AllEnginesSection"
+import { WholeSeoTeamSection } from "@/components/marketing/WholeSeoTeamSection"
 import { SolutionSection } from "@/components/marketing/SolutionSection"
 import { HowItWorksSection } from "@/components/marketing/HowItWorksSection"
 import { MechanismSection } from "@/components/marketing/MechanismSection"
 import { SocialProof } from "@/components/marketing/SocialProof"
+import { HomePricingSection } from "@/components/marketing/HomePricingSection"
 import { ComparisonTable } from "@/components/marketing/ComparisonTable"
 import { CaseStudiesSection } from "@/components/marketing/CaseStudiesSection"
 import { FaqSection } from "@/components/marketing/FaqSection"
@@ -54,17 +54,17 @@ export default function HomePage() {
       />
       <HeroSection />
       <PlatformLogos />
-      <AiShiftSection />
       <AiAnswerMockup />
       <AgencySection />
       {/* Proof, moved up: real businesses fixed this, right after the pain/savings */}
       <CaseStudiesSection />
       <SocialProof />
       <AllEnginesSection />
+      <WholeSeoTeamSection />
       <SolutionSection />
       <HowItWorksSection />
       <MechanismSection />
-      <DashboardPreview />
+      <HomePricingSection />
       <ComparisonTable />
       <FaqSection />
       <CtaBanner />
