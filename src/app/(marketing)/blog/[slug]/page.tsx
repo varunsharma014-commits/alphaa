@@ -63,7 +63,7 @@ export default async function BlogPostPage({
       <div className="max-w-2xl mx-auto">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-1.5 text-white/40 hover:text-white text-sm transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-muted hover:text-fg text-sm transition-colors mb-8"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> All guides
         </Link>
@@ -74,12 +74,12 @@ export default async function BlogPostPage({
               {meta.tag}
             </span>
           )}
-          <span className="text-white/30 text-xs">
+          <span className="text-fg/30 text-xs">
             {formatDate(meta.date)} · {meta.readMins} min read
           </span>
         </div>
 
-        <h1 className="text-white text-[34px] sm:text-[48px] lg:text-[52px] font-semibold leading-[1.1] tracking-[-0.02em] mb-8 text-balance">
+        <h1 className="text-fg text-[34px] sm:text-[48px] lg:text-[52px] font-semibold leading-[1.1] tracking-[-0.02em] mb-8 text-balance">
           {meta.title}
         </h1>
 

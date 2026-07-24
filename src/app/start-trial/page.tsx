@@ -35,25 +35,25 @@ export default async function StartTrialPage() {
   ]
 
   return (
-    <div data-theme="dark" className="radial-bg min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-bg-primary">
+    <div data-theme="light" className="radial-bg min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-bg-primary">
       <div className="flex items-center gap-2 mb-8">
         <Sparkles className="w-5 h-5 text-brand-orange" />
-        <span className="text-white font-semibold text-xl">alphaa</span>
+        <span className="text-fg font-semibold text-xl">alphaa</span>
       </div>
 
       <div className="w-full max-w-md">
         <div className="glass-card rounded-2xl p-8">
-          <h1 className="text-white font-semibold text-2xl mb-2 text-center">
+          <h1 className="text-fg font-semibold text-2xl mb-2 text-center">
             Start your 14-day free trial
           </h1>
-          <p className="text-white/50 text-sm text-center mb-7">
+          <p className="text-muted text-sm text-center mb-7">
             Your setup is done{user.businessName ? ` for ${user.businessName}` : ""} — this switches the
             autopilot on.
           </p>
 
           <ul className="space-y-3 mb-7">
             {reassurances.map((r) => (
-              <li key={r} className="flex gap-2.5 items-start text-sm text-white/70">
+              <li key={r} className="flex gap-2.5 items-start text-sm text-fg/70">
                 <Check className="w-4 h-4 text-brand-orange mt-0.5 flex-shrink-0" />
                 {r}
               </li>
@@ -64,7 +64,7 @@ export default async function StartTrialPage() {
             priceId={STRIPE_PRICE_IDS.starter.monthly}
             label="Start free trial — $99/mo after day 14"
           />
-          <p className="text-white/30 text-xs text-center mt-4">
+          <p className="text-fg/30 text-xs text-center mt-4">
             Need the Pro plan ($199/mo) or have a question? Email{" "}
             <a href="mailto:hi@alphaa.app" className="text-brand-orange hover:underline">
               hi@alphaa.app

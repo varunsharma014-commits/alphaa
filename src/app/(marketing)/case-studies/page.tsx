@@ -157,7 +157,7 @@ type Filter = (typeof filters)[number]
 
 function CaseStudyCard({ cs }: { cs: (typeof caseStudies)[0] }) {
   return (
-    <div className={`group rounded-2xl border border-white/[0.08] bg-gradient-to-b ${cs.industryColor} to-transparent overflow-hidden flex flex-col`}>
+    <div className={`group rounded-2xl border border-line/[0.08] bg-gradient-to-b ${cs.industryColor} to-transparent overflow-hidden flex flex-col`}>
       {/* Top */}
       <div className="p-6 pb-5 flex-1">
         <div className="flex items-start justify-between mb-4">
@@ -171,36 +171,36 @@ function CaseStudyCard({ cs }: { cs: (typeof caseStudies)[0] }) {
           </div>
         </div>
 
-        <h3 className="text-white text-xl font-semibold leading-snug mb-1">{cs.business}</h3>
-        <div className="flex items-center gap-1 text-white/40 text-xs mb-4">
+        <h3 className="text-fg text-xl font-semibold leading-snug mb-1">{cs.business}</h3>
+        <div className="flex items-center gap-1 text-fg/40 text-xs mb-4">
           <MapPin className="w-3 h-3" />
           {cs.location}
         </div>
 
-        <p className="text-white/70 text-sm leading-relaxed mb-5">{cs.headline}</p>
+        <p className="text-fg/70 text-sm leading-relaxed mb-5">{cs.headline}</p>
 
         {/* Key metric */}
-        <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4">
+        <div className="rounded-xl bg-fg/[0.04] border border-line/[0.06] p-4">
           <p className="text-brand-orange text-2xl font-bold leading-none mb-1">{cs.keyResult}</p>
-          <p className="text-white/40 text-xs">{cs.keyResultSub}</p>
+          <p className="text-fg/40 text-xs">{cs.keyResultSub}</p>
         </div>
       </div>
 
       {/* Metric row */}
-      <div className="grid grid-cols-2 gap-px bg-white/[0.06] border-t border-white/[0.06]">
+      <div className="grid grid-cols-2 gap-px bg-line/[0.06] border-t border-line/[0.06]">
         {cs.metrics.slice(0, 2).map((m) => (
-          <div key={m.label} className="bg-[#0a0a0a] p-4">
-            <p className="text-white font-semibold text-base">{m.value}</p>
-            <p className="text-white/40 text-xs mt-0.5">{m.label}</p>
+          <div key={m.label} className="bg-bg-primary p-4">
+            <p className="text-fg font-semibold text-base">{m.value}</p>
+            <p className="text-fg/40 text-xs mt-0.5">{m.label}</p>
           </div>
         ))}
       </div>
 
       {/* CTA */}
-      <div className="p-4 border-t border-white/[0.06]">
+      <div className="p-4 border-t border-line/[0.06]">
         <Link
           href={`/case-studies/${cs.slug}`}
-          className="flex items-center justify-between w-full text-white/60 hover:text-brand-orange text-sm font-medium transition-colors duration-200 group"
+          className="flex items-center justify-between w-full text-fg/60 hover:text-brand-orange text-sm font-medium transition-colors duration-200 group"
         >
           Read full case study
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
@@ -214,38 +214,38 @@ function FullCaseStudy({ cs }: { cs: (typeof caseStudies)[0] }) {
   return (
     <article id={cs.id} className="scroll-mt-24">
       {/* Hero */}
-      <div className={`rounded-3xl border border-white/[0.08] bg-gradient-to-b ${cs.industryColor} to-transparent overflow-hidden mb-6`}>
+      <div className={`rounded-3xl border border-line/[0.08] bg-gradient-to-b ${cs.industryColor} to-transparent overflow-hidden mb-6`}>
         <div className="p-8 sm:p-12">
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${cs.badge}`}>
               {cs.industry}
             </span>
-            <div className="flex items-center gap-1 text-white/40 text-sm">
+            <div className="flex items-center gap-1 text-fg/40 text-sm">
               <MapPin className="w-3.5 h-3.5" />
               {cs.location}
             </div>
           </div>
 
-          <h2 className="text-[32px] sm:text-[44px] font-semibold text-white leading-[1.1] tracking-tight mb-4 text-balance">
+          <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
             {cs.business}
           </h2>
-          <p className="text-white/60 text-lg sm:text-xl mb-8 max-w-2xl">{cs.headline}</p>
+          <p className="text-muted text-lg sm:text-xl mb-8 max-w-2xl">{cs.headline}</p>
 
           {/* Hero metric */}
           <div className="inline-block rounded-2xl bg-brand-orange/10 border border-brand-orange/20 px-6 py-4">
             <p className="text-brand-orange text-4xl sm:text-5xl font-bold leading-none mb-1">{cs.keyResult}</p>
-            <p className="text-white/50 text-sm">{cs.keyResultSub}</p>
+            <p className="text-fg/50 text-sm">{cs.keyResultSub}</p>
           </div>
         </div>
 
         {/* Metric cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06] border-t border-white/[0.06]">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-line/[0.06] border-t border-line/[0.06]">
           {cs.metrics.map((m) => (
-            <div key={m.label} className="bg-[#0a0a0a] p-5 sm:p-6">
+            <div key={m.label} className="bg-bg-primary p-5 sm:p-6">
               <m.icon className="w-4 h-4 text-brand-orange mb-3" />
-              <p className="text-white text-2xl font-bold leading-none mb-1">{m.value}</p>
-              <p className="text-white/70 text-sm font-medium">{m.label}</p>
-              <p className="text-white/35 text-xs mt-0.5">{m.sub}</p>
+              <p className="text-fg text-2xl font-bold leading-none mb-1">{m.value}</p>
+              <p className="text-fg/70 text-sm font-medium">{m.label}</p>
+              <p className="text-fg/35 text-xs mt-0.5">{m.sub}</p>
             </div>
           ))}
         </div>
@@ -253,31 +253,31 @@ function FullCaseStudy({ cs }: { cs: (typeof caseStudies)[0] }) {
 
       <div className="grid lg:grid-cols-3 gap-6 mb-6">
         {/* Problem */}
-        <div className="lg:col-span-1 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 sm:p-7">
+        <div className="lg:col-span-1 rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 sm:p-7">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-2 h-2 rounded-full bg-red-400" />
             <p className="text-red-400 text-xs font-semibold tracking-widest uppercase">The Problem</p>
           </div>
-          <h3 className="text-white font-semibold text-lg mb-3 leading-snug">{cs.problem.title}</h3>
-          <p className="text-white/60 text-sm leading-relaxed mb-5">{cs.problem.body}</p>
+          <h3 className="text-fg font-semibold text-lg mb-3 leading-snug">{cs.problem.title}</h3>
+          <p className="text-muted text-sm leading-relaxed mb-5">{cs.problem.body}</p>
           <div className="space-y-2">
             {cs.problem.tried.map((t, i) => (
               <div key={i} className="flex items-start gap-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-400/60 mt-1.5 flex-shrink-0" />
-                <p className="text-white/50 text-sm leading-relaxed">{t}</p>
+                <p className="text-muted text-sm leading-relaxed">{t}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Solution + timeline */}
-        <div className="lg:col-span-2 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 sm:p-7">
+        <div className="lg:col-span-2 rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 sm:p-7">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-2 h-2 rounded-full bg-brand-orange" />
             <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase">The Solution</p>
           </div>
-          <h3 className="text-white font-semibold text-lg mb-3 leading-snug">{cs.solution.title}</h3>
-          <p className="text-white/60 text-sm leading-relaxed mb-6">{cs.solution.body}</p>
+          <h3 className="text-fg font-semibold text-lg mb-3 leading-snug">{cs.solution.title}</h3>
+          <p className="text-muted text-sm leading-relaxed mb-6">{cs.solution.body}</p>
 
           {/* Timeline */}
           <div className="space-y-4">
@@ -288,15 +288,15 @@ function FullCaseStudy({ cs }: { cs: (typeof caseStudies)[0] }) {
                     <span className="text-brand-orange text-[10px] font-bold">{i + 1}</span>
                   </div>
                   {i < cs.solution.timeline.length - 1 && (
-                    <div className="w-px flex-1 bg-white/[0.06] mt-2 mb-0" />
+                    <div className="w-px flex-1 bg-line/[0.06] mt-2 mb-0" />
                   )}
                 </div>
                 <div className="pb-4">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-brand-orange text-xs font-semibold">{t.week}</span>
-                    <span className="text-white text-sm font-semibold">{t.title}</span>
+                    <span className="text-fg text-sm font-semibold">{t.title}</span>
                   </div>
-                  <p className="text-white/50 text-sm leading-relaxed">{t.detail}</p>
+                  <p className="text-muted text-sm leading-relaxed">{t.detail}</p>
                 </div>
               </div>
             ))}
@@ -310,7 +310,7 @@ function FullCaseStudy({ cs }: { cs: (typeof caseStudies)[0] }) {
           <svg className="w-8 h-8 text-brand-orange/40 mb-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
           </svg>
-          <p className="text-white text-lg sm:text-xl leading-relaxed font-medium mb-6">
+          <p className="text-fg text-lg sm:text-xl leading-relaxed font-medium mb-6">
             {cs.quote.text}
           </p>
           <div className="flex items-center gap-3">
@@ -319,20 +319,20 @@ function FullCaseStudy({ cs }: { cs: (typeof caseStudies)[0] }) {
             </div>
             <div>
               <div className="flex items-center gap-1">
-                <p className="text-white font-semibold text-sm">{cs.quote.name}</p>
+                <p className="text-fg font-semibold text-sm">{cs.quote.name}</p>
                 <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
               </div>
-              <p className="text-white/40 text-xs">{cs.quote.role} · {cs.quote.location}</p>
+              <p className="text-fg/40 text-xs">{cs.quote.role} · {cs.quote.location}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* CTA */}
-      <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <p className="text-white font-semibold mb-1">Get similar results for your business</p>
-          <p className="text-white/40 text-sm">Free AI visibility scan — see exactly where you stand in 2 minutes.</p>
+          <p className="text-fg font-semibold mb-1">Get similar results for your business</p>
+          <p className="text-muted text-sm">Free AI visibility scan — see exactly where you stand in 2 minutes.</p>
         </div>
         <OrangePillButton href="/scan" size="md" className="flex-shrink-0">
           Scan my business →
@@ -362,13 +362,13 @@ export default function CaseStudiesPage() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-semibold mb-7 tracking-wide uppercase">
             Case Studies
           </div>
-          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-5 text-balance">
+          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-5 text-balance">
             Real businesses.{" "}
             <span className="text-brand-orange">Real AI visibility.</span>
             <br />
             Real results.
           </h1>
-          <p className="text-white/55 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
+          <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
             Every case study below is a real customer. Real numbers. Real timelines. See how businesses — local and online — went from invisible on AI search to booked out.
           </p>
 
@@ -379,9 +379,9 @@ export default function CaseStudiesPage() {
               { value: "$1,400/mo", label: "avg. agency savings" },
               { value: "1,200+", label: "businesses on Alphaa" },
             ].map((s) => (
-              <div key={s.label} className="rounded-2xl border border-white/[0.07] bg-white/[0.03] p-5 text-center">
-                <p className="text-white text-2xl font-bold mb-1">{s.value}</p>
-                <p className="text-white/35 text-xs leading-snug">{s.label}</p>
+              <div key={s.label} className="rounded-2xl border border-line/[0.07] bg-fg/[0.03] p-5 text-center">
+                <p className="text-fg text-2xl font-bold mb-1">{s.value}</p>
+                <p className="text-fg/35 text-xs leading-snug">{s.label}</p>
               </div>
             ))}
           </div>
@@ -400,7 +400,7 @@ export default function CaseStudiesPage() {
                 className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-150 cursor-pointer ${
                   activeFilter === f
                     ? "bg-brand-orange text-white border-brand-orange"
-                    : "text-white/50 border-white/[0.08] hover:border-white/20 hover:text-white/80"
+                    : "text-fg/50 border-line/[0.08] hover:border-line/20 hover:text-fg/80"
                 }`}
               >
                 {f}
@@ -418,7 +418,7 @@ export default function CaseStudiesPage() {
           {/* Full case studies */}
           <div className="space-y-20">
             <div className="text-center mb-8">
-              <p className="text-white/30 text-xs font-semibold tracking-widest uppercase">Full Case Studies</p>
+              <p className="text-fg/30 text-xs font-semibold tracking-widest uppercase">Full Case Studies</p>
             </div>
             {filtered.map((cs) => (
               <FullCaseStudy key={cs.id} cs={cs} />
@@ -440,17 +440,17 @@ export default function CaseStudiesPage() {
             />
             <div className="relative">
               <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-4">Ready to be next?</p>
-              <h2 className="text-[32px] sm:text-[44px] font-semibold text-white leading-[1.1] tracking-tight mb-4 text-balance">
+              <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
                 Find out if AI search
                 <br />knows your business.
               </h2>
-              <p className="text-white/50 text-base sm:text-lg mb-8 max-w-xl mx-auto">
+              <p className="text-muted text-base sm:text-lg mb-8 max-w-xl mx-auto">
                 Run a free scan in 2 minutes. No signup required. See your AI visibility score and exactly where you're missing.
               </p>
               <OrangePillButton href="/scan" size="lg">
                 Scan my business for free →
               </OrangePillButton>
-              <p className="text-white/25 text-xs mt-4">$99/mo · No setup fee · Cancel anytime</p>
+              <p className="text-fg/25 text-xs mt-4">$99/mo · No setup fee · Cancel anytime</p>
             </div>
           </div>
         </div>

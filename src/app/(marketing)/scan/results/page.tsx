@@ -261,7 +261,7 @@ function ScoreGaugeBig({ score }: { score: number }) {
       <svg width={size} height={size} className="-rotate-90" aria-hidden>
         <circle
           cx={size / 2} cy={size / 2} r={radius}
-          stroke="rgba(255,255,255,0.08)" strokeWidth={strokeWidth} fill="none"
+          stroke="rgb(var(--fg-rgb) / 0.08)" strokeWidth={strokeWidth} fill="none"
         />
         <circle
           cx={size / 2} cy={size / 2} r={radius}
@@ -273,10 +273,10 @@ function ScoreGaugeBig({ score }: { score: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="mono text-white font-bold leading-none" style={{ fontSize: 46 }}>
+        <span className="mono text-fg font-bold leading-none" style={{ fontSize: 46 }}>
           {score}
         </span>
-        <span className="text-white/40 text-sm mt-1">/100</span>
+        <span className="text-fg/40 text-sm mt-1">/100</span>
         {/* Plain-language severity — "44" alone doesn't tell a business owner
             whether that's fine or a fire. */}
         <span className="text-[10px] font-semibold uppercase tracking-wider mt-1" style={{ color }}>
@@ -299,7 +299,7 @@ const TRUST_ITEMS = [
 function TrustStrip({ compact = false }: { compact?: boolean }) {
   if (compact) {
     return (
-      <p className="text-white/35 text-[11px] text-center leading-relaxed mt-3 mb-0">
+      <p className="text-fg/35 text-[11px] text-center leading-relaxed mt-3 mb-0">
         $0 today · 14-day free trial · cancel anytime in two clicks · payments secured by Stripe
       </p>
     )
@@ -309,7 +309,7 @@ function TrustStrip({ compact = false }: { compact?: boolean }) {
       {TRUST_ITEMS.map(({ Icon, text }) => (
         <div key={text} className="flex items-start gap-1.5">
           <Icon className="w-3 h-3 text-green-400/80 flex-shrink-0 mt-[3px]" />
-          <span className="text-white/45 text-[11px] leading-snug">{text}</span>
+          <span className="text-muted text-[11px] leading-snug">{text}</span>
         </div>
       ))}
     </div>
@@ -328,7 +328,7 @@ function SignupCta({ placement }: { placement: string }) {
       >
         Fix this automatically — start free →
       </Link>
-      <p className="text-white/35 text-[11px] text-center mt-2 mb-0">then $99/mo</p>
+      <p className="text-fg/35 text-[11px] text-center mt-2 mb-0">then $99/mo</p>
       <TrustStrip />
     </div>
   )
@@ -340,7 +340,7 @@ function MidCta() {
   return (
     <div className="bg-bg-secondary border border-brand-orange/20 rounded-2xl px-5 py-5 sm:px-6">
       <div className="sm:flex sm:items-center sm:gap-5">
-        <p className="text-white text-[15px] font-semibold leading-snug m-0 sm:flex-1">
+        <p className="text-fg text-[15px] font-semibold leading-snug m-0 sm:flex-1">
           Everything above is fixable — alphaa does the work for you from $99/mo.
         </p>
         <Link
@@ -384,9 +384,9 @@ function StickyCtaBar({
       }`}
     >
       <div className="mx-auto max-w-2xl px-4 pb-4">
-        <div className="flex items-center gap-3 bg-bg-tertiary/95 backdrop-blur-md border border-white/[0.12] rounded-2xl pl-4 pr-2 py-2.5 shadow-2xl">
-          <p className="flex-1 min-w-0 text-white/80 text-[13px] leading-snug m-0">
-            <span className="text-white font-semibold">{businessName}</span>
+        <div className="flex items-center gap-3 bg-bg-tertiary/95 backdrop-blur-md border border-line/[0.12] rounded-2xl pl-4 pr-2 py-2.5 shadow-2xl">
+          <p className="flex-1 min-w-0 text-fg/80 text-[13px] leading-snug m-0">
+            <span className="text-fg font-semibold">{businessName}</span>
             {losing
               ? ", AI is recommending your competitors — fix it from $99/mo"
               : ", AI knows you today — keep it that way from $99/mo"}
@@ -402,7 +402,7 @@ function StickyCtaBar({
             type="button"
             aria-label="Dismiss"
             onClick={() => setDismissed(true)}
-            className="flex-shrink-0 p-1.5 text-white/40 hover:text-white transition-colors"
+            className="flex-shrink-0 p-1.5 text-fg/40 hover:text-fg transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -415,10 +415,10 @@ function StickyCtaBar({
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 mb-4">
-      <span className="text-xs font-semibold uppercase tracking-[0.14em] text-white/40 whitespace-nowrap">
+      <span className="text-xs font-semibold uppercase tracking-[0.14em] text-fg/40 whitespace-nowrap">
         {children}
       </span>
-      <div className="flex-1 h-px bg-white/[0.08]" />
+      <div className="flex-1 h-px bg-fg/[0.08]" />
     </div>
   )
 }
@@ -449,11 +449,11 @@ function HeroHeadline({
       ? "text-red-400"
       : aiMentions === totalEngines
         ? "text-green-400"
-        : "text-white"
+        : "text-fg"
 
   if (loss) {
     return (
-      <h1 className="text-white text-[26px] sm:text-[32px] font-bold leading-[1.3] m-0">
+      <h1 className="text-fg text-[26px] sm:text-[32px] font-bold leading-[1.3] m-0">
         An estimated{" "}
         <span className="mono whitespace-nowrap">
           {loss.low.toLocaleString("en-US")}–{loss.high.toLocaleString("en-US")}
@@ -485,10 +485,10 @@ function HeroHeadline({
   // Fallback (old rows / null estimate): strong verdict from what exists.
   return (
     <>
-      <h1 className="text-white text-2xl sm:text-[28px] font-bold leading-snug m-0">
+      <h1 className="text-fg text-2xl sm:text-[28px] font-bold leading-snug m-0">
         {verdict}
       </h1>
-      <p className="text-white/50 text-sm mt-3 mb-0">
+      <p className="text-muted text-sm mt-3 mb-0">
         Mentioned in{" "}
         <span className={`mono font-bold ${mentionsClass}`}>
           {aiMentions} of {totalEngines}
@@ -523,17 +523,17 @@ function EvidenceCard({
   const shownText = expanded ? fullText : truncateAtWord(fullText, 300)
 
   return (
-    <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl p-5">
+    <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-5">
       {/* Header: engine + verdict chip */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-fg/[0.06] flex items-center justify-center flex-shrink-0">
             <engine.Icon className="w-4 h-4" style={{ color: engine.iconColor }} />
           </div>
           <div className="min-w-0">
-            <span className="text-white text-sm font-semibold truncate block">{engine.name}</span>
+            <span className="text-fg text-sm font-semibold truncate block">{engine.name}</span>
             {ENGINE_SUBS[engine.name] && (
-              <span className="text-white/35 text-[11px] leading-tight truncate block">
+              <span className="text-fg/35 text-[11px] leading-tight truncate block">
                 {ENGINE_SUBS[engine.name]}
               </span>
             )}
@@ -553,24 +553,24 @@ function EvidenceCard({
       {/* The question — verbatim when we have it */}
       {query ? (
         <div className="flex justify-end mb-3">
-          <div className="max-w-[85%] bg-bg-tertiary border border-white/[0.06] rounded-2xl rounded-br-md px-4 py-2.5">
-            <p className="text-[10px] uppercase tracking-wider text-white/30 mb-1">A customer asks</p>
-            <p className="text-white/85 text-[13px] leading-relaxed m-0">&ldquo;{query}&rdquo;</p>
+          <div className="max-w-[85%] bg-bg-tertiary border border-line/[0.06] rounded-2xl rounded-br-md px-4 py-2.5">
+            <p className="text-[10px] uppercase tracking-wider text-fg/30 mb-1">A customer asks</p>
+            <p className="text-fg/85 text-[13px] leading-relaxed m-0">&ldquo;{query}&rdquo;</p>
           </div>
         </div>
       ) : (
-        <p className="text-white/35 text-xs mb-3">
+        <p className="text-fg/35 text-xs mb-3">
           We asked {engine.name} about businesses like yours in {city}.
         </p>
       )}
 
       {/* The answer — verbatim excerpt */}
       {fullText ? (
-        <div className="bg-white/[0.04] border border-white/[0.06] rounded-2xl rounded-tl-md px-4 py-3">
-          <p className="text-[10px] uppercase tracking-wider text-white/30 mb-1.5">
+        <div className="bg-fg/[0.04] border border-line/[0.06] rounded-2xl rounded-tl-md px-4 py-3">
+          <p className="text-[10px] uppercase tracking-wider text-fg/30 mb-1.5">
             {engine.name} answered
           </p>
-          <p className="text-white/75 text-[13px] leading-relaxed m-0 whitespace-pre-line">
+          <p className="text-fg/75 text-[13px] leading-relaxed m-0 whitespace-pre-line">
             {highlightNames(shownText, mentioned, businessName)}
           </p>
           {isLong && (
@@ -584,7 +584,7 @@ function EvidenceCard({
           )}
         </div>
       ) : (
-        <p className="text-white/35 text-[13px] bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 m-0">
+        <p className="text-fg/35 text-[13px] bg-fg/[0.03] border border-line/[0.06] rounded-xl px-4 py-3 m-0">
           {engine.name} didn&apos;t return a usable answer during this scan
           {engine.appeared ? "" : ` — and your business wasn't in the results we could check`}.
         </p>
@@ -613,7 +613,7 @@ function MentionsPill({
           ? "text-green-400 bg-green-500/10 border-green-500/25"
           : "text-brand-orange bg-brand-orange/10 border-brand-orange/25"
       : count === 0
-        ? "text-white/40 bg-white/[0.04] border-white/[0.1]"
+        ? "text-fg/40 bg-fg/[0.04] border-line/[0.1]"
         : "text-brand-orange bg-brand-orange/10 border-brand-orange/25"
   return (
     <span className={`inline-flex items-center whitespace-nowrap text-[11px] font-medium border rounded-full px-2.5 py-1 ${cls}`}>
@@ -629,10 +629,10 @@ function GoogleRankCell({
   rank: number | null
   keyword: string | null
 }) {
-  if (rank === null) return <span className="text-white/25 text-xs">—</span>
+  if (rank === null) return <span className="text-fg/25 text-xs">—</span>
   return (
-    <span className="text-white/55 text-xs leading-snug">
-      Ranks <span className="mono text-white font-semibold">#{rank}</span> on Google
+    <span className="text-muted text-xs leading-snug">
+      Ranks <span className="mono text-fg font-semibold">#{rank}</span> on Google
       {keyword ? <> for &ldquo;{keyword}&rdquo;</> : null}
     </span>
   )
@@ -658,28 +658,28 @@ function CompetitorIntelTable({
   const googleLabel = serpCountry && serpCountry !== "us" ? `google.${serpCountry}` : "Google"
 
   return (
-    <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl overflow-hidden">
+    <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl overflow-hidden">
       {/* Column header */}
-      <div className={`hidden ${INTEL_GRID} px-5 py-2.5 border-b border-white/[0.06] bg-white/[0.02]`}>
-        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/30">Business</span>
-        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/30">AI mentions</span>
-        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/30">Google rank</span>
+      <div className={`hidden ${INTEL_GRID} px-5 py-2.5 border-b border-line/[0.06] bg-fg/[0.02]`}>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg/30">Business</span>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg/30">AI mentions</span>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg/30">Google rank</span>
       </div>
 
-      <div className="divide-y divide-white/[0.06]">
+      <div className="divide-y divide-line/[0.06]">
         {competitors.map((c, i) => {
           const href = c.url ?? (c.domain ? `https://${c.domain}` : null)
           const linkLabel = c.domain ?? (c.url ? hostFromUrl(c.url) : null)
           return (
             <div key={`${c.name}-${i}`} className={`${INTEL_GRID} px-4 sm:px-5 py-3.5`}>
               <div className="min-w-0">
-                <p className="text-white text-sm font-semibold truncate m-0">{c.name}</p>
+                <p className="text-fg text-sm font-semibold truncate m-0">{c.name}</p>
                 {href && linkLabel && (
                   <a
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    className="inline-flex items-center gap-1 text-[11px] text-white/40 hover:text-brand-orange transition-colors"
+                    className="inline-flex items-center gap-1 text-[11px] text-fg/40 hover:text-brand-orange transition-colors"
                   >
                     <span className="truncate max-w-[220px]">{linkLabel}</span>
                     <ExternalLink className="w-3 h-3 flex-shrink-0" />
@@ -699,12 +699,12 @@ function CompetitorIntelTable({
         {/* The scanned business — contrasting bottom row */}
         <div
           className={`${INTEL_GRID} px-4 sm:px-5 py-3.5 ${
-            you.aiMentions === 0 ? "bg-red-500/[0.05]" : "bg-white/[0.02]"
+            you.aiMentions === 0 ? "bg-red-500/[0.05]" : "bg-fg/[0.02]"
           }`}
         >
           <div className="min-w-0 flex items-center gap-2">
-            <p className="text-white text-sm font-semibold truncate m-0">{you.name}</p>
-            <span className="flex-shrink-0 text-[10px] font-semibold uppercase tracking-wider text-white/50 border border-white/[0.18] rounded px-1.5 py-0.5">
+            <p className="text-fg text-sm font-semibold truncate m-0">{you.name}</p>
+            <span className="flex-shrink-0 text-[10px] font-semibold uppercase tracking-wider text-fg/50 border border-line/[0.18] rounded px-1.5 py-0.5">
               You
             </span>
           </div>
@@ -720,13 +720,13 @@ function CompetitorIntelTable({
                 {keyword ? <> for &ldquo;{keyword}&rdquo;</> : null}
               </span>
             ) : (
-              <span className="text-white/25 text-xs">—</span>
+              <span className="text-fg/25 text-xs">—</span>
             )}
           </div>
         </div>
       </div>
 
-      <p className="text-white/30 text-[11px] leading-relaxed px-4 sm:px-5 py-3 border-t border-white/[0.06] m-0">
+      <p className="text-fg/30 text-[11px] leading-relaxed px-4 sm:px-5 py-3 border-t border-line/[0.06] m-0">
         AI mentions from this live scan
         {serpCount !== null && keyword ? (
           <>
@@ -769,14 +769,14 @@ function CompetitorChart({
         {rows.map((r, i) => {
           const y = i * rowH
           const w = Math.max(r.count === 0 ? 4 : 10, (r.count / maxCount) * barMax)
-          const barColor = r.isYou ? "rgba(255,255,255,0.22)" : "#FF6B1A"
+          const barColor = r.isYou ? "rgb(var(--fg-rgb) / 0.22)" : "#FF6B1A"
           const label = r.name.length > 20 ? r.name.slice(0, 19) + "…" : r.name
           return (
             <g key={`${r.name}-${i}`}>
               <text
                 x={labelW - 10} y={y + rowH / 2 + 1}
                 textAnchor="end" dominantBaseline="middle"
-                fill={r.isYou ? "rgba(255,255,255,0.55)" : "#fff"}
+                fill={r.isYou ? "rgb(var(--fg-rgb) / 0.55)" : "rgb(var(--fg-rgb))"}
                 fontSize="12" fontWeight={r.isYou ? 400 : 600}
               >
                 {label}{r.isYou ? " (you)" : ""}
@@ -790,7 +790,7 @@ function CompetitorChart({
               <text
                 x={labelW + w + 8} y={y + rowH / 2 + 1}
                 dominantBaseline="middle"
-                fill={r.isYou ? "rgba(255,255,255,0.45)" : "#FF8845"}
+                fill={r.isYou ? "rgb(var(--fg-rgb) / 0.45)" : "#FF8845"}
                 fontSize="12" fontWeight="600"
               >
                 {r.count} of {totalEngines}
@@ -814,16 +814,16 @@ function FindingCard({
 }) {
   const isCritical = issue.severity === "critical"
   return (
-    <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl p-4 sm:p-5">
+    <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-4 sm:p-5">
       <div className="flex items-start gap-3">
         <span
           className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${isCritical ? "bg-red-500" : "bg-amber-400"}`}
           aria-hidden
         />
         <div className="flex-1 min-w-0">
-          <p className="text-white text-sm font-semibold m-0 leading-snug">{issue.headline}</p>
+          <p className="text-fg text-sm font-semibold m-0 leading-snug">{issue.headline}</p>
           {!compact && (
-            <p className="text-white/50 text-[13px] leading-relaxed mt-1.5 mb-2.5">
+            <p className="text-muted text-[13px] leading-relaxed mt-1.5 mb-2.5">
               {firstSentence(issue.explanation)}
             </p>
           )}
@@ -876,7 +876,7 @@ function FindingsList({
         <button
           type="button"
           onClick={() => setShowAll((v) => !v)}
-          className="mt-3 w-full text-center text-sm font-medium text-white/60 hover:text-white bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] rounded-xl py-2.5 transition-colors"
+          className="mt-3 w-full text-center text-sm font-medium text-fg/60 hover:text-fg bg-fg/[0.03] hover:bg-fg/[0.06] border border-line/[0.08] rounded-xl py-2.5 transition-colors"
         >
           {showAll ? "Show fewer findings" : `Show all ${issues.length} findings`}
         </button>
@@ -907,7 +907,7 @@ const TIMELINE = [
 
 function FixTimeline() {
   return (
-    <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl p-5 sm:p-6">
+    <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-5 sm:p-6">
       <ol className="relative m-0 p-0 list-none">
         {TIMELINE.map((step, i) => (
           <li key={step.label} className="relative pl-9 pb-6 last:pb-0">
@@ -929,12 +929,12 @@ function FixTimeline() {
             <p className="text-brand-orange text-[11px] font-semibold uppercase tracking-[0.14em] m-0">
               {step.label}
             </p>
-            <p className="text-white text-sm font-semibold mt-1 mb-0.5">{step.title}</p>
-            <p className="text-white/50 text-[13px] leading-relaxed m-0">{step.body}</p>
+            <p className="text-fg text-sm font-semibold mt-1 mb-0.5">{step.title}</p>
+            <p className="text-muted text-[13px] leading-relaxed m-0">{step.body}</p>
           </li>
         ))}
       </ol>
-      <p className="text-white/30 text-[11px] leading-relaxed mt-5 mb-0">
+      <p className="text-fg/30 text-[11px] leading-relaxed mt-5 mb-0">
         No ranking guarantees — alphaa controls the work and shows you the movement weekly.
       </p>
     </div>
@@ -956,7 +956,7 @@ function FirstWeekStrip() {
       {FIRST_WEEK.map((item, i) => (
         <div
           key={item.title}
-          className="flex items-start gap-3 bg-bg-secondary border border-white/[0.08] rounded-xl px-4 py-3.5"
+          className="flex items-start gap-3 bg-bg-secondary border border-line/[0.08] rounded-xl px-4 py-3.5"
         >
           <span
             className="mono flex-shrink-0 w-6 h-6 rounded-full bg-brand-orange/15 border border-brand-orange/30 text-brand-orange text-[11px] font-bold flex items-center justify-center mt-0.5"
@@ -965,8 +965,8 @@ function FirstWeekStrip() {
             {i + 1}
           </span>
           <div className="min-w-0">
-            <p className="text-white text-[13px] font-semibold m-0">{item.title}</p>
-            <p className="text-white/45 text-xs leading-relaxed mt-0.5 mb-0">{item.body}</p>
+            <p className="text-fg text-[13px] font-semibold m-0">{item.title}</p>
+            <p className="text-muted text-xs leading-relaxed mt-0.5 mb-0">{item.body}</p>
           </div>
         </div>
       ))}
@@ -1002,7 +1002,7 @@ function EmailReportButton({ scanId }: { scanId: string }) {
         type="button"
         onClick={send}
         disabled={state === "sending" || state === "sent"}
-        className="inline-flex items-center gap-2 text-sm font-medium text-white/60 hover:text-white bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] rounded-full px-5 py-2.5 transition-colors disabled:opacity-60 disabled:cursor-default"
+        className="inline-flex items-center gap-2 text-sm font-medium text-fg/60 hover:text-fg bg-fg/[0.03] hover:bg-fg/[0.06] border border-line/[0.08] rounded-full px-5 py-2.5 transition-colors disabled:opacity-60 disabled:cursor-default"
       >
         {state === "sent" ? (
           <><Check className="w-4 h-4 text-green-400" /> Report sent to your inbox</>
@@ -1052,15 +1052,15 @@ function CopyBlock({
   }, [code, kind])
 
   return (
-    <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl overflow-hidden">
-      <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-white/[0.06] bg-white/[0.02]">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40 truncate">
+    <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl overflow-hidden">
+      <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-line/[0.06] bg-fg/[0.02]">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg/40 truncate">
           {label}
         </span>
         <button
           type="button"
           onClick={copy}
-          className="inline-flex items-center gap-1.5 flex-shrink-0 text-[11px] font-semibold text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] rounded-lg px-2.5 py-1.5 transition-colors"
+          className="inline-flex items-center gap-1.5 flex-shrink-0 text-[11px] font-semibold text-fg/60 hover:text-fg bg-fg/[0.04] hover:bg-fg/[0.08] border border-line/[0.1] rounded-lg px-2.5 py-1.5 transition-colors"
         >
           {copied ? (
             <><Check className="w-3 h-3 text-green-400" /> Copied</>
@@ -1073,7 +1073,7 @@ function CopyBlock({
           scroll container (overflow-x:auto forces overflow-y:auto too), which
           swallows wheel events and traps visitors mid-page. Full height + page
           scroll; horizontal overflow only. */}
-      <pre className="m-0 px-4 py-3.5 overflow-x-auto text-[11.5px] leading-relaxed text-white/70 mono">
+      <pre className="m-0 px-4 py-3.5 overflow-x-auto text-[11.5px] leading-relaxed text-fg/70 mono">
         <code>{code}</code>
       </pre>
     </div>
@@ -1131,9 +1131,9 @@ function QuickFixSection({ scanId }: { scanId: string }) {
     return (
       <div>
         <SectionHeading>Your free fix</SectionHeading>
-        <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl px-5 py-8 text-center">
+        <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl px-5 py-8 text-center">
           <Sparkles className="w-5 h-5 text-brand-orange mx-auto mb-3 animate-pulse" />
-          <p className="text-white/50 text-[13px] m-0">
+          <p className="text-muted text-[13px] m-0">
             Writing a fix you can paste on your site today…
           </p>
         </div>
@@ -1157,11 +1157,11 @@ function QuickFixSection({ scanId }: { scanId: string }) {
               <Gift className="w-4 h-4 text-brand-orange" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-white text-xl sm:text-[22px] font-bold leading-snug m-0">
+              <h2 className="text-fg text-xl sm:text-[22px] font-bold leading-snug m-0">
                 Here&apos;s a fix you can use right now &mdash;{" "}
                 <span className="text-brand-orange">free</span>
               </h2>
-              <p className="text-white/50 text-[13px] leading-relaxed mt-2 mb-0">
+              <p className="text-muted text-[13px] leading-relaxed mt-2 mb-0">
                 No signup, no card. Paste this on your site and it&apos;s yours to keep, whether or
                 not you ever use alphaa.
               </p>
@@ -1169,11 +1169,11 @@ function QuickFixSection({ scanId }: { scanId: string }) {
           </div>
 
           {fix.targetQuestion && (
-            <div className="mt-5 bg-bg-tertiary border border-white/[0.06] rounded-xl px-4 py-3">
-              <p className="text-[10px] uppercase tracking-wider text-white/30 mb-1 mt-0">
+            <div className="mt-5 bg-bg-tertiary border border-line/[0.06] rounded-xl px-4 py-3">
+              <p className="text-[10px] uppercase tracking-wider text-fg/30 mb-1 mt-0">
                 The customer question this answers
               </p>
-              <p className="text-white/85 text-[13px] leading-relaxed m-0">
+              <p className="text-fg/85 text-[13px] leading-relaxed m-0">
                 &ldquo;{fix.targetQuestion}&rdquo;
               </p>
             </div>
@@ -1185,15 +1185,15 @@ function QuickFixSection({ scanId }: { scanId: string }) {
           </div>
 
           {/* Honest explainer — plain English, no invented jargon. */}
-          <div className="mt-4 bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3.5 space-y-2">
-            <p className="text-white/60 text-[13px] leading-relaxed m-0">
-              <span className="text-white font-semibold">Why this works:</span> this is the text AI
+          <div className="mt-4 bg-fg/[0.03] border border-line/[0.08] rounded-xl px-4 py-3.5 space-y-2">
+            <p className="text-muted text-[13px] leading-relaxed m-0">
+              <span className="text-fg font-semibold">Why this works:</span> this is the text AI
               reads about you. When your page answers a customer&apos;s question in plain words,
               ChatGPT, Claude and Perplexity can quote that answer back to whoever asks. Right now
               there&apos;s nothing on your page for them to quote.
             </p>
-            <p className="text-white/60 text-[13px] leading-relaxed m-0">
-              <span className="text-white font-semibold">Why it&apos;s HTML, not a script:</span>{" "}
+            <p className="text-muted text-[13px] leading-relaxed m-0">
+              <span className="text-fg font-semibold">Why it&apos;s HTML, not a script:</span>{" "}
               those assistants only read the plain page &mdash; they don&apos;t run JavaScript. So
               the words have to be in the HTML itself, which is why you paste this rather than
               install something.
@@ -1206,11 +1206,11 @@ function QuickFixSection({ scanId }: { scanId: string }) {
           </div>
 
           {/* CTA */}
-          <div className="mt-5 pt-5 border-t border-white/[0.08]">
-            <p className="text-white text-[15px] font-semibold leading-snug text-center m-0">
+          <div className="mt-5 pt-5 border-t border-line/[0.08]">
+            <p className="text-fg text-[15px] font-semibold leading-snug text-center m-0">
               That&apos;s one page. alphaa does this for every page.
             </p>
-            <p className="text-white/50 text-[13px] leading-relaxed text-center max-w-md mx-auto mt-2 mb-5">
+            <p className="text-muted text-[13px] leading-relaxed text-center max-w-md mx-auto mt-2 mb-5">
               We write it, keep it current as your business changes, and re-check every week
               whether AI actually picked it up.
             </p>
@@ -1289,7 +1289,7 @@ function ScanResultsContent() {
     return (
       <div className="pt-24 pb-20 px-4 text-center max-w-md mx-auto">
         <AlertTriangle className="w-8 h-8 text-brand-orange mx-auto mb-4" />
-        <p className="text-white text-lg font-medium mb-2">
+        <p className="text-fg text-lg font-medium mb-2">
           Your scan is taking longer than usual.
         </p>
         <p className="text-muted text-sm mb-6">
@@ -1391,7 +1391,7 @@ function ScanResultsContent() {
       <div className="max-w-2xl mx-auto space-y-10">
 
         {/* ── Business header bar ─────────────────────────────────── */}
-        <div className="flex items-center gap-3 bg-bg-secondary border border-white/[0.08] rounded-xl px-4 py-3.5">
+        <div className="flex items-center gap-3 bg-bg-secondary border border-line/[0.08] rounded-xl px-4 py-3.5">
           <div className="w-10 h-10 rounded-lg bg-brand-orange flex items-center justify-center flex-shrink-0">
             {result.ogData?.favicon ? (
               <img
@@ -1401,14 +1401,14 @@ function ScanResultsContent() {
                 onError={(e) => { e.currentTarget.style.display = "none" }}
               />
             ) : (
-              <span className="text-white text-[13px] font-bold">{initials}</span>
+              <span className="text-fg text-[13px] font-bold">{initials}</span>
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-[15px] font-medium truncate m-0">{businessName}</p>
+            <p className="text-fg text-[15px] font-medium truncate m-0">{businessName}</p>
             <div className="flex items-center gap-1 mt-0.5">
-              <MapPin className="w-3 h-3 text-white/30" />
-              <span className="text-white/40 text-xs truncate">
+              <MapPin className="w-3 h-3 text-fg/30" />
+              <span className="text-fg/40 text-xs truncate">
                 {result.city}
                 {result.ogData?.domain ? ` · ${result.ogData.domain}` : ""}
               </span>
@@ -1421,7 +1421,7 @@ function ScanResultsContent() {
         </div>
 
         {/* ── 1. HERO — the FOMO number is the headline ───────────── */}
-        <div className="relative overflow-hidden bg-bg-secondary border border-white/[0.08] rounded-2xl px-6 py-8 sm:px-8 sm:py-9 !mt-4">
+        <div className="relative overflow-hidden bg-bg-secondary border border-line/[0.08] rounded-2xl px-6 py-8 sm:px-8 sm:py-9 !mt-4">
           <div
             className="absolute inset-0 pointer-events-none"
             style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,107,26,0.10), transparent 70%)" }}
@@ -1430,7 +1430,7 @@ function ScanResultsContent() {
           <div className="relative">
             <div className="sm:flex sm:items-center sm:gap-8 text-center sm:text-left">
               <div className="flex-1 min-w-0">
-                <p className="text-xs uppercase tracking-[0.16em] text-white/40 mb-4">
+                <p className="text-xs uppercase tracking-[0.16em] text-fg/40 mb-4">
                   Your free AI visibility scan
                 </p>
                 <HeroHeadline
@@ -1444,14 +1444,14 @@ function ScanResultsContent() {
                   verdict={verdict}
                 />
                 {loss && loss.basis && (
-                  <p className="text-white/30 text-[11px] leading-relaxed mt-3 mb-0">
+                  <p className="text-fg/30 text-[11px] leading-relaxed mt-3 mb-0">
                     Estimate — {loss.basis}
                   </p>
                 )}
               </div>
               <div className="mt-7 sm:mt-0 flex-shrink-0">
                 <ScoreGaugeBig score={score} />
-                <p className="text-white/40 text-[11px] text-center mt-2 mb-0">
+                <p className="text-fg/40 text-[11px] text-center mt-2 mb-0">
                   AI visibility score
                 </p>
               </div>
@@ -1466,7 +1466,7 @@ function ScanResultsContent() {
         {/* ── 2. THE EVIDENCE ─────────────────────────────────────── */}
         <div>
           <SectionHeading>What AI actually said</SectionHeading>
-          <p className="text-white/50 text-sm leading-relaxed mb-4 -mt-1">
+          <p className="text-muted text-sm leading-relaxed mb-4 -mt-1">
             The real answers from {totalEngines} AI assistants, word for word.
           </p>
           <div className="space-y-3">
@@ -1500,12 +1500,12 @@ function ScanResultsContent() {
         ) : showChartFallback ? (
           <div>
             <SectionHeading>Who AI recommends instead</SectionHeading>
-            <div className="bg-bg-secondary border border-white/[0.08] rounded-2xl p-5 sm:p-6">
-              <p className="text-white text-[15px] font-semibold mb-4 mt-0">
+            <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-5 sm:p-6">
+              <p className="text-fg text-[15px] font-semibold mb-4 mt-0">
                 Who AI is sending your customers to instead
               </p>
               <CompetitorChart rows={chartRows} totalEngines={totalEngines} />
-              <p className="text-white/40 text-xs leading-relaxed mt-4 mb-0">
+              <p className="text-muted text-xs leading-relaxed mt-4 mb-0">
                 How many of the {totalEngines} AI answers named each business.
               </p>
             </div>
@@ -1536,28 +1536,28 @@ function ScanResultsContent() {
         </div>
 
         {/* ── 9. DECISION BLOCK ───────────────────────────────────── */}
-        <div className="relative overflow-hidden bg-bg-secondary border border-white/[0.08] rounded-2xl px-6 py-9 sm:px-9">
+        <div className="relative overflow-hidden bg-bg-secondary border border-line/[0.08] rounded-2xl px-6 py-9 sm:px-9">
           <div
             className="absolute inset-0 pointer-events-none"
             style={{ background: "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(255,107,26,0.10), transparent 70%)" }}
             aria-hidden
           />
           <div className="relative">
-            <h2 className="text-white text-2xl font-bold text-center leading-snug m-0">
+            <h2 className="text-fg text-2xl font-bold text-center leading-snug m-0">
               alphaa fixes <span className="text-brand-orange">all of this.</span>
               <br />
-              <span className="text-white/60 font-normal text-lg">Automatically. Every week.</span>
+              <span className="text-fg/60 font-normal text-lg">Automatically. Every week.</span>
             </h2>
 
-            <p className="text-white/50 text-sm text-center leading-relaxed max-w-md mx-auto mt-4 mb-6">
+            <p className="text-muted text-sm text-center leading-relaxed max-w-md mx-auto mt-4 mb-6">
               Agencies charge $1,000–$2,000/mo for this work — alphaa is $99, with a weekly
               report proving where you stand.
             </p>
 
             {/* Honest proof — no invented customers */}
-            <div className="flex items-start gap-3 bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3.5 max-w-md mx-auto mb-7">
+            <div className="flex items-start gap-3 bg-fg/[0.03] border border-line/[0.08] rounded-xl px-4 py-3.5 max-w-md mx-auto mb-7">
               <Bot className="w-4 h-4 text-brand-orange flex-shrink-0 mt-0.5" />
-              <p className="text-white/60 text-[13px] leading-relaxed m-0">
+              <p className="text-muted text-[13px] leading-relaxed m-0">
                 alphaa runs on alphaa — ask ChatGPT what tools improve AI search visibility for
                 local businesses.
               </p>
@@ -1572,7 +1572,7 @@ function ScanResultsContent() {
         </div>
 
         {/* Honest urgency close */}
-        <p className="text-white/40 text-[13px] text-center leading-relaxed max-w-sm mx-auto !mt-6">
+        <p className="text-muted text-[13px] text-center leading-relaxed max-w-sm mx-auto !mt-6">
           Every week you wait is another week AI recommends someone else.
         </p>
 

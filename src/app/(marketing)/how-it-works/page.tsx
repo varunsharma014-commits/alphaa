@@ -58,7 +58,7 @@ export default function HowItWorksPage() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
           <SectionLabel className="mb-3 block">How it works</SectionLabel>
-          <h1 className="text-[34px] sm:text-[48px] lg:text-[54px] font-semibold leading-[1.08] tracking-[-0.02em] text-white mb-4 text-balance">
+          <h1 className="text-[34px] sm:text-[48px] lg:text-[54px] font-semibold leading-[1.08] tracking-[-0.02em] text-fg mb-4 text-balance">
             Everything Alphaa does —{" "}
             <span className="serif-italic text-brand-orange">explained</span>
           </h1>
@@ -76,7 +76,7 @@ export default function HowItWorksPage() {
                 </div>
                 <div>
                   <span className="mono text-brand-orange text-xs">{s.num}</span>
-                  <h2 className="text-white font-semibold text-lg">{s.title}</h2>
+                  <h2 className="text-fg font-semibold text-lg">{s.title}</h2>
                 </div>
               </div>
               <div className="space-y-3 pl-16">

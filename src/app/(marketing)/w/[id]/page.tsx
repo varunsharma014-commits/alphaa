@@ -95,12 +95,12 @@ export default async function PublicWinPage({
             Verified AI-visibility win
           </p>
 
-          <p className="text-white/80 text-lg font-medium mb-2">{businessName}</p>
-          <h1 className="text-[32px] sm:text-[46px] font-semibold text-white leading-[1.1] tracking-[-0.02em] mb-6 text-balance">
+          <p className="text-fg/80 text-lg font-medium mb-2">{businessName}</p>
+          <h1 className="text-[32px] sm:text-[46px] font-semibold text-fg leading-[1.1] tracking-[-0.02em] mb-6 text-balance">
             {headline}
           </h1>
 
-          <div className="flex items-center justify-center gap-1.5 text-white/40 text-sm mb-8">
+          <div className="flex items-center justify-center gap-1.5 text-fg/40 text-sm mb-8">
             <CheckCircle2 size={15} className="text-green-500" />
             <span>Verified by alphaa on {verifiedDate}</span>
           </div>
@@ -110,7 +110,7 @@ export default async function PublicWinPage({
 
         {/* Subtle viral hook */}
         <div className="glass-card rounded-2xl p-6 sm:p-8 text-center mt-8">
-          <p className="text-white/70 text-sm sm:text-base mb-4">
+          <p className="text-muted text-sm sm:text-base mb-4">
             Get found on AI too &mdash; see whether ChatGPT, Claude, Gemini and Perplexity
             recommend your business.
           </p>

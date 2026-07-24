@@ -101,12 +101,12 @@ export default async function VerticalPage({
           <p className="text-xs font-medium tracking-[0.18em] uppercase text-brand-orange mb-6">
             AI search for {v.plural}
           </p>
-          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-6 text-balance">
+          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-6 text-balance">
             When someone asks ChatGPT{" "}
             <span className="serif-italic text-brand-orange">&quot;{v.examplePrompt}&quot;</span>
             <br className="hidden sm:block" /> — are you the answer?
           </h1>
-          <p className="text-white/55 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-9">
+          <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-9">
             Alphaa gets your {v.noun} recommended by ChatGPT, Gemini &amp; Google AI automatically —
             $99/mo, no agency retainer.
           </p>
@@ -117,11 +117,11 @@ export default async function VerticalPage({
               ctaLabel="Run my free AI scan →"
             />
           </div>
-          <p className="mt-5 text-white/40 text-xs">60 seconds · no signup · no credit card</p>
+          <p className="mt-5 text-fg/40 text-xs">60 seconds · no signup · no credit card</p>
           <p className="mt-2 text-xs">
             <Link
               href="/scan"
-              className="text-white/40 hover:text-white/70 underline underline-offset-4 transition-colors duration-200"
+              className="text-fg/40 hover:text-fg/70 underline underline-offset-4 transition-colors duration-200"
             >
               No website? Start the scan with just your business name →
             </Link>
@@ -135,11 +135,11 @@ export default async function VerticalPage({
           <p className="text-red-400 text-xs font-semibold tracking-widest uppercase mb-6 text-center">
             The problem
           </p>
-          <h2 className="text-[28px] sm:text-[36px] font-semibold text-white leading-[1.15] tracking-tight text-center mb-10 text-balance">
+          <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg leading-[1.15] tracking-tight text-center mb-10 text-balance">
             Your next customer just asked AI —{" "}
             <span className="serif-italic text-brand-orange">and got someone else&apos;s name.</span>
           </h2>
-          <div className="space-y-5 text-white/55 text-lg leading-relaxed">
+          <div className="space-y-5 text-muted text-lg leading-relaxed">
             <p>
               Search has changed. People don&apos;t sift through pages of results anymore — they ask
               ChatGPT, Gemini, or Google AI a question and get a short, confident answer with two or
@@ -162,7 +162,7 @@ export default async function VerticalPage({
             <span className="text-xs font-medium tracking-[0.18em] uppercase text-brand-orange mb-3 block">
               The playbook
             </span>
-            <h2 className="text-[28px] sm:text-[36px] font-semibold text-white tracking-tight text-balance">
+            <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg tracking-tight text-balance">
               What alphaa does for {v.plural}
             </h2>
           </div>
@@ -175,8 +175,8 @@ export default async function VerticalPage({
                 <div className="w-10 h-10 rounded-xl border border-brand-orange/20 bg-brand-orange/10 flex items-center justify-center mb-5">
                   <CheckCircle2 className="w-5 h-5 text-brand-orange" />
                 </div>
-                <h3 className="text-white font-semibold text-base mb-2.5">{item.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{item.body}</p>
+                <h3 className="text-fg font-semibold text-base mb-2.5">{item.title}</h3>
+                <p className="text-muted text-sm leading-relaxed">{item.body}</p>
               </div>
             ))}
           </div>
@@ -187,7 +187,7 @@ export default async function VerticalPage({
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className="rounded-2xl border border-brand-orange/20 bg-brand-orange/[0.06] p-8 sm:p-10">
-            <p className="text-center text-white/40 text-xs uppercase tracking-widest font-semibold mb-8">
+            <p className="text-center text-fg/40 text-xs uppercase tracking-widest font-semibold mb-8">
               Do the math
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-6 sm:gap-8 max-w-3xl mx-auto">
@@ -195,11 +195,11 @@ export default async function VerticalPage({
                 <p className="text-red-400/70 text-xs font-semibold uppercase tracking-widest mb-3">
                   Typical agency for {v.plural}
                 </p>
-                <p className="text-white/40 text-4xl sm:text-5xl font-bold leading-none line-through decoration-red-500/50 decoration-2">
+                <p className="text-fg/40 text-4xl sm:text-5xl font-bold leading-none line-through decoration-red-500/50 decoration-2">
                   ${agencyAnnual.toLocaleString()}
                   <span className="text-xl">/yr</span>
                 </p>
-                <p className="text-white/30 text-xs mt-3">{v.agencyCostLabel} · and still invisible on AI</p>
+                <p className="text-fg/30 text-xs mt-3">{v.agencyCostLabel} · and still invisible on AI</p>
               </div>
               <div className="flex items-center justify-center text-brand-orange/60 text-3xl rotate-90 sm:rotate-0">
                 →
@@ -208,19 +208,19 @@ export default async function VerticalPage({
                 <p className="text-brand-orange text-xs font-semibold uppercase tracking-widest mb-3">
                   Alphaa
                 </p>
-                <p className="text-white text-4xl sm:text-5xl font-bold leading-none">
+                <p className="text-fg text-4xl sm:text-5xl font-bold leading-none">
                   ${ALPHAA_ANNUAL.toLocaleString()}
-                  <span className="text-xl text-white/50">/yr</span>
+                  <span className="text-xl text-fg/50">/yr</span>
                 </p>
-                <p className="text-white/30 text-xs mt-3">$99/mo · built for AI search</p>
+                <p className="text-fg/30 text-xs mt-3">$99/mo · built for AI search</p>
               </div>
             </div>
-            <div className="text-center mt-9 pt-9 border-t border-white/[0.08]">
-              <p className="text-white text-[28px] sm:text-[40px] font-semibold leading-tight">
+            <div className="text-center mt-9 pt-9 border-t border-line/[0.08]">
+              <p className="text-fg text-[28px] sm:text-[40px] font-semibold leading-tight">
                 Keep <span className="text-brand-orange">${savings.toLocaleString()}/year</span> in your{" "}
                 {v.noun}
               </p>
-              <p className="text-white/50 text-base sm:text-lg mt-2">
+              <p className="text-muted text-base sm:text-lg mt-2">
                 …and actually show up where your customers now search.
               </p>
             </div>
@@ -235,14 +235,14 @@ export default async function VerticalPage({
             <span className="text-xs font-medium tracking-[0.18em] uppercase text-brand-orange mb-3 block">
               FAQ
             </span>
-            <h2 className="text-[28px] sm:text-[36px] font-semibold text-white tracking-tight">
+            <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg tracking-tight">
               Questions from {v.plural}
             </h2>
           </div>
           <div className="space-y-2">
             {v.faq.map((f) => (
               <div key={f.q} className="glass-card rounded-xl p-5">
-                <h3 className="text-white font-medium text-sm mb-2.5">{f.q}</h3>
+                <h3 className="text-fg font-medium text-sm mb-2.5">{f.q}</h3>
                 <p className="text-muted text-sm leading-relaxed">{f.a}</p>
               </div>
             ))}
@@ -263,10 +263,10 @@ export default async function VerticalPage({
                 className="group flex items-start justify-between gap-4 mb-5"
               >
                 <div>
-                  <h3 className="text-white font-semibold text-lg group-hover:text-brand-orange transition-colors duration-200">
+                  <h3 className="text-fg font-semibold text-lg group-hover:text-brand-orange transition-colors duration-200">
                     {relatedPost.meta.title}
                   </h3>
-                  <p className="text-white/50 text-sm leading-relaxed mt-1.5">
+                  <p className="text-muted text-sm leading-relaxed mt-1.5">
                     {relatedPost.meta.description}
                   </p>
                 </div>
@@ -275,7 +275,7 @@ export default async function VerticalPage({
             )}
             <Link
               href="/blog"
-              className="text-sm font-medium text-white/50 hover:text-white transition-colors duration-200"
+              className="text-sm font-medium text-muted hover:text-fg transition-colors duration-200"
             >
               Browse all articles on AI search →
             </Link>
@@ -292,18 +292,18 @@ export default async function VerticalPage({
               background: "radial-gradient(ellipse at 50% 120%, rgba(255,107,26,0.18) 0%, transparent 65%)",
             }}
           >
-            <h2 className="text-[32px] sm:text-[44px] font-semibold text-white leading-[1.1] tracking-tight mb-6 text-balance">
+            <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
               Find out if AI recommends your {v.noun} —{" "}
               <span className="serif-italic text-brand-orange">or your competitor.</span>
             </h2>
-            <p className="text-white/50 text-lg sm:text-xl mb-9 max-w-xl mx-auto">
+            <p className="text-muted text-lg sm:text-xl mb-9 max-w-xl mx-auto">
               Run a free scan and see exactly what ChatGPT, Gemini, and Google AI say when customers
               ask about {v.plural} like you.
             </p>
             <OrangePillButton href="/scan" size="lg">
               Run my free AI scan →
             </OrangePillButton>
-            <p className="mt-6 text-white/25 text-sm">60 seconds · no signup · no credit card</p>
+            <p className="mt-6 text-fg/25 text-sm">60 seconds · no signup · no credit card</p>
           </div>
         </div>
       </section>

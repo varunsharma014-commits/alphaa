@@ -196,17 +196,17 @@ export default function TermsPage() {
   return (
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-white text-[32px] sm:text-[42px] font-semibold tracking-[-0.02em] mb-2">Terms of Service</h1>
-        <p className="text-white/40 text-sm mb-10">Last updated: June 15, 2026</p>
+        <h1 className="text-fg text-[32px] sm:text-[42px] font-semibold tracking-[-0.02em] mb-2">Terms of Service</h1>
+        <p className="text-muted text-sm mb-10">Last updated: June 15, 2026</p>
 
-        <p className="text-white/50 text-sm leading-relaxed mb-10 p-4 border border-white/[0.08] rounded-lg bg-white/[0.02]">
+        <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           These Terms of Service govern your access to and use of the Alphaa platform. By creating an account or using the Service, you agree to be bound by these Terms. Please read them carefully.
         </p>
 
         {sections.map((s) => (
           <div key={s.title} className="mb-10">
-            <h2 className="text-white font-semibold text-lg mb-3">{s.title}</h2>
-            <div className="text-white/50 text-sm leading-relaxed whitespace-pre-line">{s.body}</div>
+            <h2 className="text-fg font-semibold text-lg mb-3">{s.title}</h2>
+            <div className="text-muted text-sm leading-relaxed whitespace-pre-line">{s.body}</div>
           </div>
         ))}
       </div>

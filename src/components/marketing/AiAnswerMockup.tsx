@@ -48,7 +48,7 @@ export function AiAnswerMockup() {
                 <div className="rounded-xl border border-brand-orange/40 bg-brand-orange/[0.07] p-3">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="text-fg font-semibold">Summit Plumbing Co.</span>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-brand-orange text-fg">
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-brand-orange text-white">
                       Your business
                     </span>
                   </div>

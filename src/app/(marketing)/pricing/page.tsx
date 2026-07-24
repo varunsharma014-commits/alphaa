@@ -87,14 +87,14 @@ export default function PricingPage() {
         {/* Launch banner */}
         <div className="mb-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-sm font-medium">
-            🔥 Launch pricing: early customers lock in <span className="text-white">$79/month for life</span> with the annual plan
+            🔥 Launch pricing: early customers lock in <span className="text-fg">$79/month for life</span> with the annual plan
           </div>
         </div>
 
         {/* Header */}
         <div className="text-center mb-12">
           <SectionLabel className="mb-3 block">Pricing</SectionLabel>
-          <h1 className="text-[34px] sm:text-[48px] lg:text-[54px] font-semibold leading-[1.08] tracking-[-0.02em] text-white mb-4 text-balance">
+          <h1 className="text-[34px] sm:text-[48px] lg:text-[54px] font-semibold leading-[1.08] tracking-[-0.02em] text-fg mb-4 text-balance">
             From $99/month.{" "}
             <span className="serif-italic text-brand-orange">No contracts.</span>
           </h1>
@@ -103,12 +103,12 @@ export default function PricingPage() {
 
         {/* Toggle */}
         <div className="flex items-center justify-center gap-4 mb-10">
-          <span className={cn("text-sm", !annual ? "text-white" : "text-muted")}>Monthly</span>
+          <span className={cn("text-sm", !annual ? "text-fg" : "text-muted")}>Monthly</span>
           <button
             onClick={() => setAnnual(!annual)}
             className={cn(
               "relative w-12 h-6 rounded-full transition-colors duration-200",
-              annual ? "bg-brand-orange" : "bg-white/10"
+              annual ? "bg-brand-orange" : "bg-fg/10"
             )}
           >
             <span
@@ -118,7 +118,7 @@ export default function PricingPage() {
               )}
             />
           </button>
-          <span className={cn("text-sm", annual ? "text-white" : "text-muted")}>
+          <span className={cn("text-sm", annual ? "text-fg" : "text-muted")}>
             Annual <span className="text-brand-orange font-medium">save 20%</span>
           </span>
         </div>
@@ -142,13 +142,13 @@ export default function PricingPage() {
               )}
 
               <div className="mb-6">
-                <h2 className="text-white font-semibold text-xl mb-1">{plan.name}</h2>
+                <h2 className="text-fg font-semibold text-xl mb-1">{plan.name}</h2>
                 <p className="text-muted text-sm">{plan.description}</p>
               </div>
 
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
-                  <span className="mono text-white text-4xl font-medium">
+                  <span className="mono text-fg text-4xl font-medium">
                     ${annual ? plan.annual : plan.monthly}
                   </span>
                   <span className="text-muted text-sm">/month</span>
@@ -165,7 +165,7 @@ export default function PricingPage() {
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-brand-orange flex-shrink-0 mt-0.5" />
-                    <span className="text-white/80 text-sm">{f}</span>
+                    <span className="text-fg/80 text-sm">{f}</span>
                   </li>
                 ))}
               </ul>
@@ -184,11 +184,11 @@ export default function PricingPage() {
 
         {/* Billing FAQ */}
         <div className="max-w-2xl mx-auto">
-          <h3 className="text-white font-semibold text-lg text-center mb-6">Billing questions</h3>
+          <h3 className="text-fg font-semibold text-lg text-center mb-6">Billing questions</h3>
           <div className="space-y-2">
             {billingFaqs.map((faq) => (
               <GlassCard key={faq.q} className="py-4 px-5">
-                <p className="text-white text-sm font-medium mb-1">{faq.q}</p>
+                <p className="text-fg text-sm font-medium mb-1">{faq.q}</p>
                 <p className="text-muted text-sm">{faq.a}</p>
               </GlassCard>
             ))}

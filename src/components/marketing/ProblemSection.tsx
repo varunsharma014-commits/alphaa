@@ -29,7 +29,7 @@ export function ProblemSection() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <SectionLabel className="mb-3 block">The problem</SectionLabel>
-          <h2 className="text-section-mobile md:text-section font-semibold text-white text-balance">
+          <h2 className="text-section-mobile md:text-section font-semibold text-fg text-balance">
             Getting found is{" "}
             <span className="serif-italic text-brand-orange">broken</span>
           </h2>
@@ -46,7 +46,7 @@ export function ProblemSection() {
                   {p.stat}
                 </span>
               </div>
-              <h3 className="text-white font-semibold text-base leading-snug">{p.headline}</h3>
+              <h3 className="text-fg font-semibold text-base leading-snug">{p.headline}</h3>
               <p className="text-muted text-sm leading-relaxed">{p.body}</p>
             </GlassCard>
           ))}

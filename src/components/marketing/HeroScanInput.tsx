@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils"
 export function HeroScanInput({
   compact = false,
   source = "home_hero",
-  ctaLabel = "Scan my business →",
+  ctaLabel = "See where my business ranks on AI →",
 }: {
   compact?: boolean
   source?: string
@@ -42,7 +42,7 @@ export function HeroScanInput({
         placeholder="Enter your website URL…"
         aria-label="Your website URL"
         className={cn(
-          "flex-1 bg-bg-tertiary border border-white/10 rounded-full text-white placeholder:text-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors",
+          "flex-1 bg-bg-tertiary border border-line/10 rounded-full text-fg placeholder:text-muted/60 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors",
           compact ? "px-4 py-3" : "px-5 py-3.5"
         )}
       />

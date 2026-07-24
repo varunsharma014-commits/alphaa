@@ -435,7 +435,7 @@ export default function OnboardingPage() {
   const progress = ((step - 1) / TOTAL_STEPS) * 100
 
   return (
-    <div className="radial-bg min-h-screen flex flex-col items-center justify-center px-4 py-12">
+    <div data-theme="light" className="radial-bg min-h-screen flex flex-col items-center justify-center px-4 py-12">
       {/* GA4: onboarding mount = a completed signup */}
       <ConversionTracker event="sign_up" metaEvent="CompleteRegistration" />
       {/* Logo */}

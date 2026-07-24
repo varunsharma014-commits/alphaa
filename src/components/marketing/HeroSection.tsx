@@ -97,7 +97,7 @@ export function HeroSection() {
         </h1>
 
         {/* Sub-headline */}
-        <p className="text-fg/55 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-7">
+        <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-7">
           Alphaa gets your business into AI answers automatically. Why pay an agency $1,000/month when AI can do it for $99/mo?
         </p>
 

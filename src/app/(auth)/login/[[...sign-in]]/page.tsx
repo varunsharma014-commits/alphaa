@@ -7,11 +7,11 @@ export default function LoginPage() {
       appearance={{
         variables: {
           colorPrimary: "#FF6B1A",
-          colorBackground: "#13100C",
-          colorInputBackground: "#1F1812",
-          colorInputText: "#ffffff",
-          colorText: "#ffffff",
-          colorTextSecondary: "#A8A29E",
+          colorBackground: "#FFFFFF",
+          colorInputBackground: "#F1ECE4",
+          colorInputText: "#1A1410",
+          colorText: "#1A1410",
+          colorTextSecondary: "#6B635E",
           borderRadius: "12px",
           fontFamily: "Inter Tight, sans-serif",
         },

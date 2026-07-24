@@ -24,7 +24,7 @@ export function StickyScanCta({ href = "#scan-input" }: { href?: string }) {
         visible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0 pointer-events-none"
       }`}
     >
-      <div className="w-full flex items-center gap-2 rounded-2xl border border-white/10 bg-bg-secondary/95 backdrop-blur-md p-2 shadow-2xl">
+      <div className="w-full flex items-center gap-2 rounded-2xl border border-line/10 bg-bg-secondary/95 backdrop-blur-md p-2 shadow-2xl">
         <Link
           href={href}
           className="flex-1 flex items-center justify-center py-3 px-4 rounded-xl font-semibold text-white text-sm"
@@ -36,7 +36,7 @@ export function StickyScanCta({ href = "#scan-input" }: { href?: string }) {
           type="button"
           onClick={() => setDismissed(true)}
           aria-label="Dismiss"
-          className="flex items-center justify-center w-9 h-9 rounded-xl text-white/40 hover:text-white transition-colors"
+          className="flex items-center justify-center w-9 h-9 rounded-xl text-fg/40 hover:text-fg transition-colors"
         >
           <X className="w-4 h-4" />
         </button>

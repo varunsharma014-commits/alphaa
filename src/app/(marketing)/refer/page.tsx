@@ -27,7 +27,7 @@ function EarningsCalculator() {
   ]
 
   return (
-    <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8">
+    <div className="bg-fg/[0.03] border border-line/[0.08] rounded-2xl p-8">
       {/* Presets */}
       <div className="flex flex-wrap gap-2 mb-8">
         {presets.map((p) => (
@@ -37,7 +37,7 @@ function EarningsCalculator() {
             className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 ${
               referrals === p.refs
                 ? "bg-brand-orange/20 border-brand-orange/50 text-brand-orange"
-                : "border-white/10 text-white/40 hover:border-white/20 hover:text-white/60"
+                : "border-line/10 text-fg/40 hover:border-line/20 hover:text-fg/60"
             }`}
           >
             {p.label} ({p.refs} refs)
@@ -49,7 +49,7 @@ function EarningsCalculator() {
         {/* Slider */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <label className="text-white/60 text-sm font-medium">Referrals per month</label>
+            <label className="text-fg/60 text-sm font-medium">Referrals per month</label>
             <span className="text-brand-orange font-bold text-2xl">{referrals}</span>
           </div>
           <input
@@ -60,7 +60,7 @@ function EarningsCalculator() {
             onChange={(e) => setReferrals(Number(e.target.value))}
             className="w-full accent-[#ff6b1a] h-2 cursor-pointer"
           />
-          <div className="flex justify-between text-white/25 text-xs mt-1">
+          <div className="flex justify-between text-fg/25 text-xs mt-1">
             <span>1</span>
             <span>50</span>
           </div>
@@ -68,8 +68,8 @@ function EarningsCalculator() {
 
         {/* Plan Toggle */}
         <div>
-          <label className="text-white/60 text-sm font-medium block mb-3">Plan</label>
-          <div className="flex rounded-xl border border-white/[0.08] overflow-hidden">
+          <label className="text-fg/60 text-sm font-medium block mb-3">Plan</label>
+          <div className="flex rounded-xl border border-line/[0.08] overflow-hidden">
             {(["starter", "pro"] as const).map((p) => (
               <button
                 key={p}
@@ -77,7 +77,7 @@ function EarningsCalculator() {
                 className={`flex-1 py-2.5 text-sm font-semibold transition-all duration-200 ${
                   plan === p
                     ? "bg-brand-orange text-white"
-                    : "text-white/40 hover:text-white/70"
+                    : "text-fg/40 hover:text-fg/70"
                 }`}
               >
                 {p === "starter" ? "Starter · $99/mo" : "Pro · $199/mo"}
@@ -89,7 +89,7 @@ function EarningsCalculator() {
 
       {/* Math formula */}
       <div className="bg-brand-orange/10 border border-brand-orange/20 rounded-xl px-5 py-3 mb-6 text-center">
-        <span className="text-white/60 text-sm">
+        <span className="text-fg/60 text-sm">
           {referrals} referrals × ${planPrice} × 30% ={" "}
           <span className="text-brand-orange font-bold text-base">{fmt(monthly)}/mo</span>
         </span>
@@ -104,12 +104,12 @@ function EarningsCalculator() {
         ].map((item) => (
           <div
             key={item.label}
-            className="bg-white/[0.04] rounded-xl p-4 text-center border border-white/[0.06]"
+            className="bg-fg/[0.04] rounded-xl p-4 text-center border border-line/[0.06]"
           >
             <div className="text-brand-orange font-bold text-xl sm:text-2xl leading-tight">
               {item.value}
             </div>
-            <div className="text-white/40 text-xs mt-1">{item.label}</div>
+            <div className="text-fg/40 text-xs mt-1">{item.label}</div>
           </div>
         ))}
       </div>
@@ -121,19 +121,19 @@ function EarningsCalculator() {
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border-b border-white/[0.07]">
+    <div className="border-b border-line/[0.07]">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between py-5 text-left gap-4"
       >
-        <span className="text-white font-medium">{q}</span>
+        <span className="text-fg font-medium">{q}</span>
         {open ? (
-          <ChevronUp className="w-4 h-4 text-white/40 flex-shrink-0" />
+          <ChevronUp className="w-4 h-4 text-fg/40 flex-shrink-0" />
         ) : (
-          <ChevronDown className="w-4 h-4 text-white/40 flex-shrink-0" />
+          <ChevronDown className="w-4 h-4 text-fg/40 flex-shrink-0" />
         )}
       </button>
-      {open && <p className="text-white/50 text-sm pb-5 leading-relaxed">{a}</p>}
+      {open && <p className="text-muted text-sm pb-5 leading-relaxed">{a}</p>}
     </div>
   )
 }
@@ -154,8 +154,8 @@ function ApplyForm() {
     return (
       <div className="bg-brand-orange/10 border border-brand-orange/30 rounded-2xl p-8 text-center">
         <div className="text-4xl mb-3">🎉</div>
-        <h3 className="text-white font-semibold text-xl mb-2">Application sent!</h3>
-        <p className="text-white/50 text-sm">We'll send your partner link within 24 hours. Check your inbox.</p>
+        <h3 className="text-fg font-semibold text-xl mb-2">Application sent!</h3>
+        <p className="text-muted text-sm">We'll send your partner link within 24 hours. Check your inbox.</p>
       </div>
     )
   }
@@ -168,7 +168,7 @@ function ApplyForm() {
         placeholder="Your name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="flex-1 bg-white/[0.05] border border-white/[0.10] rounded-full px-5 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-brand-orange/50 transition-colors"
+        className="flex-1 bg-fg/[0.05] border border-line/[0.10] rounded-full px-5 py-3 text-fg placeholder-fg/30 text-sm focus:outline-none focus:border-brand-orange/50 transition-colors"
       />
       <input
         required
@@ -176,7 +176,7 @@ function ApplyForm() {
         placeholder="Your email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="flex-1 bg-white/[0.05] border border-white/[0.10] rounded-full px-5 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-brand-orange/50 transition-colors"
+        className="flex-1 bg-fg/[0.05] border border-line/[0.10] rounded-full px-5 py-3 text-fg placeholder-fg/30 text-sm focus:outline-none focus:border-brand-orange/50 transition-colors"
       />
       <OrangePillButton type="submit" size="md">
         Apply now →
@@ -188,7 +188,7 @@ function ApplyForm() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function ReferPage() {
   return (
-    <main className="bg-[#0a0a0a] min-h-screen text-white">
+    <main className="bg-bg-primary min-h-screen text-fg">
 
       {/* ── 1. Hero ─────────────────────────────────────────────── */}
       <section className="relative pt-32 pb-24 px-4 sm:px-6 overflow-hidden text-center">
@@ -206,16 +206,16 @@ export default function ReferPage() {
             Partner Program · Open now
           </div>
 
-          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-white mb-6 text-balance">
+          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-6 text-balance">
             Get paid every month.{" "}
             <span className="italic text-brand-orange" style={{ fontFamily: "Georgia, serif" }}>
               Forever.
             </span>
           </h1>
 
-          <p className="text-white/60 text-xl leading-relaxed max-w-2xl mx-auto mb-10">
+          <p className="text-muted text-xl leading-relaxed max-w-2xl mx-auto mb-10">
             Refer a business to Alphaa and earn{" "}
-            <span className="text-white font-semibold">30% recurring commission</span> for as long as
+            <span className="text-fg font-semibold">30% recurring commission</span> for as long as
             they're a customer.
           </p>
 
@@ -232,7 +232,7 @@ export default function ReferPage() {
                 <div className="text-brand-orange font-bold text-2xl sm:text-3xl leading-none">
                   {s.value}
                 </div>
-                <div className="text-white/40 text-xs mt-1">{s.sub}</div>
+                <div className="text-fg/40 text-xs mt-1">{s.sub}</div>
               </div>
             ))}
           </div>
@@ -241,7 +241,7 @@ export default function ReferPage() {
             Apply to be a partner →
           </OrangePillButton>
 
-          <p className="text-white/30 text-xs mt-4">
+          <p className="text-fg/30 text-xs mt-4">
             Founding partner program — early spots open now
           </p>
         </div>
@@ -254,14 +254,14 @@ export default function ReferPage() {
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
               How much will you earn?
             </h2>
-            <p className="text-white/50">Drag the slider and see your numbers in real time.</p>
+            <p className="text-muted">Drag the slider and see your numbers in real time.</p>
           </div>
           <EarningsCalculator />
         </div>
       </section>
 
       {/* ── 3. How It Works ─────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
@@ -288,10 +288,10 @@ export default function ReferPage() {
             ].map((s) => (
               <div
                 key={s.step}
-                className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-7 relative overflow-hidden"
+                className="bg-fg/[0.03] border border-line/[0.07] rounded-2xl p-7 relative overflow-hidden"
               >
                 <div
-                  className="absolute top-0 right-0 text-[80px] font-black leading-none text-white/[0.03] select-none pointer-events-none"
+                  className="absolute top-0 right-0 text-[80px] font-black leading-none text-fg/[0.03] select-none pointer-events-none"
                   aria-hidden="true"
                 >
                   {s.step}
@@ -299,8 +299,8 @@ export default function ReferPage() {
                 <div className="text-brand-orange font-bold text-xs uppercase tracking-widest mb-3">
                   Step {s.step}
                 </div>
-                <h3 className="text-white font-semibold text-xl mb-3">{s.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{s.desc}</p>
+                <h3 className="text-fg font-semibold text-xl mb-3">{s.title}</h3>
+                <p className="text-muted text-sm leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -308,21 +308,21 @@ export default function ReferPage() {
       </section>
 
       {/* ── 4. What You Earn ────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
               Exact numbers, no guessing
             </h2>
-            <p className="text-white/50">30% on everything. Every month.</p>
+            <p className="text-muted">30% on everything. Every month.</p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-white/[0.08]">
+          <div className="overflow-hidden rounded-2xl border border-line/[0.08]">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-white/[0.04] border-b border-white/[0.08]">
+                <tr className="bg-fg/[0.04] border-b border-line/[0.08]">
                   {["Plan", "Price", "Your cut/mo", "Your cut/year"].map((h) => (
-                    <th key={h} className="px-5 py-4 text-left text-white/40 font-medium text-xs uppercase tracking-wider">
+                    <th key={h} className="px-5 py-4 text-left text-fg/40 font-medium text-xs uppercase tracking-wider">
                       {h}
                     </th>
                   ))}
@@ -337,12 +337,12 @@ export default function ReferPage() {
                 ].map((row, i) => (
                   <tr
                     key={row.plan}
-                    className={`border-b border-white/[0.05] last:border-0 ${
-                      row.highlight ? "bg-brand-orange/[0.04]" : i % 2 === 0 ? "" : "bg-white/[0.01]"
+                    className={`border-b border-line/[0.05] last:border-0 ${
+                      row.highlight ? "bg-brand-orange/[0.04]" : i % 2 === 0 ? "" : "bg-fg/[0.01]"
                     }`}
                   >
-                    <td className="px-5 py-4 text-white/80 font-medium">{row.plan}</td>
-                    <td className="px-5 py-4 text-white/50">{row.price}</td>
+                    <td className="px-5 py-4 text-fg/80 font-medium">{row.plan}</td>
+                    <td className="px-5 py-4 text-fg/50">{row.price}</td>
                     <td className="px-5 py-4 text-brand-orange font-semibold">{row.cut}</td>
                     <td className="px-5 py-4 text-brand-orange font-semibold">{row.year}</td>
                   </tr>
@@ -351,14 +351,14 @@ export default function ReferPage() {
             </table>
           </div>
 
-          <p className="text-white/30 text-xs text-center mt-4">
+          <p className="text-fg/30 text-xs text-center mt-4">
             Annual plan commissions are paid upfront in full — no waiting 12 months.
           </p>
         </div>
       </section>
 
       {/* ── 5. Who This Is For ──────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
@@ -385,11 +385,11 @@ export default function ReferPage() {
             ].map((p) => (
               <div
                 key={p.title}
-                className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-7"
+                className="bg-fg/[0.03] border border-line/[0.07] rounded-2xl p-7"
               >
                 <div className="text-3xl mb-4">{p.icon}</div>
-                <h3 className="text-white font-semibold text-lg mb-3">{p.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{p.desc}</p>
+                <h3 className="text-fg font-semibold text-lg mb-3">{p.title}</h3>
+                <p className="text-muted text-sm leading-relaxed">{p.desc}</p>
               </div>
             ))}
           </div>
@@ -397,12 +397,12 @@ export default function ReferPage() {
       </section>
 
       {/* ── 6. Requirements ─────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
         <div className="max-w-3xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
               <h2 className="text-2xl font-semibold mb-6">What you need</h2>
-              <ul className="space-y-3 text-white/60 text-sm">
+              <ul className="space-y-3 text-muted text-sm">
                 {[
                   "An audience that includes business owners (local or online) OR direct relationships with companies that want to be found",
                   "A Stripe-connected account (US, Canada, UK, EU supported)",
@@ -417,7 +417,7 @@ export default function ReferPage() {
             </div>
             <div>
               <h2 className="text-2xl font-semibold mb-6">What we handle</h2>
-              <ul className="space-y-3 text-white/60 text-sm">
+              <ul className="space-y-3 text-muted text-sm">
                 {[
                   "No upfront costs, no inventory, no hassle",
                   "Billing and subscription management",
@@ -436,7 +436,7 @@ export default function ReferPage() {
       </section>
 
       {/* ── 8. FAQ ──────────────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl font-semibold tracking-tight mb-10 text-center">
             Common questions
@@ -473,7 +473,7 @@ export default function ReferPage() {
       {/* ── 9. Bottom CTA ───────────────────────────────────────── */}
       <section
         id="apply"
-        className="py-24 px-4 sm:px-6 border-t border-white/[0.06] relative overflow-hidden"
+        className="py-24 px-4 sm:px-6 border-t border-line/[0.06] relative overflow-hidden"
       >
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
@@ -487,13 +487,13 @@ export default function ReferPage() {
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
             Start earning today
           </h2>
-          <p className="text-white/50 mb-8">
+          <p className="text-muted mb-8">
             Apply in 2 minutes. Get your link the same day.
           </p>
 
           <ApplyForm />
 
-          <p className="text-white/25 text-xs mt-5">
+          <p className="text-fg/25 text-xs mt-5">
             Founding partner program — early spots open now
           </p>
         </div>

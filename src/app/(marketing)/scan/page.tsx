@@ -10,7 +10,7 @@ export default function ScanPage() {
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <SectionLabel className="mb-3 block">Free scan</SectionLabel>
-          <h1 className="text-[34px] sm:text-[48px] font-semibold text-white leading-[1.08] tracking-[-0.02em] mb-4 text-balance">
+          <h1 className="text-[34px] sm:text-[48px] font-semibold text-fg leading-[1.08] tracking-[-0.02em] mb-4 text-balance">
             See your free{" "}
             <span className="serif-italic text-brand-orange">visibility score</span>
           </h1>
@@ -23,7 +23,7 @@ export default function ScanPage() {
         <div className="flex items-center justify-center gap-2 mb-6">
           <Bot className="w-4 h-4 text-brand-orange" />
           <p className="text-muted/70 text-xs">
-            Live check across <span className="text-white font-medium">ChatGPT, Claude, Gemini &amp; Perplexity</span> plus your website
+            Live check across <span className="text-fg font-medium">ChatGPT, Claude, Gemini &amp; Perplexity</span> plus your website
           </p>
         </div>
 

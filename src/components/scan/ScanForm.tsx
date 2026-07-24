@@ -70,7 +70,7 @@ export function ScanForm() {
     return (
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label className="block text-white text-sm font-medium">{label}</label>
+          <label className="block text-fg text-sm font-medium">{label}</label>
           {hint && <span className="text-muted/50 text-xs">{hint}</span>}
         </div>
         <input
@@ -79,8 +79,8 @@ export function ScanForm() {
           onChange={(e) => { setForm((f) => ({ ...f, [key]: e.target.value })); setErrors((er) => ({ ...er, [key]: undefined })) }}
           placeholder={placeholder}
           className={cn(
-            "w-full bg-bg-tertiary border rounded-xl px-4 py-3 text-white placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors",
-            errors[key] ? "border-red-500" : "border-white/10 focus:border-brand-orange"
+            "w-full bg-bg-tertiary border rounded-xl px-4 py-3 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors",
+            errors[key] ? "border-red-500" : "border-line/10 focus:border-brand-orange"
           )}
         />
         {errors[key] && <p className="text-red-400 text-xs mt-1">{errors[key]}</p>}
