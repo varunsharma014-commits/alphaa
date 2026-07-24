@@ -64,7 +64,7 @@ export function FaqSection() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <SectionLabel className="mb-3 block">FAQ</SectionLabel>
-          <h2 className="text-section-mobile md:text-[36px] font-semibold text-fg">
+          <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight">
             Common questions
           </h2>
         </div>

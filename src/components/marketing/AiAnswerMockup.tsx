@@ -10,7 +10,7 @@ export function AiAnswerMockup() {
           <p className="text-brand-orange text-xs font-semibold uppercase tracking-[0.18em] mb-3">
             What your customers see
           </p>
-          <h2 className="text-fg text-2xl sm:text-[32px] font-semibold leading-tight">
+          <h2 className="text-fg text-[36px] sm:text-[52px] font-semibold leading-[1.1] tracking-tight">
             When someone asks AI for a business like yours
           </h2>
         </div>
