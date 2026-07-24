@@ -25,6 +25,8 @@ import { meta as reviewsAiVisibilityMeta, Body as ReviewsAiVisibilityBody } from
 import { meta as aiOverviewsAnsweringMeta, Body as AiOverviewsAnsweringBody } from "./ai-overviews-answering-your-customers"
 import { meta as aiSearchStatsMeta, Body as AiSearchStatsBody } from "./ai-search-statistics-2026"
 import { meta as seoToAeoPlaybookMeta, Body as SeoToAeoPlaybookBody } from "./seo-to-aeo-90-day-playbook"
+import { meta as realEstateMeta, Body as RealEstateBody } from "./how-real-estate-agents-get-recommended-by-ai"
+import { meta as entitySeoMeta, Body as EntitySeoBody } from "./entity-seo-how-ai-identifies-your-business"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -55,6 +57,8 @@ export const POSTS: Post[] = [
   { meta: aiOverviewsAnsweringMeta, Body: AiOverviewsAnsweringBody },
   { meta: aiSearchStatsMeta, Body: AiSearchStatsBody },
   { meta: seoToAeoPlaybookMeta, Body: SeoToAeoPlaybookBody },
+  { meta: realEstateMeta, Body: RealEstateBody },
+  { meta: entitySeoMeta, Body: EntitySeoBody },
 ]
 
 export function getAllPosts(): Post[] {
