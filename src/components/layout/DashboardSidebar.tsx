@@ -138,7 +138,7 @@ export function DashboardSidebar() {
         </a>
         <Link
           href="/pricing"
-          className="flex items-center justify-between gap-2.5 px-2.5 py-2 rounded-lg text-sm font-semibold bg-brand-orange text-fg hover:bg-brand-orange-light transition-colors"
+          className="flex items-center justify-between gap-2.5 px-2.5 py-2 rounded-lg text-sm font-semibold bg-brand-orange text-white hover:bg-brand-orange-light transition-colors"
         >
           <span>Upgrade plan</span>
           <ChevronRight className="w-3.5 h-3.5 opacity-80" />

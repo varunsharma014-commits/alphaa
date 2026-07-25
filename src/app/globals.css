@@ -11,9 +11,9 @@
 /* ── Theme-independent tokens ── */
 :root {
   /* Brand — RGB triples so opacity modifiers work: rgb(var(--orange-rgb) / 0.4).
-     Default is the product orange (dashboard app). The public marketing site
-     (and auth/onboarding, which share its look) opts into Apple blue via
-     [data-brand="blue"] on its root wrapper — see MarketingThemeScope. */
+     Default is the original product orange. Any wrapper can opt into Apple
+     blue via [data-brand="blue"] — set on marketing/auth/onboarding and the
+     dashboard app, so the whole product now shares one accent color. */
   --orange-rgb: 255 107 26;
   --orange-light-rgb: 255 136 69;
 
@@ -32,10 +32,16 @@
   --font-geist-mono: 'Geist Mono', monospace;
 }
 
-/* ── Apple-blue brand scope (public site only) ── */
+/* ── Apple-blue brand scope ── */
 [data-brand="blue"] {
   --orange-rgb: 0 113 227;
   --orange-light-rgb: 20 130 235;
+}
+/* --ds-accent is also set inside the dark/light theme blocks below, so this
+   needs a compound selector (higher specificity) to win regardless of
+   source order, since [data-brand] and [data-theme] sit on the same element. */
+[data-brand="blue"][data-theme] {
+  --ds-accent: #0071e3;
 }
 
 /* ── Dark theme (default) ──

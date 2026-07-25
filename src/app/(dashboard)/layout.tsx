@@ -43,14 +43,16 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   // App theme is a cookie so the server paints the right one immediately (no
-  // flash) and it stays scoped to the dashboard — marketing is always dark.
+  // flash) and it stays scoped to the dashboard. Light is now the default;
+  // the cookie only matters once a user explicitly picks dark.
   const themeCookie = (await cookies()).get(THEME_COOKIE)?.value
-  const theme: DashboardTheme = themeCookie === "light" ? "light" : "dark"
+  const theme: DashboardTheme = themeCookie === "dark" ? "dark" : "light"
 
   return (
     <div
       data-dashboard-root=""
       data-theme={theme}
+      data-brand="blue"
       className="flex h-screen bg-bg-primary overflow-hidden"
     >
       {/* GA4: fires trial_start once when landing with ?upgraded=true (Stripe success redirect) */}

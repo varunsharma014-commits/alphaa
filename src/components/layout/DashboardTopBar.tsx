@@ -53,7 +53,7 @@ export function DashboardTopBar({ user, theme }: { user: AppUser; theme: Dashboa
         <ThemeToggle initial={theme} />
         <UserButton
           appearance={{
-            variables: { colorPrimary: "#FF6B1A" },
+            variables: { colorPrimary: "#0071E3" },
             elements: { avatarBox: "w-8 h-8" },
           }}
         />
