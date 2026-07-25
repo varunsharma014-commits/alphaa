@@ -56,7 +56,7 @@ export function SolutionSection() {
         {/* The promise */}
         <div
           className="rounded-2xl border border-brand-orange/20 p-10 text-center"
-          style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,107,26,0.08) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(ellipse at 50% 100%, rgb(var(--orange-rgb) / 0.08) 0%, transparent 70%)" }}
         >
           <p className="text-fg text-2xl sm:text-3xl font-semibold leading-snug mb-2">
             Most customers see their first AI mention

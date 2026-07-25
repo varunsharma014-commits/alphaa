@@ -9,11 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Brand
+        // Brand — RGB-triple CSS vars so it's dark-orange by default (app/dashboard)
+        // and can be scoped to Apple blue via [data-brand="blue"] (public site).
         brand: {
-          orange: "#FF6B1A",
-          "orange-light": "#FF8845",
-          "orange-glow": "rgba(255, 107, 26, 0.4)",
+          orange: "rgb(var(--orange-rgb) / <alpha-value>)",
+          "orange-light": "rgb(var(--orange-light-rgb) / <alpha-value>)",
+          "orange-glow": "rgb(var(--orange-rgb) / 0.4)",
         },
         // Backgrounds (theme-aware via CSS vars; rgb-triple so /opacity works)
         bg: {
@@ -45,15 +46,15 @@ const config: Config = {
         DEFAULT: "12px",
       },
       boxShadow: {
-        glow: "0 0 40px rgba(255, 107, 26, 0.4)",
-        "glow-sm": "0 0 20px rgba(255, 107, 26, 0.3)",
+        glow: "0 0 40px rgb(var(--orange-rgb) / 0.4)",
+        "glow-sm": "0 0 20px rgb(var(--orange-rgb) / 0.3)",
         card: "0 1px 0 rgba(255,255,255,0.06) inset",
       },
       backgroundImage: {
         "radial-warm":
           "radial-gradient(ellipse 80% 60% at 50% 100%, #1F1812 0%, #0A0806 70%)",
         "radial-hero":
-          "radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,107,26,0.12) 0%, transparent 70%)",
+          "radial-gradient(ellipse 60% 50% at 50% 100%, rgb(var(--orange-rgb) / 0.12) 0%, transparent 70%)",
       },
       animation: {
         "pulse-glow": "pulseGlow 2s ease-in-out infinite",
@@ -62,8 +63,8 @@ const config: Config = {
       },
       keyframes: {
         pulseGlow: {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(255,107,26,0.3)" },
-          "50%": { boxShadow: "0 0 50px rgba(255,107,26,0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgb(var(--orange-rgb) / 0.3)" },
+          "50%": { boxShadow: "0 0 50px rgb(var(--orange-rgb) / 0.6)" },
         },
         fadeUp: {
           from: { opacity: "0", transform: "translateY(16px)" },

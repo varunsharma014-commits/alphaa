@@ -352,7 +352,7 @@ export default function CaseStudiesPage() {
       <section className="relative pt-32 pb-20 px-4 sm:px-6 overflow-hidden">
         <div
           className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] pointer-events-none"
-          style={{ background: "radial-gradient(ellipse at center bottom, rgba(255,107,26,0.15) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(ellipse at center bottom, rgb(var(--orange-rgb) / 0.15) 0%, transparent 70%)" }}
           aria-hidden="true"
         />
         <div className="relative max-w-5xl mx-auto text-center">

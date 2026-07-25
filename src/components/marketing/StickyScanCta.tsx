@@ -28,7 +28,7 @@ export function StickyScanCta({ href = "#scan-input" }: { href?: string }) {
         <Link
           href={href}
           className="flex-1 flex items-center justify-center py-3 px-4 rounded-xl font-semibold text-white text-sm"
-          style={{ background: "linear-gradient(135deg, #ff6b1a 0%, #e55a0e 100%)" }}
+          style={{ background: "linear-gradient(135deg, #0071e3 0%, #0058b0 100%)" }}
         >
           Run my free AI scan →
         </Link>

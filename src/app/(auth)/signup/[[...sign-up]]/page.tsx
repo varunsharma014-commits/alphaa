@@ -6,7 +6,7 @@ export default function SignUpPage() {
       forceRedirectUrl="/onboarding"
       appearance={{
         variables: {
-          colorPrimary: "#FF6B1A",
+          colorPrimary: "#0071E3",
           colorBackground: "#FFFFFF",
           colorInputBackground: "#F1ECE4",
           colorInputText: "#1A1410",

@@ -207,7 +207,7 @@ function highlightNames(
 
 function scoreColor(score: number): string {
   if (score >= 75) return "#22C55E"
-  if (score >= 50) return "#FF6B1A"
+  if (score >= 50) return "rgb(var(--orange-rgb))"
   return "#EF4444"
 }
 
@@ -769,7 +769,7 @@ function CompetitorChart({
         {rows.map((r, i) => {
           const y = i * rowH
           const w = Math.max(r.count === 0 ? 4 : 10, (r.count / maxCount) * barMax)
-          const barColor = r.isYou ? "rgb(var(--fg-rgb) / 0.22)" : "#FF6B1A"
+          const barColor = r.isYou ? "rgb(var(--fg-rgb) / 0.22)" : "rgb(var(--orange-rgb))"
           const label = r.name.length > 20 ? r.name.slice(0, 19) + "…" : r.name
           return (
             <g key={`${r.name}-${i}`}>
@@ -790,7 +790,7 @@ function CompetitorChart({
               <text
                 x={labelW + w + 8} y={y + rowH / 2 + 1}
                 dominantBaseline="middle"
-                fill={r.isYou ? "rgb(var(--fg-rgb) / 0.45)" : "#FF8845"}
+                fill={r.isYou ? "rgb(var(--fg-rgb) / 0.45)" : "rgb(var(--orange-light-rgb))"}
                 fontSize="12" fontWeight="600"
               >
                 {r.count} of {totalEngines}
@@ -915,7 +915,7 @@ function FixTimeline() {
             {i < TIMELINE.length - 1 && (
               <span
                 className="absolute left-[9px] top-5 bottom-0 w-px"
-                style={{ background: "linear-gradient(to bottom, rgba(255,107,26,0.5), rgba(255,107,26,0.1))" }}
+                style={{ background: "linear-gradient(to bottom, rgb(var(--orange-rgb) / 0.5), rgb(var(--orange-rgb) / 0.1))" }}
                 aria-hidden
               />
             )}
@@ -1148,7 +1148,7 @@ function QuickFixSection({ scanId }: { scanId: string }) {
       <div className="relative overflow-hidden bg-bg-secondary border border-brand-orange/25 rounded-2xl px-5 py-6 sm:px-6">
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,107,26,0.10), transparent 70%)" }}
+          style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgb(var(--orange-rgb) / 0.10), transparent 70%)" }}
           aria-hidden
         />
         <div className="relative">
@@ -1424,7 +1424,7 @@ function ScanResultsContent() {
         <div className="relative overflow-hidden bg-bg-secondary border border-line/[0.08] rounded-2xl px-6 py-8 sm:px-8 sm:py-9 !mt-4">
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,107,26,0.10), transparent 70%)" }}
+            style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgb(var(--orange-rgb) / 0.10), transparent 70%)" }}
             aria-hidden
           />
           <div className="relative">
@@ -1539,7 +1539,7 @@ function ScanResultsContent() {
         <div className="relative overflow-hidden bg-bg-secondary border border-line/[0.08] rounded-2xl px-6 py-9 sm:px-9">
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(255,107,26,0.10), transparent 70%)" }}
+            style={{ background: "radial-gradient(ellipse 70% 60% at 50% 100%, rgb(var(--orange-rgb) / 0.10), transparent 70%)" }}
             aria-hidden
           />
           <div className="relative">

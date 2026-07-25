@@ -55,14 +55,14 @@ export function HeroSection() {
       <div
         className="absolute top-[-80px] left-1/2 -translate-x-1/2 w-[760px] h-[520px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(255,107,26,0.16) 0%, transparent 65%)",
+          background: "radial-gradient(ellipse at center, rgb(var(--orange-rgb) / 0.16) 0%, transparent 65%)",
         }}
         aria-hidden="true"
       />
       <div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[460px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at center bottom, rgba(255,107,26,0.16) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse at center bottom, rgb(var(--orange-rgb) / 0.16) 0%, transparent 70%)",
         }}
         aria-hidden="true"
       />

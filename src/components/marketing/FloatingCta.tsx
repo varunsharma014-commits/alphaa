@@ -27,7 +27,7 @@ export function FloatingCta() {
       <Link
         href="/scan"
         className="w-full flex flex-col items-center justify-center py-3.5 px-6 rounded-2xl font-semibold text-white text-sm shadow-2xl"
-        style={{ background: "linear-gradient(135deg, #ff6b1a 0%, #e55a0e 100%)" }}
+        style={{ background: "linear-gradient(135deg, #0071e3 0%, #0058b0 100%)" }}
       >
         <span>Run my free AI scan →</span>
         <span className="text-[11px] font-normal text-white/70">60 seconds · no signup · no credit card</span>

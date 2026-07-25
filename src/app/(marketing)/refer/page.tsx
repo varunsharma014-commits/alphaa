@@ -58,7 +58,7 @@ function EarningsCalculator() {
             max={50}
             value={referrals}
             onChange={(e) => setReferrals(Number(e.target.value))}
-            className="w-full accent-[#ff6b1a] h-2 cursor-pointer"
+            className="w-full accent-[#0071e3] h-2 cursor-pointer"
           />
           <div className="flex justify-between text-fg/25 text-xs mt-1">
             <span>1</span>
@@ -196,7 +196,7 @@ export default function ReferPage() {
           className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at center bottom, rgba(255,107,26,0.18) 0%, transparent 70%)",
+              "radial-gradient(ellipse at center bottom, rgb(var(--orange-rgb) / 0.18) 0%, transparent 70%)",
           }}
           aria-hidden="true"
         />
@@ -479,7 +479,7 @@ export default function ReferPage() {
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at center top, rgba(255,107,26,0.14) 0%, transparent 70%)",
+              "radial-gradient(ellipse at center top, rgb(var(--orange-rgb) / 0.14) 0%, transparent 70%)",
           }}
           aria-hidden="true"
         />

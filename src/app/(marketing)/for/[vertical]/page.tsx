@@ -93,7 +93,7 @@ export default async function VerticalPage({
         <div
           className="absolute top-[-80px] left-1/2 -translate-x-1/2 w-[760px] h-[520px] pointer-events-none"
           style={{
-            background: "radial-gradient(ellipse at center, rgba(255,107,26,0.16) 0%, transparent 65%)",
+            background: "radial-gradient(ellipse at center, rgb(var(--orange-rgb) / 0.16) 0%, transparent 65%)",
           }}
           aria-hidden="true"
         />
@@ -289,7 +289,7 @@ export default async function VerticalPage({
           <div
             className="rounded-3xl border border-brand-orange/20 p-12 sm:p-16 text-center relative overflow-hidden"
             style={{
-              background: "radial-gradient(ellipse at 50% 120%, rgba(255,107,26,0.18) 0%, transparent 65%)",
+              background: "radial-gradient(ellipse at 50% 120%, rgb(var(--orange-rgb) / 0.18) 0%, transparent 65%)",
             }}
           >
             <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-6 text-balance">

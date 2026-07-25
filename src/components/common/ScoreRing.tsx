@@ -13,7 +13,7 @@ export function ScoreRing({ score, size = 88, strokeWidth = 7 }: ScoreRingProps)
 
   const color =
     score >= 75 ? "#22C55E"
-    : score >= 50 ? "#FF6B1A"
+    : score >= 50 ? "rgb(var(--orange-rgb))"
     : "#EF4444"
 
   return (

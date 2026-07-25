@@ -10,10 +10,12 @@
 
 /* ── Theme-independent tokens ── */
 :root {
-  /* Brand */
-  --orange: #FF6B1A;
-  --orange-light: #FF8845;
-  --orange-glow: rgba(255, 107, 26, 0.4);
+  /* Brand — RGB triples so opacity modifiers work: rgb(var(--orange-rgb) / 0.4).
+     Default is the product orange (dashboard app). The public marketing site
+     (and auth/onboarding, which share its look) opts into Apple blue via
+     [data-brand="blue"] on its root wrapper — see MarketingThemeScope. */
+  --orange-rgb: 255 107 26;
+  --orange-light-rgb: 255 136 69;
 
   /* Surfaces */
   --cream: #F5EDE0;
@@ -28,6 +30,12 @@
   --font-inter-tight: 'Inter Tight', system-ui, sans-serif;
   --font-instrument-serif: 'Instrument Serif', Georgia, serif;
   --font-geist-mono: 'Geist Mono', monospace;
+}
+
+/* ── Apple-blue brand scope (public site only) ── */
+[data-brand="blue"] {
+  --orange-rgb: 0 113 227;
+  --orange-light-rgb: 20 130 235;
 }
 
 /* ── Dark theme (default) ──
@@ -221,37 +229,37 @@ body {
 
 /* ── Orange glow button ── */
 .btn-orange {
-  background: var(--orange);
+  background: rgb(var(--orange-rgb));
   color: #fff;
   border-radius: 100px;
   font-weight: 600;
   transition: all 200ms ease;
-  box-shadow: 0 0 30px rgba(255, 107, 26, 0.35);
+  box-shadow: 0 0 30px rgb(var(--orange-rgb) / 0.35);
 }
 .btn-orange:hover {
-  background: var(--orange-light);
-  box-shadow: 0 0 50px rgba(255, 107, 26, 0.55);
+  background: rgb(var(--orange-light-rgb));
+  box-shadow: 0 0 50px rgb(var(--orange-rgb) / 0.55);
   transform: translateY(-1px);
 }
 
 /* ── Ghost button ── */
 .btn-ghost {
   background: transparent;
-  border: 1px solid rgba(255, 107, 26, 0.4);
-  color: #ff6b1a;
+  border: 1px solid rgb(var(--orange-rgb) / 0.4);
+  color: rgb(var(--orange-rgb));
   border-radius: 100px;
   font-weight: 500;
   transition: all 200ms ease;
 }
 .btn-ghost:hover {
-  border-color: rgba(255, 107, 26, 0.8);
-  background: rgba(255, 107, 26, 0.08);
-  color: #ff6b1a;
+  border-color: rgb(var(--orange-rgb) / 0.8);
+  background: rgb(var(--orange-rgb) / 0.08);
+  color: rgb(var(--orange-rgb));
 }
 
 /* ── Focus ring ── */
 *:focus-visible {
-  outline: 2px solid var(--orange);
+  outline: 2px solid rgb(var(--orange-rgb));
   outline-offset: 2px;
   border-radius: 4px;
 }

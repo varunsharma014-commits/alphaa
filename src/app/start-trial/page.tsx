@@ -35,7 +35,7 @@ export default async function StartTrialPage() {
   ]
 
   return (
-    <div data-theme="light" className="radial-bg min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-bg-primary">
+    <div data-theme="light" data-brand="blue" className="radial-bg min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-bg-primary">
       <div className="flex items-center gap-2 mb-8">
         <Sparkles className="w-5 h-5 text-brand-orange" />
         <span className="text-fg font-semibold text-xl">alphaa</span>

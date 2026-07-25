@@ -80,7 +80,7 @@ export function HomePricingSection() {
             <div
               key={plan.name}
               className={`relative rounded-[24px] p-8 flex flex-col bg-[#f5f5f7] ${
-                plan.featured ? "ring-2 ring-brand-orange shadow-[0_20px_60px_rgba(255,107,26,0.15)] bg-white" : "border border-black/[0.08]"
+                plan.featured ? "ring-2 ring-brand-orange shadow-[0_20px_60px_rgb(var(--orange-rgb) / 0.15)] bg-white" : "border border-black/[0.08]"
               }`}
             >
               {plan.badge && (
