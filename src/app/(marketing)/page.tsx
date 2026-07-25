@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/marketing/HeroSection"
+import { ScrollReveal } from "@/components/marketing/ScrollReveal"
 import { AiAnswerMockup } from "@/components/marketing/AiAnswerMockup"
 import { PlatformLogos } from "@/components/marketing/PlatformLogos"
 import { AgencySection } from "@/components/marketing/AgencySection"
@@ -52,6 +53,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
       />
+      <ScrollReveal />
       <HeroSection />
       <PlatformLogos />
       <AiAnswerMockup />

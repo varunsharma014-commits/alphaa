@@ -60,11 +60,11 @@ const PLANS = [
 
 export function HomePricingSection() {
   return (
-    <section className="py-28 px-4 sm:px-6 bg-white text-[#1d1d1f]">
+    <section data-reveal className="py-28 px-4 sm:px-6 bg-white text-[#1d1d1f]">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6">Pricing</p>
-          <h2 className="text-[36px] sm:text-[52px] font-semibold leading-[1.1] tracking-tight mb-4">
+          <h2 className="text-[40px] sm:text-[64px] font-bold leading-[1.1] tracking-tight mb-4">
             Simple pricing. 14-day free trial.
           </h2>
           <p className="text-[#6e6e73] text-lg">

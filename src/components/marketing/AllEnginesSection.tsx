@@ -12,14 +12,14 @@ const engines = [
 
 export function AllEnginesSection() {
   return (
-    <section className="py-28 px-4 sm:px-6 bg-white text-[#1d1d1f]">
+    <section data-reveal className="py-28 px-4 sm:px-6 bg-white text-[#1d1d1f]">
       <div className="max-w-5xl mx-auto">
 
         <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">
           All of them. Not just one.
         </p>
 
-        <h2 className="text-[36px] sm:text-[52px] font-semibold text-[#1d1d1f] leading-[1.1] tracking-tight text-center mb-6 text-balance">
+        <h2 className="text-[40px] sm:text-[64px] font-bold text-[#1d1d1f] leading-[1.1] tracking-tight text-center mb-6 text-balance">
           We get your business found
           <br />
           on <span className="serif-italic text-brand-orange">every</span> AI search engine.

@@ -67,7 +67,7 @@ const platforms = [
 
 export function PlatformLogos() {
   return (
-    <section className="py-20 px-4 sm:px-6">
+    <section data-reveal className="py-20 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         <p className="text-fg/50 text-xs font-semibold tracking-widest uppercase mb-8 text-center">
           Works with your website — no developer needed

@@ -3,7 +3,7 @@ import { OrangePillButton } from "@/components/common/OrangePillButton"
 
 export function CtaBanner() {
   return (
-    <section className="py-28 px-4 sm:px-6">
+    <section data-reveal className="py-28 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         <div className="rounded-3xl border border-line/[0.08] bg-fg/[0.02] p-12 sm:p-20 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/[0.06] text-brand-orange text-xs font-medium mb-8">
@@ -11,7 +11,7 @@ export function CtaBanner() {
             1,247 businesses scanned this month
           </div>
 
-          <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
+          <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
             Every day you wait,
             <br />
             your competitors get{" "}

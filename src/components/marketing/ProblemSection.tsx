@@ -42,7 +42,7 @@ export function ProblemSection() {
                 <div className="w-10 h-10 rounded-xl bg-brand-orange/10 flex items-center justify-center flex-shrink-0">
                   <p.icon className="w-5 h-5 text-brand-orange" />
                 </div>
-                <span className="text-xs font-bold text-red-400 bg-red-400/10 px-2 py-1 rounded-full whitespace-nowrap">
+                <span className="text-xs font-bold text-brand-orange bg-brand-orange/10 px-2 py-1 rounded-full whitespace-nowrap">
                   {p.stat}
                 </span>
               </div>

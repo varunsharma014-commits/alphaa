@@ -75,10 +75,10 @@ function FeatureVisual({ kind }: { kind: "engines" | "content" | "trend" }) {
 
 export function WholeSeoTeamSection() {
   return (
-    <section className="px-4 sm:px-6 bg-[#f5f5f7] text-[#1d1d1f]">
+    <section data-reveal className="px-4 sm:px-6 bg-[#f5f5f7] text-[#1d1d1f]">
       <div className="max-w-5xl mx-auto py-20 text-center">
         <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6">Features</p>
-        <h2 className="text-[36px] sm:text-[52px] font-semibold leading-[1.1] tracking-tight">
+        <h2 className="text-[40px] sm:text-[64px] font-bold leading-[1.1] tracking-tight">
           A whole SEO team, running itself.
         </h2>
       </div>

@@ -49,7 +49,7 @@ const previews = [
 
 export function CaseStudiesSection() {
   return (
-    <section className="py-28 px-4 sm:px-6 border-y border-line/[0.06]">
+    <section data-reveal className="py-28 px-4 sm:px-6 border-y border-line/[0.06]">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
@@ -57,7 +57,7 @@ export function CaseStudiesSection() {
             <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-4">
               Customer stories
             </p>
-            <h2 className="text-[32px] sm:text-[46px] font-semibold text-fg leading-[1.1] tracking-tight text-balance">
+            <h2 className="text-[36px] sm:text-[56px] font-bold text-fg leading-[1.1] tracking-tight text-balance">
               Real businesses,{" "}
               <span className="text-muted">real AI visibility.</span>
             </h2>

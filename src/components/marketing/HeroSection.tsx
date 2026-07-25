@@ -85,13 +85,13 @@ export function HeroSection() {
 
       <div className="relative max-w-5xl mx-auto text-center">
         {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-500/40 bg-red-500/10 text-red-400 text-xs font-medium mb-7">
-          <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fg/[0.04] border border-line/[0.08] text-muted text-xs font-medium mb-7">
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
           Your customers are asking AI, not just Google.
         </div>
 
         {/* Headline */}
-        <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-6 text-balance">
+        <h1 className="text-[44px] sm:text-[72px] lg:text-[92px] font-bold leading-[1.02] tracking-[-0.03em] text-fg mb-6 text-balance">
           Get Your Business Recommended by{" "}
           <HeroCyclingWord />
         </h1>

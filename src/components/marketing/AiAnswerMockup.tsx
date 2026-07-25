@@ -4,13 +4,13 @@ import { Bot, User } from "lucide-react"
 // instantly grasp the outcome alphaa is working toward. Illustrative mockup.
 export function AiAnswerMockup() {
   return (
-    <section className="px-4 sm:px-6 py-16">
+    <section data-reveal className="px-4 sm:px-6 py-16">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <p className="text-brand-orange text-xs font-semibold uppercase tracking-[0.18em] mb-3">
             What your customers see
           </p>
-          <h2 className="text-fg text-[36px] sm:text-[52px] font-semibold leading-[1.1] tracking-tight">
+          <h2 className="text-fg text-[40px] sm:text-[64px] font-bold leading-[1.1] tracking-tight">
             When someone asks AI for a business like yours
           </h2>
         </div>

@@ -22,12 +22,12 @@ function Cell({ value }: { value: string | boolean }) {
 
 export function ComparisonTable() {
   return (
-    <section className="py-28 px-4 sm:px-6">
+    <section data-reveal className="py-28 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">
           The honest comparison
         </p>
-        <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight text-center mb-16 text-balance">
+        <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-16 text-balance">
           Alphaa vs. an SEO agency
           <br />
           <span className="text-fg/40">vs. doing it yourself</span>

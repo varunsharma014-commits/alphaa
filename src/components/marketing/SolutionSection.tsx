@@ -25,14 +25,14 @@ const outcomes = [
 
 export function SolutionSection() {
   return (
-    <section className="py-28 px-4 sm:px-6">
+    <section data-reveal className="py-28 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto">
 
         <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">
           What this means for you
         </p>
 
-        <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
+        <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
           Connect in 2 minutes.
           <br />
           <span className="text-fg/40">We handle everything else, every week.</span>

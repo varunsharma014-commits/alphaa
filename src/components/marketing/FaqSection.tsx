@@ -60,11 +60,11 @@ export function FaqSection() {
   const [open, setOpen] = useState<number | null>(0)
 
   return (
-    <section className="py-20 px-4 sm:px-6">
+    <section data-reveal className="py-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <SectionLabel className="mb-3 block">FAQ</SectionLabel>
-          <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight">
+          <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight">
             Common questions
           </h2>
         </div>
