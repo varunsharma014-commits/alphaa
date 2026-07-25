@@ -10,8 +10,7 @@ const caseStudies = [
     id: "bright-smile-dental",
     slug: "bright-smile-dental",
     industry: "Dental",
-    industryColor: "from-blue-500/10",
-    badge: "bg-blue-500/15 text-blue-300 border-blue-500/20",
+    badge: "bg-blue-50 text-blue-700 border-blue-100",
     business: "Bright Smile Dental",
     owner: "Dr. Sarah Chen",
     location: "Austin, TX",
@@ -58,8 +57,7 @@ const caseStudies = [
     id: "torres-family-law",
     slug: "torres-family-law",
     industry: "Legal",
-    industryColor: "from-purple-500/10",
-    badge: "bg-purple-500/15 text-purple-300 border-purple-500/20",
+    badge: "bg-purple-50 text-purple-700 border-purple-100",
     business: "Torres Family Law",
     owner: "Marco Torres",
     location: "Miami, FL",
@@ -106,8 +104,7 @@ const caseStudies = [
     id: "coolair-pro",
     slug: "coolair-pro",
     industry: "HVAC",
-    industryColor: "from-cyan-500/10",
-    badge: "bg-cyan-500/15 text-cyan-300 border-cyan-500/20",
+    badge: "bg-cyan-50 text-cyan-700 border-cyan-100",
     business: "CoolAir Pro",
     owner: "James Whitfield",
     location: "Phoenix, AZ",
@@ -157,7 +154,7 @@ type Filter = (typeof filters)[number]
 
 function CaseStudyCard({ cs }: { cs: (typeof caseStudies)[0] }) {
   return (
-    <div className={`group rounded-2xl border border-line/[0.08] bg-gradient-to-b ${cs.industryColor} to-transparent overflow-hidden flex flex-col`}>
+    <div className={`group rounded-2xl border border-line/[0.08] bg-white overflow-hidden flex flex-col`}>
       {/* Top */}
       <div className="p-6 pb-5 flex-1">
         <div className="flex items-start justify-between mb-4">
@@ -214,7 +211,7 @@ function FullCaseStudy({ cs }: { cs: (typeof caseStudies)[0] }) {
   return (
     <article id={cs.id} className="scroll-mt-24">
       {/* Hero */}
-      <div className={`rounded-3xl border border-line/[0.08] bg-gradient-to-b ${cs.industryColor} to-transparent overflow-hidden mb-6`}>
+      <div className={`rounded-3xl border border-line/[0.08] bg-white overflow-hidden mb-6`}>
         <div className="p-8 sm:p-12">
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${cs.badge}`}>
@@ -430,28 +427,19 @@ export default function CaseStudiesPage() {
       {/* Bottom CTA */}
       <section className="px-4 sm:px-6 pb-28">
         <div className="max-w-3xl mx-auto">
-          <div
-            className="relative rounded-3xl border border-brand-orange/20 bg-gradient-to-b from-brand-orange/8 to-transparent overflow-hidden p-10 sm:p-14 text-center"
-          >
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,107,26,0.18) 0%, transparent 70%)" }}
-              aria-hidden="true"
-            />
-            <div className="relative">
-              <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-4">Ready to be next?</p>
-              <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
-                Find out if AI search
-                <br />knows your business.
-              </h2>
-              <p className="text-muted text-base sm:text-lg mb-8 max-w-xl mx-auto">
-                Run a free scan in 2 minutes. No signup required. See your AI visibility score and exactly where you're missing.
-              </p>
-              <OrangePillButton href="/scan" size="lg">
-                Scan my business for free →
-              </OrangePillButton>
-              <p className="text-fg/25 text-xs mt-4">$99/mo · No setup fee · Cancel anytime</p>
-            </div>
+          <div className="rounded-3xl border border-line/[0.08] bg-fg/[0.02] overflow-hidden p-10 sm:p-14 text-center">
+            <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-4">Ready to be next?</p>
+            <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
+              Find out if AI search
+              <br />knows your business.
+            </h2>
+            <p className="text-muted text-base sm:text-lg mb-8 max-w-xl mx-auto">
+              Run a free scan in 2 minutes. No signup required. See your AI visibility score and exactly where you're missing.
+            </p>
+            <OrangePillButton href="/scan" size="lg">
+              Scan my business for free →
+            </OrangePillButton>
+            <p className="text-muted text-xs mt-4">$99/mo · No setup fee · Cancel anytime</p>
           </div>
         </div>
       </section>

@@ -5,8 +5,7 @@ import { OrangePillButton } from "@/components/common/OrangePillButton"
 const previews = [
   {
     industry: "Dental",
-    badge: "bg-blue-500/15 text-blue-300 border-blue-500/20",
-    glow: "from-blue-500/8",
+    badge: "bg-blue-50 text-blue-700 border-blue-100",
     business: "Bright Smile Dental",
     location: "Austin, TX",
     initials: "SC",
@@ -20,8 +19,7 @@ const previews = [
   },
   {
     industry: "Legal",
-    badge: "bg-purple-500/15 text-purple-300 border-purple-500/20",
-    glow: "from-purple-500/8",
+    badge: "bg-purple-50 text-purple-700 border-purple-100",
     business: "Torres Family Law",
     location: "Miami, FL",
     initials: "MT",
@@ -35,8 +33,7 @@ const previews = [
   },
   {
     industry: "HVAC",
-    badge: "bg-cyan-500/15 text-cyan-300 border-cyan-500/20",
-    glow: "from-cyan-500/8",
+    badge: "bg-cyan-50 text-cyan-700 border-cyan-100",
     business: "CoolAir Pro",
     location: "Phoenix, AZ",
     initials: "JW",
@@ -62,12 +59,12 @@ export function CaseStudiesSection() {
             </p>
             <h2 className="text-[32px] sm:text-[46px] font-semibold text-fg leading-[1.1] tracking-tight text-balance">
               Real businesses,{" "}
-              <span className="text-fg/40">real AI visibility.</span>
+              <span className="text-muted">real AI visibility.</span>
             </h2>
           </div>
           <Link
             href="/case-studies"
-            className="flex items-center gap-1.5 text-sm font-medium text-fg/50 hover:text-brand-orange transition-colors duration-200 flex-shrink-0 group"
+            className="flex items-center gap-1.5 text-sm font-medium text-muted hover:text-brand-orange transition-colors duration-200 flex-shrink-0 group"
           >
             View all case studies
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
@@ -79,7 +76,7 @@ export function CaseStudiesSection() {
           {previews.map((p) => (
             <div
               key={p.business}
-              className={`group rounded-2xl border border-line/[0.08] bg-gradient-to-b ${p.glow} to-transparent flex flex-col overflow-hidden`}
+              className="group rounded-2xl border border-line/[0.08] bg-white flex flex-col overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
             >
               <div className="p-6 flex-1 flex flex-col">
                 {/* Top row */}
@@ -97,29 +94,29 @@ export function CaseStudiesSection() {
                 {/* Business */}
                 <div className="mb-4">
                   <h3 className="text-fg font-semibold text-lg leading-snug">{p.business}</h3>
-                  <div className="flex items-center gap-1 text-fg/35 text-xs mt-0.5">
+                  <div className="flex items-center gap-1 text-muted text-xs mt-0.5">
                     <MapPin className="w-3 h-3" />
                     {p.location}
                   </div>
                 </div>
 
                 {/* Result pill */}
-                <div className="rounded-xl bg-brand-orange/8 border border-brand-orange/15 px-4 py-3 mb-4">
+                <div className="rounded-xl bg-brand-orange/[0.06] border border-brand-orange/15 px-4 py-3 mb-4">
                   <p className="text-brand-orange font-bold text-lg leading-none mb-0.5">{p.result}</p>
-                  <p className="text-fg/40 text-xs">{p.resultSub}</p>
+                  <p className="text-muted text-xs">{p.resultSub}</p>
                 </div>
 
                 {/* Headline */}
-                <p className="text-fg/70 text-sm leading-relaxed mb-4 flex-1">{p.headline}</p>
+                <p className="text-fg/80 text-sm leading-relaxed mb-4 flex-1">{p.headline}</p>
 
                 {/* Quote */}
-                <p className="text-fg/45 text-xs leading-relaxed italic border-l-2 border-brand-orange/30 pl-3 mb-5">
+                <p className="text-muted text-xs leading-relaxed italic border-l-2 border-brand-orange/30 pl-3 mb-5">
                   "{p.quote}"
                 </p>
 
                 {/* Attribution */}
                 <div className="flex items-center gap-2.5 mb-0 pt-3 border-t border-line/[0.06]">
-                  <div className="w-8 h-8 rounded-full bg-brand-orange/20 flex items-center justify-center text-brand-orange text-xs font-bold flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-brand-orange/15 flex items-center justify-center text-brand-orange text-xs font-bold flex-shrink-0">
                     {p.initials}
                   </div>
                   <div>
@@ -127,7 +124,7 @@ export function CaseStudiesSection() {
                       <p className="text-fg text-xs font-semibold">{p.name}</p>
                       <BadgeCheck className="w-3 h-3 text-brand-orange" />
                     </div>
-                    <p className="text-fg/35 text-[11px]">{p.role} · {p.location}</p>
+                    <p className="text-muted text-[11px]">{p.role} · {p.location}</p>
                   </div>
                 </div>
               </div>
@@ -135,7 +132,7 @@ export function CaseStudiesSection() {
               {/* Read more */}
               <Link
                 href={p.href}
-                className="flex items-center justify-between px-6 py-4 border-t border-line/[0.06] text-fg/40 hover:text-brand-orange text-xs font-semibold transition-colors duration-200 group/link"
+                className="flex items-center justify-between px-6 py-4 border-t border-line/[0.06] text-muted hover:text-brand-orange text-xs font-semibold transition-colors duration-200 group/link"
               >
                 Read full case study
                 <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform duration-200" />
@@ -149,7 +146,7 @@ export function CaseStudiesSection() {
           <OrangePillButton href="/scan" size="lg">
             See if AI knows your business →
           </OrangePillButton>
-          <p className="text-fg/25 text-xs mt-3">Free scan · No signup · 2 minutes</p>
+          <p className="text-muted text-xs mt-3">Free scan · No signup · 2 minutes</p>
         </div>
       </div>
     </section>

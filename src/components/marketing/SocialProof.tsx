@@ -15,7 +15,6 @@ const testimonials = [
     location: "Austin, TX",
     initials: "SC",
     result: "Saved $1,400/mo",
-    bg: "from-orange-500/10",
   },
   {
     quote: "I asked ChatGPT 'best HVAC contractor in Phoenix' last week. My business came up second. That never happened with Google SEO.",
@@ -24,7 +23,6 @@ const testimonials = [
     location: "Phoenix, AZ",
     initials: "MR",
     result: "#2 on ChatGPT",
-    bg: "from-blue-500/10",
   },
   {
     quote: "Our Google Business Profile went from 2 posts a year to 16 a month. We jumped from position 8 to position 2 for our main keyword in 5 weeks.",
@@ -33,7 +31,6 @@ const testimonials = [
     location: "Miami, FL",
     initials: "JP",
     result: "#2 ranking in 5 weeks",
-    bg: "from-purple-500/10",
   },
   {
     quote: "Setup took 8 minutes. Within 3 weeks Gemini was recommending us when people searched for lawyers in our city. First thing I've ever paid for that actually worked.",
@@ -42,7 +39,6 @@ const testimonials = [
     location: "Chicago, IL",
     initials: "RK",
     result: "Found on Gemini",
-    bg: "from-green-500/10",
   },
   {
     quote: "We fired our $2,000/month agency in January. Switched to Alphaa. February was our best month for new bookings in 3 years.",
@@ -51,7 +47,6 @@ const testimonials = [
     location: "Seattle, WA",
     initials: "PS",
     result: "Best month in 3 years",
-    bg: "from-pink-500/10",
   },
   {
     quote: "I showed my accountant. He said it's the best ROI of anything I spend on. $99/month versus the $900 I was paying before. No comparison.",
@@ -60,7 +55,6 @@ const testimonials = [
     location: "Dallas, TX",
     initials: "DT",
     result: "10x better ROI",
-    bg: "from-cyan-500/10",
   },
 ]
 
@@ -76,15 +70,15 @@ export function SocialProof() {
         <h2 className="text-[36px] sm:text-[52px] font-semibold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
           1,200+ businesses stopped
           <br />
-          <span className="text-fg/40">paying for SEO that didn't work.</span>
+          <span className="text-muted">paying for SEO that didn't work.</span>
         </h2>
 
         {/* Metrics bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
           {metrics.map((m) => (
-            <div key={m.label} className="rounded-2xl border border-line/[0.08] bg-fg/[0.03] p-6 text-center">
+            <div key={m.label} className="rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 text-center">
               <p className="text-3xl font-bold text-fg mb-1">{m.value}</p>
-              <p className="text-fg/40 text-sm">{m.label}</p>
+              <p className="text-muted text-sm">{m.label}</p>
             </div>
           ))}
         </div>
@@ -94,7 +88,7 @@ export function SocialProof() {
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className={`rounded-2xl border border-line/[0.08] bg-gradient-to-b ${t.bg} to-transparent p-6 flex flex-col gap-4`}
+              className="rounded-2xl border border-line/[0.08] bg-white p-6 flex flex-col gap-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
             >
               <div className="flex items-center justify-between">
                 <div className="flex gap-0.5">
@@ -102,13 +96,13 @@ export function SocialProof() {
                     <Star key={i} className="w-3.5 h-3.5 fill-brand-orange text-brand-orange" />
                   ))}
                 </div>
-                <span className="text-xs font-bold text-brand-orange bg-brand-orange/10 px-2.5 py-1 rounded-full">
+                <span className="text-xs font-bold text-brand-orange bg-brand-orange/[0.08] px-2.5 py-1 rounded-full">
                   {t.result}
                 </span>
               </div>
-              <p className="text-fg/75 text-sm leading-relaxed flex-1">"{t.quote}"</p>
+              <p className="text-fg/80 text-sm leading-relaxed flex-1">"{t.quote}"</p>
               <div className="flex items-center gap-3 pt-3 border-t border-line/[0.06]">
-                <div className="w-9 h-9 rounded-full bg-brand-orange/20 flex items-center justify-center text-brand-orange text-xs font-bold flex-shrink-0">
+                <div className="w-9 h-9 rounded-full bg-brand-orange/15 flex items-center justify-center text-brand-orange text-xs font-bold flex-shrink-0">
                   {t.initials}
                 </div>
                 <div>
@@ -116,7 +110,7 @@ export function SocialProof() {
                     <p className="text-fg text-sm font-semibold">{t.name}</p>
                     <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
                   </div>
-                  <p className="text-fg/40 text-xs">{t.role} · {t.location}</p>
+                  <p className="text-muted text-xs">{t.role} · {t.location}</p>
                 </div>
               </div>
             </div>
