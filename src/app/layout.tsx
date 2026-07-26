@@ -56,9 +56,28 @@ const websiteSchema = {
   publisher: { "@type": "Organization", name: "Alphaa" },
 }
 
+// Literal hex, not CSS var() — Clerk portals its modals (UserButton's "Manage
+// account", "Update profile", etc.) directly to document.body, outside our
+// [data-theme]-scoped wrapper divs, so var(--ds-*) fails to resolve there and
+// falls back to Clerk's own default theme (which follows the OS color scheme).
+// Setting literal light-Apple values here makes every Clerk surface — inline
+// or portaled — consistently light regardless of where it ends up in the DOM.
+const clerkAppearance = {
+  variables: {
+    colorPrimary: "#0071E3",
+    colorBackground: "#ffffff",
+    colorInputBackground: "#f5f5f7",
+    colorInputText: "#1d1d1f",
+    colorText: "#1d1d1f",
+    colorTextSecondary: "#6e6e73",
+    colorNeutral: "#6e6e73",
+    borderRadius: "12px",
+  },
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={clerkAppearance}>
       <html lang="en">
         <head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
