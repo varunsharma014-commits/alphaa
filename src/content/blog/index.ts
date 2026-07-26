@@ -29,6 +29,8 @@ import { meta as realEstateMeta, Body as RealEstateBody } from "./how-real-estat
 import { meta as entitySeoMeta, Body as EntitySeoBody } from "./entity-seo-how-ai-identifies-your-business"
 import { meta as geminiMeta, Body as GeminiBody } from "./how-to-get-recommended-by-google-gemini"
 import { meta as aeoVsGeoMeta, Body as AeoVsGeoBody } from "./aeo-vs-geo"
+import { meta as claudeEngineMeta, Body as ClaudeEngineBody } from "./how-to-get-recommended-by-claude"
+import { meta as aeoTimelineMeta, Body as AeoTimelineBody } from "./how-long-does-aeo-take"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -63,6 +65,8 @@ export const POSTS: Post[] = [
   { meta: entitySeoMeta, Body: EntitySeoBody },
   { meta: geminiMeta, Body: GeminiBody },
   { meta: aeoVsGeoMeta, Body: AeoVsGeoBody },
+  { meta: claudeEngineMeta, Body: ClaudeEngineBody },
+  { meta: aeoTimelineMeta, Body: AeoTimelineBody },
 ]
 
 export function getAllPosts(): Post[] {
