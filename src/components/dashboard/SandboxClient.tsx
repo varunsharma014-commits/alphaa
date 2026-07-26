@@ -300,7 +300,7 @@ export default function SandboxClient({
                         {highlight(r.answer, businessName, r.mentioned)}
                       </p>
                       {r.mentioned.length > 0 && (
-                        <div style={{ marginTop: "10px", borderTop: "0.5px solid var(--ds-border)", paddingTop: "10px" }}>
+                        <div style={{ marginTop: "10px", borderTop: "1px solid var(--ds-border)", paddingTop: "10px" }}>
                           <div
                             style={{
                               fontSize: "10px",

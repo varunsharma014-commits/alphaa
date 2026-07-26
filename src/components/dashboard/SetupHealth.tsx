@@ -60,14 +60,15 @@ function Row({
         display: "flex",
         alignItems: "center",
         gap: "10px",
-        padding: "10px 1.25rem",
-        borderBottom: last ? "none" : "0.5px solid var(--ds-border)",
+        padding: "12px 1.5rem",
+        borderBottom: last ? "none" : "1px solid var(--ds-border)",
+        transition: "background 150ms ease",
       }}
     >
-      <Icon size={15} color={TONE_ICON_COLOR[tone]} style={{ flexShrink: 0 }} />
+      <Icon size={16} color={TONE_ICON_COLOR[tone]} style={{ flexShrink: 0 }} />
       <span
         style={{
-          fontSize: "13px",
+          fontSize: "14px",
           color: tone === "muted" ? "var(--ds-text-soft)" : "var(--ds-text-strong)",
           flex: 1,
           lineHeight: 1.5,
@@ -107,20 +108,20 @@ export function SetupHealth({
         style={{
           background: "var(--ds-ok-bg)",
           border: "1px solid var(--ds-ok-border)",
-          borderRadius: "8px",
-          padding: "8px 14px",
+          borderRadius: "14px",
+          padding: "11px 18px",
           display: "flex",
           alignItems: "center",
-          gap: "8px",
-          marginBottom: "16px",
+          gap: "10px",
+          marginBottom: "20px",
         }}
       >
-        <CheckCircle2 size={14} color="var(--ds-ok)" style={{ flexShrink: 0 }} />
-        <span style={{ fontSize: "12px", color: "var(--ds-ok-strong)", fontWeight: 500, flex: 1 }}>
+        <CheckCircle2 size={15} color="var(--ds-ok)" style={{ flexShrink: 0 }} />
+        <span style={{ fontSize: "14px", color: "var(--ds-ok-strong)", fontWeight: 510, flex: 1 }}>
           Everything connected — alphaa is running on autopilot
         </span>
         {connected && lastSyncedAt === null && (
-          <span style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>First sync scheduled</span>
+          <span style={{ fontSize: "12px", color: "var(--ds-text-faint)" }}>First sync scheduled</span>
         )}
       </div>
     )
@@ -138,24 +139,24 @@ export function SetupHealth({
   return (
     <>
       <SectionDivider>SETUP — WHAT ALPHAA NEEDS TO WORK FOR YOU</SectionDivider>
-      <DsCard accent={!connected ? "var(--ds-bad)" : "var(--ds-warn)"} style={{ padding: 0, marginBottom: "16px" }}>
+      <DsCard accent={!connected ? "var(--ds-bad)" : "var(--ds-warn)"} style={{ padding: 0, marginBottom: "20px" }}>
         {/* Header with the single primary CTA */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "12px",
-            padding: "14px 1.25rem",
-            borderBottom: "0.5px solid var(--ds-border)",
+            gap: "14px",
+            padding: "16px 1.5rem",
+            borderBottom: "1px solid var(--ds-border)",
           }}
         >
           <div style={{ flex: 1 }}>
-            <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+            <p style={{ fontSize: "15px", fontWeight: 590, color: "var(--ds-text)", letterSpacing: "-0.01em" }}>
               {!connected
                 ? "Connect Google so alphaa can work for you"
                 : "One more step to finish your setup"}
             </p>
-            <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", marginTop: "2px", lineHeight: 1.5 }}>
+            <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "3px", lineHeight: 1.5 }}>
               {!connected
                 ? "One click — this lets alphaa post updates and track your results."
                 : "alphaa is connected to Google but needs a little more to run fully."}
@@ -165,14 +166,15 @@ export function SetupHealth({
             href={cta.href}
             style={{
               background: "var(--ds-accent)",
-              color: "var(--ds-text)",
-              borderRadius: "8px",
-              padding: "8px 18px",
+              color: "#ffffff",
+              borderRadius: "980px",
+              padding: "9px 20px",
               fontSize: "13px",
-              fontWeight: 500,
+              fontWeight: 590,
               whiteSpace: "nowrap",
               flexShrink: 0,
               textDecoration: "none",
+              transition: "opacity 150ms ease",
             }}
           >
             {cta.label}
@@ -256,11 +258,11 @@ export function SetupHealth({
             display: "flex",
             alignItems: "center",
             gap: "10px",
-            padding: "10px 1.25rem",
+            padding: "12px 1.5rem",
           }}
         >
-          <Sparkles size={15} color="var(--ds-text-faint)" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: "13px", color: "var(--ds-text-soft)", flex: 1, lineHeight: 1.5 }}>
+          <Sparkles size={16} color="var(--ds-text-faint)" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: "14px", color: "var(--ds-text-soft)", flex: 1, lineHeight: 1.5 }}>
             Optional booster:{" "}
             <Link href="/dashboard/audit" style={{ color: "var(--ds-text-mute)", textDecoration: "underline" }}>
               add the alphaa snippet

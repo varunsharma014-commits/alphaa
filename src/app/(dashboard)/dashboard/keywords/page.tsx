@@ -115,7 +115,7 @@ export default async function KeywordsPage() {
         <div
           style={{
             background: 'var(--ds-surface-2)',
-            border: '0.5px solid var(--ds-border)',
+            border: '1px solid var(--ds-border)',
             borderRadius: '10px',
           }}
         >
@@ -154,7 +154,7 @@ export default async function KeywordsPage() {
         <div
           style={{
             background: 'var(--ds-surface-2)',
-            border: '0.5px solid var(--ds-border)',
+            border: '1px solid var(--ds-border)',
             borderRadius: '10px',
           }}
         >
@@ -237,7 +237,7 @@ export default async function KeywordsPage() {
       <div
         style={{
           background: 'var(--ds-surface-2)',
-          border: '0.5px solid var(--ds-border)',
+          border: '1px solid var(--ds-border)',
           borderRadius: '10px',
           overflow: 'hidden',
           marginTop: '12px',

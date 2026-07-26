@@ -66,21 +66,21 @@ export function DashboardSidebar() {
   }
 
   return (
-    <aside className="w-56 flex-shrink-0 bg-bg-secondary border-r border-line/[0.06] flex flex-col h-full">
+    <aside className="w-64 flex-shrink-0 bg-bg-secondary border-r border-line/[0.06] flex flex-col h-full">
       {/* Logo */}
-      <div className="h-14 px-4 flex items-center border-b border-line/[0.06]">
+      <div className="h-16 px-5 flex items-center border-b border-line/[0.06]">
         <Link href="/" className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-brand-orange" />
-          <span className="text-fg font-semibold text-base tracking-tight">alphaa</span>
+          <Sparkles className="w-[18px] h-[18px] text-brand-orange" />
+          <span className="text-fg font-semibold text-[17px] tracking-tight">alphaa</span>
         </Link>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto py-3 px-2">
+      <nav className="flex-1 overflow-y-auto py-4 px-3">
         {navGroups.map((group, groupIdx) => (
-          <div key={groupIdx} className={groupIdx > 0 ? "mt-5" : ""}>
+          <div key={groupIdx} className={groupIdx > 0 ? "mt-6" : ""}>
             {group.label && (
-              <p className="px-2.5 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-fg/25 select-none">
+              <p className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-fg/30 select-none">
                 {group.label}
               </p>
             )}
@@ -92,18 +92,18 @@ export function DashboardSidebar() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150 group",
+                      "flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[14px] transition-all duration-150 group",
                       active
-                        ? "bg-brand-orange/15 text-brand-orange font-medium"
-                        : "text-fg/40 hover:text-fg/80 hover:bg-fg/[0.04] font-normal"
+                        ? "bg-brand-orange/[0.12] text-brand-orange font-medium"
+                        : "text-fg/55 hover:text-fg/90 hover:bg-fg/[0.045] font-normal"
                     )}
                   >
                     <item.icon
                       className={cn(
-                        "w-4 h-4 flex-shrink-0 transition-colors",
+                        "w-[18px] h-[18px] flex-shrink-0 transition-colors",
                         active
                           ? "text-brand-orange"
-                          : "text-fg/25 group-hover:text-fg/60"
+                          : "text-fg/35 group-hover:text-fg/70"
                       )}
                     />
                     <span className="truncate leading-none">{item.label}</span>
@@ -116,29 +116,29 @@ export function DashboardSidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="px-2 pb-3 pt-2 border-t border-line/[0.06] space-y-0.5">
+      <div className="px-3 pb-4 pt-3 border-t border-line/[0.06] space-y-0.5">
         <Link
           href="/dashboard/settings"
           className={cn(
-            "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150",
+            "flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[14px] transition-all duration-150",
             pathname.startsWith("/dashboard/settings")
-              ? "bg-brand-orange/15 text-brand-orange font-medium"
-              : "text-fg/40 hover:text-fg/80 hover:bg-fg/[0.04]"
+              ? "bg-brand-orange/[0.12] text-brand-orange font-medium"
+              : "text-fg/55 hover:text-fg/90 hover:bg-fg/[0.045]"
           )}
         >
-          <Settings className="w-4 h-4 flex-shrink-0" />
+          <Settings className="w-[18px] h-[18px] flex-shrink-0" />
           <span>Settings</span>
         </Link>
         <a
           href="mailto:hi@alphaa.app?subject=Help%20with%20my%20alphaa%20account"
-          className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-fg/40 hover:text-fg/80 hover:bg-fg/[0.04] transition-all duration-150"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[14px] text-fg/55 hover:text-fg/90 hover:bg-fg/[0.045] transition-all duration-150"
         >
-          <LifeBuoy className="w-4 h-4 flex-shrink-0" />
+          <LifeBuoy className="w-[18px] h-[18px] flex-shrink-0" />
           <span>Email support</span>
         </a>
         <Link
           href="/pricing"
-          className="flex items-center justify-between gap-2.5 px-2.5 py-2 rounded-lg text-sm font-semibold bg-brand-orange text-white hover:bg-brand-orange-light transition-colors"
+          className="flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-[10px] text-[14px] font-semibold bg-brand-orange text-white hover:bg-brand-orange-light transition-colors"
         >
           <span>Upgrade plan</span>
           <ChevronRight className="w-3.5 h-3.5 opacity-80" />

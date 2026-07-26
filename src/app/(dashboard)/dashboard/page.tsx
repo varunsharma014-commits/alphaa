@@ -165,7 +165,7 @@ export default async function DashboardPage() {
     : { improved: [] as KeywordDelta[], declined: [] as KeywordDelta[] }
 
   return (
-    <div style={{ maxWidth: "880px", margin: "0 auto" }}>
+    <div style={{ maxWidth: "960px", margin: "0 auto" }}>
 
       {/* Autopilot bar — always first */}
       <AutopilotBar
@@ -186,35 +186,35 @@ export default async function DashboardPage() {
       />
 
       {/* ── Header row ─────────────────────────────── */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", marginBottom: "20px" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", marginBottom: "28px" }}>
         <div>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.2 }}>
+          <h1 style={{ fontSize: "28px", fontWeight: 600, color: "var(--ds-text)", lineHeight: 1.15, letterSpacing: "-0.02em" }}>
             Good {timeOfDayGreeting()}{firstName ? `, ${firstName}` : ""} 👋
           </h1>
-          <p style={{ fontSize: "12px", color: "var(--ds-text-faint)", marginTop: "4px" }}>
+          <p style={{ fontSize: "14px", color: "var(--ds-text-mute)", marginTop: "6px" }}>
             {activityRows.length > 0
               ? "Here is what alphaa has been doing for you."
               : "alphaa is getting to know your business."}
           </p>
         </div>
         {score !== null ? (
-          <div style={{ display: "flex", alignItems: "center", gap: "14px", flexShrink: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px", flexShrink: 0 }}>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: "28px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1 }}>{score}</div>
-              <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginTop: "4px" }}>presence score</div>
+              <div style={{ fontSize: "34px", fontWeight: 600, color: "var(--ds-text)", lineHeight: 1, letterSpacing: "-0.02em" }}>{score}</div>
+              <div style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--ds-text-ghost)", marginTop: "6px" }}>presence score</div>
               {scoreDelta !== null && scoreDelta !== 0 && (
-                <div style={{ fontSize: "11px", color: scoreDelta > 0 ? "var(--ds-ok)" : "var(--ds-bad)", marginTop: "3px" }}>
+                <div style={{ fontSize: "12px", color: scoreDelta > 0 ? "var(--ds-ok)" : "var(--ds-bad)", marginTop: "3px" }}>
                   {scoreDelta > 0 ? `↑ +${scoreDelta}` : `↓ ${scoreDelta}`} pts since last check
                 </div>
               )}
             </div>
-            <ScoreRing score={score} size={64} />
+            <ScoreRing score={score} size={68} />
           </div>
         ) : (
           <div style={{ textAlign: "right", flexShrink: 0 }}>
-            <div style={{ fontSize: "28px", fontWeight: 500, color: "var(--ds-text-ghost)", lineHeight: 1 }}>&mdash;</div>
-            <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginTop: "4px" }}>presence score</div>
-            <div style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "3px", maxWidth: "180px" }}>
+            <div style={{ fontSize: "34px", fontWeight: 600, color: "var(--ds-text-ghost)", lineHeight: 1 }}>&mdash;</div>
+            <div style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--ds-text-ghost)", marginTop: "6px" }}>presence score</div>
+            <div style={{ fontSize: "12px", color: "var(--ds-text-faint)", marginTop: "3px", maxWidth: "180px" }}>
               First audit running &mdash; your score appears here shortly
             </div>
           </div>
@@ -238,7 +238,7 @@ export default async function DashboardPage() {
                   style={{
                     display: "flex", alignItems: "flex-start", gap: "12px",
                     padding: "14px 1.25rem",
-                    borderBottom: i < activityRows.length - 1 ? "0.5px solid var(--ds-border)" : "none",
+                    borderBottom: i < activityRows.length - 1 ? "1px solid var(--ds-border)" : "none",
                   }}
                 >
                   <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: style.bg, border: `1px solid ${style.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -268,7 +268,7 @@ export default async function DashboardPage() {
         <>
           <SectionDivider>WEEK 1 — ALPHAA IS LEARNING YOUR BUSINESS</SectionDivider>
           <DsCard style={{ padding: 0 }}>
-            <div style={{ padding: "14px 1.25rem", borderBottom: "0.5px solid var(--ds-border)" }}>
+            <div style={{ padding: "14px 1.25rem", borderBottom: "1px solid var(--ds-border)" }}>
               <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                 Nothing to report yet &mdash; and that&apos;s normal
               </p>
@@ -283,7 +283,7 @@ export default async function DashboardPage() {
                 style={{
                   display: "flex", alignItems: "center", gap: "12px",
                   padding: "12px 1.25rem",
-                  borderBottom: i < SCHEDULED_ITEMS.length - 1 ? "0.5px solid var(--ds-border)" : "none",
+                  borderBottom: i < SCHEDULED_ITEMS.length - 1 ? "1px solid var(--ds-border)" : "none",
                 }}
               >
                 <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "var(--ds-surface)", border: "1px solid var(--ds-border-2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -315,7 +315,7 @@ export default async function DashboardPage() {
               style={{
                 display: "flex", alignItems: "center", gap: "12px",
                 padding: "12px 1.25rem",
-                borderBottom: i < AI_ENGINES.length - 1 ? "0.5px solid var(--ds-border)" : "none",
+                borderBottom: i < AI_ENGINES.length - 1 ? "1px solid var(--ds-border)" : "none",
               }}
             >
               <e.Icon size={16} color={state === "found" ? "var(--ds-ok)" : "var(--ds-text-mute)"} style={{ flexShrink: 0 }} />

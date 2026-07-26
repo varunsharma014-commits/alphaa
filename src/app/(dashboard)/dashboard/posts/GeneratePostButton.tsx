@@ -68,7 +68,7 @@ export function GeneratePostButton() {
             zIndex: 20,
             width: "320px",
             background: "var(--ds-surface-2)",
-            border: "0.5px solid var(--ds-border)",
+            border: "1px solid var(--ds-border)",
             borderRadius: "10px",
             padding: "16px",
             boxShadow: "0 10px 30px rgba(0,0,0,0.5)",

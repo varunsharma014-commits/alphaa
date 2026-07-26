@@ -8,12 +8,12 @@ export function AutopilotBar({ message }: { message: string }) {
       style={{
         background: "var(--ds-ok-bg)",
         border: "1px solid var(--ds-ok-border)",
-        borderRadius: "8px",
-        padding: "8px 14px",
+        borderRadius: "14px",
+        padding: "11px 18px",
         display: "flex",
         alignItems: "center",
-        gap: "8px",
-        marginBottom: "16px",
+        gap: "10px",
+        marginBottom: "20px",
       }}
     >
       <span
@@ -26,7 +26,7 @@ export function AutopilotBar({ message }: { message: string }) {
           animation: "pulse 2s infinite",
         }}
       />
-      <span style={{ fontSize: "12px", color: "var(--ds-ok-strong)", fontWeight: 500 }}>
+      <span style={{ fontSize: "14px", color: "var(--ds-ok-strong)", fontWeight: 510 }}>
         {message}
       </span>
     </div>

@@ -110,44 +110,47 @@
 
 /* ── Light theme ── */
 [data-theme="light"] {
-  --bg-primary-rgb: 250 247 242;
-  --bg-secondary-rgb: 255 255 255;
-  --bg-tertiary-rgb: 241 236 228;
+  /* Apple-neutral: cool grays/whites, not warm cream. #fbfbfd / #f5f5f7 / #1d1d1f
+     are literally Apple.com's own background and text values. */
+  --bg-primary-rgb: 255 255 255;
+  --bg-secondary-rgb: 245 245 247;
+  --bg-tertiary-rgb: 237 237 240;
 
-  --fg-rgb: 26 20 16;
-  --line-rgb: 26 20 16;
-  --muted-rgb: 107 99 94;
-  --dot-rgb: 26 20 16;
+  --fg-rgb: 29 29 31;
+  --line-rgb: 29 29 31;
+  --muted-rgb: 110 110 115;
+  --dot-rgb: 29 29 31;
 
   --card-bg: #FFFFFF;
-  --card-border: rgba(26, 20, 16, 0.08);
+  --card-border: rgba(29, 29, 31, 0.08);
 
   /* legacy aliases */
-  --text-primary: #1A1410;
-  --text-secondary: #78716C;
+  --text-primary: #1D1D1F;
+  --text-secondary: #6E6E73;
 
   /* ── Dashboard ("ds") tokens — light ──
-     Same roles as the dark set above. Text steps are darkened (not just
+     Same roles as the dark set above, retuned to Apple's cool neutral scale
+     (was a warm cream/tan palette). Text steps are darkened (not just
      inverted) so each keeps AA contrast on light surfaces, and the status hues
      are deepened for the same reason (#22c55e on white is ~2.3:1 and fails). */
-  --ds-bg: #f7f5f2;
+  --ds-bg: #f5f5f7;
   --ds-surface: #ffffff;
-  --ds-surface-2: #f4f1ed;
-  --ds-border: #e8e3db;
-  --ds-border-2: #ded8ce;
-  --ds-border-3: #cfc8bd;
+  --ds-surface-2: #fbfbfd;
+  --ds-border: #d2d2d7;
+  --ds-border-2: #c7c7cc;
+  --ds-border-3: #aeaeb2;
 
-  --ds-text: #1a1410;
-  --ds-text-strong: #3a352f;
-  --ds-text-mute: #6b635e;
-  --ds-text-soft: #7d746e;
-  --ds-text-faint: #8f867f;
-  --ds-text-ghost: #a39a93;
+  --ds-text: #1d1d1f;
+  --ds-text-strong: #38383a;
+  --ds-text-mute: #6e6e73;
+  --ds-text-soft: #86868b;
+  --ds-text-faint: #98989d;
+  --ds-text-ghost: #aeaeb2;
 
   --ds-ok: #15803d;
   --ds-ok-strong: #166534;
   --ds-ok-bg: #edfaf1;
-  --ds-ok-border: #b8e6c8;
+  --ds-ok-border: #bde8cb;
 
   --ds-warn: #b45309;
   --ds-warn-bg: #fdf6e8;

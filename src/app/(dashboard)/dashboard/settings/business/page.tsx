@@ -32,7 +32,7 @@ const EMPTY: BusinessForm = {
 const inputStyle: React.CSSProperties = {
   width: "100%",
   background: "var(--ds-surface)",
-  border: "0.5px solid var(--ds-border)",
+  border: "1px solid var(--ds-border)",
   borderRadius: "8px",
   padding: "9px 12px",
   fontSize: "13px",

@@ -26,13 +26,14 @@ export function StatusPill({
         background: s.bg,
         color: s.color,
         border: `1px solid ${s.border}`,
-        fontSize: "10px",
-        fontWeight: 500,
-        padding: "2px 10px",
+        fontSize: "12px",
+        fontWeight: 590,
+        padding: "3px 11px",
         borderRadius: "20px",
         display: "inline-block",
         whiteSpace: "nowrap",
         lineHeight: 1.5,
+        letterSpacing: "-0.01em",
         ...style,
       }}
     >

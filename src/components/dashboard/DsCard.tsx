@@ -15,16 +15,20 @@ export function DsCard({
 }) {
   const base: CSSProperties = accent
     ? {
-        background: "var(--ds-surface-2)",
-        borderRadius: "0 10px 10px 0",
+        background: "var(--ds-surface)",
+        borderRadius: "0 16px 16px 0",
         borderLeft: `3px solid ${accent}`,
-        padding: "1rem 1.25rem",
+        padding: "1.25rem 1.5rem",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+        transition: "box-shadow 200ms ease, transform 200ms ease",
       }
     : {
-        background: "var(--ds-surface-2)",
-        border: "0.5px solid var(--ds-border)",
-        borderRadius: "10px",
-        padding: "1rem 1.25rem",
+        background: "var(--ds-surface)",
+        border: "1px solid var(--ds-border)",
+        borderRadius: "16px",
+        padding: "1.25rem 1.5rem",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+        transition: "box-shadow 200ms ease, transform 200ms ease",
       }
   return (
     <div className={className} style={{ ...base, ...style }}>

@@ -220,7 +220,7 @@ export default async function ReportsPage() {
                   )}
 
                   {/* Footer */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "14px", paddingTop: "12px", borderTop: "0.5px solid var(--ds-border)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "14px", paddingTop: "12px", borderTop: "1px solid var(--ds-border)" }}>
                     <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", color: "var(--ds-text-faint)" }}>
                       <CheckCircle2 size={12} color="var(--ds-ok)" />
                       Generated automatically — nothing needed from you

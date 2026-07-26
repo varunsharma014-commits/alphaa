@@ -95,7 +95,7 @@ export function ProgressCard({
     <DsCard style={{ padding: 0 }}>
       {/* Score trend */}
       {hasScoreTrend && (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", padding: "16px 1.25rem", borderBottom: hasMentionTrend || hasKeywordTrend ? "0.5px solid var(--ds-border)" : "none", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", padding: "16px 1.25rem", borderBottom: hasMentionTrend || hasKeywordTrend ? "1px solid var(--ds-border)" : "none", flexWrap: "wrap" }}>
           <div>
             <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)" }}>Presence score</p>
             <p style={{ fontSize: "22px", fontWeight: 600, color: "var(--ds-text)", marginTop: "4px" }}>
@@ -113,7 +113,7 @@ export function ProgressCard({
 
       {/* Engine mentions trend */}
       {hasMentionTrend && (
-        <div style={{ padding: "14px 1.25rem", borderBottom: hasKeywordTrend ? "0.5px solid var(--ds-border)" : "none" }}>
+        <div style={{ padding: "14px 1.25rem", borderBottom: hasKeywordTrend ? "1px solid var(--ds-border)" : "none" }}>
           <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)" }}>AI engines mentioning you</p>
           <p style={{ fontSize: "14px", color: "var(--ds-text)", marginTop: "4px" }}>
             {lastMeasured.appeared} of {lastMeasured.total} in the latest check
