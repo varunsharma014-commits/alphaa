@@ -31,6 +31,8 @@ import { meta as geminiMeta, Body as GeminiBody } from "./how-to-get-recommended
 import { meta as aeoVsGeoMeta, Body as AeoVsGeoBody } from "./aeo-vs-geo"
 import { meta as claudeEngineMeta, Body as ClaudeEngineBody } from "./how-to-get-recommended-by-claude"
 import { meta as aeoTimelineMeta, Body as AeoTimelineBody } from "./how-long-does-aeo-take"
+import { meta as aiCrawlersMeta, Body as AiCrawlersBody } from "./ai-crawlers-robots-txt-guide"
+import { meta as trackAiTrafficMeta, Body as TrackAiTrafficBody } from "./how-to-track-ai-traffic-google-analytics"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -67,6 +69,8 @@ export const POSTS: Post[] = [
   { meta: aeoVsGeoMeta, Body: AeoVsGeoBody },
   { meta: claudeEngineMeta, Body: ClaudeEngineBody },
   { meta: aeoTimelineMeta, Body: AeoTimelineBody },
+  { meta: aiCrawlersMeta, Body: AiCrawlersBody },
+  { meta: trackAiTrafficMeta, Body: TrackAiTrafficBody },
 ]
 
 export function getAllPosts(): Post[] {
