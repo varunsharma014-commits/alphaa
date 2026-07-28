@@ -33,6 +33,8 @@ import { meta as claudeEngineMeta, Body as ClaudeEngineBody } from "./how-to-get
 import { meta as aeoTimelineMeta, Body as AeoTimelineBody } from "./how-long-does-aeo-take"
 import { meta as aiCrawlersMeta, Body as AiCrawlersBody } from "./ai-crawlers-robots-txt-guide"
 import { meta as trackAiTrafficMeta, Body as TrackAiTrafficBody } from "./how-to-track-ai-traffic-google-analytics"
+import { meta as answerVarianceMeta, Body as AnswerVarianceBody } from "./why-ai-answers-change-every-time"
+import { meta as redditMeta, Body as RedditBody } from "./reddit-and-ai-search"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -71,6 +73,8 @@ export const POSTS: Post[] = [
   { meta: aeoTimelineMeta, Body: AeoTimelineBody },
   { meta: aiCrawlersMeta, Body: AiCrawlersBody },
   { meta: trackAiTrafficMeta, Body: TrackAiTrafficBody },
+  { meta: answerVarianceMeta, Body: AnswerVarianceBody },
+  { meta: redditMeta, Body: RedditBody },
 ]
 
 export function getAllPosts(): Post[] {
