@@ -35,6 +35,8 @@ import { meta as aiCrawlersMeta, Body as AiCrawlersBody } from "./ai-crawlers-ro
 import { meta as trackAiTrafficMeta, Body as TrackAiTrafficBody } from "./how-to-track-ai-traffic-google-analytics"
 import { meta as answerVarianceMeta, Body as AnswerVarianceBody } from "./why-ai-answers-change-every-time"
 import { meta as redditMeta, Body as RedditBody } from "./reddit-and-ai-search"
+import { meta as jsRenderingMeta, Body as JsRenderingBody } from "./javascript-rendering-ai-crawlers"
+import { meta as accountantsMeta, Body as AccountantsBody } from "./how-accountants-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -75,6 +77,8 @@ export const POSTS: Post[] = [
   { meta: trackAiTrafficMeta, Body: TrackAiTrafficBody },
   { meta: answerVarianceMeta, Body: AnswerVarianceBody },
   { meta: redditMeta, Body: RedditBody },
+  { meta: jsRenderingMeta, Body: JsRenderingBody },
+  { meta: accountantsMeta, Body: AccountantsBody },
 ]
 
 export function getAllPosts(): Post[] {
