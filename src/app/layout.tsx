@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Script from "next/script"
 import { Inter_Tight, Instrument_Serif, Geist_Mono } from "next/font/google"
-import { ClerkProvider } from "@clerk/nextjs"
 import { Toaster } from "sonner"
 import "./globals.css"
 
@@ -88,29 +87,14 @@ const websiteSchema = {
   publisher: { "@type": "Organization", name: "Alphaa" },
 }
 
-// Literal hex, not CSS var() — Clerk portals its modals (UserButton's "Manage
-// account", "Update profile", etc.) directly to document.body, outside our
-// [data-theme]-scoped wrapper divs, so var(--ds-*) fails to resolve there and
-// falls back to Clerk's own default theme (which follows the OS color scheme).
-// Setting literal light-Apple values here makes every Clerk surface — inline
-// or portaled — consistently light regardless of where it ends up in the DOM.
-const clerkAppearance = {
-  variables: {
-    colorPrimary: "#0071E3",
-    colorBackground: "#ffffff",
-    colorInputBackground: "#f5f5f7",
-    colorInputText: "#1d1d1f",
-    colorText: "#1d1d1f",
-    colorTextSecondary: "#6e6e73",
-    colorNeutral: "#6e6e73",
-    borderRadius: "12px",
-  },
-}
-
+// ClerkProvider deliberately does NOT wrap the whole app. Clerk's browser SDK is
+// ~300 KiB and only (auth) and (dashboard) render client-side Clerk components;
+// every other file uses @clerk/nextjs/server, which works off middleware and
+// needs no provider. Mounting it at the root shipped the whole auth SDK to
+// every marketing visitor. Those two route groups mount it themselves.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider appearance={clerkAppearance}>
-      <html lang="en" className={fontVars}>
+    <html lang="en" className={fontVars}>
         <head>
           {/* No preconnect to fonts.googleapis.com / fonts.gstatic.com: fonts are
               self-hosted via next/font now, so those origins are never hit.
@@ -183,7 +167,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }}
           />
         </body>
-      </html>
-    </ClerkProvider>
+    </html>
   )
 }

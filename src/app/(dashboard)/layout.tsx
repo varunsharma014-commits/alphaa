@@ -7,6 +7,8 @@ import { DashboardSidebar } from "@/components/layout/DashboardSidebar"
 import { DashboardTopBar } from "@/components/layout/DashboardTopBar"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
 import { THEME_COOKIE, type DashboardTheme } from "@/lib/theme"
+import { ClerkProvider } from "@clerk/nextjs"
+import { clerkAppearance } from "@/lib/clerk-appearance"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { userId } = await auth()
@@ -49,6 +51,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const theme: DashboardTheme = themeCookie === "dark" ? "dark" : "light"
 
   return (
+    // Provider lives here, not at the app root, so marketing pages never ship
+    // Clerk's ~300 KiB browser SDK. <UserButton>/<UserProfile> need it.
+    <ClerkProvider appearance={clerkAppearance}>
     <div
       data-dashboard-root=""
       data-theme={theme}
@@ -63,5 +68,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <main className="flex-1 overflow-y-auto p-8">{children}</main>
       </div>
     </div>
+    </ClerkProvider>
   )
 }
