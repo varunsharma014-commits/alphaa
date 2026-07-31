@@ -37,6 +37,8 @@ import { meta as answerVarianceMeta, Body as AnswerVarianceBody } from "./why-ai
 import { meta as redditMeta, Body as RedditBody } from "./reddit-and-ai-search"
 import { meta as jsRenderingMeta, Body as JsRenderingBody } from "./javascript-rendering-ai-crawlers"
 import { meta as accountantsMeta, Body as AccountantsBody } from "./how-accountants-get-recommended-by-ai"
+import { meta as quotableContentMeta, Body as QuotableContentBody } from "./how-to-write-content-ai-quotes"
+import { meta as vetsMeta, Body as VetsBody } from "./how-veterinary-clinics-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -79,6 +81,8 @@ export const POSTS: Post[] = [
   { meta: redditMeta, Body: RedditBody },
   { meta: jsRenderingMeta, Body: JsRenderingBody },
   { meta: accountantsMeta, Body: AccountantsBody },
+  { meta: quotableContentMeta, Body: QuotableContentBody },
+  { meta: vetsMeta, Body: VetsBody },
 ]
 
 export function getAllPosts(): Post[] {
