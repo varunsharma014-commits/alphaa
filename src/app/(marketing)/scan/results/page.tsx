@@ -10,7 +10,7 @@ import { fbTrack } from "@/lib/pixel"
 import type { ScanResult, EngineEvidence, ScanInsights } from "@/types/scan"
 import {
   MapPin, AlertTriangle, Globe, Sparkles, MessageSquare, Search,
-  Check, Mail, Wand2, ChevronDown, ChevronUp, Bot, X, ExternalLink,
+  Check, Mail, Wand2, ChevronDown, ChevronUp, X, ExternalLink,
   Lock, BarChart3, Copy, Gift,
 } from "lucide-react"
 
@@ -341,26 +341,6 @@ function SignupCta({ placement }: { placement: string }) {
 
 // ── Mid-page CTA (between evidence and findings) ────────────────────────────
 
-function MidCta() {
-  return (
-    <div className="bg-bg-secondary border border-brand-orange/20 rounded-2xl px-5 py-5 sm:px-6">
-      <div className="sm:flex sm:items-center sm:gap-5">
-        <p className="text-fg text-[15px] font-semibold leading-snug m-0 sm:flex-1">
-          Everything above is fixable — alphaa does the work for you from $99/mo.
-        </p>
-        <Link
-          href="/signup"
-          onClick={() => track("results_cta_click", { placement: "mid" })}
-          className="btn-orange block sm:inline-block text-center text-sm font-semibold px-6 py-2.5 !rounded-xl mt-3 sm:mt-0 flex-shrink-0"
-        >
-          Start free →
-        </Link>
-      </div>
-      <TrustStrip compact />
-    </div>
-  )
-}
-
 // ── Sticky bottom CTA bar (appears after ~800px scroll, dismissible) ────────
 
 function StickyCtaBar({
@@ -449,6 +429,7 @@ function HeroHeadline({
   totalEngines: number
   verdict: string
 }) {
+  const missing = totalEngines - aiMentions
   const mentionsClass =
     aiMentions === 0
       ? "text-red-400"
@@ -456,50 +437,45 @@ function HeroHeadline({
         ? "text-green-400"
         : "text-fg"
 
-  if (loss) {
-    return (
-      <h1 className="text-fg text-[26px] sm:text-[32px] font-bold leading-[1.3] m-0">
-        An estimated{" "}
-        <span className="mono whitespace-nowrap">
-          {loss.low.toLocaleString("en-US")}–{loss.high.toLocaleString("en-US")}
-        </span>{" "}
-        high-intent buyers asked AI assistants for{" "}
-        {keyword ? (
-          <span className="text-brand-orange">&ldquo;{keyword}&rdquo;</span>
-        ) : (
-          <>
-            {searchesLabel} {isLocal ? "in or near" : "in"} {city}
-          </>
-        )}{" "}
-        in the last 30 days. You appeared in{" "}
-        <span className={`mono ${mentionsClass}`}>
-          {aiMentions} of {totalEngines}
-        </span>{" "}
-        answers we checked
-        {aiMentions === 0 ? (
-          <>
-            {" "}&mdash; <span className="text-red-400">you missed 100% of them.</span>
-          </>
-        ) : (
-          "."
-        )}
-      </h1>
+  // One short claim, then the supporting detail underneath. This used to be a
+  // single ~26-word sentence that fused the search estimate and the miss count
+  // into one headline — too much to take in at a glance on the page that has to
+  // land a single message.
+  const headline =
+    aiMentions === 0 ? (
+      <>No AI assistant named <span className="text-red-400">you</span>.</>
+    ) : aiMentions === totalEngines ? (
+      <>AI names you in <span className="text-green-400">every answer</span>.</>
+    ) : (
+      <>
+        You&rsquo;re missing from{" "}
+        <span className={`mono ${mentionsClass}`}>{missing} of {totalEngines}</span>{" "}
+        AI answers.
+      </>
     )
-  }
 
-  // Fallback (old rows / null estimate): strong verdict from what exists.
   return (
     <>
-      <h1 className="text-fg text-2xl sm:text-[28px] font-bold leading-snug m-0">
-        {verdict}
+      <h1 className="text-fg text-[30px] sm:text-[40px] font-bold leading-[1.15] tracking-[-0.02em] m-0">
+        {headline}
       </h1>
-      <p className="text-muted text-sm mt-3 mb-0">
-        Mentioned in{" "}
-        <span className={`mono font-bold ${mentionsClass}`}>
-          {aiMentions} of {totalEngines}
-        </span>{" "}
-        AI answers we checked.
-      </p>
+      {loss ? (
+        <p className="text-muted text-[15px] leading-relaxed mt-4 mb-0">
+          An estimated{" "}
+          <span className="mono whitespace-nowrap">
+            {loss.low.toLocaleString("en-US")}–{loss.high.toLocaleString("en-US")}
+          </span>{" "}
+          buyers asked AI for{" "}
+          {keyword ? (
+            <span className="text-fg">&ldquo;{keyword}&rdquo;</span>
+          ) : (
+            <>{searchesLabel} {isLocal ? "in or near" : "in"} {city}</>
+          )}{" "}
+          in the last 30 days.
+        </p>
+      ) : (
+        <p className="text-muted text-[15px] leading-relaxed mt-4 mb-0">{verdict}</p>
+      )}
     </>
   )
 }
@@ -942,39 +918,6 @@ function FixTimeline() {
       <p className="text-fg/30 text-[11px] leading-relaxed mt-5 mb-0">
         No ranking guarantees — alphaa controls the work and shows you the movement weekly.
       </p>
-    </div>
-  )
-}
-
-// ── First-week strip (before the final CTA) ─────────────────────────────────
-
-const FIRST_WEEK = [
-  { title: "First Google post",  body: "Your first Google Business post goes live." },
-  { title: "Profile fixes",      body: "The gaps this scan found get corrected." },
-  { title: "Content signals",    body: "Fresh content AI reads starts publishing." },
-  { title: "First AI re-check",  body: "We re-run this scan Wednesday and email you the result." },
-] as const
-
-function FirstWeekStrip() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      {FIRST_WEEK.map((item, i) => (
-        <div
-          key={item.title}
-          className="flex items-start gap-3 bg-bg-secondary border border-line/[0.08] rounded-xl px-4 py-3.5"
-        >
-          <span
-            className="mono flex-shrink-0 w-6 h-6 rounded-full bg-brand-orange/15 border border-brand-orange/30 text-brand-orange text-[11px] font-bold flex items-center justify-center mt-0.5"
-            aria-hidden
-          >
-            {i + 1}
-          </span>
-          <div className="min-w-0">
-            <p className="text-fg text-[13px] font-semibold m-0">{item.title}</p>
-            <p className="text-muted text-xs leading-relaxed mt-0.5 mb-0">{item.body}</p>
-          </div>
-        </div>
-      ))}
     </div>
   )
 }
@@ -1486,10 +1429,13 @@ function ScanResultsContent() {
           </div>
         </div>
 
-        {/* ── 3. THE FREE FIX — proof of competence, before the ask ── */}
-        <QuickFixSection scanId={result.scanId} />
-
-        {/* ── 4. COMPETITOR INTEL (table → chart fallback → omit) ── */}
+        {/* ── 3. WHO AI RECOMMENDS INSTEAD ─────────────────────────
+            The page previously ran nine numbered sections and three separate
+            signup CTAs. A scan result has to land one decision, so the pitch is
+            now: proof, why, one ask. The mid-page CTA is gone (the sticky bar
+            already follows the reader), the free-fix block moved below the ask
+            (two code blocks are not what a dentist needs mid-pitch), and the
+            findings / fix-timeline / first-week trio is one section. */}
         {hasIntelTable ? (
           <div>
             <SectionHeading>Who AI recommends instead</SectionHeading>
@@ -1506,9 +1452,6 @@ function ScanResultsContent() {
           <div>
             <SectionHeading>Who AI recommends instead</SectionHeading>
             <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-5 sm:p-6">
-              <p className="text-fg text-[15px] font-semibold mb-4 mt-0">
-                Who AI is sending your customers to instead
-              </p>
               <CompetitorChart rows={chartRows} totalEngines={totalEngines} />
               <p className="text-muted text-xs leading-relaxed mt-4 mb-0">
                 How many of the {totalEngines} AI answers named each business.
@@ -1517,10 +1460,7 @@ function ScanResultsContent() {
           </div>
         ) : null}
 
-        {/* ── 5. MID-PAGE CTA (between evidence and findings) ─────── */}
-        <MidCta />
-
-        {/* ── 6. FINDINGS ─────────────────────────────────────────── */}
+        {/* ── 4. WHY, AND HOW IT GETS FIXED (one section) ─────────── */}
         {issues.length > 0 && (
           <div>
             <SectionHeading>Why this is happening</SectionHeading>
@@ -1528,19 +1468,12 @@ function ScanResultsContent() {
           </div>
         )}
 
-        {/* ── 7. HOW IT GETS FIXED ────────────────────────────────── */}
         <div>
           <SectionHeading>How alphaa fixes it</SectionHeading>
           <FixTimeline />
         </div>
 
-        {/* ── 8. FIRST WEEK (before the final CTA) ────────────────── */}
-        <div>
-          <SectionHeading>What alphaa does in your first week</SectionHeading>
-          <FirstWeekStrip />
-        </div>
-
-        {/* ── 9. DECISION BLOCK ───────────────────────────────────── */}
+        {/* ── 5. THE ASK ──────────────────────────────────────────── */}
         <div className="relative overflow-hidden bg-bg-secondary border border-line/[0.08] rounded-2xl px-6 py-9 sm:px-9">
           <div
             className="absolute inset-0 pointer-events-none"
@@ -1548,25 +1481,12 @@ function ScanResultsContent() {
             aria-hidden
           />
           <div className="relative">
-            <h2 className="text-fg text-2xl font-bold text-center leading-snug m-0">
+            <h2 className="text-fg text-[26px] sm:text-[32px] font-bold text-center leading-[1.15] tracking-[-0.02em] m-0">
               alphaa fixes <span className="text-brand-orange">all of this.</span>
-              <br />
-              <span className="text-fg/60 font-normal text-lg">Automatically. Every week.</span>
             </h2>
-
-            <p className="text-muted text-sm text-center leading-relaxed max-w-md mx-auto mt-4 mb-6">
-              Agencies charge around $2,000/mo for this work — alphaa is $99, with a weekly
-              report proving where you stand.
+            <p className="text-muted text-[15px] text-center leading-relaxed max-w-md mx-auto mt-4 mb-7">
+              Automatically, every week — $99/mo instead of a $2,000/mo agency.
             </p>
-
-            {/* Honest proof — no invented customers */}
-            <div className="flex items-start gap-3 bg-fg/[0.03] border border-line/[0.08] rounded-xl px-4 py-3.5 max-w-md mx-auto mb-7">
-              <Bot className="w-4 h-4 text-brand-orange flex-shrink-0 mt-0.5" />
-              <p className="text-muted text-[13px] leading-relaxed m-0">
-                alphaa runs on alphaa — ask ChatGPT what tools improve AI search visibility for
-                local businesses.
-              </p>
-            </div>
 
             <SignupCta placement="bottom" />
 
@@ -1576,10 +1496,8 @@ function ScanResultsContent() {
           </div>
         </div>
 
-        {/* Honest urgency close */}
-        <p className="text-muted text-[13px] text-center leading-relaxed max-w-sm mx-auto !mt-6">
-          Every week you wait is another week AI recommends someone else.
-        </p>
+        {/* ── 6. FREE FIX — a bonus after the ask, not a step in it ── */}
+        <QuickFixSection scanId={result.scanId} />
 
       </div>
 

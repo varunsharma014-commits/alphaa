@@ -40,9 +40,8 @@ export function MechanismSection() {
             <span className="text-fg/40">So how does this work?</span>
           </h2>
           <p className="text-fg/55 text-lg leading-relaxed">
-            AI doesn&apos;t invent recommendations — it synthesizes signals it finds across the web.
-            You can&apos;t edit the model, but you <em className="text-fg/80 not-italic font-medium">can</em> make
-            every signal it reads point clearly to you. That&apos;s the entire game, and it&apos;s what alphaa automates.
+            You can&apos;t edit the model. You <em className="text-fg/80 not-italic font-medium">can</em> make
+            every signal it reads point clearly to you. That&apos;s the whole game.
           </p>
         </div>
 

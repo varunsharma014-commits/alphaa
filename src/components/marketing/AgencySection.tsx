@@ -37,8 +37,8 @@ export function AgencySection() {
           for a strategy that's becoming obsolete.
         </h2>
 
-        <p className="text-muted text-xl text-center mb-16 max-w-2xl mx-auto">
-          Even if your agency was doing a good job at Google SEO — and let's be honest, most of them aren't — you still have zero presence on AI search. That's a whole new problem they have no idea how to solve.
+        <p className="text-muted text-xl text-center mb-16 max-w-xl mx-auto">
+          Even a good Google agency leaves you invisible on AI search.
         </p>
 
         {/* Agency crimes */}

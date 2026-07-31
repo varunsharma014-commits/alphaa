@@ -1,4 +1,3 @@
-import { ShieldCheck } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 
 export function CtaBanner() {
@@ -18,13 +17,12 @@ export function CtaBanner() {
             <span className="serif-italic text-brand-orange">found instead.</span>
           </h2>
 
-          <p className="text-muted text-xl mb-6 max-w-xl mx-auto">
-            See your free AI visibility score in 2 minutes. No credit card. Just the truth about where you stand.
-          </p>
-
-          <p className="text-muted text-base mb-10 max-w-xl mx-auto">
-            The scan is free. The fixes are{" "}
-            <span className="text-fg font-medium">$99/month</span> — no agency, no contracts, cancel anytime.
+          {/* One supporting line, not three. The sub-CTA line below already
+              carries the trial terms, and the risk-free panel repeated them a
+              third time at the exact moment the reader is deciding. */}
+          <p className="text-muted text-xl mb-10 max-w-xl mx-auto">
+            Free scan. The fixes are{" "}
+            <span className="text-fg font-medium">$99/month</span> — no agency, no contracts.
           </p>
 
           <OrangePillButton href="/scan" size="lg">
@@ -35,13 +33,6 @@ export function CtaBanner() {
             Takes 2 minutes · No credit card · 14-day free trial if you want fixes
           </p>
 
-          <div className="mt-10 max-w-xl mx-auto flex items-start gap-3.5 rounded-2xl border border-brand-orange/15 bg-brand-orange/[0.04] px-5 py-4 text-left">
-            <ShieldCheck className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-            <p className="text-muted text-sm leading-relaxed">
-              <span className="text-fg font-medium">Try alphaa risk-free for 14 days.</span>{" "}
-              $0 today — cancel anytime before day 14 and you never pay a cent.
-            </p>
-          </div>
         </div>
       </div>
     </section>
