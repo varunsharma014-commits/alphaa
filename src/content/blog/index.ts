@@ -39,6 +39,8 @@ import { meta as jsRenderingMeta, Body as JsRenderingBody } from "./javascript-r
 import { meta as accountantsMeta, Body as AccountantsBody } from "./how-accountants-get-recommended-by-ai"
 import { meta as quotableContentMeta, Body as QuotableContentBody } from "./how-to-write-content-ai-quotes"
 import { meta as vetsMeta, Body as VetsBody } from "./how-veterinary-clinics-get-recommended-by-ai"
+import { meta as fixWrongAiMeta, Body as FixWrongAiBody } from "./fix-wrong-ai-information-about-your-business"
+import { meta as autoRepairMeta, Body as AutoRepairBody } from "./how-auto-repair-shops-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -83,6 +85,8 @@ export const POSTS: Post[] = [
   { meta: accountantsMeta, Body: AccountantsBody },
   { meta: quotableContentMeta, Body: QuotableContentBody },
   { meta: vetsMeta, Body: VetsBody },
+  { meta: fixWrongAiMeta, Body: FixWrongAiBody },
+  { meta: autoRepairMeta, Body: AutoRepairBody },
 ]
 
 export function getAllPosts(): Post[] {
