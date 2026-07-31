@@ -33,7 +33,10 @@ export function ComparisonTable() {
           <span className="text-fg/40">vs. doing it yourself</span>
         </h2>
 
-        <div className="rounded-2xl border border-line/[0.08] overflow-hidden">
+        {/* overflow-x-auto, not overflow-hidden: the table needs ~379px and the
+            container is 341px at 375px viewport, so the last column (DIY) was
+            clipped off with no way to reach it on a phone. */}
+        <div className="rounded-2xl border border-line/[0.08] overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-line/[0.08] bg-fg/[0.02]">
