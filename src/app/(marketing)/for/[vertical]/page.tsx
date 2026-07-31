@@ -32,7 +32,7 @@ export async function generateMetadata({
   if (!v) return { title: "Not found" }
   // Layout applies a "%s | Alphaa" title template — don't append the brand here.
   const title = `AI Search Optimization for ${displayPlural(v.plural)} — Get Recommended by ChatGPT`
-  const description = `Get your ${v.noun} recommended by ChatGPT, Gemini & Google AI automatically. $99/mo instead of a ${v.agencyCostLabel} agency retainer. Free 2-minute scan.`
+  const description = `Get your ${v.noun} recommended by ChatGPT, Claude & Gemini automatically. $99/mo instead of a ${v.agencyCostLabel} agency retainer. Free 2-minute scan.`
   return {
     title,
     description,
@@ -107,7 +107,7 @@ export default async function VerticalPage({
             <br className="hidden sm:block" /> — are you the answer?
           </h1>
           <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-9">
-            Alphaa gets your {v.noun} recommended by ChatGPT, Gemini &amp; Google AI automatically —
+            Alphaa gets your {v.noun} recommended by ChatGPT, Claude &amp; Gemini automatically —
             $99/mo, no agency retainer.
           </p>
           <div id="scan-input" className="scroll-mt-28">
@@ -142,7 +142,7 @@ export default async function VerticalPage({
           <div className="space-y-5 text-muted text-lg leading-relaxed">
             <p>
               Search has changed. People don&apos;t sift through pages of results anymore — they ask
-              ChatGPT, Gemini, or Google AI a question and get a short, confident answer with two or
+              ChatGPT, Claude, or Gemini a question and get a short, confident answer with two or
               three names in it. Those names get the business. Everyone else is invisible.
             </p>
             <p>{v.painLine}</p>
@@ -297,7 +297,7 @@ export default async function VerticalPage({
               <span className="serif-italic text-brand-orange">or your competitor.</span>
             </h2>
             <p className="text-muted text-lg sm:text-xl mb-9 max-w-xl mx-auto">
-              Run a free scan and see exactly what ChatGPT, Gemini, and Google AI say when customers
+              Run a free scan and see exactly what ChatGPT, Claude, and Gemini say when customers
               ask about {v.plural} like you.
             </p>
             <OrangePillButton href="/scan" size="lg">

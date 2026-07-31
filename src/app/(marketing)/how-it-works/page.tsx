@@ -37,7 +37,7 @@ const sections = [
     title: "The weekly work — what we do for you",
     body: [
       "Every week, Alphaa publishes posts to your Google Business Profile, generates AI-written blog content specific to your business and market, monitors your reviews across Google and Yelp, and checks whether your business is appearing when people ask ChatGPT or Perplexity for businesses like yours.",
-      "Specific weekly tasks: 2–4 Google Business Profile posts, 1–2 blog drafts (Pro: auto-published, Starter: one-click approval), review monitoring and response drafts, AI search citation tracking across ChatGPT, Perplexity, Google AI, and Gemini.",
+      "Specific weekly tasks: 2–4 Google Business Profile posts, 1–2 blog drafts (Pro: auto-published, Starter: one-click approval), review monitoring and response drafts, AI search citation tracking across ChatGPT, Claude, Gemini, and Perplexity.",
     ],
   },
   {

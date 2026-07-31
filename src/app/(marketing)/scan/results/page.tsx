@@ -220,9 +220,14 @@ function buildVerdict(aiMentions: number, total: number, businessName: string): 
   return `AI assistants know ${businessName} today — the work now is staying in the answer as competitors catch on.`
 }
 
+// NOTE: the `google_ai` storage key holds CLAUDE's response — a legacy naming
+// choice kept so existing ScanLead/Audit rows still resolve. It must be LABELLED
+// Claude: showing Anthropic's output under Google's name misattributes one
+// vendor's model to another, and contradicts the four engines named everywhere
+// else on the site. Change the label here, not the stored key.
 const ENGINES = [
   { key: "chatgpt",    responseKey: "chatgpt",    name: "ChatGPT",    Icon: MessageSquare, iconColor: "#22C55E" },
-  { key: "google_ai",  responseKey: "claude",     name: "Google AI",  Icon: Globe,         iconColor: "#EF4444" },
+  { key: "google_ai",  responseKey: "claude",     name: "Claude",     Icon: Globe,         iconColor: "#d97757" },
   { key: "perplexity", responseKey: "perplexity", name: "Perplexity", Icon: Search,        iconColor: "#38BDF8" },
   { key: "gemini",     responseKey: "gemini",     name: "Gemini",     Icon: Sparkles,      iconColor: "#f59e0b" },
 ] as const
@@ -231,7 +236,7 @@ const ENGINES = [
 // credibility tag under each engine name explains why missing from it matters.
 const ENGINE_SUBS: Record<string, string> = {
   "ChatGPT":    "the world's most-used AI assistant",
-  "Google AI":  "AI answers shown in Google Search",
+  "Claude":     "Anthropic's AI assistant",
   "Perplexity": "the leading AI search engine",
   "Gemini":     "Google's AI assistant",
 }
@@ -901,7 +906,7 @@ const TIMELINE = [
   {
     label: "Week 4+",
     title: "AI re-checks, weekly",
-    body: "alphaa re-runs this same scan every week and reports movement across ChatGPT, Gemini, Perplexity and Google AI.",
+    body: "alphaa re-runs this same scan every week and reports movement across ChatGPT, Claude, Gemini and Perplexity.",
   },
 ]
 

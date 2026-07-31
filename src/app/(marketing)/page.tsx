@@ -26,7 +26,7 @@ const softwareSchema = {
   operatingSystem: "Web",
   url: "https://alphaa.app",
   description:
-    "Automated AI Search Optimization (AEO) that gets your business discovered, cited, and recommended by ChatGPT, Claude, Gemini, Perplexity, and Google AI — for $99/month instead of a $2,000/month SEO agency.",
+    "Automated AI Search Optimization (AEO) that gets your business discovered, cited, and recommended by ChatGPT, Claude, Gemini, and Perplexity — for $99/month instead of a $2,000/month SEO agency.",
   offers: [
     {
       "@type": "Offer",
