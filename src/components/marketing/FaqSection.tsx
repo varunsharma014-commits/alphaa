@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "How is this different from an SEO agency?",
-    a: "SEO agencies charge $500–$2,000/month, lock you into contracts, and send reports you can't make sense of. Alphaa does the actual work — automatically — for $99/month with no contracts. You can cancel anytime.",
+    a: "SEO agencies charge around $2,000/month, lock you into contracts, and send reports you can't make sense of. Alphaa does the actual work — automatically — for $99/month with no contracts. You can cancel anytime.",
   },
   {
     q: "Do I need to know anything about marketing or SEO?",
@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "What's this 'AI search' thing?",
-    a: "More and more people search on ChatGPT, Perplexity, and Google AI instead of regular Google — whether they're looking for a shop down the street or a vendor anywhere in the world. If your business isn't showing up there, you're invisible to a growing chunk of customers. Alphaa tracks and improves your presence across all of them.",
+    a: "More and more people search on ChatGPT, Claude, Gemini, and Perplexity instead of regular Google — whether they're looking for a shop down the street or a vendor anywhere in the world. If your business isn't showing up there, you're invisible to a growing chunk of customers. Alphaa tracks and improves your presence across all of them.",
   },
   {
     q: "Will I see results in the first month?",

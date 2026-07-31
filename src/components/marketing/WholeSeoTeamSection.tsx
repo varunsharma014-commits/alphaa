@@ -2,7 +2,7 @@ import { FileText, CheckCircle2 } from "lucide-react"
 
 const ENGINES: { name: string; status: string; tone: "green" | "amber" | "muted" }[] = [
   { name: "ChatGPT", status: "Recommending you", tone: "green" },
-  { name: "Google AI", status: "Recommending you", tone: "green" },
+  { name: "Claude", status: "Recommending you", tone: "green" },
   { name: "Perplexity", status: "Sometimes", tone: "amber" },
   { name: "Gemini", status: "Working on it", tone: "muted" },
 ]
@@ -17,7 +17,7 @@ const FEATURES = [
   {
     kicker: "Visibility",
     title: "See what AI says about you.",
-    body: "Track exactly how ChatGPT, Gemini, Perplexity and Google AI answer when your customers ask. No more guessing.",
+    body: "Track exactly how ChatGPT, Claude, Gemini and Perplexity answer when your customers ask. No more guessing.",
     visual: "engines" as const,
   },
   {

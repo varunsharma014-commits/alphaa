@@ -1295,7 +1295,7 @@ function ScanResultsContent() {
         <p className="text-muted text-sm mb-6">
           {scanId
             ? "AI engines can be slow at peak times — your results may still be on the way. Check again, or start a fresh scan."
-            : "We couldn't find that scan. Start a fresh one — it only takes 60 seconds."}
+            : "We couldn't find that scan. Start a fresh one — it only takes 2 minutes."}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           {scanId && (
@@ -1550,7 +1550,7 @@ function ScanResultsContent() {
             </h2>
 
             <p className="text-muted text-sm text-center leading-relaxed max-w-md mx-auto mt-4 mb-6">
-              Agencies charge $1,000–$2,000/mo for this work — alphaa is $99, with a weekly
+              Agencies charge around $2,000/mo for this work — alphaa is $99, with a weekly
               report proving where you stand.
             </p>
 

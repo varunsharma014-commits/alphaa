@@ -1,4 +1,4 @@
-export const metadata = { title: "Privacy Policy — Alphaa" }
+export const metadata = { title: "Privacy Policy" }
 
 const sections = [
   {

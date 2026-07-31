@@ -79,7 +79,7 @@ export function ScanForm() {
           onChange={(e) => { setForm((f) => ({ ...f, [key]: e.target.value })); setErrors((er) => ({ ...er, [key]: undefined })) }}
           placeholder={placeholder}
           className={cn(
-            "w-full bg-bg-tertiary border rounded-xl px-4 py-3 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors",
+            "w-full bg-bg-tertiary border rounded-xl px-4 py-3 text-fg placeholder:text-muted text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors",
             errors[key] ? "border-red-500" : "border-line/10 focus:border-brand-orange"
           )}
         />

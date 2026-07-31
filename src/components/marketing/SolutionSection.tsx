@@ -12,7 +12,7 @@ const outcomes = [
     icon: "📍",
   },
   {
-    title: "You stop paying $1,000/month for confusion",
+    title: "You stop paying $2,000/month for confusion",
     body: "Cancel the agency retainer. $99/month. No contracts. No PDF reports. Just results you can actually see.",
     icon: "💸",
   },
@@ -25,7 +25,7 @@ const outcomes = [
 
 export function SolutionSection() {
   return (
-    <section data-reveal className="py-28 px-4 sm:px-6">
+    <section data-reveal className="py-20 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto">
 
         <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">

@@ -30,7 +30,7 @@ export function FloatingCta() {
         style={{ background: "linear-gradient(135deg, #0071e3 0%, #0058b0 100%)" }}
       >
         <span>Run my free AI scan →</span>
-        <span className="text-[11px] font-normal text-white/70">60 seconds · no signup · no credit card</span>
+        <span className="text-[11px] font-normal text-white/70">2 minutes · no credit card</span>
       </Link>
     </div>
   )

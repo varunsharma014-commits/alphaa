@@ -42,7 +42,7 @@ export function HeroScanInput({
         placeholder="Enter your website URL…"
         aria-label="Your website URL"
         className={cn(
-          "flex-1 bg-bg-tertiary border border-line/10 rounded-full text-fg placeholder:text-muted/60 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors",
+          "flex-1 bg-bg-tertiary border border-line/10 rounded-full text-fg placeholder:text-muted text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors",
           compact ? "px-4 py-3" : "px-5 py-3.5"
         )}
       />

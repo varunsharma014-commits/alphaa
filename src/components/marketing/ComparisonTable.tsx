@@ -1,7 +1,7 @@
 import { Check, X, Minus } from "lucide-react"
 
 const rows = [
-  { feature: "Monthly cost",              alphaa: "$99–$199",   agency: "$500–$2,000",  diy: "Your time" },
+  { feature: "Monthly cost",              alphaa: "$99–$199",   agency: "$2,000",  diy: "Your time" },
   { feature: "Optimizes for ChatGPT",     alphaa: true,         agency: false,          diy: false },
   { feature: "Optimizes for Claude",      alphaa: true,         agency: false,          diy: false },
   { feature: "Optimizes for Gemini",      alphaa: true,         agency: false,          diy: false },
@@ -15,14 +15,14 @@ const rows = [
 
 function Cell({ value }: { value: string | boolean }) {
   if (value === true) return <Check className="w-4 h-4 text-green-400 mx-auto" />
-  if (value === false) return <X className="w-4 h-4 text-red-400/60 mx-auto" />
+  if (value === false) return <X className="w-4 h-4 text-fg/25 mx-auto" />
   if (value === "maybe") return <Minus className="w-4 h-4 text-fg/30 mx-auto" />
   return <span className="text-fg/80 text-sm">{value}</span>
 }
 
 export function ComparisonTable() {
   return (
-    <section data-reveal className="py-28 px-4 sm:px-6">
+    <section data-reveal className="py-20 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">
           The honest comparison

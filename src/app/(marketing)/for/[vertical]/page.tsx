@@ -32,7 +32,7 @@ export async function generateMetadata({
   if (!v) return { title: "Not found" }
   // Layout applies a "%s | Alphaa" title template — don't append the brand here.
   const title = `AI Search Optimization for ${displayPlural(v.plural)} — Get Recommended by ChatGPT`
-  const description = `Get your ${v.noun} recommended by ChatGPT, Gemini & Google AI automatically. $99/mo instead of a ${v.agencyCostLabel} agency retainer. Free 60-second scan.`
+  const description = `Get your ${v.noun} recommended by ChatGPT, Gemini & Google AI automatically. $99/mo instead of a ${v.agencyCostLabel} agency retainer. Free 2-minute scan.`
   return {
     title,
     description,
@@ -117,7 +117,7 @@ export default async function VerticalPage({
               ctaLabel="Run my free AI scan →"
             />
           </div>
-          <p className="mt-5 text-fg/40 text-xs">60 seconds · no signup · no credit card</p>
+          <p className="mt-5 text-fg/40 text-xs">2 minutes · no credit card · results emailed to you</p>
           <p className="mt-2 text-xs">
             <Link
               href="/scan"
@@ -132,7 +132,7 @@ export default async function VerticalPage({
       {/* 2. Pain section */}
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
-          <p className="text-red-400 text-xs font-semibold tracking-widest uppercase mb-6 text-center">
+          <p className="text-muted text-xs font-semibold tracking-widest uppercase mb-6 text-center">
             The problem
           </p>
           <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg leading-[1.15] tracking-tight text-center mb-10 text-balance">
@@ -192,10 +192,10 @@ export default async function VerticalPage({
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-6 sm:gap-8 max-w-3xl mx-auto">
               <div className="text-center">
-                <p className="text-red-400/70 text-xs font-semibold uppercase tracking-widest mb-3">
+                <p className="text-muted text-xs font-semibold uppercase tracking-widest mb-3">
                   Typical agency for {v.plural}
                 </p>
-                <p className="text-fg/40 text-4xl sm:text-5xl font-bold leading-none line-through decoration-red-500/50 decoration-2">
+                <p className="text-fg/40 text-4xl sm:text-5xl font-bold leading-none line-through decoration-fg/25 decoration-2">
                   ${agencyAnnual.toLocaleString()}
                   <span className="text-xl">/yr</span>
                 </p>
@@ -303,7 +303,7 @@ export default async function VerticalPage({
             <OrangePillButton href="/scan" size="lg">
               Run my free AI scan →
             </OrangePillButton>
-            <p className="mt-6 text-fg/25 text-sm">60 seconds · no signup · no credit card</p>
+            <p className="mt-6 text-fg/25 text-sm">2 minutes · no credit card · results emailed to you</p>
           </div>
         </div>
       </section>

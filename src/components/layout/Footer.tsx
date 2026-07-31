@@ -15,7 +15,7 @@ const footerLinks = {
   ],
 }
 
-const engines = ["ChatGPT", "Claude", "Gemini", "Perplexity", "Google AI", "Copilot"]
+const engines = ["ChatGPT", "Claude", "Gemini", "Perplexity"]
 
 export function Footer() {
   return (
@@ -29,7 +29,7 @@ export function Footer() {
               <span className="text-fg font-semibold text-lg font-sans">alphaa</span>
             </Link>
             <p className="text-fg/40 text-sm leading-relaxed max-w-xs mb-5">
-              Get your business found on every AI search engine — ChatGPT, Claude, Gemini, Perplexity, Google AI, and Copilot. Automatically. $99/month.
+              Get your business found on every AI search engine — ChatGPT, Claude, Gemini, and Perplexity. Automatically. $99/month.
             </p>
             <div className="flex flex-wrap gap-1.5">
               {engines.map((e) => (

@@ -79,7 +79,7 @@ export function AiAnswerMockup() {
 
         <p className="text-center text-fg/40 text-sm mt-6 max-w-lg mx-auto">
           Alphaa works to get your business named in answers like this — across ChatGPT, Claude,
-          Gemini, Perplexity, and Google AI.
+          Gemini, and Perplexity.
         </p>
       </div>
     </section>

@@ -77,7 +77,7 @@ function siteMatchesDomain(site: string, domain: string): boolean {
 }
 
 const inputClass =
-  "w-full bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg placeholder:text-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+  "w-full bg-bg-tertiary border border-line/10 rounded-xl px-4 py-3 text-fg placeholder:text-muted text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
 
 function GoogleLogo({ size = 18 }: { size?: number }) {
   return (

@@ -31,7 +31,7 @@ const layers = [
 
 export function MechanismSection() {
   return (
-    <section data-reveal className="py-28 px-4 sm:px-6">
+    <section data-reveal className="py-20 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <SectionLabel className="mb-3 block">How it actually works</SectionLabel>

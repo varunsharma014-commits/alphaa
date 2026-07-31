@@ -1,3 +1,12 @@
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "How it works — from scan to AI visibility",
+  description:
+    "Exactly what happens after you sign up: the free 2-minute audit, the 2-minute setup, the weekly work Alphaa does for you, and what you see in the dashboard. No black boxes.",
+  alternates: { canonical: "/how-it-works" },
+}
+
 import { SectionLabel } from "@/components/common/SectionLabel"
 import { GlassCard } from "@/components/common/GlassCard"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
@@ -7,9 +16,9 @@ const sections = [
   {
     num: "01",
     icon: Search,
-    title: "The audit — free, 60 seconds",
+    title: "The audit — free, 2 minutes",
     body: [
-      "Before anything else, we scan your business. Enter your business name, your market (a city or 'online / national'), and website. In under 60 seconds, we check 47 factors: your Google Business Profile activity, whether you appear on ChatGPT and Perplexity, your website's content gaps, your review velocity, and how you compare to the top 3 competitors in your space.",
+      "Before anything else, we scan your business. Enter your business name, your market (a city or 'online / national'), and website. In under 2 minutes, we check 47 factors: your Google Business Profile activity, whether you appear on ChatGPT and Perplexity, your website's content gaps, your review velocity, and how you compare to the top 3 competitors in your space.",
       "You get a visibility score from 0–100 and a plain-English breakdown of exactly what's wrong and what it costs you in customers. No jargon. No PDF you'll never open. Just a score and a list.",
     ],
   },
@@ -92,7 +101,7 @@ export default function HowItWorksPage() {
           <OrangePillButton href="/scan" size="lg">
             Get your free visibility scan →
           </OrangePillButton>
-          <p className="text-muted/60 text-xs mt-3">60 seconds · No signup required</p>
+          <p className="text-muted/60 text-xs mt-3">2 minutes · No credit card</p>
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section data-reveal className="py-28 px-4 sm:px-6 border-y border-line/[0.06]">
+    <section data-reveal className="py-20 px-4 sm:px-6 border-y border-line/[0.06]">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <SectionLabel className="mb-3 block">How it works</SectionLabel>

@@ -252,15 +252,15 @@ function FullCaseStudy({ cs }: { cs: (typeof caseStudies)[0] }) {
         {/* Problem */}
         <div className="lg:col-span-1 rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 sm:p-7">
           <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-red-400" />
-            <p className="text-red-400 text-xs font-semibold tracking-widest uppercase">The Problem</p>
+            <span className="w-2 h-2 rounded-full bg-fg/30" />
+            <p className="text-muted text-xs font-semibold tracking-widest uppercase">The Problem</p>
           </div>
           <h3 className="text-fg font-semibold text-lg mb-3 leading-snug">{cs.problem.title}</h3>
           <p className="text-muted text-sm leading-relaxed mb-5">{cs.problem.body}</p>
           <div className="space-y-2">
             {cs.problem.tried.map((t, i) => (
               <div key={i} className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-400/60 mt-1.5 flex-shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-fg/25 mt-1.5 flex-shrink-0" />
                 <p className="text-muted text-sm leading-relaxed">{t}</p>
               </div>
             ))}
@@ -434,7 +434,7 @@ export default function CaseStudiesPage() {
               <br />knows your business.
             </h2>
             <p className="text-muted text-base sm:text-lg mb-8 max-w-xl mx-auto">
-              Run a free scan in 2 minutes. No signup required. See your AI visibility score and exactly where you're missing.
+              Run a free scan in 2 minutes. No credit card required. See your AI visibility score and exactly where you're missing.
             </p>
             <OrangePillButton href="/scan" size="lg">
               Scan my business for free →

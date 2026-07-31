@@ -5,10 +5,8 @@ import { PlatformLogos } from "@/components/marketing/PlatformLogos"
 import { AgencySection } from "@/components/marketing/AgencySection"
 import { AllEnginesSection } from "@/components/marketing/AllEnginesSection"
 import { WholeSeoTeamSection } from "@/components/marketing/WholeSeoTeamSection"
-import { SolutionSection } from "@/components/marketing/SolutionSection"
 import { HowItWorksSection } from "@/components/marketing/HowItWorksSection"
 import { MechanismSection } from "@/components/marketing/MechanismSection"
-import { SocialProof } from "@/components/marketing/SocialProof"
 import { HomePricingSection } from "@/components/marketing/HomePricingSection"
 import { ComparisonTable } from "@/components/marketing/ComparisonTable"
 import { CaseStudiesSection } from "@/components/marketing/CaseStudiesSection"
@@ -27,7 +25,7 @@ const softwareSchema = {
   operatingSystem: "Web",
   url: "https://alphaa.app",
   description:
-    "Automated AI Search Optimization (AEO) that gets your business discovered, cited, and recommended by ChatGPT, Claude, Gemini, Perplexity, and Google AI — for $99/month instead of a $1,000/month SEO agency.",
+    "Automated AI Search Optimization (AEO) that gets your business discovered, cited, and recommended by ChatGPT, Claude, Gemini, Perplexity, and Google AI — for $99/month instead of a $2,000/month SEO agency.",
   offers: [
     {
       "@type": "Offer",
@@ -55,17 +53,20 @@ export default function HomePage() {
       />
       <ScrollReveal />
       <HeroSection />
-      <PlatformLogos />
+      {/* The AI-answer mockup is the clearest asset on the page — it shows the
+          product's whole premise in one glance, so it runs immediately after
+          the hero rather than three screens down. */}
       <AiAnswerMockup />
+      <PlatformLogos />
+      {/* Pain, then the cost comparison that resolves it */}
       <AgencySection />
-      {/* Proof, moved up: real businesses fixed this, right after the pain/savings */}
+      {/* One proof block. SocialProof (a second testimonial wall) and
+          SolutionSection (a second feature list) were cut as duplicates. */}
       <CaseStudiesSection />
-      <SocialProof />
       <AllEnginesSection />
-      <WholeSeoTeamSection />
-      <SolutionSection />
       <HowItWorksSection />
       <MechanismSection />
+      <WholeSeoTeamSection />
       <HomePricingSection />
       <ComparisonTable />
       <FaqSection />

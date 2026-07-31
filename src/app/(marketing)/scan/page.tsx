@@ -15,7 +15,7 @@ export default function ScanPage() {
             <span className="serif-italic text-brand-orange">visibility score</span>
           </h1>
           <p className="text-muted text-base">
-            We check Google, ChatGPT, Maps, and your website — and show you exactly what's stopping customers from finding you. Takes 60 seconds.
+            We check Google, ChatGPT, Maps, and your website — and show you exactly what's stopping customers from finding you. Takes 2 minutes.
           </p>
         </div>
 
@@ -29,7 +29,7 @@ export default function ScanPage() {
 
         <ScanForm />
         <p className="text-center text-muted/50 text-xs mt-6">
-          No signup required · Results emailed to you · No credit card
+          No credit card · Results emailed to you
         </p>
       </div>
     </div>

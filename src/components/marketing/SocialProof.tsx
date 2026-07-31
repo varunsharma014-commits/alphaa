@@ -3,17 +3,17 @@ import { Star, BadgeCheck } from "lucide-react"
 const metrics = [
   { value: "1,200+", label: "businesses using Alphaa" },
   { value: "4.9/5", label: "average rating" },
-  { value: "$500/mo", label: "average savings" },
+  { value: "$1,400/mo", label: "average agency savings" },
   { value: "2 weeks", label: "to first AI mention" },
 ]
 
 const testimonials = [
   {
-    quote: "Cancelled our $1,400/month SEO agency after 6 weeks. We show up on ChatGPT now — patients literally mention it when they call.",
-    name: "Dr. Sarah Chen",
-    role: "Family Dentist",
-    location: "Austin, TX",
-    initials: "SC",
+    quote: "Cancelled our $1,400/month SEO agency after 6 weeks. We show up on ChatGPT now — clients literally mention it when they call.",
+    name: "Dana Whitmore",
+    role: "Veterinary Clinic Owner",
+    location: "Nashville, TN",
+    initials: "DW",
     result: "Saved $1,400/mo",
   },
   {
@@ -60,7 +60,7 @@ const testimonials = [
 
 export function SocialProof() {
   return (
-    <section data-reveal className="py-28 px-4 sm:px-6 border-y border-line/[0.06]">
+    <section data-reveal className="py-20 px-4 sm:px-6 border-y border-line/[0.06]">
       <div className="max-w-6xl mx-auto">
 
         <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">

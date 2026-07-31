@@ -30,7 +30,7 @@ export default async function StartTrialPage() {
 
   const reassurances = [
     "$0 today — your card isn't charged until " + trialEnds,
-    "Cancel anytime in two clicks from Billing. We email you before day 15.",
+    "Cancel anytime in two clicks from Billing. We email you before day 14.",
     "alphaa starts working immediately — first Google post within 24 hours",
   ]
 

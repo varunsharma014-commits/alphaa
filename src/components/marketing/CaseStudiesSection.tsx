@@ -49,7 +49,7 @@ const previews = [
 
 export function CaseStudiesSection() {
   return (
-    <section data-reveal className="py-28 px-4 sm:px-6 border-y border-line/[0.06]">
+    <section data-reveal className="py-20 px-4 sm:px-6 border-y border-line/[0.06]">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
@@ -146,7 +146,7 @@ export function CaseStudiesSection() {
           <OrangePillButton href="/scan" size="lg">
             See if AI knows your business →
           </OrangePillButton>
-          <p className="text-muted text-xs mt-3">Free scan · No signup · 2 minutes</p>
+          <p className="text-muted text-xs mt-3">Free scan · No credit card · 2 minutes</p>
         </div>
       </div>
     </section>

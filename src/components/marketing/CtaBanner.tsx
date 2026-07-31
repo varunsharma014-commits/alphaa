@@ -3,7 +3,7 @@ import { OrangePillButton } from "@/components/common/OrangePillButton"
 
 export function CtaBanner() {
   return (
-    <section data-reveal className="py-28 px-4 sm:px-6">
+    <section data-reveal className="py-20 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         <div className="rounded-3xl border border-line/[0.08] bg-fg/[0.02] p-12 sm:p-20 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/[0.06] text-brand-orange text-xs font-medium mb-8">
@@ -19,7 +19,7 @@ export function CtaBanner() {
           </h2>
 
           <p className="text-muted text-xl mb-6 max-w-xl mx-auto">
-            See your free AI visibility score in 60 seconds. No signup. No credit card. Just the truth about where you stand.
+            See your free AI visibility score in 2 minutes. No credit card. Just the truth about where you stand.
           </p>
 
           <p className="text-muted text-base mb-10 max-w-xl mx-auto">
@@ -32,7 +32,7 @@ export function CtaBanner() {
           </OrangePillButton>
 
           <p className="mt-6 text-muted text-sm">
-            Takes 60 seconds · No signup · 14-day free trial if you want fixes
+            Takes 2 minutes · No credit card · 14-day free trial if you want fixes
           </p>
 
           <div className="mt-10 max-w-xl mx-auto flex items-start gap-3.5 rounded-2xl border border-brand-orange/15 bg-brand-orange/[0.04] px-5 py-4 text-left">

@@ -73,7 +73,7 @@ const plans = [
 const billingFaqs = [
   { q: "Is there a free trial?", a: "Yes — 14 days free. You add a card to start but pay nothing until the trial ends, and you can cancel anytime in two clicks." },
   { q: "Can I cancel anytime?", a: "Yes. One click in your dashboard. No phone calls, no contracts." },
-  { q: "What happens after the trial?", a: "Your subscription starts automatically on day 15 unless you cancel first. We email you before that happens — no surprises." },
+  { q: "What happens after the trial?", a: "Your subscription starts automatically after day 14 unless you cancel first. We email you before that happens — no surprises." },
   { q: "Can I switch plans?", a: "Yes. Upgrade or downgrade anytime from your billing settings." },
   { q: "Do you offer refunds?", a: "We offer a full refund within 7 days of your first charge if you're not satisfied. No questions asked." },
 ]
@@ -98,7 +98,7 @@ export default function PricingPage() {
             From $99/month.{" "}
             <span className="serif-italic text-brand-orange">No contracts.</span>
           </h1>
-          <p className="text-muted text-lg">14-day free trial. $0 today. Cancel anytime before day 15 and pay nothing.</p>
+          <p className="text-muted text-lg">14-day free trial. $0 today. Cancel anytime before day 14 and pay nothing.</p>
         </div>
 
         {/* Toggle */}
@@ -111,10 +111,13 @@ export default function PricingPage() {
               annual ? "bg-brand-orange" : "bg-fg/10"
             )}
           >
+            {/* Knob travel = track (48) − knob (16) − inset (4×2) = 24px.
+                It needs the matching left-1 inset or it escapes the track and
+                paints over the "Annual" label next to it. */}
             <span
               className={cn(
-                "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform duration-200",
-                annual ? "translate-x-7" : "translate-x-1"
+                "absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-200",
+                annual ? "translate-x-6" : "translate-x-0"
               )}
             />
           </button>

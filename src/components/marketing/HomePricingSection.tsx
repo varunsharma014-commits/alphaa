@@ -60,7 +60,7 @@ const PLANS = [
 
 export function HomePricingSection() {
   return (
-    <section data-reveal className="py-28 px-4 sm:px-6 bg-white text-[#1d1d1f]">
+    <section data-reveal className="py-20 px-4 sm:px-6 bg-white text-[#1d1d1f]">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6">Pricing</p>
@@ -68,7 +68,7 @@ export function HomePricingSection() {
             Simple pricing. 14-day free trial.
           </h2>
           <p className="text-[#6e6e73] text-lg">
-            $0 today. Cancel anytime before day 15 and pay nothing.{" "}
+            $0 today. Cancel anytime before day 14 and pay nothing.{" "}
             <Link href="/pricing" className="text-brand-orange hover:underline underline-offset-4 font-medium">
               See annual pricing →
             </Link>

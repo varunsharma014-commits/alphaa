@@ -23,16 +23,16 @@ const crimes = [
 
 export function AgencySection() {
   return (
-    <section data-reveal className="py-28 px-4 sm:px-6">
+    <section data-reveal className="py-20 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto">
 
-        <p className="text-red-500 text-xs font-semibold tracking-widest uppercase mb-6 text-center">
+        <p className="text-muted text-xs font-semibold tracking-widest uppercase mb-6 text-center">
           The agency problem
         </p>
 
         <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
           Your SEO agency is charging you{" "}
-          <span className="serif-italic text-brand-orange">$1,000–$2,000/month</span>
+          <span className="serif-italic text-brand-orange">$2,000/month</span>
           <br />
           for a strategy that's becoming obsolete.
         </h2>
@@ -46,8 +46,8 @@ export function AgencySection() {
           {crimes.map(({ number, Icon, crime, body }) => (
             <div key={number} className="rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-8">
               <div className="flex items-center justify-between mb-5">
-                <div className="w-11 h-11 rounded-xl border border-red-500/15 bg-red-500/[0.06] flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-red-500" />
+                <div className="w-11 h-11 rounded-xl border border-line/10 bg-fg/[0.04] flex items-center justify-center">
+                  <Icon className="w-5 h-5 text-muted" />
                 </div>
                 <span className="text-fg/10 text-4xl font-bold leading-none">{number}</span>
               </div>
@@ -64,8 +64,8 @@ export function AgencySection() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-6 sm:gap-8 max-w-3xl mx-auto">
             <div className="text-center">
-              <p className="text-red-500/80 text-xs font-semibold uppercase tracking-widest mb-3">Your SEO agency</p>
-              <p className="text-muted text-4xl sm:text-5xl font-bold leading-none line-through decoration-red-500/50 decoration-2">
+              <p className="text-muted text-xs font-semibold uppercase tracking-widest mb-3">Your SEO agency</p>
+              <p className="text-muted text-4xl sm:text-5xl font-bold leading-none line-through decoration-fg/25 decoration-2">
                 $24,000<span className="text-xl">/yr</span>
               </p>
               <p className="text-muted text-xs mt-3">~$2,000/mo · and still invisible on AI</p>

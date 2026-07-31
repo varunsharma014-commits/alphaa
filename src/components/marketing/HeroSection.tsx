@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { Star } from "lucide-react"
 import { HeroScanInput } from "@/components/marketing/HeroScanInput"
 import { HeroCyclingWord } from "@/components/marketing/HeroCyclingWord"
 import { ScoreRing } from "@/components/common/ScoreRing"
@@ -8,19 +7,15 @@ import {
   ClaudeLogo,
   GeminiLogo,
   PerplexityLogo,
-  GoogleAILogo,
-  CopilotLogo,
 } from "@/components/marketing/AiEngineLogos"
 
-// Real engine logos read as more credible than text pills, and showing all six
-// proves we cover more than the four named in the headline.
+// Real engine logos read as more credible than text pills. These are the four
+// engines scanAllEngines() actually queries — do not add one we do not scan.
 const engines = [
   { name: "ChatGPT", Logo: ChatGPTLogo },
   { name: "Claude", Logo: ClaudeLogo },
   { name: "Gemini", Logo: GeminiLogo },
   { name: "Perplexity", Logo: PerplexityLogo },
-  { name: "Google AI", Logo: GoogleAILogo },
-  { name: "Copilot", Logo: CopilotLogo },
 ]
 
 // Scattered floating engine icons — a couple of the named engines, plus one
@@ -33,7 +28,7 @@ const FLOATERS = [
 
 const DASHBOARD_ENGINES: { name: string; status: string; tone: "green" | "amber" | "muted" }[] = [
   { name: "ChatGPT", status: "Recommending you", tone: "green" },
-  { name: "Google AI", status: "Recommending you", tone: "green" },
+  { name: "Claude", status: "Recommending you", tone: "green" },
   { name: "Perplexity", status: "Sometimes", tone: "amber" },
   { name: "Gemini", status: "Working on it", tone: "muted" },
 ]
@@ -44,9 +39,9 @@ const DASHBOARD_TONE: Record<"green" | "amber" | "muted", string> = {
   muted: "text-[#86868b] bg-[#f0f0f2]",
 }
 
-// Social-proof — update to your real numbers, and swap these placeholder
-// portraits in /public/avatars for real customer photos when you have them.
-const SOCIAL = { count: "1,000+", noun: "customers", rating: "4.9" }
+// Social-proof — deliberately unquantified. A customer count and a star rating
+// here contradicted the numbers used further down the page, so this stays
+// generic until there are real figures to publish.
 const AVATARS = ["/avatars/a1.jpg", "/avatars/a2.jpg", "/avatars/a3.jpg", "/avatars/a4.jpg"]
 
 export function HeroSection() {
@@ -98,7 +93,7 @@ export function HeroSection() {
 
         {/* Sub-headline */}
         <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-7">
-          Alphaa gets your business into AI answers automatically. Why pay an agency $1,000/month when AI can do it for $99/mo?
+          Alphaa gets your business into AI answers automatically. Why pay an agency $2,000/month when AI can do it for $99/mo?
         </p>
 
         {/* AI engines row — real logos */}
@@ -119,7 +114,7 @@ export function HeroSection() {
           <HeroScanInput />
         </div>
         <p className="text-fg/40 text-xs mb-5">
-          Takes 60 seconds · No signup or credit card to see your score
+          Takes 2 minutes · No credit card · Results emailed to you
         </p>
         <div className="flex items-center justify-center">
           <a
@@ -148,17 +143,9 @@ export function HeroSection() {
           </div>
           <div className="text-left">
             <p className="text-sm leading-tight">
-              <span className="font-semibold text-fg">{SOCIAL.count} {SOCIAL.noun}</span>
-              <span className="text-fg/50"> getting found on AI with alphaa</span>
+              <span className="font-semibold text-fg">Trusted by local businesses</span>
+              <span className="text-fg/50"> and online brands getting found on AI</span>
             </p>
-            <div className="flex items-center gap-2 mt-1">
-              <div className="flex">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <Star key={i} className="w-3.5 h-3.5 text-brand-orange" fill="currentColor" />
-                ))}
-              </div>
-              <span className="text-fg/40 text-xs">Rated {SOCIAL.rating} average</span>
-            </div>
           </div>
         </div>
 
