@@ -34,12 +34,38 @@ function stripBusinessSuffixes(name: string): string {
     .trim()
 }
 
+// "GrowthTurbine" -> "Growth Turbine". AI assistants routinely re-space
+// CamelCase brand names, so a name entered as one word has to be split before
+// keyword matching or it can never match the spaced form the model wrote.
+function splitCamelCase(name: string): string {
+  return name
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+}
+
 function extractKeyWords(businessName: string): string[] {
-  const cleaned = stripBusinessSuffixes(businessName)
+  const cleaned = stripBusinessSuffixes(splitCamelCase(businessName))
   return cleaned
     .split(" ")
     .map((w) => w.toLowerCase())
     .filter((w) => w.length > 2)
+}
+
+// Alphanumerics only, lowercased — collapses "Growth Turbine", "growth-turbine"
+// and "GrowthTurbine" to the same key. Returns the squashed string plus a map
+// from each squashed index back to its index in the original, so a match can
+// still be turned into a readable snippet.
+function squash(s: string): { text: string; map: number[] } {
+  let text = ""
+  const map: number[] = []
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i]
+    if (/[a-z0-9]/i.test(c)) {
+      text += c.toLowerCase()
+      map.push(i)
+    }
+  }
+  return { text, map }
 }
 
 function checkAppearance(
@@ -49,8 +75,12 @@ function checkAppearance(
   const lowerResponse = response.toLowerCase()
   const lowerName = businessName.toLowerCase()
 
-  // Try exact match first
-  const exactIdx = lowerResponse.indexOf(lowerName)
+  // Try exact match first. Short names need a word boundary or a plain
+  // substring search matches them inside longer words ("Ace" inside "place").
+  const exactIdx =
+    lowerName.replace(/[^a-z0-9]/g, "").length < 6
+      ? lowerResponse.search(new RegExp(`\\b${lowerName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`))
+      : lowerResponse.indexOf(lowerName)
   if (exactIdx !== -1) {
     const start = Math.max(0, exactIdx - 50)
     const end = Math.min(response.length, exactIdx + lowerName.length + 100)
@@ -61,17 +91,43 @@ function checkAppearance(
     }
   }
 
+  // Punctuation/spacing-insensitive match. Without this, a business entered as
+  // "GrowthTurbine" was reported as NOT mentioned even when the model wrote
+  // "Growth Turbine" and named it as the top recommendation — a false negative
+  // on the one thing this product exists to measure. Guarded at 6+ characters
+  // so short names can't match inside unrelated words.
+  const sq = squash(businessName)
+  if (sq.text.length >= 6) {
+    const sqResponse = squash(response)
+    const sqIdx = sqResponse.text.indexOf(sq.text)
+    if (sqIdx !== -1) {
+      const origStart = sqResponse.map[sqIdx]
+      const origEnd = sqResponse.map[Math.min(sqIdx + sq.text.length - 1, sqResponse.map.length - 1)]
+      return {
+        appeared: true,
+        position: 1,
+        snippet: response.slice(Math.max(0, origStart - 50), Math.min(response.length, origEnd + 100)).trim(),
+      }
+    }
+  }
+
   // Try key word matching (2+ words must match)
   const keyWords = extractKeyWords(businessName)
   if (keyWords.length === 0) {
     return { appeared: false, position: null, snippet: null }
   }
 
+  // Whole-word only. A plain substring test matched "Ace" inside "place", so a
+  // business with a short name was told it had been mentioned when it hadn't —
+  // a false positive, which is worse than a miss when we're reporting results
+  // to a paying customer.
+  const wordRe = keyWords.map((w) => new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`))
+
   // Find sentences/chunks that contain multiple key words
   const sentences = response.split(/(?<=[.!?])\s+/)
   for (let i = 0; i < sentences.length; i++) {
     const lowerSentence = sentences[i].toLowerCase()
-    const matchCount = keyWords.filter((w) => lowerSentence.includes(w)).length
+    const matchCount = wordRe.filter((re) => re.test(lowerSentence)).length
     const threshold = keyWords.length === 1 ? 1 : Math.max(2, Math.ceil(keyWords.length * 0.5))
     if (matchCount >= threshold) {
       const snippet = sentences[i].slice(0, 150).trim()
