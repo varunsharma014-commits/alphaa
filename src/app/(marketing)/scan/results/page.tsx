@@ -987,6 +987,7 @@ function CopyBlock({
   kind: string
 }) {
   const [copied, setCopied] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const copy = useCallback(async () => {
     try {
@@ -1017,13 +1018,25 @@ function CopyBlock({
           )}
         </button>
       </div>
-      {/* No max-height here on purpose: a vertical clamp makes the <pre> a nested
+      {/* Collapsed by default. Expanded, the two blocks were ~1,060 words —
+          59% of the whole page — of raw markup shown to a reader who is
+          usually a dentist, not a developer. Copy works without opening it.
+          No max-height when open: a vertical clamp makes the <pre> a nested
           scroll container (overflow-x:auto forces overflow-y:auto too), which
-          swallows wheel events and traps visitors mid-page. Full height + page
-          scroll; horizontal overflow only. */}
-      <pre className="m-0 px-4 py-3.5 overflow-x-auto text-[11.5px] leading-relaxed text-fg/70 mono">
-        <code>{code}</code>
-      </pre>
+          swallows wheel events and traps visitors mid-page. */}
+      {open ? (
+        <pre className="m-0 px-4 py-3.5 overflow-x-auto text-[11.5px] leading-relaxed text-fg/70 mono">
+          <code>{code}</code>
+        </pre>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="w-full text-left px-4 py-3.5 text-[12px] text-fg/45 hover:text-fg/70 transition-colors"
+        >
+          {code.split("\n").length} lines &middot; Show the code
+        </button>
+      )}
     </div>
   )
 }
@@ -1153,16 +1166,12 @@ function QuickFixSection({ scanId }: { scanId: string }) {
             </p>
           </div>
 
-          {/* CTA */}
+          {/* No CTA here. This block now sits below the decision block, so a
+              third identical "start free" button is just repetition. */}
           <div className="mt-5 pt-5 border-t border-line/[0.08]">
             <p className="text-fg text-[15px] font-semibold leading-snug text-center m-0">
-              That&apos;s one page. alphaa does this for every page.
+              That&apos;s one page. alphaa does this for every page, every week.
             </p>
-            <p className="text-muted text-[13px] leading-relaxed text-center max-w-md mx-auto mt-2 mb-5">
-              We write it, keep it current as your business changes, and re-check every week
-              whether AI actually picked it up.
-            </p>
-            <SignupCta placement="quick_fix" />
           </div>
         </div>
       </div>
