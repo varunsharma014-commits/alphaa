@@ -163,6 +163,25 @@ function firstSentence(text: string): string {
   return m ? m[0] : text
 }
 
+// AI answers come back as markdown. Rendering them raw put literal "###",
+// "**" and "- " on the page, which is the single biggest reason the evidence
+// cards read as a wall of text. Strip the syntax, keep the words.
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/```[\s\S]*?```/g, "")           // fenced code
+    .replace(/^\s*#{1,6}\s*/gm, "")           // headings
+    .replace(/\*\*(.+?)\*\*/g, "$1")         // bold
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "$1") // italics
+    .replace(/^\s*[-*+]\s+/gm, "\u2022 ")     // bullets -> real bullet
+    .replace(/^\s*\d+\.\s+/gm, "")           // numbered list markers
+    .replace(/\[(\d+)\]/g, "")                // citation refs [1][3]
+    .replace(/\[(.+?)\]\((.+?)\)/g, "$1")    // links
+    .replace(/^\s*>\s?/gm, "")                // blockquotes
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]{2,}/g, " ")
+    .trim()
+}
+
 function truncateAtWord(text: string, max: number): string {
   if (text.length <= max) return text
   const cut = text.slice(0, max)
@@ -419,6 +438,8 @@ function HeroHeadline({
   aiMentions,
   totalEngines,
   verdict,
+  missedNames,
+  foundNames,
 }: {
   loss: LossInfo | null
   keyword: string | null
@@ -428,6 +449,8 @@ function HeroHeadline({
   aiMentions: number
   totalEngines: number
   verdict: string
+  missedNames: string[]
+  foundNames: string[]
 }) {
   const missing = totalEngines - aiMentions
   const mentionsClass =
@@ -441,17 +464,20 @@ function HeroHeadline({
   // single ~26-word sentence that fused the search estimate and the miss count
   // into one headline — too much to take in at a glance on the page that has to
   // land a single message.
+  // "ChatGPT, Claude and Gemini" — an owner knows those names; "AI assistant"
+  // and "3 of 4 answers" make them do the translation themselves.
+  const list = (names: string[]) =>
+    names.length <= 1
+      ? names[0] ?? ""
+      : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`
+
   const headline =
     aiMentions === 0 ? (
-      <>No AI assistant named <span className="text-red-400">you</span>.</>
+      <>{list(missedNames)} <span className="text-red-500">didn&rsquo;t find you</span>.</>
     ) : aiMentions === totalEngines ? (
-      <>AI names you in <span className="text-green-400">every answer</span>.</>
+      <>{list(foundNames)} <span className="text-green-600">all found you</span>.</>
     ) : (
-      <>
-        You&rsquo;re missing from{" "}
-        <span className={`mono ${mentionsClass}`}>{missing} of {totalEngines}</span>{" "}
-        AI answers.
-      </>
+      <>{list(missedNames)} <span className="text-red-500">didn&rsquo;t find you</span>.</>
     )
 
   return (
@@ -500,8 +526,9 @@ function EvidenceCard({
     engine.evidence && typeof engine.evidence.query === "string" && engine.evidence.query.trim()
       ? engine.evidence.query.trim()
       : null
-  const isLong = fullText.length > 300
-  const shownText = expanded ? fullText : truncateAtWord(fullText, 300)
+  const cleanText = stripMarkdown(fullText)
+  const isLong = cleanText.length > 190
+  const shownText = expanded ? cleanText : truncateAtWord(cleanText, 190)
 
   return (
     <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-5">
@@ -1306,6 +1333,11 @@ function ScanResultsContent() {
 
   const totalEngines = engineData.length
   const aiMentions   = engineData.filter((e) => e.appeared).length
+  // Name the engines. "No AI assistant named you" means nothing to a business
+  // owner — "ChatGPT, Claude and Gemini didn't find you" is the same fact in
+  // words they already know.
+  const missedNames  = engineData.filter((e) => !e.appeared).map((e) => e.name)
+  const foundNames   = engineData.filter((e) => e.appeared).map((e) => e.name)
   const verdict      = buildVerdict(aiMentions, totalEngines, businessName)
 
   // The scanned business's own Google position, from live SERP data if present.
@@ -1345,7 +1377,7 @@ function ScanResultsContent() {
 
   return (
     <div className="pt-20 pb-20 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto space-y-10">
+      <div className="max-w-[680px] mx-auto space-y-10">
 
         {/* ── Business header bar ─────────────────────────────────── */}
         <div className="flex items-center gap-3 bg-bg-secondary border border-line/[0.08] rounded-xl px-4 py-3.5">
@@ -1399,6 +1431,8 @@ function ScanResultsContent() {
                   aiMentions={aiMentions}
                   totalEngines={totalEngines}
                   verdict={verdict}
+                  missedNames={missedNames}
+                  foundNames={foundNames}
                 />
                 {loss && loss.basis && (
                   <p className="text-fg/30 text-[11px] leading-relaxed mt-3 mb-0">

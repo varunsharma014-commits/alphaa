@@ -29,6 +29,8 @@ const config: Config = {
         fg: "rgb(var(--fg-rgb) / <alpha-value>)",
         line: "rgb(var(--line-rgb) / <alpha-value>)",
         muted: "rgb(var(--muted-rgb) / <alpha-value>)",
+        // Captions/legal only — apple.com uses this sparingly, never for body copy
+        "muted-soft": "rgb(var(--muted-soft-rgb, var(--muted-rgb)) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-inter-tight)", "system-ui", "sans-serif"],

@@ -30,8 +30,8 @@
 
 /* ── Apple-blue brand scope ── */
 [data-brand="blue"] {
-  --orange-rgb: 0 113 227;
-  --orange-light-rgb: 20 130 235;
+  --orange-rgb: 0 102 204;
+  --orange-light-rgb: 0 118 235;
 }
 /* --ds-accent is also set inside the dark/light theme blocks below, so this
    needs a compound selector (higher specificity) to win regardless of
@@ -114,7 +114,8 @@
 
   --fg-rgb: 29 29 31;
   --line-rgb: 29 29 31;
-  --muted-rgb: 110 110 115;
+  --muted-rgb: 51 51 54;
+  --muted-soft-rgb: 110 110 115;
   --dot-rgb: 29 29 31;
 
   --card-bg: #FFFFFF;
@@ -191,7 +192,7 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 17px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
