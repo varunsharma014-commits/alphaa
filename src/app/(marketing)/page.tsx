@@ -10,6 +10,7 @@ import { MechanismSection } from "@/components/marketing/MechanismSection"
 import { HomePricingSection } from "@/components/marketing/HomePricingSection"
 import { ComparisonTable } from "@/components/marketing/ComparisonTable"
 import { CaseStudiesSection } from "@/components/marketing/CaseStudiesSection"
+import { SocialProof } from "@/components/marketing/SocialProof"
 import { FaqSection } from "@/components/marketing/FaqSection"
 import { CtaBanner } from "@/components/marketing/CtaBanner"
 
@@ -60,9 +61,11 @@ export default function HomePage() {
       <PlatformLogos />
       {/* Pain, then the cost comparison that resolves it */}
       <AgencySection />
-      {/* One proof block. SocialProof (a second testimonial wall) and
-          SolutionSection (a second feature list) were cut as duplicates. */}
+      {/* Proof cluster: three deep case studies, then the stats bar and the
+          star-rated testimonial wall. SolutionSection (a second feature list,
+          duplicating WholeSeoTeamSection) stays cut. */}
       <CaseStudiesSection />
+      <SocialProof />
       <AllEnginesSection />
       <HowItWorksSection />
       <MechanismSection />
