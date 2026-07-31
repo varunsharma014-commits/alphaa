@@ -1211,7 +1211,10 @@ function QuickFixSection({ scanId }: { scanId: string }) {
 function ScanResultsContent() {
   const params  = useSearchParams()
   const scanId  = params.get("id")
+  const token   = params.get("t")
   const [result, setResult]   = useState<ScanResult | null>(null)
+  const [gated, setGated]     = useState(false)
+  const [gateInfo, setGateInfo] = useState<{ businessName: string; maskedEmail: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState(false)
   const [retryKey, setRetryKey] = useState(0)
@@ -1224,11 +1227,15 @@ function ScanResultsContent() {
     const poll = async () => {
       if (cancelled) return
       try {
-        const res  = await fetch(`/api/scan/result?id=${scanId}`)
+        const res  = await fetch(`/api/scan/result?id=${scanId}${token ? `&t=${encodeURIComponent(token)}` : ""}`)
         if (res.ok) {
           const data = await res.json()
           if (data.ready) {
-            if (!cancelled) { setResult(data.result); setLoading(false) }
+            if (!cancelled) {
+              if (data.gated) { setGated(true); setGateInfo(data.result) }
+              else setResult(data.result)
+              setLoading(false)
+            }
             return
           }
         }
@@ -1268,6 +1275,31 @@ function ScanResultsContent() {
   }, [])
 
   if (loading) return <ScanLoader />
+
+  // Gate: the report only opens from the emailed link, so a bot or a throwaway
+  // address never reaches the score or the AI answers.
+  if (gated) {
+    return (
+      <div className="pt-28 pb-24 px-4">
+        <div className="max-w-[520px] mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl bg-brand-orange/10 flex items-center justify-center mx-auto mb-7">
+            <Mail className="w-6 h-6 text-brand-orange" />
+          </div>
+          <h1 className="text-fg text-[32px] sm:text-[40px] font-bold leading-[1.15] tracking-[-0.02em] mb-4">
+            Check your email.
+          </h1>
+          <p className="text-muted text-[17px] leading-relaxed mb-8">
+            {gateInfo?.businessName ? <>Your report for <span className="text-fg font-medium">{gateInfo.businessName}</span> is ready. </> : "Your report is ready. "}
+            We sent the link to {gateInfo?.maskedEmail ? <span className="text-fg font-medium">{gateInfo.maskedEmail}</span> : "your inbox"}.
+          </p>
+          <p className="text-muted-soft text-[14px] leading-relaxed">
+            Opening it from the email confirms the address is yours — that&rsquo;s
+            the only reason we ask.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   if (error || !result) {
     return (

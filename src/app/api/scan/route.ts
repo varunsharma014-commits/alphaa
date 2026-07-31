@@ -16,6 +16,8 @@ import {
   inferCountryCode,
   type BusinessProfile,
 } from "@/lib/scan-insights"
+import { sendAuditResultsEmail } from "@/lib/email"
+import { scanResultsUrl } from "@/lib/scan-token"
 import type { AiSearchStatus } from "@/types/audit"
 import type { EngineEvidence, ScanInsights, ScanSerp, CompetitorDetail } from "@/types/scan"
 
@@ -279,7 +281,49 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
         engineResponses: engineResponses as object,
       },
     })
+
+    // The report is gated behind a token that only arrives by email, so this
+    // send is what actually delivers the result — fire it here rather than
+    // waiting for the visitor to ask. Never let a mail failure fail the scan;
+    // the results page offers a resend.
+    void sendScanReadyEmail(leadId).catch((e) =>
+      console.error("[scan] results email failed", leadId, e)
+    )
   }
+}
+
+async function sendScanReadyEmail(leadId: string) {
+  const lead = await db.scanLead.findUnique({ where: { id: leadId } })
+  if (!lead || !lead.visibilityScore) return
+
+  const status = (lead.aiSearchStatus ?? {}) as Record<string, string>
+  const engines = [
+    { key: "chatgpt", name: "ChatGPT" },
+    { key: "google_ai", name: "Claude" },
+    { key: "perplexity", name: "Perplexity" },
+    { key: "gemini", name: "Gemini" },
+  ].map((e) => ({
+    name: e.name,
+    found: status[e.key] === "occasionally" || status[e.key] === "frequently",
+    snippet: "",
+  }))
+
+  const issues = Array.isArray(lead.issues) ? (lead.issues as unknown[]) : []
+  const first = issues[0] as Record<string, unknown> | undefined
+  const topIssue =
+    (first && typeof first.explanation === "string" && first.explanation) ||
+    (first && typeof first.headline === "string" && first.headline) ||
+    "Your business is missing from most AI answers about your area."
+
+  await sendAuditResultsEmail(lead.email, {
+    businessName: lead.businessName || lead.businessUrl || "Your business",
+    city: lead.city ?? "",
+    overallScore: lead.visibilityScore,
+    engines,
+    topIssue,
+    isSubscriber: false,
+    resultsUrl: scanResultsUrl(lead.id, lead.email),
+  })
 }
 
 function getFallbackAudit(businessName: string, city: string, businessType: string) {

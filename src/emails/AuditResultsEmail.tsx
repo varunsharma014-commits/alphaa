@@ -16,10 +16,13 @@ interface AuditResultsEmailProps {
   engines: EngineResult[]
   topIssue: string
   isSubscriber: boolean
+  /** Tokenised link to the full report. The results page is gated, so this is
+   *  the only way the recipient can open it — always the primary button. */
+  resultsUrl?: string
 }
 
 export default function AuditResultsEmail({
-  businessName, city, overallScore, engines, topIssue, isSubscriber,
+  businessName, city, overallScore, engines, topIssue, isSubscriber, resultsUrl,
 }: AuditResultsEmailProps) {
   const found = engines.filter((e) => e.found).length
   const total = engines.length
@@ -82,6 +85,18 @@ export default function AuditResultsEmail({
               <Text style={issueLabel}>TOP ISSUE FOUND</Text>
               <Text style={issueText}>{topIssue}</Text>
             </Section>
+
+            {resultsUrl && (
+              <>
+                <Button style={button} href={resultsUrl}>
+                  View your full report →
+                </Button>
+                <Text style={trialNote}>
+                  This link is unique to you — it opens the full scan, including
+                  what each AI assistant actually said.
+                </Text>
+              </>
+            )}
 
             {!isSubscriber && (
               <>
