@@ -2,11 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Font imports ── */
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@1&display=swap');
-
-/* Geist Mono via CDN */
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap');
+/* Fonts are loaded with next/font in app/layout.tsx (self-hosted at build
+   time). They used to be @import'ed from fonts.googleapis.com here, which put
+   a third-party render-blocking request on the critical path. */
 
 /* ── Theme-independent tokens ── */
 :root {
@@ -26,10 +24,8 @@
   --warning: #FBBF24;
   --error: #EF4444;
 
-  /* Fonts */
-  --font-inter-tight: 'Inter Tight', system-ui, sans-serif;
-  --font-instrument-serif: 'Instrument Serif', Georgia, serif;
-  --font-geist-mono: 'Geist Mono', monospace;
+  /* --font-inter-tight / --font-instrument-serif / --font-geist-mono are
+     defined by next/font on <html>; declaring them here too would override it. */
 }
 
 /* ── Apple-blue brand scope ── */
