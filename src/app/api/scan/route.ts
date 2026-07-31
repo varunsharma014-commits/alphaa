@@ -324,6 +324,15 @@ async function sendScanReadyEmail(leadId: string) {
     isSubscriber: false,
     resultsUrl: scanResultsUrl(lead.id, lead.email),
   })
+
+  // Record that the link actually reached them. The results gate keys off this:
+  // if the send failed we must NOT lock the visitor out of their own report.
+  const og = (lead.ogData && typeof lead.ogData === "object" && !Array.isArray(lead.ogData))
+    ? (lead.ogData as Record<string, unknown>)
+    : {}
+  await db.scanLead
+    .update({ where: { id: lead.id }, data: { ogData: { ...og, reportEmailed: true } as object } })
+    .catch(() => {})
 }
 
 function getFallbackAudit(businessName: string, city: string, businessType: string) {
