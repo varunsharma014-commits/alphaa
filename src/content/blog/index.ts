@@ -41,6 +41,8 @@ import { meta as quotableContentMeta, Body as QuotableContentBody } from "./how-
 import { meta as vetsMeta, Body as VetsBody } from "./how-veterinary-clinics-get-recommended-by-ai"
 import { meta as fixWrongAiMeta, Body as FixWrongAiBody } from "./fix-wrong-ai-information-about-your-business"
 import { meta as autoRepairMeta, Body as AutoRepairBody } from "./how-auto-repair-shops-get-recommended-by-ai"
+import { meta as backlinksMeta, Body as BacklinksBody } from "./do-backlinks-matter-for-ai-search"
+import { meta as multiLocationMeta, Body as MultiLocationBody } from "./multi-location-business-ai-visibility"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -87,6 +89,8 @@ export const POSTS: Post[] = [
   { meta: vetsMeta, Body: VetsBody },
   { meta: fixWrongAiMeta, Body: FixWrongAiBody },
   { meta: autoRepairMeta, Body: AutoRepairBody },
+  { meta: backlinksMeta, Body: BacklinksBody },
+  { meta: multiLocationMeta, Body: MultiLocationBody },
 ]
 
 export function getAllPosts(): Post[] {
