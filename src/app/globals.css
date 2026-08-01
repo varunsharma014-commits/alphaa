@@ -322,59 +322,64 @@ body {
   50% { opacity: 0.4; }
 }
 
-/* ── Blog article typography (write posts as plain semantic JSX) ── */
+/* ── Blog article typography (write posts as plain semantic JSX) ──
+   Every value here was hardcoded light-on-dark (rgba(255,255,255,…), #fff,
+   #0d0d0d) from when the site was dark. Once marketing flipped to the light
+   theme, all 44 posts rendered as white text on a white page — the body copy
+   was present in the DOM and completely invisible. Everything now goes through
+   the theme tokens so both themes work. Do not reintroduce literal colours. */
 .article-prose {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 16px;
+  color: rgb(var(--muted-rgb));
+  font-size: 17px;
   line-height: 1.75;
 }
 .article-prose h2 {
-  color: #fff;
-  font-size: 24px;
+  color: rgb(var(--fg-rgb));
+  font-size: 26px;
   font-weight: 600;
   letter-spacing: -0.01em;
   margin: 2em 0 0.6em;
 }
 .article-prose h3 {
-  color: #fff;
-  font-size: 18px;
+  color: rgb(var(--fg-rgb));
+  font-size: 19px;
   font-weight: 600;
   margin: 1.6em 0 0.5em;
 }
 .article-prose p { margin: 1em 0; }
-.article-prose a { color: #ff6b1a; text-decoration: underline; }
-.article-prose strong { color: #fff; font-weight: 600; }
+.article-prose a { color: rgb(var(--orange-rgb)); text-decoration: underline; }
+.article-prose strong { color: rgb(var(--fg-rgb)); font-weight: 600; }
 .article-prose ul { margin: 1em 0; padding-left: 1.25em; list-style: disc; }
 .article-prose ol { margin: 1em 0; padding-left: 1.25em; list-style: decimal; }
 .article-prose li { margin: 0.4em 0; }
 .article-prose code {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(var(--fg-rgb) / 0.06);
   border-radius: 4px;
   padding: 2px 6px;
   font-size: 0.875em;
   font-family: var(--font-geist-mono), monospace;
-  color: #e5e5e5;
+  color: rgb(var(--fg-rgb) / 0.85);
 }
 .article-prose pre {
-  background: #0d0d0d;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgb(var(--fg-rgb) / 0.04);
+  border: 1px solid rgb(var(--line-rgb) / 0.12);
   border-radius: 12px;
   padding: 16px;
   overflow-x: auto;
   margin: 1.25em 0;
 }
-.article-prose pre code { background: none; padding: 0; font-size: 13px; line-height: 1.6; color: #cbd5e1; }
-.article-prose table { width: 100%; border-collapse: collapse; margin: 1.25em 0; font-size: 14px; }
-.article-prose th, .article-prose td { border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 12px; text-align: left; }
-.article-prose th { color: #fff; font-weight: 600; background: rgba(255, 255, 255, 0.03); }
+.article-prose pre code { background: none; padding: 0; font-size: 13px; line-height: 1.6; color: rgb(var(--fg-rgb) / 0.85); }
+.article-prose table { width: 100%; border-collapse: collapse; margin: 1.25em 0; font-size: 15px; }
+.article-prose th, .article-prose td { border: 1px solid rgb(var(--line-rgb) / 0.12); padding: 8px 12px; text-align: left; }
+.article-prose th { color: rgb(var(--fg-rgb)); font-weight: 600; background: rgb(var(--fg-rgb) / 0.03); }
 .article-prose blockquote {
-  border-left: 3px solid #ff6b1a;
+  border-left: 3px solid rgb(var(--orange-rgb));
   padding-left: 1em;
   margin: 1.25em 0;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgb(var(--muted-soft-rgb, var(--muted-rgb)));
   font-style: italic;
 }
-.article-prose hr { border: none; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 2em 0; }
+.article-prose hr { border: none; border-top: 1px solid rgb(var(--line-rgb) / 0.12); margin: 2em 0; }
 
 @layer utilities {
   .text-balance {
