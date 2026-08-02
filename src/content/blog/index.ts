@@ -43,6 +43,8 @@ import { meta as fixWrongAiMeta, Body as FixWrongAiBody } from "./fix-wrong-ai-i
 import { meta as autoRepairMeta, Body as AutoRepairBody } from "./how-auto-repair-shops-get-recommended-by-ai"
 import { meta as backlinksMeta, Body as BacklinksBody } from "./do-backlinks-matter-for-ai-search"
 import { meta as multiLocationMeta, Body as MultiLocationBody } from "./multi-location-business-ai-visibility"
+import { meta as bestOfListsMeta, Body as BestOfListsBody } from "./get-into-ai-best-of-lists"
+import { meta as gymsMeta, Body as GymsBody } from "./how-gyms-fitness-studios-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -91,6 +93,8 @@ export const POSTS: Post[] = [
   { meta: autoRepairMeta, Body: AutoRepairBody },
   { meta: backlinksMeta, Body: BacklinksBody },
   { meta: multiLocationMeta, Body: MultiLocationBody },
+  { meta: bestOfListsMeta, Body: BestOfListsBody },
+  { meta: gymsMeta, Body: GymsBody },
 ]
 
 export function getAllPosts(): Post[] {
