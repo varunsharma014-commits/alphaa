@@ -45,6 +45,8 @@ import { meta as backlinksMeta, Body as BacklinksBody } from "./do-backlinks-mat
 import { meta as multiLocationMeta, Body as MultiLocationBody } from "./multi-location-business-ai-visibility"
 import { meta as bestOfListsMeta, Body as BestOfListsBody } from "./get-into-ai-best-of-lists"
 import { meta as gymsMeta, Body as GymsBody } from "./how-gyms-fitness-studios-get-recommended-by-ai"
+import { meta as copilotMeta, Body as CopilotBody } from "./how-to-get-recommended-by-microsoft-copilot"
+import { meta as competitorMeta, Body as CompetitorBody } from "./why-ai-recommends-your-competitor"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -95,6 +97,8 @@ export const POSTS: Post[] = [
   { meta: multiLocationMeta, Body: MultiLocationBody },
   { meta: bestOfListsMeta, Body: BestOfListsBody },
   { meta: gymsMeta, Body: GymsBody },
+  { meta: copilotMeta, Body: CopilotBody },
+  { meta: competitorMeta, Body: CompetitorBody },
 ]
 
 export function getAllPosts(): Post[] {
