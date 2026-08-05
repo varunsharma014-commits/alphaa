@@ -49,6 +49,8 @@ import { meta as copilotMeta, Body as CopilotBody } from "./how-to-get-recommend
 import { meta as competitorMeta, Body as CompetitorBody } from "./why-ai-recommends-your-competitor"
 import { meta as ecommerceMeta, Body as EcommerceBody } from "./ecommerce-products-recommended-by-ai"
 import { meta as wikipediaMeta, Body as WikipediaBody } from "./wikipedia-wikidata-ai-visibility"
+import { meta as freshnessMeta, Body as FreshnessBody } from "./content-freshness-ai-search"
+import { meta as gbpAnswersMeta, Body as GbpAnswersBody } from "./google-business-profile-ai-answers"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -103,6 +105,8 @@ export const POSTS: Post[] = [
   { meta: competitorMeta, Body: CompetitorBody },
   { meta: ecommerceMeta, Body: EcommerceBody },
   { meta: wikipediaMeta, Body: WikipediaBody },
+  { meta: freshnessMeta, Body: FreshnessBody },
+  { meta: gbpAnswersMeta, Body: GbpAnswersBody },
 ]
 
 export function getAllPosts(): Post[] {
