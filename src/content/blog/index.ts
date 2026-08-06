@@ -51,6 +51,8 @@ import { meta as ecommerceMeta, Body as EcommerceBody } from "./ecommerce-produc
 import { meta as wikipediaMeta, Body as WikipediaBody } from "./wikipedia-wikidata-ai-visibility"
 import { meta as freshnessMeta, Body as FreshnessBody } from "./content-freshness-ai-search"
 import { meta as gbpAnswersMeta, Body as GbpAnswersBody } from "./google-business-profile-ai-answers"
+import { meta as pressReleasesMeta, Body as PressReleasesBody } from "./press-releases-news-coverage-ai-visibility"
+import { meta as hotelsMeta, Body as HotelsBody } from "./how-hotels-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -107,6 +109,8 @@ export const POSTS: Post[] = [
   { meta: wikipediaMeta, Body: WikipediaBody },
   { meta: freshnessMeta, Body: FreshnessBody },
   { meta: gbpAnswersMeta, Body: GbpAnswersBody },
+  { meta: pressReleasesMeta, Body: PressReleasesBody },
+  { meta: hotelsMeta, Body: HotelsBody },
 ]
 
 export function getAllPosts(): Post[] {
