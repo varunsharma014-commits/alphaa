@@ -53,6 +53,8 @@ import { meta as freshnessMeta, Body as FreshnessBody } from "./content-freshnes
 import { meta as gbpAnswersMeta, Body as GbpAnswersBody } from "./google-business-profile-ai-answers"
 import { meta as pressReleasesMeta, Body as PressReleasesBody } from "./press-releases-news-coverage-ai-visibility"
 import { meta as hotelsMeta, Body as HotelsBody } from "./how-hotels-get-recommended-by-ai"
+import { meta as videoMeta, Body as VideoBody } from "./do-videos-show-up-in-ai-answers"
+import { meta as advisorsMeta, Body as AdvisorsBody } from "./how-financial-advisors-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -111,6 +113,8 @@ export const POSTS: Post[] = [
   { meta: gbpAnswersMeta, Body: GbpAnswersBody },
   { meta: pressReleasesMeta, Body: PressReleasesBody },
   { meta: hotelsMeta, Body: HotelsBody },
+  { meta: videoMeta, Body: VideoBody },
+  { meta: advisorsMeta, Body: AdvisorsBody },
 ]
 
 export function getAllPosts(): Post[] {
