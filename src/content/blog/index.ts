@@ -55,6 +55,8 @@ import { meta as pressReleasesMeta, Body as PressReleasesBody } from "./press-re
 import { meta as hotelsMeta, Body as HotelsBody } from "./how-hotels-get-recommended-by-ai"
 import { meta as videoMeta, Body as VideoBody } from "./do-videos-show-up-in-ai-answers"
 import { meta as advisorsMeta, Body as AdvisorsBody } from "./how-financial-advisors-get-recommended-by-ai"
+import { meta as pricingPagesMeta, Body as PricingPagesBody } from "./pricing-pages-ai-recommendations"
+import { meta as therapistsMeta, Body as TherapistsBody } from "./how-therapists-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -115,6 +117,8 @@ export const POSTS: Post[] = [
   { meta: hotelsMeta, Body: HotelsBody },
   { meta: videoMeta, Body: VideoBody },
   { meta: advisorsMeta, Body: AdvisorsBody },
+  { meta: pricingPagesMeta, Body: PricingPagesBody },
+  { meta: therapistsMeta, Body: TherapistsBody },
 ]
 
 export function getAllPosts(): Post[] {
