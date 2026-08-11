@@ -61,6 +61,8 @@ import { meta as eeatMeta, Body as EeatBody } from "./eeat-author-bios-ai-search
 import { meta as weddingMeta, Body as WeddingBody } from "./how-wedding-vendors-get-recommended-by-ai"
 import { meta as directoriesMeta, Body as DirectoriesBody } from "./directory-listings-nap-citations-ai-search"
 import { meta as roofingMeta, Body as RoofingBody } from "./how-roofing-contractors-get-recommended-by-ai"
+import { meta as pdfsImagesMeta, Body as PdfsImagesBody } from "./do-ai-engines-read-pdfs-images"
+import { meta as salonsMeta, Body as SalonsBody } from "./how-salons-barbershops-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -127,6 +129,8 @@ export const POSTS: Post[] = [
   { meta: weddingMeta, Body: WeddingBody },
   { meta: directoriesMeta, Body: DirectoriesBody },
   { meta: roofingMeta, Body: RoofingBody },
+  { meta: pdfsImagesMeta, Body: PdfsImagesBody },
+  { meta: salonsMeta, Body: SalonsBody },
 ]
 
 export function getAllPosts(): Post[] {
