@@ -63,6 +63,8 @@ import { meta as directoriesMeta, Body as DirectoriesBody } from "./directory-li
 import { meta as roofingMeta, Body as RoofingBody } from "./how-roofing-contractors-get-recommended-by-ai"
 import { meta as pdfsImagesMeta, Body as PdfsImagesBody } from "./do-ai-engines-read-pdfs-images"
 import { meta as salonsMeta, Body as SalonsBody } from "./how-salons-barbershops-get-recommended-by-ai"
+import { meta as socialProfilesMeta, Body as SocialProfilesBody } from "./do-social-media-profiles-affect-ai-search"
+import { meta as chiropractorsMeta, Body as ChiropractorsBody } from "./how-chiropractors-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -131,6 +133,8 @@ export const POSTS: Post[] = [
   { meta: roofingMeta, Body: RoofingBody },
   { meta: pdfsImagesMeta, Body: PdfsImagesBody },
   { meta: salonsMeta, Body: SalonsBody },
+  { meta: socialProfilesMeta, Body: SocialProfilesBody },
+  { meta: chiropractorsMeta, Body: ChiropractorsBody },
 ]
 
 export function getAllPosts(): Post[] {
