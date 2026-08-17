@@ -68,7 +68,7 @@ function squash(s: string): { text: string; map: number[] } {
   return { text, map }
 }
 
-function checkAppearance(
+export function checkAppearance(
   response: string,
   businessName: string
 ): { appeared: boolean; position: number | null; snippet: string | null } {
