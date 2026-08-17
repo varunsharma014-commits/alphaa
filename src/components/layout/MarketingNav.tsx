@@ -65,16 +65,16 @@ export function MarketingNav() {
                 {link.label}
               </Link>
             ))}
+          </nav>
+
+          {/* Desktop: Login sits directly beside the CTA */}
+          <div className="hidden md:flex items-center gap-4">
             <Link
               href="/login"
               className="text-sm font-medium text-muted hover:text-fg transition-colors"
             >
               Login
             </Link>
-          </nav>
-
-          {/* Desktop CTA */}
-          <div className="hidden md:flex">
             <OrangePillButton href="/scan" size="sm">
               Get free scan →
             </OrangePillButton>
