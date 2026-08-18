@@ -65,6 +65,8 @@ import { meta as pdfsImagesMeta, Body as PdfsImagesBody } from "./do-ai-engines-
 import { meta as salonsMeta, Body as SalonsBody } from "./how-salons-barbershops-get-recommended-by-ai"
 import { meta as socialProfilesMeta, Body as SocialProfilesBody } from "./do-social-media-profiles-affect-ai-search"
 import { meta as chiropractorsMeta, Body as ChiropractorsBody } from "./how-chiropractors-get-recommended-by-ai"
+import { meta as paidAdsMeta, Body as PaidAdsBody } from "./do-paid-ads-affect-ai-recommendations"
+import { meta as mspsMeta, Body as MspsBody } from "./how-msps-it-support-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -135,6 +137,8 @@ export const POSTS: Post[] = [
   { meta: salonsMeta, Body: SalonsBody },
   { meta: socialProfilesMeta, Body: SocialProfilesBody },
   { meta: chiropractorsMeta, Body: ChiropractorsBody },
+  { meta: paidAdsMeta, Body: PaidAdsBody },
+  { meta: mspsMeta, Body: MspsBody },
 ]
 
 export function getAllPosts(): Post[] {
