@@ -67,6 +67,8 @@ import { meta as socialProfilesMeta, Body as SocialProfilesBody } from "./do-soc
 import { meta as chiropractorsMeta, Body as ChiropractorsBody } from "./how-chiropractors-get-recommended-by-ai"
 import { meta as paidAdsMeta, Body as PaidAdsBody } from "./do-paid-ads-affect-ai-recommendations"
 import { meta as mspsMeta, Body as MspsBody } from "./how-msps-it-support-get-recommended-by-ai"
+import { meta as insuranceMeta, Body as InsuranceBody } from "./how-insurance-agencies-get-recommended-by-ai"
+import { meta as comparisonPagesMeta, Body as ComparisonPagesBody } from "./comparison-pages-ai-search"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -139,6 +141,8 @@ export const POSTS: Post[] = [
   { meta: chiropractorsMeta, Body: ChiropractorsBody },
   { meta: paidAdsMeta, Body: PaidAdsBody },
   { meta: mspsMeta, Body: MspsBody },
+  { meta: insuranceMeta, Body: InsuranceBody },
+  { meta: comparisonPagesMeta, Body: ComparisonPagesBody },
 ]
 
 export function getAllPosts(): Post[] {
