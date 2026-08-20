@@ -69,6 +69,8 @@ import { meta as paidAdsMeta, Body as PaidAdsBody } from "./do-paid-ads-affect-a
 import { meta as mspsMeta, Body as MspsBody } from "./how-msps-it-support-get-recommended-by-ai"
 import { meta as insuranceMeta, Body as InsuranceBody } from "./how-insurance-agencies-get-recommended-by-ai"
 import { meta as comparisonPagesMeta, Body as ComparisonPagesBody } from "./comparison-pages-ai-search"
+import { meta as aeoCostMeta, Body as AeoCostBody } from "./how-much-does-aeo-cost"
+import { meta as staffingMeta, Body as StaffingBody } from "./how-staffing-recruiting-agencies-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -143,6 +145,8 @@ export const POSTS: Post[] = [
   { meta: mspsMeta, Body: MspsBody },
   { meta: insuranceMeta, Body: InsuranceBody },
   { meta: comparisonPagesMeta, Body: ComparisonPagesBody },
+  { meta: aeoCostMeta, Body: AeoCostBody },
+  { meta: staffingMeta, Body: StaffingBody },
 ]
 
 export function getAllPosts(): Post[] {
