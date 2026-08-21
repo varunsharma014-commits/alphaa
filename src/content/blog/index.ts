@@ -71,6 +71,8 @@ import { meta as insuranceMeta, Body as InsuranceBody } from "./how-insurance-ag
 import { meta as comparisonPagesMeta, Body as ComparisonPagesBody } from "./comparison-pages-ai-search"
 import { meta as aeoCostMeta, Body as AeoCostBody } from "./how-much-does-aeo-cost"
 import { meta as staffingMeta, Body as StaffingBody } from "./how-staffing-recruiting-agencies-get-recommended-by-ai"
+import { meta as moversMeta, Body as MoversBody } from "./how-moving-companies-get-recommended-by-ai"
+import { meta as cityPagesMeta, Body as CityPagesBody } from "./do-city-landing-pages-work-ai-search"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -147,6 +149,8 @@ export const POSTS: Post[] = [
   { meta: comparisonPagesMeta, Body: ComparisonPagesBody },
   { meta: aeoCostMeta, Body: AeoCostBody },
   { meta: staffingMeta, Body: StaffingBody },
+  { meta: moversMeta, Body: MoversBody },
+  { meta: cityPagesMeta, Body: CityPagesBody },
 ]
 
 export function getAllPosts(): Post[] {
