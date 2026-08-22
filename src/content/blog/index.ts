@@ -73,6 +73,8 @@ import { meta as aeoCostMeta, Body as AeoCostBody } from "./how-much-does-aeo-co
 import { meta as staffingMeta, Body as StaffingBody } from "./how-staffing-recruiting-agencies-get-recommended-by-ai"
 import { meta as moversMeta, Body as MoversBody } from "./how-moving-companies-get-recommended-by-ai"
 import { meta as cityPagesMeta, Body as CityPagesBody } from "./do-city-landing-pages-work-ai-search"
+import { meta as landscapingMeta, Body as LandscapingBody } from "./how-landscaping-lawn-care-get-recommended-by-ai"
+import { meta as citedSourcesMeta, Body as CitedSourcesBody } from "./what-sources-do-ai-engines-cite"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -151,6 +153,8 @@ export const POSTS: Post[] = [
   { meta: staffingMeta, Body: StaffingBody },
   { meta: moversMeta, Body: MoversBody },
   { meta: cityPagesMeta, Body: CityPagesBody },
+  { meta: landscapingMeta, Body: LandscapingBody },
+  { meta: citedSourcesMeta, Body: CitedSourcesBody },
 ]
 
 export function getAllPosts(): Post[] {
