@@ -77,6 +77,8 @@ import { meta as landscapingMeta, Body as LandscapingBody } from "./how-landscap
 import { meta as citedSourcesMeta, Body as CitedSourcesBody } from "./what-sources-do-ai-engines-cite"
 import { meta as pestControlMeta, Body as PestControlBody } from "./how-pest-control-companies-get-recommended-by-ai"
 import { meta as aiWrittenContentMeta, Body as AiWrittenContentBody } from "./does-ai-generated-content-hurt-ai-visibility"
+import { meta as homeCareMeta, Body as HomeCareBody } from "./how-home-care-agencies-get-recommended-by-ai"
+import { meta as brandMentionsMeta, Body as BrandMentionsBody } from "./do-brand-mentions-without-links-help-ai-search"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -159,6 +161,8 @@ export const POSTS: Post[] = [
   { meta: citedSourcesMeta, Body: CitedSourcesBody },
   { meta: pestControlMeta, Body: PestControlBody },
   { meta: aiWrittenContentMeta, Body: AiWrittenContentBody },
+  { meta: homeCareMeta, Body: HomeCareBody },
+  { meta: brandMentionsMeta, Body: BrandMentionsBody },
 ]
 
 export function getAllPosts(): Post[] {
