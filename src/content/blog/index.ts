@@ -79,6 +79,8 @@ import { meta as pestControlMeta, Body as PestControlBody } from "./how-pest-con
 import { meta as aiWrittenContentMeta, Body as AiWrittenContentBody } from "./does-ai-generated-content-hurt-ai-visibility"
 import { meta as homeCareMeta, Body as HomeCareBody } from "./how-home-care-agencies-get-recommended-by-ai"
 import { meta as brandMentionsMeta, Body as BrandMentionsBody } from "./do-brand-mentions-without-links-help-ai-search"
+import { meta as dealershipsMeta, Body as DealershipsBody } from "./how-car-dealerships-get-recommended-by-ai"
+import { meta as pageSpeedMeta, Body as PageSpeedBody } from "./does-page-speed-matter-for-ai-search"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -163,6 +165,8 @@ export const POSTS: Post[] = [
   { meta: aiWrittenContentMeta, Body: AiWrittenContentBody },
   { meta: homeCareMeta, Body: HomeCareBody },
   { meta: brandMentionsMeta, Body: BrandMentionsBody },
+  { meta: dealershipsMeta, Body: DealershipsBody },
+  { meta: pageSpeedMeta, Body: PageSpeedBody },
 ]
 
 export function getAllPosts(): Post[] {
