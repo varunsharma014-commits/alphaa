@@ -81,6 +81,8 @@ import { meta as homeCareMeta, Body as HomeCareBody } from "./how-home-care-agen
 import { meta as brandMentionsMeta, Body as BrandMentionsBody } from "./do-brand-mentions-without-links-help-ai-search"
 import { meta as dealershipsMeta, Body as DealershipsBody } from "./how-car-dealerships-get-recommended-by-ai"
 import { meta as pageSpeedMeta, Body as PageSpeedBody } from "./does-page-speed-matter-for-ai-search"
+import { meta as solarMeta, Body as SolarBody } from "./how-solar-installers-get-recommended-by-ai"
+import { meta as newSiteMeta, Body as NewSiteBody } from "./ai-visibility-for-a-new-website"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -167,6 +169,8 @@ export const POSTS: Post[] = [
   { meta: brandMentionsMeta, Body: BrandMentionsBody },
   { meta: dealershipsMeta, Body: DealershipsBody },
   { meta: pageSpeedMeta, Body: PageSpeedBody },
+  { meta: solarMeta, Body: SolarBody },
+  { meta: newSiteMeta, Body: NewSiteBody },
 ]
 
 export function getAllPosts(): Post[] {
