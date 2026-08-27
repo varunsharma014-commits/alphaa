@@ -83,6 +83,8 @@ import { meta as dealershipsMeta, Body as DealershipsBody } from "./how-car-deal
 import { meta as pageSpeedMeta, Body as PageSpeedBody } from "./does-page-speed-matter-for-ai-search"
 import { meta as solarMeta, Body as SolarBody } from "./how-solar-installers-get-recommended-by-ai"
 import { meta as newSiteMeta, Body as NewSiteBody } from "./ai-visibility-for-a-new-website"
+import { meta as cleaningMeta, Body as CleaningBody } from "./how-cleaning-companies-get-recommended-by-ai"
+import { meta as trainingRetrievalMeta, Body as TrainingRetrievalBody } from "./training-data-vs-live-retrieval-ai-search"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -171,6 +173,8 @@ export const POSTS: Post[] = [
   { meta: pageSpeedMeta, Body: PageSpeedBody },
   { meta: solarMeta, Body: SolarBody },
   { meta: newSiteMeta, Body: NewSiteBody },
+  { meta: cleaningMeta, Body: CleaningBody },
+  { meta: trainingRetrievalMeta, Body: TrainingRetrievalBody },
 ]
 
 export function getAllPosts(): Post[] {
