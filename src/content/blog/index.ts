@@ -85,6 +85,8 @@ import { meta as solarMeta, Body as SolarBody } from "./how-solar-installers-get
 import { meta as newSiteMeta, Body as NewSiteBody } from "./ai-visibility-for-a-new-website"
 import { meta as cleaningMeta, Body as CleaningBody } from "./how-cleaning-companies-get-recommended-by-ai"
 import { meta as trainingRetrievalMeta, Body as TrainingRetrievalBody } from "./training-data-vs-live-retrieval-ai-search"
+import { meta as electriciansMeta, Body as ElectriciansBody } from "./how-electricians-get-recommended-by-ai"
+import { meta as faqPagesMeta, Body as FaqPagesBody } from "./do-faq-pages-work-for-ai-search"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -175,6 +177,8 @@ export const POSTS: Post[] = [
   { meta: newSiteMeta, Body: NewSiteBody },
   { meta: cleaningMeta, Body: CleaningBody },
   { meta: trainingRetrievalMeta, Body: TrainingRetrievalBody },
+  { meta: electriciansMeta, Body: ElectriciansBody },
+  { meta: faqPagesMeta, Body: FaqPagesBody },
 ]
 
 export function getAllPosts(): Post[] {
