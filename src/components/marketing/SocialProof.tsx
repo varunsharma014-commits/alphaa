@@ -93,7 +93,7 @@ export function SocialProof() {
               <div className="flex items-center justify-between">
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-brand-orange text-brand-orange" />
+                    <Star key={i} className="w-3.5 h-3.5 fill-[#f5a623] text-[#f5a623]" />
                   ))}
                 </div>
                 <span className="text-xs font-bold text-brand-orange bg-brand-orange/[0.08] px-2.5 py-1 rounded-full">
