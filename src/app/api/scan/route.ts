@@ -35,7 +35,7 @@ async function fetchSiteData(websiteUrl: string): Promise<{ og: SiteOg | null; t
   if (!websiteUrl) return { og: null, text: "" }
   try {
     const url = websiteUrl.startsWith("http") ? websiteUrl : `https://${websiteUrl}`
-    const res = await fetch(url, { signal: AbortSignal.timeout(5000), headers: { "User-Agent": "Mozilla/5.0" } })
+    const res = await fetch(url, { signal: AbortSignal.timeout(5000), headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36", Accept: "text/html,application/xhtml+xml,*/*" } })
     const html = await res.text()
     const { load } = await import("cheerio")
     const $ = load(html)
