@@ -421,7 +421,17 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
   const sc = isRecord(result.ogData) && isRecord((result.ogData as Record<string, unknown>).siteChecks)
     ? ((result.ogData as Record<string, unknown>).siteChecks as unknown as SiteChecks)
     : null
-  if (sc?.you) {
+  if (sc?.you?.blocked) {
+    const you = sc.you
+    const b = you.blocked!
+    out.push(
+      agent([
+        { kind: "text", text: `I tried to read ${you.domain} the way an AI does. It turned me away${b.status ? ` (error ${b.status})` : ""}${b.redirectedTo ? ` — after sending me to ${b.redirectedTo}` : ""}.`, big: false },
+        { kind: "text", text: "That’s the biggest finding today. Some AI crawlers get the same door, so they fall back on what other sites say about you — and that’s where the competitors above win. Fixing it is a one-line change your host or web person can make; I’ll write the exact instruction." },
+        { kind: "sources", items: you.checks.map((c) => ({ name: c.label, detail: c.detail, status: c.ok === true ? "Yes" : c.ok === false ? "No" : "Couldn’t check", ok: c.ok === true })) },
+      ])
+    )
+  } else if (sc?.you) {
     const you = sc.you
     const fails = you.checks.filter((c) => c.ok === false)
     out.push(
@@ -433,14 +443,17 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
           : [{ kind: "text", text: "Your site is in good shape for AI. The gap is what the rest of the web says about you — that’s where I’d work." } as Block]),
       ])
     )
+  }
+  if (sc && sc.competitors.length > 0) {
+    const you = sc.you
     for (const rival of sc.competitors.slice(0, 2)) {
-      const theyHave = rival.checks.filter((c) => c.ok === true && you.checks.find((y) => y.key === c.key)?.ok === false)
+      const theyHave = rival.checks.filter((c) => c.ok === true && (!you || you.blocked || you.checks.find((y) => y.key === c.key)?.ok === false))
       if (theyHave.length === 0) continue
       const slug = (n: string) => n.toLowerCase().replace(/[^a-z0-9]/g, "")
       const rd = rivals.find((r) => slug(r.name).length >= 4 && slug(rival.domain).includes(slug(r.name).slice(0, 5)))
       out.push(
         agent([
-          { kind: "text", text: `${rd?.name ?? rival.domain}: ${rival.passed} of ${rival.total}. They have ${theyHave.map((c) => c.label.toLowerCase()).join(", ")}. You don’t.${rd && rd.aiMentions > named ? ` That’s part of why they were named ${rd.aiMentions} of ${checked} times and you ${named}.` : ""}` },
+          { kind: "text", text: `${rd?.name ?? rival.domain}: ${rival.passed} of ${rival.total}. They have ${theyHave.slice(0, 4).map((c) => c.label.toLowerCase()).join(", ")}.${you?.blocked ? " AI can read all of it." : " You don’t."}${rd && rd.aiMentions > named ? ` That’s part of why they were named ${rd.aiMentions} of ${checked} times and you ${named}.` : ""}` },
         ])
       )
       break
@@ -460,6 +473,8 @@ function buildPlan(result: ScanResult, businessName: string): string[] {
   const sc = isRecord(og.siteChecks) ? (og.siteChecks as unknown as SiteChecks) : null
   const fails = new Set(sc?.you?.checks.filter((c) => c.ok === false).map((c) => c.key) ?? [])
   const plan: string[] = []
+  if (sc?.you?.blocked) plan.push("Get your site to let AI readers in — I’ll send your host the exact one-line fix")
+  if (!sc?.you) plan.push("Read your site the way AI does and fix whatever it can’t see")
   if (fails.has("llms")) plan.push("Write and host your llms.txt — the file AI assistants read first")
   if (fails.has("faq")) plan.push("Publish the FAQ page above with your real answers filled in")
   if (fails.has("facts")) plan.push("Put the facts AI needs on your homepage — the ones it couldn’t find")

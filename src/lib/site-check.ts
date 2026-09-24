@@ -23,6 +23,8 @@ export interface SiteCheck {
   passed: number
   total: number
   blog: { found: boolean; posts: number; lastDate: string | null }
+  /** Set when the homepage refused an automated reader (403/5xx/no response) — itself the finding. */
+  blocked?: { status: number | null; redirectedTo: string | null }
 }
 
 export interface SiteChecks {
@@ -33,12 +35,12 @@ export interface SiteChecks {
 const UA = "Mozilla/5.0 (compatible; AlphaaBot/1.0; +https://alphaa.app)"
 const AI_BOTS = ["GPTBot", "ChatGPT-User", "OAI-SearchBot", "ClaudeBot", "anthropic-ai", "PerplexityBot", "Google-Extended"]
 
-async function get(url: string, ms = 7000): Promise<{ ok: boolean; status: number; text: string; ms: number } | null> {
+async function get(url: string, ms = 7000): Promise<{ ok: boolean; status: number; text: string; ms: number; finalUrl: string } | null> {
   const t0 = Date.now()
   try {
     const res = await fetch(url, { headers: { "User-Agent": UA }, redirect: "follow", signal: AbortSignal.timeout(ms) })
     const text = res.ok ? (await res.text()).slice(0, 400_000) : ""
-    return { ok: res.ok, status: res.status, text, ms: Date.now() - t0 }
+    return { ok: res.ok, status: res.status, text, ms: Date.now() - t0, finalUrl: res.url || url }
   } catch {
     return null
   }
@@ -72,6 +74,18 @@ function blockedBots(robots: string): string[] {
   return blocked
 }
 
+const LABELS: Record<CheckKey, string> = {
+  llms: "llms.txt for AI assistants",
+  robots: "AI crawlers allowed",
+  sitemap: "Sitemap",
+  schema: "Structured facts AI can read",
+  faq: "Answers to customer questions (FAQ)",
+  facts: "Phone, address and hours on the page",
+  blog: "Fresh content AI can quote",
+  meta: "Clear page title and description",
+  speed: "Loads fast",
+}
+
 export async function checkSite(input: string, opts: { isLocal: boolean }): Promise<SiteCheck | null> {
   const origin = normalizeSite(input)
   if (!origin) return null
@@ -83,7 +97,27 @@ export async function checkSite(input: string, opts: { isLocal: boolean }): Prom
     get(`${origin}/robots.txt`),
     get(`${origin}/sitemap.xml`),
   ])
-  if (!home || !home.ok) return null
+  // A site that turns away an automated reader is a finding, not a missing
+  // data point — some AI crawlers get the same door. Report it as such.
+  if (!home || !home.ok) {
+    const finalHost = home?.finalUrl ? new URL(home.finalUrl).hostname.replace(/^www\./, "") : null
+    const redirectedTo = finalHost && finalHost !== domain ? finalHost : null
+    const status = home?.status ?? null
+    const blockedItem: SiteCheckItem = {
+      key: "robots",
+      label: "AI can read your site",
+      ok: false,
+      detail: status ? `Your site refused an automated visitor (HTTP ${status})${redirectedTo ? ` after redirecting to ${redirectedTo}` : ""}` : "Your site didn’t respond to an automated visitor",
+    }
+    const rest: SiteCheckItem[] = (["llms", "sitemap", "schema", "faq", "facts", "blog", "meta", "speed"] as CheckKey[]).map((key) => ({
+      key,
+      label: LABELS[key],
+      ok: key === "llms" ? !!(llms && llms.ok && !/<html/i.test(llms.text)) : null,
+      detail: key === "llms" ? (llms && llms.ok ? "Present" : "Missing") : "Couldn’t check — site blocked the reader",
+    }))
+    const checks = [blockedItem, ...rest]
+    return { domain, checks, passed: checks.filter((c) => c.ok === true).length, total: checks.length, blog: { found: false, posts: 0, lastDate: null }, blocked: { status, redirectedTo } }
+  }
 
   const html = home.text
   const { load } = await import("cheerio")

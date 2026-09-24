@@ -3,7 +3,7 @@ export type CheckKey = "llms" | "robots" | "sitemap" | "schema" | "faq" | "facts
 
 export const CHECK_SHORT: Record<CheckKey, string> = {
   llms: "no llms.txt",
-  robots: "AI crawlers blocked",
+  robots: "AI can’t read your site at all",
   sitemap: "no sitemap",
   schema: "no structured facts",
   faq: "no FAQ",
