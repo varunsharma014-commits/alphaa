@@ -19,7 +19,8 @@ export async function generateMetadata({
   return {
     title: post.meta.title,
     description: post.meta.description,
-    openGraph: { title: post.meta.title, description: post.meta.description, type: "article" },
+    alternates: { canonical: `/blog/${post.meta.slug}` },
+    openGraph: { title: post.meta.title, description: post.meta.description, type: "article", url: `https://alphaa.app/blog/${post.meta.slug}` },
   }
 }
 

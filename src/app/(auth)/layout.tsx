@@ -3,6 +3,10 @@ import Link from "next/link"
 import { ClerkProvider } from "@clerk/nextjs"
 import { clerkAppearance } from "@/lib/clerk-appearance"
 
+// Login/signup must never appear in search results. noindex (not a robots.txt
+// block) so Google can crawl the page, see the tag and drop the indexed URL.
+export const metadata = { robots: { index: false, follow: false } }
+
 // Clerk's browser SDK is mounted here rather than in the root layout so that
 // marketing visitors never download it. <SignIn>/<SignUp> need the provider.
 export default function AuthLayout({ children }: { children: React.ReactNode }) {

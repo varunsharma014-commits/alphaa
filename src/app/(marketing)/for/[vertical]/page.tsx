@@ -36,6 +36,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: { canonical: `/for/${v.slug}` },
     openGraph: { title, description, type: "website", url: `https://alphaa.app/for/${v.slug}` },
   }
 }

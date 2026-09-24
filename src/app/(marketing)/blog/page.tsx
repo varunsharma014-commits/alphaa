@@ -6,6 +6,7 @@ export const metadata = {
   title: "Blog — AI Search Optimization (AEO) guides",
   description:
     "Practical guides on getting your business found, cited, and recommended by AI assistants like ChatGPT, Claude, Gemini, and Perplexity.",
+  alternates: { canonical: "/blog" },
 }
 
 function formatDate(iso: string): string {

@@ -59,7 +59,8 @@ export const metadata: Metadata = {
     title: "Alphaa — Get Found on Google and ChatGPT",
     description: "Replace your SEO agency. $99/month. No contracts.",
   },
-  alternates: { canonical: "/" },
+  // No site-wide canonical: a root default made every page point at the homepage,
+  // so Google dropped them as duplicates. Each page declares its own.
 }
 
 // Brand-entity structured data. Tells Google "Alphaa" is a distinct organization

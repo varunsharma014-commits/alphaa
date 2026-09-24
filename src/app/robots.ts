@@ -7,11 +7,12 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         disallow: [
-          "/dashboard/",
-          "/onboarding/",
+          // No trailing slash so prefixes cover "/dashboard?x" too. Login/signup are
+          // NOT blocked here: they carry noindex, which Google must crawl to see.
+          "/dashboard",
+          "/onboarding",
           "/api/",
-          "/login/",
-          "/signup/",
+          "/start-trial",
           "/scan/results",
         ],
       },

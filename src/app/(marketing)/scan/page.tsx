@@ -2,7 +2,7 @@ import { ScanForm } from "@/components/scan/ScanForm"
 import { SectionLabel } from "@/components/common/SectionLabel"
 import { Bot } from "lucide-react"
 
-export const metadata = { title: "Free Visibility Scan" }
+export const metadata = { title: "Free Visibility Scan", alternates: { canonical: "/scan" } }
 
 export default function ScanPage() {
   return (

@@ -11,6 +11,8 @@ import { BRAND } from "@/lib/brand"
 // SoftwareApplication structured data so AI engines / Google can state exactly
 // what Alphaa is, its category, and its price. No aggregateRating (we won't
 // publish unverifiable review counts).
+export const metadata = { alternates: { canonical: "/" } }
+
 const softwareSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
