@@ -9,6 +9,8 @@ const isPublicRoute = createRouteMatcher([
   "/blog(.*)",
   "/case-studies(.*)",
   "/scan(.*)",
+  "/start(.*)",
+  "/preview", // dev-only agent UI preview; 404s in production
   "/w(.*)",
   "/refer",
   "/login(.*)",

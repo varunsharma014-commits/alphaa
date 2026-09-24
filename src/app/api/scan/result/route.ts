@@ -11,7 +11,14 @@ export async function GET(req: NextRequest) {
 
   try {
     const lead = await db.scanLead.findUnique({ where: { id } })
-    if (!lead || !lead.visibilityScore) return NextResponse.json({ ready: false })
+    if (!lead) return NextResponse.json({ ready: false })
+    if (!lead.visibilityScore) {
+      // Stage marker written by processScan so /start can show real steps.
+      const og = (lead.ogData && typeof lead.ogData === "object" && !Array.isArray(lead.ogData))
+        ? (lead.ogData as Record<string, unknown>)
+        : {}
+      return NextResponse.json({ ready: false, progress: typeof og.progress === "string" ? og.progress : "site" })
+    }
 
     // The report itself is only served to someone holding the emailed token.
     // Without it we return just enough to render the "check your inbox" screen

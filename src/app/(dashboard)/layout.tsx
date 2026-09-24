@@ -3,8 +3,8 @@ import { auth, clerkClient } from "@clerk/nextjs/server"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { DashboardSidebar } from "@/components/layout/DashboardSidebar"
-import { DashboardTopBar } from "@/components/layout/DashboardTopBar"
+import { AgentShell } from "@/components/agent/AgentShell"
+import { getFeed } from "@/lib/agent/feed"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
 import { THEME_COOKIE, type DashboardTheme } from "@/lib/theme"
 import { ClerkProvider } from "@clerk/nextjs"
@@ -50,24 +50,35 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const themeCookie = (await cookies()).get(THEME_COOKIE)?.value
   const theme: DashboardTheme = themeCookie === "dark" ? "dark" : "light"
 
+  // Rail data (verdict count, waiting items) comes from the same feed build
+  // the /dashboard page uses — React's cache() makes that one query set.
+  const feed = await getFeed(user.id)
+  const rail = feed?.rail ?? {
+    businessName: user.businessName ?? "your business",
+    location: [user.city, user.state].filter(Boolean).join(", "),
+    dayNumber: 1,
+    named: 0,
+    checked: 0,
+    states: ["unknown", "unknown", "unknown", "unknown"],
+    waiting: { reviews: 0, posts: 0 },
+    googleConnected: false,
+  }
+  const trialDaysLeft =
+    user.subscriptionStatus === "trialing" && user.trialEndsAt
+      ? Math.max(0, Math.ceil((new Date(user.trialEndsAt).getTime() - Date.now()) / 86400000))
+      : null
+
   return (
     // Provider lives here, not at the app root, so marketing pages never ship
     // Clerk's ~300 KiB browser SDK. <UserButton>/<UserProfile> need it.
     <ClerkProvider appearance={clerkAppearance}>
-    <div
-      data-dashboard-root=""
-      data-theme={theme}
-      data-brand="blue"
-      className="flex h-screen bg-bg-primary overflow-hidden"
-    >
-      {/* GA4: fires trial_start once when landing with ?upgraded=true (Stripe success redirect) */}
-      <ConversionTracker event="trial_start" metaEvent="StartTrial" whenQueryParam="upgraded" />
-      <DashboardSidebar />
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <DashboardTopBar user={user} theme={theme} />
-        <main className="flex-1 overflow-y-auto p-8">{children}</main>
+      <div data-dashboard-root="" data-agent="" data-theme={theme} data-brand="blue">
+        {/* GA4: fires trial_start once when landing with ?upgraded=true (Stripe success redirect) */}
+        <ConversionTracker event="trial_start" metaEvent="StartTrial" whenQueryParam="upgraded" />
+        <AgentShell rail={rail} theme={theme} trialDaysLeft={trialDaysLeft}>
+          {children}
+        </AgentShell>
       </div>
-    </div>
     </ClerkProvider>
   )
 }

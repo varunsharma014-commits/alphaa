@@ -3,6 +3,7 @@ import Script from "next/script"
 import { Inter_Tight, Instrument_Serif, Geist_Mono } from "next/font/google"
 import { Toaster } from "sonner"
 import "./globals.css"
+import "./agent.css"
 
 // These used to be @import url(fonts.googleapis.com) at the top of globals.css,
 // which forced a four-hop render-blocking chain before the hero text could

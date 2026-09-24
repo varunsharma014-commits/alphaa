@@ -16,8 +16,7 @@ import {
   inferCountryCode,
   type BusinessProfile,
 } from "@/lib/scan-insights"
-import { sendAuditResultsEmail } from "@/lib/email"
-import { scanResultsUrl } from "@/lib/scan-token"
+import { sendScanReadyEmail } from "@/lib/scan-email"
 import type { AiSearchStatus } from "@/types/audit"
 import type { EngineEvidence, ScanInsights, ScanSerp, CompetitorDetail } from "@/types/scan"
 
@@ -62,7 +61,9 @@ const schema = z.object({
   city: z.string().min(1),
   businessType: z.string().optional().default("business"),
   websiteUrl: z.string().optional().default(""),
-  email: z.string().email(),
+  // Optional: the agent conversation on /start runs the scan first and asks
+  // for the address afterwards (POST /api/scan/claim attaches it).
+  email: z.string().email().optional().default(""),
 })
 
 export async function POST(req: NextRequest) {
@@ -120,6 +121,7 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
     // Runs in parallel with the sonnet audit, which usually takes longer.
     const enginePipeline = (async () => {
       const site = await fetchSiteData(input.websiteUrl)
+      void setProgress(leadId, "profile")
       let profile: BusinessProfile | null = null
       try {
         profile = await inferBusinessProfile({
@@ -134,6 +136,7 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
       } catch {
         profile = null
       }
+      void setProgress(leadId, "engines")
       const scan = await scanAllEngines(
         input.businessName,
         input.businessType,
@@ -153,8 +156,13 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
       enginePipeline,
     ])
 
-    // Parse Claude audit result
+    void setProgress(leadId, "insights")
+
+    // Parse Claude audit result. `auditFallback` is recorded in ogData so the
+    // UI can tell a generic placeholder audit from real findings and never
+    // present the placeholder issues as facts about this business.
     let auditResult: ReturnType<typeof getFallbackAudit>
+    let auditFallback = false
     if (claudeResult.status === "fulfilled") {
       try {
         const raw = claudeResult.value.content[0].type === "text" ? claudeResult.value.content[0].text : ""
@@ -162,9 +170,11 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
         auditResult = JSON.parse(cleaned)
       } catch {
         auditResult = getFallbackAudit(input.businessName, input.city, input.businessType)
+        auditFallback = true
       }
     } else {
       auditResult = getFallbackAudit(input.businessName, input.city, input.businessType)
+      auditFallback = true
     }
 
     const pipeline = pipelineSettled.status === "fulfilled" ? pipelineSettled.value : null
@@ -267,7 +277,7 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
 
     // ogData is ALWAYS an object for new scans and always carries `insights`
     // (possibly null), even when the OG fetch itself failed.
-    const ogData = { ...(site.og ?? {}), insights }
+    const ogData = { ...(site.og ?? {}), insights, auditFallback }
 
     // Update lead with results — this write is what flips the result poller
     // from { ready: false } to { ready: true }.
@@ -286,53 +296,20 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
     // send is what actually delivers the result — fire it here rather than
     // waiting for the visitor to ask. Never let a mail failure fail the scan;
     // the results page offers a resend.
-    void sendScanReadyEmail(leadId).catch((e) =>
-      console.error("[scan] results email failed", leadId, e)
-    )
+    if (input.email) {
+      void sendScanReadyEmail(leadId).catch((e) =>
+        console.error("[scan] results email failed", leadId, e)
+      )
+    }
   }
 }
 
-async function sendScanReadyEmail(leadId: string) {
-  const lead = await db.scanLead.findUnique({ where: { id: leadId } })
-  if (!lead || !lead.visibilityScore) return
-
-  const status = (lead.aiSearchStatus ?? {}) as Record<string, string>
-  const engines = [
-    { key: "chatgpt", name: "ChatGPT" },
-    { key: "google_ai", name: "Claude" },
-    { key: "perplexity", name: "Perplexity" },
-    { key: "gemini", name: "Gemini" },
-  ].map((e) => ({
-    name: e.name,
-    found: status[e.key] === "occasionally" || status[e.key] === "frequently",
-    snippet: "",
-  }))
-
-  const issues = Array.isArray(lead.issues) ? (lead.issues as unknown[]) : []
-  const first = issues[0] as Record<string, unknown> | undefined
-  const topIssue =
-    (first && typeof first.explanation === "string" && first.explanation) ||
-    (first && typeof first.headline === "string" && first.headline) ||
-    "Your business is missing from most AI answers about your area."
-
-  await sendAuditResultsEmail(lead.email, {
-    businessName: lead.businessName || lead.businessUrl || "Your business",
-    city: lead.city ?? "",
-    overallScore: lead.visibilityScore,
-    engines,
-    topIssue,
-    isSubscriber: false,
-    resultsUrl: scanResultsUrl(lead.id, lead.email),
-  })
-
-  // Record that the link actually reached them. The results gate keys off this:
-  // if the send failed we must NOT lock the visitor out of their own report.
-  const og = (lead.ogData && typeof lead.ogData === "object" && !Array.isArray(lead.ogData))
-    ? (lead.ogData as Record<string, unknown>)
-    : {}
-  await db.scanLead
-    .update({ where: { id: lead.id }, data: { ogData: { ...og, reportEmailed: true } as object } })
-    .catch(() => {})
+// Transient stage marker read by /api/scan/result while the scan is running.
+// Best-effort: a failed write must never touch the scan itself.
+async function setProgress(leadId: string, stage: "profile" | "engines" | "insights") {
+  try {
+    await db.scanLead.update({ where: { id: leadId }, data: { ogData: { progress: stage } as object } })
+  } catch {}
 }
 
 function getFallbackAudit(businessName: string, city: string, businessType: string) {
