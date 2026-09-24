@@ -170,14 +170,14 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
         { kind: "text", text: `Where the AIs look before they recommend a ${user.businessType || "business"}${user.city ? ` in ${user.city}` : ""}: ${report.listed} of ${report.targets.length} pages mention you.` },
         { kind: "sources", items: targets.map((t) => ({ name: t.domain, detail: t.title.slice(0, 80), status: t.status === "listed" ? "You’re on it" : t.status === "missing" ? "Not on it" : "Couldn’t check", ok: t.status === "listed", href: t.url })) },
         ...(report.missing > 0 ? [{ kind: "text", text: `Getting onto the ${report.missing === 1 ? "missing one" : `${report.missing} missing pages`} is the fastest way to change the answers above. Most are directories you can claim in a few minutes — I’ll walk you through each.` } as Block] : []),
-        { kind: "chips", items: [{ label: "Show me every page", action: { type: "link", href: "/dashboard/citations" }, primary: false }] },
+        { kind: "chips", items: [{ label: "Open Source Tracking", action: { type: "link", href: "/dashboard/t/sources" }, primary: false }] },
       ], "citations")
     )
   } else if (checked > 0) {
     messages.push(
       agent([
-        { kind: "text", text: "I haven’t checked yet which pages the AIs read before they recommend someone like you. It takes about two minutes." },
-        { kind: "chips", items: [{ label: "Check now", action: { type: "link", href: "/dashboard/citations" }, primary: true }] },
+        { kind: "text", text: "Next I’ll check which pages the AIs read before they recommend someone like you. It takes about two minutes — I’ll post what I find in Source Tracking." },
+        { kind: "chips", items: [{ label: "Watch me do it", action: { type: "link", href: "/dashboard/t/sources" }, primary: true }] },
       ], "citations")
     )
   }
@@ -192,7 +192,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
       agent([
         { kind: "text", text: `${rival} has a page on “${top.topic}”. You don’t. When AI gets asked about it, they’re the answer.` },
         ...(top.suggestedTitle ? [{ kind: "text", text: `I’d write it as “${top.suggestedTitle}” — from your own facts, nothing invented.` } as Block] : []),
-        { kind: "chips", items: [{ label: "Plan it", action: { type: "link", href: "/dashboard/content-plan" }, primary: true }, { label: "See all gaps", action: { type: "link", href: "/dashboard/content-gaps" } }] },
+        { kind: "chips", items: [{ label: "Draft it for me", action: { type: "draft", topic: top.suggestedTitle || top.topic, competitor: rival }, primary: true }, { label: "All competitor gaps", action: { type: "link", href: "/dashboard/t/competitors" } }] },
       ], "gap")
     )
   }
@@ -202,7 +202,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     messages.push(
       agent([
         { kind: "text", text: "One thing I can’t do yet: reply to your reviews or post to your Google listing. Connect Google and I take those over." },
-        { kind: "chips", items: [{ label: "Connect Google", action: { type: "link", href: "/dashboard/settings/integrations" }, primary: true }] },
+        { kind: "chips", items: [{ label: "Connect Google", action: { type: "link", href: "/api/integrations/google/connect" }, primary: true }] },
       ], "setup")
     )
   }

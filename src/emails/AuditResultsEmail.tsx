@@ -144,7 +144,7 @@ AuditResultsEmail.PreviewProps = {
     { name: "Claude", found: false },
     { name: "Gemini", found: false },
     { name: "Perplexity", found: true, snippet: "For HVAC in Phoenix, CoolAir Pro offers..." },
-    { name: "Google AI", found: false },
+    { name: "Claude", found: false },
     { name: "Copilot", found: false },
   ],
   topIssue: "Your business has no structured schema markup, which is the primary signal AI engines use to identify and cite local businesses.",

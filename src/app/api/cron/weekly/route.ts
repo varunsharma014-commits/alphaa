@@ -1,3 +1,6 @@
+// Legacy key: the "claude" engine is stored as google_ai.
+const ENGINE_NAMES: Record<string, string> = { chatgpt: "ChatGPT", gemini: "Gemini", perplexity: "Perplexity", google_ai: "Claude", claude: "Claude" }
+
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
@@ -114,7 +117,7 @@ async function processUser(
   movers.sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
   const keywordMovers = movers.slice(0, 5)
 
-  // 5. Generate Claude summary
+  // 5. Generate the weekly note (factual, first person — see rules in the prompt)
   const businessName = user.businessName ?? "your business"
   const city = user.city ?? ""
 
@@ -126,14 +129,14 @@ async function processUser(
       messages: [
         {
           role: "user",
-          content: `Write a 2-3 sentence weekly progress summary for ${businessName}${city ? ` in ${city}` : ""}.
-Data:
-- Posts published this week: ${postsPublished}
-- New reviews this week: ${reviewsNew}
-- Keyword movers (top): ${keywordMovers.slice(0, 3).map(k => `"${k.query}" moved ${k.change > 0 ? "+" : ""}${k.change} positions`).join(", ") || "none"}
-- Visibility changes: ${Object.entries(visibilityDelta).map(([e, d]) => `${e}: ${d > 0 ? "+" : ""}${d}`).join(", ")}
+          content: `You are Alphaa, an AI agent working for ${businessName}${city ? ` in ${city}` : ""}. Write the owner's weekly note: 2-3 short sentences, first person ("I"), plain English.
+Data (the only facts you may use):
+- Google updates I published this week: ${postsPublished}
+- New Google reviews this week: ${reviewsNew}
+- Google search movers: ${keywordMovers.slice(0, 3).filter(k => k.change !== 0).map(k => `"${k.query}" moved ${k.change > 0 ? "up" : "down"} ${Math.abs(k.change)}`).join(", ") || "none"}
+- Change in AI assistants naming the business: ${Object.entries(visibilityDelta).map(([e, d]) => `${ENGINE_NAMES[e] ?? e}: ${d > 0 ? "started naming it" : d < 0 ? "stopped naming it" : "no change"}`).join(", ")}
 
-Write in a positive, encouraging tone. Be specific. No lists, just flowing prose. 2-3 sentences max.`,
+Rules: state only what the data shows. If nothing changed, say so plainly and say what you'll do next week. Never describe results as "steady", "strong" or "holding firm" and never imply the business is being recommended unless the data says an AI started naming it. Name engines only as ChatGPT, Gemini, Claude or Perplexity. No hype, no exclamation marks, no lists.`,
         },
       ],
     })

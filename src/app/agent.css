@@ -320,3 +320,10 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .ag-trust--small { margin-top: 20px; gap: 10px; font-size: 13px; }
 .ag-trust--small .ag-trust__faces img { width: 26px; height: 26px; margin-left: -8px; border-width: 1.5px; }
 .ag-trust--small .ag-trust__faces img:first-child { margin-left: 0; }
+
+/* Topic shortcuts above the composer — every rail item, one tap away inside the chat. */
+.ag-topics { display: flex; gap: 8px; overflow-x: auto; padding: 8px 16px 0; max-width: 760px; margin: 0 auto; width: 100%; scrollbar-width: none; }
+.ag-topics::-webkit-scrollbar { display: none; }
+.ag-topics a { flex: none; font-size: 13px; padding: 6px 12px; border-radius: 980px; background: var(--ag-bg2); color: var(--ag-fg2); border: 1px solid transparent; white-space: nowrap; transition: background-color .2s ease; }
+.ag-topics a:hover { background: var(--ag-bg3); }
+.ag-topics a.on { background: var(--ag-fg); color: var(--ag-bg); }

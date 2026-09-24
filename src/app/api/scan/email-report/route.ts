@@ -15,7 +15,7 @@ const schema = z.object({ scanId: z.string().min(10).max(64) })
 
 const ENGINE_DISPLAY = [
   { key: "chatgpt", responseKey: "chatgpt", name: "ChatGPT" },
-  { key: "google_ai", responseKey: "claude", name: "Google AI" },
+  { key: "google_ai", responseKey: "claude", name: "Claude" },
   { key: "perplexity", responseKey: "perplexity", name: "Perplexity" },
   { key: "gemini", responseKey: "gemini", name: "Gemini" },
 ] as const

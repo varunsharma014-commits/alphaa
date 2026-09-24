@@ -8,6 +8,11 @@ import type { RailData } from "@/lib/agent/feed"
 import { AgentRail } from "./AgentRail"
 
 const TITLES: [string, string][] = [
+  ["/dashboard/t/reviews", "Reviews"],
+  ["/dashboard/t/site", "Site Schema & Code"],
+  ["/dashboard/t/sources", "Source Tracking"],
+  ["/dashboard/t/competitors", "Competitors"],
+  ["/dashboard/t/briefings", "Weekly Briefings"],
   ["/dashboard/reviews", "Reviews"],
   ["/dashboard/vault", "What AI reads about you"],
   ["/dashboard/citations", "Where AI looks you up"],
@@ -39,7 +44,7 @@ export function AgentShell({
 }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
-  const isHome = pathname === "/dashboard" || pathname === "/preview"
+  const isHome = pathname === "/dashboard" || pathname === "/preview" || pathname.startsWith("/dashboard/t/")
   const title = isHome ? "Today" : TITLES.find(([p]) => pathname.startsWith(p))?.[1] ?? "Detail"
 
   return (

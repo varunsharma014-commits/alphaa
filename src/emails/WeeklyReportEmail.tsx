@@ -34,7 +34,7 @@ interface WeeklyReportEmailProps {
 const ENGINE_LABELS: Record<string, string> = {
   chatgpt: "ChatGPT",
   perplexity: "Perplexity",
-  google_ai: "Google AI",
+  google_ai: "Claude",
   gemini: "Gemini",
 }
 

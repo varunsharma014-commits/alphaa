@@ -5,16 +5,22 @@ import { usePathname } from "next/navigation"
 import type { RailData } from "@/lib/agent/feed"
 import { BRAND } from "@/lib/brand"
 
+// Every item is a thread in the same conversation (see lib/agent/threads.ts).
 const CONVERSATIONS = [
   { href: "/dashboard", label: "Today", exact: true },
-  { href: "/dashboard/reviews", label: "Reviews" },
-  { href: "/dashboard/vault", label: "What AI reads about you" },
-  { href: "/dashboard/citations", label: "Where AI looks you up" },
-  { href: "/dashboard/competitors", label: "Competitors" },
-  { href: "/dashboard/reports", label: "Weekly notes" },
+  { href: "/dashboard/t/reviews", label: "Reviews" },
+  { href: "/dashboard/t/site", label: "Site Schema & Code" },
+  { href: "/dashboard/t/sources", label: "Source Tracking" },
+  { href: "/dashboard/t/competitors", label: "Competitors" },
+  { href: "/dashboard/t/briefings", label: "Weekly Briefings" },
 ]
 
 const DETAIL = [
+  { href: "/dashboard/reviews", label: "All reviews" },
+  { href: "/dashboard/vault", label: "Structured data" },
+  { href: "/dashboard/citations", label: "Every source page" },
+  { href: "/dashboard/competitors", label: "Competitor details" },
+  { href: "/dashboard/reports", label: "Past reports" },
   { href: "/dashboard/sandbox", label: "Ask the AIs a question" },
   { href: "/dashboard/visibility/chatgpt", label: "ChatGPT" },
   { href: "/dashboard/visibility/gemini", label: "Gemini" },
@@ -58,7 +64,7 @@ export function AgentRail({ rail, open, onClose }: { rail: RailData; open: boole
         <div className="ag-rail__sub">{rail.checked === 0 ? "Not checked yet" : `${rail.checked} of 4 checked`}</div>
       </div>
 
-      <div className="ag-rail__lbl">Conversations</div>
+      <div className="ag-rail__lbl">Your agent</div>
       {CONVERSATIONS.map((c) => (
         <Link key={c.href} href={c.href} className={isOn(c.href, c.exact) ? "on" : ""} onClick={onClose}>
           {c.label}
@@ -68,7 +74,7 @@ export function AgentRail({ rail, open, onClose }: { rail: RailData; open: boole
 
       <div className="ag-rail__lbl">More detail</div>
       <details>
-        <summary>Every report</summary>
+        <summary>Full reports</summary>
         {DETAIL.map((c) => (
           <Link key={c.href} href={c.href} className={isOn(c.href) ? "on" : ""} onClick={onClose}>
             {c.label}

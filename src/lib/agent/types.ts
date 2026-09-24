@@ -23,6 +23,9 @@ export type ChipAction =
   | { type: "post-publish"; postId: string }
   | { type: "post-delete"; postId: string }
   | { type: "dismiss" }
+  | { type: "copy"; text: string; done?: string } // copy to clipboard, confirm in-thread
+  | { type: "draft"; topic: string; competitor?: string } // agent writes a page/FAQ draft to close a gap
+  | { type: "run"; task: "site-check" | "citations" | "schema" } // agent runs a job right now
 
 export type Chip = { label: string; action: ChipAction; primary?: boolean }
 

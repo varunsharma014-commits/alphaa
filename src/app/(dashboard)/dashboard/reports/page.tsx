@@ -27,7 +27,7 @@ type VisibilityDelta = Record<string, number>
 const ENGINE_META: Record<string, { label: string }> = {
   chatgpt:    { label: "ChatGPT" },
   perplexity: { label: "Perplexity" },
-  google_ai:  { label: "Google AI" },
+  google_ai:  { label: "Claude" },
   gemini:     { label: "Gemini" },
 }
 
