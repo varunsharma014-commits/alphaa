@@ -24,7 +24,7 @@ const plans = [
       "Review monitoring",
       "Email support",
     ],
-    cta: "Start free trial",
+    cta: "Start today",
     priceId: { monthly: "starter_monthly", annual: "starter_annual" },
   },
   {
@@ -45,7 +45,7 @@ const plans = [
       "Priority chat support",
       "Free setup ($49 value)",
     ],
-    cta: "Start free trial",
+    cta: "Start today",
     priceId: { monthly: "pro_monthly", annual: "pro_annual" },
   },
   {
@@ -71,9 +71,9 @@ const plans = [
 ]
 
 const billingFaqs = [
-  { q: "Is there a free trial?", a: "Yes — 14 days free. You add a card to start but pay nothing until the trial ends, and you can cancel anytime in two clicks." },
-  { q: "Can I cancel anytime?", a: "Yes. One click in your dashboard. No phone calls, no contracts." },
-  { q: "What happens after the trial?", a: "Your subscription starts automatically after day 14 unless you cancel first. We email you before that happens — no surprises." },
+  { q: "Is there a free trial?", a: "No — the free check at /start shows you exactly what the AIs say about you today, and that's the trial. Plans are month to month from day one." },
+  { q: "Can I cancel anytime?", a: "Yes. Two clicks in Billing. No phone calls, no contracts, no exit fees." },
+  { q: "Do I need technical skills?", a: "No. Your agent writes, fixes and publishes; you approve with one tap. If you'd rather not touch your website at all, Full Service has a human do it." },
   { q: "Can I switch plans?", a: "Yes. Upgrade or downgrade anytime from your billing settings." },
   { q: "Do you offer refunds?", a: "We offer a full refund within 7 days of your first charge if you're not satisfied. No questions asked." },
 ]
@@ -87,7 +87,7 @@ export default function PricingPage() {
         {/* Launch banner */}
         <div className="mb-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-sm font-medium">
-            🔥 Launch pricing: early customers lock in <span className="text-fg">$79/month for life</span> with the annual plan
+            An SEO agency charges ~$2,000 a month for Google alone. Your agent starts at <span className="text-fg">$99</span>.
           </div>
         </div>
 
@@ -98,7 +98,7 @@ export default function PricingPage() {
             From $99/month.{" "}
             <span className="serif-italic text-brand-orange">No contracts.</span>
           </h1>
-          <p className="text-muted text-lg">14-day free trial. $0 today. Cancel anytime before day 14 and pay nothing.</p>
+          <p className="text-muted text-lg">Month to month. No contract. Cancel in two clicks.</p>
         </div>
 
         {/* Toggle */}

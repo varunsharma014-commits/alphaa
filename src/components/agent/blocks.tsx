@@ -17,9 +17,21 @@ function escapeRe(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 }
 
+/** Engines return markdown; the card shows plain text. */
+function stripMarkdown(s: string): string {
+  return s
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*\s?\*/g, "")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\[([^\]]+)\]\((?:https?:\/\/)[^)]+\)/g, "$1")
+    .replace(/^\s*[-*]\s+/gm, "• ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
+}
+
 /** Wrap the business name (green) and named competitors (grey) in <mark>. */
 function highlight(answer: string, you: string, them: string[]): string {
-  let html = escapeHtml(answer)
+  let html = escapeHtml(stripMarkdown(answer))
   const youRe = you.trim().length > 2 ? new RegExp(escapeRe(escapeHtml(you.trim())), "gi") : null
   if (youRe) html = html.replace(youRe, (m) => `<mark>${m}</mark>`)
   for (const t of them) {

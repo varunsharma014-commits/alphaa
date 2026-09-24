@@ -7,11 +7,10 @@ import { db } from "@/lib/db"
 import { STRIPE_PRICE_IDS } from "@/lib/stripe"
 import { StartTrialButton } from "./StartTrialButton"
 
-export const metadata = { title: "Start your free trial — alphaa" }
+export const metadata = { title: "Start today — alphaa" }
 
-// Card-upfront trial: users who finished onboarding but never started a
-// Stripe trial land here (redirected from the dashboard layout). $0 today,
-// first charge after day 14, cancel anytime.
+// Users who finished onboarding but have no subscription land here (redirected
+// from the dashboard layout). Month to month, first charge today, cancel any time.
 export default async function StartTrialPage() {
   const { userId: clerkId } = await auth()
   if (!clerkId) redirect("/login")
@@ -23,15 +22,10 @@ export default async function StartTrialPage() {
     redirect("/dashboard")
   }
 
-  const trialEnds = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-  })
-
   const reassurances = [
-    "$0 today — your card isn't charged until " + trialEnds,
-    "Cancel anytime in two clicks from Billing. We email you before day 14.",
-    "alphaa starts working immediately — first Google post within 24 hours",
+    "$99 a month. Month to month — no contract, cancel in two clicks from Billing.",
+    "No technical skills needed. I do the work; you tap approve.",
+    "I start today: your llms.txt, FAQ page and first Google post this week.",
   ]
 
   return (
@@ -44,11 +38,10 @@ export default async function StartTrialPage() {
       <div className="w-full max-w-md">
         <div className="glass-card rounded-2xl p-8">
           <h1 className="text-fg font-semibold text-2xl mb-2 text-center">
-            Start your 14-day free trial
+            Start today
           </h1>
           <p className="text-muted text-sm text-center mb-7">
-            Your setup is done{user.businessName ? ` for ${user.businessName}` : ""} — this switches the
-            autopilot on.
+            Setup is done{user.businessName ? ` for ${user.businessName}` : ""}. This puts your agent to work.
           </p>
 
           <ul className="space-y-3 mb-7">
@@ -62,7 +55,7 @@ export default async function StartTrialPage() {
 
           <StartTrialButton
             priceId={STRIPE_PRICE_IDS.starter.monthly}
-            label="Start free trial — $99/mo after day 14"
+            label="Start today — $99/month"
           />
           <p className="text-fg/30 text-xs text-center mt-4">
             Need the Pro plan ($199/mo) or have a question? Email{" "}

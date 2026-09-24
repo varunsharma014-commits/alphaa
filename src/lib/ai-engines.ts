@@ -1,7 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk"
 import { installPauseGuard } from "./ai-paused"
 import OpenAI from "openai"
-import { GoogleGenerativeAI, type GenerationConfig } from "@google/generative-ai"
+import { GoogleGenerativeAI, type GenerationConfig, type Tool } from "@google/generative-ai"
+
+// Search-backed answers take longer than training-weight ones.
+const SEARCH_TIMEOUT_MS = 35000
 
 export type EngineResult = {
   engine: "chatgpt" | "claude" | "gemini" | "perplexity"
@@ -157,15 +160,34 @@ async function scanClaude(
   try {
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
     installPauseGuard(client)
-    const message = await withTimeout(
-      client.messages.create({
-        model: "claude-haiku-4-5",
-        max_tokens: 600,
-        messages: [{ role: "user", content: query }],
-      }),
-      20000
-    )
-    const response = message.content[0].type === "text" ? message.content[0].text : ""
+    // Live web search (Sept 2026): without it the model answers from training
+    // weights and almost never knows a local business, so "not named" said
+    // nothing about the business and could never move. Falls back to a plain
+    // answer if the tool is refused, so the engine never goes dark.
+    const searchTool = { type: "web_search_20250305", name: "web_search", max_uses: 3 } as const
+    let message
+    try {
+      message = await withTimeout(
+        client.messages.create({
+          model: "claude-haiku-4-5",
+          max_tokens: 900,
+          tools: [searchTool as unknown as Anthropic.Messages.Tool],
+          messages: [{ role: "user", content: query }],
+        }),
+        SEARCH_TIMEOUT_MS
+      )
+    } catch (toolErr) {
+      console.warn("Claude web search unavailable, answering without it:", toolErr instanceof Error ? toolErr.message : toolErr)
+      message = await withTimeout(
+        client.messages.create({ model: "claude-haiku-4-5", max_tokens: 600, messages: [{ role: "user", content: query }] }),
+        20000
+      )
+    }
+    const response = message.content
+      .filter((b): b is Anthropic.Messages.TextBlock => b.type === "text")
+      .map((b) => b.text)
+      .join("\n")
+      .trim()
     const { appeared, position, snippet } = checkAppearance(response, businessName)
     return {
       engine: "claude",
@@ -210,15 +232,28 @@ async function scanChatGPT(
   }
   try {
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-    const completion = await withTimeout(
-      client.chat.completions.create({
-        model: "gpt-4o-mini",
-        max_tokens: 600,
-        messages: [{ role: "user", content: query }],
-      }),
-      20000
-    )
-    const response = completion.choices[0]?.message?.content ?? ""
+    // Live web search via the Responses API — what a real ChatGPT user gets.
+    // Plain completion is the fallback so a tool outage never blanks the engine.
+    let response = ""
+    try {
+      const res = await withTimeout(
+        client.responses.create({
+          model: "gpt-4o-mini",
+          tools: [{ type: "web_search_preview", search_context_size: "low" }],
+          input: query,
+          max_output_tokens: 900,
+        }),
+        SEARCH_TIMEOUT_MS
+      )
+      response = (res.output_text ?? "").trim()
+    } catch (toolErr) {
+      console.warn("ChatGPT web search unavailable, answering without it:", toolErr instanceof Error ? toolErr.message : toolErr)
+      const completion = await withTimeout(
+        client.chat.completions.create({ model: "gpt-4o-mini", max_tokens: 600, messages: [{ role: "user", content: query }] }),
+        20000
+      )
+      response = completion.choices[0]?.message?.content ?? ""
+    }
     const { appeared, position, snippet } = checkAppearance(response, businessName)
     return {
       engine: "chatgpt",
@@ -277,8 +312,24 @@ async function scanGemini(
       // API honours it (verified live against the prod key).
       generationConfig: { thinkingConfig: { thinkingBudget: 0 }, maxOutputTokens: 600 } as unknown as GenerationConfig,
     })
-    const result = await withTimeout(model.generateContent(query), 20000)
-    const response = result.response.text()
+    // Google Search grounding. SDK 0.24.1 only types the legacy
+    // googleSearchRetrieval tool; Gemini 2+/3 expects `googleSearch: {}` and the
+    // API honours it, hence the cast. Ungrounded answer is the fallback.
+    let response = ""
+    try {
+      const grounded = await withTimeout(
+        model.generateContent({
+          contents: [{ role: "user", parts: [{ text: query }] }],
+          tools: [{ googleSearch: {} } as unknown as Tool],
+        }),
+        SEARCH_TIMEOUT_MS
+      )
+      response = grounded.response.text()
+    } catch (toolErr) {
+      console.warn("Gemini grounding unavailable, answering without it:", toolErr instanceof Error ? toolErr.message : toolErr)
+      const result = await withTimeout(model.generateContent(query), 20000)
+      response = result.response.text()
+    }
     const { appeared, position, snippet } = checkAppearance(response, businessName)
     return {
       engine: "gemini",

@@ -7,6 +7,7 @@ import { agent, user, type Block, type Chip, type Message } from "@/lib/agent/ty
 import { track } from "@/lib/gtag"
 import { fbTrack } from "@/lib/pixel"
 import type { ScanResult, EngineEvidence } from "@/types/scan"
+import type { SiteChecks } from "@/lib/site-check"
 import type { IdentifyResult } from "@/app/api/scan/identify/route"
 import { BRAND } from "@/lib/brand"
 
@@ -27,11 +28,10 @@ function domainOf(url: string): string {
     return url.replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0]
   }
 }
-const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`
 
-const STEP_LABELS = (domain: string) => [
+const STEP_LABELS = (domain: string, local: boolean) => [
   `Reading ${domain}`,
-  "Working out what customers near you ask",
+  local ? "Working out what customers near you ask" : "Working out what customers ask",
   "Asking ChatGPT, Gemini, Claude and Perplexity",
   "Checking who they recommended instead",
 ]
@@ -39,11 +39,11 @@ const PROGRESS_DONE: Record<string, number> = { site: 0, profile: 1, engines: 2,
 
 const CANNED: Record<string, string> = {
   "What exactly will you do?":
-    "Every week I ask the four AIs the questions your customers ask and tell you what changed. In between, I write the pages and answers AI needs to read about you, keep your Google listing active, draft replies to reviews, and watch what your competitors publish. Anything public gets a one-tap approve from you first.",
+    "This week: fix everything in the checklist above — llms.txt, the FAQ page, the facts AI couldn’t find. Every week after: ask the four AIs your customers’ questions and tell you what changed, keep your Google listing active, draft replies to reviews, and watch what your competitors publish. Anything public gets a one-tap approve from you first. You never touch code.",
   "Is this real?":
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The money figure is an estimate and I label it as one.",
   "How much?":
-    "$99 a month after 14 free days. No card today — I’ll ask for one when you start the trial, and you can cancel before day 14 and pay nothing.",
+    "$99 a month, month to month. Cancel in two clicks, no contract. An SEO agency charges around $2,000 a month for Google alone — and nothing for AI.",
 }
 
 export function StartAgent() {
@@ -83,7 +83,7 @@ export function StartAgent() {
     push(
       agent([
         { kind: "text", text: `${ident.businessName}${where}. Give me 60 seconds — I’m going to ask the AIs about you the way a customer would.` },
-        { kind: "steps", items: STEP_LABELS(domain), done: 0 },
+        { kind: "steps", items: STEP_LABELS(domain, !!ident.city), done: 0 },
       ], "scan-steps")
     )
     track("scan_started")
@@ -162,12 +162,26 @@ export function StartAgent() {
       )
     }
 
+    const plan = buildPlan(result, ident.businessName)
     push(
       agent([
-        { kind: "text", text: "Want me to keep going?", big: true },
-        { kind: "text", text: "I’ll fix what’s above, ask the AIs again every week, and tell you every time something changes. Where do I send the full report?" },
-        emailBlock(),
-        { kind: "chips", items: Object.keys(CANNED).map((label) => ({ label, action: { type: "say", text: CANNED[label] }, primary: false })) },
+        { kind: "text", text: "Here’s what I’d do for you this week.", big: true },
+        { kind: "receipt", title: "Your first week", sub: `${plan.length} things`, items: plan },
+        { kind: "text", text: "Your SEO agency is working on Google’s list of ten links. Your customers are getting one answer now — from AI. Nobody on your side has to learn anything: I do the work, you tap approve." },
+      ])
+    )
+    push(
+      agent([
+        { kind: "text", text: "$99 a month. Month to month.", big: true },
+        { kind: "text", text: "An agency charges around $2,000 for Google alone. Cancel in two clicks — no contract, no exit fees. I start the day you say go." },
+        {
+          kind: "chips",
+          items: [
+            { label: "Start today →", action: { type: "link", href: `/signup?scan=${scanId}` }, primary: true },
+            { label: "Send me the report instead", action: { type: "ask", text: "report" }, primary: false },
+            ...Object.keys(CANNED).map((label) => ({ label, action: { type: "say", text: CANNED[label] } as const, primary: false })),
+          ],
+        },
       ], "ask")
     )
     setBusy(false)
@@ -192,7 +206,7 @@ export function StartAgent() {
     push(user(text))
 
     if (phase === "result" || phase === "claimed") {
-      push(agent([{ kind: "text", text: "Once you start a trial I answer anything you ask here. For now — send yourself the report above and I’ll take it from there." }]))
+      push(agent([{ kind: "text", text: "Once you start I answer anything you ask here. For now — tap Start today, or send yourself the report and I’ll take it from there." }]))
       return
     }
 
@@ -235,7 +249,9 @@ export function StartAgent() {
 
   // ── chips & email ─────────────────────────────────────────────────────────
   async function onChip(chip: Chip) {
-    if (chip.action.type === "say") {
+    if (chip.action.type === "ask") {
+      push(user(chip.label), agent([{ kind: "text", text: "Sure. Where do I send it?" }, emailBlock()]))
+    } else if (chip.action.type === "say") {
       push(user(chip.label), agent([{ kind: "text", text: chip.action.text }]))
     } else if (chip.action.type === "link") {
       window.location.href = chip.action.href
@@ -260,11 +276,11 @@ export function StartAgent() {
         user(email),
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
-          { kind: "text", text: "If you want me to actually fix this — not just report it — start the trial and I begin this week." },
+          { kind: "text", text: "If you want me to actually fix this — not just report it — start today and I begin this week. $99 a month, cancel any time." },
           {
             kind: "chips",
             items: [
-              { label: "Start my agent — 14 days free →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true },
+              { label: "Start today →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true },
               { label: "Read the full report", action: { type: "link", href: data.resultsUrl || `/scan/results?id=${scan.id}` }, primary: false },
             ],
           },
@@ -389,37 +405,68 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
     )
   }
 
-  // 5. Money, honestly labelled.
+  // 5. Demand, honestly labelled — the estimate is PEOPLE per month, not money.
   const loss = isRecord(insights?.estimatedMonthlyLoss) ? (insights!.estimatedMonthlyLoss as { low: number; high: number; basis: string }) : null
-  if (loss && typeof loss.low === "number" && typeof loss.high === "number" && loss.high > 0 && named < checked) {
+  if (loss && typeof loss.low === "number" && typeof loss.high === "number" && loss.high > 0 && keyword) {
+    const tail = named === 0 ? "None of them heard your name." : named < checked ? `${checked - named} in ${checked} of those answers didn’t include you.` : "Right now, they hear yours."
     out.push(
       agent([
-        { kind: "stat", value: `${money(loss.low)}–${money(loss.high)}`, label: `a month, roughly, going to the businesses AI names instead. An estimate — ${loss.basis || "based on how often people ask AI for this."}` },
+        { kind: "stat", value: `${loss.low.toLocaleString("en-US")}–${loss.high.toLocaleString("en-US")}`, label: `people a month ask an AI for “${keyword}”. ${tail} An estimate — ${loss.basis.replace(/^Based on/i, "based on")}` },
       ])
     )
   }
 
-  // 6. First fix — only when the audit is real (never the placeholder set) and
-  //    only if it doesn't contradict what the engines just said.
-  const fallback = isRecord(result.ogData) && (result.ogData as Record<string, unknown>).auditFallback === true
-  const issues: unknown[] = Array.isArray(result.issues) ? result.issues : []
-  const namedLabels = evidence.filter((x) => x.ev?.appeared).map((x) => (x.engine === "chatgpt" ? "chatgpt" : x.engine))
-  const contradicts = (i: Record<string, unknown>) => {
-    const txt = `${i.headline ?? ""} ${i.explanation ?? ""}`.toLowerCase()
-    return namedLabels.some((e) => txt.includes(e)) || (named === checked && checked > 0 && /\bai\b|assistant/.test(txt))
-  }
-  const first = issues.filter(isRecord).find((i) => !contradicts(i) && (i.severity === "critical" || i.severity === "warning")) ?? issues.filter(isRecord).find((i) => !contradicts(i))
-  if (!fallback && named < checked && first && typeof first.headline === "string") {
+  // 6. What AI finds when it reads the site — you vs the competitors it named.
+  const sc = isRecord(result.ogData) && isRecord((result.ogData as Record<string, unknown>).siteChecks)
+    ? ((result.ogData as Record<string, unknown>).siteChecks as unknown as SiteChecks)
+    : null
+  if (sc?.you) {
+    const you = sc.you
+    const fails = you.checks.filter((c) => c.ok === false)
     out.push(
       agent([
-        { kind: "text", text: `First thing I’d fix: ${first.headline.replace(/\.$/, "")}.` },
-        ...(typeof first.explanation === "string" ? [{ kind: "text", text: first.explanation } as Block] : []),
+        { kind: "text", text: `What an AI finds when it reads ${you.domain}: ${you.passed} of ${you.total}.` },
+        { kind: "sources", items: you.checks.map((c) => ({ name: c.label, detail: c.detail, status: c.ok === true ? "Yes" : c.ok === false ? "No" : "Couldn’t check", ok: c.ok === true })) },
+        ...(fails.length
+          ? [{ kind: "text", text: `${fails.length === 1 ? "The one that matters most" : "The ones that matter most"}: ${fails.slice(0, 3).map((c) => c.label.toLowerCase()).join(", ")}. ${fails.some((c) => c.key === "llms" || c.key === "faq") ? "I’ve drafted the first fix below." : "All fixable this week."}` } as Block]
+          : [{ kind: "text", text: "Your site is in good shape for AI. The gap is what the rest of the web says about you — that’s where I’d work." } as Block]),
       ])
     )
+    for (const rival of sc.competitors.slice(0, 2)) {
+      const theyHave = rival.checks.filter((c) => c.ok === true && you.checks.find((y) => y.key === c.key)?.ok === false)
+      if (theyHave.length === 0) continue
+      const slug = (n: string) => n.toLowerCase().replace(/[^a-z0-9]/g, "")
+      const rd = rivals.find((r) => slug(r.name).length >= 4 && slug(rival.domain).includes(slug(r.name).slice(0, 5)))
+      out.push(
+        agent([
+          { kind: "text", text: `${rd?.name ?? rival.domain}: ${rival.passed} of ${rival.total}. They have ${theyHave.map((c) => c.label.toLowerCase()).join(", ")}. You don’t.${rd ? ` That’s the difference between being named ${rd.aiMentions} of ${checked} times and ${evidence.filter((x) => x.ev?.appeared).length}.` : ""}` },
+        ])
+      )
+      break
+    }
   }
 
   if (out.length === 0) {
     out.push(agent([{ kind: "text", text: "I couldn’t get a clean answer from the AIs this time. Leave me your email and I’ll re-run it and send you the result." }]))
   }
   return out
+}
+
+// The week plan is built from what the checks actually found — never a
+// generic list — so the close reads as "here is your situation, handled".
+function buildPlan(result: ScanResult, businessName: string): string[] {
+  const og = isRecord(result.ogData) ? (result.ogData as Record<string, unknown>) : {}
+  const sc = isRecord(og.siteChecks) ? (og.siteChecks as SiteChecks) : null
+  const fails = new Set(sc?.you?.checks.filter((c) => c.ok === false).map((c) => c.key) ?? [])
+  const plan: string[] = []
+  if (fails.has("llms")) plan.push("Write and host your llms.txt — the file AI assistants read first")
+  if (fails.has("faq")) plan.push("Publish the FAQ page above with your real answers filled in")
+  if (fails.has("facts")) plan.push("Put the facts AI needs on your homepage — the ones it couldn’t find")
+  if (fails.has("schema")) plan.push("Add the structured facts block so AI reads your business, not just your words")
+  if (fails.has("robots")) plan.push("Unblock the AI crawlers your robots.txt is turning away")
+  if (fails.has("blog")) plan.push("First fresh page AI can quote, written from your site")
+  if (fails.has("sitemap")) plan.push("Add a sitemap so nothing on your site is missed")
+  plan.push(`Ask ChatGPT, Gemini, Claude and Perplexity about ${businessName} again — and tell you what changed`)
+  plan.push("Send you one short note: what I did, what moved, what I need a yes on")
+  return plan.slice(0, 7)
 }

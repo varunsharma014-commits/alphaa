@@ -21,7 +21,7 @@ export function StartTrialButton({ priceId, label }: { priceId: string; label: s
       if (!res.ok || !data.url) throw new Error(data.error || "Checkout failed")
       window.location.href = data.url
     } catch {
-      setError("Something went wrong starting your trial. Try again, or email us and we’ll set you up: hi@alphaa.app")
+      setError("Something went wrong opening checkout. Try again, or email us and we’ll set you up: hi@alphaa.app")
       setLoading(false)
     }
   }

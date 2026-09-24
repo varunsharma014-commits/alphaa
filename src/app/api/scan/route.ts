@@ -17,6 +17,7 @@ import {
   type BusinessProfile,
 } from "@/lib/scan-insights"
 import { sendScanReadyEmail } from "@/lib/scan-email"
+import { checkSites, type SiteChecks } from "@/lib/site-check"
 import type { AiSearchStatus } from "@/types/audit"
 import type { EngineEvidence, ScanInsights, ScanSerp, CompetitorDetail } from "@/types/scan"
 
@@ -54,7 +55,7 @@ async function fetchSiteData(websiteUrl: string): Promise<{ og: SiteOg | null; t
   }
 }
 
-export const maxDuration = 90
+export const maxDuration = 120
 
 const schema = z.object({
   businessName: z.string().min(1),
@@ -261,6 +262,24 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
       competitorDetails = []
     }
 
+    // What AI finds when it reads the site — you vs the two most-named
+    // competitors. HTTP only, ~5s, capped so it can never stall the scan.
+    let siteChecks: SiteChecks | null = null
+    if (input.websiteUrl) {
+      try {
+        const rivalDomains = competitorDetails
+          .filter((c) => c.domain && c.aiMentions > 0)
+          .sort((a, b) => b.aiMentions - a.aiMentions)
+          .map((c) => c.domain as string)
+        siteChecks = await Promise.race([
+          checkSites(input.websiteUrl, rivalDomains, isLocal),
+          new Promise<null>((r) => setTimeout(() => r(null), 25000)),
+        ])
+      } catch {
+        siteChecks = null
+      }
+    }
+
     // insights is null only when we couldn't determine a real industry at all —
     // the results page hides the block in that case.
     const insights: ScanInsights | null = industry
@@ -277,7 +296,7 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
 
     // ogData is ALWAYS an object for new scans and always carries `insights`
     // (possibly null), even when the OG fetch itself failed.
-    const ogData = { ...(site.og ?? {}), insights, auditFallback }
+    const ogData = { ...(site.og ?? {}), insights, auditFallback, siteChecks }
 
     // Update lead with results — this write is what flips the result poller
     // from { ready: false } to { ready: true }.

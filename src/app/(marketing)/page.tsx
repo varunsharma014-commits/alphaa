@@ -101,7 +101,7 @@ export default function HomePage() {
         <h2>One agent. From $99 a month.</h2>
         <div className="ag-price">
           <div className="ag-price__amt">$99<small>/month</small></div>
-          <p>14 days free. Cancel any time before day 14 and pay nothing.</p>
+          <p>Month to month. No contract. Cancel in two clicks.</p>
           <Link className="ag-pill ag-pill--blue" href="/start">Meet your agent</Link>
           <p style={{ marginTop: 14, fontSize: 14 }}><Link href="/pricing">Compare plans ›</Link></p>
         </div>

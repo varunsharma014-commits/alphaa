@@ -1,9 +1,13 @@
 import { SignUp } from "@clerk/nextjs"
 
-export default function SignUpPage() {
+// `scan` is the ScanLead id from /start; onboarding prefills the business from
+// it so a visitor who just watched the agent work never retypes anything.
+export default async function SignUpPage({ searchParams }: { searchParams: Promise<{ scan?: string }> }) {
+  const { scan } = await searchParams
+  const next = scan && /^[a-z0-9]{10,64}$/i.test(scan) ? `/onboarding?scan=${scan}` : "/onboarding"
   return (
     <SignUp
-      forceRedirectUrl="/onboarding"
+      forceRedirectUrl={next}
       appearance={{
         variables: {
           colorPrimary: "#0071E3",

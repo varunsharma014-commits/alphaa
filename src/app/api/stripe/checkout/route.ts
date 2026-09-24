@@ -57,7 +57,8 @@ export async function POST(req: NextRequest) {
     customer: stripeCustomerId,
     line_items: [{ price: priceId, quantity: 1 }],
     mode: "subscription",
-    subscription_data: { trial_period_days: 14 },
+    // No trial (decided 2026-09-24): the /start analysis does the convincing;
+    // month to month, cancel any time.
     payment_method_collection: "always",
     success_url: `${appUrl}/dashboard?upgraded=true`,
     cancel_url: `${appUrl}/pricing`,
