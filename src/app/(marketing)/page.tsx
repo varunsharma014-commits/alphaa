@@ -50,17 +50,16 @@ export default function HomePage() {
 
       {/* Hero — the agent, not the dashboard, is the product. */}
       <section className="ag-hero">
-        <div className="ag-hero__eyebrow">Get customers from ChatGPT, Claude, Perplexity and other AI.</div>
-        <h1>Get Recommended by ChatGPT, Claude, Gemini and other AI.</h1>
+        <h1>Get customers from ChatGPT, Claude, and Perplexity.</h1>
         <p className="ag-hero__sub">
-          Meet {BRAND.agentName}: the AI agent that works 24/7 to get your business recommended on ChatGPT, Gemini, Claude and Perplexity. You watch. It does the work.
+          Meet {BRAND.agentName}: the AI agent that works 24/7 to put your business at the top of AI search answers. You watch. It does the work.
         </p>
         <div className="ag-hero__cta">
           <Link className="ag-pill ag-pill--blue" href="/start">Scan Your Website – It’s Free</Link>
           <a className="ag-hero__more" href="#watch">Watch it work</a>
         </div>
-        <div className="ag-fine">Takes 5 seconds. Just enter your URL.</div>
-        <div className="ag-trust">
+        <div className="ag-fine">No credit card required.</div>
+        <div className="ag-trust ag-trust--small">
           <div className="ag-trust__faces">
             {AVATARS.map((src) => (
               <Image key={src} src={src} width={36} height={36} alt="" aria-hidden="true" />

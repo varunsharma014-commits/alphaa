@@ -74,7 +74,7 @@ export function MarketingNav() {
             </Link>
             <Link
               href="/start"
-              className="text-[12px] text-white bg-[#0071e3] hover:bg-[#0077ed] rounded-full px-3 py-[5px] transition-colors duration-200"
+              className="text-[14px] font-medium text-white bg-[#0071e3] hover:bg-[#0077ed] rounded-full px-5 py-[7px] min-w-[132px] text-center transition-colors duration-200"
             >
               Free AI Scan
             </Link>

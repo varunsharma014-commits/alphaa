@@ -1,12 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Check } from "lucide-react"
-import { OrangePillButton } from "@/components/common/OrangePillButton"
-import { SectionLabel } from "@/components/common/SectionLabel"
-import { GlassCard } from "@/components/common/GlassCard"
+import Link from "next/link"
+import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { FaqSection } from "@/components/marketing/FaqSection"
+import { Panel, AgentNote, EngineChips, Phone } from "@/components/marketing/apple/Mockups"
+import { AgencyToggle } from "@/components/marketing/apple/Sections"
 
 const plans = [
   {
@@ -78,126 +77,101 @@ const billingFaqs = [
   { q: "Do you offer refunds?", a: "We offer a full refund within 7 days of your first charge if you're not satisfied. No questions asked." },
 ]
 
+// Each plan gets its own "product shot" — what that plan looks like in use.
+const ART: Record<string, { tone: "sky" | "lavender" | "sage"; art: React.ReactNode }> = {
+  Starter: {
+    tone: "sky",
+    art: (
+      <Phone>
+        <AgentNote title="Posted to Google" body="“Now booking same-week cleanings — call or book online.” Your 2nd post this week." />
+        <EngineChips items={[{ name: "ChatGPT", ok: true }, { name: "Gemini", ok: true }, { name: "Claude", ok: false }, { name: "Perplexity", ok: true }]} />
+      </Phone>
+    ),
+  },
+  Pro: {
+    tone: "lavender",
+    art: (
+      <Phone>
+        <AgentNote title="3 locations this week" body="Downtown named 4 of 4. Northside 3 of 4. Westlake 2 of 4 — Smile Studio got the other two. Here’s what they have that you don’t." />
+      </Phone>
+    ),
+  },
+  "Full Service": {
+    tone: "sage",
+    art: (
+      <Phone>
+        <AgentNote title="Published to your website" body="Your new FAQ page and structured facts are live. A person on our team did it — you didn’t touch a thing." />
+      </Phone>
+    ),
+  },
+}
+
 export default function PricingPage() {
   const [annual, setAnnual] = useState(false)
+  const [open, setOpen] = useState<number | null>(null)
 
   return (
-    <div className="pt-24 pb-20 px-4 sm:px-6">
-      <div className="max-w-5xl mx-auto">
-        {/* Launch banner */}
-        <div className="mb-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-sm font-medium">
-            An SEO agency charges ~$2,000 a month for Google alone. Your agent starts at <span className="text-fg">$99</span>.
-          </div>
+    <>
+      <section className="ap-sec" style={{ paddingTop: 120 }}>
+        <p className="ap-center" style={{ fontSize: 15, color: "#6e6e73", margin: "0 auto 18px", padding: "0 22px" }}>
+          An SEO agency charges ~$2,000 a month for Google alone. Your agent starts at <b style={{ color: "#1d1d1f" }}>$99</b>.
+        </p>
+        <h1 className="ap-h2 ap-center" style={{ fontSize: "clamp(44px, 7.7vw, 88px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}>
+          From $99/month.<br /><span className="ap-quiet">No contracts.</span>
+        </h1>
+        <p className="ap-lead ap-center">Month to month. Cancel in two clicks. No technical skills needed — your agent does the work.</p>
+
+        <div className="ap-seg" role="tablist" aria-label="Billing period">
+          <button role="tab" aria-selected={!annual} className={!annual ? "is-on" : ""} onClick={() => setAnnual(false)}>Monthly</button>
+          <button role="tab" aria-selected={annual} className={annual ? "is-on" : ""} onClick={() => setAnnual(true)}>Annual · save 20%</button>
+          <span className={cn("ap-seg__thumb", annual && "is-right")} aria-hidden="true" />
         </div>
 
-        {/* Header */}
-        <div className="text-center mb-12">
-          <SectionLabel className="mb-3 block">Pricing</SectionLabel>
-          <h1 className="text-[37.4px] sm:text-[52.8px] lg:text-[59.4px] font-semibold leading-[1.08] tracking-[-0.02em] text-fg mb-4 text-balance">
-            From $99/month.{" "}
-            <span className="text-[#86868b]">No contracts.</span>
-          </h1>
-          <p className="text-muted text-lg">Month to month. No contract. Cancel in two clicks.</p>
-        </div>
-
-        {/* Toggle */}
-        <div className="flex items-center justify-center gap-4 mb-10">
-          <span className={cn("text-sm", !annual ? "text-fg" : "text-muted")}>Monthly</span>
-          <button
-            onClick={() => setAnnual(!annual)}
-            className={cn(
-              "relative w-12 h-6 rounded-full transition-colors duration-200",
-              annual ? "bg-brand-orange" : "bg-fg/10"
-            )}
-          >
-            {/* Knob travel = track (48) − knob (16) − inset (4×2) = 24px.
-                It needs the matching left-1 inset or it escapes the track and
-                paints over the "Annual" label next to it. */}
-            <span
-              className={cn(
-                "absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-200",
-                annual ? "translate-x-6" : "translate-x-0"
-              )}
-            />
-          </button>
-          <span className={cn("text-sm", annual ? "text-fg" : "text-muted")}>
-            Annual <span className="text-brand-orange font-medium">save 20%</span>
-          </span>
-        </div>
-
-        {/* Plan cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={cn(
-                "glass-card rounded-card p-8 relative flex flex-col",
-                plan.highlight && "border-brand-orange/30 shadow-glow-sm"
-              )}
-            >
-              {"badge" in plan && plan.badge && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className={plan.highlight ? "px-3 py-1 rounded-full bg-brand-orange text-white text-xs font-semibold" : "px-3 py-1 rounded-full border border-brand-orange/40 bg-brand-orange/10 text-brand-orange text-xs font-semibold"}>
-                    {plan.badge}
-                  </span>
+        <div className="ap-plans">
+          {plans.map((plan) => {
+            const a = ART[plan.name]
+            const price = annual ? plan.annual : plan.monthly
+            const href = "href" in plan && plan.href ? plan.href : `/signup?plan=${plan.priceId[annual ? "annual" : "monthly"]}`
+            return (
+              <article key={plan.name} className={cn("ap-plan", plan.highlight && "ap-plan--hi")}>
+                <Panel tone={a.tone}>{a.art}</Panel>
+                <div className="ap-plan__body">
+                  {"badge" in plan && plan.badge && <div className="ap-plan__badge">{plan.badge}</div>}
+                  <h2>{plan.name}</h2>
+                  <p className="ap-plan__desc">{plan.description}</p>
+                  <div className="ap-plan__price"><b>${price}</b><span>/month</span></div>
+                  <div className="ap-plan__note">
+                    {"monthlyOnly" in plan && plan.monthlyOnly ? "Monthly only — human-fulfilled service" : annual ? `Billed annually ($${price * 12}/yr)` : "Month to month · cancel anytime"}
+                  </div>
+                  <Link href={href} className={cn("ap-plan__cta", plan.highlight && "is-primary")}>{plan.cta}</Link>
+                  <ul className="ap-plan__list">
+                    {plan.features.map((f) => <li key={f}>{f}</li>)}
+                  </ul>
                 </div>
-              )}
-
-              <div className="mb-6">
-                <h2 className="text-fg font-semibold text-xl mb-1">{plan.name}</h2>
-                <p className="text-muted text-sm">{plan.description}</p>
-              </div>
-
-              <div className="mb-8">
-                <div className="flex items-baseline gap-1">
-                  <span className="mono text-fg text-4xl font-medium">
-                    ${annual ? plan.annual : plan.monthly}
-                  </span>
-                  <span className="text-muted text-sm">/month</span>
-                </div>
-                {annual && !("monthlyOnly" in plan && plan.monthlyOnly) && (
-                  <p className="text-muted/60 text-xs mt-1">Billed annually (${(annual ? plan.annual : plan.monthly) * 12}/yr)</p>
-                )}
-                {"monthlyOnly" in plan && plan.monthlyOnly && (
-                  <p className="text-muted/60 text-xs mt-1">Monthly only — human-fulfilled service</p>
-                )}
-              </div>
-
-              <ul className="space-y-3 flex-1 mb-8">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5">
-                    <Check className="w-4 h-4 text-brand-orange flex-shrink-0 mt-0.5" />
-                    <span className="text-fg/80 text-sm">{f}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <OrangePillButton
-                href={"href" in plan && plan.href ? plan.href : `/signup?plan=${plan.priceId[annual ? "annual" : "monthly"]}`}
-                variant={plan.highlight ? "primary" : "ghost"}
-                className="w-full justify-center"
-                size="md"
-              >
-                {plan.cta} →
-              </OrangePillButton>
-            </div>
-          ))}
+              </article>
+            )
+          })}
         </div>
+      </section>
 
-        {/* Billing FAQ */}
-        <div className="max-w-2xl mx-auto">
-          <h3 className="text-fg font-semibold text-lg text-center mb-6">Billing questions</h3>
-          <div className="space-y-2">
-            {billingFaqs.map((faq) => (
-              <GlassCard key={faq.q} className="py-4 px-5">
-                <p className="text-fg text-sm font-medium mb-1">{faq.q}</p>
-                <p className="text-muted text-sm">{faq.a}</p>
-              </GlassCard>
+      <AgencyToggle />
+
+      <section className="ap-sec ap-sec--grey">
+        <h2 className="ap-h2 ap-center">Billing questions.</h2>
+        <div className="ap-faq" style={{ marginTop: 24 }}>
+          <div className="ap-faq__group">
+            {billingFaqs.map((f, i) => (
+              <div key={f.q} className={cn("ap-faq__item", open === i && "is-open")}>
+                <button className="ap-faq__q" onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i}>
+                  <span>{f.q}</span>
+                  <ChevronDown className="ap-faq__chev" aria-hidden="true" />
+                </button>
+                <div className="ap-faq__a"><p>{f.a}</p></div>
+              </div>
             ))}
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   )
 }

@@ -75,7 +75,25 @@ export function IncomingCall({ from, sub }: { from: string; sub: string }) {
 }
 
 /** A search-ad price tag, struck through, next to an organic AI badge. */
-export function AdVsAi() {
+export function AdVsAi({ only }: { only?: "ad" | "ai" } = {}) {
+  if (only === "ad")
+    return (
+      <div className="ap-ad ap-ad--solo">
+        <div className="ap-ad__tag">Sponsored</div>
+        <div className="ap-ad__price"><s>$15.40</s> per click</div>
+        <div className="ap-ad__meta">Bidding against 12 competitors. Gone the day you stop paying.</div>
+      </div>
+    )
+  if (only === "ai")
+    return (
+      <div className="ap-badge ap-badge--solo">
+        <span className="ap-badge__star">★</span>
+        <div>
+          <b>Recommended by ChatGPT</b>
+          <span>Free. Earned. Trusted.</span>
+        </div>
+      </div>
+    )
   return (
     <div className="ap-advs">
       <div className="ap-ad">

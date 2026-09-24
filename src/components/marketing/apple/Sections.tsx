@@ -19,7 +19,7 @@ export function RevenueSection() {
       step: "Save on ads",
       title: "Skip the Google Ads bidding war.",
       body: "Stop paying $15 a click to fight for attention on Google. When an AI recommends you as the “best local option,” you get organic trust that money can’t buy.",
-      art: <AdVsAi />,
+      art: <div className="ap-price-chip"><b>$0</b><span>per click</span><em>AI recommendations aren’t auctioned</em></div>,
     },
     {
       tone: "sky" as const,
@@ -44,6 +44,22 @@ export function RevenueSection() {
     <section className="ap-sec ap-sec--grey">
       <h2 className="ap-h2 ap-center">Turn AI recommendations<br />into real revenue.</h2>
       <p className="ap-lead ap-center">When ChatGPT or Claude names your business, it’s not a vanity metric — it’s a direct referral. People asking AI aren’t browsing. They’re ready to book, buy or visit.</p>
+      {/* The strongest angle, front and centre: pay per click vs. recommended for free. */}
+      <div className="ap-hero-panel">
+        <Panel tone="lavender" tall>
+          <div className="ap-versus">
+            <div className="ap-versus__side">
+              <div className="ap-versus__label">Google Ads</div>
+              <AdVsAi only="ad" />
+            </div>
+            <div className="ap-versus__vs" aria-hidden="true">vs</div>
+            <div className="ap-versus__side">
+              <div className="ap-versus__label">AI recommendation</div>
+              <AdVsAi only="ai" />
+            </div>
+          </div>
+        </Panel>
+      </div>
       <div className="ap-steps">
         {cards.map((c) => (
           <article key={c.title} className="ap-stepcard">
@@ -199,49 +215,42 @@ export function EasyRail() {
   )
 }
 
-// ── 4. Agency vs agent: segmented toggle ─────────────────────────────────────
-const SIDES = {
-  agency: {
-    price: "$2,000",
-    per: "a month · ~$24,000 a year",
-    rows: [
-      ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked."],
-      ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver."],
-      ["The focus", "Google’s ten blue links. Ask about ChatGPT or Claude and watch them stumble."],
-    ],
-  },
-  alphaa: {
-    price: "$99",
-    per: "a month · $1,188 a year",
-    rows: [
-      ["The report", "One line: what it did today, what changed, what it needs from you."],
-      ["The contract", "Month to month. Cancel in two clicks. It only stays if the AIs keep saying your name."],
-      ["The focus", "Getting you recommended by AI assistants is the only thing it does."],
-    ],
-  },
-}
+// ── 4. Agency vs agent: side-by-side, prices on one line, savings right under ──
+const ROWS: [string, string, string][] = [
+  ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what it did today, what changed, what it needs from you."],
+  ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel in two clicks. It only stays if the AIs keep saying your name."],
+  ["The focus", "Google’s ten blue links. Ask about ChatGPT or Claude and watch them stumble.", "Getting you recommended by AI assistants is the only thing it does."],
+]
 
 export function AgencyToggle() {
-  const [side, setSide] = useState<"agency" | "alphaa">("alphaa")
-  const s = SIDES[side]
   return (
     <section className="ap-sec">
       <h2 className="ap-h2 ap-center">Your SEO agency charges $2,000 a month<br /><span className="ap-quiet">for a job AI is taking over.</span></h2>
       <p className="ap-lead ap-center">Even a “good” Google SEO agency leaves you invisible where customers are actually asking questions today.</p>
-      <div className="ap-seg" role="tablist">
-        <button role="tab" aria-selected={side === "agency"} className={side === "agency" ? "is-on" : ""} onClick={() => setSide("agency")}>SEO agency</button>
-        <button role="tab" aria-selected={side === "alphaa"} className={side === "alphaa" ? "is-on" : ""} onClick={() => setSide("alphaa")}>{A}</button>
-        <span className={`ap-seg__thumb${side === "alphaa" ? " is-right" : ""}`} aria-hidden="true" />
-      </div>
-      <div className={`ap-compare ap-compare--${side}`} key={side}>
-        <div className="ap-compare__price"><b>{s.price}</b><span>{s.per}</span></div>
-        <div className="ap-compare__rows">
-          {s.rows.map(([k, v]) => (
-            <div key={k} className="ap-compare__row"><div className="ap-eyebrow ap-eyebrow--dark">{k}</div><p>{v}</p></div>
-          ))}
+      <div className="ap-vs">
+        <div className="ap-vs__col ap-vs__col--them">
+          <div className="ap-vs__name">SEO agency</div>
+          <div className="ap-vs__price"><b>$2,000</b><span>/mo</span></div>
+          <div className="ap-vs__year">$24,000 a year</div>
+        </div>
+        <div className="ap-vs__col ap-vs__col--us">
+          <div className="ap-vs__name">{A}</div>
+          <div className="ap-vs__price"><b>$99</b><span>/mo</span></div>
+          <div className="ap-vs__year">$1,188 a year</div>
+        </div>
+        {ROWS.map(([k, them, us], i) => (
+          <div key={k} className={`ap-vs__row${i === ROWS.length - 1 ? " is-last" : ""}`}>
+            <div className="ap-vs__k">{k}</div>
+            <p className="ap-vs__them">{them}</p>
+            <p className="ap-vs__us">{us}</p>
+          </div>
+        ))}
+        <div className="ap-vs__save">
+          <span>Save up to</span>
+          <b>$22,800 a year</b>
+          <em>…and actually show up where your customers now ask.</em>
         </div>
       </div>
-      <p className="ap-save">Save up to <b>$22,800 a year</b> — and actually show up where it matters.</p>
     </section>
   )
 }
