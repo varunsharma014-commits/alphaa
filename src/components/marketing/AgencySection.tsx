@@ -22,7 +22,7 @@ const contrasts = [
 
 export function AgencySection() {
   return (
-    <section className="ag-section ag-section--grey">
+    <section className="ag-section">
       <h2>Your SEO agency charges $2,000 a month<br /><span className="ag-quiet">for a job AI is taking over.</span></h2>
       <p className="ag-section__sub">Even a “good” Google SEO agency leaves you completely invisible in the places where customers are actually asking questions today.</p>
 
