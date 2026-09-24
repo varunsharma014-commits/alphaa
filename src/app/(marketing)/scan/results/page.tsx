@@ -314,7 +314,7 @@ function ScoreGaugeBig({ score }: { score: number }) {
 // ── Trust strip — honest items only, shown near every CTA ───────────────────
 
 const TRUST_ITEMS = [
-  { Icon: Check,     text: "$0 today · 14-day free trial" },
+  { Icon: Check,     text: "$99 a month · month to month" },
   { Icon: Check,     text: "Cancel anytime in two clicks" },
   { Icon: Lock,      text: "Payments secured by Stripe" },
   { Icon: BarChart3, text: "Weekly progress report — measured, not promised" },
@@ -324,7 +324,7 @@ function TrustStrip({ compact = false }: { compact?: boolean }) {
   if (compact) {
     return (
       <p className="text-fg/35 text-[11px] text-center leading-relaxed mt-3 mb-0">
-        $0 today · 14-day free trial · cancel anytime in two clicks · payments secured by Stripe
+        $99 a month · month to month · cancel anytime in two clicks · payments secured by Stripe
       </p>
     )
   }

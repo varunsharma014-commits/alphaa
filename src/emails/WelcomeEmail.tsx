@@ -6,10 +6,11 @@ import {
 interface WelcomeEmailProps {
   firstName: string
   businessName: string
-  trialEndDate: string
+  /** Unused since trials ended (2026-09); kept so existing callers still type-check. */
+  trialEndDate?: string
 }
 
-export default function WelcomeEmail({ firstName, businessName, trialEndDate }: WelcomeEmailProps) {
+export default function WelcomeEmail({ firstName, businessName }: WelcomeEmailProps) {
   return (
     <Html>
       <Head />
@@ -23,17 +24,17 @@ export default function WelcomeEmail({ firstName, businessName, trialEndDate }: 
           <Section style={content}>
             <Heading style={h1}>You're in, {firstName}.</Heading>
             <Text style={paragraph}>
-              <strong>{businessName}</strong> now has a 14-day free trial to get found on ChatGPT, Claude, Gemini, Perplexity, Google AI, and Copilot.
+              Your agent is set up for <strong>{businessName}</strong>. Its job: get you recommended when people ask ChatGPT, Gemini, Claude and Perplexity.
             </Text>
             <Text style={paragraph}>
-              Here's what we're building for you over the next 14 days:
+              Here's what it works on first:
             </Text>
 
             <Section style={checklist}>
               {[
                 "AI citation profile — structured data every AI engine pulls from",
                 "First weekly content post to Google Business Profile",
-                "Visibility score across all 6 AI engines",
+                "Asks all 4 AI assistants about you — and tells you who they named",
                 "Keyword tracking for your business category + city",
               ].map((item) => (
                 <Text key={item} style={checkItem}>✓ {item}</Text>
@@ -47,7 +48,7 @@ export default function WelcomeEmail({ firstName, businessName, trialEndDate }: 
             <Hr style={hr} />
 
             <Text style={smallText}>
-              Your free trial runs until <strong>{trialEndDate}</strong> — you pay $0 until then, and we'll email you before it ends. Cancel anytime in Billing.
+              $99 a month, month to month. Cancel anytime in Billing — no contract, no exit fees.
             </Text>
             <Text style={smallText}>
               Questions? Reply to this email or email us at <Link href="mailto:support@alphaa.app" style={link}>support@alphaa.app</Link>

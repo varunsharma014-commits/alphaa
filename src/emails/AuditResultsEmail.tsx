@@ -100,14 +100,14 @@ export default function AuditResultsEmail({
 
             {!isSubscriber && (
               <>
-                <Text style={ctaHeading}>Fix your AI visibility in 2 weeks.</Text>
+                <Text style={ctaHeading}>Let your agent fix it.</Text>
                 <Text style={paragraph}>
-                  Alphaa automatically builds your AI citation profile, posts weekly content, and re-checks your visibility across every major AI assistant each week.
+                  Alphaa is an AI agent that does the work: it writes what AI needs to read about you, keeps your Google profile active, and asks ChatGPT, Gemini, Claude and Perplexity about you every week. You approve with one tap.
                 </Text>
                 <Button style={button} href={`${process.env.NEXT_PUBLIC_APP_URL}/pricing`}>
-                  Start free 14-day trial →
+                  Start today →
                 </Button>
-                <Text style={trialNote}>$99/mo after a 14-day free trial. $0 today. Cancel anytime.</Text>
+                <Text style={trialNote}>$99 a month. Month to month — cancel in two clicks.</Text>
               </>
             )}
 
