@@ -154,11 +154,13 @@ export function StartAgent() {
     const qf = (await quickFix) as { faqHtml?: string; quickFix?: { faqHtml?: string } } | null
     const faq = qf?.faqHtml ?? qf?.quickFix?.faqHtml
     if (faq && faq.length > 40) {
+      const og = isRecord(result.ogData) ? (result.ogData as Record<string, unknown>) : {}
+      const siteBlocked = !!(isRecord(og.siteChecks) && isRecord(og.siteChecks.you) && og.siteChecks.you.blocked)
       push(
         agent([
           { kind: "text", text: "I’ve already started. Here’s the first page AI needs and your site doesn’t have — the questions customers ask before they call:" },
           { kind: "doc", title: `${domain} — FAQ`, meta: "draft · not published", html: faq },
-          { kind: "text", text: "Written from your own site. Anything in [brackets] is a fact only you know. I won’t publish anything until you say so." },
+          { kind: "text", text: `${siteBlocked ? "Written from what the AIs already know about you — your site wouldn’t let me in." : "Written from your own site."} Anything in [brackets] is a fact only you know. I won’t publish anything until you say so.` },
         ])
       )
     }
@@ -453,7 +455,7 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
       const rd = rivals.find((r) => slug(r.name).length >= 4 && slug(rival.domain).includes(slug(r.name).slice(0, 5)))
       out.push(
         agent([
-          { kind: "text", text: `${rd?.name ?? rival.domain}: ${rival.passed} of ${rival.total}. They have ${theyHave.slice(0, 4).map((c) => c.label.toLowerCase()).join(", ")}.${you?.blocked ? " AI can read all of it." : " You don’t."}${rd && rd.aiMentions > named ? ` That’s part of why they were named ${rd.aiMentions} of ${checked} times and you ${named}.` : ""}` },
+          { kind: "text", text: `${rd?.name ?? rival.domain}: ${rival.passed} of ${rival.total}. They have ${theyHave.slice(0, 4).map((c) => softLower(c.label)).join(", ")}.${you?.blocked ? " AI can read all of it." : " You don’t."}${rd && rd.aiMentions > named ? ` That’s part of why they were named ${rd.aiMentions} of ${checked} times and you ${named}.` : ""}` },
         ])
       )
       break
@@ -468,6 +470,11 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
 
 // The week plan is built from what the checks actually found — never a
 // generic list — so the close reads as "here is your situation, handled".
+// Lower-case a checklist label for mid-sentence use, keeping acronyms ("AI crawlers allowed").
+function softLower(label: string): string {
+  return /^[A-Z]{2,}\b/.test(label) ? label : label.charAt(0).toLowerCase() + label.slice(1)
+}
+
 function buildPlan(result: ScanResult, businessName: string): string[] {
   const og = isRecord(result.ogData) ? (result.ogData as Record<string, unknown>) : {}
   const sc = isRecord(og.siteChecks) ? (og.siteChecks as unknown as SiteChecks) : null
@@ -479,7 +486,7 @@ function buildPlan(result: ScanResult, businessName: string): string[] {
   if (fails.has("faq")) plan.push("Publish the FAQ page above with your real answers filled in")
   if (fails.has("facts")) plan.push("Put the facts AI needs on your homepage — the ones it couldn’t find")
   if (fails.has("schema")) plan.push("Add the structured facts block so AI reads your business, not just your words")
-  if (fails.has("robots")) plan.push("Unblock the AI crawlers your robots.txt is turning away")
+  if (fails.has("robots") && !sc?.you?.blocked) plan.push("Unblock the AI crawlers your robots.txt is turning away")
   if (fails.has("blog")) plan.push("First fresh page AI can quote, written from your site")
   if (fails.has("sitemap")) plan.push("Add a sitemap so nothing on your site is missed")
   plan.push(`Ask ChatGPT, Gemini, Claude and Perplexity about ${businessName} again — and tell you what changed`)
