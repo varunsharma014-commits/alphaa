@@ -6,7 +6,7 @@ const footerLinks = {
     { href: "/how-it-works", label: "How it works" },
     { href: "/case-studies", label: "Case studies" },
     { href: "/pricing", label: "Pricing" },
-    { href: "/scan", label: "Free visibility scan" },
+    { href: "/start", label: "Free visibility scan" },
     { href: "/refer", label: "Refer & Earn" },
   ],
   Company: [

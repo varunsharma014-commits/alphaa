@@ -8,11 +8,10 @@ import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { href: "/how-it-works", label: "How it works" },
-  { href: "/case-studies", label: "Case studies" },
+  { href: "/how-it-works", label: "How it Works" },
+  { href: "/case-studies", label: "Case Studies" },
   { href: "/blog", label: "Blog" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/start", label: "Free check" },
 ]
 
 export function MarketingNav() {
@@ -76,7 +75,7 @@ export function MarketingNav() {
               Login
             </Link>
             <OrangePillButton href="/start" size="sm">
-              Meet your agent →
+              Free AI Scan
             </OrangePillButton>
           </div>
 
@@ -115,7 +114,7 @@ export function MarketingNav() {
               Login
             </Link>
             <OrangePillButton href="/start" className="mt-2 w-full justify-center">
-              Meet your agent →
+              Free AI Scan
             </OrangePillButton>
           </div>
         </div>

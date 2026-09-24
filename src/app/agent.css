@@ -283,6 +283,9 @@
 .ag-price__amt { font-size: 56px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
 .ag-price__amt small { font-size: 17px; color: var(--ag-muted); font-weight: 400; letter-spacing: 0; }
 .ag-price p { color: var(--ag-muted); margin: 10px 0 0; }
+.ag-price__list { list-style: none; padding: 0; margin: 18px auto 24px; text-align: left; display: inline-block; color: var(--ag-fg2); font-size: 15px; line-height: 1.5; }
+.ag-price__list li { position: relative; padding-left: 26px; margin: 8px 0; }
+.ag-price__list li::before { content: "✓"; position: absolute; left: 0; color: var(--ag-green, #1d8a4e); font-weight: 600; }
 .ag-price .ag-pill { margin-top: 24px; }
 
 /* The page ground under an agent surface follows its theme (the legacy body
