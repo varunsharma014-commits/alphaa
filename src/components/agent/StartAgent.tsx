@@ -456,7 +456,7 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
 // generic list — so the close reads as "here is your situation, handled".
 function buildPlan(result: ScanResult, businessName: string): string[] {
   const og = isRecord(result.ogData) ? (result.ogData as Record<string, unknown>) : {}
-  const sc = isRecord(og.siteChecks) ? (og.siteChecks as SiteChecks) : null
+  const sc = isRecord(og.siteChecks) ? (og.siteChecks as unknown as SiteChecks) : null
   const fails = new Set(sc?.you?.checks.filter((c) => c.ok === false).map((c) => c.key) ?? [])
   const plan: string[] = []
   if (fails.has("llms")) plan.push("Write and host your llms.txt — the file AI assistants read first")

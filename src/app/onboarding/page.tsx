@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { ChevronRight, ChevronLeft, Check, Sparkles, Loader2, Wand2, ChevronDown } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
@@ -94,7 +94,6 @@ function GoogleLogo({ size = 18 }: { size?: number }) {
 
 export default function OnboardingPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
   const [aiAnalyzing, setAiAnalyzing] = useState(false)
@@ -135,7 +134,9 @@ export default function OnboardingPage() {
   // name, city and website from the public scan result. Best-effort.
   const scanPrefillRef = useRef(false)
   useEffect(() => {
-    const scanId = searchParams.get("scan")
+    // window.location rather than useSearchParams: the latter forces a Suspense
+    // boundary at prerender time and this page is client-only anyway.
+    const scanId = new URLSearchParams(window.location.search).get("scan")
     if (!scanId || scanPrefillRef.current) return
     scanPrefillRef.current = true
     fetch(`/api/scan/result?id=${encodeURIComponent(scanId)}`, { cache: "no-store" })
@@ -152,7 +153,7 @@ export default function OnboardingPage() {
         }))
       })
       .catch(() => {})
-  }, [searchParams])
+  }, [])
 
   // ── Persist progress server-side (survives the Google redirect) ────────────
   function saveProgress(snapshot: OnboardingData, stepNum: number) {
