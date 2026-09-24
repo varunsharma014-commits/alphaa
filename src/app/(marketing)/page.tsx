@@ -3,7 +3,6 @@ import Image from "next/image"
 import { AgencySection } from "@/components/marketing/AgencySection"
 import { AVATARS } from "@/components/marketing/HeroSection"
 import { AgentHomeDemo } from "@/components/marketing/AgentHomeDemo"
-import { CaseStudiesSection } from "@/components/marketing/CaseStudiesSection"
 import { SocialProof } from "@/components/marketing/SocialProof"
 import { FaqSection } from "@/components/marketing/FaqSection"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
@@ -44,7 +43,7 @@ export default function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
-      {/* Case studies, social proof and FAQ use data-reveal — invisible until this runs. */}
+      {/* Social proof and FAQ use data-reveal — invisible until this runs. */}
       <ScrollReveal />
 
       {/* Hero — the agent, not the dashboard, is the product. */}
@@ -97,7 +96,6 @@ export default function HomePage() {
 
       <AgencySection />
 
-      <CaseStudiesSection />
       <SocialProof />
 
       <section className="ag-section ag-section--grey">
