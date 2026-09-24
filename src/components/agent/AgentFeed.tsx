@@ -110,7 +110,7 @@ export function AgentFeed({
       case "answer":
         return <AnswerBlock key={key} {...block} />
       case "sources":
-        return <SourcesBlock key={key} items={block.items} />
+        return <SourcesBlock key={key} items={block.items} title={block.title} />
       case "stat":
         return <StatBlock key={key} value={block.value} label={block.label} />
       case "doc":

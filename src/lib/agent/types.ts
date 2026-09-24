@@ -40,7 +40,7 @@ export type Block =
       businessName: string
       sources?: string[]
     }
-  | { kind: "sources"; items: { name: string; detail?: string; status: string; ok: boolean; href?: string }[] }
+  | { kind: "sources"; title?: string; items: { name: string; detail?: string; status: string; ok: boolean; href?: string }[] }
   | { kind: "stat"; value: string; label: string }
   | { kind: "doc"; title: string; meta?: string; text?: string; html?: string; docId?: string; editable?: boolean }
   | { kind: "diff"; beforeLabel: string; afterLabel: string; before: string[]; after: string[]; highlight?: string }

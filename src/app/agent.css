@@ -133,6 +133,7 @@
 
 /* sources */
 .ag-sources { margin: 10px 0 4px; border: 1px solid var(--ag-line); border-radius: 14px; overflow: hidden; font-size: 14px; background: var(--ag-card); }
+.ag-sources__h { padding: 10px 14px 8px; font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--ag-muted); border-bottom: 1px solid var(--ag-line); display: flex; justify-content: space-between; gap: 8px; }
 .ag-src { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-top: 1px solid var(--ag-line); color: inherit; }
 .ag-src:first-child { border-top: 0; }
 .ag-src__ic { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; flex: none; color: #fff; background: var(--ag-bad); }

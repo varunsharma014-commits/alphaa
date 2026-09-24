@@ -263,7 +263,7 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
     }
 
     // What AI finds when it reads the site — you vs the two most-named
-    // competitors. HTTP only, ~5s, capped so it can never stall the scan.
+    // competitors. HTTP only, usually 1–12s, capped so it can never stall the scan.
     let siteChecks: SiteChecks | null = null
     if (input.websiteUrl) {
       try {
@@ -275,8 +275,8 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
           if (d && d.replace(/^www\./, "") !== new URL(input.websiteUrl.startsWith("http") ? input.websiteUrl : `https://${input.websiteUrl}`).hostname.replace(/^www\./, "")) rivalDomains.push(d)
         }
         siteChecks = await Promise.race([
-          checkSites(input.websiteUrl, rivalDomains, isLocal),
-          new Promise<null>((r) => setTimeout(() => r(null), 25000)),
+          checkSites(input.websiteUrl, rivalDomains, isLocal, input.city ?? ""),
+          new Promise<null>((r) => setTimeout(() => r(null), 32000)),
         ])
       } catch {
         siteChecks = null

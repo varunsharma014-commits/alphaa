@@ -8,7 +8,8 @@ import { track } from "@/lib/gtag"
 import { fbTrack } from "@/lib/pixel"
 import type { ScanResult, EngineEvidence } from "@/types/scan"
 import type { SiteChecks } from "@/lib/site-check"
-import { CHECK_SHORT } from "@/lib/site-check-labels"
+import { CHECK_SHORT, CHECK_GROUP, CHECK_IMPACT, GROUP_TITLE, type CheckGroup, type CheckKey } from "@/lib/site-check-labels"
+import type { SiteCheck, SiteCheckItem } from "@/lib/site-check"
 import type { IdentifyResult } from "@/app/api/scan/identify/route"
 import { BRAND } from "@/lib/brand"
 
@@ -426,22 +427,32 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
   if (sc?.you?.blocked) {
     const you = sc.you
     const b = you.blocked!
+    const known = you.checks.filter((c) => c.ok !== null)
     out.push(
       agent([
         { kind: "text", text: `I tried to read ${you.domain} the way an AI does. It turned me away${b.status ? ` (error ${b.status})` : ""}${b.redirectedTo ? ` — after sending me to ${b.redirectedTo}` : ""}.`, big: false },
         { kind: "text", text: "That’s the biggest finding today. Some AI crawlers get the same door, so they fall back on what other sites say about you — and that’s where the competitors above win. Fixing it is a one-line change your host or web person can make; I’ll write the exact instruction." },
-        { kind: "sources", items: you.checks.map((c) => ({ name: c.label, detail: c.detail, status: c.ok === true ? "Yes" : c.ok === false ? "No" : "Couldn’t check", ok: c.ok === true })) },
+        { kind: "sources", items: known.map(srcItem) },
+        { kind: "text", text: `The other ${you.total - known.length} checks — structured facts, reviews, service pages, how Google treats your pages — need your site to let me in. I’ll run them the moment it does.` },
       ])
     )
   } else if (sc?.you) {
     const you = sc.you
-    const fails = you.checks.filter((c) => c.ok === false)
+    const worst = hurtingMost(you)
+    const groups = (["access", "understand", "trust"] as CheckGroup[])
+      .map((g) => ({ g, items: you.checks.filter((c) => CHECK_GROUP[c.key] === g) }))
+      .filter((x) => x.items.length > 0)
     out.push(
       agent([
-        { kind: "text", text: `What an AI finds when it reads ${you.domain}: ${you.passed} of ${you.total}.` },
-        { kind: "sources", items: you.checks.map((c) => ({ name: c.label, detail: c.detail, status: c.ok === true ? "Yes" : c.ok === false ? "No" : "Couldn’t check", ok: c.ok === true })) },
-        ...(fails.length
-          ? [{ kind: "text", text: `What’s hurting you most: ${fails.slice(0, 3).map((c) => CHECK_SHORT[c.key]).join(", ")}. ${fails.some((c) => c.key === "llms" || c.key === "faq") ? "I’ve drafted the first fix below." : "All fixable this week."}` } as Block]
+        { kind: "text", text: `Then I read ${you.domain} the way ChatGPT, Claude and Perplexity do — ${you.total} checks. You pass ${you.passed}.` },
+        ...groups.map(({ g, items }) => {
+          // Problems first inside each group, so the eye lands on them.
+          const sorted = [...items].sort((a, b) => rank(a) - rank(b))
+          const passed = items.filter((c) => c.ok === true).length
+          return { kind: "sources", title: `${GROUP_TITLE[g]}  ·  ${passed} of ${items.length}`, items: sorted.map(srcItem) } as Block
+        }),
+        ...(worst.length
+          ? [{ kind: "text", text: `What’s hurting you most: ${worst.slice(0, 3).map((c) => CHECK_SHORT[c.key]).join("; ")}. ${worst.some((c) => c.key === "llms" || c.key === "faq") ? "I’ve drafted the first fix below." : "All fixable — none of it needs you to learn anything."}` } as Block]
           : [{ kind: "text", text: "Your site is in good shape for AI. The gap is what the rest of the web says about you — that’s where I’d work." } as Block]),
       ])
     )
@@ -449,7 +460,9 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
   if (sc && sc.competitors.length > 0) {
     const you = sc.you
     for (const rival of sc.competitors.slice(0, 2)) {
-      const theyHave = rival.checks.filter((c) => c.ok === true && (!you || you.blocked || you.checks.find((y) => y.key === c.key)?.ok === false))
+      const theyHave = rival.checks
+        .filter((c) => c.ok === true && (!you || you.blocked || you.checks.find((y) => y.key === c.key)?.ok === false))
+        .sort((a, b) => CHECK_IMPACT[b.key] - CHECK_IMPACT[a.key])
       if (theyHave.length === 0) continue
       const slug = (n: string) => n.toLowerCase().replace(/[^a-z0-9]/g, "")
       const rd = rivals.find((r) => slug(r.name).length >= 4 && slug(rival.domain).includes(slug(r.name).slice(0, 5)))
@@ -470,26 +483,71 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
 
 // The week plan is built from what the checks actually found — never a
 // generic list — so the close reads as "here is your situation, handled".
+function srcItem(c: SiteCheckItem) {
+  return { name: c.label, detail: c.detail, status: c.ok === true ? "Yes" : c.ok === false ? "No" : "Couldn’t check", ok: c.ok === true }
+}
+
+// Failures first (worst impact first), then unknowns, then passes.
+function rank(c: SiteCheckItem): number {
+  return c.ok === false ? 10 - CHECK_IMPACT[c.key] : c.ok === null ? 20 : 30
+}
+
+// Failed checks by impact, minus ones that only restate a bigger failure.
+function hurtingMost(you: SiteCheck): SiteCheckItem[] {
+  const failed = new Set(you.checks.filter((c) => c.ok === false).map((c) => c.key))
+  const implied: Partial<Record<CheckKey, CheckKey>> = { schemaFacts: "schema", depth: "render", sitemap: "pages" }
+  return you.checks
+    .filter((c) => c.ok === false && !(implied[c.key] && failed.has(implied[c.key]!)))
+    .sort((a, b) => CHECK_IMPACT[b.key] - CHECK_IMPACT[a.key])
+}
+
 // Lower-case a checklist label for mid-sentence use, keeping acronyms ("AI crawlers allowed").
 function softLower(label: string): string {
   return /^[A-Z]{2,}\b/.test(label) ? label : label.charAt(0).toLowerCase() + label.slice(1)
 }
 
+const PLAN_STEP: Partial<Record<CheckKey, string>> = {
+  aibots: "Get your host to let ChatGPT, Claude and Perplexity’s crawlers through — I’ll write the exact setting",
+  robots: "Fix your robots.txt so AI search can read you",
+  indexable: "Remove the tag telling search engines to skip your homepage",
+  render: "Make your key facts readable without JavaScript — I’ll hand your web person the exact list",
+  canonical: "Fix the tags telling Google your pages are copies, so they get indexed",
+  https: "Point every version of your address at one secure site",
+  bing: "Set you up with Bing — ChatGPT search leans on it",
+  llms: "Write and host your llms.txt — the file AI assistants read first",
+  sitemap: "Add a sitemap so nothing on your site is missed",
+  schema: "Add the structured facts block so AI reads your business, not just your words",
+  schemaFacts: "Fill in your address, phone, hours and map location in your structured facts",
+  facts: "Put the facts AI needs on your homepage — the ones it couldn’t find",
+  local: "Put your city in your page title and main heading so AI knows where you work",
+  depth: "Add the words AI needs to quote you — services, prices, areas you cover",
+  pages: "Write a page for each service you offer",
+  faq: "Publish the FAQ page above with your real answers filled in",
+  reviews: "Put your best reviews on your site as text AI can read",
+  profiles: "Link your Google, Yelp and social profiles so AI ties them to you",
+  about: "Write your About page — who you are, since when, credentials",
+  blog: "First fresh page AI can quote, written from your site",
+  meta: "Rewrite your page title and description in plain words",
+  headings: "Give your homepage one clear main heading",
+}
+
 function buildPlan(result: ScanResult, businessName: string): string[] {
   const og = isRecord(result.ogData) ? (result.ogData as Record<string, unknown>) : {}
   const sc = isRecord(og.siteChecks) ? (og.siteChecks as unknown as SiteChecks) : null
-  const fails = new Set(sc?.you?.checks.filter((c) => c.ok === false).map((c) => c.key) ?? [])
   const plan: string[] = []
   if (sc?.you?.blocked) plan.push("Get your site to let AI readers in — I’ll send your host the exact one-line fix")
   if (!sc?.you) plan.push("Read your site the way AI does and fix whatever it can’t see")
-  if (fails.has("llms")) plan.push("Write and host your llms.txt — the file AI assistants read first")
-  if (fails.has("faq")) plan.push("Publish the FAQ page above with your real answers filled in")
-  if (fails.has("facts")) plan.push("Put the facts AI needs on your homepage — the ones it couldn’t find")
-  if (fails.has("schema")) plan.push("Add the structured facts block so AI reads your business, not just your words")
-  if (fails.has("robots") && !sc?.you?.blocked) plan.push("Unblock the AI crawlers your robots.txt is turning away")
-  if (fails.has("blog")) plan.push("First fresh page AI can quote, written from your site")
-  if (fails.has("sitemap")) plan.push("Add a sitemap so nothing on your site is missed")
+  if (sc?.you) {
+    const steps = sc.you.blocked
+      ? sc.you.checks.filter((c) => c.ok === false && c.key !== "aibots")
+      : hurtingMost(sc.you)
+    for (const c of steps) {
+      const step = PLAN_STEP[c.key]
+      if (step && !plan.includes(step)) plan.push(step)
+      if (plan.length >= 5) break
+    }
+  }
   plan.push(`Ask ChatGPT, Gemini, Claude and Perplexity about ${businessName} again — and tell you what changed`)
   plan.push("Send you one short note: what I did, what moved, what I need a yes on")
-  return plan.slice(0, 7)
+  return plan
 }

@@ -165,9 +165,10 @@ export function AnswerBlock(b: Extract<Block, { kind: "answer" }>) {
 
 // ── sources ────────────────────────────────────────────────────────────────
 
-export function SourcesBlock({ items }: { items: Extract<Block, { kind: "sources" }>["items"] }) {
+export function SourcesBlock({ items, title }: { items: Extract<Block, { kind: "sources" }>["items"]; title?: string }) {
   return (
     <div className="ag-sources">
+      {title && <div className="ag-sources__h">{title}</div>}
       {items.map((s, i) => {
         const cls = `ag-src ${s.ok ? "ag-src--ok" : s.status.toLowerCase().includes("check") ? "ag-src--unknown" : ""}`
         const inner = (
