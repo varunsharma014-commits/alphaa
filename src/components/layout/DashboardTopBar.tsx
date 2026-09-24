@@ -22,9 +22,9 @@ export function DashboardTopBar({ user, theme }: { user: AppUser; theme: Dashboa
       <div className="flex items-center gap-3">
         {businessLabel && (
           <div className="flex items-center gap-2">
-            <span className="text-fg/90 text-[16.5px] font-medium tracking-tight">{businessLabel}</span>
+            <span className="text-fg/90 text-[15px] font-medium tracking-tight">{businessLabel}</span>
             {locationLabel && (
-              <span className="text-fg/35 text-[14.3px] hidden sm:inline">{locationLabel}</span>
+              <span className="text-fg/35 text-[13px] hidden sm:inline">{locationLabel}</span>
             )}
           </div>
         )}
@@ -32,14 +32,14 @@ export function DashboardTopBar({ user, theme }: { user: AppUser; theme: Dashboa
         {isTrialing && trialDaysLeft !== null && trialDaysLeft <= 7 && (
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-amber-400 text-[14.3px] font-medium">
+            <span className="text-amber-400 text-[13px] font-medium">
               {trialDaysLeft === 0
                 ? "Trial ends today"
                 : `${trialDaysLeft}d left in trial`}
             </span>
             <a
               href="/pricing"
-              className="text-[14.3px] text-fg/60 hover:text-fg underline ml-0.5 transition-colors"
+              className="text-[13px] text-fg/60 hover:text-fg underline ml-0.5 transition-colors"
             >
               Upgrade →
             </a>

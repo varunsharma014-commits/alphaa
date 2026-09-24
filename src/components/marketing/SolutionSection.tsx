@@ -32,7 +32,7 @@ export function SolutionSection() {
           What this means for you
         </p>
 
-        <h2 className="text-[44px] sm:text-[70.4px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
+        <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
           Connect in 2 minutes.
           <br />
           <span className="text-fg/40">We handle everything else, every week.</span>

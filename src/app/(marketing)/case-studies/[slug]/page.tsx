@@ -56,7 +56,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                   className="rounded-2xl border border-line/[0.08] bg-white p-6 hover:border-brand-orange/30 transition-colors duration-200"
                 >
                   <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[12.1px] font-semibold border mb-3 ${o.badge}`}
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border mb-3 ${o.badge}`}
                   >
                     {o.industry}
                   </span>

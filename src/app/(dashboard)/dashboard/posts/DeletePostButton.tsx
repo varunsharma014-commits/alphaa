@@ -32,7 +32,7 @@ export function DeletePostButton({ postId }: { postId: string }) {
         color: "var(--ds-text-mute)",
         borderRadius: "8px",
         padding: "6px 12px",
-        fontSize: "12.1px",
+        fontSize: "11px",
         fontWeight: 500,
         cursor: loading ? "not-allowed" : "pointer",
         opacity: loading ? 0.5 : 1,

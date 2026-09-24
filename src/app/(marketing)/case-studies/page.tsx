@@ -149,7 +149,7 @@ export default function CaseStudiesPage() {
         <div className="max-w-3xl mx-auto">
           <div className="rounded-3xl border border-line/[0.08] bg-fg/[0.02] overflow-hidden p-10 sm:p-14 text-center">
             <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-4">Ready to be next?</p>
-            <h2 className="text-[35.2px] sm:text-[48.4px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
+            <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
               Find out if AI search
               <br />knows your business.
             </h2>

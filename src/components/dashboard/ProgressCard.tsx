@@ -73,10 +73,10 @@ export function ProgressCard({
             <Clock size={16} color="var(--ds-text-mute)" />
           </div>
           <div>
-            <p style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
+            <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
               Building your baseline
             </p>
-            <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "2px" }}>
+            <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "2px" }}>
               alphaa measures your AI visibility every Wednesday and your Google rankings
               daily. Once there are two data points, your trend appears here &mdash; real
               numbers, not promises.
@@ -97,11 +97,11 @@ export function ProgressCard({
       {hasScoreTrend && (
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", padding: "16px 1.25rem", borderBottom: hasMentionTrend || hasKeywordTrend ? "1px solid var(--ds-border)" : "none", flexWrap: "wrap" }}>
           <div>
-            <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)" }}>Presence score</p>
-            <p style={{ fontSize: "24.2px", fontWeight: 600, color: "var(--ds-text)", marginTop: "4px" }}>
+            <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)" }}>Presence score</p>
+            <p style={{ fontSize: "22px", fontWeight: 600, color: "var(--ds-text)", marginTop: "4px" }}>
               {first.score} <span style={{ color: "var(--ds-text-faint)", fontWeight: 400 }}>→</span> {latest.score}
               {scoreDelta !== 0 && (
-                <span style={{ fontSize: "14.3px", marginLeft: "8px", color: scoreDelta > 0 ? "var(--ds-ok)" : "var(--ds-bad)" }}>
+                <span style={{ fontSize: "13px", marginLeft: "8px", color: scoreDelta > 0 ? "var(--ds-ok)" : "var(--ds-bad)" }}>
                   {scoreDelta > 0 ? `+${scoreDelta}` : scoreDelta} since you joined
                 </span>
               )}
@@ -114,11 +114,11 @@ export function ProgressCard({
       {/* Engine mentions trend */}
       {hasMentionTrend && (
         <div style={{ padding: "14px 1.25rem", borderBottom: hasKeywordTrend ? "1px solid var(--ds-border)" : "none" }}>
-          <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)" }}>AI engines mentioning you</p>
-          <p style={{ fontSize: "15.4px", color: "var(--ds-text)", marginTop: "4px" }}>
+          <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)" }}>AI engines mentioning you</p>
+          <p style={{ fontSize: "14px", color: "var(--ds-text)", marginTop: "4px" }}>
             {lastMeasured.appeared} of {lastMeasured.total} in the latest check
             {lastMeasured.appeared !== firstMeasured.appeared && (
-              <span style={{ fontSize: "13.2px", marginLeft: "8px", color: lastMeasured.appeared > firstMeasured.appeared ? "var(--ds-ok)" : "var(--ds-text-mute)" }}>
+              <span style={{ fontSize: "12px", marginLeft: "8px", color: lastMeasured.appeared > firstMeasured.appeared ? "var(--ds-ok)" : "var(--ds-text-mute)" }}>
                 {lastMeasured.appeared > firstMeasured.appeared ? "↑" : "↓"} was {firstMeasured.appeared} of {firstMeasured.total} at your first check
               </span>
             )}
@@ -129,16 +129,16 @@ export function ProgressCard({
       {/* Keyword movers */}
       {hasKeywordTrend && (
         <div style={{ padding: "14px 1.25rem" }}>
-          <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginBottom: "8px" }}>
+          <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginBottom: "8px" }}>
             Google ranking moves this week
           </p>
           {improved.map((k) => (
             <div key={k.query} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "5px 0" }}>
               <TrendingUp size={14} color="var(--ds-ok)" style={{ flexShrink: 0 }} />
-              <span style={{ fontSize: "14.3px", color: "var(--ds-text)", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <span style={{ fontSize: "13px", color: "var(--ds-text)", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 &ldquo;{k.query}&rdquo;
               </span>
-              <span style={{ fontSize: "13.2px", color: "var(--ds-ok)", flexShrink: 0 }}>
+              <span style={{ fontSize: "12px", color: "var(--ds-ok)", flexShrink: 0 }}>
                 #{k.prev} → #{k.curr}
               </span>
             </div>
@@ -146,10 +146,10 @@ export function ProgressCard({
           {declined.map((k) => (
             <div key={k.query} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "5px 0" }}>
               <TrendingDown size={14} color="var(--ds-text-mute)" style={{ flexShrink: 0 }} />
-              <span style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <span style={{ fontSize: "13px", color: "var(--ds-text-mute)", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 &ldquo;{k.query}&rdquo;
               </span>
-              <span style={{ fontSize: "13.2px", color: "var(--ds-text-mute)", flexShrink: 0 }}>
+              <span style={{ fontSize: "12px", color: "var(--ds-text-mute)", flexShrink: 0 }}>
                 #{k.prev} → #{k.curr}
               </span>
             </div>

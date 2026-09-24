@@ -30,7 +30,7 @@ export default function BillingSettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-fg font-semibold text-2xl">Billing</h1>
+      <h1 className="text-fg font-semibold text-[1.65rem]/[2.2rem]">Billing</h1>
 
       <GlassCard>
         <div className="flex items-center gap-3 mb-5">

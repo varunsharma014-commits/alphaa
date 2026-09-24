@@ -33,16 +33,16 @@ export function StatBox({
         textAlign: "center",
       }}
     >
-      <div style={{ fontSize: "24.2px", fontWeight: 500, color: TONE_COLOR[tone], lineHeight: 1.1 }}>
+      <div style={{ fontSize: "22px", fontWeight: 500, color: TONE_COLOR[tone], lineHeight: 1.1 }}>
         {value}
       </div>
-      <div style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "2px", lineHeight: 1.3 }}>
+      <div style={{ fontSize: "10px", color: "var(--ds-text-faint)", marginTop: "2px", lineHeight: 1.3 }}>
         {label}
       </div>
       {delta && (
         <div
           style={{
-            fontSize: "11px",
+            fontSize: "10px",
             marginTop: "2px",
             color: deltaDir === "down" ? "var(--ds-bad)" : "var(--ds-ok)",
           }}

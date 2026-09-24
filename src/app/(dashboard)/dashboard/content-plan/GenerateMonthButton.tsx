@@ -49,7 +49,7 @@ export function GenerateMonthButton() {
           border: "none",
           borderRadius: "8px",
           padding: "8px 18px",
-          fontSize: "14.3px",
+          fontSize: "13px",
           fontWeight: 500,
           cursor: loading ? "not-allowed" : "pointer",
           opacity: loading ? 0.5 : 1,
@@ -72,7 +72,7 @@ export function GenerateMonthButton() {
         )}
         {loading ? "Generating…" : "Generate my first month →"}
       </button>
-      {message && <span style={{ fontSize: "12.1px", color: "var(--ds-text-mute)" }}>{message}</span>}
+      {message && <span style={{ fontSize: "11px", color: "var(--ds-text-mute)" }}>{message}</span>}
     </div>
   )
 }

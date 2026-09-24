@@ -10,7 +10,7 @@ export function CtaBanner() {
             1,247 businesses scanned this month
           </div>
 
-          <h2 className="text-[44px] sm:text-[70.4px] font-bold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
+          <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
             Every day you wait,
             <br />
             your competitors get{" "}

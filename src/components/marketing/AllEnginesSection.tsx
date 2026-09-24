@@ -17,7 +17,7 @@ export function AllEnginesSection() {
           All of them. Not just one.
         </p>
 
-        <h2 className="text-[44px] sm:text-[70.4px] font-bold text-[#1d1d1f] leading-[1.1] tracking-tight text-center mb-6 text-balance">
+        <h2 className="text-[40px] sm:text-[64px] font-bold text-[#1d1d1f] leading-[1.1] tracking-tight text-center mb-6 text-balance">
           We get your business found
           <br />
           on <span className="text-[#86868b]">every</span> AI search engine.

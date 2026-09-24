@@ -156,21 +156,21 @@ export function HeroSection() {
               <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
               <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
               <span className="w-3 h-3 rounded-full bg-[#28c840]" />
-              <span className="ml-3 text-[#86868b] text-[13.2px]">app.alphaa.app/dashboard</span>
+              <span className="ml-3 text-[#86868b] text-[12px]">app.alphaa.app/dashboard</span>
             </div>
             <div className="p-6 grid sm:grid-cols-3 gap-4">
               <div className="rounded-2xl bg-[#f5f5f7] p-5 flex flex-col items-center justify-center text-center">
                 <ScoreRing score={82} size={92} />
-                <p className="text-[#6e6e73] text-[13.2px] mt-3">Presence score</p>
-                <p className="text-[#1d8a4e] text-[13.2px] font-medium">↑ +9 this month</p>
+                <p className="text-[#6e6e73] text-[12px] mt-3">Presence score</p>
+                <p className="text-[#1d8a4e] text-[12px] font-medium">↑ +9 this month</p>
               </div>
               <div className="sm:col-span-2 rounded-2xl bg-[#f5f5f7] p-5">
-                <p className="text-[#86868b] text-[12.1px] tracking-[-0.01em] mb-3">Where people find you</p>
+                <p className="text-[#86868b] text-[11px] tracking-[-0.01em] mb-3">Where people find you</p>
                 <div className="space-y-3">
                   {DASHBOARD_ENGINES.map((e) => (
                     <div key={e.name} className="flex items-center justify-between">
-                      <span className="text-[#1d1d1f] text-[15.4px] font-medium">{e.name}</span>
-                      <span className={`text-[12.1px] font-semibold px-2.5 py-1 rounded-full ${DASHBOARD_TONE[e.tone]}`}>{e.status}</span>
+                      <span className="text-[#1d1d1f] text-[14px] font-medium">{e.name}</span>
+                      <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${DASHBOARD_TONE[e.tone]}`}>{e.status}</span>
                     </div>
                   ))}
                 </div>

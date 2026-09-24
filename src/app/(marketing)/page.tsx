@@ -93,7 +93,7 @@ export default function HomePage() {
             <li>Month-to-month. No contracts. Cancel in two clicks.</li>
           </ul>
           <Link className="ag-pill ag-pill--blue" href="/start">Hire Your Agent Now</Link>
-          <p style={{ marginTop: 14, fontSize: 15.4 }}><Link href="/pricing">Compare Plans ›</Link></p>
+          <p style={{ marginTop: 14, fontSize: 14 }}><Link href="/pricing">Compare Plans ›</Link></p>
         </div>
       </section>
 

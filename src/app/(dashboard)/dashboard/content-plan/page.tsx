@@ -105,11 +105,11 @@ export default async function ContentPlanPage() {
       >
         <div>
           <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Content calendar</h1>
-          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px", maxWidth: "560px" }}>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px", maxWidth: "560px" }}>
             alphaa plans, writes, and schedules your content — you can approve each post or let it go out
             automatically.
           </p>
-          <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "6px" }}>{monthName}</p>
+          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "6px" }}>{monthName}</p>
         </div>
         <GenerateMonthButton />
       </div>
@@ -140,10 +140,10 @@ export default async function ContentPlanPage() {
       {/* Honest notice: autopilot can't publish until Google is connected */}
       {!gbpConnected && (
         <DsCard accent="var(--ds-warn)" style={{ marginBottom: "16px" }}>
-          <p style={{ fontSize: "14.3px", color: "var(--ds-text)", fontWeight: 500 }}>
+          <p style={{ fontSize: "13px", color: "var(--ds-text)", fontWeight: 500 }}>
             Autopilot is paused — your Google listing isn&apos;t connected yet
           </p>
-          <p style={{ fontSize: "13.2px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>
+          <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>
             alphaa can write your posts now, but it can&apos;t publish them to Google until your
             listing is connected. It takes about 2 minutes.
           </p>
@@ -156,14 +156,14 @@ export default async function ContentPlanPage() {
               color: "var(--ds-text)",
               borderRadius: "8px",
               padding: "7px 16px",
-              fontSize: "13.2px",
+              fontSize: "12px",
               fontWeight: 500,
               textDecoration: "none",
             }}
           >
             Connect Google listing →
           </Link>
-          <p style={{ fontSize: "13.2px", color: "var(--ds-text-mute)", marginTop: "10px", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", marginTop: "10px", lineHeight: 1.6 }}>
             Prefer a human?{" "}
             <Link href="/dashboard/concierge" style={{ color: "var(--ds-accent)", fontWeight: 500 }}>
               We&apos;ll set everything up for you →
@@ -176,10 +176,10 @@ export default async function ContentPlanPage() {
       {/* ── Progress bar ───────────────────────────────── */}
       <DsCard>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-          <span style={{ fontSize: "14.3px", color: "var(--ds-text)", fontWeight: 500 }}>
+          <span style={{ fontSize: "13px", color: "var(--ds-text)", fontWeight: 500 }}>
             {publishedCount} of {targetPerMonth} posts published this month
           </span>
-          <span style={{ fontSize: "14.3px", color: "var(--ds-accent)", fontWeight: 500 }}>{progressPct}%</span>
+          <span style={{ fontSize: "13px", color: "var(--ds-accent)", fontWeight: 500 }}>{progressPct}%</span>
         </div>
         <div style={{ height: "8px", borderRadius: "20px", background: "var(--ds-surface)", overflow: "hidden" }}>
           <div
@@ -192,7 +192,7 @@ export default async function ContentPlanPage() {
             }}
           />
         </div>
-        <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "10px", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "10px", lineHeight: 1.6 }}>
           alphaa keeps publishing for you — about 2 posts per week, no action needed on your part.
         </p>
       </DsCard>
@@ -232,7 +232,7 @@ export default async function ContentPlanPage() {
                     position: "absolute",
                     top: "12px",
                     right: "12px",
-                    fontSize: "9.9px",
+                    fontSize: "9px",
                     fontWeight: 500,
                     color: "var(--ds-accent)",
                     textTransform: "uppercase",
@@ -242,8 +242,8 @@ export default async function ContentPlanPage() {
                   Now
                 </span>
               )}
-              <p style={{ fontSize: "14.3px", fontWeight: 500, color: "var(--ds-text)" }}>Week {i + 1}</p>
-              <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "2px" }}>
+              <p style={{ fontSize: "13px", fontWeight: 500, color: "var(--ds-text)" }}>Week {i + 1}</p>
+              <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "2px" }}>
                 {formatDate(week.start)} – {formatDate(week.end)}
               </p>
 
@@ -274,11 +274,11 @@ export default async function ContentPlanPage() {
                   )
                 })}
                 {weekPosts.length > 2 && (
-                  <span style={{ fontSize: "12.1px", color: "var(--ds-text-faint)" }}>+{weekPosts.length - 2}</span>
+                  <span style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>+{weekPosts.length - 2}</span>
                 )}
               </div>
 
-              <p style={{ fontSize: "12.1px", marginTop: "10px", lineHeight: 1.5 }}>
+              <p style={{ fontSize: "11px", marginTop: "10px", lineHeight: 1.5 }}>
                 {weekPosts.length === 0 ? (
                   <span style={{ color: "var(--ds-text-faint)" }}>
                     alphaa will generate posts for this week automatically
@@ -314,7 +314,7 @@ export default async function ContentPlanPage() {
                 border: l.border ? "1px solid var(--ds-border-2)" : undefined,
               }}
             />
-            <span style={{ fontSize: "12.1px", color: "var(--ds-text-faint)" }}>{l.label}</span>
+            <span style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>{l.label}</span>
           </div>
         ))}
       </div>
@@ -359,11 +359,11 @@ export default async function ContentPlanPage() {
                   }}
                 />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+                  <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
                     {post.content.slice(0, 180)}
                     {post.content.length > 180 ? "…" : ""}
                   </p>
-                  <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "4px" }}>
+                  <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "4px" }}>
                     {formatDateLong(post.createdAt)}
                   </p>
                 </div>

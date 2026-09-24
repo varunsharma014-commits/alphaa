@@ -43,7 +43,7 @@ export default async function SandboxPage() {
         <MessagesSquare size={20} color="var(--ds-accent)" />
         <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Ask the AIs about your business</h1>
       </div>
-      <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "16px" }}>
+      <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "16px" }}>
         Type any question a customer might ask, and see what ChatGPT, Claude, Gemini and Perplexity actually answer
         &mdash; right now.
       </p>

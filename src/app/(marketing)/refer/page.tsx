@@ -291,7 +291,7 @@ export default function ReferPage() {
                 className="bg-fg/[0.03] border border-line/[0.07] rounded-2xl p-7 relative overflow-hidden"
               >
                 <div
-                  className="absolute top-0 right-0 text-[88px] font-black leading-none text-fg/[0.03] select-none pointer-events-none"
+                  className="absolute top-0 right-0 text-[80px] font-black leading-none text-fg/[0.03] select-none pointer-events-none"
                   aria-hidden="true"
                 >
                   {s.step}

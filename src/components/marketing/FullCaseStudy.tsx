@@ -18,7 +18,7 @@ export function FullCaseStudy({ cs }: { cs: CaseStudy }) {
             </div>
           </div>
 
-          <h2 className="text-[35.2px] sm:text-[48.4px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
+          <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
             {cs.business}
           </h2>
           <p className="text-muted text-lg sm:text-xl mb-8 max-w-2xl">{cs.headline}</p>
@@ -77,7 +77,7 @@ export function FullCaseStudy({ cs }: { cs: CaseStudy }) {
               <div key={i} className="flex gap-4">
                 <div className="flex flex-col items-center">
                   <div className="w-7 h-7 rounded-full bg-brand-orange/10 border border-brand-orange/30 flex items-center justify-center flex-shrink-0">
-                    <span className="text-brand-orange text-[11px] font-bold">{i + 1}</span>
+                    <span className="text-brand-orange text-[10px] font-bold">{i + 1}</span>
                   </div>
                   {i < cs.solution.timeline.length - 1 && (
                     <div className="w-px flex-1 bg-line/[0.06] mt-2 mb-0" />

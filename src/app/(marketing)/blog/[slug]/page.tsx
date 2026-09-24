@@ -71,7 +71,7 @@ export default async function BlogPostPage({
 
         <div className="flex items-center gap-3 mb-4">
           {meta.tag && (
-            <span className="text-[11px] font-semibold tracking-[-0.01em] px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
+            <span className="text-[10px] font-semibold tracking-[-0.01em] px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
               {meta.tag}
             </span>
           )}

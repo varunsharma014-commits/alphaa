@@ -27,7 +27,7 @@ export function ComparisonTable() {
         <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-6 text-center">
           The honest comparison
         </p>
-        <h2 className="text-[44px] sm:text-[70.4px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-16 text-balance">
+        <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-16 text-balance">
           Alphaa vs. an SEO agency
           <br />
           <span className="text-fg/40">vs. doing it yourself</span>

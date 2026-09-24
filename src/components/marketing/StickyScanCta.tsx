@@ -27,7 +27,7 @@ export function StickyScanCta({ href = "#scan-input" }: { href?: string }) {
       <div className="w-full flex items-center gap-2 rounded-full border border-black/[0.06] bg-[rgba(251,251,253,0.85)] backdrop-blur-[20px] backdrop-saturate-[1.8] p-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.10)]">
         <Link
           href={href}
-          className="flex-1 flex items-center justify-center py-3 px-4 rounded-full text-white text-[18.7px] bg-[#0071e3] active:bg-[#006edb]"
+          className="flex-1 flex items-center justify-center py-3 px-4 rounded-full text-white text-[17px] bg-[#0071e3] active:bg-[#006edb]"
         >
           Run my free AI scan →
         </Link>

@@ -943,14 +943,14 @@ function StepGoogle({
         {status === "connecting" ? "Opening Google…" : "Connect Google — takes 30 seconds"}
       </button>
 
-      <p className="text-muted/60 text-[12.1px] text-center mt-3 mb-4">
+      <p className="text-muted/60 text-[11px] text-center mt-3 mb-4">
         You&apos;ll sign in with Google on Google&apos;s own page. alphaa never sees your password.
       </p>
 
       <button onClick={onSkip} className="text-muted text-sm hover:text-fg transition-colors block text-center w-full">
         Skip for now →
       </button>
-      <p className="text-muted/50 text-[12.1px] text-center mt-1.5">
+      <p className="text-muted/50 text-[11px] text-center mt-1.5">
         alphaa can&apos;t post to Google or track your rankings until this is connected — you can do
         it later in Settings.
       </p>

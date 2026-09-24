@@ -48,7 +48,7 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
         <label
           style={{
             display: "block",
-            fontSize: "11px",
+            fontSize: "10px",
             fontWeight: 500,
             textTransform: "uppercase",
             letterSpacing: "0.08em",
@@ -76,7 +76,7 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
             borderRadius: "8px",
             padding: "9px 12px",
             color: "var(--ds-text)",
-            fontSize: "14.3px",
+            fontSize: "13px",
             outline: "none",
             opacity: loading ? 0.5 : 1,
           }}
@@ -90,7 +90,7 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
             border: "none",
             borderRadius: "8px",
             padding: "8px 18px",
-            fontSize: "14.3px",
+            fontSize: "13px",
             fontWeight: 500,
             cursor: loading || !competitorUrl.trim() ? "not-allowed" : "pointer",
             opacity: loading || !competitorUrl.trim() ? 0.5 : 1,
@@ -101,12 +101,12 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
         </button>
       </div>
       {prominent && (
-        <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.6, textAlign: "left" }}>
+        <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.6, textAlign: "left" }}>
           alphaa will find topics they rank for that you are missing — with suggested titles and outlines ready to use.
         </p>
       )}
       {error && (
-        <p style={{ fontSize: "13.2px", color: "var(--ds-bad)", marginTop: "8px", textAlign: "left" }}>
+        <p style={{ fontSize: "12px", color: "var(--ds-bad)", marginTop: "8px", textAlign: "left" }}>
           {error}
         </p>
       )}

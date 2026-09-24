@@ -35,7 +35,7 @@ export function MechanismSection() {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <SectionLabel className="mb-3 block">How it actually works</SectionLabel>
-          <h2 className="text-[39.6px] sm:text-[61.6px] font-bold text-fg leading-[1.1] tracking-tight text-balance mb-5">
+          <h2 className="text-[36px] sm:text-[56px] font-bold text-fg leading-[1.1] tracking-tight text-balance mb-5">
             No one can reach inside ChatGPT.{" "}
             <span className="text-fg/40">So how does this work?</span>
           </h2>

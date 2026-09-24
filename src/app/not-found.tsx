@@ -29,7 +29,7 @@ export default function NotFound() {
 
       <Link
         href="/scan"
-        className="btn-orange inline-flex items-center px-7 py-3.5 rounded-full text-[16.5px] font-semibold"
+        className="btn-orange inline-flex items-center px-7 py-3.5 rounded-full text-[15px] font-semibold"
       >
         See where you rank on AI →
       </Link>

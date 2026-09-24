@@ -102,13 +102,13 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
             <Globe className="w-5 h-5" style={{ color: "var(--ds-text-faint)" }} />
           </div>
           <div className="min-w-0">
-            <h3 className="truncate" style={{ color: "var(--ds-text)", fontSize: 15.4, fontWeight: 500 }}>{name}</h3>
+            <h3 className="truncate" style={{ color: "var(--ds-text)", fontSize: 14, fontWeight: 500 }}>{name}</h3>
             <a
               href={competitor.url}
               target="_blank"
               rel="noopener noreferrer"
               className="truncate block transition-colors hover:text-fg"
-              style={{ color: "var(--ds-text-faint)", fontSize: 12.1 }}
+              style={{ color: "var(--ds-text-faint)", fontSize: 11 }}
             >
               {domain}
             </a>
@@ -129,29 +129,29 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
           {/* Quick stats */}
           <div className="grid grid-cols-3 gap-3">
             <div className="rounded-[8px] p-3 text-center" style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border)" }}>
-              <p style={{ color: "var(--ds-text)", fontSize: 22, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{pagesFound ?? "—"}</p>
-              <p style={{ color: "var(--ds-text-faint)", fontSize: 12.1, marginTop: 2 }}>Pages reviewed</p>
+              <p style={{ color: "var(--ds-text)", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{pagesFound ?? "—"}</p>
+              <p style={{ color: "var(--ds-text-faint)", fontSize: 11, marginTop: 2 }}>Pages reviewed</p>
             </div>
             <div className="rounded-[8px] p-3 text-center" style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border)" }}>
-              <p style={{ color: "var(--ds-text)", fontSize: 22, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{schemaCount}</p>
-              <p style={{ color: "var(--ds-text-faint)", fontSize: 12.1, marginTop: 2 }}>Search-friendly signals</p>
+              <p style={{ color: "var(--ds-text)", fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{schemaCount}</p>
+              <p style={{ color: "var(--ds-text-faint)", fontSize: 11, marginTop: 2 }}>Search-friendly signals</p>
             </div>
             <div className="rounded-[8px] p-3 text-center flex flex-col items-center justify-center gap-1.5" style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border)" }}>
               <StatusPill variant={freq.variant}>{postingFreq ?? "Unknown"}</StatusPill>
-              <p style={{ color: "var(--ds-text-faint)", fontSize: 11 }}>How often they post</p>
+              <p style={{ color: "var(--ds-text-faint)", fontSize: 10 }}>How often they post</p>
             </div>
           </div>
 
           {/* Key topics */}
           {keyTopics.length > 0 && (
             <div>
-              <p style={{ color: "var(--ds-text-ghost)", fontSize: 11, fontWeight: 500, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>What they write about</p>
+              <p style={{ color: "var(--ds-text-ghost)", fontSize: 10, fontWeight: 500, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>What they write about</p>
               <div className="flex flex-wrap gap-1.5">
                 {keyTopics.map((topic) => (
                   <span
                     key={topic}
                     className="px-2.5 py-1 rounded-[8px]"
-                    style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border-2)", color: "var(--ds-text-mute)", fontSize: 12.1 }}
+                    style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border-2)", color: "var(--ds-text-mute)", fontSize: 11 }}
                   >
                     {topic}
                   </span>
@@ -167,11 +167,11 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                 <div className="rounded-[8px] p-4" style={{ background: "var(--ds-ok-bg)", border: ".5px solid var(--ds-ok-border)" }}>
                   <div className="flex items-center gap-1.5" style={{ marginBottom: 10 }}>
                     <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "var(--ds-ok)" }} />
-                    <p style={{ color: "var(--ds-ok)", fontSize: 12.1, fontWeight: 500 }}>What's working for them</p>
+                    <p style={{ color: "var(--ds-ok)", fontSize: 11, fontWeight: 500 }}>What's working for them</p>
                   </div>
                   <ul className="space-y-1.5">
                     {strengths.map((s) => (
-                      <li key={s} className="flex items-start gap-2" style={{ color: "var(--ds-text-mute)", fontSize: 12.1, lineHeight: 1.6 }}>
+                      <li key={s} className="flex items-start gap-2" style={{ color: "var(--ds-text-mute)", fontSize: 11, lineHeight: 1.6 }}>
                         <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-ok)" }} />
                         {s}
                       </li>
@@ -183,11 +183,11 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                 <div className="rounded-[8px] p-4" style={{ background: "var(--ds-bad-bg)", border: ".5px solid var(--ds-bad-border)" }}>
                   <div className="flex items-center gap-1.5" style={{ marginBottom: 10 }}>
                     <AlertCircle className="w-3.5 h-3.5" style={{ color: "var(--ds-bad)" }} />
-                    <p style={{ color: "var(--ds-bad-soft)", fontSize: 12.1, fontWeight: 500 }}>Gaps you can win on</p>
+                    <p style={{ color: "var(--ds-bad-soft)", fontSize: 11, fontWeight: 500 }}>Gaps you can win on</p>
                   </div>
                   <ul className="space-y-3">
                     {weaknesses.map((w) => (
-                      <li key={w} style={{ color: "var(--ds-text-mute)", fontSize: 12.1, lineHeight: 1.6 }}>
+                      <li key={w} style={{ color: "var(--ds-text-mute)", fontSize: 11, lineHeight: 1.6 }}>
                         <div className="flex items-start gap-2">
                           <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-bad)" }} />
                           {w}
@@ -208,19 +208,19 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
             <div className="rounded-[8px] px-4 py-3" style={{ background: "var(--ds-surface)", border: ".5px solid var(--ds-border-2)" }}>
               <div className="flex items-center gap-1.5" style={{ marginBottom: 6 }}>
                 <Zap className="w-3 h-3" style={{ color: "var(--ds-accent)" }} />
-                <span style={{ color: "var(--ds-accent)", fontSize: 12.1, fontWeight: 500 }}>alphaa&apos;s take</span>
+                <span style={{ color: "var(--ds-accent)", fontSize: 11, fontWeight: 500 }}>alphaa&apos;s take</span>
               </div>
-              <p style={{ color: "var(--ds-text-mute)", fontSize: 14.3, lineHeight: 1.6 }}>{aiSummary}</p>
+              <p style={{ color: "var(--ds-text-mute)", fontSize: 13, lineHeight: 1.6 }}>{aiSummary}</p>
             </div>
           )}
 
-          <p style={{ color: "var(--ds-text-ghost)", fontSize: 12.1 }}>Last refreshed automatically: {formatDate(competitor.analyzedAt)}</p>
+          <p style={{ color: "var(--ds-text-ghost)", fontSize: 11 }}>Last refreshed automatically: {formatDate(competitor.analyzedAt)}</p>
         </div>
       ) : (
         <div style={{ padding: "1.25rem" }}>
           <div className="flex items-center gap-2 py-4">
             <div className="w-4 h-4 rounded-full animate-spin flex-shrink-0" style={{ border: "2px solid var(--ds-accent)", borderTopColor: "transparent" }} />
-            <p style={{ color: "var(--ds-text-mute)", fontSize: 14.3 }}>alphaa is analyzing this competitor for you — sit tight.</p>
+            <p style={{ color: "var(--ds-text-mute)", fontSize: 13 }}>alphaa is analyzing this competitor for you — sit tight.</p>
           </div>
         </div>
       )}
@@ -248,14 +248,14 @@ export default async function CompetitorsPage() {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 style={{ color: "var(--ds-text)", fontSize: 22, fontWeight: 500 }}>Competitor intel</h1>
-          <p style={{ color: "var(--ds-text-mute)", fontSize: 14.3, lineHeight: 1.6, marginTop: 4 }}>
+          <p style={{ color: "var(--ds-text-mute)", fontSize: 13, lineHeight: 1.6, marginTop: 4 }}>
             See what is working for your competitors — so you can do it better.
           </p>
         </div>
         {competitors.length > 0 && (
           <div
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-            style={{ background: "var(--ds-surface-2)", border: ".5px solid var(--ds-border)", color: "var(--ds-text-mute)", fontSize: 12.1 }}
+            style={{ background: "var(--ds-surface-2)", border: ".5px solid var(--ds-border)", color: "var(--ds-text-mute)", fontSize: 11 }}
           >
             <Users className="w-3 h-3" />
             {competitors.length} tracked on autopilot
@@ -288,14 +288,14 @@ export default async function CompetitorsPage() {
       <details className="rounded-[10px]" style={{ background: "var(--ds-surface-2)", border: ".5px solid var(--ds-border)" }}>
         <summary
           className="flex items-center gap-2 cursor-pointer select-none list-none"
-          style={{ padding: "0.85rem 1.25rem", color: "var(--ds-text-mute)", fontSize: 14.3, fontWeight: 500 }}
+          style={{ padding: "0.85rem 1.25rem", color: "var(--ds-text-mute)", fontSize: 13, fontWeight: 500 }}
         >
           <TrendingUp className="w-4 h-4" style={{ color: "var(--ds-accent)" }} />
           Track a specific competitor
         </summary>
         <div style={{ padding: "0 1.25rem 1.25rem" }}>
           <AddCompetitorButton />
-          <p style={{ color: "var(--ds-text-faint)", fontSize: 12.1, lineHeight: 1.6, marginTop: 10 }}>
+          <p style={{ color: "var(--ds-text-faint)", fontSize: 11, lineHeight: 1.6, marginTop: 10 }}>
             alphaa crawls up to 20 pages and identifies their strengths, content topics, and posting frequency — updated automatically every week.
           </p>
         </div>

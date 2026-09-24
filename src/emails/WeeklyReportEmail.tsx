@@ -226,26 +226,26 @@ const container = { maxWidth: "560px", margin: "24px auto", backgroundColor: "#f
 const header = { padding: "32px 40px 20px", borderBottom: "1px solid #d2d2d7" }
 const logoText = {
   color: "#0066cc",
-  fontSize: "22px",
+  fontSize: "20px",
   fontWeight: "600",
   margin: "0",
 }
 const weekLabel2 = {
   color: "#86868b",
-  fontSize: "14.3px",
+  fontSize: "13px",
   margin: "4px 0 0",
 }
 const content = { padding: "32px 40px" }
 const h1 = {
   color: "#1d1d1f",
-  fontSize: "24.2px",
+  fontSize: "22px",
   fontWeight: "600",
   margin: "0 0 12px",
   lineHeight: "1.3",
 }
 const paragraph = {
   color: "#424245",
-  fontSize: "16.5px",
+  fontSize: "15px",
   lineHeight: "1.6",
   margin: "0 0 0",
 }
@@ -264,21 +264,21 @@ const statBoxMiddle = {
 }
 const statValue = {
   color: "#0066cc",
-  fontSize: "35.2px",
+  fontSize: "32px",
   fontWeight: "600",
   margin: "0",
   lineHeight: "1",
 }
 const statLabel = {
   color: "#6e6e73",
-  fontSize: "12.1px",
+  fontSize: "11px",
   fontWeight: "600",
   letterSpacing: "0.5px",
   margin: "6px 0 0",
 }
 const sectionLabel = {
   color: "#86868b",
-  fontSize: "11px",
+  fontSize: "10px",
   fontWeight: "600",
   letterSpacing: "2px",
   margin: "0 0 12px",
@@ -293,11 +293,11 @@ const visibilityCell = {
 }
 const engineName = {
   color: "#424245",
-  fontSize: "13.2px",
+  fontSize: "12px",
   margin: "0 0 4px",
 }
 const deltaValue = {
-  fontSize: "22px",
+  fontSize: "20px",
   fontWeight: "600",
   margin: "0",
 }
@@ -308,19 +308,19 @@ const tableColKeyword = { padding: "10px 14px", width: "55%" }
 const tableColNum = { padding: "10px 10px", width: "15%", textAlign: "right" as const }
 const tableHeadText = {
   color: "#86868b",
-  fontSize: "11px",
+  fontSize: "10px",
   fontWeight: "600",
   letterSpacing: "1px",
   margin: "0",
 }
 const tableCell = {
   color: "#424245",
-  fontSize: "14.3px",
+  fontSize: "13px",
   margin: "0",
 }
 const tableCellMono = {
   color: "#424245",
-  fontSize: "14.3px",
+  fontSize: "13px",
   fontFamily: "'SF Mono', Menlo, monospace",
   margin: "0",
 }
@@ -328,7 +328,7 @@ const button = {
   backgroundColor: "#0071e3",
   color: "#1d1d1f",
   borderRadius: "8px",
-  fontSize: "16.5px",
+  fontSize: "15px",
   fontWeight: "600",
   padding: "12px 28px",
   textDecoration: "none",
@@ -337,7 +337,7 @@ const button = {
 const footer = { padding: "20px 40px", borderTop: "1px solid #d2d2d7" }
 const footerText = {
   color: "#86868b",
-  fontSize: "13.2px",
+  fontSize: "12px",
   textAlign: "center" as const,
   margin: "0 0 4px",
 }

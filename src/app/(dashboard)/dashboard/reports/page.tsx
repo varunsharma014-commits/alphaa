@@ -37,17 +37,17 @@ function formatWeek(date: Date): string {
 
 function DeltaText({ value }: { value: number }) {
   if (value > 0) return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "var(--ds-ok)", fontSize: "12.1px", fontWeight: 500 }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "var(--ds-ok)", fontSize: "11px", fontWeight: 500 }}>
       <TrendingUp size={12} />+{value}
     </span>
   )
   if (value < 0) return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "var(--ds-bad)", fontSize: "12.1px", fontWeight: 500 }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "var(--ds-bad)", fontSize: "11px", fontWeight: 500 }}>
       <TrendingDown size={12} />{value}
     </span>
   )
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "var(--ds-text-faint)", fontSize: "12.1px" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "var(--ds-text-faint)", fontSize: "11px" }}>
       <Minus size={12} />no change
     </span>
   )
@@ -76,7 +76,7 @@ export default async function ReportsPage() {
       {/* ── Page heading ─────────────────────────── */}
       <div style={{ marginBottom: "20px" }}>
         <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Weekly reports</h1>
-        <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>
+        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>
           Every Monday morning, alphaa sends you a plain-English summary of the week. No login needed.
         </p>
       </div>
@@ -118,13 +118,13 @@ export default async function ReportsPage() {
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <FileText size={14} color="var(--ds-text-mute)" />
-                        <h3 style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
+                        <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                           Week of {formatWeek(report.createdAt)}
                         </h3>
                         {isLatest && <StatusPill variant="info">Latest</StatusPill>}
                       </div>
                       {report.summary && (
-                        <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "6px", maxWidth: "560px" }}>
+                        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "6px", maxWidth: "560px" }}>
                           {report.summary}
                         </p>
                       )}
@@ -154,7 +154,7 @@ export default async function ReportsPage() {
                   {/* AI visibility */}
                   {Object.keys(visibilityDelta).length > 0 && (
                     <div style={{ marginTop: "14px" }}>
-                      <p style={{ fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginBottom: "8px" }}>
+                      <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginBottom: "8px" }}>
                         AI visibility this week
                       </p>
                       <div
@@ -172,7 +172,7 @@ export default async function ReportsPage() {
                           const meta = ENGINE_META[engine]
                           return (
                             <div key={engine} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
-                              <span style={{ fontSize: "14.3px", color: "var(--ds-text-mute)" }}>{meta?.label ?? engine}</span>
+                              <span style={{ fontSize: "13px", color: "var(--ds-text-mute)" }}>{meta?.label ?? engine}</span>
                               <DeltaText value={delta} />
                             </div>
                           )
@@ -184,7 +184,7 @@ export default async function ReportsPage() {
                   {/* Keyword movers */}
                   {topMovers.length > 0 && (
                     <div style={{ marginTop: "14px" }}>
-                      <p style={{ fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginBottom: "8px" }}>
+                      <p style={{ fontSize: "10px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ds-text-ghost)", marginBottom: "8px" }}>
                         Keywords on the move
                       </p>
                       <div
@@ -200,12 +200,12 @@ export default async function ReportsPage() {
                       >
                         {topMovers.map((k) => (
                           <div key={k.query} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
-                            <span style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>
+                            <span style={{ fontSize: "13px", color: "var(--ds-text-mute)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>
                               {k.query}
                             </span>
                             <span
                               style={{
-                                fontSize: "13.2px",
+                                fontSize: "12px",
                                 fontWeight: 500,
                                 flexShrink: 0,
                                 color: k.change > 0 ? "var(--ds-ok)" : k.change < 0 ? "var(--ds-bad)" : "var(--ds-text-faint)",
@@ -221,7 +221,7 @@ export default async function ReportsPage() {
 
                   {/* Footer */}
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "14px", paddingTop: "12px", borderTop: "1px solid var(--ds-border)" }}>
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "12.1px", color: "var(--ds-text-faint)" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", color: "var(--ds-text-faint)" }}>
                       <CheckCircle2 size={12} color="var(--ds-ok)" />
                       Generated automatically — nothing needed from you
                     </span>

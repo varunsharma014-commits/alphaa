@@ -26,7 +26,7 @@ export function StatusPill({
         background: s.bg,
         color: s.color,
         border: `1px solid ${s.border}`,
-        fontSize: "13.2px",
+        fontSize: "12px",
         fontWeight: 590,
         padding: "3px 11px",
         borderRadius: "20px",

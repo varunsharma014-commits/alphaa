@@ -63,7 +63,7 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
           <h1 style={{ fontSize: "30.8px", fontWeight: 600, color: "var(--ds-text)", lineHeight: 1.15, letterSpacing: "-0.02em" }}>
             Where AI looks you up
           </h1>
-          <p style={{ fontSize: "15.4px", color: "var(--ds-text-mute)", marginTop: "6px", lineHeight: 1.6, maxWidth: "60ch" }}>
+          <p style={{ fontSize: "14px", color: "var(--ds-text-mute)", marginTop: "6px", lineHeight: 1.6, maxWidth: "60ch" }}>
             When someone asks ChatGPT or Gemini for a business like yours, it reads a handful of
             pages to decide who to name. These are those pages.
           </p>
@@ -76,7 +76,7 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
             display: "inline-flex", alignItems: "center", gap: "8px",
             background: "var(--ds-accent)", color: "#fff",
             borderRadius: "980px", padding: "10px 20px",
-            fontSize: "15.4px", fontWeight: 590, border: "none",
+            fontSize: "14px", fontWeight: 590, border: "none",
             cursor: running ? "default" : "pointer", opacity: running ? 0.7 : 1,
             flexShrink: 0, whiteSpace: "nowrap",
           }}
@@ -88,7 +88,7 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
 
       {running && (
         <DsCard style={{ marginBottom: "20px" }}>
-          <p style={{ fontSize: "15.4px", color: "var(--ds-text-mute)", margin: 0, lineHeight: 1.6 }}>
+          <p style={{ fontSize: "14px", color: "var(--ds-text-mute)", margin: 0, lineHeight: 1.6 }}>
             Searching the way a customer would, then opening each page to see whether you&apos;re on
             it. This takes a couple of minutes.
           </p>
@@ -97,13 +97,13 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
 
       {error && (
         <DsCard accent="var(--ds-bad)" style={{ marginBottom: "20px" }}>
-          <p style={{ fontSize: "15.4px", color: "var(--ds-text)", margin: 0 }}>{error}</p>
+          <p style={{ fontSize: "14px", color: "var(--ds-text)", margin: 0 }}>{error}</p>
         </DsCard>
       )}
 
       {report && !report.searchConfigured && (
         <DsCard accent="var(--ds-warn)" style={{ marginBottom: "20px" }}>
-          <p style={{ fontSize: "15.4px", color: "var(--ds-text)", margin: 0, lineHeight: 1.6 }}>
+          <p style={{ fontSize: "14px", color: "var(--ds-text)", margin: 0, lineHeight: 1.6 }}>
             Search isn&apos;t switched on for this account yet, so we couldn&apos;t look anything up.
             Nothing here is a verdict on your business.
           </p>
@@ -112,10 +112,10 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
 
       {!report && !running && (
         <DsCard>
-          <p style={{ fontSize: "16.5px", fontWeight: 590, color: "var(--ds-text)", margin: 0 }}>
+          <p style={{ fontSize: "15px", fontWeight: 590, color: "var(--ds-text)", margin: 0 }}>
             Let&apos;s find out where AI looks you up.
           </p>
-          <p style={{ fontSize: "15.4px", color: "var(--ds-text-mute)", marginTop: "6px", lineHeight: 1.6, marginBottom: 0 }}>
+          <p style={{ fontSize: "14px", color: "var(--ds-text-mute)", marginTop: "6px", lineHeight: 1.6, marginBottom: 0 }}>
             We&apos;ll search the way your customers do, then open each result and check whether your
             business is named. Nothing is changed on your site.
           </p>
@@ -131,8 +131,8 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
               { v: unknown.length, l: "couldn't be read" },
             ].map((s) => (
               <DsCard key={s.l}>
-                <p style={{ fontSize: "33px", fontWeight: 600, color: "var(--ds-text)", margin: 0, lineHeight: 1, letterSpacing: "-0.02em" }}>{s.v}</p>
-                <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "6px", marginBottom: 0 }}>{s.l}</p>
+                <p style={{ fontSize: "30px", fontWeight: 600, color: "var(--ds-text)", margin: 0, lineHeight: 1, letterSpacing: "-0.02em" }}>{s.v}</p>
+                <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "6px", marginBottom: 0 }}>{s.l}</p>
               </DsCard>
             ))}
           </div>
@@ -167,14 +167,14 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
                   <Row key={t.url} t={t} last={i === unknown.length - 1} />
                 ))}
               </DsCard>
-              <p style={{ fontSize: "14.3px", color: "var(--ds-text-soft)", marginTop: "8px" }}>
+              <p style={{ fontSize: "13px", color: "var(--ds-text-soft)", marginTop: "8px" }}>
                 These pages blocked us or timed out. That doesn&apos;t mean you&apos;re not on them —
                 we just couldn&apos;t tell.
               </p>
             </>
           )}
 
-          <p style={{ fontSize: "14.3px", color: "var(--ds-text-soft)", marginTop: "24px" }}>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-soft)", marginTop: "24px" }}>
             Checked {new Date(report.generatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })} · searched
             for {report.queries.map((q) => `“${q}”`).join(", ")}
           </p>
@@ -195,21 +195,21 @@ function Row({ t, last }: { t: CitationTarget; last: boolean }) {
     >
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "3px" }}>
-          <span style={{ fontSize: "13.2px", fontWeight: 600, color: "var(--ds-text-mute)" }}>
+          <span style={{ fontSize: "12px", fontWeight: 600, color: "var(--ds-text-mute)" }}>
             {KIND_LABEL[t.kind]}
           </span>
-          <span style={{ fontSize: "13.2px", color: "var(--ds-text-soft)" }}>{t.domain}</span>
+          <span style={{ fontSize: "12px", color: "var(--ds-text-soft)" }}>{t.domain}</span>
         </div>
         <a
           href={t.url}
           target="_blank"
           rel="noopener noreferrer nofollow"
-          style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "5px", lineHeight: 1.45 }}
+          style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "5px", lineHeight: 1.45 }}
         >
           {t.title}
           <ExternalLink size={12} style={{ flexShrink: 0, opacity: 0.5 }} />
         </a>
-        <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", margin: "3px 0 0", lineHeight: 1.5 }}>
+        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", margin: "3px 0 0", lineHeight: 1.5 }}>
           {KIND_WHY[t.kind]}
         </p>
       </div>

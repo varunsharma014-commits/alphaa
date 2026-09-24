@@ -97,10 +97,10 @@ export default async function KeywordsPage() {
       <h1 style={{ fontSize: '22px', fontWeight: 500, color: 'var(--ds-text)' }}>
         Google rankings
       </h1>
-      <p style={{ fontSize: '14.3px', color: 'var(--ds-text-mute)', marginTop: '4px', lineHeight: 1.6 }}>
+      <p style={{ fontSize: '13px', color: 'var(--ds-text-mute)', marginTop: '4px', lineHeight: 1.6 }}>
         Keywords people use to find businesses like yours — and where you rank.
       </p>
-      <p style={{ fontSize: '13.2px', color: 'var(--ds-text-faint)', marginTop: '8px', lineHeight: 1.6 }}>
+      <p style={{ fontSize: '12px', color: 'var(--ds-text-faint)', marginTop: '8px', lineHeight: 1.6 }}>
         Google rankings still matter — but AI visibility is where new customers increasingly come from.
       </p>
     </div>
@@ -131,7 +131,7 @@ export default async function KeywordsPage() {
                 color: 'var(--ds-text)',
                 borderRadius: '8px',
                 padding: '8px 18px',
-                fontSize: '14.3px',
+                fontSize: '13px',
                 fontWeight: 500,
                 display: 'inline-block',
                 textDecoration: 'none',
@@ -193,7 +193,7 @@ export default async function KeywordsPage() {
       {/* Plain-English summary line */}
       <p
         style={{
-          fontSize: '14.3px',
+          fontSize: '13px',
           color: 'var(--ds-text-mute)',
           lineHeight: 1.6,
           marginBottom: '16px',
@@ -244,14 +244,14 @@ export default async function KeywordsPage() {
         }}
       >
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14.3px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--ds-border)' }}>
                 <th
                   style={{
                     textAlign: 'left',
                     padding: '12px 16px',
-                    fontSize: '11px',
+                    fontSize: '10px',
                     fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
@@ -265,7 +265,7 @@ export default async function KeywordsPage() {
                   style={{
                     textAlign: 'left',
                     padding: '12px 16px',
-                    fontSize: '11px',
+                    fontSize: '10px',
                     fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
@@ -279,7 +279,7 @@ export default async function KeywordsPage() {
                   style={{
                     textAlign: 'left',
                     padding: '12px 16px',
-                    fontSize: '11px',
+                    fontSize: '10px',
                     fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
@@ -293,7 +293,7 @@ export default async function KeywordsPage() {
                   style={{
                     textAlign: 'right',
                     padding: '12px 16px',
-                    fontSize: '11px',
+                    fontSize: '10px',
                     fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',

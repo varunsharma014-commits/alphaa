@@ -100,7 +100,7 @@ export default async function SpeedPage() {
         <AutopilotBar message="alphaa checks your site speed automatically once it knows your website address" />
         <div style={{ marginBottom: "18px" }}>
           <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Page speed</h1>
-          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             alphaa checks how fast your site feels to visitors every week.
           </p>
         </div>
@@ -118,7 +118,7 @@ export default async function SpeedPage() {
               gap: "8px",
               background: "var(--ds-accent)",
               color: "var(--ds-text)",
-              fontSize: "14.3px",
+              fontSize: "13px",
               fontWeight: 500,
               padding: "8px 18px",
               borderRadius: "8px",
@@ -181,7 +181,7 @@ export default async function SpeedPage() {
       >
         <div>
           <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Page speed</h1>
-          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             alphaa checks how fast your site feels to visitors every week.
           </p>
         </div>
@@ -213,7 +213,7 @@ export default async function SpeedPage() {
         <DsCard>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
             <Gauge size={15} color="var(--ds-accent)" />
-            <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
+            <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
               How fast your site feels to visitors
             </span>
             {perfPct !== null && (
@@ -237,16 +237,16 @@ export default async function SpeedPage() {
                     padding: "12px",
                   }}
                 >
-                  <div style={{ fontSize: "12.1px", color: "var(--ds-text-mute)", marginBottom: "4px" }}>
+                  <div style={{ fontSize: "11px", color: "var(--ds-text-mute)", marginBottom: "4px" }}>
                     {cwvFriendlyName(id)}
                   </div>
-                  <div style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.1 }}>
+                  <div style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.1 }}>
                     {audit.displayValue ?? "—"}
                   </div>
                   <div style={{ marginTop: "8px" }}>
                     <StatusPill variant={status.variant}>{status.label}</StatusPill>
                   </div>
-                  <div style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.5 }}>
+                  <div style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.5 }}>
                     {cwvSubtitle(id)}
                   </div>
                 </div>
@@ -256,7 +256,7 @@ export default async function SpeedPage() {
         </DsCard>
       ) : (
         <DsCard>
-          <div style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+          <div style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
             We couldn&apos;t get speed data from Google this time — it happens when their
             PageSpeed service is busy. Reload this page in a minute to try again; alphaa
             also re-checks automatically every week.

@@ -297,13 +297,13 @@ function ScoreGaugeBig({ score }: { score: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="mono text-fg font-bold leading-none" style={{ fontSize: 50.6 }}>
+        <span className="mono text-fg font-bold leading-none" style={{ fontSize: 46 }}>
           {score}
         </span>
         <span className="text-fg/40 text-sm mt-1">/100</span>
         {/* Plain-language severity — "44" alone doesn't tell a business owner
             whether that's fine or a fire. */}
-        <span className="text-[11px] font-semibold tracking-[-0.01em] mt-1" style={{ color }}>
+        <span className="text-[10px] font-semibold tracking-[-0.01em] mt-1" style={{ color }}>
           {score < 50 ? "Critical" : score < 75 ? "Needs work" : "Strong"}
         </span>
       </div>
@@ -323,7 +323,7 @@ const TRUST_ITEMS = [
 function TrustStrip({ compact = false }: { compact?: boolean }) {
   if (compact) {
     return (
-      <p className="text-fg/35 text-[12.1px] text-center leading-relaxed mt-3 mb-0">
+      <p className="text-fg/35 text-[11px] text-center leading-relaxed mt-3 mb-0">
         $99 a month · month to month · cancel anytime in two clicks · payments secured by Stripe
       </p>
     )
@@ -333,7 +333,7 @@ function TrustStrip({ compact = false }: { compact?: boolean }) {
       {TRUST_ITEMS.map(({ Icon, text }) => (
         <div key={text} className="flex items-start gap-1.5">
           <Icon className="w-3 h-3 text-green-400/80 flex-shrink-0 mt-[3px]" />
-          <span className="text-muted text-[12.1px] leading-snug">{text}</span>
+          <span className="text-muted text-[11px] leading-snug">{text}</span>
         </div>
       ))}
     </div>
@@ -352,7 +352,7 @@ function SignupCta({ placement }: { placement: string }) {
       >
         Fix this automatically — start free →
       </Link>
-      <p className="text-fg/35 text-[12.1px] text-center mt-2 mb-0">then $99/mo</p>
+      <p className="text-fg/35 text-[11px] text-center mt-2 mb-0">then $99/mo</p>
       <TrustStrip />
     </div>
   )
@@ -389,7 +389,7 @@ function StickyCtaBar({
     >
       <div className="mx-auto max-w-2xl px-4 pb-4">
         <div className="flex items-center gap-3 bg-bg-tertiary/95 backdrop-blur-md border border-line/[0.12] rounded-2xl pl-4 pr-2 py-2.5 shadow-2xl">
-          <p className="flex-1 min-w-0 text-fg/80 text-[14.3px] leading-snug m-0">
+          <p className="flex-1 min-w-0 text-fg/80 text-[13px] leading-snug m-0">
             <span className="text-fg font-semibold">{businessName}</span>
             {losing
               ? ", AI is recommending your competitors — fix it from $99/mo"
@@ -398,7 +398,7 @@ function StickyCtaBar({
           <Link
             href="/signup"
             onClick={() => track("results_cta_click", { placement: "sticky_bar" })}
-            className="btn-orange flex-shrink-0 text-[14.3px] font-semibold px-4 py-2 !rounded-lg whitespace-nowrap"
+            className="btn-orange flex-shrink-0 text-[13px] font-semibold px-4 py-2 !rounded-lg whitespace-nowrap"
           >
             Start free →
           </Link>
@@ -486,7 +486,7 @@ function HeroHeadline({
         {headline}
       </h1>
       {loss ? (
-        <p className="text-muted text-[16.5px] leading-relaxed mt-4 mb-0">
+        <p className="text-muted text-[15px] leading-relaxed mt-4 mb-0">
           An estimated{" "}
           <span className="mono whitespace-nowrap">
             {loss.low.toLocaleString("en-US")}–{loss.high.toLocaleString("en-US")}
@@ -500,7 +500,7 @@ function HeroHeadline({
           in the last 30 days.
         </p>
       ) : (
-        <p className="text-muted text-[16.5px] leading-relaxed mt-4 mb-0">{verdict}</p>
+        <p className="text-muted text-[15px] leading-relaxed mt-4 mb-0">{verdict}</p>
       )}
     </>
   )
@@ -541,18 +541,18 @@ function EvidenceCard({
           <div className="min-w-0">
             <span className="text-fg text-sm font-semibold truncate block">{engine.name}</span>
             {ENGINE_SUBS[engine.name] && (
-              <span className="text-fg/35 text-[12.1px] leading-tight truncate block">
+              <span className="text-fg/35 text-[11px] leading-tight truncate block">
                 {ENGINE_SUBS[engine.name]}
               </span>
             )}
           </div>
         </div>
         {engine.appeared ? (
-          <span className="flex-shrink-0 text-[12.1px] font-semibold text-green-400 bg-green-500/10 border border-green-500/25 rounded-full px-2.5 py-1">
+          <span className="flex-shrink-0 text-[11px] font-semibold text-green-400 bg-green-500/10 border border-green-500/25 rounded-full px-2.5 py-1">
             You were mentioned ✓
           </span>
         ) : (
-          <span className="flex-shrink-0 text-[12.1px] font-semibold text-red-400 bg-red-500/10 border border-red-500/25 rounded-full px-2.5 py-1">
+          <span className="flex-shrink-0 text-[11px] font-semibold text-red-400 bg-red-500/10 border border-red-500/25 rounded-full px-2.5 py-1">
             You weren&apos;t mentioned
           </span>
         )}
@@ -562,8 +562,8 @@ function EvidenceCard({
       {query ? (
         <div className="flex justify-end mb-3">
           <div className="max-w-[85%] bg-bg-tertiary border border-line/[0.06] rounded-2xl rounded-br-md px-4 py-2.5">
-            <p className="text-[11px] tracking-[-0.01em] text-fg/30 mb-1">A customer asks</p>
-            <p className="text-fg/85 text-[14.3px] leading-relaxed m-0">&ldquo;{query}&rdquo;</p>
+            <p className="text-[10px] tracking-[-0.01em] text-fg/30 mb-1">A customer asks</p>
+            <p className="text-fg/85 text-[13px] leading-relaxed m-0">&ldquo;{query}&rdquo;</p>
           </div>
         </div>
       ) : (
@@ -575,10 +575,10 @@ function EvidenceCard({
       {/* The answer — verbatim excerpt */}
       {fullText ? (
         <div className="bg-fg/[0.04] border border-line/[0.06] rounded-2xl rounded-tl-md px-4 py-3">
-          <p className="text-[11px] tracking-[-0.01em] text-fg/30 mb-1.5">
+          <p className="text-[10px] tracking-[-0.01em] text-fg/30 mb-1.5">
             {engine.name} answered
           </p>
-          <p className="text-fg/75 text-[14.3px] leading-relaxed m-0 whitespace-pre-line">
+          <p className="text-fg/75 text-[13px] leading-relaxed m-0 whitespace-pre-line">
             {highlightNames(shownText, mentioned, businessName)}
           </p>
           {isLong && (
@@ -592,7 +592,7 @@ function EvidenceCard({
           )}
         </div>
       ) : (
-        <p className="text-fg/35 text-[14.3px] bg-fg/[0.03] border border-line/[0.06] rounded-xl px-4 py-3 m-0">
+        <p className="text-fg/35 text-[13px] bg-fg/[0.03] border border-line/[0.06] rounded-xl px-4 py-3 m-0">
           {engine.name} didn&apos;t return a usable answer during this scan
           {engine.appeared ? "" : ` — and your business wasn't in the results we could check`}.
         </p>
@@ -624,7 +624,7 @@ function MentionsPill({
         ? "text-fg/40 bg-fg/[0.04] border-line/[0.1]"
         : "text-brand-orange bg-brand-orange/10 border-brand-orange/25"
   return (
-    <span className={`inline-flex items-center whitespace-nowrap text-[12.1px] font-medium border rounded-full px-2.5 py-1 ${cls}`}>
+    <span className={`inline-flex items-center whitespace-nowrap text-[11px] font-medium border rounded-full px-2.5 py-1 ${cls}`}>
       Mentioned by&nbsp;<span className="mono font-bold">{count}</span>&nbsp;of {total} AI assistants
     </span>
   )
@@ -669,9 +669,9 @@ function CompetitorIntelTable({
     <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl overflow-hidden">
       {/* Column header */}
       <div className={`hidden ${INTEL_GRID} px-5 py-2.5 border-b border-line/[0.06] bg-fg/[0.02]`}>
-        <span className="text-[11px] font-semibold tracking-[-0.01em] text-fg/30">Business</span>
-        <span className="text-[11px] font-semibold tracking-[-0.01em] text-fg/30">AI mentions</span>
-        <span className="text-[11px] font-semibold tracking-[-0.01em] text-fg/30">Google rank</span>
+        <span className="text-[10px] font-semibold tracking-[-0.01em] text-fg/30">Business</span>
+        <span className="text-[10px] font-semibold tracking-[-0.01em] text-fg/30">AI mentions</span>
+        <span className="text-[10px] font-semibold tracking-[-0.01em] text-fg/30">Google rank</span>
       </div>
 
       <div className="divide-y divide-line/[0.06]">
@@ -687,7 +687,7 @@ function CompetitorIntelTable({
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    className="inline-flex items-center gap-1 text-[12.1px] text-fg/40 hover:text-brand-orange transition-colors"
+                    className="inline-flex items-center gap-1 text-[11px] text-fg/40 hover:text-brand-orange transition-colors"
                   >
                     <span className="truncate max-w-[220px]">{linkLabel}</span>
                     <ExternalLink className="w-3 h-3 flex-shrink-0" />
@@ -712,7 +712,7 @@ function CompetitorIntelTable({
         >
           <div className="min-w-0 flex items-center gap-2">
             <p className="text-fg text-sm font-semibold truncate m-0">{you.name}</p>
-            <span className="flex-shrink-0 text-[11px] font-semibold tracking-[-0.01em] text-fg/50 border border-line/[0.18] rounded px-1.5 py-0.5">
+            <span className="flex-shrink-0 text-[10px] font-semibold tracking-[-0.01em] text-fg/50 border border-line/[0.18] rounded px-1.5 py-0.5">
               You
             </span>
           </div>
@@ -734,7 +734,7 @@ function CompetitorIntelTable({
         </div>
       </div>
 
-      <p className="text-fg/30 text-[12.1px] leading-relaxed px-4 sm:px-5 py-3 border-t border-line/[0.06] m-0">
+      <p className="text-fg/30 text-[11px] leading-relaxed px-4 sm:px-5 py-3 border-t border-line/[0.06] m-0">
         AI mentions from this live scan
         {serpCount !== null && keyword ? (
           <>
@@ -831,7 +831,7 @@ function FindingCard({
         <div className="flex-1 min-w-0">
           <p className="text-fg text-sm font-semibold m-0 leading-snug">{issue.headline}</p>
           {!compact && (
-            <p className="text-muted text-[14.3px] leading-relaxed mt-1.5 mb-2.5">
+            <p className="text-muted text-[13px] leading-relaxed mt-1.5 mb-2.5">
               {firstSentence(issue.explanation)}
             </p>
           )}
@@ -866,12 +866,12 @@ function FindingsList({
     <div>
       <div className="flex flex-wrap items-center gap-2 mb-3">
         {criticalCount > 0 && (
-          <span className="inline-flex items-center gap-1.5 text-[12.1px] font-semibold text-red-400 bg-red-500/10 border border-red-500/25 rounded-full px-2.5 py-1">
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-red-400 bg-red-500/10 border border-red-500/25 rounded-full px-2.5 py-1">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> {criticalCount} critical
           </span>
         )}
         {otherCount > 0 && (
-          <span className="inline-flex items-center gap-1.5 text-[12.1px] font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/25 rounded-full px-2.5 py-1">
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/25 rounded-full px-2.5 py-1">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> {otherCount} worth fixing
           </span>
         )}
@@ -934,15 +934,15 @@ function FixTimeline() {
             >
               <span className="w-[7px] h-[7px] rounded-full bg-brand-orange" />
             </span>
-            <p className="text-brand-orange text-[12.1px] font-semibold tracking-[-0.01em] m-0">
+            <p className="text-brand-orange text-[11px] font-semibold tracking-[-0.01em] m-0">
               {step.label}
             </p>
             <p className="text-fg text-sm font-semibold mt-1 mb-0.5">{step.title}</p>
-            <p className="text-muted text-[14.3px] leading-relaxed m-0">{step.body}</p>
+            <p className="text-muted text-[13px] leading-relaxed m-0">{step.body}</p>
           </li>
         ))}
       </ol>
-      <p className="text-fg/30 text-[12.1px] leading-relaxed mt-5 mb-0">
+      <p className="text-fg/30 text-[11px] leading-relaxed mt-5 mb-0">
         No ranking guarantees — alphaa controls the work and shows you the movement weekly.
       </p>
     </div>
@@ -1030,13 +1030,13 @@ function CopyBlock({
   return (
     <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl overflow-hidden">
       <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-line/[0.06] bg-fg/[0.02]">
-        <span className="text-[12.1px] font-semibold tracking-[-0.01em] text-fg/40 truncate">
+        <span className="text-[11px] font-semibold tracking-[-0.01em] text-fg/40 truncate">
           {label}
         </span>
         <button
           type="button"
           onClick={copy}
-          className="inline-flex items-center gap-1.5 flex-shrink-0 text-[12.1px] font-semibold text-fg/60 hover:text-fg bg-fg/[0.04] hover:bg-fg/[0.08] border border-line/[0.1] rounded-lg px-2.5 py-1.5 transition-colors"
+          className="inline-flex items-center gap-1.5 flex-shrink-0 text-[11px] font-semibold text-fg/60 hover:text-fg bg-fg/[0.04] hover:bg-fg/[0.08] border border-line/[0.1] rounded-lg px-2.5 py-1.5 transition-colors"
         >
           {copied ? (
             <><Check className="w-3 h-3 text-green-400" /> Copied</>
@@ -1052,14 +1052,14 @@ function CopyBlock({
           scroll container (overflow-x:auto forces overflow-y:auto too), which
           swallows wheel events and traps visitors mid-page. */}
       {open ? (
-        <pre className="m-0 px-4 py-3.5 overflow-x-auto text-[12.7px] leading-relaxed text-fg/70 mono">
+        <pre className="m-0 px-4 py-3.5 overflow-x-auto text-[11.5px] leading-relaxed text-fg/70 mono">
           <code>{code}</code>
         </pre>
       ) : (
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="w-full text-left px-4 py-3.5 text-[13.2px] text-fg/45 hover:text-fg/70 transition-colors"
+          className="w-full text-left px-4 py-3.5 text-[12px] text-fg/45 hover:text-fg/70 transition-colors"
         >
           {code.split("\n").length} lines &middot; Show the code
         </button>
@@ -1121,7 +1121,7 @@ function QuickFixSection({ scanId }: { scanId: string }) {
         <SectionHeading>Your free fix</SectionHeading>
         <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl px-5 py-8 text-center">
           <Sparkles className="w-5 h-5 text-brand-orange mx-auto mb-3 animate-pulse" />
-          <p className="text-muted text-[14.3px] m-0">
+          <p className="text-muted text-[13px] m-0">
             Writing a fix you can paste on your site today…
           </p>
         </div>
@@ -1145,11 +1145,11 @@ function QuickFixSection({ scanId }: { scanId: string }) {
               <Gift className="w-4 h-4 text-brand-orange" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-fg text-xl sm:text-[24.2px] font-bold leading-snug m-0">
+              <h2 className="text-fg text-xl sm:text-[22px] font-bold leading-snug m-0">
                 Here&apos;s a fix you can use right now &mdash;{" "}
                 <span className="text-brand-orange">free</span>
               </h2>
-              <p className="text-muted text-[14.3px] leading-relaxed mt-2 mb-0">
+              <p className="text-muted text-[13px] leading-relaxed mt-2 mb-0">
                 No signup, no card. Paste this on your site and it&apos;s yours to keep, whether or
                 not you ever use alphaa.
               </p>
@@ -1158,10 +1158,10 @@ function QuickFixSection({ scanId }: { scanId: string }) {
 
           {fix.targetQuestion && (
             <div className="mt-5 bg-bg-tertiary border border-line/[0.06] rounded-xl px-4 py-3">
-              <p className="text-[11px] tracking-[-0.01em] text-fg/30 mb-1 mt-0">
+              <p className="text-[10px] tracking-[-0.01em] text-fg/30 mb-1 mt-0">
                 The customer question this answers
               </p>
-              <p className="text-fg/85 text-[14.3px] leading-relaxed m-0">
+              <p className="text-fg/85 text-[13px] leading-relaxed m-0">
                 &ldquo;{fix.targetQuestion}&rdquo;
               </p>
             </div>
@@ -1174,19 +1174,19 @@ function QuickFixSection({ scanId }: { scanId: string }) {
 
           {/* Honest explainer — plain English, no invented jargon. */}
           <div className="mt-4 bg-fg/[0.03] border border-line/[0.08] rounded-xl px-4 py-3.5 space-y-2">
-            <p className="text-muted text-[14.3px] leading-relaxed m-0">
+            <p className="text-muted text-[13px] leading-relaxed m-0">
               <span className="text-fg font-semibold">Why this works:</span> this is the text AI
               reads about you. When your page answers a customer&apos;s question in plain words,
               ChatGPT, Claude and Perplexity can quote that answer back to whoever asks. Right now
               there&apos;s nothing on your page for them to quote.
             </p>
-            <p className="text-muted text-[14.3px] leading-relaxed m-0">
+            <p className="text-muted text-[13px] leading-relaxed m-0">
               <span className="text-fg font-semibold">Why it&apos;s HTML, not a script:</span>{" "}
               those assistants only read the plain page &mdash; they don&apos;t run JavaScript. So
               the words have to be in the HTML itself, which is why you paste this rather than
               install something.
             </p>
-            <p className="text-amber-400/90 text-[14.3px] leading-relaxed m-0">
+            <p className="text-amber-400/90 text-[13px] leading-relaxed m-0">
               <span className="font-semibold">Before you paste:</span> fill in anything in
               [square brackets] with your real details. We left those blank on purpose &mdash;
               we&apos;d rather hand you a gap than make something up about your business.
@@ -1196,7 +1196,7 @@ function QuickFixSection({ scanId }: { scanId: string }) {
           {/* No CTA here. This block now sits below the decision block, so a
               third identical "start free" button is just repetition. */}
           <div className="mt-5 pt-5 border-t border-line/[0.08]">
-            <p className="text-fg text-[16.5px] font-semibold leading-snug text-center m-0">
+            <p className="text-fg text-[15px] font-semibold leading-snug text-center m-0">
               That&apos;s one page. alphaa does this for every page, every week.
             </p>
           </div>
@@ -1288,11 +1288,11 @@ function ScanResultsContent() {
           <h1 className="text-fg text-[35.2px] sm:text-[44px] font-bold leading-[1.15] tracking-[-0.02em] mb-4">
             Check your email.
           </h1>
-          <p className="text-muted text-[18.7px] leading-relaxed mb-8">
+          <p className="text-muted text-[17px] leading-relaxed mb-8">
             {gateInfo?.businessName ? <>Your report for <span className="text-fg font-medium">{gateInfo.businessName}</span> is ready. </> : "Your report is ready. "}
             We sent the link to {gateInfo?.maskedEmail ? <span className="text-fg font-medium">{gateInfo.maskedEmail}</span> : "your inbox"}.
           </p>
-          <p className="text-muted-soft text-[15.4px] leading-relaxed">
+          <p className="text-muted-soft text-[14px] leading-relaxed">
             Opening it from the email confirms the address is yours — that&rsquo;s
             the only reason we ask.
           </p>
@@ -1422,11 +1422,11 @@ function ScanResultsContent() {
                 onError={(e) => { e.currentTarget.style.display = "none" }}
               />
             ) : (
-              <span className="text-fg text-[14.3px] font-bold">{initials}</span>
+              <span className="text-fg text-[13px] font-bold">{initials}</span>
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-fg text-[16.5px] font-medium truncate m-0">{businessName}</p>
+            <p className="text-fg text-[15px] font-medium truncate m-0">{businessName}</p>
             <div className="flex items-center gap-1 mt-0.5">
               <MapPin className="w-3 h-3 text-fg/30" />
               <span className="text-fg/40 text-xs truncate">
@@ -1467,14 +1467,14 @@ function ScanResultsContent() {
                   foundNames={foundNames}
                 />
                 {loss && loss.basis && (
-                  <p className="text-fg/30 text-[12.1px] leading-relaxed mt-3 mb-0">
+                  <p className="text-fg/30 text-[11px] leading-relaxed mt-3 mb-0">
                     Estimate — {loss.basis}
                   </p>
                 )}
               </div>
               <div className="mt-7 sm:mt-0 flex-shrink-0">
                 <ScoreGaugeBig score={score} />
-                <p className="text-fg/40 text-[12.1px] text-center mt-2 mb-0">
+                <p className="text-fg/40 text-[11px] text-center mt-2 mb-0">
                   AI visibility score
                 </p>
               </div>
@@ -1556,10 +1556,10 @@ function ScanResultsContent() {
             aria-hidden
           />
           <div className="relative">
-            <h2 className="text-fg text-[28.6px] sm:text-[35.2px] font-bold text-center leading-[1.15] tracking-[-0.02em] m-0">
+            <h2 className="text-fg text-[26px] sm:text-[32px] font-bold text-center leading-[1.15] tracking-[-0.02em] m-0">
               alphaa fixes <span className="text-brand-orange">all of this.</span>
             </h2>
-            <p className="text-muted text-[16.5px] text-center leading-relaxed max-w-md mx-auto mt-4 mb-7">
+            <p className="text-muted text-[15px] text-center leading-relaxed max-w-md mx-auto mt-4 mb-7">
               Automatically, every week — $99/mo instead of a $2,000/mo agency.
             </p>
 

@@ -136,7 +136,7 @@ export default async function VerticalPage({
           <p className="text-muted text-xs font-semibold tracking-[-0.01em] mb-6 text-center">
             The problem
           </p>
-          <h2 className="text-[30.8px] sm:text-[39.6px] font-semibold text-fg leading-[1.15] tracking-tight text-center mb-10 text-balance">
+          <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg leading-[1.15] tracking-tight text-center mb-10 text-balance">
             Your next customer just asked AI —{" "}
             <span className="text-[#86868b]">and got someone else&apos;s name.</span>
           </h2>
@@ -163,7 +163,7 @@ export default async function VerticalPage({
             <span className="text-xs font-medium tracking-[-0.01em] text-brand-orange mb-3 block">
               The playbook
             </span>
-            <h2 className="text-[30.8px] sm:text-[39.6px] font-semibold text-fg tracking-tight text-balance">
+            <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg tracking-tight text-balance">
               What alphaa does for {v.plural}
             </h2>
           </div>
@@ -217,7 +217,7 @@ export default async function VerticalPage({
               </div>
             </div>
             <div className="text-center mt-9 pt-9 border-t border-line/[0.08]">
-              <p className="text-fg text-[30.8px] sm:text-[44px] font-semibold leading-tight">
+              <p className="text-fg text-[28px] sm:text-[40px] font-semibold leading-tight">
                 Keep <span className="text-brand-orange">${savings.toLocaleString()}/year</span> in your{" "}
                 {v.noun}
               </p>
@@ -236,7 +236,7 @@ export default async function VerticalPage({
             <span className="text-xs font-medium tracking-[-0.01em] text-brand-orange mb-3 block">
               FAQ
             </span>
-            <h2 className="text-[30.8px] sm:text-[39.6px] font-semibold text-fg tracking-tight">
+            <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg tracking-tight">
               Questions from {v.plural}
             </h2>
           </div>
@@ -293,7 +293,7 @@ export default async function VerticalPage({
               background: "transparent",
             }}
           >
-            <h2 className="text-[35.2px] sm:text-[48.4px] font-semibold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
+            <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
               Find out if AI recommends your {v.noun} —{" "}
               <span className="text-[#86868b]">or your competitor.</span>
             </h2>

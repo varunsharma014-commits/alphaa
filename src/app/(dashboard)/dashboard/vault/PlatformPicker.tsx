@@ -92,7 +92,7 @@ export function PlatformPicker({ mailtoHref }: { mailtoHref: string }) {
                 border: `1px solid ${active ? "var(--ds-accent)" : "var(--ds-border-3)"}`,
                 borderRadius: "20px",
                 padding: "5px 14px",
-                fontSize: "13.2px",
+                fontSize: "12px",
                 fontWeight: 500,
                 cursor: "pointer",
               }}
@@ -114,7 +114,7 @@ export function PlatformPicker({ mailtoHref }: { mailtoHref: string }) {
                 background: "var(--ds-surface)",
                 border: "1px solid var(--ds-border-2)",
                 color: "var(--ds-text-mute)",
-                fontSize: "12.1px",
+                fontSize: "11px",
                 fontWeight: 500,
                 display: "flex",
                 alignItems: "center",
@@ -125,7 +125,7 @@ export function PlatformPicker({ mailtoHref }: { mailtoHref: string }) {
             >
               {i + 1}
             </span>
-            <p style={{ flex: 1, fontSize: "14.3px", color: "var(--ds-text-strong)", lineHeight: 1.6 }}>{step}</p>
+            <p style={{ flex: 1, fontSize: "13px", color: "var(--ds-text-strong)", lineHeight: 1.6 }}>{step}</p>
           </li>
         ))}
       </ol>
@@ -133,7 +133,7 @@ export function PlatformPicker({ mailtoHref }: { mailtoHref: string }) {
       {platform.caveat && (
         <p
           style={{
-            fontSize: "13.2px",
+            fontSize: "12px",
             color: "var(--ds-warn)",
             background: "var(--ds-warn-bg)",
             border: "1px solid var(--ds-warn-border)",
@@ -157,7 +157,7 @@ export function PlatformPicker({ mailtoHref }: { mailtoHref: string }) {
             color: "var(--ds-text-mute)",
             borderRadius: "8px",
             padding: "7px 14px",
-            fontSize: "13.2px",
+            fontSize: "12px",
             fontWeight: 500,
             textDecoration: "none",
           }}

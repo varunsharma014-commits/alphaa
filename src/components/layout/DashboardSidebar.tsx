@@ -72,7 +72,7 @@ export function DashboardSidebar() {
       <div className="h-16 px-5 flex items-center border-b border-line/[0.06]">
         <Link href="/" className="flex items-center gap-2">
           <Sparkles className="w-[18px] h-[18px] text-brand-orange" />
-          <span className="text-fg font-semibold text-[18.7px] tracking-tight">alphaa</span>
+          <span className="text-fg font-semibold text-[17px] tracking-tight">alphaa</span>
         </Link>
       </div>
 
@@ -81,7 +81,7 @@ export function DashboardSidebar() {
         {navGroups.map((group, groupIdx) => (
           <div key={groupIdx} className={groupIdx > 0 ? "mt-6" : ""}>
             {group.label && (
-              <p className="px-3 mb-2 text-[12.1px] font-semibold tracking-[-0.01em] text-fg/30 select-none">
+              <p className="px-3 mb-2 text-[11px] font-semibold tracking-[-0.01em] text-fg/30 select-none">
                 {group.label}
               </p>
             )}
@@ -93,7 +93,7 @@ export function DashboardSidebar() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[15.4px] transition-all duration-150 group",
+                      "flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[14px] transition-all duration-150 group",
                       active
                         ? "bg-brand-orange/[0.12] text-brand-orange font-medium"
                         : "text-fg/55 hover:text-fg/90 hover:bg-fg/[0.045] font-normal"
@@ -121,7 +121,7 @@ export function DashboardSidebar() {
         <Link
           href="/dashboard/settings"
           className={cn(
-            "flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[15.4px] transition-all duration-150",
+            "flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[14px] transition-all duration-150",
             pathname.startsWith("/dashboard/settings")
               ? "bg-brand-orange/[0.12] text-brand-orange font-medium"
               : "text-fg/55 hover:text-fg/90 hover:bg-fg/[0.045]"
@@ -132,14 +132,14 @@ export function DashboardSidebar() {
         </Link>
         <a
           href="mailto:hi@alphaa.app?subject=Help%20with%20my%20alphaa%20account"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[15.4px] text-fg/55 hover:text-fg/90 hover:bg-fg/[0.045] transition-all duration-150"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[14px] text-fg/55 hover:text-fg/90 hover:bg-fg/[0.045] transition-all duration-150"
         >
           <LifeBuoy className="w-[18px] h-[18px] flex-shrink-0" />
           <span>Email support</span>
         </a>
         <Link
           href="/pricing"
-          className="flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-[10px] text-[15.4px] font-semibold bg-brand-orange text-white hover:bg-brand-orange-light transition-colors"
+          className="flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-[10px] text-[14px] font-semibold bg-brand-orange text-white hover:bg-brand-orange-light transition-colors"
         >
           <span>Upgrade plan</span>
           <ChevronRight className="w-3.5 h-3.5 opacity-80" />

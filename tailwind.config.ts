@@ -40,24 +40,10 @@ const config: Config = {
         mono: ['"SF Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       fontSize: {
-        // Tailwind's named sizes, +10% (2026-09-24). Line heights scale with them.
-        xs: ["0.825rem", { lineHeight: "1.1rem" }],
-        sm: ["0.9625rem", { lineHeight: "1.375rem" }],
-        base: ["1.1rem", { lineHeight: "1.65rem" }],
-        lg: ["1.2375rem", { lineHeight: "1.925rem" }],
-        xl: ["1.375rem", { lineHeight: "1.925rem" }],
-        "2xl": ["1.65rem", { lineHeight: "2.2rem" }],
-        "3xl": ["2.0625rem", { lineHeight: "2.475rem" }],
-        "4xl": ["2.475rem", { lineHeight: "2.75rem" }],
-        "5xl": ["3.3rem", { lineHeight: "1" }],
-        "6xl": ["4.125rem", { lineHeight: "1" }],
-        "7xl": ["4.95rem", { lineHeight: "1" }],
-        "8xl": ["6.6rem", { lineHeight: "1" }],
-        "9xl": ["8.8rem", { lineHeight: "1" }],
-        hero: ["61.6px", { lineHeight: "1.08", letterSpacing: "-0.02em" }],
-        "hero-mobile": ["39.6px", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
-        section: ["44px", { lineHeight: "1.15", letterSpacing: "-0.02em" }],
-        "section-mobile": ["30.8px", { lineHeight: "1.2" }],
+        hero: ["56px", { lineHeight: "1.08", letterSpacing: "-0.02em" }],
+        "hero-mobile": ["36px", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
+        section: ["40px", { lineHeight: "1.15", letterSpacing: "-0.02em" }],
+        "section-mobile": ["28px", { lineHeight: "1.2" }],
       },
       // Apple headlines are semibold, never heavy: "bold" renders at 600.
       fontWeight: {

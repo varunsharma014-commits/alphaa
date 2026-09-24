@@ -37,7 +37,7 @@ export default async function StartTrialPage() {
 
       <div className="w-full max-w-md">
         <div className="glass-card rounded-2xl p-8">
-          <h1 className="text-fg font-semibold text-2xl mb-2 text-center">
+          <h1 className="text-fg font-semibold text-[1.65rem]/[2.2rem] mb-2 text-center">
             Start today
           </h1>
           <p className="text-muted text-sm text-center mb-7">

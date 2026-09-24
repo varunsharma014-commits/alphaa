@@ -40,8 +40,8 @@ function FeatureVisual({ kind }: { kind: "engines" | "content" | "trend" }) {
       <div className="rounded-2xl bg-[#f5f5f7] p-5 space-y-3">
         {ENGINES.map((e) => (
           <div key={e.name} className="flex items-center justify-between bg-white rounded-xl px-4 py-3">
-            <span className="text-[15.4px] font-medium text-[#1d1d1f]">{e.name}</span>
-            <span className={`text-[12.1px] font-semibold px-2.5 py-1 rounded-full ${TONE[e.tone]}`}>{e.status}</span>
+            <span className="text-[14px] font-medium text-[#1d1d1f]">{e.name}</span>
+            <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${TONE[e.tone]}`}>{e.status}</span>
           </div>
         ))}
       </div>
@@ -58,7 +58,7 @@ function FeatureVisual({ kind }: { kind: "engines" | "content" | "trend" }) {
         {items.map((it) => (
           <div key={it.t} className="flex items-center gap-3 bg-white rounded-xl px-4 py-3.5">
             <it.icon className="w-4 h-4 text-[#1d8a4e] flex-shrink-0" />
-            <span className="text-[14.3px] text-[#1d1d1f]">{it.t}</span>
+            <span className="text-[13px] text-[#1d1d1f]">{it.t}</span>
           </div>
         ))}
       </div>
@@ -66,9 +66,9 @@ function FeatureVisual({ kind }: { kind: "engines" | "content" | "trend" }) {
   }
   return (
     <div className="rounded-2xl bg-[#f5f5f7] p-5 flex flex-col items-center justify-center text-center gap-2">
-      <p className="text-[52.8px] font-semibold text-brand-orange leading-none">82</p>
-      <p className="text-[#1d8a4e] text-[14.3px] font-medium">↑ +9 this month</p>
-      <p className="text-[#86868b] text-[13.2px]">Presence score</p>
+      <p className="text-[48px] font-semibold text-brand-orange leading-none">82</p>
+      <p className="text-[#1d8a4e] text-[13px] font-medium">↑ +9 this month</p>
+      <p className="text-[#86868b] text-[12px]">Presence score</p>
     </div>
   )
 }
@@ -78,7 +78,7 @@ export function WholeSeoTeamSection() {
     <section data-reveal className="px-4 sm:px-6 bg-[#f5f5f7] text-[#1d1d1f]">
       <div className="max-w-5xl mx-auto py-20 text-center">
         <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-6">Features</p>
-        <h2 className="text-[44px] sm:text-[70.4px] font-bold leading-[1.1] tracking-tight">
+        <h2 className="text-[40px] sm:text-[64px] font-bold leading-[1.1] tracking-tight">
           A whole SEO team, running itself.
         </h2>
       </div>
@@ -86,9 +86,9 @@ export function WholeSeoTeamSection() {
         {FEATURES.map((f, i) => (
           <div key={f.title} className="grid md:grid-cols-2 gap-8 items-center bg-white rounded-[28px] p-8 sm:p-12">
             <div className={i % 2 === 1 ? "md:order-2" : ""}>
-              <p className="text-[15.4px] font-semibold text-brand-orange mb-3">{f.kicker}</p>
-              <h3 className="text-[30.8px] sm:text-[37.4px] font-semibold leading-[1.08] tracking-[-0.02em] text-[#1d1d1f]">{f.title}</h3>
-              <p className="text-[18.7px] leading-relaxed text-[#6e6e73] mt-4">{f.body}</p>
+              <p className="text-[14px] font-semibold text-brand-orange mb-3">{f.kicker}</p>
+              <h3 className="text-[28px] sm:text-[34px] font-semibold leading-[1.08] tracking-[-0.02em] text-[#1d1d1f]">{f.title}</h3>
+              <p className="text-[17px] leading-relaxed text-[#6e6e73] mt-4">{f.body}</p>
             </div>
             <div className={i % 2 === 1 ? "md:order-1" : ""}>
               <FeatureVisual kind={f.visual} />

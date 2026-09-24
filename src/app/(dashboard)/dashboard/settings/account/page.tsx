@@ -5,7 +5,7 @@ export const metadata = { title: "Account Settings" }
 export default function AccountSettingsPage() {
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-fg font-semibold text-2xl mb-6">Account</h1>
+      <h1 className="text-fg font-semibold text-[1.65rem]/[2.2rem] mb-6">Account</h1>
       <UserProfile
         appearance={{
           // Literal hex, not var(--ds-*): nested modals this opens (Update

@@ -10,7 +10,7 @@ export function AiAnswerMockup() {
           <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-3">
             What your customers see
           </p>
-          <h2 className="text-fg text-[44px] sm:text-[70.4px] font-bold leading-[1.1] tracking-tight">
+          <h2 className="text-fg text-[40px] sm:text-[64px] font-bold leading-[1.1] tracking-tight">
             When someone asks AI for a business like yours
           </h2>
         </div>
@@ -48,7 +48,7 @@ export function AiAnswerMockup() {
                 <div className="rounded-xl border border-brand-orange/40 bg-brand-orange/[0.07] p-3">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="text-fg font-semibold">Summit Plumbing Co.</span>
-                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-brand-orange text-white">
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-brand-orange text-white">
                       Your business
                     </span>
                   </div>
@@ -66,7 +66,7 @@ export function AiAnswerMockup() {
                   {["summitplumbing.com", "Google reviews", "Local listings"].map((s) => (
                     <span
                       key={s}
-                      className="text-[12.1px] text-fg/40 border border-line/10 rounded-full px-2.5 py-1"
+                      className="text-[11px] text-fg/40 border border-line/10 rounded-full px-2.5 py-1"
                     >
                       {s}
                     </span>

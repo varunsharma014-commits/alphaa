@@ -194,17 +194,17 @@ export default async function AuditPage() {
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
                   <AlertCircle size={18} color="var(--ds-bad)" style={{ flexShrink: 0, marginTop: "1px" }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
+                    <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                       Your website is blocking {engine} from reading your content
                     </p>
-                    <p style={{ fontSize: "14.3px", color: "var(--ds-bad-soft)", lineHeight: 1.6, marginTop: "4px" }}>
+                    <p style={{ fontSize: "13px", color: "var(--ds-bad-soft)", lineHeight: 1.6, marginTop: "4px" }}>
                       This means {engine} literally cannot see your website — which is why you don&apos;t appear in its results.
                     </p>
                     <details style={{ marginTop: "10px" }}>
-                      <summary style={{ cursor: "pointer", color: "var(--ds-accent)", fontSize: "14.3px", fontWeight: 500 }}>
+                      <summary style={{ cursor: "pointer", color: "var(--ds-accent)", fontSize: "13px", fontWeight: 500 }}>
                         Show me how to fix this →
                       </summary>
-                      <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "8px" }}>
+                      <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "8px" }}>
                         {String(issue.fix ?? "")}
                       </p>
                     </details>
@@ -228,7 +228,7 @@ export default async function AuditPage() {
       >
         <div>
           <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Website health</h1>
-          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             alphaa checks your site every week and flags anything that could hurt your visibility.
             {latestCrawl ? ` Last checked ${formatDate(latestCrawl.crawledAt)}.` : ""}
           </p>
@@ -273,7 +273,7 @@ export default async function AuditPage() {
             }}
           >
             <Gauge size={15} color="var(--ds-accent)" />
-            <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
+            <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
               How fast your site feels to visitors
             </span>
             {perfPct !== null && (
@@ -297,16 +297,16 @@ export default async function AuditPage() {
                     padding: "12px",
                   }}
                 >
-                  <div style={{ fontSize: "12.1px", color: "var(--ds-text-mute)", marginBottom: "4px" }}>
+                  <div style={{ fontSize: "11px", color: "var(--ds-text-mute)", marginBottom: "4px" }}>
                     {cwvFriendlyName(id)}
                   </div>
-                  <div style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.1 }}>
+                  <div style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.1 }}>
                     {audit.displayValue ?? "—"}
                   </div>
                   <div style={{ marginTop: "8px" }}>
                     <StatusPill variant={status.variant}>{status.label}</StatusPill>
                   </div>
-                  <div style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.5 }}>
+                  <div style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px", lineHeight: 1.5 }}>
                     {cwvSubtitle(id)}
                   </div>
                 </div>
@@ -316,7 +316,7 @@ export default async function AuditPage() {
         </DsCard>
       ) : (
         <DsCard>
-          <div style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+          <div style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
             Speed data updates shortly — we check this weekly and you will see it here next time.
           </div>
         </DsCard>
@@ -325,7 +325,7 @@ export default async function AuditPage() {
       {/* ── Issues list ─────────────────────────────────────── */}
       <SectionDivider>WHAT WE FOUND</SectionDivider>
       {!latestCrawl && combinedIssues.length > 0 && (
-        <p style={{ fontSize: "12.7px", color: "var(--ds-text-faint)", margin: "0 0 10px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: "11.5px", color: "var(--ds-text-faint)", margin: "0 0 10px", lineHeight: 1.5 }}>
           These findings come from your AI visibility audit. Page-by-page website results appear above once the first site check finishes.
         </p>
       )}
@@ -348,7 +348,7 @@ export default async function AuditPage() {
                       marginTop: "5px",
                     }}
                   />
-                  <p style={{ flex: 1, fontSize: "14.3px", color: "var(--ds-text-strong)", lineHeight: 1.6 }}>
+                  <p style={{ flex: 1, fontSize: "13px", color: "var(--ds-text-strong)", lineHeight: 1.6 }}>
                     {issue.text}
                   </p>
                   {automatic ? (
@@ -357,7 +357,7 @@ export default async function AuditPage() {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: "5px",
-                        fontSize: "12.1px",
+                        fontSize: "11px",
                         fontWeight: 500,
                         color: "var(--ds-ok)",
                         whiteSpace: "nowrap",
@@ -374,7 +374,7 @@ export default async function AuditPage() {
                       style={{
                         background: "var(--ds-accent)",
                         color: "var(--ds-text)",
-                        fontSize: "12.1px",
+                        fontSize: "11px",
                         fontWeight: 500,
                         padding: "5px 12px",
                         borderRadius: "8px",
@@ -396,10 +396,10 @@ export default async function AuditPage() {
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <CheckCircle2 size={18} color="var(--ds-ok)" />
             <div>
-              <div style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
+              <div style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
                 Your site is in great shape
               </div>
-              <div style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "2px", lineHeight: 1.6 }}>
+              <div style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "2px", lineHeight: 1.6 }}>
                 alphaa checked every page and found nothing that needs your attention.
               </div>
             </div>
@@ -419,10 +419,10 @@ export default async function AuditPage() {
       <DsCard>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "14px", flexWrap: "wrap" }}>
           <div style={{ flex: 1, minWidth: "240px" }}>
-            <p style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
+            <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
               Make AI read your business — the most important thing you can do
             </p>
-            <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>
+            <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px" }}>
               ChatGPT, Claude and Perplexity read the plain code of your site. Copy the code alphaa
               wrote for you and paste it onto your website — we show you exactly where.
             </p>
@@ -435,7 +435,7 @@ export default async function AuditPage() {
               gap: "6px",
               background: "var(--ds-accent)",
               color: "var(--ds-text)",
-              fontSize: "14.3px",
+              fontSize: "13px",
               fontWeight: 500,
               padding: "8px 16px",
               borderRadius: "8px",

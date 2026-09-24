@@ -27,7 +27,7 @@ export function DownloadLlmsButton({ content }: { content: string }) {
         color: "var(--ds-text-mute)",
         borderRadius: "8px",
         padding: "6px 12px",
-        fontSize: "13.2px",
+        fontSize: "12px",
         fontWeight: 500,
         cursor: "pointer",
       }}
