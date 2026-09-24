@@ -8,6 +8,7 @@ import { track } from "@/lib/gtag"
 import { fbTrack } from "@/lib/pixel"
 import type { ScanResult, EngineEvidence } from "@/types/scan"
 import type { SiteChecks } from "@/lib/site-check"
+import { CHECK_SHORT } from "@/lib/site-check-labels"
 import type { IdentifyResult } from "@/app/api/scan/identify/route"
 import { BRAND } from "@/lib/brand"
 
@@ -428,7 +429,7 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
         { kind: "text", text: `What an AI finds when it reads ${you.domain}: ${you.passed} of ${you.total}.` },
         { kind: "sources", items: you.checks.map((c) => ({ name: c.label, detail: c.detail, status: c.ok === true ? "Yes" : c.ok === false ? "No" : "Couldn’t check", ok: c.ok === true })) },
         ...(fails.length
-          ? [{ kind: "text", text: `${fails.length === 1 ? "The one that matters most" : "The ones that matter most"}: ${fails.slice(0, 3).map((c) => c.label.toLowerCase()).join(", ")}. ${fails.some((c) => c.key === "llms" || c.key === "faq") ? "I’ve drafted the first fix below." : "All fixable this week."}` } as Block]
+          ? [{ kind: "text", text: `What’s hurting you most: ${fails.slice(0, 3).map((c) => CHECK_SHORT[c.key]).join(", ")}. ${fails.some((c) => c.key === "llms" || c.key === "faq") ? "I’ve drafted the first fix below." : "All fixable this week."}` } as Block]
           : [{ kind: "text", text: "Your site is in good shape for AI. The gap is what the rest of the web says about you — that’s where I’d work." } as Block]),
       ])
     )
@@ -439,7 +440,7 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
       const rd = rivals.find((r) => slug(r.name).length >= 4 && slug(rival.domain).includes(slug(r.name).slice(0, 5)))
       out.push(
         agent([
-          { kind: "text", text: `${rd?.name ?? rival.domain}: ${rival.passed} of ${rival.total}. They have ${theyHave.map((c) => c.label.toLowerCase()).join(", ")}. You don’t.${rd ? ` That’s the difference between being named ${rd.aiMentions} of ${checked} times and ${evidence.filter((x) => x.ev?.appeared).length}.` : ""}` },
+          { kind: "text", text: `${rd?.name ?? rival.domain}: ${rival.passed} of ${rival.total}. They have ${theyHave.map((c) => c.label.toLowerCase()).join(", ")}. You don’t.${rd && rd.aiMentions > named ? ` That’s part of why they were named ${rd.aiMentions} of ${checked} times and you ${named}.` : ""}` },
         ])
       )
       break

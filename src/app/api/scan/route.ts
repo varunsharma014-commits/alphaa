@@ -17,7 +17,7 @@ import {
   type BusinessProfile,
 } from "@/lib/scan-insights"
 import { sendScanReadyEmail } from "@/lib/scan-email"
-import { checkSites, type SiteChecks } from "@/lib/site-check"
+import { checkSites, findCompetitorDomain, type SiteChecks } from "@/lib/site-check"
 import type { AiSearchStatus } from "@/types/audit"
 import type { EngineEvidence, ScanInsights, ScanSerp, CompetitorDetail } from "@/types/scan"
 
@@ -267,10 +267,13 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
     let siteChecks: SiteChecks | null = null
     if (input.websiteUrl) {
       try {
-        const rivalDomains = competitorDetails
-          .filter((c) => c.domain && c.aiMentions > 0)
-          .sort((a, b) => b.aiMentions - a.aiMentions)
-          .map((c) => c.domain as string)
+        const ranked = [...competitorDetails].filter((c) => c.aiMentions > 0).sort((a, b) => b.aiMentions - a.aiMentions)
+        const rivalDomains: string[] = []
+        for (const c of ranked) {
+          if (rivalDomains.length >= 2) break
+          const d = c.domain ?? (await findCompetitorDomain(c.name, input.city))
+          if (d && d.replace(/^www\./, "") !== new URL(input.websiteUrl.startsWith("http") ? input.websiteUrl : `https://${input.websiteUrl}`).hostname.replace(/^www\./, "")) rivalDomains.push(d)
+        }
         siteChecks = await Promise.race([
           checkSites(input.websiteUrl, rivalDomains, isLocal),
           new Promise<null>((r) => setTimeout(() => r(null), 25000)),

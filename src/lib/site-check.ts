@@ -4,7 +4,11 @@
 // is best-effort: a fetch failure yields ok=null ("couldn't check"), never a
 // fabricated fail.
 
-export type CheckKey = "llms" | "robots" | "sitemap" | "schema" | "faq" | "facts" | "blog" | "meta" | "speed"
+// Server-only (fetches + Anthropic). Client code imports the labels from
+// lib/site-check-labels.ts so the SDK never lands in a browser bundle.
+import { anthropic } from "@/lib/claude"
+import type { CheckKey } from "@/lib/site-check-labels"
+export type { CheckKey } from "@/lib/site-check-labels"
 
 export interface SiteCheckItem {
   key: CheckKey
@@ -180,6 +184,30 @@ export async function checkSite(input: string, opts: { isLocal: boolean }): Prom
 
   const passed = checks.filter((c) => c.ok === true).length
   return { domain, checks, passed, total: checks.length, blog }
+}
+
+// When the SERP didn't hand us a competitor's domain, ask Haiku for it and
+// VERIFY by fetching: the page must exist and carry the name. A wrong guess
+// returns null rather than a stranger's website.
+export async function findCompetitorDomain(name: string, city: string): Promise<string | null> {
+  try {
+    const msg = await anthropic.messages.create({
+      model: "claude-haiku-4-5",
+      max_tokens: 60,
+      messages: [{ role: "user", content: `Official website domain (just the bare domain, e.g. example.com) for the business "${name}"${city ? ` in ${city}` : ""}. If unsure reply exactly: unknown` }],
+    })
+    const raw = (msg.content[0]?.type === "text" ? msg.content[0].text : "").trim().toLowerCase()
+    const m = raw.match(/([a-z0-9-]+\.)+[a-z]{2,}/)
+    if (!m || /unknown/.test(raw)) return null
+    const domain = m[0].replace(/^www\./, "")
+    const page = await get(`https://${domain}/`, 7000)
+    if (!page || !page.ok) return null
+    const tokens = name.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter((t) => t.length > 3 && !["restaurant", "dental", "clinic", "the", "and"].includes(t))
+    const body = page.text.toLowerCase()
+    return tokens.length === 0 || tokens.some((t) => body.includes(t)) ? domain : null
+  } catch {
+    return null
+  }
 }
 
 export async function checkSites(you: string, competitorDomains: string[], isLocal: boolean): Promise<SiteChecks> {
