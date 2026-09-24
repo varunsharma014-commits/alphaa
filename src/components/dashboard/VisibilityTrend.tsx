@@ -55,12 +55,12 @@ export function VisibilityTrend({ points }: { points: TrendPoint[] }) {
           marginBottom: "8px",
         }}
       >
-        <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+        <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
           Your AI share of voice over time
         </span>
         <span
           style={{
-            fontSize: "12px",
+            fontSize: "13.2px",
             color: delta > 0 ? "var(--ds-ok)" : delta < 0 ? "var(--ds-bad)" : "var(--ds-text-mute)",
           }}
         >
@@ -117,7 +117,7 @@ export function VisibilityTrend({ points }: { points: TrendPoint[] }) {
           </g>
         ))}
       </svg>
-      <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "6px" }}>
+      <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "6px" }}>
         Share of voice = the portion of the 4 AI engines (ChatGPT, Claude, Gemini,
         Perplexity) that mention your business when asked. Updated with every weekly scan.
       </p>

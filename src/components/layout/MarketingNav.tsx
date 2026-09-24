@@ -41,7 +41,7 @@ export function MarketingNav() {
             <div className="w-6 h-6 relative flex items-center justify-center">
               <Sparkles className="w-[18px] h-[18px] text-[#1d1d1f]" />
             </div>
-            <span className="text-[#1d1d1f] font-semibold text-[17px] tracking-[-0.022em]">
+            <span className="text-[#1d1d1f] font-semibold text-[18.7px] tracking-[-0.022em]">
               alphaa
             </span>
           </Link>
@@ -53,7 +53,7 @@ export function MarketingNav() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-[12px] tracking-[-0.01em] transition-colors duration-300",
+                  "text-[13.2px] tracking-[-0.01em] transition-colors duration-300",
                   pathname === link.href
                     ? "text-[#1d1d1f]"
                     : "text-[#1d1d1f]/80 hover:text-[#1d1d1f]"
@@ -68,13 +68,13 @@ export function MarketingNav() {
           <div className="hidden md:flex items-center gap-5">
             <Link
               href="/login"
-              className="text-[12px] text-[#1d1d1f]/80 hover:text-[#1d1d1f] transition-colors duration-300"
+              className="text-[13.2px] text-[#1d1d1f]/80 hover:text-[#1d1d1f] transition-colors duration-300"
             >
               Login
             </Link>
             <Link
               href="/start"
-              className="text-[12px] text-white bg-[#0071e3] hover:bg-[#0077ed] rounded-full px-3 py-[5px] transition-colors duration-200"
+              className="text-[13.2px] text-white bg-[#0071e3] hover:bg-[#0077ed] rounded-full px-3 py-[5px] transition-colors duration-200"
             >
               Free AI Scan
             </Link>
@@ -103,18 +103,18 @@ export function MarketingNav() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[28px] font-semibold tracking-[-0.015em] text-[#1d1d1f] py-1.5"
+                className="text-[30.8px] font-semibold tracking-[-0.015em] text-[#1d1d1f] py-1.5"
               >
                 {link.label}
               </Link>
             ))}
             <Link
               href="/login"
-              className="text-[28px] font-semibold tracking-[-0.015em] text-[#1d1d1f] py-1.5"
+              className="text-[30.8px] font-semibold tracking-[-0.015em] text-[#1d1d1f] py-1.5"
             >
               Login
             </Link>
-            <Link href="/start" className="mt-6 self-start text-[17px] text-white bg-[#0071e3] hover:bg-[#0077ed] rounded-full px-5 py-2.5 transition-colors">
+            <Link href="/start" className="mt-6 self-start text-[18.7px] text-white bg-[#0071e3] hover:bg-[#0077ed] rounded-full px-5 py-2.5 transition-colors">
               Free AI Scan
             </Link>
           </div>

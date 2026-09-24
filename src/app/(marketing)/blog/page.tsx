@@ -28,7 +28,7 @@ export default function BlogIndexPage() {
           <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-3">
             The alphaa blog
           </p>
-          <h1 className="text-fg text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-balance">
+          <h1 className="text-fg text-[41.8px] sm:text-[61.6px] lg:text-[70.4px] font-semibold leading-[1.05] tracking-[-0.02em] text-balance">
             Getting found in the age of{" "}
             <span className="text-[#86868b]">AI search</span>
           </h1>
@@ -47,7 +47,7 @@ export default function BlogIndexPage() {
             >
               <div className="flex items-center gap-3 mb-2">
                 {meta.tag && (
-                  <span className="text-[10px] font-semibold tracking-[-0.01em] px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
+                  <span className="text-[11px] font-semibold tracking-[-0.01em] px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
                     {meta.tag}
                   </span>
                 )}

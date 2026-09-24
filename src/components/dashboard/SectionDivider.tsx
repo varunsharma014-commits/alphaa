@@ -6,7 +6,7 @@ export function SectionDivider({ children }: { children: ReactNode }) {
     <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "28px", marginBottom: "14px" }}>
       <span
         style={{
-          fontSize: "12px",
+          fontSize: "13.2px",
           fontWeight: 600,
           textTransform: "uppercase",
           letterSpacing: "0.06em",

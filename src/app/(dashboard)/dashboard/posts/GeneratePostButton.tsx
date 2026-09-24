@@ -47,7 +47,7 @@ export function GeneratePostButton() {
           color: "var(--ds-text)",
           borderRadius: "8px",
           padding: "8px 18px",
-          fontSize: "13px",
+          fontSize: "14.3px",
           fontWeight: 500,
           border: "none",
           cursor: "pointer",
@@ -75,7 +75,7 @@ export function GeneratePostButton() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
-            <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>Generate a new post</h3>
+            <h3 style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>Generate a new post</h3>
             <button
               onClick={() => setOpen(false)}
               style={{ color: "var(--ds-text-mute)", background: "none", border: "none", cursor: "pointer", display: "flex" }}
@@ -90,7 +90,7 @@ export function GeneratePostButton() {
                 style={{
                   display: "block",
                   color: "var(--ds-text-ghost)",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   marginBottom: "6px",
                   fontWeight: 500,
                   textTransform: "uppercase",
@@ -109,7 +109,7 @@ export function GeneratePostButton() {
                   borderRadius: "8px",
                   padding: "8px 12px",
                   color: "var(--ds-text)",
-                  fontSize: "13px",
+                  fontSize: "14.3px",
                   outline: "none",
                 }}
               >
@@ -124,7 +124,7 @@ export function GeneratePostButton() {
                 style={{
                   display: "block",
                   color: "var(--ds-text-ghost)",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   marginBottom: "6px",
                   fontWeight: 500,
                   textTransform: "uppercase",
@@ -145,13 +145,13 @@ export function GeneratePostButton() {
                   borderRadius: "8px",
                   padding: "8px 12px",
                   color: "var(--ds-text)",
-                  fontSize: "13px",
+                  fontSize: "14.3px",
                   outline: "none",
                 }}
               />
             </div>
 
-            {error && <p style={{ color: "var(--ds-bad)", fontSize: "11px" }}>{error}</p>}
+            {error && <p style={{ color: "var(--ds-bad)", fontSize: "12.1px" }}>{error}</p>}
 
             <button
               onClick={handleGenerate}
@@ -162,7 +162,7 @@ export function GeneratePostButton() {
                 color: "var(--ds-text)",
                 borderRadius: "8px",
                 padding: "10px 18px",
-                fontSize: "13px",
+                fontSize: "14.3px",
                 fontWeight: 500,
                 border: "none",
                 cursor: loading ? "not-allowed" : "pointer",

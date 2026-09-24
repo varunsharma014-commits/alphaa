@@ -67,23 +67,23 @@ export function WinGapButton({ competitorId, gap }: { competitorId: string; gap:
       >
         <div className="flex items-center gap-1.5" style={{ marginBottom: 8 }}>
           <Check className="w-3 h-3 flex-shrink-0" style={{ color: "var(--ds-ok)" }} />
-          <span style={{ color: "var(--ds-ok)", fontSize: 11, fontWeight: 500 }}>
+          <span style={{ color: "var(--ds-ok)", fontSize: 12.1, fontWeight: 500 }}>
             Draft ready — {draft.format}
           </span>
         </div>
 
-        <h4 style={{ color: "var(--ds-text)", fontSize: 13, fontWeight: 600, lineHeight: 1.45 }}>
+        <h4 style={{ color: "var(--ds-text)", fontSize: 14.3, fontWeight: 600, lineHeight: 1.45 }}>
           {draft.title}
         </h4>
 
-        <p style={{ color: "var(--ds-text-faint)", fontSize: 11, lineHeight: 1.6, marginTop: 6 }}>
+        <p style={{ color: "var(--ds-text-faint)", fontSize: 12.1, lineHeight: 1.6, marginTop: 6 }}>
           Answers the customer question: &quot;{draft.targetQuestion}&quot;
         </p>
 
         <pre
           style={{
             color: "var(--ds-text-mute)",
-            fontSize: 12,
+            fontSize: 13.2,
             lineHeight: 1.7,
             marginTop: 10,
             maxHeight: 320,
@@ -100,14 +100,14 @@ export function WinGapButton({ competitorId, gap }: { competitorId: string; gap:
           {draft.draft}
         </pre>
 
-        <p style={{ color: "var(--ds-text-faint)", fontSize: 11, lineHeight: 1.6, marginTop: 10 }}>
+        <p style={{ color: "var(--ds-text-faint)", fontSize: 12.1, lineHeight: 1.6, marginTop: 10 }}>
           alphaa can&apos;t publish to your website. Copy this into your site, or send it to whoever
           manages your website. Anything in [square brackets] is a detail only you know — fill it in
           before publishing.
         </p>
 
         {error && (
-          <p style={{ color: "var(--ds-bad)", fontSize: 11, marginTop: 8 }}>{error}</p>
+          <p style={{ color: "var(--ds-bad)", fontSize: 12.1, marginTop: 8 }}>{error}</p>
         )}
 
         <div className="flex items-center gap-2 flex-wrap" style={{ marginTop: 10 }}>
@@ -122,7 +122,7 @@ export function WinGapButton({ competitorId, gap }: { competitorId: string; gap:
               border: "none",
               borderRadius: 8,
               padding: "6px 12px",
-              fontSize: 11,
+              fontSize: 12.1,
               fontWeight: 500,
               cursor: "pointer",
             }}
@@ -140,7 +140,7 @@ export function WinGapButton({ competitorId, gap }: { competitorId: string; gap:
               border: ".5px solid var(--ds-border-2)",
               borderRadius: 8,
               padding: "6px 12px",
-              fontSize: 11,
+              fontSize: 12.1,
               fontWeight: 500,
             }}
           >
@@ -165,7 +165,7 @@ export function WinGapButton({ competitorId, gap }: { competitorId: string; gap:
           border: ".5px solid var(--ds-border-2)",
           borderRadius: 8,
           padding: "5px 10px",
-          fontSize: 11,
+          fontSize: 12.1,
           fontWeight: 500,
           cursor: loading ? "not-allowed" : "pointer",
           opacity: loading ? 0.6 : 1,
@@ -187,11 +187,11 @@ export function WinGapButton({ competitorId, gap }: { competitorId: string; gap:
         )}
       </button>
       {loading && (
-        <p style={{ color: "var(--ds-text-faint)", fontSize: 10, marginTop: 6 }}>
+        <p style={{ color: "var(--ds-text-faint)", fontSize: 11, marginTop: 6 }}>
           This takes about 20 seconds.
         </p>
       )}
-      {error && <p style={{ color: "var(--ds-bad)", fontSize: 11, marginTop: 6 }}>{error}</p>}
+      {error && <p style={{ color: "var(--ds-bad)", fontSize: 12.1, marginTop: 6 }}>{error}</p>}
     </div>
   )
 }

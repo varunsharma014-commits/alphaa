@@ -85,7 +85,7 @@ export default function CaseStudiesPage() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-semibold mb-7 tracking-[-0.01em]">
             Case Studies
           </div>
-          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-5 text-balance">
+          <h1 className="text-[41.8px] sm:text-[61.6px] lg:text-[70.4px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-5 text-balance">
             Real businesses.{" "}
             <span className="text-brand-orange">Real AI visibility.</span>
             <br />
@@ -149,7 +149,7 @@ export default function CaseStudiesPage() {
         <div className="max-w-3xl mx-auto">
           <div className="rounded-3xl border border-line/[0.08] bg-fg/[0.02] overflow-hidden p-10 sm:p-14 text-center">
             <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-4">Ready to be next?</p>
-            <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
+            <h2 className="text-[35.2px] sm:text-[48.4px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
               Find out if AI search
               <br />knows your business.
             </h2>

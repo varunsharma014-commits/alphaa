@@ -64,7 +64,7 @@ export function HomePricingSection() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-6">Pricing</p>
-          <h2 className="text-[40px] sm:text-[64px] font-bold leading-[1.1] tracking-tight mb-4">
+          <h2 className="text-[44px] sm:text-[70.4px] font-bold leading-[1.1] tracking-tight mb-4">
             Simple pricing. 14-day free trial.
           </h2>
           <p className="text-[#6e6e73] text-lg">
@@ -97,16 +97,16 @@ export function HomePricingSection() {
                 </div>
               )}
 
-              <h3 className="text-[20px] font-semibold text-[#1d1d1f]">{plan.name}</h3>
-              <p className="text-[14px] text-[#6e6e73] mt-2 min-h-[40px]">{plan.description}</p>
-              <p className="mt-6 text-[44px] font-semibold text-[#1d1d1f] tracking-tight leading-none">
+              <h3 className="text-[22px] font-semibold text-[#1d1d1f]">{plan.name}</h3>
+              <p className="text-[15.4px] text-[#6e6e73] mt-2 min-h-[40px]">{plan.description}</p>
+              <p className="mt-6 text-[48.4px] font-semibold text-[#1d1d1f] tracking-tight leading-none">
                 ${plan.price}
-                <span className="text-[16px] text-[#86868b] font-normal">/mo</span>
+                <span className="text-[17.6px] text-[#86868b] font-normal">/mo</span>
               </p>
 
               <Link
                 href={plan.href}
-                className={`mt-7 block text-center text-[15px] font-medium px-6 py-3 rounded-full transition-colors ${
+                className={`mt-7 block text-center text-[16.5px] font-medium px-6 py-3 rounded-full transition-colors ${
                   plan.featured ? "bg-brand-orange hover:bg-brand-orange-light text-white" : "bg-white hover:bg-[#ececee] text-[#1d1d1f] border border-black/[0.08]"
                 }`}
               >
@@ -115,7 +115,7 @@ export function HomePricingSection() {
 
               <ul className="mt-7 space-y-3 flex-1">
                 {plan.features.map((ft) => (
-                  <li key={ft} className="flex items-start gap-2.5 text-[14px] text-[#1d1d1f]">
+                  <li key={ft} className="flex items-start gap-2.5 text-[15.4px] text-[#1d1d1f]">
                     <Check className="w-4 h-4 text-brand-orange flex-shrink-0 mt-0.5" />
                     {ft}
                   </li>

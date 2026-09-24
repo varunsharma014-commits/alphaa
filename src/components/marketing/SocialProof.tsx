@@ -67,7 +67,7 @@ export function SocialProof() {
           Real results
         </p>
 
-        <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
+        <h2 className="text-[44px] sm:text-[70.4px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-6 text-balance">
           1,200+ businesses stopped
           <br />
           <span className="text-muted">paying for SEO that didn't work.</span>

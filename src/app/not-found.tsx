@@ -20,7 +20,7 @@ export default function NotFound() {
       className="min-h-screen flex flex-col items-center justify-center bg-bg-primary px-6 text-center"
     >
       <p className="text-muted text-sm font-semibold tracking-[-0.01em] mb-4">404</p>
-      <h1 className="text-[36px] sm:text-[52px] font-bold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
+      <h1 className="text-[39.6px] sm:text-[57.2px] font-bold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
         We couldn&apos;t find that page.
       </h1>
       <p className="text-muted text-lg max-w-md mb-9">
@@ -29,7 +29,7 @@ export default function NotFound() {
 
       <Link
         href="/scan"
-        className="btn-orange inline-flex items-center px-7 py-3.5 rounded-full text-[15px] font-semibold"
+        className="btn-orange inline-flex items-center px-7 py-3.5 rounded-full text-[16.5px] font-semibold"
       >
         See where you rank on AI →
       </Link>

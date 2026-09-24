@@ -71,7 +71,7 @@ export default async function BlogPostPage({
 
         <div className="flex items-center gap-3 mb-4">
           {meta.tag && (
-            <span className="text-[10px] font-semibold tracking-[-0.01em] px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
+            <span className="text-[11px] font-semibold tracking-[-0.01em] px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
               {meta.tag}
             </span>
           )}
@@ -80,7 +80,7 @@ export default async function BlogPostPage({
           </span>
         </div>
 
-        <h1 className="text-fg text-[34px] sm:text-[48px] lg:text-[52px] font-semibold leading-[1.1] tracking-[-0.02em] mb-8 text-balance">
+        <h1 className="text-fg text-[37.4px] sm:text-[52.8px] lg:text-[57.2px] font-semibold leading-[1.1] tracking-[-0.02em] mb-8 text-balance">
           {meta.title}
         </h1>
 

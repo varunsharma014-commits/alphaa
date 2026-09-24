@@ -57,7 +57,7 @@ export function CaseStudiesSection() {
             <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-4">
               Customer stories
             </p>
-            <h2 className="text-[36px] sm:text-[56px] font-bold text-fg leading-[1.1] tracking-tight text-balance">
+            <h2 className="text-[39.6px] sm:text-[61.6px] font-bold text-fg leading-[1.1] tracking-tight text-balance">
               Real businesses,{" "}
               <span className="text-muted">real AI visibility.</span>
             </h2>
@@ -124,7 +124,7 @@ export function CaseStudiesSection() {
                       <p className="text-fg text-xs font-semibold">{p.name}</p>
                       <BadgeCheck className="w-3 h-3 text-brand-orange" />
                     </div>
-                    <p className="text-muted text-[11px]">{p.role} · {p.location}</p>
+                    <p className="text-muted text-[12.1px]">{p.role} · {p.location}</p>
                   </div>
                 </div>
               </div>

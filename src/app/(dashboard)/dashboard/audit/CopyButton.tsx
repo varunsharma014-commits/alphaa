@@ -26,7 +26,7 @@ export default function CopyButton({ text }: Props) {
         background: "transparent",
         border: "1px solid var(--ds-border-3)",
         color: copied ? "var(--ds-ok)" : "var(--ds-text-mute)",
-        fontSize: "11px",
+        fontSize: "12.1px",
         fontWeight: 500,
         padding: "4px 12px",
         borderRadius: "8px",

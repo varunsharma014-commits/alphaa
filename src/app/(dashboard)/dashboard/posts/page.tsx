@@ -106,8 +106,8 @@ export default async function PostsPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>Google listing</h1>
-          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6, maxWidth: "560px" }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Google listing</h1>
+          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6, maxWidth: "560px" }}>
             alphaa posts to your Google Business Profile automatically — keeping it active so more
             customers find you.
           </p>
@@ -121,10 +121,10 @@ export default async function PostsPage() {
           <div style={{ display: "flex", gap: "14px", alignItems: "flex-start" }}>
             <AlertCircle size={22} color="var(--ds-bad)" style={{ flexShrink: 0, marginTop: "2px" }} />
             <div style={{ flex: 1 }}>
-              <h2 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+              <h2 style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
                 Google Business Profile is not connected yet
               </h2>
-              <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "6px", maxWidth: "560px" }}>
+              <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "6px", maxWidth: "560px" }}>
                 Without this, alphaa cannot post to your listing or monitor reviews. This takes 2
                 minutes to set up and unlocks the most important features.
               </p>
@@ -137,7 +137,7 @@ export default async function PostsPage() {
                   color: "var(--ds-text)",
                   borderRadius: "8px",
                   padding: "8px 18px",
-                  fontSize: "13px",
+                  fontSize: "14.3px",
                   fontWeight: 500,
                   textDecoration: "none",
                 }}
@@ -175,13 +175,13 @@ export default async function PostsPage() {
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                     <PostTypeBadge type={post.postType} />
                     <StatusBadge status={post.status} />
-                    <span style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginLeft: "auto", whiteSpace: "nowrap" }}>
+                    <span style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginLeft: "auto", whiteSpace: "nowrap" }}>
                       {formatDate(post.createdAt)}
                     </span>
                   </div>
 
                   {/* Content preview */}
-                  <p style={{ fontSize: "13px", color: "var(--ds-text-strong)", lineHeight: 1.6, marginTop: "12px" }}>
+                  <p style={{ fontSize: "14.3px", color: "var(--ds-text-strong)", lineHeight: 1.6, marginTop: "12px" }}>
                     {post.content.length > 200 ? post.content.slice(0, 200) + "…" : post.content}
                   </p>
 
@@ -205,7 +205,7 @@ export default async function PostsPage() {
                   {post.status === "posted" && post.postedAt && (
                     <p
                       style={{
-                        fontSize: "11px",
+                        fontSize: "12.1px",
                         color: "var(--ds-text-faint)",
                         marginTop: "12px",
                         paddingTop: "12px",
@@ -219,7 +219,7 @@ export default async function PostsPage() {
                   {post.status === "scheduled" && post.scheduledFor && (
                     <p
                       style={{
-                        fontSize: "11px",
+                        fontSize: "12.1px",
                         color: "var(--ds-text-faint)",
                         marginTop: "12px",
                         paddingTop: "12px",
@@ -233,7 +233,7 @@ export default async function PostsPage() {
                   {post.status === "failed" && (
                     <p
                       style={{
-                        fontSize: "11px",
+                        fontSize: "12.1px",
                         color: "var(--ds-bad)",
                         marginTop: "12px",
                         paddingTop: "12px",

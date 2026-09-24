@@ -332,14 +332,14 @@ export default function IntegrationsPage() {
 
   // ── Shared styles ──────────────────────────────────────────────────────────
   const labelStyle: React.CSSProperties = {
-    fontSize: '10px',
+    fontSize: '11px',
     fontWeight: 500,
     textTransform: 'uppercase',
     letterSpacing: '.08em',
     color: 'var(--ds-text-ghost)',
   }
   const selectClass =
-    'w-full appearance-none rounded-lg px-3 py-2.5 text-[13px] pr-9 focus:outline-none transition-colors'
+    'w-full appearance-none rounded-lg px-3 py-2.5 text-[14.3px] pr-9 focus:outline-none transition-colors'
   const selectStyle: React.CSSProperties = {
     backgroundColor: 'var(--ds-surface)',
     border: '.5px solid var(--ds-border)',
@@ -349,7 +349,7 @@ export default function IntegrationsPage() {
     backgroundColor: 'var(--ds-accent)',
     color: 'var(--ds-text)',
     borderRadius: '8px',
-    fontSize: '13px',
+    fontSize: '14.3px',
     fontWeight: 500,
   }
   const secondaryBtnStyle: React.CSSProperties = {
@@ -357,7 +357,7 @@ export default function IntegrationsPage() {
     border: '1px solid var(--ds-border-3)',
     color: 'var(--ds-text-mute)',
     borderRadius: '8px',
-    fontSize: '13px',
+    fontSize: '14.3px',
     fontWeight: 500,
   }
 
@@ -391,10 +391,10 @@ export default function IntegrationsPage() {
             </div>
 
             <div className="space-y-2 max-w-md">
-              <h2 className="text-[15px] font-medium" style={{ color: 'var(--ds-text)' }}>
+              <h2 className="text-[16.5px] font-medium" style={{ color: 'var(--ds-text)' }}>
                 Connect Google so alphaa can work for you
               </h2>
-              <p className="text-[13px]" style={{ color: 'var(--ds-text-mute)', lineHeight: 1.6 }}>
+              <p className="text-[14.3px]" style={{ color: 'var(--ds-text-mute)', lineHeight: 1.6 }}>
                 Link your Google Business Profile, Search Console, and Analytics
                 once. After that, alphaa pulls your data, posts on your behalf,
                 and watches your rankings automatically — you never log in again.
@@ -420,7 +420,7 @@ export default function IntegrationsPage() {
               {['Business Profile', 'Search Console', 'Analytics'].map((chip) => (
                 <div
                   key={chip}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.1px]"
                   style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid var(--ds-border)', color: 'var(--ds-text-mute)' }}
                 >
                   <CheckCircle2 className="w-3 h-3" style={{ color: 'var(--ds-ok)' }} />
@@ -429,7 +429,7 @@ export default function IntegrationsPage() {
               ))}
             </div>
 
-            <p className="text-[11px] max-w-sm" style={{ color: 'var(--ds-text-faint)' }}>
+            <p className="text-[12.1px] max-w-sm" style={{ color: 'var(--ds-text-faint)' }}>
               alphaa only requests the access it needs. Your data stays private
               and is never shared.
             </p>
@@ -449,10 +449,10 @@ export default function IntegrationsPage() {
               <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--ds-ok)' }} />
             </div>
             <div>
-              <h2 className="text-[14px] font-medium" style={{ color: 'var(--ds-text)' }}>
+              <h2 className="text-[15.4px] font-medium" style={{ color: 'var(--ds-text)' }}>
                 Google is connected — pick what alphaa should manage
               </h2>
-              <p className="text-[12px] mt-0.5" style={{ color: 'var(--ds-text-mute)' }}>
+              <p className="text-[13.2px] mt-0.5" style={{ color: 'var(--ds-text-mute)' }}>
                 Choose your accounts below. You can leave any on “Set up later”
                 and alphaa will remind you when it needs them.
               </p>
@@ -549,7 +549,7 @@ export default function IntegrationsPage() {
               </button>
 
               {!selectedGa && !selectedGsc && !selectedGmbLocation && (
-                <p className="text-[11px] text-center" style={{ color: 'var(--ds-text-faint)' }}>
+                <p className="text-[12.1px] text-center" style={{ color: 'var(--ds-text-faint)' }}>
                   You can set everything up later — alphaa will guide you when
                   it needs each one.
                 </p>
@@ -573,17 +573,17 @@ export default function IntegrationsPage() {
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-[14px] font-medium" style={{ color: 'var(--ds-text)' }}>Google</h2>
+                <h2 className="text-[15.4px] font-medium" style={{ color: 'var(--ds-text)' }}>Google</h2>
                 <StatusPill variant="found">Connected</StatusPill>
               </div>
               {status?.lastSyncedAt && (
-                <p className="text-[11px] mt-0.5 flex items-center gap-1" style={{ color: 'var(--ds-text-faint)' }}>
+                <p className="text-[12.1px] mt-0.5 flex items-center gap-1" style={{ color: 'var(--ds-text-faint)' }}>
                   <Clock className="w-3 h-3" /> alphaa last synced your data{' '}
                   {formatTime(status.lastSyncedAt)}
                 </p>
               )}
               {!status?.lastSyncedAt && (
-                <p className="text-[11px] mt-0.5" style={{ color: 'var(--ds-text-faint)' }}>
+                <p className="text-[12.1px] mt-0.5" style={{ color: 'var(--ds-text-faint)' }}>
                   alphaa is preparing your first sync — nothing for you to do.
                 </p>
               )}
@@ -595,7 +595,7 @@ export default function IntegrationsPage() {
               onClick={handleSyncNow}
               disabled={syncing}
               className="flex items-center gap-1.5 px-3.5 py-2 transition-colors disabled:opacity-50"
-              style={{ ...secondaryBtnStyle, fontSize: '11px' }}
+              style={{ ...secondaryBtnStyle, fontSize: '12.1px' }}
             >
               <RefreshCw
                 className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`}
@@ -606,7 +606,7 @@ export default function IntegrationsPage() {
               onClick={handleDisconnect}
               disabled={disconnecting}
               className="flex items-center gap-1.5 px-3.5 py-2 transition-colors disabled:opacity-50"
-              style={{ backgroundColor: 'transparent', border: '1px solid var(--ds-bad-border)', color: 'var(--ds-bad)', borderRadius: '8px', fontSize: '11px', fontWeight: 500 }}
+              style={{ backgroundColor: 'transparent', border: '1px solid var(--ds-bad-border)', color: 'var(--ds-bad)', borderRadius: '8px', fontSize: '12.1px', fontWeight: 500 }}
             >
               <Unlink className="w-3.5 h-3.5" />
               {disconnecting ? 'Disconnecting…' : 'Disconnect'}
@@ -637,13 +637,13 @@ export default function IntegrationsPage() {
             >
               <p style={labelStyle}>{item.label}</p>
               {item.value ? (
-                <p className="text-[12px] font-medium truncate" style={{ color: 'var(--ds-text)' }}>
+                <p className="text-[13.2px] font-medium truncate" style={{ color: 'var(--ds-text)' }}>
                   {item.value}
                 </p>
               ) : (
                 <button
                   onClick={() => setState('selecting_properties')}
-                  className="text-[12px] hover:underline"
+                  className="text-[13.2px] hover:underline"
                   style={{ color: 'var(--ds-accent)' }}
                 >
                   Set up →
@@ -684,10 +684,10 @@ export default function IntegrationsPage() {
 
       {/* Header */}
       <div>
-        <h1 className="font-medium" style={{ fontSize: '20px', color: 'var(--ds-text)' }}>
+        <h1 className="font-medium" style={{ fontSize: '22px', color: 'var(--ds-text)' }}>
           Integrations
         </h1>
-        <p className="text-[13px] mt-1" style={{ color: 'var(--ds-text-mute)', lineHeight: 1.6 }}>
+        <p className="text-[14.3px] mt-1" style={{ color: 'var(--ds-text-mute)', lineHeight: 1.6 }}>
           Connect your tools once. From there, alphaa pulls your data and works
           for you automatically.
         </p>
@@ -696,7 +696,7 @@ export default function IntegrationsPage() {
       {/* Success banner after OAuth return */}
       {justConnected && (
         <div
-          className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-[13px]"
+          className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-[14.3px]"
           style={{ backgroundColor: 'var(--ds-ok-bg)', border: '1px solid var(--ds-ok-border)', color: 'var(--ds-ok)' }}
         >
           <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
@@ -721,10 +721,10 @@ export default function IntegrationsPage() {
               <AlertCircle className="w-5 h-5" style={{ color: 'var(--ds-bad)' }} />
             </div>
             <div className="flex-1 space-y-2">
-              <h2 className="text-[14px] font-medium" style={{ color: 'var(--ds-text)' }}>
+              <h2 className="text-[15.4px] font-medium" style={{ color: 'var(--ds-text)' }}>
                 Action needed: Connect your Google Business Profile
               </h2>
-              <p className="text-[13px]" style={{ color: 'var(--ds-text-mute)', lineHeight: 1.6 }}>
+              <p className="text-[14.3px]" style={{ color: 'var(--ds-text-mute)', lineHeight: 1.6 }}>
                 This is the most important step. Without it, alphaa cannot post
                 to your Google listing, monitor your reviews, or track your
                 search rankings.
@@ -733,7 +733,7 @@ export default function IntegrationsPage() {
                 onClick={handleConnect}
                 disabled={connecting}
                 className="flex items-center gap-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-1"
-                style={{ ...primaryBtnStyle, padding: '10px 20px', fontSize: '13px' }}
+                style={{ ...primaryBtnStyle, padding: '10px 20px', fontSize: '14.3px' }}
               >
                 {connecting ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -750,14 +750,14 @@ export default function IntegrationsPage() {
       {/* Error banner */}
       {error && (
         <div
-          className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-[13px]"
+          className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-[14.3px]"
           style={{ backgroundColor: 'var(--ds-warn-bg)', border: '1px solid var(--ds-warn-border)', color: 'var(--ds-warn)' }}
         >
           <AlertTriangle className="w-4 h-4 flex-shrink-0" />
           <span className="flex-1">{error}</span>
           <button
             onClick={() => setError(null)}
-            className="text-[11px] ml-2 hover:underline"
+            className="text-[12.1px] ml-2 hover:underline"
             style={{ color: 'var(--ds-warn)' }}
           >
             Dismiss
@@ -785,19 +785,19 @@ export default function IntegrationsPage() {
                 <Globe className="w-4 h-4" style={{ color: 'var(--ds-text-mute)' }} />
               </div>
               <div>
-                <h3 className="text-[14px] font-medium" style={{ color: 'var(--ds-text)' }}>
+                <h3 className="text-[15.4px] font-medium" style={{ color: 'var(--ds-text)' }}>
                   Website health check
                 </h3>
                 {crawlLoading ? (
-                  <p className="text-[11px] mt-0.5" style={{ color: 'var(--ds-text-faint)' }}>Loading…</p>
+                  <p className="text-[12.1px] mt-0.5" style={{ color: 'var(--ds-text-faint)' }}>Loading…</p>
                 ) : crawlData ? (
-                  <p className="text-[11px] mt-0.5 flex items-center gap-1" style={{ color: 'var(--ds-text-faint)' }}>
+                  <p className="text-[12.1px] mt-0.5 flex items-center gap-1" style={{ color: 'var(--ds-text-faint)' }}>
                     <Clock className="w-3 h-3" />
                     Last checked {formatTime(crawlData.crawledAt)} ·{' '}
                     {crawlData.pagesScanned} pages
                   </p>
                 ) : (
-                  <p className="text-[11px] mt-0.5" style={{ color: 'var(--ds-text-faint)' }}>
+                  <p className="text-[12.1px] mt-0.5" style={{ color: 'var(--ds-text-faint)' }}>
                     alphaa will check your site for issues that hurt your ranking.
                   </p>
                 )}
@@ -808,7 +808,7 @@ export default function IntegrationsPage() {
               onClick={handleCrawl}
               disabled={crawling}
               className="flex items-center gap-1.5 px-3.5 py-2 transition-colors disabled:opacity-50 flex-shrink-0"
-              style={{ ...secondaryBtnStyle, fontSize: '11px' }}
+              style={{ ...secondaryBtnStyle, fontSize: '12.1px' }}
             >
               {crawling ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -826,7 +826,7 @@ export default function IntegrationsPage() {
               style={{ borderTop: '.5px solid var(--ds-border)' }}
             >
               <Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--ds-accent)' }} />
-              <p className="text-[13px]" style={{ color: 'var(--ds-text-mute)' }}>
+              <p className="text-[14.3px]" style={{ color: 'var(--ds-text-mute)' }}>
                 alphaa is checking your website — this takes 15–60 seconds.
               </p>
             </div>
@@ -835,7 +835,7 @@ export default function IntegrationsPage() {
           {/* Crawl error — friendly fallback */}
           {!crawling && crawlError && (
             <div
-              className="mt-4 flex items-center gap-2 p-3 rounded-lg text-[12px]"
+              className="mt-4 flex items-center gap-2 p-3 rounded-lg text-[13.2px]"
               style={{ backgroundColor: 'var(--ds-warn-bg)', border: '1px solid var(--ds-warn-border)', color: 'var(--ds-warn)' }}
             >
               <AlertTriangle className="w-4 h-4 flex-shrink-0" />
@@ -849,7 +849,7 @@ export default function IntegrationsPage() {
               {/* Summary chips */}
               <div className="flex flex-wrap gap-2">
                 <div
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.1px]"
                   style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid var(--ds-border)', color: 'var(--ds-text)' }}
                 >
                   <Globe className="w-3 h-3" style={{ color: 'var(--ds-text-mute)' }} />
@@ -857,7 +857,7 @@ export default function IntegrationsPage() {
                 </div>
                 {issueCounts.critical > 0 && (
                   <div
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.1px]"
                     style={{ backgroundColor: 'var(--ds-bad-bg)', border: '1px solid var(--ds-bad-border)', color: 'var(--ds-bad)' }}
                   >
                     <XCircle className="w-3 h-3" />
@@ -866,7 +866,7 @@ export default function IntegrationsPage() {
                 )}
                 {issueCounts.warning > 0 && (
                   <div
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.1px]"
                     style={{ backgroundColor: 'var(--ds-warn-bg)', border: '1px solid var(--ds-warn-border)', color: 'var(--ds-warn)' }}
                   >
                     <AlertTriangle className="w-3 h-3" />
@@ -875,7 +875,7 @@ export default function IntegrationsPage() {
                 )}
                 {issueCounts.improvement > 0 && (
                   <div
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px]"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.1px]"
                     style={{ backgroundColor: 'var(--ds-info-bg)', border: '1px solid var(--ds-info-border)', color: 'var(--ds-info)' }}
                   >
                     <Zap className="w-3 h-3" />
@@ -895,17 +895,17 @@ export default function IntegrationsPage() {
                       style={{ backgroundColor: 'var(--ds-surface)', border: '.5px solid var(--ds-border)' }}
                     >
                       <div className="flex items-start justify-between gap-3 flex-wrap">
-                        <p className="text-[12px] font-medium" style={{ color: 'var(--ds-text)' }}>
+                        <p className="text-[13.2px] font-medium" style={{ color: 'var(--ds-text)' }}>
                           {issue.description}
                         </p>
                         <SeverityBadge severity={issue.severity} />
                       </div>
-                      <p className="text-[12px]" style={{ color: 'var(--ds-text-mute)', lineHeight: 1.6 }}>
+                      <p className="text-[13.2px]" style={{ color: 'var(--ds-text-mute)', lineHeight: 1.6 }}>
                         <span className="font-medium" style={{ color: 'var(--ds-info)' }}>How alphaa fixes it: </span>
                         {issue.fix}
                       </p>
                       {issue.url && issue.url !== 'site-wide' && (
-                        <p className="text-[11px] truncate" style={{ color: 'var(--ds-text-ghost)' }}>
+                        <p className="text-[12.1px] truncate" style={{ color: 'var(--ds-text-ghost)' }}>
                           {issue.url}
                         </p>
                       )}
@@ -916,7 +916,7 @@ export default function IntegrationsPage() {
 
               {issues.length === 0 && (
                 <div
-                  className="flex items-center gap-2 p-3 rounded-lg text-[13px]"
+                  className="flex items-center gap-2 p-3 rounded-lg text-[14.3px]"
                   style={{ backgroundColor: 'var(--ds-ok-bg)', border: '1px solid var(--ds-ok-border)', color: 'var(--ds-ok)' }}
                 >
                   <CheckCircle2 className="w-4 h-4" />

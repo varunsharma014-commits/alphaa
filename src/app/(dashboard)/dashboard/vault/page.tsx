@@ -156,10 +156,10 @@ Thank you!`
     <div style={{ maxWidth: "880px", margin: "0 auto" }}>
       {/* ── Header ──────────────────────────────────────────── */}
       <div style={{ marginBottom: "18px" }}>
-        <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>
+        <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>
           What AI reads about you
         </h1>
-        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
           ChatGPT, Claude and Perplexity read the plain code of your website — they don&apos;t click
           around like a person does. Adding the code below is the single most useful thing you can do
           to be described correctly.
@@ -190,7 +190,7 @@ Thank you!`
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+          <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
             {status === "empty"
               ? "AI engines can't read your business details yet"
               : statusHeadline}
@@ -200,14 +200,14 @@ Thank you!`
 
         {status === "good" && (
           <div style={{ marginTop: "8px" }}>
-            <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+            <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
               When alphaa last checked your site, AI engines could read:
             </p>
             <ul style={{ margin: "6px 0 0", padding: 0, listStyle: "none" }}>
               {businessTypesFound.map((t) => (
                 <li
                   key={t}
-                  style={{ fontSize: "13px", color: "var(--ds-text-strong)", lineHeight: 1.7 }}
+                  style={{ fontSize: "14.3px", color: "var(--ds-text-strong)", lineHeight: 1.7 }}
                 >
                   · {plainName(t)}
                 </li>
@@ -217,14 +217,14 @@ Thank you!`
         )}
 
         {status === "partial" && (
-          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "6px" }}>
+          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "6px" }}>
             alphaa found some code on your site, but nothing that describes your business itself.
             Adding the code below fixes that.
           </p>
         )}
 
         {status === "empty" && (
-          <p style={{ fontSize: "13px", color: "var(--ds-bad-soft)", lineHeight: 1.6, marginTop: "6px" }}>
+          <p style={{ fontSize: "14.3px", color: "var(--ds-bad-soft)", lineHeight: 1.6, marginTop: "6px" }}>
             alphaa checked your site and found no code describing your business. That means AI
             engines have to guess who you are. Copy the code in Step 1 and paste it onto your site —
             Step 2 shows you exactly where.
@@ -232,13 +232,13 @@ Thank you!`
         )}
 
         {status === "none" && (
-          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "6px" }}>
+          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "6px" }}>
             alphaa is checking your site — this updates after the first check, and then every week.
           </p>
         )}
 
         {latestCrawl && (
-          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "10px" }}>
+          <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "10px" }}>
             Based on alphaa&apos;s check of {latestCrawl.url} on <LocalDate iso={latestCrawl.crawledAt.toISOString()} />.
           </p>
         )}
@@ -266,7 +266,7 @@ Thank you!`
               flexWrap: "wrap",
             }}
           >
-            <p style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>
+            <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)" }}>
               Written <LocalDate iso={latestSchema.generatedAt.toISOString()} /> · {schemas.length} block
               {schemas.length !== 1 ? "s" : ""} ready to paste
             </p>
@@ -293,7 +293,7 @@ Thank you!`
                     <StatusPill variant="info">{plainName(schema.type)}</StatusPill>
                     <span
                       style={{
-                        fontSize: "11px",
+                        fontSize: "12.1px",
                         color: "var(--ds-text-faint)",
                         fontFamily: "monospace",
                         overflow: "hidden",
@@ -312,7 +312,7 @@ Thank you!`
                     border: "1px solid var(--ds-border)",
                     borderRadius: "8px",
                     padding: "12px",
-                    fontSize: "11px",
+                    fontSize: "12.1px",
                     color: "var(--ds-text-mute)",
                     fontFamily: "monospace",
                     overflowX: "auto",
@@ -338,10 +338,10 @@ Thank you!`
       <DsCard accent="var(--ds-accent)" style={{ marginBottom: "10px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "14px", flexWrap: "wrap" }}>
           <div>
-            <p style={{ fontSize: "14px", fontWeight: 600, color: "var(--ds-text)", margin: 0 }}>
+            <p style={{ fontSize: "15.4px", fontWeight: 600, color: "var(--ds-text)", margin: 0 }}>
               Don&apos;t want to touch code? We&apos;ll install it for you.
             </p>
-            <p style={{ fontSize: "12.5px", color: "var(--ds-text-mute)", margin: "4px 0 0", lineHeight: 1.6 }}>
+            <p style={{ fontSize: "13.8px", color: "var(--ds-text-mute)", margin: "4px 0 0", lineHeight: 1.6 }}>
               A real person from alphaa sets up everything on this page within 2 business days — $149 one-time.
             </p>
           </div>
@@ -349,7 +349,7 @@ Thank you!`
             href="/dashboard/concierge"
             style={{
               flexShrink: 0, padding: "9px 18px", borderRadius: "999px", background: "var(--ds-accent)",
-              color: "#fff", fontSize: "13px", fontWeight: 600, textDecoration: "none",
+              color: "#fff", fontSize: "14.3px", fontWeight: 600, textDecoration: "none",
             }}
           >
             Do this for me →
@@ -358,7 +358,7 @@ Thank you!`
       </DsCard>
 
       <DsCard>
-        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "14px" }}>
+        <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "14px" }}>
           Pick how your website was built and follow the three steps. If you&apos;re not sure, ask
           whoever set up your site — or use the button at the bottom to send it to them.
         </p>
@@ -369,12 +369,12 @@ Thank you!`
       <SectionDivider>STEP 3 — OPTIONAL EXTRA</SectionDivider>
       <DsCard>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px", flexWrap: "wrap" }}>
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+          <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
             Optional extra that keeps Google&apos;s copy fresh automatically
           </span>
           <StatusPill variant="neutral">Optional</StatusPill>
         </div>
-        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "12px" }}>
+        <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginBottom: "12px" }}>
           Add this one line before your site&apos;s &lt;/head&gt; tag — the same place as Step 2.
           alphaa then keeps your details up to date automatically: your business information plus any
           code written here (questions and answers, services, and more). No re-pasting when anything
@@ -394,7 +394,7 @@ Thank you!`
         >
           <code
             style={{
-              fontSize: "11px",
+              fontSize: "12.1px",
               color: "var(--ds-text-mute)",
               fontFamily: "monospace",
               overflowX: "auto",
@@ -405,7 +405,7 @@ Thank you!`
           </code>
           <CopyButton text={tagSnippet} />
         </div>
-        <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "10px", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "10px", lineHeight: 1.6 }}>
           Important: this snippet adds your details using JavaScript, and only Google (and Google&apos;s
           AI) runs JavaScript when it reads your site. ChatGPT, Claude and Perplexity read the plain
           page only — so to be understood by those, use the copy-paste version in Step 1 (or ask
@@ -426,14 +426,14 @@ Thank you!`
             flexWrap: "wrap",
           }}
         >
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+          <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
             llms.txt — a plain summary of who you are, written for AI
           </span>
           <StatusPill variant="found">Written</StatusPill>
         </div>
         <p
           style={{
-            fontSize: "11px",
+            fontSize: "12.1px",
             color: "var(--ds-text-faint)",
             fontFamily: "monospace",
             marginBottom: "12px",
@@ -450,7 +450,7 @@ Thank you!`
             border: "1px solid var(--ds-border)",
             borderRadius: "8px",
             padding: "12px",
-            fontSize: "11px",
+            fontSize: "12.1px",
             color: "var(--ds-text-mute)",
             fontFamily: "monospace",
             overflowX: "auto",
@@ -463,7 +463,7 @@ Thank you!`
         </pre>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "12px", flexWrap: "wrap" }}>
           <DownloadLlmsButton content={llmsTxt} />
-          <span style={{ fontSize: "11px", color: "var(--ds-text-faint)", lineHeight: 1.6 }}>
+          <span style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", lineHeight: 1.6 }}>
             alphaa keeps this updated automatically. To add it to your own site, download it and
             upload to yourdomain.com/llms.txt.
           </span>

@@ -203,6 +203,8 @@
 }
 
 html {
+  /* Root stays 17px: Tailwind spacing is rem-based. Text sizes are scaled
+     individually (+10%, 2026-09-24) so layout doesn't grow with them. */
   font-size: 17px;
   background: #fff;
   -webkit-font-smoothing: antialiased;
@@ -214,7 +216,7 @@ body {
   background-color: rgb(var(--bg-primary-rgb));
   color: rgb(var(--fg-rgb));
   font-family: var(--font-apple);
-  font-size: 17px;
+  font-size: 18.7px;
   line-height: 1.47059;
   letter-spacing: -0.022em;
   min-height: 100vh;
@@ -315,13 +317,13 @@ body {
    the theme tokens so both themes work. Do not reintroduce literal colours. */
 .article-prose {
   color: #1d1d1f;
-  font-size: 19px;
+  font-size: 20.9px;
   line-height: 1.58;
   letter-spacing: 0.012em;
 }
 .article-prose h2 {
   color: rgb(var(--fg-rgb));
-  font-size: 32px;
+  font-size: 35.2px;
   line-height: 1.125;
   font-weight: 600;
   letter-spacing: 0.004em;
@@ -329,7 +331,7 @@ body {
 }
 .article-prose h3 {
   color: rgb(var(--fg-rgb));
-  font-size: 24px;
+  font-size: 26.4px;
   line-height: 1.17;
   font-weight: 600;
   letter-spacing: 0.009em;
@@ -358,8 +360,8 @@ body {
   overflow-x: auto;
   margin: 1.25em 0;
 }
-.article-prose pre code { background: none; padding: 0; font-size: 13px; line-height: 1.6; color: rgb(var(--fg-rgb) / 0.85); }
-.article-prose table { width: 100%; border-collapse: collapse; margin: 1.25em 0; font-size: 15px; }
+.article-prose pre code { background: none; padding: 0; font-size: 14.3px; line-height: 1.6; color: rgb(var(--fg-rgb) / 0.85); }
+.article-prose table { width: 100%; border-collapse: collapse; margin: 1.25em 0; font-size: 16.5px; }
 .article-prose th, .article-prose td { border: 1px solid rgb(var(--line-rgb) / 0.12); padding: 8px 12px; text-align: left; }
 .article-prose th { color: rgb(var(--fg-rgb)); font-weight: 600; background: rgb(var(--fg-rgb) / 0.03); }
 .article-prose blockquote {

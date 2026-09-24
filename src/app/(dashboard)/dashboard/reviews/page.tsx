@@ -85,10 +85,10 @@ export default async function ReviewsPage() {
         <AutopilotBar message="alphaa monitors new reviews daily and drafts replies for you" />
 
         <div className="mb-6">
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>
             Customer reviews
           </h1>
-          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             alphaa monitors your Google reviews daily and drafts professional replies — you just approve.
           </p>
         </div>
@@ -106,7 +106,7 @@ export default async function ReviewsPage() {
                 color: "var(--ds-text)",
                 borderRadius: "8px",
                 padding: "8px 18px",
-                fontSize: "13px",
+                fontSize: "14.3px",
                 fontWeight: 500,
                 display: "inline-block",
                 marginTop: "4px",
@@ -127,10 +127,10 @@ export default async function ReviewsPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-5">
         <div>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>
             Customer reviews
           </h1>
-          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             alphaa monitors your Google reviews daily and drafts professional replies — you just approve.
             {integration.gmbLocationName && (
               <span style={{ color: "var(--ds-text-faint)" }}> · {integration.gmbLocationName}</span>
@@ -189,12 +189,12 @@ export default async function ReviewsPage() {
                             flexShrink: 0,
                           }}
                         >
-                          <span style={{ color: "var(--ds-warn)", fontSize: "11px", fontWeight: 600 }}>
+                          <span style={{ color: "var(--ds-warn)", fontSize: "12.1px", fontWeight: 600 }}>
                             {getInitials(review.authorName)}
                           </span>
                         </div>
                         <div>
-                          <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.2 }}>
+                          <p style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.2 }}>
                             {review.authorName}
                           </p>
                           <div style={{ marginTop: "3px" }}>
@@ -202,7 +202,7 @@ export default async function ReviewsPage() {
                           </div>
                         </div>
                       </div>
-                      <span style={{ fontSize: "11px", color: "var(--ds-text-faint)", whiteSpace: "nowrap" }}>
+                      <span style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", whiteSpace: "nowrap" }}>
                         {review.publishedAt ? formatDate(review.publishedAt) : formatDate(review.createdAt)}
                       </span>
                     </div>
@@ -211,7 +211,7 @@ export default async function ReviewsPage() {
                     {review.comment && (
                       <p
                         style={{
-                          fontSize: "13px",
+                          fontSize: "14.3px",
                           color: "var(--ds-text-mute)",
                           lineHeight: 1.6,
                           marginTop: "12px",
@@ -255,12 +255,12 @@ export default async function ReviewsPage() {
                             flexShrink: 0,
                           }}
                         >
-                          <span style={{ color: "var(--ds-text-mute)", fontSize: "11px", fontWeight: 600 }}>
+                          <span style={{ color: "var(--ds-text-mute)", fontSize: "12.1px", fontWeight: 600 }}>
                             {getInitials(review.authorName)}
                           </span>
                         </div>
                         <div>
-                          <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.2 }}>
+                          <p style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)", lineHeight: 1.2 }}>
                             {review.authorName}
                           </p>
                           <div style={{ marginTop: "3px" }}>
@@ -268,13 +268,13 @@ export default async function ReviewsPage() {
                           </div>
                         </div>
                       </div>
-                      <span style={{ fontSize: "11px", color: "var(--ds-text-faint)", whiteSpace: "nowrap" }}>
+                      <span style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", whiteSpace: "nowrap" }}>
                         {review.publishedAt ? formatDate(review.publishedAt) : formatDate(review.createdAt)}
                       </span>
                     </div>
 
                     {review.comment && (
-                      <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "12px" }}>
+                      <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "12px" }}>
                         {review.comment}
                       </p>
                     )}
@@ -290,7 +290,7 @@ export default async function ReviewsPage() {
                     >
                       <p
                         style={{
-                          fontSize: "10px",
+                          fontSize: "11px",
                           fontWeight: 500,
                           textTransform: "uppercase",
                           letterSpacing: "0.08em",
@@ -300,7 +300,7 @@ export default async function ReviewsPage() {
                       >
                         Your reply
                       </p>
-                      <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+                      <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
                         {review.reply}
                       </p>
                     </div>

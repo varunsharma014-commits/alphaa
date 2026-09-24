@@ -153,7 +153,7 @@ export default function SandboxClient({
           htmlFor="sandbox-question"
           style={{
             display: "block",
-            fontSize: "10px",
+            fontSize: "11px",
             textTransform: "uppercase",
             letterSpacing: "0.08em",
             color: "var(--ds-text-ghost)",
@@ -180,7 +180,7 @@ export default function SandboxClient({
               border: "1px solid var(--ds-border-2)",
               borderRadius: "8px",
               padding: "10px 12px",
-              fontSize: "14px",
+              fontSize: "15.4px",
               color: "var(--ds-text)",
               outline: "none",
             }}
@@ -194,7 +194,7 @@ export default function SandboxClient({
               gap: "8px",
               background: "var(--ds-accent)",
               color: "var(--ds-text)",
-              fontSize: "13px",
+              fontSize: "14.3px",
               fontWeight: 500,
               borderRadius: "8px",
               padding: "10px 18px",
@@ -217,27 +217,27 @@ export default function SandboxClient({
             marginTop: "8px",
           }}
         >
-          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>
+          <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)" }}>
             {tooShort ? "A little longer, please — at least 5 characters." : `${trimmed.length}/200 characters`}
           </p>
-          <p style={{ fontSize: "11px", color: outOfChecks ? "var(--ds-warn)" : "var(--ds-text-faint)" }}>
+          <p style={{ fontSize: "12.1px", color: outOfChecks ? "var(--ds-warn)" : "var(--ds-text-faint)" }}>
             {remaining} of {limit} live checks left today
           </p>
         </div>
 
         {outOfChecks && !error && (
-          <p style={{ fontSize: "12px", color: "var(--ds-warn)", marginTop: "8px", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "13.2px", color: "var(--ds-warn)", marginTop: "8px", lineHeight: 1.6 }}>
             You&apos;ve used your {limit} live checks today — they reset in a few hours. alphaa also checks
             automatically every Wednesday.
           </p>
         )}
         {error && (
-          <p style={{ fontSize: "12px", color: "var(--ds-warn)", marginTop: "8px", lineHeight: 1.6 }}>{error}</p>
+          <p style={{ fontSize: "13.2px", color: "var(--ds-warn)", marginTop: "8px", lineHeight: 1.6 }}>{error}</p>
         )}
       </DsCard>
 
       {/* Honest note */}
-      <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", lineHeight: 1.6, marginBottom: "16px" }}>
+      <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", lineHeight: 1.6, marginBottom: "16px" }}>
         This asks the engines live, right now. Answers can vary between runs — that&apos;s how AI works. Nothing here
         is a ranking or a promise; it&apos;s just what each engine said this time.
       </p>
@@ -246,14 +246,14 @@ export default function SandboxClient({
         <DsCard accent="var(--ds-accent)" style={{ marginBottom: "16px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <RefreshCw size={15} color="var(--ds-accent)" className="animate-spin" />
-            <span style={{ fontSize: "13px", color: "var(--ds-text-mute)" }}>{progress}</span>
+            <span style={{ fontSize: "14.3px", color: "var(--ds-text-mute)" }}>{progress}</span>
           </div>
         </DsCard>
       )}
 
       {results && askedQuestion && (
         <>
-          <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", marginBottom: "10px" }}>
+          <p style={{ fontSize: "13.2px", color: "var(--ds-text-mute)", marginBottom: "10px" }}>
             Asked just now: &ldquo;{askedQuestion}&rdquo;
           </p>
           <div
@@ -271,13 +271,13 @@ export default function SandboxClient({
                 <DsCard key={key}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
                     <Icon size={15} color={r?.appeared ? "var(--ds-ok)" : "var(--ds-text-mute)"} />
-                    <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>{label}</span>
+                    <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>{label}</span>
                   </div>
 
                   {unavailable ? (
                     <>
                       <StatusPill variant="neutral">No answer</StatusPill>
-                      <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", marginTop: "10px", lineHeight: 1.6 }}>
+                      <p style={{ fontSize: "13.2px", color: "var(--ds-text-mute)", marginTop: "10px", lineHeight: 1.6 }}>
                         {!r || r.status === "not_configured"
                           ? `${label} isn't connected on this account, so alphaa didn't ask it. Nothing is being guessed here.`
                           : `${label} didn't respond this time — so there's no answer to show. Try again in a minute.`}
@@ -290,7 +290,7 @@ export default function SandboxClient({
                       </StatusPill>
                       <p
                         style={{
-                          fontSize: "12.5px",
+                          fontSize: "13.8px",
                           color: "var(--ds-text-strong)",
                           lineHeight: 1.7,
                           marginTop: "10px",
@@ -303,7 +303,7 @@ export default function SandboxClient({
                         <div style={{ marginTop: "10px", borderTop: "1px solid var(--ds-border)", paddingTop: "10px" }}>
                           <div
                             style={{
-                              fontSize: "10px",
+                              fontSize: "11px",
                               textTransform: "uppercase",
                               letterSpacing: "0.08em",
                               color: "var(--ds-text-ghost)",
@@ -335,7 +335,7 @@ export default function SandboxClient({
               gap: "16px",
               flexWrap: "wrap",
               marginTop: "14px",
-              fontSize: "11px",
+              fontSize: "12.1px",
               color: "var(--ds-text-faint)",
             }}
           >

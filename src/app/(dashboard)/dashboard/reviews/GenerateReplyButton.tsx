@@ -106,7 +106,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
             <CheckCircle2 size={13} color="var(--ds-ok)" />
             <span
               style={{
-                fontSize: "10px",
+                fontSize: "11px",
                 fontWeight: 500,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
@@ -116,7 +116,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
               Reply posted to your Google listing
             </span>
           </div>
-          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>
+          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>
             {draft.trim()}
           </p>
         </div>
@@ -142,7 +142,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
             <Sparkles size={12} color="var(--ds-accent)" />
             <span
               style={{
-                fontSize: "10px",
+                fontSize: "11px",
                 fontWeight: 500,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
@@ -164,7 +164,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
               border: "1px solid var(--ds-border-3)",
               borderRadius: "8px",
               padding: "10px 12px",
-              fontSize: "13px",
+              fontSize: "14.3px",
               color: "var(--ds-text-strong)",
               lineHeight: 1.6,
               fontFamily: "inherit",
@@ -173,7 +173,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
               opacity: posting ? 0.6 : 1,
             }}
           />
-          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "6px" }}>
+          <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "6px" }}>
             Nothing is posted until you approve it.
           </p>
         </div>
@@ -187,7 +187,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
               color: "var(--ds-text)",
               borderRadius: "8px",
               padding: "8px 18px",
-              fontSize: "13px",
+              fontSize: "14.3px",
               fontWeight: 500,
               display: "inline-flex",
               alignItems: "center",
@@ -210,7 +210,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
               border: "1px solid var(--ds-border-3)",
               borderRadius: "8px",
               padding: "8px 18px",
-              fontSize: "13px",
+              fontSize: "14.3px",
               fontWeight: 500,
               cursor: posting ? "not-allowed" : "pointer",
               opacity: posting ? 0.5 : 1,
@@ -221,7 +221,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
         </div>
 
         {error && (
-          <p style={{ fontSize: "11px", color: "var(--ds-bad)", marginTop: "8px", lineHeight: 1.5 }}>
+          <p style={{ fontSize: "12.1px", color: "var(--ds-bad)", marginTop: "8px", lineHeight: 1.5 }}>
             {error}
           </p>
         )}
@@ -245,7 +245,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
           <Sparkles size={12} color="var(--ds-accent)" />
           <span
             style={{
-              fontSize: "10px",
+              fontSize: "11px",
               fontWeight: 500,
               textTransform: "uppercase",
               letterSpacing: "0.08em",
@@ -255,7 +255,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
             alphaa can draft a reply
           </span>
         </div>
-        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
           alphaa writes a warm, professional draft for you to read and edit. Nothing is posted
           until you approve it.
         </p>
@@ -270,7 +270,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
             color: "var(--ds-text)",
             borderRadius: "8px",
             padding: "8px 18px",
-            fontSize: "13px",
+            fontSize: "14.3px",
             fontWeight: 500,
             display: "inline-flex",
             alignItems: "center",
@@ -286,7 +286,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
       </div>
 
       {error && (
-        <p style={{ fontSize: "11px", color: "var(--ds-bad)", marginTop: "8px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: "12.1px", color: "var(--ds-bad)", marginTop: "8px", lineHeight: 1.5 }}>
           {error}
         </p>
       )}

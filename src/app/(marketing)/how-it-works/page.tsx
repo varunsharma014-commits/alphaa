@@ -67,7 +67,7 @@ export default function HowItWorksPage() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
           <SectionLabel className="mb-3 block">How it works</SectionLabel>
-          <h1 className="text-[34px] sm:text-[48px] lg:text-[54px] font-semibold leading-[1.08] tracking-[-0.02em] text-fg mb-4 text-balance">
+          <h1 className="text-[37.4px] sm:text-[52.8px] lg:text-[59.4px] font-semibold leading-[1.08] tracking-[-0.02em] text-fg mb-4 text-balance">
             Everything Alphaa does —{" "}
             <span className="text-[#86868b]">explained</span>
           </h1>

@@ -44,11 +44,11 @@ export function EmptyState({
         <Icon size={22} color="var(--ds-accent)" />
       </div>
       <div style={{ maxWidth: "420px" }}>
-        <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)", marginBottom: "6px" }}>
+        <h3 style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)", marginBottom: "6px" }}>
           {title}
         </h3>
-        <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>{body}</p>
-        {sub && <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px" }}>{sub}</p>}
+        <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>{body}</p>
+        {sub && <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "8px" }}>{sub}</p>}
       </div>
       {children}
     </div>

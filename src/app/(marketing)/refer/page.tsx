@@ -206,7 +206,7 @@ export default function ReferPage() {
             Partner Program · Open now
           </div>
 
-          <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-6 text-balance">
+          <h1 className="text-[41.8px] sm:text-[61.6px] lg:text-[70.4px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-6 text-balance">
             Get paid every month.{" "}
             <span className="text-[#86868b]">
               Forever.
@@ -291,7 +291,7 @@ export default function ReferPage() {
                 className="bg-fg/[0.03] border border-line/[0.07] rounded-2xl p-7 relative overflow-hidden"
               >
                 <div
-                  className="absolute top-0 right-0 text-[80px] font-black leading-none text-fg/[0.03] select-none pointer-events-none"
+                  className="absolute top-0 right-0 text-[88px] font-black leading-none text-fg/[0.03] select-none pointer-events-none"
                   aria-hidden="true"
                 >
                   {s.step}

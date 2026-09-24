@@ -60,7 +60,7 @@ export function AgentShell({
           </div>
           <div className="ag-head__right">
             {trialDaysLeft !== null && trialDaysLeft <= 7 && (
-              <a href="/dashboard/settings/billing" style={{ fontSize: 13 }}>
+              <a href="/dashboard/settings/billing" style={{ fontSize: 14.3 }}>
                 {trialDaysLeft === 0 ? "Trial ends today" : `${trialDaysLeft}d left in trial`} →
               </a>
             )}

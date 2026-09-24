@@ -35,14 +35,14 @@ const inputStyle: React.CSSProperties = {
   border: "1px solid var(--ds-border)",
   borderRadius: "8px",
   padding: "9px 12px",
-  fontSize: "13px",
+  fontSize: "14.3px",
   color: "var(--ds-text)",
   outline: "none",
 }
 
 const labelStyle: React.CSSProperties = {
   display: "block",
-  fontSize: "12px",
+  fontSize: "13.2px",
   fontWeight: 500,
   color: "var(--ds-text-strong)",
   marginBottom: "6px",
@@ -112,15 +112,15 @@ export default function BusinessSettingsPage() {
 
   return (
     <div>
-      <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>Business details</h1>
-      <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", marginBottom: "20px", lineHeight: 1.6 }}>
+      <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Business details</h1>
+      <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", marginBottom: "20px", lineHeight: 1.6 }}>
         alphaa uses these details to write your posts and check your visibility. Keep them
         accurate and alphaa does the rest.
       </p>
 
       <DsCard>
         {loading ? (
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "12px 0", color: "var(--ds-text-mute)", fontSize: "13px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "12px 0", color: "var(--ds-text-mute)", fontSize: "14.3px" }}>
             <Loader2 size={15} className="animate-spin" />
             Loading your details…
           </div>
@@ -144,7 +144,7 @@ export default function BusinessSettingsPage() {
                 onChange={(e) => update({ websiteUrl: e.target.value })}
                 placeholder="yourbusiness.com"
               />
-              <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "6px", lineHeight: 1.5 }}>
+              <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "6px", lineHeight: 1.5 }}>
                 alphaa checks this site every week for anything hurting your visibility.
               </p>
             </div>
@@ -173,7 +173,7 @@ export default function BusinessSettingsPage() {
                 onChange={(e) => update({ voiceDescription: e.target.value })}
                 placeholder="Family-owned, gentle care, no-wait appointments…"
               />
-              <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "6px", lineHeight: 1.5 }}>
+              <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "6px", lineHeight: 1.5 }}>
                 alphaa writes your posts in this voice — not generic AI copy.
               </p>
             </div>
@@ -202,7 +202,7 @@ export default function BusinessSettingsPage() {
                   border: "none",
                   borderRadius: "8px",
                   padding: "9px 20px",
-                  fontSize: "13px",
+                  fontSize: "14.3px",
                   fontWeight: 500,
                   cursor: saving ? "not-allowed" : "pointer",
                   opacity: saving ? 0.6 : 1,
@@ -212,11 +212,11 @@ export default function BusinessSettingsPage() {
                 {saving ? "Saving…" : "Save changes"}
               </button>
               {saved && (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "12px", color: "var(--ds-ok)" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "13.2px", color: "var(--ds-ok)" }}>
                   <Check size={14} /> Saved — alphaa will use these from now on
                 </span>
               )}
-              {error && <span style={{ fontSize: "12px", color: "var(--ds-warn)" }}>{error}</span>}
+              {error && <span style={{ fontSize: "13.2px", color: "var(--ds-warn)" }}>{error}</span>}
             </div>
           </div>
         )}

@@ -17,9 +17,9 @@ interface OrangePillButtonProps {
 
 const sizeClasses = {
   // Apple's pill sizes: 14px small, 17px default and large.
-  sm: "px-4 py-[7px] text-[14px]",
-  md: "px-[22px] py-[11px] text-[17px]",
-  lg: "px-7 py-[14px] text-[17px]",
+  sm: "px-4 py-[7px] text-[15.4px]",
+  md: "px-[22px] py-[11px] text-[18.7px]",
+  lg: "px-7 py-[14px] text-[18.7px]",
 }
 
 export function OrangePillButton({

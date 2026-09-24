@@ -41,7 +41,7 @@ export function PublishPostButton({ postId }: { postId: string }) {
           color: "var(--ds-ok)",
           borderRadius: "8px",
           padding: "6px 12px",
-          fontSize: "11px",
+          fontSize: "12.1px",
           fontWeight: 500,
           cursor: loading ? "not-allowed" : "pointer",
           opacity: loading ? 0.5 : 1,
@@ -54,7 +54,7 @@ export function PublishPostButton({ postId }: { postId: string }) {
         )}
         {loading ? "Publishing…" : "Publish now"}
       </button>
-      {error && <p style={{ color: "var(--ds-bad)", fontSize: "11px", marginTop: "4px" }}>{error}</p>}
+      {error && <p style={{ color: "var(--ds-bad)", fontSize: "12.1px", marginTop: "4px" }}>{error}</p>}
     </div>
   )
 }

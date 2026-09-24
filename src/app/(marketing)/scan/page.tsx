@@ -10,7 +10,7 @@ export default function ScanPage() {
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <SectionLabel className="mb-3 block">Free scan</SectionLabel>
-          <h1 className="text-[34px] sm:text-[48px] font-semibold text-fg leading-[1.08] tracking-[-0.02em] mb-4 text-balance">
+          <h1 className="text-[37.4px] sm:text-[52.8px] font-semibold text-fg leading-[1.08] tracking-[-0.02em] mb-4 text-balance">
             See your free{" "}
             <span className="text-[#86868b]">visibility score</span>
           </h1>

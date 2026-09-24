@@ -96,7 +96,7 @@ export default async function PublicWinPage({
           </p>
 
           <p className="text-fg/80 text-lg font-medium mb-2">{businessName}</p>
-          <h1 className="text-[32px] sm:text-[46px] font-semibold text-fg leading-[1.1] tracking-[-0.02em] mb-6 text-balance">
+          <h1 className="text-[35.2px] sm:text-[50.6px] font-semibold text-fg leading-[1.1] tracking-[-0.02em] mb-6 text-balance">
             {headline}
           </h1>
 

@@ -110,8 +110,8 @@ export default async function VisibilityPage() {
 
         {/* Page header */}
         <div style={{ marginBottom: "20px" }}>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>AI Visibility</h1>
-          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>AI Visibility</h1>
+          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             When someone asks an AI assistant for your type of business — do you show up?
           </p>
         </div>
@@ -142,15 +142,15 @@ export default async function VisibilityPage() {
               <RefreshCw size={22} color="var(--ds-accent)" className="animate-spin" />
             </div>
             <div style={{ maxWidth: "440px" }}>
-              <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)", marginBottom: "6px" }}>
+              <h3 style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)", marginBottom: "6px" }}>
                 alphaa is running your first AI engine scan
               </h3>
-              <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+              <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
                 We&apos;re asking ChatGPT, Claude, Gemini and Perplexity the questions your
                 customers type — and checking whether your business comes up. This happens
                 automatically, you don&apos;t need to do anything.
               </p>
-              <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "8px" }}>
+              <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "8px" }}>
                 The first scan usually finishes within a few minutes. alphaa re-checks every week
                 after that.
               </p>
@@ -178,7 +178,7 @@ export default async function VisibilityPage() {
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <Icon size={18} color="var(--ds-text-mute)" />
-                    <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+                    <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
                       {meta.label}
                     </span>
                   </div>
@@ -208,8 +208,8 @@ export default async function VisibilityPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "20px", fontWeight: 500, color: "var(--ds-text)" }}>AI Visibility</h1>
-          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>AI Visibility</h1>
+          <p style={{ fontSize: "14.3px", color: "var(--ds-text-mute)", marginTop: "4px", lineHeight: 1.6 }}>
             When someone asks an AI assistant for your type of business — do you show up?
           </p>
         </div>
@@ -290,7 +290,7 @@ export default async function VisibilityPage() {
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <Icon size={18} color={isFound ? "var(--ds-ok)" : "var(--ds-text-mute)"} />
-                  <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+                  <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
                     {meta.label}
                   </span>
                 </div>
@@ -313,7 +313,7 @@ export default async function VisibilityPage() {
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
-                      fontSize: "12px",
+                      fontSize: "13.2px",
                       color: "var(--ds-text-soft)",
                     }}
                   >
@@ -325,7 +325,7 @@ export default async function VisibilityPage() {
                     {snippet ? (
                       <p
                         style={{
-                          fontSize: "11px",
+                          fontSize: "12.1px",
                           fontStyle: "italic",
                           color: "var(--ds-text-mute)",
                           lineHeight: 1.6,
@@ -334,18 +334,18 @@ export default async function VisibilityPage() {
                         &ldquo;{snippet}&rdquo;
                       </p>
                     ) : (
-                      <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+                      <p style={{ fontSize: "13.2px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
                         This engine recommends your business when customers ask.
                       </p>
                     )}
                     {engineResult?.query && (
-                      <p style={{ fontSize: "11px", color: "var(--ds-ok)", marginTop: "8px" }}>
+                      <p style={{ fontSize: "12.1px", color: "var(--ds-ok)", marginTop: "8px" }}>
                         Mentioned when we asked: &ldquo;{engineResult.query}&rdquo;
                       </p>
                     )}
                   </>
                 ) : (
-                  <p style={{ fontSize: "12px", color: "var(--ds-text-soft)", lineHeight: 1.6 }}>
+                  <p style={{ fontSize: "13.2px", color: "var(--ds-text-soft)", lineHeight: 1.6 }}>
                     alphaa is working on this. Typically takes 2–4 more weeks of content
                     publishing.
                   </p>
@@ -361,7 +361,7 @@ export default async function VisibilityPage() {
       <DsCard accent="var(--ds-ok)">
         <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
           <Wand2 size={15} color="var(--ds-ok)" />
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>
+          <span style={{ fontSize: "15.4px", fontWeight: 500, color: "var(--ds-text)" }}>
             What alphaa is doing to improve this
           </span>
         </div>
@@ -377,7 +377,7 @@ export default async function VisibilityPage() {
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "8px",
-                fontSize: "13px",
+                fontSize: "14.3px",
                 color: "var(--ds-text-mute)",
                 lineHeight: 1.6,
               }}
@@ -388,7 +388,7 @@ export default async function VisibilityPage() {
           ))}
         </ul>
         {lastScanDate && (
-          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "12px" }}>
+          <p style={{ fontSize: "12.1px", color: "var(--ds-text-faint)", marginTop: "12px" }}>
             Last automatic scan {lastScanDate} · next scan runs within 7 days
           </p>
         )}

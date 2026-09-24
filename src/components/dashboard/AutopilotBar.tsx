@@ -26,7 +26,7 @@ export function AutopilotBar({ message }: { message: string }) {
           animation: "pulse 2s infinite",
         }}
       />
-      <span style={{ fontSize: "14px", color: "var(--ds-ok-strong)", fontWeight: 510 }}>
+      <span style={{ fontSize: "15.4px", color: "var(--ds-ok-strong)", fontWeight: 510 }}>
         {message}
       </span>
     </div>
