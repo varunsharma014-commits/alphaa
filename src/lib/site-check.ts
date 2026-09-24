@@ -57,7 +57,7 @@ async function get(url: string, ms = 7000, ua = UA, redirect: RequestRedirect = 
   const t0 = Date.now()
   try {
     const res = await fetch(url, { headers: { "User-Agent": ua, Accept: "text/html,application/xhtml+xml,*/*" }, redirect, signal: AbortSignal.timeout(ms) })
-    const text = res.ok ? (await res.text()).slice(0, 400_000) : ""
+    const text = res.ok ? (await res.text()).slice(0, 3_000_000) : ""
     return { ok: res.ok, status: res.status, text, ms: Date.now() - t0, finalUrl: res.url || url, headers: res.headers, location: res.headers.get("location") }
   } catch {
     return null
@@ -69,7 +69,9 @@ async function get(url: string, ms = 7000, ua = UA, redirect: RequestRedirect = 
 function isChallenge(f: Fetched | null): boolean {
   if (!f) return false
   if (f.headers.get("cf-mitigated") === "challenge") return true
-  if ([401, 403, 429, 503].includes(f.status)) return true
+  if ([202, 401, 403, 429, 503].includes(f.status)) return true
+  // An "OK" with an empty body is a JavaScript challenge (AWS WAF, Sucuri…), not a page.
+  if (f.ok && f.text.trim().length < 200) return true
   return f.text.length < 60_000 && /cf-chl-|challenge-platform|<title>Just a moment\.\.\.|Attention Required! \| Cloudflare|sucuri_cloudproxy|_Incapsula_Resource|captcha-delivery/i.test(f.text)
 }
 
@@ -250,7 +252,9 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
     push(
       "aibots",
       false,
-      status ? `Your site refused an automated visitor (HTTP ${status})${redirectedTo ? ` after redirecting to ${redirectedTo}` : ""}` : "Your site didn’t respond to an automated visitor",
+      status && status < 300
+        ? `Your site showed a bot check instead of the page${redirectedTo ? ` after redirecting to ${redirectedTo}` : ""}`
+        : status ? `Your site refused an automated visitor (HTTP ${status})${redirectedTo ? ` after redirecting to ${redirectedTo}` : ""}` : "Your site didn’t respond to an automated visitor",
       "AI can read your site"
     )
     robotsItem()

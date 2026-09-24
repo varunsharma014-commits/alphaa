@@ -430,7 +430,7 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
     const known = you.checks.filter((c) => c.ok !== null)
     out.push(
       agent([
-        { kind: "text", text: `I tried to read ${you.domain} the way an AI does. It turned me away${b.status ? ` (error ${b.status})` : ""}${b.redirectedTo ? ` — after sending me to ${b.redirectedTo}` : ""}.`, big: false },
+        { kind: "text", text: `I tried to read ${you.domain} the way an AI does. It turned me away${b.status && b.status >= 300 ? ` (error ${b.status})` : b.status ? " with a bot check" : ""}${b.redirectedTo ? ` — after sending me to ${b.redirectedTo}` : ""}.`, big: false },
         { kind: "text", text: "That’s the biggest finding today. Some AI crawlers get the same door, so they fall back on what other sites say about you — and that’s where the competitors above win. Fixing it is a one-line change your host or web person can make; I’ll write the exact instruction." },
         { kind: "sources", items: known.map(srcItem) },
         { kind: "text", text: `The other ${you.total - known.length} checks — structured facts, reviews, service pages, how Google treats your pages — need your site to let me in. I’ll run them the moment it does.` },
