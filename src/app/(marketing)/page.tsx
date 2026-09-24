@@ -1,4 +1,7 @@
 import Link from "next/link"
+import Image from "next/image"
+import { AgencySection } from "@/components/marketing/AgencySection"
+import { AVATARS } from "@/components/marketing/HeroSection"
 import { AgentHomeDemo } from "@/components/marketing/AgentHomeDemo"
 import { CaseStudiesSection } from "@/components/marketing/CaseStudiesSection"
 import { SocialProof } from "@/components/marketing/SocialProof"
@@ -53,10 +56,18 @@ export default function HomePage() {
           <a className="ag-hero__more" href="#watch">Watch it work</a>
         </div>
         <div className="ag-fine">Takes 60 seconds. Just your website.</div>
+        <div className="ag-trust">
+          <div className="ag-trust__faces">
+            {AVATARS.map((src) => (
+              <Image key={src} src={src} width={36} height={36} alt="" aria-hidden="true" />
+            ))}
+          </div>
+          <span><b>Trusted by local businesses</b> and online brands getting found on AI</span>
+        </div>
         <div id="watch"><AgentHomeDemo /></div>
       </section>
 
-      <section className="ag-section ag-section--grey">
+      <section className="ag-section">
         <h2>It doesn’t give you a to-do list.<br /><span className="ag-quiet">It does the to-dos.</span></h2>
         <p className="ag-section__sub">Tools show you a dashboard and leave. {BRAND.agentName} reads, writes, fixes and publishes — then tells you what it did, in plain English.</p>
         <div className="ag-three">
@@ -81,14 +92,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="ag-section">
-        <h2>Not another SEO tool.</h2>
-        <p className="ag-section__sub">SEO gets you a spot on a list of ten links. AI gives one answer. {BRAND.agentName}’s whole job is making that answer you.</p>
-        <div className="ag-compare">
-          <div className="ag-col"><h3>An SEO tool</h3><ul><li>Shows you 40 charts</li><li>Gives you 112 tasks</li><li>You do the work, or hire someone</li><li>Measures Google rankings</li></ul></div>
-          <div className="ag-col ag-col--us"><h3>{BRAND.agentName}</h3><ul><li>Tells you what AI said this week</li><li>Does the tasks itself</li><li>Asks you only when it needs a yes</li><li>Measures one thing: did AI name you</li></ul></div>
-        </div>
-      </section>
+      <AgencySection />
 
       <CaseStudiesSection />
       <SocialProof />

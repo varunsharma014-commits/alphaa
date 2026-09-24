@@ -42,7 +42,7 @@ const DASHBOARD_TONE: Record<"green" | "amber" | "muted", string> = {
 // Social-proof — deliberately unquantified. A customer count and a star rating
 // here contradicted the numbers used further down the page, so this stays
 // generic until there are real figures to publish.
-const AVATARS = ["/avatars/a1.jpg", "/avatars/a2.jpg", "/avatars/a3.jpg", "/avatars/a4.jpg"]
+export const AVATARS = ["/avatars/a1.jpg", "/avatars/a2.jpg", "/avatars/a3.jpg", "/avatars/a4.jpg"]
 
 export function HeroSection() {
   return (
