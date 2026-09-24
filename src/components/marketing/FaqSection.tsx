@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { SectionLabel } from "@/components/common/SectionLabel"
 import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -56,42 +55,46 @@ const faqs = [
   },
 ]
 
+// Apple-style "More questions? More answers.": category pills filter a
+// grouped list of hairline-divided questions. Indexes point into faqs above.
+const GROUPS: { name: string; items: number[] }[] = [
+  { name: "Getting started", items: [0, 2, 3, 7] },
+  { name: "Results", items: [4, 10] },
+  { name: "Agencies and other tools", items: [1, 5, 11] },
+  { name: "Pricing and cancelling", items: [6] },
+  { name: "Access and safety", items: [8, 9] },
+]
+
 export function FaqSection() {
-  const [open, setOpen] = useState<number | null>(0)
+  const [filter, setFilter] = useState<string>("All")
+  const [open, setOpen] = useState<number | null>(null)
+  const shown = filter === "All" ? GROUPS : GROUPS.filter((g) => g.name === filter)
 
   return (
-    <section data-reveal className="py-20 px-4 sm:px-6">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <SectionLabel className="mb-3 block">FAQ</SectionLabel>
-          <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight">
-            Common questions
-          </h2>
-        </div>
-
-        <div className="space-y-2">
-          {faqs.map((faq, i) => (
-            <div key={i} className="glass-card rounded-xl overflow-hidden">
-              <button
-                onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between p-5 text-left"
-              >
-                <span className="text-fg font-medium text-sm pr-4">{faq.q}</span>
-                <ChevronDown
-                  className={cn(
-                    "w-4 h-4 text-muted flex-shrink-0 transition-transform duration-200",
-                    open === i && "rotate-180"
-                  )}
-                />
-              </button>
-              {open === i && (
-                <div className="px-5 pb-5">
-                  <p className="text-muted text-sm leading-relaxed">{faq.a}</p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+    <section className="ap-sec">
+      <h2 className="ap-h2 ap-center">More questions? More answers.</h2>
+      <div className="ap-pills" role="tablist">
+        {["All", ...GROUPS.map((g) => g.name)].map((name) => (
+          <button key={name} role="tab" aria-selected={filter === name} className={filter === name ? "is-on" : ""} onClick={() => setFilter(name)}>
+            {name}
+          </button>
+        ))}
+      </div>
+      <div className="ap-faq">
+        {shown.map((g) => (
+          <div key={g.name} className="ap-faq__group">
+            <h3>{g.name}</h3>
+            {g.items.map((i) => (
+              <div key={i} className={cn("ap-faq__item", open === i && "is-open")}>
+                <button className="ap-faq__q" onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i}>
+                  <span>{faqs[i].q}</span>
+                  <ChevronDown className="ap-faq__chev" aria-hidden="true" />
+                </button>
+                <div className="ap-faq__a"><p>{faqs[i].a}</p></div>
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
     </section>
   )

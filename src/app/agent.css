@@ -51,7 +51,7 @@
 
 [data-agent] a { text-decoration: none; }
 .ag-msg__body a, .ag-hero__more, .ag-price p a, .ag-land__hint a, .ag-ask__fine a { color: var(--ag-link); }
-[data-agent] button { font: inherit; cursor: pointer; }
+[data-agent] :where(button) { font: inherit; cursor: pointer; }
 
 /* status dot */
 .ag-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ag-good); display: inline-block; box-shadow: 0 0 0 3px rgb(52 199 89 / 0.2); }

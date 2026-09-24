@@ -3,6 +3,7 @@ import Script from "next/script"
 import { Toaster } from "sonner"
 import "./globals.css"
 import "./agent.css"
+import "./apple.css"
 
 // Apple's own type: the system font stack (SF Pro on Apple devices), defined
 // as --font-apple in globals.css. No web fonts to download at all.
