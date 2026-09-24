@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        By the alphaa team — we watch how AI engines describe thousands of businesses over time, so we see which
-        changes move fast and which take patience.
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
         <strong>Short answer:</strong> AEO does not work overnight, but it is usually faster than classic SEO.
@@ -27,7 +26,7 @@ export function Body() {
         The honest answer is a range, and it depends on where you start.
       </p>
 
-      <h2>Why there is no single number</h2>
+      <h2>Why is there no single answer to how long AEO takes?</h2>
       <p>
         AEO has no fixed timeline because AI engines assemble answers from several layers that each update at a
         different speed. When Claude, ChatGPT, Gemini, or Perplexity decides who to name, it draws on live web
@@ -36,7 +35,11 @@ export function Body() {
         one per layer — so the useful answer is a timeline, not a date.
       </p>
 
-      <h2>The honest timeline, layer by layer</h2>
+      <h2>What is the realistic AEO timeline, layer by layer?</h2>
+      <p>
+        Retrieval and profile fixes move in days to two weeks, corroboration and consensus in weeks to a couple
+        of months, and training-era knowledge over months and beyond.
+      </p>
 
       <h3>Days to two weeks: retrieval and profile fixes</h3>
       <p>
@@ -65,9 +68,11 @@ export function Body() {
         Think of it as planting rather than switching on.
       </p>
 
-      <h2>What makes it faster or slower</h2>
+      <h2>What makes AEO work faster or slower?</h2>
       <p>
-        Two businesses starting AEO on the same day can see results weeks apart. The main factors:
+        Your starting point, how crawlable you are, review velocity, competition and category, and consistency
+        of effort decide the pace. Two businesses starting AEO on the same day can see results weeks apart. The
+        main factors:
       </p>
       <ul>
         <li>
@@ -93,7 +98,11 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Frequently asked questions</h2>
+      <h2>What else do people ask about AEO timelines?</h2>
+      <p>
+        The common questions are whether AEO is faster than SEO, whether anyone can guarantee a timeline, and how
+        to tell it is working before the big wins land.
+      </p>
 
       <h3>Is AEO faster than SEO?</h3>
       <p>
@@ -122,7 +131,7 @@ export function Body() {
         so you can see the trend rather than guess at it.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how long does AEO take to work?</h2>
       <p>
         AEO is faster to start than classic SEO and slower to fully mature than a sales pitch admits. Expect the
         earliest movement — retrieval and profile fixes — within days to two weeks, the bulk of the durable gain
@@ -131,7 +140,12 @@ export function Body() {
         signals rather than a switch to flip. Start by knowing where you stand today.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to expect early movement from retrieval and profile fixes within days to two weeks
+        and the durable gains over one to three months, and to treat AEO as steady maintenance of true,
+        consistent signals rather than a switch to flip.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
       <p>
         <em>Last updated July 26, 2026.</em>

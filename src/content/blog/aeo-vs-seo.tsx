@@ -21,8 +21,10 @@ export function Body() {
         game leave money on the table. SEO still matters; it&apos;s just no longer the whole picture.
       </p>
 
-      <h2>What&apos;s actually changing</h2>
+      <h2>What&apos;s actually changing in how customers find businesses?</h2>
       <p>
+        Customers increasingly ask ChatGPT or read Google&apos;s AI Overview and act on the recommendation
+        instead of clicking through ranked links.{" "}
         For 20 years, &quot;getting found&quot; meant ranking on the first page of Google so someone would{" "}
         <em>click your link</em>. Increasingly, people don&apos;t click anything — they ask ChatGPT &quot;who&apos;s
         the best [your service] near me?&quot; or read Google&apos;s AI Overview and act on the recommendation
@@ -33,7 +35,11 @@ export function Body() {
         the AI names and cites.&quot; That&apos;s what AEO is for.
       </p>
 
-      <h2>SEO vs AEO, side by side</h2>
+      <h2>How do SEO and AEO compare side by side?</h2>
+      <p>
+        A traditional SEO agency optimizes for Google&apos;s ranked links, while AEO optimizes for AI answers
+        plus Google.
+      </p>
       <table>
         <thead>
           <tr>
@@ -76,7 +82,11 @@ export function Body() {
         </tbody>
       </table>
 
-      <h2>Why agencies struggle with AI search</h2>
+      <h2>Why do SEO agencies struggle with AI search?</h2>
+      <p>
+        Agencies are built around keywords, backlinks, and slow manual retainers, while AI visibility runs on a
+        different playbook.
+      </p>
       <ul>
         <li>
           <strong>They&apos;re built around keywords and backlinks.</strong> AI engines don&apos;t rank links the
@@ -94,7 +104,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Does SEO still matter? Yes.</h2>
+      <h2>Does SEO still matter in the age of AI search?</h2>
       <p>
         Let&apos;s be honest: Google isn&apos;t going anywhere, and classic SEO still drives real traffic. AEO
         doesn&apos;t replace SEO — it extends it to where attention is moving. The good news is the foundations
@@ -103,8 +113,10 @@ export function Body() {
         for how AI engines read and cite the web.
       </p>
 
-      <h2>How AEO actually works (no magic)</h2>
+      <h2>How does AEO actually work?</h2>
       <p>
+        AEO improves the public signals AI assistants favor — clear, consistent, easy-to-cite information — so
+        your business is the obvious option when an engine answers a question.{" "}
         AI assistants answer using a mix of what they&apos;ve indexed and live web retrieval (RAG). They favor
         sources that are clear, consistent, and easy to cite. AEO improves exactly those signals — accurate
         schema, an{" "}
@@ -114,17 +126,27 @@ export function Body() {
         signals it reads.
       </p>
 
-      <h2>So — agency or AEO in 2026?</h2>
+      <h2>Should you hire an SEO agency or invest in AEO in 2026?</h2>
+      <p>
+        Most businesses are best served by getting the AEO foundations in place first, then layering paid SEO
+        only where it pays back.
+      </p>
       <ul>
         <li><strong>If you have budget and a team to execute</strong>, a good SEO agency can still be worth it for competitive, link-driven niches.</li>
         <li><strong>If you want to be found on AI search without a $1,000+/mo retainer</strong>, AEO is the faster, cheaper path — and it covers the channel that&apos;s growing fastest.</li>
         <li><strong>Most businesses</strong> are best served by getting the AEO foundations in place first (they&apos;re cheap, automatable, and compounding), then layering paid SEO only where it pays back.</li>
       </ul>
 
+      <p>
+        The key takeaway is that AEO extends SEO rather than replacing it: put the cheap, compounding AEO
+        foundations in place first so AI engines can name and cite you, then add SEO spend only where it pays
+        back.
+      </p>
+
       <hr />
       <p>
         <strong>Curious where you stand?</strong>{" "}
-        <Link href="/scan">Run a free 60-second AI visibility scan →</Link> and see whether ChatGPT, Gemini, and
+        <Link href="/start">Run a free 60-second AI visibility scan →</Link> and see whether ChatGPT, Gemini, and
         Perplexity already know your business.
       </p>
     </div>

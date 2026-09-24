@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and compare what the
-          engines say about them versus their competitors. Last updated 3 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 3 August 2026.
         </em>
       </p>
 
@@ -29,9 +28,9 @@ export function Body() {
         query, capture who gets named, then compare their public evidence against yours, field by field.
       </p>
 
-      <h2>What the model is actually doing when it picks a name</h2>
+      <h2>How does AI decide which business to recommend?</h2>
       <p>
-        There is no ranking table inside ChatGPT. When someone asks &quot;who is the best commercial cleaner in
+        AI names the business it can attach concrete, grounded attributes to from the documents it retrieves. There is no ranking table inside ChatGPT. When someone asks &quot;who is the best commercial cleaner in
         Manchester,&quot; the assistant runs a search, retrieves a handful of documents, and writes a summary
         of what those documents support. It will only name a business it can attach concrete attributes to,
         because a hedged answer — &quot;there are several options&quot; — is a safer output than a specific
@@ -51,8 +50,8 @@ export function Body() {
         concluding you are excluded, run the query more than once.
       </p>
 
-      <h2>The five reasons a competitor gets named instead of you</h2>
-      <p>In scan after scan, the cause is one of five things, roughly in order of frequency:</p>
+      <h2>Why does AI recommend my competitor instead of me?</h2>
+      <p>Usually they appear in third-party lists, have specific reviews, publish constraint facts, have a unified entity, or are simply retrievable. Usually, the cause is one of five things, roughly in order of frequency:</p>
       <ol>
         <li>
           <strong>They appear in third-party lists and you do not.</strong> Roundups, directories, local press,
@@ -82,9 +81,9 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>The diff diagnostic: 30 minutes, no tools required</h2>
+      <h2>How can I compare my AI evidence against a competitor&apos;s?</h2>
       <p>
-        This is the exact workflow we use before recommending anything. Do it manually once — it teaches you
+        Run a 30-minute diff: collect the answers, identify the repeat winner, build an evidence table, and read the gaps. This is the exact workflow we use before recommending anything. Do it manually once — it teaches you
         more about your visibility than any dashboard.
       </p>
       <h3>Step 1 — Collect the answers</h3>
@@ -150,8 +149,8 @@ export function Body() {
         touching your site design.
       </p>
 
-      <h2>Closing the gap: what actually moves</h2>
-      <p>Working the diff in order of effort-to-impact:</p>
+      <h2>How do I close the gap with a competitor AI prefers?</h2>
+      <p>Publish the facts you withhold, get onto the lists that decide your category, ask for specific reviews, unify your entity and add schema. Working the diff in order of effort-to-impact:</p>
       <ul>
         <li>
           <strong>Publish the withheld facts this week.</strong> A price range, a named service-area list, an
@@ -179,9 +178,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>What will not work</h2>
+      <h2>What will not help me beat a competitor in AI answers?</h2>
       <p>
-        Two temptations are worth naming, because both are common and both backfire. The first is attacking the
+        Attacking the competitor and publishing thin content for volume will not work. Two temptations are worth naming, because both are common and both backfire. The first is attacking the
         competitor — comparison pages that disparage them, or negative reviews. Assistants summarise the
         consensus; feeding the consensus more sentences that pair your competitor&apos;s name with your category
         strengthens their association, not yours. The second is volume for its own sake: twenty thin blog posts
@@ -195,7 +194,7 @@ export function Body() {
         all, which is precisely what your competitor got right and you did not.
       </p>
 
-      <h2>Q&amp;A</h2>
+      <h2>What else do people ask about losing to competitors in AI?</h2>
       <h3>My competitor is smaller than us. How are they being recommended?</h3>
       <p>
         Because size is invisible to a retrieval system and specificity is not. A small firm that publishes
@@ -223,14 +222,18 @@ export function Body() {
         whole game.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do I get AI to recommend me over my competitor?</h2>
       <p>
         Your competitor is not winning a quality contest. They are winning an evidence contest, usually by
         default, usually with a handful of facts you chose not to publish and a couple of pages you never asked
         to be listed on. Run the diff, find the two blanks, fill them. That is the entire mechanism.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI recommends whoever it can describe with confidence, so run the diff against the repeat winner
+        and fill the two or three evidence gaps where they have a fact and you have a blank.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -25,14 +25,13 @@ export function Body() {
       </p>
 
       <p>
-        By the alphaa team — we run AI-visibility scans across thousands of local businesses, and reviews are
-        one of the clearest patterns we see separating the businesses AI recommends from the ones it skips. Last
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last
         updated July 22, 2026.
       </p>
 
-      <h2>Why reviews carry so much weight with AI engines</h2>
+      <h2>Why do reviews carry so much weight with AI engines?</h2>
       <p>
-        To understand why reviews matter, you have to understand how an AI assistant actually forms a
+        Reviews are multi-source consensus in its purest form: many independent people describing your business in their own words on a platform the model reads. To understand why reviews matter, you have to understand how an AI assistant actually forms a
         recommendation. It doesn&apos;t recall a fixed leaderboard. It retrieves live sources, weighs them, and
         rewards <strong>multi-source consensus</strong> — things that many independent sources say the same way.
         Reviews are consensus in its purest form: dozens or hundreds of separate people, describing your
@@ -61,9 +60,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>What the AI actually reads in a review</h2>
+      <h2>What does AI actually read in your reviews?</h2>
       <p>
-        It helps to be precise about the signals, because it changes what you should ask customers for. When an
+        It reads rating and volume together, the words customers use, recency and cadence, and your responses. It helps to be precise about the signals, because it changes what you should ask customers for. When an
         engine reads your review corpus, it&apos;s extracting more than a star average:
       </p>
       <ul>
@@ -86,9 +85,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>A worked example</h2>
+      <h2>How do reviews change which business AI recommends?</h2>
       <p>
-        Two HVAC companies in the same city. Company A has a 4.9 rating across 240 reviews, three new ones this
+        The business with more specific, recent, verifiable reviews tends to surface, even against a perfect rating on a thin, old sample. Two HVAC companies in the same city. Company A has a 4.9 rating across 240 reviews, three new ones this
         week, and the word &quot;furnace&quot; appears in dozens of them. Company B has a 5.0 across 9 reviews,
         the most recent from 14 months ago, mostly one-line &quot;Great service!&quot; entries.
       </p>
@@ -102,9 +101,9 @@ export function Body() {
         not the model&apos;s mind.
       </p>
 
-      <h2>How to strengthen the review signal (the honest playbook)</h2>
+      <h2>How can you strengthen your review signal honestly?</h2>
       <p>
-        None of this requires tricks. It requires a system for earning real reviews from real customers,
+        Ask every satisfied customer at the moment of delivered value, and make it easy for them to mention specifics. None of this requires tricks. It requires a system for earning real reviews from real customers,
         consistently. Here&apos;s the operator&apos;s version:
       </p>
       <ol>
@@ -135,9 +134,9 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>What crosses the line — and why it backfires</h2>
+      <h2>Which review tactics cross the line with Google and AI?</h2>
       <p>
-        Reviews are powerful precisely because they&apos;re trusted, so anything that fakes them is both against
+        Buying reviews, writing your own, paying or discounting for reviews, and gating reviews all cross the line. Reviews are powerful precisely because they&apos;re trusted, so anything that fakes them is both against
         Google&apos;s policies and self-defeating with AI engines. Do not buy reviews, write your own, offer
         payment or discounts in exchange for a review, or gate reviews so only happy customers can leave one.
         Beyond the risk of removal or suspension, fabricated reviews tend to look fabricated — repetitive
@@ -146,9 +145,9 @@ export function Body() {
         genuinely.
       </p>
 
-      <h2>Reviews are necessary, not sufficient</h2>
+      <h2>Are reviews enough on their own to get recommended by AI?</h2>
       <p>
-        Honest caveat: reviews are one signal among several. A great review profile paired with a thin, unclear
+        No. Reviews are one signal among several. A great review profile paired with a thin, unclear
         website, inconsistent business details, or no structured data will still underperform. AI engines
         cross-check. Reviews tell the model you&apos;re trusted; your{" "}
         <Link href="/blog/schema-markup-for-ai-search">structured content and schema</Link> tell it precisely what
@@ -157,7 +156,10 @@ export function Body() {
         and those that don&apos;t is widening, not shrinking.
       </p>
 
-      <h2>Frequently asked questions</h2>
+      <h2>What else do people ask about Google reviews and AI?</h2>
+      <p>
+        The common questions are whether Google reviews affect ChatGPT, whether rating or count matters more, whether other review sites count, and how fast new reviews make a difference.
+      </p>
       <p>
         <strong>Do Google reviews directly affect ChatGPT recommendations?</strong> Indirectly but meaningfully.
         ChatGPT and other assistants retrieve and read the sources where your reviews live. Strong, specific,
@@ -180,7 +182,7 @@ export function Body() {
         profile gets read and re-read. Anyone promising an overnight change isn&apos;t being straight with you.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>How much do reviews really matter for AI recommendations?</h2>
       <p>
         Your reviews are no longer just social proof for humans skimming a maps listing — they&apos;re a primary
         input to how AI engines decide who to recommend. Volume, rating, recency, wording, and your responses all
@@ -189,7 +191,10 @@ export function Body() {
         the AI engines currently say about your business — and how your review signal is landing — start here.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI engines treat reviews as evidence, so build a steady flow of genuine, specific, recent reviews, respond to them, and never fake them.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

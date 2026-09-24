@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including online
-          stores, and compare what the engines say about their products versus their competitors&apos;. Last
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last
           updated 3 August 2026.
         </em>
       </p>
@@ -31,9 +30,9 @@ export function Body() {
         two-line poetic description are, to a retrieval system, an empty page.
       </p>
 
-      <h2>Why product recommendations work differently from local recommendations</h2>
+      <h2>Why do product recommendations work differently from local ones?</h2>
       <p>
-        When someone asks an assistant &quot;who is the best plumber near me,&quot; the model needs one entity
+        Product queries need a set of constrained matches, with category, material, use case and price all verifiable in a retrieved document, rather than one consistent entity. When someone asks an assistant &quot;who is the best plumber near me,&quot; the model needs one entity
         with consistent details. When someone asks &quot;what is a good waterproof merino base layer under
         $120,&quot; it needs something harder: a set of <em>constrained matches</em>. It has to satisfy a
         category, a material, a use case, and a price ceiling simultaneously, and every one of those
@@ -53,9 +52,9 @@ export function Body() {
         2026). The research step increasingly happens inside the assistant; the click is what is left over.
       </p>
 
-      <h2>What an AI assistant actually reads on a product page</h2>
+      <h2>What does an AI assistant actually read on a product page?</h2>
       <p>
-        Run this test yourself before changing anything: open one of your best product pages, disable
+        It reads roughly what survives with JavaScript disabled, and on many storefronts price, variants and reviews vanish because they are injected client-side. Run this test yourself before changing anything: open one of your best product pages, disable
         JavaScript in your browser, and read what remains. That stripped-down version is roughly what many
         crawlers get on first pass. On a lot of storefronts — especially heavily app-laden Shopify themes and
         headless React builds — price, variants, and reviews all vanish, because they are injected client-side
@@ -98,7 +97,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The structured data layer</h2>
+      <h2>What structured data does an ecommerce product page need?</h2>
       <p>
         Schema.org <code>Product</code> markup is the machine-readable version of everything above, and for
         ecommerce it is not optional. A minimal useful implementation includes <code>name</code>,{" "}
@@ -122,7 +121,7 @@ export function Body() {
         reliability is the selection criterion.
       </p>
 
-      <h2>The off-site half nobody wants to do</h2>
+      <h2>Why do assistants need sources beyond your own product page?</h2>
       <p>
         Here is the uncomfortable part: assistants rarely recommend a product on the strength of the brand&apos;s
         own page alone. Product queries pull heavily from independent sources — review sites, roundups,
@@ -154,7 +153,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>A two-week worked sequence</h2>
+      <h2>What does a two-week plan to get products recommended look like?</h2>
+      <p>
+        Pick your ten highest-margin products, check what their raw HTML is missing, fix the template, write in the specifics buyers filter on, then pitch roundups and ask for reviews.
+      </p>
       <ol>
         <li>
           <strong>Days 1–2.</strong> Pick your ten highest-margin products. For each, ask ChatGPT, Claude,
@@ -185,7 +187,10 @@ export function Body() {
         <Link href="/blog/why-ai-answers-change-every-time">why AI answers change every time</Link>.
       </p>
 
-      <h2>Questions store owners ask us</h2>
+      <h2>What do store owners ask about AI product recommendations?</h2>
+      <p>
+        Store owners most often ask whether they can pay to be recommended, how long it takes, and whether this helps traditional SEO too.
+      </p>
       <h3>Can I pay to have my product recommended?</h3>
       <p>
         Not in the organic answer. Assistants surface products from retrieval and training, and no vendor can
@@ -195,7 +200,7 @@ export function Body() {
       </p>
       <h3>How long does it take?</h3>
       <p>
-        In our experience, technical fixes — rendering and schema — can change what an assistant is able to say
+        Typically, technical fixes — rendering and schema — can change what an assistant is able to say
         about a product within days to a few weeks, because live retrieval reads the current page. Off-site
         evidence moves on the timescale of the publications and reviewers involved, which is months. We cannot
         promise a citation on any timeline, and neither can anyone else.
@@ -207,7 +212,7 @@ export function Body() {
         them.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What is the bottom line for ecommerce AI visibility?</h2>
       <p>
         Ecommerce AI visibility is mostly a specificity problem wearing a technology costume. The assistant is
         not judging your brand; it is filling in a comparison table, and it can only use cells you filled in
@@ -215,7 +220,10 @@ export function Body() {
         in agreement, and get described by someone other than yourself.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that assistants can only recommend products whose specifics they can read and verify, so publish the numbers in server-rendered HTML with honest schema and earn independent descriptions off-site.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

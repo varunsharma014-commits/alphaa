@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and see what owners
-          are quoted before they come to us. Last updated 20 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 20 August 2026.
         </em>
       </p>
 
@@ -32,7 +31,8 @@ export function Body() {
 
       <h2>What are you actually paying for in AEO?</h2>
       <p>
-        AEO is the practice of shaping the public signals an AI assistant reads before it answers a question
+        You pay for four things: diagnosis, fixes on your own property, off-property signals, and monitoring. AEO
+        is the practice of shaping the public signals an AI assistant reads before it answers a question
         like &quot;who is the best plumber in Tulsa.&quot; There is no ad auction to buy into and no ranking
         to purchase. So every dollar you spend goes into one of four buckets:
       </p>
@@ -62,9 +62,9 @@ export function Body() {
         quote usually becomes easy to evaluate.
       </p>
 
-      <h2>Tier 1: Doing it yourself — $0 to $500 one-off</h2>
+      <h2>How much does it cost to do AEO yourself?</h2>
       <p>
-        The DIY route is genuinely viable for a single-location business, and it is the tier we recommend
+        Doing it yourself costs $0 to $500 one-off. The DIY route is genuinely viable for a single-location business, and it is the tier we recommend
         most owners start at. The realistic bill:
       </p>
       <ul>
@@ -99,9 +99,9 @@ export function Body() {
         instead of pretending otherwise.
       </p>
 
-      <h2>Tier 2: Tools and monitoring — $30 to $300 a month</h2>
+      <h2>How much do AEO tools and monitoring cost?</h2>
       <p>
-        This tier buys you two things: knowing what the engines say without checking by hand, and having the
+        AEO tools and monitoring cost $30 to $300 a month. This tier buys you two things: knowing what the engines say without checking by hand, and having the
         repetitive fixes done on a schedule. Typical 2026 pricing across the category:
       </p>
       <ul>
@@ -127,7 +127,7 @@ export function Body() {
         <Link href="/blog/best-aeo-tools-2026">our honest comparison of AEO tools</Link>.
       </p>
 
-      <h2>Tier 3: Agencies and consultants — $1,500 to $10,000 a month</h2>
+      <h2>How much do AEO agencies and consultants charge?</h2>
       <p>
         Agency AEO retainers in 2026 mostly sit between $1,500 and $5,000 a month for small and mid-sized
         businesses, with $5,000 to $10,000-plus for multi-location brands, regulated industries, and
@@ -152,7 +152,10 @@ export function Body() {
         unchanged to AEO retainers.
       </p>
 
-      <h2>The costs nobody puts in the quote</h2>
+      <h2>Which AEO costs are left out of the quote?</h2>
+      <p>
+        Your own time, developer time, review generation and waiting are the costs quotes usually leave out.
+      </p>
       <ul>
         <li>
           <strong>Your own time.</strong> Every tier needs facts only you have: service areas, hours,
@@ -175,7 +178,11 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>How to decide what to spend: a five-minute test</h2>
+      <h2>How do you decide how much to spend on AEO?</h2>
+      <p>
+        Run a five-minute test: ask the engines what a customer would ask and what they know about your
+        business, then spend based on whether you appear and whether the facts are right.
+      </p>
       <ol>
         <li>
           Ask ChatGPT, Gemini and Perplexity the question a customer would ask — &quot;best [your service] in
@@ -202,7 +209,11 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Common questions</h2>
+      <h2>What else do owners ask about AEO pricing?</h2>
+      <p>
+        The common questions are whether AEO is cheaper than SEO, whether each engine costs extra, whether anyone
+        can guarantee results, and the minimum sensible budget.
+      </p>
       <h3>Is AEO cheaper than SEO?</h3>
       <p>
         In upfront cash, usually yes — much of the work is one-off hygiene rather than a permanent content
@@ -230,9 +241,9 @@ export function Body() {
         something breaks rather than when the phone stops ringing.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how much should a business spend on AEO?</h2>
       <p>
-        AEO pricing looks confusing because the category is young and the deliverables are invisible. Strip it
+        Start with the free work, then monitoring, and pay an agency only when you need one. AEO pricing looks confusing because the category is young and the deliverables are invisible. Strip it
         back and there are only four things to buy: diagnosis, on-site fixes, off-site signals, and
         monitoring. Do the free work first, buy monitoring second, and only hire an agency when the problem is
         genuinely one of scale, regulation or relationships — not when it is one of tedium. The businesses
@@ -240,7 +251,12 @@ export function Body() {
         consistent everywhere an engine looks.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AEO only buys diagnosis, on-site fixes, off-site signals and monitoring, so do
+        the free work first, add monitoring second, and hire an agency only for scale, regulation or
+        relationships.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, home care and senior
-          care agencies among them. Last updated 24 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 24 August 2026.
         </em>
       </p>
 
@@ -32,9 +31,9 @@ export function Body() {
         of a smiling caregiver and the phrase &quot;compassionate care you can trust.&quot;
       </p>
 
-      <h2>Who is actually asking, and what they ask</h2>
+      <h2>Who searches for home care with AI, and what do they ask?</h2>
       <p>
-        The person searching is almost never the person receiving care. It is an adult child, often in another
+        Usually an adult child, often in another state, asking what kind of care a parent needs, who pays for it and who provides it locally. The person searching is almost never the person receiving care. It is an adult child, often in another
         state, often at 11pm after a fall or a hospital discharge call. They do not know the vocabulary. They ask
         an assistant because it will translate for them. The questions look like this:
       </p>
@@ -53,9 +52,9 @@ export function Body() {
         matched on it — and in this category the unmatched provider is simply not mentioned.
       </p>
 
-      <h2>The distinction that decides half your visibility</h2>
+      <h2>Why must you say whether you offer home care or home health?</h2>
       <p>
-        Home care (non-medical: bathing, dressing, meals, transport, companionship) and home health (skilled
+        Assistants clearly separate non-medical home care from skilled home health, so you need to say plainly which one you provide. Home care (non-medical: bathing, dressing, meals, transport, companionship) and home health (skilled
         nursing, physical therapy, ordered by a physician) are different services, differently licensed and
         differently paid for. Families conflate them constantly. Assistants do not — they are quite good at this
         distinction, because it is well documented in authoritative sources.
@@ -69,9 +68,9 @@ export function Body() {
         answer.
       </p>
 
-      <h2>Publish the license. Publish the number.</h2>
+      <h2>Should a home care agency publish its license number?</h2>
       <p>
-        Most states license or register home care agencies, and the register is public. AI systems weight
+        Yes. Put your license or registration number and the issuing agency in readable text. Most states license or register home care agencies, and the register is public. AI systems weight
         official records heavily because they are the sort of source that resolves a conflict — this is the
         entity-corroboration mechanism described in{" "}
         <Link href="/blog/entity-seo-how-ai-identifies-your-business">
@@ -94,9 +93,9 @@ export function Body() {
         trust each.
       </p>
 
-      <h2>The payer page nobody has</h2>
+      <h2>Why does a home care agency need a payer page?</h2>
       <p>
-        This is the highest-return page in the category and we almost never find it. &quot;Does Medicare cover
+        Because &quot;Does Medicare cover this?&quot; is the first question every family asks, and an honest state-specific answer makes you the source. This is the highest-return page in the category and we almost never find it. &quot;Does Medicare cover
         this?&quot; is the question every family asks first, and the honest answer is uncomfortable: original
         Medicare generally does not pay for long-term non-medical home care. Agencies avoid saying it. So the
         assistant answers from a government page, cites that, and no provider gets named.
@@ -114,9 +113,9 @@ export function Body() {
         official program pages for eligibility. Trustworthiness here is not a tone; it is refusing to overstate.
       </p>
 
-      <h2>Price ranges, in numbers</h2>
+      <h2>Should home care agencies publish their price ranges?</h2>
       <p>
-        Cost is the second question and the most common silence. &quot;Contact us for a free consultation&quot;
+        Yes. A published range is retrievable where a consultation form is not, and it gets you named in the answers families with budget are reading. Cost is the second question and the most common silence. &quot;Contact us for a free consultation&quot;
         is not retrievable. A range is: &quot;In [county], our rates run $34–$42 per hour depending on level of
         care and schedule, with a 4-hour minimum visit. Live-in care is quoted daily, typically $[x]–$[y]. Rates
         as of August 2026.&quot;
@@ -129,15 +128,15 @@ export function Body() {
         number is a fact an assistant can use, and a slogan is not.
       </p>
 
-      <h2>Answer the availability question explicitly</h2>
+      <h2>How should agencies answer how fast they can start?</h2>
       <p>
-        &quot;How fast can you start?&quot; is a decisive filter in a discharge scenario and it is nearly always
+        Answer it explicitly with a real sentence on the site about how quickly you can staff a new case and whether you cover nights and weekends. &quot;How fast can you start?&quot; is a decisive filter in a discharge scenario and it is nearly always
         unanswered. Put a real sentence on the site: how quickly you can typically staff a new case, whether you
         cover nights and weekends, whether you take same-week starts, and how the intake assessment works and how
         long it takes. If you have a genuine 24/7 answering line staffed by a person, say that in those words.
       </p>
 
-      <h2>Conditions, not services</h2>
+      <h2>Should home care pages be organized by condition or by service?</h2>
       <p>
         Families search by the condition in front of them, not by your service menu. One &quot;Our Services&quot;
         page with nine bullets is one weak document competing for nine different questions. Give each of these its
@@ -152,9 +151,9 @@ export function Body() {
         assistant can lift. &quot;We provide compassionate memory care&quot; is not.
       </p>
 
-      <h2>Reviews, from the right people</h2>
+      <h2>Which reviews help home care agencies most with AI?</h2>
       <p>
-        Reviews are corroboration, and in senior care they are also the closest thing to outcome evidence. Ask
+        Reviews from adult children after the first month that name the city, level of care, condition and how quickly you started help most. Reviews are corroboration, and in senior care they are also the closest thing to outcome evidence. Ask
         adult children after the first month, not at the end of service. Ask them to name the specifics — the
         city, the level of care, the condition, how quickly you started. A review that says &quot;they staffed
         overnight dementia care for my dad in [town] within 48 hours of discharge&quot; corroborates four claims
@@ -167,7 +166,7 @@ export function Body() {
         not a trust signal.
       </p>
 
-      <h2>Where else assistants look for you</h2>
+      <h2>Where else do AI assistants look for home care agencies?</h2>
       <p>
         Beyond your own site, make sure your listing is complete and consistent on your Google Business Profile,
         the state licensing register, Medicare&apos;s Care Compare if you are also a certified home health
@@ -179,7 +178,10 @@ export function Body() {
         .
       </p>
 
-      <h2>Questions agency owners ask us</h2>
+      <h2>What else do home care agency owners ask?</h2>
+      <p>
+        Owners usually ask whether publishing rates loses business, whether HIPAA gets in the way, whether this works for franchise locations, and how long it takes.
+      </p>
 
       <h3>Will publishing rates lose us to cheaper competitors?</h3>
       <p>
@@ -208,7 +210,7 @@ export function Body() {
         sources that change and vary between engines. What you control is whether the facts exist to be found.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>How do AI systems judge a home care agency?</h2>
       <p>
         Home care is judged by AI systems the way a cautious person judges it: license first, specifics second,
         corroboration third, warmth last. Publish the license number, name the level of care, state who pays,
@@ -216,7 +218,10 @@ export function Body() {
         register and your reviews already say.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to publish your license number, level of care, payers, price range and start time, and make every one of those facts match the state register and your reviews.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

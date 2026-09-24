@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and watch which
-          pages the engines actually cite. Last updated 19 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 19 August 2026.
         </em>
       </p>
 
@@ -30,8 +29,10 @@ export function Body() {
         you win every row is not a comparison, and it reads that way to a model.
       </p>
 
-      <h2>Why comparison queries matter more in AI search than in classic SEO</h2>
+      <h2>Why do comparison queries matter more in AI search than SEO?</h2>
       <p>
+        In AI search, the assistant returns a single synthesised verdict assembled from whatever comparison
+        content it could retrieve, instead of ten links.{" "}
         In traditional search, a comparison query returned ten links and the buyer read three of them. In AI
         search, the assistant reads a dozen sources and returns a single synthesised verdict — often a short
         table or a &quot;choose X if…, choose Y if…&quot; paragraph. That verdict is assembled from whatever
@@ -44,8 +45,10 @@ export function Body() {
         writing brief, and it changes almost every decision on the page.
       </p>
 
-      <h2>How an AI engine actually processes a comparison</h2>
+      <h2>How does an AI engine actually process a comparison?</h2>
       <p>
+        It retrieves pages about both entities, extracts attribute-level claims, cross-checks them for
+        agreement, and synthesises a conditional recommendation.{" "}
         When an assistant handles &quot;Acme vs Beta for a 20-person team,&quot; it does roughly four things:
       </p>
       <ol>
@@ -76,7 +79,11 @@ export function Body() {
         unreliable narrator.
       </p>
 
-      <h2>What separates a cited comparison from an ignored one</h2>
+      <h2>What makes AI cite one comparison page and ignore another?</h2>
+      <p>
+        Cited comparisons concede something real, compare attributes rather than adjectives, date their claims,
+        frame the verdict by use case, and stay accurate about competitors.
+      </p>
 
       <h3>1. Concede something real</h3>
       <p>
@@ -122,7 +129,11 @@ export function Body() {
         practice, a trust signal about you.
       </p>
 
-      <h2>Which comparison pages to build, in order</h2>
+      <h2>Which comparison pages should you build first?</h2>
+      <p>
+        Start with you vs your most-searched competitor, then an &quot;alternatives to [category leader]&quot;
+        page, a category round-up, and approach comparisons.
+      </p>
       <ul>
         <li>
           <strong>You vs your single most-searched competitor.</strong> One page, deeply specific. Check what
@@ -144,7 +155,11 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Structural details that decide extraction</h2>
+      <h2>How should you structure a comparison page for AI extraction?</h2>
+      <p>
+        Use a real HTML table, question-shaped headings, short lead paragraphs, a summary block near the top,
+        and server-rendered text.
+      </p>
       <ul>
         <li>
           <strong>Use a real HTML table</strong> for the attribute grid. Tables are parsed cleanly; a table
@@ -169,7 +184,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The honest limitations</h2>
+      <h2>What can&apos;t comparison pages do in AI search?</h2>
       <p>
         Comparison pages are influence, not control. A vendor-authored page will always carry less weight
         than an independent review site or a forum thread, and that is appropriate — models are right to
@@ -184,7 +199,7 @@ export function Body() {
         sourcing are your protection on both fronts.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on comparison pages for AI search?</h2>
       <p>
         Comparison pages work in AI search for the same reason they work with a careful human buyer: they
         answer the actual question, which is not &quot;is this good&quot; but &quot;is this right for me
@@ -193,7 +208,13 @@ export function Body() {
         publishing a page — you are supplying the sentences the engines will use when someone asks about you.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to write comparison pages as source material: compare attributes, concede what is
+        genuinely better elsewhere, date your claims, and frame the verdict by use case so engines can lift your
+        sentences.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

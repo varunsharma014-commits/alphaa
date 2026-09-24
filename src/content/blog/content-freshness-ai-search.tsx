@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and re-run them over
-          time, so we watch the same pages get cited, dropped, and re-cited. Last updated 5 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 5 August 2026.
         </em>
       </p>
 
@@ -30,8 +29,10 @@ export function Body() {
         engine can compare your claimed date against content that plainly has not moved.
       </p>
 
-      <h2>Why freshness matters to an AI engine at all</h2>
+      <h2>Why does content freshness matter to an AI engine?</h2>
       <p>
+        Freshness matters because, when an assistant retrieves live pages for current questions, a verifiably
+        current page is the safer thing to repeat.{" "}
         Modern assistants answer in two modes. For general knowledge they lean on training data, which is
         frozen at a cutoff. For anything current, they run a retrieval step: search the live web, pull a
         handful of documents, read them, and synthesise. Freshness only enters through that second path.
@@ -51,9 +52,11 @@ export function Body() {
         opposite treatment.
       </p>
 
-      <h2>What actually decays on a business website</h2>
+      <h2>What content actually goes stale on a business website?</h2>
       <p>
-        In scans, the pages that lose citations are rarely the ones that &quot;stopped being updated.&quot;
+        The facts that go stale most are prices and packages, hours and locations, staff and credentials, and
+        year-stamped claims.{" "}
+        In practice, the pages that lose citations are rarely the ones that &quot;stopped being updated.&quot;
         They are the ones carrying a specific, checkable fact that has since become wrong. The four we see
         most:
       </p>
@@ -83,8 +86,10 @@ export function Body() {
         page. The decay is per-fact, not per-site.
       </p>
 
-      <h2>How often to update, by page type</h2>
+      <h2>How often should you update each type of page?</h2>
       <p>
+        Review pricing and contact details monthly, core service and team pages quarterly, statistics every six
+        months, and explainers annually.{" "}
         This is the cadence we actually run for clients. Treat it as a maintenance schedule, not a content
         quota — the review is mandatory, the edit only happens if something changed.
       </p>
@@ -130,8 +135,10 @@ export function Body() {
         </tbody>
       </table>
 
-      <h2>A worked example: the audit we run first</h2>
+      <h2>How do you audit your site for stale content?</h2>
       <p>
+        List every page carrying a checkable fact, search your site for stale year strings, cross-check facts
+        against your other profiles, and ask an assistant directly.{" "}
         Before touching anything, find out what is actually stale. This takes about thirty minutes on a
         typical small-business site.
       </p>
@@ -166,7 +173,7 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Dates, schema, and the thing not to do</h2>
+      <h2>How should you handle dates and schema for freshness?</h2>
       <p>
         Give machines an honest, machine-readable date. In practice that means three things agreeing: a visible
         &quot;last updated&quot; line in the page text, <code>datePublished</code> and <code>dateModified</code>{" "}
@@ -191,7 +198,7 @@ export function Body() {
         you a date field.
       </p>
 
-      <h2>Updating an existing page vs publishing a new one</h2>
+      <h2>Should you update an existing page or publish a new one?</h2>
       <p>
         When a topic you already cover needs new information, updating the existing URL is almost always the
         better move. It concentrates whatever authority and links the page has accumulated instead of splitting
@@ -214,7 +221,7 @@ export function Body() {
         visibility than the page itself.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do people ask about content freshness?</h2>
       <h3>Does publishing more blog posts improve my AI visibility?</h3>
       <p>
         Only if the posts answer questions people actually ask and are specific enough to quote. Volume alone
@@ -242,7 +249,7 @@ export function Body() {
         from the date being recent.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on content freshness for AI search?</h2>
       <p>
         Freshness is real, narrow, and frequently mis-sold. AI engines care whether the specific facts they are
         about to repeat are still true, and they use dates to judge that — which makes accuracy, internal
@@ -256,7 +263,12 @@ export function Body() {
         .
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to keep the specific facts AI might repeat accurate and consistent, review them on
+        a schedule, and keep your dates truthful rather than paying for date-field churn.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

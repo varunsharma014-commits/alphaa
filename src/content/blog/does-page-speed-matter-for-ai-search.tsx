@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and fetch their pages the
-          way AI crawlers do. Last updated 25 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 25 August 2026.
         </em>
       </p>
 
@@ -31,8 +30,8 @@ export function Body() {
         empty shell and fills it in with JavaScript half a second later is invisible.
       </p>
 
-      <h2>Two different meanings of &quot;speed&quot;</h2>
-      <p>Separating these is most of the answer:</p>
+      <h2>What does &quot;speed&quot; actually mean for AI search?</h2>
+      <p>There are two kinds of speed: perceived speed (Core Web Vitals), which is largely irrelevant to a crawler, and fetch speed, which decides whether an AI engine reads you at all. Separating these is most of the answer:</p>
       <ul>
         <li>
           <strong>Perceived speed (Core Web Vitals).</strong> LCP, INP, CLS — metrics about how a page feels to a
@@ -50,9 +49,9 @@ export function Body() {
         perfectly. The two measurements are not testing the same thing.
       </p>
 
-      <h2>What actually happens when an AI engine fetches your page</h2>
+      <h2>What happens when an AI engine fetches your page?</h2>
       <p>
-        There are two distinct moments where speed can cost you, and they behave differently.
+        It fetches you in one of two ways, an indexing crawl or a live retrieval fetch, and speed costs you differently in each. There are two distinct moments where speed can cost you, and they behave differently.
       </p>
       <p>
         <strong>The indexing crawl.</strong> Bots such as GPTBot, ClaudeBot, PerplexityBot and Google-Extended
@@ -73,9 +72,9 @@ export function Body() {
         an assumed threshold.
       </p>
 
-      <h2>The failure that looks like slowness but is not</h2>
+      <h2>Why can a fast site still look empty to AI crawlers?</h2>
       <p>
-        By far the most common problem we see is not a slow server. It is a fast server returning an empty page. A
+        A client-rendered site can return its HTML quickly with no content in it, because the words are injected by JavaScript that several AI crawlers do not run. By far the most common problem we see is not a slow server. It is a fast server returning an empty page. A
         client-rendered site sends a minimal HTML shell, then JavaScript fetches the content and injects it. A
         human perceives this as quick. A crawler that does not execute JavaScript sees a document with no words in
         it — and several AI crawlers do not execute JavaScript, or do so inconsistently. This is a rendering
@@ -88,9 +87,9 @@ export function Body() {
         was never in the response to begin with.
       </p>
 
-      <h2>How to test what a crawler actually gets</h2>
+      <h2>How do you test what an AI crawler actually gets?</h2>
       <p>
-        Skip the performance dashboards for this. Use curl, which behaves like a simple crawler: it makes one
+        Skip the performance dashboards and use curl, which behaves like a simple crawler: it makes one
         request, runs no JavaScript, and shows you exactly what came back.
       </p>
       <ol>
@@ -129,7 +128,10 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>What to fix, in order</h2>
+      <h2>In what order should you fix speed problems for AI crawlers?</h2>
+      <p>
+        Fix bot blocking first, then get content into the initial HTML, then time to first byte, redirect chains and reliability under load; image and font optimisation matters least.
+      </p>
       <ol>
         <li>
           <strong>Bot blocking.</strong> Verify GPTBot, ClaudeBot, PerplexityBot and friends get a 200. Aggressive
@@ -157,7 +159,10 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Questions we get asked</h2>
+      <h2>What else do people ask about page speed and AI?</h2>
+      <p>
+        The common questions cover Core Web Vitals and AI Overviews, whether slow sites are penalised, CDNs, very large pages, and how much of AI visibility is technical at all.
+      </p>
       <h3>Do Core Web Vitals affect AI Overviews?</h3>
       <p>
         Indirectly at most. AI Overviews draw heavily on pages that already rank in Google&apos;s index, and Core
@@ -189,15 +194,18 @@ export function Body() {
         you. See <Link href="/blog/what-sources-do-ai-engines-cite">what sources AI engines actually cite</Link>.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So does page speed matter for AI search?</h2>
       <p>
-        Treat speed as a gate, not a lever. Your job is to make sure a crawler can get your complete content, in
+        Yes, but treat speed as a gate, not a lever. Your job is to make sure a crawler can get your complete content, in
         one request, without JavaScript, without being blocked, in well under a second — and then stop optimising,
         because past that point the returns collapse and the real work is elsewhere. Test with curl, not with a
         performance score, because the performance score is measuring an experience no AI engine ever has.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI engines need your complete content in the first HTML response, unblocked and quick, so test with curl and fix blocking and rendering before chasing performance scores.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and read the sources
-          the engines actually cite. Last updated 2 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 2 August 2026.
         </em>
       </p>
 
@@ -30,9 +29,9 @@ export function Body() {
         properly.
       </p>
 
-      <h2>Why &quot;best of&quot; pages carry so much weight</h2>
+      <h2>Why do &quot;best of&quot; lists carry so much weight with AI?</h2>
       <p>
-        A superlative question — &quot;best accountant in Leeds,&quot; &quot;best project management tool for
+        They have already done the ranking work a superlative question needs, so the cheapest way for a retrieval system to answer is to find and merge them. A superlative question — &quot;best accountant in Leeds,&quot; &quot;best project management tool for
         agencies&quot; — has no factual answer sitting in a single document. The model has to synthesise a
         ranking. The cheapest way for any retrieval system to do that is to find documents that have already
         done the ranking work and merge them.
@@ -62,8 +61,8 @@ export function Body() {
         named in the body text of a credible roundup helps even when the list gives you no hyperlink at all.
       </p>
 
-      <h2>The four kinds of list that actually get cited</h2>
-      <p>Not all lists are equal. In the citation panels we look at, four types keep appearing:</p>
+      <h2>Which kinds of lists do AI engines actually cite?</h2>
+      <p>Four kinds keep getting cited: editorial roundups, category directories and marketplaces, community threads, and local media and association lists. Not all lists are equal. In the citation panels we look at, four types keep appearing:</p>
       <ol>
         <li>
           <strong>Editorial roundups</strong> — a publication, trade magazine or established blog compiling
@@ -87,9 +86,9 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>The workflow: find the lists that already decide your category</h2>
+      <h2>How do you find the lists that decide your category?</h2>
       <p>
-        Do this before you write a single outreach email. It takes about an hour and it tells you which twenty
+        Ask the engines the buying question, not your brand name, and note every source they cite. Do this before you write a single outreach email. It takes about an hour and it tells you which twenty
         pages matter instead of guessing.
       </p>
       <ol>
@@ -128,9 +127,9 @@ export function Body() {
         <Link href="/blog/why-ai-answers-change-every-time">why AI answers change every time</Link>.
       </p>
 
-      <h2>How to earn a place on a list you are not on</h2>
+      <h2>How do you get onto a list you are not on?</h2>
       <p>
-        Compilers — whether a journalist, a niche blogger or a directory&apos;s editorial team — are solving a
+        Start by being verifiable in ninety seconds, because compilers drop anyone they cannot quickly confirm. Compilers — whether a journalist, a niche blogger or a directory&apos;s editorial team — are solving a
         research problem under time pressure. Make yourself the easiest correct answer to include.
       </p>
 
@@ -184,7 +183,10 @@ export function Body() {
         .
       </p>
 
-      <h2>What does not work — and what will hurt you</h2>
+      <h2>What list-building tactics do not work or will hurt you?</h2>
+      <p>
+        Paid badge placements on obscure sites, self-serving roundups on satellite domains, incentivised reviews, and chasing volume over relevance all fail.
+      </p>
       <ul>
         <li>
           <strong>Paying for &quot;top 10&quot; badge placements on obscure sites.</strong> These pages exist to
@@ -206,7 +208,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>How long this takes, honestly</h2>
+      <h2>How long does it take to get into AI best-of lists?</h2>
       <p>
         Directory claims and corrections propagate in days to weeks. Editorial placements run on the
         publication&apos;s schedule, which can be months, and many pitches simply go unanswered. Once a mention
@@ -221,7 +223,10 @@ export function Body() {
         summarised from sources you appear in nowhere.
       </p>
 
-      <h2>Q&amp;A</h2>
+      <h2>What else do people ask about AI best-of lists?</h2>
+      <p>
+        The common questions are whether a list must link to you, whether to pay for a sponsored spot, and what to do when a list ranks a competitor above you.
+      </p>
       <p>
         <strong>Does the list need to link to my site?</strong> No. For AI answers, being named in the text is
         what matters most; the link is a bonus that also helps classic search.
@@ -241,15 +246,18 @@ export function Body() {
         showed up in your citation audit. That is usually five to fifteen pages, not fifty.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>How do you get into AI answers for &quot;best&quot; questions?</h2>
       <p>
-        AI assistants answer superlative questions by summarising other people&apos;s judgements. If you want to
+        Be accurately present, described in specifics, on the third-party pages the engines keep returning to. AI assistants answer superlative questions by summarising other people&apos;s judgements. If you want to
         be in those answers, the work is not writing more about yourself — it is being accurately present,
         described in specifics, on the handful of third-party pages the engines keep returning to. Audit which
         pages those are, fix what is wrong on them first, then earn the ones you are missing.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI answers superlative questions from third-party lists, so find the pages the engines already cite for your category, fix your entries there, and earn the ones you are missing.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

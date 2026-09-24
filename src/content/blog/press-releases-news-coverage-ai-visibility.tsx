@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and read the actual
-          sources engines cite back. Last updated 6 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 6 August 2026.
         </em>
       </p>
 
@@ -30,9 +29,9 @@ export function Body() {
         to 400 sites.
       </p>
 
-      <h2>Why the two are not the same signal</h2>
+      <h2>Why is a press release weaker than news coverage for AI?</h2>
       <p>
-        A press release you pay to distribute is <em>self-published content with a news costume on</em>. The wire
+        A press release is duplicated, self-authored and carries no editorial signal, while coverage is independent. A press release you pay to distribute is <em>self-published content with a news costume on</em>. The wire
         service publishes your words verbatim, then syndicates that exact text to a network of partner sites,
         most of which are low-traffic aggregators that republish everything they receive without editing it.
       </p>
@@ -64,9 +63,9 @@ export function Body() {
         text about you outranks your text about you, every time.
       </p>
 
-      <h2>What a press release still does for you</h2>
+      <h2>Is a press release still worth sending?</h2>
       <p>
-        The honest version is not &quot;never send one.&quot; Press releases retain three legitimate uses, none of
+        Yes, for creating a citable record, feeding interested journalists and occasionally earning a real pickup. The honest version is not &quot;never send one.&quot; Press releases retain three legitimate uses, none of
         them about volume:
       </p>
       <ol>
@@ -89,9 +88,9 @@ export function Body() {
         paid syndication as a lottery ticket rather than a strategy.
       </p>
 
-      <h2>What actually moves an AI answer</h2>
+      <h2>What kind of coverage actually moves an AI answer?</h2>
       <p>
-        Ranked by how often we see each one show up in the sources an engine cites back:
+        Trade features, local news profiles, expert quotes, transcribed podcasts and &quot;best of&quot; roundups move answers; wire syndication sits near the bottom. Ranked by how often we see each one show up in the sources an engine cites back:
       </p>
       <table>
         <thead>
@@ -143,9 +142,9 @@ export function Body() {
         </tbody>
       </table>
 
-      <h2>How to earn the mentions, concretely</h2>
+      <h2>How can a small business earn media mentions?</h2>
       <p>
-        This is the part most &quot;do digital PR&quot; advice skips. Here is the actual sequence we run.
+        Build a source list from AI answers, pitch stories, make yourself quotable, answer journalist requests weekly and make coverage findable. This is the part most &quot;do digital PR&quot; advice skips. Here is the actual sequence we run.
       </p>
       <h3>1. Build a source list before you build a pitch</h3>
       <p>
@@ -186,9 +185,9 @@ export function Body() {
         machine-readable side of that works.
       </p>
 
-      <h2>What to expect, and when</h2>
+      <h2>How long does news coverage take to affect AI answers?</h2>
       <p>
-        Be realistic about the mechanism and the clock. An article has to be published, then crawled, then
+        It takes weeks, not days, because an article must be published, crawled and retrieved first. Be realistic about the mechanism and the clock. An article has to be published, then crawled, then
         retrieved for a relevant query before it can influence an answer. In practice that means weeks, not days,
         and the effect shows up first in engines that search live — Perplexity and search-grounded modes — before
         anything else. Coverage that only ever lands in a model&apos;s training data waits for the next training
@@ -202,7 +201,7 @@ export function Body() {
         a pattern: several independent sources, over months, all describing you the same way.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do people ask about press and AI visibility?</h2>
       <h3>Do the links in a press release help?</h3>
       <p>
         Barely, and that is not the point here. Wire links are typically nofollowed or on duplicated pages. For AI
@@ -229,7 +228,7 @@ export function Body() {
         mentions. That is the bar, not a universal number.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So should I spend on press releases or news coverage?</h2>
       <p>
         Press release distribution buys you copies of your own words. Editorial coverage buys you someone
         else&apos;s. AI engines are built to tell the difference, and the difference is exactly what a
@@ -238,7 +237,11 @@ export function Body() {
         yourself the easiest expert in your city to quote.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to publish releases on your own site for the record and put your effort into earning independent
+        editorial coverage, because AI engines weight other people&apos;s words about you far above your own.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

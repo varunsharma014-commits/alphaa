@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and read what the
-          engines actually say back. Last updated 9 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 9 August 2026.
         </em>
       </p>
 
@@ -29,7 +28,7 @@ export function Body() {
         something to attribute. Pages that do not are quietly harder to cite — not penalised, just less usable.
       </p>
 
-      <h2>What E-E-A-T actually is, precisely</h2>
+      <h2>What exactly is E-E-A-T?</h2>
       <p>
         E-E-A-T stands for Experience, Expertise, Authoritativeness and Trustworthiness. It is not an algorithm
         and it is not a ranking factor. It is a set of criteria from Google&apos;s publicly published{" "}
@@ -51,9 +50,9 @@ export function Body() {
         does it check out?
       </p>
 
-      <h2>The three things an engine can actually verify</h2>
+      <h2>What can an AI engine actually verify about your credibility?</h2>
       <p>
-        Strip away the acronym and an assistant is doing three concrete checks against retrieved text:
+        An engine can check three things: whether a named entity stands behind a claim, whether the claim carries its own qualifiers, and whether independent sources agree. Strip away the acronym and an assistant is doing three concrete checks against retrieved text:
       </p>
       <ul>
         <li>
@@ -76,9 +75,9 @@ export function Body() {
         experience.&quot; All of it requires specificity.
       </p>
 
-      <h2>What a useful author bio contains</h2>
+      <h2>What should a useful author bio contain?</h2>
       <p>
-        Most bios are written for reassurance and are useless for attribution. Here is the difference, using the
+        A useful bio contains checkable facts, such as a full name, a licence or credential, and what the person has done and since when, rather than adjectives. Most bios are written for reassurance and are useless for attribution. Here is the difference, using the
         same person.
       </p>
       <p>
@@ -109,9 +108,9 @@ export function Body() {
         <Link href="/blog/schema-markup-for-ai-search">schema markup for AI search</Link> for the full pattern.
       </p>
 
-      <h2>The About page is doing more work than your homepage</h2>
+      <h2>Why does your About page matter so much for AI search?</h2>
       <p>
-        In scans, the About page is disproportionately the document that gets retrieved when a question is about
+        In practice, the About page is disproportionately the document that gets retrieved when a question is about
         the business rather than the service — &quot;is [company] legitimate&quot;, &quot;how long has [company]
         been around&quot;, &quot;who owns [company]&quot;. Those are exactly the questions a cautious buyer asks
         an assistant before making contact, and a vague About page produces a vague, hedged answer.
@@ -131,9 +130,9 @@ export function Body() {
         <Link href="/blog/javascript-rendering-ai-crawlers">JavaScript rendering and AI crawlers</Link>.
       </p>
 
-      <h2>The trustworthiness signals people skip</h2>
+      <h2>Which trustworthiness signals do most businesses skip?</h2>
       <p>
-        Trustworthiness is the load-bearing letter — the other three matter mostly because they feed it. The
+        The most skipped signals include real published and updated dates, named sources for external claims, and visible limits on who you are right for. Trustworthiness is the load-bearing letter — the other three matter mostly because they feed it. The
         signals that move it are unglamorous:
       </p>
       <ul>
@@ -157,7 +156,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>What does not work</h2>
+      <h2>What E-E-A-T tactics do not work?</h2>
       <p>
         Fabricated credentials and invented author personas are the obvious failure, and they fail hardest here
         because credential claims are the most checkable thing on the page — licence registries and membership
@@ -171,7 +170,10 @@ export function Body() {
         facts to make true and then make visible.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do people ask about author bios and AI search?</h2>
+      <p>
+        The usual questions are whether you need a named human author, whether a headshot helps, and how fast changes show up in answers.
+      </p>
 
       <h3>Do I need a named human author, or can content be attributed to the company?</h3>
       <p>
@@ -195,15 +197,18 @@ export function Body() {
         honestly.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What does E-E-A-T mean for AI search in practice?</h2>
       <p>
-        AI engines do not reward the appearance of credibility. They reward attributability: a real name, a
+        In practice, AI engines reward attributability, not the appearance of credibility: a real name, a
         checkable claim, and agreement across sources. Write the bio so a stranger could verify every clause in
         ten minutes, make the About page state facts instead of feelings, and cite your sources. That is the
         whole of E-E-A-T that a machine can see.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that credibility only counts when a machine can check it, so give every author a verifiable bio, make the About page state facts, and cite your sources.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

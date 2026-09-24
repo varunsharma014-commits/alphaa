@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        By the alphaa team — we set up AI-traffic reporting for businesses every week, and we would rather you
-        measure this honestly than see an inflated number.
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
         <strong>Short answer:</strong> AI assistants do send referral traffic, and you can isolate it in GA4 by
@@ -27,8 +26,9 @@ export function Body() {
         referrer and land in Direct, and the zero-click majority never becomes a visit at all.
       </p>
 
-      <h2>Why AI traffic is hidden by default</h2>
+      <h2>Why is AI traffic hidden in Google Analytics by default?</h2>
       <p>
+        AI traffic is hidden because GA4 has no built-in &quot;AI&quot; channel, so clicks from assistants get filed under Referral.
         GA4 assigns each session to a default channel group using the source, medium, and campaign values it
         detects. There is no built-in &quot;AI&quot; channel. When someone clicks a citation inside ChatGPT, the
         browser sends a referrer header of <code>chatgpt.com</code>, GA4 sees an unfamiliar domain with no paid or
@@ -40,8 +40,8 @@ export function Body() {
         what the label does and does not capture.
       </p>
 
-      <h2>The fastest way to see it: a filtered report</h2>
-      <p>Two minutes, no configuration, useful immediately.</p>
+      <h2>What is the fastest way to see AI traffic in GA4?</h2>
+      <p>The fastest way is a filtered Traffic acquisition report by Session source: two minutes, no configuration, useful immediately.</p>
       <ol>
         <li>In GA4, open <strong>Reports → Acquisition → Traffic acquisition</strong>.</li>
         <li>
@@ -60,9 +60,9 @@ export function Body() {
         whether it grows after you change something.
       </p>
 
-      <h2>The durable setup: a custom AI channel group</h2>
+      <h2>How do I set up a permanent AI channel in GA4?</h2>
       <p>
-        A filtered report is something you have to remember to run. A channel group makes AI traffic a permanent
+        Create a custom channel group so AI traffic becomes a permanent row in your standard reports. A filtered report is something you have to remember to run. A channel group makes AI traffic a permanent
         row in your standard reports. This is what we set up for clients who want to watch it monthly.
       </p>
       <ol>
@@ -91,9 +91,9 @@ export function Body() {
         year. And a source string only appears if the referrer survived the click.
       </p>
 
-      <h2>Why your number is lower than reality</h2>
+      <h2>Why is my AI traffic number lower than reality?</h2>
       <p>
-        This is the section most guides leave out, and it is the one that keeps you from drawing wrong
+        Your number is low because visits without a referrer land in Direct and the zero-click majority never becomes a visit at all. This is the section most guides leave out, and it is the one that keeps you from drawing wrong
         conclusions.
       </p>
       <ul>
@@ -120,9 +120,9 @@ export function Body() {
         headcount of everyone the AI sent your way.
       </p>
 
-      <h2>What to do with the number once you have it</h2>
+      <h2>What should I do with my AI traffic number?</h2>
       <p>
-        A baseline is only useful if you compare something to it. The workflow that produces a real answer:
+        Use it as a baseline and compare against it after you change something. The workflow that produces a real answer:
       </p>
       <ol>
         <li>
@@ -148,7 +148,7 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Frequently asked questions</h2>
+      <h2>What else do people ask about tracking AI traffic?</h2>
 
       <h3>Can I see which question someone asked the AI before clicking?</h3>
       <p>
@@ -172,7 +172,7 @@ export function Body() {
         canonical URL. UTMs remain useful for your own campaigns; they are the wrong tool here.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how should you track AI traffic in GA4?</h2>
       <p>
         Build the AI channel in GA4 so you stop flying blind, place it above Referral so it actually collects
         sessions, and read it as a trend rather than a total. Then pair it with the half you cannot see in
@@ -181,7 +181,11 @@ export function Body() {
         or left out.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to build an AI channel group in GA4 and read it as a trend, not a total, then check
+        what the engines actually say about you to see the influence analytics cannot capture.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
       <p>
         <em>Last updated July 27, 2026.</em>

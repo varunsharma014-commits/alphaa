@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        By the alphaa team — we run AI-visibility scans across thousands of businesses, and the question we get
-        asked most is why yesterday&apos;s result did not reproduce today.
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
         <strong>Short answer:</strong> AI assistants give different answers to the same question because they are
@@ -29,7 +28,8 @@ export function Body() {
 
       <h2>Why does ChatGPT give different answers to the same question?</h2>
       <p>
-        Four independent sources of variance stack on top of each other. Understanding which one is moving matters,
+        ChatGPT&apos;s answers change because of sampling, live retrieval, session context and model or routing
+        changes. Four independent sources of variance stack on top of each other. Understanding which one is moving matters,
         because only some of them are things you can influence.
       </p>
       <ul>
@@ -62,9 +62,9 @@ export function Body() {
         noise you have to measure through.
       </p>
 
-      <h2>Why a single screenshot is not a measurement</h2>
+      <h2>Why isn&apos;t a single AI screenshot a real measurement?</h2>
       <p>
-        Suppose your business genuinely gets named in 40% of answers to &quot;best emergency plumber in
+        One screenshot is one sample from a variable answer, not evidence of a stable position. Suppose your business genuinely gets named in 40% of answers to &quot;best emergency plumber in
         Sacramento.&quot; Ask once and you have a 40% chance of seeing yourself and a 60% chance of concluding you
         are invisible. Ask once next month, see yourself, and conclude your AEO worked. Neither conclusion is
         supported — you have drawn two samples from a coin and declared a trend.
@@ -75,9 +75,9 @@ export function Body() {
         ChatGPT&quot; claim backed by one screenshot as unmeasured.
       </p>
 
-      <h2>The protocol we use to measure it</h2>
+      <h2>How do I measure my visibility when AI answers keep changing?</h2>
       <p>
-        This is the same shape as the scan we run, and you can execute it by hand in about 30 minutes. It replaces
+        Measure a mention rate: a fixed prompt set, run five times per engine in a clean session, repeated monthly. This is the same shape as the scan we run, and you can execute it by hand in about 30 minutes. It replaces
         an anecdote with a rate.
       </p>
       <ol>
@@ -136,7 +136,7 @@ export function Body() {
         honest columns.
       </p>
 
-      <h2>Questions people ask us about this</h2>
+      <h2>What else do people ask about changing AI answers?</h2>
       <p>
         <strong>Can I make the answer deterministic?</strong> No. You cannot set the temperature of a consumer
         assistant, and you should not want to — you are trying to influence what the average customer sees, and the
@@ -158,7 +158,7 @@ export function Body() {
         <Link href="/blog/how-long-does-aeo-take">how long AEO takes to work</Link>.
       </p>
 
-      <h2>The limits of this method</h2>
+      <h2>What can a mention rate not tell me?</h2>
       <p>
         A mention rate measures what assistants say, not what it earns you. It cannot tell you how many people asked
         that question, and no public dataset does either — the assistants do not publish query volume the way Search
@@ -168,7 +168,7 @@ export function Body() {
         it is still a proxy. Anyone quoting you an exact revenue figure from AI answers is guessing.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how should I deal with AI answers that change every time?</h2>
       <p>
         The variance is not a bug you can engineer away, and it is not evidence that AI visibility is unmeasurable.
         It just means the unit of measurement is a rate over repeated samples, not a screenshot. Fix your prompts,
@@ -180,10 +180,14 @@ export function Body() {
         .
       </p>
       <p>
+        The key takeaway is to stop trusting single screenshots and measure a mention rate instead: the same
+        prompts, run several times per engine from a clean session, repeated monthly.
+      </p>
+      <p>
         <em>Last updated 2026-07-28.</em>
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

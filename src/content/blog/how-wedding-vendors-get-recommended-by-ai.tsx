@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses, including
-          venues and event vendors. Last updated 9 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 9 August 2026.
         </em>
       </p>
 
@@ -30,9 +29,9 @@ export function Body() {
         published a starting number gets named instead.
       </p>
 
-      <h2>What couples actually ask</h2>
+      <h2>What do couples actually ask AI about wedding vendors?</h2>
       <p>
-        Wedding queries are unusually constraint-dense, because planning is a filtering exercise from day one.
+        Couples ask filter-heavy questions combining location, guest count, budget, style and policy constraints. Wedding queries are unusually constraint-dense, because planning is a filtering exercise from day one.
         Real question shapes look like this:
       </p>
       <ul>
@@ -49,9 +48,9 @@ export function Body() {
         them — which is why some of the most beautiful portfolios in a market are invisible in AI answers.
       </p>
 
-      <h2>Where the answer comes from in this category</h2>
+      <h2>Where do AI answers about wedding vendors come from?</h2>
       <p>
-        When an assistant answers a wedding query it synthesizes from retrieved documents, and the retrievable
+        They come mostly from wedding marketplaces, backed by Google Business Profile, reviews, editorial features and your own site. When an assistant answers a wedding query it synthesizes from retrieved documents, and the retrievable
         set here is marketplace-heavy:
       </p>
       <ul>
@@ -81,7 +80,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The five fixes, in order of leverage</h2>
+      <h2>What should wedding vendors fix first to get recommended by AI?</h2>
+      <p>
+        Publish a real price basis first, then state capacity as numbers, name your style in words, make availability legible and complete every marketplace field.
+      </p>
 
       <h3>1. Publish a real price basis</h3>
       <p>
@@ -134,9 +136,9 @@ export function Body() {
         your website: one business name spelling, one phone number, one address, one capacity figure.
       </p>
 
-      <h2>Schema worth adding</h2>
+      <h2>What schema markup should wedding vendors add?</h2>
       <p>
-        For a venue, mark up the location as <code>LocalBusiness</code> (or <code>EventVenue</code>) with{" "}
+        Venues should use LocalBusiness or EventVenue, and photographers and planners ProfessionalService, plus FAQPage for a genuine FAQ. For a venue, mark up the location as <code>LocalBusiness</code> (or <code>EventVenue</code>) with{" "}
         <code>address</code>, <code>geo</code>, <code>maximumAttendeeCapacity</code>,{" "}
         <code>amenityFeature</code> and <code>priceRange</code>. For photographers and planners, use{" "}
         <code>ProfessionalService</code> with <code>areaServed</code> and <code>makesOffer</code> pointing at
@@ -146,7 +148,7 @@ export function Body() {
         <Link href="/blog/schema-markup-for-ai-search">schema markup for AI search</Link>.
       </p>
 
-      <h2>What not to do</h2>
+      <h2>What should wedding vendors avoid when chasing AI recommendations?</h2>
       <p>
         Do not buy or solicit incentivised reviews — marketplaces police it, and reviews are read for content in
         this category, so a wall of generic five-star text is worth less than a dozen specific ones. Do not list
@@ -156,7 +158,7 @@ export function Body() {
         answer for your city — answers vary by phrasing, by engine and over time, and nobody controls them.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do wedding vendors ask about AI recommendations?</h2>
 
       <h3>Do I have to publish exact prices?</h3>
       <p>
@@ -180,7 +182,7 @@ export function Body() {
         <Link href="/blog/is-aeo-real">is AEO real</Link>.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do wedding vendors get recommended by AI?</h2>
       <p>
         Wedding vendors lose AI recommendations to withheld information, not to competition. Couples ask in
         numbers — guests, dollars, dates, miles — and assistants can only answer with the numbers they can find.
@@ -189,7 +191,11 @@ export function Body() {
         arrive already qualified.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to publish your capacity, price basis, policies and style in plain sentences and make every profile
+        agree, because assistants can only answer couples with the numbers they can find.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

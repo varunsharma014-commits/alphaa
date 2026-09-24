@@ -15,9 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <em>By the alphaa team — we help local businesses measure and improve what AI search engines say about
-        them, and we track the zero-click shift because it is the single biggest change to how customers find a
-        business in a decade.</em>
+        <em>By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.</em>
       </p>
 
       <p>
@@ -29,7 +27,7 @@ export function Body() {
         &quot;does the answer mention me?&quot; takes its place.
       </p>
 
-      <h2>What &quot;zero-click&quot; actually means</h2>
+      <h2>What does &quot;zero-click search&quot; actually mean?</h2>
       <p>
         A zero-click search is any query where the searcher&apos;s need is met without leaving the search results.
         Ask &quot;what time does the pharmacy close,&quot; &quot;how many ounces in a cup,&quot; or &quot;is the
@@ -45,7 +43,7 @@ export function Body() {
         person is deciding what to buy and from whom — are increasingly answered on the page too.
       </p>
 
-      <h2>The number, and where it comes from</h2>
+      <h2>How many Google searches end without a click?</h2>
       <p>
         The current best estimate is that roughly two-thirds of Google searches now end without a single click to
         a website (SparkToro/Similarweb, 2026) — up from around 60% in 2024. Treat the direction as the headline,
@@ -60,9 +58,9 @@ export function Body() {
         skeptical — the honest version of this stat comes with a qualifier attached.
       </p>
 
-      <h2>Why zero-click became the norm</h2>
+      <h2>Why did zero-click search become the norm?</h2>
       <p>
-        For twenty years, Google could only point. It had no way to answer &quot;how long does a water heater
+        Zero-click became the norm because the results page became the answer, answers got good enough to end the search, and many searchers skipped Google entirely. For twenty years, Google could only point. It had no way to answer &quot;how long does a water heater
         last&quot; itself, so it returned ten links and the answer lived on someone&apos;s page. That constraint is
         gone. Three shifts stack on top of each other:
       </p>
@@ -86,9 +84,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>What zero-click does to a business</h2>
+      <h2>How does zero-click search affect my business?</h2>
       <p>
-        The most disorienting symptom is the one that looks like a contradiction: your rankings hold and your
+        It lowers the value of your ranking, so rankings can hold while traffic falls. The most disorienting symptom is the one that looks like a contradiction: your rankings hold and your
         traffic falls. Position 2 is still position 2 — but when an AI Overview or a featured snippet sits above
         it and resolves the question, position 2 now lives below an answer the searcher has already read. Your
         ranking didn&apos;t drop; the <em>value</em> of the ranking did. A traffic decline with stable rankings
@@ -105,9 +103,9 @@ export function Body() {
         now predicts customers is whether that answer names you.
       </p>
 
-      <h2>How to stay visible when the click disappears</h2>
+      <h2>How can my business stay visible without the click?</h2>
       <p>
-        Being included in the answer is a different job than ranking, and it is won differently. AI engines and
+        Get included in the answer itself by being described verifiably, specifically and consistently across many sources. Being included in the answer is a different job than ranking, and it is won differently. AI engines and
         answer boxes assemble responses by retrieving live sources and weighing them against what the model
         already learned — and they reward being described{" "}
         <strong>verifiably, specifically, and consistently across many sources</strong>. Practically, that means:
@@ -138,9 +136,9 @@ export function Body() {
         <Link href="/blog/is-aeo-real">Is AEO real?</Link> before anyone sells you a guarantee.
       </p>
 
-      <h2>The honest caveats</h2>
+      <h2>Does zero-click search mean SEO is dead?</h2>
       <p>
-        The loud version of the zero-click story drops the limits. The honest one keeps them:
+        No: crawlable, clear pages matter as much as ever, because they are the raw material answers are quoted from. The loud version of the zero-click story drops the limits. The honest one keeps them:
       </p>
       <ul>
         <li>
@@ -164,7 +162,7 @@ export function Body() {
         for you is warmer than one comparing ten open tabs.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So what does zero-click search mean for my business?</h2>
       <p>
         Zero-click search means the results page increasingly answers the question itself, and roughly two-thirds
         of Google searches now end without a website visit (SparkToro/Similarweb, 2026). The click you used to
@@ -174,10 +172,14 @@ export function Body() {
         you can check it.
       </p>
       <p>
+        The key takeaway is that ranking no longer guarantees the click, so check what AI engines say about
+        you and make your facts consistent, quotable and backed by third-party evidence so the answer names you.
+      </p>
+      <p>
         <em>Last updated July 20, 2026.</em>
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

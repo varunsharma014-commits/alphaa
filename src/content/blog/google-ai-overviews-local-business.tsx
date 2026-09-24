@@ -23,7 +23,7 @@ export function Body() {
         can&apos;t buy a slot or force a mention, but you can make yourself the obvious, easy-to-cite answer.
       </p>
 
-      <h2>What Google AI Overviews actually are</h2>
+      <h2>What are Google AI Overviews?</h2>
       <p>
         An AI Overview is the summarized answer Google now places at the top of many results pages. Instead of
         making you click through ten blue links, Google reads the pages and profiles it already indexes and
@@ -40,9 +40,9 @@ export function Body() {
         make true things about your business easy to find, verify, and quote, and you become quotable.
       </p>
 
-      <h2>The signals AI Overviews lean on for local queries</h2>
+      <h2>Which signals do AI Overviews use for local queries?</h2>
       <p>
-        Local Overviews draw from a fairly predictable set of inputs. Strengthen these and you improve your
+        They lean on your Google Business Profile, your reviews and their content, citation consistency, on-page content that answers the question, and structured data. Local Overviews draw from a fairly predictable set of inputs. Strengthen these and you improve your
         odds of being the business Google names:
       </p>
       <ul>
@@ -75,8 +75,8 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>A practical playbook to show up</h2>
-      <p>Work these in order. The early items move the needle most for the least effort.</p>
+      <h2>How can a local business show up in AI Overviews?</h2>
+      <p>Complete your Business Profile, build a steady review flow, fix your citations, write pages that answer real questions, and earn third-party mentions. Work these in order. The early items move the needle most for the least effort.</p>
       <h3>1. Make your Business Profile complete and specific</h3>
       <p>
         Fill every field. Choose the most precise primary category, then add relevant secondary categories.
@@ -113,9 +113,9 @@ export function Body() {
         handful of credible, consistent mentions goes a long way.
       </p>
 
-      <h2>What you cannot do (and who to ignore)</h2>
+      <h2>What can&apos;t you do to get into AI Overviews?</h2>
       <p>
-        Be clear-eyed about the limits. You <strong>cannot</strong> pay Google to insert your business into an
+        You <strong>cannot</strong> pay Google to insert your business into an
         AI Overview, and no vendor has a backdoor that guarantees a mention. Overviews vary by phrasing, by
         location, by user, and over time — the same query can name different businesses on different days.
         Anyone promising &quot;guaranteed placement in Google AI Overviews&quot; is selling the same hype that
@@ -130,7 +130,7 @@ export function Body() {
         for being the business the Overview recommends, not just for a link buried below it.
       </p>
 
-      <h2>How this connects to the rest of AI search</h2>
+      <h2>Do AI Overviews work like ChatGPT and other AI assistants?</h2>
       <p>
         Google AI Overviews are one surface among several — ChatGPT, Gemini, Perplexity, and Apple&apos;s
         assistants all answer local questions in similar ways, reading public signals and synthesizing. The
@@ -142,7 +142,7 @@ export function Body() {
         . The tactics overlap heavily, because the underlying mechanism is the same everywhere.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What is the real way to show up in Google AI Overviews?</h2>
       <p>
         Showing up in Google AI Overviews isn&apos;t a trick — it is the disciplined, honest work of making
         your business complete, well-reviewed, and consistently described. Do that, and the Overview has clean,
@@ -151,7 +151,10 @@ export function Body() {
         find.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI Overviews name businesses they can describe with verifiable facts, so keep your Business Profile complete, your reviews flowing and your details consistent everywhere.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

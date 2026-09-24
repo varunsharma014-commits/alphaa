@@ -25,9 +25,9 @@ export function Body() {
         absolutely shape what it reads about you.
       </p>
 
-      <h2>Why AI recommends some local businesses and ignores others</h2>
+      <h2>Why does AI recommend some local businesses and ignore others?</h2>
       <p>
-        AI assistants answer local questions in two ways. Some pull live results at the moment you ask
+        AI recommends the businesses whose public information is clean, complete and trustworthy enough that it feels safe naming them. AI assistants answer local questions in two ways. Some pull live results at the moment you ask
         (retrieval, often called RAG) — searching the web, Maps, and directories in real time. Others lean
         on what they absorbed during training. Either way, the raw material is the same: the public
         information that exists about your business. AEO (Answer Engine Optimization) is the practice of
@@ -44,9 +44,9 @@ export function Body() {
         and they&apos;re the same ones below.
       </p>
 
-      <h2>A real example: a dental practice</h2>
+      <h2>What does this look like for a real dental practice?</h2>
       <p>
-        Imagine two dentists in the same town. Dr. A has a fully filled-out Google Business Profile — hours,
+        AI has a confident story to tell about the practice with a complete profile, many answered reviews and consistent details, and almost nothing it can trust about the one with gaps. Imagine two dentists in the same town. Dr. A has a fully filled-out Google Business Profile — hours,
         services, photos, insurance accepted — 180 reviews averaging 4.6 stars, and replies to nearly every
         one. Her website spells out specific services (&quot;Invisalign,&quot; &quot;same-day crowns,&quot;
         &quot;pediatric dentistry&quot;) and her name, address, and phone match exactly across her site,
@@ -61,7 +61,10 @@ export function Body() {
         a contractor, a law firm, or a salon.
       </p>
 
-      <h2>The local AI recommendation playbook</h2>
+      <h2>What steps get a local business recommended by AI?</h2>
+      <p>
+        Seven steps cover it: complete your Google Business Profile, earn and answer reviews, keep your NAP consistent, write service- and location-specific content, add LocalBusiness schema, avoid blocking AI crawlers, and add an llms.txt file.
+      </p>
 
       <h3>1. Complete and actively maintain your Google Business Profile</h3>
       <p>
@@ -147,9 +150,9 @@ export function Body() {
         for a template you can adapt today.
       </p>
 
-      <h2>If you&apos;re in a health or regulated field, trust matters more</h2>
+      <h2>Does trust matter more for health and regulated businesses?</h2>
       <p>
-        For dentists, medical clinics, lawyers, and other regulated services, AI is more cautious — and so are
+        Yes. For dentists, medical clinics, lawyers, and other regulated services, AI is more cautious — and so are
         the systems that feed it. This is where <strong>E-E-A-T</strong> (experience, expertise, authority,
         trust) carries extra weight. Make credentials obvious: list practitioners by name with their
         qualifications and licenses, cite authoritative sources where you make health or legal claims, show
@@ -158,9 +161,9 @@ export function Body() {
         behind recommending you to someone making a health or legal decision.
       </p>
 
-      <h2>What this is — and what it isn&apos;t</h2>
+      <h2>What can AEO do for a local business, and what can&apos;t it?</h2>
       <p>
-        Be clear-eyed about the mechanics. AEO doesn&apos;t reach inside an AI model and edit it. It improves the
+        AEO improves the public signals AI reads, such as your profile, reviews, citations, schema and content, but it cannot edit a model or guarantee rankings. Be clear-eyed about the mechanics. AEO doesn&apos;t reach inside an AI model and edit it. It improves the
         public signals the AI reads — your Google Business Profile, reviews, directories and citations, schema,
         and content — which then surface through live retrieval and training. There are no guaranteed rankings,
         and any tool or agency claiming otherwise is overpromising. What you <em>can</em> control is whether your
@@ -170,7 +173,10 @@ export function Body() {
         breaks it down.
       </p>
 
-      <h2>Where to start</h2>
+      <h2>Where should a local business start with AI visibility?</h2>
+      <p>
+        Start with your Google Business Profile, then reviews, consistent NAP, specific service pages, and schema plus crawler access.
+      </p>
       <ol>
         <li>Claim and fully complete your Google Business Profile.</li>
         <li>Set up a simple system to ask for reviews — and reply to every one.</li>
@@ -184,8 +190,11 @@ export function Body() {
       </p>
 
       <p>
+        The key takeaway is that AI recommends local businesses it can verify, so make your profile, reviews, listings and service pages complete, consistent and specific.
+      </p>
+      <p>
         Curious how AI describes your business right now?{" "}
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

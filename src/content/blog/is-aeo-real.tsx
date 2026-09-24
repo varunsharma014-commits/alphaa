@@ -24,18 +24,19 @@ export function Body() {
         selling hype.
       </p>
 
-      <h2>Why people ask if AEO is &quot;real&quot;</h2>
+      <h2>Why do people ask whether AEO is real?</h2>
       <p>
-        AEO arrived fast, wrapped in the same breathless language that once surrounded &quot;guaranteed #1 on
+        People ask because AEO arrived wrapped in the same hype that once surrounded &quot;guaranteed #1 on
+        Google,&quot; so skepticism is healthy. AEO arrived fast, wrapped in the same breathless language that once surrounded &quot;guaranteed #1 on
         Google.&quot; So the skepticism is healthy. If you&apos;ve typed &quot;is AEO real or just marketing
         hype?&quot; into an AI assistant, you&apos;re asking exactly the right question. The honest answer has
         two halves: the underlying mechanism is real and well-understood, and the industry around it contains
         both legitimate work and snake oil. Let&apos;s separate them.
       </p>
 
-      <h2>How AI engines actually form an answer</h2>
+      <h2>How do AI engines actually form an answer?</h2>
       <p>
-        When you ask ChatGPT, Claude, Gemini, or Perplexity a question like &quot;who&apos;s the best plumber
+        AI engines combine training knowledge with live web retrieval, then weigh signal layers to decide who to name. When you ask ChatGPT, Claude, Gemini, or Perplexity a question like &quot;who&apos;s the best plumber
         in Austin?&quot;, the answer is assembled from a few distinct sources rather than recalled from a
         single fact sheet:
       </p>
@@ -82,7 +83,7 @@ export function Body() {
         leaves you out.
       </p>
 
-      <h2>What AEO can do</h2>
+      <h2>What can AEO actually do for my business?</h2>
       <p>AEO is the discipline of strengthening those signal layers. Done well, it can:</p>
       <ul>
         <li>
@@ -107,8 +108,8 @@ export function Body() {
         works on the same plumbing as the answer itself.
       </p>
 
-      <h2>What AEO cannot do</h2>
-      <p>This is where honesty matters most. AEO <strong>cannot</strong>:</p>
+      <h2>What can AEO not do?</h2>
+      <p>AEO cannot edit a model&apos;s weights, inject you into answers, or guarantee a citation. This is where honesty matters most. AEO <strong>cannot</strong>:</p>
       <ul>
         <li>
           <strong>Edit a model&apos;s internal weights.</strong> Training knowledge is frozen. No vendor can
@@ -130,7 +131,10 @@ export function Body() {
         distinction is the whole difference between the real practice and the hype.
       </p>
 
-      <h2>How to tell legitimate AEO from snake oil</h2>
+      <h2>How can I tell legitimate AEO from snake oil?</h2>
+      <p>
+        Legitimate AEO talks about influencing inputs and probabilities; snake oil promises guaranteed rankings or a secret backdoor into the models.
+      </p>
       <table>
         <thead>
           <tr>
@@ -163,7 +167,7 @@ export function Body() {
         be skeptical.
       </p>
 
-      <h2>The honest state of the field</h2>
+      <h2>How mature is AEO as a field?</h2>
       <p>
         AEO is young, and parts of it are genuinely uncertain. Research in 2026 suggests that live retrieval
         and multi-source consensus meaningfully shape who gets named, but the field is still measuring how much
@@ -187,7 +191,7 @@ export function Body() {
         the disciplined work of making true things about your business easy for machines to find and verify.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So is AEO real or just hype?</h2>
       <p>
         AEO is real because the mechanism is real. AI assistants retrieve, weigh sources, and reward
         consensus — and you can legitimately influence every part of that except the model&apos;s frozen
@@ -197,7 +201,11 @@ export function Body() {
         keep.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AEO is real because you can legitimately influence what AI retrieves and trusts, but any promise
+        of guaranteed placement is not, so judge every offer by whether it respects that line.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

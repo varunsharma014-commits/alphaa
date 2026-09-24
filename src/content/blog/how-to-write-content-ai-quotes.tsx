@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of small businesses and read the raw
-          passages engines quote back. Last updated 30 July 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 30 July 2026.
         </em>
       </p>
 
@@ -30,9 +29,9 @@ export function Body() {
         completely and name the business it is about.
       </p>
 
-      <h2>Why passages, not pages, get cited</h2>
+      <h2>Why do AI engines cite passages instead of whole pages?</h2>
       <p>
-        A <strong>passage</strong> (or &quot;chunk&quot;) is the slice of your page that a retrieval system
+        AI engines cite passages because retrieval chunks, matches and synthesizes text below page level, so each passage is stored and scored on its own. A <strong>passage</strong> (or &quot;chunk&quot;) is the slice of your page that a retrieval system
         stores and scores as one unit. Retrieval-augmented generation — the process most assistants use to
         answer with live web content — works in three steps, and each one operates below page level:
       </p>
@@ -86,8 +85,8 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>A worked example: the same fact, written two ways</h2>
-      <p>Here is a paragraph from a typical service page:</p>
+      <h2>What does a passage AI can quote actually look like?</h2>
+      <p>A quotable passage names the entity, service, geography, hours, fee and conditions in one self-contained block. Here is a paragraph from a typical service page:</p>
       <blockquote>
         <p>
           We pride ourselves on fast response times and transparent pricing. Our experienced team is available
@@ -122,7 +121,7 @@ export function Body() {
         carrying numbers.
       </p>
 
-      <h2>How to structure a page for chunking</h2>
+      <h2>How should I structure a page so AI can chunk it?</h2>
       <p>
         Chunk boundaries usually fall on headings, so headings are how you control what gets stored together.
         The practical rules:
@@ -152,7 +151,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>A 30-minute rewrite workflow you can run today</h2>
+      <h2>How can I rewrite a page for AI quotes in 30 minutes?</h2>
+      <p>
+        Pick one page, turn your customers&apos; real questions into H2s, answer each one in the first sentence, and run the isolation test.
+      </p>
       <ol>
         <li>
           <strong>Pick one page that matters</strong> — the service or location page you would most want named
@@ -185,7 +187,7 @@ export function Body() {
         a retriever sees it, and it costs nothing.
       </p>
 
-      <h2>Questions people ask about writing for AI extraction</h2>
+      <h2>What else do people ask about writing for AI extraction?</h2>
       <h3>Does this mean I should write shorter articles?</h3>
       <p>
         No — write shorter <em>sections</em>. Length at the page level is fine and often helps, because more
@@ -217,7 +219,7 @@ export function Body() {
         writing is the part of the system you fully control, which is exactly why it is worth doing first.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how should you write content that AI will quote?</h2>
       <p>
         Stop optimising pages and start optimising paragraphs. Every section should answer one question, lead
         with the answer, name the business and place, carry a specific you will keep accurate, and stand up
@@ -226,7 +228,11 @@ export function Body() {
         done.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to optimise paragraphs, not pages: every section should answer one question, lead with the answer,
+        name the business and place, and still make sense when read in isolation.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

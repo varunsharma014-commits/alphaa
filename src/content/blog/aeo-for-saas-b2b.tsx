@@ -25,8 +25,10 @@ export function Body() {
         ranking.
       </p>
 
-      <h2>How AI picks software to recommend</h2>
+      <h2>How does AI pick which software to recommend?</h2>
       <p>
+        AI picks software by combining what it has indexed with live retrieval, leaning heavily on review
+        platforms, comparison content, community discussion, and your own docs and product pages.{" "}
         When someone types &quot;what&apos;s the best project management tool for agencies?&quot; into ChatGPT,
         Claude, Gemini, or Perplexity, the model isn&apos;t pulling from a single ranking. It draws on what
         it&apos;s indexed plus live retrieval, and for B2B software it leans heavily on a recognizable set of
@@ -46,16 +48,20 @@ export function Body() {
         software buying.
       </p>
 
-      <h2>This is a non-local playbook</h2>
+      <h2>Why is SaaS AEO different from local AEO?</h2>
       <p>
+        For SaaS and B2B, geography barely matters, so the levers are review platforms, comparison content, and
+        docs rather than local signals.{" "}
         If you run a local service business, the levers are different — Google Business Profile, location pages,
         and city-specific signals. (We cover that separately in our local guide.) For SaaS and B2B, geography
         barely matters. Buyers ask category and competitor questions, and AI answers from review platforms,
         comparison content, and docs. So that&apos;s where this playbook focuses.
       </p>
 
-      <h2>1. Own your category and &quot;alternatives / vs&quot; queries</h2>
+      <h2>1. How do you own your category and &quot;alternatives / vs&quot; queries?</h2>
       <p>
+        Publish honest comparison pages, &quot;alternatives to [competitor]&quot; pages, and use-case pages
+        so AI has credible content of yours for these comparative queries.{" "}
         The highest-intent AI queries in B2B are comparative: &quot;best [category] software,&quot;
         &quot;alternatives to [competitor],&quot; and &quot;[competitor] vs [you].&quot; If you don&apos;t
         publish credible content addressing these, AI fills the gap with whatever else it finds — usually your
@@ -71,7 +77,7 @@ export function Body() {
         <Link href="/blog/aeo-vs-seo-why-agencies-fail">AEO vs SEO</Link>.
       </p>
 
-      <h2>2. Get and maintain reviews on G2, Capterra, and TrustRadius</h2>
+      <h2>2. Why do reviews on G2, Capterra, and TrustRadius matter?</h2>
       <p>
         Review platforms are among the most heavily weighted sources AI uses for software recommendations —
         they&apos;re structured, independent, and updated by real users. A thin or stale profile is a missed
@@ -83,8 +89,9 @@ export function Body() {
         <li><strong>Keep details consistent</strong> with your own site. If your pricing tiers or positioning differ across sources, you weaken the consensus the model is trying to form.</li>
       </ul>
 
-      <h2>3. Publish content AI can actually cite</h2>
+      <h2>3. What content can AI actually cite about your software?</h2>
       <p>
+        AI can cite comparison and roundup content, use-case and integration pages, and clean documentation.{" "}
         AI engines favor sources that are clear, specific, and verifiable. Vague &quot;we&apos;re the leading
         platform&quot; copy gives a model nothing to cite. Concrete, structured content does.
       </p>
@@ -94,8 +101,11 @@ export function Body() {
         <li><strong>Clean documentation.</strong> Good docs aren&apos;t just for existing users — they&apos;re a rich, citable description of exactly what your product does. Make them crawlable and well-organized.</li>
       </ul>
 
-      <h2>4. Add Product / SoftwareApplication schema</h2>
+      <h2>4. Which schema should a SaaS company add?</h2>
       <p>
+        A SaaS company should add <strong>SoftwareApplication</strong> (or <strong>Product</strong>) schema,
+        plus <strong>Offer</strong> for pricing and <strong>AggregateRating</strong> where it has legitimate
+        ratings.{" "}
         Structured data helps engines parse what you are without guessing. For SaaS, the most relevant types
         are <strong>SoftwareApplication</strong> (or <strong>Product</strong>) plus{" "}
         <strong>Offer</strong> for pricing and <strong>AggregateRating</strong> where you have legitimate
@@ -121,7 +131,7 @@ export function Body() {
         accurately.
       </p>
 
-      <h2>5. Add an llms.txt for your docs</h2>
+      <h2>5. Should you add an llms.txt for your docs?</h2>
       <p>
         An <Link href="/blog/how-to-create-llms-txt-file">llms.txt file</Link> is a simple, plain-text map that
         points AI crawlers to your most important, citable pages — docs, key product pages, pricing, and
@@ -130,7 +140,7 @@ export function Body() {
         outdated pages. Pair it with not blocking reputable AI crawlers in your robots rules.
       </p>
 
-      <h2>6. Be consistent everywhere AI looks</h2>
+      <h2>6. Why must your story be consistent everywhere AI looks?</h2>
       <p>
         Consensus is the whole game. Your name, category, core value proposition, and pricing model should read
         the same across your site, your review profiles, comparison articles, press mentions, and community
@@ -144,7 +154,7 @@ export function Body() {
         <li><strong>Your own site:</strong> keep positioning and pricing current so you don&apos;t contradict the third-party record.</li>
       </ul>
 
-      <h2>A realistic expectation</h2>
+      <h2>What results can you realistically expect from SaaS AEO?</h2>
       <p>
         None of this edits the model. AEO shapes the <em>public signals</em> AI reads, and engines change how
         they retrieve and weight sources over time — so think of this as improving your odds of being
@@ -152,10 +162,16 @@ export function Body() {
         consistently and verifiably across reviews, comparisons, docs, and their own pages.
       </p>
 
+      <p>
+        The key takeaway is to be described consistently and verifiably across review platforms, comparison
+        content, docs, and your own pages, because AI recommends the software whose story agrees everywhere it
+        looks.
+      </p>
+
       <hr />
       <p>
         <strong>Want to know if AI already recommends you?</strong>{" "}
-        <Link href="/scan">Run a free AI visibility scan →</Link> and see how ChatGPT, Gemini, and Perplexity
+        <Link href="/start">Run the free AI check →</Link> and see how ChatGPT, Gemini, and Perplexity
         describe your software in your category.
       </p>
     </div>

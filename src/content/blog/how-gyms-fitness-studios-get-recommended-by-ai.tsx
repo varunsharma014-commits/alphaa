@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses, including gyms,
-          boutique studios and independent trainers. Last updated 2 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 2 August 2026.
         </em>
       </p>
 
@@ -30,9 +29,9 @@ export function Body() {
         decides the answer.
       </p>
 
-      <h2>Why fitness is unusually badly served by AI right now</h2>
+      <h2>Why is AI so bad at recommending gyms right now?</h2>
       <p>
-        Gym-finding queries are almost always constrained: &quot;beginner-friendly gym near Shoreditch with
+        Gym queries carry hard filters like time, price and class type, and the fitness industry withholds exactly those facts. Gym-finding queries are almost always constrained: &quot;beginner-friendly gym near Shoreditch with
         6am classes,&quot; &quot;24-hour gym in Austin with no joining fee,&quot; &quot;pilates studio that does
         prenatal.&quot; Each of those has hard filters — time, price, modality, population — and an assistant can
         only satisfy a filter with a fact it can find.
@@ -49,7 +48,10 @@ export function Body() {
         This is not a design problem. It is a retrieval problem, and it is fixable in a weekend.
       </p>
 
-      <h2>The five fixes, in the order we would do them</h2>
+      <h2>What should gyms fix first to get recommended by AI?</h2>
+      <p>
+        Publish prices in text, get the timetable into the HTML, say who you are for, fix the facts on other sites, and add the right schema.
+      </p>
 
       <h3>1. Publish your prices in text</h3>
       <p>
@@ -116,7 +118,7 @@ export function Body() {
         .
       </p>
       <p>
-        The most common thing we find in fitness scans is contradictory hours: a 24/7 access gym listing
+        One of the most common problems on fitness websites is contradictory hours: a 24/7 access gym listing
         9am–5pm staffed hours in one directory and 24 hours in another. An assistant asked for a 24-hour gym has
         to resolve that contradiction and often resolves it by naming someone else.
       </p>
@@ -136,7 +138,7 @@ export function Body() {
         <Link href="/blog/schema-markup-for-ai-search">our schema markup guide</Link>.
       </p>
 
-      <h2>Reviews: the fitness-specific version</h2>
+      <h2>What kind of reviews help a gym get recommended?</h2>
       <p>
         Reviews are the strongest third-party evidence a gym has, but for AI purposes the <em>content</em> of the
         review matters more than the star average. &quot;Love this place!!&quot; contributes nothing retrievable.
@@ -154,7 +156,10 @@ export function Body() {
         .
       </p>
 
-      <h2>A 30-minute audit you can run today</h2>
+      <h2>How can you audit your gym&apos;s AI visibility in 30 minutes?</h2>
+      <p>
+        Ask the assistants your niche question, test constrained follow-ups and direct fact checks, reload key pages with JavaScript off, and compare your listings side by side.
+      </p>
       <ol>
         <li>
           Ask ChatGPT, Gemini, Claude and Perplexity: &quot;best gym in [your suburb] for [your actual
@@ -180,19 +185,22 @@ export function Body() {
         <Link href="/blog/why-ai-answers-change-every-time">here is why</Link>).
       </p>
 
-      <h2>What to expect</h2>
+      <h2>How long before AI starts recommending your gym?</h2>
       <p>
         Profile corrections tend to surface within days to a few weeks once the sources are re-crawled; new
         pages and reviews take longer. Nobody can guarantee an AI engine will recommend your gym — AEO shapes the
         public signals models read, it does not control their output, and any vendor promising guaranteed
         placement is selling something that does not exist. What this work does is remove the reasons an
         assistant currently has to skip you: missing prices, invisible timetables, contradictory hours, and a
-        positioning statement too vague to match anyone. In our scans, the fitness businesses that move fastest
+        positioning statement too vague to match anyone. The fitness businesses that tend to move fastest
         are the ones that publish pricing and get the timetable into plain HTML, because those two changes turn
         the most common constrained queries from unanswerable into answerable.
       </p>
 
-      <h2>Q&amp;A</h2>
+      <h2>What else do gym owners ask about AI visibility?</h2>
+      <p>
+        The common questions are whether you must publish prices, whether ClassPass or Mindbody covers you, and what applies to trainers without premises and franchise gyms.
+      </p>
       <p>
         <strong>Do I really have to publish prices?</strong> It is the highest-impact single change for a gym,
         because so many queries are price-constrained. A published range with the contract terms captures most of
@@ -215,14 +223,17 @@ export function Body() {
         hours — that differ from the other branches.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>Why do gyms lose AI recommendations?</h2>
       <p>
         Gyms lose AI recommendations for a boring reason: the facts people filter on are the exact facts the
         industry hides. Publish the prices, get the timetable into the HTML, say plainly who you are for, make
         your hours agree everywhere, and ask members to review in specifics. That is most of the job.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to publish prices, get your timetable into the HTML, state who you are for, keep hours consistent everywhere, and ask members for specific reviews.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

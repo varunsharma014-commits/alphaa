@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including a lot of sites
-          that launched last month. Last updated 26 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 26 August 2026.
         </em>
       </p>
 
@@ -32,8 +31,10 @@ export function Body() {
         show up in a model&apos;s baked-in knowledge.
       </p>
 
-      <h2>Why a new site is at a disadvantage — precisely which one</h2>
+      <h2>Why is a new website at a disadvantage in AI search?</h2>
       <p>
+        A new site is not penalised; it is missing three inputs: corroboration, an entity record, and presence in
+        training data.{" "}
         It is worth being exact about the handicap, because it is narrower than most people assume. A new site is
         not penalised. It is simply missing inputs. There are three:
       </p>
@@ -61,8 +62,10 @@ export function Body() {
         much faster than a classic SEO deficit.
       </p>
 
-      <h2>The two doors into an AI answer</h2>
+      <h2>How can a new website get into an AI answer?</h2>
       <p>
+        There are two doors: live retrieval, which is open to a site published yesterday, and parametric
+        knowledge, which stays closed until a training cycle includes material about you.{" "}
         Understanding these separately is what makes the sequence below make sense.
       </p>
       <p>
@@ -82,7 +85,11 @@ export function Body() {
         for long enough.
       </p>
 
-      <h2>The order of operations</h2>
+      <h2>In what order should a new website build AI visibility?</h2>
+      <p>
+        Be fetchable first, fix your name, create corroboration, add structured data, write three strong pages,
+        and then measure the right thing.
+      </p>
 
       <h3>Step 1 — Make sure you are fetchable at all (day one)</h3>
       <p>
@@ -200,8 +207,10 @@ export function Body() {
         <Link href="/blog/how-to-track-ai-traffic-google-analytics">here is how</Link>.
       </p>
 
-      <h2>An honest timeline</h2>
+      <h2>How long does a new website take to show up in AI answers?</h2>
       <p>
+        Expect occasional citations for narrow queries in weeks 3–8 and a settled entity record in months 2–6,
+        though these are patterns, not promises.{" "}
         From what we observe across new sites, roughly:
       </p>
       <ul>
@@ -230,7 +239,7 @@ export function Body() {
         <Link href="/blog/why-ai-answers-change-every-time">why AI answers change every time you ask</Link>.
       </p>
 
-      <h2>Questions we get asked</h2>
+      <h2>What else do new website owners ask about AI visibility?</h2>
       <h3>Should I buy an aged domain instead?</h3>
       <p>
         No. The value you are missing is corroboration and entity clarity, and an aged domain with an unrelated
@@ -264,7 +273,7 @@ export function Body() {
         posts did.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line for a new website?</h2>
       <p>
         A new website&apos;s problem is missing evidence, not a penalty — and evidence can be assembled
         deliberately. Be fetchable, pick one exact name and use it everywhere, create a small set of independent
@@ -272,7 +281,13 @@ export function Body() {
         you could write. That sequence, done properly in a month, beats a year of publishing into a void.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that a new site lacks evidence, not standing: be fetchable, use one exact name
+        everywhere, build a few independent records, add structured data, and write the pages only you could
+        write.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

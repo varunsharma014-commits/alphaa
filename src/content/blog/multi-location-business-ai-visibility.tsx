@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including chains,
-          franchises and multi-branch practices. Last updated 1 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 1 August 2026.
         </em>
       </p>
 
@@ -30,9 +29,9 @@ export function Body() {
         consistent with the parent brand but not identical to each other.
       </p>
 
-      <h2>Why multi-location is a different problem</h2>
+      <h2>Why is AI visibility harder for multi-location businesses?</h2>
       <p>
-        A single-location business has one job: be describable. A ten-location business has that job ten times
+        It is harder because the engine must also decide which branch to name, a disambiguation problem single-location businesses do not have. A single-location business has one job: be describable. A ten-location business has that job ten times
         over, plus a new one — <strong>disambiguation</strong>. When someone asks &quot;physical therapy clinic
         in Round Rock that takes Medicare,&quot; the engine has to decide not only whether your brand is
         relevant but <em>which</em> of your ten clinics to name, with what address, hours and phone number. If
@@ -56,9 +55,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The template trap</h2>
+      <h2>Why do templated location pages hurt AI visibility?</h2>
       <p>
-        Nearly every multi-location site we scan has the same architecture: one location template, populated
+        Templated pages are near-identical, so none contains a distinguishing fact that lets retrieval tell branches apart. Nearly every multi-location site we scan has the same architecture: one location template, populated
         from a database, producing pages that differ only in the city name, the map embed and the phone number.
         Three hundred words of identical body copy across forty pages.
       </p>
@@ -85,9 +84,9 @@ export function Body() {
         metro area with quality care&quot; is not.
       </p>
 
-      <h2>The five-layer checklist for each location</h2>
+      <h2>What does each location need to get recommended by AI?</h2>
       <p>
-        Run this per branch, not per brand. It is tedious the first time and mostly maintenance afterwards.
+        Each location needs a real page, its own LocalBusiness schema, its own claimed profiles, its own reviews and some local content. Run this per branch, not per brand. It is tedious the first time and mostly maintenance afterwards.
       </p>
       <ol>
         <li>
@@ -124,7 +123,7 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Naming consistency: the boring thing that breaks everything</h2>
+      <h2>Why does consistent location naming matter so much for AI?</h2>
       <p>
         Decide, once, how each location is named, and then use that exact string everywhere:{" "}
         <strong>&quot;Meridian Physical Therapy — Round Rock&quot;</strong>. Not &quot;Meridian PT Round
@@ -139,8 +138,8 @@ export function Body() {
         manual is worth more to AI visibility than most of the marketing budget above it.
       </p>
 
-      <h2>How to audit this yourself in an afternoon</h2>
-      <p>Pick your three most commercially important locations and, for each one:</p>
+      <h2>How can I audit my locations&apos; AI visibility in an afternoon?</h2>
+      <p>Ask the AI engines local questions and check the answers, page HTML and naming variants. Pick your three most commercially important locations and, for each one:</p>
       <ol>
         <li>
           Ask ChatGPT, Gemini, Claude and Perplexity the question a local customer would ask — the service plus
@@ -166,11 +165,11 @@ export function Body() {
         .
       </p>
 
-      <h2>What to expect, honestly</h2>
+      <h2>What results can a multi-location business realistically expect?</h2>
       <p>
         None of this guarantees that an AI engine will name your branch — nothing does, and any vendor promising
         guaranteed AI placement is selling something that does not exist. What it does is remove the reasons a
-        model currently has to hedge, blend or pick a competitor. In our experience the two changes that move
+        model currently has to hedge, blend or pick a competitor. Usually, the two changes that move
         the needle fastest are the per-location profile cleanup (because it fixes contradictions the engine is
         actively tripping over) and the five-distinguishing-facts rewrite (because it gives retrieval something
         to match). Both take weeks, not days, to show up in answers — profiles have to be re-crawled and
@@ -182,7 +181,7 @@ export function Body() {
         fields rather than one that permits them.
       </p>
 
-      <h2>Q&amp;A</h2>
+      <h2>What else do multi-location businesses ask about AI visibility?</h2>
       <p>
         <strong>Should each location have its own website?</strong> Almost never. Separate domains split your
         authority and multiply the maintenance. One brand domain with strong, distinct location pages is the
@@ -207,14 +206,18 @@ export function Body() {
         uniqueness limit. If a page has nothing true and specific to say, it should not exist.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do multi-location businesses win AI recommendations?</h2>
       <p>
         For a multi-location business, AI visibility is not a brand problem. It is the same entity problem
         repeated once per branch, and the brands that win are the ones that treat each location as a business
         that has to earn its own description, its own profile and its own reviews.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to treat every location as its own entity, with at least five distinguishing facts, its own schema,
+        profile and reviews, and one exact naming standard used everywhere.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

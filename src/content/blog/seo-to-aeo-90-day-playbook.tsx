@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>By the alphaa team — this is the exact sequence we run when a business moves from chasing rankings
-        to getting cited by AI.</strong> Last updated 23 July 2026.
+        <strong>By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.</strong> Last updated 23 July 2026.
       </p>
 
       <p>
@@ -28,9 +27,9 @@ export function Body() {
         under a year, and those visitors convert better than traditional search traffic (Adobe Analytics, 2025–26).
       </p>
 
-      <h2>Why a playbook instead of a rebuild</h2>
+      <h2>Do I need to rebuild my site to move from SEO to AEO?</h2>
       <p>
-        The instinct when a channel shifts is to tear everything down. Do not. Live retrieval — the process AI
+        No: AI retrieval reads the same crawlable, well-structured content good SEO already produces, so you add a layer rather than rebuild. The instinct when a channel shifts is to tear everything down. Do not. Live retrieval — the process AI
         assistants use to pull fresh web pages before answering — reads the same crawlable, well-structured content
         that good SEO already produces. The fundamentals did not stop working; they stopped being the whole job.
         What is new is the layer on top: making your facts consistent everywhere a model looks, and earning the
@@ -45,9 +44,9 @@ export function Body() {
         <Link href="/blog/is-aeo-real">Is AEO real?</Link>.
       </p>
 
-      <h2>Days 1–30: Measure (get your real baseline)</h2>
+      <h2>Days 1–30: How do I measure what AI says about me?</h2>
       <p>
-        You cannot improve what you have not looked at. Most owners have never actually asked an AI what it says
+        Ask ChatGPT, Claude, Gemini and Perplexity customer questions, audit your facts and write down a baseline. You cannot improve what you have not looked at. Most owners have never actually asked an AI what it says
         about their business, and the answer is usually wrong, vague, or absent. Phase one is diagnosis, not
         editing.
       </p>
@@ -80,9 +79,9 @@ export function Body() {
         for you</Link> and gives you the same baseline in a couple of minutes.
       </p>
 
-      <h2>Days 31–60: Fix (make your facts machine-readable)</h2>
+      <h2>Days 31–60: How do I make my facts machine-readable?</h2>
       <p>
-        Now you correct what the measurement exposed. This phase is unglamorous and high-leverage — it removes the
+        Make your core facts identical everywhere, rewrite service pages answer-first, add schema and publish plain FAQ answers. Now you correct what the measurement exposed. This phase is unglamorous and high-leverage — it removes the
         reasons an engine leaves you out before you spend effort earning new mentions.
       </p>
       <ul>
@@ -114,9 +113,9 @@ export function Body() {
         That is the raw material every AI answer is assembled from.
       </p>
 
-      <h2>Days 61–90: Build (earn the outside evidence)</h2>
+      <h2>Days 61–90: How do I earn outside evidence for AI?</h2>
       <p>
-        Describing yourself well is necessary but not sufficient. AI assistants reward being described{" "}
+        Build reviews, listings and a few genuine mentions, then re-run your day-1 measurement. Describing yourself well is necessary but not sufficient. AI assistants reward being described{" "}
         <strong>verifiably, specifically, and consistently across many sources</strong> — being vouched for by
         others carries weight your own site cannot manufacture. Phase three builds that.
       </p>
@@ -145,7 +144,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The 90-day plan at a glance</h2>
+      <h2>What does the 90-day SEO-to-AEO plan look like at a glance?</h2>
+      <p>
+        It is three 30-day phases: measure, fix, then build.
+      </p>
       <table>
         <thead>
           <tr>
@@ -173,9 +175,9 @@ export function Body() {
         </tbody>
       </table>
 
-      <h2>What to expect after 90 days</h2>
+      <h2>What results should I expect after 90 days of AEO?</h2>
       <p>
-        Be realistic about the shape of the result. AI engines re-crawl and re-train on their own schedule, so
+        Expect directional improvement: more engines naming you, fewer wrong details, and better descriptions. Be realistic about the shape of the result. AI engines re-crawl and re-train on their own schedule, so
         improvements show up unevenly — one engine may pick up your corrected facts weeks before another. You are
         not buying a ranking that flips on a set date; you are raising the odds that when a customer asks, the
         answer includes you. What you should see is directional: more of the four engines naming you, fewer wrong
@@ -189,7 +191,7 @@ export function Body() {
         optimization is</Link> defines the discipline this playbook applies.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do I move from SEO to AEO?</h2>
       <p>
         Moving from SEO to AEO is not a teardown; it is a 90-day reordering of effort. Measure honestly, fix your
         facts, build your evidence — in that sequence, because each phase makes the next one work. Do it well and
@@ -197,7 +199,11 @@ export function Body() {
         your customer asks an AI who to hire, does it say you? Start by finding out where you stand today.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to measure what AI says about you, fix your facts and structure, then build third-party evidence, in
+        that order, because each phase makes the next one work.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

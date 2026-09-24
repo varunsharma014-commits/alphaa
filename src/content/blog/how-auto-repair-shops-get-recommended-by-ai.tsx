@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses, including
-          independent garages and specialist repair shops. Last updated 31 July 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 31 July 2026.
         </em>
       </p>
 
@@ -30,9 +29,9 @@ export function Body() {
         list of serviced makes.
       </p>
 
-      <h2>What drivers actually ask AI</h2>
+      <h2>What do drivers actually ask AI about car repairs?</h2>
       <p>
-        Repair queries split into two moments, and most shop websites are built only for the second one.
+        Drivers ask symptom questions, often from the driveway, and who questions looking for a specific shop. Repair queries split into two moments, and most shop websites are built only for the second one.
       </p>
       <ul>
         <li>
@@ -52,7 +51,7 @@ export function Body() {
         You need content for both, and they are written very differently.
       </p>
 
-      <h2>Why generic shops lose the recommendation</h2>
+      <h2>Why do generic auto repair shops lose AI recommendations?</h2>
       <p>
         Retrieval systems match a specific question against specific text. &quot;Full-service auto repair&quot;
         is semantically close to every other garage in your city, so it wins nothing. &quot;We service European
@@ -61,11 +60,14 @@ export function Body() {
         driver attached to it.
       </p>
       <p>
-        This is the single largest gap we see in shop websites: the owner knows the shop is the go-to Subaru
+        This is one of the largest gaps on shop websites: the owner knows the shop is the go-to Subaru
         place in town, and the website never says the word Subaru anywhere a machine can read it.
       </p>
 
-      <h2>The playbook</h2>
+      <h2>How can an auto repair shop get recommended by AI?</h2>
+      <p>
+        Publish your makes and services, diagnostic fee, warranty and certifications in plain text, answer symptom questions, use the right schema, match your Google Business Profile, and ask for reviews that name the repair.
+      </p>
 
       <h3>1. Publish a makes-and-services matrix in plain text</h3>
       <p>
@@ -136,7 +138,10 @@ export function Body() {
         . Ask at handover, when the relief is fresh, and ask the customer to mention the specific job.
       </p>
 
-      <h2>Quick reference: what to publish this week</h2>
+      <h2>What should an auto repair shop publish this week?</h2>
+      <p>
+        Publish the plain facts drivers filter on: makes and services, diagnostic fee, warranty, certifications, hours, loaner options and five symptom answers.
+      </p>
       <ul>
         <li>A makes-and-services list in plain text, including what you decline.</li>
         <li>Your diagnostic fee, and whether it is credited toward the repair.</li>
@@ -147,15 +152,15 @@ export function Body() {
         <li>Five symptom answers, each complete on its own.</li>
       </ul>
 
-      <h2>Why this matters now</h2>
+      <h2>Why does AI visibility matter for repair shops now?</h2>
       <p>
-        Roughly two-thirds of Google searches now end without a single click to a website (SparkToro/Similarweb,
+        A growing share of drivers form a shortlist from AI summaries before your website ever loads. Roughly two-thirds of Google searches now end without a single click to a website (SparkToro/Similarweb,
         2026), and 65% of consumers use AI tools to research products before buying (Clutch, 2026). For a repair
         shop that means a growing share of drivers form a shortlist before your website ever loads — from a
         summary assembled out of whatever public text describes you.
       </p>
 
-      <h2>Honest expectations</h2>
+      <h2>How long until AI recommends your repair shop?</h2>
       <p>
         Listing and profile corrections can show up in AI answers within days because they are re-retrieved
         live. Content and review signals build over weeks to months. Results vary by shop, by city, by how
@@ -165,15 +170,18 @@ export function Body() {
         the hype.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What wins AI recommendations for auto repair shops?</h2>
       <p>
-        Auto repair shops lose AI recommendations to vagueness far more often than to competition. Say which
+        Specific, consistent facts win them. Auto repair shops lose AI recommendations to vagueness far more often than to competition. Say which
         makes you work on, what a diagnostic costs, what your warranty actually covers, and what your
         technicians are certified in — then make every public listing agree. That is not a trick; it is the
         same information a driver with a grinding noise needs, written so a machine can find it too.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI engines cannot recommend a shop they cannot describe, so publish your makes, diagnostic fee, warranty and certifications in plain text and make every listing agree.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -15,7 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>By the alphaa team — we run AI-visibility scans across thousands of local businesses.</strong>{" "}
+        <strong>By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.</strong>{" "}
         Every statistic below is attributed to a named source, quoted with its original qualifier, and dated. Where
         a figure is commonly exaggerated online, we say so and give the number the source actually reported. Last
         updated 23 July 2026.
@@ -29,8 +29,11 @@ export function Body() {
         (OpenAI, 2025). Below is each number, its source, and what it does and does not mean.
       </p>
 
-      <h2>The headline numbers (verified)</h2>
+      <h2>What are the verified AI search statistics for 2026?</h2>
       <p>
+        The verified headline numbers are ~68% zero-click Google searches, 65% of consumers researching with AI,
+        800M+ weekly ChatGPT users, ~48% of commercial searches showing an AI Overview, and 1,200%+ growth in
+        AI-referred retail traffic.{" "}
         These are the figures we are comfortable standing behind because they trace to a named, checkable source.
         We have kept each one&apos;s exact qualifier — &quot;commercial-intent,&quot; &quot;weekly active,&quot;
         &quot;in under a year&quot; — because dropping the qualifier is how an honest statistic becomes a misleading
@@ -64,8 +67,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>What these numbers mean together</h2>
+      <h2>What do these AI search numbers mean together?</h2>
       <p>
+        Together they show the click you used to earn is now optional, whether the answer arrives on Google&apos;s
+        results page or in ChatGPT.{" "}
         Read as a set, the story is consistent. The moment where a searcher used to choose between ten blue links
         is being removed from the middle of the journey. Sometimes the answer arrives on Google&apos;s own results
         page — that is the ~68% zero-click and the ~48% AI-Overview figures. Sometimes the searcher never opens
@@ -80,8 +85,9 @@ export function Body() {
         <Link href="/blog/death-of-the-blue-link">The death of the blue link</Link>.
       </p>
 
-      <h2>Numbers to be careful with</h2>
+      <h2>Which AI search statistics should you be careful repeating?</h2>
       <p>
+        Be careful with figures that are wrong, out of date, or missing a qualifier that changes their meaning.{" "}
         A stats page is only trustworthy if it also tells you what <em>not</em> to repeat. These are figures we see
         cited confidently that are either wrong, out of date, or missing a qualifier that changes their meaning:
       </p>
@@ -104,7 +110,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Frequently asked questions</h2>
+      <h2>What else do people ask about AI search statistics?</h2>
       <h3>How many searches end without a click in 2026?</h3>
       <p>
         Roughly two-thirds — about 68% of Google searches now end without a single click to any website
@@ -129,7 +135,7 @@ export function Body() {
         and those visitors convert better than traditional search traffic (Adobe Analytics, 2025–26).
       </p>
 
-      <h2>The honest limitation</h2>
+      <h2>How far should you rely on these AI search statistics?</h2>
       <p>
         These are directional, industry-level figures. None of them tells you what an AI engine says about{" "}
         <em>your</em> business today — and that is the only number that changes your revenue. National statistics
@@ -144,7 +150,7 @@ export function Body() {
         work genuinely cannot do.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on AI search in 2026?</h2>
       <p>
         The 2026 data points one way: fewer clicks, more answers, and a large slice of demand now flowing through
         AI assistants that decide who to name based on the sources they can find and verify. The statistics tell
@@ -153,7 +159,12 @@ export function Body() {
         includes you.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that the 2026 data points to fewer clicks and more answers, so the number that
+        matters is whether the AI answer your customers see actually includes your business.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

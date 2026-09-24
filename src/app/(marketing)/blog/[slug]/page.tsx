@@ -3,6 +3,8 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { ArrowLeft } from "lucide-react"
 import { getAllPosts, getPost } from "@/content/blog"
+import { extractFaq } from "@/content/blog/faq"
+import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
 
 export function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.meta.slug }))
@@ -49,10 +51,32 @@ export default async function BlogPostPage({
     headline: meta.title,
     description: meta.description,
     datePublished: meta.date,
-    dateModified: meta.date,
+    dateModified: meta.date > CONTENT_REVIEWED ? meta.date : CONTENT_REVIEWED,
     author: { "@type": "Organization", name: "Alphaa" },
     publisher: { "@type": "Organization", name: "Alphaa", url: "https://alphaa.app" },
     mainEntityOfPage: `https://alphaa.app/blog/${meta.slug}`,
+    url: `https://alphaa.app/blog/${meta.slug}`,
+    inLanguage: "en",
+    isAccessibleForFree: true,
+  }
+  // Question-phrased H2 + its first paragraph → FAQPage, so AI engines can
+  // lift a direct answer per question.
+  const faq = extractFaq(meta.slug)
+  const faqSchema = faq.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+      }
+    : null
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://alphaa.app" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://alphaa.app/blog" },
+      { "@type": "ListItem", position: 3, name: meta.title, item: `https://alphaa.app/blog/${meta.slug}` },
+    ],
   }
 
   return (
@@ -61,6 +85,8 @@ export default async function BlogPostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
       <div className="max-w-2xl mx-auto">
         <Link
           href="/blog"
@@ -84,7 +110,23 @@ export default async function BlogPostPage({
           {meta.title}
         </h1>
 
+        {/* Every post leads to the free check — once near the top, once at the end. */}
+        <Link href="/start" className="blog-cta-top">
+          Free: see what ChatGPT, Gemini, Claude and Perplexity say about your business <span aria-hidden="true">›</span>
+        </Link>
+
         <Body />
+
+        <aside className="blog-cta" aria-label="Free AI check">
+          <p className="blog-cta__eyebrow">Free · 60 seconds</p>
+          <h2 className="blog-cta__title">Does AI recommend your business?</h2>
+          <p className="blog-cta__text">
+            Alphaa asks ChatGPT, Gemini, Claude and Perplexity the question your customers ask, shows you who they named,
+            and runs 23 checks on what AI can read on your site.
+          </p>
+          <Link href="/start" className="blog-cta__btn">Scan Your Website – It’s Free</Link>
+          <p className="blog-cta__fine">No credit card required.</p>
+        </aside>
       </div>
     </article>
   )

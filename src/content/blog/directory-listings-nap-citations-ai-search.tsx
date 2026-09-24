@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses and read the
-          sources the engines actually cite back. Last updated 10 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 10 August 2026.
         </em>
       </p>
 
@@ -31,8 +30,10 @@ export function Body() {
         listings with three different phone numbers actively does the opposite.
       </p>
 
-      <h2>What changed: from traffic channel to verification layer</h2>
+      <h2>How have directory listings changed in the age of AI search?</h2>
       <p>
+        Directory listings have moved from a traffic channel to a verification layer that AI uses to confirm
+        claims about you.{" "}
         The old citation-building playbook was a link-and-traffic play. You submitted to 300 directories
         because each one was a possible referral and a possible ranking signal. That logic mostly died with the
         click: roughly two-thirds of Google searches now end without a single click to any website
@@ -42,15 +43,16 @@ export function Body() {
       <p>
         The listings did not stop mattering, though. They moved jobs. Directory pages are clean, structured,
         frequently re-crawled and — critically — <em>not written by you</em>. That makes them ideal retrieval
-        targets when a model needs to confirm a claim. In practice we see this in the citation lists engines
+        targets when a model needs to confirm a claim. In practice this shows up in the citation lists engines
         return: ask Perplexity or ChatGPT for &quot;best pest control in Boise&quot; and the sources under the
         answer are usually a mix of the businesses&apos; own sites, Google Business Profile data, review
         platforms, and two or three directories or local roundups. The directory is rarely the reason you get
         recommended. It is frequently the reason the assistant is confident enough to say your name.
       </p>
 
-      <h2>How an assistant actually uses a listing</h2>
+      <h2>How does an AI assistant actually use a directory listing?</h2>
       <p>
+        An assistant uses a listing as an entity confirmation, a filter answer, and a trust proxy.{" "}
         It helps to be precise about the mechanism, because it changes what you should do. Modern assistants
         answer local and service questions through retrieval-augmented generation: the model issues one or more
         searches, pulls back a set of documents, and writes an answer grounded in what those documents say. A
@@ -83,9 +85,12 @@ export function Body() {
         <em> statements about you</em>, not as links.
       </p>
 
-      <h2>Which listings are actually worth your time</h2>
+      <h2>Which directory listings are actually worth your time?</h2>
       <p>
-        Most businesses do not need more listings. They need the right eight to be perfect. In our scans the
+        The listings worth your time are Google Business Profile, Apple Business Connect and Bing Places, your
+        category&apos;s review platforms and marketplaces, the BBB where customers care, your trade association,
+        and the data aggregators.{" "}
+        Most businesses do not need more listings. They need the right eight to be perfect. The
         sources that show up in AI citations for local queries cluster tightly, and the long tail of submission
         sites almost never appears. A realistic priority order:
       </p>
@@ -132,9 +137,10 @@ export function Body() {
         to keep accurate.
       </p>
 
-      <h2>The real risk: listings that contradict you</h2>
+      <h2>What happens when your listings contradict each other?</h2>
       <p>
-        The most common damage we find in scans is not absence. It is disagreement. A typical mid-sized service
+        When listings disagree, the assistant hedges, picks the wrong detail, or drops you.{" "}
+        The most common damage is not absence. It is disagreement. A typical mid-sized service
         business has moved office once, changed its tracking phone number twice, rebranded from
         &quot;Sons&quot; to &quot;&amp; Sons&quot;, and closed a second location — and every one of those events
         left a stale copy somewhere.
@@ -163,8 +169,10 @@ export function Body() {
         ones are the ones that generate the contradiction.
       </p>
 
-      <h2>A worked cleanup, in the order we actually do it</h2>
+      <h2>How do you clean up your directory listings?</h2>
       <p>
+        Write your canonical record, find what exists, ask the assistants, fix in dependency order, claim rather
+        than duplicate, update your own site, and re-check in four to six weeks.{" "}
         This takes about two hours for a single-location business and is the highest-return unglamorous work in
         AEO.
       </p>
@@ -211,8 +219,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>What about tracking numbers?</h2>
+      <h2>Should you use call-tracking numbers in your listings?</h2>
       <p>
+        Not as the primary number: use your real main line everywhere a machine reads it and keep tracking
+        numbers to channels such as paid ads.{" "}
         Call-tracking numbers are the single most common self-inflicted inconsistency we see. The rule that
         keeps both things working: use your real main line as the primary number everywhere a machine reads it
         — GBP, directories, schema, contact page — and confine tracking numbers to channels where they belong,
@@ -221,7 +231,7 @@ export function Body() {
         never point different directories at different tracking numbers.
       </p>
 
-      <h2>Questions we get asked</h2>
+      <h2>What else do people ask about directory listings and AI?</h2>
 
       <h3>Do I need a paid listing or upgraded profile?</h3>
       <p>
@@ -253,11 +263,10 @@ export function Body() {
         Honestly: it is necessary, not sufficient. Consistent listings remove the reasons an engine would
         exclude or hedge on you. They do not by themselves make you the recommendation — that comes from being
         genuinely well-reviewed, specific about what you do, and described by third parties. We cannot give you
-        a percentage, and you should be suspicious of anyone who does. What we can say is that in scans, the
-        businesses that are invisible for their own brand name almost always have a consistency problem first.
+        a percentage, and you should be suspicious of anyone who does. What can be said is that the businesses that are invisible for their own brand name almost always have a consistency problem first.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on directory listings for AI search?</h2>
       <p>
         Directories stopped being a traffic strategy and became a fact-checking layer. That means the goal is
         not coverage, it is agreement: a small set of listings on platforms that are actually retrieved, every
@@ -266,7 +275,12 @@ export function Body() {
         work that most often moves the needle first.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to aim for agreement, not coverage: keep a small set of listings on platforms AI
+        actually retrieves, each stating exactly what your website and Google profile state.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

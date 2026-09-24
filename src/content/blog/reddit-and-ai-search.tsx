@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        By the alphaa team — we read the raw snippets AI engines produce about businesses every week, and the source
-        they quote is usually not the business&apos;s own website.
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
         <strong>Short answer:</strong> AI assistants weight third-party sources heavily because your own site tells
@@ -29,7 +28,8 @@ export function Body() {
 
       <h2>Why do AI engines quote Reddit so often?</h2>
       <p>
-        Three mechanics compound, and none of them are about Reddit being a better website.
+        AI engines quote Reddit because its threads match the shape of the query, look independent, and are
+        available through content agreements. Three mechanics compound, and none of them are about Reddit being a better website.
       </p>
       <ul>
         <li>
@@ -54,8 +54,8 @@ export function Body() {
         someone in your city, because the comment is retrievable, conversational, and independent.
       </p>
 
-      <h2>The four surfaces that actually move the answer</h2>
-      <p>Ranked by how often we see them quoted verbatim in engine snippets.</p>
+      <h2>Which third-party sources actually move AI answers?</h2>
+      <p>Review platforms, forums, directories and editorial mentions move the answer most. Ranked by how often we see them quoted verbatim in engine snippets.</p>
       <ol>
         <li>
           <strong>Review platforms.</strong> Google Business Profile reviews first, then the category-specific ones —
@@ -84,9 +84,9 @@ export function Body() {
         overnight.
       </p>
 
-      <h2>A worked example</h2>
+      <h2>How do third-party mentions change what AI says about a business?</h2>
       <p>
-        A common pattern from scan results: a dental practice with a modern site, correct schema, and a strong 4.8
+        They decide which specific phrases the model attaches to you. A common pattern from scan results: a dental practice with a modern site, correct schema, and a strong 4.8
         Google rating gets named in roughly one in five ChatGPT runs for &quot;best dentist for nervous patients&quot;
         in its city. Reading the snippets shows the model describing it in generic terms — location and rating,
         nothing else — while naming two competitors with specific phrases about sedation and anxiety.
@@ -105,9 +105,9 @@ export function Body() {
         .
       </p>
 
-      <h2>How to earn mentions without getting removed</h2>
+      <h2>How can I earn third-party mentions without getting removed?</h2>
       <p>
-        This is where most businesses either do nothing or do something that backfires. The workflow that holds up:
+        Ask for specific reviews, participate openly as yourself, audit listings quarterly and stay quotable on your own site. This is where most businesses either do nothing or do something that backfires. The workflow that holds up:
       </p>
       <ul>
         <li>
@@ -134,7 +134,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>What not to do</h2>
+      <h2>What should I avoid when trying to get mentioned on Reddit?</h2>
       <p>
         Do not buy reviews, do not post as a fake customer, and do not pay for undisclosed positive threads. Beyond
         the legal exposure — the FTC&apos;s 2024 rule on fake reviews and testimonials carries real penalties in the
@@ -143,7 +143,7 @@ export function Body() {
         designed to catch. The honest version is slower and does not get deleted.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do people ask about Reddit and AI search?</h2>
       <p>
         <strong>Should I create a subreddit or post about my own business?</strong> Generally no. Self-promotional
         threads get removed and do not read as independent. Answering existing questions works; announcing yourself
@@ -165,7 +165,7 @@ export function Body() {
         own AI answers.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do I get Reddit and reviews working for my AI visibility?</h2>
       <p>
         You do not get to write your own entry in an AI assistant&apos;s answer. You get to make sure that when it
         reads what other people have written about you, the picture is specific, accurate, and consistent. That is
@@ -173,10 +173,14 @@ export function Body() {
         no one, including us, can guarantee a placement, only improve the evidence.
       </p>
       <p>
+        The key takeaway is to earn specific, honest third-party mentions in reviews, communities, directories and
+        press, because AI trusts what others say about you more than what you say about yourself.
+      </p>
+      <p>
         <em>Last updated 2026-07-28.</em>
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

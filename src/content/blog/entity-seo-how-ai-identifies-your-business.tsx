@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        By the alphaa team — we read what AI engines actually cite about businesses every day, and entity
-        confusion is one of the most common reasons a real company gets left out of the answer.
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
         <strong>Short answer:</strong> Entity SEO is the practice of making your business recognizable to AI and
@@ -44,9 +43,9 @@ export function Body() {
         amount of good content saves you — it doesn&apos;t know which business the content belongs to.
       </p>
 
-      <h2>How an AI engine identifies your business, step by step</h2>
+      <h2>How does an AI engine identify your business?</h2>
       <p>
-        Roughly, resolving a business entity happens in three stages:
+        It recognises your name, disambiguates you from similar entities using signals like location and category, then resolves your attributes. Roughly, resolving a business entity happens in three stages:
       </p>
       <ul>
         <li>
@@ -72,7 +71,10 @@ export function Body() {
         &quot;here is what it does and why I&apos;d recommend it.&quot;
       </p>
 
-      <h2>The signals that define your entity</h2>
+      <h2>Which signals define your business as an entity?</h2>
+      <p>
+        Five signals do most of the work: a consistent NAP and canonical name, structured data, sameAs links connecting your profiles, corroboration from sources you don&apos;t own, and distinctive naming.
+      </p>
       <h3>1. A consistent NAP and canonical name</h3>
       <p>
         NAP — name, address, phone — is the backbone of entity identity for a local business. Pick one canonical
@@ -117,7 +119,7 @@ export function Body() {
         context to disambiguate you.
       </p>
 
-      <h2>The entity-fragmentation trap</h2>
+      <h2>What is entity fragmentation and why does it hurt?</h2>
       <p>
         The most common failure we see isn&apos;t missing content — it&apos;s a business that has accidentally
         split itself into several half-entities. An old business name on Yelp, a slightly different name on
@@ -128,7 +130,10 @@ export function Body() {
         requires no new content at all.
       </p>
 
-      <h2>Entity SEO vs. keyword SEO</h2>
+      <h2>How is entity SEO different from keyword SEO?</h2>
+      <p>
+        Keyword SEO tries to rank a page for a phrase, while entity SEO tries to make the engine confident you are a specific, real business so you get named in the answer.
+      </p>
       <table>
         <thead>
           <tr>
@@ -161,7 +166,7 @@ export function Body() {
         <Link href="/blog/is-aeo-real">the honest truth about answer engine optimization</Link>.
       </p>
 
-      <h2>What entity SEO cannot do</h2>
+      <h2>What can&apos;t entity SEO do for your business?</h2>
       <p>
         Entity work sharpens who you are; it does not manufacture a reputation you haven&apos;t earned. It
         can&apos;t edit a model&apos;s training data, force a knowledge-graph entry, or guarantee a citation.
@@ -171,7 +176,10 @@ export function Body() {
         signals steadily raise the odds that an engine recognizes you and recommends you.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do people ask about entity SEO?</h2>
+      <p>
+        The common questions are whether you need a Wikipedia page, how an entity differs from a keyword, and which single entity fix has the most impact.
+      </p>
       <h3>Do I need a Wikipedia page to be an entity?</h3>
       <p>
         No. Wikipedia and Wikidata are strong corroborating sources when you legitimately qualify, but the vast
@@ -192,7 +200,7 @@ export function Body() {
         engine&apos;s confidence that it knows who you are.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>Why does entity SEO matter for AI recommendations?</h2>
       <p>
         Before an AI engine can recommend your business, it has to be sure who your business is. Entity SEO is
         the discipline of removing every reason for doubt — one canonical identity, declared in structured data,
@@ -201,7 +209,10 @@ export function Body() {
         floats free of an entity the engine can name.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI engines only recommend businesses they can identify with confidence, so keep one canonical identity, declare it in schema, link your profiles, and get it corroborated elsewhere.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

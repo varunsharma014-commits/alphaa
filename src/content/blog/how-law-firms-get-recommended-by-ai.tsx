@@ -24,9 +24,9 @@ export function Body() {
         quote.
       </p>
 
-      <h2>Why lawyers get targeted by guarantee scams</h2>
+      <h2>Why are lawyers targeted by AI guarantee scams?</h2>
       <p>
-        Legal is a high-value, high-anxiety market. A single case can be worth thousands or more, and firms
+        Lawyers are targeted because legal is a high-value, high-anxiety market. A single case can be worth thousands or more, and firms
         know clients now start with a search box. That combination has always attracted vendors promising
         certainty: &quot;guaranteed #1 on Google,&quot; &quot;exclusive leads,&quot; and now &quot;guaranteed
         placement in ChatGPT.&quot; The AI version is the same old pitch in new clothing. If a company tells
@@ -36,11 +36,11 @@ export function Body() {
         the foundation of the work that actually moves the needle.
       </p>
 
-      <h2>How AI decides which firm to recommend</h2>
+      <h2>How does AI decide which law firm to recommend?</h2>
       <p>
         When someone asks &quot;best personal injury lawyer near me&quot; or &quot;estate attorney in [city]
-        who does living trusts,&quot; the assistant doesn&apos;t recall a favorite. It retrieves live signals
-        about firms that match and summarizes them. For a law firm, the signals that carry the most weight
+        who does living trusts,&quot; the assistant retrieves live signals about firms that match and
+        summarizes them, rather than recalling a favorite. For a law firm, the signals that carry the most weight
         are:
       </p>
       <ul>
@@ -67,7 +67,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Why legal is a special case: caution is the whole game</h2>
+      <h2>Why is legal a special case for AI recommendations?</h2>
       <p>
         Law is a &quot;your money or your life&quot; topic, and AI models are noticeably more careful with
         legal, medical, and financial questions. They lean harder on verifiable, professional signals and shy
@@ -81,7 +81,11 @@ export function Body() {
         appointments available&quot; — are far more quotable than superlatives, and far safer.
       </p>
 
-      <h2>The practical playbook for a law firm</h2>
+      <h2>What should a law firm do to get recommended by AI?</h2>
+      <p>
+        Perfect your Google Business Profile, build genuine reviews, make every listing say exactly the same
+        thing, write client-question pages instead of brochure copy, and earn credible third-party mentions.
+      </p>
       <h3>1. Perfect your Google Business Profile</h3>
       <p>
         Choose the most accurate primary category and add the practice areas you genuinely handle as
@@ -122,19 +126,19 @@ export function Body() {
         verifiable institutions, so quality and consistency beat volume.
       </p>
 
-      <h2>The one honest number worth knowing</h2>
+      <h2>What is the one honest number law firms should know?</h2>
       <p>
-        You don&apos;t need inflated statistics to justify this work, but the direction of travel is real.
         Roughly two-thirds of Google searches now end without a single click to a website (SparkToro/Similarweb,
-        2026) — people increasingly get their answer on the results page or from an assistant instead of
+        2026). You don&apos;t need inflated statistics to justify this work, but the direction of travel is real:
+        people increasingly get their answer on the results page or from an assistant instead of
         clicking through. For a firm, that reframes the question from &quot;do we rank?&quot; to &quot;do the
         AI engines describe us accurately when someone asks?&quot; The tactics above are how you influence the
         second question honestly.
       </p>
 
-      <h2>What no legal-marketing vendor can do</h2>
+      <h2>Can a legal-marketing vendor guarantee AI recommendations?</h2>
       <p>
-        Be skeptical of anyone selling AI visibility to law firms with guarantees. No one can pay to insert
+        No, so be skeptical of anyone selling AI visibility to law firms with guarantees. No one can pay to insert
         your firm into ChatGPT or Google AI Overviews, edit what a model &quot;knows,&quot; or promise you the
         top result. Outputs vary by phrasing, location, model version, and time — the same query can name
         different firms on different days. That isn&apos;t a weakness of an honest approach; it is simply how
@@ -147,16 +151,17 @@ export function Body() {
         favor.
       </p>
 
-      <h2>A realistic timeline</h2>
+      <h2>How long does it take a law firm to get recommended by AI?</h2>
       <p>
-        None of this is instant, and any firm telling you otherwise should raise a flag. Profile and citation
+        Expect weeks for profile and citation fixes and months or more for reviews and content. None of this is
+        instant, and any firm telling you otherwise should raise a flag. Profile and citation
         fixes can register within weeks; a stronger review profile builds over months as new reviews
         accumulate; content and third-party mentions compound over a quarter or more. The honest promise is
         direction, not a date: do the work consistently and you steadily become the firm AI is best equipped
         to recommend — because you are the firm it can most easily verify.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do law firms get recommended by AI?</h2>
       <p>
         Law firms get recommended by AI the same way they earn referrals in the real world — by being
         genuinely good and easy to confirm. A complete Google Business Profile, authentic client reviews,
@@ -167,7 +172,12 @@ export function Body() {
         find.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI recommends the firms it can verify: a complete Google Business Profile,
+        authentic reviews, consistent legal-directory listings and honest practice-area pages beat any vendor
+        promising guaranteed placement.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

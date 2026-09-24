@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and read the sources
-          the engines actually cite back. Last updated 1 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 1 August 2026.
         </em>
       </p>
 
@@ -29,8 +28,10 @@ export function Body() {
         the sentence away and leave a bare link in a footer directory, and you keep almost none of it.
       </p>
 
-      <h2>Why the question comes up at all</h2>
+      <h2>Why are people asking whether backlinks still matter?</h2>
       <p>
+        People ask because agencies renamed their link packages &quot;AEO&quot;, yet links are now one input
+        among several rather than the dominant one.{" "}
         For twenty years, link building was the load-bearing wall of SEO. So the first thing agencies did when
         AI search arrived was to rename their existing link packages &quot;AEO&quot; and keep selling them.
         That is worth being skeptical about. The honest position is that links are one input among several, and
@@ -38,8 +39,10 @@ export function Body() {
         are completely dead is oversimplifying in the other direction.
       </p>
 
-      <h2>How a link actually reaches an AI answer</h2>
+      <h2>How does a backlink actually reach an AI answer?</h2>
       <p>
+        A backlink reaches an AI answer through retrieval reach, the surrounding sentence, and entity
+        confirmation.{" "}
         When you ask ChatGPT, Gemini, Claude or Perplexity for a recommendation, most modern assistants run a
         live retrieval step: they issue one or more search queries, pull back a set of pages, read them, and
         synthesize an answer from what those pages say. A backlink can influence that chain in three distinct
@@ -74,8 +77,9 @@ export function Body() {
         strategy changes.
       </p>
 
-      <h2>Mentions vs. links: what the difference looks like in practice</h2>
+      <h2>Is a brand mention or a backlink better for AI visibility?</h2>
       <p>
+        For AI visibility, a specific, quotable mention usually beats a link with nothing describable around it.{" "}
         Here is a concrete pair. Both are &quot;off-page signals&quot; in the old vocabulary; they behave
         completely differently in an AI answer.
       </p>
@@ -136,8 +140,8 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>What to do instead: five things that earn mentions</h2>
-      <p>These are the plays we actually run, in rough order of effort-to-payoff:</p>
+      <h2>What should you do instead of buying backlinks?</h2>
+      <p>Fix your own describability, complete every profile in your category, earn and reply to reviews, be useful where your category is discussed, and publish one genuinely citable asset. These are the plays we actually run, in rough order of effort-to-payoff:</p>
       <ol>
         <li>
           <strong>Fix your own describability first.</strong> Third parties describe you using the words you
@@ -170,9 +174,9 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>How to check whether any of it is working</h2>
+      <h2>How can you check whether your mentions are working?</h2>
       <p>
-        Do not measure this with a backlink counter. Measure it the way the engine sees it: ask the assistants
+        Check it the way the engine sees it, not with a backlink counter: ask the assistants
         the questions your customers ask, repeatedly, and record whether you get named and what sources get
         cited. Two honest caveats. First, answers vary run to run — a single screenshot proves nothing, which we
         explain in{" "}
@@ -180,7 +184,7 @@ export function Body() {
         . Second, this is slow: third-party signals need time to accumulate and to be re-crawled.
       </p>
 
-      <h2>Q&amp;A</h2>
+      <h2>What else do people ask about backlinks and AI search?</h2>
       <p>
         <strong>Do backlinks directly improve AI citations?</strong> Not directly. They improve the search
         rankings that AI retrieval draws from, which indirectly raises your odds of being retrieved. The
@@ -203,14 +207,19 @@ export function Body() {
         <Link href="/blog/is-aeo-real">is AEO real?</Link> for how to tell the difference.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on backlinks for AI search?</h2>
       <p>
         Backlinks have gone from the main event to a supporting signal. What replaced them is not a new trick —
         it is the older, harder discipline of being described accurately and often by people who are not you.
         Build the mentions and the useful links follow; buy the links and you get neither.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to stop buying links that only exist to move a ranking and instead earn specific,
+        accurate mentions from people who are not you — the useful links tend to follow.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

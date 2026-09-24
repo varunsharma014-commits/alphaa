@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including a lot of
-          green-industry ones. Last updated 22 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 22 August 2026.
         </em>
       </p>
 
@@ -30,10 +29,10 @@ export function Body() {
         two and you are ahead of most of your market.
       </p>
 
-      <h2>What a customer actually asks an assistant</h2>
+      <h2>What do customers actually ask an AI assistant about landscapers?</h2>
       <p>
-        Almost nobody types &quot;landscaper near me&quot; into ChatGPT. The questions we see people bring to
-        assistants are long, specific and full of constraints:
+        Customers ask long, specific questions full of constraints; almost nobody types &quot;landscaper near
+        me&quot; into ChatGPT. The questions we see look like this:
       </p>
       <ul>
         <li>&quot;Who does weekly lawn mowing in [suburb] and takes on properties under a quarter acre?&quot;</li>
@@ -49,9 +48,9 @@ export function Body() {
         matched none of them. You have written a category, not an answer.
       </p>
 
-      <h2>The single biggest fix: split &quot;landscaping&quot; into named services</h2>
+      <h2>What is the biggest fix for a landscaping website?</h2>
       <p>
-        Most green-industry sites have one Services page listing eight bullet points. That is one document
+        Split &quot;landscaping&quot; into a real page for each named service you genuinely want to sell. Most green-industry sites have one Services page listing eight bullet points. That is one document
         covering eight jobs, which means it is a weak match for all eight. The businesses that get named in AI
         answers have a real page — 400 words minimum — for each service they genuinely want to sell:
       </p>
@@ -89,9 +88,9 @@ export function Body() {
         <Link href="/blog/how-to-write-content-ai-quotes">how to write content AI engines will quote</Link>.
       </p>
 
-      <h2>Publish the seasonal calendar — it is the content nobody writes</h2>
+      <h2>Should a landscaping company publish a seasonal calendar?</h2>
       <p>
-        Green-industry demand is a calendar, and almost no landscaping site publishes one. That is an open
+        Yes: green-industry demand is a calendar, and almost no landscaping site publishes one. That is an open
         opportunity, because &quot;when should I aerate my lawn in [region]&quot; and &quot;when do I need to
         book fall cleanup&quot; are exactly the questions people ask assistants, and the assistant has to cite
         somebody.
@@ -115,9 +114,9 @@ export function Body() {
         <Link href="/blog/content-freshness-ai-search">content freshness and AI search</Link>.
       </p>
 
-      <h2>Define your service area honestly, in text</h2>
+      <h2>How should a landscaper define their service area for AI?</h2>
       <p>
-        Landscaping is drive-time economics: you will not cross a metro for a $60 mow. Assistants answering
+        List the towns, suburbs and ZIP codes you cover in plain text, not a map widget. Landscaping is drive-time economics: you will not cross a metro for a $60 mow. Assistants answering
         &quot;who serves [town]&quot; need a text list of the towns, suburbs and ZIP codes you cover — not a map
         widget, which is usually an image or a script and contributes nothing readable.
       </p>
@@ -131,9 +130,9 @@ export function Body() {
         <Link href="/blog/do-city-landing-pages-work-ai-search">do city landing pages still work for AI search</Link>.
       </p>
 
-      <h2>Pricing: give a range or get skipped</h2>
+      <h2>Should landscapers publish pricing for AI to find?</h2>
       <p>
-        Price filters heavily in these questions, and a page with no numbers cannot be cited on price. You do
+        Yes, give a range: price filters heavily in these questions, and a page with no numbers cannot be cited on price. You do
         not have to publish a rate card. A range with the variables named does the job: what a weekly mow runs
         for a typical quarter-acre lot in your market, what a season-long treatment programme costs, what a
         paver patio runs per square foot and what moves it — access, grade, material, drainage.
@@ -144,9 +143,9 @@ export function Body() {
         <Link href="/blog/pricing-pages-ai-recommendations">pricing pages and AI recommendations</Link>.
       </p>
 
-      <h2>Reviews are the corroboration, and they should name the work</h2>
+      <h2>What kind of reviews help a landscaper get recommended?</h2>
       <p>
-        For local service work, off-property confirmation usually decides the answer. What matters is not only
+        Reviews that name the service and the place help most, because review text is retrievable. For local service work, off-property confirmation usually decides the answer. What matters is not only
         the star average but <em>what the reviews say</em> — review text is retrievable, and reviews that name a
         service and a place turn into evidence the engine can use.
       </p>
@@ -159,7 +158,7 @@ export function Body() {
         <Link href="/blog/google-reviews-ai-visibility">why your Google reviews decide your AI visibility</Link>.
       </p>
 
-      <h2>The listings that matter for green-industry businesses</h2>
+      <h2>Which listings matter most for landscaping and lawn care businesses?</h2>
       <p>
         Your name, address and phone number must be identical everywhere — Google Business Profile first, then
         Apple Business Connect, Bing Places, Yelp, Angi, Thumbtack, HomeAdvisor, Nextdoor, and your state
@@ -177,7 +176,11 @@ export function Body() {
         .
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do landscaping owners ask about AI recommendations?</h2>
+      <p>
+        The common questions are whether photos help, whether a one-person operation should bother, whether this
+        gets you to the top, and how long it takes.
+      </p>
       <h3>Does posting photos of my work help?</h3>
       <p>
         Photos help humans convert and they help your Google Business Profile, but an engine reading your site
@@ -207,7 +210,7 @@ export function Body() {
         <Link href="/blog/how-long-does-aeo-take">how long AEO takes to work</Link>.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do landscaping companies get recommended by AI?</h2>
       <p>
         The landscaping companies that get recommended by AI are the ones that stopped writing
         &quot;full-service&quot; and started writing which service, which town, which month, and roughly what it
@@ -216,7 +219,11 @@ export function Body() {
         same thing, is the entire job.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to replace &quot;full-service&quot; copy with pages that say which service, which town,
+        which month and roughly what it costs, then keep your listings and reviews saying the same thing.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

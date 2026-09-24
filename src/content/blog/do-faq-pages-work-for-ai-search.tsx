@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and read a great many
-          FAQ pages. Last updated 28 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 28 August 2026.
         </em>
       </p>
 
@@ -32,9 +31,10 @@ export function Body() {
         than nothing, because it teaches an engine that your page contains no facts.
       </p>
 
-      <h2>What actually changed, and when</h2>
+      <h2>What actually changed with FAQ pages, and when?</h2>
       <p>
-        Two separate things get conflated, so it is worth being precise.
+        In August 2023 Google reduced FAQ rich results to a small number of authoritative sites, which changed a
+        search-result display feature, not the usefulness of Q&amp;A content. Two separate things get conflated, so it is worth being precise.
       </p>
       <p>
         In August 2023 Google announced it was reducing FAQ rich results to a small number of
@@ -57,8 +57,10 @@ export function Body() {
         candidate for that extraction.
       </p>
 
-      <h2>Why the Q&amp;A format suits retrieval so well</h2>
+      <h2>Why does the Q&amp;A format suit AI retrieval so well?</h2>
       <p>
+        A well-formed FAQ entry is topically matched to the query, makes sense on its own, and is short enough
+        to quote.{" "}
         When an assistant answers a question, it needs a passage that (a) is topically matched to the query, (b)
         makes sense removed from its surroundings, and (c) is short enough to quote without summarising. A
         well-formed FAQ entry satisfies all three by construction:
@@ -84,8 +86,10 @@ export function Body() {
         simply the most mechanical way to produce it.
       </p>
 
-      <h2>The FAQ that fails, and why it fails</h2>
+      <h2>Why do most small-business FAQ pages fail in AI search?</h2>
       <p>
+        Most fail because they ask questions nobody puts to an assistant and give answers with zero extractable
+        facts.{" "}
         Roughly the pattern we see on most small-business sites:
       </p>
       <ul>
@@ -108,8 +112,10 @@ export function Body() {
         <em> about</em> anything in particular, so it is a weak match for every query.
       </p>
 
-      <h2>How to write an FAQ entry that gets quoted</h2>
+      <h2>How do you write an FAQ entry that AI will quote?</h2>
       <p>
+        Use the question people actually ask, answer it in the first sentence, keep it 40–120 words and
+        standalone, and include a number, name, or condition.{" "}
         The rules are simple and almost nobody follows them.
       </p>
       <ol>
@@ -143,8 +149,10 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Where the FAQ should live</h2>
+      <h2>Where should your FAQ content live on your site?</h2>
       <p>
+        Put four to eight questions at the bottom of each service page, give big questions their own page, and
+        keep a sitewide FAQ only for cross-cutting topics.{" "}
         This is where most sites go wrong structurally. A single sitewide <code>/faq</code> page collecting every
         question you have ever been asked is the weakest arrangement. Better:
       </p>
@@ -189,8 +197,10 @@ export function Body() {
         keep.
       </p>
 
-      <h2>How to tell whether yours is working</h2>
+      <h2>How can you tell whether your FAQ is working?</h2>
       <p>
+        Ask the question in the assistants yourself, repeat it several times, and watch referral traffic from
+        assistant domains.{" "}
         You cannot measure this in Search Console, because most of the value shows up in answers that never
         generate a click. What you can do:
       </p>
@@ -213,7 +223,7 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Questions we get asked</h2>
+      <h2>What else do people ask about FAQ pages and AI search?</h2>
 
       <h3>Didn&apos;t Google say FAQ pages are spam?</h3>
       <p>
@@ -250,7 +260,7 @@ export function Body() {
         output.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on FAQ pages for AI search?</h2>
       <p>
         The FAQ page lost its search-result reward and quietly gained a better one. For AI search, question-shaped
         headings with short, standalone, fact-carrying answers are the most directly extractable content you can
@@ -259,7 +269,12 @@ export function Body() {
         win on most sites; an FAQ full of &quot;yes, absolutely!&quot; is a page that teaches engines to skip you.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to write FAQs as question-shaped headings with short, standalone, fact-carrying
+        answers placed on the pages they belong to, because specifics — not the format — are what get quoted.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

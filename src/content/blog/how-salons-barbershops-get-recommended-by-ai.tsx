@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses, including
-          salons, barbershops and studios. Last updated 11 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 11 August 2026.
         </em>
       </p>
 
@@ -31,10 +30,10 @@ export function Body() {
         read.
       </p>
 
-      <h2>What a customer actually asks</h2>
+      <h2>What do customers actually ask AI about salons and barbers?</h2>
       <p>
-        Nobody asks an assistant &quot;best salon.&quot; They ask constrained questions, and the constraint is
-        the whole game:
+        Customers ask constrained questions — a technique, a hair type, a day, a walk-in policy — not &quot;best
+        salon,&quot; and the constraint is the whole game:
       </p>
       <ul>
         <li>&quot;Where can I get a fade in Arlington on a Sunday?&quot;</li>
@@ -52,9 +51,10 @@ export function Body() {
         is disqualifying.
       </p>
 
-      <h2>The image problem, which is specific to this industry</h2>
+      <h2>Why are image-heavy salon websites invisible to AI?</h2>
       <p>
-        Salons and barbershops run on visuals, and that instinct carries straight onto the website: the service
+        Because the retrieval systems behind AI answers extract text and largely ignore pixels, and salons and
+        barbershops run on visuals, and that instinct carries straight onto the website: the service
         menu is a designed graphic, the price list is a PDF or a photo, the stylist bios are a collage, the
         holiday hours go up as an Instagram story. Every one of those is invisible to the retrieval systems
         behind AI answers, which extract text and largely ignore pixels — the mechanics are in{" "}
@@ -68,7 +68,11 @@ export function Body() {
         problems than anything else we see.
       </p>
 
-      <h2>The five things that decide whether you get named</h2>
+      <h2>What decides whether AI names your salon or barbershop?</h2>
+      <p>
+        Five things decide it: a properly completed Google Business Profile, reviews that name the service, a
+        text services page, hours and walk-in policy as text, and consistent business facts everywhere.
+      </p>
 
       <h3>1. Google Business Profile, completed properly</h3>
       <p>
@@ -130,9 +134,9 @@ export function Body() {
         <Link href="/blog/directory-listings-nap-citations-ai-search">our directory listings guide</Link>.
       </p>
 
-      <h2>Where Instagram fits</h2>
+      <h2>Does Instagram help a salon get recommended by AI?</h2>
       <p>
-        Instagram is where this industry lives, and it is genuinely how many clients choose a stylist — but it
+        Not directly: Instagram is where this industry lives, and it is genuinely how many clients choose a stylist — but it
         works through humans, not through retrieval. Assistants do not reliably read your grid, your captions
         or your stories, and much of the platform is inaccessible to crawlers. Treat social as demand
         generation and portfolio proof, and treat your website and Google profile as the machine-readable
@@ -141,7 +145,11 @@ export function Body() {
         about, it needs a home on your site as well.
       </p>
 
-      <h2>A realistic first month</h2>
+      <h2>What should a salon do in its first month?</h2>
+      <p>
+        Take a baseline, fix your Google Business Profile, rewrite services and stylist bios as text, start the
+        review habit, then re-ask the same questions and compare.
+      </p>
       <ul>
         <li>
           <strong>Week 1.</strong> Ask ChatGPT, Perplexity and Gemini five questions a real client would ask
@@ -173,9 +181,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Being straight about what this does</h2>
+      <h2>Does this guarantee AI will recommend my salon?</h2>
       <p>
-        None of this guarantees you get recommended, and anyone selling you a guaranteed spot in an AI answer
+        No, none of this guarantees you get recommended, and anyone selling you a guaranteed spot in an AI answer
         is selling something they do not control. Answers vary by phrasing, by engine and between runs. What
         this work does is concrete and worth doing anyway: it makes your real strengths legible to a machine
         that is currently reading a page which says &quot;full-service salon&quot; and a picture it cannot
@@ -183,7 +191,12 @@ export function Body() {
         exists somewhere a model can retrieve it.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to turn your menu, prices, hours, specialities and stylist bios into plain text,
+        complete your Google Business Profile, and collect reviews that name the service, so AI can match you to
+        the specific questions clients ask.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

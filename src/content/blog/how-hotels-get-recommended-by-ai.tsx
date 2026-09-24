@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses, including
-          hospitality properties competing against booking platforms. Last updated 6 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 6 August 2026.
         </em>
       </p>
 
@@ -31,9 +30,9 @@ export function Body() {
         candidate.
       </p>
 
-      <h2>Why hospitality is a harder case than other local businesses</h2>
+      <h2>Why is hospitality harder for AI visibility than other local businesses?</h2>
       <p>
-        Three structural things make this vertical different, and they are worth naming before any tactics.
+        Intermediaries own the descriptions, the queries are unusually constrained, and review volume is the reputation layer. Three structural things make this vertical different, and they are worth naming before any tactics.
       </p>
       <p>
         <strong>The intermediaries own the descriptions.</strong> For a plumber, the most detailed public
@@ -56,9 +55,9 @@ export function Body() {
         <Link href="/blog/google-reviews-ai-visibility">why Google reviews now decide your AI visibility</Link>.
       </p>
 
-      <h2>Where the answer actually comes from</h2>
+      <h2>Where do AI assistants get their hotel recommendations?</h2>
       <p>
-        When an assistant answers a stay question, the documents it pulls typically come from four places, in
+        Mostly from booking platform listings, then review platforms, editorial travel guides and city roundups, and finally your own site and Business Profile. When an assistant answers a stay question, the documents it pulls typically come from four places, in
         rough order of influence:
       </p>
       <ol>
@@ -85,9 +84,9 @@ export function Body() {
         it is rarely what got you named.
       </p>
 
-      <h2>The specificity pass — the highest-value hour</h2>
+      <h2>How should hotels rewrite their listing descriptions for AI?</h2>
       <p>
-        Do this on every listing you control, starting with the platform that sends you the most bookings. Open
+        Rewrite every description into specific facts an assistant could use to answer a constrained question. Do this on every listing you control, starting with the platform that sends you the most bookings. Open
         the description field and rewrite it against this test: <em>could an assistant use this sentence to answer
         a constrained question?</em>
       </p>
@@ -129,9 +128,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Own the questions your guests actually ask</h2>
+      <h2>Which guest questions should a hotel answer on its site?</h2>
       <p>
-        Hospitality has an unusually predictable question set, and almost nobody publishes the answers in plain
+        Answer the predictable ones your front desk fields weekly, such as check-in times, parking, pets, accessibility, distances and breakfast. Hospitality has an unusually predictable question set, and almost nobody publishes the answers in plain
         text. Your front desk answers these weekly — put each one on your site as a real heading with a complete
         one-paragraph answer:
       </p>
@@ -153,9 +152,9 @@ export function Body() {
         <Link href="/blog/how-to-write-content-ai-quotes">how to write content AI quotes</Link>.
       </p>
 
-      <h2>Get into the roundups</h2>
+      <h2>How can a hotel get into &quot;best places to stay&quot; roundups?</h2>
       <p>
-        &quot;Best places to stay in [city]&quot; articles are, structurally, pre-written answers to the most
+        Find the lists assistants actually cite for your city, then pitch a specific themed angle rather than the property. &quot;Best places to stay in [city]&quot; articles are, structurally, pre-written answers to the most
         common travel query there is — and assistants use them accordingly. Getting into them is a real, workable
         project:
       </p>
@@ -183,9 +182,9 @@ export function Body() {
         any recognition.
       </p>
 
-      <h2>Being honest about the ceiling</h2>
+      <h2>What parts of hotel AI visibility can&apos;t you control?</h2>
       <p>
-        Some of this is out of reach, and knowing which parts saves money.
+        You cannot influence live availability and price, outrank a chain on brand recognition, or get identical answers every time. Some of this is out of reach, and knowing which parts saves money.
       </p>
       <ul>
         <li>
@@ -208,7 +207,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Common questions</h2>
+      <h2>What else do hoteliers ask about AI recommendations?</h2>
+      <p>
+        The common questions cover whether your own website still matters, star ratings, timelines, and whether a hotel blog helps.
+      </p>
       <h3>Should I still bother with my own website if the platforms dominate?</h3>
       <p>
         Yes, for two reasons. It is where a traveller who has just heard your name confirms details and books
@@ -234,7 +236,7 @@ export function Body() {
         an assistant needs. One genuinely useful local guide beats twenty.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>How do hotels win AI recommendations?</h2>
       <p>
         Hospitality AI visibility is won on constraints. Travellers ask with filters attached, and assistants answer
         from third-party descriptions of your property. So rewrite every listing description into checkable facts,
@@ -243,7 +245,10 @@ export function Body() {
         job, and it is mostly a writing job.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to rewrite every listing into checkable facts, complete every amenity field, publish plain answers to guest questions, and earn places in the city roundups assistants already cite.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

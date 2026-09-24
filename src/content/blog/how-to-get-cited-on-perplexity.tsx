@@ -25,9 +25,10 @@ export function Body() {
         sources it reaches for.
       </p>
 
-      <h2>Why Perplexity is different from ChatGPT</h2>
+      <h2>How is Perplexity different from ChatGPT?</h2>
       <p>
-        Most AI assistants blend two things: what they absorbed during training and what they fetch
+        Perplexity searches the live web for nearly every query and shows numbered citations, while ChatGPT
+        leans more heavily on its training data. Most AI assistants blend two things: what they absorbed during training and what they fetch
         from the live web at the moment you ask. Perplexity sits firmly on the retrieval end of that
         spectrum. It is built as an answer engine that searches the web for nearly every query, then
         summarizes what it found and shows numbered citations linking back to the pages it used.
@@ -45,7 +46,11 @@ export function Body() {
         <Link href="/blog/how-to-get-recommended-by-chatgpt">how to get recommended by ChatGPT</Link>.
       </p>
 
-      <h2>The playbook: how to become a citable source</h2>
+      <h2>How do you become a source Perplexity cites?</h2>
+      <p>
+        Publish recent content, lead with the answer, state clear citable facts, build a real FAQ page, earn
+        third-party citations, add structured data, and keep your facts consistent everywhere.
+      </p>
 
       <h3>1. Publish recent, regularly updated content</h3>
       <p>
@@ -113,7 +118,7 @@ export function Body() {
         whose story is cleaner. Audit your top listings and fix contradictions before chasing new ones.
       </p>
 
-      <h2>What does not work</h2>
+      <h2>What doesn&apos;t work for getting cited on Perplexity?</h2>
       <p>
         You cannot edit Perplexity&apos;s model, buy a citation slot, or trick the engine with hidden
         instructions stuffed into your page — retrieval systems filter that kind of manipulation, and
@@ -123,7 +128,7 @@ export function Body() {
         the question.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do you get cited on Perplexity?</h2>
       <p>
         Getting cited on Perplexity is mostly about meeting a retrieval engine where it works. Because
         it reads the live web and shows its sources, your job is to be a page worth quoting: recent,
@@ -133,12 +138,17 @@ export function Body() {
         about what you do.
       </p>
 
+      <p>
+        The key takeaway is to be a page worth quoting: recent, answer-first, full of checkable facts, backed by
+        an FAQ and third-party mentions, and consistent everywhere your business appears.
+      </p>
+
       <hr />
       <p>
         <strong>Not sure whether Perplexity and the other AI engines cite you today?</strong> Alphaa
         checks how the major answer engines see your business, finds the gaps in your signals, and
         shows you what to fix first.{" "}
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

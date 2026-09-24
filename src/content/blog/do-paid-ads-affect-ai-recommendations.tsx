@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, most of which are
-          also spending on paid search or social. Last updated 18 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 18 August 2026.
         </em>
       </p>
 
@@ -32,8 +31,10 @@ export function Body() {
         around.
       </p>
 
-      <h2>Why ads and AI answers are separate systems</h2>
+      <h2>Why are paid ads and AI answers separate systems?</h2>
       <p>
+        AI answers are built from public content, and none of the steps that produce them consults an
+        advertising auction.{" "}
         It helps to be precise about what an AI answer actually is. When you ask an assistant &quot;who
         should I hire for X in Denver,&quot; the model typically does some combination of three things: it
         recalls what it absorbed during training, it runs a retrieval step against a search index or its own
@@ -60,8 +61,10 @@ export function Body() {
         to show you the mechanism.
       </p>
 
-      <h2>The four indirect effects that are actually real</h2>
+      <h2>How can paid ads indirectly help your AI visibility?</h2>
       <p>
+        Ads can help indirectly by forcing you to build indexable pages, generating customers who leave reviews,
+        revealing the vocabulary to publish, and seeding branded queries and mentions.{" "}
         Here is where paid spend genuinely moves AI visibility. All four are downstream: the ad itself does
         nothing, but the activity around it produces signals engines read.
       </p>
@@ -71,7 +74,7 @@ export function Body() {
         Nobody runs a high-intent search campaign into a homepage. To make ads convert you build landing
         pages with the specifics: what the service includes, what it costs, who it is for, how fast you can
         start, what happens on the first call. Those specifics are exactly what an assistant needs to match a
-        constrained query. We see this constantly in scans — a business is visible in AI answers for the one
+        constrained query. This is a common pattern — a business is visible in AI answers for the one
         service it happened to build an ad landing page for, and invisible for the rest of its catalogue.
       </p>
       <p>
@@ -116,7 +119,12 @@ export function Body() {
         it is not zero.
       </p>
 
-      <h2>Where ad money does nothing for AI visibility</h2>
+      <h2>Where does ad money do nothing for AI visibility?</h2>
+      <p>
+        Ad money does nothing for AI visibility when it goes to bigger budgets on the same pages, display
+        impressions, noindex landing pages, unverifiable listicle placements, or &quot;guaranteed AI
+        ranking&quot; offers.
+      </p>
       <ul>
         <li>
           <strong>Spending more in an existing campaign.</strong> Doubling a budget on the same pages
@@ -142,8 +150,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>A worked example</h2>
+      <h2>What does this look like for a real business running ads?</h2>
       <p>
+        For one cleaning company, only the service with an indexable landing page got named by assistants,
+        until two noindex ad pages were made visible.{" "}
         A commercial cleaning company we scanned was spending about $6,000/month on Google Ads across three
         campaigns. In the assistants they were named for &quot;post-construction cleaning&quot; and nothing
         else. The reason was mechanical: post-construction was the only service with its own indexable
@@ -160,7 +170,11 @@ export function Body() {
         and two of them had been made invisible by a checkbox.
       </p>
 
-      <h2>How to check this for yourself</h2>
+      <h2>How can you check whether your ads help AI visibility?</h2>
+      <p>
+        Check that your ad landing pages are indexable and crawlable, match your converting search terms to
+        pages on your site, and ask assistants the questions customers ask.
+      </p>
       <ol>
         <li>
           Export the landing-page URLs from every active campaign.
@@ -205,7 +219,7 @@ export function Body() {
         honest. That work is nearly free and it serves both systems.
       </p>
 
-      <h2>Questions we get asked</h2>
+      <h2>What else do people ask about ads and AI recommendations?</h2>
 
       <h3>Does a bigger Google Ads budget improve my AI Overview presence?</h3>
       <p>
@@ -235,7 +249,7 @@ export function Body() {
         <Link href="/blog/how-to-write-content-ai-quotes">how to write content AI quotes</Link>.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on paid ads and AI recommendations?</h2>
       <p>
         You cannot buy your way into an AI recommendation, and you should be suspicious of anyone who implies
         otherwise. What you can do is notice that good advertising already forces you to produce the exact
@@ -245,7 +259,12 @@ export function Body() {
         food. Feed both from the same kitchen.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that you cannot buy an AI recommendation, but you can keep the indexable pages and
+        customer reviews your advertising already produces visible to the engines instead of hiding them.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

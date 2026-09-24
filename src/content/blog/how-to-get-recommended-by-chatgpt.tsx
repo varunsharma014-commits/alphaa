@@ -23,9 +23,9 @@ export function Body() {
         ignore anyone who promises that.
       </p>
 
-      <h2>How ChatGPT actually surfaces businesses</h2>
+      <h2>How does ChatGPT actually decide which businesses to recommend?</h2>
       <p>
-        ChatGPT draws on two things when it suggests a business. First, its{" "}
+        ChatGPT draws on two things when it suggests a business: training knowledge and live web retrieval. First, its{" "}
         <strong>training knowledge</strong> — a snapshot of the web it learned from, which is why
         businesses with a strong, consistent footprint get &quot;remembered.&quot; Second, and
         increasingly, <strong>live web retrieval</strong> (often called SearchGPT or browsing): when
@@ -51,7 +51,11 @@ export function Body() {
         .
       </p>
 
-      <h2>The step-by-step playbook</h2>
+      <h2>What are the steps to get recommended by ChatGPT?</h2>
+      <p>
+        Be consistent everywhere, earn and respond to reviews, publish answer-first content, add accurate schema,
+        earn third-party mentions, don&apos;t block GPTBot, and add an llms.txt file.
+      </p>
 
       <h3>1. Be consistent everywhere</h3>
       <p>
@@ -157,9 +161,10 @@ export function Body() {
         has a copy-paste template.
       </p>
 
-      <h2>What does NOT work</h2>
+      <h2>What doesn&apos;t work for getting recommended by ChatGPT?</h2>
       <p>
-        Save your money and your reputation by avoiding these:
+        Paid insertion, guaranteed rankings, keyword stuffing, fake reviews and prompt-injection tricks don&apos;t
+        work. Save your money and your reputation by avoiding these:
       </p>
       <ul>
         <li>
@@ -182,7 +187,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The bottom line</h2>
+      <h2>So how do you get recommended by ChatGPT?</h2>
       <p>
         Getting recommended by ChatGPT isn&apos;t about hacking the model — it&apos;s about making
         the truth about your business easy to find, consistent, and well-reviewed across the web.
@@ -190,12 +195,18 @@ export function Body() {
         crawlability, and you&apos;ll show up wherever AI retrieves and summarizes — ChatGPT included.
       </p>
 
+      <p>
+        The key takeaway is that ChatGPT recommends businesses whose true story is easy to find, consistent and
+        well-reviewed across the web, so focus on consistency, reviews, answer-first content, schema,
+        third-party mentions and crawlability.
+      </p>
+
       <hr />
       <p>
         <strong>Not sure how ChatGPT sees you today?</strong> Alphaa checks whether the major AI
         engines surface your business, finds the gaps in your signals, and shows you what to fix
         first.{" "}
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

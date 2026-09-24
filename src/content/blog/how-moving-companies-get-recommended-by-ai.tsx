@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including local and
-          long-distance moving companies. Last updated 21 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 21 August 2026.
         </em>
       </p>
 
@@ -33,7 +32,8 @@ export function Body() {
 
       <h2>What do customers actually ask an AI assistant about movers?</h2>
       <p>
-        Moving queries arrive far more specific than &quot;best movers near me,&quot; because a move has hard
+        Customers ask specific questions built around a date, an origin, a destination, a size and usually one
+        awkward item. Moving queries arrive far more specific than &quot;best movers near me,&quot; because a move has hard
         constraints — a date, an origin, a destination, a size, and usually one awkward item. In practice they
         look like this:
       </p>
@@ -57,9 +57,10 @@ export function Body() {
         , and it is more acute for movers because the constraint <em>is</em> the query.
       </p>
 
-      <h2>Why movers face a trust filter other verticals do not</h2>
+      <h2>Why does AI apply a stricter trust filter to movers?</h2>
       <p>
-        Ask an assistant to recommend a dentist and it will usually just recommend one. Ask it to recommend an
+        Because moving fraud is a well-documented consumer-protection topic, so assistants build a verification
+        step into their answers. Ask an assistant to recommend a dentist and it will usually just recommend one. Ask it to recommend an
         interstate mover and it will often lead with a warning: check the USDOT number, get it in writing,
         avoid large deposits, beware of estimates given without an inventory.
       </p>
@@ -80,7 +81,11 @@ export function Body() {
         the assistant retrieved. Everything below follows from that.
       </p>
 
-      <h2>The five signals that decide whether a mover gets named</h2>
+      <h2>Which signals decide whether AI names a moving company?</h2>
+      <p>
+        Five signals decide it: a crawlable licence number, a stated distance class and service radius, named
+        specialty items, estimate and pricing transparency, and a recent, consistent review record.
+      </p>
 
       <h3>1. A licence number in crawlable text, on the page</h3>
       <p>
@@ -178,9 +183,9 @@ export function Body() {
         BBB — is a contradiction that suppresses recommendation rather than averaging out.
       </p>
 
-      <h2>A worked example: what a scan usually finds</h2>
+      <h2>What does an AI visibility scan usually find for a mover?</h2>
       <p>
-        A typical mid-size local mover we scan looks like this. The site has a hero image reading &quot;Fully
+        It usually finds an identity and verification problem rather than a content problem. A typical mid-size local mover we scan looks like this. The site has a hero image reading &quot;Fully
         licensed and insured,&quot; a services page listing residential, commercial, packing and storage, a
         contact form, and no licence number anywhere in the HTML. Google Business Profile is claimed but the
         category is set to &quot;Mover&quot; with no secondary categories and no service-area list. There are
@@ -208,7 +213,11 @@ export function Body() {
         before you write anything new.
       </p>
 
-      <h2>The 30-day fix order for a moving company</h2>
+      <h2>What should a moving company fix first, and in what order?</h2>
+      <p>
+        Fix identity in week 1, structured data in week 2, specific pages in week 3, and reviews plus a re-check
+        in week 4.
+      </p>
       <ol>
         <li>
           <strong>Week 1 — identity.</strong> Licence numbers as text in the footer and About page. One phone
@@ -235,7 +244,11 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Common questions</h2>
+      <h2>What else do moving companies ask about AI recommendations?</h2>
+      <p>
+        The common questions cover aggregator sites, AI&apos;s mover warnings, city landing pages, paying for
+        placement, and how much you can do yourself.
+      </p>
       <h3>Do the moving aggregator and lead-broker sites help or hurt?</h3>
       <p>
         Both. A listing on a large moving directory is a corroborating third-party mention and worth having.
@@ -273,9 +286,9 @@ export function Body() {
         client-side, which can leave crawlers seeing an empty page.
       </p>
 
-      <h2>The honest limits</h2>
+      <h2>Does any of this guarantee AI will recommend my moving company?</h2>
       <p>
-        None of this guarantees a recommendation. AI answers are generated per query and vary between runs,
+        No, none of this guarantees a recommendation. AI answers are generated per query and vary between runs,
         even for the same question asked twice — the reasons are in{" "}
         <Link href="/blog/why-ai-answers-change-every-time">why AI answers change every time</Link>. What you
         control is the input: whether a model that goes looking for a licensed, specific, well-reviewed mover
@@ -285,7 +298,12 @@ export function Body() {
         is worth real money.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that movers get named when their licence, identity and specifics are trivially
+        confirmable in text: fix identity first, then structured data, specific pages and an ongoing review
+        record.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

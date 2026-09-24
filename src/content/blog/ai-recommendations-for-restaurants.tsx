@@ -26,11 +26,13 @@ export function Body() {
       </p>
 
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
 
-      <h2>Why AI names some restaurants and skips others</h2>
+      <h2>Why does AI name some restaurants and skip others?</h2>
       <p>
+        AI names the restaurants that are written about consistently and positively across many public
+        sources, with strong reviews doing much of the gatekeeping.{" "}
         AI assistants answer dining questions in two ways. Some retrieve live results the moment you
         ask — Google&apos;s AI features and tools that browse the web pull from current pages, maps,
         and directories. Others answer from what they absorbed during training, which favors places
@@ -48,7 +50,11 @@ export function Body() {
         more often.
       </p>
 
-      <h2>The restaurant AEO playbook</h2>
+      <h2>How can a restaurant get recommended by AI?</h2>
+      <p>
+        A restaurant gets recommended by maintaining its Google Business Profile, reviews, menu details,
+        occasion-specific content, schema, and listings, and by not blocking AI crawlers.
+      </p>
 
       <h3>1. Complete and actively maintained Google Business Profile</h3>
       <p>
@@ -133,9 +139,10 @@ export function Body() {
         dish someone&apos;s craving.
       </p>
 
-      <h2>What this is — and isn&apos;t</h2>
+      <h2>What can restaurant AEO do, and what can&apos;t it do?</h2>
       <p>
-        To be clear about the mechanics: this work shapes the <em>public signals</em> AI relies on —
+        Restaurant AEO shapes the public signals AI relies on, but it can&apos;t reach inside the model, buy a
+        placement, or guarantee a ranking. To be clear about the mechanics: this work shapes the <em>public signals</em> AI relies on —
         your Google Business Profile, reviews, menu and cuisine details, schema, and directory listings.
         It does not reach inside the model or buy you a placement, and there&apos;s no guaranteed ranking.
         What it does is make you the well-documented, well-reviewed, clearly described choice that an
@@ -143,13 +150,19 @@ export function Body() {
         being invisible to the way people increasingly decide where to eat.
       </p>
 
-      <h2>Start with what AI sees today</h2>
+      <p>
+        The key takeaway is to become the well-documented, well-reviewed, clearly described choice: keep your
+        Google Business Profile, reviews, menu, schema, and listings accurate and consistent so assistants keep
+        landing on you.
+      </p>
+
+      <h2>What should you check before changing anything?</h2>
       <p>
         Before you change anything, find out what assistants actually say about your restaurant right
         now — which questions you show up for, where your listings disagree, and what&apos;s missing.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -25,7 +25,7 @@ export function Body() {
       </p>
 
       <p>
-        By the alphaa team — we track how AI engines cite local businesses across thousands of scans. This is part
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. This is part
         of our{" "}
         <Link href="/blog/death-of-the-blue-link">Death of the Blue Link</Link> series on the shift from ranked
         links to AI answers. Last updated July 22, 2026.
@@ -41,11 +41,11 @@ export function Body() {
         list of websites does.
       </p>
 
-      <h2>How often do they actually appear? (An honest number)</h2>
+      <h2>How often do AI Overviews actually appear?</h2>
       <p>
-        This is where a lot of marketing gets sloppy, so here&apos;s the careful version. AI Overviews now appear
-        in up to ~48% of commercial-intent searches (BrightEdge, 2026) — the exact kind of &quot;best,&quot;
-        &quot;near me,&quot; and &quot;how do I choose&quot; queries that precede a purchase. That is not the same
+        AI Overviews now appear in up to ~48% of commercial-intent searches (BrightEdge, 2026) — the exact kind
+        of &quot;best,&quot; &quot;near me,&quot; and &quot;how do I choose&quot; queries that precede a purchase.
+        This is where a lot of marketing gets sloppy, so here&apos;s the careful version. That is not the same
         as &quot;half of all searches.&quot; Broad-panel studies that measure every query type (Semrush, for
         example) have put overview presence closer to ~16–25% of all searches. Both can be true at once: overviews
         are far more common on the buying-intent queries that matter to your business than they are across search
@@ -53,7 +53,7 @@ export function Body() {
         searches where a customer is deciding who to hire, they&apos;re already the norm.
       </p>
 
-      <h2>Why this cuts your website traffic</h2>
+      <h2>Why do AI Overviews cut your website traffic?</h2>
       <p>
         When the answer is on the results page, fewer people click anything at all. This is the zero-click
         pattern: roughly two-thirds of Google searches now end without a single click to a website
@@ -78,8 +78,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The reframe: from &quot;rank on the page&quot; to &quot;be in the answer&quot;</h2>
+      <h2>Should you aim to rank on the page or be in the answer?</h2>
       <p>
+        Aim to be in the answer: the work now is to be one of the sources the overview pulls from and names.{" "}
         The strategic shift is simple to state and hard to ignore. Optimizing to rank below an AI Overview is
         optimizing for a spot people increasingly skip. The work now is to be one of the sources the overview
         pulls from and names. That&apos;s the same discipline as getting recommended by ChatGPT or cited on
@@ -87,8 +88,10 @@ export function Body() {
         you&apos;re usually building the signals that help in all of them.
       </p>
 
-      <h2>How to become the business an AI Overview cites</h2>
+      <h2>How do you become the business an AI Overview cites?</h2>
       <p>
+        Make your business the most retrievable, verifiable, quotable source for the questions your customers
+        ask.{" "}
         You can&apos;t buy your way into an overview or guarantee a citation — Google decides per query, and
         results vary. What you <em>can</em> do is make your business the most retrievable, verifiable, quotable
         source for the questions your customers ask. In practice:</p>
@@ -121,7 +124,7 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Frequently asked questions</h2>
+      <h2>What else do people ask about AI Overviews?</h2>
       <p>
         <strong>Are AI Overviews the same as ChatGPT?</strong> No — AI Overviews are Google&apos;s feature inside
         search results, while ChatGPT is a separate assistant. But they work on the same underlying idea:
@@ -144,7 +147,7 @@ export function Body() {
         ranking to being cited.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on AI Overviews?</h2>
       <p>
         AI Overviews have quietly moved the moment of decision from your website to Google&apos;s results page. On
         the commercial searches that lead to a sale, they&apos;re already the norm, and they&apos;re a major
@@ -153,7 +156,13 @@ export function Body() {
         obvious, verifiable source. The first step is knowing what the AI engines currently say about you.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that you can&apos;t control an AI Overview, but you can earn your way into it with
+        direct answers, clean structure, strong reviews, and consistent details that make you the obvious,
+        verifiable source.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

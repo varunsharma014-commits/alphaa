@@ -23,9 +23,10 @@ export function Body() {
         Below are the exact prompts, what to look for, and one faster method that checks every engine at once.
       </p>
 
-      <h2>Why you can&apos;t assume ChatGPT knows you</h2>
+      <h2>Why can&apos;t you assume ChatGPT knows your business?</h2>
       <p>
-        When someone asks an AI assistant to recommend a plumber, a dentist, or a software vendor, the model
+        Because you show up only if your business is described clearly and consistently across the sources AI
+        engines read. When someone asks an AI assistant to recommend a plumber, a dentist, or a software vendor, the model
         assembles an answer from what it learned in training plus, increasingly, live web results it retrieves
         the moment you ask. Your business shows up only if it&apos;s described clearly and consistently across the
         sources those engines read. So the real question isn&apos;t &quot;am I on page one of Google?&quot; — it&apos;s
@@ -34,9 +35,9 @@ export function Body() {
         engine draws on different data.
       </p>
 
-      <h2>Method 1: Ask ChatGPT directly (the two prompts that matter)</h2>
+      <h2>How do you ask ChatGPT directly what it says about you?</h2>
       <p>
-        Open ChatGPT and run these two prompts. They test two different things, and both matter.
+        Open ChatGPT and run two prompts: a recognition test and a recommendation test. They test two different things, and both matter.
       </p>
       <ul>
         <li>
@@ -59,9 +60,9 @@ export function Body() {
         from appearing in five of five.
       </p>
 
-      <h2>Method 2: Turn on web browsing and re-test</h2>
+      <h2>Does turning on ChatGPT web browsing change the results?</h2>
       <p>
-        ChatGPT can answer from frozen training knowledge or from live web retrieval, and the two can disagree.
+        It can, because ChatGPT can answer from frozen training knowledge or from live web retrieval, and the two can disagree.
         If your version offers a browsing or &quot;search the web&quot; mode, run the recommendation prompt with
         it on and off. If you appear only when browsing is on, your presence depends on current web content
         (your site, reviews, directories) rather than being &quot;baked in&quot; from training — useful to know,
@@ -69,9 +70,9 @@ export function Body() {
         either way, you have a visibility gap to close, not just a wording problem.
       </p>
 
-      <h2>Method 3: Check every engine, not just ChatGPT</h2>
+      <h2>Should you check other AI engines besides ChatGPT?</h2>
       <p>
-        ChatGPT is the loudest name, but your buyers use whatever assistant is in front of them. Run the same
+        Yes: ChatGPT is the loudest name, but your buyers use whatever assistant is in front of them. Run the same
         two prompts in each of these, because they pull from different sources and will often disagree:
       </p>
       <ul>
@@ -94,7 +95,11 @@ export function Body() {
         see <Link href="/blog/how-to-get-cited-on-perplexity">how to get cited on Perplexity</Link>.
       </p>
 
-      <h2>What your results actually mean</h2>
+      <h2>What do your ChatGPT test results actually mean?</h2>
+      <p>
+        Being named consistently means strong visibility; being recognized but not recommended, getting wrong
+        details, or getting no information each point to a specific gap.
+      </p>
       <table>
         <thead>
           <tr>
@@ -130,9 +135,9 @@ export function Body() {
         sign anything.
       </p>
 
-      <h2>The one fast method: check all four engines at once</h2>
+      <h2>Is there a faster way to check all four AI engines at once?</h2>
       <p>
-        Doing the manual test well — two prompts, several runs, four engines — takes real time, and it&apos;s easy
+        Yes, a scan automates the manual test. Doing the manual test well — two prompts, several runs, four engines — takes real time, and it&apos;s easy
         to fool yourself by running a prompt once and calling it a day. That&apos;s the exact job a scan
         automates. Alphaa runs your recognition and recommendation prompts across ChatGPT, Claude, Gemini, and
         Perplexity, repeats them, and reports where you appear, where you don&apos;t, and who gets named instead
@@ -144,7 +149,11 @@ export function Body() {
         visibility gap you haven&apos;t measured, and &quot;I assume ChatGPT knows us&quot; is not a measurement.
       </p>
 
-      <h2>FAQ</h2>
+      <h2>What else do people ask about checking what ChatGPT says?</h2>
+      <p>
+        The common questions are whether checking is free, why answers change every time, and how to correct
+        wrong details.
+      </p>
       <p>
         <strong>Is it really free to check what ChatGPT says about my business?</strong> Yes. Asking ChatGPT,
         Claude, Gemini, and Perplexity directly costs nothing beyond your time. The prompts above are all you
@@ -163,7 +172,12 @@ export function Body() {
       </p>
 
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to test both recognition and recommendation prompts several times across ChatGPT,
+        Claude, Gemini and Perplexity, then fix the gap your results point to rather than trusting a single
+        answer.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

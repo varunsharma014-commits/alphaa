@@ -32,8 +32,8 @@ export function Body() {
         <Link href="/blog/what-is-answer-engine-optimization">what answer engine optimization actually is</Link>.
       </p>
 
-      <h2>Foundations</h2>
-      <p>These are table stakes — get them wrong and nothing else compounds.</p>
+      <h2>What foundations does AI need before it recommends you?</h2>
+      <p>AI needs consistent name, address, and phone details, a complete Google Business Profile, a clear one-sentence description, and an accurate website before it will recommend you. These are table stakes — get them wrong and nothing else compounds.</p>
       <ul>
         <li><strong>Consistent name, address, and phone (NAP)</strong> everywhere — your site, directories, and profiles must match exactly, because mismatches break consensus.</li>
         <li><strong>A complete, verified Google Business Profile</strong> — categories, hours, service area, and photos filled in, since AI leans on it heavily for local answers.</li>
@@ -42,8 +42,8 @@ export function Body() {
         <li><strong>Presence on the directories that matter for your niche</strong> (industry lists, maps, app stores) — absence reads as &quot;not a real option.&quot;</li>
       </ul>
 
-      <h2>Content</h2>
-      <p>AI engines lift sentences they can reuse. Write so your pages are easy to quote.</p>
+      <h2>How should you write content so AI can quote it?</h2>
+      <p>Write answer-first pages with question headings, specific facts, and plain language, because AI engines lift sentences they can reuse. Write so your pages are easy to quote.</p>
       <ul>
         <li><strong>Answer-first structure</strong> — lead each page with a direct answer in the first sentence or two, then support it, because that is the shape models extract.</li>
         <li><strong>Clear headings phrased as questions</strong> a customer would actually ask, so retrieval matches your page to the query.</li>
@@ -53,7 +53,7 @@ export function Body() {
         <li><strong>Plain language over jargon</strong>, so the model and the reader both understand you on the first pass.</li>
       </ul>
 
-      <h2>Reviews and authority</h2>
+      <h2>How much do reviews and authority matter for AI recommendations?</h2>
       <p>
         For local and service recommendations, reviews are often the gate. Analyses of ChatGPT-recommended
         local businesses put their average rating around <strong>4.3 stars</strong> — and very low ratings or a
@@ -69,8 +69,8 @@ export function Body() {
         <li><strong>Consistent messaging across all of the above</strong>, so the story a model assembles from many sources doesn&apos;t contradict itself.</li>
       </ul>
 
-      <h2>Technical</h2>
-      <p>If an engine can&apos;t read or trust your pages, none of the content work lands.</p>
+      <h2>What technical basics let AI read and trust your site?</h2>
+      <p>Accurate schema, crawler access, fast server-rendered pages, clean URLs, a working sitemap, and HTTPS let AI read and trust your site. If an engine can&apos;t read or trust your pages, none of the content work lands.</p>
       <ul>
         <li><strong>Accurate structured data (JSON-LD schema)</strong> — Organization, LocalBusiness, Product, FAQ as relevant — so machines parse your facts unambiguously.</li>
         <li><strong>Don&apos;t block AI crawlers</strong> in <code>robots.txt</code> unless you mean to, because a blocked page simply can&apos;t be retrieved or cited.</li>
@@ -80,8 +80,8 @@ export function Body() {
         <li><strong>HTTPS and basic site health</strong> — small trust signals that quietly add up.</li>
       </ul>
 
-      <h2>AI-specific</h2>
-      <p>A few newer signals are aimed squarely at how AI assistants read the web.</p>
+      <h2>Which AI-specific signals should you add to your site?</h2>
+      <p>Add an <code>llms.txt</code> file, a short summary for AI assistants, clear entity signals, honest comparison content, and regular re-checks of what AI says about you. A few newer signals are aimed squarely at how AI assistants read the web.</p>
       <ul>
         <li>
           <strong>An <code>llms.txt</code> file</strong> at your domain root — an emerging convention (still
@@ -95,7 +95,7 @@ export function Body() {
         <li><strong>Regular re-checks</strong> of what AI actually says about you, since the public inputs — and the models — keep changing.</li>
       </ul>
 
-      <h2>How to use this checklist</h2>
+      <h2>How should you work through this AEO checklist?</h2>
       <p>
         Don&apos;t try to do everything at once. Fix the <strong>foundations</strong> first (NAP, Google
         Business Profile, an accurate site), then <strong>reviews</strong>, then <strong>content</strong> and{" "}
@@ -109,11 +109,16 @@ export function Body() {
         <Link href="/blog/aeo-vs-seo-why-agencies-fail">why so many agencies get AEO wrong</Link>.
       </p>
 
+      <p>
+        The key takeaway is to fix your foundations first, then reviews, then content and technical items, so
+        every source tells AI the same consistent, well-supported story about your business.
+      </p>
+
       <hr />
       <p>
         <strong>Want to know where you stand today?</strong> The fastest way to use this checklist is to see
         which signals you&apos;re already winning and which are costing you recommendations.{" "}
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

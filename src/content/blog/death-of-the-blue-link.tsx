@@ -23,8 +23,9 @@ export function Body() {
         doesn&apos;t.
       </p>
 
-      <h2>The bargain that used to hold</h2>
+      <h2>How did search traffic used to work for businesses?</h2>
       <p>
+        Search used to be a simple trade: you supplied the content, and Google sent you the traffic.{" "}
         For twenty years, search worked on a simple trade. Google took your page, showed a title and two lines
         of description, and if that teaser was interesting enough, the searcher clicked through to your site.
         You paid in content; Google paid in traffic. The whole SEO industry — every audit, every backlink, every
@@ -36,7 +37,7 @@ export function Body() {
         Google could do. The answer lived on someone&apos;s website, and to read it you had to go there.
       </p>
 
-      <h2>What actually changed</h2>
+      <h2>What actually changed in Google search?</h2>
       <p>
         Google can answer now. So can ChatGPT, Claude, Gemini, and Perplexity. When the results page itself
         satisfies the question, the click becomes optional — and optional clicks mostly don&apos;t happen. Three
@@ -67,8 +68,10 @@ export function Body() {
         process.
       </p>
 
-      <h2>Why your rankings look fine and your traffic doesn&apos;t</h2>
+      <h2>Why do your rankings look fine while your traffic drops?</h2>
       <p>
+        Your ranking didn&apos;t fall; the value of the ranking fell, because an AI Overview above the links can
+        resolve the question first.{" "}
         This is the part that makes owners feel like they&apos;re being lied to. Your agency&apos;s report says
         position 2 for your money keyword. Impressions are flat or up. Clicks are down. Nobody is lying —
         both things are true at once, and they always were measuring different events.
@@ -85,8 +88,10 @@ export function Body() {
         left to go. The question worth asking is different: when the AI writes that answer, does it mention you?
       </p>
 
-      <h2>The new question: are you in the answer?</h2>
+      <h2>How do you get into the AI answer instead of just ranking?</h2>
       <p>
+        You get into the answer by being described verifiably, specifically, and consistently across many
+        sources.{" "}
         Being cited in an AI answer is not the same job as ranking, and it isn&apos;t won the same way. AI
         assistants assemble answers by retrieving live sources and weighing them against what they already
         learned — and they reward being described <strong>verifiably, specifically, and consistently across many
@@ -101,8 +106,9 @@ export function Body() {
         sells you a guarantee.
       </p>
 
-      <h2>What this doesn&apos;t mean</h2>
+      <h2>Does this mean SEO and clicks are dead?</h2>
       <p>
+        No — SEO isn&apos;t dead, clicks aren&apos;t worthless, and nobody can guarantee you a citation.{" "}
         The honest version of this story has limits, and the loud version tends to drop them:
       </p>
       <ul>
@@ -129,8 +135,10 @@ export function Body() {
         for you is a warmer lead than someone comparing ten tabs.
       </p>
 
-      <h2>Where to start</h2>
+      <h2>Where should a business start with AI search?</h2>
       <p>
+        Start by finding out what the AI engines currently say about you, then make your basic facts identical
+        everywhere.{" "}
         The work isn&apos;t exotic, and most of it is stuff you&apos;d want to be true anyway:
       </p>
       <ul>
@@ -156,7 +164,7 @@ export function Body() {
         <Link href="/blog/aeo-checklist">AEO checklist</Link> walks through it step by step.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on the death of the blue link?</h2>
       <p>
         The blue link isn&apos;t gone — it&apos;s been relegated. Ranking #1 in a world where roughly two-thirds
         of searches end in no click is a smaller prize than it was in 2019, and pretending otherwise is why so
@@ -165,7 +173,12 @@ export function Body() {
         asks an AI who to hire, does it say me?&quot; That question has an answer today, and you can check it.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to stop asking &quot;where do I rank?&quot; and start asking whether AI names you:
+        make your facts consistent, answer real questions plainly, and build third-party evidence.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

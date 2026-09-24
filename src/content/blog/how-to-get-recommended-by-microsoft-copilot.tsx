@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and check what each
-          major assistant says about them. Last updated 3 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 3 August 2026.
         </em>
       </p>
 
@@ -31,7 +30,8 @@ export function Body() {
 
       <h2>What is Microsoft Copilot, in retrieval terms?</h2>
       <p>
-        Copilot is Microsoft&apos;s assistant layer — it appears in Windows, in the Edge sidebar, at
+        In retrieval terms, Copilot runs a search, reads the returned documents and writes an answer with links
+        back to sources. Copilot is Microsoft&apos;s assistant layer — it appears in Windows, in the Edge sidebar, at
         copilot.microsoft.com, and inside Microsoft 365. Underneath the chat interface it does what other
         assistants do: it takes your question, decides whether it needs live information, runs a search, reads
         the returned documents, and writes an answer with links back to sources.
@@ -61,14 +61,15 @@ export function Body() {
       <p>
         Contrast that with ChatGPT and Claude, where the retrieval layer is a mix of their own crawlers and
         third-party search partners, or with Perplexity, which runs its own index. Being strong in one engine
-        does not automatically carry to Copilot. In our scans, a business found by ChatGPT and missing from
-        Copilot is one of the most common asymmetries we see — and the cause is nearly always an indexing
+        does not automatically carry to Copilot. A business found by ChatGPT and missing from
+        Copilot is a common asymmetry — and the cause is nearly always an indexing
         problem, not a content problem.
       </p>
 
-      <h2>Step 1: Confirm Bing can actually see you</h2>
+      <h2>How do you confirm Bing can actually see your site?</h2>
       <p>
-        Do this before anything else, because every later step depends on it. Two checks, five minutes.
+        Check that your robots.txt does not block <code>bingbot</code>, and compare your Bing index count with
+        Google&apos;s. Do this before anything else, because every later step depends on it. Two checks, five minutes.
       </p>
       <p>
         <strong>Check your robots.txt.</strong> Open <code>yourdomain.com/robots.txt</code> and look for any
@@ -86,8 +87,9 @@ export function Body() {
         domain is thin and its rendering queue is slower than Google&apos;s.
       </p>
 
-      <h2>Step 2: Set up Bing Webmaster Tools and import from Google</h2>
+      <h2>How do you set up Bing Webmaster Tools quickly?</h2>
       <p>
+        Verify ownership by importing your site directly from Google Search Console.{" "}
         <a href="https://www.bing.com/webmasters" target="_blank" rel="noopener noreferrer">
           Bing Webmaster Tools
         </a>{" "}
@@ -112,8 +114,10 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Step 3: Turn on IndexNow so new pages reach Copilot in hours</h2>
+      <h2>How does IndexNow get new pages to Copilot faster?</h2>
       <p>
+        IndexNow lets your site ping participating search engines, including Bing, the moment a page is
+        published or updated.{" "}
         <a href="https://www.indexnow.org" target="_blank" rel="noopener noreferrer">IndexNow</a> is an open
         protocol Microsoft co-created. Instead of waiting for a crawler to rediscover a changed page, your site
         pings the participating search engines the moment a page is published or updated, and they come and
@@ -139,9 +143,9 @@ export function Body() {
         it does not make thin pages worth quoting. It removes a delay; it does not create authority.
       </p>
 
-      <h2>Step 4: Claim Bing Places — the step nearly everyone skips</h2>
+      <h2>Why should you claim your Bing Places listing?</h2>
       <p>
-        For any question with local intent — &quot;best dentist in Leeds,&quot; &quot;emergency electrician near
+        Because Google Business Profile does not feed Microsoft, and Bing Places does. For any question with local intent — &quot;best dentist in Leeds,&quot; &quot;emergency electrician near
         me&quot; — Copilot needs a business record with a name, address, phone, hours and category. Google
         Business Profile does not feed Microsoft. Bing Places does.
       </p>
@@ -167,9 +171,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Step 5: Make the page itself quotable</h2>
+      <h2>How do you make a page quotable for Copilot?</h2>
       <p>
-        Once Copilot can retrieve you, the remaining question is whether it can lift a clean sentence. The
+        Answer in the first two sentences, publish the specifics competitors hide, add schema, and keep the
+        answer out of JavaScript. Once Copilot can retrieve you, the remaining question is whether it can lift a clean sentence. The
         content rules here are the same ones that work across every assistant, and they are not exotic:
       </p>
       <ul>
@@ -195,7 +200,8 @@ export function Body() {
 
       <h2>Does Copilot deserve the effort?</h2>
       <p>
-        Be honest about the trade-off. Bing&apos;s share of raw web search is small next to Google&apos;s. The
+        Yes, especially for B2B and professional services, because Copilot is built into Windows, Edge and
+        Microsoft 365. Be honest about the trade-off. Bing&apos;s share of raw web search is small next to Google&apos;s. The
         reason Copilot still earns a place on the list is distribution: it is built into Windows and Edge and
         surfaced inside Microsoft 365, so it reaches a lot of people at work who never chose an assistant at
         all. For B2B and professional services in particular, that is your buyer sitting at a work laptop.
@@ -206,7 +212,11 @@ export function Body() {
         is the one where the barrier to entry is a free webmaster tools account rather than a content war.
       </p>
 
-      <h2>Frequently asked questions</h2>
+      <h2>What else do people ask about getting recommended by Copilot?</h2>
+      <p>
+        The common questions are whether Copilot optimisation is the same as Bing, whether you need separate
+        content, how long it takes, and whether you can pay to be included.
+      </p>
       <h3>Is optimising for Copilot the same as optimising for Bing?</h3>
       <p>
         Largely, yes, at the retrieval layer — Copilot grounds in Microsoft&apos;s index, so getting indexed and
@@ -230,9 +240,9 @@ export function Body() {
         otherwise is selling something that does not exist.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do you get recommended by Microsoft Copilot?</h2>
       <p>
-        Copilot visibility is mostly an indexing problem wearing an AI costume. Unblock <code>bingbot</code>,
+        Make sure Bing can index you, then make your pages quotable. Copilot visibility is mostly an indexing problem wearing an AI costume. Unblock <code>bingbot</code>,
         verify in Bing Webmaster Tools, submit your sitemap, wire up IndexNow, claim and correct Bing Places,
         and make the page answer its question in the first two sentences. None of that guarantees a citation —
         outputs vary by phrasing, user and model version, and we will not pretend otherwise. But it moves you
@@ -240,7 +250,12 @@ export function Body() {
         where most businesses are still stuck.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to treat Copilot as an indexing problem first: unblock bingbot, verify in Bing
+        Webmaster Tools, turn on IndexNow, claim Bing Places, and make each page answer its question in the
+        first two sentences.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

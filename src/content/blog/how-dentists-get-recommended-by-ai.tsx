@@ -23,9 +23,9 @@ export function Body() {
         Your job is to make the true story of your practice the easiest one to find and quote.
       </p>
 
-      <h2>How AI picks a dentist to recommend</h2>
+      <h2>How does AI pick a dentist to recommend?</h2>
       <p>
-        When someone types &quot;best family dentist near me&quot; or &quot;dentist in [city] that takes my
+        It retrieves live signals, mainly your Google Business Profile, patient reviews, consistent listings and clear service pages, and summarizes them. When someone types &quot;best family dentist near me&quot; or &quot;dentist in [city] that takes my
         insurance&quot; into ChatGPT, Gemini, Perplexity, or Google&apos;s AI Overview, the assistant
         doesn&apos;t recall a favorite from memory. It retrieves live signals and summarizes them. For a dental
         practice, the signals that carry the most weight are:
@@ -52,7 +52,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Why dental is a special case: trust and honesty matter more</h2>
+      <h2>Why do trust and honesty matter more for dentists?</h2>
       <p>
         Dentistry is health care, and AI models are noticeably more cautious with health and money topics. They
         tend to lean harder on verifiable, professional signals and to avoid making strong claims. That cuts two
@@ -64,7 +64,10 @@ export function Body() {
         hours Tuesdays and Thursdays&quot;) are far more quotable than superlatives.
       </p>
 
-      <h2>The practical playbook for a dental practice</h2>
+      <h2>What should a dental practice do to get recommended by AI?</h2>
+      <p>
+        Perfect your Google Business Profile, build genuine reviews, make every listing match, write patient-question pages, and earn credible third-party mentions.
+      </p>
       <h3>1. Perfect your Google Business Profile</h3>
       <p>
         Choose the most accurate primary category and add the secondary services you genuinely provide. List
@@ -103,9 +106,9 @@ export function Body() {
         confident. Quality and consistency beat quantity here.
       </p>
 
-      <h2>What no dentist marketing vendor can do</h2>
+      <h2>Can a marketing vendor guarantee AI recommends your practice?</h2>
       <p>
-        Be skeptical of anyone selling AI visibility to dentists with guarantees. No one can pay to insert your
+        No. Be skeptical of anyone selling AI visibility to dentists with guarantees. No one can pay to insert your
         practice into ChatGPT or Google AI Overviews, edit what a model &quot;knows,&quot; or promise you the
         top spot. Results vary by phrasing, location, and time — the same query can name different dentists on
         different days. This honesty isn&apos;t a limitation of our approach; it is the whole picture of how AI
@@ -119,16 +122,16 @@ export function Body() {
         favor.
       </p>
 
-      <h2>A realistic timeline</h2>
+      <h2>How long does it take for AI to recommend a dentist?</h2>
       <p>
-        None of this is instant. Profile and citation fixes can register within weeks; a stronger review
+        None of this is instant: profile and citation fixes can register within weeks; a stronger review
         profile builds over months as new reviews accumulate; content and third-party mentions compound over a
         quarter or more. Anyone quoting a precise, fast, guaranteed result is guessing or exaggerating. The
         honest promise is direction, not a date: do the work consistently and you steadily become the practice
         AI is most equipped to recommend.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>How do dentists get recommended by AI?</h2>
       <p>
         Dentists get recommended by AI the same way they earn word-of-mouth in the real world — by being
         genuinely good and being easy to verify. A complete Google Business Profile, authentic patient reviews,
@@ -137,7 +140,10 @@ export function Body() {
         true story of your practice the easiest one to find.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to make the true story of your practice easy to verify, with a complete profile, authentic reviews, consistent listings and honest service pages.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

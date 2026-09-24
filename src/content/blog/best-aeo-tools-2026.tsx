@@ -24,8 +24,10 @@ export function Body() {
         to pick without getting sold a guarantee no one can keep.
       </p>
 
-      <h2>First, a warning about how to read any AEO comparison</h2>
+      <h2>How should you read any AEO tool comparison?</h2>
       <p>
+        Read it by asking whether each tool talks about influencing the inputs AI engines read or promises a
+        guaranteed output.{" "}
         AEO is a young field, and the marketing around it moves faster than the evidence. Before you trust any
         tool — including ours — apply one test: does it talk about influencing the <em>inputs</em> AI engines
         read, or does it promise a guaranteed <em>output</em>? No tool can edit a model&apos;s training weights
@@ -36,8 +38,10 @@ export function Body() {
         below assumes you&apos;re shopping honestly.
       </p>
 
-      <h2>The three categories of AEO tool in 2026</h2>
+      <h2>What are the three categories of AEO tool in 2026?</h2>
       <p>
+        The three categories are prompt-tracking and monitoring platforms, classic SEO suites with AEO features
+        bolted on, and do-it-for-you platforms for local and small businesses.{" "}
         Almost every product in this space falls into one of three buckets. Knowing which bucket you actually
         need saves you from paying enterprise prices for a dashboard you won&apos;t act on.
       </p>
@@ -116,7 +120,11 @@ export function Body() {
         what we&apos;re built for.
       </p>
 
-      <h2>How to choose: five honest questions</h2>
+      <h2>How do you choose the right AEO tool?</h2>
+      <p>
+        Choose by asking five honest questions about measuring versus fixing, scale, engine coverage, honesty,
+        and whether you can afford to act on the results.
+      </p>
       <ul>
         <li>
           <strong>Do you need to measure or to fix?</strong> If you have a team to act on data, a tracker is
@@ -141,8 +149,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Why &quot;the tool that also fixes things&quot; matters most for small businesses</h2>
+      <h2>Why should a small business pick an AEO tool that also fixes things?</h2>
       <p>
+        A small business rarely has time to act on a dashboard, so a tool that also does the remediation work
+        is the one that helps.{" "}
         The biggest failure mode in AEO isn&apos;t buying the wrong tracker — it&apos;s buying <em>any</em>
         tracker, staring at a dashboard that says &quot;you&apos;re invisible in 60% of prompts,&quot; and then
         never doing the work to change it. Measurement without remediation is a to-do list you don&apos;t have
@@ -152,7 +162,7 @@ export function Body() {
         old-school agencies fall short</Link> covers that tradeoff directly.
       </p>
 
-      <h2>FAQ</h2>
+      <h2>What else do people ask about AEO tools?</h2>
       <p>
         <strong>What is the best AEO tool in 2026?</strong> There isn&apos;t one universal winner. Agencies and
         enterprise teams get the most from deep prompt-tracking platforms; local and small businesses get the
@@ -176,11 +186,17 @@ export function Body() {
       </p>
 
       <p>
+        The key takeaway is to match the tool to your situation: teams with people to act on data can use a
+        tracker, while most small businesses are better served by a tool that measures and then fixes their AI
+        visibility.
+      </p>
+
+      <p>
         The honest starting point for any of this is knowing where you stand today. Before comparing plans, see
         what the engines actually say about you.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

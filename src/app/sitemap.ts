@@ -1,13 +1,14 @@
 import { MetadataRoute } from "next"
 import { getAllPosts } from "@/content/blog"
 import { VERTICALS } from "@/content/verticals"
+import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
 
 const BASE_URL = "https://alphaa.app"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const blogPosts: MetadataRoute.Sitemap = getAllPosts().map((p) => ({
     url: `${BASE_URL}/blog/${p.meta.slug}`,
-    lastModified: new Date(p.meta.date),
+    lastModified: new Date(p.meta.date > CONTENT_REVIEWED ? p.meta.date : CONTENT_REVIEWED),
     changeFrequency: "monthly",
     priority: 0.7,
   }))
@@ -27,6 +28,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${BASE_URL}/start`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
       url: `${BASE_URL}/blog`,
       lastModified: new Date(),
       changeFrequency: "weekly",
@@ -41,6 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/about`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
       url: `${BASE_URL}/how-it-works`,
       lastModified: new Date(),
       changeFrequency: "monthly",
@@ -49,8 +62,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${BASE_URL}/scan`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
     {
       url: `${BASE_URL}/case-studies`,

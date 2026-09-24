@@ -63,16 +63,24 @@ const STEPS = [
 ]
 
 export default function HowItWorksPage() {
+  const howTo = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: `How ${A} gets your business recommended by AI`,
+    description: "From a free 60-second check of what ChatGPT, Gemini, Claude and Perplexity say about you to a weekly plain-English note.",
+    step: STEPS.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.title, text: s.body, url: `https://alphaa.app/how-it-works#step-${i + 1}` })),
+  }
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howTo) }} />
       <section className="ap-sec ap-sec--grey" style={{ paddingTop: 120 }}>
         <h1 className="ap-h2 ap-center" style={{ fontSize: "clamp(44px, 7.7vw, 88px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}>
           Everything {A} does.<br /><span className="ap-quiet">Explained.</span>
         </h1>
         <p className="ap-lead ap-center">No black boxes. Here’s exactly what happens — from a free check to AI saying your name.</p>
         <div className="ap-story">
-          {STEPS.map((s) => (
-            <article key={s.title} className="ap-row">
+          {STEPS.map((s, i) => (
+            <article key={s.title} id={`step-${i + 1}`} className="ap-row">
               <div className="ap-row__art"><Panel tone={s.tone}>{s.art}</Panel></div>
               <div className="ap-row__text">
                 <div className="ap-eyebrow">{s.eyebrow}</div>

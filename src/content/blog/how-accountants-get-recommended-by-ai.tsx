@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of small businesses, including
-          accounting and tax practices. Last updated 29 July 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 29 July 2026.
         </em>
       </p>
 
@@ -31,9 +30,9 @@ export function Body() {
         someone else.
       </p>
 
-      <h2>What people actually ask AI when they need an accountant</h2>
+      <h2>What do people ask AI when they need an accountant?</h2>
       <p>
-        The queries that matter come in two waves, and most firms only think about the second one.
+        They ask problem questions first, about tax and entity decisions, and then who questions looking for a specific accountant. The queries that matter come in two waves, and most firms only think about the second one.
       </p>
       <ul>
         <li>
@@ -60,8 +59,8 @@ export function Body() {
         actually contain them.
       </p>
 
-      <h2>Why accounting firms are unusually invisible to AI</h2>
-      <p>Four patterns show up again and again in scans of accounting practices:</p>
+      <h2>Why are accounting firms so often invisible to AI?</h2>
+      <p>Four patterns cause it: deliberate vagueness, no pricing signal, content locked in PDFs and portals, and seasonal silence. Four patterns show up again and again on accounting practice websites:</p>
       <ul>
         <li>
           <strong>Deliberate vagueness.</strong> Many firms avoid naming a niche because they fear turning
@@ -83,7 +82,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Step 1 — Fix the entity layer</h2>
+      <h2>How do you make your accounting firm one clear entity for AI?</h2>
       <p>
         Before content, make your firm resolvable as one clear entity. AI engines cross-check what they read,
         and accounting is a category with unusually good public verification sources. Use them.
@@ -128,8 +127,8 @@ export function Body() {
         .
       </p>
 
-      <h2>Step 2 — Trade vagueness for specificity</h2>
-      <p>Here is the rewrite that moves the needle. Before:</p>
+      <h2>How specific should an accounting firm&apos;s website be?</h2>
+      <p>Specific enough to name your niche, geography, services and a price signal, as in this rewrite. Here is the rewrite that moves the needle. Before:</p>
       <blockquote>
         We are a full-service accounting firm providing accounting, tax and advisory services to businesses
         and individuals. Our experienced team is committed to excellence and personalised service.
@@ -149,8 +148,8 @@ export function Body() {
         confident recommending you to the people you are for.
       </p>
 
-      <h2>Step 3 — Publish the answers, not brochures</h2>
-      <p>Pages that get quoted in this category tend to be:</p>
+      <h2>What content gets accounting firms quoted by AI?</h2>
+      <p>Answer pages get quoted, not brochures: cost pages, situation guides, jurisdiction-specific pages, deadline pages and a clear FAQ. Pages that get quoted in this category tend to be:</p>
       <ul>
         <li>
           <strong>Cost pages with real ranges.</strong> &quot;What we charge for a 1065 partnership
@@ -177,9 +176,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Step 4 — Earn the third-party evidence</h2>
+      <h2>How do accountants earn third-party evidence that AI trusts?</h2>
       <p>
-        Accountants are chosen on trust, and models weight independent corroboration accordingly. Ask every
+        Ask happy clients for specific Google reviews, and get listed with your local chamber and industry associations. Accountants are chosen on trust, and models weight independent corroboration accordingly. Ask every
         client you finish a good year with for a Google review, and encourage specificity — &quot;handled our
         multi-state payroll registration&quot; is worth far more to retrieval than &quot;great service.&quot;
         The mechanism is explained in{" "}
@@ -189,7 +188,10 @@ export function Body() {
         season stories come around.
       </p>
 
-      <h2>What not to do</h2>
+      <h2>What should accountants avoid when chasing AI visibility?</h2>
+      <p>
+        Do not promise outcomes, invent credentials, mass-produce thin city pages, or buy &quot;guaranteed AI placement.&quot;
+      </p>
       <ul>
         <li>
           <strong>Do not promise outcomes.</strong> &quot;Guaranteed maximum refund&quot; and &quot;we can cut
@@ -209,7 +211,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>A realistic 30-day plan</h2>
+      <h2>What does a realistic 30-day plan look like for accountants?</h2>
+      <p>
+        Spend the month measuring what AI says, reconciling your firm details, rewriting for specificity, publishing two useful pages, and requesting specific reviews.
+      </p>
       <ol>
         <li><strong>Days 1–3:</strong> Ask ChatGPT, Claude, Gemini and Perplexity the ten questions a real
           prospect would ask in your city and niche. Record what they say and who they name.</li>
@@ -227,7 +232,10 @@ export function Body() {
         see <Link href="/blog/how-long-does-aeo-take">how long AEO actually takes</Link>.
       </p>
 
-      <h2>Quick answers</h2>
+      <h2>What else do accountants ask about AI recommendations?</h2>
+      <p>
+        The quick answers cover solo practitioners versus big firms, publishing prices, how this differs from SEO, and whether any of it can be guaranteed.
+      </p>
       <h3>Will AI recommend a solo practitioner over a big firm?</h3>
       <p>
         Regularly, yes — when the query has qualifiers the solo firm matches and the big firm does not. A
@@ -252,7 +260,7 @@ export function Body() {
         and answers vary between engines and over time.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What is the winning move for accountants in AI search?</h2>
       <p>
         Accounting is a category where the winning move is uncomfortable: say precisely who you serve, what you
         do, roughly what it costs, and who you turn away. Make that story identical everywhere a machine can
@@ -261,7 +269,10 @@ export function Body() {
         question.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to state precisely who you serve, what you do, roughly what it costs and who you turn away, and keep those facts identical across every source a machine can check.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

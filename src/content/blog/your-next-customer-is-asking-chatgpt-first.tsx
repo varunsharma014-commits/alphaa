@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <em>By the alphaa team — we run AI-visibility scans across ChatGPT, Claude, Gemini and Perplexity for
-        local businesses, so we see firsthand which businesses get named in these answers and which get skipped.
+        <em>By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
         This is part three of our Death of the Blue Link series.</em>
       </p>
 
@@ -29,9 +28,9 @@ export function Body() {
         you, you were never in the running — and nothing in your analytics will tell you it happened.
       </p>
 
-      <h2>What actually changed about the first question</h2>
+      <h2>How has the way customers research businesses changed?</h2>
       <p>
-        The old sequence was: search, scan ten links, open four tabs, compare, decide. Every step of that
+        Customers now collapse searching, scanning links and comparing tabs into one exchange with an AI assistant. The old sequence was: search, scan ten links, open four tabs, compare, decide. Every step of that
         happened on surfaces you could measure — a ranking, a click, a session, a bounce rate.
       </p>
       <p>
@@ -47,9 +46,9 @@ export function Body() {
         you still get looks normal, because the customers you lost never generated a single event.
       </p>
 
-      <h2>Why AI answers are trusted differently</h2>
+      <h2>Why do customers trust AI answers differently from search results?</h2>
       <p>
-        A results page presents ten options and openly signals that some paid to be there. The reader does the
+        An assistant presents a few names with the filtering already done and the reasoning stated, which feels like a recommendation rather than a list. A results page presents ten options and openly signals that some paid to be there. The reader does the
         filtering and knows they are filtering. An assistant presents three, in a confident sentence, with the
         filtering already done and the reasoning stated. Psychologically these are not the same artifact, even
         when the underlying sources overlap heavily.
@@ -62,9 +61,9 @@ export function Body() {
         already vouched for you is warmer than one comparing ten open tabs.
       </p>
 
-      <h2>How the assistant decides who to name</h2>
+      <h2>How does an AI assistant decide which business to name?</h2>
       <p>
-        This is the part worth understanding precisely, because it is where the actionable work lives. When you
+        It combines training knowledge with live retrieval and rewards businesses described verifiably, specifically and consistently across many sources. This is the part worth understanding precisely, because it is where the actionable work lives. When you
         ask a modern assistant for a local recommendation, the answer is assembled from two things rather than
         recalled from a directory:
       </p>
@@ -94,9 +93,9 @@ export function Body() {
         exactly why the model leans on outside sources when the stakes of the recommendation are real.
       </p>
 
-      <h2>What this looks like in practice</h2>
+      <h2>Why would AI skip my business or get its details wrong?</h2>
       <p>
-        A concrete pattern we see repeatedly when scanning local businesses: the business ranks perfectly well
+        Usually because your facts are inconsistent across the web while a competitor&apos;s are consistent and specific. A concrete pattern we see repeatedly when scanning local businesses: the business ranks perfectly well
         on Google, has decent reviews, and is simply absent from the AI answer — while a smaller competitor with
         a thinner website gets named. The usual cause is not that the competitor did clever AI marketing. It is
         that the competitor&apos;s facts are consistent and specific everywhere, and the larger business has
@@ -110,9 +109,9 @@ export function Body() {
         evidence quality. Customers act on it. Nobody tells you.
       </p>
 
-      <h2>How to check where you stand, today</h2>
+      <h2>How can I check what AI says about my business today?</h2>
       <p>
-        You can do this manually in about five minutes, and you should do it before buying anything from anyone —
+        Ask ChatGPT, Gemini and Perplexity the need and your name, check the facts and citations, and repeat across phrasings. You can do this manually in about five minutes, and you should do it before buying anything from anyone —
         including us:
       </p>
       <ul>
@@ -145,9 +144,9 @@ export function Body() {
         on the engine-specific mechanics.
       </p>
 
-      <h2>The honest caveats</h2>
+      <h2>What are the limits of the shift to AI search?</h2>
       <p>
-        The version of this story that sells courses drops the limits. Keeping them:
+        Google has not disappeared, nobody can guarantee a citation, and the work is not instant. The version of this story that sells courses drops the limits. Keeping them:
       </p>
       <ul>
         <li>
@@ -173,7 +172,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The bottom line</h2>
+      <h2>So what should I do now that customers ask ChatGPT first?</h2>
       <p>
         The first question about your category is increasingly asked of an assistant, not a search box, and the
         shortlist that comes back is built from evidence you can influence but not control. The businesses
@@ -183,10 +182,15 @@ export function Body() {
         the only way to know is to go ask.
       </p>
       <p>
+        The key takeaway is to find out what AI assistants say about your business, then make your facts
+        specific, consistent and verifiable everywhere a model might look, because lost customers leave no trace
+        in your analytics.
+      </p>
+      <p>
         <em>Last updated July 21, 2026.</em>
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and watch how the major
-          assistants source their answers. Last updated 27 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 27 August 2026.
         </em>
       </p>
 
@@ -31,7 +30,10 @@ export function Body() {
         is not something you can influence on a useful timescale. Retrieval is.
       </p>
 
-      <h2>The two mechanisms, precisely</h2>
+      <h2>What is the difference between training data and live retrieval?</h2>
+      <p>
+        Training data is what a model remembers from a frozen corpus; live retrieval is what it fetches from the web after someone asks.
+      </p>
 
       <h3>Training data (parametric knowledge)</h3>
       <p>
@@ -86,9 +88,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>How to tell which one just answered you</h2>
+      <h2>How can I tell if an AI answer came from memory or search?</h2>
       <p>
-        You can usually diagnose this from the answer itself, in about ten seconds:
+        Citations with links mean retrieval ran; no citations and no current specifics usually mean a memory answer. You can usually diagnose this from the answer itself, in about ten seconds:
       </p>
       <ul>
         <li>
@@ -120,9 +122,9 @@ export function Body() {
         page — its name arrives from memory even when the facts arrive from the web.
       </p>
 
-      <h2>The crawler detail almost everyone gets wrong</h2>
+      <h2>Do training and retrieval use different AI crawlers?</h2>
       <p>
-        The two mechanisms are fed by <em>different bots</em>, and the major providers document this explicitly.
+        Yes. The two mechanisms are fed by <em>different bots</em>, and the major providers document this explicitly.
         OpenAI, for example, publishes separate user agents for corpus collection, for its search index, and for
         user-triggered fetches, on its{" "}
         <a href="https://platform.openai.com/docs/bots" target="_blank" rel="noopener noreferrer">
@@ -154,9 +156,9 @@ export function Body() {
         against the provider&apos;s own documentation rather than against a blog post — including this one.
       </p>
 
-      <h2>What each mechanism responds to</h2>
+      <h2>What influences training data versus live retrieval?</h2>
       <p>
-        If you accept that you can only really act on retrieval, the work sorts itself cleanly.
+        Retrieval responds to extractable, fetchable, current content, training data to years of broad coverage, and consistent entity data helps both. If you accept that you can only really act on retrieval, the work sorts itself cleanly.
       </p>
       <p>
         <strong>Things that only help retrieval, and help it a lot:</strong> content that answers the literal
@@ -179,7 +181,10 @@ export function Body() {
         work that pays into both accounts.
       </p>
 
-      <h2>A five-minute diagnostic you can run today</h2>
+      <h2>How can I check my training-data and retrieval visibility in five minutes?</h2>
+      <p>
+        Ask a memory question and a retrieval question, read the citations, then check your pages are fetchable and in the HTML.
+      </p>
       <ol>
         <li>
           <strong>Ask a memory question.</strong> &quot;What do you know about [your business name] in [city]?&quot;
@@ -223,7 +228,7 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Questions we get asked</h2>
+      <h2>What else do people ask about training data and retrieval?</h2>
 
       <h3>Can I get my business into the next training run?</h3>
       <p>
@@ -265,7 +270,7 @@ export function Body() {
         quoting a precise one.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So should I focus on training data or live retrieval?</h2>
       <p>
         Stop trying to influence what the model remembers and start controlling what it can fetch. Training data is
         a fixed inheritance you did not choose; retrieval is a live surface you own — your pages, your facts, your
@@ -274,13 +279,17 @@ export function Body() {
         own timescale.
       </p>
       <p>
+        The key takeaway is to focus on live retrieval: keep your pages fetchable, quotable and current, and be
+        present on the sources engines cite, because training data is something you cannot usefully influence.
+      </p>
+      <p>
         <Link href="/blog/what-sources-do-ai-engines-cite">
           Which sources AI engines actually cite
         </Link>{" "}
         is the natural next read, since the citation list is where the retrieval funnel becomes visible.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

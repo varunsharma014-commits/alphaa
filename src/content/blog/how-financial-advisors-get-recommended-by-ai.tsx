@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including regulated
-          professional practices. This is marketing guidance, not legal or compliance advice: clear anything below
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. This is marketing guidance, not legal or compliance advice: clear anything below
           with your CCO or compliance counsel before publishing. Last updated 7 August 2026.
         </em>
       </p>
@@ -31,9 +30,9 @@ export function Body() {
         legible and consistent.
       </p>
 
-      <h2>The question your prospect actually asks</h2>
+      <h2>What do prospects actually ask AI about financial advisors?</h2>
       <p>
-        Nobody types &quot;financial advisor&quot; into ChatGPT. They ask something with constraints attached:
+        They ask with constraints attached, such as fee model, location, client type or a specific situation. Nobody types &quot;financial advisor&quot; into ChatGPT. They ask something with constraints attached:
         &quot;fee-only fiduciary advisor in Denver who works with tech employees with RSUs,&quot; &quot;advisor who
         specialises in special-needs trusts,&quot; &quot;someone to help me roll over a 401k after being laid off at
         52.&quot;
@@ -47,9 +46,9 @@ export function Body() {
         it excludes nobody. It is not that the engine dislikes you. There is no hook to catch on.
       </p>
 
-      <h2>Your Form ADV is an AI visibility asset</h2>
+      <h2>Why is your Form ADV an AI visibility asset?</h2>
       <p>
-        Here is the piece specific to this industry that most advisors have never considered. Your Form ADV and
+        Your Form ADV is a public, structured, regulator-maintained record, which makes it an authoritative third-party source about your practice. Here is the piece specific to this industry that most advisors have never considered. Your Form ADV and
         firm record on the SEC&apos;s Investment Adviser Public Disclosure system are public, structured, and
         maintained by a regulator. In source terms, that is close to ideal: an authoritative third-party record that
         states your assets under management, client types, fee structure, and disciplinary history in a consistent
@@ -70,9 +69,9 @@ export function Body() {
         <Link href="/blog/entity-seo-how-ai-identifies-your-business">how AI identifies your business as an entity</Link>.
       </p>
 
-      <h2>The directories that carry weight here</h2>
+      <h2>Which directories carry weight for financial advisors?</h2>
       <p>
-        Advisory is one of the few local-professional categories with genuinely high-quality, curated directories —
+        Curated directories such as NAPFA, the CFP Board&apos;s public directory and networks like XY Planning Network carry real weight. Advisory is one of the few local-professional categories with genuinely high-quality, curated directories —
         and AI engines lean on curated lists heavily, because a vetted list is cheap evidence.
       </p>
       <ul>
@@ -99,9 +98,9 @@ export function Body() {
         is why filling them is such cheap ground to take.
       </p>
 
-      <h2>What compliance actually permits</h2>
+      <h2>What does compliance actually permit in advisor marketing?</h2>
       <p>
-        Advisors routinely assume any marketing that mentions clients is prohibited. That has not been true for
+        For registered investment advisers, the SEC Marketing Rule permits testimonials and endorsements, subject to disclosure, oversight and anti-cherry-picking conditions. Advisors routinely assume any marketing that mentions clients is prohibited. That has not been true for
         several years. Under the SEC&apos;s Marketing Rule (Rule 206(4)-1), which took effect for registered
         investment advisers in November 2022, testimonials and endorsements <em>are</em> permitted — subject to
         real conditions: required disclosures about client status and compensation, oversight of the promoter, and
@@ -123,8 +122,8 @@ export function Body() {
         read.
       </p>
 
-      <h2>The pages that get advisors cited</h2>
-      <p>Concretely, in the order we would build them:</p>
+      <h2>Which pages get financial advisors cited by AI?</h2>
+      <p>A who-we-work-with page, a fees page, situation pages, a credentials and disclosures page, and a plain FAQ. Concretely, in the order we would build them:</p>
       <ol>
         <li>
           <strong>A &quot;who we work with&quot; page with real constraints.</strong> Not a persona essay. Plain
@@ -156,7 +155,10 @@ export function Body() {
         page it has to summarise.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do advisors ask about AI visibility?</h2>
+      <p>
+        Advisors usually ask about advertising rules, paying to appear in AI answers, timelines, and whether they need a blog.
+      </p>
       <h3>Is any of this a violation of the advertising rules?</h3>
       <p>
         Publishing accurate factual descriptions of your practice is ordinary marketing and generally fine.
@@ -185,7 +187,7 @@ export function Body() {
         say nothing about who you serve. Six genuinely useful situation pages beat sixty quarterly outlooks.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>Do compliance rules and AI visibility conflict for advisors?</h2>
       <p>
         Advisory is a category where compliance constraints and AI visibility point in the same direction. The
         engines reward specific, verifiable, consistent description — and specific, verifiable, consistent
@@ -195,7 +197,10 @@ export function Body() {
         outcomes are needed, which in this profession is the point.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to make your ADV brochure, website, directory profiles and LinkedIn tell one consistent story, and to publish your fee model, minimum and the situations you handle in plain text.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

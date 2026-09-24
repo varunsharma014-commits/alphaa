@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        By the alphaa team — we run AI-visibility scans across the major engines every day, and Gemini is the
-        one where your existing Google footprint does the most work for you, for better or worse.
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
         <strong>Short answer:</strong> To get recommended by Google Gemini, make your business a clear,
@@ -28,9 +27,10 @@ export function Body() {
         of the businesses it can describe with confidence.
       </p>
 
-      <h2>Why Gemini is different from ChatGPT and Perplexity</h2>
+      <h2>How is Gemini different from ChatGPT and Perplexity?</h2>
       <p>
-        Every AI assistant blends two ingredients: what it absorbed during training and what it retrieves
+        Gemini can lean on Google&apos;s own web index, Knowledge Graph and local data that power Search and
+        Maps. Every AI assistant blends two ingredients: what it absorbed during training and what it retrieves
         live when you ask. Where each engine sits on that spectrum changes your job. ChatGPT leans more on
         training-era consensus and reaches for the web selectively; Perplexity sits at the retrieval end and
         shows numbered citations inline. Gemini is Google&apos;s model, and its defining advantage is that it
@@ -48,7 +48,11 @@ export function Body() {
         deciding who to call.
       </p>
 
-      <h2>The playbook: how to become a business Gemini can recommend</h2>
+      <h2>How do you become a business Gemini can recommend?</h2>
+      <p>
+        Complete and verify your Google Business Profile, be one unambiguous entity, write answer-first pages,
+        add accurate schema, earn genuine reviews, and build corroboration across the web.
+      </p>
 
       <h3>1. Complete and verify your Google Business Profile</h3>
       <p>
@@ -110,7 +114,11 @@ export function Body() {
         one carries the same core facts about you.
       </p>
 
-      <h2>Frequently asked questions</h2>
+      <h2>What else do people ask about getting recommended by Gemini?</h2>
+      <p>
+        The common questions are whether Gemini optimization is the same as SEO, whether it helps with AI
+        Overviews, and whether you can pay to be recommended.
+      </p>
 
       <h3>Is optimizing for Gemini the same as SEO for Google?</h3>
       <p>
@@ -136,7 +144,7 @@ export function Body() {
         the odds in your favor — it does not flip a switch.
       </p>
 
-      <h2>What does not work</h2>
+      <h2>What doesn&apos;t work for getting recommended by Gemini?</h2>
       <p>
         You cannot edit Gemini&apos;s model, buy a recommendation, or trick it with hidden text stuffed into a
         page — Google&apos;s systems filter that kind of manipulation. There is also no guaranteed ranking or
@@ -145,7 +153,7 @@ export function Body() {
         trusts.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do you get recommended by Google Gemini?</h2>
       <p>
         Getting recommended by Gemini is mostly about meeting Google where it already knows you. Complete and
         verify your Business Profile, resolve your business into one clear entity, publish answer-first pages
@@ -157,12 +165,18 @@ export function Body() {
         <Link href="/blog/how-to-get-cited-on-perplexity">how to get cited on Perplexity</Link>.
       </p>
 
+      <p>
+        The key takeaway is to meet Google where it already knows you: a complete, verified Business Profile,
+        one clear entity, answer-first pages with clean schema, genuine reviews and consistent facts
+        everywhere.
+      </p>
+
       <hr />
       <p>
         <strong>Not sure whether Gemini and the other AI engines recommend you today?</strong> Alphaa checks
         how the major answer engines see your business, finds the gaps in your signals, and shows you what to
         fix first.{" "}
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
       <p>
         <em>Last updated July 25, 2026.</em>

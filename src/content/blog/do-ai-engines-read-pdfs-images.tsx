@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses and inspect what
-          the engines actually retrieve from their sites. Last updated 11 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 11 August 2026.
         </em>
       </p>
 
@@ -30,8 +29,10 @@ export function Body() {
         assume the assistants answering questions about you do not have it.
       </p>
 
-      <h2>Why the distinction exists at all</h2>
+      <h2>Why can AI read uploaded images but not your website&apos;s images?</h2>
       <p>
+        Because they are two different systems: the model can see pixels a user uploads, but the retrieval
+        layer that fetches your pages is built around text.{" "}
         It is tempting to assume that because ChatGPT, Claude and Gemini are all multimodal — they can look at
         an image you upload — they must also look at the images on your website. They are two different
         systems. The model can see pixels when a user hands it pixels. The <em>retrieval</em> layer that fetches
@@ -48,7 +49,11 @@ export function Body() {
         question of whether a model <em>could</em> understand it, but whether it ever arrives.
       </p>
 
-      <h2>What actually gets extracted, format by format</h2>
+      <h2>Which file formats do AI engines actually extract?</h2>
+      <p>
+        HTML text is fully extracted, text-layer PDFs usually are, scanned PDFs are unreliable, and images and
+        embedded widgets effectively are not.
+      </p>
 
       <h3>HTML text — fully extracted</h3>
       <p>
@@ -60,7 +65,7 @@ export function Body() {
       <h3>Text-layer PDFs — usually extracted, sometimes cited</h3>
       <p>
         A PDF exported from Word, Google Docs, InDesign or a web page carries a real text layer. Search engines
-        have indexed these for two decades and AI crawlers parse them too. In scans we regularly see PDFs turn
+        have indexed these for two decades and AI crawlers parse them too. It is common for PDFs to turn
         up as cited sources — annual reports, service brochures, fee schedules, council documents. The caveats
         are real, though: PDFs are re-crawled less often than HTML pages, they carry no internal navigation the
         crawler can follow onward, their titles are often garbage (&quot;Untitled-2 final FINAL v3&quot;), and
@@ -100,9 +105,10 @@ export function Body() {
         starting price is close to ideal input for an answer engine.
       </p>
 
-      <h2>The failure we see most often</h2>
+      <h2>What is the most common PDF and image mistake?</h2>
       <p>
-        The single most common version of this problem in our scans is a business whose most decision-relevant
+        The most common mistake is putting your most decision-relevant information only in an image.{" "}
+        A common version of this problem is a business whose most decision-relevant
         information — the exact thing a customer asks an assistant about — exists only as an image. A few real
         shapes of it:
       </p>
@@ -134,8 +140,10 @@ export function Body() {
         reading the page sees a heading, a paragraph of marketing copy, and a file it cannot open.
       </p>
 
-      <h2>The fix, in the order we do it</h2>
+      <h2>How do you fix content AI engines can&apos;t read?</h2>
       <p>
+        Audit what a text-only reader sees, give every image-only fact an HTML twin, convert critical PDFs into
+        pages, and mirror key facts in structured data.{" "}
         This is a couple of hours of unglamorous work and it is often the highest-return change on the whole
         site.
       </p>
@@ -180,7 +188,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Questions we get asked</h2>
+      <h2>What else do people ask about PDFs, images, and AI?</h2>
 
       <h3>Should I stop using PDFs entirely?</h3>
       <p>
@@ -215,7 +223,7 @@ export function Body() {
         recommendation, and you should be wary of anyone who says otherwise.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on PDFs and images in AI search?</h2>
       <p>
         Answer engines can only recommend what they can read. A design decision made for humans — put the menu
         in the pretty graphic, put the rate card in the PDF — quietly removes your most persuasive information
@@ -223,7 +231,12 @@ export function Body() {
         for every fact that currently lives in pixels, and it usually takes an afternoon.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that answer engines can only recommend what they can read, so give every fact that
+        lives in an image or PDF a text twin in your HTML.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

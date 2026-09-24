@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including managed
-          service providers and IT support firms. Last updated 18 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 18 August 2026.
         </em>
       </p>
 
@@ -31,10 +30,10 @@ export function Body() {
         exactly why this vertical is winnable.
       </p>
 
-      <h2>What buyers actually ask an assistant</h2>
+      <h2>What do IT buyers actually ask an AI assistant about MSPs?</h2>
       <p>
-        Nobody types &quot;best MSP.&quot; IT buying questions arrive loaded with constraints, because the
-        person asking is trying to disqualify vendors quickly:
+        IT buyers ask questions loaded with constraints, because they are trying to disqualify vendors quickly;
+        nobody types &quot;best MSP.&quot; Typical examples:
       </p>
       <ul>
         <li>&quot;Managed IT provider in Columbus for a 45-person accounting firm&quot;</li>
@@ -51,7 +50,11 @@ export function Body() {
         published the qualifying details their competitors treat as sales-call material.
       </p>
 
-      <h2>The six facts that decide MSP recommendations</h2>
+      <h2>Which facts decide whether AI recommends an MSP?</h2>
+      <p>
+        Six facts decide it: seat count and client size, compliance regimes, your stack by vendor name, pricing
+        structure, service terms, and engagement models.
+      </p>
 
       <h3>1. Seat count and client size, stated as numbers</h3>
       <p>
@@ -113,9 +116,9 @@ export function Body() {
         price.
       </p>
 
-      <h2>Case studies are this vertical&apos;s biggest missed asset</h2>
+      <h2>Why are case studies so valuable for MSP AI visibility?</h2>
       <p>
-        A dozen client logos in a grid is invisible: it is an image, and{" "}
+        Because a short written case study gives engines text they can lift, while logo grids are invisible. A dozen client logos in a grid is invisible: it is an image, and{" "}
         <Link href="/blog/do-ai-engines-read-pdfs-images">
           engines cannot read the text inside your images
         </Link>
@@ -137,9 +140,10 @@ export function Body() {
         is a liability that outlives whatever traffic it earns.
       </p>
 
-      <h2>Reviews and third-party presence</h2>
+      <h2>Where should an MSP maintain reviews and third-party profiles?</h2>
       <p>
-        B2B IT buyers check different places than consumers, and so do the engines answering them. Worth
+        Prioritize Google Business Profile, Clutch and G2, your LinkedIn company page, and vendor partner
+        directories. B2B IT buyers check different places than consumers, and so do the engines answering them. Worth
         maintaining, in rough priority order: Google Business Profile with the correct primary category
         (&quot;Computer support and services&quot; or &quot;Computer consultant&quot;) and real hours;
         Clutch and G2 profiles, which are frequently quoted when a model is asked for vendor shortlists; your
@@ -163,10 +167,10 @@ export function Body() {
         .
       </p>
 
-      <h2>Structured data worth adding</h2>
+      <h2>What structured data should an MSP add?</h2>
       <p>
-        Schema does not rescue a thin site, but it removes ambiguity about what you are and where you
-        operate. The workable shape for an MSP is <code>ProfessionalService</code>:
+        The workable shape for an MSP is <code>ProfessionalService</code> schema. It does not rescue a thin site,
+        but it removes ambiguity about what you are and where you operate:
       </p>
       <pre>
         <code>{`{
@@ -196,7 +200,11 @@ export function Body() {
         <Link href="/blog/schema-markup-for-ai-search">our schema markup guide</Link>.
       </p>
 
-      <h2>A 30-day sequence</h2>
+      <h2>What should an MSP do in the next 30 days?</h2>
+      <p>
+        Qualify in public in week 1, cover compliance and stack in week 2, add commercial clarity in week 3, and
+        publish evidence in week 4.
+      </p>
       <ul>
         <li>
           <strong>Week 1 — qualify in public.</strong> Rewrite your homepage and services pages to state seat
@@ -223,7 +231,11 @@ export function Body() {
         <Link href="/blog/how-long-does-aeo-take">how long AEO actually takes</Link>.
       </p>
 
-      <h2>Questions MSPs ask us</h2>
+      <h2>What do MSPs commonly ask about AI recommendations?</h2>
+      <p>
+        MSPs ask about publishing pricing, white-label shops, whether a ransomware blog helps, and what to do when
+        an assistant gets something wrong.
+      </p>
 
       <h3>Won&apos;t publishing pricing let competitors undercut us?</h3>
       <p>
@@ -258,7 +270,7 @@ export function Body() {
         .
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do MSPs get recommended by AI?</h2>
       <p>
         Managed IT is a qualification business, and AI recommendation is a qualification game — which is good
         news for any MSP willing to say out loud who they are for. Name the seat range. Name the compliance
@@ -268,7 +280,12 @@ export function Body() {
         exactly where the engines look.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to say out loud who you are for: publish your seat range, compliance scope, vendors,
+        price structure, SLA and real written case studies so engines find checkable facts instead of a logo
+        wall.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

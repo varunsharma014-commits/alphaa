@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses, including
-          chiropractic and physical-therapy practices. Last updated 17 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 17 August 2026.
         </em>
       </p>
 
@@ -32,9 +31,9 @@ export function Body() {
         they are less likely to quote.
       </p>
 
-      <h2>What patients actually ask an assistant</h2>
+      <h2>What do patients actually ask AI about chiropractors?</h2>
       <p>
-        Almost nobody types &quot;best chiropractor.&quot; They arrive with a constraint, and the constraint
+        They ask with a constraint attached: a condition, technique, insurer, schedule or price. Almost nobody types &quot;best chiropractor.&quot; They arrive with a constraint, and the constraint
         is what your content has to match:
       </p>
       <ul>
@@ -51,7 +50,10 @@ export function Body() {
         are the ones that wrote the specifics down.
       </p>
 
-      <h2>The five facts that decide chiropractic recommendations</h2>
+      <h2>Which facts decide whether AI recommends a chiropractor?</h2>
+      <p>
+        Five facts decide it: conditions treated, techniques, insurance and payment, access details like hours and parking, and checkable credentials.
+      </p>
 
       <h3>1. Conditions treated, listed by name</h3>
       <p>
@@ -72,7 +74,7 @@ export function Body() {
 
       <h3>3. Insurance and payment, in words</h3>
       <p>
-        This is the most common gap we see in scans. Insurance information is usually either absent or
+        This is one of the most common gaps. Insurance information is usually either absent or
         trapped in a PDF or an image of a logo wall — and{" "}
         <Link href="/blog/do-ai-engines-read-pdfs-images">
           logos in an image are unreadable to an engine
@@ -101,9 +103,9 @@ export function Body() {
         .
       </p>
 
-      <h2>Reviews: what to encourage, and what not to</h2>
+      <h2>What kind of reviews help chiropractors get recommended by AI?</h2>
       <p>
-        Reviews are the most influential third-party signal in this category, but the useful part is the
+        Reviews that describe the condition, technique, outcome and insurance help most. Reviews are the most influential third-party signal in this category, but the useful part is the
         prose, not the star average. A review reading &quot;Great office!&quot; contributes almost nothing. A
         review reading &quot;I came in with sciatica down my left leg, Dr. Reyes used flexion-distraction and
         I was walking normally in three weeks — they billed my Aetna plan directly&quot; contains condition,
@@ -141,9 +143,9 @@ export function Body() {
         replies. Thank them and speak generally about the condition rather than confirming their treatment.
       </p>
 
-      <h2>The overclaiming trap</h2>
+      <h2>Can overclaiming hurt a chiropractor&apos;s AI visibility?</h2>
       <p>
-        Chiropractic marketing has a long history of claims that outrun the evidence — that adjustments
+        Yes. AI engines treat health as higher-stakes and deprioritize pages that promise to cure conditions. Chiropractic marketing has a long history of claims that outrun the evidence — that adjustments
         treat conditions unrelated to the musculoskeletal system, or that a specific protocol cures a
         disease. Publishing those claims is a visibility problem on top of a regulatory one.
       </p>
@@ -161,9 +163,9 @@ export function Body() {
         with these systems, not a handicap.
       </p>
 
-      <h2>Structured data worth adding</h2>
+      <h2>What structured data should a chiropractic practice add?</h2>
       <p>
-        Schema will not carry a thin site, but it removes ambiguity about who and what you are. For a
+        Use the Chiropractic schema type, a subtype of MedicalBusiness and LocalBusiness. Schema will not carry a thin site, but it removes ambiguity about who and what you are. For a
         practice, the useful shape is <code>Chiropractic</code>, a subtype of{" "}
         <code>MedicalBusiness</code> and <code>LocalBusiness</code>:
       </p>
@@ -195,7 +197,10 @@ export function Body() {
         <Link href="/blog/schema-markup-for-ai-search">our schema markup guide</Link>.
       </p>
 
-      <h2>A 30-day sequence for a single-location practice</h2>
+      <h2>What should a single-location practice do in its first 30 days?</h2>
+      <p>
+        Spend week one on your profile, week two on the facts pages, week three on provider bios, and week four on reviews and checking what the engines say.
+      </p>
       <ul>
         <li>
           <strong>Week 1 — the profile.</strong> Google Business Profile: correct primary category
@@ -226,7 +231,10 @@ export function Body() {
         <Link href="/blog/how-long-does-aeo-take">how long AEO actually takes</Link>.
       </p>
 
-      <h2>Questions chiropractors ask us</h2>
+      <h2>What else do chiropractors ask about AI recommendations?</h2>
+      <p>
+        They usually ask whether blogging about back pain helps, whether competitors&apos; review counts matter, and what to do when an engine gets something wrong.
+      </p>
       <h3>Will blogging about back pain get me recommended?</h3>
       <p>
         Generic condition articles rarely do — the engines already have a thousand of them from health
@@ -253,9 +261,9 @@ export function Body() {
         .
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>How do chiropractors win AI recommendations?</h2>
       <p>
-        Chiropractic is a specifics business, and AI recommendation is a specifics game — which is good news
+        By publishing specific, checkable facts and avoiding claims the evidence does not support. Chiropractic is a specifics business, and AI recommendation is a specifics game — which is good news
         if you are willing to write things down. Name the conditions. Name the techniques. Name the insurers
         and the prices. Name your credentials in a form someone could check. Ask for reviews that describe
         real cases in real words. And resist the claims that would make you sound more impressive than the
@@ -264,7 +272,10 @@ export function Body() {
         engines look for them.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to name your conditions, techniques, insurers, prices and credentials in plain text, ask for reviews that describe real cases, and avoid claims the evidence does not support.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

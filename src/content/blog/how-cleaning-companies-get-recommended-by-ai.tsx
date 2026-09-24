@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including residential
-          maid services and commercial janitorial contractors. Last updated 27 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 27 August 2026.
         </em>
       </p>
 
@@ -32,9 +31,9 @@ export function Body() {
         supplies, are you insured if something breaks — in text, before anyone asked.
       </p>
 
-      <h2>What people actually ask an assistant about cleaners</h2>
+      <h2>What do people actually ask AI about cleaning companies?</h2>
       <p>
-        The queries we see are rarely &quot;cleaning service near me.&quot; That is a Google Maps behaviour.
+        They ask long, specific, anxious questions about price, insurance and background checks, move-out cleans, commercial jobs and products. The queries we see are rarely &quot;cleaning service near me.&quot; That is a Google Maps behaviour.
         Assistant queries are longer, more specific, and full of anxiety:
       </p>
       <ul>
@@ -52,9 +51,9 @@ export function Body() {
         filterable attributes and gets excluded from all six answers.
       </p>
 
-      <h2>Why cleaning is a harder category than it looks</h2>
+      <h2>Why is cleaning a harder category for AI visibility?</h2>
       <p>
-        We look at a lot of local-services scans. Cleaning behaves differently from trades like roofing or HVAC in
+        Business names collide, franchise sites hide the local operator, and the buying decision is about trusting strangers in your home. We look at a lot of local-services scans. Cleaning behaves differently from trades like roofing or HVAC in
         three ways that matter:
       </p>
       <ol>
@@ -83,7 +82,10 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>The seven fixes, in order of impact</h2>
+      <h2>What should cleaning companies fix first for AI visibility?</h2>
+      <p>
+        In order of impact: publish prices, split cleaning into named service pages, state trust credentials as text, name your service area, fix duplicate content, treat reviews as source text, and make booking terms explicit.
+      </p>
 
       <h3>1. Publish real prices, or a real price range</h3>
       <p>
@@ -155,9 +157,9 @@ export function Body() {
         specific answers you are currently invisible for.
       </p>
 
-      <h2>A worked example of the difference</h2>
+      <h2>What does a cleaning company that gets recommended do differently?</h2>
       <p>
-        Take the query &quot;move-out cleaning in [city] that will pass a landlord inspection, roughly what does it
+        It supplies the named service, a price signal and evidence of the outcome in retrievable text, not just a high star rating. Take the query &quot;move-out cleaning in [city] that will pass a landlord inspection, roughly what does it
         cost.&quot; To answer it, an engine needs three things in retrievable text: the service named as a service,
         a price signal, and some evidence that the outcome — passing inspection, deposit returned — actually
         happens.
@@ -176,7 +178,10 @@ export function Body() {
         than technical trickery.
       </p>
 
-      <h2>A 30-day sequence that fits around actual jobs</h2>
+      <h2>What is a realistic 30-day plan for a cleaning company?</h2>
+      <p>
+        Fix identity in week one, publish prices and terms in week two, split out your top services in week three, add trust text and review asks in week four, then re-measure.
+      </p>
       <ol>
         <li>
           <strong>Week 1 — measure and fix identity.</strong> Ask ChatGPT, Claude, Gemini and Perplexity what they
@@ -209,7 +214,10 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Questions we get asked</h2>
+      <h2>What else do cleaning company owners ask?</h2>
+      <p>
+        The usual questions cover timelines, competing with franchises, publishing prices, commercial versus residential, and guarantees.
+      </p>
 
       <h3>How long before this shows up in AI answers?</h3>
       <p>
@@ -251,16 +259,18 @@ export function Body() {
         your business is the one it finds.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>Why do cleaning companies lose AI recommendations?</h2>
       <p>
-        Cleaning companies do not lose AI recommendations on technical grounds — most have simple, fast, perfectly
-        crawlable websites. They lose because those websites contain no facts. Prices, services defined by name,
+        Cleaning companies lose AI recommendations because their websites contain no facts, not on technical grounds — most have simple, fast, perfectly crawlable websites. Prices, services defined by name,
         insurance and employment status, coverage by place name, and reviews that describe the work: five
         categories of concrete text, and almost nobody in the category publishes them. The first company in your
         market that does becomes the default answer.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to publish the concrete facts assistants need, such as prices, named services, insurance and employment status, and coverage by place name, and to ask for reviews that describe the work.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

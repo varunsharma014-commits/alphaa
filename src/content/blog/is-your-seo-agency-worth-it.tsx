@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <em>By the alphaa team — we run AI-visibility scans for local businesses, which means we spend a lot of
-        time looking at sites that have been under agency management for years. This audit is the sequence we
+        <em>By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. This audit is the sequence we
         actually use when an owner asks us whether they are getting their money&apos;s worth.</em>
       </p>
 
@@ -29,7 +28,7 @@ export function Body() {
         tools you don&apos;t already have.
       </p>
 
-      <h2>Before you start: what you are actually judging</h2>
+      <h2>What am I actually judging when I audit my SEO agency?</h2>
       <p>
         You are not judging whether your agency works hard. You are judging whether the work is
         <strong> compounding</strong> — whether each month leaves behind an asset (a page, a fixed technical
@@ -43,9 +42,9 @@ export function Body() {
         the artifacts, not a single report.
       </p>
 
-      <h2>Check 1: Can you name what shipped last month? (2 minutes)</h2>
+      <h2>Check 1: Can you name what your agency shipped last month?</h2>
       <p>
-        Open the last three monthly reports side by side. Write down, for each month, the specific things that
+        You should be able to list three to six concrete artifacts per month, and this check takes two minutes. Open the last three monthly reports side by side. Write down, for each month, the specific things that
         now exist that did not exist before — a new service page, a fixed redirect chain, twelve review
         responses, a schema block, a Google Business Profile update.
       </p>
@@ -57,9 +56,9 @@ export function Body() {
         busywork.
       </p>
 
-      <h2>Check 2: View source on your own homepage (2 minutes)</h2>
+      <h2>Check 2: What does my homepage source code reveal about my agency?</h2>
       <p>
-        This is the fastest technical tell in existence. Open your homepage, right-click, choose
+        Your homepage source shows in two minutes whether schema markup, a descriptive title and a meta description are in place. This is the fastest technical tell in existence. Open your homepage, right-click, choose
         &quot;View Page Source,&quot; and press Ctrl-F (Cmd-F on Mac). Search for these three strings:
       </p>
       <ul>
@@ -85,9 +84,9 @@ export function Body() {
         invisible from a traffic chart alone.
       </p>
 
-      <h2>Check 3: Ask an AI engine who you are (2 minutes)</h2>
+      <h2>Check 3: What does an AI engine say about my business?</h2>
       <p>
-        This is the check almost no agency report covers yet, and it is increasingly the one that predicts
+        Ask ChatGPT, Gemini, or Perplexity the question a customer would ask and see whether you are named accurately, absent, or named with wrong details. This is the check almost no agency report covers yet, and it is increasingly the one that predicts
         customers. Open ChatGPT, Gemini, or Perplexity and ask the question a customer would ask — not your
         business name, but the need: &quot;who is the best [your service] in [your city]?&quot; Then ask a
         direct one: &quot;tell me about [your business name] in [your city].&quot;
@@ -119,9 +118,9 @@ export function Body() {
         scope that has not been updated.
       </p>
 
-      <h2>Check 4: Read the report for decisions, not numbers (2 minutes)</h2>
+      <h2>Check 4: Does my agency&apos;s report recommend any decisions?</h2>
       <p>
-        Take the most recent report and count two things: how many charts it contains, and how many
+        A good report recommends decisions, not just charts, and you can check it in two minutes. Take the most recent report and count two things: how many charts it contains, and how many
         <em> decisions</em> it recommends. A decision looks like &quot;we are cutting the three pages that get no
         impressions and consolidating them into one, because X.&quot; A chart is not a decision.
       </p>
@@ -132,9 +131,9 @@ export function Body() {
         name and the report would still read correctly, it was not written about you.
       </p>
 
-      <h2>Check 5: Check the traffic you actually care about (1 minute)</h2>
+      <h2>Check 5: Is my agency moving calls, forms and bookings?</h2>
       <p>
-        Ignore total sessions. Total traffic is the easiest number to make go up and the least connected to
+        Look at calls, form fills and bookings rather than total sessions. Ignore total sessions. Total traffic is the easiest number to make go up and the least connected to
         revenue. Ask instead: are calls, form fills, or bookings up? If your agency cannot connect its work to
         any of those, it is optimizing a proxy.
       </p>
@@ -144,7 +143,7 @@ export function Body() {
         and defaulting to sessions because sessions are easy to chart.
       </p>
 
-      <h2>Check 6: The rankings-flat-traffic-down test (1 minute)</h2>
+      <h2>Check 6: Why are my rankings flat but traffic falling?</h2>
       <p>
         If your rankings are stable but traffic is falling, and your agency has no explanation, they are missing
         the most important structural change in search. That pattern usually is not a penalty and usually is not
@@ -157,7 +156,7 @@ export function Body() {
         exact pattern in <Link href="/blog/zero-click-search">Zero-Click Search</Link>.
       </p>
 
-      <h2>Scoring it honestly</h2>
+      <h2>How do I score my SEO agency audit?</h2>
       <p>
         Count how many checks came back clean:
       </p>
@@ -176,7 +175,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Four questions to send your agency</h2>
+      <h2>What questions should I send my SEO agency?</h2>
+      <p>
+        Send four questions covering what shipped, what they do about AI answers, which metric matters, and what they would cut.
+      </p>
       <ul>
         <li>What specifically shipped in the last 90 days that still exists on my site or profiles today?</li>
         <li>What are we doing about AI answers — ChatGPT, Gemini, Perplexity, AI Overviews — and how is it measured?</li>
@@ -188,9 +190,9 @@ export function Body() {
         answers are themselves the finding.
       </p>
 
-      <h2>The honest caveats</h2>
+      <h2>What are the limits of this SEO agency audit?</h2>
       <p>
-        A few limits on this audit, stated plainly. It is a diagnostic, not a verdict — six checks cannot capture
+        This audit is a diagnostic, not a verdict. A few limits on this audit, stated plainly. It is a diagnostic, not a verdict — six checks cannot capture
         everything a competent agency does, and some of the most valuable work (cleaning up a messy site
         migration, killing a toxic backlink profile) leaves little visible trace. SEO also takes months to
         compound, so recency bias will make a new agency look worse than it is. And a failed check is a
@@ -204,7 +206,7 @@ export function Body() {
         passes, keep them.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So is your SEO agency worth it?</h2>
       <p>
         Judge your agency on artifacts and decisions, not effort and charts. Ten minutes — three reports, a view
         source, one AI query, and a hard look at what the reporting actually recommends — will tell you most of
@@ -213,10 +215,14 @@ export function Body() {
         business, whether or not anyone you pay is watching.
       </p>
       <p>
+        The key takeaway is to judge your agency on shipped artifacts and recommended decisions, not effort and
+        charts, and to check whether anyone is watching what AI engines say about your business.
+      </p>
+      <p>
         <em>Last updated July 21, 2026.</em>
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -22,7 +22,7 @@ export function Body() {
         surfaced through live web retrieval and training, so you become the clear, well-described answer.
       </p>
 
-      <h2>AEO vs SEO, in one paragraph</h2>
+      <h2>What is the difference between AEO and SEO?</h2>
       <p>
         SEO optimizes you to rank in Google&apos;s list of blue links so a person clicks through to your site. AEO
         optimizes you to be <em>named inside the answer itself</em> — when someone asks an AI assistant &quot;who&apos;s
@@ -32,9 +32,9 @@ export function Body() {
         <Link href="/blog/aeo-vs-seo-why-agencies-fail">AEO vs SEO: why traditional agencies fail</Link>.
       </p>
 
-      <h2>Why AEO matters now</h2>
+      <h2>Why does AEO matter for my business now?</h2>
       <p>
-        For two decades, &quot;getting found&quot; meant ranking on page one of Google. That is changing. People
+        AEO matters because people increasingly act on an AI assistant&apos;s answer instead of clicking through links. For two decades, &quot;getting found&quot; meant ranking on page one of Google. That is changing. People
         increasingly ask an AI assistant a question and act on its answer directly, rather than clicking through a
         page of links. Industry and analyst estimates in 2026 suggest a large and growing share of search-style
         activity is moving to AI assistants — by some accounts ChatGPT alone now handles on the order of billions of
@@ -47,7 +47,7 @@ export function Body() {
         exists to make sure you&apos;re the option the AI names.
       </p>
 
-      <h2>How answer engines actually work (in plain English)</h2>
+      <h2>How do answer engines actually work?</h2>
       <p>
         Most modern AI assistants answer using two sources: what they absorbed during training, and what they
         retrieve live from the web at the moment you ask. That live step is called <strong>retrieval-augmented
@@ -68,9 +68,9 @@ export function Body() {
         clearly enough that the engine confidently names you. That is the entire job of AEO.
       </p>
 
-      <h2>The core levers of AEO</h2>
+      <h2>What are the core levers of AEO?</h2>
       <p>
-        These are the signals AI engines reliably reward. None of them are tricks; they&apos;re the same things that
+        The core levers are answer-first content, accurate schema, consistency, reviews, freshness, open crawler access and an llms.txt file. These are the signals AI engines reliably reward. None of them are tricks; they&apos;re the same things that
         make a business easy for a human to trust, just made machine-readable.
       </p>
 
@@ -126,6 +126,9 @@ export function Body() {
       </p>
 
       <h2>Who needs AEO?</h2>
+      <p>
+        Local businesses, service providers and SaaS, and anyone who sells on trust and being chosen need AEO.
+      </p>
       <ul>
         <li>
           <strong>Local businesses</strong> whose customers ask AI &quot;who&apos;s the best [service] near me?&quot;
@@ -145,7 +148,10 @@ export function Body() {
         almost everyone else, it&apos;s becoming table stakes.
       </p>
 
-      <h2>How to get started</h2>
+      <h2>How do I get started with AEO?</h2>
+      <p>
+        Start by finding out what AI engines say about you, then fix your foundations and make your content answer-first.
+      </p>
       <ol>
         <li>
           <strong>Find out where you stand.</strong> Ask the major engines about your category and see whether they
@@ -175,10 +181,16 @@ export function Body() {
         stack the public signals in your favor so you&apos;re the obvious answer far more often.
       </p>
 
+      <p>
+        The key takeaway is that AEO improves the public information AI engines read about you, through
+        answer-first content, accurate schema, consistent listings and genuine reviews, so you are the option they
+        name more often.
+      </p>
+
       <hr />
       <p>
         <strong>Want to know what the AI engines say about you right now?</strong>{" "}
-        <Link href="/scan">Run a free AI visibility scan →</Link> and see whether ChatGPT, Gemini, and Perplexity
+        <Link href="/start">Run the free AI check →</Link> and see whether ChatGPT, Gemini, and Perplexity
         already know your business.
       </p>
     </div>

@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including licensed
-          clinical practices. This is marketing guidance, not legal, clinical or ethics advice; check anything
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. This is marketing guidance, not legal, clinical or ethics advice; check anything
           below against your licensing board&apos;s advertising rules and your professional code before
           publishing. Last updated 8 August 2026.
         </em>
@@ -32,10 +31,10 @@ export function Body() {
         highest-leverage work here is almost entirely ethics-safe: it is factual precision, not persuasion.
       </p>
 
-      <h2>What people actually ask</h2>
+      <h2>What do people actually ask AI when looking for a therapist?</h2>
       <p>
-        Nobody types &quot;therapist&quot; into ChatGPT. Every real query we see carries three or four
-        constraints stacked together, because that is how someone in distress narrows a decision:
+        Every real query we see stacks three or four constraints together, because that is how someone in
+        distress narrows a decision; nobody types &quot;therapist&quot; into ChatGPT. Typical examples:
       </p>
       <ul>
         <li>&quot;EMDR therapist in Portland who takes Aetna and does evening sessions&quot;</li>
@@ -51,7 +50,7 @@ export function Body() {
         practice sites, and it is why so many perfectly good clinicians are invisible to AI search.
       </p>
 
-      <h2>Where the answer actually comes from</h2>
+      <h2>Where does AI get its answers about therapists?</h2>
       <p>
         When an assistant answers a therapist query, it retrieves live documents and synthesizes from what they
         say. In this category the retrievable set is unusually directory-heavy, roughly in this order of
@@ -92,7 +91,11 @@ export function Body() {
         resolution works in general.
       </p>
 
-      <h2>The five fixes, in order of leverage</h2>
+      <h2>What should therapists fix first to get recommended by AI?</h2>
+      <p>
+        Make one canonical fact set, fill every directory field, write a page per modality and population,
+        publish fees and access terms, and keep intake status current.
+      </p>
 
       <h3>1. Make one canonical fact set, then propagate it</h3>
       <p>
@@ -142,9 +145,10 @@ export function Body() {
         date-stamp the waitlist line on your site.
       </p>
 
-      <h2>What not to do</h2>
+      <h2>What should therapists avoid when trying to get recommended?</h2>
       <p>
-        This category has real ethical and legal constraints, and the AEO advice that ignores them is dangerous.
+        Avoid soliciting client reviews, claiming untrained modalities, implying guaranteed outcomes, and
+        publishing anything that could identify a client. This category has real ethical and legal constraints, and the AEO advice that ignores them is dangerous.
         Do not solicit or incentivise client reviews — most codes of ethics restrict testimonials from current
         or recent clients precisely because of the power imbalance, and no visibility gain is worth a board
         complaint. Do not claim a modality you are not trained in; the certification registries that verify
@@ -154,7 +158,11 @@ export function Body() {
         advertising rules would not support.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do therapists ask about AI recommendations?</h2>
+      <p>
+        Therapists commonly ask whether their website matters, how to handle multi-state telehealth, and how long
+        this takes.
+      </p>
 
       <h3>Does my practice website matter at all?</h3>
       <p>
@@ -178,7 +186,7 @@ export function Body() {
         <Link href="/blog/is-aeo-real">is AEO real</Link> for the honest limits.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do therapists get recommended by AI?</h2>
       <p>
         Therapists lose AI recommendations to vagueness, not to competition. Say which modalities you practise,
         which populations you serve, where you are licensed, what you charge, whether you are open — then make
@@ -186,7 +194,11 @@ export function Body() {
         pick up the phone. Writing it down clearly serves both readers at once.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to state your modalities, populations, licensed states, fees and intake status
+        plainly, then make every directory profile, your Google Business Profile and your website agree.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

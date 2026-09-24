@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        By the alphaa team — we crawl and scan thousands of business websites, and misconfigured robots rules are
-        one of the most common reasons a business is invisible to AI engines.
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
         <strong>Short answer:</strong> allow the retrieval agents that fetch pages to answer live questions —{" "}
@@ -28,8 +27,10 @@ export function Body() {
         proprietary content sometimes block training while keeping retrieval open.
       </p>
 
-      <h2>Why there are two kinds of AI bot</h2>
+      <h2>Why are there two kinds of AI bot?</h2>
       <p>
+        There are two kinds because training crawlers collect text to build a model, while retrieval agents
+        fetch pages in real time to answer and cite.{" "}
         An AI crawler is an automated client that requests your pages and identifies itself with a user-agent
         string. The critical distinction, and the one that trips people up, is <em>what the fetch is for</em>:
       </p>
@@ -51,8 +52,8 @@ export function Body() {
         answer &quot;who is the best plumber near me?&quot;
       </p>
 
-      <h2>The user agents that actually matter</h2>
-      <p>Grouped by operator, with what each one is for:</p>
+      <h2>Which AI user agents actually matter?</h2>
+      <p>The ones that matter are the training crawlers and retrieval agents run by OpenAI, Anthropic, Perplexity, Google, Common Crawl, and Apple. Grouped by operator, with what each one is for:</p>
       <table>
         <thead>
           <tr>
@@ -141,8 +142,9 @@ export function Body() {
         . Check the source rather than trusting a copied list, including this one.
       </p>
 
-      <h2>The Google-Extended misunderstanding</h2>
+      <h2>Does blocking Google-Extended remove you from AI Overviews?</h2>
       <p>
+        No — blocking <code>Google-Extended</code> does not remove you from AI Overviews.
         This one is worth stating precisely, because it is the most common piece of bad advice in circulation.{" "}
         <code>Google-Extended</code> is not a crawler. It is a product token that controls whether content Google
         has already crawled may be used to train Gemini models and to ground Gemini Apps and the Vertex AI API.
@@ -158,8 +160,8 @@ export function Body() {
         see <Link href="/blog/google-ai-overviews-local-business">AI Overviews for local businesses</Link>.
       </p>
 
-      <h2>How to configure robots.txt, step by step</h2>
-      <p>Here is the workflow we run when auditing a site.</p>
+      <h2>How do you configure robots.txt for AI crawlers?</h2>
+      <p>Read the robots.txt you actually serve, look for a blanket block, write the rules you actually mean, and verify with your server logs. Here is the workflow we run when auditing a site.</p>
 
       <h3>Step 1: read what you currently serve</h3>
       <p>
@@ -244,7 +246,11 @@ Sitemap: https://yourdomain.com/sitemap.xml`}</code></pre>
         similar services frequently catch AI crawlers by default, and that block is invisible in robots.txt.
       </p>
 
-      <h2>Honest limitations</h2>
+      <h2>What can robots.txt not do for AI visibility?</h2>
+      <p>
+        robots.txt is a voluntary request, and allowing crawlers removes a blocker but does not make you get
+        cited.
+      </p>
       <ul>
         <li>
           <strong>robots.txt is voluntary.</strong> It is a request, not enforcement. Major operators state that
@@ -265,7 +271,7 @@ Sitemap: https://yourdomain.com/sitemap.xml`}</code></pre>
         </li>
       </ul>
 
-      <h2>Frequently asked questions</h2>
+      <h2>What else do people ask about AI crawlers and robots.txt?</h2>
 
       <h3>Will blocking GPTBot hurt my visibility in ChatGPT?</h3>
       <p>
@@ -288,7 +294,7 @@ Sitemap: https://yourdomain.com/sitemap.xml`}</code></pre>
         details, and answer-shaped content. Access is the floor, not the strategy.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on AI crawlers and robots.txt?</h2>
       <p>
         Treat crawler access as two separate decisions. Retrieval agents should almost always be allowed — they
         are the mechanism by which AI assistants find and cite you right now. Training crawlers are a real choice
@@ -297,7 +303,13 @@ Sitemap: https://yourdomain.com/sitemap.xml`}</code></pre>
         the signals that actually earn the recommendation.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to treat crawler access as two decisions: almost always allow retrieval agents so
+        AI assistants can find and cite you, and block training crawlers only as a deliberate choice, never with
+        a blanket rule.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
       <p>
         <em>Last updated July 27, 2026.</em>

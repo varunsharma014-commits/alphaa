@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of small businesses, and this is
-          the single most common technical reason a site comes back invisible. Last updated 29 July 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 29 July 2026.
         </em>
       </p>
 
@@ -33,7 +32,8 @@ export function Body() {
 
       <h2>Do AI crawlers execute JavaScript?</h2>
       <p>
-        Be precise here, because the answer differs by crawler and the honest version has caveats.
+        Googlebot does render JavaScript, but the dedicated AI crawlers publish no rendering guarantee and in
+        practice behave like plain HTML fetchers. Be precise here, because the answer differs by crawler and the honest version has caveats.
       </p>
       <ul>
         <li>
@@ -64,9 +64,9 @@ export function Body() {
         Treat rendering as a bonus, not a contract.
       </p>
 
-      <h2>The 60-second test: what does a crawler actually see?</h2>
+      <h2>How can I see what an AI crawler actually sees on my site?</h2>
       <p>
-        Do not guess. Fetch your own page the way a simple crawler would, with no browser and no JavaScript:
+        Fetch your page with curl, with no browser and no JavaScript, and count the words that come back. Do not guess. Fetch your own page the way a simple crawler would, with no browser and no JavaScript:
       </p>
       <pre><code>{`# 1. Fetch the raw HTML your server returns
 curl -sL https://yoursite.com/ -o raw.html
@@ -100,9 +100,9 @@ grep -io "serving Austin" raw.html`}</code></pre>
         </li>
       </ul>
 
-      <h2>What a half-invisible site looks like in practice</h2>
+      <h2>What does a site that is half-invisible to AI look like?</h2>
       <p>
-        A typical case we see: a home-services company on a modern single-page React site. Beautiful, fast to
+        It looks perfect to humans but hands crawlers a shell with a title tag and no body copy. A typical case we see: a home-services company on a modern single-page React site. Beautiful, fast to
         click around, service areas and pricing all in the app. Ask ChatGPT or Perplexity who does emergency
         drain work in their city and the company never appears — while a competitor on a plain WordPress theme
         gets named every time. Nothing is wrong with the business. The crawler simply received a shell with a
@@ -119,7 +119,10 @@ grep -io "serving Austin" raw.html`}</code></pre>
           deeper is ever cited.</li>
       </ul>
 
-      <h2>How to fix it, by stack</h2>
+      <h2>How do I fix JavaScript rendering for AI crawlers on my stack?</h2>
+      <p>
+        Make sure the meaningful text is in the server-rendered HTML: use SSR or static generation for single-page apps, and check add-ons and widgets on other platforms.
+      </p>
       <h3>React / Vue / Angular single-page app</h3>
       <p>
         This is the real problem case. Move to server-side rendering (SSR) or static generation (SSG) for every
@@ -155,7 +158,7 @@ grep -io "serving Austin" raw.html`}</code></pre>
           <Link href="/blog/ai-crawlers-robots-txt-guide">robots.txt and crawler allow-list</Link> first.</li>
       </ul>
 
-      <h2>Quick answers</h2>
+      <h2>What else do people ask about JavaScript and AI crawlers?</h2>
       <h3>Does server-side rendering guarantee I get cited by AI?</h3>
       <p>
         No. It removes a blocker; it does not create demand. Rendering makes your content <em>retrievable</em>.
@@ -181,7 +184,7 @@ grep -io "serving Austin" raw.html`}</code></pre>
         following weeks whether AI answers begin using your own phrasing rather than only directory data.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So should I fix rendering before other AEO work?</h2>
       <p>
         Before you invest in content, schema, or reviews, confirm the machines can read the page at all. It is
         the cheapest possible win: one <code>curl</code> command tells you whether an AI crawler is receiving
@@ -190,7 +193,11 @@ grep -io "serving Austin" raw.html`}</code></pre>
         the answer.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to make sure your key content exists in the raw HTML before any JavaScript runs, and to check it with
+        one curl command before investing in content, schema or reviews.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

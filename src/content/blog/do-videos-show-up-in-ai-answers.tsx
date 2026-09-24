@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and watch which URLs the
-          engines actually cite. Last updated 7 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 7 August 2026.
         </em>
       </p>
 
@@ -35,8 +34,10 @@ export function Body() {
         and it is the reason most business video does nothing for AI visibility.
       </p>
 
-      <h2>Why AI engines read video instead of watching it</h2>
+      <h2>Why do AI engines read video instead of watching it?</h2>
       <p>
+        AI engines read video because retrieval works on the text of a video page — title, description,
+        metadata, and transcript — not on the frames.{" "}
         Retrieval is a text operation. When an assistant answers a question, it runs a search, pulls back a set of
         documents, and reads them. A YouTube URL in that result set is a <em>web page</em> — one with a title, a
         description field, structured metadata, and, if captions exist, a transcript the page exposes. That text is
@@ -65,7 +66,7 @@ export function Body() {
         </li>
         <li>
           <strong>ChatGPT with browsing.</strong> Can fetch a YouTube page and use its title, description and
-          visible transcript. In our scans it cites written pages far more often than video pages for local and
+          visible transcript. In practice it tends to cite written pages far more often than video pages for local and
           commercial questions.
         </li>
         <li>
@@ -81,7 +82,7 @@ export function Body() {
         event.
       </p>
 
-      <h2>The transcript is the asset</h2>
+      <h2>What part of a video actually gets cited by AI?</h2>
       <p>
         If you take one thing from this article: <strong>the transcript is the thing that gets cited, not the
         video.</strong> Everything else follows from that.
@@ -98,8 +99,8 @@ export function Body() {
         video. Download the auto-generated track, fix the punctuation, correct every proper noun, and re-upload it.
       </p>
 
-      <h2>The workflow we use, step by step</h2>
-      <p>Here is the actual sequence, in the order it matters.</p>
+      <h2>How do you get your videos cited in AI answers?</h2>
+      <p>Title the video as the question, answer it in the first thirty seconds, upload a corrected transcript, write a real description, add chapters, and publish a companion page with VideoObject schema. Here is the actual sequence, in the order it matters.</p>
       <ol>
         <li>
           <strong>Title the video as the question, not the topic.</strong> &quot;Why Your Water Heater Makes a
@@ -169,7 +170,7 @@ export function Body() {
         <Link href="/blog/schema-markup-for-ai-search">schema markup guide for AI search</Link>.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do people ask about video and AI answers?</h2>
       <h3>Do I need to be on YouTube at all?</h3>
       <p>
         Not necessarily. A self-hosted video with an on-page transcript can work fine for AI visibility. YouTube
@@ -195,7 +196,7 @@ export function Body() {
         procedural questions. It does not make you the answer.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on video in AI answers?</h2>
       <p>
         Video shows up in AI answers through its text. Title the video as the question, answer it out loud in the
         first thirty seconds, upload a corrected transcript, write the description like an article, add chapters,
@@ -203,7 +204,13 @@ export function Body() {
         expensive part — the citable asset is the twenty minutes of typing afterwards that most businesses skip.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that video shows up in AI answers through its text, so the corrected transcript,
+        question-shaped title, real description, and a companion page on your own domain are what get you
+        cited.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

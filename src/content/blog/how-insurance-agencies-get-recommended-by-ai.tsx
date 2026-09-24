@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including
-          independent agencies, brokers and MGAs. Last updated 19 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 19 August 2026.
         </em>
       </p>
 
@@ -31,9 +30,10 @@ export function Body() {
         winnable by anyone willing to write them down.
       </p>
 
-      <h2>What insurance buyers actually ask an assistant</h2>
+      <h2>What do insurance buyers actually ask an AI assistant?</h2>
       <p>
-        Nobody types &quot;best insurance agency.&quot; Insurance questions arrive loaded with constraints,
+        Buyers ask constraint-heavy questions naming a line of business, class, state, loss history or size,
+        not &quot;best insurance agency.&quot; Insurance questions arrive loaded with constraints,
         because the person asking is trying to find out, quickly, whether anyone can even write their risk:
       </p>
       <ul>
@@ -51,17 +51,18 @@ export function Body() {
         the ones that published the qualifying details their competitors treat as first-phone-call material.
       </p>
 
-      <h2>Why insurance is unusually hard — and unusually winnable</h2>
+      <h2>Why is insurance so hard for AI visibility, yet winnable?</h2>
       <p>
-        Two things make this category different from a dentist or a plumber.
+        Carrier-supplied template sites and compliance nervousness leave most agencies with nothing distinctive
+        to cite, which is why being specific wins. Two things make this category different from a dentist or a
+        plumber.
       </p>
       <p>
         First, <strong>carrier-supplied websites are near-invisible</strong>. Thousands of agencies run a
         template site provided by a carrier or an agency-management vendor, with the same boilerplate copy as
         every other agency on that platform. When a retrieval system pulls twenty pages that all say
         &quot;we shop multiple carriers to find you the best rate,&quot; there is nothing in any of them to
-        distinguish or cite. Duplicate, undifferentiated text is the single most common cause of invisibility
-        we see in this vertical.
+        distinguish or cite. Duplicate, undifferentiated text is one of the most common causes of invisibility in this vertical.
       </p>
       <p>
         Second, <strong>compliance nervousness suppresses specifics</strong>. Agencies avoid naming carriers,
@@ -72,7 +73,11 @@ export function Body() {
         implying a guarantee of coverage.
       </p>
 
-      <h2>The six facts that decide insurance recommendations</h2>
+      <h2>Which facts decide whether AI recommends an insurance agency?</h2>
+      <p>
+        Six facts decide it: lines of business, appetite, carriers and markets, licensed states, who you are in
+        entity terms, and your process and turnaround.
+      </p>
 
       <h3>1. Lines of business, named individually</h3>
       <p>
@@ -131,7 +136,7 @@ export function Body() {
         easiest thing to write and one of the most quotable things an assistant can lift.
       </p>
 
-      <h2>A page structure that works</h2>
+      <h2>What page structure works for an insurance agency website?</h2>
       <p>
         The structure that performs in this vertical is boring and specific: one page per{" "}
         <strong>line-of-business plus audience</strong> combination you genuinely serve. Not sixty thin pages
@@ -151,9 +156,10 @@ export function Body() {
         machine-readable layer matches the text.
       </p>
 
-      <h2>Reviews and third-party evidence</h2>
+      <h2>What kind of reviews help an insurance agency get recommended?</h2>
       <p>
-        Insurance reviews are unusual: they cluster around claims moments, so they skew to either relief or
+        Reviews that name the specific situation you solved help most, not the star average alone. Insurance
+        reviews are unusual: they cluster around claims moments, so they skew to either relief or
         anger. What helps an assistant is not the star average alone but reviews that contain{" "}
         <strong>specifics</strong> — &quot;placed our GL and workers comp for a five-truck HVAC company after
         our carrier non-renewed.&quot; When asking for reviews, ask about the situation you solved, not for
@@ -167,9 +173,9 @@ export function Body() {
         most agencies realise.
       </p>
 
-      <h2>What this cannot do</h2>
+      <h2>Can AEO guarantee my agency appears in AI answers?</h2>
       <p>
-        Being honest about limits matters more in a regulated category than anywhere else. Publishing your
+        No, and being honest about limits matters more in a regulated category than anywhere else. Publishing your
         appetite does not guarantee you appear in any given AI answer — outputs vary by phrasing, by user,
         and by model version, and no vendor can insert you into ChatGPT. It also cannot fix an agency whose
         actual availability is poor; assistants increasingly reflect review content, and a pattern of
@@ -179,7 +185,11 @@ export function Body() {
         <Link href="/blog/is-aeo-real">is AEO real</Link>.
       </p>
 
-      <h2>Where to start this week</h2>
+      <h2>Where should an insurance agency start this week?</h2>
+      <p>
+        Start by publishing your appetite, listing your licensed states in text, building two niche pages, making
+        your name consistent, and asking for specific reviews.
+      </p>
       <ul>
         <li>Write one appetite paragraph — lines, classes, size bands, states — and put it on your homepage.</li>
         <li>Replace any map graphic with a written list of licensed states.</li>
@@ -192,7 +202,12 @@ export function Body() {
         words a buyer would use, on a page a machine can read.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that agencies get named when the details buyers filter on — lines, appetite, carriers,
+        licensed states and process — are written down as text on pages a model can read, backed by consistent
+        listings and specific reviews.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

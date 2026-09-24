@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses, including
-          veterinary practices and animal hospitals. Last updated 30 July 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 30 July 2026.
         </em>
       </p>
 
@@ -31,9 +30,9 @@ export function Body() {
         question against, so it names the clinic down the road instead.
       </p>
 
-      <h2>What pet owners actually ask AI</h2>
+      <h2>What do pet owners actually ask AI about vets?</h2>
       <p>
-        Veterinary queries split into two very different moments, and clinic websites are usually built only
+        Pet owners ask two kinds of question: the worried question about symptoms and costs, and the who question about which clinic to use. Veterinary queries split into two very different moments, and clinic websites are usually built only
         for the second.
       </p>
       <ul>
@@ -55,7 +54,10 @@ export function Body() {
         veterinary sites contain none of them.
       </p>
 
-      <h2>The five signals that decide whether a clinic gets named</h2>
+      <h2>What signals decide whether AI names a vet clinic?</h2>
+      <p>
+        Five signals decide it: species and service specificity, emergency and after-hours truth, actionable price ranges, consistent clinic records, and specific reviews.
+      </p>
       <h3>1. Species and service specificity</h3>
       <p>
         This is the single biggest differentiator in veterinary medicine and the one most sites fumble. &quot;We
@@ -107,8 +109,8 @@ export function Body() {
         for the mechanism.
       </p>
 
-      <h2>A worked example</h2>
-      <p>Typical veterinary homepage copy:</p>
+      <h2>What does vet clinic copy that AI can use look like?</h2>
+      <p>Usable copy names the species, procedures, city, hours, urgency policy and an honest limit. Typical veterinary homepage copy:</p>
       <blockquote>
         <p>
           Our caring team has proudly served the community for over 20 years, treating every patient like
@@ -133,7 +135,10 @@ export function Body() {
         <Link href="/blog/how-to-write-content-ai-quotes">writing content AI actually quotes</Link> requires.
       </p>
 
-      <h2>The 30-day starting sequence</h2>
+      <h2>How can a vet clinic start improving AI visibility in 30 days?</h2>
+      <p>
+        Audit and fix your records in week 1, rewrite services and publish price ranges in week 2, then add schema and answer common worried questions.
+      </p>
       <ol>
         <li>
           <strong>Week 1 — audit the facts.</strong> Ask ChatGPT, Gemini, Claude and Perplexity &quot;best vet
@@ -168,7 +173,7 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Questions veterinary practices ask</h2>
+      <h2>What else do veterinary practices ask about AI visibility?</h2>
       <h3>Is publishing prices risky when cases vary so much?</h3>
       <p>
         Ranges with stated conditions carry the variance honestly and still give a model something to quote.
@@ -188,7 +193,7 @@ export function Body() {
         not exist — see <Link href="/blog/is-aeo-real">is AEO real</Link> for the honest mechanism.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how does a vet clinic get recommended by AI?</h2>
       <p>
         Veterinary practices lose AI recommendations to vagueness far more often than to competition. Say which
         species you treat, what you do, when you are open, what it roughly costs, and where you send people
@@ -196,7 +201,11 @@ export function Body() {
         the same information an anxious owner at 11pm needs, written so a machine can find it too.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to be specific and consistent: state which species you treat, what you do, your hours, rough costs and
+        where you send people when closed, and make every public record agree.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

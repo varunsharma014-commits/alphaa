@@ -24,9 +24,10 @@ export function Body() {
         is to make the true story of your company the easiest one to find and quote.
       </p>
 
-      <h2>Why the trades are perfectly suited to AI recommendations</h2>
+      <h2>Why are HVAC and plumbing companies suited to AI recommendations?</h2>
       <p>
-        Homeowners search for a plumber or HVAC tech at the worst possible moment — a burst pipe at 11pm, no heat
+        Because homeowners increasingly ask an AI assistant for help at urgent moments, and that is high-intent,
+        local demand AI answers directly. Homeowners search for a plumber or HVAC tech at the worst possible moment — a burst pipe at 11pm, no heat
         in January, a leaking water heater before guests arrive. Increasingly, the first thing they do is ask an
         AI assistant: &quot;who&apos;s a good emergency plumber near me?&quot; or &quot;best HVAC company in
         [city] for AC repair.&quot; That is high-intent, local, urgent demand — exactly the kind of question AI
@@ -35,11 +36,11 @@ export function Body() {
         whole game.
       </p>
 
-      <h2>How AI picks a contractor to recommend</h2>
+      <h2>How does AI pick a contractor to recommend?</h2>
       <p>
         When someone asks &quot;best plumber near me&quot; or &quot;who repairs furnaces in [city],&quot; the
-        assistant doesn&apos;t recall a favorite from memory. It retrieves live signals about local businesses and
-        synthesizes an answer. For a home-services company, the signals that carry the most weight are:
+        assistant retrieves live signals about local businesses and synthesizes an answer, rather than recalling a
+        favorite from memory. For a home-services company, the signals that carry the most weight are:
       </p>
       <ul>
         <li>
@@ -66,9 +67,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Service area is the trade&apos;s secret weapon</h2>
+      <h2>Why does service area matter so much for HVAC and plumbing?</h2>
       <p>
-        Most HVAC and plumbing companies serve a cluster of towns, not a single storefront address. AI
+        Service area matters because most HVAC and plumbing companies serve a cluster of towns, not a single
+        storefront address, and AI needs to match you to a homeowner&apos;s location. AI
         assistants lean heavily on location to decide who to name, so being explicit about <em>where</em> you
         work is one of the highest-leverage things you can do. Set your service area accurately in your Google
         Business Profile, and publish a page for each core town or neighborhood you cover — &quot;Emergency
@@ -78,7 +80,11 @@ export function Body() {
         honest geography does.
       </p>
 
-      <h2>The practical playbook for HVAC and plumbing</h2>
+      <h2>What should HVAC and plumbing companies do to get recommended?</h2>
+      <p>
+        Perfect your Google Business Profile, build genuine reviews that describe specific jobs, make every listing
+        say the same thing, write pages that answer what homeowners ask, and earn credible third-party mentions.
+      </p>
       <h3>1. Perfect your Google Business Profile</h3>
       <p>
         Pick the most accurate primary category and add secondary services you genuinely offer (drain cleaning,
@@ -122,9 +128,9 @@ export function Body() {
         already trust does double duty: it drives calls and it feeds AI. Quality and consistency beat volume.
       </p>
 
-      <h2>What no contractor marketing vendor can do</h2>
+      <h2>Can a marketing vendor guarantee AI will recommend my company?</h2>
       <p>
-        Be skeptical of anyone selling AI visibility to HVAC and plumbing companies with guarantees. No one can
+        No, so be skeptical of anyone selling AI visibility to HVAC and plumbing companies with guarantees. No one can
         pay to insert your business into ChatGPT or Google AI Overviews, edit what a model &quot;knows,&quot; or
         promise you the top spot. The lead-gen world the trades live in is full of &quot;exclusive leads&quot;
         and &quot;guaranteed #1&quot; pitches; treat AI-placement guarantees the same way. Results vary by
@@ -138,16 +144,16 @@ export function Body() {
         odds move in your favor.
       </p>
 
-      <h2>A realistic timeline</h2>
+      <h2>How long does it take to get recommended by AI?</h2>
       <p>
-        None of this is instant. Profile and listing fixes can register within a few weeks; a stronger review
+        It is not instant: profile and listing fixes can register within a few weeks; a stronger review
         profile builds over months as new jobs and new reviews accumulate; service-area pages and third-party
         mentions compound over a quarter or more. Anyone quoting a precise, fast, guaranteed result is guessing
         or exaggerating. The honest promise is direction, not a date: do the work consistently and you steadily
         become the company AI is best equipped to recommend when a homeowner needs help now.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do HVAC and plumbing companies get recommended by AI?</h2>
       <p>
         HVAC and plumbing companies get recommended by AI the same way they earn word-of-mouth on a street — by
         doing good work and being easy to verify. A complete Google Business Profile, authentic reviews that name
@@ -157,7 +163,12 @@ export function Body() {
         pro.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI names the HVAC and plumbing companies it can verify, so keep your Google
+        Business Profile complete, your reviews specific, your listings consistent and your service-area pages
+        clear, and ignore anyone promising guaranteed placement.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -40,9 +40,9 @@ export function Body() {
         <code>address</code>. Nothing is left to interpretation.
       </p>
 
-      <h2>Why it matters for AI search</h2>
+      <h2>Why does schema markup matter for AI search?</h2>
       <p>
-        AI assistants like ChatGPT, Perplexity, and Google&apos;s AI overviews answer questions by retrieving
+        Schema matters because it makes your facts explicit, consistent and verifiable, which is what AI engines lean on. AI assistants like ChatGPT, Perplexity, and Google&apos;s AI overviews answer questions by retrieving
         sources and summarizing them. When they assemble an answer, they lean on facts that are{" "}
         <em>explicit</em>, <em>consistent</em>, and <em>verifiable</em>. Schema markup feeds all three:
       </p>
@@ -69,7 +69,7 @@ export function Body() {
         bigger picture.
       </p>
 
-      <h2>Example 1 — LocalBusiness</h2>
+      <h2>How do I write LocalBusiness schema for my business?</h2>
       <p>
         If you serve customers in a specific area, <code>LocalBusiness</code> (or a more specific subtype like{" "}
         <code>Plumber</code>, <code>Dentist</code>, or <code>Restaurant</code>) is the most important schema to
@@ -111,7 +111,7 @@ export function Body() {
         address is exactly the kind of inconsistency that erodes trust.
       </p>
 
-      <h2>Example 2 — FAQPage</h2>
+      <h2>How do I add FAQPage schema for AI search?</h2>
       <p>
         An <code>FAQPage</code> turns your questions and answers into structured pairs. This is well suited to
         AI search because the question-and-answer shape mirrors how people prompt assistants — and your answer
@@ -145,7 +145,7 @@ export function Body() {
         should make sense on its own.
       </p>
 
-      <h2>Example 3 — Organization</h2>
+      <h2>When should I use Organization schema?</h2>
       <p>
         For a company that isn&apos;t tied to a single physical location, <code>Organization</code> describes
         the entity itself — its name, logo, and the official profiles that confirm who you are. The{" "}
@@ -177,7 +177,7 @@ export function Body() {
         gets you distrusted.
       </p>
 
-      <h2>Where to place the markup</h2>
+      <h2>Where should I place schema markup on my page?</h2>
       <p>
         JSON-LD goes inside a <code>script</code> tag with the type{" "}
         <code>application/ld+json</code>. The recommended spot is the page&apos;s <code>head</code>, though
@@ -211,9 +211,9 @@ export function Body() {
         <code>FAQPage</code> block).
       </p>
 
-      <h2>How to validate it</h2>
+      <h2>How do I validate my schema markup?</h2>
       <p>
-        Always test before you ship — a typo can silently break the whole block. Two free tools:
+        Validate it with two free tools before you ship, because a typo can silently break the whole block:
       </p>
       <ul>
         <li>
@@ -235,7 +235,7 @@ export function Body() {
         Fix every error and review the warnings, then re-test until it&apos;s clean.
       </p>
 
-      <h2>A realistic bottom line</h2>
+      <h2>Will schema markup alone get me recommended by AI?</h2>
       <p>
         Schema markup won&apos;t single-handedly get you recommended by AI. But it removes guesswork: it states
         your facts in the precise, consistent, verifiable form that AI engines reward. Pair it with an accurate
@@ -243,11 +243,16 @@ export function Body() {
         AI — the same trustworthy story about your business.
       </p>
 
+      <p>
+        The key takeaway is to add accurate JSON-LD schema, starting with LocalBusiness or Organization, validate
+        it, and pair it with a consistent Google Business Profile and listings so every engine gets the same facts.
+      </p>
+
       <hr />
       <p>
         <strong>Not sure how AI engines currently see your business?</strong> Alphaa checks your schema, your
         profiles, and the other signals AI assistants read — then shows you exactly what to fix.{" "}
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

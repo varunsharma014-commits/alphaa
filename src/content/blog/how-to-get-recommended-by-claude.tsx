@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        By the alphaa team — we build on Claude ourselves and run AI-visibility scans across the major engines
-        every day, so this is the engine we watch most closely.
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
         <strong>Short answer:</strong> To get recommended by Claude, make your business easy to find and verify.
@@ -28,9 +27,10 @@ export function Body() {
         with confidence.
       </p>
 
-      <h2>How Claude actually decides who to name</h2>
+      <h2>How does Claude actually decide which business to name?</h2>
       <p>
-        Every AI assistant blends two ingredients: training knowledge and live retrieval. Claude is no
+        Claude answers general questions from training knowledge and uses web search for recent, local or
+        specific ones. Every AI assistant blends two ingredients: training knowledge and live retrieval. Claude is no
         different, but it is worth understanding where it leans. For general questions, Claude answers from what
         it learned during training — a large slice of the public web, frozen at a cutoff date. For anything
         recent, local, or specific — &quot;who is a good bookkeeper in Denver?&quot; — Claude can use web search
@@ -45,7 +45,11 @@ export function Body() {
         cover in <Link href="/blog/is-aeo-real">is AEO real</Link>; Claude is just one engine running it.
       </p>
 
-      <h2>The playbook: how to become a business Claude can recommend</h2>
+      <h2>How do you become a business Claude can recommend?</h2>
+      <p>
+        Write answer-first pages, be one unambiguous entity everywhere, earn genuine third-party corroboration,
+        add accurate schema markup, and make your site easy to crawl.
+      </p>
 
       <h3>1. Write answer-first pages Claude can lift</h3>
       <p>
@@ -95,7 +99,11 @@ export function Body() {
         exactly the honest framing every AEO tactic deserves.
       </p>
 
-      <h2>Frequently asked questions</h2>
+      <h2>What else do people ask about getting recommended by Claude?</h2>
+      <p>
+        The common questions are whether Claude browses the web, whether you can pay to be recommended, and how
+        Claude differs from ChatGPT or Gemini.
+      </p>
 
       <h3>Does Claude browse the web when it answers?</h3>
       <p>
@@ -124,7 +132,7 @@ export function Body() {
         <Link href="/blog/how-to-get-cited-on-perplexity">how to get cited on Perplexity</Link>.
       </p>
 
-      <h2>What does not work</h2>
+      <h2>What doesn&apos;t work for getting recommended by Claude?</h2>
       <p>
         You cannot edit Claude&apos;s model, buy your way into an answer, or trick it with hidden keyword text
         stuffed onto a page — that kind of manipulation tends to be filtered and, when spotted, costs trust you
@@ -133,7 +141,7 @@ export function Body() {
         the clear, consistent, well-corroborated business the engine can describe without guessing.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do you get recommended by Claude?</h2>
       <p>
         Getting recommended by Claude comes down to being findable and verifiable. Write answer-first pages,
         resolve your business into one clear entity, earn genuine reviews and mentions, add accurate schema, and
@@ -142,11 +150,17 @@ export function Body() {
         <Link href="/blog/how-to-get-recommended-by-google-gemini">how to get recommended by Google Gemini</Link>.
       </p>
 
+      <p>
+        The key takeaway is that Claude names businesses it can find and verify, so write answer-first pages,
+        resolve into one clear entity, earn genuine reviews and mentions, add accurate schema and keep your site
+        crawlable.
+      </p>
+
       <hr />
       <p>
         <strong>Not sure whether Claude and the other AI engines recommend you today?</strong> Alphaa checks how
         the major answer engines see your business, finds the gaps in your signals, and shows you what to fix
-        first. <Link href="/scan">Run a free AI visibility scan →</Link>
+        first. <Link href="/start">Run the free AI check →</Link>
       </p>
       <p>
         <em>Last updated July 26, 2026.</em>

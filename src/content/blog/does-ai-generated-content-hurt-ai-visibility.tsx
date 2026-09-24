@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "does-ai-generated-content-hurt-ai-visibility",
   title: "Does AI-Generated Content Hurt Your AI Visibility?",
   description:
-    "AI-written content is not penalised for being AI-written. It fails for a more basic reason: it contains nothing an AI engine could not already produce itself, so there is no reason to retrieve or cite it. Here are the four failure modes we see in scans, and the drafting workflow that avoids them.",
+    "AI-written content is not penalised for being AI-written. It fails for a more basic reason: it contains nothing an AI engine could not already produce itself, so there is no reason to retrieve or cite it. Here are the four common failure modes, and the drafting workflow that avoids them.",
   date: "2026-08-23",
   readMins: 10,
   tag: "Mechanism",
@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and read a great deal of
-          machine-written marketing copy in the process. Last updated 23 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 23 August 2026.
         </em>
       </p>
 
@@ -31,9 +30,9 @@ export function Body() {
         signals you depend on.
       </p>
 
-      <h2>What the search platforms actually say</h2>
+      <h2>What do Google and the search platforms say about AI content?</h2>
       <p>
-        It is worth separating policy from mechanism. On the policy side, Google has been consistent since 2023
+        Google rewards high-quality content however it is produced, and its spam policies target scaled content abuse, not the use of a model. It is worth separating policy from mechanism. On the policy side, Google has been consistent since 2023
         that it rewards high-quality content however it is produced, and its{" "}
         <a
           href="https://developers.google.com/search/docs/essentials/spam-policies"
@@ -52,9 +51,9 @@ export function Body() {
         loses.
       </p>
 
-      <h2>The real mechanism: retrieval has no use for what the model already knows</h2>
+      <h2>Why does AI-generated content rarely get cited in AI answers?</h2>
       <p>
-        When an assistant answers a question with sources, it is not judging prose quality. It is running a
+        Generic AI copy rarely gets cited because retrieval only uses passages that supply something the model cannot generate on its own, such as a specific number, name, price or first-hand observation. When an assistant answers a question with sources, it is not judging prose quality. It is running a
         retrieval step — searching an index, pulling candidate passages, and assembling an answer from the ones
         that carry usable, corroborated information. A passage earns its place by supplying something the model
         cannot generate on its own: a specific number, a named business, a licence, a date, a process, a price, a
@@ -68,7 +67,10 @@ export function Body() {
         <Link href="/blog/how-to-write-content-ai-quotes">how to write content AI actually quotes</Link>.
       </p>
 
-      <h2>The four failure modes we see in scans</h2>
+      <h2>What are the most common ways AI-written content fails?</h2>
+      <p>
+        The four common failure modes are zero verifiable specifics, unattributable claims, self-duplication at scale, and entity drift.
+      </p>
 
       <h3>1. Zero verifiable specifics</h3>
       <p>
@@ -110,9 +112,9 @@ export function Body() {
         .
       </p>
 
-      <h2>How to draft with a model without becoming uncitable</h2>
+      <h2>How can you draft with AI without becoming uncitable?</h2>
       <p>
-        We use models for drafting daily, including for this blog. The rule that keeps it safe is simple:{" "}
+        Let the model shape the structure and supply every fact yourself. We use models for drafting daily, including for this blog. The rule that keeps it safe is simple:{" "}
         <strong>the model shapes; the human supplies every fact.</strong> In practice that is a five-step
         workflow:
       </p>
@@ -143,7 +145,7 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>The five-minute test for any page you already published</h2>
+      <h2>How do you test a page you already published?</h2>
       <p>
         Open the page and highlight every sentence containing a checkable specific — a figure, a name, a date, a
         place, a procedure, a price. Then ask the question that decides everything:{" "}
@@ -156,7 +158,10 @@ export function Body() {
         <Link href="/blog/content-freshness-ai-search">why content freshness matters for AI search</Link>.
       </p>
 
-      <h2>Questions we get about this</h2>
+      <h2>What else do people ask about AI-written content?</h2>
+      <p>
+        The most common follow-ups are about AI detection, disclosure, deleting old AI content, and AI-generated product descriptions or translations.
+      </p>
 
       <h3>Can AI engines detect that my content was AI-written?</h3>
       <p>
@@ -189,15 +194,18 @@ export function Body() {
         generally lower risk, but have a fluent speaker check anything about safety, legality or price.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So does AI-generated content hurt your AI visibility?</h2>
       <p>
-        The question &quot;does AI content hurt my AI visibility&quot; has the wrong subject. Nobody is punishing
+        Using AI does not hurt you on its own; generic model output simply adds no information, and hallucinated details about your business actively subtract. The question &quot;does AI content hurt my AI visibility&quot; has the wrong subject. Nobody is punishing
         you for using a tool. The engines are choosing which passages add information to an answer, and generic
         model output adds none — while hallucinated details about your own business actively subtract. Use models
         to draft and organise all you like. Just make sure the facts came from you, and that they are true.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI engines ignore content that adds nothing new, so use models to draft and organise while you supply every fact yourself and check that it is true.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including home-services
-          and solar contractors. Last updated 26 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 26 August 2026.
         </em>
       </p>
 
@@ -32,10 +31,10 @@ export function Body() {
         AI engine cannot use them, and it names a competitor who spelled them out.
       </p>
 
-      <h2>What a homeowner actually asks</h2>
+      <h2>What do homeowners actually ask AI about solar installers?</h2>
       <p>
-        The queries we see people bring to assistants about solar are longer and more suspicious than typical local
-        search. They look like:
+        Homeowners ask questions that are longer and more suspicious than typical local search, pre-screening for
+        legitimacy, scope and business model. They look like:
       </p>
       <ul>
         <li>&quot;Who are the most reputable solar installers in Sacramento County?&quot;</li>
@@ -50,9 +49,10 @@ export function Body() {
         in — and the way to be present in it is to have answered those exact questions somewhere an engine can read.
       </p>
 
-      <h2>Why solar is harder than other trades</h2>
+      <h2>Why is solar harder to get recommended for than other trades?</h2>
       <p>
-        We look at a lot of local-services scans, and solar behaves differently from plumbing or roofing in three
+        Because the category has a reputation problem, aggregators dominate the visible surface, and incentives
+        change constantly. We look at a lot of local-services scans, and solar behaves differently from plumbing or roofing in three
         specific ways:
       </p>
       <ol>
@@ -76,7 +76,11 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>The seven things to fix, in order</h2>
+      <h2>What should a solar installer fix first to get recommended?</h2>
+      <p>
+        In order: licence and certifications in text, a named service area, the business-model question,
+        consistent directory presence, local-conditions content, real project details, and your reviews as text.
+      </p>
 
       <h3>1. Put your licence and certifications in readable text</h3>
       <p>
@@ -152,9 +156,10 @@ export function Body() {
         <Link href="/blog/google-reviews-ai-visibility">why your Google reviews decide your AI visibility</Link>.
       </p>
 
-      <h2>What to do about the trust problem, specifically</h2>
+      <h2>How can a solar installer overcome the industry&apos;s trust problem?</h2>
       <p>
-        Because assistants often answer solar questions with caution first, the installers who win are the ones
+        Publish the things a sceptical buyer wants and most competitors avoid, such as warranty, cancellation and
+        financing terms. Because assistants often answer solar questions with caution first, the installers who win are the ones
         whose own content matches that cautious register. Concretely, that means publishing the things a sceptical
         buyer wants and most competitors avoid:
       </p>
@@ -172,7 +177,11 @@ export function Body() {
         exactly that kind of promise, so matching their scepticism is a competitive advantage.
       </p>
 
-      <h2>A 30-day sequence that fits around real work</h2>
+      <h2>What should a solar installer do in the next 30 days?</h2>
+      <p>
+        Audit in week 1, fix the facts in week 2, publish two local pieces in week 3, add evidence in week 4, and
+        re-check at 60 and 90 days.
+      </p>
       <ol>
         <li>
           <strong>Week 1 — audit.</strong> Ask ChatGPT, Gemini, Claude, and Perplexity the five questions at the
@@ -199,7 +208,11 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Questions we get asked</h2>
+      <h2>What do solar installers commonly ask about AI recommendations?</h2>
+      <p>
+        Installers ask about EnergySage, town-by-town pages, old bad reviews, changing incentive rules, and
+        whether ads can replace this work.
+      </p>
       <h3>Do I need to be on EnergySage to be recommended?</h3>
       <p>
         You do not need it, but it helps disproportionately in this vertical, because marketplace and review-site
@@ -232,7 +245,7 @@ export function Body() {
         answer. See <Link href="/blog/do-paid-ads-affect-ai-recommendations">do paid ads affect AI recommendations</Link>.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do solar installers get recommended by AI?</h2>
       <p>
         Solar is a trust purchase, and AI assistants have absorbed the industry&apos;s trust problems along with
         everything else. You do not overcome that with better adjectives. You overcome it with verifiable, plainly
@@ -241,7 +254,12 @@ export function Body() {
         today are rarely the biggest ones. They are the ones who wrote the specifics down.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that solar installers overcome AI&apos;s caution with verifiable, plainly stated
+        facts — licence, certifications, service area, honest financing terms, real project numbers and current
+        local rules — repeated consistently everywhere an engine looks.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

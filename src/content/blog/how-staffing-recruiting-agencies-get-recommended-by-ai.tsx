@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including staffing
-          and recruiting firms. Last updated 20 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 20 August 2026.
         </em>
       </p>
 
@@ -32,7 +31,8 @@ export function Body() {
 
       <h2>What does a buyer actually ask an AI assistant?</h2>
       <p>
-        Staffing queries arrive far more specific than most owners expect. In practice they look like:
+        Buyers ask far more specific questions than most owners expect, naming a role, a hiring model and
+        usually a place. In practice they look like:
       </p>
       <ul>
         <li>&quot;Best staffing agency for warehouse workers in Columbus Ohio&quot;</li>
@@ -49,9 +49,10 @@ export function Body() {
         <em>contract-to-hire</em>, <em>direct placement</em>, <em>executive search</em>.
       </p>
 
-      <h2>The two-sided problem only recruiters have</h2>
+      <h2>How should recruiters handle serving both employers and candidates?</h2>
       <p>
-        A dentist has one audience. A staffing firm has two — <strong>employers and candidates</strong> — and
+        Split your site into two clearly separated sections, because employers and candidates ask opposite
+        questions. A dentist has one audience. A staffing firm has two — <strong>employers and candidates</strong> — and
         they ask opposite questions. &quot;Best staffing agency in Dallas&quot; from a hiring manager means
         &quot;who will fill my role well.&quot; The same words from a job seeker mean &quot;who will get me
         placed.&quot;
@@ -77,7 +78,11 @@ export function Body() {
         <em> hire through</em>, the model recommends a competitor whose service pages are unmistakable.
       </p>
 
-      <h2>The pages that actually get cited</h2>
+      <h2>Which staffing agency pages actually get cited by AI?</h2>
+      <p>
+        Niche-plus-geography pages, a fee and model explainer, placement proof with real specifics, and a
+        comparison page on hiring approaches.
+      </p>
 
       <h3>1. One page per niche, per geography</h3>
       <p>
@@ -114,9 +119,10 @@ export function Body() {
         <Link href="/blog/comparison-pages-ai-search">do comparison pages help you get recommended by AI</Link>.
       </p>
 
-      <h2>Off-site signals: where recruiters win or lose</h2>
+      <h2>Which off-site signals matter most for recruiters?</h2>
       <p>
-        Staffing is a trust purchase, so assistants lean heavily on sources you do not control. In rough order
+        Google Business Profile, Clutch and industry directories, reviews from both sides, LinkedIn, and trade
+        associations and local press. Staffing is a trust purchase, so assistants lean heavily on sources you do not control. In rough order
         of impact:
       </p>
       <ol>
@@ -149,9 +155,10 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Entity hygiene, the recruiter version</h2>
+      <h2>Why does AI get confused about which staffing firm is which?</h2>
       <p>
-        Staffing firms break entity resolution more often than almost any other vertical, for three reasons:
+        Rebrands, multiple trading names and shared office addresses can leave an assistant unsure whether you
+        are one company or several. Staffing firms break entity resolution more often than almost any other vertical, for three reasons:
         frequent rebrands and acquisitions, multiple trading names for different divisions, and virtual or
         co-working office addresses shared with dozens of other companies. Any of these can leave an assistant
         unsure whether you are one company or several.
@@ -172,7 +179,10 @@ export function Body() {
         who your business is</Link>.
       </p>
 
-      <h2>A 30-day plan for a small staffing firm</h2>
+      <h2>What should a small staffing firm do in the next 30 days?</h2>
+      <p>
+        Measure in week 1, fix identity in week 2, publish pages in week 3, and gather proof in week 4.
+      </p>
       <ul>
         <li>
           <strong>Week 1 — measure.</strong> Ask ChatGPT, Gemini, Claude and Perplexity your five real buyer
@@ -194,9 +204,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Honest limitations</h2>
+      <h2>Can any of this guarantee AI will recommend my agency?</h2>
       <p>
-        None of this guarantees a recommendation. AI assistants regenerate answers per query, weight sources
+        No, none of this guarantees a recommendation. AI assistants regenerate answers per query, weight sources
         they control, and change behaviour when models are updated — which is why we always recommend
         measuring across several engines and several runs rather than trusting a single screenshot. Expect
         weeks, not days, before profile and content changes are reflected; the timeline is in{" "}
@@ -210,7 +220,7 @@ export function Body() {
         exactly the kind of specific, structured detail assistants extract well.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do staffing agencies get recommended by AI?</h2>
       <p>
         Recruiters lose AI visibility to vagueness more than to competition. Name the roles you fill, the
         places you fill them, the model you charge under, and the results you can evidence — then make sure
@@ -218,7 +228,12 @@ export function Body() {
         whole game, and it is mostly a week of unglamorous cleanup rather than a marketing budget.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to be unambiguously specific about the roles you fill, where you fill them and how
+        you charge, then make Google, LinkedIn, Clutch and your directories tell the same story about who you
+        are.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

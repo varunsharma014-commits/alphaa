@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and spend a lot of time
-          looking at what an assistant cites versus what a backlink tool counts. Last updated 24 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 24 August 2026.
         </em>
       </p>
 
@@ -33,8 +32,10 @@ export function Body() {
         getting you named.
       </p>
 
-      <h2>Why links and mentions do different jobs</h2>
+      <h2>Why do links and brand mentions do different jobs?</h2>
       <p>
+        Links handle discovery and authority transfer, while any text that names you does the corroboration AI
+        answers are built on.{" "}
         It helps to separate three things that traditional SEO bundles together.
       </p>
       <ul>
@@ -59,8 +60,10 @@ export function Body() {
         other half of the same picture.
       </p>
 
-      <h2>The mechanism, concretely</h2>
+      <h2>How does an unlinked mention get a business into an AI answer?</h2>
       <p>
+        The mention enters the retrieval index as text, and when a query matches its service and place, the
+        model can name the business and cite the page.{" "}
         Take a local trade journal article: &quot;Three firms — Halloran Electric, Vance &amp; Sons, and Bright
         Path Solar — completed the county&apos;s residential retrofit program this spring.&quot; No links to any
         of them.
@@ -79,8 +82,10 @@ export function Body() {
         answer.
       </p>
 
-      <h2>What makes a mention actually count</h2>
+      <h2>What makes a brand mention actually count for AI?</h2>
       <p>
+        A mention counts when it uses your exact name, includes disambiguating context, comes from an
+        independent crawlable source, and agrees with everything else.{" "}
         Not all mentions are equal, and the difference is not subtle. Four properties matter, roughly in this
         order:
       </p>
@@ -112,9 +117,11 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>Where the valuable unlinked mentions actually live</h2>
+      <h2>Where do the most valuable unlinked mentions come from?</h2>
       <p>
-        In scans, the mentions that show up in cited answers cluster in a few places, and almost none of them are
+        They come from forum threads, review text, local news and trade press, roundups, transcripts, and
+        association directories.{" "}
+        In practice, the mentions that show up in cited answers cluster in a few places, and almost none of them are
         the places link-building targets:
       </p>
       <ul>
@@ -145,8 +152,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>How to earn more of them</h2>
+      <h2>How can you earn more unlinked brand mentions?</h2>
       <p>
+        Be quotable in one sentence, answer journalist requests, get listed in your industry&apos;s registries,
+        ask reviewers for specifics, help in customer communities, and publish transcripts.{" "}
         The tactics are ordinary; the framing is what changes. You are not asking for a link, which makes the ask
         easier and the yes more common.
       </p>
@@ -180,8 +189,10 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>How to find your existing mentions</h2>
+      <h2>How do you find your existing brand mentions?</h2>
       <p>
+        Search your exact brand name in quotes on Google and Bing, excluding your own domain, and set up a
+        Google Alert on the name.{" "}
         Backlink tools will not show these, because there is no link to find. What works: search your exact brand
         name in quotes on Google and Bing, then run the same search with <code>-site:yourdomain.com</code> to
         strip out your own pages. Set up a Google Alert on the exact name and on common misspellings. Search your
@@ -197,7 +208,7 @@ export function Body() {
         an easy ask because you are not asking for anything of value.
       </p>
 
-      <h2>Questions we get</h2>
+      <h2>What else do people ask about unlinked brand mentions?</h2>
 
       <h3>Is an unlinked mention better than a link?</h3>
       <p>
@@ -236,7 +247,7 @@ export function Body() {
         specificity of genuine positive evidence, not suppression.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on brand mentions without links?</h2>
       <p>
         Stop grading coverage by whether it links. AI answers are assembled from sentences, and a sentence that
         names your business, your city and what you actually do is the unit of evidence that gets you recommended.
@@ -244,7 +255,12 @@ export function Body() {
         the others.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to stop grading coverage by whether it links and instead earn more specific
+        sentences that name your business, your city, and what you do — all spelled one way and in agreement.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses, including home
-          services and exterior contractors. Last updated 10 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 10 August 2026.
         </em>
       </p>
 
@@ -32,9 +31,10 @@ export function Body() {
         a phone number over a stock photo does not.
       </p>
 
-      <h2>What homeowners actually ask</h2>
+      <h2>What do homeowners actually ask AI about roofers?</h2>
       <p>
-        Roofing questions split into two very different modes, and you need to be answerable in both.
+        Roofing questions split into two modes — emergency questions hours after weather and considered questions
+        days to months later — and you need to be answerable in both.
       </p>
       <p>
         <strong>Emergency mode</strong>, hours after weather:
@@ -62,10 +62,11 @@ export function Body() {
         you are legitimate will say it cannot confirm, which reads to the homeowner exactly like a warning.
       </p>
 
-      <h2>Where the answer comes from in this category</h2>
+      <h2>Where does AI get its answers about roofing contractors?</h2>
       <p>
-        When an assistant answers a roofing query it synthesizes from retrieved documents. In our scans the
-        retrievable set for exterior contractors is consistently:
+        An assistant answering a roofing query synthesizes from retrieved documents such as Google Business
+        Profile, marketplaces, manufacturer locators, licence registries, reviews and your own site. The
+        retrievable set for exterior contractors is typically:
       </p>
       <ul>
         <li>
@@ -105,9 +106,10 @@ export function Body() {
         claims are confirmed somewhere other than their own marketing.
       </p>
 
-      <h2>The pages that make a roofer answerable</h2>
+      <h2>Which pages make a roofing contractor answerable to AI?</h2>
       <p>
-        Most roofing sites are built to look trustworthy to a human skimming on a phone. The same site can be
+        A text credentials block, a page per roof type, a warranty page, an insurance-claim page, a service-area
+        page, honest cost ranges and concrete emergency availability. Most roofing sites are built to look trustworthy to a human skimming on a phone. The same site can be
         nearly content-free to a retrieval system: a hero video, a form, three adjectives, and a gallery.
         Assistants cannot lift adjectives. Here is what to add, in the order that pays.
       </p>
@@ -160,8 +162,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Storm season is an AI visibility problem, not just a sales problem</h2>
+      <h2>Why is storm season an AI visibility problem for roofers?</h2>
       <p>
+        Because after a major storm, out-of-town contractors flood in and homeowners ask assistants who is real.
         The economics of this trade are seasonal and event-driven, and the AI layer amplifies that. After a
         significant hail or wind event, three things happen at once: query volume for your area spikes,
         out-of-town contractors flood in with new local landing pages, and homeowners start asking assistants
@@ -187,9 +190,9 @@ export function Body() {
         carrier — and let the competence be the pitch.
       </p>
 
-      <h2>Reviews: volume, recency, and what they say</h2>
+      <h2>How do reviews affect whether AI recommends a roofer?</h2>
       <p>
-        Roofing has a structural review problem. The job happens once a decade, the customer is often stressed,
+        Volume, recency and what reviews say all matter, and roofers systematically under-collect them. Roofing has a structural review problem. The job happens once a decade, the customer is often stressed,
         and the crew leaves before the homeowner has any idea whether the work was good. So roofers
         systematically under-collect reviews relative to trades with repeat visits, and assistants notice — a
         contractor with 31 reviews sits below one with 400 in almost every ranking heuristic that exists.
@@ -205,10 +208,11 @@ export function Body() {
         <Link href="/blog/google-reviews-ai-visibility">how Google reviews shape AI visibility</Link>.
       </p>
 
-      <h2>The technical minimum</h2>
+      <h2>What is the technical minimum for a roofing website?</h2>
       <p>
-        Roofing sites are disproportionately built on heavy page-builder templates, which creates two specific
-        failure modes we find constantly in scans:
+        Keep key content out of JavaScript-only widgets and images, and add <code>RoofingContractor</code> schema
+        that matches your listings. Roofing sites are disproportionately built on heavy page-builder templates, which creates two common
+        failure modes:
       </p>
       <ul>
         <li>
@@ -234,7 +238,11 @@ export function Body() {
         .
       </p>
 
-      <h2>Questions roofers ask us</h2>
+      <h2>What do roofers commonly ask about AI recommendations?</h2>
+      <p>
+        Roofers ask whether they can pay for placement, whether a one-crew roofer can compete, how long it takes,
+        and what to do if AI describes them wrong.
+      </p>
 
       <h3>Can I pay to be recommended by ChatGPT?</h3>
       <p>
@@ -271,9 +279,9 @@ export function Body() {
         .
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do roofing contractors get recommended by AI?</h2>
       <p>
-        Roofing is a trust category answered by machines that can only weigh evidence they can retrieve. The
+        By making their evidence of legitimacy retrievable. Roofing is a trust category answered by machines that can only weigh evidence they can retrieve. The
         contractors getting recommended are not the ones with the best hero video — they are the ones whose
         licence number, certifications, warranty terms, materials, service area and claim process exist as
         plain text, agree everywhere, and are backed by recent, specific reviews. Publish what a cautious
@@ -281,7 +289,12 @@ export function Body() {
         assistant: <em>is this company for real?</em>
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to publish what a cautious homeowner would want verified — licence, certifications,
+        warranty, materials, service area and claim process — as plain text that agrees everywhere, backed by
+        recent, specific reviews.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

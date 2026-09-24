@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and look at a lot of
-          city-page templates. Last updated 21 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 21 August 2026.
         </em>
       </p>
 
@@ -30,8 +29,10 @@ export function Body() {
         problem. Three genuinely local pages beat fifty templated ones, reliably.
       </p>
 
-      <h2>Why the honest answer is &quot;it depends on the page,&quot; not &quot;yes&quot; or &quot;no&quot;</h2>
+      <h2>Do city landing pages work for AI search or not?</h2>
       <p>
+        It depends on the page: AI retrieval rewards distinctive, specific text and punishes near-duplicate
+        templated pages.{" "}
         The advice you will find is split, and both camps are half right. &quot;City pages are dead&quot;
         comes from people who watched Google devalue doorway pages. &quot;City pages are essential&quot; comes
         from agencies whose product is producing them at volume.
@@ -63,7 +64,7 @@ export function Body() {
         not the problem, the sameness is.
       </p>
 
-      <h2>The one-sentence test for a city page</h2>
+      <h2>How can you tell if a city page is worth publishing?</h2>
       <p>
         Before you publish, apply this: <strong>if you swapped the city name for a different city, would any
         sentence on the page become false?</strong>
@@ -79,7 +80,7 @@ export function Body() {
         district, where trucks over 24 feet cannot access most streets&quot; survives it emphatically.
       </p>
 
-      <h2>What actually goes on a city page that earns citations</h2>
+      <h2>What should a city page include to earn AI citations?</h2>
       <p>
         Facts that are true of that place and nowhere else. In practice, a page that works usually contains
         four or five of these:
@@ -112,8 +113,8 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>How templated pages actively hurt</h2>
-      <p>Three concrete failure modes, all of which we see in scans:</p>
+      <h2>How do templated city pages hurt your AI visibility?</h2>
+      <p>Templated pages dilute your entity, spread contradictory addresses and phone numbers, and crowd out the pages that would have worked. Three concrete, common failure modes:</p>
       <h3>Entity dilution</h3>
       <p>
         Engines build a picture of your business as an entity: one name, one identity, a defined service area.
@@ -158,7 +159,11 @@ export function Body() {
         without thirty near-duplicate documents attached.
       </p>
 
-      <h2>Building one: a worked structure</h2>
+      <h2>How should you structure a city landing page?</h2>
+      <p>
+        Use a plain-query H1, a 40–60 word answer-first paragraph, coverage, local specifics, local proof, a
+        short FAQ, and LocalBusiness schema.
+      </p>
       <ol>
         <li>
           <strong>H1 with the plain query.</strong> &quot;[Service] in [City], [State]&quot;. Not clever, not
@@ -201,7 +206,7 @@ export function Body() {
         .
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do people ask about city landing pages?</h2>
       <h3>Will AI engines penalise my city pages?</h3>
       <p>
         There is no penalty in the sense classic SEO uses the word. Retrieval simply does not surface passages
@@ -242,7 +247,7 @@ export function Body() {
         .
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on city landing pages for AI search?</h2>
       <p>
         City pages are not dead and they are not magic. They are a container, and AI search only rewards
         containers with something specific inside them. The test is the swap test: change the city name, and
@@ -252,7 +257,12 @@ export function Body() {
         can copy.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to apply the swap test and only publish city pages you can fill with facts true of
+        that place, while keeping one canonical address.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

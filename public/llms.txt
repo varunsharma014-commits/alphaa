@@ -19,11 +19,37 @@
 - [Home](https://alphaa.app/): What the agent does and how it works.
 - [Free check](https://alphaa.app/start): The 60-second check above.
 - [How it works](https://alphaa.app/how-it-works): Step by step.
+- [About](https://alphaa.app/about): Who Alphaa is, what it does, contact details.
 - [Pricing](https://alphaa.app/pricing): Starter $99/month, Pro $199/month, Full Service $299/month. Month to month.
 - [Blog](https://alphaa.app/blog): Plain-English guides on getting recommended by AI assistants.
 - [For dentists](https://alphaa.app/for/dentists), [plumbers](https://alphaa.app/for/plumbers), [HVAC](https://alphaa.app/for/hvac), [lawyers](https://alphaa.app/for/lawyers), [med spas](https://alphaa.app/for/med-spas), [restaurants](https://alphaa.app/for/restaurants)
 - [Referral program](https://alphaa.app/refer)
 - [Privacy policy](https://alphaa.app/privacy) · [Terms](https://alphaa.app/terms)
+
+## Original research
+
+- [We checked 288 local business websites for AI readiness (2026)](https://alphaa.app/blog/local-business-ai-readiness-study-2026): dentists, plumbers/HVAC, law firms, veterinarians and restaurants in six US cities, checked on September 25, 2026 with Alphaa's 23-point check. 17% turned away an automated reader; of readable sites, 71% had missing or incomplete structured business facts, 66% had no FAQ content, 56% had no reviews readable as text, 46% didn't show phone/address/hours in readable text; fewer than 2% passed 20 of 23 checks. Restaurants scored lowest (11.2 of 23 on average).
+
+## Comparisons
+
+- [Alphaa vs. a traditional SEO agency](https://alphaa.app/blog/alphaa-vs-seo-agencies): what a ~$2,000/month retainer buys versus an AI agent at $99/month.
+- [Alphaa vs. Yext](https://alphaa.app/blog/alphaa-vs-yext): managing listings vs. managing AI answers.
+- [Alphaa vs. BrightLocal](https://alphaa.app/blog/alphaa-vs-brightlocal): local SEO toolkit vs. an AI agent that does the work.
+- [SEO vs. AEO vs. GEO](https://alphaa.app/blog/seo-vs-aeo-vs-geo): the differences and which gets a local business customers.
+- [ChatGPT vs. Gemini vs. Perplexity vs. Claude for local search](https://alphaa.app/blog/chatgpt-vs-gemini-vs-perplexity-local-search): where each gets local recommendations.
+- [Best AI agent tools for local business marketing (2026)](https://alphaa.app/blog/ai-agent-tools-local-business-marketing)
+
+## Key guides
+
+- [How to get recommended by ChatGPT](https://alphaa.app/blog/how-to-get-recommended-by-chatgpt)
+- [How to get recommended by Google Gemini](https://alphaa.app/blog/how-to-get-recommended-by-google-gemini)
+- [How to get cited on Perplexity](https://alphaa.app/blog/how-to-get-cited-on-perplexity)
+- [How to get recommended by Claude](https://alphaa.app/blog/how-to-get-recommended-by-claude)
+- [The AEO checklist](https://alphaa.app/blog/aeo-checklist)
+- [How much does AEO cost?](https://alphaa.app/blog/how-much-does-aeo-cost)
+- [How long does AEO take?](https://alphaa.app/blog/how-long-does-aeo-take)
+- [How to fix wrong AI information about your business](https://alphaa.app/blog/fix-wrong-ai-information-about-your-business)
+- [What is llms.txt and how to create one](https://alphaa.app/blog/how-to-create-llms-txt-file)
 
 ## What the agent does
 

@@ -6,76 +6,7 @@ import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Panel, AgentNote, EngineChips, Phone } from "@/components/marketing/apple/Mockups"
 import { AgencyToggle } from "@/components/marketing/apple/Sections"
-
-const plans = [
-  {
-    name: "Starter",
-    monthly: 99,
-    annual: 79,
-    description: "For a single business ready to stop being invisible.",
-    highlight: false,
-    features: [
-      "1 business location",
-      "2 Google Business Profile posts per week",
-      "2 AI-optimized blog posts per month",
-      "AI visibility tracking (Google, ChatGPT, Perplexity, Gemini)",
-      "Weekly performance email",
-      "Review monitoring",
-      "Email support",
-    ],
-    cta: "Start today",
-    priceId: { monthly: "starter_monthly", annual: "starter_annual" },
-  },
-  {
-    name: "Pro",
-    monthly: 199,
-    annual: 159,
-    description: "For businesses serious about dominating Google and AI search.",
-    highlight: true,
-    badge: "Most popular",
-    features: [
-      "Up to 3 business locations",
-      "4 Google Business Profile posts per week",
-      "4 AI-optimized blog posts per month",
-      "Everything in Starter",
-      "Competitor benchmarking",
-      "Auto-approval rules for posts",
-      "Monthly executive report",
-      "Priority chat support",
-      "Free setup ($49 value)",
-    ],
-    cta: "Start today",
-    priceId: { monthly: "pro_monthly", annual: "pro_annual" },
-  },
-  {
-    name: "Full Service",
-    monthly: 299,
-    annual: 299,
-    monthlyOnly: true,
-    description: "Everything in Pro — plus a real person does all the website work for you.",
-    highlight: false,
-    badge: "Done for you",
-    features: [
-      "Everything in Pro",
-      "White-glove setup included — we install all code on your site",
-      "A human publishes your monthly blogs & FAQs to your website",
-      "Schema & llms.txt maintained for you",
-      "Invite-based access — never your passwords",
-      "Human turnaround within 2 business days",
-    ],
-    cta: "Get Full Service",
-    href: "/dashboard/concierge",
-    priceId: { monthly: "fullservice_monthly", annual: "fullservice_monthly" },
-  },
-]
-
-const billingFaqs = [
-  { q: "Is there a free trial?", a: "No — the free check at /start shows you exactly what the AIs say about you today, and that's the trial. Plans are month to month from day one." },
-  { q: "Can I cancel anytime?", a: "Yes. Two clicks in Billing. No phone calls, no contracts, no exit fees." },
-  { q: "Do I need technical skills?", a: "No. Your agent writes, fixes and publishes; you approve with one tap. If you'd rather not touch your website at all, Full Service has a human do it." },
-  { q: "Can I switch plans?", a: "Yes. Upgrade or downgrade anytime from your billing settings." },
-  { q: "Do you offer refunds?", a: "We offer a full refund within 7 days of your first charge if you're not satisfied. No questions asked." },
-]
+import { plans, billingFaqs } from "./pricing-data"
 
 // Each plan gets its own "product shot" — what that plan looks like in use.
 const ART: Record<string, { tone: "sky" | "lavender" | "sage"; art: React.ReactNode }> = {

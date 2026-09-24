@@ -1,4 +1,11 @@
 import type { Post } from "./types"
+import { meta as studyMeta, Body as StudyBody } from "./local-business-ai-readiness-study-2026"
+import { meta as vsAgenciesMeta, Body as VsAgenciesBody } from "./alphaa-vs-seo-agencies"
+import { meta as vsYextMeta, Body as VsYextBody } from "./alphaa-vs-yext"
+import { meta as vsBrightLocalMeta, Body as VsBrightLocalBody } from "./alphaa-vs-brightlocal"
+import { meta as agentToolsMeta, Body as AgentToolsBody } from "./ai-agent-tools-local-business-marketing"
+import { meta as seoAeoGeoMeta, Body as SeoAeoGeoBody } from "./seo-vs-aeo-vs-geo"
+import { meta as enginesLocalMeta, Body as EnginesLocalBody } from "./chatgpt-vs-gemini-vs-perplexity-local-search"
 import { meta as llmsTxtMeta, Body as LlmsTxtBody } from "./llms-txt-guide"
 import { meta as aeoVsSeoMeta, Body as AeoVsSeoBody } from "./aeo-vs-seo"
 import { meta as whatIsAeoMeta, Body as WhatIsAeoBody } from "./what-is-answer-engine-optimization"
@@ -91,6 +98,13 @@ import { meta as faqPagesMeta, Body as FaqPagesBody } from "./do-faq-pages-work-
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
 export const POSTS: Post[] = [
+  { meta: studyMeta, Body: StudyBody },
+  { meta: vsAgenciesMeta, Body: VsAgenciesBody },
+  { meta: vsYextMeta, Body: VsYextBody },
+  { meta: vsBrightLocalMeta, Body: VsBrightLocalBody },
+  { meta: agentToolsMeta, Body: AgentToolsBody },
+  { meta: seoAeoGeoMeta, Body: SeoAeoGeoBody },
+  { meta: enginesLocalMeta, Body: EnginesLocalBody },
   { meta: whatIsAeoMeta, Body: WhatIsAeoBody },
   { meta: chatgptMeta, Body: ChatgptBody },
   { meta: isAeoRealMeta, Body: IsAeoRealBody },

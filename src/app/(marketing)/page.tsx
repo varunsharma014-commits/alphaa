@@ -5,6 +5,7 @@ import { AVATARS } from "@/components/marketing/HeroSection"
 import { AgentHomeDemo } from "@/components/marketing/AgentHomeDemo"
 import { SocialProof } from "@/components/marketing/SocialProof"
 import { FaqSection } from "@/components/marketing/FaqSection"
+import { faqs } from "@/components/marketing/faq-data"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
 import { BRAND } from "@/lib/brand"
 
@@ -22,7 +23,7 @@ const softwareSchema = {
   operatingSystem: "Web",
   url: "https://alphaa.app",
   description:
-    "Automated AI Search Optimization (AEO) that gets your business discovered, cited, and recommended by ChatGPT, Claude, Gemini, and Perplexity — for $99/month instead of a $2,000/month SEO agency.",
+    "Alphaa is an AI agent that works to get businesses recommended by ChatGPT, Gemini, Claude and Perplexity: it checks what those AIs say about you, fixes what they can't read on your site, writes the pages they quote, and keeps your Google Business Profile active — from $99/month, month to month, instead of a $2,000/month SEO agency.",
   offers: [
     {
       "@type": "Offer",
@@ -30,6 +31,13 @@ const softwareSchema = {
       price: "99",
       priceCurrency: "USD",
       priceSpecification: { "@type": "UnitPriceSpecification", price: "99", priceCurrency: "USD", unitText: "MONTH" },
+    },
+    {
+      "@type": "Offer",
+      name: "Full Service",
+      price: "299",
+      priceCurrency: "USD",
+      priceSpecification: { "@type": "UnitPriceSpecification", price: "299", priceCurrency: "USD", unitText: "MONTH" },
     },
     {
       "@type": "Offer",
@@ -45,6 +53,16 @@ export default function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+          }),
+        }}
+      />
       {/* Social proof and FAQ use data-reveal — invisible until this runs. */}
       <ScrollReveal />
 

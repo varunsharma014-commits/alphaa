@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of small businesses and see the same
-          wrong answers repeat. Last updated 31 July 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 31 July 2026.
         </em>
       </p>
 
@@ -31,7 +30,7 @@ export function Body() {
 
       <h2>First: which kind of wrong is it?</h2>
       <p>
-        Before you change anything, work out where the error is coming from. There are two mechanisms, and they
+        It is either stale training memory or bad live retrieval. Before you change anything, work out where the error is coming from. There are two mechanisms, and they
         have completely different repair times.
       </p>
       <ul>
@@ -73,7 +72,10 @@ export function Body() {
         .
       </p>
 
-      <h2>The six errors we see most often</h2>
+      <h2>What wrong information do AI engines most often give about businesses?</h2>
+      <p>
+        The six most common errors are closed-or-moved flags, wrong hours or phone numbers, entity collisions, invented services, stale pricing, and wrong ownership or staff.
+      </p>
       <ul>
         <li>
           <strong>Closed or moved.</strong> An old &quot;permanently closed&quot; flag or a previous address
@@ -102,9 +104,9 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The correction workflow, in priority order</h2>
+      <h2>How do you correct wrong AI information about your business?</h2>
       <p>
-        Work top to bottom. The order matters — the earlier items are re-crawled most often and carry the most
+        Fix each error at its source, starting with your Google Business Profile and then your own site&apos;s canonical facts. Work top to bottom. The order matters — the earlier items are re-crawled most often and carry the most
         weight, so fixing them first changes answers soonest.
       </p>
       <ol>
@@ -168,7 +170,10 @@ export function Body() {
         in <Link href="/blog/why-ai-answers-change-every-time">why AI answers change every time</Link>.
       </p>
 
-      <h2>What you cannot fix, and should stop trying to</h2>
+      <h2>What wrong AI information can you not fix?</h2>
+      <p>
+        You cannot rewrite a model&apos;s weights, make an engine ignore honest negative reviews, or guarantee the exact wording of an answer.
+      </p>
       <ul>
         <li>
           <strong>The model&apos;s weights.</strong> No vendor can reach in and rewrite them. If someone offers
@@ -184,7 +189,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Close the loop: re-check on a schedule</h2>
+      <h2>How do you know a correction has worked?</h2>
       <p>
         A correction is not done when you submit the edit; it is done when the answer changes. Keep a simple
         log: the exact question, the engine, the date, and the answer you got. Re-run the same three or four
@@ -197,15 +202,18 @@ export function Body() {
         .
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What actually fixes a wrong AI answer?</h2>
       <p>
-        A wrong AI answer is almost always a wrong source, not a broken model. Diagnose which source, fix it at
+        Fixing the source does, because a wrong AI answer is almost always a wrong source, not a broken model. Diagnose which source, fix it at
         the origin, make every other public record agree, and then verify over weeks rather than hours. That is
         unglamorous work, and it is the only version of this that actually holds — because the next time an
         engine looks you up, it reads the same public record you just corrected.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to trace each wrong answer to the public source feeding it, correct it there, make every other record agree, and re-check monthly until the answer changes.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

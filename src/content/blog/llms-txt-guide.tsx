@@ -37,7 +37,7 @@ export function Body() {
 
       <h2>Does it actually help AI find you?</h2>
       <p>
-        Be realistic: <code>llms.txt</code> is a new standard, and adoption is still partial — not every AI
+        It can help as a low-cost, forward-looking signal, but it is not a magic switch. Be realistic: <code>llms.txt</code> is a new standard, and adoption is still partial — not every AI
         engine fetches it yet. So it isn&apos;t a magic switch. But it&apos;s a low-cost, forward-looking
         signal that works <em>with</em> the things that already matter:
       </p>
@@ -50,7 +50,7 @@ export function Body() {
         In other words: treat <code>llms.txt</code> as one clean input among several, not the whole strategy.
       </p>
 
-      <h2>What goes in an llms.txt file</h2>
+      <h2>What should go in an llms.txt file?</h2>
       <p>A good <code>llms.txt</code> is short and answers three things: who you are, what you offer, and where to look. A typical structure:</p>
       <ul>
         <li>An <code>H1</code> with your business name.</li>
@@ -62,8 +62,8 @@ export function Body() {
         <li>Contact details.</li>
       </ul>
 
-      <h2>Step 1 — Write the file</h2>
-      <p>Copy this template and fill in your details:</p>
+      <h2>Step 1 — How do I write an llms.txt file?</h2>
+      <p>Write it in Markdown using the template below; copy it and fill in your details:</p>
       <pre><code>{`# [Business Name]
 
 > [One sentence: what you do and who you serve.]
@@ -95,9 +95,9 @@ Email: hello@yourdomain.com`}</code></pre>
         Keep it honest and specific. Vague, keyword-stuffed copy helps no one — AI included.
       </p>
 
-      <h2>Step 2 — Host it at yourdomain.com/llms.txt</h2>
+      <h2>Step 2 — Where do I host my llms.txt file?</h2>
       <p>
-        Save the file as <code>llms.txt</code> and upload it so it&apos;s served at the root of your domain.
+        Host it at the root of your domain, at yourdomain.com/llms.txt. Save the file as <code>llms.txt</code> and upload it so it&apos;s served at the root of your domain.
         Exactly how depends on your platform:
       </p>
       <ul>
@@ -111,17 +111,22 @@ Email: hello@yourdomain.com`}</code></pre>
         file on a URL you control and referencing it is the practical fallback.
       </blockquote>
 
-      <h2>Step 3 — Verify it</h2>
+      <h2>Step 3 — How do I check my llms.txt file is working?</h2>
       <p>
         Visit <code>https://yourdomain.com/llms.txt</code> in a browser. You should see your plain-text file
         (not a 404 and not your site&apos;s HTML). If you get a 404, the file isn&apos;t at the root; if you
         see your homepage, your routing is rewriting it.
       </p>
 
-      <h2>Keep it updated</h2>
+      <h2>How often should I update my llms.txt file?</h2>
       <p>
-        Your <code>llms.txt</code> should reflect your current services, pages, and details. Stale info is
+        Review it whenever your offering changes. Your <code>llms.txt</code> should reflect your current services, pages, and details. Stale info is
         worse than none — it teaches AI the wrong thing about you. Review it whenever your offering changes.
+      </p>
+
+      <p>
+        The key takeaway is that llms.txt is a quick, low-cost file worth adding and keeping current, but it
+        is one clean input among several, not the whole strategy.
       </p>
 
       <hr />
@@ -129,7 +134,7 @@ Email: hello@yourdomain.com`}</code></pre>
         <strong>Want this done for you?</strong> Alphaa automatically generates and hosts an{" "}
         <code>llms.txt</code> for your business from your profile, keeps it current, and optimizes the other
         signals AI engines read — schema, Google Business Profile, and content.{" "}
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, including residential
-          and commercial electrical contractors. Last updated 28 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 28 August 2026.
         </em>
       </p>
 
@@ -32,9 +31,9 @@ export function Body() {
         and being named is almost always missing facts, not a missing marketing budget.
       </p>
 
-      <h2>What people actually ask an assistant about electricians</h2>
+      <h2>What do people actually ask AI about electricians?</h2>
       <p>
-        Almost nobody types &quot;electrician near me&quot; into ChatGPT — that behaviour still goes to Maps.
+        They ask longer, technical questions about the job, such as permits, costs and safety, rather than about a company. Almost nobody types &quot;electrician near me&quot; into ChatGPT — that behaviour still goes to Maps.
         Assistant queries about electrical work are longer, more technical, and usually start as a question about
         the job rather than about a company:
       </p>
@@ -55,9 +54,9 @@ export function Body() {
         question arrives.
       </p>
 
-      <h2>Why electrical is different from the other trades</h2>
+      <h2>Why is electrical work different from other trades for AI?</h2>
       <p>
-        We look at a lot of local-services scans. Electricians behave unlike plumbers or roofers in three ways
+        Safety framing makes models cautious, licensing is jurisdictional and checkable, and the category is splitting fast. We look at a lot of local-services scans. Electricians behave unlike plumbers or roofers in three ways
         that change the work:
       </p>
       <ol>
@@ -82,9 +81,9 @@ export function Body() {
         </li>
       </ol>
 
-      <h2>What an AI engine can actually read about your company</h2>
+      <h2>What can an AI engine actually read about your electrical company?</h2>
       <p>
-        When an assistant answers &quot;who should I call for X in Y,&quot; it is not consulting a directory of
+        It reads your pages&apos; raw HTML, your Google Business Profile, directories and licence registries, review text, and local mentions. When an assistant answers &quot;who should I call for X in Y,&quot; it is not consulting a directory of
         electricians. It runs a retrieval step, gets back a candidate set of URLs, fetches some of them, and writes
         an answer from the text it extracted. Your inputs to that process are narrower than most contractors
         assume:
@@ -121,7 +120,10 @@ export function Body() {
         actually survives extraction.
       </p>
 
-      <h2>The five facts that decide whether you make the shortlist</h2>
+      <h2>Which facts decide whether an electrician makes the AI shortlist?</h2>
+      <p>
+        Five facts decide it: your licence details in text, named services, how you handle permits and inspections, real price ranges, and coverage by place name and hour.
+      </p>
 
       <h3>1. Licence number, jurisdiction and entity name — in text</h3>
       <p>
@@ -176,9 +178,9 @@ export function Body() {
         botched is a win, and accuracy is what keeps you in the answers you do want.
       </p>
 
-      <h2>A concrete example of the rewrite</h2>
+      <h2>What does a better electrician web page look like?</h2>
       <p>
-        Before, from a real page shape we see constantly:
+        A better page puts a checkable fact in every sentence, such as licence, service area and specialties, instead of generic claims. Before, from a real page shape we see constantly:
       </p>
       <p>
         <em>
@@ -206,7 +208,7 @@ export function Body() {
         <Link href="/blog/how-to-write-content-ai-quotes">how to write content AI engines will quote</Link>.
       </p>
 
-      <h2>Schema and technical work that pays off here</h2>
+      <h2>What schema and technical work helps electricians?</h2>
       <p>
         Mark your business up as <code>Electrician</code> (a defined subtype of{" "}
         <code>LocalBusiness</code> in the schema.org vocabulary) rather than generic{" "}
@@ -231,9 +233,9 @@ export function Body() {
         setting, not a content problem, and it is more common on contractor sites than anyone expects.
       </p>
 
-      <h2>Reviews: ask for the specific, not the sentiment</h2>
+      <h2>How should electricians ask for reviews?</h2>
       <p>
-        Review text is third-party corroboration of your claims, which is exactly what a cautious model wants for a
+        Ask customers to mention what you did, such as the specific job and the permit, rather than just asking for a review. Review text is third-party corroboration of your claims, which is exactly what a cautious model wants for a
         safety-critical trade. The ask matters. &quot;Please leave us a review&quot; produces &quot;great
         service!&quot; — which is worth nothing to retrieval. Instead, after the job: &quot;If you have a minute,
         it really helps if you mention what we did — the panel upgrade and the permit — and that we finished in a
@@ -243,7 +245,10 @@ export function Body() {
         <Link href="/blog/google-reviews-ai-visibility">why Google reviews now decide your AI visibility</Link>.
       </p>
 
-      <h2>Questions we get asked</h2>
+      <h2>What else do electricians ask about AI visibility?</h2>
+      <p>
+        The common questions cover blogging as a one-truck electrician, directories like Angi and Thumbtack, timelines, and guarantees.
+      </p>
 
       <h3>Should I write a blog if I am a one-truck electrician?</h3>
       <p>
@@ -277,7 +282,7 @@ export function Body() {
         nothing.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>Why are electricians well placed to win AI recommendations?</h2>
       <p>
         Electrical contractors are unusually well placed to win AI recommendations, because the category rewards
         exactly what models want: verifiable licensing, precise technical vocabulary, and clear answers to
@@ -287,7 +292,10 @@ export function Body() {
         checkable answer in a category full of vague ones.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to publish your licence number, name services the way codes and customers do, explain who pulls the permit, give real price ranges and list your coverage, so you become the checkable answer.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

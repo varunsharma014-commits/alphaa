@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <em>By the alphaa team — we run AI-visibility scans across thousands of local businesses, including
-        aesthetic and medical practices, and watch which signals actually move an AI to name one over another.</em>
+        <em>By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.</em>
       </p>
 
       <p>
@@ -29,11 +28,11 @@ export function Body() {
         spa the easiest one for a machine to find, trust, and quote.
       </p>
 
-      <h2>How AI picks a med spa to recommend</h2>
+      <h2>How does AI pick a med spa to recommend?</h2>
       <p>
         When someone types &quot;best med spa near me for Botox&quot; or &quot;where to get laser hair removal in
-        [city]&quot; into an AI assistant, it doesn&apos;t recall a favorite from memory. It retrieves live signals
-        and summarizes them. For a med spa, the signals that carry the most weight are:
+        [city]&quot; into an AI assistant, it retrieves live signals and summarizes them rather than recalling a
+        favorite from memory. For a med spa, the signals that carry the most weight are:
       </p>
       <ul>
         <li>
@@ -59,7 +58,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Why med spas are a special case: health, money, and caution</h2>
+      <h2>Why are med spas a special case for AI recommendations?</h2>
       <p>
         Aesthetic medicine sits squarely in what AI models treat as sensitive territory — it touches both health
         and money, the two subjects models are trained to handle carefully. In practice that means AI assistants
@@ -79,7 +78,11 @@ export function Body() {
         and visibility — they point the same direction.
       </p>
 
-      <h2>The practical playbook for a med spa</h2>
+      <h2>What should a med spa do to get recommended by AI?</h2>
+      <p>
+        Perfect your Google Business Profile, build genuine reviews that describe specific treatments, make every
+        listing say the same thing, write treatment-question pages, and earn credible third-party mentions.
+      </p>
       <h3>1. Perfect your Google Business Profile</h3>
       <p>
         Choose &quot;Medical Spa&quot; as your primary category and add accurate secondary categories for the
@@ -119,9 +122,10 @@ export function Body() {
         consistency beat volume here.
       </p>
 
-      <h2>A worked example</h2>
+      <h2>What does a med spa that AI recommends look like?</h2>
       <p>
-        Picture two med spas in the same suburb. Spa A has a Google profile categorized simply as &quot;Spa,&quot;
+        It is the one with a correct category, named and credentialed injectors, specific recent reviews and a
+        treatment page for each service. Picture two med spas in the same suburb. Spa A has a Google profile categorized simply as &quot;Spa,&quot;
         twelve reviews with generic five-star text, and a website that says &quot;luxury aesthetics, unbeatable
         results.&quot; Spa B is categorized as &quot;Medical Spa,&quot; lists its injectors by name and credential,
         has ninety recent reviews that mention Botox, filler, and morpheus8 by name, and has a treatment page for
@@ -131,7 +135,11 @@ export function Body() {
         to work from. That is the entire game.
       </p>
 
-      <h2>Common questions med spa owners ask</h2>
+      <h2>What do med spa owners commonly ask about AI recommendations?</h2>
+      <p>
+        They ask whether they can pay to appear in AI answers, whether before-and-after photos help, and how long
+        this takes.
+      </p>
       <p>
         <strong>Can I pay to appear in ChatGPT or Google AI Overviews?</strong> No. There is no paid slot and no
         API that inserts a business into an AI answer. Any vendor claiming a backdoor is selling hype.
@@ -147,9 +155,9 @@ export function Body() {
         promising a fast, guaranteed result is guessing.
       </p>
 
-      <h2>What no med spa marketing vendor can do</h2>
+      <h2>Can a marketing vendor guarantee AI will recommend my med spa?</h2>
       <p>
-        Be skeptical of anyone selling AI visibility to aesthetic practices with guarantees. No one can pay to
+        No, so be skeptical of anyone selling AI visibility to aesthetic practices with guarantees. No one can pay to
         insert your spa into ChatGPT or Google AI Overviews, edit what a model &quot;knows,&quot; or promise you
         the top spot. Results vary by phrasing, location, and time — the same query can name different med spas on
         different days. This honesty isn&apos;t a weakness of the approach; it is the whole truth of how AI search
@@ -162,7 +170,7 @@ export function Body() {
         mechanism is identical for a med spa: influence the inputs, honestly, and the odds move in your favor.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do med spas get recommended by AI?</h2>
       <p>
         Med spas get recommended by AI the same way they earn word-of-mouth in the real world — by being genuinely
         good and easy to verify. A complete, correctly categorized Google Business Profile, authentic reviews that
@@ -174,7 +182,12 @@ export function Body() {
         <em>Last updated July 20, 2026.</em>
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI names the med spas it can verify, so give it a correctly categorized
+        profile, credentialed injectors, reviews that name treatments, consistent listings and honest treatment
+        pages instead of superlatives or paid-placement promises.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and read the raw engine
-          responses, including the ones where a competitor&apos;s price gets quoted instead of our customer&apos;s.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
           Last updated 8 August 2026.
         </em>
       </p>
@@ -32,9 +31,9 @@ export function Body() {
         the <em>structure</em> of your pricing rather than a figure.
       </p>
 
-      <h2>Why price is the question AI gets asked most</h2>
+      <h2>Why do customers ask AI about price so often?</h2>
       <p>
-        Buyers do not ask assistants &quot;who is the best roofer.&quot; They ask &quot;how much does it cost to
+        Cost is the constraint that makes the rest of the search real, so it comes up early and constantly. Buyers do not ask assistants &quot;who is the best roofer.&quot; They ask &quot;how much does it cost to
         replace a roof in Tampa,&quot; &quot;what do bookkeepers charge for a small business,&quot; &quot;is
         $4,000 reasonable for Invisalign.&quot; Cost is the constraint that makes the rest of the search real,
         so it shows up early and it shows up constantly.
@@ -48,11 +47,11 @@ export function Body() {
         <Link href="/blog/is-aeo-real">is AEO real</Link>.
       </p>
 
-      <h2>What actually happens when you publish nothing</h2>
+      <h2>What does AI say about my prices if I publish none?</h2>
       <p>
-        Run the experiment yourself — it takes two minutes and it is more convincing than any argument here. Ask
+        It quotes a competitor, substitutes a national average, or describes you as opaque. Run the experiment yourself — it takes two minutes and it is more convincing than any argument here. Ask
         ChatGPT, Gemini and Perplexity what your service costs in your city, phrased the way a customer would.
-        In our scans, the pattern is consistent enough to predict:
+        The pattern is consistent enough to predict:
       </p>
       <ul>
         <li>
@@ -74,9 +73,9 @@ export function Body() {
         to do — answer from available evidence — with your evidence missing.
       </p>
 
-      <h2>What a quotable pricing page looks like</h2>
+      <h2>What does a pricing page AI can quote look like?</h2>
       <p>
-        &quot;Quotable&quot; is the operative word. A model lifting an answer needs a self-contained sentence
+        A quotable pricing page gives a self-contained sentence with a unit, scope, qualifier, location and date. &quot;Quotable&quot; is the operative word. A model lifting an answer needs a self-contained sentence
         that survives being pulled out of its page. Compare:
       </p>
       <ul>
@@ -132,9 +131,9 @@ export function Body() {
         a shortcut. Our <Link href="/blog/schema-markup-for-ai-search">schema guide</Link> covers the setup.
       </p>
 
-      <h2>When your work really is bespoke</h2>
+      <h2>What should I publish if my work is bespoke?</h2>
       <p>
-        Plenty of businesses cannot post a single number honestly — a litigation practice, a custom fabricator,
+        Publish the structure of your pricing: the model, the floor, the drivers and a worked example. Plenty of businesses cannot post a single number honestly — a litigation practice, a custom fabricator,
         an agency scoping six-month engagements. Publishing a fake-precise figure there would be worse than
         silence. But &quot;no fixed price&quot; is not the same as &quot;no information,&quot; and the
         information is what gets retrieved. Publish the structure instead:
@@ -159,7 +158,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>The honest caveats</h2>
+      <h2>Does publishing prices guarantee AI will recommend me?</h2>
       <p>
         Publishing a price does not guarantee you get recommended, and nobody can promise that it will —
         assistants weigh many signals, answers vary between engines and between runs of the same engine, and
@@ -170,7 +169,10 @@ export function Body() {
         change it on the page the same week.
       </p>
 
-      <h2>A 30-minute version you can do today</h2>
+      <h2>How can I fix my pricing for AI in 30 minutes?</h2>
+      <p>
+        Check what assistants say your service costs, then publish one quotable paragraph per core service as HTML text and re-check in a few weeks.
+      </p>
       <ol>
         <li>Ask three assistants what your main service costs in your city. Save the answers.</li>
         <li>
@@ -184,14 +186,18 @@ export function Body() {
         <li>Re-run the three questions in three to four weeks and compare.</li>
       </ol>
 
-      <h2>The bottom line</h2>
+      <h2>So should I publish my prices for AI search?</h2>
       <p>
         The cost question gets answered with or without you. Publishing a specific, qualified, dated range is
         how you make sure the answer is yours rather than a stranger&apos;s guess — and it is one of the few AEO
         moves that also does obvious work for the human reading the page.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to publish a specific, qualified, dated price range as real HTML text, or the structure of your
+        pricing if your work is bespoke, so the cost answer AI gives is yours.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and read the citation
-          lists that come back. Last updated 22 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 22 August 2026.
         </em>
       </p>
 
@@ -30,9 +29,9 @@ export function Body() {
         want to be the answer to.
       </p>
 
-      <h2>Why &quot;which sources get cited most&quot; is the wrong question</h2>
+      <h2>Is there one list of sources AI engines cite most?</h2>
       <p>
-        Published studies of citation share exist, and they disagree with each other — because they sample
+        No: citation share depends on the query sample, so no general ranking fits your category. Published studies of citation share exist, and they disagree with each other — because they sample
         different queries. A study built on B2B software questions will find review platforms and comparison sites
         everywhere. One built on medical questions will find institutional and government sources. One built on
         local service queries will find maps, directories and forums. All three are correct about their sample and
@@ -44,7 +43,10 @@ export function Body() {
         Understand the roles, then measure your own category — the twenty-minute method is at the end of this post.
       </p>
 
-      <h2>The seven source categories and what each one is used for</h2>
+      <h2>What types of sources do AI engines cite, and why?</h2>
+      <p>
+        AI engines cite seven source types, each for a different job: your website, review and map platforms, directories, forums, press, reference sites and roundups.
+      </p>
 
       <h3>1. Your own website — the source of facts about you</h3>
       <p>
@@ -120,9 +122,9 @@ export function Body() {
         <Link href="/blog/get-into-ai-best-of-lists">how to get into AI best-of lists</Link>.
       </p>
 
-      <h2>The pattern: your site states, everything else confirms</h2>
+      <h2>Why isn&apos;t my own website enough to get cited by AI?</h2>
       <p>
-        Six of those seven categories are things you do not own. That is the structural fact of AEO and the reason
+        Your site states the facts, but everything else confirms them, and six of the seven source types are ones you do not own. Six of those seven categories are things you do not own. That is the structural fact of AEO and the reason
         it is not just content marketing. An engine composing an answer is doing something closer to fact-checking
         than to ranking: it retrieves candidate passages, and claims supported from several independent directions
         survive while unsupported ones get hedged or dropped.
@@ -135,8 +137,8 @@ export function Body() {
         <Link href="/blog/why-ai-recommends-your-competitor">why AI recommends your competitor</Link>.
       </p>
 
-      <h2>Measure your own category in twenty minutes</h2>
-      <p>Do not take anyone&apos;s citation-share chart, including a chart you might build from this post. Build yours:</p>
+      <h2>How can I find which sources AI cites in my category?</h2>
+      <p>Ask ten real customer questions in engines that show sources, log every cited domain, and count by category. Do not take anyone&apos;s citation-share chart, including a chart you might build from this post. Build yours:</p>
       <ol>
         <li>
           <strong>Write down ten real questions.</strong> The ones customers actually ask, phrased the way they
@@ -170,10 +172,10 @@ export function Body() {
       <p>
         Twenty minutes of this beats any general study, because it is your queries, your competitors and your
         market. If you would rather not do it by hand for every engine, that sampling and logging is exactly what
-        an <Link href="/scan">AI visibility scan</Link> automates.
+        an <Link href="/start">AI visibility scan</Link> automates.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do people ask about AI citation sources?</h2>
       <h3>Do AI engines cite the sites that rank highest on Google?</h3>
       <p>
         There is overlap, since several engines lean on a search index for retrieval, but the correlation is loose.
@@ -202,7 +204,7 @@ export function Body() {
         .
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So which sources should I focus on for AI citations?</h2>
       <p>
         There is no universal ranking of the sources AI engines cite, and any single number you are quoted is
         really a statement about someone else&apos;s query sample. What holds everywhere is the division of labour:
@@ -211,7 +213,11 @@ export function Body() {
         and work the gaps in that order.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that your site supplies the facts while independent sources decide whether they are believed, so
+        measure which source types your customers&apos; questions pull from and fill those gaps first.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

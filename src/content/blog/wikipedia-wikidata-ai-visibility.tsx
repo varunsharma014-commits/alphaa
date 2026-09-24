@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and spend a lot of
-          time on why an engine can or cannot identify one. Last updated 3 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 3 August 2026.
         </em>
       </p>
 
@@ -31,9 +30,9 @@ export function Body() {
         corroborated identity — using assets you are actually entitled to control.
       </p>
 
-      <h2>Why these two sources punch above their weight</h2>
+      <h2>Why do Wikipedia and Wikidata matter so much to AI?</h2>
       <p>
-        Wikipedia and Wikidata are sister projects of the Wikimedia Foundation, and they do different jobs.
+        They matter because of their training weight, stable identifiers and wide downstream propagation. Wikipedia and Wikidata are sister projects of the Wikimedia Foundation, and they do different jobs.
         Wikipedia is prose: an encyclopedic article with inline citations to independent sources. Wikidata is a
         structured knowledge base: machine-readable statements about an entity — founding date, headquarters,
         industry, parent company, official website — each with its own identifier and, ideally, its own
@@ -67,9 +66,9 @@ export function Body() {
         .
       </p>
 
-      <h2>The part most articles skip: you probably do not qualify</h2>
+      <h2>Does my business qualify for a Wikipedia page?</h2>
       <p>
-        Wikipedia&apos;s inclusion standard is notability, and for companies it broadly requires significant
+        Probably not: most small and mid-sized businesses do not meet Wikipedia&apos;s notability bar. Wikipedia&apos;s inclusion standard is notability, and for companies it broadly requires significant
         coverage in multiple reliable, independent, secondary sources — meaning substantial journalism or
         published analysis <em>about</em> the company, not press releases, funding announcements, listicles,
         directory entries, or interviews you arranged. Wikipedia also has explicit conflict-of-interest and
@@ -77,8 +76,7 @@ export function Body() {
         must be disclosed.
       </p>
       <p>
-        What actually happens when a business ignores this is predictable, and we have watched it more than
-        once. A page appears. Within days a new-page reviewer tags it for notability. The sources turn out to
+        What typically happens when a business ignores this is predictable. A page appears. Within days a new-page reviewer tags it for notability. The sources turn out to
         be the company&apos;s own blog, a paid placement, and a local roundup. It goes to deletion discussion
         and is removed — and the deletion record itself is public, indexed, and rather less flattering than
         having no page at all. Agencies selling &quot;we&apos;ll get you a Wikipedia page&quot; are usually
@@ -91,9 +89,9 @@ export function Body() {
         is earned upstream, in coverage, not downstream, in editing.
       </p>
 
-      <h2>Wikidata is a different, and much lower, bar</h2>
+      <h2>Can my business get a Wikidata entry instead?</h2>
       <p>
-        Wikidata does not use Wikipedia&apos;s notability standard. Its own criteria are looser: an item may be
+        Often, yes, because Wikidata has a much lower bar than Wikipedia. Wikidata does not use Wikipedia&apos;s notability standard. Its own criteria are looser: an item may be
         created if it refers to a clearly identifiable conceptual or material entity that can be described
         using serious, publicly available references, or if it is needed to structure other data. Plenty of
         organisations exist on Wikidata with no Wikipedia article at all.
@@ -112,9 +110,9 @@ export function Body() {
         not create the reason.
       </p>
 
-      <h2>What to do instead — reproducing the same signals</h2>
+      <h2>How can I get the same AI benefits without Wikipedia?</h2>
       <p>
-        Strip away the brand names and Wikipedia and Wikidata give an AI system four things. Every one has an
+        Use Organization or LocalBusiness schema with sameAs, consistent identifiers, independent third-party description and consistent profiles. Strip away the brand names and Wikipedia and Wikidata give an AI system four things. Every one has an
         accessible substitute.
       </p>
       <table>
@@ -162,8 +160,7 @@ export function Body() {
         <Link href="/blog/schema-markup-for-ai-search">schema markup for AI search</Link>.
       </p>
       <p>
-        And keep the spelling identical everywhere. Fragmented naming is the single most common cause of the
-        wrong-entity problem we see in scans — three variants of a company name produce three weak entities
+        And keep the spelling identical everywhere. Fragmented naming is the single most common cause of the wrong-entity problem — three variants of a company name produce three weak entities
         instead of one strong one. If an engine has already blended you with someone else, the repair process
         is in{" "}
         <Link href="/blog/fix-wrong-ai-information-about-your-business">
@@ -172,7 +169,7 @@ export function Body() {
         .
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do people ask about Wikipedia, Wikidata and AI?</h2>
       <h3>Will a Wikipedia page make ChatGPT recommend me?</h3>
       <p>
         On its own, no. It strengthens the model&apos;s baseline knowledge and gives retrieval a high-trust
@@ -196,7 +193,7 @@ export function Body() {
         <Link href="/blog/how-long-does-aeo-take">how long AEO takes</Link>.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So should I pursue Wikipedia or Wikidata for AI visibility?</h2>
       <p>
         Wikipedia and Wikidata matter because they give machines something rare: a structured, corroborated,
         widely copied statement of who an entity is. If you legitimately qualify for Wikipedia, that is a
@@ -206,7 +203,11 @@ export function Body() {
         promising you a deletion discussion.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to pursue Wikipedia only through genuine coverage if you qualify, add a referenced Wikidata item if
+        appropriate, and reproduce the rest with schema, consistent identifiers and independent mentions.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

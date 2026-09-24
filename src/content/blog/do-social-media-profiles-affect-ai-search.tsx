@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses and read what the
-          engines actually cite back. Last updated 17 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 17 August 2026.
         </em>
       </p>
 
@@ -31,8 +30,9 @@ export function Body() {
         followers, because one is machine-readable prose and the other is a number attached to images.
       </p>
 
-      <h2>How an AI engine actually encounters your social profile</h2>
+      <h2>How does an AI engine actually encounter your social profile?</h2>
       <p>
+        An AI engine encounters your profile through live retrieval, training data, or entity resolution.{" "}
         There are three distinct paths, and they behave very differently. Knowing which one you are relying
         on is the whole point.
       </p>
@@ -63,7 +63,11 @@ export function Body() {
         your story views. It has access to text on a public URL.
       </p>
 
-      <h2>Which platforms actually contribute, and why</h2>
+      <h2>Which social platforms actually help your AI visibility?</h2>
+      <p>
+        LinkedIn and Facebook business pages contribute most, YouTube moderately to highly, and Instagram,
+        TikTok, and X contribute little.
+      </p>
       <table>
         <thead>
           <tr>
@@ -122,8 +126,10 @@ export function Body() {
         <strong>public, textual, factual</strong> content at a stable URL. That is the only currency here.
       </p>
 
-      <h2>The image problem, stated plainly</h2>
+      <h2>Can AI engines read the images you post on social media?</h2>
       <p>
+        For retrieval purposes, a photo of your price list is a blank space, because AI engines work primarily
+        from text.{" "}
         Most social content is a picture with words baked into the pixels: a price list graphic, a
         before-and-after, a carousel of service details, an event flyer. AI engines that crawl the web work
         primarily from text — HTML, alt attributes, captions. A photo of your price list is, for retrieval
@@ -132,12 +138,14 @@ export function Body() {
       </p>
       <p>
         The practical consequence: a business can be extremely active on social and still be invisible to
-        assistants. We see this constantly in scans — a studio posting daily to Instagram, zero engine
+        assistants. It is a common pattern — a studio posting daily to Instagram, zero engine
         mentions, because every fact about the business exists only inside a JPEG.
       </p>
 
-      <h2>What to do: a 30-minute pass over your profiles</h2>
+      <h2>How do you optimise your social profiles for AI in 30 minutes?</h2>
       <p>
+        Fix your name and NAP, rewrite bios as factual sentences, link back to your site, add the profiles to
+        your schema, and put facts in captions.{" "}
         This is the actual workflow. It is boring, it is one-time, and it moves more than a month of posting.
       </p>
       <ol>
@@ -196,7 +204,11 @@ export function Body() {
 }`}</code>
       </pre>
 
-      <h2>What social media does <em>not</em> do</h2>
+      <h2>What does social media <em>not</em> do for AI visibility?</h2>
+      <p>
+        Follower counts, posting frequency, and bought engagement do not improve AI visibility, and a strong
+        social presence will not rescue a thin website.
+      </p>
       <ul>
         <li>
           <strong>Follower count is not a ranking factor.</strong> No AI assistant queries your follower
@@ -219,7 +231,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Questions people actually ask</h2>
+      <h2>What else do people ask about social media and AI search?</h2>
       <h3>Does having no social media hurt my AI visibility?</h3>
       <p>
         Mildly, and only through the entity-confirmation path. A business with a strong site, a complete
@@ -248,8 +260,9 @@ export function Body() {
         If you have dead accounts, either update them or delete them.
       </p>
 
-      <h2>The honest limits</h2>
+      <h2>How much weight do AI engines give your social profiles?</h2>
       <p>
+        Nobody knows exactly: the weights are undisclosed, vary by engine, and change as models update.{" "}
         We can tell you which surfaces are readable and which are not, because that is observable. What
         nobody can tell you — including us — is exactly how much weight any engine assigns to a LinkedIn page
         versus a directory listing versus a review. Those weights are undisclosed, vary by engine, and change
@@ -259,7 +272,7 @@ export function Body() {
         a number attached to it.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>What&apos;s the bottom line on social media profiles for AI search?</h2>
       <p>
         Treat your social profiles as <strong>identity documents, not megaphones</strong>. Their job in AI
         search is to say the same true things about your business that your website and your Google listing
@@ -268,7 +281,12 @@ export function Body() {
         posting for your customers — just stop expecting the algorithm behind ChatGPT to be watching.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to treat social profiles as identity documents: make them state the same true
+        facts as your website and Google listing, in public text, on the platforms that publish readable prose.
+      </p>
+
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

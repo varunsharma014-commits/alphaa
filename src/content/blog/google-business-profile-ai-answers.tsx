@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of local businesses and manage
-          Google Business Profiles as part of the product. Last updated 5 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 5 August 2026.
         </em>
       </p>
 
@@ -30,9 +29,9 @@ export function Body() {
         crawlable pages say about you. That is the mechanism.
       </p>
 
-      <h2>How the data actually travels</h2>
+      <h2>How does Google Business Profile data reach AI answers?</h2>
       <p>
-        It helps to be precise here, because the popular version of this claim is wrong in a way that leads to
+        It travels by copying: Google renders your profile publicly, aggregators and directories copy it, and AI engines retrieve those copies and synthesise what they read. It helps to be precise here, because the popular version of this claim is wrong in a way that leads to
         wasted effort. Here is the real chain, in order:
       </p>
       <ol>
@@ -75,9 +74,9 @@ export function Body() {
         any shorter path as a bonus.
       </p>
 
-      <h2>The fields that actually move the needle</h2>
+      <h2>Which Google Business Profile fields matter most for AI answers?</h2>
       <p>
-        Not all of GBP matters equally for AI answers. Ranked by how often we see each one change a scan
+        Primary category matters most, followed by your exact business name and your services list. Not all of GBP matters equally for AI answers. Ranked by how often we see each one change a scan
         result:
       </p>
       <table>
@@ -150,7 +149,10 @@ export function Body() {
         </tbody>
       </table>
 
-      <h2>The three gaps we find in almost every audit</h2>
+      <h2>What Google Business Profile gaps hurt AI visibility most?</h2>
+      <p>
+        Three gaps show up in almost every audit: an empty or hostile Q&amp;A section, services left as a category default, and details that contradict the website.
+      </p>
       <h3>1. An empty or hostile Q&amp;A section</h3>
       <p>
         GBP lets anyone ask a public question about your business, and lets anyone answer — including
@@ -185,7 +187,10 @@ export function Body() {
         agrees too — see <Link href="/blog/schema-markup-for-ai-search">schema markup for AI search</Link>.
       </p>
 
-      <h2>A 45-minute GBP pass, in order</h2>
+      <h2>How do you optimise your Google Business Profile in 45 minutes?</h2>
+      <p>
+        Work in order: verify the category, fix the name, fill services and attributes, rewrite the description, clean the Q&amp;A, reconcile with your website, set holiday hours, then re-scan in four to six weeks.
+      </p>
       <ol>
         <li>
           <strong>Verify the primary category</strong> against how customers describe you, not how your
@@ -230,9 +235,9 @@ export function Body() {
         .
       </p>
 
-      <h2>What GBP will not do</h2>
+      <h2>What won&apos;t a Google Business Profile do for you?</h2>
       <p>
-        Being honest about the ceiling saves you from over-investing. A complete profile makes you an accurate,
+        It will not make you the recommended business on its own, create authority, fix a site engines cannot read, or produce identical answers every time. Being honest about the ceiling saves you from over-investing. A complete profile makes you an accurate,
         findable candidate. It does not make you the recommended one.
       </p>
       <ul>
@@ -261,7 +266,10 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Common questions</h2>
+      <h2>What else do owners ask about Google Business Profile and AI?</h2>
+      <p>
+        The common questions cover GBP posts, how long changes take to show up, businesses with no physical location, and wrong information posted by others.
+      </p>
       <h3>Do GBP posts help my AI visibility?</h3>
       <p>
         Modestly, and mostly indirectly. Posts are indexed content attached to a high-authority profile, which
@@ -296,7 +304,7 @@ export function Body() {
         .
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>Does your Google Business Profile feed ChatGPT directly?</h2>
       <p>
         Your Google Business Profile is not wired into ChatGPT, and it does not need to be. It is the master
         copy of your business facts, and copies of it are exactly what AI assistants read when they answer
@@ -306,7 +314,10 @@ export function Body() {
         contradiction that started here.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that your Google Business Profile is the master copy AI engines read through its public copies, so get the category, services, attributes and Q&amp;A right and make every detail match your website.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

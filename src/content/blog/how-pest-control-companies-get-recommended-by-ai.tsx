@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, pest control operators
-          among them. Last updated 23 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 23 August 2026.
         </em>
       </p>
 
@@ -32,9 +31,9 @@ export function Body() {
         &quot;residential and commercial pest solutions.&quot;
       </p>
 
-      <h2>What a homeowner actually asks an assistant</h2>
+      <h2>What do homeowners actually ask AI about pest control?</h2>
       <p>
-        People in a pest emergency are frightened, specific, and typing fast. The questions we see brought to
+        Homeowners in a pest emergency ask frightened, specific questions, and they type fast. The questions we see brought to
         ChatGPT, Gemini and Perplexity look like this:
       </p>
       <ul>
@@ -52,9 +51,9 @@ export function Body() {
         of them — it is a slogan, not an answer.
       </p>
 
-      <h2>Build a page per pest, not per service</h2>
+      <h2>Should a pest control website have a page per pest?</h2>
       <p>
-        This is the single highest-return change, and it is the one we see skipped most often. One
+        Yes: this is the single highest-return change, and it is the one we see skipped most often. One
         &quot;Services&quot; page with twelve bullet points is one weak document competing for twelve different
         questions. Replace it with a real page — 400 to 700 words is plenty — for every pest you actually want
         the phone to ring about. In practice that is usually eight to twelve pages:
@@ -76,7 +75,7 @@ export function Body() {
         <Link href="/blog/pricing-pages-ai-recommendations">why hiding your pricing hurts AI recommendations</Link>.
       </p>
 
-      <h2>Publish the credentials — they are retrievable trust signals</h2>
+      <h2>Why should pest control companies publish their credentials?</h2>
       <p>
         Pest control is a licensed trade, and licensing is exactly the kind of independently verifiable fact AI
         systems weight heavily when deciding whether to name a business. Put it in text, not in a logo image:
@@ -101,9 +100,9 @@ export function Body() {
         <Link href="/blog/eeat-author-bios-ai-search">E-E-A-T for AI search</Link>.
       </p>
 
-      <h2>The termite letter: the referral channel nobody publishes</h2>
+      <h2>Should pest control companies publish a termite letter page?</h2>
       <p>
-        Wood-destroying organism inspections for real estate closings are a steady, high-margin, deadline-driven
+        Yes, if you do these inspections: wood-destroying organism inspections for real estate closings are a steady, high-margin, deadline-driven
         service — and they generate a question type assistants get asked constantly by buyers, sellers and agents.
         Almost no pest control site has a page for it. If you do these inspections, publish a page that states
         plainly: which counties you cover, your typical turnaround in business days, the report form you issue
@@ -112,8 +111,9 @@ export function Body() {
         asks &quot;who does fast termite letters in [county]&quot; is worth more than most ad spend.
       </p>
 
-      <h2>Answer the safety question directly</h2>
+      <h2>How should pest control companies answer the safety question?</h2>
       <p>
+        Answer it directly with specific, honest text about products, re-entry times and reduced-risk options.
         Every parent and pet owner asks some version of &quot;is this safe around my kids and dog?&quot; Vague
         reassurance (&quot;we use family-friendly products&quot;) is unretrievable. Specific, honest text is:
         which product classes you use for which pest, how long people and pets should stay off treated surfaces,
@@ -122,8 +122,9 @@ export function Body() {
         products with real re-entry intervals, and saying so builds more trust than pretending otherwise.
       </p>
 
-      <h2>Make your service area and response time machine-readable</h2>
+      <h2>How do you make service area and response time machine-readable?</h2>
       <p>
+        List the towns, suburbs and ZIP codes you service in text, and state your real response commitment.
         &quot;Serving the greater [metro] area&quot; tells an assistant nothing. List the towns, suburbs and ZIP
         codes you actually service, in text, on a page. If you have branches, give each one its own page with its
         own address, phone number and technician roster — the reasoning is in{" "}
@@ -135,9 +136,9 @@ export function Body() {
         reviews will contradict you, and contradiction is what costs you the recommendation.
       </p>
 
-      <h2>Reviews and listings are the corroboration layer</h2>
+      <h2>How do reviews and listings affect pest control recommendations?</h2>
       <p>
-        Your website is where an engine learns what you claim. Reviews and listings are where it checks. Two
+        Reviews and listings are where an engine checks what your website claims. Two
         things matter most: that your name, address and phone number are identical everywhere (see{" "}
         <Link href="/blog/directory-listings-nap-citations-ai-search">directory listings and NAP citations</Link>
         ), and that review text mentions specific pests and outcomes. A five-star review saying &quot;great
@@ -148,7 +149,11 @@ export function Body() {
         <Link href="/blog/google-reviews-ai-visibility">how Google reviews decide your AI visibility</Link>.
       </p>
 
-      <h2>A realistic build order</h2>
+      <h2>In what order should a pest control company do this work?</h2>
+      <p>
+        Fix the entity basics first, then write your top four pest pages, add credentials, publish service area
+        and response time, add the termite-letter page, and update your review request.
+      </p>
       <ol>
         <li>Fix the entity basics: identical name, address, phone and hours on your site, Google Business Profile, Apple Maps, Bing Places and the big directories.</li>
         <li>Write your top four pest pages first — whichever four actually pay your bills.</li>
@@ -159,7 +164,11 @@ export function Body() {
         <li>Finish the remaining pest pages over the following month.</li>
       </ol>
 
-      <h2>Questions pest control operators ask us</h2>
+      <h2>What do pest control operators commonly ask about AI?</h2>
+      <p>
+        Operators ask whether they need schema markup, whether this gets them to the top of ChatGPT, how long it
+        takes, and whether a small operation should bother.
+      </p>
       <h3>Do I need schema markup for this?</h3>
       <p>
         It helps and it is cheap, but it is not the first move. Structured data makes facts unambiguous; it cannot
@@ -190,7 +199,7 @@ export function Body() {
         crawlspace job produces more specific text than any template.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do pest control companies get recommended by AI?</h2>
       <p>
         Pest control companies get recommended by AI when they stop selling &quot;pest solutions&quot; and start
         publishing pest-by-pest answers: this species, this treatment, this many visits, this safety profile,
@@ -199,7 +208,11 @@ export function Body() {
         and reviews say the same thing — is the whole job.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to publish pest-by-pest answers — species, treatment, visits, safety, price range,
+        licence and towns — on crawlable pages, and make sure your listings and reviews say the same thing.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

@@ -15,8 +15,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        By the alphaa team — we run AI-visibility scans across thousands of local businesses, agents and brokers
-        included.
+        By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
         <strong>Short answer:</strong> Real estate agents get recommended by AI assistants when the public
@@ -28,11 +27,11 @@ export function Body() {
         your business the easiest one for a machine to find and quote.
       </p>
 
-      <h2>How AI decides which agent to recommend</h2>
+      <h2>How does AI decide which real estate agent to recommend?</h2>
       <p>
         When someone asks &quot;who&apos;s a good real estate agent in [city]?&quot; or &quot;best realtor for
-        first-time buyers near me,&quot; the assistant doesn&apos;t recall a favorite. It retrieves live signals
-        and synthesizes an answer. For a real estate agent, the signals that carry the most weight are:
+        first-time buyers near me,&quot; the assistant retrieves live signals and synthesizes an answer
+        rather than recalling a favorite. For a real estate agent, the signals that carry the most weight are:
       </p>
       <ul>
         <li>
@@ -58,7 +57,7 @@ export function Body() {
         </li>
       </ul>
 
-      <h2>Why real estate is a trust-sensitive category</h2>
+      <h2>Why is real estate a trust-sensitive category for AI?</h2>
       <p>
         A home is the biggest transaction most people ever make, and AI models are noticeably more cautious with
         money and high-stakes decisions. They lean harder on verifiable, professional signals and shy away from
@@ -70,7 +69,11 @@ export function Body() {
         &quot;certified relocation specialist&quot;) are far more quotable than superlatives.
       </p>
 
-      <h2>The practical playbook for a real estate agent</h2>
+      <h2>What should a real estate agent do to get recommended by AI?</h2>
+      <p>
+        Get reviews that describe the work, perfect your Google Business Profile and portal listings, make every
+        profile say the same thing, publish neighborhood pages, and earn credible third-party mentions.
+      </p>
       <h3>1. Make your reviews describe the work, not just the rating</h3>
       <p>
         Ask every satisfied client for a review at closing, and make it one tap with a direct link. Never buy,
@@ -114,9 +117,9 @@ export function Body() {
         consistency beat volume here.
       </p>
 
-      <h2>What no real estate marketing vendor can do</h2>
+      <h2>Can a marketing vendor guarantee AI will recommend me?</h2>
       <p>
-        Be skeptical of anyone selling AI visibility to agents with guarantees. No one can pay to insert you into
+        No, so be skeptical of anyone selling AI visibility to agents with guarantees. No one can pay to insert you into
         ChatGPT or Google&apos;s AI Overviews, edit what a model &quot;knows,&quot; or promise you the top spot.
         Results vary by phrasing, location, and time — the same query can name different agents on different
         days. That honesty isn&apos;t a weakness of the approach; it is the whole picture of how AI search works.
@@ -129,16 +132,20 @@ export function Body() {
         favor.
       </p>
 
-      <h2>A realistic timeline</h2>
+      <h2>How long does it take an agent to get recommended by AI?</h2>
       <p>
-        None of this is instant. Profile and listing fixes can register within weeks. A stronger review profile
+        It is not instant: profile and listing fixes can register within weeks. A stronger review profile
         builds over months as new closings turn into new reviews. Neighborhood content and third-party mentions
         compound over a quarter or more. Anyone quoting a precise, fast, guaranteed result is guessing. The
         honest promise is direction, not a date: do the work consistently and you steadily become the agent AI
         is best equipped to recommend.
       </p>
 
-      <h2>Common questions</h2>
+      <h2>What else do agents ask about AI recommendations?</h2>
+      <p>
+        Agents commonly ask whether Zillow reviews matter, whether new licensees can show up, and whether paid
+        &quot;featured agent&quot; slots help.
+      </p>
       <h3>Do Zillow reviews affect what ChatGPT says about me?</h3>
       <p>
         They can. AI assistants retrieve from the public web, and Zillow agent profiles and reviews are widely
@@ -159,7 +166,7 @@ export function Body() {
         consistent profiles — not ad spend. Invest in the signals AI actually reads.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>So how do real estate agents get recommended by AI?</h2>
       <p>
         Agents get recommended by AI the same way they earn referrals in the real world — by being genuinely good
         and being easy to verify. Reviews that describe your wins, a public track record of closings, consistent
@@ -168,7 +175,12 @@ export function Body() {
         your business the easiest one to find.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is that AI recommends agents it can verify, so collect reviews that describe your wins,
+        keep every portal profile consistent, publish clear neighborhood pages, and skip anyone promising
+        guaranteed placement.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

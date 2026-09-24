@@ -16,8 +16,7 @@ export function Body() {
     <div className="article-prose">
       <p>
         <em>
-          By the alphaa team — we run AI-visibility scans across thousands of businesses, franchise and
-          independent car dealerships among them. Last updated 25 August 2026.
+          By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Last updated 25 August 2026.
         </em>
       </p>
 
@@ -31,9 +30,9 @@ export function Body() {
         crawlability problem and you are ahead of most of your market, because your competitors have not.
       </p>
 
-      <h2>What car buyers actually ask an assistant</h2>
+      <h2>What do car buyers actually ask AI assistants?</h2>
       <p>
-        Buyers no longer start on your website. They start with a question they would have been embarrassed to
+        They ask detailed questions in full sentences about out-the-door prices, credit, budget, fees and specific inventory. Buyers no longer start on your website. They start with a question they would have been embarrassed to
         ask a salesperson, and they ask it in full sentences:
       </p>
       <ul>
@@ -51,9 +50,9 @@ export function Body() {
         a category this crowded, an unmatched dealer is simply not mentioned.
       </p>
 
-      <h2>The VDP problem: your inventory is invisible</h2>
+      <h2>Why is dealership inventory often invisible to AI?</h2>
       <p>
-        This is the single biggest technical issue in the category. A vehicle detail page (VDP) on a typical
+        Most vehicle detail pages load inventory with JavaScript, so a crawler that does not run it sees an empty container. This is the single biggest technical issue in the category. A vehicle detail page (VDP) on a typical
         dealer platform is generated client-side: the page shell loads, then JavaScript calls an inventory API,
         then the year, make, model, trim, mileage, VIN and price appear in the browser. A human sees a full
         listing. A crawler that does not execute JavaScript sees an empty container.
@@ -84,9 +83,9 @@ export function Body() {
         it is usually a setting nobody has asked them to turn on.
       </p>
 
-      <h2>Add Vehicle and Offer schema — and keep it truthful</h2>
+      <h2>What schema should a car dealership add?</h2>
       <p>
-        Structured data does not make an assistant recommend you, but it does make your facts unambiguous. Two
+        Add Vehicle and Offer schema, plus AutoDealer markup on the homepage, and keep it matching the visible page. Structured data does not make an assistant recommend you, but it does make your facts unambiguous. Two
         types matter here: <code>Vehicle</code> (with <code>vehicleIdentificationNumber</code>,{" "}
         <code>mileageFromOdometer</code>, <code>vehicleTransmission</code>, <code>bodyType</code>,{" "}
         <code>modelDate</code>) and <code>Offer</code> (with <code>price</code>, <code>priceCurrency</code>,{" "}
@@ -101,7 +100,7 @@ export function Body() {
         <Link href="/blog/schema-markup-for-ai-search">schema markup for AI search</Link>.
       </p>
 
-      <h2>Publish the page that decides trust: your fee and pricing policy</h2>
+      <h2>Why should dealers publish a fee and pricing policy page?</h2>
       <p>
         Ask any assistant which dealers are transparent about pricing and watch what it does — it looks for a page
         that says so in words. Almost no dealership has one. Write it, put it at a stable URL, and be specific:
@@ -120,9 +119,9 @@ export function Body() {
         alternative is being unverifiable rather than being cheap.
       </p>
 
-      <h2>Financing pages that answer real credit questions</h2>
+      <h2>What should a dealership financing page say?</h2>
       <p>
-        &quot;Bad credit? No problem!&quot; is unusable to a language model — it contains no fact to match against.
+        It should state real parameters: the score bands your lenders work with, minimum down payment, term lengths and the documents to bring. &quot;Bad credit? No problem!&quot; is unusable to a language model — it contains no fact to match against.
         A credit-challenged buyer&apos;s question has parameters, so your page should too: which score bands your
         lenders work with, minimum down payment, whether you have buy-here-pay-here financing, whether you accept
         ITIN applicants, typical term lengths, and what documents a first-time buyer should bring. Write it as
@@ -130,9 +129,9 @@ export function Body() {
         a credit application form, and publishing a payment calculator instead of an explanation.
       </p>
 
-      <h2>Your service department is a second business — treat it that way</h2>
+      <h2>How can a dealership&apos;s service department win AI visibility?</h2>
       <p>
-        Service queries are high-frequency, local, and far less contested than sales queries. &quot;Who can do a
+        Give service its own crawlable pages stating makes serviced, certifications, loaners, hours and recall work. Service queries are high-frequency, local, and far less contested than sales queries. &quot;Who can do a
         transmission service on a [model] near me,&quot; &quot;which shop is certified for EV high-voltage
         work,&quot; &quot;does anyone near [city] have loaner cars.&quot; Give service its own crawlable pages
         stating the makes you service, whether you service vehicles you did not sell, certifications held (including
@@ -140,9 +139,9 @@ export function Body() {
         warranty work. This is the cheapest visibility in the category.
       </p>
 
-      <h2>The off-site half: where AI checks you</h2>
+      <h2>Where does AI check facts about your dealership?</h2>
       <p>
-        Your website establishes claims; other sources verify them. For dealerships the corroborating set is
+        It checks your Google Business Profile, the major marketplaces, the manufacturer&apos;s dealer locator and your reviews. Your website establishes claims; other sources verify them. For dealerships the corroborating set is
         unusually well-defined:
       </p>
       <ul>
@@ -170,7 +169,10 @@ export function Body() {
         splits one dealership into three weakly-attested entities.
       </p>
 
-      <h2>Questions dealers ask</h2>
+      <h2>What else do dealers ask about AI visibility?</h2>
+      <p>
+        Dealers most often ask whether to publish prices, whether marketplace feeds cover them, and how fast this works.
+      </p>
       <h3>Should we publish prices if our competitors do not?</h3>
       <p>
         For AI visibility, yes — an assistant cannot recommend a price it cannot read, and &quot;call for
@@ -191,7 +193,7 @@ export function Body() {
         <Link href="/blog/why-ai-answers-change-every-time">why AI answers change every time</Link>.
       </p>
 
-      <h2>The bottom line</h2>
+      <h2>Why is dealership AI visibility so winnable?</h2>
       <p>
         Dealership AI visibility is unusually winnable because the category&apos;s biggest problem is technical
         rather than competitive. Make your inventory readable without JavaScript, state your fees in words, answer
@@ -199,7 +201,10 @@ export function Body() {
         everywhere. That is a short list, and most of your market has done none of it.
       </p>
       <p>
-        <Link href="/scan">Run a free AI visibility scan →</Link>
+        The key takeaway is to make your inventory readable without JavaScript, state fees and credit terms in words, give service its own pages, and keep your name and address identical everywhere.
+      </p>
+      <p>
+        <Link href="/start">Run the free AI check →</Link>
       </p>
     </div>
   )

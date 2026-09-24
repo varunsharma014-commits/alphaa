@@ -376,3 +376,14 @@ body {
     text-wrap: balance;
   }
 }
+
+/* ── Blog calls-to-action to the free check (/start) ── */
+.blog-cta-top { display: inline-block; margin: -8px 0 28px; font-size: 15px; color: #0066cc; }
+.blog-cta-top:hover { text-decoration: underline; }
+.blog-cta { margin-top: 56px; padding: 40px 36px; border-radius: 28px; background: #f5f5f7; text-align: center; }
+.blog-cta__eyebrow { font-size: 14px; font-weight: 600; color: #bf4800; margin: 0; }
+.blog-cta__title { font-size: 32px; font-weight: 600; line-height: 1.1; color: #1d1d1f; margin: 8px 0 0; letter-spacing: 0.004em; }
+.blog-cta__text { font-size: 17px; line-height: 1.47; color: #1d1d1f; max-width: 520px; margin: 14px auto 0; }
+.blog-cta__btn { display: inline-block; margin-top: 24px; background: #0071e3; color: #fff; border-radius: 980px; padding: 12px 26px; font-size: 17px; transition: background-color .2s ease; }
+.blog-cta__btn:hover { background: #0077ed; color: #fff; }
+.blog-cta__fine { font-size: 13px; color: #6e6e73; margin: 10px 0 0; }
