@@ -43,7 +43,7 @@ const CANNED: Record<string, string> = {
   "What exactly will you do?":
     "This week: fix everything in the checklist above — llms.txt, the FAQ page, the facts AI couldn’t find. Every week after: ask the four AIs your customers’ questions and tell you what changed, keep your Google listing active, draft replies to reviews, and watch what your competitors publish. Anything public gets a one-tap approve from you first. You never touch code.",
   "Is this real?":
-    "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The money figure is an estimate and I label it as one.",
+    "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
     "$99 a month, month to month. Cancel in two clicks, no contract. An SEO agency charges around $2,000 a month for Google alone — and nothing for AI.",
 }
@@ -412,10 +412,19 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
   // 5. Demand, honestly labelled — the estimate is PEOPLE per month, not money.
   const loss = isRecord(insights?.estimatedMonthlyLoss) ? (insights!.estimatedMonthlyLoss as { low: number; high: number; basis: string }) : null
   if (loss && typeof loss.low === "number" && typeof loss.high === "number" && loss.high > 0 && keyword) {
-    const tail = named === 0 ? "None of them heard your name." : named < checked ? `${checked - named} in ${checked} of those answers didn’t include you.` : "Right now, they hear yours."
+    // Plain sentence, not a giant number: a small figure shown huge reads as
+    // "not worth paying for". Lead with "An estimated", keep the source short.
+    const range = `${loss.low.toLocaleString("en-US")}–${loss.high.toLocaleString("en-US")}`
+    const tail =
+      named === 0
+        ? "Right now, every one of them hears a competitor’s name instead of yours."
+        : named < checked
+          ? `In ${checked - named} of the ${checked} answers I checked, they hear someone else’s name.`
+          : "Right now, they hear yours — my job is to keep it that way as competitors catch up."
     out.push(
       agent([
-        { kind: "stat", value: `${loss.low.toLocaleString("en-US")}–${loss.high.toLocaleString("en-US")}`, label: `people a month ask an AI for “${keyword}”. ${tail} An estimate — ${loss.basis.replace(/^Based on/i, "based on")}` },
+        { kind: "text", text: `An estimated ${range} people a month ask an AI for “${keyword}”. ${tail}` },
+        { kind: "text", text: "Estimate: typical monthly searches for that phrase, times the share now asked to AI assistants instead of Google." },
       ])
     )
   }

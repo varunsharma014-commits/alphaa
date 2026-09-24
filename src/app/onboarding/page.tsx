@@ -263,6 +263,14 @@ export default function OnboardingPage() {
       }
       if (cancelled) return
 
+      // Already set up (e.g. an existing customer who tapped "Start today" on
+      // /start and signed in with Google): go straight on — /dashboard sends
+      // anyone without a subscription to /start-trial (payment).
+      if (profile && (profile as { onboardingCompleted?: boolean }).onboardingCompleted && !justConnected && !oauthError) {
+        window.location.replace("/dashboard")
+        return
+      }
+
       if (profile) {
         const p = profile
         setData((d) => ({
