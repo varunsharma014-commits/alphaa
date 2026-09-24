@@ -19,7 +19,7 @@ export default function LoginPage() {
           card: "shadow-none border border-line/[0.08]",
           headerTitle: "text-fg font-semibold",
           headerSubtitle: "text-muted",
-          formButtonPrimary: "bg-brand-orange hover:bg-brand-orange-light rounded-full shadow-glow",
+          formButtonPrimary: "bg-[#0071e3] hover:bg-[#0077ed] rounded-full shadow-none font-normal text-[15px]",
           footerActionLink: "text-brand-orange hover:text-brand-orange-light",
           formFieldInput: "border-line/10",
           socialButtonsBlockButton: "bg-white hover:bg-gray-100 text-gray-900 border border-gray-200 rounded-full font-medium",

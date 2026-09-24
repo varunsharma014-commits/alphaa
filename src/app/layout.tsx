@@ -1,41 +1,11 @@
 import type { Metadata } from "next"
 import Script from "next/script"
-import { Inter_Tight, Instrument_Serif, Geist_Mono } from "next/font/google"
 import { Toaster } from "sonner"
 import "./globals.css"
 import "./agent.css"
 
-// These used to be @import url(fonts.googleapis.com) at the top of globals.css,
-// which forced a four-hop render-blocking chain before the hero text could
-// paint: HTML → our CSS → Google's CSS → the woff2 files. next/font downloads
-// them at build time and serves them from our own origin instead, so there is
-// no third-party round trip on the critical path at all. Each exposes the same
-// CSS variable the Tailwind fontFamily config already expects.
-const interTight = Inter_Tight({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-inter-tight",
-  display: "swap",
-})
-
-const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["italic"],
-  variable: "--font-instrument-serif",
-  display: "swap",
-})
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-geist-mono",
-  display: "swap",
-})
-
-const fontVars = `${interTight.variable} ${instrumentSerif.variable} ${geistMono.variable}`
-
+// Apple's own type: the system font stack (SF Pro on Apple devices), defined
+// as --font-apple in globals.css. No web fonts to download at all.
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
@@ -96,7 +66,7 @@ const websiteSchema = {
 // every marketing visitor. Those two route groups mount it themselves.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={fontVars}>
+    <html lang="en" data-theme="light">
         <head>
           {/* No preconnect to fonts.googleapis.com / fonts.gstatic.com: fonts are
               self-hosted via next/font now, so those origins are never hit.
@@ -136,12 +106,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               }}
             />
           )}
-          {/* Set theme before first paint to avoid a flash of the wrong theme */}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `(function(){try{var t=localStorage.getItem('alphaa-theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`,
-            }}
-          />
         </head>
         <body className="bg-bg-primary text-fg font-sans antialiased">
           {FB_PIXEL_ID && (

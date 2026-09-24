@@ -13,14 +13,14 @@ export function AllEnginesSection() {
     <section data-reveal className="py-20 px-4 sm:px-6 bg-white text-[#1d1d1f]">
       <div className="max-w-5xl mx-auto">
 
-        <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">
+        <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-6 text-center">
           All of them. Not just one.
         </p>
 
         <h2 className="text-[40px] sm:text-[64px] font-bold text-[#1d1d1f] leading-[1.1] tracking-tight text-center mb-6 text-balance">
           We get your business found
           <br />
-          on <span className="serif-italic text-brand-orange">every</span> AI search engine.
+          on <span className="text-[#86868b]">every</span> AI search engine.
         </h2>
 
         <p className="text-[#6e6e73] text-xl text-center mb-16 max-w-2xl mx-auto">

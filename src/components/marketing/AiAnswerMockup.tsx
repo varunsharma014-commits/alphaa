@@ -7,7 +7,7 @@ export function AiAnswerMockup() {
     <section data-reveal className="px-4 sm:px-6 py-16">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <p className="text-brand-orange text-xs font-semibold uppercase tracking-[0.18em] mb-3">
+          <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-3">
             What your customers see
           </p>
           <h2 className="text-fg text-[40px] sm:text-[64px] font-bold leading-[1.1] tracking-tight">

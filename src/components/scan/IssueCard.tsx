@@ -20,7 +20,7 @@ export function IssueCard({ issue }: { issue: AuditIssue }) {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <span className={cn("text-xs font-medium uppercase tracking-wide", cfg.color)}>{cfg.label}</span>
+            <span className={cn("text-xs font-medium tracking-[-0.01em]", cfg.color)}>{cfg.label}</span>
           </div>
           <h3 className="text-white font-medium text-sm mb-1">{issue.headline}</h3>
           <p className="text-muted text-sm leading-relaxed mb-3">{issue.explanation}</p>

@@ -54,7 +54,7 @@ export function CaseStudiesSection() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
           <div>
-            <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-4">
+            <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-4">
               Customer stories
             </p>
             <h2 className="text-[36px] sm:text-[56px] font-bold text-fg leading-[1.1] tracking-tight text-balance">

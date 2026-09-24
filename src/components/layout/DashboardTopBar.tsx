@@ -1,7 +1,6 @@
 "use client"
 
 import { UserButton } from "@clerk/nextjs"
-import { ThemeToggle } from "@/components/dashboard/ThemeToggle"
 import type { DashboardTheme } from "@/lib/theme"
 import type { AppUser } from "@/types/user"
 
@@ -50,7 +49,6 @@ export function DashboardTopBar({ user, theme }: { user: AppUser; theme: Dashboa
 
       {/* Right: actions */}
       <div className="flex items-center gap-3">
-        <ThemeToggle initial={theme} />
         <UserButton
           appearance={{
             variables: { colorPrimary: "#0071E3" },

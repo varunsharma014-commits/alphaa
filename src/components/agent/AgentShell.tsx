@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import { UserButton } from "@clerk/nextjs"
-import { ThemeToggle } from "@/components/dashboard/ThemeToggle"
 import type { DashboardTheme } from "@/lib/theme"
 import type { RailData } from "@/lib/agent/feed"
 import { AgentRail } from "./AgentRail"
@@ -65,7 +64,6 @@ export function AgentShell({
                 {trialDaysLeft === 0 ? "Trial ends today" : `${trialDaysLeft}d left in trial`} →
               </a>
             )}
-            <ThemeToggle initial={theme} />
             {showUser && <UserButton appearance={{ variables: { colorPrimary: "#0071E3" }, elements: { avatarBox: "w-8 h-8" } }} />}
           </div>
         </header>

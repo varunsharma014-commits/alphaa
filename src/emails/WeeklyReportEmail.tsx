@@ -109,10 +109,10 @@ export default function WeeklyReportEmail({
                           ...deltaValue,
                           color:
                             delta > 0
-                              ? "#22c55e"
+                              ? "#1d8a4e"
                               : delta < 0
-                              ? "#ef4444"
-                              : "rgba(255,255,255,0.4)",
+                              ? "#d70015"
+                              : "#6e6e73",
                         }}
                       >
                         {delta > 0 ? "+" : ""}
@@ -161,10 +161,10 @@ export default function WeeklyReportEmail({
                             ...tableCellMono,
                             color:
                               k.change > 0
-                                ? "#22c55e"
+                                ? "#1d8a4e"
                                 : k.change < 0
-                                ? "#ef4444"
-                                : "rgba(255,255,255,0.4)",
+                                ? "#d70015"
+                                : "#6e6e73",
                           }}
                         >
                           {k.change > 0 ? "+" : ""}
@@ -219,114 +219,114 @@ WeeklyReportEmail.PreviewProps = {
 
 // Styles
 const body = {
-  backgroundColor: "#0a0a0a",
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+  backgroundColor: "#f5f5f7",
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
 }
-const container = { maxWidth: "560px", margin: "0 auto" }
-const header = { padding: "32px 40px 20px", borderBottom: "1px solid #1a1a1a" }
+const container = { maxWidth: "560px", margin: "24px auto", backgroundColor: "#ffffff", borderRadius: "18px", overflow: "hidden" as const }
+const header = { padding: "32px 40px 20px", borderBottom: "1px solid #d2d2d7" }
 const logoText = {
-  color: "#ff6b1a",
+  color: "#0066cc",
   fontSize: "20px",
-  fontWeight: "700",
+  fontWeight: "600",
   margin: "0",
 }
 const weekLabel2 = {
-  color: "rgba(255,255,255,0.3)",
+  color: "#86868b",
   fontSize: "13px",
   margin: "4px 0 0",
 }
 const content = { padding: "32px 40px" }
 const h1 = {
-  color: "#ffffff",
+  color: "#1d1d1f",
   fontSize: "22px",
-  fontWeight: "700",
+  fontWeight: "600",
   margin: "0 0 12px",
   lineHeight: "1.3",
 }
 const paragraph = {
-  color: "rgba(255,255,255,0.7)",
+  color: "#424245",
   fontSize: "15px",
   lineHeight: "1.6",
   margin: "0 0 0",
 }
-const hr = { borderColor: "#1a1a1a", margin: "24px 0" }
+const hr = { borderColor: "#d2d2d7", margin: "24px 0" }
 const statsRow = { margin: "0 0 0" }
 const statBox = {
-  backgroundColor: "#111",
+  backgroundColor: "#ffffff",
   borderRadius: "10px",
   padding: "16px",
   textAlign: "center" as const,
-  border: "1px solid #1e1e1e",
+  border: "1px solid #d2d2d7",
 }
 const statBoxMiddle = {
   ...statBox,
   margin: "0 8px",
 }
 const statValue = {
-  color: "#ff6b1a",
+  color: "#0066cc",
   fontSize: "32px",
-  fontWeight: "800",
+  fontWeight: "600",
   margin: "0",
   lineHeight: "1",
 }
 const statLabel = {
-  color: "rgba(255,255,255,0.4)",
+  color: "#6e6e73",
   fontSize: "11px",
   fontWeight: "600",
   letterSpacing: "0.5px",
   margin: "6px 0 0",
 }
 const sectionLabel = {
-  color: "rgba(255,255,255,0.3)",
+  color: "#86868b",
   fontSize: "10px",
-  fontWeight: "700",
+  fontWeight: "600",
   letterSpacing: "2px",
   margin: "0 0 12px",
 }
 const visibilityGrid = { margin: "0" }
 const visibilityCell = {
-  backgroundColor: "#111",
+  backgroundColor: "#ffffff",
   borderRadius: "8px",
   padding: "12px",
   textAlign: "center" as const,
-  border: "1px solid #1e1e1e",
+  border: "1px solid #d2d2d7",
 }
 const engineName = {
-  color: "rgba(255,255,255,0.6)",
+  color: "#424245",
   fontSize: "12px",
   margin: "0 0 4px",
 }
 const deltaValue = {
   fontSize: "20px",
-  fontWeight: "700",
+  fontWeight: "600",
   margin: "0",
 }
-const table = { backgroundColor: "#111", borderRadius: "10px", border: "1px solid #1e1e1e", overflow: "hidden" }
-const tableHeader = { borderBottom: "1px solid #1e1e1e" }
-const tableRow = { borderBottom: "1px solid #1a1a1a" }
+const table = { backgroundColor: "#ffffff", borderRadius: "10px", border: "1px solid #d2d2d7", overflow: "hidden" }
+const tableHeader = { borderBottom: "1px solid #d2d2d7" }
+const tableRow = { borderBottom: "1px solid #d2d2d7" }
 const tableColKeyword = { padding: "10px 14px", width: "55%" }
 const tableColNum = { padding: "10px 10px", width: "15%", textAlign: "right" as const }
 const tableHeadText = {
-  color: "rgba(255,255,255,0.3)",
+  color: "#86868b",
   fontSize: "10px",
-  fontWeight: "700",
+  fontWeight: "600",
   letterSpacing: "1px",
   margin: "0",
 }
 const tableCell = {
-  color: "rgba(255,255,255,0.7)",
+  color: "#424245",
   fontSize: "13px",
   margin: "0",
 }
 const tableCellMono = {
-  color: "rgba(255,255,255,0.7)",
+  color: "#424245",
   fontSize: "13px",
-  fontFamily: "monospace",
+  fontFamily: "'SF Mono', Menlo, monospace",
   margin: "0",
 }
 const button = {
-  backgroundColor: "#ff6b1a",
-  color: "#ffffff",
+  backgroundColor: "#0071e3",
+  color: "#1d1d1f",
   borderRadius: "8px",
   fontSize: "15px",
   fontWeight: "600",
@@ -334,9 +334,9 @@ const button = {
   textDecoration: "none",
   display: "inline-block",
 }
-const footer = { padding: "20px 40px", borderTop: "1px solid #1a1a1a" }
+const footer = { padding: "20px 40px", borderTop: "1px solid #d2d2d7" }
 const footerText = {
-  color: "rgba(255,255,255,0.2)",
+  color: "#86868b",
   fontSize: "12px",
   textAlign: "center" as const,
   margin: "0 0 4px",

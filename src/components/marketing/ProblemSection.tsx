@@ -31,7 +31,7 @@ export function ProblemSection() {
           <SectionLabel className="mb-3 block">The problem</SectionLabel>
           <h2 className="text-section-mobile md:text-section font-semibold text-fg text-balance">
             Getting found is{" "}
-            <span className="serif-italic text-brand-orange">broken</span>
+            <span className="text-[#86868b]">broken</span>
           </h2>
         </div>
 

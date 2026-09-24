@@ -17,6 +17,16 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
 
   let stripeCustomerId = user.stripeCustomerId
+  // Apple-style hosted checkout for Alphaa sessions only (the Stripe account is
+  // shared with another product, so this is per session, not account-wide).
+  const branding_settings = {
+    display_name: "Alphaa",
+    background_color: "#ffffff",
+    button_color: "#0071e3",
+    border_style: "pill" as const,
+    font_family: "default" as const,
+  }
+
   if (!stripeCustomerId) {
     const customer = await stripe.customers.create({ email: user.email, name: user.fullName ?? undefined })
     stripeCustomerId = customer.id
@@ -30,6 +40,7 @@ export async function POST(req: NextRequest) {
     }
     const session = await stripe.checkout.sessions.create({
       customer: stripeCustomerId,
+      branding_settings,
       line_items: [{ price: STRIPE_SETUP_FEE_PRICE_ID, quantity: 1 }],
       mode: "payment",
       metadata: { purpose: "concierge_setup", userId: user.id },
@@ -44,6 +55,7 @@ export async function POST(req: NextRequest) {
   if (purchase === "fullservice") {
     const session = await stripe.checkout.sessions.create({
       customer: stripeCustomerId,
+      branding_settings,
       line_items: [{ price: STRIPE_PRICE_IDS.fullservice.monthly, quantity: 1 }],
       mode: "subscription",
       payment_method_collection: "always",
@@ -55,6 +67,7 @@ export async function POST(req: NextRequest) {
 
   const session = await stripe.checkout.sessions.create({
     customer: stripeCustomerId,
+    branding_settings,
     line_items: [{ price: priceId, quantity: 1 }],
     mode: "subscription",
     // No trial (decided 2026-09-24): the /start analysis does the convincing;

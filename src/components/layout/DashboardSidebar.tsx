@@ -81,7 +81,7 @@ export function DashboardSidebar() {
         {navGroups.map((group, groupIdx) => (
           <div key={groupIdx} className={groupIdx > 0 ? "mt-6" : ""}>
             {group.label && (
-              <p className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-fg/30 select-none">
+              <p className="px-3 mb-2 text-[11px] font-semibold tracking-[-0.01em] text-fg/30 select-none">
                 {group.label}
               </p>
             )}

@@ -84,19 +84,19 @@ ConnectGoogleNudgeEmail.PreviewProps = {
   isSecondNudge: false,
 } satisfies ConnectGoogleNudgeEmailProps
 
-const body = { backgroundColor: "#0a0a0a", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }
-const container = { maxWidth: "560px", margin: "0 auto" }
-const header = { padding: "32px 40px 20px", borderBottom: "1px solid #1a1a1a" }
-const logoText = { color: "#ff6b1a", fontSize: "20px", fontWeight: "700", margin: "0" }
+const body = { backgroundColor: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" }
+const container = { maxWidth: "560px", margin: "24px auto", backgroundColor: "#ffffff", borderRadius: "18px", overflow: "hidden" as const }
+const header = { padding: "32px 40px 20px", borderBottom: "1px solid #d2d2d7" }
+const logoText = { color: "#0066cc", fontSize: "20px", fontWeight: "600", margin: "0" }
 const content = { padding: "32px 40px 0" }
-const h1 = { color: "#ffffff", fontSize: "24px", fontWeight: "700", margin: "0 0 16px", lineHeight: "1.3" }
-const paragraph = { color: "rgba(255,255,255,0.6)", fontSize: "15px", lineHeight: "1.6", margin: "0 0 20px" }
-const waitBox = { backgroundColor: "#110b05", border: "1px solid rgba(255,107,26,0.2)", borderRadius: "12px", padding: "20px 24px", margin: "0 0 24px" }
-const waitItem = { color: "rgba(255,255,255,0.7)", fontSize: "14px", margin: "0 0 8px", lineHeight: "1.5" }
-const button = { backgroundColor: "#ff6b1a", color: "#ffffff", borderRadius: "8px", fontSize: "16px", fontWeight: "600", padding: "14px 28px", textDecoration: "none", display: "inline-block", margin: "0 0 12px" }
-const reassureNote = { color: "rgba(255,255,255,0.3)", fontSize: "12px", margin: "0 0 24px" }
-const hr = { borderColor: "#1a1a1a", margin: "24px 0" }
-const smallText = { color: "rgba(255,255,255,0.4)", fontSize: "13px", lineHeight: "1.6", margin: "0 0 24px" }
-const footer = { padding: "20px 40px", borderTop: "1px solid #1a1a1a" }
-const footerText = { color: "rgba(255,255,255,0.2)", fontSize: "12px", textAlign: "center" as const, margin: "0 0 4px" }
-const footerLink = { color: "rgba(255,255,255,0.3)", textDecoration: "none" }
+const h1 = { color: "#1d1d1f", fontSize: "24px", fontWeight: "600", margin: "0 0 16px", lineHeight: "1.3" }
+const paragraph = { color: "#424245", fontSize: "15px", lineHeight: "1.6", margin: "0 0 20px" }
+const waitBox = { backgroundColor: "#fff5eb", border: "1px solid rgba(0,113,227,0.2)", borderRadius: "12px", padding: "20px 24px", margin: "0 0 24px" }
+const waitItem = { color: "#424245", fontSize: "14px", margin: "0 0 8px", lineHeight: "1.5" }
+const button = { backgroundColor: "#0071e3", color: "#ffffff", borderRadius: "980px", fontSize: "16px", fontWeight: "400", padding: "14px 28px", textDecoration: "none", display: "inline-block", margin: "0 0 12px" }
+const reassureNote = { color: "#86868b", fontSize: "12px", margin: "0 0 24px" }
+const hr = { borderColor: "#d2d2d7", margin: "24px 0" }
+const smallText = { color: "#6e6e73", fontSize: "13px", lineHeight: "1.6", margin: "0 0 24px" }
+const footer = { padding: "20px 40px", borderTop: "1px solid #d2d2d7" }
+const footerText = { color: "#86868b", fontSize: "12px", textAlign: "center" as const, margin: "0 0 4px" }
+const footerLink = { color: "#86868b", textDecoration: "none" }

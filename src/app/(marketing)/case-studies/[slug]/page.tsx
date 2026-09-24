@@ -45,7 +45,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
 
         {others.length > 0 && (
           <div className="mt-16 pt-10 border-t border-line/[0.08]">
-            <p className="text-muted text-xs font-semibold tracking-widest uppercase mb-6">
+            <p className="text-muted text-xs font-semibold tracking-[-0.01em] mb-6">
               More case studies
             </p>
             <div className="grid sm:grid-cols-2 gap-4">

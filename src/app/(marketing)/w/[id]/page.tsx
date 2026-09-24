@@ -91,7 +91,7 @@ export default async function PublicWinPage({
             <Icon size={30} className="text-brand-orange" />
           </div>
 
-          <p className="text-xs uppercase tracking-[0.18em] text-brand-orange mb-4">
+          <p className="text-xs tracking-[-0.01em] text-brand-orange mb-4">
             Verified AI-visibility win
           </p>
 

@@ -19,7 +19,8 @@ export function HeadlineWithSerif({
   return (
     <Tag className={cn("text-fg text-balance", className)}>
       {before && <span>{before} </span>}
-      <span className="serif-italic text-brand-orange">{serifWord}</span>
+      {/* Apple's two-tone headline: the emphasis phrase in secondary grey. */}
+      <span className="text-[#86868b]">{serifWord}</span>
       {after && <span> {after}</span>}
     </Tag>
   )

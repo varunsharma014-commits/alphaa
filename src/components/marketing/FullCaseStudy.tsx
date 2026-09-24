@@ -48,7 +48,7 @@ export function FullCaseStudy({ cs }: { cs: CaseStudy }) {
         <div className="lg:col-span-1 rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 sm:p-7">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-2 h-2 rounded-full bg-fg/30" />
-            <p className="text-muted text-xs font-semibold tracking-widest uppercase">The Problem</p>
+            <p className="text-muted text-xs font-semibold tracking-[-0.01em]">The Problem</p>
           </div>
           <h3 className="text-fg font-semibold text-lg mb-3 leading-snug">{cs.problem.title}</h3>
           <p className="text-muted text-sm leading-relaxed mb-5">{cs.problem.body}</p>
@@ -66,7 +66,7 @@ export function FullCaseStudy({ cs }: { cs: CaseStudy }) {
         <div className="lg:col-span-2 rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 sm:p-7">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-2 h-2 rounded-full bg-brand-orange" />
-            <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase">The Solution</p>
+            <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em]">The Solution</p>
           </div>
           <h3 className="text-fg font-semibold text-lg mb-3 leading-snug">{cs.solution.title}</h3>
           <p className="text-muted text-sm leading-relaxed mb-6">{cs.solution.body}</p>

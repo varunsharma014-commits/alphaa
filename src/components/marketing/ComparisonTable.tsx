@@ -24,7 +24,7 @@ export function ComparisonTable() {
   return (
     <section data-reveal className="py-20 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
-        <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">
+        <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-6 text-center">
           The honest comparison
         </p>
         <h2 className="text-[40px] sm:text-[64px] font-bold text-fg leading-[1.1] tracking-tight text-center mb-16 text-balance">
@@ -40,12 +40,12 @@ export function ComparisonTable() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-line/[0.08] bg-fg/[0.02]">
-                <th className="text-left p-4 text-fg/40 text-xs font-medium uppercase tracking-wide">Feature</th>
+                <th className="text-left p-4 text-fg/40 text-xs font-medium tracking-[-0.01em]">Feature</th>
                 <th className="p-4 text-center bg-brand-orange/5 border-x border-brand-orange/10">
                   <span className="text-brand-orange font-bold text-sm">Alphaa</span>
                 </th>
-                <th className="p-4 text-center text-fg/40 text-xs font-medium uppercase tracking-wide">SEO Agency</th>
-                <th className="p-4 text-center text-fg/40 text-xs font-medium uppercase tracking-wide">DIY</th>
+                <th className="p-4 text-center text-fg/40 text-xs font-medium tracking-[-0.01em]">SEO Agency</th>
+                <th className="p-4 text-center text-fg/40 text-xs font-medium tracking-[-0.01em]">DIY</th>
               </tr>
             </thead>
             <tbody>

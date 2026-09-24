@@ -12,8 +12,19 @@
      Default is the original product orange. Any wrapper can opt into Apple
      blue via [data-brand="blue"] — set on marketing/auth/onboarding and the
      dashboard app, so the whole product now shares one accent color. */
-  --orange-rgb: 255 107 26;
-  --orange-light-rgb: 255 136 69;
+  /* Apple blue by default everywhere (#0071e3 buttons, #0077ed hover). The
+     token keeps its historical "orange" name so every brand-orange utility
+     in the codebase follows it. */
+  --orange-rgb: 0 113 227;
+  --orange-light-rgb: 0 119 237;
+
+  /* Apple's type stack: SF Pro on Apple devices, the platform UI font elsewhere. */
+  --font-apple: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-apple-mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-inter-tight: var(--font-apple);
+  --font-instrument-serif: var(--font-apple);
+  --font-geist-mono: var(--font-apple-mono);
+  --apple-ease: cubic-bezier(0.28, 0.11, 0.32, 1);
 
   /* Surfaces */
   --cream: #F5EDE0;
@@ -30,8 +41,8 @@
 
 /* ── Apple-blue brand scope ── */
 [data-brand="blue"] {
-  --orange-rgb: 0 102 204;
-  --orange-light-rgb: 0 118 235;
+  --orange-rgb: 0 113 227;
+  --orange-light-rgb: 0 119 237;
 }
 /* --ds-accent is also set inside the dark/light theme blocks below, so this
    needs a compound selector (higher specificity) to win regardless of
@@ -44,7 +55,6 @@
    fg/line/muted/dot are RGB triples so Tailwind's /opacity modifier works:
    text-fg/40 → rgb(var(--fg-rgb) / 0.4). Flip the triple and the whole
    opacity hierarchy flips with it. */
-:root,
 [data-theme="dark"] {
   --bg-primary-rgb: 10 8 6;
   --bg-secondary-rgb: 19 16 12;
@@ -104,7 +114,8 @@
   --ds-info-border: #1e2d45;
 }
 
-/* ── Light theme ── */
+/* ── Light theme (default everywhere — apple.com has no dark mode) ── */
+:root,
 [data-theme="light"] {
   /* Apple-neutral: cool grays/whites, not warm cream. #fbfbfd / #f5f5f7 / #1d1d1f
      are literally Apple.com's own background and text values. */
@@ -114,8 +125,8 @@
 
   --fg-rgb: 29 29 31;
   --line-rgb: 29 29 31;
-  --muted-rgb: 51 51 54;
-  --muted-soft-rgb: 110 110 115;
+  --muted-rgb: 110 110 115;   /* #6e6e73 — Apple secondary text */
+  --muted-soft-rgb: 134 134 139; /* #86868b — Apple tertiary / captions */
   --dot-rgb: 29 29 31;
 
   --card-bg: #FFFFFF;
@@ -158,7 +169,7 @@
   --ds-bad-bg: #fdeeee;
   --ds-bad-border: #f3c6c6;
 
-  --ds-accent: #c2410c;
+  --ds-accent: #0071e3;
 
   --ds-info: #1d4ed8;
   --ds-info-bg: #eef4fd;
@@ -170,21 +181,21 @@
    near-black-on-light (e.g. text-fg/40 ≈ 2.5:1, fails WCAG AA). In light mode
    only, lift each foreground opacity step to a darker effective alpha so body
    text stays legible. Surfaces/borders (bg-fg, border-line) are left subtle. */
-[data-theme="light"] .text-fg\/20 { color: rgb(var(--fg-rgb) / 0.42); }
-[data-theme="light"] .text-fg\/25 { color: rgb(var(--fg-rgb) / 0.46); }
-[data-theme="light"] .text-fg\/30 { color: rgb(var(--fg-rgb) / 0.52); }
-[data-theme="light"] .text-fg\/35 { color: rgb(var(--fg-rgb) / 0.56); }
-[data-theme="light"] .text-fg\/40 { color: rgb(var(--fg-rgb) / 0.60); }
-[data-theme="light"] .text-fg\/45 { color: rgb(var(--fg-rgb) / 0.64); }
-[data-theme="light"] .text-fg\/50 { color: rgb(var(--fg-rgb) / 0.68); }
-[data-theme="light"] .text-fg\/55 { color: rgb(var(--fg-rgb) / 0.72); }
-[data-theme="light"] .text-fg\/60 { color: rgb(var(--fg-rgb) / 0.76); }
-[data-theme="light"] .text-fg\/65 { color: rgb(var(--fg-rgb) / 0.80); }
-[data-theme="light"] .text-fg\/70 { color: rgb(var(--fg-rgb) / 0.84); }
-[data-theme="light"] .text-fg\/75 { color: rgb(var(--fg-rgb) / 0.87); }
-[data-theme="light"] .text-fg\/80 { color: rgb(var(--fg-rgb) / 0.90); }
-[data-theme="light"] .text-fg\/85 { color: rgb(var(--fg-rgb) / 0.93); }
-[data-theme="light"] .text-fg\/90 { color: rgb(var(--fg-rgb) / 0.95); }
+:root:not([data-theme="dark"]) .text-fg\/20 { color: rgb(var(--fg-rgb) / 0.42); }
+:root:not([data-theme="dark"]) .text-fg\/25 { color: rgb(var(--fg-rgb) / 0.46); }
+:root:not([data-theme="dark"]) .text-fg\/30 { color: rgb(var(--fg-rgb) / 0.52); }
+:root:not([data-theme="dark"]) .text-fg\/35 { color: rgb(var(--fg-rgb) / 0.56); }
+:root:not([data-theme="dark"]) .text-fg\/40 { color: rgb(var(--fg-rgb) / 0.60); }
+:root:not([data-theme="dark"]) .text-fg\/45 { color: rgb(var(--fg-rgb) / 0.64); }
+:root:not([data-theme="dark"]) .text-fg\/50 { color: rgb(var(--fg-rgb) / 0.68); }
+:root:not([data-theme="dark"]) .text-fg\/55 { color: rgb(var(--fg-rgb) / 0.72); }
+:root:not([data-theme="dark"]) .text-fg\/60 { color: rgb(var(--fg-rgb) / 0.76); }
+:root:not([data-theme="dark"]) .text-fg\/65 { color: rgb(var(--fg-rgb) / 0.80); }
+:root:not([data-theme="dark"]) .text-fg\/70 { color: rgb(var(--fg-rgb) / 0.84); }
+:root:not([data-theme="dark"]) .text-fg\/75 { color: rgb(var(--fg-rgb) / 0.87); }
+:root:not([data-theme="dark"]) .text-fg\/80 { color: rgb(var(--fg-rgb) / 0.90); }
+:root:not([data-theme="dark"]) .text-fg\/85 { color: rgb(var(--fg-rgb) / 0.93); }
+:root:not([data-theme="dark"]) .text-fg\/90 { color: rgb(var(--fg-rgb) / 0.95); }
 
 /* ── Base reset ── */
 *, *::before, *::after {
@@ -193,6 +204,7 @@
 
 html {
   font-size: 17px;
+  background: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
@@ -201,17 +213,21 @@ html {
 body {
   background-color: rgb(var(--bg-primary-rgb));
   color: rgb(var(--fg-rgb));
-  font-family: var(--font-inter-tight);
+  font-family: var(--font-apple);
+  font-size: 17px;
+  line-height: 1.47059;
+  letter-spacing: -0.022em;
   min-height: 100vh;
   overflow-x: hidden;
-  transition: background-color 200ms ease, color 200ms ease;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 /* ── Scroll reveal (Apple-style fade-up-on-scroll) ── */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+  transform: translateY(40px);
+  transition: opacity 1s var(--apple-ease), transform 1s var(--apple-ease);
 }
 [data-reveal].reveal-in {
   opacity: 1;
@@ -225,96 +241,65 @@ body {
   }
 }
 
-/* ── Dot grid texture ── */
-.dot-grid {
-  background-image: radial-gradient(circle, rgb(var(--dot-rgb) / 0.15) 1px, transparent 1px);
-  background-size: 28px 28px;
-  opacity: 0.03;
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
+/* ── Dot grid texture — retired (apple.com has flat surfaces) ── */
+.dot-grid { display: none; }
 
-/* ── Radial warm background ── */
-.radial-bg {
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 100%, rgb(var(--bg-tertiary-rgb)) 0%, rgb(var(--bg-primary-rgb)) 70%),
-    rgb(var(--bg-primary-rgb));
-}
+/* ── Page ground: flat Apple grey (was a warm radial gradient) ── */
+.radial-bg { background: #f5f5f7; }
 
-/* ── Glass card ── */
+/* ── Card: Apple tile — white, soft radius, hairline, no blur ── */
 .glass-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
 }
 
-/* ── Orange glow button ── */
+/* ── Primary button: Apple pill (#0071e3), no glow, no lift ── */
 .btn-orange {
-  background: rgb(var(--orange-rgb));
+  background: #0071e3;
   color: #fff;
-  border-radius: 100px;
-  font-weight: 600;
-  transition: all 200ms ease;
-  box-shadow: 0 0 30px rgb(var(--orange-rgb) / 0.35);
+  border-radius: 980px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  transition: background-color 0.2s var(--apple-ease, ease);
+  box-shadow: none;
 }
-.btn-orange:hover {
-  background: rgb(var(--orange-light-rgb));
-  box-shadow: 0 0 50px rgb(var(--orange-rgb) / 0.55);
-  transform: translateY(-1px);
-}
+.btn-orange:hover { background: #0077ed; color: #fff; }
+.btn-orange:active { background: #006edb; }
 
-/* ── Ghost button ── */
+/* ── Secondary button: Apple outline pill ── */
 .btn-ghost {
   background: transparent;
-  border: 1px solid rgb(var(--orange-rgb) / 0.4);
-  color: rgb(var(--orange-rgb));
-  border-radius: 100px;
-  font-weight: 500;
-  transition: all 200ms ease;
+  border: 1px solid #0071e3;
+  color: #0066cc;
+  border-radius: 980px;
+  font-weight: 400;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
-.btn-ghost:hover {
-  border-color: rgb(var(--orange-rgb) / 0.8);
-  background: rgb(var(--orange-rgb) / 0.08);
-  color: rgb(var(--orange-rgb));
-}
+.btn-ghost:hover { background: #0071e3; border-color: #0071e3; color: #fff; }
 
 /* ── Focus ring ── */
 *:focus-visible {
-  outline: 2px solid rgb(var(--orange-rgb));
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 125, 250, 0.6);
+  border-radius: 6px;
 }
 
 /* ── Serif italic accent ── */
 .serif-italic {
-  font-family: var(--font-instrument-serif);
-  font-style: italic;
-  font-weight: 400;
+  font-family: var(--font-apple);
+  font-style: normal;
+  font-weight: inherit;
 }
 
 /* ── Mono numbers ── */
 .mono {
-  font-family: var(--font-geist-mono);
+  font-family: var(--font-apple);
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: rgb(var(--bg-primary-rgb));
-}
-::-webkit-scrollbar-thumb {
-  background: rgb(var(--fg-rgb) / 0.1);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--fg-rgb) / 0.2);
-}
+/* ── Scrollbar: native, like apple.com ── */
 
 /* ── Autopilot status-dot pulse (used across dashboard screens) ── */
 @keyframes pulse {
@@ -329,25 +314,30 @@ body {
    was present in the DOM and completely invisible. Everything now goes through
    the theme tokens so both themes work. Do not reintroduce literal colours. */
 .article-prose {
-  color: rgb(var(--muted-rgb));
-  font-size: 17px;
-  line-height: 1.75;
+  color: #1d1d1f;
+  font-size: 19px;
+  line-height: 1.58;
+  letter-spacing: 0.012em;
 }
 .article-prose h2 {
   color: rgb(var(--fg-rgb));
-  font-size: 26px;
+  font-size: 32px;
+  line-height: 1.125;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  margin: 2em 0 0.6em;
+  letter-spacing: 0.004em;
+  margin: 1.8em 0 0.6em;
 }
 .article-prose h3 {
   color: rgb(var(--fg-rgb));
-  font-size: 19px;
+  font-size: 24px;
+  line-height: 1.17;
   font-weight: 600;
+  letter-spacing: 0.009em;
   margin: 1.6em 0 0.5em;
 }
 .article-prose p { margin: 1em 0; }
-.article-prose a { color: rgb(var(--orange-rgb)); text-decoration: underline; }
+.article-prose a { color: #0066cc; text-decoration: none; }
+.article-prose a:hover { text-decoration: underline; }
 .article-prose strong { color: rgb(var(--fg-rgb)); font-weight: 600; }
 .article-prose ul { margin: 1em 0; padding-left: 1.25em; list-style: disc; }
 .article-prose ol { margin: 1em 0; padding-left: 1.25em; list-style: decimal; }
@@ -357,7 +347,7 @@ body {
   border-radius: 4px;
   padding: 2px 6px;
   font-size: 0.875em;
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-apple-mono);
   color: rgb(var(--fg-rgb) / 0.85);
 }
 .article-prose pre {
@@ -373,7 +363,7 @@ body {
 .article-prose th, .article-prose td { border: 1px solid rgb(var(--line-rgb) / 0.12); padding: 8px 12px; text-align: left; }
 .article-prose th { color: rgb(var(--fg-rgb)); font-weight: 600; background: rgb(var(--fg-rgb) / 0.03); }
 .article-prose blockquote {
-  border-left: 3px solid rgb(var(--orange-rgb));
+  border-left: 3px solid #d2d2d7;
   padding-left: 1em;
   margin: 1.25em 0;
   color: rgb(var(--muted-soft-rgb, var(--muted-rgb)));

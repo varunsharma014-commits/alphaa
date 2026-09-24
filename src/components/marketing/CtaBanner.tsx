@@ -14,7 +14,7 @@ export function CtaBanner() {
             Every day you wait,
             <br />
             your competitors get{" "}
-            <span className="serif-italic text-brand-orange">found instead.</span>
+            <span className="text-[#86868b]">found instead.</span>
           </h2>
 
           {/* One supporting line, not three. The sub-CTA line below already

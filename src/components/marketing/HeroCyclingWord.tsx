@@ -15,7 +15,7 @@ export function HeroCyclingWord() {
   return (
     <span
       key={WORDS[index]}
-      className="inline-block serif-italic text-brand-orange animate-fade-up"
+      className="inline-block text-[#86868b] animate-fade-up"
     >
       {WORDS[index]}.
     </span>

@@ -25,12 +25,12 @@ export default function BlogIndexPage() {
     <div className="pt-28 pb-24 px-4 sm:px-6">
       <div className="max-w-2xl mx-auto">
         <div className="mb-12 text-center">
-          <p className="text-brand-orange text-xs font-semibold uppercase tracking-[0.18em] mb-3">
+          <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-3">
             The alphaa blog
           </p>
           <h1 className="text-fg text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-balance">
             Getting found in the age of{" "}
-            <span className="serif-italic text-brand-orange">AI search</span>
+            <span className="text-[#86868b]">AI search</span>
           </h1>
           <p className="text-muted text-base mt-4 max-w-xl mx-auto">
             Practical, no-fluff guides on AI Search Optimization — how AI assistants decide what to
@@ -47,7 +47,7 @@ export default function BlogIndexPage() {
             >
               <div className="flex items-center gap-3 mb-2">
                 {meta.tag && (
-                  <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
+                  <span className="text-[10px] font-semibold tracking-[-0.01em] px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
                     {meta.tag}
                   </span>
                 )}

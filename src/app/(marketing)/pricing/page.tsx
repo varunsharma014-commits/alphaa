@@ -96,7 +96,7 @@ export default function PricingPage() {
           <SectionLabel className="mb-3 block">Pricing</SectionLabel>
           <h1 className="text-[34px] sm:text-[48px] lg:text-[54px] font-semibold leading-[1.08] tracking-[-0.02em] text-fg mb-4 text-balance">
             From $99/month.{" "}
-            <span className="serif-italic text-brand-orange">No contracts.</span>
+            <span className="text-[#86868b]">No contracts.</span>
           </h1>
           <p className="text-muted text-lg">Month to month. No contract. Cancel in two clicks.</p>
         </div>

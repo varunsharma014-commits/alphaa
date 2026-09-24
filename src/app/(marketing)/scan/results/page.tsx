@@ -303,7 +303,7 @@ function ScoreGaugeBig({ score }: { score: number }) {
         <span className="text-fg/40 text-sm mt-1">/100</span>
         {/* Plain-language severity — "44" alone doesn't tell a business owner
             whether that's fine or a fire. */}
-        <span className="text-[10px] font-semibold uppercase tracking-wider mt-1" style={{ color }}>
+        <span className="text-[10px] font-semibold tracking-[-0.01em] mt-1" style={{ color }}>
           {score < 50 ? "Critical" : score < 75 ? "Needs work" : "Strong"}
         </span>
       </div>
@@ -419,7 +419,7 @@ function StickyCtaBar({
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 mb-4">
-      <span className="text-xs font-semibold uppercase tracking-[0.14em] text-fg/40 whitespace-nowrap">
+      <span className="text-xs font-semibold tracking-[-0.01em] text-fg/40 whitespace-nowrap">
         {children}
       </span>
       <div className="flex-1 h-px bg-fg/[0.08]" />
@@ -562,7 +562,7 @@ function EvidenceCard({
       {query ? (
         <div className="flex justify-end mb-3">
           <div className="max-w-[85%] bg-bg-tertiary border border-line/[0.06] rounded-2xl rounded-br-md px-4 py-2.5">
-            <p className="text-[10px] uppercase tracking-wider text-fg/30 mb-1">A customer asks</p>
+            <p className="text-[10px] tracking-[-0.01em] text-fg/30 mb-1">A customer asks</p>
             <p className="text-fg/85 text-[13px] leading-relaxed m-0">&ldquo;{query}&rdquo;</p>
           </div>
         </div>
@@ -575,7 +575,7 @@ function EvidenceCard({
       {/* The answer — verbatim excerpt */}
       {fullText ? (
         <div className="bg-fg/[0.04] border border-line/[0.06] rounded-2xl rounded-tl-md px-4 py-3">
-          <p className="text-[10px] uppercase tracking-wider text-fg/30 mb-1.5">
+          <p className="text-[10px] tracking-[-0.01em] text-fg/30 mb-1.5">
             {engine.name} answered
           </p>
           <p className="text-fg/75 text-[13px] leading-relaxed m-0 whitespace-pre-line">
@@ -669,9 +669,9 @@ function CompetitorIntelTable({
     <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl overflow-hidden">
       {/* Column header */}
       <div className={`hidden ${INTEL_GRID} px-5 py-2.5 border-b border-line/[0.06] bg-fg/[0.02]`}>
-        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg/30">Business</span>
-        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg/30">AI mentions</span>
-        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg/30">Google rank</span>
+        <span className="text-[10px] font-semibold tracking-[-0.01em] text-fg/30">Business</span>
+        <span className="text-[10px] font-semibold tracking-[-0.01em] text-fg/30">AI mentions</span>
+        <span className="text-[10px] font-semibold tracking-[-0.01em] text-fg/30">Google rank</span>
       </div>
 
       <div className="divide-y divide-line/[0.06]">
@@ -712,7 +712,7 @@ function CompetitorIntelTable({
         >
           <div className="min-w-0 flex items-center gap-2">
             <p className="text-fg text-sm font-semibold truncate m-0">{you.name}</p>
-            <span className="flex-shrink-0 text-[10px] font-semibold uppercase tracking-wider text-fg/50 border border-line/[0.18] rounded px-1.5 py-0.5">
+            <span className="flex-shrink-0 text-[10px] font-semibold tracking-[-0.01em] text-fg/50 border border-line/[0.18] rounded px-1.5 py-0.5">
               You
             </span>
           </div>
@@ -934,7 +934,7 @@ function FixTimeline() {
             >
               <span className="w-[7px] h-[7px] rounded-full bg-brand-orange" />
             </span>
-            <p className="text-brand-orange text-[11px] font-semibold uppercase tracking-[0.14em] m-0">
+            <p className="text-brand-orange text-[11px] font-semibold tracking-[-0.01em] m-0">
               {step.label}
             </p>
             <p className="text-fg text-sm font-semibold mt-1 mb-0.5">{step.title}</p>
@@ -1030,7 +1030,7 @@ function CopyBlock({
   return (
     <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl overflow-hidden">
       <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-line/[0.06] bg-fg/[0.02]">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg/40 truncate">
+        <span className="text-[11px] font-semibold tracking-[-0.01em] text-fg/40 truncate">
           {label}
         </span>
         <button
@@ -1136,7 +1136,7 @@ function QuickFixSection({ scanId }: { scanId: string }) {
       <div className="relative overflow-hidden bg-bg-secondary border border-brand-orange/25 rounded-2xl px-5 py-6 sm:px-6">
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgb(var(--orange-rgb) / 0.10), transparent 70%)" }}
+          style={{ background: "transparent" }}
           aria-hidden
         />
         <div className="relative">
@@ -1158,7 +1158,7 @@ function QuickFixSection({ scanId }: { scanId: string }) {
 
           {fix.targetQuestion && (
             <div className="mt-5 bg-bg-tertiary border border-line/[0.06] rounded-xl px-4 py-3">
-              <p className="text-[10px] uppercase tracking-wider text-fg/30 mb-1 mt-0">
+              <p className="text-[10px] tracking-[-0.01em] text-fg/30 mb-1 mt-0">
                 The customer question this answers
               </p>
               <p className="text-fg/85 text-[13px] leading-relaxed m-0">
@@ -1445,13 +1445,13 @@ function ScanResultsContent() {
         <div className="relative overflow-hidden bg-bg-secondary border border-line/[0.08] rounded-2xl px-6 py-8 sm:px-8 sm:py-9 !mt-4">
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgb(var(--orange-rgb) / 0.10), transparent 70%)" }}
+            style={{ background: "transparent" }}
             aria-hidden
           />
           <div className="relative">
             <div className="sm:flex sm:items-center sm:gap-8 text-center sm:text-left">
               <div className="flex-1 min-w-0">
-                <p className="text-xs uppercase tracking-[0.16em] text-fg/40 mb-4">
+                <p className="text-xs tracking-[-0.01em] text-fg/40 mb-4">
                   Your free AI visibility scan
                 </p>
                 <HeroHeadline
@@ -1552,7 +1552,7 @@ function ScanResultsContent() {
         <div className="relative overflow-hidden bg-bg-secondary border border-line/[0.08] rounded-2xl px-6 py-9 sm:px-9">
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse 70% 60% at 50% 100%, rgb(var(--orange-rgb) / 0.10), transparent 70%)" }}
+            style={{ background: "transparent" }}
             aria-hidden
           />
           <div className="relative">

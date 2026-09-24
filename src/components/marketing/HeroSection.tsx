@@ -50,14 +50,14 @@ export function HeroSection() {
       <div
         className="absolute top-[-80px] left-1/2 -translate-x-1/2 w-[760px] h-[520px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at center, rgb(var(--orange-rgb) / 0.16) 0%, transparent 65%)",
+          background: "transparent",
         }}
         aria-hidden="true"
       />
       <div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[460px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at center bottom, rgb(var(--orange-rgb) / 0.16) 0%, transparent 70%)",
+          background: "transparent",
         }}
         aria-hidden="true"
       />
@@ -165,7 +165,7 @@ export function HeroSection() {
                 <p className="text-[#1d8a4e] text-[12px] font-medium">↑ +9 this month</p>
               </div>
               <div className="sm:col-span-2 rounded-2xl bg-[#f5f5f7] p-5">
-                <p className="text-[#86868b] text-[11px] uppercase tracking-wider mb-3">Where people find you</p>
+                <p className="text-[#86868b] text-[11px] tracking-[-0.01em] mb-3">Where people find you</p>
                 <div className="space-y-3">
                   {DASHBOARD_ENGINES.map((e) => (
                     <div key={e.name} className="flex items-center justify-between">

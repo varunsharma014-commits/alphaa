@@ -19,21 +19,21 @@ const engines = ["ChatGPT", "Claude", "Gemini", "Perplexity"]
 
 export function Footer() {
   return (
-    <footer className="border-t border-line/[0.06] bg-bg-primary">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+    <footer className="bg-[#f5f5f7] text-[12px] leading-[1.33] tracking-[-0.01em] text-[#6e6e73]">
+      <div className="max-w-[980px] mx-auto px-4 sm:px-6 pt-10 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Sparkles className="w-5 h-5 text-brand-orange" />
-              <span className="text-fg font-semibold text-lg font-sans">alphaa</span>
+              <Sparkles className="w-4 h-4 text-[#1d1d1f]" />
+              <span className="text-[#1d1d1f] font-semibold text-[14px]">alphaa</span>
             </Link>
-            <p className="text-fg/40 text-sm leading-relaxed max-w-xs mb-5">
+            <p className="text-[#6e6e73] text-[12px] leading-[1.5] max-w-xs mb-3">
               Get your business found on every AI search engine — ChatGPT, Claude, Gemini, and Perplexity. Automatically. $99/month.
             </p>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-x-3 gap-y-1">
               {engines.map((e) => (
-                <span key={e} className="text-xs text-fg/30 border border-line/[0.08] px-2 py-0.5 rounded-full">
+                <span key={e} className="text-[12px] text-[#86868b]">
                   {e}
                 </span>
               ))}
@@ -43,13 +43,13 @@ export function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([section, links]) => (
             <div key={section}>
-              <p className="text-fg/60 font-medium text-xs uppercase tracking-widest mb-4">{section}</p>
-              <ul className="space-y-2.5">
+              <p className="text-[#1d1d1f] font-semibold text-[12px] mb-2.5">{section}</p>
+              <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-fg/40 text-sm hover:text-fg transition-colors duration-200"
+                      className="text-[#424245] text-[12px] hover:underline"
                     >
                       {link.label}
                     </Link>
@@ -60,17 +60,17 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="border-t border-line/[0.06] pt-8 space-y-4">
-          <div className="border-t border-line/[0.04] pt-4 flex flex-col gap-2">
-            <p className="text-fg/20 text-xs text-center">
+        <div className="border-t border-[#d2d2d7] pt-4 space-y-3">
+          <div className="flex flex-col gap-2">
+            <p className="text-[#6e6e73] text-[12px]">
               AI visibility results vary by business, location, and industry. No specific rankings or revenue outcomes are guaranteed.
             </p>
-            <p className="text-fg/20 text-xs text-center">
+            <p className="text-[#6e6e73] text-[12px]">
               Alphaa is not affiliated with, endorsed by, or sponsored by OpenAI, Anthropic, Google LLC, Microsoft Corporation, or Perplexity AI.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-fg/25 text-xs">© {new Date().getFullYear()} Alphaa. All rights reserved.</p>
+            <p className="text-[#6e6e73] text-[12px]">Copyright © {new Date().getFullYear()} Alphaa. All rights reserved.</p>
           </div>
         </div>
       </div>

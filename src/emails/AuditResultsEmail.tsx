@@ -26,7 +26,7 @@ export default function AuditResultsEmail({
 }: AuditResultsEmailProps) {
   const found = engines.filter((e) => e.found).length
   const total = engines.length
-  const scoreColor = overallScore >= 70 ? "#22c55e" : overallScore >= 40 ? "#f59e0b" : "#ef4444"
+  const scoreColor = overallScore >= 70 ? "#1d8a4e" : overallScore >= 40 ? "#b64400" : "#d70015"
   const scoreLabel = overallScore >= 70 ? "Good" : overallScore >= 40 ? "Needs work" : "Critical gaps"
 
   return (
@@ -66,7 +66,7 @@ export default function AuditResultsEmail({
             {engines.map((e) => (
               <Row key={e.name} style={engineRow}>
                 <Column style={engineIconCol}>
-                  <Text style={{ ...engineStatus, color: e.found ? "#22c55e" : "#ef4444" }}>
+                  <Text style={{ ...engineStatus, color: e.found ? "#1d8a4e" : "#d70015" }}>
                     {e.found ? "✓" : "✗"}
                   </Text>
                 </Column>
@@ -151,34 +151,34 @@ AuditResultsEmail.PreviewProps = {
   isSubscriber: false,
 } satisfies AuditResultsEmailProps
 
-const body = { backgroundColor: "#0a0a0a", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }
-const container = { maxWidth: "560px", margin: "0 auto" }
-const header = { padding: "32px 40px 20px", borderBottom: "1px solid #1a1a1a" }
-const logoText = { color: "#ff6b1a", fontSize: "20px", fontWeight: "700", margin: "0" }
+const body = { backgroundColor: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" }
+const container = { maxWidth: "560px", margin: "24px auto", backgroundColor: "#ffffff", borderRadius: "18px", overflow: "hidden" as const }
+const header = { padding: "32px 40px 20px", borderBottom: "1px solid #d2d2d7" }
+const logoText = { color: "#0066cc", fontSize: "20px", fontWeight: "600", margin: "0" }
 const content = { padding: "32px 40px 0" }
-const h1 = { color: "#ffffff", fontSize: "26px", fontWeight: "700", margin: "0 0 12px", lineHeight: "1.2" }
-const paragraph = { color: "rgba(255,255,255,0.6)", fontSize: "15px", lineHeight: "1.6", margin: "0 0 20px" }
-const scoreCard = { backgroundColor: "#111", borderRadius: "12px", padding: "24px", margin: "0 0 28px", border: "1px solid #1e1e1e" }
-const scoreLabel2 = { color: "rgba(255,255,255,0.3)", fontSize: "10px", fontWeight: "700", letterSpacing: "2px", margin: "0 0 6px" }
-const scoreValue = { color: "#ffffff", fontSize: "44px", fontWeight: "800", margin: "0", lineHeight: "1" }
-const scoreUnit = { fontSize: "20px", color: "rgba(255,255,255,0.3)" }
+const h1 = { color: "#1d1d1f", fontSize: "26px", fontWeight: "600", margin: "0 0 12px", lineHeight: "1.2" }
+const paragraph = { color: "#424245", fontSize: "15px", lineHeight: "1.6", margin: "0 0 20px" }
+const scoreCard = { backgroundColor: "#ffffff", borderRadius: "12px", padding: "24px", margin: "0 0 28px", border: "1px solid #d2d2d7" }
+const scoreLabel2 = { color: "#86868b", fontSize: "10px", fontWeight: "600", letterSpacing: "2px", margin: "0 0 6px" }
+const scoreValue = { color: "#1d1d1f", fontSize: "44px", fontWeight: "600", margin: "0", lineHeight: "1" }
+const scoreUnit = { fontSize: "20px", color: "#86868b" }
 const scoreBadge = { fontSize: "13px", fontWeight: "600", margin: "6px 0 0" }
-const scoreBadge2 = { fontSize: "13px", color: "rgba(255,255,255,0.4)", margin: "6px 0 0" }
-const sectionLabel = { color: "rgba(255,255,255,0.3)", fontSize: "10px", fontWeight: "700", letterSpacing: "2px", margin: "0 0 12px" }
+const scoreBadge2 = { fontSize: "13px", color: "#6e6e73", margin: "6px 0 0" }
+const sectionLabel = { color: "#86868b", fontSize: "10px", fontWeight: "600", letterSpacing: "2px", margin: "0 0 12px" }
 const engineRow = { marginBottom: "14px" }
 const engineIconCol = { width: "32px" }
-const engineStatus = { fontSize: "16px", fontWeight: "700", margin: "0" }
-const engineName = { color: "#ffffff", fontSize: "14px", fontWeight: "600", margin: "0" }
-const engineSnippet = { color: "rgba(255,255,255,0.4)", fontSize: "13px", fontStyle: "italic", margin: "2px 0 0" }
-const engineMissing = { color: "#ef4444", fontSize: "12px", margin: "2px 0 0", opacity: 0.7 }
-const hr = { borderColor: "#1a1a1a", margin: "24px 0" }
-const issueBox = { backgroundColor: "#1a0a00", border: "1px solid rgba(255,107,26,0.3)", borderRadius: "10px", padding: "16px 20px", margin: "0 0 24px" }
-const issueLabel = { color: "#ff6b1a", fontSize: "10px", fontWeight: "700", letterSpacing: "2px", margin: "0 0 6px" }
-const issueText = { color: "rgba(255,255,255,0.8)", fontSize: "14px", lineHeight: "1.6", margin: "0" }
-const ctaHeading = { color: "#ffffff", fontSize: "20px", fontWeight: "700", margin: "0 0 12px" }
-const button = { backgroundColor: "#ff6b1a", color: "#ffffff", borderRadius: "8px", fontSize: "15px", fontWeight: "600", padding: "12px 24px", textDecoration: "none", display: "inline-block", margin: "0 0 12px" }
-const trialNote = { color: "rgba(255,255,255,0.3)", fontSize: "12px", margin: "0 0 24px" }
-const footer = { padding: "20px 40px", borderTop: "1px solid #1a1a1a" }
-const footerText = { color: "rgba(255,255,255,0.2)", fontSize: "12px", textAlign: "center" as const, margin: "0 0 8px" }
-const footerLink = { color: "rgba(255,255,255,0.3)", textDecoration: "none" }
-const footerDisclaimer = { color: "rgba(255,255,255,0.15)", fontSize: "11px", textAlign: "center" as const, margin: "0", lineHeight: "1.5" }
+const engineStatus = { fontSize: "16px", fontWeight: "600", margin: "0" }
+const engineName = { color: "#1d1d1f", fontSize: "14px", fontWeight: "600", margin: "0" }
+const engineSnippet = { color: "#6e6e73", fontSize: "13px", fontStyle: "italic", margin: "2px 0 0" }
+const engineMissing = { color: "#d70015", fontSize: "12px", margin: "2px 0 0", opacity: 0.7 }
+const hr = { borderColor: "#d2d2d7", margin: "24px 0" }
+const issueBox = { backgroundColor: "#fff5eb", border: "1px solid rgba(0,113,227,0.3)", borderRadius: "10px", padding: "16px 20px", margin: "0 0 24px" }
+const issueLabel = { color: "#0066cc", fontSize: "10px", fontWeight: "600", letterSpacing: "2px", margin: "0 0 6px" }
+const issueText = { color: "#1d1d1f", fontSize: "14px", lineHeight: "1.6", margin: "0" }
+const ctaHeading = { color: "#1d1d1f", fontSize: "20px", fontWeight: "600", margin: "0 0 12px" }
+const button = { backgroundColor: "#0071e3", color: "#ffffff", borderRadius: "980px", fontSize: "15px", fontWeight: "400", padding: "12px 24px", textDecoration: "none", display: "inline-block", margin: "0 0 12px" }
+const trialNote = { color: "#86868b", fontSize: "12px", margin: "0 0 24px" }
+const footer = { padding: "20px 40px", borderTop: "1px solid #d2d2d7" }
+const footerText = { color: "#86868b", fontSize: "12px", textAlign: "center" as const, margin: "0 0 8px" }
+const footerLink = { color: "#86868b", textDecoration: "none" }
+const footerDisclaimer = { color: "#86868b", fontSize: "11px", textAlign: "center" as const, margin: "0", lineHeight: "1.5" }

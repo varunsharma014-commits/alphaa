@@ -12,7 +12,7 @@ export default function ScanPage() {
           <SectionLabel className="mb-3 block">Free scan</SectionLabel>
           <h1 className="text-[34px] sm:text-[48px] font-semibold text-fg leading-[1.08] tracking-[-0.02em] mb-4 text-balance">
             See your free{" "}
-            <span className="serif-italic text-brand-orange">visibility score</span>
+            <span className="text-[#86868b]">visibility score</span>
           </h1>
           <p className="text-muted text-base">
             We check Google, ChatGPT, Maps, and your website — and show you exactly what's stopping customers from finding you. Takes 2 minutes.

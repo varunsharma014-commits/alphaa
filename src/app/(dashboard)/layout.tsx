@@ -48,7 +48,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
   // flash) and it stays scoped to the dashboard. Light is now the default;
   // the cookie only matters once a user explicitly picks dark.
   const themeCookie = (await cookies()).get(THEME_COOKIE)?.value
-  const theme: DashboardTheme = themeCookie === "dark" ? "dark" : "light"
+  // Light only, like apple.com. The old dark-mode cookie is ignored.
+  void themeCookie
+  const theme: DashboardTheme = "light"
 
   // Rail data (verdict count, waiting items) comes from the same feed build
   // the /dashboard page uses — React's cache() makes that one query set.

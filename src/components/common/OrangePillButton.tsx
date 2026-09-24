@@ -16,9 +16,10 @@ interface OrangePillButtonProps {
 }
 
 const sizeClasses = {
-  sm: "px-4 py-2 text-sm",
-  md: "px-6 py-3 text-sm",
-  lg: "px-8 py-4 text-base",
+  // Apple's pill sizes: 14px small, 17px default and large.
+  sm: "px-4 py-[7px] text-[14px]",
+  md: "px-[22px] py-[11px] text-[17px]",
+  lg: "px-7 py-[14px] text-[17px]",
 }
 
 export function OrangePillButton({
@@ -33,7 +34,7 @@ export function OrangePillButton({
   loading,
 }: OrangePillButtonProps) {
   const base = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 cursor-pointer",
+    "inline-flex items-center justify-center gap-2 rounded-full font-normal tracking-[-0.022em] transition-colors duration-200 cursor-pointer",
     sizeClasses[size],
     variant === "primary" && "btn-orange",
     variant === "ghost" && "btn-ghost",

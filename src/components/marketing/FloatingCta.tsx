@@ -26,11 +26,10 @@ export function FloatingCta() {
     >
       <Link
         href="/start"
-        className="w-full flex flex-col items-center justify-center py-3.5 px-6 rounded-2xl font-semibold text-white text-sm shadow-2xl"
-        style={{ background: "linear-gradient(135deg, #0071e3 0%, #0058b0 100%)" }}
+        className="w-full flex flex-col items-center justify-center py-3 px-6 rounded-full text-white text-[17px] bg-[#0071e3] active:bg-[#006edb] shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
       >
-        <span>Run my free AI scan →</span>
-        <span className="text-[11px] font-normal text-white/70">2 minutes · no credit card</span>
+        <span>Free AI Scan</span>
+        <span className="text-[12px] text-white/80">Just enter your URL</span>
       </Link>
     </div>
   )

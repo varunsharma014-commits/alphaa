@@ -196,7 +196,7 @@ export default function ReferPage() {
           className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at center bottom, rgb(var(--orange-rgb) / 0.18) 0%, transparent 70%)",
+              "transparent",
           }}
           aria-hidden="true"
         />
@@ -208,7 +208,7 @@ export default function ReferPage() {
 
           <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-6 text-balance">
             Get paid every month.{" "}
-            <span className="italic text-brand-orange" style={{ fontFamily: "Georgia, serif" }}>
+            <span className="text-[#86868b]">
               Forever.
             </span>
           </h1>
@@ -296,7 +296,7 @@ export default function ReferPage() {
                 >
                   {s.step}
                 </div>
-                <div className="text-brand-orange font-bold text-xs uppercase tracking-widest mb-3">
+                <div className="text-brand-orange font-bold text-xs tracking-[-0.01em] mb-3">
                   Step {s.step}
                 </div>
                 <h3 className="text-fg font-semibold text-xl mb-3">{s.title}</h3>
@@ -322,7 +322,7 @@ export default function ReferPage() {
               <thead>
                 <tr className="bg-fg/[0.04] border-b border-line/[0.08]">
                   {["Plan", "Price", "Your cut/mo", "Your cut/year"].map((h) => (
-                    <th key={h} className="px-5 py-4 text-left text-fg/40 font-medium text-xs uppercase tracking-wider">
+                    <th key={h} className="px-5 py-4 text-left text-fg/40 font-medium text-xs tracking-[-0.01em]">
                       {h}
                     </th>
                   ))}
@@ -479,7 +479,7 @@ export default function ReferPage() {
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at center top, rgb(var(--orange-rgb) / 0.14) 0%, transparent 70%)",
+              "transparent",
           }}
           aria-hidden="true"
         />

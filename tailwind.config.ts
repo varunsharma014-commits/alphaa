@@ -33,9 +33,11 @@ const config: Config = {
         "muted-soft": "rgb(var(--muted-soft-rgb, var(--muted-rgb)) / <alpha-value>)",
       },
       fontFamily: {
-        sans: ["var(--font-inter-tight)", "system-ui", "sans-serif"],
-        serif: ["var(--font-instrument-serif)", "Georgia", "serif"],
-        mono: ["var(--font-geist-mono)", "monospace"],
+        // Apple's stack everywhere (SF Pro on Apple devices). "serif" maps to
+        // the same face on purpose: apple.com never mixes in a serif.
+        sans: ["-apple-system", "BlinkMacSystemFont", '"SF Pro Text"', '"SF Pro Display"', '"Helvetica Neue"', "Helvetica", "Arial", "sans-serif"],
+        serif: ["-apple-system", "BlinkMacSystemFont", '"SF Pro Display"', '"Helvetica Neue"', "Helvetica", "Arial", "sans-serif"],
+        mono: ['"SF Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       fontSize: {
         hero: ["56px", { lineHeight: "1.08", letterSpacing: "-0.02em" }],
@@ -43,24 +45,29 @@ const config: Config = {
         section: ["40px", { lineHeight: "1.15", letterSpacing: "-0.02em" }],
         "section-mobile": ["28px", { lineHeight: "1.2" }],
       },
+      // Apple headlines are semibold, never heavy: "bold" renders at 600.
+      fontWeight: {
+        bold: "600",
+        extrabold: "600",
+        black: "700",
+      },
       borderRadius: {
-        card: "24px",
+        card: "18px",
         DEFAULT: "12px",
       },
       boxShadow: {
-        glow: "0 0 40px rgb(var(--orange-rgb) / 0.4)",
-        "glow-sm": "0 0 20px rgb(var(--orange-rgb) / 0.3)",
-        card: "0 1px 0 rgba(255,255,255,0.06) inset",
+        // Glows retired — apple.com uses soft, neutral depth only.
+        glow: "0 4px 24px rgba(0,0,0,0.06)",
+        "glow-sm": "0 2px 12px rgba(0,0,0,0.05)",
+        card: "0 4px 24px rgba(0,0,0,0.04)",
       },
       backgroundImage: {
-        "radial-warm":
-          "radial-gradient(ellipse 80% 60% at 50% 100%, #1F1812 0%, #0A0806 70%)",
-        "radial-hero":
-          "radial-gradient(ellipse 60% 50% at 50% 100%, rgb(var(--orange-rgb) / 0.12) 0%, transparent 70%)",
+        "radial-warm": "none",
+        "radial-hero": "none",
       },
       animation: {
-        "pulse-glow": "pulseGlow 2s ease-in-out infinite",
-        "fade-up": "fadeUp 0.5s ease forwards",
+        "pulse-glow": "none",
+        "fade-up": "fadeUp 0.9s cubic-bezier(0.28, 0.11, 0.32, 1) forwards",
         "spin-slow": "spin 3s linear infinite",
       },
       keyframes: {
@@ -69,12 +76,12 @@ const config: Config = {
           "50%": { boxShadow: "0 0 50px rgb(var(--orange-rgb) / 0.6)" },
         },
         fadeUp: {
-          from: { opacity: "0", transform: "translateY(16px)" },
+          from: { opacity: "0", transform: "translateY(24px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
       },
       transitionDuration: {
-        DEFAULT: "200ms",
+        DEFAULT: "240ms",
       },
     },
   },

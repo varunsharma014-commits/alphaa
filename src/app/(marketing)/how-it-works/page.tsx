@@ -69,7 +69,7 @@ export default function HowItWorksPage() {
           <SectionLabel className="mb-3 block">How it works</SectionLabel>
           <h1 className="text-[34px] sm:text-[48px] lg:text-[54px] font-semibold leading-[1.08] tracking-[-0.02em] text-fg mb-4 text-balance">
             Everything Alphaa does —{" "}
-            <span className="serif-italic text-brand-orange">explained</span>
+            <span className="text-[#86868b]">explained</span>
           </h1>
           <p className="text-muted text-lg">
             No black boxes. Here's exactly what happens after you sign up.

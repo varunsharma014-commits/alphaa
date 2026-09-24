@@ -63,7 +63,7 @@ export function SocialProof() {
     <section data-reveal className="py-20 px-4 sm:px-6 border-y border-line/[0.06]">
       <div className="max-w-6xl mx-auto">
 
-        <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">
+        <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-6 text-center">
           Real results
         </p>
 

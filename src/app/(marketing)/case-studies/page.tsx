@@ -78,11 +78,11 @@ export default function CaseStudiesPage() {
       <section className="relative pt-32 pb-20 px-4 sm:px-6 overflow-hidden">
         <div
           className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] pointer-events-none"
-          style={{ background: "radial-gradient(ellipse at center bottom, rgb(var(--orange-rgb) / 0.15) 0%, transparent 70%)" }}
+          style={{ background: "transparent" }}
           aria-hidden="true"
         />
         <div className="relative max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-semibold mb-7 tracking-wide uppercase">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-semibold mb-7 tracking-[-0.01em]">
             Case Studies
           </div>
           <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-5 text-balance">
@@ -148,7 +148,7 @@ export default function CaseStudiesPage() {
       <section className="px-4 sm:px-6 pb-28">
         <div className="max-w-3xl mx-auto">
           <div className="rounded-3xl border border-line/[0.08] bg-fg/[0.02] overflow-hidden p-10 sm:p-14 text-center">
-            <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-4">Ready to be next?</p>
+            <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-4">Ready to be next?</p>
             <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
               Find out if AI search
               <br />knows your business.

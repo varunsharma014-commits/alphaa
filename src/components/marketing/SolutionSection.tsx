@@ -28,7 +28,7 @@ export function SolutionSection() {
     <section data-reveal className="py-20 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto">
 
-        <p className="text-brand-orange text-xs font-semibold tracking-widest uppercase mb-6 text-center">
+        <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-6 text-center">
           What this means for you
         </p>
 
@@ -56,7 +56,7 @@ export function SolutionSection() {
         {/* The promise */}
         <div
           className="rounded-2xl border border-brand-orange/20 p-10 text-center"
-          style={{ background: "radial-gradient(ellipse at 50% 100%, rgb(var(--orange-rgb) / 0.08) 0%, transparent 70%)" }}
+          style={{ background: "transparent" }}
         >
           <p className="text-fg text-2xl sm:text-3xl font-semibold leading-snug mb-2">
             Most customers see their first AI mention

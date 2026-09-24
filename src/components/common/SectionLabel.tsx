@@ -4,7 +4,8 @@ export function SectionLabel({ children, className }: { children: React.ReactNod
   return (
     <span
       className={cn(
-        "text-xs font-medium tracking-[0.18em] uppercase text-brand-orange",
+        // Apple eyebrow: sentence case, semibold, warm accent — not spaced caps.
+        "text-[17px] font-semibold tracking-[-0.022em] text-[#bf4800]",
         className
       )}
     >

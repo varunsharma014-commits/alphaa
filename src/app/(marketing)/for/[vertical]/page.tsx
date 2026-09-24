@@ -94,17 +94,17 @@ export default async function VerticalPage({
         <div
           className="absolute top-[-80px] left-1/2 -translate-x-1/2 w-[760px] h-[520px] pointer-events-none"
           style={{
-            background: "radial-gradient(ellipse at center, rgb(var(--orange-rgb) / 0.16) 0%, transparent 65%)",
+            background: "transparent",
           }}
           aria-hidden="true"
         />
         <div className="relative max-w-5xl mx-auto text-center">
-          <p className="text-xs font-medium tracking-[0.18em] uppercase text-brand-orange mb-6">
+          <p className="text-xs font-medium tracking-[-0.01em] text-brand-orange mb-6">
             AI search for {v.plural}
           </p>
           <h1 className="text-[38px] sm:text-[56px] lg:text-[64px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-6 text-balance">
             When someone asks ChatGPT{" "}
-            <span className="serif-italic text-brand-orange">&quot;{v.examplePrompt}&quot;</span>
+            <span className="text-[#86868b]">&quot;{v.examplePrompt}&quot;</span>
             <br className="hidden sm:block" /> — are you the answer?
           </h1>
           <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-9">
@@ -133,12 +133,12 @@ export default async function VerticalPage({
       {/* 2. Pain section */}
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
-          <p className="text-muted text-xs font-semibold tracking-widest uppercase mb-6 text-center">
+          <p className="text-muted text-xs font-semibold tracking-[-0.01em] mb-6 text-center">
             The problem
           </p>
           <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg leading-[1.15] tracking-tight text-center mb-10 text-balance">
             Your next customer just asked AI —{" "}
-            <span className="serif-italic text-brand-orange">and got someone else&apos;s name.</span>
+            <span className="text-[#86868b]">and got someone else&apos;s name.</span>
           </h2>
           <div className="space-y-5 text-muted text-lg leading-relaxed">
             <p>
@@ -160,7 +160,7 @@ export default async function VerticalPage({
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-xs font-medium tracking-[0.18em] uppercase text-brand-orange mb-3 block">
+            <span className="text-xs font-medium tracking-[-0.01em] text-brand-orange mb-3 block">
               The playbook
             </span>
             <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg tracking-tight text-balance">
@@ -188,12 +188,12 @@ export default async function VerticalPage({
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className="rounded-2xl border border-brand-orange/20 bg-brand-orange/[0.06] p-8 sm:p-10">
-            <p className="text-center text-fg/40 text-xs uppercase tracking-widest font-semibold mb-8">
+            <p className="text-center text-fg/40 text-xs tracking-[-0.01em] font-semibold mb-8">
               Do the math
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-6 sm:gap-8 max-w-3xl mx-auto">
               <div className="text-center">
-                <p className="text-muted text-xs font-semibold uppercase tracking-widest mb-3">
+                <p className="text-muted text-xs font-semibold tracking-[-0.01em] mb-3">
                   Typical agency for {v.plural}
                 </p>
                 <p className="text-fg/40 text-4xl sm:text-5xl font-bold leading-none line-through decoration-fg/25 decoration-2">
@@ -206,7 +206,7 @@ export default async function VerticalPage({
                 →
               </div>
               <div className="text-center">
-                <p className="text-brand-orange text-xs font-semibold uppercase tracking-widest mb-3">
+                <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-3">
                   Alphaa
                 </p>
                 <p className="text-fg text-4xl sm:text-5xl font-bold leading-none">
@@ -233,7 +233,7 @@ export default async function VerticalPage({
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-xs font-medium tracking-[0.18em] uppercase text-brand-orange mb-3 block">
+            <span className="text-xs font-medium tracking-[-0.01em] text-brand-orange mb-3 block">
               FAQ
             </span>
             <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg tracking-tight">
@@ -255,7 +255,7 @@ export default async function VerticalPage({
       <section className="py-12 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <div className="glass-card rounded-2xl p-7 sm:p-8">
-            <span className="text-xs font-medium tracking-[0.18em] uppercase text-brand-orange mb-4 block">
+            <span className="text-xs font-medium tracking-[-0.01em] text-brand-orange mb-4 block">
               Related reading
             </span>
             {relatedPost && (
@@ -290,12 +290,12 @@ export default async function VerticalPage({
           <div
             className="rounded-3xl border border-brand-orange/20 p-12 sm:p-16 text-center relative overflow-hidden"
             style={{
-              background: "radial-gradient(ellipse at 50% 120%, rgb(var(--orange-rgb) / 0.18) 0%, transparent 65%)",
+              background: "transparent",
             }}
           >
             <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
               Find out if AI recommends your {v.noun} —{" "}
-              <span className="serif-italic text-brand-orange">or your competitor.</span>
+              <span className="text-[#86868b]">or your competitor.</span>
             </h2>
             <p className="text-muted text-lg sm:text-xl mb-9 max-w-xl mx-auto">
               Run a free scan and see exactly what ChatGPT, Claude, and Gemini say when customers

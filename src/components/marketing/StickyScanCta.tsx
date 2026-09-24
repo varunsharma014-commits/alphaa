@@ -24,11 +24,10 @@ export function StickyScanCta({ href = "#scan-input" }: { href?: string }) {
         visible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0 pointer-events-none"
       }`}
     >
-      <div className="w-full flex items-center gap-2 rounded-2xl border border-line/10 bg-bg-secondary/95 backdrop-blur-md p-2 shadow-2xl">
+      <div className="w-full flex items-center gap-2 rounded-full border border-black/[0.06] bg-[rgba(251,251,253,0.85)] backdrop-blur-[20px] backdrop-saturate-[1.8] p-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.10)]">
         <Link
           href={href}
-          className="flex-1 flex items-center justify-center py-3 px-4 rounded-xl font-semibold text-white text-sm"
-          style={{ background: "linear-gradient(135deg, #0071e3 0%, #0058b0 100%)" }}
+          className="flex-1 flex items-center justify-center py-3 px-4 rounded-full text-white text-[17px] bg-[#0071e3] active:bg-[#006edb]"
         >
           Run my free AI scan →
         </Link>
@@ -36,7 +35,7 @@ export function StickyScanCta({ href = "#scan-input" }: { href?: string }) {
           type="button"
           onClick={() => setDismissed(true)}
           aria-label="Dismiss"
-          className="flex items-center justify-center w-9 h-9 rounded-xl text-fg/40 hover:text-fg transition-colors"
+          className="flex items-center justify-center w-9 h-9 rounded-full text-fg/40 hover:text-fg transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
