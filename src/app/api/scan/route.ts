@@ -274,8 +274,13 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
           const d = c.domain ?? (await findCompetitorDomain(c.name, input.city))
           if (d && d.replace(/^www\./, "") !== new URL(input.websiteUrl.startsWith("http") ? input.websiteUrl : `https://${input.websiteUrl}`).hostname.replace(/^www\./, "")) rivalDomains.push(d)
         }
+        // /start sends "your area" when it couldn't read a city off the site;
+        // the profile's customer question usually names it ("…dentist in Louisville, Kentucky?").
+        const placeholder = !input.city || /^your area$/i.test(input.city.trim())
+        const fromQuery = profile?.query?.match(/\bin ([A-Z][^?,]+?)(?:,|\?|$)/)?.[1]?.trim() ?? ""
+        const checkCity = placeholder ? fromQuery : input.city
         siteChecks = await Promise.race([
-          checkSites(input.websiteUrl, rivalDomains, isLocal, input.city ?? ""),
+          checkSites(input.websiteUrl, rivalDomains, isLocal, checkCity),
           new Promise<null>((r) => setTimeout(() => r(null), 32000)),
         ])
       } catch {

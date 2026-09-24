@@ -404,7 +404,7 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
   const title = $("title").first().text().trim()
   const h1s = $("h1").map((_, h) => $(h).text().trim()).get().filter(Boolean)
   if (opts.isLocal) {
-    const city = (opts.city || "").split(",")[0].trim()
+    const city = /^your area$/i.test((opts.city || "").trim()) ? "" : (opts.city || "").split(",")[0].trim()
     if (city.length >= 3) {
       const re = new RegExp(`\\b${city.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i")
       const inTop = re.test(title) || h1s.some((h) => re.test(h))
