@@ -136,22 +136,26 @@
 .ap-feature__slide .ap-phone__screen { min-height: 470px; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
 /* ── Rail: horizontal cards with (+) ── */
-.ap-railhead { max-width: 1024px; margin: 0 auto; padding: 0 22px; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+.ap-railhead { max-width: 1024px; margin: 0 auto; padding: 0 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.ap-railhead .ap-link { font-size: 19px; }
 .ap-railhead .ap-h2 { margin: 0; padding: 0; text-align: left; }
 .ap-rail { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: max(22px, calc((100vw - 980px) / 2)); padding: 48px max(22px, calc((100vw - 980px) / 2)) 24px; scrollbar-width: none; }
 .ap-rail::-webkit-scrollbar { display: none; }
-.ap-railcard { position: relative; flex: 0 0 min(372px, 82vw); min-height: 500px; background: #fff; border-radius: 28px; padding: 30px 30px 26px; scroll-snap-align: start; display: flex; flex-direction: column; overflow: hidden; transition: transform .6s cubic-bezier(.28,.11,.32,1), box-shadow .6s cubic-bezier(.28,.11,.32,1); }
+.ap-railcard { position: relative; flex: 0 0 min(372px, 82vw); min-height: 540px; background: #fff; border-radius: 28px; padding: 32px 32px 0; scroll-snap-align: start; display: flex; flex-direction: column; overflow: hidden; transition: transform .6s cubic-bezier(.28,.11,.32,1), box-shadow .6s cubic-bezier(.28,.11,.32,1); }
 .ap-railcard:hover { transform: scale(1.01); box-shadow: 0 14px 40px rgba(0,0,0,0.07); }
 .ap-railcard h3 { font-size: 28px; line-height: 1.14; font-weight: 600; letter-spacing: 0.007em; margin: 8px 0 0; }
 .ap-railcard > p { font-size: 17px; line-height: 1.47; margin: 10px 0 0; color: #1d1d1f; }
-.ap-railcard__art { margin-top: auto; border-radius: 20px; padding: 24px 20px; display: flex; justify-content: center; align-items: center; min-height: 200px; }
+/* Full-bleed picture: same height on every card, flush to the card bottom,
+   so the (+) sits inside it like apple.com. */
+.ap-railcard__art { margin: auto -32px 0; height: 264px; padding: 28px 32px 64px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+.ap-railcard__art > * { max-width: 100%; }
 .ap-tint--mist { background: #eef2fa; } .ap-tint--sky { background: #e3effc; } .ap-tint--peach { background: #fdf0e8; } .ap-tint--sage { background: #e8f4ed; } .ap-tint--lavender { background: #eeedf8; }
-.ap-plus { position: absolute; right: 22px; bottom: 22px; z-index: 3; width: 36px; height: 36px; border-radius: 50%; border: 0; background: #1d1d1f; color: #fff; font-size: 22px; line-height: 1; cursor: pointer; transition: transform .3s ease, background-color .2s ease; }
+.ap-plus { position: absolute; right: 20px; bottom: 20px; z-index: 3; width: 36px; height: 36px; border-radius: 50%; border: 0; background: #1d1d1f; color: #fff; font-size: 22px; line-height: 1; cursor: pointer; transition: transform .3s ease, background-color .2s ease; }
 .ap-plus:hover { background: #333336; transform: scale(1.06); }
-.ap-railcard__more { position: absolute; inset: 0; z-index: 2; background: #fff; padding: 30px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .45s cubic-bezier(.28,.11,.32,1), transform .45s cubic-bezier(.28,.11,.32,1); }
+.ap-railcard__more { position: absolute; inset: 0; z-index: 2; background: #fff; padding: 32px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .45s cubic-bezier(.28,.11,.32,1), transform .45s cubic-bezier(.28,.11,.32,1); }
 .ap-railcard__more.is-on { opacity: 1; transform: none; pointer-events: auto; }
 .ap-railcard__more p { font-size: 19px; line-height: 1.42; margin-top: 16px; }
-.ap-railnav { max-width: 1024px; margin: 8px auto 0; padding: 0 22px; display: flex; justify-content: flex-end; gap: 14px; }
+.ap-railnav { max-width: 1024px; margin: 12px auto 0; padding: 0 22px; display: flex; justify-content: flex-end; gap: 14px; }
 .ap-railnav button { width: 36px; height: 36px; border-radius: 50%; border: 0; background: #e8e8ed; color: #1d1d1f; font-size: 22px; line-height: 1; cursor: pointer; transition: background-color .2s ease; }
 .ap-railnav button:hover { background: #dcdce1; }
 
@@ -200,7 +204,6 @@
   .ap-compare__rows { grid-template-columns: 1fr; gap: 20px; }
 }
 @media (max-width: 734px) {
-  .ap-railhead { flex-direction: column; align-items: flex-start; }
   .ap-seg button { min-width: 0; padding: 12px 20px; font-size: 17px; }
   .ap-stepcard__body { padding: 28px 26px 34px; }
 }
