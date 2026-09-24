@@ -25,7 +25,7 @@ export function FloatingCta() {
       }`}
     >
       <Link
-        href="/scan"
+        href="/start"
         className="w-full flex flex-col items-center justify-center py-3.5 px-6 rounded-2xl font-semibold text-white text-sm shadow-2xl"
         style={{ background: "linear-gradient(135deg, #0071e3 0%, #0058b0 100%)" }}
       >

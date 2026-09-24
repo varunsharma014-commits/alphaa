@@ -12,7 +12,7 @@ const navLinks = [
   { href: "/case-studies", label: "Case studies" },
   { href: "/blog", label: "Blog" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/scan", label: "Free scan" },
+  { href: "/start", label: "Free check" },
 ]
 
 export function MarketingNav() {
@@ -75,8 +75,8 @@ export function MarketingNav() {
             >
               Login
             </Link>
-            <OrangePillButton href="/scan" size="sm">
-              Get free scan →
+            <OrangePillButton href="/start" size="sm">
+              Meet your agent →
             </OrangePillButton>
           </div>
 
@@ -114,8 +114,8 @@ export function MarketingNav() {
             >
               Login
             </Link>
-            <OrangePillButton href="/scan" className="mt-2 w-full justify-center">
-              Get free scan →
+            <OrangePillButton href="/start" className="mt-2 w-full justify-center">
+              Meet your agent →
             </OrangePillButton>
           </div>
         </div>

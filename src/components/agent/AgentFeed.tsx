@@ -24,6 +24,7 @@ export function AgentFeed({
   onEmail,
   onDocEdit,
   onSettled,
+  autoScroll = true,
 }: {
   messages: Message[]
   animate?: Animate
@@ -32,6 +33,7 @@ export function AgentFeed({
   onEmail?: (email: string) => Promise<string | null>
   onDocEdit?: (docId: string, text: string) => void
   onSettled?: () => void
+  autoScroll?: boolean // false for embedded demos that must not move the page
 }) {
   const [cursor, setCursor] = useState<Cursor>(() =>
     animate === "none" ? { m: Number.MAX_SAFE_INTEGER, b: 0, pause: false } : { m: 0, b: 0, pause: true }
@@ -86,9 +88,10 @@ export function AgentFeed({
   }, [cursor, messages.length, onSettled])
 
   useEffect(() => {
+    if (!autoScroll) return
     if (animate !== "type" && messages.length <= initialCount.current && !busy) return
     endRef.current?.scrollIntoView({ block: "end", behavior: "smooth" })
-  }, [cursor, busy, messages.length, animate])
+  }, [cursor, busy, messages.length, animate, autoScroll])
 
   function pick(chip: Chip, msgId: string) {
     setPicked((p) => ({ ...p, [msgId]: true }))
