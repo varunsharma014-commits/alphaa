@@ -335,25 +335,38 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
     const summary =
       named === 0 ? `${checked === 4 ? "None" : `None of the ${checked}`} of them named you.` :
       named === checked ? "All of them named you. That’s rare — now the job is staying there." :
+      named >= checked - 1 ? `${named} of ${checked} named you. Strong. The one that didn’t is where I start.` :
       `${named} of ${checked} named you.`
     blocks.push({ kind: "text", text: summary })
     out.push(agent(blocks))
   }
 
-  // 3. Who they named instead.
+  // 3. Who else they named. The framing depends on whether you were named too.
   const insights = isRecord(result.ogData) && isRecord((result.ogData as Record<string, unknown>).insights)
     ? ((result.ogData as Record<string, unknown>).insights as Record<string, unknown>)
     : null
   const details = Array.isArray(insights?.competitorDetails) ? (insights!.competitorDetails as { name: string; aiMentions: number; googleRank: number | null }[]) : []
   const rivals = details.filter((d) => d.name && d.name.toLowerCase() !== businessName.toLowerCase() && d.aiMentions > 0).sort((a, b) => b.aiMentions - a.aiMentions).slice(0, 3)
-  if (rivals.length > 0 && named < checked) {
+  if (rivals.length > 0 && checked > 0) {
     const top = rivals[0]
-    out.push(
-      agent([
-        { kind: "text", text: `They recommended ${rivals.map((r) => r.name).join(", ")} instead. ${top.name} was named by ${top.aiMentions} of ${checked}${top.googleRank ? ` and sits at #${top.googleRank} on Google` : ""}.` },
-        { kind: "text", text: "That’s not because they’re better. It’s because AI can find the facts about them — hours, insurance, prices, what makes them different — and can’t find yours." },
-      ])
-    )
+    const rank = top.googleRank ? ` and sits at #${top.googleRank} on Google` : ""
+    if (named === 0) {
+      out.push(
+        agent([
+          { kind: "text", text: `They recommended ${rivals.map((r) => r.name).join(", ")} instead. ${top.name} was named by ${top.aiMentions} of ${checked}${rank}.` },
+          { kind: "text", text: "That’s not because they’re better. It’s because AI can find the facts about them — hours, prices, what makes them different — and can’t find yours." },
+        ])
+      )
+    } else if (named < checked) {
+      out.push(
+        agent([
+          { kind: "text", text: `Where you were missing, they named ${rivals.map((r) => r.name).join(", ")}. ${top.name} came up ${top.aiMentions} of ${checked} times${rank}.` },
+          { kind: "text", text: "Every answer you’re not in is a customer hearing a different name. The gap is usually facts AI can find about them and not about you." },
+        ])
+      )
+    } else {
+      out.push(agent([{ kind: "text", text: `You were named every time. Also in the mix: ${rivals.map((r) => r.name).join(", ")}. The job now is staying ahead of them.` }]))
+    }
   }
 
   // 4. Where AI looks.
@@ -386,11 +399,17 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
     )
   }
 
-  // 6. First fix — only when the audit is real, never the placeholder set.
+  // 6. First fix — only when the audit is real (never the placeholder set) and
+  //    only if it doesn't contradict what the engines just said.
   const fallback = isRecord(result.ogData) && (result.ogData as Record<string, unknown>).auditFallback === true
-  const issues = Array.isArray(result.issues) ? result.issues : []
-  const first = issues.find((i) => isRecord(i) && i.severity === "critical") ?? issues[0]
-  if (!fallback && isRecord(first) && typeof first.headline === "string") {
+  const issues: unknown[] = Array.isArray(result.issues) ? result.issues : []
+  const namedLabels = evidence.filter((x) => x.ev?.appeared).map((x) => (x.engine === "chatgpt" ? "chatgpt" : x.engine))
+  const contradicts = (i: Record<string, unknown>) => {
+    const txt = `${i.headline ?? ""} ${i.explanation ?? ""}`.toLowerCase()
+    return namedLabels.some((e) => txt.includes(e)) || (named === checked && checked > 0 && /\bai\b|assistant/.test(txt))
+  }
+  const first = issues.filter(isRecord).find((i) => !contradicts(i) && (i.severity === "critical" || i.severity === "warning")) ?? issues.filter(isRecord).find((i) => !contradicts(i))
+  if (!fallback && named < checked && first && typeof first.headline === "string") {
     out.push(
       agent([
         { kind: "text", text: `First thing I’d fix: ${first.headline.replace(/\.$/, "")}.` },
