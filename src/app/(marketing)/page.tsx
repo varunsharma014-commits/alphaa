@@ -50,7 +50,7 @@ export default function HomePage() {
 
       {/* Hero — the agent, not the dashboard, is the product. */}
       <section className="ag-hero">
-        <div className="ag-hero__eyebrow">{BRAND.agentName}. An AI agent for your business.</div>
+        <div className="ag-hero__eyebrow">Get customers from ChatGPT, Claude, Perplexity and other AI.</div>
         <h1>Get Recommended by ChatGPT, Claude, Gemini and other AI.</h1>
         <p className="ag-hero__sub">
           Meet {BRAND.agentName}: the AI agent that works 24/7 to get your business recommended on ChatGPT, Gemini, Claude and Perplexity. You watch. It does the work.
