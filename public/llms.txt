@@ -74,6 +74,11 @@ Long-form comparison guides:
 - Keeps your Google Business Profile active with posts and review replies you approve.
 - Sends one short plain-English note: what it did, what moved, what it needs a yes on.
 
+## Website changes
+
+- WordPress sites: the free Alphaa Connector plugin lets the agent publish approved FAQ pages, structured data, llms.txt and AI-crawler robots.txt rules, with one-tap undo, and pings Bing via IndexNow.
+- Other sites: the agent emails the exact code and instructions to the owner's web person, or the Full Service team installs it.
+
 ## How it works
 
 AI assistants answer from what they've indexed plus live web search. They favour businesses whose facts are clear, consistent and easy to cite across the web. Alphaa improves those public signals. It cannot edit an AI model directly, and it does not guarantee rankings or timelines.

@@ -10,7 +10,7 @@ export const plans = [
       "1 business location",
       "2 Google Business Profile posts per week",
       "2 AI-optimized blog posts per month",
-      "AI visibility tracking (Google, ChatGPT, Perplexity, Gemini)",
+      "Weekly AI visibility checks (ChatGPT, Gemini, Claude, Perplexity)",
       "Weekly performance email",
       "Review monitoring",
       "Email support",
