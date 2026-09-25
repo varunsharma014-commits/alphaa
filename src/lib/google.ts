@@ -20,12 +20,20 @@ function createOAuth2Client(): OAuth2Client {
   )
 }
 
-export function getGoogleAuthUrl(state: string): string {
+// analytics.readonly is back only for the AI-referral numbers in the weekly
+// briefing, and only once the scope is re-verified on the OAuth consent
+// screen — flip GA_SCOPE_ENABLED=1 after Google approves it.
+export const GA_SCOPE = 'https://www.googleapis.com/auth/analytics.readonly'
+export const gaScopeEnabled = () => process.env.GA_SCOPE_ENABLED === '1'
+
+export function getGoogleAuthUrl(state: string, opts: { analytics?: boolean } = {}): string {
   const client = createOAuth2Client()
+  const scope = opts.analytics && gaScopeEnabled() ? [...SCOPES, GA_SCOPE] : SCOPES
   return client.generateAuthUrl({
     access_type: 'offline',
-    scope: SCOPES,
+    scope,
     prompt: 'consent',
+    include_granted_scopes: true,
     state,
   })
 }

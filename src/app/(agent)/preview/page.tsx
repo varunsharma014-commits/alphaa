@@ -29,6 +29,24 @@ export default function PreviewPage() {
       { kind: "sources", items: [{ name: "zocdoc.com", detail: "Best Dentists in Austin, TX", status: "Not on it", ok: false }, { name: "yelp.com", detail: "Top 10 Best Dentist near Zilker", status: "You’re on it", ok: true }, { name: "austinchronicle.com", detail: "Best of Austin 2026 — Dentist", status: "Not on it", ok: false }] },
       { kind: "chips", items: [{ label: "Show me every page", action: { type: "link", href: "/dashboard/citations" }, primary: false }] },
     ]),
+    agent([
+      { kind: "divider", text: "Your results" },
+      { kind: "text", text: "AI assistants sent 4 people to your website this week — ChatGPT 3, Perplexity 1. (up from 1)", big: true },
+      { kind: "text", text: "From your Google listing: 12 calls (up from 9), 18 requests for directions and 31 website visits." },
+    ]),
+    agent([
+      { kind: "text", text: "I wrote the structured facts AI reads about you.", big: true },
+      { kind: "chips", items: [{ label: "Email it to my web person", action: { type: "handoff", what: "schema" }, primary: true }, { label: "Have our team do it", action: { type: "link", href: "/dashboard/concierge" } }, { label: "Connect my website", action: { type: "wp-connect" } }] },
+    ]),
+    agent([
+      { kind: "text", text: "Reviews are one of the strongest things AI weighs before naming a business." },
+      { kind: "chips", items: [{ label: "Ask a customer for a review", action: { type: "review-ask" }, primary: true }] },
+    ]),
+    agent([
+      { kind: "text", text: "1. Bing Places" },
+      { kind: "receipt", title: "Bing Places for Business", sub: "about 10 minutes", items: ["Go to bingplaces.com and sign in.", "Choose “Import from Google Business Profile”.", "Confirm and verify."] },
+      { kind: "chips", items: [{ label: "Open Bing Places", action: { type: "link", href: "https://www.bingplaces.com" } }, { label: "I’ve done it", action: { type: "setting", key: "bingPlacesDone", value: true, done: "Noted." }, primary: true }] },
+    ]),
     agent([{ kind: "receipt", title: "This week", sub: "14 things done", items: ["Asked the 4 AIs your 5 questions", "Published “Do you take Delta Dental?”", "Replied to 6 reviews", "Posted 2 Google updates"] }, { kind: "text", text: "Ask me about any of it below." }]),
   ]
   return (

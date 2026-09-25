@@ -186,6 +186,12 @@
 .ag-ask .ag-pill { padding: 12px 18px; font-size: 15px; }
 .ag-ask__fine { font-size: 12px; color: var(--ag-muted); margin: 10px 0 0; line-height: 1.4; }
 .ag-error { color: var(--ag-bad-text); font-size: 13px; margin-top: 8px; }
+.ag-form { display: grid; gap: 12px; }
+.ag-form__field label { margin-bottom: 6px; }
+.ag-form__field input { width: 100%; }
+.ag-form__check { display: flex !important; gap: 10px; align-items: flex-start; font-size: 14px !important; color: var(--ag-fg) !important; line-height: 1.4; margin: 0 !important; cursor: pointer; }
+.ag-form__check input { flex: none; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--ag-link); }
+.ag-form > .ag-pill { justify-self: start; }
 
 /* composer */
 .ag-composer { border: 1px solid var(--ag-line); border-radius: 18px; display: flex; align-items: center; padding: 6px 6px 6px 16px; background: var(--ag-card); box-shadow: var(--ag-shadow); }

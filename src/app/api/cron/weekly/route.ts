@@ -4,6 +4,7 @@ const ENGINE_NAMES: Record<string, string> = { chatgpt: "ChatGPT", gemini: "Gemi
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { getRoi, roiLines } from "@/lib/roi"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
@@ -169,7 +170,8 @@ Rules: state only what the data shows. If nothing changed, say so plainly and sa
 
   // 7. Send email
   try {
-    const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/reports`
+    const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/t/briefings`
+    const results = await getRoi(user.id).then(roiLines).catch(() => [] as string[])
     await sendEmail({
       to: user.email,
       subject: `Your weekly Alphaa report — ${businessName}`,
@@ -181,6 +183,7 @@ Rules: state only what the data shows. If nothing changed, say so plainly and sa
         visibilityDelta,
         keywordMovers,
         reportUrl,
+        results,
       }),
     })
 

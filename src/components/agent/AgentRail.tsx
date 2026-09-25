@@ -11,6 +11,7 @@ const CONVERSATIONS = [
   { href: "/dashboard/t/reviews", label: "Reviews" },
   { href: "/dashboard/t/site", label: "Site Schema & Code" },
   { href: "/dashboard/t/sources", label: "Source Tracking" },
+  { href: "/dashboard/t/listings", label: "Maps & Listings" },
   { href: "/dashboard/t/competitors", label: "Competitors" },
   { href: "/dashboard/t/briefings", label: "Weekly Briefings" },
 ]

@@ -363,6 +363,72 @@ export function EmailBlock({
   )
 }
 
+// ── inline multi-field form (web person, review request, review link) ──────
+
+export function FormBlock({
+  b,
+  onSubmit,
+}: {
+  b: Extract<Block, { kind: "form" }>
+  onSubmit: (formId: string, values: Record<string, string | boolean>) => Promise<string | null>
+}) {
+  const [values, setValues] = useState<Record<string, string | boolean>>(() =>
+    Object.fromEntries(b.fields.map((f) => [f.name, f.type === "checkbox" ? false : f.value ?? ""]))
+  )
+  const [busy, setBusy] = useState(false)
+  const [err, setErr] = useState<string | null>(null)
+  const [sent, setSent] = useState(false)
+  if (sent) return null
+  return (
+    <form
+      className="ag-ask ag-form"
+      onSubmit={async (e) => {
+        e.preventDefault()
+        const missing = b.fields.find((f) => f.required && (f.type === "checkbox" ? !values[f.name] : !String(values[f.name] ?? "").trim()))
+        if (missing) {
+          setErr(missing.type === "checkbox" ? "Tick the box to confirm." : `Add ${missing.label.toLowerCase()}.`)
+          return
+        }
+        setBusy(true)
+        setErr(null)
+        const problem = await onSubmit(b.formId, values)
+        setBusy(false)
+        if (problem) setErr(problem)
+        else setSent(true)
+      }}
+    >
+      {b.fields.map((f) => {
+        const id = `${b.formId}-${f.name}`
+        if (f.type === "checkbox") {
+          return (
+            <label key={f.name} htmlFor={id} className="ag-form__check">
+              <input id={id} type="checkbox" checked={!!values[f.name]} onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.checked }))} disabled={busy} />
+              <span>{f.label}</span>
+            </label>
+          )
+        }
+        return (
+          <div key={f.name} className="ag-form__field">
+            <label htmlFor={id}>{f.label}</label>
+            <input
+              id={id}
+              type={f.type}
+              inputMode={f.type === "email" ? "email" : f.type === "tel" ? "tel" : f.type === "url" ? "url" : undefined}
+              placeholder={f.placeholder}
+              value={String(values[f.name] ?? "")}
+              onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))}
+              disabled={busy}
+            />
+          </div>
+        )
+      })}
+      <button className="ag-pill ag-pill--blue" type="submit" disabled={busy}>{busy ? "Working…" : b.cta}</button>
+      {err && <div className="ag-error">{err}</div>}
+      {b.fine && <p className="ag-ask__fine">{b.fine}</p>}
+    </form>
+  )
+}
+
 export function Typing() {
   return (
     <div className="ag-msg">

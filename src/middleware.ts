@@ -26,6 +26,8 @@ const isPublicRoute = createRouteMatcher([
   "/api/webhooks/(.*)",
   "/api/cron/(.*)",
   "/api/integrations/sync",
+  "/api/connect/wp/hello",
+  "/api/connect/visit",
 ])
 
 const isAuthRoute = createRouteMatcher(["/login(.*)", "/signup(.*)"])

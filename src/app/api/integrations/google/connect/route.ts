@@ -21,7 +21,10 @@ export async function GET(request: NextRequest) {
       JSON.stringify({ userId: clerkId, nonce: crypto.randomUUID(), returnTo }),
     ).toString('base64url')
 
-    const authUrl = getGoogleAuthUrl(state)
+    const authUrl = getGoogleAuthUrl(state, { analytics: request.nextUrl.searchParams.get('analytics') === '1' })
+
+    // Agent chips navigate here directly (?go=1) rather than fetching JSON.
+    if (request.nextUrl.searchParams.get('go') === '1') return NextResponse.redirect(authUrl)
 
     return NextResponse.json({ authUrl })
   } catch (err) {

@@ -4,19 +4,27 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { AgentFeed, Composer } from "./AgentFeed"
-import { agent, user as userMsg, type Block, type Chip, type Message } from "@/lib/agent/types"
+import { agent, mid, user as userMsg, type Block, type Chip, type Message, type SiteOp } from "@/lib/agent/types"
 import type { EngineKey } from "@/lib/agent/types"
 import { siteCheckBlocks, describeSchemas } from "@/lib/agent/site-narration"
-import { citationBlocks } from "@/lib/agent/thread-blocks"
+import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
 
 type LiveResult = { engine: EngineKey; answer: string; appeared: boolean; mentioned: string[]; status: string }
 
 type Task = "site-check" | "citations" | "schema"
+type Prefs = { webPersonEmail: string | null; wpConnected: boolean }
+type Pending =
+  | { kind: "handoff"; what: SiteOp; title?: string; text?: string }
+  | { kind: "review" }
+  | { kind: "review-link" }
+
+const OP_NAME: Record<SiteOp, string> = { page: "the page", schema: "your structured facts", llms: "your llms.txt", robots: "the robots.txt fix" }
 const TOPIC_LINKS: { href: string; label: string }[] = [
   { href: "/dashboard", label: "Today" },
   { href: "/dashboard/t/reviews", label: "Reviews" },
   { href: "/dashboard/t/site", label: "Site Schema & Code" },
   { href: "/dashboard/t/sources", label: "Source Tracking" },
+  { href: "/dashboard/t/listings", label: "Maps & Listings" },
   { href: "/dashboard/t/competitors", label: "Competitors" },
   { href: "/dashboard/t/briefings", label: "Weekly Briefings" },
 ]
@@ -39,6 +47,25 @@ export function DashboardAgent({
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const docEdits = useRef<Record<string, string>>({})
+  const prefs = useRef<Prefs>({ webPersonEmail: null, wpConnected: false })
+  const pending = useRef<Record<string, Pending>>({})
+
+  async function loadPrefs() {
+    const r = await fetch("/api/agent/settings").then((x) => (x.ok ? x.json() : null)).catch(() => null)
+    if (r) prefs.current = { webPersonEmail: r.webPersonEmail ?? null, wpConnected: !!r.wpConnected }
+  }
+
+  // Who makes a website change happen: the agent itself when the site is
+  // connected; otherwise the owner's web person (by email) or our team.
+  function siteChips(op: SiteOp, extra: { title?: string; text?: string; docId?: string } = {}): Chip[] {
+    const handoff: Chip = { label: "Email it to my web person", action: { type: "handoff", what: op, ...extra } }
+    if (prefs.current.wpConnected) return [{ label: "Publish it to my site", action: { type: "wp-push", op, ...extra }, primary: true }, handoff]
+    return [
+      { ...handoff, primary: true },
+      { label: "Have our team do it", action: { type: "link", href: "/dashboard/concierge" } },
+      { label: "Connect my website", action: { type: "wp-connect" } },
+    ]
+  }
   const inputRef = useRef<HTMLInputElement>(null)
 
   const push = useCallback((...m: Message[]) => setMessages((prev) => [...prev, ...m]), [])
@@ -65,13 +92,28 @@ export function DashboardAgent({
       clearInterval(t)
       if (!ok || !data.check) return replace(id, agent([{ kind: "text", text: data.error ?? "I couldn’t read your site just now. I’ll try again shortly." }, { kind: "chips", items: [{ label: "Try again", action: { type: "run", task: "site-check" }, primary: true }] }]))
       replace(id, agent(siteCheckBlocks(data.check)))
+      const failed = new Set(data.check.checks.filter((c) => c.ok === false).map((c) => c.key as string))
+      if (failed.has("aibots") || failed.has("robots")) {
+        push(agent([
+          { kind: "text", text: "First, the door: some AI search assistants are being turned away from your site.", big: true },
+          { kind: "text", text: "I wrote robots.txt rules that let ChatGPT, Claude and Perplexity’s search crawlers in. If a firewall like Cloudflare is the blocker, your web person needs to allow them there too — I include that in the instructions." },
+          { kind: "chips", items: siteChips("robots") },
+        ]))
+      }
       await runTask("schema")
       if (data.userId) {
         const llms = `${window.location.origin}/llms/${data.userId}`
         push(agent([
-          { kind: "text", text: "I also keep the file AI assistants read first — your llms.txt — up to date for you, hosted here:" },
-          { kind: "doc", title: "llms.txt · kept current by Alphaa", meta: "live", text: llms },
-          { kind: "chips", items: [{ label: "Copy the link for my web person", action: { type: "copy", text: llms, done: "Copied. Your web person points yoursite.com/llms.txt at it — one redirect." }, primary: false }] },
+          { kind: "text", text: "I also keep the file AI assistants read first — your llms.txt — up to date for you." },
+          { kind: "doc", title: "llms.txt · kept current by Alphaa", meta: "hosted by Alphaa", text: llms },
+          { kind: "chips", items: [...siteChips("llms"), { label: "Copy the link", action: { type: "copy", text: llms, done: "Copied." } }] },
+        ]))
+      }
+      if (!prefs.current.wpConnected) {
+        push(agent([
+          { kind: "text", text: "Want me to make these changes myself?" },
+          { kind: "text", text: "If your site runs on WordPress, install my plugin once. After that, every fix is one tap — “Publish it to my site” — and every change has an Undo." },
+          { kind: "chips", items: [{ label: "Connect my WordPress site", action: { type: "wp-connect" }, primary: true }, { label: "Not WordPress", action: { type: "say", text: "No problem. Tap “Email it to my web person” on any fix and I’ll send them the exact code, where it goes and how to check it — or our team can do it for you on Full Service." } }] },
         ]))
       }
       return
@@ -91,11 +133,8 @@ export function DashboardAgent({
       push(agent([
         { kind: "text", text: "I wrote the structured facts AI reads about you.", big: true },
         { kind: "receipt", title: "What it tells AI", sub: `${schemas.length} ${schemas.length === 1 ? "block" : "blocks"} · ready to install`, items: describeSchemas(schemas) },
-        { kind: "text", text: "It goes in your site’s header once. You don’t touch it — pick who installs it:" },
-        { kind: "chips", items: [
-          { label: "Have a person install it", action: { type: "link", href: "/dashboard/concierge" }, primary: true },
-          { label: "Copy it for my web person", action: { type: "copy", text: code, done: "Copied. Your web person pastes it into the site header — that’s the whole job." } },
-        ] },
+        { kind: "text", text: prefs.current.wpConnected ? "It goes in your site’s header once. Say the word and I’ll add it:" : "It goes in your site’s header once. You don’t touch it — pick who installs it:" },
+        { kind: "chips", items: [...siteChips("schema"), { label: "Copy the code", action: { type: "copy", text: code, done: "Copied." } }] },
       ]))
       return
     }
@@ -107,6 +146,7 @@ export function DashboardAgent({
       clearInterval(t)
       if (!ok || !data.report || !data.report.targets?.length) return replace(id, agent([{ kind: "text", text: data.error ?? "The search didn’t come back this time. I’ll run it again on my next pass." }, { kind: "chips", items: [{ label: "Try again now", action: { type: "run", task: "citations" }, primary: true }] }]))
       replace(id, agent(citationBlocks(data.report, context?.businessType ?? null, context?.city ?? null, new Date())))
+      push(...discussionMessages(data.report))
     }
   }
 
@@ -115,6 +155,7 @@ export function DashboardAgent({
     if (started.current) return
     started.current = true
     ;(async () => {
+      await loadPrefs()
       for (const t of autorun) await runTask(t)
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,7 +187,9 @@ export function DashboardAgent({
     const a = chip.action
     switch (a.type) {
       case "link":
-        if (a.href.startsWith("/api/")) window.location.href = a.href
+        if (/^(sms|mailto|tel):/.test(a.href)) window.location.href = a.href
+        else if (a.href.startsWith("http")) window.open(a.href, "_blank", "noopener")
+        else if (a.href.startsWith("/api/")) window.location.href = a.href
         else router.push(a.href)
         return
       case "copy":
@@ -163,18 +206,128 @@ export function DashboardAgent({
       case "draft": {
         push(userMsg(chip.label))
         setBusy(true)
-        const { ok, data } = await post<{ title?: string; text?: string }>("/api/agent/draft", { topic: a.topic, competitor: a.competitor })
+        const { ok, data } = await post<{ title?: string; text?: string }>("/api/agent/draft", { topic: a.topic, competitor: a.competitor, mode: a.mode, url: a.url })
         setBusy(false)
         if (!ok || !data.text) return fail(data.error ?? "I couldn’t write that just now.")
         const docId = `draft-${Date.now()}`
+        if (a.mode === "reply") {
+          const where = a.url ? new URL(a.url).hostname.replace(/^www\./, "") : "the discussion"
+          push(agent([
+            { kind: "text", text: `Here’s a reply you could post on ${where}. It helps first and says who you are — communities (and AI) trust that. Edit anything, then post it from your own account.` },
+            { kind: "doc", title: `Your reply · ${where}`, meta: "draft · you post it", text: data.text, docId, editable: true },
+            { kind: "chips", items: [
+              { label: "Copy it", action: { type: "copy", text: data.text, done: "Copied. Paste it in the thread — and check the community’s rules on business posts first." }, primary: true },
+              ...(a.url ? [{ label: "Open the discussion", action: { type: "link", href: a.url } } as Chip] : []),
+            ] },
+          ]))
+          return
+        }
         push(agent([
-          { kind: "text", text: `Here’s the section I’d add to your site — written from your facts. Anything in [brackets] is a detail only you know.` },
+          { kind: "text", text: `Here’s the section I’d add to your site — written from your facts. Anything in [brackets] is a detail only you know: tap the draft to fill it in before it goes live.` },
           { kind: "doc", title: data.title ?? a.topic, meta: "draft · not published", text: data.text, docId, editable: true },
-          { kind: "chips", items: [
-            { label: "Approve — have a person publish it", action: { type: "link", href: "/dashboard/concierge" }, primary: true },
-            { label: "Copy it", action: { type: "copy", text: data.text, done: "Copied." } },
-          ] },
+          { kind: "chips", items: [...siteChips("page", { title: data.title ?? a.topic, text: data.text, docId }), { label: "Copy it", action: { type: "copy", text: data.text, done: "Copied." } }] },
         ]))
+        return
+      }
+      case "wp-connect": {
+        setBusy(true)
+        const st = await fetch("/api/connect/wp/status").then((r) => r.json()).catch(() => null) as { connected?: boolean; reachable?: boolean; siteUrl?: string; key?: string; error?: string } | null
+        setBusy(false)
+        if (!st || (!st.connected && !st.key)) return fail("I couldn’t check your connection just now. Try again in a minute.")
+        if (st.connected && st.reachable) {
+          prefs.current.wpConnected = true
+          push(agent([
+            { kind: "text", text: `I’m connected to ${new URL(st.siteUrl!).hostname}. ✓`, big: true },
+            { kind: "text", text: "From now on, “Publish it to my site” puts a fix live straight away, and every change comes with an Undo. Want me to start with the basics?" },
+            { kind: "chips", items: [
+              { label: "Add my structured facts", action: { type: "wp-push", op: "schema" }, primary: true },
+              { label: "Publish my llms.txt", action: { type: "wp-push", op: "llms" } },
+              { label: "Let AI search bots in", action: { type: "wp-push", op: "robots" } },
+            ] },
+          ]))
+          return
+        }
+        if (st.connected && !st.reachable) {
+          push(agent([
+            { kind: "text", text: `I can’t reach the plugin on ${st.siteUrl ? new URL(st.siteUrl).hostname : "your site"} right now.` },
+            { kind: "text", text: `WordPress said: ${st.error ?? "no answer"}. A security plugin may be blocking the WordPress REST API, or the Alphaa plugin was deactivated. Check it’s active under Plugins, then try again.` },
+            { kind: "chips", items: [{ label: "Check again", action: { type: "wp-connect" }, primary: true }, { label: "Email my web person instead", action: { type: "handoff", what: "schema" } }] },
+          ]))
+          return
+        }
+        push(agent([
+          { kind: "text", text: "Connect your WordPress site — about two minutes, once.", big: true },
+          { kind: "receipt", title: "Three steps", sub: "you need to be a WordPress admin", items: [
+            "Download my plugin (a small zip file).",
+            "In WordPress: Plugins → Add New → Upload Plugin → choose the zip → Install → Activate.",
+            "Settings → Alphaa → paste the key below → Connect.",
+          ] },
+          { kind: "doc", title: "Your connection key", meta: "private — only for your site", text: st.key ?? "" },
+          { kind: "chips", items: [
+            { label: "Download the plugin", action: { type: "link", href: `${window.location.origin}/downloads/alphaa-connector.zip` }, primary: true },
+            { label: "Copy my key", action: { type: "copy", text: st.key ?? "", done: "Key copied. Paste it in Settings → Alphaa." } },
+            { label: "I’ve connected it", action: { type: "wp-connect" } },
+          ] },
+          { kind: "text", text: "Nothing goes live until you approve it here, pages are never deleted (Undo moves them to WordPress’s Trash), and the plugin only counts visitors who arrive from an AI assistant — no cookies, nothing personal." },
+        ]))
+        return
+      }
+      case "wp-push": {
+        const text = (a.docId && docEdits.current[a.docId]) || a.text
+        push(userMsg(`Publish ${OP_NAME[a.op]}`))
+        setBusy(true)
+        const { ok, data } = await post<{ url?: string; changeId?: string; indexed?: boolean; shadowed?: boolean }>("/api/connect/wp/push", { op: a.op, title: a.title, text })
+        setBusy(false)
+        if (!ok || !data.url) return fail(data.error ?? "Your site didn’t accept it. Nothing changed.")
+        const blocks: Block[] = [
+          { kind: "text", text: `Done — it’s live on your site.`, big: true },
+          { kind: "doc", title: "Live at", meta: "published", text: data.url },
+        ]
+        if (data.indexed) blocks.push({ kind: "text", text: "I also told Bing it changed (IndexNow), so ChatGPT’s search can pick it up sooner." })
+        if (data.shadowed) blocks.push({ kind: "text", text: `Heads-up: your server already has its own ${a.op === "llms" ? "llms.txt" : "robots.txt"} file, and that file wins over mine. Your web person needs to update or remove it — I can email them.` })
+        blocks.push({ kind: "chips", items: [
+          { label: "Open it", action: { type: "link", href: data.url } },
+          ...(data.shadowed ? [{ label: "Email my web person", action: { type: "handoff", what: a.op } } as Chip] : []),
+          { label: "Undo", action: { type: "wp-undo", changeId: data.changeId! } },
+        ] })
+        push(agent(blocks))
+        return
+      }
+      case "wp-undo": {
+        push(userMsg("Undo"))
+        setBusy(true)
+        const { ok, data } = await post("/api/connect/wp/undo", { changeId: a.changeId })
+        setBusy(false)
+        if (!ok) return fail(data.error ?? "I couldn’t undo it just now.")
+        push(agent([{ kind: "text", text: "Undone. Your site is back the way it was. (Pages go to WordPress’s Trash, so you can restore them there too.)" }]))
+        return
+      }
+      case "handoff": {
+        const text = (a.docId && docEdits.current[a.docId]) || a.text
+        const formId = mid("handoff")
+        pending.current[formId] = { kind: "handoff", what: a.what, title: a.title, text }
+        push(userMsg(chip.label), agent([
+          { kind: "text", text: `I’ll email ${OP_NAME[a.what]} to your web person with exactly where it goes and how to check it. Their replies come to you.` },
+          { kind: "form", formId, fields: [{ name: "email", label: "Your web person’s email", type: "email", placeholder: "dev@example.com", value: prefs.current.webPersonEmail ?? "", required: true }], cta: "Send it", fine: "I’ll remember this address for next time." },
+        ]))
+        return
+      }
+      case "review-ask": {
+        const formId = mid("review")
+        pending.current[formId] = { kind: "review" }
+        push(userMsg(chip.label), agent([
+          { kind: "text", text: "Who should I ask? Everyone gets the same friendly note — Google doesn’t allow asking only happy customers." },
+          { kind: "form", formId, fields: [
+            { name: "name", label: "Their first name", type: "text", placeholder: "Maria", required: true },
+            { name: "contact", label: "Email or mobile number", type: "text", placeholder: "maria@example.com or (555) 123-4567", required: true },
+            { name: "consent", label: "They’re a real customer and happy to hear from me.", type: "checkbox", required: true },
+          ], cta: "Ask for a review", fine: "Email goes from your business name, and replies come to you. For a mobile number, I write the text and you send it from your phone. I never ask the same person twice." },
+        ]))
+        return
+      }
+      case "setting": {
+        await post("/api/agent/settings", { [a.key]: a.value })
+        push(userMsg(chip.label), agent([{ kind: "text", text: a.done }]))
         return
       }
       case "say":
@@ -230,6 +383,51 @@ export function DashboardAgent({
     }
   }
 
+  async function onForm(formId: string, values: Record<string, string | boolean>): Promise<string | null> {
+    const p = pending.current[formId]
+    if (!p) return "This form expired — tap the button again."
+    if (p.kind === "handoff") {
+      const email = String(values.email ?? "").trim()
+      const { ok, data } = await post("/api/agent/handoff", { what: p.what, email, title: p.title, text: p.text })
+      if (!ok) return data.error ?? "It didn’t send. Try again."
+      prefs.current.webPersonEmail = email
+      push(agent([{ kind: "text", text: `Sent to ${email}. Their reply comes straight to you, and I’ll re-check your site on my next pass to confirm it’s live.` }]))
+      return null
+    }
+    if (p.kind === "review-link") {
+      const { ok, data } = await post("/api/agent/settings", { reviewLink: String(values.link ?? "").trim() })
+      if (!ok) return data.error ?? "That doesn’t look like a link."
+      push(agent([{ kind: "text", text: "Got it. Now I can ask customers for reviews." }, { kind: "chips", items: [{ label: "Ask a customer for a review", action: { type: "review-ask" }, primary: true }] }]))
+      return null
+    }
+    const { ok, data } = await post<{ via?: "email" | "sms"; smsHref?: string; message?: string; needLink?: boolean }>("/api/agent/review-request", { name: values.name, contact: values.contact, consent: values.consent === true })
+    if (data.needLink) {
+      const fid = mid("revlink")
+      pending.current[fid] = { kind: "review-link" }
+      push(agent([
+        { kind: "text", text: "I need your Google review link first. Connect Google and I’ll fetch it — or paste it here (Google Business Profile → “Ask for reviews” → copy the link)." },
+        { kind: "form", formId: fid, fields: [{ name: "link", label: "Your Google review link", type: "url", placeholder: "https://g.page/r/…", required: true }], cta: "Save it" },
+      ]))
+      return null
+    }
+    if (!ok) return data.error ?? "That didn’t work. Try again."
+    const first = String(values.name).split(/\s+/)[0]
+    if (data.via === "sms" && data.smsHref) {
+      push(agent([
+        { kind: "text", text: `Here’s the text for ${first}. It comes from your own number, so they know it’s you.` },
+        { kind: "doc", title: `Text to ${first}`, meta: "ready to send", text: data.message ?? "" },
+        { kind: "chips", items: [
+          { label: "Open in Messages", action: { type: "link", href: data.smsHref }, primary: true },
+          { label: "Copy it", action: { type: "copy", text: data.message ?? "", done: "Copied." } },
+          { label: "Ask someone else", action: { type: "review-ask" } },
+        ] },
+      ]))
+    } else {
+      push(agent([{ kind: "text", text: `Sent. ${first} will get a short note from your business with your review link. Replies come to you.` }, { kind: "chips", items: [{ label: "Ask someone else", action: { type: "review-ask" }, primary: true }] }]))
+    }
+    return null
+  }
+
   async function send(text?: string) {
     const q = (text ?? input).trim()
     if (!q) return
@@ -253,6 +451,7 @@ export function DashboardAgent({
           animate="stagger"
           busy={busy}
           onChip={onChip}
+          onForm={onForm}
           onDocEdit={(id, t) => { docEdits.current[id] = t }}
         />
       </div>

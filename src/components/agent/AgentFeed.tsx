@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { Block, Chip, Message } from "@/lib/agent/types"
 import {
-  AnswerBlock, ChipsBlock, DiffBlock, DocBlock, EmailBlock, ReceiptBlock,
+  AnswerBlock, ChipsBlock, DiffBlock, DocBlock, EmailBlock, FormBlock, ReceiptBlock,
   SourcesBlock, StatBlock, StepsBlock, TextBlock, Typing, VerdictsBlock,
 } from "./blocks"
 
@@ -22,6 +22,7 @@ export function AgentFeed({
   busy = false,
   onChip,
   onEmail,
+  onForm,
   onDocEdit,
   onSettled,
   autoScroll = true,
@@ -31,6 +32,7 @@ export function AgentFeed({
   busy?: boolean
   onChip: (chip: Chip, messageId: string) => void | Promise<void>
   onEmail?: (email: string) => Promise<string | null>
+  onForm?: (formId: string, values: Record<string, string | boolean>) => Promise<string | null>
   onDocEdit?: (docId: string, text: string) => void
   onSettled?: () => void
   autoScroll?: boolean // false for embedded demos that must not move the page
@@ -94,7 +96,8 @@ export function AgentFeed({
   }, [cursor, busy, messages.length, animate, autoScroll])
 
   function pick(chip: Chip, msgId: string) {
-    setPicked((p) => ({ ...p, [msgId]: true }))
+    // Copying or opening a link doesn't use up the other choices in the message.
+    if (chip.action.type !== "copy" && chip.action.type !== "link") setPicked((p) => ({ ...p, [msgId]: true }))
     void onChip(chip, msgId)
   }
 
@@ -123,6 +126,8 @@ export function AgentFeed({
         return <ChipsBlock key={key} items={block.items} disabled={!!picked[msg.id]} onPick={(c) => pick(c, msg.id)} />
       case "email":
         return onEmail ? <EmailBlock key={key} b={block} onSubmit={onEmail} /> : null
+      case "form":
+        return onForm ? <FormBlock key={key} b={block} onSubmit={onForm} /> : null
       case "divider":
         return null
     }

@@ -6,13 +6,16 @@
 import { db } from "@/lib/db"
 import type { CitationReport } from "@/lib/citations"
 import { agent, type Block, type Message } from "@/lib/agent/types"
-import { citationBlocks } from "@/lib/agent/thread-blocks"
+import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
+import { getAgentSettings } from "@/lib/agent/settings"
+import { getRoi, roiLines } from "@/lib/roi"
 
-export type Topic = "reviews" | "site" | "sources" | "competitors" | "briefings"
+export type Topic = "reviews" | "site" | "sources" | "listings" | "competitors" | "briefings"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "reviews", label: "Reviews", blurb: "Your Google reviews and my reply drafts" },
   { key: "site", label: "Site Schema & Code", blurb: "What AI can read on your site, and the fixes I wrote" },
   { key: "sources", label: "Source Tracking", blurb: "The pages AI reads before it recommends anyone" },
+  { key: "listings", label: "Maps & Listings", blurb: "Bing Places and Apple Business Connect — free listings AI reads" },
   { key: "competitors", label: "Competitors", blurb: "What they have that you don’t — and drafts to close it" },
   { key: "briefings", label: "Weekly Briefings", blurb: "What I did each week, in plain English" },
 ]
@@ -35,7 +38,24 @@ const host = (u: string) => u.replace(/^https?:\/\//, "").replace(/^www\./, "").
 // Legacy key: the "claude" engine is stored as google_ai in old reports.
 const ENGINE_NAME: Record<string, string> = { chatgpt: "ChatGPT", gemini: "Gemini", claude: "Claude", google_ai: "Claude", perplexity: "Perplexity" }
 
+// Shown at the end of the Reviews thread whatever its state.
+const askForReviews = (hasReviews: boolean): Message =>
+  agent([
+    { kind: "text", text: hasReviews ? "Want more of them? Reviews are one of the strongest things AI weighs before naming a business." : "Reviews are one of the strongest things AI weighs before naming a business — so let’s get you some." },
+    { kind: "text", text: "Give me a customer’s name and their email or mobile. I’ll send a short, friendly ask with your Google review link — or write the text for you to send from your own phone." },
+    { kind: "chips", items: [{ label: "Ask a customer for a review", action: { type: "review-ask" }, primary: true }] },
+  ], "rv-ask")
+
 export async function buildThread(topic: Topic, userId: string): Promise<Thread> {
+  const t = await buildThreadInner(topic, userId)
+  if (topic === "reviews") {
+    const has = t.messages.some((m) => m.id === "rv-sum")
+    t.messages.push(askForReviews(has))
+  }
+  return t
+}
+
+async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
   const user = await db.user.findUnique({ where: { id: userId }, include: { integration: true } })
   if (!user) return { messages: [], autorun: [] }
   const biz = user.businessName ?? "your business"
@@ -52,7 +72,7 @@ export async function buildThread(topic: Topic, userId: string): Promise<Thread>
             agent([
               { kind: "text", text: "I can’t see your Google reviews yet.", big: true },
               { kind: "text", text: "Connect Google once and I’ll read every new review each day, draft a reply in your voice, and post it when you tap approve." },
-              { kind: "chips", items: [{ label: "Connect Google", action: { type: "link", href: "/api/integrations/google/connect" }, primary: true }] },
+              { kind: "chips", items: [{ label: "Connect Google", action: { type: "link", href: "/api/integrations/google/connect?go=1" }, primary: true }] },
             ], "rv-connect"),
           ],
         }
@@ -115,7 +135,36 @@ export async function buildThread(topic: Topic, userId: string): Promise<Thread>
           messages: [agent([{ kind: "text", text: "I’m searching the way your customers do.", big: true }, { kind: "text", text: "Then I open each result the AIs lean on and check whether you’re on it. About two minutes — nothing changes on your site." }, { kind: "steps", items: ["Searching like a customer", "Opening each page AI reads", "Checking if you’re named"], done: 0 }], "src-run")],
         }
       }
-      return { autorun: [], messages: [agent(citationBlocks(report, user.businessType, user.city, row!.createdAt), "src-report")] }
+      return { autorun: [], messages: [agent(citationBlocks(report, user.businessType, user.city, row!.createdAt), "src-report"), ...discussionMessages(report)] }
+    }
+
+    // ── Maps & Listings ───────────────────────────────────────────────────
+    case "listings": {
+      const s = await getAgentSettings(userId)
+      const when = (iso?: string) => (iso ? new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "")
+      return {
+        autorun: [],
+        messages: [
+          agent([
+            { kind: "text", text: "Two free listings most businesses skip.", big: true },
+            { kind: "text", text: "ChatGPT’s search draws partly on Bing, and Siri, Apple Maps and Spotlight read Apple Business Connect. Neither costs anything, and each takes about ten minutes. These need you — both ask the owner to verify — so here’s exactly what to do." },
+          ], "ls-intro"),
+          agent([
+            { kind: "text", text: s.bingPlacesDone ? `Bing Places — done on ${when(s.bingPlacesDone)}. ✓` : "1. Bing Places" },
+            ...(s.bingPlacesDone ? [] : [
+              { kind: "receipt", title: "Bing Places for Business", sub: "about 10 minutes", items: ["Go to bingplaces.com and sign in (a Microsoft, Google or Facebook account works).", "Choose “Import from Google Business Profile” — your name, address, hours and photos copy across.", "Confirm the details and verify. Bing may verify an imported listing straight away; otherwise it asks for a phone, email or postcard check."] } as Block,
+              { kind: "chips", items: [{ label: "Open Bing Places", action: { type: "link", href: "https://www.bingplaces.com" } }, { label: "I’ve done it", action: { type: "setting", key: "bingPlacesDone", value: true, done: "Noted. I’ll check Bing is showing your details on my next pass." }, primary: true }] } as Block,
+            ]),
+          ], "ls-bing"),
+          agent([
+            { kind: "text", text: s.appleConnectDone ? `Apple Business Connect — done on ${when(s.appleConnectDone)}. ✓` : "2. Apple Business Connect" },
+            ...(s.appleConnectDone ? [] : [
+              { kind: "receipt", title: "Apple Business Connect", sub: "about 10 minutes, plus verification", items: ["Go to businessconnect.apple.com and sign in with an Apple Account.", "Search for your business and claim it — or add it if it isn’t on Apple Maps yet.", "Verify you’re the owner. Apple offers a phone call to your business number or a document check.", "Add your hours, photos, website and a short description. That’s what Siri reads out."] } as Block,
+              { kind: "chips", items: [{ label: "Open Apple Business Connect", action: { type: "link", href: "https://businessconnect.apple.com" } }, { label: "I’ve done it", action: { type: "setting", key: "appleConnectDone", value: true, done: "Noted — that covers Siri and Apple Maps." }, primary: true }] } as Block,
+            ]),
+          ], "ls-apple"),
+        ],
+      }
     }
 
     // ── Competitors ───────────────────────────────────────────────────────
@@ -150,11 +199,25 @@ export async function buildThread(topic: Topic, userId: string): Promise<Thread>
 
     // ── Weekly Briefings ──────────────────────────────────────────────────
     case "briefings": {
-      const reports = await db.weeklyReport.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 6 })
+      const [reports, roi] = await Promise.all([
+        db.weeklyReport.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 6 }),
+        getRoi(userId).catch(() => null),
+      ])
+      const results = roi ? roiLines(roi) : []
+      const resultsMsg: Message = results.length
+        ? agent([{ kind: "divider", text: "Your results" }, { kind: "text", text: results[0], big: true }, ...results.slice(1).map((t) => ({ kind: "text", text: t }) as Block)], "br-roi")
+        : agent([
+            { kind: "text", text: "I can’t see your results yet.", big: true },
+            { kind: "text", text: "Connect Google and I’ll show the calls and direction requests your listing gets. Connect your website and I’ll count every visitor ChatGPT, Perplexity, Claude or Gemini sends you." },
+            { kind: "chips", items: [
+              ...(user.integration ? [] : [{ label: "Connect Google", action: { type: "link", href: "/api/integrations/google/connect?go=1" }, primary: true } as const]),
+              { label: "Connect my website", action: { type: "wp-connect" } },
+            ] },
+          ], "br-roi")
       if (reports.length === 0) {
-        return { autorun: [], messages: [agent([{ kind: "text", text: "Your first briefing lands Monday morning.", big: true }, { kind: "text", text: "Each week I’ll tell you what I did, what moved, and what I need a yes on — here and by email." }], "br-none")] }
+        return { autorun: [], messages: [resultsMsg, agent([{ kind: "text", text: "Your first briefing lands Monday morning.", big: true }, { kind: "text", text: "Each week I’ll tell you what I did, what moved, and what I need a yes on — here and by email." }], "br-none")] }
       }
-      const msgs: Message[] = []
+      const msgs: Message[] = [resultsMsg]
       for (const r of reports) {
         const week = r.createdAt.toLocaleDateString("en-US", { month: "long", day: "numeric" })
         const delta = isRecord(r.visibilityDelta) ? (r.visibilityDelta as Record<string, number>) : {}

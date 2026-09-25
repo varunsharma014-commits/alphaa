@@ -11,6 +11,7 @@ const TITLES: [string, string][] = [
   ["/dashboard/t/reviews", "Reviews"],
   ["/dashboard/t/site", "Site Schema & Code"],
   ["/dashboard/t/sources", "Source Tracking"],
+  ["/dashboard/t/listings", "Maps & Listings"],
   ["/dashboard/t/competitors", "Competitors"],
   ["/dashboard/t/briefings", "Weekly Briefings"],
   ["/dashboard/reviews", "Reviews"],

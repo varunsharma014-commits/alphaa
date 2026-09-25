@@ -29,6 +29,8 @@ interface WeeklyReportEmailProps {
   visibilityDelta: VisibilityDelta
   keywordMovers: KeywordMover[]
   reportUrl: string
+  /** Plain-English results (AI visitors, calls, directions) — omitted when we can't measure them. */
+  results?: string[]
 }
 
 const ENGINE_LABELS: Record<string, string> = {
@@ -46,6 +48,7 @@ export default function WeeklyReportEmail({
   visibilityDelta,
   keywordMovers,
   reportUrl,
+  results = [],
 }: WeeklyReportEmailProps) {
   const weekLabel = new Date().toLocaleDateString("en-US", {
     month: "long",
@@ -73,6 +76,14 @@ export default function WeeklyReportEmail({
           {/* Main content */}
           <Section style={content}>
             <Text style={h1}>Your Weekly Alphaa Report — {businessName}</Text>
+            {results.length > 0 && (
+              <Section style={{ background: "#f5f5f7", borderRadius: 14, padding: "16px 20px", margin: "0 0 16px" }}>
+                <Text style={{ ...paragraph, fontWeight: 600, margin: "0 0 6px" }}>Your results this week</Text>
+                {results.map((r) => (
+                  <Text key={r} style={{ ...paragraph, margin: "0 0 6px" }}>{r}</Text>
+                ))}
+              </Section>
+            )}
             <Text style={paragraph}>{summary}</Text>
 
             <Hr style={hr} />

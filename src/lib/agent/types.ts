@@ -24,8 +24,25 @@ export type ChipAction =
   | { type: "post-delete"; postId: string }
   | { type: "dismiss" }
   | { type: "copy"; text: string; done?: string } // copy to clipboard, confirm in-thread
-  | { type: "draft"; topic: string; competitor?: string } // agent writes a page/FAQ draft to close a gap
+  | { type: "draft"; topic: string; competitor?: string; mode?: "faq" | "reply"; url?: string } // agent writes an FAQ draft, or a reply for a discussion AI cites
   | { type: "run"; task: "site-check" | "citations" | "schema" } // agent runs a job right now
+  | { type: "wp-connect" } // show the steps + key to connect a WordPress site
+  | { type: "wp-push"; op: SiteOp; title?: string; text?: string; docId?: string } // publish an approved change to the connected site
+  | { type: "wp-undo"; changeId: string }
+  | { type: "handoff"; what: SiteOp; title?: string; text?: string; docId?: string } // email it to the owner's web person
+  | { type: "setting"; key: "bingPlacesDone" | "appleConnectDone"; value: boolean; done: string }
+  | { type: "review-ask" } // open the "ask a customer for a review" form
+
+export type SiteOp = "page" | "schema" | "llms" | "robots"
+
+export type FormField = {
+  name: string
+  label: string
+  type: "text" | "email" | "tel" | "url" | "checkbox"
+  placeholder?: string
+  value?: string
+  required?: boolean
+}
 
 export type Chip = { label: string; action: ChipAction; primary?: boolean }
 
@@ -51,6 +68,7 @@ export type Block =
   | { kind: "chips"; items: Chip[] }
   | { kind: "divider"; text: string }
   | { kind: "email"; label: string; placeholder: string; cta: string; fine: string }
+  | { kind: "form"; formId: string; fields: FormField[]; cta: string; fine?: string }
 
 export type Message = {
   id: string

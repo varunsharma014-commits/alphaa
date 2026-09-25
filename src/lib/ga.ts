@@ -172,3 +172,40 @@ export async function getPropertyList(
 
   return properties
 }
+
+/** Sessions that arrived from AI assistants, by assistant, over the last `days`. */
+export async function getAiReferrals(
+  integration: StoredIntegration & { gaPropertyId?: string | null },
+  days = 7,
+): Promise<{ total: number; bySource: Record<string, number> } | null> {
+  if (!integration.gaPropertyId) return null
+  try {
+    const auth = await getAuthenticatedClient(integration)
+    const analyticsdata = google.analyticsdata({ version: 'v1beta', auth })
+    const res = await analyticsdata.properties.runReport({
+      property: `properties/${integration.gaPropertyId}`,
+      requestBody: {
+        dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'yesterday' }],
+        dimensions: [{ name: 'sessionSource' }],
+        metrics: [{ name: 'sessions' }],
+        dimensionFilter: {
+          filter: {
+            fieldName: 'sessionSource',
+            stringFilter: { matchType: 'PARTIAL_REGEXP', value: 'chatgpt|openai|perplexity|claude\\.ai|gemini\\.google|copilot' },
+          },
+        },
+        limit: '20',
+      },
+    })
+    const bySource: Record<string, number> = {}
+    for (const row of res.data.rows ?? []) {
+      const src = (row.dimensionValues?.[0]?.value ?? '').toLowerCase()
+      const name = /chatgpt|openai/.test(src) ? 'ChatGPT' : src.includes('perplexity') ? 'Perplexity' : src.includes('claude') ? 'Claude' : src.includes('gemini') ? 'Gemini' : 'Copilot'
+      bySource[name] = (bySource[name] ?? 0) + parseInt(row.metricValues?.[0]?.value ?? '0', 10)
+    }
+    return { total: Object.values(bySource).reduce((a, b) => a + b, 0), bySource }
+  } catch (err) {
+    console.error('[GA] getAiReferrals error:', err instanceof Error ? err.message : err)
+    return null
+  }
+}

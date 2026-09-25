@@ -49,7 +49,7 @@ async function gmbFetch<T>(
   return response.json() as Promise<T>
 }
 
-async function resolveAccessToken(
+export async function resolveAccessToken(
   integration: StoredIntegration,
 ): Promise<string> {
   const client = await getAuthenticatedClient(integration)
@@ -293,6 +293,68 @@ export async function getLocationInfo(
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     console.error('[GMB] getLocationInfo error:', message)
+    return null
+  }
+}
+
+// ── Review link + profile actions (same business.manage scope) ─────────────
+
+/** Google's "write a review" link for the location, when Google provides one. */
+export async function getReviewLink(
+  integration: StoredIntegration & { gmbLocationId?: string | null },
+): Promise<string | null> {
+  if (!integration.gmbLocationId) return null
+  try {
+    const token = await resolveAccessToken(integration)
+    const loc = await gmbFetch<{ metadata?: { newReviewUri?: string; placeId?: string } }>(
+      token,
+      `https://mybusinessbusinessinformation.googleapis.com/v1/locations/${integration.gmbLocationId}?readMask=metadata`,
+    )
+    if (loc.metadata?.newReviewUri) return loc.metadata.newReviewUri
+    if (loc.metadata?.placeId) return `https://search.google.com/local/writereview?placeid=${loc.metadata.placeId}`
+    return null
+  } catch (err) {
+    console.error('[GMB] getReviewLink error:', err instanceof Error ? err.message : err)
+    return null
+  }
+}
+
+export type ProfileActions = { calls: number; directions: number; websiteClicks: number }
+
+/**
+ * Calls, direction requests and website clicks from the Business Profile
+ * Performance API, for [start, end] inclusive. Google's data lags a few days.
+ */
+export async function getProfileActions(
+  integration: StoredIntegration & { gmbLocationId?: string | null },
+  start: Date,
+  end: Date,
+): Promise<ProfileActions | null> {
+  if (!integration.gmbLocationId) return null
+  try {
+    const token = await resolveAccessToken(integration)
+    const q = new URLSearchParams()
+    for (const m of ['CALL_CLICKS', 'BUSINESS_DIRECTION_REQUESTS', 'WEBSITE_CLICKS']) q.append('dailyMetrics', m)
+    const put = (p: string, d: Date) => {
+      q.set(`dailyRange.${p}.year`, String(d.getUTCFullYear()))
+      q.set(`dailyRange.${p}.month`, String(d.getUTCMonth() + 1))
+      q.set(`dailyRange.${p}.day`, String(d.getUTCDate()))
+    }
+    put('startDate', start)
+    put('endDate', end)
+    const res = await gmbFetch<{
+      multiDailyMetricTimeSeries?: { dailyMetricTimeSeries?: { dailyMetric?: string; timeSeries?: { datedValues?: { value?: string }[] } }[] }[]
+    }>(token, `https://businessprofileperformance.googleapis.com/v1/locations/${integration.gmbLocationId}:fetchMultiDailyMetricsTimeSeries?${q}`)
+    const sum: Record<string, number> = {}
+    for (const group of res.multiDailyMetricTimeSeries ?? []) {
+      for (const s of group.dailyMetricTimeSeries ?? []) {
+        const total = (s.timeSeries?.datedValues ?? []).reduce((n, v) => n + (Number(v.value) || 0), 0)
+        if (s.dailyMetric) sum[s.dailyMetric] = (sum[s.dailyMetric] ?? 0) + total
+      }
+    }
+    return { calls: sum.CALL_CLICKS ?? 0, directions: sum.BUSINESS_DIRECTION_REQUESTS ?? 0, websiteClicks: sum.WEBSITE_CLICKS ?? 0 }
+  } catch (err) {
+    console.error('[GMB] getProfileActions error:', err instanceof Error ? err.message : err)
     return null
   }
 }

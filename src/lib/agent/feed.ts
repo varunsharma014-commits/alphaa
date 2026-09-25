@@ -202,7 +202,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     messages.push(
       agent([
         { kind: "text", text: "One thing I can’t do yet: reply to your reviews or post to your Google listing. Connect Google and I take those over." },
-        { kind: "chips", items: [{ label: "Connect Google", action: { type: "link", href: "/api/integrations/google/connect" }, primary: true }] },
+        { kind: "chips", items: [{ label: "Connect Google", action: { type: "link", href: "/api/integrations/google/connect?go=1" }, primary: true }] },
       ], "setup")
     )
   }
