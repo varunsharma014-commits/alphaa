@@ -2,6 +2,7 @@ import { MetadataRoute } from "next"
 import { getAllPosts } from "@/content/blog"
 import { VERTICALS } from "@/content/verticals"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
+import { COMPARES, COMPARE_CHECKED } from "@/content/compare"
 
 const BASE_URL = "https://alphaa.app"
 
@@ -20,7 +21,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }))
 
+  const comparePages: MetadataRoute.Sitemap = [
+    { url: `${BASE_URL}/compare`, lastModified: new Date(COMPARE_CHECKED), changeFrequency: "monthly", priority: 0.8 },
+    ...COMPARES.map((c) => ({
+      url: `${BASE_URL}/compare/${c.slug}`,
+      lastModified: new Date(COMPARE_CHECKED),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    })),
+  ]
+
   return [
+    ...comparePages,
     {
       url: BASE_URL,
       lastModified: new Date(),

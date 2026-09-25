@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/how-it-works", label: "How it Works" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/blog", label: "Blog" },
+  { href: "/compare", label: "Compare" },
   { href: "/pricing", label: "Pricing" },
 ]
 

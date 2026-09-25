@@ -308,3 +308,79 @@
   .ap-row__art .ap-panel { min-height: 320px; }
   .ap-row__text { padding: 32px 28px 40px; }
 }
+
+/* ── Compare (/compare, /compare/[slug]) ─────────────────────────────── */
+.cmp-hero { padding-top: 112px; }
+.cmp-h1 { font-size: clamp(44px, 7.2vw, 80px); line-height: 1.05; letter-spacing: -0.015em; }
+.cmp-crumbs { text-align: center; font-size: 14px; color: #6e6e73; margin-bottom: 20px; padding: 0 22px; }
+.cmp-crumbs a { color: #0066cc; }
+.cmp-crumbs a:hover { text-decoration: underline; }
+.cmp-answer { max-width: 760px; margin: 40px auto 0; padding: 28px 32px; background: #f5f5f7; border-radius: 24px; text-align: left; }
+@media (max-width: 640px) { .cmp-answer { margin: 32px 16px 0; padding: 22px; } }
+.cmp-answer__k { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #0071e3; margin-bottom: 8px; }
+.cmp-answer p { margin: 0; font-size: clamp(17px, 1.7vw, 19px); line-height: 1.5; color: #1d1d1f; }
+.cmp-hero__cta { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 32px; }
+.cmp-hero__cta span { font-size: 14px; color: #6e6e73; }
+.cmp-btn { display: inline-block; background: #0071e3; color: #fff; border-radius: 980px; padding: 12px 26px; font-size: 17px; transition: background-color .2s ease; }
+.cmp-btn:hover { background: #0077ed; }
+
+.cmp-table-wrap { max-width: 980px; margin: 44px auto 0; padding: 0 22px; }
+.cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 24px; overflow: hidden; font-size: 17px; line-height: 1.45; }
+.cmp-table th, .cmp-table td { padding: 18px 22px; text-align: left; vertical-align: top; border-top: 1px solid #e8e8ed; }
+.cmp-table thead th { border-top: 0; font-size: 19px; font-weight: 600; color: #1d1d1f; padding-top: 24px; }
+.cmp-table tbody th { font-weight: 600; color: #1d1d1f; width: 24%; }
+.cmp-table td { color: #6e6e73; width: 38%; }
+.cmp-table .is-us { background: #eef5ff; color: #1d1d1f; }
+.cmp-table thead .is-us { color: #0071e3; }
+.cmp-note { text-align: center; font-size: 14px; color: #6e6e73; margin: 18px auto 0; padding: 0 22px; }
+@media (max-width: 720px) {
+  .cmp-table, .cmp-table tbody, .cmp-table tr { display: block; width: 100%; }
+  .cmp-table thead { display: none; }
+  .cmp-table tr { border-top: 1px solid #e8e8ed; padding: 6px 0; }
+  .cmp-table tr:first-child { border-top: 0; }
+  .cmp-table th, .cmp-table td { display: block; width: auto !important; border: 0; padding: 8px 20px; }
+  .cmp-table tbody th { padding-top: 16px; }
+  .cmp-table td::before { content: attr(data-label); display: block; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #86868b; margin-bottom: 2px; }
+  .cmp-table td.is-us { margin: 4px 12px 12px; border-radius: 14px; padding: 12px; }
+  .cmp-table td.is-us::before { color: #0071e3; }
+}
+
+.cmp-cards { max-width: 980px; margin: 44px auto 0; padding: 0 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 720px) { .cmp-cards { grid-template-columns: 1fr; padding: 0 16px; } }
+.cmp-card { background: #f5f5f7; border-radius: 24px; padding: 32px; }
+.ap-sec--grey .cmp-card { background: #fff; }
+.cmp-card.is-us { background: #eef5ff; }
+.cmp-card h3 { font-size: 24px; font-weight: 600; letter-spacing: 0.009em; margin: 0 0 16px; color: #1d1d1f; }
+.cmp-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.cmp-card li { position: relative; padding-left: 26px; font-size: 17px; line-height: 1.47; color: #1d1d1f; }
+.cmp-card li::before { content: "✓"; position: absolute; left: 0; top: 0; color: #86868b; font-weight: 600; }
+.cmp-card.is-us li::before { color: #0071e3; }
+
+.cmp-prose { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+.cmp-prose h2 { font-size: clamp(26px, 3vw, 32px); font-weight: 600; line-height: 1.15; letter-spacing: 0.004em; margin: 48px 0 12px; color: #1d1d1f; }
+.cmp-prose > div:first-child h2 { margin-top: 0; }
+.cmp-prose p { font-size: 19px; line-height: 1.55; color: #1d1d1f; margin: 0 0 16px; }
+.cmp-more { margin-top: 32px !important; color: #6e6e73 !important; }
+.cmp-more a, .cmp-sources a { color: #0066cc; }
+.cmp-more a:hover, .cmp-sources a:hover { text-decoration: underline; }
+
+.cmp-faq { border-bottom: 1px solid #d2d2d7; }
+.cmp-faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0; font-size: 17px; font-weight: 600; color: #1d1d1f; cursor: pointer; }
+.cmp-faq summary::-webkit-details-marker { display: none; }
+.cmp-faq[open] .ap-faq__chev { transform: rotate(180deg); }
+.cmp-faq p { margin: 0; padding-bottom: 22px; font-size: 17px; line-height: 1.47; color: #1d1d1f; }
+.cmp-sources { max-width: 900px; margin: 40px auto 0; padding: 0 22px; font-size: 14px; color: #6e6e73; }
+.cmp-sources h3 { font-size: 14px; font-weight: 600; color: #1d1d1f; margin: 0 0 8px; }
+.cmp-sources ul { margin: 0 0 8px; padding-left: 18px; list-style: disc; }
+
+.cmp-related { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 900px; margin: 28px auto 0; padding: 0 22px; }
+.cmp-related a { border: 1px solid #d2d2d7; background: #fff; border-radius: 980px; padding: 9px 18px; font-size: 15px; color: #1d1d1f; transition: border-color .2s ease; }
+.cmp-related a:hover { border-color: #1d1d1f; }
+
+.cmp-grid { max-width: 980px; margin: 40px auto 0; padding: 0 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.cmp-tile { display: flex; flex-direction: column; gap: 8px; background: #fff; border-radius: 24px; padding: 30px; color: #1d1d1f; transition: transform .3s cubic-bezier(.28,.11,.32,1), box-shadow .3s ease; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.ap-sec:not(.ap-sec--grey) .cmp-tile { background: #f5f5f7; }
+.cmp-tile:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+.cmp-tile h3 { font-size: 24px; font-weight: 600; margin: 0; }
+.cmp-tile p { font-size: 17px; line-height: 1.4; color: #6e6e73; margin: 0; flex: 1; }
+.cmp-tile span { font-size: 17px; color: #0066cc; margin-top: 8px; }

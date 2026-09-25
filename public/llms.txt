@@ -32,6 +32,21 @@
 
 ## Comparisons
 
+Side-by-side comparison pages, each with a short answer, a feature table, where the other option is better, sources and an FAQ. Competitor details checked September 25, 2026.
+
+- [All comparisons](https://alphaa.app/compare)
+- [Alphaa vs. an SEO agency](https://alphaa.app/compare/alphaa-vs-seo-agency): ~$2,000/month ($24,000/yr) on contract, mostly for Google, vs. $99/month ($1,188/yr) month to month for AI answers.
+- [Alphaa vs. a freelance SEO](https://alphaa.app/compare/alphaa-vs-freelance-seo): a freelancer's hours (~$1,348/month average per Ahrefs) vs. an agent that works every week.
+- [SEO vs. AEO](https://alphaa.app/compare/seo-vs-aeo): ranking in a list of links vs. being named in the AI answer.
+- [Local SEO vs. GEO](https://alphaa.app/compare/local-seo-vs-geo): the Google Map Pack vs. AI-written local recommendations.
+- [Alphaa vs. Semrush](https://alphaa.app/compare/alphaa-vs-semrush): a research and reporting suite for marketers vs. an agent that does the work for an owner.
+- [Alphaa vs. Ahrefs](https://alphaa.app/compare/alphaa-vs-ahrefs): SEO research and Brand Radar AI mentions vs. done-for-you AI visibility.
+- [Alphaa vs. Yext](https://alphaa.app/compare/alphaa-vs-yext): enterprise listings across 200+ publishers vs. AI answers for 1–3 locations.
+- [Alphaa vs. BrightLocal](https://alphaa.app/compare/alphaa-vs-brightlocal): local SEO toolkit for agencies vs. an agent for owners.
+- [Alphaa vs. Whitespark](https://alphaa.app/compare/alphaa-vs-whitespark): citations and rank tracking vs. AI answers.
+
+Long-form comparison guides:
+
 - [Alphaa vs. a traditional SEO agency](https://alphaa.app/blog/alphaa-vs-seo-agencies): what a ~$2,000/month retainer buys versus an AI agent at $99/month.
 - [Alphaa vs. Yext](https://alphaa.app/blog/alphaa-vs-yext): managing listings vs. managing AI answers.
 - [Alphaa vs. BrightLocal](https://alphaa.app/blog/alphaa-vs-brightlocal): local SEO toolkit vs. an AI agent that does the work.
