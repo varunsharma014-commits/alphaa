@@ -25,7 +25,11 @@ Communications: Records of your communications with us, including support reques
 
 Payment Information: We do not store your full payment card details. Payment transactions are processed and stored by Stripe, our payment processor. We receive limited transaction metadata (subscription status, billing dates, last 4 digits of card) for account management purposes.
 
-AI Content Data: Business information and prompts submitted to generate AI content on your behalf, including queries sent to the Anthropic Claude API.`,
+AI Content Data: Business information and prompts submitted to generate AI content on your behalf, including queries sent to the Anthropic Claude API.
+
+Your Customers' Contact Details: If you ask Alphaa to request a review from one of your customers, we process the first name and email address or phone number you provide to send that one request (email is sent through Resend; for a phone number we only prepare a message for you to send). We don't keep the email address or phone number itself — only a one-way fingerprint of it, so the same person isn't asked twice within 90 days — and we use it for no other purpose.
+
+Website Connector: If you install the Alphaa Connector plugin on your website, it tells us when a visitor arrives from an AI assistant (for example ChatGPT or Perplexity), sending only the assistant's name and the page path. It sets no cookies and sends no IP address or other information about the visitor.`,
   },
   {
     title: "3. How We Use Your Information",
@@ -207,7 +211,7 @@ export default function PrivacyPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Privacy Policy</h1>
-        <p className="text-muted text-sm mb-10">Last updated: June 15, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: September 27, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.

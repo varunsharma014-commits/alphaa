@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { NextResponse } from "next/server"
+import { createHash } from "crypto"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { currentUser } from "@/lib/connector/user"
@@ -43,7 +44,8 @@ export async function POST(req: Request) {
   const since = new Date(Date.now() - 86_400_000)
   const recent = await db.mockActivity.findMany({ where: { userId: user.id, type: "review_request", createdAt: { gte: new Date(Date.now() - 90 * 86_400_000) } }, select: { metadata: true, createdAt: true } })
   if (recent.filter((r) => r.createdAt >= since).length >= DAILY_CAP) return NextResponse.json({ error: `That’s ${DAILY_CAP} today — I’ll pick up again tomorrow.` }, { status: 429 })
-  const key = isEmail ? input.contact.toLowerCase() : phone
+  // Only a one-way fingerprint is kept, to avoid asking the same person twice.
+  const key = createHash("sha256").update(isEmail ? input.contact.toLowerCase() : phone.replace(/\D/g, "")).digest("hex")
   if (recent.some((r) => (r.metadata as { to?: string } | null)?.to === key)) return NextResponse.json({ error: `You already asked ${first} in the last 90 days — I don’t ask twice.` }, { status: 409 })
 
   if (isEmail) {

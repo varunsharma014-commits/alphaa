@@ -11,14 +11,16 @@ These Terms constitute a binding legal agreement between you (or the business en
     title: "2. Description of Service",
     body: `Alphaa is an AI-powered search visibility optimization platform designed for local small and medium-sized businesses ("SMBs"). The Service includes, without limitation:
 
-• AI Search Visibility Optimization — automated analysis and optimization of your business's presence across AI-powered search engines and assistants, including ChatGPT (OpenAI), Claude (Anthropic), Gemini (Google), Perplexity AI, Google AI Overviews, and Microsoft Copilot.
+• AI Search Visibility Optimization — automated analysis and optimization of your business's presence across AI-powered search engines and assistants, including ChatGPT (OpenAI), Claude (Anthropic), Gemini (Google) and Perplexity AI.
 • Structured Data Publishing — generation and distribution of structured business data (e.g., schema.org markup, business citations) designed to improve discoverability in AI-augmented search results.
 • AI-Generated Content — creation of business descriptions, Google Business Profile posts, FAQ content, and other marketing copy using the Anthropic Claude API.
 • Google Business Profile Posting — automated publishing of content to your connected Google Business Profile via Google's official APIs.
 • Weekly Automated Reports — scheduled email reports summarizing your visibility scores, AI citation tracking, and optimization activity.
-• Visibility Tracking — monitoring of your business's appearance and mention frequency across ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews, and Microsoft Copilot.
+• Visibility Tracking — monitoring of your business's appearance and mention frequency across ChatGPT, Claude, Gemini and Perplexity.
+• Website Changes — with your approval, publishing content, structured data, llms.txt and robots.txt rules to your website through the Alphaa Connector plugin (for WordPress), by emailing instructions to a person you designate, or by Alphaa staff on the Full Service plan. Nothing is published to your website without your approval, and changes made through the plugin can be undone from your dashboard.
+• Review Requests — sending review request messages, on your instruction, to customers you identify. You are responsible for having each customer's permission to contact them and for complying with the review platform's policies.
 
-The Service requires you to connect a Google Business Profile and may optionally use your website URL and other business information you provide. The features included vary by subscription plan.`,
+Some features require you to connect a Google Business Profile or your website; the Service may also use your website URL and other business information you provide. The features included vary by subscription plan.`,
   },
   {
     title: "3. Eligibility",
@@ -27,12 +29,12 @@ The Service requires you to connect a Google Business Profile and may optionally
 If you are accepting these Terms on behalf of a business, "you" refers to that business entity and all references to your obligations apply to the entity and its authorized personnel. Alphaa may, at its discretion, request documentation verifying your authority to act on behalf of a business.`,
   },
   {
-    title: "4. Free Trial",
-    body: `Alphaa offers a 14-day free trial for new accounts. A valid payment method is required to begin the free trial, but you will not be charged during the trial period. During the trial period, you will have access to the features specified on the applicable trial plan page.
+    title: "4. Free Scan; No Free Trial",
+    body: `Alphaa does not offer a free trial. Anyone may run the free AI visibility scan at alphaa.app/start without providing a payment method. The scan shows what AI assistants say about a business at the time it is run and is provided for information only; results can change and are not a guarantee of future visibility.
 
-Unless you cancel before the end of the 14-day trial period, your trial converts to a paid subscription and the payment method on file is charged for your selected plan. You may cancel at any time during the trial from your dashboard at no cost, and we send a reminder email before the trial ends.
+Paid plans begin when you subscribe and are billed from the first day, month to month, or annually if you choose annual billing. You may cancel at any time, and the 7-day refund on your first paid charge applies, both as described in Section 5.
 
-Alphaa reserves the right to modify or discontinue the free trial offering at any time without notice. Only one free trial is permitted per person, business, or email domain. Any attempt to circumvent this limitation (including by creating multiple accounts) may result in termination of all associated accounts.`,
+If you signed up under an earlier free-trial offer, the trial terms presented to you at sign-up continue to apply to that trial.`,
   },
   {
     title: "5. Subscriptions & Billing",
@@ -197,7 +199,7 @@ export default function TermsPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Terms of Service</h1>
-        <p className="text-muted text-sm mb-10">Last updated: June 15, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: September 27, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           These Terms of Service govern your access to and use of the Alphaa platform. By creating an account or using the Service, you agree to be bound by these Terms. Please read them carefully.
