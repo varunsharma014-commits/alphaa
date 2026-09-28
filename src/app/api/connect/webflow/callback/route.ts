@@ -27,18 +27,27 @@ export async function GET(request: NextRequest) {
   if (oauthError) {
     return fail(oauthError === "access_denied" ? "You cancelled the Webflow connection, so nothing was connected." : `Webflow said: ${(sp.get("error_description") || oauthError).slice(0, 200)}`)
   }
-  if (!code || !state) return fail("Webflow didn’t send back a sign-in code. Try connecting again.")
+  if (!code) return fail("Webflow didn’t send back a sign-in code. Try connecting again.")
 
+  // Installs started on Webflow's side (the app's Install button, the Marketplace) come back
+  // with a code but no state of ours: accept those for whoever is signed in. When we did send
+  // a state, it must match the signed-in account.
   let stateUserId: string | null = null
-  try {
-    stateUserId = (JSON.parse(Buffer.from(state, "base64url").toString()) as { userId?: string }).userId ?? null
-  } catch {
-    stateUserId = null
+  if (state) {
+    try {
+      stateUserId = (JSON.parse(Buffer.from(state, "base64url").toString()) as { userId?: string }).userId ?? null
+    } catch {
+      stateUserId = null
+    }
   }
 
   const user = await currentUser()
-  if (!user) return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").toString())
-  if (!stateUserId || stateUserId !== user.id) return fail("That Webflow sign-in didn’t match your account. Try connecting again.")
+  if (!user) {
+    // Codes are short-lived: sign in, then straight back here with the same query.
+    const here = `/api/connect/webflow/callback${request.nextUrl.search}`
+    return NextResponse.redirect(new URL(`/login?redirect_url=${encodeURIComponent(here)}`, process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").toString())
+  }
+  if (state && stateUserId !== user.id) return fail("That Webflow sign-in didn’t match your account. Try connecting again.")
 
   try {
     const { accessToken } = await webflowExchange(code)
