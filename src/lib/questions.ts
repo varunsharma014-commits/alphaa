@@ -42,18 +42,42 @@ export async function trackedQuestions(userId: string): Promise<string[]> {
   if (!user) return []
   const n = questionLimit(user.plan)
   const cities = [user.city, ...(s.locations ?? []).map((l) => l.city)].filter((c, i, a): c is string => !!c && a.indexOf(c) === i)
+  // Ground the questions in what the site actually says, not just a category label.
+  const site = user.websiteUrl ? (user.websiteUrl.startsWith("http") ? user.websiteUrl : `https://${user.websiteUrl}`) : null
+  const page = site ? await fetch(site, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) }).then((r) => r.text()).catch(() => "") : ""
+  const siteText = page
+    .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/gi, " ").replace(/\s+/g, " ").trim().slice(0, 3500)
   try {
     const res = await anthropic.messages.create({
       model: SONNET,
-      max_tokens: 900,
+      max_tokens: 1200,
       messages: [{
         role: "user",
-        content: `Write ${n} questions real customers type into ChatGPT or Perplexity when looking for a business like this one. Business: ${nameOf(user) ?? "unknown"} — ${user.businessType ?? "local business"}${cities.length ? ` in ${cities.join(" / ")}` : ""}. Website: ${user.websiteUrl ?? "unknown"}.
-Mix: "best X in <city>" style; specific services; problems ("my AC is leaking, who can fix it today"); comparisons/price questions; ${cities.length > 1 ? "spread across every city listed; " : ""}Never include the business's own name. One question per line, no numbering, no quotes.`,
+        content: `Write exactly ${n} questions that real potential customers of this business would type into ChatGPT or Perplexity when looking for what it sells — questions where this business deserves to be one of the answers.
+
+Business name: ${nameOf(user) ?? "unknown"}
+Category: ${user.businessType ?? "unknown"}
+${cities.length ? `Serves: ${cities.join(" / ")}` : "Location: not a local business (or unknown)"}
+Website: ${site ?? "unknown"}
+What the website says (excerpt):
+${siteText || "(couldn't load)"}
+
+Rules: work out what the business actually sells from the website text, and write the questions its buyers ask — "best …", specific services, problems they want solved, comparisons, price questions.${cities.length ? " Include the city in the local ones." : ""} Never include the business's own name. Each is a natural question a person would type, ending with "?".
+Return ONLY a JSON array of strings, nothing else.`,
       }],
     })
-    const qs = text(res).split("\n").map((l) => l.replace(/^[-*\d.)\s]+/, "").trim()).filter((l) => l.length > 12).slice(0, n)
-    if (qs.length) await saveAgentSettings(userId, { questions: qs })
+    const raw = text(res).replace(/```json\n?|```/g, "").trim()
+    let parsed: unknown = []
+    try { parsed = JSON.parse(raw.slice(raw.indexOf("["), raw.lastIndexOf("]") + 1)) } catch {}
+    const biz = (nameOf(user) ?? "").toLowerCase()
+    const qs = (Array.isArray(parsed) ? parsed : [])
+      .filter((q): q is string => typeof q === "string")
+      .map((q) => q.trim())
+      // Only real questions; nothing that mentions the business or talks about the task.
+      .filter((q) => q.length > 12 && q.length < 200 && q.endsWith("?") && !/^(i('|’)ll|let me|based on|here are)/i.test(q) && (!biz || !q.toLowerCase().includes(biz)))
+      .slice(0, n)
+    if (qs.length >= Math.min(5, n)) await saveAgentSettings(userId, { questions: qs })
     return qs
   } catch (err) {
     console.error("[questions] generate", err instanceof Error ? err.message : err)

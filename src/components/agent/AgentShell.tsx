@@ -48,7 +48,7 @@ export function AgentShell({
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
   const isHome = pathname === "/dashboard" || pathname === "/preview" || pathname.startsWith("/dashboard/t/")
-  const title = isHome ? "Today" : TITLES.find(([p]) => pathname.startsWith(p))?.[1] ?? "Detail"
+  const title = TITLES.find(([p]) => pathname.startsWith(p))?.[1] ?? (isHome ? "Today" : "Detail")
 
   return (
     <div className="ag-app">
