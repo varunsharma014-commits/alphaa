@@ -195,6 +195,18 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
     // ── AI Answers ────────────────────────────────────────────────────────
     case "answers": {
       const latest = await latestQuestionScan(userId)
+      const started = await db.mockActivity.findFirst({ where: { userId, type: "question_scan_started", createdAt: { gte: new Date(Date.now() - 20 * 60_000) } }, orderBy: { createdAt: "desc" } })
+      if (started && (!latest || latest.at < started.createdAt)) {
+        const mins = Math.max(1, Math.round((Date.now() - started.createdAt.getTime()) / 60_000))
+        return { autorun: [], messages: [
+          agent([
+            { kind: "text", text: "I’m asking all four AIs your questions right now.", big: true },
+            { kind: "steps", items: ["Asking ChatGPT, Gemini, Claude and Perplexity each question", "Noting who they name instead of you", "Checking what they say about you is true"], done: mins >= 3 ? 1 : 0 },
+            { kind: "text", text: `Started ${mins} minute${mins === 1 ? "" : "s"} ago — usually done in about five. Come back in a few minutes, or ask me anything meanwhile.` },
+          ], "ans-running"),
+          ...(latest ? answersMessages(latest.scan, latest.at) : []),
+        ] }
+      }
       if (!latest) {
         return { autorun: [], messages: [agent([
           { kind: "text", text: "I haven’t asked your customer questions yet.", big: true },
