@@ -183,11 +183,12 @@ export function AnswerBlock(b: Extract<Block, { kind: "answer" }>) {
 
 // ── sources ────────────────────────────────────────────────────────────────
 
-export function SourcesBlock({ items, title, collapseOk }: { items: Extract<Block, { kind: "sources" }>["items"]; title?: string; collapseOk?: boolean }) {
+export function SourcesBlock({ items, title, collapseOk, limit }: { items: Extract<Block, { kind: "sources" }>["items"]; title?: string; collapseOk?: boolean; limit?: number }) {
   const [open, setOpen] = useState(false)
   const okCount = items.filter((s) => s.ok).length
   const fold = !!collapseOk && !open && okCount >= 2
-  const shown = fold ? items.filter((s) => !s.ok) : items
+  const cut = !!limit && !open && items.length > limit
+  const shown = cut ? items.slice(0, limit) : fold ? items.filter((s) => !s.ok) : items
   return (
     <div className="ag-sources">
       {title && <div className="ag-sources__h">{title}</div>}
@@ -214,7 +215,13 @@ export function SourcesBlock({ items, title, collapseOk }: { items: Extract<Bloc
           </div>
         )
       })}
-      {collapseOk && okCount >= 2 && (
+      {!!limit && items.length > limit && (
+        <button type="button" className="ag-src ag-src--fold ag-src--more" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+          <span className="ag-src__t">{open ? "Show fewer" : `Show all ${items.length}`}</span>
+          <span className="ag-src__a">{open ? "Hide" : "Show"}</span>
+        </button>
+      )}
+      {!limit && collapseOk && okCount >= 2 && (
         <button type="button" className="ag-src ag-src--fold" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
           <span className="ag-src__ic">✓</span>
           <span className="ag-src__t">{open ? "Hide what’s already right" : `${okCount} already right`}</span>

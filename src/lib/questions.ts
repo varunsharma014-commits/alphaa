@@ -116,6 +116,9 @@ export async function runQuestionScan(userId: string): Promise<QuestionScan | nu
     return { q, engines }
   })
 
+  // AI assistants and platforms aren't competitors, even when an answer names them.
+  const PLATFORM = /^(chatgpt|openai|gpt-?\d.*|gemini|google( ai| ai overviews| business profile| my business| maps| search)?|claude|anthropic|perplexity( ai)?|copilot|microsoft copilot|bing|yelp|reddit|facebook|instagram|linkedin|youtube|tiktok|nextdoor|quora)$/i
+  for (const q of questions) for (const e of Object.values(q.engines)) if (e) e.named = e.named.filter((n) => !PLATFORM.test(n.trim()))
   let named = 0, answers = 0
   const rivalCount = new Map<string, number>()
   for (const q of questions) {

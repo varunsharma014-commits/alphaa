@@ -158,6 +158,8 @@
 .ag-src--fold .ag-src__ic { background: var(--ag-good); }
 .ag-src--fold .ag-src__a { color: var(--ag-link); }
 .ag-src--fold:hover .ag-src__a { text-decoration: underline; }
+.ag-src--more { padding-left: 14px; }
+.ag-src--more .ag-src__t { color: var(--ag-link); }
 
 /* the one big button a message ends on */
 .ag-cta { margin: 16px 0 6px; }

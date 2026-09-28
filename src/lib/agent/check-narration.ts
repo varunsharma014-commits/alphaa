@@ -111,16 +111,43 @@ export function answersMessages(q: QuestionScan, at: Date): Message[] {
       { kind: "chips", items: [{ label: "Check my listings", action: { type: "link", href: "/dashboard/t/listings" }, primary: true }, { label: "Check my site", action: { type: "link", href: "/dashboard/t/site" } }] },
     ], "ans-facts"))
   }
+  const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1)
+  const PLATFORM = /^(chatgpt|openai|gemini|google( ai| ai overviews| business profile| my business| maps| search)?|claude|anthropic|perplexity( ai)?|copilot|microsoft copilot|bing|yelp|reddit|facebook|instagram|linkedin|youtube|tiktok|nextdoor|quora)$/i
+  const real = (n: string) => !PLATFORM.test(n.trim())
+  q = { ...q, rivals: q.rivals.filter((r) => real(r.name)) }
+  const rows = q.questions.map((x) => {
+    const es = Object.entries(x.engines).filter(([, e]) => e && e.status !== "error")
+    const namedBy = es.filter(([, e]) => e!.appeared).map(([k]) => ENGINE[k])
+    const others = Array.from(new Set(es.flatMap(([, e]) => e!.named))).filter(real)
+    return { q: cap(x.q), n: namedBy.length, of: es.length, namedBy, others }
+  })
+  const rivals = q.rivals.slice(0, 3).map((r) => r.name)
+  const headline = q.named === 0
+    ? `None of the four AIs named you for any of your ${q.questions.length} customer questions yet.`
+    : `The AIs named you in ${q.named} of ${q.answers} answers across your ${q.questions.length} customer questions.`
+  const who = rivals.length
+    ? `The names that keep coming up instead: ${rivals.join(", ")}${q.rivals[0] ? ` — ${q.rivals[0].name} in ${q.rivals[0].count} answers` : ""}.`
+    : "When they don’t name you, they mostly don’t name anyone specific — which means the answer is still up for grabs."
+  // Where you're closest: a question nobody owns yet, else the one with the fewest rivals.
+  const target = [...rows].filter((r) => r.n === 0).sort((a, b) => a.others.length - b.others.length)[0]
   out.push(agent([
-    { kind: "text", text: `Across ${q.questions.length} customer questions, the four AIs named you in ${q.named} of ${q.answers} answers.`, big: true },
-    { kind: "text", text: `Asked ${when}. Each question goes to ChatGPT, Gemini, Claude and Perplexity${q.facts.checked && !q.facts.issues.length ? ", and I checked what they say about you — nothing wrong" : ""}.` },
-    { kind: "sources", title: "Question by question", collapseOk: true, items: q.questions.map((x) => {
-      const es = Object.entries(x.engines).filter(([, e]) => e && e.status !== "error")
-      const n = es.filter(([, e]) => e!.appeared).length
-      return { name: x.q, detail: n ? `Named by ${es.filter(([, e]) => e!.appeared).map(([k]) => ENGINE[k]).join(", ")}` : (es.flatMap(([, e]) => e!.named).slice(0, 2).join(", ") ? `Named instead: ${Array.from(new Set(es.flatMap(([, e]) => e!.named))).slice(0, 2).join(", ")}` : "Nobody named"), status: `${n} of ${es.length}`, ok: n > 0 }
-    }) },
-    ...(q.rivals.length ? [{ kind: "text", text: `Named most instead of you: ${q.rivals.slice(0, 4).map((r) => `${r.name} (${r.count})`).join(", ")}.` } as Block] : []),
-    { kind: "chips", items: [{ label: "Write a post for a question I missed", action: { type: "draft", topic: "auto", mode: "post" }, primary: true }, { label: "Change the questions", action: { type: "questions-edit" } }] },
+    { kind: "text", text: headline, big: true },
+    { kind: "text", text: `${who} I asked ${when}, the way a customer would.` },
+    ...(rows.filter((r) => r.n > 0).length ? [{ kind: "text", text: `Where you’re already named: ${rows.filter((r) => r.n > 0).map((r) => `“${r.q}” (${r.namedBy.join(", ")})`).join("; ")}.` } as Block] : []),
   ], "ans-sum"))
+  if (target) {
+    out.push(agent([
+      { kind: "text", text: target.others.length ? `Here’s where I’d start: “${target.q}” Right now the AIs send people to ${target.others.slice(0, 2).join(" and ")}.` : `Here’s where I’d start: “${target.q}” Nobody owns that answer yet — it’s the easiest one to win.` },
+      { kind: "text", text: "I’ll write a post that answers it directly, from your own facts — the kind of page AI quotes. You read it before anything goes live." },
+      { kind: "chips", items: [{ label: "Write it", action: { type: "draft", topic: target.q, mode: "post" }, primary: true }, { label: "Change the questions", action: { type: "questions-edit" } }] },
+    ], "ans-next"))
+  }
+  out.push(agent([
+    { kind: "sources", title: "Question by question", limit: 3, items: rows.map((r) => ({
+      name: r.q,
+      detail: r.n ? `Named by ${r.namedBy.join(", ")}` : r.others.length ? `Named instead: ${r.others.slice(0, 2).join(", ")}` : "Nobody named yet",
+      status: `${r.n} of ${r.of}`, ok: r.n > 0,
+    })) },
+  ], "ans-table"))
   return out
 }

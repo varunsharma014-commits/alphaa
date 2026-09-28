@@ -66,7 +66,7 @@ export type Block =
       businessName: string
       sources?: string[]
     }
-  | { kind: "sources"; title?: string; collapseOk?: boolean; items: { name: string; detail?: string; status: string; ok: boolean; href?: string }[] } // collapseOk: fold passing rows behind "N already right"
+  | { kind: "sources"; title?: string; collapseOk?: boolean; limit?: number; items: { name: string; detail?: string; status: string; ok: boolean; href?: string }[] } // collapseOk: fold passing rows behind "N already right"
   | { kind: "stat"; value: string; label: string }
   | { kind: "doc"; title: string; meta?: string; text?: string; html?: string; docId?: string; editable?: boolean }
   | { kind: "diff"; beforeLabel: string; afterLabel: string; before: string[]; after: string[]; highlight?: string }
