@@ -182,34 +182,26 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
 ]
 
 export function EasyRail() {
-  const rail = useRef<HTMLDivElement>(null)
-  const [more, setMore] = useState<number | null>(null)
-  const scroll = (dir: 1 | -1) => rail.current?.scrollBy({ left: dir * Math.min(420, rail.current.clientWidth * 0.8), behavior: "smooth" })
+  // Bento: one wide card to lead, then a 2×2 grid — everything visible, nothing cut off.
+  const [lead, ...rest] = EASY
+  const Card = ({ c, wide }: { c: (typeof EASY)[number]; wide?: boolean }) => (
+    <article className={`ap-bento__card${wide ? " is-wide" : ""}`} data-reveal>
+      <div className="ap-bento__text">
+        <div className="ap-bento__eyebrow">{c.eyebrow}</div>
+        <h3>{c.title}</h3>
+        <p className="ap-bento__lead">{c.body}</p>
+        <p className="ap-bento__more">{c.more}</p>
+      </div>
+      <div className={`ap-bento__art ap-tint--${c.tone}`}>{c.art}</div>
+    </article>
+  )
   return (
-    <section className="ap-sec ap-sec--grey ap-sec--rail">
-      <div className="ap-railhead">
-        <h2 className="ap-h2">Zero technical skills required.<br /><span className="ap-quiet">Your agent does the heavy lifting.</span></h2>
-        <Link href="/how-it-works" className="ap-link">See how it works ›</Link>
-      </div>
-      <div className="ap-rail" ref={rail}>
-        {EASY.map((c, i) => (
-          <article key={c.title} className="ap-railcard">
-            <div className="ap-eyebrow ap-eyebrow--dark">{c.eyebrow}</div>
-            <h3>{c.title}</h3>
-            <p>{c.body}</p>
-            <div className={`ap-railcard__art ap-tint--${c.tone}`}>{c.art}</div>
-            <button className="ap-plus" aria-label={`More about: ${c.title}`} onClick={() => setMore(more === i ? null : i)}>{more === i ? "×" : "+"}</button>
-            <div className={`ap-railcard__more${more === i ? " is-on" : ""}`}>
-              <div className="ap-eyebrow ap-eyebrow--dark">{c.eyebrow}</div>
-              <h3>{c.title}</h3>
-              <p>{c.more}</p>
-            </div>
-          </article>
-        ))}
-      </div>
-      <div className="ap-railnav">
-        <button onClick={() => scroll(-1)} aria-label="Previous">‹</button>
-        <button onClick={() => scroll(1)} aria-label="Next">›</button>
+    <section className="ap-sec ap-sec--grey">
+      <h2 className="ap-h2 ap-center">Zero technical skills required.<br /><span className="ap-quiet">Your agent does the heavy lifting.</span></h2>
+      <p className="ap-center" style={{ marginTop: 18 }}><Link href="/how-it-works" className="ap-link" style={{ fontSize: 19 }}>See how it works ›</Link></p>
+      <div className="ap-bento">
+        <Card c={lead} wide />
+        {rest.map((c) => <Card key={c.title} c={c} />)}
       </div>
     </section>
   )

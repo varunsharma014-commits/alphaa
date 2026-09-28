@@ -394,7 +394,7 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .hx-c4 { left: calc(50% + 500px); top: 42%; animation-delay: -1s; }
 .hx-c5 { right: calc(50% + 460px); top: 62%; animation-delay: -3s; }
 .hx-c6 { left: calc(50% + 460px); top: 66%; animation-delay: -5s; }
-@media (max-width: 1400px) { .hx-card { display: none; } }
+@media (max-width: 1560px) { .hx-card { display: none; } }
 @media (prefers-reduced-motion: reduce) { .hx-grid, .hx-glow, .hx-card { animation: none; } }
 
 .ag-hero__cta--big { flex-direction: column; gap: 14px; }
