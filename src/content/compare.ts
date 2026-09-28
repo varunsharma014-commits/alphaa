@@ -3,7 +3,7 @@
 // question-shaped sections and an FAQ (emitted as FAQPage JSON-LD).
 // Competitor facts come from their own public pages — keep `sources` and `checked` current.
 
-export type CompareKind = "alternative" | "concept" | "tool"
+export type CompareKind = "alternative" | "concept" | "dashboard" | "tool"
 
 export type Compare = {
   slug: string
@@ -344,7 +344,167 @@ export const COMPARES: Compare[] = [
     deepDive: "aeo-vs-geo",
   },
 
-  // ─── Category 3: competitor tools ─────────────────────────────────────
+  // ─── Category 3: AI-visibility dashboards vs. an agent ────────────────
+  {
+    slug: "peec-ai",
+    kind: "dashboard",
+    label: "Alphaa vs. Peec AI",
+    left: "Peec AI",
+    right: "Alphaa",
+    metaTitle: "Alphaa vs. Peec AI (2026): AI Search Analytics Dashboard vs. an AI Agent That Fixes It",
+    description:
+      "Peec AI tells marketing teams why they’re losing on ChatGPT. Alphaa is an AI agent that fixes it for local businesses — writing and publishing content, fixing the site, and replying to reviews. An honest comparison.",
+    h1: "Alphaa vs. Peec AI.",
+    h1Quiet: "Peec tells you why you’re losing on ChatGPT. Alphaa fixes it.",
+    tldr:
+      "The main difference between Alphaa and Peec AI is analytics versus action. Peec AI is a well-funded AI-search analytics platform that shows marketing teams their visibility, sentiment and sources across AI assistants, with recommended actions. Alphaa is an AI agent for local businesses that does the work itself — writing and publishing pages, fixing structured data and llms.txt, and drafting review replies — from $99 a month.",
+    rows: [
+      ["What it is", "AI search analytics platform", "AI agent that does the AI-visibility work"],
+      ["Built for", "SEO, content and marketing teams; agencies", "Local business owners"],
+      ["Price (Sept 2026)", "Starter ~$95/mo (50 prompts), Pro ~$245/mo (150), Advanced ~$495/mo (350); Enterprise custom", "$99/mo (10 questions), Pro $199 (20 questions, 3 locations), Full Service $299"],
+      ["AI assistants", "ChatGPT, Perplexity, Gemini included; more models as paid add-ons", "ChatGPT, Gemini, Claude and Perplexity, all included"],
+      ["How often it checks", "Daily", "Weekly, plus live checks on request"],
+      ["Competitor & sentiment analytics", "Deep — share of voice, sentiment, source analysis", "Who got named instead, question by question"],
+      ["Recommendations", "Yes — ranked recommended actions", "Yes — and it carries them out"],
+      ["Writes & publishes pages and posts", "No", "Yes — to WordPress with one-tap approval and Undo, or emailed to your web person"],
+      ["Fixes structured data, llms.txt, robots.txt, titles", "No", "Yes"],
+      ["Google reviews & Business Profile posts", "No", "Drafts replies and posts; you approve"],
+      ["Catches AI saying wrong facts about you", "Via sentiment and brand analysis", "Weekly fact check — closed, wrong phone, wrong address"],
+    ],
+    leftGood: {
+      title: "What Peec AI is great at",
+      points: [
+        "Daily, granular AI-visibility data across many prompts.",
+        "Share of voice, sentiment and source analysis for brands.",
+        "Unlimited seats — built for teams and agencies.",
+        "Fast-growing and well-funded (Berlin-based, $21M Series A).",
+      ],
+    },
+    rightGood: {
+      title: "Where Alphaa is different",
+      points: [
+        "It doesn’t hand you a chart — it does the fix.",
+        "Publishes the page, updates the facts AI reads, answers the reviews.",
+        "Built for one local business, not a marketing department.",
+        "Claude included, no model add-ons.",
+      ],
+    },
+    chooseLeft: [
+      "You have a marketing team that will act on the data.",
+      "You track hundreds of prompts across brands or clients.",
+      "Sentiment and share-of-voice reporting is the goal.",
+    ],
+    chooseRight: [
+      "You run a local business and want AI to recommend you.",
+      "You want the work done, not another dashboard to read.",
+      "You want one flat price with everything included.",
+    ],
+    sections: [
+      {
+        q: "Is Peec AI an analytics tool or an agent?",
+        a: [
+          "Peec AI is primarily an analytics platform: it tracks how brands appear in AI answers, benchmarks competitors, analyses the sources AI cites and recommends actions. As of September 2026 its site also describes “agent actions” — ranked recommendations and workflow skills — but the publishing and fixing is still done by your team.",
+          "Alphaa is built the other way round: the agent writes the page, updates your structured data and llms.txt, drafts review replies and Google posts, and publishes after you tap approve.",
+        ],
+      },
+      {
+        q: "Why does ‘done for you’ matter for a local business?",
+        a: [
+          "A dentist or plumber doesn’t have a content team to turn a visibility report into new pages. Knowing you’re missing from ChatGPT doesn’t change the answer — changing what AI can read about you does. That’s the part Alphaa does.",
+        ],
+      },
+    ],
+    faq: [
+      { q: "Is Alphaa a Peec AI alternative?", a: "For local businesses that want AI visibility fixed for them, yes. For marketing teams that want deep daily analytics across many brands and prompts, Peec AI is built for that." },
+      { q: "How much does Peec AI cost?", a: "Reported self-serve prices in 2026 are about $95/month (Starter, 50 prompts), $245 (Pro, 150) and $495 (Advanced, 350), with extra AI models as add-ons. Alphaa is $99, $199 or $299 a month with all four assistants included." },
+      { q: "Does Peec AI publish content to my website?", a: "No. Peec AI tracks visibility and recommends actions; your team makes the changes. Alphaa writes and publishes pages and posts to WordPress after you approve, or emails them to your web person." },
+      { q: "Does Alphaa track Claude?", a: "Yes. Alphaa asks ChatGPT, Gemini, Claude and Perplexity your customers’ questions every week, included in every plan." },
+    ],
+    sources: [
+      { label: "Peec AI pricing", url: "https://peec.ai/pricing" },
+      { label: "Peec AI pricing review (2026)", url: "https://geotoolbox.ai/blog/what-is-peec-ai" },
+      { label: "Peec AI $21M Series A (Nov 2025)", url: "https://everything-pr.com/berlins-peec-ai-rockets-to-4m-arr-in-ten-months-raises-21m-series-a-to-open-new-york-office" },
+    ],
+    deepDive: "best-aeo-tools-2026",
+  },
+  {
+    slug: "otterly-ai",
+    kind: "dashboard",
+    label: "Alphaa vs. Otterly.AI",
+    left: "Otterly.AI",
+    right: "Alphaa",
+    metaTitle: "Alphaa vs. Otterly.AI (2026): AI Search Monitoring vs. an AI Agent That Does the Work",
+    description:
+      "Otterly.AI monitors your brand across ChatGPT, Perplexity, Copilot and AI Overviews. Alphaa is an AI agent that fixes what stops local businesses being recommended. Price, features and fit, compared honestly.",
+    h1: "Alphaa vs. Otterly.AI.",
+    h1Quiet: "Otterly watches the answers. Alphaa changes them.",
+    tldr:
+      "The main difference between Alphaa and Otterly.AI is monitoring versus doing. Otterly.AI is an affordable AI-search monitoring tool that tracks brand mentions and cited links across AI assistants and audits pages for GEO. Alphaa is an AI agent for local businesses that makes the fixes itself — pages, posts, structured data, llms.txt, review replies — from $99 a month.",
+    rows: [
+      ["What it is", "AI search monitoring & GEO audit tool", "AI agent that does the AI-visibility work"],
+      ["Built for", "Marketers, SMEs and agencies", "Local business owners"],
+      ["Price (Sept 2026)", "Lite $29/mo (15 prompts), Standard $189 (100), Premium $489 (400); Enterprise custom", "$99/mo (10 questions), Pro $199 (20 questions, 3 locations), Full Service $299"],
+      ["AI assistants", "ChatGPT, Google AI Overviews, Perplexity, Copilot; Claude, Gemini and AI Mode as add-ons", "ChatGPT, Gemini, Claude and Perplexity, all included"],
+      ["Brand mentions & cited links", "Yes — a core strength", "Yes — who got named, and the pages AI reads"],
+      ["Page audits", "GEO URL audits (1,000–10,000/mo by plan)", "23 AI-readiness checks + security checks, weekly"],
+      ["Writes & publishes pages and posts", "No", "Yes — WordPress one-tap publish with Undo, or emailed to your web person"],
+      ["Fixes structured data, llms.txt, robots.txt, titles", "No — recommends", "Yes"],
+      ["Google reviews & Business Profile posts", "No", "Drafts replies and posts; you approve"],
+      ["Directory & profile consistency", "No", "Checks your name, phone and address across directories and social profiles"],
+    ],
+    leftGood: {
+      title: "What Otterly.AI is great at",
+      points: [
+        "Low entry price for monitoring ($29 Lite).",
+        "Broad engine coverage including Copilot and AI Overviews.",
+        "Link-citation analysis and bulk GEO page audits.",
+      ],
+    },
+    rightGood: {
+      title: "Where Alphaa is different",
+      points: [
+        "It makes the changes instead of listing them.",
+        "Local-business work included: reviews, Google posts, listings, locations.",
+        "Claude and Gemini included, no add-ons.",
+        "Plain-English weekly note instead of a dashboard.",
+      ],
+    },
+    chooseLeft: [
+      "You only want to watch your AI visibility, cheaply.",
+      "You’re a marketer who’ll act on audit findings yourself.",
+      "You need Copilot or AI Overviews monitoring specifically.",
+    ],
+    chooseRight: [
+      "You want the fixes done, not a to-do list.",
+      "You’re a local business without a marketing team.",
+      "You want reviews, listings and content handled too.",
+    ],
+    sections: [
+      {
+        q: "Does Otterly.AI fix my website?",
+        a: [
+          "No. As of September 2026, Otterly.AI monitors how AI assistants mention your brand and which links they cite, and audits pages with GEO recommendations. Making the changes is up to you or your team.",
+          "Alphaa writes the fix and, once you approve, publishes it — on WordPress directly, or by emailing your web person exactly what to change.",
+        ],
+      },
+      {
+        q: "Is Otterly.AI cheaper than Alphaa?",
+        a: [
+          "Otterly’s Lite plan is $29 a month for 15 tracked prompts — cheaper if you only want to monitor. Its Standard plan is $189. Alphaa is $99 a month and includes the work: pages, posts, structured data, review replies and listings checks.",
+        ],
+      },
+    ],
+    faq: [
+      { q: "Is Alphaa an Otterly.AI alternative?", a: "For local businesses that want AI visibility done for them, yes. For marketers who want low-cost monitoring across many engines, Otterly.AI is a good fit." },
+      { q: "How much does Otterly.AI cost?", a: "As of September 2026: Lite $29/month (15 prompts), Standard $189 (100), Premium $489 (400), with Claude, Gemini and Google AI Mode as paid add-ons." },
+      { q: "Does Otterly.AI track Claude?", a: "Claude is available as a paid add-on on Otterly.AI. Alphaa includes Claude, ChatGPT, Gemini and Perplexity in every plan." },
+      { q: "Can Otterly.AI publish content?", a: "No. Otterly.AI monitors and audits. Alphaa writes and publishes approved pages and posts to WordPress, or emails them to your web person." },
+    ],
+    sources: [{ label: "Otterly.AI pricing", url: "https://otterly.ai/pricing" }],
+    deepDive: "best-aeo-tools-2026",
+  },
+
+  // ─── Category 4: competitor tools ─────────────────────────────────────
   {
     slug: "alphaa-vs-semrush",
     kind: "tool",
@@ -663,5 +823,6 @@ export function getCompare(slug: string) {
 export const COMPARE_GROUPS: { kind: CompareKind; title: string; blurb: string }[] = [
   { kind: "alternative", title: "The old way", blurb: "Agencies and freelancers sell hours. An agent does the work." },
   { kind: "concept", title: "The shift", blurb: "What changes when customers ask AI instead of Google." },
+  { kind: "dashboard", title: "Dashboards vs. an agent", blurb: "AI-visibility dashboards show you the problem. An agent fixes it." },
   { kind: "tool", title: "The tools", blurb: "You don’t need another dashboard. You need the work done." },
 ]

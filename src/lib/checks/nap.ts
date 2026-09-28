@@ -1,3 +1,4 @@
+import { fetchPage } from "./fetch-page"
 import { checkAppearance } from "../ai-engines"
 
 // NAP consistency: does each directory page show the same Name, Address and
@@ -198,13 +199,10 @@ async function checkOne(url: string, facts: NapFacts): Promise<NapFinding> {
   }
   try {
     if (!domain) return base
-    const res = await fetch(url, {
-      headers: { "user-agent": UA, accept: "text/html,application/xhtml+xml", "accept-language": "en-US,en;q=0.9" },
-      redirect: "follow",
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    })
-    if (!res.ok) return base
-    const html = await res.text()
+    // Direct, then through Apify's residential proxy if the directory blocks us.
+    const page = await fetchPage(url, TIMEOUT_MS)
+    if (!page.readable) return base
+    const html = page.html
     const text = htmlToText(html)
     // Bot walls return 200 with almost nothing in them.
     if (text.trim().length < 200) return base

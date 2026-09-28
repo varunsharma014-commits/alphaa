@@ -4,6 +4,7 @@
 // microdata, then the "4.5 stars · 120 reviews" text in page meta. Sites that
 // block automated visits come back readable:false. Nothing here throws.
 
+import { apifyEnabled, facebookPage } from "./apify"
 import { fetchPage, jsonLdNodes, mapLimit } from "./fetch-page"
 
 export type OutsideReview = { site: string; url: string; rating: number | null; count: number | null; readable: boolean }
@@ -88,6 +89,11 @@ async function readOne(url: string): Promise<OutsideReview> {
   const full = /^https?:\/\//i.test(url) ? url : `https://${url}`
   const blank: OutsideReview = { site, url: full, rating: null, count: null, readable: false }
   try {
+    // Facebook needs a real scraper; it reports "% recommend", converted to stars.
+    if (/facebook\.com/i.test(full) && apifyEnabled()) {
+      const d = await facebookPage(full)
+      if (d) return { site, url: full, rating: d.rating, count: d.ratingCount, readable: true }
+    }
     const page = await fetchPage(full)
     if (!page.readable) return blank
     const { load } = await import("cheerio")

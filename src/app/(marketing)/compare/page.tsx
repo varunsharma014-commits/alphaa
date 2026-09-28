@@ -5,9 +5,9 @@ import { COMPARES, COMPARE_GROUPS } from "@/content/compare"
 const BASE = "https://alphaa.app"
 
 export const metadata: Metadata = {
-  title: { absolute: "Compare Alphaa — vs. SEO Agencies, Semrush, Ahrefs, Yext, BrightLocal & Whitespark" },
+  title: { absolute: "Compare Alphaa — vs. Peec AI, Otterly, SEO Agencies, Semrush, Yext & BrightLocal" },
   description:
-    "Honest side-by-side comparisons: Alphaa vs. SEO agencies, freelancers, Semrush, Ahrefs, Yext, BrightLocal and Whitespark — plus SEO vs. AEO and local SEO vs. GEO explained.",
+    "Honest side-by-side comparisons: Alphaa vs. Peec AI, Otterly.AI, SEO agencies, freelancers, Semrush, Ahrefs, Yext, BrightLocal and Whitespark — plus SEO vs. AEO and local SEO vs. GEO explained.",
   alternates: { canonical: "/compare" },
 }
 

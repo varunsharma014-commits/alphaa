@@ -53,13 +53,13 @@ export function profileMessages(r: ProfilesResult): Message[] {
   if (r.findings.length) {
     blocks.push({ kind: "sources", title: "Your profiles", items: r.findings.map((f) => ({
       name: NET[f.network] ?? f.network,
-      detail: f.readable ? (f.issues[0] ?? (f.bio ? f.bio.slice(0, 90) : "Looks consistent")) : "This network blocks automated checks — tap to check it yourself",
-      status: !f.readable ? "Check yourself" : f.issues.length ? "Fix" : "Good",
+      detail: f.readable ? (f.issues[0] ?? (f.bio ? f.bio.slice(0, 90) : "Looks consistent")) : "Couldn’t read it this time — I’ll retry on my next pass",
+      status: !f.readable ? "Retrying" : f.issues.length ? "Fix" : "Good",
       ok: f.readable && f.issues.length === 0,
       href: f.url,
     })) })
   }
-  if (blocked.length) blocks.push({ kind: "text", text: `${blocked.map((f) => NET[f.network]).join(", ")} ${blocked.length === 1 ? "blocks" : "block"} automated visits, so open ${blocked.length === 1 ? "it" : "each one"} and check: same business name, same phone, same hours as your website, and a link back to your site. AI compares these.` })
+  if (issues.length) blocks.push({ kind: "text", text: "AI compares these with your website. Fix each one marked Fix — same name, same phone, and a link back to your site." })
   if (r.missing.length) blocks.push({ kind: "text", text: `Missing: ${r.missing.map((n) => NET[n]).join(", ")}. These are the ones AI checks most for a business like yours.` })
   blocks.push({ kind: "chips", items: [{ label: "Add a profile I have", action: { type: "profile-add" } }] })
   return [agent(blocks, "prof-sum")]
@@ -82,7 +82,7 @@ export function listingsMessages(r: ListingsResult): Message[] {
   if (r.reviews.length) {
     out.push(agent([
       { kind: "text", text: rated.length ? `Your ratings beyond Google: ${rated.map((v) => `${v.site} ${v.rating!.toFixed(1)}★${v.count ? ` (${v.count})` : ""}`).join(" · ")}.` : "Your reviews beyond Google:" },
-      { kind: "sources", items: r.reviews.map((v) => ({ name: v.site, detail: v.readable ? (v.rating !== null ? `${v.rating.toFixed(1)} stars${v.count ? ` from ${v.count} reviews` : ""}` : "No rating shown") : "Blocks automated checks — tap to see it", status: v.readable ? (v.rating !== null && v.rating < 4 ? "Below 4★" : "Read") : "Check yourself", ok: v.readable && (v.rating ?? 0) >= 4, href: v.url })) },
+      { kind: "sources", items: r.reviews.map((v) => ({ name: v.site, detail: v.readable ? (v.rating !== null ? `${v.rating.toFixed(1)} stars${v.count ? ` from ${v.count} reviews` : ""}` : "Couldn’t read the rating this time") : "Couldn’t read this page this time", status: v.readable ? (v.rating !== null ? (v.rating < 4 ? "Below 4★" : "Read") : "Rating hidden") : "Retrying weekly", ok: v.readable && (v.rating ?? 0) >= 4, href: v.url })) },
       { kind: "text", text: "AI reads these too. Asking happy customers to review you on the site where you’re weakest lifts the average fastest." },
     ], "rev-out"))
   }

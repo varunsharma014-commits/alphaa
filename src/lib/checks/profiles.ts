@@ -4,6 +4,7 @@
 // back? Networks that block automated visits are reported as unreadable,
 // never as a fabricated mismatch. Nothing here throws.
 
+import { apifyEnabled, facebookPage, instagramProfile, type SocialData } from "./apify"
 import { checkAppearance } from "@/lib/ai-engines"
 import { fetchPage, jsonLdNodes, mapLimit } from "./fetch-page"
 
@@ -143,6 +144,11 @@ async function readProfile(
 ): Promise<ProfileFinding> {
   const base: ProfileFinding = { ...p, readable: false, nameMatches: null, phoneMatches: null, linksToWebsite: null, bio: null, issues: [BLOCKED_ISSUE] }
   try {
+    // Facebook and Instagram need a real scraper; Apify returns structured data.
+    if ((p.network === "facebook" || p.network === "instagram") && apifyEnabled()) {
+      const d = p.network === "facebook" ? await facebookPage(p.url) : await instagramProfile(p.url)
+      if (d) return fromSocialData(p, d, ctx)
+    }
     const page = await fetchPage(p.url)
     if (!page.readable) return base
     const $ = ctx.load(page.html)
@@ -180,6 +186,26 @@ async function readProfile(
   } catch {
     return base
   }
+}
+
+function fromSocialData(
+  p: { network: ProfileNetwork; url: string; source: "website" | "owner" },
+  d: SocialData,
+  ctx: { businessName: string; phone: string | null; domain: string | null }
+): ProfileFinding {
+  const name = LABEL[p.network]
+  const nameMatches = d.name ? checkAppearance(d.name, ctx.businessName).appeared : null
+  const known = ctx.phone ? digits(ctx.phone) : ""
+  const theirs = d.phone ? digits(d.phone).slice(-10) : ""
+  const phoneMatches = known.length === 10 && theirs.length === 10 ? known === theirs : null
+  const linksToWebsite = ctx.domain ? (d.website ? d.website.toLowerCase().includes(ctx.domain) : false) : null
+  const bio = d.bio ? d.bio.replace(/\s+/g, " ").slice(0, 300) : null
+  const issues: string[] = []
+  if (nameMatches === false) issues.push(`The name on ${name} (“${d.name}”) doesn’t match your business name`)
+  if (phoneMatches === false) issues.push(`${name} shows ${d.phone} — not your phone number`)
+  if (linksToWebsite === false) issues.push(d.website ? `${name} links to ${d.website}, not your website` : `Your ${name} profile doesn’t link to your website`)
+  if (!bio) issues.push(`No description on your ${name} profile`)
+  return { ...p, readable: true, nameMatches, phoneMatches, linksToWebsite, bio, issues }
 }
 
 export async function checkProfiles(input: {

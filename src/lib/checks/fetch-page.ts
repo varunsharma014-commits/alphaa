@@ -5,12 +5,28 @@
 export const BROWSER_UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
-export type Page = { status: number | null; finalUrl: string; html: string; readable: boolean }
+import { proxyGet } from "./apify"
+
+export type Page = { status: number | null; finalUrl: string; html: string; readable: boolean; via?: "direct" | "proxy" }
 
 const LOGIN_URL = /\/(login|signin|sign-in|accounts\/login|authwall|checkpoint|uas\/login)|[?&](login|next)=|\/i\/flow\/login/i
 const CHALLENGE = /cf-chl-|challenge-platform|<title>Just a moment\.\.\.|<title>(Client Challenge|Access Denied|Pardon Our Interruption|Security Check)|Attention Required! \| Cloudflare|captcha-delivery|px-captcha|SlardarWAF|_wafchallengeid|_Incapsula_Resource|sucuri_cloudproxy|Please enable JS and disable any ad blocker|<title>(Log in|Login|Sign in|Sign Up)[^<]*<\/title>/i
 
+const isBlocked = (url: string, status: number, finalUrl: string, html: string, mitigated: string | null) =>
+  status < 200 || status >= 300 || status === 999 || mitigated === "challenge" ||
+  (LOGIN_URL.test(finalUrl) && !LOGIN_URL.test(url)) || html.trim().length < 3000 || (html.length < 150_000 && CHALLENGE.test(html))
+
+/** Direct first; if the site blocks us, once more through Apify's residential proxy. */
 export async function fetchPage(url: string, ms = 8000): Promise<Page> {
+  const direct = await fetchDirect(url, ms)
+  if (direct.readable) return { ...direct, via: "direct" }
+  const p = await proxyGet(url, { "User-Agent": BROWSER_UA, Accept: "text/html,application/xhtml+xml,*/*", "Accept-Language": "en-US,en;q=0.9" })
+  if (!p) return direct
+  const readable = !isBlocked(url, p.status, p.url, p.html, null)
+  return readable ? { status: p.status, finalUrl: p.url, html: p.html, readable, via: "proxy" } : direct
+}
+
+async function fetchDirect(url: string, ms: number): Promise<Page> {
   try {
     const res = await fetch(url, {
       headers: { "User-Agent": BROWSER_UA, Accept: "text/html,application/xhtml+xml,*/*", "Accept-Language": "en-US,en;q=0.9" },
