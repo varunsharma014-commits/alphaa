@@ -3,6 +3,7 @@ export const maxDuration = 300
 
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
+import { FOUNDER_EMAILS } from "@/lib/billing"
 import { runVisibilityScan } from "@/lib/visibility-scan"
 import { logActivity } from "@/lib/activity"
 
@@ -30,7 +31,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     where: {
       onboardingCompleted: true,
       OR: [
-        { subscriptionStatus: { in: ["active", "trialing"] } },
+        { subscriptionStatus: { in: ["active", "trialing"] }, stripeSubscriptionId: { not: null } },
+        { email: { in: FOUNDER_EMAILS } },
         { createdAt: { gte: fourteenDaysAgo } },
       ],
     },

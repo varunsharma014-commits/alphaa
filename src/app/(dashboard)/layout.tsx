@@ -3,6 +3,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
+import { hasPaidPlan, FOUNDER_EMAILS } from "@/lib/billing"
 import { AgentShell } from "@/components/agent/AgentShell"
 import { getFeed } from "@/lib/agent/feed"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
@@ -23,7 +24,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       const clerkUser = await client.users.getUser(userId)
       const email = clerkUser.emailAddresses[0]?.emailAddress ?? ""
       const fullName = [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") || null
-      user = await db.user.create({ data: { clerkId: userId, email, fullName } })
+      user = await db.user.create({ data: { clerkId: userId, email, fullName, subscriptionStatus: "none" } })
     } catch {
       redirect("/login")
     }
@@ -31,16 +32,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   if (!user.onboardingCompleted) redirect("/onboarding")
 
-  // Card-upfront trial gate: onboarded users who never started a Stripe trial
-  // go to /start-trial (outside this layout — no redirect loop). The webhook
-  // sets stripeSubscriptionId + "trialing" seconds after checkout completes.
+  // Paywall: onboarded users without a real Stripe subscription go to
+  // /start-trial (outside this layout — no redirect loop). The webhook sets
+  // stripeSubscriptionId + status seconds after checkout completes. Status
+  // alone isn't trusted: the column's DB default is "trialing".
   // Founder account bypasses so the owner can always dogfood.
-  const FOUNDER_EMAILS = ["varunsharma014@gmail.com"]
-  if (
-    !["active", "trialing"].includes(user.subscriptionStatus) &&
-    !user.stripeSubscriptionId &&
-    !FOUNDER_EMAILS.includes(user.email)
-  ) {
+  if (!hasPaidPlan(user) && !FOUNDER_EMAILS.includes(user.email)) {
     redirect("/start-trial")
   }
 

@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { Sparkles, Check } from "lucide-react"
 import { db } from "@/lib/db"
+import { hasPaidPlan } from "@/lib/billing"
 import { STRIPE_PRICE_IDS } from "@/lib/stripe"
 import { StartTrialButton } from "./StartTrialButton"
 
@@ -18,7 +19,7 @@ export default async function StartTrialPage() {
   const user = await db.user.findUnique({ where: { clerkId } })
   if (!user) redirect("/login")
   if (!user.onboardingCompleted) redirect("/onboarding")
-  if (["active", "trialing"].includes(user.subscriptionStatus) || user.stripeSubscriptionId) {
+  if (hasPaidPlan(user)) {
     redirect("/dashboard")
   }
 

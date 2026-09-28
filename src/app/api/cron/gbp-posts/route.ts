@@ -226,6 +226,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const users = await db.user.findMany({
     where: {
       subscriptionStatus: { in: ["active", "trialing"] },
+      stripeSubscriptionId: { not: null },
     },
     select: {
       id: true,

@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const { id, email_addresses, first_name, last_name } = event.data
     const email = email_addresses[0]?.email_address ?? ""
     const fullName = [first_name, last_name].filter(Boolean).join(" ") || null
-    await db.user.create({ data: { clerkId: id, email, fullName } })
+    await db.user.create({ data: { clerkId: id, email, fullName, subscriptionStatus: "none" } })
 
     const trialEndDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
       .toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
