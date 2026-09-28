@@ -48,7 +48,7 @@ export type Chip = { label: string; action: ChipAction; primary?: boolean }
 
 export type Block =
   | { kind: "text"; text: string; big?: boolean }
-  | { kind: "steps"; items: string[]; done?: number } // done = how many are finished; the next one spins
+  | { kind: "steps"; items: string[]; done?: number; ticker?: string[][] } // done = how many are finished; the next one spins. ticker[i] = live status lines cycled under step i while it runs
   | { kind: "verdicts"; items: { engine: EngineKey; state: VerdictState; note?: string }[] }
   | {
       kind: "answer"
@@ -60,12 +60,13 @@ export type Block =
       businessName: string
       sources?: string[]
     }
-  | { kind: "sources"; title?: string; items: { name: string; detail?: string; status: string; ok: boolean; href?: string }[] }
+  | { kind: "sources"; title?: string; collapseOk?: boolean; items: { name: string; detail?: string; status: string; ok: boolean; href?: string }[] } // collapseOk: fold passing rows behind "N already right"
   | { kind: "stat"; value: string; label: string }
   | { kind: "doc"; title: string; meta?: string; text?: string; html?: string; docId?: string; editable?: boolean }
   | { kind: "diff"; beforeLabel: string; afterLabel: string; before: string[]; after: string[]; highlight?: string }
   | { kind: "receipt"; title: string; sub?: string; items: string[] }
   | { kind: "chips"; items: Chip[] }
+  | { kind: "cta"; chip: Chip; sub?: string } // the one big button a message ends on
   | { kind: "divider"; text: string }
   | { kind: "email"; label: string; placeholder: string; cta: string; fine: string }
   | { kind: "form"; formId: string; fields: FormField[]; cta: string; fine?: string }

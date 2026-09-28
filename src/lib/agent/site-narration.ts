@@ -27,7 +27,7 @@ export function siteCheckBlocks(check: Check): Block[] {
   const groups = (["access", "understand", "trust"] as CheckGroup[]).map((g) => ({ g, items: check.checks.filter((c) => CHECK_GROUP[c.key] === g) })).filter((x) => x.items.length)
   return [
     { kind: "text", text: `${check.passed} of ${check.total} things AI needs are in place on ${check.domain}.`, big: true },
-    ...groups.map(({ g, items }) => ({ kind: "sources", title: `${GROUP_TITLE[g]}  ·  ${items.filter((c) => c.ok === true).length} of ${items.length}`, items: [...items].sort((a, b) => rank(a) - rank(b)).map(srcItem) }) as Block),
+    ...groups.map(({ g, items }) => ({ kind: "sources", title: `${GROUP_TITLE[g]}  ·  ${items.filter((c) => c.ok === true).length} of ${items.length}`, collapseOk: true, items: [...items].sort((a, b) => rank(a) - rank(b)).map(srcItem) }) as Block),
     worst.length
       ? { kind: "text", text: `What’s hurting you most: ${worst.slice(0, 3).map((c) => CHECK_SHORT[c.key]).join("; ")}.` }
       : { kind: "text", text: "Your site is in good shape for AI. The gap is what the rest of the web says about you — see Source Tracking." },

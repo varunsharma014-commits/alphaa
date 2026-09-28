@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { Block, Chip, Message } from "@/lib/agent/types"
 import {
-  AnswerBlock, ChipsBlock, DiffBlock, DocBlock, EmailBlock, FormBlock, ReceiptBlock,
+  AnswerBlock, ChipsBlock, CtaBlock, DiffBlock, DocBlock, EmailBlock, FormBlock, ReceiptBlock,
   SourcesBlock, StatBlock, StepsBlock, TextBlock, Typing, VerdictsBlock,
 } from "./blocks"
 
@@ -107,13 +107,13 @@ export function AgentFeed({
       case "text":
         return <TextBlock key={key} text={block.text} big={block.big} typing={typing} onDone={typing ? advance : undefined} />
       case "steps":
-        return <StepsBlock key={key} items={block.items} done={block.done} />
+        return <StepsBlock key={key} items={block.items} done={block.done} ticker={block.ticker} />
       case "verdicts":
         return <VerdictsBlock key={key} items={block.items} />
       case "answer":
         return <AnswerBlock key={key} {...block} />
       case "sources":
-        return <SourcesBlock key={key} items={block.items} title={block.title} />
+        return <SourcesBlock key={key} items={block.items} title={block.title} collapseOk={block.collapseOk} />
       case "stat":
         return <StatBlock key={key} value={block.value} label={block.label} />
       case "doc":
@@ -126,6 +126,8 @@ export function AgentFeed({
         return <ChipsBlock key={key} items={block.items} disabled={!!picked[msg.id]} onPick={(c) => pick(c, msg.id)} />
       case "email":
         return onEmail ? <EmailBlock key={key} b={block} onSubmit={onEmail} /> : null
+      case "cta":
+        return <CtaBlock key={key} chip={block.chip} sub={block.sub} onPick={(c) => pick(c, msg.id)} />
       case "form":
         return onForm ? <FormBlock key={key} b={block} onSubmit={onForm} /> : null
       case "divider":

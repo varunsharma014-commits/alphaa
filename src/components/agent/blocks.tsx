@@ -87,8 +87,20 @@ export function TextBlock({
 
 // ── steps ──────────────────────────────────────────────────────────────────
 
-export function StepsBlock({ items, done }: { items: string[]; done?: number }) {
+export function StepsBlock({ items, done, ticker }: { items: string[]; done?: number; ticker?: string[][] }) {
   const n = done ?? items.length
+  const lines = n < items.length ? ticker?.[n] ?? [] : []
+  const [tick, setTick] = useState(0)
+  const [secs, setSecs] = useState(0)
+  useEffect(() => setTick(0), [n])
+  useEffect(() => {
+    if (n >= items.length || !ticker) return
+    const id = window.setInterval(() => {
+      setTick((t) => t + 1)
+      setSecs((s) => s + 2)
+    }, 2000)
+    return () => window.clearInterval(id)
+  }, [n, items.length, ticker])
   return (
     <div className="ag-steps">
       {items.map((t, i) => {
@@ -96,10 +108,16 @@ export function StepsBlock({ items, done }: { items: string[]; done?: number }) 
         return (
           <div key={i} className={`ag-step ag-step--${state}`}>
             <span className="ag-step__ic">{state === "done" ? "✓" : ""}</span>
-            <span dangerouslySetInnerHTML={{ __html: t }} />
+            <span>
+              <span dangerouslySetInnerHTML={{ __html: t }} />
+              {state === "doing" && lines.length > 0 && (
+                <small key={tick} className="ag-step__live">{lines[tick % lines.length]}</small>
+              )}
+            </span>
           </div>
         )
       })}
+      {ticker && n < items.length && secs >= 6 && <div className="ag-steps__time">{secs}s · still working</div>}
     </div>
   )
 }
@@ -165,12 +183,17 @@ export function AnswerBlock(b: Extract<Block, { kind: "answer" }>) {
 
 // ── sources ────────────────────────────────────────────────────────────────
 
-export function SourcesBlock({ items, title }: { items: Extract<Block, { kind: "sources" }>["items"]; title?: string }) {
+export function SourcesBlock({ items, title, collapseOk }: { items: Extract<Block, { kind: "sources" }>["items"]; title?: string; collapseOk?: boolean }) {
+  const [open, setOpen] = useState(false)
+  const okCount = items.filter((s) => s.ok).length
+  const fold = !!collapseOk && !open && okCount >= 2
+  const shown = fold ? items.filter((s) => !s.ok) : items
   return (
     <div className="ag-sources">
       {title && <div className="ag-sources__h">{title}</div>}
-      {items.map((s, i) => {
-        const cls = `ag-src ${s.ok ? "ag-src--ok" : s.status.toLowerCase().includes("check") ? "ag-src--unknown" : ""}`
+      {shown.map((s, i) => {
+        const unknown = !s.ok && s.status.toLowerCase().includes("check")
+        const cls = `ag-src ${s.ok ? "ag-src--ok" : unknown ? "ag-src--unknown" : collapseOk ? "ag-src--bad" : ""}`
         const inner = (
           <>
             <span className="ag-src__ic">{s.ok ? "✓" : "✕"}</span>
@@ -191,6 +214,22 @@ export function SourcesBlock({ items, title }: { items: Extract<Block, { kind: "
           </div>
         )
       })}
+      {collapseOk && okCount >= 2 && (
+        <button type="button" className="ag-src ag-src--fold" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+          <span className="ag-src__ic">✓</span>
+          <span className="ag-src__t">{open ? "Hide what’s already right" : `${okCount} already right`}</span>
+          <span className="ag-src__a">{open ? "Hide" : "Show"}</span>
+        </button>
+      )}
+    </div>
+  )
+}
+
+export function CtaBlock({ chip, sub, disabled, onPick }: { chip: Chip; sub?: string; disabled?: boolean; onPick: (c: Chip) => void }) {
+  return (
+    <div className="ag-cta">
+      <button type="button" className="ag-cta__btn" disabled={disabled} onClick={() => onPick(chip)}>{chip.label}</button>
+      {sub && <p className="ag-cta__sub">{sub}</p>}
     </div>
   )
 }

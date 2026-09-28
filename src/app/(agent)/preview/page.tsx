@@ -30,6 +30,12 @@ export default function PreviewPage() {
       { kind: "chips", items: [{ label: "Show me every page", action: { type: "link", href: "/dashboard/citations" }, primary: false }] },
     ]),
     agent([
+      { kind: "steps", items: ["Reading growthturbine.com", "Working out what customers ask", "Asking ChatGPT, Gemini, Claude and Perplexity", "Checking who they recommended instead"], done: 2, ticker: [["Opening"], ["Thinking"], ["Asking ChatGPT…", "Asking Gemini…", "Asking Claude…", "Asking Perplexity…"], ["Checking"]] },
+      { kind: "sources", title: "Can AI get in?  ·  9 of 10", collapseOk: true, items: [{ name: "Set up with Bing (ChatGPT search uses it)", detail: "No sign of Bing Webmaster Tools", status: "No", ok: false }, ...["AI crawlers can open your site", "robots.txt lets AI search in", "Readable without JavaScript", "Sitemap"].map((n) => ({ name: n, detail: "Allowed", status: "Yes", ok: true }))] },
+      { kind: "cta", chip: { label: "Start today — $99/month", action: { type: "link", href: "/signup" }, primary: true }, sub: "Month to month · cancel in two clicks" },
+      { kind: "chips", items: [{ label: "Send me the report instead", action: { type: "say", text: "ok" }, primary: false }, { label: "How much?", action: { type: "say", text: "ok" }, primary: false }] },
+    ]),
+    agent([
       { kind: "divider", text: "Your results" },
       { kind: "text", text: "AI assistants sent 4 people to your website this week — ChatGPT 3, Perplexity 1. (up from 1)", big: true },
       { kind: "text", text: "From your Google listing: 12 calls (up from 9), 18 requests for directions and 31 website visits." },

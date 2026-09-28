@@ -37,6 +37,13 @@ const STEP_LABELS = (domain: string, local: boolean) => [
   "Asking ChatGPT, Gemini, Claude and Perplexity",
   "Checking who they recommended instead",
 ]
+// Live status lines under the running step, so the 60-second wait never looks frozen.
+const STEP_TICKER = (domain: string): string[][] => [
+  [`Opening ${domain}`, "Reading what you do and where", "Finding your services"],
+  ["Thinking like a customer would", "Picking the question people actually ask", "Checking how often it gets asked"],
+  ["Asking ChatGPT…", "Asking Gemini…", "Asking Claude…", "Asking Perplexity…", "Reading their answers"],
+  ["Checking who got named instead", "Reading your site the way AI does", "Running 23 checks", "Drafting your first fix"],
+]
 const PROGRESS_DONE: Record<string, number> = { site: 0, profile: 1, engines: 2, insights: 3 }
 
 const CANNED: Record<string, string> = {
@@ -85,7 +92,7 @@ export function StartAgent() {
     push(
       agent([
         { kind: "text", text: `${ident.businessName}${where}. Give me 60 seconds — I’m going to ask the AIs about you the way a customer would.` },
-        { kind: "steps", items: STEP_LABELS(domain, !!ident.city), done: 0 },
+        { kind: "steps", items: STEP_LABELS(domain, !!ident.city), done: 0, ticker: STEP_TICKER(domain) },
       ], "scan-steps")
     )
     track("scan_started")
@@ -178,10 +185,10 @@ export function StartAgent() {
       agent([
         { kind: "text", text: "$99 a month. Month to month.", big: true },
         { kind: "text", text: "An agency charges around $2,000 for Google alone. Cancel in two clicks — no contract, no exit fees. I start the day you say go." },
+        { kind: "cta", chip: { label: "Start today — $99/month", action: { type: "link", href: `/signup?scan=${scanId}` }, primary: true }, sub: "Month to month · cancel in two clicks" },
         {
           kind: "chips",
           items: [
-            { label: "Start today →", action: { type: "link", href: `/signup?scan=${scanId}` }, primary: true },
             { label: "Send me the report instead", action: { type: "ask", text: "report" }, primary: false },
             ...Object.keys(CANNED).map((label) => ({ label, action: { type: "say", text: CANNED[label] } as const, primary: false })),
           ],
@@ -281,10 +288,10 @@ export function StartAgent() {
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
           { kind: "text", text: "If you want me to actually fix this — not just report it — start today and I begin this week. $99 a month, cancel any time." },
+          { kind: "cta", chip: { label: "Start today — $99/month", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true }, sub: "Month to month · cancel in two clicks" },
           {
             kind: "chips",
             items: [
-              { label: "Start today →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true },
               { label: "Read the full report", action: { type: "link", href: data.resultsUrl || `/scan/results?id=${scan.id}` }, primary: false },
             ],
           },
@@ -458,7 +465,7 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
           // Problems first inside each group, so the eye lands on them.
           const sorted = [...items].sort((a, b) => rank(a) - rank(b))
           const passed = items.filter((c) => c.ok === true).length
-          return { kind: "sources", title: `${GROUP_TITLE[g]}  ·  ${passed} of ${items.length}`, items: sorted.map(srcItem) } as Block
+          return { kind: "sources", title: `${GROUP_TITLE[g]}  ·  ${passed} of ${items.length}`, collapseOk: true, items: sorted.map(srcItem) } as Block
         }),
         ...(worst.length
           ? [{ kind: "text", text: `What’s hurting you most: ${worst.slice(0, 3).map((c) => CHECK_SHORT[c.key]).join("; ")}. ${worst.some((c) => c.key === "llms" || c.key === "faq") ? "I’ve drafted the first fix below." : "All fixable — none of it needs you to learn anything."}` } as Block]
