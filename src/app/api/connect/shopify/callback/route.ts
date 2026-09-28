@@ -4,6 +4,7 @@ import { currentUser } from "@/lib/connector/user"
 import { saveAgentSettings } from "@/lib/agent/settings"
 import { encryptSecret } from "@/lib/checks/bing-webmaster"
 import { isShopDomain, shopifyExchange, shopifySetup, verifyShopifyHmac } from "@/lib/connector/shopify"
+import { platformAvailability } from "@/lib/connector/availability"
 
 export const dynamic = "force-dynamic"
 
@@ -22,8 +23,8 @@ export async function GET(req: NextRequest) {
   if (q.get("error")) return fail(q.get("error_description") || "Shopify didn't approve the connection.")
 
   const user = await currentUser()
-  if (!user) return NextResponse.redirect(new URL("/login", base))
-  if (!process.env.SHOPIFY_API_KEY || !process.env.SHOPIFY_API_SECRET) return back({ connect: "shopify-unavailable" })
+  if (!user) return NextResponse.redirect(new URL(`/login?redirect_url=${encodeURIComponent(`/api/connect/shopify/start?shop=${encodeURIComponent(q.get("shop") ?? "")}`)}`, base))
+  if (!platformAvailability().shopify) return back({ connect: "shopify-unavailable" })
 
   const shop = q.get("shop")
   const code = q.get("code")
@@ -45,7 +46,9 @@ export async function GET(req: NextRequest) {
     const setup = await shopifySetup(shop, tokens.accessToken)
     if ("error" in setup) return fail(setup.error)
 
+    // One website per account: connecting Shopify replaces any WordPress connection.
     await saveAgentSettings(user.id, {
+      wp: undefined,
       site: {
         platform: "shopify",
         siteUrl: setup.siteUrl,

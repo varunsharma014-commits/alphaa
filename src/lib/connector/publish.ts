@@ -12,7 +12,8 @@ import { shopify } from "@/lib/connector/shopify"
 import { wix } from "@/lib/connector/wix"
 
 const CONNECTORS: Record<SiteConnection["platform"], SiteConnector> = { webflow, shopify, wix }
-export const PLATFORM_NAME = { wordpress: "WordPress", webflow: "Webflow", shopify: "Shopify", wix: "Wix" } as const
+export { PLATFORM_NAME } from "@/lib/connector/platforms"
+import { PLATFORM_NAME } from "@/lib/connector/platforms"
 
 export type ContentInput = {
   kind: "post" | "page"

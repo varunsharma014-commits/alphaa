@@ -3,6 +3,7 @@ import { getAllPosts } from "@/content/blog"
 import { VERTICALS } from "@/content/verticals"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
 import { COMPARES, COMPARE_CHECKED } from "@/content/compare"
+import { INTEGRATIONS, INTEGRATIONS_CHECKED } from "@/content/integrations"
 
 const BASE_URL = "https://alphaa.app"
 
@@ -31,8 +32,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ]
 
+  const integrationPages: MetadataRoute.Sitemap = [
+    { url: `${BASE_URL}/integrations`, lastModified: new Date(INTEGRATIONS_CHECKED), changeFrequency: "monthly", priority: 0.8 },
+    ...INTEGRATIONS.map((i) => ({
+      url: `${BASE_URL}/integrations/${i.slug}`,
+      lastModified: new Date(INTEGRATIONS_CHECKED),
+      changeFrequency: "monthly" as const,
+      priority: i.status === "live" ? 0.8 : 0.5,
+    })),
+  ]
+
   return [
     ...comparePages,
+    ...integrationPages,
     {
       url: BASE_URL,
       lastModified: new Date(),
@@ -91,13 +103,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${BASE_URL}/privacy`,
-      lastModified: new Date("2026-06-15"),
+      lastModified: new Date("2026-09-28"),
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${BASE_URL}/terms`,
-      lastModified: new Date("2026-06-15"),
+      lastModified: new Date("2026-09-28"),
       changeFrequency: "yearly",
       priority: 0.3,
     },

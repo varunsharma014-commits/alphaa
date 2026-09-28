@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
   }
 
   const user = await currentUser()
-  if (!user) return NextResponse.redirect(new URL("/sign-in", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").toString())
+  if (!user) return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").toString())
   if (!stateUserId || stateUserId !== user.id) return fail("That Wix install didn’t match your account. Try connecting again.")
 
   // Query params can be forged: only trust instanceId once signedInstance checks out.
@@ -52,7 +52,9 @@ export async function GET(request: NextRequest) {
     const setup = await wixSetup({ ...tokens, ...(instanceId ? { instanceId } : {}) })
     if ("error" in setup) return fail(setup.error)
 
+    // One website per account: connecting Wix replaces any WordPress connection.
     await saveAgentSettings(user.id, {
+      wp: undefined,
       site: {
         platform: "wix",
         siteUrl: setup.siteUrl,

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import type { Block, Chip } from "@/lib/agent/types"
 import { mdToHtml } from "@/lib/markdown"
 import { ENGINE_LABEL } from "@/lib/agent/types"
+import { PlatformIcon } from "@/components/brand/PlatformIcon"
+import { PLATFORM_NAME } from "@/lib/connector/platforms"
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
@@ -356,6 +358,36 @@ export function ChipsBlock({
           onClick={() => onPick(c)}
         >
           {c.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+// ── website platform picker ────────────────────────────────────────────────
+
+export function PlatformsBlock({
+  items,
+  onPick,
+  disabled,
+}: {
+  items: Extract<Block, { kind: "platforms" }>["items"]
+  onPick: (chip: Chip) => void
+  disabled?: boolean
+}) {
+  return (
+    <div className="ag-platforms">
+      {items.map(({ platform, available }) => (
+        <button
+          key={platform}
+          type="button"
+          className="ag-platform"
+          disabled={disabled || !available}
+          onClick={() => onPick({ label: PLATFORM_NAME[platform], action: { type: "connect", platform } })}
+        >
+          <PlatformIcon platform={platform} size={30} />
+          <span className="ag-platform__name">{PLATFORM_NAME[platform]}</span>
+          <span className="ag-platform__sub">{available ? (platform === "wordpress" ? "Free plugin" : "One-click app") : "Coming soon"}</span>
         </button>
       ))}
     </div>

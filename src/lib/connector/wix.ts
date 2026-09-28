@@ -516,6 +516,10 @@ const itemPath = (it: ItemSeo): string | null => {
 const SEO_UNDO = "seo:"
 
 export const wix: SiteConnector = {
+  async ping(conn: SiteConnection): Promise<void> {
+    await wx<unknown>(await tokenFor(conn), "/apps/v1/instance")
+  },
+
   async publish(conn: SiteConnection, input: PublishInput): Promise<PublishResult> {
     const token = await tokenFor(conn)
     const memberId = conn.config.memberId

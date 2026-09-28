@@ -34,4 +34,6 @@ export interface SiteConnector {
   undo(conn: SiteConnection, id: string): Promise<void>
   /** Change a page's SEO title + description, if the platform allows it. */
   updateMeta?(conn: SiteConnection, input: MetaInput): Promise<PublishResult>
+  /** Cheapest authenticated read the platform offers; throws when the connection no longer works. */
+  ping(conn: SiteConnection): Promise<void>
 }

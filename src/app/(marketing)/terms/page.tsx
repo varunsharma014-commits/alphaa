@@ -17,7 +17,7 @@ These Terms constitute a binding legal agreement between you (or the business en
 • Google Business Profile Posting — automated publishing of content to your connected Google Business Profile via Google's official APIs.
 • Weekly Automated Reports — scheduled email reports summarizing your visibility scores, AI citation tracking, and optimization activity.
 • Visibility Tracking — monitoring of your business's appearance and mention frequency across ChatGPT, Claude, Gemini and Perplexity.
-• Website Changes — with your approval, publishing content, structured data, llms.txt and robots.txt rules to your website through the Alphaa Connector plugin (for WordPress), by emailing instructions to a person you designate, or by Alphaa staff on the Full Service plan. Nothing is published to your website without your approval, and changes made through the plugin can be undone from your dashboard.
+• Website Changes — with your approval, publishing content, structured data, llms.txt and robots.txt rules to your website through the Alphaa Connector plugin (for WordPress) or the Alphaa app for Shopify or Webflow that you install and authorize, by emailing instructions to a person you designate, or by Alphaa staff on the Full Service plan. Nothing is published to your website without your approval (or, on plans that offer it, the auto-publish setting you turn on), and changes made through a connection can be undone from your dashboard.
 • Review Requests — sending review request messages, on your instruction, to customers you identify. You are responsible for having each customer's permission to contact them and for complying with the review platform's policies.
 
 Some features require you to connect a Google Business Profile or your website; the Service may also use your website URL and other business information you provide. The features included vary by subscription plan.`,
@@ -201,7 +201,7 @@ export default function TermsPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Terms of Service</h1>
-        <p className="text-muted text-sm mb-10">Last updated: September 27, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: September 28, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           These Terms of Service govern your access to and use of the Alphaa platform. By creating an account or using the Service, you agree to be bound by these Terms. Please read them carefully.

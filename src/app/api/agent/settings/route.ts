@@ -5,6 +5,7 @@ import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { networkOf } from "@/lib/checks/profiles"
+import { platformAvailability } from "@/lib/connector/availability"
 
 // Small owner-set flags the agent remembers (Bing/Apple listings done, a
 // review link). The WordPress connection is only ever set by the plugin.
@@ -25,7 +26,7 @@ export async function GET() {
     wpConnected: !!s.wp,
     siteConnected: !!s.wp || !!s.site,
     platform: s.wp ? "wordpress" : s.site?.platform ?? null,
-    available: { webflow: !!process.env.WEBFLOW_CLIENT_ID, shopify: !!process.env.SHOPIFY_API_KEY, wix: !!process.env.WIX_APP_ID },
+    available: platformAvailability(),
     autoPublishPosts: !!s.autoPublishPosts,
     canAutoPublish: /pro|full/i.test(user.plan),
     reviewLink: s.reviewLink ?? null,

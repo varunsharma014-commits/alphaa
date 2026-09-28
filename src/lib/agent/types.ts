@@ -77,6 +77,7 @@ export type Block =
   | { kind: "divider"; text: string }
   | { kind: "email"; label: string; placeholder: string; cta: string; fine: string }
   | { kind: "form"; formId: string; fields: FormField[]; cta: string; fine?: string }
+  | { kind: "platforms"; items: { platform: import("@/lib/connector/types").Platform; available: boolean }[] } // "connect your website" picker with logos; unavailable = Coming soon
 
 export type Message = {
   id: string

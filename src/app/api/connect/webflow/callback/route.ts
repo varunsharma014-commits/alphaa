@@ -4,6 +4,7 @@ import { saveAgentSettings } from "@/lib/agent/settings"
 import { encryptSecret } from "@/lib/checks/bing-webmaster"
 import { currentUser } from "@/lib/connector/user"
 import { webflowExchange, webflowSetup } from "@/lib/connector/webflow"
+import { platformAvailability } from "@/lib/connector/availability"
 
 export const dynamic = "force-dynamic"
 
@@ -14,14 +15,17 @@ const back = (params: Record<string, string>) => {
 }
 const fail = (msg: string) => back({ connect_error: msg })
 
+// Webflow sends the owner back here with ?code&state, or ?error=access_denied when they
+// cancel. Every failure lands back in the dashboard thread with a plain message.
 export async function GET(request: NextRequest) {
+  if (!platformAvailability().webflow) return back({ connect: "webflow-unavailable" })
   const sp = request.nextUrl.searchParams
   const code = sp.get("code")
   const state = sp.get("state")
   const oauthError = sp.get("error")
 
   if (oauthError) {
-    return fail(oauthError === "access_denied" ? "You cancelled the Webflow connection." : `Webflow said: ${sp.get("error_description") || oauthError}`)
+    return fail(oauthError === "access_denied" ? "You cancelled the Webflow connection, so nothing was connected." : `Webflow said: ${(sp.get("error_description") || oauthError).slice(0, 200)}`)
   }
   if (!code || !state) return fail("Webflow didn’t send back a sign-in code. Try connecting again.")
 
@@ -33,7 +37,7 @@ export async function GET(request: NextRequest) {
   }
 
   const user = await currentUser()
-  if (!user) return NextResponse.redirect(new URL("/sign-in", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").toString())
+  if (!user) return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").toString())
   if (!stateUserId || stateUserId !== user.id) return fail("That Webflow sign-in didn’t match your account. Try connecting again.")
 
   try {
@@ -47,7 +51,9 @@ export async function GET(request: NextRequest) {
     const setup = await webflowSetup(accessToken, host)
     if ("error" in setup) return fail(setup.error)
 
+    // One website per account: connecting Webflow replaces any WordPress connection.
     await saveAgentSettings(user.id, {
+      wp: undefined,
       site: {
         platform: "webflow",
         siteUrl: setup.siteUrl,
@@ -68,6 +74,6 @@ export async function GET(request: NextRequest) {
     return back({ connected: "webflow" })
   } catch (e) {
     console.error("[Webflow Callback]", e)
-    return fail(e instanceof Error ? e.message : "Couldn’t finish connecting Webflow.")
+    return fail(e instanceof Error ? e.message.slice(0, 300) : "Couldn’t finish connecting Webflow.")
   }
 }

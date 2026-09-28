@@ -7,6 +7,7 @@ const footerLinks = {
     { href: "/case-studies", label: "Case studies" },
     { href: "/pricing", label: "Pricing" },
     { href: "/compare", label: "Compare" },
+    { href: "/integrations", label: "Integrations" },
     { href: "/start", label: "Free visibility scan" },
     { href: "/refer", label: "Refer & Earn" },
   ],

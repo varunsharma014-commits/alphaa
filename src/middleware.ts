@@ -7,6 +7,7 @@ const isPublicRoute = createRouteMatcher([
   "/how-it-works",
   "/about",
   "/compare(.*)",
+  "/integrations(.*)",
   "/for(.*)",
   "/blog(.*)",
   "/case-studies(.*)",
@@ -24,6 +25,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/tag/(.*)",
   "/api/scan(.*)",
   "/api/webhooks/(.*)",
+  "/api/webhooks/shopify(.*)", // app/uninstalled + GDPR topics (HMAC-verified); also covered by the line above
   "/api/cron/(.*)",
   "/api/integrations/sync",
   "/api/connect/wp/hello",

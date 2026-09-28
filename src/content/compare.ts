@@ -366,7 +366,7 @@ export const COMPARES: Compare[] = [
       ["How often it checks", "Daily", "Weekly, plus live checks on request"],
       ["Competitor & sentiment analytics", "Deep — share of voice, sentiment, source analysis", "Who got named instead, question by question"],
       ["Recommendations", "Yes — ranked recommended actions", "Yes — and it carries them out"],
-      ["Writes & publishes pages and posts", "No", "Yes — to WordPress with one-tap approval and Undo, or emailed to your web person"],
+      ["Writes & publishes pages and posts", "No", "Yes — to WordPress, Shopify or Webflow with one-tap approval and Undo, or emailed to your web person"],
       ["Fixes structured data, llms.txt, robots.txt, titles", "No", "Yes"],
       ["Google reviews & Business Profile posts", "No", "Drafts replies and posts; you approve"],
       ["Catches AI saying wrong facts about you", "Via sentiment and brand analysis", "Weekly fact check — closed, wrong phone, wrong address"],
@@ -417,7 +417,7 @@ export const COMPARES: Compare[] = [
     faq: [
       { q: "Is Alphaa a Peec AI alternative?", a: "For local businesses that want AI visibility fixed for them, yes. For marketing teams that want deep daily analytics across many brands and prompts, Peec AI is built for that." },
       { q: "How much does Peec AI cost?", a: "Reported self-serve prices in 2026 are about $95/month (Starter, 50 prompts), $245 (Pro, 150) and $495 (Advanced, 350), with extra AI models as add-ons. Alphaa is $99, $199 or $299 a month with all four assistants included." },
-      { q: "Does Peec AI publish content to my website?", a: "No. Peec AI tracks visibility and recommends actions; your team makes the changes. Alphaa writes and publishes pages and posts to WordPress after you approve, or emails them to your web person." },
+      { q: "Does Peec AI publish content to my website?", a: "No. Peec AI tracks visibility and recommends actions; your team makes the changes. Alphaa writes and publishes pages and posts to WordPress, Shopify or Webflow after you approve, or emails them to your web person." },
       { q: "Does Alphaa track Claude?", a: "Yes. Alphaa asks ChatGPT, Gemini, Claude and Perplexity your customers’ questions every week, included in every plan." },
     ],
     sources: [
@@ -447,7 +447,7 @@ export const COMPARES: Compare[] = [
       ["AI assistants", "ChatGPT, Google AI Overviews, Perplexity, Copilot; Claude, Gemini and AI Mode as add-ons", "ChatGPT, Gemini, Claude and Perplexity, all included"],
       ["Brand mentions & cited links", "Yes — a core strength", "Yes — who got named, and the pages AI reads"],
       ["Page audits", "GEO URL audits (1,000–10,000/mo by plan)", "23 AI-readiness checks + security checks, weekly"],
-      ["Writes & publishes pages and posts", "No", "Yes — WordPress one-tap publish with Undo, or emailed to your web person"],
+      ["Writes & publishes pages and posts", "No", "Yes — one-tap publish to WordPress, Shopify or Webflow with Undo, or emailed to your web person"],
       ["Fixes structured data, llms.txt, robots.txt, titles", "No — recommends", "Yes"],
       ["Google reviews & Business Profile posts", "No", "Drafts replies and posts; you approve"],
       ["Directory & profile consistency", "No", "Checks your name, phone and address across directories and social profiles"],
@@ -484,7 +484,7 @@ export const COMPARES: Compare[] = [
         q: "Does Otterly.AI fix my website?",
         a: [
           "No. As of September 2026, Otterly.AI monitors how AI assistants mention your brand and which links they cite, and audits pages with GEO recommendations. Making the changes is up to you or your team.",
-          "Alphaa writes the fix and, once you approve, publishes it — on WordPress directly, or by emailing your web person exactly what to change.",
+          "Alphaa writes the fix and, once you approve, publishes it — directly on WordPress, Shopify or Webflow, or by emailing your web person exactly what to change.",
         ],
       },
       {
@@ -498,7 +498,7 @@ export const COMPARES: Compare[] = [
       { q: "Is Alphaa an Otterly.AI alternative?", a: "For local businesses that want AI visibility done for them, yes. For marketers who want low-cost monitoring across many engines, Otterly.AI is a good fit." },
       { q: "How much does Otterly.AI cost?", a: "As of September 2026: Lite $29/month (15 prompts), Standard $189 (100), Premium $489 (400), with Claude, Gemini and Google AI Mode as paid add-ons." },
       { q: "Does Otterly.AI track Claude?", a: "Claude is available as a paid add-on on Otterly.AI. Alphaa includes Claude, ChatGPT, Gemini and Perplexity in every plan." },
-      { q: "Can Otterly.AI publish content?", a: "No. Otterly.AI monitors and audits. Alphaa writes and publishes approved pages and posts to WordPress, or emails them to your web person." },
+      { q: "Can Otterly.AI publish content?", a: "No. Otterly.AI monitors and audits. Alphaa writes and publishes approved pages and posts to WordPress, Shopify or Webflow, or emails them to your web person." },
     ],
     sources: [{ label: "Otterly.AI pricing", url: "https://otterly.ai/pricing" }],
     deepDive: "best-aeo-tools-2026",
@@ -521,7 +521,7 @@ export const COMPARES: Compare[] = [
       ["What it is", "Automated SEO/AEO content + backlink platform", "AI agent for local businesses’ AI visibility"],
       ["Price (Sept 2026)", "Listed from $49/mo (Grow, 30 articles) and $199/mo (Scale, 120 articles); 3-day trial", "$99/mo (Starter), $199 (Pro, 3 locations), $299 (Full Service)"],
       ["Articles", "High volume — 30 to 120 a month, 50+ languages", "2 (Starter) or 4 (Pro) a month, each answering a question the AIs don’t name you for"],
-      ["Publishing", "Automatic to WordPress, Shopify, Webflow and more", "WordPress today (Shopify, Webflow and Wix rolling out) — you approve, or turn on auto-publish (Pro); every change has Undo"],
+      ["Publishing", "Automatic to WordPress, Shopify, Webflow and more", "WordPress, Shopify and Webflow today (Wix coming soon) — you approve, or turn on auto-publish (Pro); every change has Undo"],
       ["Backlinks", "Automated link exchange between customers’ sites", "None — we don’t trade links (see below)"],
       ["Reddit & Quora", "Suggests comments that mention your brand", "Drafts helpful replies that say plainly you own the business"],
       ["AI tracking", "ChatGPT, Claude, Perplexity, Gemini (10–50 prompts)", "ChatGPT, Gemini, Claude, Perplexity — 10–20 customer questions weekly, plus a check for wrong facts"],

@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/case-studies", label: "Case Studies" },
   { href: "/blog", label: "Blog" },
   { href: "/compare", label: "Compare" },
+  { href: "/integrations", label: "Integrations" },
   { href: "/pricing", label: "Pricing" },
 ]
 
@@ -48,7 +49,7 @@ export function MarketingNav() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-5 lg:gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

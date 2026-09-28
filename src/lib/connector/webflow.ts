@@ -108,6 +108,32 @@ export async function webflowExchange(code: string): Promise<{ accessToken: stri
   return { accessToken: data.access_token }
 }
 
+/**
+ * Best effort: tell Webflow to drop this token. Webflow documents the revoke endpoint for its
+ * OAuth apps; if it fails we still forget the token on our side.
+ */
+export async function webflowRevoke(accessToken: string): Promise<boolean> {
+  try {
+    const res = await fetch("https://api.webflow.com/oauth/revoke_authorization", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ client_id: process.env.WEBFLOW_CLIENT_ID, client_secret: process.env.WEBFLOW_CLIENT_SECRET, access_token: accessToken }),
+      signal: AbortSignal.timeout(10_000),
+    })
+    return res.ok
+  } catch {
+    return false
+  }
+}
+
+export function webflowToken(conn: SiteConnection): string | null {
+  try {
+    return accessToken(conn)
+  } catch {
+    return null
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Pure helpers (unit-tested)
 
@@ -281,6 +307,10 @@ const PAGE_NOTE = "Webflow can’t create standalone pages through its API, so t
 type WfItem = { id: string; fieldData?: { slug?: string } }
 
 export const webflow: SiteConnector = {
+  async ping(conn: SiteConnection): Promise<void> {
+    await wf<unknown>(accessToken(conn), `/sites/${conn.config.siteId}`)
+  },
+
   async publish(conn: SiteConnection, input: PublishInput): Promise<PublishResult> {
     const token = accessToken(conn)
     const f = fieldsOf(conn)
@@ -308,6 +338,13 @@ export const webflow: SiteConnector = {
   /** Unpublish the live item; Webflow keeps it as a draft (isDraft: true). Never deletes. */
   async undo(conn: SiteConnection, id: string): Promise<void> {
     const token = accessToken(conn)
+    const meta = /^meta:([^:]+):([A-Za-z0-9_-]*)$/.exec(id)
+    if (meta) {
+      // A page-title change: put back the SEO title/description that were there before.
+      const prev = JSON.parse(Buffer.from(meta[2], "base64url").toString("utf8")) as { title?: string | null; description?: string | null }
+      await wf<unknown>(token, `/pages/${encodeURIComponent(meta[1])}`, { method: "PUT", body: { seo: { ...(prev.title ? { title: prev.title } : {}), description: prev.description ?? "" } } })
+      return
+    }
     await wf<unknown>(token, `/collections/${conn.config.collectionId}/items/${encodeURIComponent(id)}/live`, { method: "DELETE" })
   },
 
@@ -321,6 +358,8 @@ export const webflow: SiteConnector = {
     }
     const pageId = findPageId(pages, input.url)
     if (!pageId) throw new Error(`We couldn’t find a Webflow page for ${input.url}. Blog posts and other CMS pages get their SEO from the collection template in Webflow.`)
+    const before = await wf<{ seo?: { title?: string | null; description?: string | null } }>(token, `/pages/${pageId}`)
+    const packed = Buffer.from(JSON.stringify({ title: before.seo?.title ?? null, description: before.seo?.description ?? null })).toString("base64url")
     await wf<unknown>(token, `/pages/${pageId}`, {
       method: "PUT",
       body: { seo: { title: input.title, description: input.description } },
@@ -328,7 +367,7 @@ export const webflow: SiteConnector = {
     // Page settings are staged changes. Publishing the whole site would also push any unfinished
     // Designer work (and needs sites:write), so we leave that to the owner.
     return {
-      id: pageId,
+      id: `meta:${pageId}:${packed}`, // "meta:" so undo() restores the old title instead of unpublishing a CMS item
       url: input.url,
       note: "Saved in Webflow. It’ll show on your live site the next time you hit Publish in Webflow.",
     }

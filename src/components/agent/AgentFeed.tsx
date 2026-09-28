@@ -5,6 +5,7 @@ import type { Block, Chip, Message } from "@/lib/agent/types"
 import {
   AnswerBlock, ChipsBlock, CtaBlock, DiffBlock, DocBlock, EmailBlock, FormBlock, ReceiptBlock,
   SourcesBlock, StatBlock, StepsBlock, TextBlock, Typing, VerdictsBlock,
+  PlatformsBlock,
 } from "./blocks"
 
 export type Animate = "type" | "stagger" | "none"
@@ -130,6 +131,8 @@ export function AgentFeed({
         return <CtaBlock key={key} chip={block.chip} sub={block.sub} onPick={(c) => pick(c, msg.id)} />
       case "form":
         return onForm ? <FormBlock key={key} b={block} onSubmit={onForm} /> : null
+      case "platforms":
+        return <PlatformsBlock key={key} items={block.items} disabled={!!picked[msg.id]} onPick={(c) => pick(c, msg.id)} />
       case "divider":
         return null
     }

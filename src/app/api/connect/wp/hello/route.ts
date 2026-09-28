@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   }
 
   const now = new Date().toISOString()
-  await saveAgentSettings(user.id, { wp: { siteUrl: site.toString(), restUrl: rest.toString(), version: input.version, connectedAt: now, lastSeenAt: now } })
+  await saveAgentSettings(user.id, { site: undefined, wp: { siteUrl: site.toString(), restUrl: rest.toString(), version: input.version, connectedAt: now, lastSeenAt: now } })
   await db.mockActivity.create({ data: { userId: user.id, type: "site_connected", title: `Connected to ${bareHost(site.hostname)} (WordPress)`, metadata: { siteUrl: site.toString() } } })
   return NextResponse.json({ ok: true, indexnow: indexNowKey(user.id) })
 }

@@ -63,6 +63,14 @@ export function verifyShopifyHmac(query: URLSearchParams, secret = process.env.S
   })
 }
 
+/** Webhooks: X-Shopify-Hmac-Sha256 = base64 HMAC-SHA256 of the raw body with the app secret. */
+export function verifyShopifyWebhook(rawBody: string, hmacHeader: string | null, secret = process.env.SHOPIFY_API_SECRET ?? ""): boolean {
+  if (!secret || !hmacHeader) return false
+  const given = Buffer.from(hmacHeader, "base64")
+  const digest = createHmac("sha256", secret).update(rawBody, "utf8").digest()
+  return given.length === digest.length && timingSafeEqual(given, digest)
+}
+
 async function tokenRequest(shop: string, body: Record<string, string>): Promise<Tokens> {
   if (!isShopDomain(shop)) throw new Error("That isn't a valid Shopify store address.")
   let res: Response
@@ -229,10 +237,13 @@ export function matchShopifyPath(url: string): ShopifyTarget {
 // ---------- connector ----------
 
 const ARTICLE_FIELDS = `id handle blog { handle }`
-const PAGE_FIELDS = `id handle onlineStoreUrl`
+const PAGE_FIELDS = `id handle` // Admin API Page has no onlineStoreUrl (that's Storefront API)
+
+type PrevSeo = { t: string | null; d: string | null }
+const META_RE = /^meta:(gid:\/\/shopify\/(?:Article|Page)\/\d+):([A-Za-z0-9_-]*)$/
 
 function splitId(id: string): { kind: "article" | "page"; gid: string } {
-  if (id.startsWith("meta:")) throw new Error("SEO title changes on Shopify can't be undone automatically. Edit the Search engine listing in Shopify admin.")
+  if (id.startsWith("meta:")) throw new Error("That SEO title change was made before Undo was available for it. Edit the Search engine listing in Shopify admin.")
   const m = /^(article|page):(gid:\/\/shopify\/(Article|Page)\/\d+)$/.exec(id)
   if (!m) throw new Error("That change wasn't made through Shopify, so it can't be undone here.")
   return { kind: m[1] as "article" | "page", gid: m[2] }
@@ -246,6 +257,10 @@ function seoMetafields(ownerId: string, title: string, description: string) {
 }
 
 export const shopify: SiteConnector = {
+  async ping(conn: SiteConnection): Promise<void> {
+    await gql<unknown>(conn.config.shop, await accessToken(conn), `{ shop { name } }`)
+  },
+
   async publish(conn: SiteConnection, input: PublishInput): Promise<PublishResult> {
     const shop = conn.config.shop
     const token = await accessToken(conn)
@@ -291,6 +306,25 @@ export const shopify: SiteConnector = {
   },
 
   async undo(conn: SiteConnection, id: string): Promise<void> {
+    const meta = META_RE.exec(id)
+    if (meta) {
+      // Put back the SEO title/description that were there before (or remove ours if there were none).
+      const [, ownerId, packed] = meta
+      const prev = JSON.parse(Buffer.from(packed, "base64url").toString("utf8")) as PrevSeo
+      const token = await accessToken(conn)
+      const keys = [["title_tag", prev.t], ["description_tag", prev.d]] as const
+      const set = keys.filter(([, v]) => v).map(([key, value]) => ({ ownerId, namespace: "global", key, type: "single_line_text_field", value }))
+      const del = keys.filter(([, v]) => !v).map(([key]) => ({ ownerId, namespace: "global", key }))
+      if (set.length) {
+        const d = await gql<{ metafieldsSet: { userErrors: UserError[] } }>(conn.config.shop, token, `mutation($metafields: [MetafieldsSetInput!]!) { metafieldsSet(metafields: $metafields) { metafields { key } userErrors { field message } } }`, { metafields: set })
+        check("restore the search title and description", d.metafieldsSet.userErrors)
+      }
+      if (del.length) {
+        const d = await gql<{ metafieldsDelete: { userErrors: UserError[] } }>(conn.config.shop, token, `mutation($metafields: [MetafieldIdentifierInput!]!) { metafieldsDelete(metafields: $metafields) { deletedMetafields { key } userErrors { field message } } }`, { metafields: del })
+        check("restore the search title and description", d.metafieldsDelete.userErrors)
+      }
+      return
+    }
     const { kind, gid } = splitId(id)
     const token = await accessToken(conn)
     if (kind === "article") {
@@ -338,7 +372,7 @@ export const shopify: SiteConnector = {
       const d = await gql<{ pages: { nodes: { id: string; handle: string }[] } }>(
         shop,
         token,
-        `query($q: String!) { pages(first: 5, query: $q) { nodes { id handle } } }`,
+        `query($q: String!) { pages(first: 50, query: $q) { nodes { id handle } } }`,
         { q: `handle:'${target.handle.replace(/'/g, "")}'` },
       )
       const page = d.pages.nodes.find((p) => p.handle === target.handle)
@@ -348,7 +382,7 @@ export const shopify: SiteConnector = {
       const d = await gql<{ articles: { nodes: { id: string; handle: string; blog: { handle: string } }[] } }>(
         shop,
         token,
-        `query($q: String!) { articles(first: 10, query: $q) { nodes { id handle blog { handle } } } }`,
+        `query($q: String!) { articles(first: 50, query: $q) { nodes { id handle blog { handle } } } }`,
         { q: `handle:'${target.handle.replace(/'/g, "")}'` },
       )
       const art = d.articles.nodes.find((a) => a.handle === target.handle && a.blog.handle === target.blog)
@@ -358,6 +392,13 @@ export const shopify: SiteConnector = {
 
     const metafields = seoMetafields(ownerId, input.title, input.description)
     if (!metafields.length) throw new Error("Both the title and the description are empty.")
+    const before = await gql<{ node: { t?: { value: string } | null; d?: { value: string } | null } | null }>(
+      shop,
+      token,
+      `query($id: ID!) { node(id: $id) { ... on HasMetafields { t: metafield(namespace: "global", key: "title_tag") { value } d: metafield(namespace: "global", key: "description_tag") { value } } } }`,
+      { id: ownerId },
+    )
+    const prev: PrevSeo = { t: before.node?.t?.value ?? null, d: before.node?.d?.value ?? null }
     const d = await gql<{ metafieldsSet: { userErrors: UserError[] } }>(
       shop,
       token,
@@ -365,7 +406,7 @@ export const shopify: SiteConnector = {
       { metafields },
     )
     check("update the search title and description", d.metafieldsSet.userErrors)
-    // "meta:" so undo() never mistakes this for a publish and unpublishes the page.
-    return { id: `meta:${ownerId}`, url: input.url }
+    // "meta:" so undo() never mistakes this for a publish; the old values ride along for Undo.
+    return { id: `meta:${ownerId}:${Buffer.from(JSON.stringify(prev)).toString("base64url")}`, url: input.url }
   },
 }

@@ -174,8 +174,8 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
   {
     eyebrow: "Works with your site",
     title: "Keep your website. Keep your host.",
-    body: "Squarespace, Wix, WordPress — it doesn’t matter.",
-    more: `${A} never needs your passwords. It connects to Google with one secure click and hands your web person exact instructions when something needs a change.`,
+    body: "WordPress, Shopify, Webflow — or anything else.",
+    more: `${A} never needs your passwords. It connects to WordPress, Shopify and Webflow with one secure approval (Wix is coming soon) and hands your web person exact instructions for anything else.`,
     tone: "lavender",
     art: <ChatAnswer q="Who does emergency plumbing in Austin?" name="Lone Star Plumbing" rest=" — open 24/7, licensed, 4.8★." />,
   },

@@ -9,10 +9,12 @@ import { securityMessages, profileMessages, listingsMessages, bingMessages } fro
 import type { EngineKey } from "@/lib/agent/types"
 import { siteCheckBlocks, describeSchemas } from "@/lib/agent/site-narration"
 import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
+import { NONE_AVAILABLE, PLATFORM_NAME, platformPickerBlocks, type Availability } from "@/lib/connector/platforms"
+import type { Platform } from "@/lib/connector/types"
 
 type LiveResult = { engine: EngineKey; answer: string; appeared: boolean; mentioned: string[]; status: string }
 
-type Prefs = { webPersonEmail: string | null; wpConnected: boolean; siteConnected: boolean; platform: string | null; available: { webflow: boolean; shopify: boolean; wix: boolean } }
+type Prefs = { webPersonEmail: string | null; wpConnected: boolean; siteConnected: boolean; platform: Platform | null; available: Availability }
 // What a connected Webflow / Shopify / Wix site can take through its API (WordPress takes everything).
 const API_OPS: SiteOp[] = ["post", "page", "meta"]
 type Pending =
@@ -56,12 +58,12 @@ export function DashboardAgent({
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const docEdits = useRef<Record<string, string>>({})
-  const prefs = useRef<Prefs>({ webPersonEmail: null, wpConnected: false, siteConnected: false, platform: null, available: { webflow: false, shopify: false, wix: false } })
+  const prefs = useRef<Prefs>({ webPersonEmail: null, wpConnected: false, siteConnected: false, platform: null, available: NONE_AVAILABLE })
   const pending = useRef<Record<string, Pending>>({})
 
   async function loadPrefs() {
     const r = await fetch("/api/agent/settings").then((x) => (x.ok ? x.json() : null)).catch(() => null)
-    if (r) prefs.current = { webPersonEmail: r.webPersonEmail ?? null, wpConnected: !!r.wpConnected, siteConnected: !!r.siteConnected, platform: r.platform ?? null, available: r.available ?? { webflow: false, shopify: false, wix: false } }
+    if (r) prefs.current = { webPersonEmail: r.webPersonEmail ?? null, wpConnected: !!r.wpConnected, siteConnected: !!r.siteConnected, platform: r.platform ?? null, available: { ...NONE_AVAILABLE, ...(r.available ?? {}) } }
   }
 
   // Who makes a website change happen: the agent itself when the site is
@@ -144,7 +146,7 @@ export function DashboardAgent({
       if (!prefs.current.siteConnected) {
         push(agent([
           { kind: "text", text: "Want me to make these changes myself?" },
-          { kind: "text", text: "Connect your website once — WordPress, Webflow, Shopify or Wix. After that, every approved fix is one tap, and every change has an Undo." },
+          { kind: "text", text: "Connect your website once — WordPress, Shopify or Webflow (Wix is coming soon). After that, every approved fix is one tap, and every change has an Undo." },
           { kind: "chips", items: [{ label: "Connect my website", action: { type: "wp-connect" }, primary: true }] },
         ]))
       }
@@ -296,6 +298,10 @@ export function DashboardAgent({
         return
       }
       case "connect": {
+        if (!prefs.current.available[a.platform]) {
+          push(userMsg(chip.label), agent([{ kind: "text", text: `Connecting ${PLATFORM_NAME[a.platform]} is coming soon. Until then, tap “Email it to my web person” on any fix and I’ll send them exactly what to change, or our team can do it for you.` }]))
+          return
+        }
         if (a.platform === "wordpress") return onChip({ label: chip.label, action: { type: "wp-connect", direct: true } }, messageId)
         if (a.platform === "shopify") {
           const formId = mid("shopify")
@@ -311,21 +317,14 @@ export function DashboardAgent({
       }
       case "wp-connect": {
         if (!prefs.current.wpConnected && prefs.current.siteConnected) {
-          push(agent([{ kind: "text", text: `You’re connected to your ${prefs.current.platform === "webflow" ? "Webflow" : prefs.current.platform === "shopify" ? "Shopify" : "Wix"} site. ✓ Approved posts, pages and page titles go straight there; anything the platform doesn’t let apps change, I email to your web person.` }]))
+          push(agent([
+            { kind: "text", text: `You’re connected to your ${PLATFORM_NAME[prefs.current.platform ?? "webflow"]} site. ✓ Approved posts, pages and page titles go straight there; anything the platform doesn’t let apps change, I email to your web person.` },
+            { kind: "chips", items: [{ label: "See or switch the connection", action: { type: "link", href: "/dashboard/settings/website" } }] },
+          ]))
           return
         }
-        if (!prefs.current.wpConnected && (prefs.current.available.webflow || prefs.current.available.shopify || prefs.current.available.wix) && !a.direct) {
-          const av = prefs.current.available
-          push(agent([
-            { kind: "text", text: "Which website builder is your site on?" },
-            { kind: "chips", items: [
-              { label: "WordPress", action: { type: "connect", platform: "wordpress" } },
-              ...(av.webflow ? [{ label: "Webflow", action: { type: "connect", platform: "webflow" } } as Chip] : []),
-              ...(av.shopify ? [{ label: "Shopify", action: { type: "connect", platform: "shopify" } } as Chip] : []),
-              ...(av.wix ? [{ label: "Wix", action: { type: "connect", platform: "wix" } } as Chip] : []),
-              { label: "Something else", action: { type: "say", text: "No problem. Tap “Email it to my web person” on any fix and I’ll send them the exact change, where it goes and how to check it — or our team can do it for you on Full Service." } },
-            ] },
-          ]))
+        if (!prefs.current.wpConnected && !a.direct) {
+          push(agent(platformPickerBlocks(prefs.current.available)))
           return
         }
         setBusy(true)
@@ -374,13 +373,14 @@ export function DashboardAgent({
         const text = (a.docId && docEdits.current[a.docId]) || a.text
         push(userMsg(`Publish ${OP_NAME[a.op]}`))
         setBusy(true)
-        const { ok, data } = await post<{ url?: string; changeId?: string; indexed?: boolean; shadowed?: boolean }>("/api/connect/wp/push", { op: a.op, title: a.title, text, url: a.url, locationId: a.locationId, draftId: a.draftId })
+        const { ok, data } = await post<{ url?: string; changeId?: string; indexed?: boolean; shadowed?: boolean; note?: string }>("/api/connect/wp/push", { op: a.op, title: a.title, text, url: a.url, locationId: a.locationId, draftId: a.draftId })
         setBusy(false)
         if (!ok || !data.url) return fail(data.error ?? "Your site didn’t accept it. Nothing changed.")
         const blocks: Block[] = [
           { kind: "text", text: `Done — it’s live on your site.`, big: true },
           { kind: "doc", title: "Live at", meta: "published", text: data.url },
         ]
+        if (data.note) blocks.push({ kind: "text", text: data.note })
         if (data.indexed) blocks.push({ kind: "text", text: "I also told Bing it changed (IndexNow), so ChatGPT’s search can pick it up sooner." })
         if (data.shadowed) blocks.push({ kind: "text", text: `Heads-up: your server already has its own ${a.op === "llms" ? "llms.txt" : "robots.txt"} file, and that file wins over mine. Your web person needs to update or remove it — I can email them.` })
         blocks.push({ kind: "chips", items: [
@@ -397,7 +397,8 @@ export function DashboardAgent({
         const { ok, data } = await post("/api/connect/wp/undo", { changeId: a.changeId })
         setBusy(false)
         if (!ok) return fail(data.error ?? "I couldn’t undo it just now.")
-        push(agent([{ kind: "text", text: "Undone. Your site is back the way it was. (Pages go to WordPress’s Trash, so you can restore them there too.)" }]))
+        const onWp = !/^(webflow|shopify|wix):/.test(a.changeId)
+        push(agent([{ kind: "text", text: onWp ? "Undone. Your site is back the way it was. (Pages go to WordPress’s Trash, so you can restore them there too.)" : "Undone. It’s unpublished on your site, and kept as a draft there in case you want it back." }]))
         return
       }
       case "handoff": {

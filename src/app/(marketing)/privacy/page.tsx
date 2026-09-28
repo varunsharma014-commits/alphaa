@@ -112,7 +112,25 @@ Limited Use Commitments:
 You may revoke Alphaa's access to your Google data at any time by visiting https://myaccount.google.com/permissions and removing Alphaa's access. Revoking access will disable features that depend on Google integrations but will not affect your Alphaa account otherwise.`,
   },
   {
-    title: "6. Cookies and Tracking",
+    title: "6. Website Connections (WordPress, Shopify, Webflow)",
+    body: `If you connect your website, Alphaa uses that connection only to publish and undo the changes you approve (or that you have set to publish automatically) and to check the connection still works.
+
+What we access: your site's content — blog posts, pages, and their SEO titles and descriptions — plus the basic site details needed to publish to the right place (your site or store name, address and blog). We do not access, request or store customer, order, product or payment data from your website platform.
+
+Shopify: the Alphaa app asks only for the read_content and write_content permissions (blog posts and pages). It cannot read orders, customers or products, and cannot edit your theme or robots.txt. We store your store's address, the blog we publish to, and an access token. We honor Shopify's privacy webhooks: because we store no Shopify customer data, customer data requests and redaction requests have nothing to return or delete, and a shop redaction request (or uninstalling the app) deletes the store's connection from Alphaa.
+
+Webflow: the Alphaa app asks for Sites (read), CMS (read and write) and Pages (read and write). We store your site's ID and address, the CMS collection we publish to and its field names, and an access token.
+
+WordPress: the Alphaa Connector plugin holds a connection key that you paste in; we store your site's address, its REST API address and the plugin version. We don't hold a WordPress password or token — the key is derived on our side and used to sign each request to your site. The plugin's AI-visit count is described in Section 2.
+
+How tokens are stored: Shopify and Webflow access tokens (and refresh tokens, where the platform issues them) are encrypted with AES-256-GCM before they're saved to our database, and are only decrypted on our servers when Alphaa talks to your site for you (publishing, undoing, or checking the connection). They are never shown in the dashboard, sent to your browser, or shared with anyone else.
+
+What we keep: a log of each change Alphaa made to your site (what it was, the page address, and what's needed to undo it), shown in your dashboard.
+
+Disconnecting: in Settings → Website connection, click Disconnect. We delete the stored connection and tokens at once and, for Webflow, ask Webflow to revoke the token. For Shopify, you can also uninstall the app in your Shopify admin; Shopify then notifies us and we delete the connection. Content already published stays on your site until you remove it or use Undo.`,
+  },
+  {
+    title: "7. Cookies and Tracking",
     body: `We use a minimal set of cookies strictly necessary to operate the Service:
 
 Session Cookies: Used to maintain your authenticated session while you use the Service. These expire when you close your browser or log out.
@@ -128,7 +146,7 @@ We do NOT use:
 You can control cookie settings through your browser preferences. Disabling session cookies will prevent you from logging in to the Service.`,
   },
   {
-    title: "7. Data Retention",
+    title: "8. Data Retention",
     body: `Active Accounts: We retain your personal information and account data for as long as your account remains active or as needed to provide the Service.
 
 Deleted Accounts: When you delete your account, we will delete or anonymize your personally identifiable information (including name, email address, and business contact details) within 30 days of account deletion.
@@ -140,7 +158,7 @@ Legal Holds: Notwithstanding the above, we may retain information longer if requ
 Google API Data: Data obtained through Google APIs is deleted within 30 days of account deletion or revocation of Google access, whichever occurs first.`,
   },
   {
-    title: "8. Your Privacy Rights",
+    title: "9. Your Privacy Rights",
     body: `Depending on your location, you may have the following rights regarding your personal information:
 
 GDPR Rights (EEA and UK Residents):
@@ -161,13 +179,13 @@ CCPA Rights (California Residents):
 To exercise any of these rights, please email privacy@alphaa.app with your name, email address, and a description of your request. We will respond within 30 days (or within the timeframe required by applicable law).`,
   },
   {
-    title: "9. Children's Privacy",
+    title: "10. Children's Privacy",
     body: `The Service is not directed to individuals under the age of 18. We do not knowingly collect personal information from anyone under 18. If you are a parent or guardian and believe your child has provided us with personal information without your consent, please contact us at privacy@alphaa.app and we will promptly delete such information.
 
 If we become aware that we have inadvertently collected personal information from a person under 18, we will take steps to delete that information as quickly as possible.`,
   },
   {
-    title: "10. International Data Transfers",
+    title: "11. International Data Transfers",
     body: `Alphaa is based in the United States. If you are accessing the Service from the European Economic Area (EEA), United Kingdom, or other regions with laws governing data collection and use that may differ from U.S. law, please be aware that your information may be transferred to, stored, and processed in the United States and other countries.
 
 For transfers of personal data from the EEA or UK to the United States, Alphaa relies on the following transfer mechanisms:
@@ -177,19 +195,19 @@ For transfers of personal data from the EEA or UK to the United States, Alphaa r
 By using the Service, you acknowledge that your information may be transferred to and processed in the United States. We take appropriate safeguards to ensure your personal information remains protected in accordance with this Policy and applicable law.`,
   },
   {
-    title: "11. Data Security",
+    title: "12. Data Security",
     body: `We implement commercially reasonable technical and organizational security measures designed to protect your personal information from unauthorized access, disclosure, alteration, and destruction. These measures include encryption of data in transit (TLS), access controls, and regular security reviews.
 
 However, no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to protect your personal information, we cannot guarantee its absolute security. You are responsible for maintaining the security of your account credentials and for notifying us immediately if you suspect unauthorized access to your account.`,
   },
   {
-    title: "12. Changes to This Policy",
+    title: "13. Changes to This Policy",
     body: `We may update this Privacy Policy from time to time. For material changes, we will provide at least 14 days' advance notice by emailing your registered email address and/or by posting a prominent notice on the Service. The "Last updated" date at the top of this Policy will reflect the date of the most recent revision.
 
 Your continued use of the Service after the effective date of any changes constitutes your acceptance of the revised Policy. If you do not agree to the revised Policy, you must discontinue use of the Service.`,
   },
   {
-    title: "13. Contact Us",
+    title: "14. Contact Us",
     body: `If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact our Privacy team:
 
 Email: hi@alphaa.app
@@ -211,7 +229,7 @@ export default function PrivacyPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Privacy Policy</h1>
-        <p className="text-muted text-sm mb-10">Last updated: September 27, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: September 28, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.

@@ -10,6 +10,7 @@ const TABS = [
   { href: "/dashboard/settings/account", label: "Account" },
   { href: "/dashboard/settings/business", label: "Business details" },
   { href: "/dashboard/settings/integrations", label: "Google connection" },
+  { href: "/dashboard/settings/website", label: "Website connection" },
   { href: "/dashboard/settings/billing", label: "Billing & plan" },
 ]
 
