@@ -9,7 +9,18 @@ export type AgentSettings = {
   bingPlacesDone?: string // ISO date the owner said it's done
   appleConnectDone?: string
   reviewLink?: string // owner-supplied fallback when Google doesn't return one
+  /** Customer questions tracked weekly across the four AIs. */
+  questions?: string[]
+  /** Extra locations (Pro: up to 3 including the main one). */
+  locations?: Location[]
+  /** Social/review profile URLs the owner confirmed or added. */
+  profiles?: string[]
+  /** Bing Webmaster Tools API key, encrypted (see lib/checks/bing-webmaster). */
+  bingKeyEnc?: string
+  bingSite?: string
 }
+
+export type Location = { id: string; name: string; street: string; city: string; state?: string; zip?: string; phone?: string; hours?: string }
 
 const TYPE = "agent_settings"
 
@@ -26,3 +37,6 @@ export async function saveAgentSettings(userId: string, patch: Partial<AgentSett
   else await db.mockActivity.create({ data: { userId, type: TYPE, title: "Agent settings", metadata: next as object } })
   return next
 }
+
+/** Pro and Full Service cover 3 locations in total (the main business + 2). */
+export const maxExtraLocations = (plan: string) => (/pro|full/i.test(plan) ? 2 : 0)

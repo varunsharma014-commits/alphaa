@@ -3,7 +3,8 @@
 // so the briefing never shows a made-up zero.
 import { db } from "@/lib/db"
 import { getProfileActions, type ProfileActions } from "@/lib/gmb"
-import { getAiReferrals } from "@/lib/ga"
+import { getAiReferrals, getTrafficSummary } from "@/lib/ga"
+import { latestQuestionScan } from "@/lib/questions"
 
 export type Roi = {
   /** Visitors from AI assistants, counted by the WordPress plugin. */
@@ -14,6 +15,10 @@ export type Roi = {
   profile: { now: ProfileActions; prev: ProfileActions } | null
   /** How many of the four AIs named the business in the latest weekly check. */
   named: { count: number; of: number } | null
+  /** Across every tracked customer question (the fuller measure). */
+  questions: { named: number; answers: number; questions: number; wrongFacts: number } | null
+  /** All website traffic from Google Analytics. */
+  traffic: { sessions: number; prev: number; channels: { name: string; sessions: number }[] } | null
 }
 
 const DAY = 86_400_000
@@ -49,7 +54,14 @@ export async function getRoi(userId: string): Promise<Roi> {
     if (now && prev) profile = { now, prev }
   }
 
-  const gaVisits = integ?.gaPropertyId ? await getAiReferrals(integ, 7) : null
+  const [gaVisits, traffic, qs] = await Promise.all([
+    integ?.gaPropertyId ? getAiReferrals(integ, 7) : Promise.resolve(null),
+    integ?.gaPropertyId ? getTrafficSummary(integ) : Promise.resolve(null),
+    latestQuestionScan(userId).catch(() => null),
+  ])
+  const questions = qs && Date.now() - qs.at.getTime() < 10 * DAY
+    ? { named: qs.scan.named, answers: qs.scan.answers, questions: qs.scan.questions.length, wrongFacts: qs.scan.facts.issues.length }
+    : null
 
   let named: Roi["named"] = null
   const results = latestAudit?.aiEngineResults ?? []
@@ -59,7 +71,7 @@ export async function getRoi(userId: string): Promise<Roi> {
     named = { count: [...engines.values()].filter(Boolean).length, of: engines.size }
   }
 
-  return { pluginVisits, gaVisits, profile, named }
+  return { pluginVisits, gaVisits, profile, named, questions, traffic }
 }
 
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
@@ -81,6 +93,13 @@ export function roiLines(r: Roi): string[] {
       lines.push(`From your Google listing: ${plural(now.calls, "call", "calls")}${trend(now.calls, prev.calls)}, ${plural(now.directions, "request", "requests")} for directions${trend(now.directions, prev.directions)} and ${plural(now.websiteClicks, "website visit", "website visits")}.`)
     }
   }
-  if (r.named) lines.push(`${r.named.count} of ${r.named.of} AI assistants named you in my latest check.`)
+  if (r.questions && r.questions.answers > 0) {
+    lines.push(`Across ${r.questions.questions} customer questions, the four AIs named you in ${r.questions.named} of ${r.questions.answers} answers.`)
+    if (r.questions.wrongFacts) lines.push(`${plural(r.questions.wrongFacts, "AI answer gets", "AI answers get")} a fact about you wrong — I’ve flagged ${r.questions.wrongFacts === 1 ? "it" : "them"} below.`)
+  } else if (r.named) lines.push(`${r.named.count} of ${r.named.of} AI assistants named you in my latest check.`)
+  if (r.traffic && r.traffic.sessions > 0) {
+    const top = r.traffic.channels.map((c) => `${c.name} ${c.sessions}`).join(", ")
+    lines.push(`Your website had ${plural(r.traffic.sessions, "visit", "visits")} this week${trend(r.traffic.sessions, r.traffic.prev)} — ${top}.`)
+  }
   return lines
 }

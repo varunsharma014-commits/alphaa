@@ -3,13 +3,30 @@ import { AgentShell } from "@/components/agent/AgentShell"
 import { DashboardAgent } from "@/components/agent/DashboardAgent"
 import { agent } from "@/lib/agent/types"
 import type { RailData } from "@/lib/agent/feed"
+import { answersMessages, securityMessages } from "@/lib/agent/check-narration"
 
 // Dev-only: renders the app shell with sample messages so the agent UI can be
 // checked in a browser without a Clerk session. 404s in production.
 export default function PreviewPage() {
   if (process.env.NODE_ENV === "production") notFound()
   const rail: RailData = { businessName: "Bright Smile Dental", location: "Austin, TX", dayNumber: 42, named: 3, checked: 4, states: ["found", "found", "found", "partial"], waiting: { reviews: 1, posts: 1 }, googleConnected: true }
+  const sample = answersMessages({
+    at: new Date().toISOString(), named: 9, answers: 40,
+    questions: [
+      { q: "Who is the best family dentist in Austin?", engines: { chatgpt: { appeared: true, status: "appeared", named: [] }, gemini: { appeared: false, status: "not_appearing", named: ["Austin Family Dental"] }, claude: { appeared: true, status: "appeared", named: [] }, perplexity: { appeared: false, status: "not_appearing", named: ["Barton Springs Dental"] } } },
+      { q: "Emergency dentist open Saturday near Zilker", engines: { chatgpt: { appeared: false, status: "not_appearing", named: ["Austin Family Dental"] }, gemini: { appeared: false, status: "not_appearing", named: [] }, claude: { appeared: false, status: "not_appearing", named: [] }, perplexity: { appeared: false, status: "not_appearing", named: ["SmileNow"] } } },
+    ],
+    rivals: [{ name: "Austin Family Dental", count: 14 }, { name: "Barton Springs Dental", count: 6 }],
+    facts: { checked: true, question: "", issues: [{ engine: "chatgpt", claim: "Closed on Saturdays", truth: "open Saturday 9–1", severity: "high" }] },
+  }, new Date())
+  const sec = securityMessages({ domain: "brightsmile.com", checkedAt: "", passed: 5, total: 7, items: [
+    { key: "hsts", label: "Browsers told to always use HTTPS", ok: false, detail: "Not set", severity: "medium" },
+    { key: "sslExpiry", label: "Security certificate", ok: true, detail: "Renews in 60 days", severity: "high" },
+    { key: "https", label: "Secure connection (HTTPS)", ok: true, detail: "Yes", severity: "high" },
+  ] }, false)
   const messages = [
+    ...sample,
+    ...sec,
     { id: "day", role: "agent" as const, blocks: [{ kind: "divider" as const, text: "Tuesday, 23 September · day 42" }] },
     agent([
       { kind: "text", text: "ChatGPT named you this morning.", big: true },

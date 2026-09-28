@@ -24,21 +24,27 @@ export type ChipAction =
   | { type: "post-delete"; postId: string }
   | { type: "dismiss" }
   | { type: "copy"; text: string; done?: string } // copy to clipboard, confirm in-thread
-  | { type: "draft"; topic: string; competitor?: string; mode?: "faq" | "reply"; url?: string } // agent writes an FAQ draft, or a reply for a discussion AI cites
-  | { type: "run"; task: "site-check" | "citations" | "schema" } // agent runs a job right now
+  | { type: "draft"; topic: string; competitor?: string; mode?: "faq" | "reply" | "post" | "meta" | "location" | "outreach"; url?: string; locationId?: string; kind?: string } // agent writes something: FAQ, discussion reply, blog post, page title, location page, outreach
+  | { type: "run"; task: Task } // agent runs a job right now
   | { type: "wp-connect" } // show the steps + key to connect a WordPress site
-  | { type: "wp-push"; op: SiteOp; title?: string; text?: string; docId?: string } // publish an approved change to the connected site
+  | { type: "wp-push"; op: SiteOp; title?: string; text?: string; docId?: string; url?: string; locationId?: string; draftId?: string } // publish an approved change to the connected site
   | { type: "wp-undo"; changeId: string }
-  | { type: "handoff"; what: SiteOp; title?: string; text?: string; docId?: string } // email it to the owner's web person
+  | { type: "handoff"; what: SiteOp; title?: string; text?: string; docId?: string; url?: string; locationId?: string; draftId?: string } // email it to the owner's web person
   | { type: "setting"; key: "bingPlacesDone" | "appleConnectDone"; value: boolean; done: string }
   | { type: "review-ask" } // open the "ask a customer for a review" form
+  | { type: "profile-add" } // form: a profile URL the owner has
+  | { type: "location-add" } // form: another location
+  | { type: "bing-connect" } // form: Bing Webmaster API key
+  | { type: "questions-edit" } // form: the tracked customer questions
+  | { type: "questions-run" } // ask all tracked questions now
 
-export type SiteOp = "page" | "schema" | "llms" | "robots"
+export type SiteOp = "page" | "schema" | "llms" | "robots" | "post" | "meta" | "sitemap" | "headers"
+export type Task = "site-check" | "citations" | "schema" | "security" | "profiles" | "listings" | "bing"
 
 export type FormField = {
   name: string
   label: string
-  type: "text" | "email" | "tel" | "url" | "checkbox"
+  type: "text" | "email" | "tel" | "url" | "checkbox" | "textarea"
   placeholder?: string
   value?: string
   required?: boolean

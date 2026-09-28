@@ -4,27 +4,33 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { AgentFeed, Composer } from "./AgentFeed"
-import { agent, mid, user as userMsg, type Block, type Chip, type Message, type SiteOp } from "@/lib/agent/types"
+import { agent, mid, user as userMsg, type Block, type Chip, type Message, type SiteOp, type Task } from "@/lib/agent/types"
+import { securityMessages, profileMessages, listingsMessages, bingMessages } from "@/lib/agent/check-narration"
 import type { EngineKey } from "@/lib/agent/types"
 import { siteCheckBlocks, describeSchemas } from "@/lib/agent/site-narration"
 import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
 
 type LiveResult = { engine: EngineKey; answer: string; appeared: boolean; mentioned: string[]; status: string }
 
-type Task = "site-check" | "citations" | "schema"
 type Prefs = { webPersonEmail: string | null; wpConnected: boolean }
 type Pending =
-  | { kind: "handoff"; what: SiteOp; title?: string; text?: string }
+  | { kind: "handoff"; what: SiteOp; title?: string; text?: string; url?: string }
   | { kind: "review" }
   | { kind: "review-link" }
+  | { kind: "profile" }
+  | { kind: "location" }
+  | { kind: "bing" }
+  | { kind: "questions" }
 
-const OP_NAME: Record<SiteOp, string> = { page: "the page", schema: "your structured facts", llms: "your llms.txt", robots: "the robots.txt fix" }
+const OP_NAME: Record<SiteOp, string> = { page: "the page", schema: "your structured facts", llms: "your llms.txt", robots: "the robots.txt fix", post: "the post", meta: "the new title and description", sitemap: "your sitemap", headers: "the security settings" }
 const TOPIC_LINKS: { href: string; label: string }[] = [
   { href: "/dashboard", label: "Today" },
   { href: "/dashboard/t/reviews", label: "Reviews" },
   { href: "/dashboard/t/site", label: "Site Schema & Code" },
   { href: "/dashboard/t/sources", label: "Source Tracking" },
-  { href: "/dashboard/t/listings", label: "Maps & Listings" },
+  { href: "/dashboard/t/answers", label: "AI Answers" },
+  { href: "/dashboard/t/content", label: "Posts & Pages" },
+  { href: "/dashboard/t/listings", label: "Listings & Profiles" },
   { href: "/dashboard/t/competitors", label: "Competitors" },
   { href: "/dashboard/t/briefings", label: "Weekly Briefings" },
 ]
@@ -57,7 +63,7 @@ export function DashboardAgent({
 
   // Who makes a website change happen: the agent itself when the site is
   // connected; otherwise the owner's web person (by email) or our team.
-  function siteChips(op: SiteOp, extra: { title?: string; text?: string; docId?: string } = {}): Chip[] {
+  function siteChips(op: SiteOp, extra: { title?: string; text?: string; docId?: string; url?: string; locationId?: string; draftId?: string } = {}): Chip[] {
     const handoff: Chip = { label: "Email it to my web person", action: { type: "handoff", what: op, ...extra } }
     if (prefs.current.wpConnected) return [{ label: "Publish it to my site", action: { type: "wp-push", op, ...extra }, primary: true }, handoff]
     return [
@@ -84,6 +90,19 @@ export function DashboardAgent({
   // Jobs the agent starts on its own (or on "run" chips): never a blank
   // page with a button — the thread shows progress, then the findings.
   async function runTask(task: Task) {
+    if (task === "security" || task === "profiles" || task === "listings" || task === "bing") {
+      const id = `${task}-run`
+      const { ok, data } = await post<{ data?: unknown }>(`/api/agent/checks?kind=${task}`)
+      setMessages((prev) => prev.filter((m) => m.id !== id))
+      if (!ok || !data.data) {
+        if (task !== "bing") push(agent([{ kind: "text", text: data.error ?? "That check didn’t finish this time. I’ll run it again on my next pass." }]))
+        return
+      }
+      const d = data.data as never
+      const msgs = task === "security" ? securityMessages(d, prefs.current.wpConnected) : task === "profiles" ? profileMessages(d) : task === "listings" ? listingsMessages(d) : bingMessages(d)
+      push(...msgs.map((m) => ({ ...m, id: mid(m.id) })))
+      return
+    }
     if (task === "site-check") {
       const id = "st-run"
       let n = 0
@@ -99,6 +118,15 @@ export function DashboardAgent({
           { kind: "text", text: "I wrote robots.txt rules that let ChatGPT, Claude and Perplexity’s search crawlers in. If a firewall like Cloudflare is the blocker, your web person needs to allow them there too — I include that in the instructions." },
           { kind: "chips", items: siteChips("robots") },
         ]))
+      }
+      if (failed.has("meta") || failed.has("headings")) {
+        push(agent([
+          { kind: "text", text: failed.has("meta") ? "Your homepage title and description don’t say clearly what you do and where — that’s the first thing AI and Google read." : "Your homepage’s main heading doesn’t say what you do. I’ll start with the title and description, which I can change safely." },
+          { kind: "chips", items: [{ label: "Write a better title and description", action: { type: "draft", topic: "Homepage title and description", mode: "meta" }, primary: true }] },
+        ]))
+      }
+      if (failed.has("sitemap") && prefs.current.wpConnected) {
+        push(agent([{ kind: "text", text: "You don’t have a sitemap AI crawlers can find. WordPress can make one for you." }, { kind: "chips", items: siteChips("sitemap") }]))
       }
       await runTask("schema")
       if (data.userId) {
@@ -201,15 +229,49 @@ export function DashboardAgent({
         }
         return
       case "run":
-        push(agent([{ kind: "text", text: "On it." }, { kind: "steps", items: ["Working"], done: 0 }], a.task === "citations" ? "src-run" : a.task === "site-check" ? "st-run" : undefined))
+        push(agent([{ kind: "text", text: "On it." }, { kind: "steps", items: ["Working"], done: 0 }], a.task === "citations" ? "src-run" : a.task === "site-check" ? "st-run" : a.task === "schema" ? undefined : `${a.task}-run`))
         return runTask(a.task)
       case "draft": {
         push(userMsg(chip.label))
         setBusy(true)
-        const { ok, data } = await post<{ title?: string; text?: string }>("/api/agent/draft", { topic: a.topic, competitor: a.competitor, mode: a.mode, url: a.url })
+        const { ok, data } = await post<{ title?: string; text?: string }>("/api/agent/draft", { topic: a.topic, competitor: a.competitor, mode: a.mode, url: a.url, locationId: a.locationId, kind: a.kind })
         setBusy(false)
         if (!ok || !data.text) return fail(data.error ?? "I couldn’t write that just now.")
         const docId = `draft-${Date.now()}`
+        if (a.mode === "post") {
+          const d = data as { title?: string; text?: string; draftId?: string }
+          push(agent([
+            { kind: "text", text: "Here’s a new post — written to be the answer AI quotes. Tap it to edit; fill in anything in [brackets]." },
+            { kind: "doc", title: d.title ?? "New post", meta: "draft · not published", text: d.text, docId, editable: true },
+            { kind: "chips", items: siteChips("post", { title: d.title, text: d.text, docId, draftId: d.draftId }) },
+          ]))
+          return
+        }
+        if (a.mode === "meta") {
+          const d = data as { text?: string; current?: { title?: string | null; description?: string | null } }
+          push(agent([
+            ...(d.current?.title ? [{ kind: "text", text: `Right now it says: “${d.current.title}”${d.current.description ? ` — “${d.current.description}”` : " with no description"}.` } as Block] : []),
+            { kind: "doc", title: "New title & description", meta: "tap to edit", text: d.text, docId, editable: true },
+            { kind: "chips", items: siteChips("meta", { text: d.text, docId, url: a.url }) },
+          ]))
+          return
+        }
+        if (a.mode === "location") {
+          push(agent([
+            { kind: "text", text: "Here’s the page for that location — it tells AI exactly where you are and what you do there." },
+            { kind: "doc", title: data.title ?? "Location page", meta: "draft · not published", text: data.text, docId, editable: true },
+            { kind: "chips", items: siteChips("page", { title: data.title, text: data.text, docId, locationId: a.locationId }) },
+          ]))
+          return
+        }
+        if (a.mode === "outreach") {
+          push(agent([
+            { kind: "text", text: a.kind === "directory" ? "Here’s how to get on that page:" : "Here’s an email you could send the people behind that list. It comes from you — edit it, then send it from your own inbox." },
+            { kind: "doc", title: a.topic.slice(0, 80), meta: "draft", text: data.text, docId, editable: true },
+            { kind: "chips", items: [{ label: "Copy it", action: { type: "copy", text: data.text!, done: "Copied." }, primary: true }, ...(a.url ? [{ label: "Open the page", action: { type: "link", href: a.url } } as Chip] : [])] },
+          ]))
+          return
+        }
         if (a.mode === "reply") {
           const where = a.url ? new URL(a.url).hostname.replace(/^www\./, "") : "the discussion"
           push(agent([
@@ -276,7 +338,7 @@ export function DashboardAgent({
         const text = (a.docId && docEdits.current[a.docId]) || a.text
         push(userMsg(`Publish ${OP_NAME[a.op]}`))
         setBusy(true)
-        const { ok, data } = await post<{ url?: string; changeId?: string; indexed?: boolean; shadowed?: boolean }>("/api/connect/wp/push", { op: a.op, title: a.title, text })
+        const { ok, data } = await post<{ url?: string; changeId?: string; indexed?: boolean; shadowed?: boolean }>("/api/connect/wp/push", { op: a.op, title: a.title, text, url: a.url, locationId: a.locationId, draftId: a.draftId })
         setBusy(false)
         if (!ok || !data.url) return fail(data.error ?? "Your site didn’t accept it. Nothing changed.")
         const blocks: Block[] = [
@@ -305,7 +367,7 @@ export function DashboardAgent({
       case "handoff": {
         const text = (a.docId && docEdits.current[a.docId]) || a.text
         const formId = mid("handoff")
-        pending.current[formId] = { kind: "handoff", what: a.what, title: a.title, text }
+        pending.current[formId] = { kind: "handoff", what: a.what, title: a.title, text, url: a.url }
         push(userMsg(chip.label), agent([
           { kind: "text", text: `I’ll email ${OP_NAME[a.what]} to your web person with exactly where it goes and how to check it. Their replies come to you.` },
           { kind: "form", formId, fields: [{ name: "email", label: "Your web person’s email", type: "email", placeholder: "dev@example.com", value: prefs.current.webPersonEmail ?? "", required: true }], cta: "Send it", fine: "I’ll remember this address for next time." },
@@ -323,6 +385,57 @@ export function DashboardAgent({
             { name: "consent", label: "They’re a real customer and happy to hear from me.", type: "checkbox", required: true },
           ], cta: "Ask for a review", fine: "Email goes from your business name, and replies come to you. For a mobile number, I write the text and you send it from your phone. I never ask the same person twice." },
         ]))
+        return
+      }
+      case "profile-add":
+      case "location-add":
+      case "bing-connect": {
+        const formId = mid(a.type)
+        pending.current[formId] = { kind: a.type === "profile-add" ? "profile" : a.type === "location-add" ? "location" : "bing" }
+        const forms: Record<string, Block[]> = {
+          "profile-add": [
+            { kind: "text", text: "Paste the link to a profile you have — Facebook, Instagram, LinkedIn, Yelp, YouTube, TikTok, X, Nextdoor or Google. I’ll check it every week and list it in your site’s structured data." },
+            { kind: "form", formId, fields: [{ name: "url", label: "Profile link", type: "url", placeholder: "https://www.facebook.com/yourbusiness", required: true }], cta: "Add it" },
+          ],
+          "location-add": [
+            { kind: "text", text: "Tell me about the location. I’ll write its page, give it its own structured data, and track questions for its city." },
+            { kind: "form", formId, fields: [
+              { name: "name", label: "Location name", type: "text", placeholder: "Downtown", required: true },
+              { name: "street", label: "Street address", type: "text", placeholder: "123 Main St", required: true },
+              { name: "city", label: "City", type: "text", placeholder: "Austin", required: true },
+              { name: "state", label: "State / province", type: "text", placeholder: "TX" },
+              { name: "zip", label: "ZIP / postal code", type: "text", placeholder: "78701" },
+              { name: "phone", label: "Phone", type: "tel", placeholder: "(512) 555-0100" },
+              { name: "hours", label: "Hours", type: "text", placeholder: "Mon–Fri 8–6, Sat 9–1" },
+            ], cta: "Add location" },
+          ],
+          "bing-connect": [
+            { kind: "receipt", title: "Connect Bing Webmaster Tools", sub: "about 3 minutes", items: [
+              "Go to bing.com/webmasters and sign in. If your site isn’t there, choose “Import from Google Search Console” — it’s verified instantly.",
+              "Click the gear (Settings) → API access → API Key → Generate.",
+              "Paste the key below. I only use it to read your Bing numbers and tell Bing about new pages.",
+            ] },
+            { kind: "form", formId, fields: [{ name: "apiKey", label: "Bing API key", type: "text", placeholder: "Paste your key", required: true }], cta: "Connect Bing" },
+          ],
+        }
+        push(userMsg(chip.label), agent(forms[a.type]))
+        return
+      }
+      case "questions-edit": {
+        const r = await fetch("/api/agent/questions").then((x) => x.json()).catch(() => null) as { questions?: string[] } | null
+        const formId = mid("questions")
+        pending.current[formId] = { kind: "questions" }
+        push(userMsg(chip.label), agent([
+          { kind: "text", text: "These are the questions I ask the four AIs every week. Change any of them — one per line." },
+          { kind: "form", formId, fields: [{ name: "questions", label: "Customer questions", type: "textarea", value: (r?.questions ?? []).join("\n"), required: true }], cta: "Save questions" },
+        ]))
+        return
+      }
+      case "questions-run": {
+        push(userMsg(chip.label))
+        const { ok, data } = await post("/api/agent/questions")
+        if (!ok) return fail(data.error ?? "I couldn’t start that just now.")
+        push(agent([{ kind: "text", text: "Asking all four AIs every question now. It takes a few minutes — the results will be here when you come back." }]))
         return
       }
       case "setting": {
@@ -388,10 +501,44 @@ export function DashboardAgent({
     if (!p) return "This form expired — tap the button again."
     if (p.kind === "handoff") {
       const email = String(values.email ?? "").trim()
-      const { ok, data } = await post("/api/agent/handoff", { what: p.what, email, title: p.title, text: p.text })
+      const { ok, data } = await post("/api/agent/handoff", { what: p.what, email, title: p.title, text: p.text, url: p.url })
       if (!ok) return data.error ?? "It didn’t send. Try again."
       prefs.current.webPersonEmail = email
       push(agent([{ kind: "text", text: `Sent to ${email}. Their reply comes straight to you, and I’ll re-check your site on my next pass to confirm it’s live.` }]))
+      return null
+    }
+    if (p.kind === "profile") {
+      const { ok, data } = await post("/api/agent/settings", { profileUrl: String(values.url ?? "").trim() })
+      if (!ok) return data.error ?? "That link didn’t work."
+      push(agent([{ kind: "text", text: "Added. I’ll check it with the rest every week, and include it the next time I update your structured data." }]))
+      return null
+    }
+    if (p.kind === "location") {
+      const { ok, data } = await post<{ location?: { id: string; city: string }; upgrade?: boolean }>("/api/agent/locations", values)
+      if (!ok) {
+        if (data.upgrade) push(agent([{ kind: "text", text: data.error ?? "" }, { kind: "chips", items: [{ label: "See plans", action: { type: "link", href: "/dashboard/billing" }, primary: true }] }]))
+        return data.upgrade ? null : data.error ?? "That didn’t save."
+      }
+      const loc = data.location!
+      push(agent([
+        { kind: "text", text: `Added your ${loc.city} location. I’ll add questions for ${loc.city} to my weekly checks.` },
+        { kind: "chips", items: [{ label: `Write the ${loc.city} page`, action: { type: "draft", topic: `${loc.city} location page`, mode: "location", locationId: loc.id }, primary: true }] },
+      ]))
+      return null
+    }
+    if (p.kind === "bing") {
+      const { ok, data } = await post<{ site?: string; summary?: unknown }>("/api/agent/bing", { apiKey: String(values.apiKey ?? "").trim() })
+      if (!ok) return data.error ?? "Bing didn’t accept that."
+      push(agent([{ kind: "text", text: `Connected to Bing for ${data.site}. ✓` }]))
+      if (data.summary) push(...bingMessages(data.summary as never).map((m) => ({ ...m, id: mid(m.id) })))
+      return null
+    }
+    if (p.kind === "questions") {
+      const list = String(values.questions ?? "").split("\n").map((q) => q.trim()).filter(Boolean)
+      const r = await fetch("/api/agent/questions", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questions: list }) })
+      const data = await r.json().catch(() => ({}))
+      if (!r.ok) return data.error ?? "Those didn’t save."
+      push(agent([{ kind: "text", text: `Saved ${list.length} questions. I’ll ask them on my next weekly pass.` }, { kind: "chips", items: [{ label: "Ask them now", action: { type: "questions-run" }, primary: true }] }]))
       return null
     }
     if (p.kind === "review-link") {

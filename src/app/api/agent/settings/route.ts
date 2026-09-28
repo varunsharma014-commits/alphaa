@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
+import { networkOf } from "@/lib/checks/profiles"
 
 // Small owner-set flags the agent remembers (Bing/Apple listings done, a
 // review link). The WordPress connection is only ever set by the plugin.
@@ -11,6 +12,7 @@ const body = z.object({
   bingPlacesDone: z.boolean().optional(),
   appleConnectDone: z.boolean().optional(),
   reviewLink: z.string().url().max(500).optional(),
+  profileUrl: z.string().url().max(500).optional(), // add one profile
 })
 
 export async function GET() {
@@ -30,6 +32,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 })
   }
   const now = new Date().toISOString()
+  if (input.profileUrl) {
+    if (!networkOf(input.profileUrl)) return NextResponse.json({ error: "That isn’t a Facebook, Instagram, LinkedIn, Yelp, YouTube, TikTok, X, Nextdoor or Google link." }, { status: 400 })
+    const s = await getAgentSettings(user.id)
+    await saveAgentSettings(user.id, { profiles: Array.from(new Set([...(s.profiles ?? []), input.profileUrl])) })
+  }
   await saveAgentSettings(user.id, {
     ...(input.bingPlacesDone !== undefined ? { bingPlacesDone: input.bingPlacesDone ? now : undefined } : {}),
     ...(input.appleConnectDone !== undefined ? { appleConnectDone: input.appleConnectDone ? now : undefined } : {}),

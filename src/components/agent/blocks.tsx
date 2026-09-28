@@ -446,6 +446,14 @@ export function FormBlock({
             </label>
           )
         }
+        if (f.type === "textarea") {
+          return (
+            <div key={f.name} className="ag-form__field">
+              <label htmlFor={id}>{f.label}</label>
+              <textarea id={id} rows={8} placeholder={f.placeholder} value={String(values[f.name] ?? "")} onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))} disabled={busy} />
+            </div>
+          )
+        }
         return (
           <div key={f.name} className="ag-form__field">
             <label htmlFor={id}>{f.label}</label>

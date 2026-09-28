@@ -3,7 +3,7 @@
  * Plugin Name:       Alphaa Connector
  * Plugin URI:        https://alphaa.app
  * Description:       Lets your Alphaa agent publish the pages, structured data and llms.txt you approve — and undo them in one tap. Also tells you when ChatGPT, Perplexity, Claude or Gemini send you a visitor.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 5.6
  * Requires PHP:      7.4
  * Author:            Alphaa
@@ -14,7 +14,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('ALPHAA_VERSION', '1.0.0');
+define('ALPHAA_VERSION', '1.1.0');
 if (!defined('ALPHAA_API')) define('ALPHAA_API', 'https://alphaa.app');
 
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
@@ -60,6 +60,10 @@ add_action('rest_api_init', function () {
     'llms'   => 'alphaa_rest_llms',
     'robots' => 'alphaa_rest_robots',
     'undo'   => 'alphaa_rest_undo',
+    'post'   => 'alphaa_rest_post',
+    'meta'   => 'alphaa_rest_meta',
+    'sitemap' => 'alphaa_rest_sitemap',
+    'headers' => 'alphaa_rest_headers',
   );
   foreach ($routes as $route => $cb) {
     register_rest_route('alphaa/v1', '/' . $route, array(
@@ -82,7 +86,33 @@ function alphaa_rest_status() {
     'physicalLlms' => file_exists(ABSPATH . 'llms.txt'),
     'searchVisible' => (bool) get_option('blog_public'),
     'indexnow' => (string) get_option('alphaa_indexnow', ''),
+    'seoPlugin' => alphaa_seo_plugin(),
+    'sitemap' => alphaa_sitemap_url(),
   );
+}
+
+function alphaa_seo_plugin() {
+  if (defined('WPSEO_VERSION')) return 'yoast';
+  if (defined('RANK_MATH_VERSION')) return 'rankmath';
+  if (defined('AIOSEO_VERSION')) return 'aioseo';
+  return '';
+}
+
+function alphaa_sitemap_url() {
+  $seo = alphaa_seo_plugin();
+  if ($seo === 'yoast' || $seo === 'rankmath') return home_url('/sitemap_index.xml');
+  if ($seo === 'aioseo') return home_url('/sitemap.xml');
+  if (function_exists('get_sitemap_url') && apply_filters('wp_sitemaps_enabled', (bool) get_option('blog_public'))) return get_sitemap_url('index');
+  return '';
+}
+
+/** Post id for a URL on this site; 0 for a front page that lists posts. */
+function alphaa_resolve_url($url) {
+  $path = wp_parse_url($url, PHP_URL_PATH);
+  $home = alphaa_home_path();
+  if ($home && strpos((string) $path, $home) === 0) $path = substr($path, strlen($home));
+  if (!$path || $path === '/') return get_option('show_on_front') === 'page' ? intval(get_option('page_on_front')) : 0;
+  return intval(url_to_postid($url));
 }
 
 function alphaa_rest_page(WP_REST_Request $req) {
@@ -102,6 +132,66 @@ function alphaa_rest_page(WP_REST_Request $req) {
   if (!empty($p['jsonld']) && is_array($p['jsonld'])) update_post_meta($post_id, '_alphaa_schema', wp_json_encode($p['jsonld']));
   $id = alphaa_log_change('page', array('post_id' => $post_id));
   return array('ok' => true, 'id' => $id, 'url' => get_permalink($post_id));
+}
+
+function alphaa_rest_post(WP_REST_Request $req) {
+  $p = $req->get_json_params();
+  $title = isset($p['title']) ? sanitize_text_field($p['title']) : '';
+  $html = isset($p['html']) ? wp_kses_post($p['html']) : '';
+  if (!$title || !$html) return new WP_Error('alphaa_bad', 'Missing title or content.', array('status' => 400));
+  $post_id = wp_insert_post(array(
+    'post_type' => 'post',
+    'post_status' => 'publish',
+    'post_title' => $title,
+    'post_content' => $html,
+    'post_excerpt' => isset($p['excerpt']) ? sanitize_text_field($p['excerpt']) : '',
+  ), true);
+  if (is_wp_error($post_id)) return $post_id;
+  update_post_meta($post_id, '_alphaa', 1);
+  if (!empty($p['jsonld']) && is_array($p['jsonld'])) update_post_meta($post_id, '_alphaa_schema', wp_json_encode($p['jsonld']));
+  $id = alphaa_log_change('post', array('post_id' => $post_id));
+  return array('ok' => true, 'id' => $id, 'url' => get_permalink($post_id));
+}
+
+// Page title + meta description. Written where the site's SEO plugin reads
+// them (Yoast / Rank Math), otherwise served by this plugin.
+function alphaa_rest_meta(WP_REST_Request $req) {
+  $p = $req->get_json_params();
+  $url = isset($p['url']) ? esc_url_raw($p['url']) : home_url('/');
+  $title = isset($p['title']) ? sanitize_text_field($p['title']) : '';
+  $desc = isset($p['description']) ? sanitize_text_field($p['description']) : '';
+  if (!$title && !$desc) return new WP_Error('alphaa_bad', 'Nothing to change.', array('status' => 400));
+  $pid = alphaa_resolve_url($url);
+  $seo = alphaa_seo_plugin();
+  $prev = array();
+  if ($pid && ($seo === 'yoast' || $seo === 'rankmath')) {
+    $tk = $seo === 'yoast' ? '_yoast_wpseo_title' : 'rank_math_title';
+    $dk = $seo === 'yoast' ? '_yoast_wpseo_metadesc' : 'rank_math_description';
+    $prev = array('store' => 'postmeta', 'post_id' => $pid, 'tk' => $tk, 'dk' => $dk, 'title' => get_post_meta($pid, $tk, true), 'desc' => get_post_meta($pid, $dk, true));
+    if ($title) update_post_meta($pid, $tk, $title);
+    if ($desc) update_post_meta($pid, $dk, $desc);
+  } else {
+    $key = $pid ? 'p' . $pid : 'home';
+    $all = get_option('alphaa_meta', array());
+    if (!is_array($all)) $all = array();
+    $prev = array('store' => 'option', 'key' => $key, 'value' => isset($all[$key]) ? $all[$key] : null);
+    $all[$key] = array('title' => $title, 'description' => $desc);
+    update_option('alphaa_meta', $all, true);
+  }
+  $id = alphaa_log_change('meta', array('prev' => $prev));
+  return array('ok' => true, 'id' => $id, 'url' => $pid ? get_permalink($pid) : home_url('/'), 'via' => $seo ? $seo : 'alphaa');
+}
+
+function alphaa_rest_sitemap() {
+  update_option('alphaa_sitemap', 1, false);
+  $id = alphaa_log_change('sitemap', array());
+  return array('ok' => true, 'id' => $id, 'url' => alphaa_sitemap_url() ? alphaa_sitemap_url() : get_sitemap_url('index'));
+}
+
+function alphaa_rest_headers() {
+  update_option('alphaa_headers', 1, false);
+  $id = alphaa_log_change('headers', array());
+  return array('ok' => true, 'id' => $id, 'url' => home_url('/'));
 }
 
 function alphaa_rest_schema(WP_REST_Request $req) {
@@ -140,6 +230,20 @@ function alphaa_rest_undo(WP_REST_Request $req) {
     case 'schema': update_option('alphaa_schema', get_option('alphaa_schema_prev', ''), true); break;
     case 'llms':   update_option('alphaa_llms', get_option('alphaa_llms_prev', ''), false); break;
     case 'robots': update_option('alphaa_robots', 0, false); break;
+    case 'post':   wp_trash_post(intval($ch['post_id'])); break;
+    case 'sitemap': update_option('alphaa_sitemap', 0, false); break;
+    case 'headers': update_option('alphaa_headers', 0, false); break;
+    case 'meta':
+      $pv = isset($ch['prev']) ? $ch['prev'] : array();
+      if (isset($pv['store']) && $pv['store'] === 'postmeta') {
+        update_post_meta(intval($pv['post_id']), $pv['tk'], $pv['title']);
+        update_post_meta(intval($pv['post_id']), $pv['dk'], $pv['desc']);
+      } elseif (isset($pv['store']) && $pv['store'] === 'option') {
+        $all = get_option('alphaa_meta', array());
+        if ($pv['value'] === null) unset($all[$pv['key']]); else $all[$pv['key']] = $pv['value'];
+        update_option('alphaa_meta', $all, true);
+      }
+      break;
   }
   unset($c[$id]);
   update_option('alphaa_changes', $c, false);
@@ -162,6 +266,37 @@ add_action('wp_head', function () {
     echo "\n<script type=\"application/ld+json\">" . wp_json_encode($block, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
   }
 }, 5);
+
+// Titles/descriptions set through Alphaa when no SEO plugin handles them.
+function alphaa_current_meta() {
+  if (alphaa_seo_plugin()) return null;
+  $all = get_option('alphaa_meta', array());
+  if (!is_array($all) || !$all) return null;
+  if (is_front_page() && !is_page()) return isset($all['home']) ? $all['home'] : null;
+  $pid = get_queried_object_id();
+  return ($pid && isset($all['p' . $pid])) ? $all['p' . $pid] : null;
+}
+add_filter('pre_get_document_title', function ($t) {
+  $m = alphaa_current_meta();
+  return ($m && !empty($m['title'])) ? $m['title'] : $t;
+}, 99);
+add_action('wp_head', function () {
+  $m = alphaa_current_meta();
+  if ($m && !empty($m['description'])) echo '<meta name="description" content="' . esc_attr($m['description']) . '" />' . "\n";
+}, 1);
+
+// Basic security headers, when the owner approved them. HSTS only over HTTPS
+// and without includeSubDomains, so it can't break a subdomain.
+add_action('send_headers', function () {
+  if (!get_option('alphaa_headers') || headers_sent()) return;
+  header('X-Content-Type-Options: nosniff');
+  header('X-Frame-Options: SAMEORIGIN');
+  header('Referrer-Policy: strict-origin-when-cross-origin');
+  if (is_ssl()) header('Strict-Transport-Security: max-age=31536000');
+});
+
+// Make sure WordPress's built-in sitemap is on when the owner approved it.
+add_filter('wp_sitemaps_enabled', function ($on) { return get_option('alphaa_sitemap') ? true : $on; }, 99);
 
 // /llms.txt and the IndexNow key file, served without touching the filesystem.
 add_action('parse_request', function () {
@@ -264,5 +399,5 @@ function alphaa_settings_page() {
 
 register_uninstall_hook(__FILE__, 'alphaa_uninstall');
 function alphaa_uninstall() {
-  foreach (array('alphaa_key', 'alphaa_schema', 'alphaa_schema_prev', 'alphaa_llms', 'alphaa_llms_prev', 'alphaa_robots', 'alphaa_changes', 'alphaa_indexnow') as $o) delete_option($o);
+  foreach (array('alphaa_key', 'alphaa_schema', 'alphaa_schema_prev', 'alphaa_llms', 'alphaa_llms_prev', 'alphaa_robots', 'alphaa_changes', 'alphaa_indexnow', 'alphaa_meta', 'alphaa_sitemap', 'alphaa_headers') as $o) delete_option($o);
 }

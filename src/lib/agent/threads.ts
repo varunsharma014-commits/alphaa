@@ -5,23 +5,31 @@
 
 import { db } from "@/lib/db"
 import type { CitationReport } from "@/lib/citations"
-import { agent, type Block, type Message } from "@/lib/agent/types"
+import { agent, type Block, type Message, type Task } from "@/lib/agent/types"
 import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { getRoi, roiLines } from "@/lib/roi"
+import { latestQuestionScan } from "@/lib/questions"
+import { cachedCheck, type ProfilesResult, type ListingsResult, type BingResult } from "@/lib/checks/run"
+import type { SecurityCheck } from "@/lib/checks/security"
+import { answersMessages, changeChips, profileMessages, listingsMessages, bingMessages, securityMessages } from "@/lib/agent/check-narration"
+import { outreachMessages } from "@/lib/agent/thread-blocks"
+import { maxExtraLocations } from "@/lib/agent/settings"
 
-export type Topic = "reviews" | "site" | "sources" | "listings" | "competitors" | "briefings"
+export type Topic = "reviews" | "site" | "sources" | "listings" | "answers" | "content" | "competitors" | "briefings"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "reviews", label: "Reviews", blurb: "Your Google reviews and my reply drafts" },
   { key: "site", label: "Site Schema & Code", blurb: "What AI can read on your site, and the fixes I wrote" },
   { key: "sources", label: "Source Tracking", blurb: "The pages AI reads before it recommends anyone" },
-  { key: "listings", label: "Maps & Listings", blurb: "Bing Places and Apple Business Connect — free listings AI reads" },
+  { key: "answers", label: "AI Answers", blurb: "Every customer question, asked to all four AIs each week — and what they get wrong about you" },
+  { key: "content", label: "Posts & Pages", blurb: "Fresh posts and pages I write for your site, waiting for your yes" },
+  { key: "listings", label: "Listings & Profiles", blurb: "Bing, Apple, your social profiles, your details across directories, and your locations" },
   { key: "competitors", label: "Competitors", blurb: "What they have that you don’t — and drafts to close it" },
   { key: "briefings", label: "Weekly Briefings", blurb: "What I did each week, in plain English" },
 ]
 export const isTopic = (t: string): t is Topic => TOPICS.some((x) => x.key === t)
 
-export type Thread = { messages: Message[]; autorun: ("site-check" | "citations")[] }
+export type Thread = { messages: Message[]; autorun: Task[] }
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v)
@@ -118,9 +126,23 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       if (!site) {
         return { autorun: [], messages: [agent([{ kind: "text", text: "I don’t have your website address yet.", big: true }, { kind: "text", text: "Add it once and I’ll read your site the way ChatGPT, Claude and Perplexity do, then write the fixes." }, { kind: "chips", items: [{ label: "Add my website", action: { type: "link", href: "/dashboard/settings/business" }, primary: true }] }], "st-none")] }
       }
+      const s = await getAgentSettings(userId)
+      const [sec, bing] = await Promise.all([cachedCheck<SecurityCheck>(userId, "security"), cachedCheck<BingResult>(userId, "bing", 8 * 86_400_000)])
+      const autorun: Task[] = ["site-check"]
+      if (!sec) autorun.push("security")
+      const tail: Message[] = sec ? securityMessages(sec.data, !!s.wp) : [agent([{ kind: "text", text: "Then I’ll run the security checks." }], "security-run")]
+      if (s.bingKeyEnc) {
+        if (bing) tail.push(...bingMessages(bing.data))
+        else { autorun.push("bing"); tail.push(agent([{ kind: "text", text: "Reading your Bing numbers…" }], "bing-run")) }
+      } else {
+        tail.push(agent([
+          { kind: "text", text: "Want me to watch Bing too? ChatGPT’s search draws on Bing’s index. Connect Bing Webmaster Tools and I’ll report your Bing clicks, what people search, and any crawl problems — and tell Bing about every new page." },
+          { kind: "chips", items: [{ label: "Connect Bing", action: { type: "bing-connect" }, primary: true }] },
+        ], "bing-offer"))
+      }
       return {
-        autorun: ["site-check"],
-        messages: [agent([{ kind: "text", text: `I’m reading ${site} the way ChatGPT, Claude and Perplexity do.`, big: true }, { kind: "steps", items: ["Opening your homepage as each AI crawler", "Checking what they can read", "Checking the facts AI needs", "Writing the fixes"], done: 0 }], "st-run")],
+        autorun,
+        messages: [agent([{ kind: "text", text: `I’m reading ${site} the way ChatGPT, Claude and Perplexity do.`, big: true }, { kind: "steps", items: ["Opening your homepage as each AI crawler", "Checking what they can read", "Checking the facts AI needs", "Writing the fixes"], done: 0 }], "st-run"), ...tail],
       }
     }
 
@@ -135,7 +157,7 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
           messages: [agent([{ kind: "text", text: "I’m searching the way your customers do.", big: true }, { kind: "text", text: "Then I open each result the AIs lean on and check whether you’re on it. About two minutes — nothing changes on your site." }, { kind: "steps", items: ["Searching like a customer", "Opening each page AI reads", "Checking if you’re named"], done: 0 }], "src-run")],
         }
       }
-      return { autorun: [], messages: [agent(citationBlocks(report, user.businessType, user.city, row!.createdAt), "src-report"), ...discussionMessages(report)] }
+      return { autorun: [], messages: [agent(citationBlocks(report, user.businessType, user.city, row!.createdAt), "src-report"), ...outreachMessages(report), ...discussionMessages(report)] }
     }
 
     // ── Maps & Listings ───────────────────────────────────────────────────
@@ -143,10 +165,11 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       const s = await getAgentSettings(userId)
       const when = (iso?: string) => (iso ? new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "")
       return {
-        autorun: [],
+        
         messages: [
           agent([
-            { kind: "text", text: "Two free listings most businesses skip.", big: true },
+            { kind: "text", text: "Where AI checks your details — and whether they match.", big: true },
+            { kind: "text", text: "First, two free listings most businesses skip." },
             { kind: "text", text: "ChatGPT’s search draws partly on Bing, and Siri, Apple Maps and Spotlight read Apple Business Connect. Neither costs anything, and each takes about ten minutes. These need you — both ask the owner to verify — so here’s exactly what to do." },
           ], "ls-intro"),
           agent([
@@ -163,8 +186,53 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
               { kind: "chips", items: [{ label: "Open Apple Business Connect", action: { type: "link", href: "https://businessconnect.apple.com" } }, { label: "I’ve done it", action: { type: "setting", key: "appleConnectDone", value: true, done: "Noted — that covers Siri and Apple Maps." }, primary: true }] } as Block,
             ]),
           ], "ls-apple"),
+          ...(await listingsTail(userId, user.plan, s)),
         ],
+        autorun: await listingsAutorun(userId),
       }
+    }
+
+    // ── AI Answers ────────────────────────────────────────────────────────
+    case "answers": {
+      const latest = await latestQuestionScan(userId)
+      if (!latest) {
+        return { autorun: [], messages: [agent([
+          { kind: "text", text: "I haven’t asked your customer questions yet.", big: true },
+          { kind: "text", text: "I’ll write the 10–20 questions your customers really ask, put each one to ChatGPT, Gemini, Claude and Perplexity every week, and check what they say about you — wrong hours, wrong phone, “closed”. First run takes a few minutes." },
+          { kind: "chips", items: [{ label: "Ask them now", action: { type: "questions-run" }, primary: true }, { label: "See the questions first", action: { type: "questions-edit" } }] },
+        ], "ans-none")] }
+      }
+      return { autorun: [], messages: answersMessages(latest.scan, latest.at) }
+    }
+
+    // ── Posts & Pages ─────────────────────────────────────────────────────
+    case "content": {
+      const s = await getAgentSettings(userId)
+      const wp = !!s.wp
+      const drafts = await db.mockActivity.findMany({ where: { userId, type: "post_draft" }, orderBy: { createdAt: "desc" }, take: 12 })
+      const ready = drafts.filter((d) => (d.metadata as { status?: string } | null)?.status === "ready").slice(0, 4)
+      const published = drafts.filter((d) => (d.metadata as { status?: string } | null)?.status === "published")
+      const perMonth = /pro|full/i.test(user.plan) ? 4 : 2
+      const msgs: Message[] = [agent([
+        { kind: "text", text: ready.length ? `${ready.length} ${ready.length === 1 ? "post is" : "posts are"} ready for your yes.` : "No posts waiting on you.", big: true },
+        { kind: "text", text: `AI favours sites that stay fresh. I write ${perMonth} posts a month, each answering a question the AIs didn’t name you for${published.length ? ` — ${published.length} published so far` : ""}.${wp ? " Approve one and it goes live on your site." : ""}` },
+      ], "ct-sum")]
+      for (const d of ready) {
+        const m = d.metadata as { title?: string; markdown?: string; topic?: string }
+        const docId = `post-${d.id}`
+        msgs.push(agent([
+          { kind: "doc", title: m.title ?? "New post", meta: `draft · answers “${(m.topic ?? "").slice(0, 70)}”`, text: m.markdown, docId, editable: true },
+          { kind: "chips", items: [...changeChips("post", wp, { title: m.title, text: m.markdown, docId, draftId: d.id }), { label: "Skip", action: { type: "dismiss" } }] },
+        ], `ct-${d.id}`))
+      }
+      msgs.push(agent([{ kind: "chips", items: [{ label: "Write a post now", action: { type: "draft", topic: "auto", mode: "post" }, primary: !ready.length }] }], "ct-more"))
+      for (const l of s.locations ?? []) {
+        msgs.push(agent([
+          { kind: "text", text: `Your ${l.city} location needs its own page so AI knows you’re there.` },
+          { kind: "chips", items: [{ label: `Write the ${l.city} page`, action: { type: "draft", topic: `${l.city} location page`, mode: "location", locationId: l.id } }] },
+        ], `ct-loc-${l.id}`))
+      }
+      return { autorun: [], messages: msgs }
     }
 
     // ── Competitors ───────────────────────────────────────────────────────
@@ -237,4 +305,24 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       return { autorun: [], messages: msgs }
     }
   }
+}
+
+
+async function listingsAutorun(userId: string): Promise<Task[]> {
+  const [p, l] = await Promise.all([cachedCheck(userId, "profiles", 7 * 86_400_000), cachedCheck(userId, "listings", 7 * 86_400_000)])
+  return [...(p ? [] : ["profiles" as Task]), ...(l ? [] : ["listings" as Task])]
+}
+
+async function listingsTail(userId: string, plan: string, s: Awaited<ReturnType<typeof getAgentSettings>>): Promise<Message[]> {
+  const [p, l] = await Promise.all([cachedCheck<ProfilesResult>(userId, "profiles", 7 * 86_400_000), cachedCheck<ListingsResult>(userId, "listings", 7 * 86_400_000)])
+  const out: Message[] = []
+  out.push(...(p ? profileMessages(p.data) : [agent([{ kind: "text", text: "Checking your social and review profiles…" }], "profiles-run")]))
+  out.push(...(l ? listingsMessages(l.data) : [agent([{ kind: "text", text: "Checking your details on the directories AI reads…" }], "listings-run")]))
+  const extra = maxExtraLocations(plan)
+  const locs = s.locations ?? []
+  out.push(agent([
+    { kind: "text", text: locs.length ? `Your other locations: ${locs.map((x) => `${x.name} (${x.city})`).join(", ")}.` : extra ? "Got more than one location? Add each one — I’ll write its page, give it its own structured data, and track questions for its city." : "More locations come with the Pro plan (up to 3)." },
+    { kind: "chips", items: extra > locs.length ? [{ label: "Add a location", action: { type: "location-add" } }] : locs.length ? [] : [{ label: "See plans", action: { type: "link", href: "/pricing" } }] },
+  ], "ls-locs"))
+  return out
 }

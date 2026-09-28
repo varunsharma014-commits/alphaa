@@ -4,7 +4,7 @@ Tags: ai search, llms.txt, schema, aeo, chatgpt
 Requires at least: 5.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 
 Lets your Alphaa agent publish what you approve — FAQ pages, structured data, llms.txt and AI-crawler access — with one-tap undo.
@@ -13,7 +13,9 @@ Lets your Alphaa agent publish what you approve — FAQ pages, structured data, 
 
 Alphaa is an AI agent that works to get local businesses recommended by ChatGPT, Gemini, Claude and Perplexity. This plugin lets it make the website changes you approve:
 
-* Publish FAQ pages (with FAQPage structured data) you approve in Alphaa.
+* Publish FAQ pages, location pages and blog posts (with structured data) you approve in Alphaa.
+* Improve page titles and meta descriptions (written where Yoast or Rank Math reads them, if installed).
+* Turn on WordPress's built-in sitemap and basic security headers.
 * Add LocalBusiness structured data to your site's header.
 * Serve /llms.txt.
 * Add robots.txt rules that let AI search assistants (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot, Perplexity-User) read your site.

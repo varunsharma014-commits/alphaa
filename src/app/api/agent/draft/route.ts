@@ -6,6 +6,8 @@ import { auth } from "@clerk/nextjs/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
+import { writePost, writeMeta, writeLocationPage, writeOutreach } from "@/lib/content"
+import { getAgentSettings } from "@/lib/agent/settings"
 
 // Writes a short, publish-ready FAQ section that closes a competitor gap —
 // from the business's own facts only. Unknown facts become [bracketed]
@@ -14,8 +16,12 @@ const body = z.object({
   topic: z.string().min(3).max(200),
   competitor: z.string().max(200).optional(),
   // mode "reply": a reply the owner posts themselves in a discussion the AIs cite.
-  mode: z.enum(["faq", "reply"]).optional(),
+  // post: a blog post; meta: page title + description; location: a location page;
+  // outreach: email to a "best of" list / steps for a directory the AIs read.
+  mode: z.enum(["faq", "reply", "post", "meta", "location", "outreach"]).optional(),
   url: z.string().url().max(500).optional(),
+  locationId: z.string().max(40).optional(),
+  kind: z.string().max(20).optional(),
 })
 
 async function threadText(url: string): Promise<string> {
@@ -57,6 +63,38 @@ export async function POST(req: Request) {
     user.voiceDescription ? `Voice: ${user.voiceDescription}` : "",
     user.topicsToAvoid ? `Avoid: ${user.topicsToAvoid}` : "",
   ].filter(Boolean).join("\n")
+
+  try {
+    if (input.mode === "post") {
+      const p = await writePost(user, input.topic === "auto" ? undefined : input.topic)
+      const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready" } } })
+      return NextResponse.json({ title: p.title, text: p.markdown, draftId: row.id })
+    }
+    if (input.mode === "meta") {
+      const url = input.url ?? user.websiteUrl ?? ""
+      const page = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) }).then((r) => r.text()).catch(() => "")
+      const currentTitle = page.match(/<title[^>]*>([^<]*)/i)?.[1]?.trim() ?? null
+      const currentDescription = page.match(/<meta[^>]+name=["']description["'][^>]*content=["']([^"']*)/i)?.[1] ?? null
+      const text = await writeMeta(user, { url, currentTitle, currentDescription })
+      return NextResponse.json({ title: "Page title & description", text, current: { title: currentTitle, description: currentDescription } })
+    }
+    if (input.mode === "location") {
+      const loc = (await getAgentSettings(user.id)).locations?.find((l) => l.id === input.locationId)
+      if (!loc) return NextResponse.json({ error: "I can’t find that location." }, { status: 404 })
+      const p = await writeLocationPage(user, loc)
+      await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Drafted the ${loc.city} location page`, metadata: { ...p, locationId: loc.id } } })
+      return NextResponse.json({ title: p.title, text: p.markdown })
+    }
+    if (input.mode === "outreach" && input.url) {
+      const pageText = await threadText(input.url)
+      const text = await writeOutreach(user, { url: input.url, title: input.topic, kind: input.kind ?? "bestof" }, pageText)
+      await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Drafted outreach for “${input.topic.slice(0, 80)}”`, metadata: { url: input.url, text } } })
+      return NextResponse.json({ title: input.topic, text })
+    }
+  } catch (err) {
+    console.error("[agent/draft]", input.mode, err instanceof Error ? err.message : err)
+    return NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
+  }
 
   if (input.mode === "reply" && input.url) {
     const thread = await threadText(input.url)

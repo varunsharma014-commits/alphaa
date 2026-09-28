@@ -209,3 +209,41 @@ export async function getAiReferrals(
     return null
   }
 }
+
+/** Sessions this week vs last, and the top channels — for the weekly briefing. */
+export async function getTrafficSummary(
+  integration: StoredIntegration & { gaPropertyId?: string | null },
+): Promise<{ sessions: number; prev: number; channels: { name: string; sessions: number }[] } | null> {
+  if (!integration.gaPropertyId) return null
+  try {
+    const auth = await getAuthenticatedClient(integration)
+    const analyticsdata = google.analyticsdata({ version: 'v1beta', auth })
+    const res = await analyticsdata.properties.runReport({
+      property: `properties/${integration.gaPropertyId}`,
+      requestBody: {
+        dateRanges: [
+          { startDate: '7daysAgo', endDate: 'yesterday', name: 'now' },
+          { startDate: '14daysAgo', endDate: '8daysAgo', name: 'prev' },
+        ],
+        dimensions: [{ name: 'sessionDefaultChannelGroup' }],
+        metrics: [{ name: 'sessions' }],
+        limit: '20',
+      },
+    })
+    let sessions = 0
+    let prev = 0
+    const byChannel: Record<string, number> = {}
+    for (const row of res.data.rows ?? []) {
+      const channel = row.dimensionValues?.[0]?.value ?? 'Other'
+      const range = row.dimensionValues?.[1]?.value ?? 'now'
+      const n = parseInt(row.metricValues?.[0]?.value ?? '0', 10)
+      if (range === 'prev') prev += n
+      else { sessions += n; byChannel[channel] = (byChannel[channel] ?? 0) + n }
+    }
+    const channels = Object.entries(byChannel).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([name, s]) => ({ name, sessions: s }))
+    return { sessions, prev, channels }
+  } catch (err) {
+    console.error('[GA] getTrafficSummary error:', err instanceof Error ? err.message : err)
+    return null
+  }
+}

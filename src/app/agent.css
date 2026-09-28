@@ -210,6 +210,8 @@
 .ag-form { display: grid; gap: 12px; }
 .ag-form__field label { margin-bottom: 6px; }
 .ag-form__field input { width: 100%; }
+.ag-form__field textarea { width: 100%; border: 1px solid var(--ag-line); border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 15px; line-height: 1.45; background: var(--ag-card); color: var(--ag-fg); outline: 0; resize: vertical; }
+.ag-form__field textarea:focus { border-color: var(--ag-link); box-shadow: 0 0 0 3px rgb(0 102 204 / 0.2); }
 .ag-form__check { display: flex !important; gap: 10px; align-items: flex-start; font-size: 14px !important; color: var(--ag-fg) !important; line-height: 1.4; margin: 0 !important; cursor: pointer; }
 .ag-form__check input { flex: none; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--ag-link); }
 .ag-form > .ag-pill { justify-self: start; }

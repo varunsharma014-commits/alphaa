@@ -39,3 +39,18 @@ export function discussionMessages(report: CitationReport): Message[] {
     ),
   ]
 }
+
+// "Best of" lists and directories the AIs read that don't mention the business.
+export function outreachMessages(report: CitationReport): Message[] {
+  const targets = report.targets.filter((t) => t.status === "missing" && (t.kind === "bestof" || t.kind === "directory")).slice(0, 4)
+  if (!targets.length) return []
+  return [
+    agent([{ kind: "text", text: `${targets.length === 1 ? "One page" : `${targets.length} pages`} the AIs read ${targets.length === 1 ? "doesn’t" : "don’t"} mention you yet. Getting onto them is one of the fastest ways to change what AI says. I’ll do the writing:` }], "out-intro"),
+    ...targets.map((t) =>
+      agent([
+        { kind: "sources", items: [{ name: t.domain, detail: t.title.slice(0, 90), status: t.kind === "directory" ? "Directory" : "Best-of list", ok: false, href: t.url }] },
+        { kind: "chips", items: [{ label: t.kind === "directory" ? "How do I get listed?" : "Draft the email for me", action: { type: "draft", topic: t.title.slice(0, 190) || t.domain, mode: "outreach", url: t.url, kind: t.kind }, primary: true }, { label: "Skip", action: { type: "dismiss" } }] },
+      ], `out-${t.rank}`)
+    ),
+  ]
+}

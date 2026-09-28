@@ -10,6 +10,7 @@ import { suggestedQuestion } from "@/lib/sandbox"
 import { timeOfDayGreeting } from "@/lib/humanize"
 import type { CitationReport } from "@/lib/citations"
 import { agent, type Block, type Message, type VerdictState } from "@/lib/agent/types"
+import { latestQuestionScan } from "@/lib/questions"
 
 const ENGINES: EngineKey[] = ["chatgpt", "gemini", "claude", "perplexity"]
 const LABEL: Record<EngineKey, string> = { chatgpt: "ChatGPT", gemini: "Gemini", claude: "Claude", perplexity: "Perplexity" }
@@ -64,7 +65,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     getEngineEvidence({ id: user.id, email: user.email }),
     db.mockActivity.findFirst({ where: { userId: user.id, type: "citation_scan" }, orderBy: { createdAt: "desc" } }),
     db.mockActivity.findMany({
-      where: { userId: user.id, createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) }, type: { notIn: ["sandbox_query"] } },
+      where: { userId: user.id, createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) }, type: { notIn: ["sandbox_query", "agent_settings", "question_scan_started", "ai_visit", "site_check", "citation_scan", "check_security", "check_profiles", "check_listings", "check_bing"] } },
       orderBy: { createdAt: "desc" },
       take: 30,
     }),
@@ -133,6 +134,23 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     messages.push(agent(blocks, "standing"))
   }
 
+  // ── 1b. Every tracked question, and anything the AIs get wrong ─────────────
+  const qs = await latestQuestionScan(user.id).catch(() => null)
+  if (qs && Date.now() - qs.at.getTime() < 10 * 86_400_000) {
+    const wrong = qs.scan.facts.issues
+    const high = wrong.filter((i) => i.severity === "high")
+    if (wrong.length) {
+      messages.push(agent([
+        { kind: "text", text: high.length ? `${LABEL[high[0].engine as EngineKey] ?? "An AI"} is telling customers “${high[0].claim}”. That’s wrong — ${high[0].truth}.` : `${wrong.length} AI ${wrong.length === 1 ? "answer gets" : "answers get"} a detail about you wrong.`, big: true },
+        { kind: "chips", items: [{ label: "See what’s wrong and how I’ll fix it", action: { type: "link", href: "/dashboard/t/answers" }, primary: true }] },
+      ], "facts"))
+    }
+    messages.push(agent([
+      { kind: "text", text: `Across your ${qs.scan.questions.length} customer questions, the four AIs named you in ${qs.scan.named} of ${qs.scan.answers} answers.${qs.scan.rivals[0] ? ` ${qs.scan.rivals[0].name} was named ${qs.scan.rivals[0].count} times.` : ""}` },
+      { kind: "chips", items: [{ label: "Question by question", action: { type: "link", href: "/dashboard/t/answers" } }] },
+    ], "questions"))
+  }
+
   // ── 2. Reviews waiting for a reply ────────────────────────────────────────
   const gmbConnected = !!(user.integration?.gmbAccountId && user.integration?.gmbLocationId)
   for (const r of user.gmbReviews) {
@@ -157,6 +175,17 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
         { kind: "chips", items: [{ label: "Post it", action: { type: "post-publish", postId: draft.id }, primary: true }, { label: "Delete it", action: { type: "post-delete", postId: draft.id } }] },
       ], `post-${draft.id}`)
     )
+  }
+
+  // ── 3b. Posts for the website waiting on a yes ────────────────────────────
+  const readyPosts = await db.mockActivity.findMany({ where: { userId: user.id, type: "post_draft" }, orderBy: { createdAt: "desc" }, take: 8 })
+  const waitingPosts = readyPosts.filter((p) => (p.metadata as { status?: string } | null)?.status === "ready")
+  if (waitingPosts.length) {
+    const m = waitingPosts[0].metadata as { title?: string }
+    messages.push(agent([
+      { kind: "text", text: `I wrote ${waitingPosts.length === 1 ? "a new post" : `${waitingPosts.length} new posts`} for your website${m.title ? ` — “${m.title}”` : ""}. Want to read ${waitingPosts.length === 1 ? "it" : "them"}?` },
+      { kind: "chips", items: [{ label: "Read and approve", action: { type: "link", href: "/dashboard/t/content" }, primary: true }] },
+    ], "posts"))
   }
 
   // ── 4. Where AI looks you up ──────────────────────────────────────────────
