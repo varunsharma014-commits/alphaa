@@ -12,7 +12,9 @@ import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
 
 type LiveResult = { engine: EngineKey; answer: string; appeared: boolean; mentioned: string[]; status: string }
 
-type Prefs = { webPersonEmail: string | null; wpConnected: boolean }
+type Prefs = { webPersonEmail: string | null; wpConnected: boolean; siteConnected: boolean; platform: string | null; available: { webflow: boolean; shopify: boolean; wix: boolean } }
+// What a connected Webflow / Shopify / Wix site can take through its API (WordPress takes everything).
+const API_OPS: SiteOp[] = ["post", "page", "meta"]
 type Pending =
   | { kind: "handoff"; what: SiteOp; title?: string; text?: string; url?: string }
   | { kind: "review" }
@@ -21,6 +23,7 @@ type Pending =
   | { kind: "location" }
   | { kind: "bing" }
   | { kind: "questions" }
+  | { kind: "shopify" }
 
 const OP_NAME: Record<SiteOp, string> = { page: "the page", schema: "your structured facts", llms: "your llms.txt", robots: "the robots.txt fix", post: "the post", meta: "the new title and description", sitemap: "your sitemap", headers: "the security settings" }
 const TOPIC_LINKS: { href: string; label: string }[] = [
@@ -53,19 +56,20 @@ export function DashboardAgent({
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const docEdits = useRef<Record<string, string>>({})
-  const prefs = useRef<Prefs>({ webPersonEmail: null, wpConnected: false })
+  const prefs = useRef<Prefs>({ webPersonEmail: null, wpConnected: false, siteConnected: false, platform: null, available: { webflow: false, shopify: false, wix: false } })
   const pending = useRef<Record<string, Pending>>({})
 
   async function loadPrefs() {
     const r = await fetch("/api/agent/settings").then((x) => (x.ok ? x.json() : null)).catch(() => null)
-    if (r) prefs.current = { webPersonEmail: r.webPersonEmail ?? null, wpConnected: !!r.wpConnected }
+    if (r) prefs.current = { webPersonEmail: r.webPersonEmail ?? null, wpConnected: !!r.wpConnected, siteConnected: !!r.siteConnected, platform: r.platform ?? null, available: r.available ?? { webflow: false, shopify: false, wix: false } }
   }
 
   // Who makes a website change happen: the agent itself when the site is
   // connected; otherwise the owner's web person (by email) or our team.
   function siteChips(op: SiteOp, extra: { title?: string; text?: string; docId?: string; url?: string; locationId?: string; draftId?: string } = {}): Chip[] {
     const handoff: Chip = { label: "Email it to my web person", action: { type: "handoff", what: op, ...extra } }
-    if (prefs.current.wpConnected) return [{ label: "Publish it to my site", action: { type: "wp-push", op, ...extra }, primary: true }, handoff]
+    if (prefs.current.wpConnected || (prefs.current.siteConnected && API_OPS.includes(op))) return [{ label: "Publish it to my site", action: { type: "wp-push", op, ...extra }, primary: true }, handoff]
+    if (prefs.current.siteConnected) return [{ ...handoff, primary: true }, { label: "Have our team do it", action: { type: "link", href: "/dashboard/concierge" } }]
     return [
       { ...handoff, primary: true },
       { label: "Have our team do it", action: { type: "link", href: "/dashboard/concierge" } },
@@ -137,11 +141,11 @@ export function DashboardAgent({
           { kind: "chips", items: [...siteChips("llms"), { label: "Copy the link", action: { type: "copy", text: llms, done: "Copied." } }] },
         ]))
       }
-      if (!prefs.current.wpConnected) {
+      if (!prefs.current.siteConnected) {
         push(agent([
           { kind: "text", text: "Want me to make these changes myself?" },
-          { kind: "text", text: "If your site runs on WordPress, install my plugin once. After that, every fix is one tap — “Publish it to my site” — and every change has an Undo." },
-          { kind: "chips", items: [{ label: "Connect my WordPress site", action: { type: "wp-connect" }, primary: true }, { label: "Not WordPress", action: { type: "say", text: "No problem. Tap “Email it to my web person” on any fix and I’ll send them the exact code, where it goes and how to check it — or our team can do it for you on Full Service." } }] },
+          { kind: "text", text: "Connect your website once — WordPress, Webflow, Shopify or Wix. After that, every approved fix is one tap, and every change has an Undo." },
+          { kind: "chips", items: [{ label: "Connect my website", action: { type: "wp-connect" }, primary: true }] },
         ]))
       }
       return
@@ -239,10 +243,10 @@ export function DashboardAgent({
         if (!ok || !data.text) return fail(data.error ?? "I couldn’t write that just now.")
         const docId = `draft-${Date.now()}`
         if (a.mode === "post") {
-          const d = data as { title?: string; text?: string; draftId?: string }
+          const d = data as { title?: string; text?: string; draftId?: string; image?: string | null }
           push(agent([
             { kind: "text", text: "Here’s the post — written to be the answer AI quotes. The highlighted bits are facts only you know: tap Edit and fill them in, then pick who publishes it." },
-            { kind: "doc", title: d.title ?? "New post", meta: "draft · not published", text: d.text, docId, editable: true, markdown: true },
+            { kind: "doc", title: d.title ?? "New post", meta: "draft · not published", text: d.text, docId, editable: true, markdown: true, image: d.image ?? undefined },
             { kind: "chips", items: siteChips("post", { title: d.title, text: d.text, docId, draftId: d.draftId }) },
           ]))
           return
@@ -291,7 +295,39 @@ export function DashboardAgent({
         ]))
         return
       }
+      case "connect": {
+        if (a.platform === "wordpress") return onChip({ label: chip.label, action: { type: "wp-connect", direct: true } }, messageId)
+        if (a.platform === "shopify") {
+          const formId = mid("shopify")
+          pending.current[formId] = { kind: "shopify" }
+          push(userMsg(chip.label), agent([
+            { kind: "text", text: "What’s your Shopify store address? It ends in .myshopify.com — you’ll find it in Shopify under Settings → Domains." },
+            { kind: "form", formId, fields: [{ name: "shop", label: "Store address", type: "text", placeholder: "yourstore.myshopify.com", required: true }], cta: "Connect Shopify", fine: "Shopify will ask you to approve access. I only get permission to publish blog posts and pages — nothing about orders or customers." },
+          ]))
+          return
+        }
+        window.location.href = `/api/connect/${a.platform}/start`
+        return
+      }
       case "wp-connect": {
+        if (!prefs.current.wpConnected && prefs.current.siteConnected) {
+          push(agent([{ kind: "text", text: `You’re connected to your ${prefs.current.platform === "webflow" ? "Webflow" : prefs.current.platform === "shopify" ? "Shopify" : "Wix"} site. ✓ Approved posts, pages and page titles go straight there; anything the platform doesn’t let apps change, I email to your web person.` }]))
+          return
+        }
+        if (!prefs.current.wpConnected && (prefs.current.available.webflow || prefs.current.available.shopify || prefs.current.available.wix) && !a.direct) {
+          const av = prefs.current.available
+          push(agent([
+            { kind: "text", text: "Which website builder is your site on?" },
+            { kind: "chips", items: [
+              { label: "WordPress", action: { type: "connect", platform: "wordpress" } },
+              ...(av.webflow ? [{ label: "Webflow", action: { type: "connect", platform: "webflow" } } as Chip] : []),
+              ...(av.shopify ? [{ label: "Shopify", action: { type: "connect", platform: "shopify" } } as Chip] : []),
+              ...(av.wix ? [{ label: "Wix", action: { type: "connect", platform: "wix" } } as Chip] : []),
+              { label: "Something else", action: { type: "say", text: "No problem. Tap “Email it to my web person” on any fix and I’ll send them the exact change, where it goes and how to check it — or our team can do it for you on Full Service." } },
+            ] },
+          ]))
+          return
+        }
         setBusy(true)
         const st = await fetch("/api/connect/wp/status").then((r) => r.json()).catch(() => null) as { connected?: boolean; reachable?: boolean; siteUrl?: string; key?: string; error?: string } | null
         setBusy(false)
@@ -313,7 +349,7 @@ export function DashboardAgent({
           push(agent([
             { kind: "text", text: `I can’t reach the plugin on ${st.siteUrl ? new URL(st.siteUrl).hostname : "your site"} right now.` },
             { kind: "text", text: `WordPress said: ${st.error ?? "no answer"}. A security plugin may be blocking the WordPress REST API, or the Alphaa plugin was deactivated. Check it’s active under Plugins, then try again.` },
-            { kind: "chips", items: [{ label: "Check again", action: { type: "wp-connect" }, primary: true }, { label: "Email my web person instead", action: { type: "handoff", what: "schema" } }] },
+            { kind: "chips", items: [{ label: "Check again", action: { type: "wp-connect", direct: true }, primary: true }, { label: "Email my web person instead", action: { type: "handoff", what: "schema" } }] },
           ]))
           return
         }
@@ -328,7 +364,7 @@ export function DashboardAgent({
           { kind: "chips", items: [
             { label: "Download the plugin", action: { type: "link", href: `${window.location.origin}/downloads/alphaa-connector.zip` }, primary: true },
             { label: "Copy my key", action: { type: "copy", text: st.key ?? "", done: "Key copied. Paste it in Settings → Alphaa." } },
-            { label: "I’ve connected it", action: { type: "wp-connect" } },
+            { label: "I’ve connected it", action: { type: "wp-connect", direct: true } },
           ] },
           { kind: "text", text: "Nothing goes live until you approve it here, pages are never deleted (Undo moves them to WordPress’s Trash), and the plugin only counts visitors who arrive from an AI assistant — no cookies, nothing personal." },
         ]))
@@ -439,7 +475,8 @@ export function DashboardAgent({
         return
       }
       case "setting": {
-        await post("/api/agent/settings", { [a.key]: a.value })
+        const { ok, data } = await post("/api/agent/settings", { [a.key]: a.value })
+        if (!ok) return fail(data.error ?? "That didn’t save. Try again.")
         push(userMsg(chip.label), agent([{ kind: "text", text: a.done }]))
         return
       }
@@ -505,6 +542,13 @@ export function DashboardAgent({
       if (!ok) return data.error ?? "It didn’t send. Try again."
       prefs.current.webPersonEmail = email
       push(agent([{ kind: "text", text: `Sent to ${email}. Their reply comes straight to you, and I’ll re-check your site on my next pass to confirm it’s live.` }]))
+      return null
+    }
+    if (p.kind === "shopify") {
+      const shop = String(values.shop ?? "").trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/.*$/, "")
+      const full = shop.includes(".") ? shop : `${shop}.myshopify.com`
+      if (!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(full)) return "That should look like yourstore.myshopify.com."
+      window.location.href = `/api/connect/shopify/start?shop=${encodeURIComponent(full)}`
       return null
     }
     if (p.kind === "profile") {

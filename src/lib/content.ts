@@ -4,6 +4,7 @@ import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { getAgentSettings, type Location } from "@/lib/agent/settings"
 import { latestQuestionScan } from "@/lib/questions"
+import { learnVoice } from "@/lib/voice"
 
 const SONNET = "claude-sonnet-4-6"
 const text = (r: { content: { type: string; text?: string }[] }) => r.content.find((c) => c.type === "text")?.text?.trim() ?? ""
@@ -16,7 +17,7 @@ export function factsOf(user: U): string {
     `Type: ${user.businessType ?? "unknown"}`,
     `Location: ${[user.city, user.state].filter(Boolean).join(", ") || "unknown"}`,
     `Website: ${user.websiteUrl ?? "unknown"}`,
-    user.voiceDescription ? `Voice: ${user.voiceDescription}` : "",
+    user.voiceDescription ? `Voice (write like this):\n${user.voiceDescription}` : "",
     user.topicsToAvoid ? `Avoid: ${user.topicsToAvoid}` : "",
   ].filter(Boolean).join("\n")
 }
@@ -24,7 +25,12 @@ export function factsOf(user: U): string {
 const RULES = `Use only the facts given; for anything you'd have to invent (prices, hours, years in business, staff names, insurance, guarantees) write a [bracketed placeholder]. Plain English, no hype, never claim to be "the best". Answer-first: the first sentence under every heading answers it directly.`
 
 /** A blog post answering a real customer question — markdown with ## question headings. */
-export async function writePost(user: U, topic?: string): Promise<{ title: string; markdown: string; excerpt: string; topic: string }> {
+export async function writePost(user: U, topic?: string, opts: { noPlaceholders?: boolean } = {}): Promise<{ title: string; markdown: string; excerpt: string; topic: string }> {
+  // First post for this business: learn how it sounds from its own site.
+  if (!user.voiceDescription?.trim()) {
+    const v = await learnVoice(user.id).catch(() => null)
+    if (v) user = { ...user, voiceDescription: v }
+  }
   let t = topic
   if (!t) {
     // Prefer a tracked question the AIs didn't name us for; else a content gap.
@@ -45,7 +51,7 @@ export async function writePost(user: U, topic?: string): Promise<{ title: strin
     messages: [{
       role: "user",
       content: `Write a blog post (650–900 words) for this business's website that answers: "${t}". It should be the page an AI assistant quotes when a customer asks this.
-Format: first line "TITLE: <title, under 65 characters>", second line "EXCERPT: <one sentence>", then the body in Markdown: a 2-sentence direct answer paragraph, then 4–6 sections with "## " headings phrased as questions, short paragraphs and "- " bullet lists where useful, ending with a "## Frequently asked questions" section of 3 "### " questions. Mention the business naturally once or twice, with its city. ${RULES}
+Format: first line "TITLE: <title, under 65 characters>", second line "EXCERPT: <one sentence>", then the body in Markdown: a 2-sentence direct answer paragraph, then 4–6 sections with "## " headings phrased as questions, short paragraphs and "- " bullet lists where useful, ending with a "## Frequently asked questions" section of 3 "### " questions. Mention the business naturally once or twice, with its city. Write in the business's own voice (see Voice below). ${opts.noPlaceholders ? "This will publish automatically: NEVER write [placeholders] — if a fact isn't given, leave it out and write around it." : RULES}
 
 FACTS
 ${factsOf(user)}`,

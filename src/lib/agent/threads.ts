@@ -15,6 +15,7 @@ import type { SecurityCheck } from "@/lib/checks/security"
 import { answersMessages, changeChips, profileMessages, listingsMessages, bingMessages, securityMessages } from "@/lib/agent/check-narration"
 import { outreachMessages } from "@/lib/agent/thread-blocks"
 import { maxExtraLocations } from "@/lib/agent/settings"
+import { imageUrl } from "@/lib/images"
 
 export type Topic = "reviews" | "site" | "sources" | "listings" | "answers" | "content" | "competitors" | "briefings"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
@@ -225,19 +226,42 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       const ready = drafts.filter((d) => (d.metadata as { status?: string } | null)?.status === "ready").slice(0, 4)
       const published = drafts.filter((d) => (d.metadata as { status?: string } | null)?.status === "published")
       const perMonth = /pro|full/i.test(user.plan) ? 4 : 2
+      const voiceMsg: Message | null = user.voiceDescription?.trim()
+        ? agent([
+            { kind: "receipt", title: "How I write for you", sub: "learned from your website", items: user.voiceDescription.split("\n").map((l) => l.trim()).filter(Boolean).slice(0, 5) },
+            { kind: "chips", items: [{ label: "Change it", action: { type: "link", href: "/dashboard/settings/business" } }] },
+          ], "ct-voice")
+        : null
       const msgs: Message[] = [agent([
         { kind: "text", text: ready.length ? `${ready.length} ${ready.length === 1 ? "post is" : "posts are"} ready for your yes.` : "No posts waiting on you.", big: true },
         { kind: "text", text: `AI favours sites that stay fresh. I write ${perMonth} posts a month, each answering a question the AIs didn’t name you for${published.length ? ` — ${published.length} published so far` : ""}.${wp ? " Approve one and it goes live on your site." : ""}` },
       ], "ct-sum")]
+      if (voiceMsg) msgs.push(voiceMsg)
       for (const d of ready) {
-        const m = d.metadata as { title?: string; markdown?: string; topic?: string }
+        const m = d.metadata as { title?: string; markdown?: string; topic?: string; imageId?: string | null }
         const docId = `post-${d.id}`
         msgs.push(agent([
-          { kind: "doc", title: m.title ?? "New post", meta: `draft · answers “${(m.topic ?? "").slice(0, 70)}”`, text: m.markdown, docId, editable: true, markdown: true },
+          { kind: "doc", title: m.title ?? "New post", meta: `draft · answers “${(m.topic ?? "").slice(0, 70)}”`, text: m.markdown, docId, editable: true, markdown: true, image: m.imageId ? imageUrl(m.imageId) : undefined },
           { kind: "chips", items: [...changeChips("post", wp, { title: m.title, text: m.markdown, docId, draftId: d.id }), { label: "Skip", action: { type: "dismiss" } }] },
         ], `ct-${d.id}`))
       }
+      const autoDone = drafts.filter((d) => { const m = d.metadata as { status?: string; auto?: boolean }; return m?.auto && m.status === "published" }).slice(0, 3)
+      for (const d of autoDone) {
+        const m = d.metadata as { title?: string; url?: string; changeId?: string }
+        msgs.push(agent([
+          { kind: "text", text: `I published “${m.title}” on my own, as you asked.` },
+          { kind: "chips", items: [...(m.url ? [{ label: "Open it", action: { type: "link", href: m.url } } as const] : []), ...(m.changeId ? [{ label: "Undo", action: { type: "wp-undo", changeId: m.changeId } } as const] : [])] },
+        ], `ct-auto-${d.id}`))
+      }
       msgs.push(agent([{ kind: "chips", items: [{ label: "Write a post now", action: { type: "draft", topic: "auto", mode: "post" }, primary: !ready.length }] }], "ct-more"))
+      if (/pro|full/i.test(user.plan)) {
+        msgs.push(agent([
+          { kind: "text", text: s.autoPublishPosts ? "Auto-publish is on: posts with no missing facts go live without asking, and you can undo any of them." : "Want me to publish posts without asking? Only posts with no missing facts go live, and each one has an Undo." },
+          { kind: "chips", items: [s.autoPublishPosts
+            ? { label: "Turn auto-publish off", action: { type: "setting", key: "autoPublishPosts", value: false, done: "Auto-publish is off. I’ll ask before each post goes live." } }
+            : { label: "Turn auto-publish on", action: { type: "setting", key: "autoPublishPosts", value: true, done: "Auto-publish is on. Posts with no missing facts go live on their own — you’ll see each one here with an Undo." }, primary: true }] },
+        ], "ct-auto"))
+      }
       for (const l of s.locations ?? []) {
         msgs.push(agent([
           { kind: "text", text: `Your ${l.city} location needs its own page so AI knows you’re there.` },

@@ -28,6 +28,10 @@ const isPublicRoute = createRouteMatcher([
   "/api/integrations/sync",
   "/api/connect/wp/hello",
   "/api/connect/visit",
+  "/api/img/(.*)",
+  "/api/connect/shopify/callback",
+  "/api/connect/webflow/callback",
+  "/api/connect/wix/callback",
 ])
 
 const isAuthRoute = createRouteMatcher(["/login(.*)", "/signup(.*)"])

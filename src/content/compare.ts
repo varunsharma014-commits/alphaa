@@ -504,6 +504,87 @@ export const COMPARES: Compare[] = [
     deepDive: "best-aeo-tools-2026",
   },
 
+  {
+    slug: "babylovegrowth",
+    kind: "tool",
+    label: "Alphaa vs. BabyLoveGrowth",
+    left: "BabyLoveGrowth",
+    right: "Alphaa",
+    metaTitle: "Alphaa vs. BabyLoveGrowth (2026): Content Autopilot vs. a Local AI-Visibility Agent",
+    description:
+      "BabyLoveGrowth auto-publishes lots of SEO articles and trades backlinks through its network. Alphaa is an AI agent for local businesses that gets them named by ChatGPT, Gemini, Claude and Perplexity — with your approval on everything. An honest comparison.",
+    h1: "Alphaa vs. BabyLoveGrowth.",
+    h1Quiet: "More articles, or the right ones — without the risk.",
+    tldr:
+      "The main difference between Alphaa and BabyLoveGrowth is volume versus local focus. BabyLoveGrowth is a content autopilot: it publishes dozens of SEO articles a month and exchanges backlinks through its customer network. Alphaa is an AI agent for local businesses: fewer, targeted posts answering the questions AI isn’t naming you for, plus reviews, listings and fixes — every change approved by you and undoable.",
+    rows: [
+      ["What it is", "Automated SEO/AEO content + backlink platform", "AI agent for local businesses’ AI visibility"],
+      ["Price (Sept 2026)", "Listed from $49/mo (Grow, 30 articles) and $199/mo (Scale, 120 articles); 3-day trial", "$99/mo (Starter), $199 (Pro, 3 locations), $299 (Full Service)"],
+      ["Articles", "High volume — 30 to 120 a month, 50+ languages", "2 (Starter) or 4 (Pro) a month, each answering a question the AIs don’t name you for"],
+      ["Publishing", "Automatic to WordPress, Shopify, Webflow and more", "WordPress today (Shopify, Webflow and Wix rolling out) — you approve, or turn on auto-publish (Pro); every change has Undo"],
+      ["Backlinks", "Automated link exchange between customers’ sites", "None — we don’t trade links (see below)"],
+      ["Reddit & Quora", "Suggests comments that mention your brand", "Drafts helpful replies that say plainly you own the business"],
+      ["AI tracking", "ChatGPT, Claude, Perplexity, Gemini (10–50 prompts)", "ChatGPT, Gemini, Claude, Perplexity — 10–20 customer questions weekly, plus a check for wrong facts"],
+      ["Google reviews & Business Profile", "Not listed", "Drafts review replies and posts; asks customers for reviews"],
+      ["Listings & directories", "Not listed", "Bing Places, Apple, social profiles, and your details across directories"],
+      ["Guarantee", "90-day money-back if organic visibility doesn’t improve", "90-day AI Visibility Guarantee: if no AI names you in our weekly checks, your next month is free"],
+    ],
+    leftGood: {
+      title: "What BabyLoveGrowth is great at",
+      points: [
+        "Publishing a lot of content, fast, in many languages.",
+        "Broad CMS integrations.",
+        "Low entry price for content volume.",
+        "A money-back guarantee.",
+      ],
+    },
+    rightGood: {
+      title: "Where Alphaa is different",
+      points: [
+        "Built for local businesses: reviews, Google profile, listings, locations.",
+        "Targets the exact questions AI isn’t naming you for.",
+        "No link schemes, no undisclosed brand mentions.",
+        "You approve changes — and can undo any of them.",
+      ],
+    },
+    chooseLeft: [
+      "You want maximum article volume and languages.",
+      "You run a SaaS, store or content site rather than a local business.",
+      "You’re comfortable with automated link exchanges.",
+    ],
+    chooseRight: [
+      "You’re a local business that wants AI to recommend you.",
+      "You want reviews, listings and fixes handled, not just articles.",
+      "You want nothing on your site you didn’t approve.",
+    ],
+    sections: [
+      {
+        q: "Is a backlink exchange network risky?",
+        a: [
+          "Google’s spam policies list “excessive link exchanges (‘Link to me and I’ll link to you’)” as a link scheme. Networks where customers’ sites link to each other can fall into that, and Google can ignore those links or act against the sites involved. That’s why Alphaa doesn’t trade links: we earn mentions through listings, reviews, outreach to the pages AI reads, and content worth citing.",
+        ],
+      },
+      {
+        q: "Does more content mean more AI visibility?",
+        a: [
+          "Not by itself. Google’s policies also warn against “scaled content abuse” — mass-produced pages that add little value. For a local business, a handful of pages that answer real customer questions, plus accurate facts across the web, usually moves AI answers more than dozens of generic articles.",
+        ],
+      },
+    ],
+    faq: [
+      { q: "Is Alphaa a BabyLoveGrowth alternative?", a: "For local businesses that want AI assistants to recommend them — with reviews, listings and approvals — yes. For high-volume multilingual content, BabyLoveGrowth is built for that." },
+      { q: "How much does BabyLoveGrowth cost?", a: "Its pricing page (September 2026) lists Grow from $49/month with 30 articles and Scale from $199/month with 120 articles, with a 3-day trial and a 90-day money-back guarantee." },
+      { q: "Does Alphaa build backlinks?", a: "No. Alphaa doesn’t buy or trade links, because Google’s spam policies treat excessive link exchanges as a link scheme. It helps you get listed and mentioned on the pages AI actually reads." },
+      { q: "Does Alphaa publish automatically?", a: "Only if you want it to. By default you approve each post; Pro can turn on auto-publish for posts with no missing facts. Every change can be undone." },
+    ],
+    sources: [
+      { label: "BabyLoveGrowth", url: "https://www.babylovegrowth.ai/en" },
+      { label: "BabyLoveGrowth pricing", url: "https://www.babylovegrowth.ai/en/pricing" },
+      { label: "Google Search spam policies (link spam, scaled content abuse)", url: "https://developers.google.com/search/docs/essentials/spam-policies" },
+    ],
+    deepDive: "best-aeo-tools-2026",
+  },
+
   // ─── Category 4: competitor tools ─────────────────────────────────────
   {
     slug: "alphaa-vs-semrush",

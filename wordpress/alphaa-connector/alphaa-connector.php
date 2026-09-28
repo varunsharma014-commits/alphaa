@@ -3,7 +3,7 @@
  * Plugin Name:       Alphaa Connector
  * Plugin URI:        https://alphaa.app
  * Description:       Lets your Alphaa agent publish the pages, structured data and llms.txt you approve — and undo them in one tap. Also tells you when ChatGPT, Perplexity, Claude or Gemini send you a visitor.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 5.6
  * Requires PHP:      7.4
  * Author:            Alphaa
@@ -14,7 +14,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('ALPHAA_VERSION', '1.1.0');
+define('ALPHAA_VERSION', '1.2.0');
 if (!defined('ALPHAA_API')) define('ALPHAA_API', 'https://alphaa.app');
 
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
@@ -149,6 +149,17 @@ function alphaa_rest_post(WP_REST_Request $req) {
   if (is_wp_error($post_id)) return $post_id;
   update_post_meta($post_id, '_alphaa', 1);
   if (!empty($p['jsonld']) && is_array($p['jsonld'])) update_post_meta($post_id, '_alphaa_schema', wp_json_encode($p['jsonld']));
+  // Featured image, fetched from Alphaa's signed URL into the media library.
+  if (!empty($p['image']['url'])) {
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    $att = media_sideload_image(esc_url_raw($p['image']['url']), $post_id, isset($p['image']['alt']) ? sanitize_text_field($p['image']['alt']) : $title, 'id');
+    if (!is_wp_error($att)) {
+      set_post_thumbnail($post_id, $att);
+      update_post_meta($att, '_wp_attachment_image_alt', isset($p['image']['alt']) ? sanitize_text_field($p['image']['alt']) : $title);
+    }
+  }
   $id = alphaa_log_change('post', array('post_id' => $post_id));
   return array('ok' => true, 'id' => $id, 'url' => get_permalink($post_id));
 }

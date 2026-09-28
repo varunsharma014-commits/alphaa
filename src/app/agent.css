@@ -209,6 +209,7 @@
 .ag-ask .ag-pill { padding: 12px 18px; font-size: 15px; }
 .ag-ask__fine { font-size: 12px; color: var(--ag-muted); margin: 10px 0 0; line-height: 1.4; }
 .ag-error { color: var(--ag-bad-text); font-size: 13px; margin-top: 8px; }
+.ag-doc__img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-bottom: 1px solid var(--ag-line); }
 .ag-doc__md { white-space: normal; }
 .ag-doc__md h2 { font-size: 17px; font-weight: 600; margin: 18px 0 6px; }
 .ag-doc__md h3 { font-size: 15px; font-weight: 600; margin: 14px 0 4px; }

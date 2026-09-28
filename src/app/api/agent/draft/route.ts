@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic"
-export const maxDuration = 60
+export const maxDuration = 180
 
 import { NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
@@ -8,6 +8,7 @@ import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { writePost, writeMeta, writeLocationPage, writeOutreach } from "@/lib/content"
 import { getAgentSettings } from "@/lib/agent/settings"
+import { generatePostImage } from "@/lib/images"
 
 // Writes a short, publish-ready FAQ section that closes a competitor gap —
 // from the business's own facts only. Unknown facts become [bracketed]
@@ -67,8 +68,9 @@ export async function POST(req: Request) {
   try {
     if (input.mode === "post") {
       const p = await writePost(user, input.topic === "auto" ? undefined : input.topic)
-      const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready" } } })
-      return NextResponse.json({ title: p.title, text: p.markdown, draftId: row.id })
+      const img = await generatePostImage(user.id, { title: p.title, businessType: user.businessType, city: user.city })
+      const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null } } })
+      return NextResponse.json({ title: p.title, text: p.markdown, draftId: row.id, image: img?.url ?? null })
     }
     if (input.mode === "meta") {
       const url = input.url ?? user.websiteUrl ?? ""

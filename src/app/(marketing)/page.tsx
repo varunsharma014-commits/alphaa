@@ -108,6 +108,7 @@ export default function HomePage() {
             <li>Automated Google Business Profile optimization</li>
             <li>One-click content approval and publishing</li>
             <li>Month-to-month. No contracts. Cancel in two clicks.</li>
+            <li>90-day AI Visibility Guarantee — if no AI names you, your next month is free.</li>
           </ul>
           <Link className="ag-pill ag-pill--blue" href="/start">Hire Your Agent Now</Link>
           <p style={{ marginTop: 14, fontSize: 14 }}><Link href="/pricing">Compare Plans ›</Link></p>

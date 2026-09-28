@@ -51,6 +51,7 @@ export default function PricingPage() {
           From $99/month.<br /><span className="ap-quiet">No contracts.</span>
         </h1>
         <p className="ap-lead ap-center">Month to month. Cancel in two clicks. No technical skills needed — your agent does the work.</p>
+        <p className="ap-center" style={{ fontSize: 15, color: "#1d1d1f", margin: "14px auto 0", padding: "0 22px" }}><b>90-day AI Visibility Guarantee:</b> if no AI assistant names you in our weekly checks, your next month is free.</p>
 
         <div className="ap-seg" role="tablist" aria-label="Billing period">
           <button role="tab" aria-selected={!annual} className={!annual ? "is-on" : ""} onClick={() => setAnnual(false)}>Monthly</button>

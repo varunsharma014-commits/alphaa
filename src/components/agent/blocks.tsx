@@ -280,6 +280,10 @@ export function DocBlock({
           )}
         </span>
       </div>
+      {b.image && !editing && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className="ag-doc__img" src={b.image} alt={b.title} loading="lazy" />
+      )}
       {editing && b.docId ? (
         <textarea
           id={`doc-${b.docId}`}

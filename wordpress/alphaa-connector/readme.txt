@@ -4,7 +4,7 @@ Tags: ai search, llms.txt, schema, aeo, chatgpt
 Requires at least: 5.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 
 Lets your Alphaa agent publish what you approve — FAQ pages, structured data, llms.txt and AI-crawler access — with one-tap undo.

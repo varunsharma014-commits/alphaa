@@ -59,5 +59,7 @@ export function startCron(): void {
     if (dow === 2 && hour === 9) hit("/api/cron/checks")
     // Daily 10:00 UTC — blog post drafts on each plan's schedule (Anthropic)
     if (hour === 10) hit("/api/cron/content")
+    // Daily 15:00 UTC — 90-day AI Visibility Guarantee credits (Stripe)
+    if (hour === 15) hit("/api/cron/guarantee")
   }, 60_000)
 }

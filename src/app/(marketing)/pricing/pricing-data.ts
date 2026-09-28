@@ -63,6 +63,7 @@ export const plans = [
 
 export const billingFaqs = [
   { q: "Is there a free trial?", a: "No — the free check at /start shows you exactly what the AIs say about you today, and that's the trial. Plans are month to month from day one." },
+  { q: "What is the AI Visibility Guarantee?", a: "If, in your first 90 days on a paid plan, none of ChatGPT, Gemini, Claude or Perplexity names your business in any of our weekly checks, your next month is free. We apply the credit to your account automatically — you don't have to ask. Once per customer." },
   { q: "Can I cancel anytime?", a: "Yes. Two clicks in Billing. No phone calls, no contracts, no exit fees." },
   { q: "Do I need technical skills?", a: "No. Your agent writes, fixes and publishes; you approve with one tap. If you'd rather not touch your website at all, Full Service has a human do it." },
   { q: "Can I switch plans?", a: "Yes. Upgrade or downgrade anytime from your billing settings." },

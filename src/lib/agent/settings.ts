@@ -18,6 +18,10 @@ export type AgentSettings = {
   /** Bing Webmaster Tools API key, encrypted (see lib/checks/bing-webmaster). */
   bingKeyEnc?: string
   bingSite?: string
+  /** Webflow / Shopify / Wix connection (WordPress uses `wp`). */
+  site?: import("@/lib/connector/types").SiteConnection
+  /** Pro: publish blog posts without asking (only drafts with no [placeholders]). */
+  autoPublishPosts?: boolean
 }
 
 export type Location = { id: string; name: string; street: string; city: string; state?: string; zip?: string; phone?: string; hours?: string }

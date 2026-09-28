@@ -7,6 +7,36 @@ import { db } from "@/lib/db"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { wpCall, pingIndexNow, faqToHtml, mdToHtml, mdFaq } from "@/lib/connector/wordpress"
 import { parseMeta } from "@/lib/content"
+import { imageUrl } from "@/lib/images"
+import { publishContent, updateMetaOnSite, PLATFORM_NAME } from "@/lib/connector/publish"
+import type { AgentSettings } from "@/lib/agent/settings"
+
+/** Webflow / Shopify / Wix: posts, pages and page titles go through the platform's API. */
+async function viaConnector(userId: string, s: AgentSettings, input: z.infer<typeof body>) {
+  const name = PLATFORM_NAME[s.site!.platform]
+  try {
+    if (input.op === "post" || input.op === "page") {
+      let text = input.text ?? ""
+      if (hasBrackets(text)) return NextResponse.json({ error: BRACKETS }, { status: 400 })
+      // FAQ drafts ("Q: … / A: …") become ### question + answer paragraphs.
+      if (/^Q:/im.test(text)) text = text.split("\n").map((l) => l.replace(/^Q:\s*/i, "### ").replace(/^A:\s*/i, "")).join("\n")
+      const draft = input.draftId ? await db.mockActivity.findFirst({ where: { id: input.draftId, userId, type: "post_draft" } }) : null
+      const title = input.title?.trim() || "New post"
+      const r = await publishContent(userId, { kind: input.op, title, markdown: text, imageId: (draft?.metadata as { imageId?: string | null } | null)?.imageId }, `Published “${title}” to your ${name} site`)
+      if (draft) await db.mockActivity.update({ where: { id: draft.id }, data: { metadata: { ...(draft.metadata as object), status: "published", url: r.url } } })
+      return NextResponse.json({ url: r.url, changeId: r.changeId, indexed: r.indexed, note: r.note })
+    }
+    if (input.op === "meta") {
+      const { title, description } = parseMeta(input.text ?? "")
+      if (hasBrackets(`${title} ${description}`)) return NextResponse.json({ error: BRACKETS }, { status: 400 })
+      const r = await updateMetaOnSite(userId, input.url ?? s.site!.siteUrl, title, description)
+      return NextResponse.json({ url: r.url, changeId: r.changeId, indexed: false, note: r.note })
+    }
+    return NextResponse.json({ error: `${name} doesn’t let apps change that part of your site. Tap “Email it to my web person” and I’ll send them exactly what to do.` }, { status: 400 })
+  } catch (err) {
+    return NextResponse.json({ error: `${name} didn’t accept it: ${err instanceof Error ? err.message : err}. Nothing changed.` }, { status: 502 })
+  }
+}
 import { generateLlmsTxt } from "@/lib/llms-txt"
 import { currentUser } from "@/lib/connector/user"
 
@@ -38,6 +68,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Bad request" }, { status: 400 })
   }
   const s = await getAgentSettings(user.id)
+  if (!s.wp && s.site) return viaConnector(user.id, s, input)
   if (!s.wp) return NextResponse.json({ error: "Your website isn’t connected yet." }, { status: 400 })
 
   let result: PushResult
@@ -71,7 +102,9 @@ export async function POST(req: Request) {
       const faq = mdFaq(text)
       const jsonld: object[] = [{ "@context": "https://schema.org", "@type": "BlogPosting", headline: title, datePublished: new Date().toISOString(), author: { "@type": "Organization", name: user.businessName ?? undefined }, publisher: { "@type": "Organization", name: user.businessName ?? undefined } }]
       if (faq.length) jsonld.push(faqLd(faq))
-      result = await wpCall<PushResult>(user.id, s.wp, "post", { title, html: mdToHtml(text), jsonld })
+      const draft = input.draftId ? await db.mockActivity.findFirst({ where: { id: input.draftId, userId: user.id, type: "post_draft" } }) : null
+      const imageId = (draft?.metadata as { imageId?: string | null } | null)?.imageId
+      result = await wpCall<PushResult>(user.id, s.wp, "post", { title, html: mdToHtml(text), jsonld, ...(imageId ? { image: { url: imageUrl(imageId), alt: title } } : {}) })
       label = `Published the post “${title}”`
       if (input.draftId) {
         const row = await db.mockActivity.findFirst({ where: { id: input.draftId, userId: user.id, type: "post_draft" } })

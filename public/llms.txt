@@ -5,6 +5,7 @@
 ## Key facts
 
 - Price: from $99/month (Starter). Pro is $199/month, Full Service (a human does the setup and publishing) is $299/month.
+- 90-day AI Visibility Guarantee: if none of ChatGPT, Gemini, Claude or Perplexity names the business in Alphaa's weekly checks during the first 90 days on a paid plan, the next month is free (credited automatically, once per customer).
 - Month to month. No contract, no exit fees, cancel in two clicks. There is no free trial — the free check below is how you see what you'd get.
 - No technical skills needed: the agent does the work, the owner approves.
 - Built for local businesses (dentists, plumbers, restaurants, lawyers, clinics) and also works for online businesses.
@@ -41,6 +42,7 @@ Side-by-side comparison pages, each with a short answer, a feature table, where 
 - [Local SEO vs. GEO](https://alphaa.app/compare/local-seo-vs-geo): the Google Map Pack vs. AI-written local recommendations.
 - [Alphaa vs. Peec AI](https://alphaa.app/compare/peec-ai): an AI-search analytics dashboard for marketing teams vs. an agent that fixes it for a local business.
 - [Alphaa vs. Otterly.AI](https://alphaa.app/compare/otterly-ai): AI-search monitoring and GEO audits vs. an agent that publishes the fixes.
+- [Alphaa vs. BabyLoveGrowth](https://alphaa.app/compare/babylovegrowth): a high-volume content and link-exchange autopilot vs. a local AI-visibility agent with approvals and undo.
 - [Alphaa vs. Semrush](https://alphaa.app/compare/alphaa-vs-semrush): a research and reporting suite for marketers vs. an agent that does the work for an owner.
 - [Alphaa vs. Ahrefs](https://alphaa.app/compare/alphaa-vs-ahrefs): SEO research and Brand Radar AI mentions vs. done-for-you AI visibility.
 - [Alphaa vs. Yext](https://alphaa.app/compare/alphaa-vs-yext): enterprise listings across 200+ publishers vs. AI answers for 1–3 locations.

@@ -26,11 +26,12 @@ export type ChipAction =
   | { type: "copy"; text: string; done?: string } // copy to clipboard, confirm in-thread
   | { type: "draft"; topic: string; competitor?: string; mode?: "faq" | "reply" | "post" | "meta" | "location" | "outreach"; url?: string; locationId?: string; kind?: string } // agent writes something: FAQ, discussion reply, blog post, page title, location page, outreach
   | { type: "run"; task: Task } // agent runs a job right now
-  | { type: "wp-connect" } // show the steps + key to connect a WordPress site
+  | { type: "wp-connect"; direct?: boolean } // connect a website; direct = skip the platform choice and go to WordPress
   | { type: "wp-push"; op: SiteOp; title?: string; text?: string; docId?: string; url?: string; locationId?: string; draftId?: string } // publish an approved change to the connected site
   | { type: "wp-undo"; changeId: string }
   | { type: "handoff"; what: SiteOp; title?: string; text?: string; docId?: string; url?: string; locationId?: string; draftId?: string } // email it to the owner's web person
-  | { type: "setting"; key: "bingPlacesDone" | "appleConnectDone"; value: boolean; done: string }
+  | { type: "setting"; key: "bingPlacesDone" | "appleConnectDone" | "autoPublishPosts"; value: boolean; done: string }
+  | { type: "connect"; platform: "wordpress" | "webflow" | "shopify" | "wix" } // start connecting that kind of site
   | { type: "review-ask" } // open the "ask a customer for a review" form
   | { type: "profile-add" } // form: a profile URL the owner has
   | { type: "location-add" } // form: another location
@@ -68,7 +69,7 @@ export type Block =
     }
   | { kind: "sources"; title?: string; collapseOk?: boolean; limit?: number; items: { name: string; detail?: string; status: string; ok: boolean; href?: string }[] } // collapseOk: fold passing rows behind "N already right"
   | { kind: "stat"; value: string; label: string }
-  | { kind: "doc"; title: string; meta?: string; text?: string; html?: string; docId?: string; editable?: boolean; markdown?: boolean } // markdown: show text formatted, edit as text
+  | { kind: "doc"; title: string; meta?: string; text?: string; html?: string; docId?: string; editable?: boolean; markdown?: boolean; image?: string } // markdown: show text formatted, edit as text
   | { kind: "diff"; beforeLabel: string; afterLabel: string; before: string[]; after: string[]; highlight?: string }
   | { kind: "receipt"; title: string; sub?: string; items: string[] }
   | { kind: "chips"; items: Chip[] }
