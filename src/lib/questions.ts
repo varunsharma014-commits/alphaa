@@ -25,6 +25,13 @@ const SONNET = "claude-sonnet-4-6"
 const HAIKU = "claude-haiku-4-5"
 const text = (r: { content: { type: string; text?: string }[] }) => r.content.find((c) => c.type === "text")?.text?.trim() ?? ""
 
+/** Business name, or one derived from the website ("growthturbine.com" → "Growthturbine") when none is saved. */
+export function nameOf(user: { businessName: string | null; websiteUrl: string | null }): string | null {
+  if (user.businessName?.trim()) return user.businessName.trim()
+  const host = user.websiteUrl?.replace(/^https?:\/\//, "").replace(/^www\./, "").split(/[/.]/)[0]
+  return host ? host.charAt(0).toUpperCase() + host.slice(1) : null
+}
+
 export const questionLimit = (plan: string) => (/pro|full/i.test(plan) ? 20 : 10)
 
 /** The questions we track: the owner's own list, else written once from the business profile. */
@@ -41,7 +48,7 @@ export async function trackedQuestions(userId: string): Promise<string[]> {
       max_tokens: 900,
       messages: [{
         role: "user",
-        content: `Write ${n} questions real customers type into ChatGPT or Perplexity when looking for a business like this one. Business: ${user.businessName ?? "unknown"} — ${user.businessType ?? "local business"}${cities.length ? ` in ${cities.join(" / ")}` : ""}. Website: ${user.websiteUrl ?? "unknown"}.
+        content: `Write ${n} questions real customers type into ChatGPT or Perplexity when looking for a business like this one. Business: ${nameOf(user) ?? "unknown"} — ${user.businessType ?? "local business"}${cities.length ? ` in ${cities.join(" / ")}` : ""}. Website: ${user.websiteUrl ?? "unknown"}.
 Mix: "best X in <city>" style; specific services; problems ("my AC is leaking, who can fix it today"); comparisons/price questions; ${cities.length > 1 ? "spread across every city listed; " : ""}Never include the business's own name. One question per line, no numbering, no quotes.`,
       }],
     })
@@ -66,10 +73,10 @@ async function mapLimit<T, R>(items: T[], limit: number, fn: (t: T) => Promise<R
 /** Ask every tracked question to all four AIs, then fact-check what they say about the business. */
 export async function runQuestionScan(userId: string): Promise<QuestionScan | null> {
   const user = await db.user.findUnique({ where: { id: userId }, include: { integration: true } })
-  if (!user?.businessName) return null
+  const biz = user ? nameOf(user) : null
+  if (!user || !biz) return null
   const qs = await trackedQuestions(userId)
   if (!qs.length) return null
-  const biz = user.businessName
   const type = user.businessType ?? "business"
   const city = user.city ?? ""
 
@@ -97,7 +104,7 @@ export async function runQuestionScan(userId: string): Promise<QuestionScan | nu
   }
   const rivals = [...rivalCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8).map(([name, count]) => ({ name, count }))
 
-  const facts = await factCheck(user).catch((err) => {
+  const facts = await factCheck({ ...user, businessName: biz }).catch((err) => {
     console.error("[questions] factCheck", err instanceof Error ? err.message : err)
     return { checked: false, issues: [], question: null }
   })
