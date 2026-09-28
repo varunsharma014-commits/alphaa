@@ -165,7 +165,7 @@ export function AgentFeed({
         )
       })}
       {(showTyping || (cursor.pause && cursor.m < messages.length && messages[cursor.m]?.role === "agent" && animate === "type")) && <Typing />}
-      <div ref={endRef} />
+      <div ref={endRef} style={{ scrollMarginBottom: 140 }} />
     </div>
   )
 }

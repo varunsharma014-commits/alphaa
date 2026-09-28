@@ -241,8 +241,8 @@ export function DashboardAgent({
         if (a.mode === "post") {
           const d = data as { title?: string; text?: string; draftId?: string }
           push(agent([
-            { kind: "text", text: "Here’s a new post — written to be the answer AI quotes. Tap it to edit; fill in anything in [brackets]." },
-            { kind: "doc", title: d.title ?? "New post", meta: "draft · not published", text: d.text, docId, editable: true },
+            { kind: "text", text: "Here’s the post — written to be the answer AI quotes. The highlighted bits are facts only you know: tap Edit and fill them in, then pick who publishes it." },
+            { kind: "doc", title: d.title ?? "New post", meta: "draft · not published", text: d.text, docId, editable: true, markdown: true },
             { kind: "chips", items: siteChips("post", { title: d.title, text: d.text, docId, draftId: d.draftId }) },
           ]))
           return
@@ -259,7 +259,7 @@ export function DashboardAgent({
         if (a.mode === "location") {
           push(agent([
             { kind: "text", text: "Here’s the page for that location — it tells AI exactly where you are and what you do there." },
-            { kind: "doc", title: data.title ?? "Location page", meta: "draft · not published", text: data.text, docId, editable: true },
+            { kind: "doc", title: data.title ?? "Location page", meta: "draft · not published", text: data.text, docId, editable: true, markdown: true },
             { kind: "chips", items: siteChips("page", { title: data.title, text: data.text, docId, locationId: a.locationId }) },
           ]))
           return

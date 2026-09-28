@@ -68,7 +68,7 @@ export type Block =
     }
   | { kind: "sources"; title?: string; collapseOk?: boolean; limit?: number; items: { name: string; detail?: string; status: string; ok: boolean; href?: string }[] } // collapseOk: fold passing rows behind "N already right"
   | { kind: "stat"; value: string; label: string }
-  | { kind: "doc"; title: string; meta?: string; text?: string; html?: string; docId?: string; editable?: boolean }
+  | { kind: "doc"; title: string; meta?: string; text?: string; html?: string; docId?: string; editable?: boolean; markdown?: boolean } // markdown: show text formatted, edit as text
   | { kind: "diff"; beforeLabel: string; afterLabel: string; before: string[]; after: string[]; highlight?: string }
   | { kind: "receipt"; title: string; sub?: string; items: string[] }
   | { kind: "chips"; items: Chip[] }

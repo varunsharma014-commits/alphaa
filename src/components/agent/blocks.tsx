@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { Block, Chip } from "@/lib/agent/types"
+import { mdToHtml } from "@/lib/markdown"
 import { ENGINE_LABEL } from "@/lib/agent/types"
 
 // ── helpers ────────────────────────────────────────────────────────────────
@@ -290,6 +291,8 @@ export function DocBlock({
         />
       ) : b.html ? (
         <div className="ag-doc__b" style={{ whiteSpace: "normal" }} dangerouslySetInnerHTML={{ __html: b.html }} />
+      ) : b.markdown ? (
+        <div className="ag-doc__b ag-doc__md" dangerouslySetInnerHTML={{ __html: mdToHtml(text, { highlightPlaceholders: true }) }} />
       ) : (
         <div className="ag-doc__b">{text}</div>
       )}

@@ -233,7 +233,7 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
         const m = d.metadata as { title?: string; markdown?: string; topic?: string }
         const docId = `post-${d.id}`
         msgs.push(agent([
-          { kind: "doc", title: m.title ?? "New post", meta: `draft · answers “${(m.topic ?? "").slice(0, 70)}”`, text: m.markdown, docId, editable: true },
+          { kind: "doc", title: m.title ?? "New post", meta: `draft · answers “${(m.topic ?? "").slice(0, 70)}”`, text: m.markdown, docId, editable: true, markdown: true },
           { kind: "chips", items: [...changeChips("post", wp, { title: m.title, text: m.markdown, docId, draftId: d.id }), { label: "Skip", action: { type: "dismiss" } }] },
         ], `ct-${d.id}`))
       }
