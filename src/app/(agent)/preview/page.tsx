@@ -32,8 +32,8 @@ export default function PreviewPage() {
     agent([
       { kind: "steps", items: ["Reading growthturbine.com", "Working out what customers ask", "Asking ChatGPT, Gemini, Claude and Perplexity", "Checking who they recommended instead"], done: 2, ticker: [["Opening"], ["Thinking"], ["Asking ChatGPT…", "Asking Gemini…", "Asking Claude…", "Asking Perplexity…"], ["Checking"]] },
       { kind: "sources", title: "Can AI get in?  ·  9 of 10", collapseOk: true, items: [{ name: "Set up with Bing (ChatGPT search uses it)", detail: "No sign of Bing Webmaster Tools", status: "No", ok: false }, ...["AI crawlers can open your site", "robots.txt lets AI search in", "Readable without JavaScript", "Sitemap"].map((n) => ({ name: n, detail: "Allowed", status: "Yes", ok: true }))] },
-      { kind: "cta", chip: { label: "Start today — $99/month", action: { type: "link", href: "/signup" }, primary: true }, sub: "Month to month · cancel in two clicks" },
-      { kind: "chips", items: [{ label: "Send me the report instead", action: { type: "say", text: "ok" }, primary: false }, { label: "How much?", action: { type: "say", text: "ok" }, primary: false }] },
+      { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: "/signup" }, primary: true } },
+      { kind: "chips", items: [{ label: "Email me this report", action: { type: "say", text: "ok" }, primary: false }] },
     ]),
     agent([
       { kind: "divider", text: "Your results" },

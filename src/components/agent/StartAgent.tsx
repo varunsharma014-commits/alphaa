@@ -46,6 +46,7 @@ const STEP_TICKER = (domain: string): string[][] => [
 ]
 const PROGRESS_DONE: Record<string, number> = { site: 0, profile: 1, engines: 2, insights: 3 }
 
+// Not shown as pills (they invited doubt at checkout) — answered when typed.
 const CANNED: Record<string, string> = {
   "What exactly will you do?":
     "This week: fix everything in the checklist above — llms.txt, the FAQ page, the facts AI couldn’t find. Every week after: ask the four AIs your customers’ questions and tell you what changed, keep your Google listing active, draft replies to reviews, and watch what your competitors publish. Anything public gets a one-tap approve from you first. You never touch code.",
@@ -73,6 +74,7 @@ export function StartAgent() {
   const inputRef = useRef<HTMLInputElement>(null)
   const scanRef = useRef<{ id: string; businessName: string; domain: string } | null>(null)
   const identRef = useRef<Partial<IdentifyResult>>({})
+  const draftedRef = useRef(false)
 
   const push = useCallback((...m: Message[]) => setMessages((prev) => [...prev, ...m]), [])
   const patch = useCallback((id: string, fn: (m: Message) => Message) => {
@@ -162,6 +164,7 @@ export function StartAgent() {
     const qf = (await quickFix) as { faqHtml?: string; quickFix?: { faqHtml?: string } } | null
     const faq = qf?.faqHtml ?? qf?.quickFix?.faqHtml
     if (faq && faq.length > 40) {
+      draftedRef.current = true
       const og = isRecord(result.ogData) ? (result.ogData as Record<string, unknown>) : {}
       const siteBlocked = !!(isRecord(og.siteChecks) && isRecord(og.siteChecks.you) && og.siteChecks.you.blocked)
       push(
@@ -184,15 +187,9 @@ export function StartAgent() {
     push(
       agent([
         { kind: "text", text: "$99 a month. Month to month.", big: true },
-        { kind: "text", text: "An agency charges around $2,000 for Google alone. Cancel in two clicks — no contract, no exit fees. I start the day you say go." },
-        { kind: "cta", chip: { label: "Start today — $99/month", action: { type: "link", href: `/signup?scan=${scanId}` }, primary: true }, sub: "Month to month · cancel in two clicks" },
-        {
-          kind: "chips",
-          items: [
-            { label: "Send me the report instead", action: { type: "ask", text: "report" }, primary: false },
-            ...Object.keys(CANNED).map((label) => ({ label, action: { type: "say", text: CANNED[label] } as const, primary: false })),
-          ],
-        },
+        { kind: "text", text: `An agency charges about $2,000 a month for Google alone. Cancel anytime in two clicks — no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
+        { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: `/signup?scan=${scanId}` }, primary: true } },
+        { kind: "chips", items: [{ label: "Email me this report", action: { type: "ask", text: "report" }, primary: false }] },
       ], "ask")
     )
     setBusy(false)
@@ -217,7 +214,13 @@ export function StartAgent() {
     push(user(text))
 
     if (phase === "result" || phase === "claimed") {
-      push(agent([{ kind: "text", text: "Once you start I answer anything you ask here. For now — tap Start today, or send yourself the report and I’ll take it from there." }]))
+      const t = text.toLowerCase()
+      const canned =
+        /real|legit|trust|fake|true/.test(t) ? CANNED["Is this real?"]
+        : /how much|price|cost|\$|pay|expensive/.test(t) ? CANNED["How much?"]
+        : /what (exactly )?(will|do|would) you|what.*do for me|how does it work/.test(t) ? CANNED["What exactly will you do?"]
+        : null
+      push(agent([{ kind: "text", text: canned ?? "Once you start I answer anything you ask here. For now — tap Start today, or email yourself the report and I’ll take it from there." }]))
       return
     }
 
@@ -288,7 +291,7 @@ export function StartAgent() {
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
           { kind: "text", text: "If you want me to actually fix this — not just report it — start today and I begin this week. $99 a month, cancel any time." },
-          { kind: "cta", chip: { label: "Start today — $99/month", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true }, sub: "Month to month · cancel in two clicks" },
+          { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
           {
             kind: "chips",
             items: [
