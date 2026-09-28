@@ -1,3 +1,5 @@
+import { EngineRotator } from "@/components/marketing/hero/EngineRotator"
+import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
 import Link from "next/link"
 import Image from "next/image"
 import { RevenueSection, TodoAccordion, EasyRail, AgencyToggle } from "@/components/marketing/apple/Sections"
@@ -67,13 +69,20 @@ export default function HomePage() {
       <ScrollReveal />
 
       {/* Hero — the agent, not the dashboard, is the product. */}
+      <div className="hx-wrap">
+      <HeroBackdrop />
       <section className="ag-hero">
-        <h1>Get customers from ChatGPT, Claude, and Perplexity.</h1>
+        <div className="ag-hero__in">
+        <h1>Get customers<br />from <EngineRotator /></h1>
         <p className="ag-hero__sub">
           Meet {BRAND.agentName}: the AI agent that works 24/7 to put your business at the top of AI search answers. You watch. It does the work.
         </p>
-        <div className="ag-hero__cta">
-          <Link className="ag-pill ag-pill--blue" href="/start">Scan Your Website – It’s Free</Link>
+        <div className="ag-hero__cta ag-hero__cta--big">
+          <Link className="ag-hero__big" href="/start">Scan your website free</Link>
+          <span className="ag-hero__promise">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 9.9C8 19.4 5 15.6 5 11V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg>
+            <span>If no AI names you within 90 days, <b>your next month is free.</b></span>
+          </span>
           <a className="ag-hero__more" href="#watch">Watch it work</a>
         </div>
         <div className="ag-fine">No credit card required.</div>
@@ -86,7 +95,9 @@ export default function HomePage() {
           <span><b>Trusted by 1,200+ businesses</b> getting found on AI</span>
         </div>
         <div id="watch"><AgentHomeDemo /></div>
+        </div>
       </section>
+      </div>
 
       <RevenueSection />
 
