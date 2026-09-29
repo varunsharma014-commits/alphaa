@@ -37,7 +37,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   // stripeSubscriptionId + status seconds after checkout completes. Status
   // alone isn't trusted: the column's DB default is "trialing".
   // Founder account bypasses so the owner can always dogfood.
-  if (!hasPaidPlan(user) && !FOUNDER_EMAILS.includes(user.email)) {
+  if (!hasPaidPlan(user) && !FOUNDER_EMAILS.includes(user.email.toLowerCase())) {
     redirect("/start-trial")
   }
 

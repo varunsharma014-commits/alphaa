@@ -3,5 +3,11 @@ export function hasPaidPlan(u: { subscriptionStatus: string; stripeSubscriptionI
   return !!u.stripeSubscriptionId && ["active", "trialing"].includes(u.subscriptionStatus)
 }
 
-/** Owner dogfood accounts: full access and agent work without a subscription. */
-export const FOUNDER_EMAILS = ["varunsharma014@gmail.com"]
+/**
+ * Accounts with full access and agent work without a subscription: the owner's dogfood account,
+ * plus COMP_ACCESS_EMAILS (comma-separated, e.g. Shopify/Webflow app-review logins).
+ */
+export const FOUNDER_EMAILS = [
+  "varunsharma014@gmail.com",
+  ...(process.env.COMP_ACCESS_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean),
+]
