@@ -302,6 +302,67 @@ function fieldsOf(conn: SiteConnection): WfFields {
   }
 }
 
+type WfFieldFull = WfField & { validations?: { collectionId?: string; options?: { id: string; name?: string }[] } }
+
+/**
+ * Owners' blog collections often have extra required fields (a category reference, an option,
+ * a date). Fill each one we didn't set with the most sensible value so the publish isn't
+ * rejected; anything we can't fill gets a plain error naming the field.
+ */
+async function fillRequired(
+  token: string,
+  collectionId: string,
+  fieldData: Record<string, unknown>,
+  ctx: { title: string; html: string; excerpt?: string; siteUrl: string },
+): Promise<void> {
+  const col = await wf<{ fields?: WfFieldFull[] }>(token, `/collections/${collectionId}`)
+  for (const f of col.fields ?? []) {
+    if (fieldData[f.slug] !== undefined) continue
+    // Also stamp an optional publish date — templates often show it.
+    if (!f.isRequired && !(f.type === "DateTime" && /date|publish/i.test(f.slug))) continue
+    switch (f.type) {
+      case "PlainText":
+        fieldData[f.slug] = (ctx.excerpt || ctx.title).slice(0, 256)
+        break
+      case "RichText":
+        fieldData[f.slug] = ctx.html
+        break
+      case "DateTime":
+        fieldData[f.slug] = new Date().toISOString()
+        break
+      case "Switch":
+        fieldData[f.slug] = false
+        break
+      case "Number":
+        fieldData[f.slug] = 0
+        break
+      case "Link":
+      case "VideoLink":
+        fieldData[f.slug] = ctx.siteUrl
+        break
+      case "Option": {
+        const opt = f.validations?.options?.[0]
+        if (opt) fieldData[f.slug] = opt.id
+        break
+      }
+      case "Reference":
+      case "MultiReference": {
+        const ref = f.validations?.collectionId
+        if (!ref) break
+        const r = await wf<{ items?: { id: string; fieldData?: { name?: string } }[] }>(token, `/collections/${ref}/items?limit=100`)
+        const items = r.items ?? []
+        const pick = items.find((i) => /blog|news|general|article|update/i.test(i.fieldData?.name ?? "")) ?? items[0]
+        if (pick) fieldData[f.slug] = f.type === "MultiReference" ? [pick.id] : pick.id
+        break
+      }
+    }
+    if (f.isRequired && fieldData[f.slug] === undefined) {
+      throw new Error(`Your Webflow blog needs “${f.displayName || f.slug}” filled in on every post, and Alphaa can’t choose one for you. Add at least one option for it in Webflow, or make it optional.`)
+    }
+  }
+}
+
+const STAGED_NOTE = "Your Webflow site isn’t published yet, so this is saved in your CMS and goes live the next time you publish the site."
 const PAGE_NOTE = "Webflow can’t create standalone pages through its API, so this went into your blog collection."
 
 type WfItem = { id: string; fieldData?: { slug?: string } }
@@ -322,16 +383,26 @@ export const webflow: SiteConnector = {
       fieldData[f.image] = { url: input.image.url, alt: input.image.alt }
       if (f.imageAlt) fieldData[f.imageAlt] = input.image.alt
     }
-    const item = await wf<WfItem>(token, `/collections/${collectionId}/items/live`, {
-      method: "POST",
-      body: { isArchived: false, isDraft: false, fieldData },
-    })
+    await fillRequired(token, collectionId, fieldData, { title: input.title, html: input.html, excerpt: input.excerpt, siteUrl: conn.siteUrl })
+    const body = { isArchived: false, isDraft: false, fieldData }
+    let item: WfItem
+    let staged = false
+    try {
+      item = await wf<WfItem>(token, `/collections/${collectionId}/items/live`, { method: "POST", body })
+    } catch (e) {
+      // A site that has never been published can't take live items (409 "The site is not
+      // published"). Save it to the CMS instead; it goes live with the owner's next site publish.
+      if (!(e instanceof Error && /not published/i.test(e.message))) throw e
+      item = await wf<WfItem>(token, `/collections/${collectionId}/items`, { method: "POST", body })
+      staged = true
+    }
     const finalSlug = item.fieldData?.slug || slug
     const base = conn.siteUrl.replace(/\/+$/, "")
+    const notes = [staged ? STAGED_NOTE : "", input.kind === "page" ? PAGE_NOTE : ""].filter(Boolean)
     return {
-      id: item.id,
+      id: staged ? `staged:${item.id}` : item.id,
       url: `${base}/${f.collectionSlug}/${finalSlug}`,
-      ...(input.kind === "page" ? { note: PAGE_NOTE } : {}),
+      ...(notes.length ? { note: notes.join(" ") } : {}),
     }
   },
 
@@ -343,6 +414,12 @@ export const webflow: SiteConnector = {
       // A page-title change: put back the SEO title/description that were there before.
       const prev = JSON.parse(Buffer.from(meta[2], "base64url").toString("utf8")) as { title?: string | null; description?: string | null }
       await wf<unknown>(token, `/pages/${encodeURIComponent(meta[1])}`, { method: "PUT", body: { seo: { ...(prev.title ? { title: prev.title } : {}), description: prev.description ?? "" } } })
+      return
+    }
+    const staged = /^staged:(.+)$/.exec(id)
+    if (staged) {
+      // Never went live: turn it back into a draft so the next site publish skips it.
+      await wf<unknown>(token, `/collections/${conn.config.collectionId}/items/${encodeURIComponent(staged[1])}`, { method: "PATCH", body: { isDraft: true } })
       return
     }
     await wf<unknown>(token, `/collections/${conn.config.collectionId}/items/${encodeURIComponent(id)}/live`, { method: "DELETE" })
