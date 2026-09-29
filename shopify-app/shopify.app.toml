@@ -1,0 +1,35 @@
+# Alphaa Shopify app config — deploy with: npx @shopify/cli app deploy (from this folder).
+# Mirrors the Dev Dashboard settings and adds the webhook subscriptions,
+# which can only be declared here.
+client_id = "44b8e2ff65922ed68243c9e66449d1bf"
+name = "Alphaa"
+application_url = "https://alphaa.app/api/connect/shopify/start"
+embedded = false
+
+[access_scopes]
+scopes = "read_content,write_content"
+
+[auth]
+redirect_urls = ["https://alphaa.app/api/connect/shopify/callback"]
+
+[webhooks]
+api_version = "2026-07"
+
+  [[webhooks.subscriptions]]
+  topics = ["app/uninstalled"]
+  uri = "https://alphaa.app/api/webhooks/shopify/app-uninstalled"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = ["customers/data_request"]
+  uri = "https://alphaa.app/api/webhooks/shopify/customers-data-request"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = ["customers/redact"]
+  uri = "https://alphaa.app/api/webhooks/shopify/customers-redact"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = ["shop/redact"]
+  uri = "https://alphaa.app/api/webhooks/shopify/shop-redact"
+
+[pos]
+embedded = false
