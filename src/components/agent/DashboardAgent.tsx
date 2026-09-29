@@ -375,7 +375,12 @@ export function DashboardAgent({
         setBusy(true)
         const { ok, data } = await post<{ url?: string; changeId?: string; indexed?: boolean; shadowed?: boolean; note?: string }>("/api/connect/wp/push", { op: a.op, title: a.title, text, url: a.url, locationId: a.locationId, draftId: a.draftId })
         setBusy(false)
-        if (!ok || !data.url) return fail(data.error ?? "Your site didn’t accept it. Nothing changed.")
+        // Keep a way to retry: the chip above is spent, and the usual fix (filling in
+        // [bracketed] facts) happens in the draft, which the retry re-reads via docEdits.
+        if (!ok || !data.url) return push(agent([
+          { kind: "text", text: data.error ?? "Your site didn’t accept it. Nothing changed." },
+          { kind: "chips", items: [{ label: "Try publishing again", action: a, primary: true }] },
+        ]))
         const blocks: Block[] = [
           // Webflow sites that were never published only take staged CMS items (see connector note).
           ...(/isn’t published yet/.test(data.note ?? "")
