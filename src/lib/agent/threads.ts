@@ -221,7 +221,8 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
     // ── Posts & Pages ─────────────────────────────────────────────────────
     case "content": {
       const s = await getAgentSettings(userId)
-      const wp = !!s.wp
+      // Posts publish through any connection (WordPress plugin or the Webflow/Shopify/Wix apps).
+      const wp = !!s.wp || !!s.site
       const drafts = await db.mockActivity.findMany({ where: { userId, type: "post_draft" }, orderBy: { createdAt: "desc" }, take: 12 })
       const ready = drafts.filter((d) => (d.metadata as { status?: string } | null)?.status === "ready").slice(0, 4)
       const published = drafts.filter((d) => (d.metadata as { status?: string } | null)?.status === "published")

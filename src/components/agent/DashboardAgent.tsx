@@ -377,8 +377,10 @@ export function DashboardAgent({
         setBusy(false)
         if (!ok || !data.url) return fail(data.error ?? "Your site didn’t accept it. Nothing changed.")
         const blocks: Block[] = [
-          { kind: "text", text: `Done — it’s live on your site.`, big: true },
-          { kind: "doc", title: "Live at", meta: "published", text: data.url },
+          // Webflow sites that were never published only take staged CMS items (see connector note).
+          ...(/isn’t published yet/.test(data.note ?? "")
+            ? [{ kind: "text", text: "Done — it’s saved in your site’s CMS.", big: true } as Block, { kind: "doc", title: "Goes live at", meta: "on your next site publish", text: data.url } as Block]
+            : [{ kind: "text", text: "Done — it’s live on your site.", big: true } as Block, { kind: "doc", title: "Live at", meta: "published", text: data.url } as Block]),
         ]
         if (data.note) blocks.push({ kind: "text", text: data.note })
         if (data.indexed) blocks.push({ kind: "text", text: "I also told Bing it changed (IndexNow), so ChatGPT’s search can pick it up sooner." })
