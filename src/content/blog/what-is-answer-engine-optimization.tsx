@@ -32,11 +32,16 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> Answer Engine Optimization (AEO) is the practice of optimizing your content and online
-        signals so that AI answer engines — ChatGPT, Claude, Gemini, Perplexity, and Google&apos;s AI Overviews —
-        discover your business, cite it, and recommend it when someone asks a relevant question. It does not change
-        anything inside an AI model. Instead, it improves the public information those models read about you,
-        surfaced through live web retrieval and training, so you become the clear, well-described answer.
+        <strong>Short answer:</strong> Answer Engine Optimization (AEO) is the practice of optimizing your
+        content and online signals so that AI answer engines — ChatGPT, Claude, Gemini, Perplexity, and
+        Google&apos;s AI Overviews — discover your business, cite it, and recommend it when someone asks a
+        relevant question.
+      </p>
+
+      <p>
+        It does not change anything inside an AI model. Instead, it improves the public information those models
+        read about you, surfaced through live web retrieval and training, so you become the clear,
+        well-described answer.
       </p>
 
       <h2>What is the difference between AEO and SEO?</h2>

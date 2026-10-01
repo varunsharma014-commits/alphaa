@@ -40,14 +40,18 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> AI engines recommend the cleaning companies whose{" "}
-        <strong>service list, pricing model, insurance and bonding status, and coverage area are written in plain
-        text on pages an engine can fetch</strong>, and whose reviews describe those same specifics in the
-        customers&apos; own words. Cleaning is a low-differentiation, high-trust category: every website says
-        &quot;reliable, thorough, affordable,&quot; so a model has almost nothing to distinguish one company from
-        another unless you give it something concrete. The businesses that get named are the ones that answered the
-        awkward questions — what does a deep clean cost, are your cleaners employees or contractors, do you bring
-        supplies, are you insured if something breaks — in text, before anyone asked.
+        <strong>Short answer:</strong> AI engines recommend the cleaning companies whose{" "} <strong>service
+        list, pricing model, insurance and bonding status, and coverage area are written in plain text on pages
+        an engine can fetch</strong>, and whose reviews describe those same specifics in the customers&apos; own
+        words.
+      </p>
+
+      <p>
+        Cleaning is a low-differentiation, high-trust category: every website says &quot;reliable, thorough,
+        affordable,&quot; so a model has almost nothing to distinguish one company from another unless you give
+        it something concrete. The businesses that get named are the ones that answered the awkward questions —
+        what does a deep clean cost, are your cleaners employees or contractors, do you bring supplies, are you
+        insured if something breaks — in text, before anyone asked.
       </p>
 
       <h2>What do people actually ask AI about cleaning companies?</h2>

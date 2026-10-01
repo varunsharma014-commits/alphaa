@@ -33,12 +33,16 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> To show up in Google AI Overviews as a local business, you strengthen
-        the same signals Google already trusts for local results — a complete, accurate Google Business
-        Profile, a steady flow of genuine reviews, consistent name-address-phone details across the web, and
-        clear pages that answer the exact questions people ask. AI Overviews don&apos;t use a separate hidden
-        ranking; they read the same local evidence, then write a summary that names a few businesses. You
-        can&apos;t buy a slot or force a mention, but you can make yourself the obvious, easy-to-cite answer.
+        <strong>Short answer:</strong> To show up in Google AI Overviews as a local business, you strengthen the
+        same signals Google already trusts for local results — a complete, accurate Google Business Profile, a
+        steady flow of genuine reviews, consistent name-address-phone details across the web, and clear pages
+        that answer the exact questions people ask.
+      </p>
+
+      <p>
+        AI Overviews don&apos;t use a separate hidden ranking; they read the same local evidence, then write a
+        summary that names a few businesses. You can&apos;t buy a slot or force a mention, but you can make
+        yourself the obvious, easy-to-cite answer.
       </p>
 
       <h2>What are Google AI Overviews?</h2>

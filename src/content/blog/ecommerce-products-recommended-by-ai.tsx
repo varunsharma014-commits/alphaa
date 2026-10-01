@@ -42,10 +42,13 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> AI assistants recommend the products they can describe with confident
         specifics — exact price, materials, dimensions, sizing, shipping and return terms — pulled live from
-        product pages, structured product data, and third-party reviews. Ecommerce brands win AI
-        recommendations by publishing those attributes as machine-readable facts on a crawlable page, and by
-        being independently described in the places assistants retrieve from. A gorgeous product photo and a
-        two-line poetic description are, to a retrieval system, an empty page.
+        product pages, structured product data, and third-party reviews. Ecommerce brands win AI recommendations
+        by publishing those attributes as machine-readable facts on a crawlable page, and by being independently
+        described in the places assistants retrieve from.
+      </p>
+
+      <p>
+        A gorgeous product photo and a two-line poetic description are, to a retrieval system, an empty page.
       </p>
 
       <h2>Why do product recommendations work differently from local ones?</h2>

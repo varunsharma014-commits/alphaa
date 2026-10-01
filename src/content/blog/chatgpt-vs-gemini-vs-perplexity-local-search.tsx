@@ -34,16 +34,16 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> All four engines search the live web before naming a local business,
-        but they lean on different sources. ChatGPT uses third-party search providers plus partner data such
-        as Yelp. Gemini draws on Google Search and Google Maps. Perplexity cites community sites like Reddit
+        <strong>Short answer:</strong> All four engines search the live web before naming a local business, but
+        they lean on different sources. ChatGPT uses third-party search providers plus partner data such as
+        Yelp. Gemini draws on Google Search and Google Maps. Perplexity cites community sites like Reddit
         heavily. Claude runs its own web search. Consistent facts everywhere help with all four.
       </p>
 
       <p>
-        This guide sticks to what the companies document and what published studies show. Where a claim is
-        only reported, not confirmed by the company, we say so. Where the evidence is thin, we say that too.
-        Nobody outside these companies knows the exact ranking logic, and nobody can guarantee you a spot.
+        This guide sticks to what the companies document and what published studies show. Where a claim is only
+        reported, not confirmed by the company, we say so. Where the evidence is thin, we say that too. Nobody
+        outside these companies knows the exact ranking logic, and nobody can guarantee you a spot.
       </p>
 
       <h2>Where does ChatGPT get local business recommendations?</h2>
@@ -206,6 +206,11 @@ export function Body() {
       </p>
 
       <h2>How do the four engines compare side by side?</h2>
+      <p>
+        The four differ most in where their live web results come from and which local data they lean on, which
+        is why a business that one engine names confidently can be missing from another. The table below sets
+        out the retrieval source, the local signals and the one priority that matters most for each.
+      </p>
       <div className="table-wrap">
         <table>
           <thead>

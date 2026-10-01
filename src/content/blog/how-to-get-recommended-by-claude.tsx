@@ -38,11 +38,14 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> To get recommended by Claude, make your business easy to find and verify.
         Claude, Anthropic&apos;s AI assistant, forms answers from two things: what it absorbed during training
-        and what it retrieves live through web search when a question needs current or local information. So the
-        work is to be described clearly and specifically on your own site, and consistently corroborated across
-        the third-party sources Claude can reach — reviews, directories, and reputable mentions. You cannot edit
-        Claude, and no one can guarantee a mention. What you can do is become one of the businesses it can name
-        with confidence.
+        and what it retrieves live through web search when a question needs current or local information.
+      </p>
+
+      <p>
+        So the work is to be described clearly and specifically on your own site, and consistently corroborated
+        across the third-party sources Claude can reach — reviews, directories, and reputable mentions. You
+        cannot edit Claude, and no one can guarantee a mention. What you can do is become one of the businesses
+        it can name with confidence.
       </p>
 
       <h2>How does Claude actually decide which business to name?</h2>

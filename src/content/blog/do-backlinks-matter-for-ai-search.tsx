@@ -41,8 +41,12 @@ export function Body() {
         <strong>Short answer:</strong> Yes, but indirectly — and the thing that really moves an AI
         recommendation is the <em>mention</em>, not the hyperlink. A link helps because it feeds the classic
         search rankings that AI engines retrieve from, and because links tend to come attached to a sentence
-        describing who you are. Strip the link away and leave the sentence, and you keep most of the value. Strip
-        the sentence away and leave a bare link in a footer directory, and you keep almost none of it.
+        describing who you are.
+      </p>
+
+      <p>
+        Strip the link away and leave the sentence, and you keep most of the value. Strip the sentence away and
+        leave a bare link in a footer directory, and you keep almost none of it.
       </p>
 
       <h2>Why are people asking whether backlinks still matter?</h2>

@@ -41,12 +41,15 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> Financial advisors get recommended by AI when a <em>specific, checkable</em>
-        description of who they serve exists across the sources assistants actually read — the SEC&apos;s public
-        adviser records, fee-only and CFP directories, specialist press, and niche communities — not just on the
-        advisor&apos;s own site. And the good news for a regulated profession is that almost none of this requires
-        the tactics compliance worries about. The highest-leverage work is making true, already-disclosed facts
-        legible and consistent.
+        <strong>Short answer:</strong> Financial advisors get recommended by AI when a <em>specific,
+        checkable</em> description of who they serve exists across the sources assistants actually read — the
+        SEC&apos;s public adviser records, fee-only and CFP directories, specialist press, and niche communities
+        — not just on the advisor&apos;s own site.
+      </p>
+
+      <p>
+        And the good news for a regulated profession is that almost none of this requires the tactics compliance
+        worries about. The highest-leverage work is making true, already-disclosed facts legible and consistent.
       </p>
 
       <h2>What do prospects actually ask AI about financial advisors?</h2>

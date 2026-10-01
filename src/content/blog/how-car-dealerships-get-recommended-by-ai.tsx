@@ -44,6 +44,9 @@ export function Body() {
         <strong>real inventory in crawlable text, an explicit pricing and fee policy, named financing options
         including subprime and first-time-buyer terms, and specific service-department capabilities</strong> —
         all corroborated by Google reviews, marketplace listings and the manufacturer&apos;s own dealer locator.
+      </p>
+
+      <p>
         The obstacle is structural: most dealership websites hide their entire inventory behind a JavaScript
         search widget, so the assistant sees a homepage of stock photography and nothing else. Fix the
         crawlability problem and you are ahead of most of your market, because your competitors have not.

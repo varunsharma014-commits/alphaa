@@ -34,12 +34,16 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> Dentists get recommended by ChatGPT and Google AI when the public
-        signals about their practice are complete, consistent, and genuinely positive — a fully filled-out
-        Google Business Profile, a steady stream of real patient reviews, accurate service and location pages,
-        and matching details everywhere the practice is listed. AI assistants don&apos;t take payment to name a
-        dentist and can&apos;t be forced to; they read what is verifiable about you and synthesize an answer.
-        Your job is to make the true story of your practice the easiest one to find and quote.
+        <strong>Short answer:</strong> Dentists get recommended by ChatGPT and Google AI when the public signals
+        about their practice are complete, consistent, and genuinely positive — a fully filled-out Google
+        Business Profile, a steady stream of real patient reviews, accurate service and location pages, and
+        matching details everywhere the practice is listed.
+      </p>
+
+      <p>
+        AI assistants don&apos;t take payment to name a dentist and can&apos;t be forced to; they read what is
+        verifiable about you and synthesize an answer. Your job is to make the true story of your practice the
+        easiest one to find and quote.
       </p>
 
       <h2>How does AI pick a dentist to recommend?</h2>

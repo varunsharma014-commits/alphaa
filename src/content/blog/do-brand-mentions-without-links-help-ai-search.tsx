@@ -43,6 +43,9 @@ export function Body() {
         answer, it retrieves passages of <em>text</em> and reads what those passages say. A sentence like
         &quot;Northside Plumbing in Rochester handles same-day sewer scoping&quot; carries a business name, a
         location and a service, and it carries all three whether or not the words are wrapped in an anchor tag.
+      </p>
+
+      <p>
         The href is invisible to the part of the system that decides what the answer says. This does not mean
         links stopped mattering — they still drive crawl discovery and classical ranking, which feed the same
         indexes — but it does mean the PR-style mention your SEO tool scores as worthless is often the thing

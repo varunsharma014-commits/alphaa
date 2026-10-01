@@ -42,11 +42,15 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> Hotels get recommended by AI when a property is described in specific,
         matchable terms across the sources assistants actually read — booking platforms, review sites, travel
-        guides and local roundups — rather than on the hotel&apos;s own site. Ask an assistant &quot;where should
-        I stay in Bath with a dog and free parking&quot; and it answers from those third-party descriptions. If
-        your listing says &quot;charming boutique hotel in the heart of the city,&quot; you are unmatchable. If it
-        says &quot;dog-friendly, on-site parking, 8 minutes&apos; walk from the Roman Baths,&quot; you are a
-        candidate.
+        guides and local roundups — rather than on the hotel&apos;s own site. Ask an assistant &quot;where
+        should I stay in Bath with a dog and free parking&quot; and it answers from those third-party
+        descriptions.
+      </p>
+
+      <p>
+        If your listing says &quot;charming boutique hotel in the heart of the city,&quot; you are unmatchable.
+        If it says &quot;dog-friendly, on-site parking, 8 minutes&apos; walk from the Roman Baths,&quot; you are
+        a candidate.
       </p>
 
       <h2>Why is hospitality harder for AI visibility than other local businesses?</h2>

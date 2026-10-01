@@ -41,6 +41,9 @@ export function Body() {
         <strong>Short answer:</strong> when an AI assistant says &quot;the best options are X, Y and Z,&quot; it
         is rarely forming its own opinion of your business — it is compressing what third-party sources already
         say, and roundups, directories and &quot;best of&quot; lists are the densest such sources in existence.
+      </p>
+
+      <p>
         Getting into those lists is therefore one of the highest-leverage AEO moves available, and the way in is
         unglamorous: be findable to the people who compile them, give them the specific facts they need, and ask
         properly.

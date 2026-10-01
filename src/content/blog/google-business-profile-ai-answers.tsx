@@ -39,12 +39,16 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> Not directly, and yes, substantially. No AI assistant queries your
-        Google Business Profile (GBP) as a live data source the way Google Maps does. But GBP is the origin
-        point for the most-copied description of your business anywhere on the web — it populates your Google
-        knowledge panel, gets scraped into directories and aggregators, and is the version of your details that
-        appears in the pages assistants actually retrieve. Change GBP and, over weeks, you change what dozens of
-        crawlable pages say about you. That is the mechanism.
+        <strong>Short answer:</strong> Not directly, and yes, substantially. No AI assistant queries your Google
+        Business Profile (GBP) as a live data source the way Google Maps does. But GBP is the origin point for
+        the most-copied description of your business anywhere on the web — it populates your Google knowledge
+        panel, gets scraped into directories and aggregators, and is the version of your details that appears in
+        the pages assistants actually retrieve.
+      </p>
+
+      <p>
+        Change GBP and, over weeks, you change what dozens of crawlable pages say about you. That is the
+        mechanism.
       </p>
 
       <h2>How does Google Business Profile data reach AI answers?</h2>

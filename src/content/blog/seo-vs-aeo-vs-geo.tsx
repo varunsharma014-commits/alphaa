@@ -45,10 +45,9 @@ export function Body() {
       <p>
         The three terms get used as if they were rival religions. They are not. They are three layers of the
         same job, which is making sure that when a customer asks a question, the answer includes you. We have
-        already gone deep on two of the pairings, in{" "}
-        <Link href="/blog/aeo-vs-seo-why-agencies-fail">AEO vs SEO</Link> and{" "}
-        <Link href="/blog/aeo-vs-geo">AEO vs GEO</Link>. This post is the umbrella view: all three side by
-        side, and an honest take on where your time and money should go.
+        already gone deep on two of the pairings, in{" "} <Link href="/blog/aeo-vs-seo-why-agencies-fail">AEO vs
+        SEO</Link> and{" "} <Link href="/blog/aeo-vs-geo">AEO vs GEO</Link>. This post is the umbrella view: all
+        three side by side, and an honest take on where your time and money should go.
       </p>
 
       <h2>What is SEO?</h2>

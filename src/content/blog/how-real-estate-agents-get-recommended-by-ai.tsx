@@ -41,9 +41,13 @@ export function Body() {
         record of their work is complete, consistent, and genuinely positive — real client reviews that describe
         specific wins, a verifiable track record of sold listings, matching profiles across Zillow, Google,
         Realtor.com and their own site, and clear pages that say exactly which neighborhoods and property types
-        they handle. ChatGPT, Gemini, and Perplexity don&apos;t take payment to name an agent and can&apos;t be
-        forced to. They read what is verifiable about you and summarize it. Your job is to make the true story of
-        your business the easiest one for a machine to find and quote.
+        they handle.
+      </p>
+
+      <p>
+        ChatGPT, Gemini, and Perplexity don&apos;t take payment to name an agent and can&apos;t be forced to.
+        They read what is verifiable about you and summarize it. Your job is to make the true story of your
+        business the easiest one for a machine to find and quote.
       </p>
 
       <h2>How does AI decide which real estate agent to recommend?</h2>

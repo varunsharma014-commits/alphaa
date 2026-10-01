@@ -40,14 +40,17 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> AI engines recommend the solar installers whose{" "}
-        <strong>licence and certification details, service area, and review history are stated consistently and in
-        plain text across the open web</strong> — on your own site, on your Google Business Profile, on the state
-        licence register, on EnergySage and similar marketplaces, and in local news or trade coverage. Solar is a
-        high-consideration, high-fraud-anxiety purchase, so assistants lean unusually hard on verifiable trust
-        signals and on third-party sources rather than on your marketing copy. If your NABCEP certification, your
-        licence number, and the counties you actually cover are only visible inside a slide-out menu or a PDF, an
-        AI engine cannot use them, and it names a competitor who spelled them out.
+        <strong>Short answer:</strong> AI engines recommend the solar installers whose{" "} <strong>licence and
+        certification details, service area, and review history are stated consistently and in plain text across
+        the open web</strong> — on your own site, on your Google Business Profile, on the state licence
+        register, on EnergySage and similar marketplaces, and in local news or trade coverage.
+      </p>
+
+      <p>
+        Solar is a high-consideration, high-fraud-anxiety purchase, so assistants lean unusually hard on
+        verifiable trust signals and on third-party sources rather than on your marketing copy. If your NABCEP
+        certification, your licence number, and the counties you actually cover are only visible inside a
+        slide-out menu or a PDF, an AI engine cannot use them, and it names a competitor who spelled them out.
       </p>
 
       <h2>What do homeowners actually ask AI about solar installers?</h2>

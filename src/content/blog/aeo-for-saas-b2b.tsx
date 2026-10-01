@@ -33,14 +33,17 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> To get your SaaS recommended by AI, you need to be described
-        consistently and verifiably across the sources AI trusts when buyers ask &quot;best [category]
-        software&quot; or &quot;alternatives to [competitor].&quot; That means maintained profiles and reviews
-        on G2, Capterra, and TrustRadius; clear comparison, &quot;alternatives,&quot; and use-case content AI
-        can cite; clean documentation; and structured product and pricing pages. AI synthesizes these into a
-        multi-source consensus — your job is to make sure that consensus describes you accurately. AEO shapes
-        the public signals AI reads; it doesn&apos;t edit the model&apos;s internals, and no one can guarantee a
-        ranking.
+        <strong>Short answer:</strong> To get your SaaS recommended by AI, you need to be described consistently
+        and verifiably across the sources AI trusts when buyers ask &quot;best [category] software&quot; or
+        &quot;alternatives to [competitor].&quot; That means maintained profiles and reviews on G2, Capterra,
+        and TrustRadius; clear comparison, &quot;alternatives,&quot; and use-case content AI can cite; clean
+        documentation; and structured product and pricing pages.
+      </p>
+
+      <p>
+        AI synthesizes these into a multi-source consensus — your job is to make sure that consensus describes
+        you accurately. AEO shapes the public signals AI reads; it doesn&apos;t edit the model&apos;s internals,
+        and no one can guarantee a ranking.
       </p>
 
       <h2>How does AI pick which software to recommend?</h2>

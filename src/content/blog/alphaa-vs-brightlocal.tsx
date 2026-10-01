@@ -39,10 +39,10 @@ export function Body() {
       </p>
 
       <p>
-        Plenty of owners end up here because they already pay for local SEO software, or an agency that uses
-        it, and they&apos;ve started to notice customers saying &quot;ChatGPT told me about you&quot; or, worse,
-        &quot;ChatGPT recommended someone else.&quot; That&apos;s a fair thing to worry about. Here&apos;s an honest
-        look at both products, including where BrightLocal is the better pick.
+        Plenty of owners end up here because they already pay for local SEO software, or an agency that uses it,
+        and they&apos;ve started to notice customers saying &quot;ChatGPT told me about you&quot; or, worse,
+        &quot;ChatGPT recommended someone else.&quot; That&apos;s a fair thing to worry about. Here&apos;s an
+        honest look at both products, including where BrightLocal is the better pick.
       </p>
 
       <h2>What is BrightLocal, and what does it do in 2026?</h2>

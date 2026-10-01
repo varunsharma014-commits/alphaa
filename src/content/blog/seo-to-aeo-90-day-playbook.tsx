@@ -40,9 +40,13 @@ export function Body() {
         <strong>Short answer:</strong> You do not rebuild your site or abandon SEO. Over 90 days you run three
         30-day phases — <strong>measure</strong> what AI engines say about you today, <strong>fix</strong> the
         facts and structure they read, and <strong>build</strong> the third-party evidence that gets you named.
-        The goal is not a ranking; it is being the business ChatGPT, Claude, Gemini, and Perplexity recommend when
-        your customer asks. The payoff is real: traffic to retail sites from AI assistants grew over 1,200% in
-        under a year, and those visitors convert better than traditional search traffic (Adobe Analytics, 2025–26).
+      </p>
+
+      <p>
+        The goal is not a ranking; it is being the business ChatGPT, Claude, Gemini, and Perplexity recommend
+        when your customer asks. The payoff is real: traffic to retail sites from AI assistants grew over 1,200%
+        in under a year, and those visitors convert better than traditional search traffic (Adobe Analytics,
+        2025–26).
       </p>
 
       <h2>Do I need to rebuild my site to move from SEO to AEO?</h2>

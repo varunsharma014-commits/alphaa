@@ -44,9 +44,13 @@ export function Body() {
         assistant is going to answer the cost question either way. When your site has no price, the model does
         not say &quot;unknown&quot; and stop; it reaches for whatever number it <em>can</em> retrieve — a
         directory estimate, a competitor&apos;s posted rate, an old forum thread, a national average that has
-        nothing to do with your market. Publishing a specific, honestly-qualified range is how you make your
-        number the retrievable one. The exception is genuinely bespoke work, where the right move is publishing
-        the <em>structure</em> of your pricing rather than a figure.
+        nothing to do with your market.
+      </p>
+
+      <p>
+        Publishing a specific, honestly-qualified range is how you make your number the retrievable one. The
+        exception is genuinely bespoke work, where the right move is publishing the <em>structure</em> of your
+        pricing rather than a figure.
       </p>
 
       <h2>Why do customers ask AI about price so often?</h2>

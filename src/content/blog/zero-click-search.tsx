@@ -36,12 +36,15 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> A zero-click search is a search that ends without the user clicking through
-        to any website — they get what they needed on the results page itself and move on. Roughly two-thirds of
-        Google searches now end this way (SparkToro/Similarweb, 2026), up from around 60% in 2024. It matters
-        because the click was the whole point of ranking: you optimized to earn a visit. When most searches
-        produce no visit, &quot;where do I rank?&quot; stops being the question that predicts customers, and
-        &quot;does the answer mention me?&quot; takes its place.
+        <strong>Short answer:</strong> A zero-click search is a search that ends without the user clicking
+        through to any website — they get what they needed on the results page itself and move on. Roughly
+        two-thirds of Google searches now end this way (SparkToro/Similarweb, 2026), up from around 60% in 2024.
+      </p>
+
+      <p>
+        It matters because the click was the whole point of ranking: you optimized to earn a visit. When most
+        searches produce no visit, &quot;where do I rank?&quot; stops being the question that predicts
+        customers, and &quot;does the answer mention me?&quot; takes its place.
       </p>
 
       <h2>What does &quot;zero-click search&quot; actually mean?</h2>

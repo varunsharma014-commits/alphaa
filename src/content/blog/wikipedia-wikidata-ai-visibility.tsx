@@ -42,10 +42,13 @@ export function Body() {
         <strong>Short answer:</strong> Yes — Wikipedia and Wikidata carry outsized weight with AI assistants,
         because both are heavily represented in training data and are structured, permissively licensed, and
         widely mirrored. But the honest caveat matters more than the fact: the overwhelming majority of small
-        and mid-sized businesses do not meet Wikipedia&apos;s notability bar, and creating a page about
-        yourself is against its conflict-of-interest guidance and usually ends in deletion. The useful move for
-        most companies is to reproduce what those sources <em>provide</em> — a stable, structured, independently
-        corroborated identity — using assets you are actually entitled to control.
+        and mid-sized businesses do not meet Wikipedia&apos;s notability bar, and creating a page about yourself
+        is against its conflict-of-interest guidance and usually ends in deletion.
+      </p>
+
+      <p>
+        The useful move for most companies is to reproduce what those sources <em>provide</em> — a stable,
+        structured, independently corroborated identity — using assets you are actually entitled to control.
       </p>
 
       <h2>Why do Wikipedia and Wikidata matter so much to AI?</h2>

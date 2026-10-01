@@ -42,9 +42,13 @@ export function Body() {
         <strong>Short answer:</strong> AI assistants almost never recommend a brand — they recommend a specific
         branch that can serve the person asking. Multi-location businesses lose because their location pages are
         template clones with the city name swapped in, which gives a retrieval system nothing to tell branch
-        seven apart from branch two. The fix is to make every location a distinct, fully described entity: its
-        own page with its own facts, its own claimed profile, its own reviews, and its own schema — all
-        consistent with the parent brand but not identical to each other.
+        seven apart from branch two.
+      </p>
+
+      <p>
+        The fix is to make every location a distinct, fully described entity: its own page with its own facts,
+        its own claimed profile, its own reviews, and its own schema — all consistent with the parent brand but
+        not identical to each other.
       </p>
 
       <h2>Why is AI visibility harder for multi-location businesses?</h2>

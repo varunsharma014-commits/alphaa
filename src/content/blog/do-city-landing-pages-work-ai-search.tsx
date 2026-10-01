@@ -39,12 +39,15 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> yes, city landing pages still work for AI search —{" "}
-        <strong>but only the ones that contain something true about that specific city</strong>. An AI
-        assistant retrieves passages, not pages, so a page earns a citation by containing a passage worth
-        lifting. Fifty pages generated from one template with the place name swapped contain one passage
-        repeated fifty times, which gives the engine nothing to choose and gives your site a duplication
-        problem. Three genuinely local pages beat fifty templated ones, reliably.
+        <strong>Short answer:</strong> yes, city landing pages still work for AI search —{" "} <strong>but only
+        the ones that contain something true about that specific city</strong>. An AI assistant retrieves
+        passages, not pages, so a page earns a citation by containing a passage worth lifting.
+      </p>
+
+      <p>
+        Fifty pages generated from one template with the place name swapped contain one passage repeated fifty
+        times, which gives the engine nothing to choose and gives your site a duplication problem. Three
+        genuinely local pages beat fifty templated ones, reliably.
       </p>
 
       <h2>Do city landing pages work for AI search or not?</h2>

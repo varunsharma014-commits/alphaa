@@ -40,13 +40,16 @@ export function Body() {
 
       <p>
         <strong>Short answer:</strong> Yes — but for a completely different reason than they used to.{" "}
-        <strong>FAQ pages no longer earn you anything in Google&apos;s search results</strong>; Google removed FAQ
-        rich results for almost all sites in 2023 and the visual reward is gone. What they do earn is{" "}
-        <strong>extraction</strong>. A question-shaped heading followed by a short, self-contained answer is
-        structurally identical to what a retrieval system is trying to build, so it can be lifted into an AI answer
-        with minimal rewriting. The catch is that this only holds for real questions with real answers. The
-        marketing-fluff FAQ — &quot;Why choose us?&quot; &quot;Are you the best in the business?&quot; — is worse
-        than nothing, because it teaches an engine that your page contains no facts.
+        <strong>FAQ pages no longer earn you anything in Google&apos;s search results</strong>; Google removed
+        FAQ rich results for almost all sites in 2023 and the visual reward is gone.
+      </p>
+
+      <p>
+        What they do earn is{" "} <strong>extraction</strong>. A question-shaped heading followed by a short,
+        self-contained answer is structurally identical to what a retrieval system is trying to build, so it can
+        be lifted into an AI answer with minimal rewriting. The catch is that this only holds for real questions
+        with real answers. The marketing-fluff FAQ — &quot;Why choose us?&quot; &quot;Are you the best in the
+        business?&quot; — is worse than nothing, because it teaches an engine that your page contains no facts.
       </p>
 
       <h2>What actually changed with FAQ pages, and when?</h2>

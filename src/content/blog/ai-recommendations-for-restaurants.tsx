@@ -32,14 +32,17 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> When someone asks an AI assistant &quot;best ramen near me&quot;
-        or &quot;a good Italian restaurant in [city] for an anniversary,&quot; it doesn&apos;t make the
-        list up — it leans on the public signals it can read about you: your Google Business Profile,
-        your reviews (how many, how high, how recent, and whether you reply), your menu and cuisine
-        details, and whether your listings agree with each other across Google, Yelp, TripAdvisor, and
-        reservation platforms. You can&apos;t edit what the model thinks. But you can shape what it reads
-        about you, so the restaurants that get named tend to be the ones that are <em>complete</em>,
-        <em> well-reviewed</em>, and described <em>consistently</em> everywhere.
+        <strong>Short answer:</strong> When someone asks an AI assistant &quot;best ramen near me&quot; or
+        &quot;a good Italian restaurant in [city] for an anniversary,&quot; it doesn&apos;t make the list up —
+        it leans on the public signals it can read about you: your Google Business Profile, your reviews (how
+        many, how high, how recent, and whether you reply), your menu and cuisine details, and whether your
+        listings agree with each other across Google, Yelp, TripAdvisor, and reservation platforms.
+      </p>
+
+      <p>
+        You can&apos;t edit what the model thinks. But you can shape what it reads about you, so the restaurants
+        that get named tend to be the ones that are <em>complete</em>, <em> well-reviewed</em>, and described
+        <em>consistently</em> everywhere.
       </p>
 
       <p>

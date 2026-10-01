@@ -41,13 +41,16 @@ export function Body() {
 
       <p>
         <strong>Short answer:</strong> Roofing contractors get recommended by AI when three things are
-        retrievable in plain text: <em>proof you are legitimate</em> (licence number, insurance, how long
-        you have operated locally), <em>specifics of what you install and warrant</em> (materials,
-        manufacturer certifications, workmanship warranty length), and <em>how you handle insurance claims</em>.
+        retrievable in plain text: <em>proof you are legitimate</em> (licence number, insurance, how long you
+        have operated locally), <em>specifics of what you install and warrant</em> (materials, manufacturer
+        certifications, workmanship warranty length), and <em>how you handle insurance claims</em>.
+      </p>
+
+      <p>
         This category is unusual because the buyer is often frightened and in a hurry, and because it attracts
         storm-chasers — so assistants weight legitimacy and verifiability more heavily here than in almost any
-        other trade. The roofer who publishes their licence number and warranty terms gets named; the one with
-        a phone number over a stock photo does not.
+        other trade. The roofer who publishes their licence number and warranty terms gets named; the one with a
+        phone number over a stock photo does not.
       </p>
 
       <h2>What do homeowners actually ask AI about roofers?</h2>

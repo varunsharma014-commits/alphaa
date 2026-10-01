@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-therapists-get-recommended-by-ai",
   title: "How Therapists and Mental Health Practices Get Recommended by AI",
   description:
-    "AI assistants answer \"find me a therapist\" mostly from directory profiles, insurance and licence records — rarely from a practice website.",
+    "AI assistants answer \"find me a therapist\" mostly from directory profiles, insurance and licence records, rarely from a practice's own website.",
   subtitle:
     "Therapists get recommended when who they treat, their modalities, licensure and fees are stated plainly, which is also what clients filter on.",
   date: "2026-08-08",
@@ -45,9 +45,13 @@ export function Body() {
         <strong>Short answer:</strong> Therapists get recommended by AI when a <em>specific and verifiable</em>
         description of who they treat, how, and under what payment terms exists across the sources assistants
         actually retrieve — directory profiles, licence registries, insurance provider lists, specialist
-        associations — and matches what is on their own site. The counterintuitive part is that the practice
-        website is usually the <em>least</em> influential of those sources. And unlike most industries, the
-        highest-leverage work here is almost entirely ethics-safe: it is factual precision, not persuasion.
+        associations — and matches what is on their own site.
+      </p>
+
+      <p>
+        The counterintuitive part is that the practice website is usually the <em>least</em> influential of
+        those sources. And unlike most industries, the highest-leverage work here is almost entirely
+        ethics-safe: it is factual precision, not persuasion.
       </p>
 
       <h2>What do people actually ask AI when looking for a therapist?</h2>

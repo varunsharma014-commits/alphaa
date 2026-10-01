@@ -40,14 +40,17 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> AI assistants recommend the chiropractors whose specifics they can
-        read and verify. In practice that comes down to four things: a complete Google Business Profile with
-        accurate hours and phone; recent reviews that name <em>specific conditions and techniques</em>; a
-        website that states in plain text which conditions you treat, which techniques you use, which
-        insurance you accept and what a first visit costs; and credentials that are stated as verifiable
-        facts rather than adjectives. Health is also the one vertical where overclaiming actively hurts —
-        engines apply extra caution to medical topics, and a page full of unsupported cure claims is a page
-        they are less likely to quote.
+        <strong>Short answer:</strong> AI assistants recommend the chiropractors whose specifics they can read
+        and verify. In practice that comes down to four things: a complete Google Business Profile with accurate
+        hours and phone; recent reviews that name <em>specific conditions and techniques</em>; a website that
+        states in plain text which conditions you treat, which techniques you use, which insurance you accept
+        and what a first visit costs; and credentials that are stated as verifiable facts rather than
+        adjectives.
+      </p>
+
+      <p>
+        Health is also the one vertical where overclaiming actively hurts — engines apply extra caution to
+        medical topics, and a page full of unsupported cure claims is a page they are less likely to quote.
       </p>
 
       <h2>What do patients actually ask AI about chiropractors?</h2>

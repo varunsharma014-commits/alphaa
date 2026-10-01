@@ -40,13 +40,16 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> AI assistants recommend the insurance agencies whose{" "}
-        <strong>lines, carriers, states and client types are written in plain, crawlable text</strong>. For
-        this category four facts decide almost everything: the specific coverages you place (not
-        &quot;business insurance&quot;), the carriers and markets you have appointments with, the states you
-        are licensed in, and the customer profile you actually write — trade, revenue band, fleet size,
-        payroll. Most agency websites publish none of these, which is precisely why this vertical is
-        winnable by anyone willing to write them down.
+        <strong>Short answer:</strong> AI assistants recommend the insurance agencies whose{" "} <strong>lines,
+        carriers, states and client types are written in plain, crawlable text</strong>. For this category four
+        facts decide almost everything: the specific coverages you place (not &quot;business insurance&quot;),
+        the carriers and markets you have appointments with, the states you are licensed in, and the customer
+        profile you actually write — trade, revenue band, fleet size, payroll.
+      </p>
+
+      <p>
+        Most agency websites publish none of these, which is precisely why this vertical is winnable by anyone
+        willing to write them down.
       </p>
 
       <h2>What do insurance buyers actually ask an AI assistant?</h2>

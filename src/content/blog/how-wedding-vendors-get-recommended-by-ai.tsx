@@ -42,10 +42,13 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> Wedding vendors get recommended by AI when the four facts every couple
         filters on — <em>date availability, capacity, price basis and style</em> — exist as plain retrievable
-        text and agree across your site, your marketplace profiles and your Google Business Profile. This
-        category loses more AI recommendations to hidden pricing than to anything else. &quot;Contact us for
-        pricing&quot; is not a negotiating position to an assistant; it is a missing field, and the vendor who
-        published a starting number gets named instead.
+        text and agree across your site, your marketplace profiles and your Google Business Profile.
+      </p>
+
+      <p>
+        This category loses more AI recommendations to hidden pricing than to anything else. &quot;Contact us
+        for pricing&quot; is not a negotiating position to an assistant; it is a missing field, and the vendor
+        who published a starting number gets named instead.
       </p>
 
       <h2>What do couples actually ask AI about wedding vendors?</h2>

@@ -41,9 +41,13 @@ export function Body() {
         <strong>Short answer:</strong> PDFs usually get read. Images usually do not. Text-layer PDFs are
         crawled, parsed and cited much like web pages, so a price list or brochure in PDF form can end up in an
         AI answer. A photograph of that same price list is, to most retrieval pipelines, an opaque file with a
-        filename and maybe some alt text. Scanned PDFs sit in between and are unreliable. If a fact about your
-        business exists only inside pixels — the menu, the hours sign, the service-area map, the rate card —
-        assume the assistants answering questions about you do not have it.
+        filename and maybe some alt text.
+      </p>
+
+      <p>
+        Scanned PDFs sit in between and are unreliable. If a fact about your business exists only inside pixels
+        — the menu, the hours sign, the service-area map, the rate card — assume the assistants answering
+        questions about you do not have it.
       </p>
 
       <h2>Why can AI read uploaded images but not your website&apos;s images?</h2>

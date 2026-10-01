@@ -35,10 +35,14 @@ export function Body() {
         By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
-        <strong>Short answer:</strong> AI assistants give different answers to the same question because they are
-        non-deterministic by design — they sample their next word from a probability distribution — and because
-        most of them re-run a live web search on every question, so the source documents themselves change between
-        asks. The fix is not to chase a stable answer. It is to stop treating a single screenshot as data and start
+        <strong>Short answer:</strong> AI assistants give different answers to the same question because they
+        are non-deterministic by design — they sample their next word from a probability distribution — and
+        because most of them re-run a live web search on every question, so the source documents themselves
+        change between asks.
+      </p>
+
+      <p>
+        The fix is not to chase a stable answer. It is to stop treating a single screenshot as data and start
         measuring a <strong>mention rate</strong>: how often you appear across a fixed set of prompts, repeated
         several times, on a fixed schedule.
       </p>

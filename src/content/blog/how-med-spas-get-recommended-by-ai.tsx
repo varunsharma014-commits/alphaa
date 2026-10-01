@@ -38,13 +38,17 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> Med spas get recommended by ChatGPT, Gemini, Perplexity, and Google&apos;s
-        AI Overviews when the public signals about the practice are complete, consistent, and genuinely positive —
-        a fully built Google Business Profile with the right treatment categories, a steady flow of real client
-        reviews that name specific treatments, accurate service pages, and matching details everywhere the spa is
-        listed. AI assistants take no payment to recommend you and can&apos;t be forced to; they read what is
-        verifiable about your practice and synthesize an answer. Your job is to make the true story of your med
-        spa the easiest one for a machine to find, trust, and quote.
+        <strong>Short answer:</strong> Med spas get recommended by ChatGPT, Gemini, Perplexity, and
+        Google&apos;s AI Overviews when the public signals about the practice are complete, consistent, and
+        genuinely positive — a fully built Google Business Profile with the right treatment categories, a steady
+        flow of real client reviews that name specific treatments, accurate service pages, and matching details
+        everywhere the spa is listed.
+      </p>
+
+      <p>
+        AI assistants take no payment to recommend you and can&apos;t be forced to; they read what is verifiable
+        about your practice and synthesize an answer. Your job is to make the true story of your med spa the
+        easiest one for a machine to find, trust, and quote.
       </p>
 
       <h2>How does AI pick a med spa to recommend?</h2>

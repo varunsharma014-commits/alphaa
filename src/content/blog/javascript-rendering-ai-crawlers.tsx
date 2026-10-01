@@ -39,13 +39,16 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> AI crawlers generally fetch your page&apos;s raw HTML and read what
-        comes back. Most of them do not run a full browser, so they do not wait for JavaScript to fetch data,
-        build the DOM, and paint your content. If your homepage is a React or Vue app that renders
-        client-side, what the crawler receives can be a nearly empty shell — a <code>&lt;div id=&quot;root&quot;&gt;</code>,
-        a couple of script tags, and no words. Your site looks perfect to a human and blank to the machine
-        deciding whether to recommend you. The fix is to make sure the meaningful text exists in the HTML
-        <em> before</em> any JavaScript runs.
+        <strong>Short answer:</strong> AI crawlers generally fetch your page&apos;s raw HTML and read what comes
+        back. Most of them do not run a full browser, so they do not wait for JavaScript to fetch data, build
+        the DOM, and paint your content. If your homepage is a React or Vue app that renders client-side, what
+        the crawler receives can be a nearly empty shell — a <code>&lt;div id=&quot;root&quot;&gt;</code>, a
+        couple of script tags, and no words.
+      </p>
+
+      <p>
+        Your site looks perfect to a human and blank to the machine deciding whether to recommend you. The fix
+        is to make sure the meaningful text exists in the HTML <em> before</em> any JavaScript runs.
       </p>
 
       <h2>Do AI crawlers execute JavaScript?</h2>

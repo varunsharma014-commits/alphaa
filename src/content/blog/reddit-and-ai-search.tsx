@@ -35,12 +35,16 @@ export function Body() {
         By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
-        <strong>Short answer:</strong> AI assistants weight third-party sources heavily because your own site tells
-        them what you <em>claim</em>, while reviews, forum threads, directories and press tell them what is
-        <em> corroborated</em>. When a model has to decide whether to name you, independent agreement across several
-        unrelated sources is the strongest evidence it has. Reddit and Quora punch especially far above their weight
-        because their content is phrased as questions and answers — the same shape as the query — and because both
-        Google and OpenAI have signed content agreements with Reddit (Reuters, 2024; Reddit and OpenAI, 2024).
+        <strong>Short answer:</strong> AI assistants weight third-party sources heavily because your own site
+        tells them what you <em>claim</em>, while reviews, forum threads, directories and press tell them what
+        is <em> corroborated</em>. When a model has to decide whether to name you, independent agreement across
+        several unrelated sources is the strongest evidence it has.
+      </p>
+
+      <p>
+        Reddit and Quora punch especially far above their weight because their content is phrased as questions
+        and answers — the same shape as the query — and because both Google and OpenAI have signed content
+        agreements with Reddit (Reuters, 2024; Reddit and OpenAI, 2024).
       </p>
 
       <h2>Why do AI engines quote Reddit so often?</h2>

@@ -39,11 +39,15 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> Yes — a large and growing share of people now get answers without clicking a
-        website, and many ask an AI assistant instead of Google. The most defensible 2026 figures: roughly
-        two-thirds of Google searches end without a single click (SparkToro/Similarweb, 2026), 65% of consumers use
-        AI tools to research products before buying (Clutch, 2026), and ChatGPT serves 800M+ weekly active users
-        (OpenAI, 2025). Below is each number, its source, and what it does and does not mean.
+        <strong>Short answer:</strong> Yes — a large and growing share of people now get answers without
+        clicking a website, and many ask an AI assistant instead of Google. The most defensible 2026 figures:
+        roughly two-thirds of Google searches end without a single click (SparkToro/Similarweb, 2026), 65% of
+        consumers use AI tools to research products before buying (Clutch, 2026), and ChatGPT serves 800M+
+        weekly active users (OpenAI, 2025).
+      </p>
+
+      <p>
+        Below is each number, its source, and what it does and does not mean.
       </p>
 
       <h2>What are the verified AI search statistics for 2026?</h2>

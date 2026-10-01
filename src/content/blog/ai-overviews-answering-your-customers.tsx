@@ -35,11 +35,14 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> Google&apos;s AI Overviews — the AI-generated summary that now sits above
         the classic blue links — increasingly answer your customer&apos;s question right on the results page,
-        citing a handful of sources and often ending the search before anyone clicks through to a website. For
-        local and commercial searches, that means the overview, not your homepage, is frequently the first (and
-        sometimes only) impression a prospect gets. The businesses named and cited inside that overview win; the
-        ones ranked #4 below it may never be seen. Your job has shifted from &quot;rank on the page&quot; to
-        &quot;be in the answer.&quot;
+        citing a handful of sources and often ending the search before anyone clicks through to a website.
+      </p>
+
+      <p>
+        For local and commercial searches, that means the overview, not your homepage, is frequently the first
+        (and sometimes only) impression a prospect gets. The businesses named and cited inside that overview
+        win; the ones ranked #4 below it may never be seen. Your job has shifted from &quot;rank on the
+        page&quot; to &quot;be in the answer.&quot;
       </p>
 
       <p>

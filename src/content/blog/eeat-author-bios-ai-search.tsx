@@ -42,8 +42,12 @@ export function Body() {
         <strong>Short answer:</strong> Yes, but not the way most people assume. No AI engine computes an
         &quot;E-E-A-T score&quot; for your site. What actually happens is narrower and more mechanical: an
         assistant retrieves a handful of documents, then decides which claims it is willing to repeat under its
-        own name. Pages that identify a real, checkable author and a real, checkable organisation give it
-        something to attribute. Pages that do not are quietly harder to cite — not penalised, just less usable.
+        own name.
+      </p>
+
+      <p>
+        Pages that identify a real, checkable author and a real, checkable organisation give it something to
+        attribute. Pages that do not are quietly harder to cite — not penalised, just less usable.
       </p>
 
       <h2>What exactly is E-E-A-T?</h2>

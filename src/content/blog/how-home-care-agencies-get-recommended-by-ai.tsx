@@ -43,11 +43,14 @@ export function Body() {
         <strong>Short answer:</strong> AI assistants recommend the home care agencies whose website states{" "}
         <strong>the state license or registration number, the specific level of care provided, which payment
         sources are accepted, the exact service area, and how quickly care can start</strong> — in crawlable
-        text, corroborated by reviews, directory listings and the state licensing register. Senior care is a
-        high-stakes category, and assistants behave accordingly: they are conservative, they prefer sources they
-        can verify, and they will decline to name a provider they cannot corroborate. That conservatism is the
-        opportunity. The verifiable agency wins by default, because most of its competitors publish a photograph
-        of a smiling caregiver and the phrase &quot;compassionate care you can trust.&quot;
+        text, corroborated by reviews, directory listings and the state licensing register.
+      </p>
+
+      <p>
+        Senior care is a high-stakes category, and assistants behave accordingly: they are conservative, they
+        prefer sources they can verify, and they will decline to name a provider they cannot corroborate. That
+        conservatism is the opportunity. The verifiable agency wins by default, because most of its competitors
+        publish a photograph of a smiling caregiver and the phrase &quot;compassionate care you can trust.&quot;
       </p>
 
       <h2>Who searches for home care with AI, and what do they ask?</h2>

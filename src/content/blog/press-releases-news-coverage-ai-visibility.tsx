@@ -41,9 +41,12 @@ export function Body() {
         <strong>Short answer:</strong> Genuine editorial coverage helps a lot. Paid press release distribution
         helps very little. They look similar on an invoice and they are almost opposites in an AI engine&apos;s
         eyes: one is an independent source describing you, the other is your own copy reprinted on hundreds of
-        low-authority mirrors. Assistants weight independent, non-duplicated, attributable sources — so a single
-        local business-journal profile typically does more for what ChatGPT says about you than a $600 wire blast
-        to 400 sites.
+        low-authority mirrors.
+      </p>
+
+      <p>
+        Assistants weight independent, non-duplicated, attributable sources — so a single local business-journal
+        profile typically does more for what ChatGPT says about you than a $600 wire blast to 400 sites.
       </p>
 
       <h2>Why is a press release weaker than news coverage for AI?</h2>

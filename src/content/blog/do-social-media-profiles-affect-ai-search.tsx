@@ -38,13 +38,16 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> Yes, but indirectly, and not the way most owners assume. Follower
-        counts, likes and engagement are not ranking inputs for AI assistants. What social profiles do is
-        two things: they <strong>confirm your business is the entity you claim to be</strong> — same name,
-        same address, same phone, same website, in one more place a model can check — and they{" "}
-        <strong>publish readable text</strong> that a retrieval system can pull into an answer. A LinkedIn
-        company page with a real description contributes more to an AI recommendation than 40,000 Instagram
-        followers, because one is machine-readable prose and the other is a number attached to images.
+        <strong>Short answer:</strong> Yes, but indirectly, and not the way most owners assume. Follower counts,
+        likes and engagement are not ranking inputs for AI assistants. What social profiles do is two things:
+        they <strong>confirm your business is the entity you claim to be</strong> — same name, same address,
+        same phone, same website, in one more place a model can check — and they{" "} <strong>publish readable
+        text</strong> that a retrieval system can pull into an answer.
+      </p>
+
+      <p>
+        A LinkedIn company page with a real description contributes more to an AI recommendation than 40,000
+        Instagram followers, because one is machine-readable prose and the other is a number attached to images.
       </p>
 
       <h2>How does an AI engine actually encounter your social profile?</h2>

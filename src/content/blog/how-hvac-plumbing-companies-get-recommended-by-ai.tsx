@@ -38,9 +38,13 @@ export function Body() {
         Perplexity, and Google&apos;s AI Overviews when the public signals about their business are complete,
         consistent, and genuinely positive — a fully built-out Google Business Profile, a steady stream of real
         customer reviews that mention specific jobs, accurate service-area and service pages, and matching name,
-        address, and phone details everywhere the company is listed. No AI assistant takes payment to name a
-        contractor, and none can be forced to. They read what is verifiable about you and summarize it. Your job
-        is to make the true story of your company the easiest one to find and quote.
+        address, and phone details everywhere the company is listed.
+      </p>
+
+      <p>
+        No AI assistant takes payment to name a contractor, and none can be forced to. They read what is
+        verifiable about you and summarize it. Your job is to make the true story of your company the easiest
+        one to find and quote.
       </p>
 
       <h2>Why are HVAC and plumbing companies suited to AI recommendations?</h2>

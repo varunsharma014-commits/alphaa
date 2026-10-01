@@ -38,14 +38,16 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> no — paying for ads does not buy you a mention in an AI answer. There
-        is no bid, no budget and no account manager that gets your business named when someone asks ChatGPT
-        for a recommendation. The organic answer an assistant gives is assembled from public signals: your
-        site&apos;s text, your structured data, reviews, directories and third-party coverage. Ad spend
-        touches none of those directly. It can affect them <em>indirectly</em>, because the assets you build
-        to run good ads — a real pricing page, comparison pages, a stream of new reviews — are the same
-        assets AI engines read. That second-order effect is real, and it is the only one worth planning
-        around.
+        <strong>Short answer:</strong> no — paying for ads does not buy you a mention in an AI answer. There is
+        no bid, no budget and no account manager that gets your business named when someone asks ChatGPT for a
+        recommendation. The organic answer an assistant gives is assembled from public signals: your site&apos;s
+        text, your structured data, reviews, directories and third-party coverage.
+      </p>
+
+      <p>
+        Ad spend touches none of those directly. It can affect them <em>indirectly</em>, because the assets you
+        build to run good ads — a real pricing page, comparison pages, a stream of new reviews — are the same
+        assets AI engines read. That second-order effect is real, and it is the only one worth planning around.
       </p>
 
       <h2>Why are paid ads and AI answers separate systems?</h2>

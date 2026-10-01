@@ -34,12 +34,15 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> schema markup is structured data — usually written as JSON-LD — that
-        you add to your web pages to state your facts in a format machines can read directly. It tells search
+        <strong>Short answer:</strong> schema markup is structured data — usually written as JSON-LD — that you
+        add to your web pages to state your facts in a format machines can read directly. It tells search
         engines and AI assistants exactly what your business is, where it operates, and what it offers, instead
-        of forcing them to guess from your page text. It doesn&apos;t guarantee you&apos;ll be cited, but it
-        makes your facts consistent and verifiable — the qualities AI engines favor when they decide what to
-        trust and repeat.
+        of forcing them to guess from your page text.
+      </p>
+
+      <p>
+        It doesn&apos;t guarantee you&apos;ll be cited, but it makes your facts consistent and verifiable — the
+        qualities AI engines favor when they decide what to trust and repeat.
       </p>
 
       <h2>What is schema markup (and JSON-LD)?</h2>

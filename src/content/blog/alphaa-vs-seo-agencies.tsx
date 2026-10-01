@@ -40,10 +40,10 @@ export function Body() {
 
       <p>
         If you run a dental practice, a plumbing company, a law firm or a med spa, you have probably paid an
-        agency for a year or more and still can&apos;t say exactly what changed. That doesn&apos;t mean the agency
-        is bad. It means the question has shifted. More of your customers now type &quot;who&apos;s the best
-        emergency plumber near me&quot; into an AI assistant and get back a short list of names. Being on that
-        list is a different job from ranking on page one, and it is worth pricing the two honestly.
+        agency for a year or more and still can&apos;t say exactly what changed. That doesn&apos;t mean the
+        agency is bad. It means the question has shifted. More of your customers now type &quot;who&apos;s the
+        best emergency plumber near me&quot; into an AI assistant and get back a short list of names. Being on
+        that list is a different job from ranking on page one, and it is worth pricing the two honestly.
       </p>
 
       <h2>What does a $2,000-a-month SEO agency retainer actually pay for?</h2>

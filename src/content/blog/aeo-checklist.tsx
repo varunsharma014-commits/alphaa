@@ -34,11 +34,14 @@ export function Body() {
     <div className="article-prose">
       <p>
         <strong>Short answer:</strong> AI recommends your business when the public signals it reads — your
-        website, your schema, your reviews, your Google Business Profile, and what third parties say about
-        you — agree on a clear, consistent, well-supported story. AI engines build a{" "}
-        <strong>multi-source consensus</strong>: the more your own pages, your reviews, and outside mentions
-        line up, the more confidently a model names you in an answer. The checklist below covers the concrete
-        things that move that consensus in your favor.
+        website, your schema, your reviews, your Google Business Profile, and what third parties say about you —
+        agree on a clear, consistent, well-supported story. AI engines build a{" "} <strong>multi-source
+        consensus</strong>: the more your own pages, your reviews, and outside mentions line up, the more
+        confidently a model names you in an answer.
+      </p>
+
+      <p>
+        The checklist below covers the concrete things that move that consensus in your favor.
       </p>
 
       <p>

@@ -34,13 +34,16 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> Law firms get recommended by AI assistants when the public record
-        about the firm is complete, consistent, and verifiable — an accurate Google Business Profile, real
-        client reviews, clear practice-area pages, matching attorney bios, and credible third-party mentions
-        like bar directories and legitimate press. No one can pay ChatGPT, Gemini, or Perplexity to name a
-        firm, and no vendor can &quot;guarantee&quot; the top spot. AI reads what it can verify about you and
-        synthesizes an answer, so the work is making the true story of your firm the easiest one to find and
-        quote.
+        <strong>Short answer:</strong> Law firms get recommended by AI assistants when the public record about
+        the firm is complete, consistent, and verifiable — an accurate Google Business Profile, real client
+        reviews, clear practice-area pages, matching attorney bios, and credible third-party mentions like bar
+        directories and legitimate press.
+      </p>
+
+      <p>
+        No one can pay ChatGPT, Gemini, or Perplexity to name a firm, and no vendor can &quot;guarantee&quot;
+        the top spot. AI reads what it can verify about you and synthesizes an answer, so the work is making the
+        true story of your firm the easiest one to find and quote.
       </p>
 
       <h2>Why are lawyers targeted by AI guarantee scams?</h2>

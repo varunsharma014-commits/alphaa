@@ -176,7 +176,9 @@ export function Body() {
 
       <h2>How do I score my SEO agency audit?</h2>
       <p>
-        Count how many checks came back clean:
+        Score it by counting how many of the six checks came back clean: five or six means your agency is doing
+        real work, three or four means the relationship is worth renegotiating rather than ending, and two or
+        fewer means you are paying a retainer for reporting. Count the clean checks:
       </p>
       <ul>
         <li>

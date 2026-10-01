@@ -39,13 +39,16 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> For almost every business, <strong>live retrieval is the one that matters</strong>.
-        Training data is what a model remembers about the world from a corpus frozen months or years ago; live
-        retrieval is what it fetches from the web in the seconds after someone asks. Local businesses, small
-        companies and anything newer than the model&apos;s cutoff are essentially absent from training data, so
-        being recommended depends almost entirely on being findable, fetchable and quotable at retrieval time.
-        Training-data presence still helps — it is why big brands get named without any search happening — but it
-        is not something you can influence on a useful timescale. Retrieval is.
+        <strong>Short answer:</strong> For almost every business, <strong>live retrieval is the one that
+        matters</strong>. Training data is what a model remembers about the world from a corpus frozen months or
+        years ago; live retrieval is what it fetches from the web in the seconds after someone asks.
+      </p>
+
+      <p>
+        Local businesses, small companies and anything newer than the model&apos;s cutoff are essentially absent
+        from training data, so being recommended depends almost entirely on being findable, fetchable and
+        quotable at retrieval time. Training-data presence still helps — it is why big brands get named without
+        any search happening — but it is not something you can influence on a useful timescale. Retrieval is.
       </p>
 
       <h2>What is the difference between training data and live retrieval?</h2>

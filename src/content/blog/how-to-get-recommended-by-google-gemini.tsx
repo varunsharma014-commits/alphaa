@@ -36,12 +36,16 @@ export function Body() {
       </p>
       <p>
         <strong>Short answer:</strong> To get recommended by Google Gemini, make your business a clear,
-        consistent entity that Google already understands — a complete and accurate Google Business Profile,
-        a website with specific answer-first content and clean schema, genuine reviews, and matching details
-        everywhere Google looks. Gemini draws on Google&apos;s search index, its Knowledge Graph, and live
-        retrieval, so the signals that make you visible in Google Search are largely the same ones that make
-        Gemini name you. You cannot edit Gemini, and no one can guarantee a mention — but you can become one
-        of the businesses it can describe with confidence.
+        consistent entity that Google already understands — a complete and accurate Google Business Profile, a
+        website with specific answer-first content and clean schema, genuine reviews, and matching details
+        everywhere Google looks.
+      </p>
+
+      <p>
+        Gemini draws on Google&apos;s search index, its Knowledge Graph, and live retrieval, so the signals that
+        make you visible in Google Search are largely the same ones that make Gemini name you. You cannot edit
+        Gemini, and no one can guarantee a mention — but you can become one of the businesses it can describe
+        with confidence.
       </p>
 
       <h2>How is Gemini different from ChatGPT and Perplexity?</h2>

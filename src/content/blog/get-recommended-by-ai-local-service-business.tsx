@@ -35,13 +35,16 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> When someone asks an AI assistant &quot;best dentist near me&quot;
-        or &quot;a good HVAC company in [city],&quot; it doesn&apos;t invent an answer — it leans on the
-        public signals it can read about you: your Google Business Profile, your reviews, and your local
-        citations (your name, address, and phone repeated consistently across the web). So the businesses
-        that win AI recommendations are the ones that are <em>complete</em>, <em>well-reviewed</em>, and
-        described <em>consistently</em> everywhere. You can&apos;t edit the model&apos;s brain — but you can
-        absolutely shape what it reads about you.
+        <strong>Short answer:</strong> When someone asks an AI assistant &quot;best dentist near me&quot; or
+        &quot;a good HVAC company in [city],&quot; it doesn&apos;t invent an answer — it leans on the public
+        signals it can read about you: your Google Business Profile, your reviews, and your local citations
+        (your name, address, and phone repeated consistently across the web).
+      </p>
+
+      <p>
+        So the businesses that win AI recommendations are the ones that are <em>complete</em>,
+        <em>well-reviewed</em>, and described <em>consistently</em> everywhere. You can&apos;t edit the
+        model&apos;s brain — but you can absolutely shape what it reads about you.
       </p>
 
       <h2>Why does AI recommend some local businesses and ignore others?</h2>

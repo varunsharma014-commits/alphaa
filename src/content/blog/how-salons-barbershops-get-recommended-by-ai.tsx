@@ -41,10 +41,13 @@ export function Body() {
         <strong>Short answer:</strong> AI assistants recommend the salons and barbershops whose specifics they
         can actually read. That means three things in order: a complete, accurate Google Business Profile; a
         healthy stream of recent reviews that mention <em>specific services</em> by name; and a website that
-        states in plain text what you do, who you do it for, what it costs and when you are open. Beauty
-        businesses lose here more often than almost any other category for one reason — the whole industry
-        publishes its portfolio and its price list as images, and images are the one thing the engines do not
-        read.
+        states in plain text what you do, who you do it for, what it costs and when you are open.
+      </p>
+
+      <p>
+        Beauty businesses lose here more often than almost any other category for one reason — the whole
+        industry publishes its portfolio and its price list as images, and images are the one thing the engines
+        do not read.
       </p>
 
       <h2>What do customers actually ask AI about salons and barbers?</h2>

@@ -44,8 +44,11 @@ export function Body() {
         services, service area, seasons and rough pricing are stated in plain text somewhere a crawler can read
         — and confirmed by reviews and listings that agree with each other. Nothing about the green industry is
         special except two things that trip everyone up: <strong>the work is seasonal</strong>, and{" "}
-        <strong>&quot;landscaping&quot; means six different jobs to six different customers</strong>. Fix those
-        two and you are ahead of most of your market.
+        <strong>&quot;landscaping&quot; means six different jobs to six different customers</strong>.
+      </p>
+
+      <p>
+        Fix those two and you are ahead of most of your market.
       </p>
 
       <h2>What do customers actually ask an AI assistant about landscapers?</h2>

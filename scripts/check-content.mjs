@@ -283,13 +283,25 @@ function lintSources() {
     const first = paras.find((t) => !isByline(t))
     if (!first || !/Short answer:/.test(first)) fmtErr(slug, 'first paragraph must open with "<strong>Short answer:</strong>"')
     else {
+      // Target is 40-60 (see the format spec), but the gate allows up to 75:
+      // the paragraph can only be shortened at a sentence boundary, and in this
+      // corpus those routinely land at 62-70 words.
       const n = toText(first).replace(/^Short answer:\s*/, "").split(/\s+/).length
-      if (n < 40 || n > 60) warn(slug, `"Short answer" is ${n} words, want 40-60`)
+      if (n < 40 || n > 75) fmtErr(slug, `"Short answer" is ${n} words, want 40-75 (target 40-60)`)
     }
 
-    // question H2s must each be answered by the <p> that follows
+    // Question H2s must each be answered by the <p> that follows — except a
+    // section container (an H2 immediately followed by an <h3>), such as the
+    // FAQ block's own heading. Those are answered by their h3/p pairs.
     const h2 = pairs(body, "h2")
-    for (const p of h2) if (p.q.endsWith("?") && p.a.length < 40) fmtErr(slug, `question H2 "${p.q}" is not followed by an answering <p> of 40+ chars`)
+    // Capture what follows each </h2> and then test it. Requiring <h3> inside
+    // the pattern makes the lazy group backtrack across other headings.
+    const container = new Set()
+    for (const c of body.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>([\s\S]{0,30})/g))
+      if (/^\s*<h3[\s>]/.test(c[2])) container.add(toText(c[1]))
+    for (const p of h2)
+      if (p.q.endsWith("?") && p.a.length < 40 && !container.has(p.q))
+        fmtErr(slug, `question H2 "${p.q}" is not followed by an answering <p> of 40+ chars`)
 
     // the hand-written FAQ block
     const faqH3 = pairs(body, "h3").filter((p) => p.q.endsWith("?"))

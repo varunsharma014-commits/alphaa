@@ -42,10 +42,13 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> AI assistants recommend the auto repair shops they can describe without
         guessing — which makes and systems you actually work on, what a diagnostic costs, what your warranty
-        covers, how long a job takes, and whether you can take the car today. A shop whose website says
-        &quot;honest, dependable auto repair you can trust&quot; has given a model nothing to match a driver&apos;s
-        question against, so the model names the shop down the road that published its diagnostic fee and its
-        list of serviced makes.
+        covers, how long a job takes, and whether you can take the car today.
+      </p>
+
+      <p>
+        A shop whose website says &quot;honest, dependable auto repair you can trust&quot; has given a model
+        nothing to match a driver&apos;s question against, so the model names the shop down the road that
+        published its diagnostic fee and its list of serviced makes.
       </p>
 
       <h2>What do drivers actually ask AI about car repairs?</h2>

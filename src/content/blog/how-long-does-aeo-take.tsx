@@ -37,10 +37,14 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> AEO does not work overnight, but it is usually faster than classic SEO.
         Some of the signals AI engines read update in days to a couple of weeks — a corrected Google Business
-        Profile, new pages that get retrieved, fresh reviews. The deeper win, where multiple engines describe you
-        confidently and consistently, builds over roughly one to three months as corroboration accumulates across
-        the web. Anyone promising results in 24 hours is selling hype; anyone quoting a fixed date is guessing.
-        The honest answer is a range, and it depends on where you start.
+        Profile, new pages that get retrieved, fresh reviews.
+      </p>
+
+      <p>
+        The deeper win, where multiple engines describe you confidently and consistently, builds over roughly
+        one to three months as corroboration accumulates across the web. Anyone promising results in 24 hours is
+        selling hype; anyone quoting a fixed date is guessing. The honest answer is a range, and it depends on
+        where you start.
       </p>
 
       <h2>Why is there no single answer to how long AEO takes?</h2>

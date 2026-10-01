@@ -30,14 +30,16 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> To get your business cited on Perplexity, publish recent, answer-first content that states
-        clear, verifiable facts an AI can quote — then earn references to it from other reputable
-        sites so your information shows up consistently across the web. Perplexity answers questions
-        by retrieving live web pages and listing the sources it used right inside the answer. So
-        unlike a model that leans mostly on training data, Perplexity will cite you when your page is
-        fresh, easy to extract from, and corroborated elsewhere. You cannot edit Perplexity itself,
-        and no one can guarantee a citation — but you can make your business one of the obvious
-        sources it reaches for.
+        <strong>Short answer:</strong> To get your business cited on Perplexity, publish recent, answer-first
+        content that states clear, verifiable facts an AI can quote — then earn references to it from other
+        reputable sites so your information shows up consistently across the web. Perplexity answers questions
+        by retrieving live web pages and listing the sources it used right inside the answer.
+      </p>
+
+      <p>
+        So unlike a model that leans mostly on training data, Perplexity will cite you when your page is fresh,
+        easy to extract from, and corroborated elsewhere. You cannot edit Perplexity itself, and no one can
+        guarantee a citation — but you can make your business one of the obvious sources it reaches for.
       </p>
 
       <h2>How is Perplexity different from ChatGPT?</h2>

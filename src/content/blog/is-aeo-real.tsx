@@ -33,13 +33,16 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> Yes, AEO (Answer Engine Optimization) is real — but not in the way
-        the louder marketers describe it. It&apos;s real because it&apos;s grounded in how AI assistants
-        actually build answers: a documented computer-science process called retrieval-augmented generation
-        (RAG), combined with what the model learned in training. AEO is the practice of making your business
-        easy for that process to find, verify, and cite. What it is <em>not</em> is a magic switch that
-        &quot;injects&quot; you into ChatGPT or guarantees you a spot in every answer. Anyone promising that is
-        selling hype.
+        <strong>Short answer:</strong> Yes, AEO (Answer Engine Optimization) is real — but not in the way the
+        louder marketers describe it. It&apos;s real because it&apos;s grounded in how AI assistants actually
+        build answers: a documented computer-science process called retrieval-augmented generation (RAG),
+        combined with what the model learned in training.
+      </p>
+
+      <p>
+        AEO is the practice of making your business easy for that process to find, verify, and cite. What it is
+        <em>not</em> is a magic switch that &quot;injects&quot; you into ChatGPT or guarantees you a spot in
+        every answer. Anyone promising that is selling hype.
       </p>
 
       <h2>Why do people ask whether AEO is real?</h2>

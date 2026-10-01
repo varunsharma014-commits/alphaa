@@ -35,10 +35,14 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> The fastest free way to see what ChatGPT says about your business is to
         open ChatGPT and ask it directly — by name and by category. Type &quot;What do you know about [your
-        business name] in [your city]?&quot; and then &quot;Who are the best [your service] in [your city]?&quot;
-        to see whether you get named at all. Because AI answers vary by wording, engine, and user, one check
-        isn&apos;t enough: repeat the same prompts in Claude, Gemini, and Perplexity, and run each a few times.
-        Below are the exact prompts, what to look for, and one faster method that checks every engine at once.
+        business name] in [your city]?&quot; and then &quot;Who are the best [your service] in [your
+        city]?&quot; to see whether you get named at all.
+      </p>
+
+      <p>
+        Because AI answers vary by wording, engine, and user, one check isn&apos;t enough: repeat the same
+        prompts in Claude, Gemini, and Perplexity, and run each a few times. Below are the exact prompts, what
+        to look for, and one faster method that checks every engine at once.
       </p>
 
       <h2>Why can&apos;t you assume ChatGPT knows your business?</h2>

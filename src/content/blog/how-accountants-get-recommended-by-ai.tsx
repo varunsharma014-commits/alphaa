@@ -41,12 +41,15 @@ export function Body() {
 
       <p>
         <strong>Short answer:</strong> AI assistants recommend the accounting firms they can describe
-        confidently. That means three things in practice: your site says <em>specifically</em> who you serve
-        and what you charge to do what, your firm details and licence status are consistent and verifiable
-        across Google, state board and IRS directories, and other people — reviewers, forum threads, local
-        press — say the same things about you. Firms that describe themselves as a &quot;full-service
-        accounting firm serving businesses of all sizes&quot; give a model nothing to hold on to, so it names
-        someone else.
+        confidently. That means three things in practice: your site says <em>specifically</em> who you serve and
+        what you charge to do what, your firm details and licence status are consistent and verifiable across
+        Google, state board and IRS directories, and other people — reviewers, forum threads, local press — say
+        the same things about you.
+      </p>
+
+      <p>
+        Firms that describe themselves as a &quot;full-service accounting firm serving businesses of all
+        sizes&quot; give a model nothing to hold on to, so it names someone else.
       </p>
 
       <h2>What do people ask AI when they need an accountant?</h2>

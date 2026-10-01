@@ -36,12 +36,15 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> Yes, YouTube videos show up in AI answers — but the engine is almost never
-        watching your video. It is reading the <em>text attached to it</em>: the title, the description, the
-        captions or transcript, the chapter markers, and any page that embeds or writes about the video. A video
-        with an auto-generated transcript full of &quot;um, so basically&quot; is close to invisible. A video with
-        a question-shaped title, a real transcript, and a written companion page on your own site is a citable
-        source.
+        <strong>Short answer:</strong> Yes, YouTube videos show up in AI answers — but the engine is almost
+        never watching your video. It is reading the <em>text attached to it</em>: the title, the description,
+        the captions or transcript, the chapter markers, and any page that embeds or writes about the video.
+      </p>
+
+      <p>
+        A video with an auto-generated transcript full of &quot;um, so basically&quot; is close to invisible. A
+        video with a question-shaped title, a real transcript, and a written companion page on your own site is
+        a citable source.
       </p>
 
       <p>

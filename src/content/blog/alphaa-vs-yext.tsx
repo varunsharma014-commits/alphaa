@@ -35,9 +35,9 @@ export function Body() {
     <div className="article-prose">
       <p>
         <strong>Short answer:</strong> Yext is an enterprise platform built to keep business information
-        accurate across hundreds of directories, review sites and location pages, and it now adds AI
-        visibility tracking on top. Alphaa is an AI agent for a local business that wants to be named when
-        customers ask ChatGPT, Gemini, Claude or Perplexity, with the work done for it at a flat monthly price.
+        accurate across hundreds of directories, review sites and location pages, and it now adds AI visibility
+        tracking on top. Alphaa is an AI agent for a local business that wants to be named when customers ask
+        ChatGPT, Gemini, Claude or Perplexity, with the work done for it at a flat monthly price.
       </p>
 
       <p>

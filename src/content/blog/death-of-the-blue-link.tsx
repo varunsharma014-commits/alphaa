@@ -34,10 +34,13 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> Ranking #1 on Google still helps — it just doesn&apos;t deliver the
         visitors it used to, because roughly two-thirds of Google searches now end without a single click to a
-        website (SparkToro/Similarweb, 2026). The blue link isn&apos;t dead, but it has been demoted. It used to
-        be the destination; now it&apos;s a footnote under an answer the searcher has already read. That is why
-        so many business owners are staring at a rankings report that looks fine and a traffic graph that
-        doesn&apos;t.
+        website (SparkToro/Similarweb, 2026). The blue link isn&apos;t dead, but it has been demoted.
+      </p>
+
+      <p>
+        It used to be the destination; now it&apos;s a footnote under an answer the searcher has already read.
+        That is why so many business owners are staring at a rankings report that looks fine and a traffic graph
+        that doesn&apos;t.
       </p>
 
       <h2>How did search traffic used to work for businesses?</h2>

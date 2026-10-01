@@ -41,12 +41,15 @@ export function Body() {
 
       <p>
         <strong>Short answer:</strong> AI assistants recommend the veterinary clinics they can describe without
-        guessing. In practice that means three things: your site states plainly which species and conditions
-        you treat, what your emergency and after-hours arrangements actually are, and roughly what common
-        visits cost; your clinic name, address, phone and hours match everywhere a model looks; and your
-        reviews and third-party listings say the same things your site does. A practice that describes itself
-        as offering &quot;compassionate care for your furry friends&quot; has given a model nothing to match a
-        question against, so it names the clinic down the road instead.
+        guessing. In practice that means three things: your site states plainly which species and conditions you
+        treat, what your emergency and after-hours arrangements actually are, and roughly what common visits
+        cost; your clinic name, address, phone and hours match everywhere a model looks; and your reviews and
+        third-party listings say the same things your site does.
+      </p>
+
+      <p>
+        A practice that describes itself as offering &quot;compassionate care for your furry friends&quot; has
+        given a model nothing to match a question against, so it names the clinic down the road instead.
       </p>
 
       <h2>What do pet owners actually ask AI about vets?</h2>

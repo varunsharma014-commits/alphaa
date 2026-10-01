@@ -40,11 +40,15 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> Yes, but it is a different kind of speed than the one your SEO report
         measures. AI engines do not appear to score you on Core Web Vitals — nobody has shown that a Largest
-        Contentful Paint of 3.1s versus 1.8s changes whether ChatGPT names your business. What does matter is{" "}
-        <strong>whether a crawler receives your complete content in the initial HTML response, fast enough that it
-        does not time out or give up</strong>. Speed is a gating factor for retrieval, not a ranking factor for
-        quality. A slow page that still returns full HTML is usually fine. A fast-feeling page that returns an
-        empty shell and fills it in with JavaScript half a second later is invisible.
+        Contentful Paint of 3.1s versus 1.8s changes whether ChatGPT names your business.
+      </p>
+
+      <p>
+        What does matter is{" "} <strong>whether a crawler receives your complete content in the initial HTML
+        response, fast enough that it does not time out or give up</strong>. Speed is a gating factor for
+        retrieval, not a ranking factor for quality. A slow page that still returns full HTML is usually fine. A
+        fast-feeling page that returns an empty shell and fills it in with JavaScript half a second later is
+        invisible.
       </p>
 
       <h2>What does &quot;speed&quot; actually mean for AI search?</h2>

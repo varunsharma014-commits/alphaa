@@ -36,13 +36,16 @@ export function Body() {
         By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses. Here is the honest answer.
       </p>
       <p>
-        <strong>Short answer:</strong> AEO (Answer Engine Optimization) and GEO (Generative Engine
-        Optimization) describe nearly the same discipline under two different names — making your business
-        easy for AI systems to find, understand, trust, and cite. They emerged from different corners of the
-        industry and carry slightly different emphasis, but they run on the same underlying mechanism:
-        influencing the inputs AI engines read so they name you with confidence. If a vendor tells you GEO is
-        a fundamentally new science that replaces AEO, be skeptical — the label matters far less than the work,
-        and the work is largely identical.
+        <strong>Short answer:</strong> AEO (Answer Engine Optimization) and GEO (Generative Engine Optimization)
+        describe nearly the same discipline under two different names — making your business easy for AI systems
+        to find, understand, trust, and cite. They emerged from different corners of the industry and carry
+        slightly different emphasis, but they run on the same underlying mechanism: influencing the inputs AI
+        engines read so they name you with confidence.
+      </p>
+
+      <p>
+        If a vendor tells you GEO is a fundamentally new science that replaces AEO, be skeptical — the label
+        matters far less than the work, and the work is largely identical.
       </p>
 
       <h2>What do AEO and GEO actually mean?</h2>

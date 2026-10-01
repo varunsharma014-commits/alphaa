@@ -40,9 +40,12 @@ export function Body() {
         search engines as one specific, well-defined thing — a single entity with a consistent name, location,
         category, and set of facts across every source. Before ChatGPT, Gemini, or Perplexity can recommend you,
         it first has to resolve <em>who you are</em> and be confident it isn&apos;t confusing you with a
-        similarly named company. When your identity is fragmented or contradictory across the web, the engine
-        hedges or leaves you out. Entity SEO fixes that by aligning your signals so a machine can pin down a
-        single, trustworthy identity.
+        similarly named company.
+      </p>
+
+      <p>
+        When your identity is fragmented or contradictory across the web, the engine hedges or leaves you out.
+        Entity SEO fixes that by aligning your signals so a machine can pin down a single, trustworthy identity.
       </p>
 
       <h2>What is an &quot;entity,&quot; exactly?</h2>

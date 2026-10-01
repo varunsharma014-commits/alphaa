@@ -42,10 +42,13 @@ export function Body() {
         <strong>Short answer:</strong> Yes, directory listings still matter — but for a completely different
         reason than they did in 2015. Almost nobody browses Yelp to find a plumber anymore, so directories are
         weak traffic sources. What they are now is <strong>corroboration</strong>: independent, heavily crawled
-        pages that state your name, address, phone, hours, services and category. When an AI assistant is
-        deciding whether to name you, it is looking for the same facts in more than one place it did not have
-        to take your word for. A handful of accurate, agreeing listings does that job. Forty auto-generated
-        listings with three different phone numbers actively does the opposite.
+        pages that state your name, address, phone, hours, services and category.
+      </p>
+
+      <p>
+        When an AI assistant is deciding whether to name you, it is looking for the same facts in more than one
+        place it did not have to take your word for. A handful of accurate, agreeing listings does that job.
+        Forty auto-generated listings with three different phone numbers actively does the opposite.
       </p>
 
       <h2>How have directory listings changed in the age of AI search?</h2>

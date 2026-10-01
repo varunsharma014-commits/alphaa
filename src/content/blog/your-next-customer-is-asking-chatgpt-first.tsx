@@ -40,9 +40,13 @@ export function Body() {
         <strong>Short answer:</strong> A growing share of buying research now starts inside an AI assistant
         rather than a search box — 65% of consumers now use AI tools to research products before buying (Clutch,
         2026), and ChatGPT alone serves 800M+ weekly active users, handling billions of queries every day
-        (OpenAI, 2025). The practical consequence for your business is that a shortlist can be formed before
-        anyone visits a website, reads a review page, or sees a single ad. If the assistant doesn&apos;t name
-        you, you were never in the running — and nothing in your analytics will tell you it happened.
+        (OpenAI, 2025).
+      </p>
+
+      <p>
+        The practical consequence for your business is that a shortlist can be formed before anyone visits a
+        website, reads a review page, or sees a single ad. If the assistant doesn&apos;t name you, you were
+        never in the running — and nothing in your analytics will tell you it happened.
       </p>
 
       <h2>How has the way customers research businesses changed?</h2>

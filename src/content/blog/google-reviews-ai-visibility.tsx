@@ -36,10 +36,13 @@ export function Body() {
         <strong>Short answer:</strong> Yes — your Google reviews strongly influence whether ChatGPT, Gemini,
         Perplexity, and Google&apos;s own AI Overviews recommend your business. Reviews are one of the richest
         third-party signals an AI engine can read: they&apos;re specific, recent, written by other people, and
-        published on a source the models already trust. When an assistant decides who to name as &quot;the best
-        plumber in Denver,&quot; the volume, rating, recency, and <em>wording</em> of your reviews feed directly
-        into that decision. What reviews cannot do is buy you a guaranteed spot — they shift the odds, they
-        don&apos;t flip a switch.
+        published on a source the models already trust.
+      </p>
+
+      <p>
+        When an assistant decides who to name as &quot;the best plumber in Denver,&quot; the volume, rating,
+        recency, and <em>wording</em> of your reviews feed directly into that decision. What reviews cannot do
+        is buy you a guaranteed spot — they shift the odds, they don&apos;t flip a switch.
       </p>
 
       <p>

@@ -37,13 +37,16 @@ export function Body() {
         By the Alphaa team — we build an AI agent that checks what ChatGPT, Gemini, Claude and Perplexity say about local businesses.
       </p>
       <p>
-        <strong>Short answer:</strong> allow the retrieval agents that fetch pages to answer live questions —{" "}
-        <code>OAI-SearchBot</code>, <code>ChatGPT-User</code>, <code>PerplexityBot</code>,{" "}
+        <strong>Short answer:</strong> allow the retrieval agents that fetch pages to answer live questions —{" "} <code>OAI-SearchBot</code>, <code>ChatGPT-User</code>, <code>PerplexityBot</code>,{" "}
         <code>Claude-User</code> — because blocking them makes you ineligible to be cited in AI answers. The
         training crawlers (<code>GPTBot</code>, <code>ClaudeBot</code>, <code>Google-Extended</code>,{" "}
-        <code>CCBot</code>) are a separate, genuinely optional decision about whether your content may be used to
-        train future models. Most businesses that want to be recommended by AI should allow both; businesses with
-        proprietary content sometimes block training while keeping retrieval open.
+        <code>CCBot</code>) are a separate, genuinely optional decision about whether your content may be used
+        to train future models.
+      </p>
+
+      <p>
+        Most businesses that want to be recommended by AI should allow both; businesses with proprietary content
+        sometimes block training while keeping retrieval open.
       </p>
 
       <h2>Why are there two kinds of AI bot?</h2>

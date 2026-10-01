@@ -41,9 +41,12 @@ export function Body() {
         <strong>Short answer:</strong> Yes, content freshness affects whether AI engines cite you — but it is
         the <em>substance</em> of the update that matters, not the timestamp. AI assistants that retrieve live
         web results tend to favour pages that are recent, dated, and factually current for time-sensitive
-        questions, and they largely ignore recency for stable, definitional ones. Bumping a
-        &quot;last updated&quot; date on unchanged text does not help and can quietly hurt you, because the
-        engine can compare your claimed date against content that plainly has not moved.
+        questions, and they largely ignore recency for stable, definitional ones.
+      </p>
+
+      <p>
+        Bumping a &quot;last updated&quot; date on unchanged text does not help and can quietly hurt you,
+        because the engine can compare your claimed date against content that plainly has not moved.
       </p>
 
       <h2>Why does content freshness matter to an AI engine?</h2>

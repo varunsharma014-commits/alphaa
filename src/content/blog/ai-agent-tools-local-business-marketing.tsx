@@ -44,15 +44,15 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> The best AI agent tools for a local business in 2026 each own one job:
         getting you recommended by AI assistants, answering the phone, collecting and replying to reviews,
-        booking appointments, drafting social posts, and running ads. Start with the job where you lose the
-        most customers today, not the tool with the most features.
+        booking appointments, drafting social posts, and running ads. Start with the job where you lose the most
+        customers today, not the tool with the most features.
       </p>
 
       <p>
         This guide is for owners of dentists, plumbing and HVAC companies, restaurants, law firms, med spas and
         similar businesses. Every outside tool below is described from its own website, and prices only appear
-        where the vendor publishes them (as of September 2026). We make one of the tools on this list — Alphaa
-        — and we&apos;ve tried to describe it the same way we describe everyone else.
+        where the vendor publishes them (as of September 2026). We make one of the tools on this list — Alphaa —
+        and we&apos;ve tried to describe it the same way we describe everyone else.
       </p>
 
       <h2>What is an AI agent for a local business?</h2>

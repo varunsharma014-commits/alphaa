@@ -41,9 +41,13 @@ export function Body() {
         <strong>Short answer:</strong> AI engines almost never quote a whole page — they quote a{" "}
         <em>passage</em>, a few hundred words of text that was retrieved on its own and had to make sense
         without the rest of the article around it. So the unit of AEO writing is not the page, it is the
-        self-contained paragraph. Write each section so that if you cut it out and handed it to a stranger with
-        no title, no headline, and no surrounding context, it would still answer one specific question
-        completely and name the business it is about.
+        self-contained paragraph.
+      </p>
+
+      <p>
+        Write each section so that if you cut it out and handed it to a stranger with no title, no headline, and
+        no surrounding context, it would still answer one specific question completely and name the business it
+        is about.
       </p>
 
       <h2>Why do AI engines cite passages instead of whole pages?</h2>

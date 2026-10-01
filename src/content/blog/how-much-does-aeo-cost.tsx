@@ -42,9 +42,12 @@ export function Body() {
         <strong>Short answer:</strong> answer engine optimization costs <strong>$0 to about $500 in one-off
         effort if you do it yourself</strong>, <strong>$30 to $300 a month for a monitoring or automation
         tool</strong>, and <strong>$1,500 to $10,000 a month for an agency retainer</strong>. Most small
-        businesses do not need the top tier. The work that moves AI recommendations the most — consistent
-        business facts, structured data, reviews, and a few genuinely useful pages — is cheap in dollars and
-        expensive in attention.
+        businesses do not need the top tier.
+      </p>
+
+      <p>
+        The work that moves AI recommendations the most — consistent business facts, structured data, reviews,
+        and a few genuinely useful pages — is cheap in dollars and expensive in attention.
       </p>
 
       <h2>What are you actually paying for in AEO?</h2>

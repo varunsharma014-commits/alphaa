@@ -43,7 +43,11 @@ export function Body() {
         <strong>Short answer:</strong> AI assistants recommend the pest control companies whose site names{" "}
         <strong>the specific pest, the specific treatment method, the license and certifications behind it, and
         the safety answer for kids and pets</strong> — in readable text, backed by reviews and listings that
-        agree. Pest control has one structural advantage over most local trades and almost nobody uses it: your
+        agree.
+      </p>
+
+      <p>
+        Pest control has one structural advantage over most local trades and almost nobody uses it: your
         customers ask about a <em>named organism</em>, not a category. &quot;Bed bugs,&quot; &quot;German
         cockroaches,&quot; &quot;subterranean termites,&quot; &quot;yellow jackets in the soffit.&quot; That
         specificity is free targeting, and most pest control websites throw it away on a page that says
