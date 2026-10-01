@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Moving Companies Get Recommended by AI",
   description:
     "AI assistants recommend movers that publish a verifiable USDOT or state licence number, a specific service radius and move type, and a consistent review record across Google, Yelp and moving directories. Here is the playbook for movers, including the trust problem that decides most of these answers.",
+  subtitle:
+    "Moving companies get recommended when licensing is verifiable, the type of move and coverage area are unambiguous, and recent reviews corroborate both.",
   date: "2026-08-21",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how moving companies get recommended by ai",
+  takeaways: [
+    "Customers ask specific questions built around a date, an origin, a destination, a size and usually one awkward item.",
+    "Because moving fraud is a well-documented consumer-protection topic, so assistants build a verification step into their answers.",
+    "Five signals decide it: a crawlable licence number.",
+    "It usually finds an identity and verification problem rather than a content problem.",
+    "Fix identity in week 1, structured data in week 2, specific pages in week 3, and reviews plus a re-check in week 4.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

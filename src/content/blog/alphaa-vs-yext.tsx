@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Alphaa vs. Yext: Managing Listings vs. Managing AI Answers",
   description:
     "An honest comparison of Yext and Alphaa for local businesses and multi-location brands: what each does, who does the work, how pricing works, and when to use one, the other, or both.",
+  subtitle:
+    "Yext keeps your listings accurate across directories, while Alphaa checks what AI assistants actually say about you and fixes the signals behind it.",
   date: "2026-09-25",
+  updated: "2026-10-01",
   readMins: 7,
   tag: "Comparison",
+  kind: "comparison",
+  keyphrase: "alphaa vs yext",
+  takeaways: [
+    "Yext is a platform for managing a brand’s location data from one central record and pushing it to directories, maps, review sites and web pages.",
+    "Alphaa focuses on one question: when a customer asks an AI assistant for a business like yours, does your name come up?",
+    "Yext is a broad system of record for many locations; Alphaa is a narrow, done-for-you agent for getting named in AI answers.",
+    "Yext is the better fit if you run dozens or hundreds of locations and your biggest problem is keeping hours.",
+    "Alphaa is the better fit if you are a local business owner who wants to show up when people ask AI for a recommendation.",
+  ],
+  sources: [
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const

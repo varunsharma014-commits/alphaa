@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Gyms and Fitness Studios Get Recommended by AI",
   description:
     "When someone asks ChatGPT for a gym near them, the answer is decided by class schedules, pricing transparency, review specifics and a claimed profile — not by your website's design. Here is the working playbook for gyms, boutique studios and personal trainers.",
+  subtitle:
+    "Gyms get recommended when pricing, the class schedule and who the gym is for are published, because fitness queries are almost always filtered.",
   date: "2026-08-02",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how gyms fitness studios get recommended by ai",
+  takeaways: [
+    "Gym queries carry hard filters like time, price and class type, and the fitness industry withholds exactly those facts.",
+    "Reviews are the strongest third-party evidence a gym has, but for AI purposes the content of the review matters more than the star average.",
+    "Profile corrections tend to surface within days to a few weeks once the sources are re-crawled; new pages and reviews take longer.",
+    "The common questions are whether you must publish prices, whether ClassPass or Mindbody covers you, and what applies to trainers without premises and franchise gyms.",
+    "Gyms lose AI recommendations for a boring reason: the facts people filter on are the exact facts the industry hides.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "AEO vs GEO: Is Generative Engine Optimization Different from Answer Engine Optimization?",
   description:
     "AEO and GEO describe nearly the same discipline under two names — making your business easy for AI engines to find, trust, and cite. The differences are mostly emphasis, not mechanism. Here is what each term means, where they diverge, and why the label matters less than the work.",
+  subtitle:
+    "AEO and GEO describe nearly the same discipline under two different names, so pick the term your audience uses and judge the work instead of the label.",
   date: "2026-07-25",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Explainer",
+  kind: "glossary",
+  keyphrase: "aeo vs geo",
+  takeaways: [
+    "Answer Engine Optimization (AEO) is the practice of optimizing so that \"answer engines\".",
+    "AEO and GEO share the same target systems and core mechanism, and differ mainly in framing and origin.",
+    "GEO leans slightly more technical and content-level, while AEO leans slightly more toward the whole entity.",
+    "Both strengthen the inputs AI engines weigh to decide who to name, with multi-source consensus as the thread connecting them.",
+    "Use whichever your audience uses, and do not let the debate distract you.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

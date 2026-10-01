@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Insurance Agencies and Brokers Get Recommended by AI",
   description:
     "When someone asks ChatGPT for an agent who writes contractor general liability in Georgia, the engines answer from what agencies have published. Here is what actually decides whether an insurance agency or broker gets named.",
+  subtitle:
+    "Agencies and brokers get recommended when the lines they write, the carriers they represent and the states they are licensed in are all in readable text.",
   date: "2026-08-19",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how insurance agencies get recommended by ai",
+  takeaways: [
+    "Buyers ask constraint-heavy questions naming a line of business.",
+    "Carrier-supplied template sites and compliance nervousness leave most agencies with nothing distinctive to cite, which is why being specific wins.",
+    "Six facts decide it: lines of business, appetite, carriers and markets, licensed states, who you are in entity terms, and your process and turnaround.",
+    "The structure that performs in this vertical is boring and specific: one page per line-of-business plus audience combination you genuinely serve.",
+    "Reviews that name the specific situation you solved help most, not the star average alone.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

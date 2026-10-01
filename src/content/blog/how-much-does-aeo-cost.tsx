@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "How Much Does AEO Cost? An Honest 2026 Price Breakdown",
   description:
     "AEO in 2026 costs roughly $0 to $500 if you do it yourself, $30 to $300 a month for monitoring tools, and $1,500 to $10,000 a month for an agency retainer. Here is what each tier actually buys, what the hidden costs are, and how to tell whether you need to spend anything at all.",
+  subtitle:
+    "Doing it yourself costs almost nothing but your time, tools run roughly $99 to $199 a month, and agency retainers start around ten times that.",
   date: "2026-08-20",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Comparison",
+  kind: "guide",
+  keyphrase: "how much does aeo cost",
+  takeaways: [
+    "You pay for four things: diagnosis, fixes on your own property, off-property signals, and monitoring.",
+    "Doing it yourself costs $0 to $500 one-off.",
+    "AEO tools and monitoring cost $30 to $300 a month.",
+    "Agency AEO retainers in 2026 mostly sit between $1,500 and $5,000 a month for small and mid-sized businesses.",
+    "Your own time, developer time, review generation and waiting are the costs quotes usually leave out.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

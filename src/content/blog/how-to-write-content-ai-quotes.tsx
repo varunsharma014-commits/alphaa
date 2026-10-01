@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "How to Write Content AI Actually Quotes (The Passage-Level Guide)",
   description:
     "AI engines don't cite pages — they cite passages. Here's how retrieval chunking works, and the paragraph-level writing rules that make your content liftable into a ChatGPT, Perplexity or Gemini answer.",
+  subtitle:
+    "Engines quote passages rather than pages, so every section has to make sense on its own once it is pulled out of the article.",
   date: "2026-07-30",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Technical",
+  kind: "guide",
+  keyphrase: "how to write content ai quotes",
+  takeaways: [
+    "AI engines cite passages because retrieval chunks, matches and synthesizes text below page level, so each passage is stored and scored on its own.",
+    "A quotable passage names the entity, service, geography, hours, fee and conditions in one self-contained block.",
+    "Chunk boundaries usually fall on headings, so headings are how you control what gets stored together.",
+    "Pick one page, turn your customers’ real questions into H2s, answer each one in the first sentence, and run the isolation test.",
+  ],
+  sources: [
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "FAQPage - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/FAQPage" },
+  ],
 }
 
 export function Body() {

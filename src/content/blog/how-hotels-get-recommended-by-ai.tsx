@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Hotels, B&Bs and Short-Term Rentals Get Recommended by AI",
   description:
     "Travellers now plan trips by asking an AI assistant, and the assistant answers from booking sites, review platforms and travel guides rather than your own website. Here is how hospitality properties get named in those answers, and the specificity problem that keeps most of them out.",
+  subtitle:
+    "Hotels get recommended when the property is described in specific, matchable terms across the sources assistants actually read, not just on the booking engine.",
   date: "2026-08-06",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how hotels get recommended by ai",
+  takeaways: [
+    "Intermediaries own the descriptions, the queries are unusually constrained, and review volume is the reputation layer.",
+    "Mostly from booking platform listings, then review platforms, editorial travel guides and city roundups, and finally your own site and Business Profile.",
+    "Rewrite every description into specific facts an assistant could use to answer a constrained question.",
+    "Answer the predictable ones your front desk fields weekly, such as check-in times, parking, pets, accessibility, distances and breakfast.",
+    "Find the lists assistants actually cite for your city, then pitch a specific themed angle rather than the property.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

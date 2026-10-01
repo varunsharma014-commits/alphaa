@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "What Sources Do AI Engines Actually Cite?",
   description:
     "AI engines cite a predictable mix: your own site, review and map platforms, directories and association lists, forums like Reddit, news and trade press, reference sites like Wikipedia, and third-party best-of roundups. Here is what each category is used for, and how to measure the mix for your own category in about twenty minutes.",
+  subtitle:
+    "Engines cite a predictable set of source types, led by your own clear pages, third-party roundups, review platforms and community discussion.",
   date: "2026-08-22",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "what sources do ai engines cite",
+  takeaways: [
+    "No: citation share depends on the query sample, so no general ranking fits your category.",
+    "AI engines cite seven source types, each for a different job: your website, review and map platforms, directories, forums, press, reference sites and roundups.",
+    "Your site states the facts, but everything else confirms them, and six of the seven source types are ones you do not own.",
+    "Ask ten real customer questions in engines that show sources, log every cited domain, and count by category.",
+    "There is no universal ranking of the sources AI engines cite.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

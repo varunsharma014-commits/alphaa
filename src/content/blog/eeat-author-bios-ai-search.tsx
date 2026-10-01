@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Do Author Bios and About Pages Affect AI Search? How Engines Judge Credibility",
   description:
     "AI engines do not score E-E-A-T directly, but they retrieve and quote the pages that carry it. Here is what an author bio, an About page and a named source actually do to whether an assistant is willing to name you.",
+  subtitle:
+    "Named authors with checkable credentials give an engine a reason to trust a claim, which counts most on health, legal and financial topics.",
   date: "2026-08-09",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "eeat author bios ai search",
+  takeaways: [
+    "E-E-A-T stands for Experience, Expertise, Authoritativeness and Trustworthiness.",
+    "An engine can check three things: whether a named entity stands behind a claim.",
+    "In practice, the About page is disproportionately the document that gets retrieved when a question is about the business rather than the service.",
+    "Fabricated credentials and invented author personas are the obvious failure.",
+    "The usual questions are whether you need a named human author, whether a headshot helps, and how fast changes show up in answers.",
+  ],
+  sources: [
+    { title: "Our latest update to the quality rater guidelines: E-A-T gets an extra E for Experience", publisher: "Google Search Central", url: "https://developers.google.com/search/blog/2022/12/google-raters-guidelines-e-e-a-t" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "Organization - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/Organization" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

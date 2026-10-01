@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "SEO vs. AEO vs. GEO: What's the Difference, and Which One Gets You Customers in 2026?",
   description:
     "A plain-English, three-way comparison of SEO, AEO and GEO: what each one optimises for, what it measures, where the tactics overlap, and what a local business should do first.",
+  subtitle:
+    "SEO wins clicks, AEO and GEO win the answer, and in 2026 most businesses need the fundamentals of all three rather than a side to pick.",
   date: "2026-09-25",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Guide",
+  kind: "comparison",
+  keyphrase: "seo vs aeo vs geo",
+  takeaways: [
+    "SEO is the work of getting your web pages to rank high in a search engine’s list of results.",
+    "GEO is the work of getting your business mentioned.",
+    "They differ mainly in what the engine does with your content: SEO gets it listed.",
+    "Start with the basics that serve all three at once: a complete Google Business Profile.",
+    "Start by finding out whether AI tools already mention you, because that tells you which of the three layers needs the most work.",
+  ],
+  sources: [
+    { title: "Google Search Essentials (formerly Webmaster Guidelines)", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/essentials" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const

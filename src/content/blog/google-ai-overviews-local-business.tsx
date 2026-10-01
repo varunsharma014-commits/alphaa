@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Google AI Overviews for Local Businesses: How to Show Up",
   description:
     "Google AI Overviews pull from the same local signals that power the map pack — your Business Profile, reviews, and consistent citations — then synthesize an answer. Here is how local businesses earn a mention, honestly.",
+  subtitle:
+    "Showing up in AI Overviews means strengthening the local signals Google already trusts, then making the page on your site quotable.",
   date: "2026-07-13",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Playbook",
+  kind: "guide",
+  keyphrase: "google ai overviews for local business",
+  takeaways: [
+    "An AI Overview is the summarized answer Google now places at the top of many results pages.",
+    "They lean on your Google Business Profile, your reviews and their content, citation consistency, on-page content that answers the question, and structured data.",
+    "Complete your Business Profile, build a steady review flow, fix your citations, write pages that answer real questions, and earn third-party mentions.",
+    "You cannot pay Google to insert your business into an AI Overview, and no vendor has a backdoor that guarantees a mention.",
+    "Google AI Overviews are one surface among several.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Find information in faster & easier ways with AI Overviews in Google Search - Computer", publisher: "Google Help", url: "https://support.google.com/websearch/answer/14901683" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+  ],
 }
 
 export function Body() {

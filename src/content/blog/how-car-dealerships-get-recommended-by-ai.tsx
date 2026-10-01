@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Car Dealerships Get Recommended by AI",
   description:
     "AI assistants recommend dealerships whose website states the actual out-the-door pricing policy, live inventory in crawlable text, financing terms and service-department specifics — corroborated by reviews and marketplace listings. Here is the playbook, including the VDP problem almost every dealer has.",
+  subtitle:
+    "Dealerships get recommended when inventory, pricing and trade-in terms are crawlable text, because a database an engine cannot read may as well be empty.",
   date: "2026-08-25",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how car dealerships get recommended by ai",
+  takeaways: [
+    "They ask detailed questions in full sentences about out-the-door prices, credit, budget, fees and specific inventory.",
+    "Most vehicle detail pages load inventory with JavaScript, so a crawler that does not run it sees an empty container.",
+    "Add Vehicle and Offer schema, plus AutoDealer markup on the homepage, and keep it matching the visible page.",
+    "Ask any assistant which dealers are transparent about pricing and watch what it does — it looks for a page that says so in words.",
+    "It should state real parameters: the score bands your lenders work with, minimum down payment, term lengths and the documents to bring.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

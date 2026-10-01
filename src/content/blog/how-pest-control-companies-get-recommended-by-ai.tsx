@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Pest Control Companies Get Recommended by AI",
   description:
     "AI assistants recommend pest control companies that name the specific pest, the specific treatment, the license behind it and the safety answer — in plain text a crawler can read. Here is the pest-by-pest playbook, including the termite letter most operators never publish.",
+  subtitle:
+    "Pest control companies get recommended when the specific pests, treatment methods and service area are named, because these queries are almost always specific.",
   date: "2026-08-23",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how pest control companies get recommended by ai",
+  takeaways: [
+    "Homeowners in a pest emergency ask frightened, specific questions, and they type fast.",
+    "Yes: this is the single highest-return change, and it is the one we see skipped most often.",
+    "Yes, if you do these inspections: wood-destroying organism inspections for real estate closings are a steady, high-margin, deadline-driven service.",
+    "Answer it directly with specific, honest text about products, re-entry times and reduced-risk options.",
+    "List the towns, suburbs and ZIP codes you service in text, and state your real response commitment.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

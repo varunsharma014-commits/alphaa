@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Do Social Media Profiles Affect AI Recommendations? What Instagram, Facebook and LinkedIn Actually Contribute",
   description:
     "Social profiles influence AI recommendations indirectly — as entity confirmation and as text an engine can read — not as a popularity score. Here is which parts of a profile actually get crawled, which posts are effectively invisible, and how to make your accounts earn their keep.",
+  subtitle:
+    "Social profiles contribute as entity corroboration rather than as content, so consistent names, bios and links matter more than your posting cadence.",
   date: "2026-08-17",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "do social media profiles affect ai search",
+  takeaways: [
+    "An AI engine encounters your profile through live retrieval, training data, or entity resolution.",
+    "LinkedIn and Facebook business pages contribute most, YouTube moderately to highly, and Instagram, TikTok, and X contribute little.",
+    "For retrieval purposes, a photo of your price list is a blank space, because AI engines work primarily from text.",
+    "Follower counts, posting frequency, and bought engagement do not improve AI visibility, and a strong social presence will not rescue a thin website.",
+    "Nobody knows exactly: the weights are undisclosed, vary by engine, and change as models update.",
+  ],
+  sources: [
+    { title: "Organization - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/Organization" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

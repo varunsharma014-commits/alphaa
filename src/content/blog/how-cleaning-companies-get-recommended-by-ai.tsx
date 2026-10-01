@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Cleaning Companies Get Recommended by AI",
   description:
     "Homeowners and office managers now ask ChatGPT and Gemini which cleaning company to hire. Here is what those engines can actually read about a maid service or janitorial contractor, why most get skipped, and the specific fixes that change the answer.",
+  subtitle:
+    "Cleaning companies get recommended when their service list, pricing model, insurance status and coverage area are published in plain text an engine can fetch.",
   date: "2026-08-27",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how cleaning companies get recommended by ai",
+  takeaways: [
+    "They ask long, specific, anxious questions about price, insurance and background checks, move-out cleans, commercial jobs and products.",
+    "Business names collide, franchise sites hide the local operator, and the buying decision is about trusting strangers in your home.",
+    "It supplies the named service, a price signal and evidence of the outcome in retrievable text, not just a high star rating.",
+    "The usual questions cover timelines, competing with franchises, publishing prices, commercial versus residential, and guarantees.",
+    "Cleaning companies lose AI recommendations because their websites contain no facts, not on technical grounds — most have simple, fast, perfectly crawlable websites.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

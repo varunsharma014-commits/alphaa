@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "Schema Markup for AI Search: A Practical Guide (With Examples)",
   description:
     "What schema markup (JSON-LD) is, why it matters for AI search, and copy-paste examples for LocalBusiness, FAQPage, and Organization — plus where to place and how to validate it.",
+  subtitle:
+    "Schema gives engines typed facts instead of guessed ones, and a handful of types do almost all the useful work.",
   date: "2026-06-17",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 4,
   tag: "Technical Guide",
+  kind: "guide",
+  keyphrase: "schema markup for ai search",
+  takeaways: [
+    "Schema markup is a shared vocabulary defined at schema.org.",
+    "Schema matters because it makes your facts explicit, consistent and verifiable, which is what AI engines lean on.",
+    "If you serve customers in a specific area.",
+    "An FAQPage turns your questions and answers into structured pairs.",
+    "For a company that isn’t tied to a single physical location, Organization describes the entity itself.",
+  ],
+  sources: [
+    { title: "Structured Data Markup that Google Search Supports", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/search-gallery" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "LocalBusiness - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/LocalBusiness" },
+    { title: "Schema Markup Validator", publisher: "Schema.org", url: "https://validator.schema.org" },
+    { title: "FAQPage - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/FAQPage" },
+  ],
 }
 
 export function Body() {

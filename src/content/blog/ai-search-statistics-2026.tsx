@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "AI Search Statistics 2026: How Many People Actually Ask AI First",
   description:
     "The verified numbers on AI search in 2026: roughly two-thirds of Google searches end without a click, 65% of consumers research with AI before buying, and ChatGPT serves 800M+ weekly users. Every figure here is sourced — and we flag the ones that are widely misquoted.",
+  subtitle:
+    "The verified numbers on how many people now ask AI first, each one quoted with its source and its qualifier intact.",
   date: "2026-07-23",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 4,
   tag: "Data",
+  kind: "listicle",
+  keyphrase: "ai search statistics 2026",
+  takeaways: [
+    "The verified headline numbers are ~68% zero-click Google searches.",
+    "Together they show the click you used to earn is now optional, whether the answer arrives on Google’s results page or in ChatGPT.",
+    "Be careful with figures that are wrong, out of date, or missing a qualifier that changes their meaning.",
+    "The 2026 data points one way: fewer clicks.",
+  ],
+  sources: [
+    { title: "We Studied 200,000 AI Overviews: Here's What We Learned", publisher: "Semrush", url: "https://www.semrush.com/blog/ai-overviews-study/" },
+    { title: "Find information in faster & easier ways with AI Overviews in Google Search - Computer", publisher: "Google Help", url: "https://support.google.com/websearch/answer/14901683" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+  ],
 }
 
 export function Body() {

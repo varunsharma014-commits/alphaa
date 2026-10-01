@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Chiropractors Get Recommended by AI (Without Overclaiming)",
   description:
     "When a patient asks ChatGPT for a chiropractor who treats sciatica or takes their insurance, the engines answer from reviews, structured practice data and plain text on your site. Here is what decides whether you get named — and why health claims need more care than any other vertical.",
+  subtitle:
+    "Chiropractors get recommended when techniques, conditions treated and credentials are specific and checkable, without the outcome claims that make engines cautious.",
   date: "2026-08-17",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how chiropractors get recommended by ai",
+  takeaways: [
+    "They ask with a constraint attached: a condition, technique, insurer, schedule or price.",
+    "Five facts decide it: conditions treated, techniques, insurance and payment, access details like hours and parking, and checkable credentials.",
+    "Reviews that describe the condition, technique, outcome and insurance help most.",
+    "Use the Chiropractic schema type, a subtype of MedicalBusiness and LocalBusiness.",
+    "They usually ask whether blogging about back pain helps, whether competitors’ review counts matter, and what to do when an engine gets something wrong.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

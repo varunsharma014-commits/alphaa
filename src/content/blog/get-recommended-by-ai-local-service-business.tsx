@@ -7,9 +7,28 @@ export const meta: PostMeta = {
     "How Local Service Businesses Get Recommended by AI (Dentists, Clinics, Contractors & More)",
   description:
     "When someone asks ChatGPT for the best dentist, plumber, or clinic nearby, AI leans on your Google Business Profile, reviews, and consistent local citations. Here is the practical playbook to become the business it names.",
+  subtitle:
+    "Local service recommendations come from your profile, your reviews and third-party listings, so completeness and consistency beat website design.",
   date: "2026-06-17",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "get recommended by ai local service business",
+  takeaways: [
+    "AI recommends the businesses whose public information is clean, complete and trustworthy enough that it feels safe naming them.",
+    "AI has a confident story to tell about the practice with a complete profile.",
+    "Seven steps cover it: complete your Google Business Profile.",
+    "AEO improves the public signals AI reads, such as your profile, reviews, citations, schema and content, but it cannot edit a model or guarantee rankings.",
+    "Start with your Google Business Profile, then reviews, consistent NAP, specific service pages, and schema plus crawler access.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "ChatGPT Is Wrong About My Business. How Do I Fix It?",
   description:
     "You can't edit an AI model's memory — you fix the public sources it reads and re-checks. Here's how to diagnose whether an error comes from stale training or bad retrieval, the correction workflow in priority order, and how long each fix actually takes.",
+  subtitle:
+    "You cannot edit the model, so you correct the public sources it reads and wait for retrieval to catch up.",
   date: "2026-07-31",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Technical",
+  kind: "guide",
+  keyphrase: "fix wrong ai information about your business",
+  takeaways: [
+    "It is either stale training memory or bad live retrieval.",
+    "The six most common errors are closed-or-moved flags, wrong hours or phone numbers, entity collisions, invented services, stale pricing, and wrong ownership or staff.",
+    "Fix each error at its source, starting with your Google Business Profile and then your own site’s canonical facts.",
+    "Honestly: it depends on the mechanism, and nobody can promise you a date.",
+    "You cannot rewrite a model’s weights, make an engine ignore honest negative reviews, or guarantee the exact wording of an answer.",
+  ],
+  sources: [
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Verify your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/6300665" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

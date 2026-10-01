@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Accountants and CPA Firms Get Recommended by AI",
   description:
     "AI assistants name accounting firms that are specific about who they serve, verifiable through licence and directory records, and well reviewed. Here's the practical playbook for CPAs, tax preparers and bookkeepers.",
+  subtitle:
+    "Accounting firms get recommended when their specialisms, credentials and client type are written in plain text, because tax queries are always narrowly qualified.",
   date: "2026-07-29",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how accountants get recommended by ai",
+  takeaways: [
+    "They ask problem questions first, about tax and entity decisions, and then who questions looking for a specific accountant.",
+    "Four patterns cause it: deliberate vagueness, no pricing signal, content locked in PDFs and portals, and seasonal silence.",
+    "Before content, make your firm resolvable as one clear entity.",
+    "Specific enough to name your niche, geography, services and a price signal, as in this rewrite.",
+    "Answer pages get quoted, not brochures: cost pages, situation guides, jurisdiction-specific pages, deadline pages and a clear FAQ.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

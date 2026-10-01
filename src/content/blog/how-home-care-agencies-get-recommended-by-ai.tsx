@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Home Care and Senior Care Agencies Get Recommended by AI",
   description:
     "AI assistants recommend home care agencies that publish their state license number, the exact level of care they provide, who pays for it, and how fast they can start — in plain readable text. Here is the playbook, including the payer page almost no agency has.",
+  subtitle:
+    "Home care agencies get recommended when the state licence, services offered and coverage area are published, because families filter on exactly those facts.",
   date: "2026-08-24",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how home care agencies get recommended by ai",
+  takeaways: [
+    "Usually an adult child, often in another state, asking what kind of care a parent needs, who pays for it and who provides it locally.",
+    "Assistants clearly separate non-medical home care from skilled home health, so you need to say plainly which one you provide.",
+    "Because \"Does Medicare cover this?\" is the first question every family asks, and an honest state-specific answer makes you the source.",
+    "Families search by the condition in front of them, not by your service menu.",
+    "Reviews from adult children after the first month that name the city, level of care, condition and how quickly you started help most.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

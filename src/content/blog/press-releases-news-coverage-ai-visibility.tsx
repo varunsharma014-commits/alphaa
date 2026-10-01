@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Do Press Releases and News Coverage Help Your AI Visibility?",
   description:
     "Paid press release distribution does almost nothing for AI visibility. Genuine editorial coverage does a lot. Here is the difference an AI engine can actually detect, why syndicated wire copy gets discounted, and how to earn the kind of mention that gets quoted back to your customers.",
+  subtitle:
+    "Press coverage helps when a real publication describes you in text that gets indexed, while paid wire distribution mostly does not.",
   date: "2026-08-06",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Off-Page",
+  kind: "guide",
+  keyphrase: "press releases news coverage ai visibility",
+  takeaways: [
+    "A press release is duplicated, self-authored and carries no editorial signal, while coverage is independent.",
+    "Yes, for creating a citable record, feeding interested journalists and occasionally earning a real pickup.",
+    "Trade features, local news profiles, expert quotes, transcribed podcasts and \"best of\" roundups move answers; wire syndication sits near the bottom.",
+    "Build a source list from AI answers, pitch stories, make yourself quotable, answer journalist requests weekly and make coverage findable.",
+    "It takes weeks, not days, because an article must be published, crawled and retrieved first.",
+  ],
+  sources: [
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "Our latest update to the quality rater guidelines: E-A-T gets an extra E for Experience", publisher: "Google Search Central", url: "https://developers.google.com/search/blog/2022/12/google-raters-guidelines-e-e-a-t" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

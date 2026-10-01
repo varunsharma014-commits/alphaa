@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Why AI Recommends Your Competitor Instead of You",
   description:
     "If ChatGPT names a competitor and not you, it is rarely because they are better. It is because they are easier to describe. Here is the diff-based diagnostic we run to find the exact missing evidence — and how to close it.",
+  subtitle:
+    "Your competitor is easier to describe, not better, and a thirty-minute evidence diff shows you exactly which facts they publish and you do not.",
   date: "2026-08-03",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "why ai recommends your competitor",
+  takeaways: [
+    "AI names the business it can attach concrete, grounded attributes to from the documents it retrieves.",
+    "Usually they appear in third-party lists, have specific reviews, publish constraint facts, have a unified entity, or are simply retrievable.",
+    "Run a 30-minute diff: collect the answers, identify the repeat winner, build an evidence table, and read the gaps.",
+    "Publish the facts you withhold, get onto the lists that decide your category, ask for specific reviews, unify your entity and add schema.",
+    "Attacking the competitor and publishing thin content for volume will not work.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+  ],
 }
 
 export function Body() {

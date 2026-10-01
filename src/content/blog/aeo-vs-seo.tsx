@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "AEO vs SEO: Why Traditional SEO Agencies Fail in the Age of AI Search",
   description:
     "Should you hire an SEO agency or invest in AEO in 2026? A clear, honest comparison of cost, speed, and where customers actually find you — Google's links vs. AI answers.",
+  subtitle:
+    "SEO optimises you for Google's ranked links while AEO optimises you for the answer itself, and most agencies are still staffed and priced for the former.",
   date: "2026-06-17",
-  readMins: 7,
+  updated: "2026-10-01",
+  readMins: 3,
   tag: "Comparison",
+  kind: "comparison",
+  keyphrase: "aeo vs seo",
+  takeaways: [
+    "Customers increasingly ask ChatGPT or read Google’s AI Overview and act on the recommendation instead of clicking through ranked links.",
+    "A traditional SEO agency optimizes for Google’s ranked links, while AEO optimizes for AI answers plus Google.",
+    "Agencies are built around keywords, backlinks, and slow manual retainers, while AI visibility runs on a different playbook.",
+    "Let’s be honest: Google isn’t going anywhere, and classic SEO still drives real traffic.",
+    "AEO improves the public signals AI assistants favor.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Google Search Essentials (formerly Webmaster Guidelines)", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/essentials" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Zero-Click Search: Two Thirds of Google Searches Now End Without a Website Visit",
   description:
     "Roughly two-thirds of Google searches now end without a single click to any website (SparkToro/Similarweb, 2026) — up from around 60% in 2024. Here is what zero-click search means, why it's happening, and how businesses stay visible when the click disappears.",
+  subtitle:
+    "Roughly two-thirds of Google searches now end without a click to any website, so the result page and the AI answer have become the destination.",
   date: "2026-07-20",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Explainer",
+  kind: "guide",
+  keyphrase: "zero click search",
+  takeaways: [
+    "A zero-click search is any query where the searcher’s need is met without leaving the search results.",
+    "The current best estimate is that roughly two-thirds of Google searches now end without a single click to a website (SparkToro/Similarweb, 2026).",
+    "Zero-click became the norm because the results page became the answer, answers got good enough to end the search, and many searchers skipped Google entirely.",
+    "It lowers the value of your ranking, so rankings can hold while traffic falls.",
+    "Get included in the answer itself by being described verifiably, specifically and consistently across many sources.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Find information in faster & easier ways with AI Overviews in Google Search - Computer", publisher: "Google Help", url: "https://support.google.com/websearch/answer/14901683" },
+    { title: "We Studied 200,000 AI Overviews: Here's What We Learned", publisher: "Semrush", url: "https://www.semrush.com/blog/ai-overviews-study/" },
+  ],
 }
 
 export function Body() {

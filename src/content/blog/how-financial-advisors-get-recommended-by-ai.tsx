@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Financial Advisors Get Recommended by AI (Without Breaking Compliance)",
   description:
     "AI assistants answer \"who should manage my money\" from regulator filings, fee-only directories and specialist coverage — rarely from an advisor's own website. Here is how advisors become the named recommendation while staying inside the SEC and FINRA marketing rules.",
+  subtitle:
+    "Advisors get recommended when who they serve, how they charge and what they are registered to do are stated plainly and stay inside compliance.",
   date: "2026-08-07",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how financial advisors get recommended by ai",
+  takeaways: [
+    "They ask with constraints attached, such as fee model, location, client type or a specific situation.",
+    "Your Form ADV is a public, structured, regulator-maintained record, which makes it an authoritative third-party source about your practice.",
+    "Curated directories such as NAPFA, the CFP Board’s public directory and networks like XY Planning Network carry real weight.",
+    "For registered investment advisers, the SEC Marketing Rule permits testimonials and endorsements, subject to disclosure, oversight and anti-cherry-picking conditions.",
+    "A who-we-work-with page, a fees page, situation pages, a credentials and disclosures page, and a plain FAQ.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

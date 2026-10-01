@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "From SEO to AEO: The 90-Day Playbook for Getting Recommended by AI",
   description:
     "A concrete 90-day plan to shift from ranking on Google to getting recommended by ChatGPT, Claude, Gemini, and Perplexity — three 30-day phases of measure, fix, and build, with the exact tasks we run for local businesses.",
+  subtitle:
+    "Three thirty-day phases: measure what AI says about you now, fix the facts and structure it reads, then build the third-party evidence it corroborates against.",
   date: "2026-07-23",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "guide",
+  keyphrase: "how to switch from seo to aeo",
+  takeaways: [
+    "No: AI retrieval reads the same crawlable, well-structured content good SEO already produces, so you add a layer rather than rebuild.",
+    "Ask ChatGPT, Claude, Gemini and Perplexity customer questions, audit your facts and write down a baseline.",
+    "Make your core facts identical everywhere, rewrite service pages answer-first, add schema and publish plain FAQ answers.",
+    "Build reviews, listings and a few genuine mentions, then re-run your day-1 measurement.",
+    "It is three 30-day phases: measure, fix, then build.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

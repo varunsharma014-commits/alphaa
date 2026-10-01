@@ -6,9 +6,24 @@ export const meta: PostMeta = {
   title: "How to Get Your Business Cited on Perplexity",
   description:
     "Perplexity leans on live web retrieval and shows its sources inline, so getting cited comes down to being a recent, clear, citable source. Here is a practical playbook.",
+  subtitle:
+    "Perplexity cites recent, answer-first pages that state verifiable facts, because it retrieves live and shows its sources on every answer.",
   date: "2026-06-17",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "How-to",
+  kind: "industry",
+  keyphrase: "how to get cited on perplexity",
+  takeaways: [
+    "Perplexity searches the live web for nearly every query and shows numbered citations, while ChatGPT leans more heavily on its training data.",
+    "You cannot edit Perplexity’s model, buy a citation slot, or trick the engine with hidden instructions stuffed into your page.",
+    "Getting cited on Perplexity is mostly about meeting a retrieval engine where it works.",
+  ],
+  sources: [
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

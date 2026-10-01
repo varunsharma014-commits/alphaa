@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Auto Repair Shops Get Recommended by AI",
   description:
     "AI assistants recommend the shops they can describe precisely: which makes you service, what your diagnostic fee is, what your warranty covers, and which certifications you actually hold. Here's the practical playbook for independent garages and specialist shops.",
+  subtitle:
+    "Repair shops get recommended when the makes they service, their certifications and their diagnostic fees are published rather than left to a phone call.",
   date: "2026-07-31",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how auto repair shops get recommended by ai",
+  takeaways: [
+    "Drivers ask symptom questions, often from the driveway, and who questions looking for a specific shop.",
+    "Retrieval systems match a specific question against specific text.",
+    "Publish the plain facts drivers filter on: makes and services, diagnostic fee, warranty, certifications, hours, loaner options and five symptom answers.",
+    "A growing share of drivers form a shortlist from AI summaries before your website ever loads.",
+    "Listing and profile corrections can show up in AI answers within days because they are re-retrieved live.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "How to Get Your Business Recommended by ChatGPT",
   description:
     "ChatGPT recommends businesses it sees described consistently and positively across the web. Here's exactly how to earn those signals — and what doesn't work.",
+  subtitle:
+    "ChatGPT recommends businesses it can describe confidently from retrieved sources, so the work is making your details specific, consistent and easy to quote.",
   date: "2026-06-17",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "How-to",
+  kind: "industry",
+  keyphrase: "how to get recommended by chatgpt",
+  takeaways: [
+    "ChatGPT draws on two things when it suggests a business: training knowledge and live web retrieval.",
+    "Be consistent everywhere, earn and respond to reviews, publish answer-first content, add accurate schema, earn third-party mentions, don’t block GPTBot, and add an llms.txt file.",
+    "Paid insertion, guaranteed rankings, keyword stuffing, fake reviews and prompt-injection tricks don’t work.",
+    "Getting recommended by ChatGPT isn’t about hacking the model.",
+  ],
+  sources: [
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

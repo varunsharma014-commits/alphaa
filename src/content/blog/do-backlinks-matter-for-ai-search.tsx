@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Do Backlinks Still Matter for AI Search?",
   description:
     "Backlinks still matter for AI search, but indirectly and less than they did for Google rankings. What AI engines actually reward is being mentioned and described by credible third parties — with or without a link. Here's the mechanism, and what to build instead of a link-buying budget.",
+  subtitle:
+    "Backlinks still matter indirectly, by shaping what ranks and gets retrieved, but the words around the link often do more work than the link itself.",
   date: "2026-08-01",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "do backlinks matter for ai search",
+  takeaways: [
+    "People ask because agencies renamed their link packages \"AEO\", yet links are now one input among several rather than the dominant one.",
+    "A backlink reaches an AI answer through retrieval reach, the surrounding sentence, and entity confirmation.",
+    "For AI visibility, a specific, quotable mention usually beats a link with nothing describable around it.",
+    "No — you should stop building the kind of links that only ever existed to move a ranking.",
+    "Check it the way the engine sees it.",
+  ],
+  sources: [
+    { title: "Google Search Essentials (formerly Webmaster Guidelines)", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/essentials" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Entity SEO: How AI Engines Figure Out Who Your Business Is",
   description:
     "Before an AI engine can recommend you, it has to be sure who you are. Entity SEO is the work of resolving your business into one clear, consistent identity across the web so ChatGPT, Gemini, and Perplexity stop confusing you with someone else. Here is how it works and what to do.",
+  subtitle:
+    "Entity SEO is the work of making your business resolve as one specific, well-described thing instead of several weak fragments.",
   date: "2026-07-24",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Technical",
+  kind: "guide",
+  keyphrase: "entity seo",
+  takeaways: [
+    "In search and AI, an entity is a distinct, uniquely identifiable thing.",
+    "It recognises your name, disambiguates you from similar entities using signals like location and category, then resolves your attributes.",
+    "Five signals do most of the work: a consistent NAP and canonical name.",
+    "The most common failure we see isn’t missing content — it’s a business that has accidentally split itself into several half-entities.",
+    "Keyword SEO tries to rank a page for a phrase.",
+  ],
+  sources: [
+    { title: "Organization - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/Organization" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Wikidata:Notability", publisher: "Wikidata", url: "https://www.wikidata.org/wiki/Wikidata:Notability" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

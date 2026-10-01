@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "How to Track Traffic from ChatGPT, Perplexity and Gemini in Google Analytics",
   description:
     "AI assistants send real referral traffic, but GA4 buries it inside Referral and Direct by default. Here is how to build a reliable AI channel in GA4, what the numbers do and do not tell you, and why the biggest share of AI influence never shows up as a visit at all.",
+  subtitle:
+    "AI assistants do send referral traffic, and you can isolate it in GA4 by filtering session source for the assistant hostnames.",
   date: "2026-07-27",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Measurement",
+  kind: "guide",
+  keyphrase: "how to track ai traffic in google analytics",
+  takeaways: [
+    "AI traffic is hidden because GA4 has no built-in \"AI\" channel, so clicks from assistants get filed under Referral.",
+    "The fastest way is a filtered Traffic acquisition report by Session source: two minutes, no configuration, useful immediately.",
+    "Create a custom channel group so AI traffic becomes a permanent row in your standard reports.",
+    "Your number is low because visits without a referrer land in Direct and the zero-click majority never becomes a visit at all.",
+    "Use it as a baseline and compare against it after you change something.",
+  ],
+  sources: [
+    { title: "Analytics dimensions and metrics", publisher: "Google Help", url: "https://support.google.com/analytics/answer/9143382" },
+    { title: "Comparing metrics: Google Analytics vs. Universal Analytics", publisher: "Google Help", url: "https://support.google.com/analytics/answer/11986666" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+  ],
 }
 
 export function Body() {

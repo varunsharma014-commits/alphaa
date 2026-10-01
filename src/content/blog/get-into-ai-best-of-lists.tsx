@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "How to Get Into the \"Best Of\" Lists AI Recommends From",
   description:
     "When ChatGPT names the best plumber, dentist or CRM, it is usually paraphrasing a third-party roundup rather than judging your website. Here is how those lists get built, how to get considered for them legitimately, and what never works.",
+  subtitle:
+    "Assistants usually borrow their shortlist from third-party roundups, which makes getting onto those lists more valuable than improving your own page.",
   date: "2026-08-02",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Mechanism",
+  kind: "listicle",
+  keyphrase: "how to get into ai best of lists",
+  takeaways: [
+    "They have already done the ranking work a superlative question needs.",
+    "Four kinds keep getting cited: editorial roundups, category directories and marketplaces, community threads, and local media and association lists.",
+    "Ask the engines the buying question, not your brand name, and note every source they cite.",
+    "Start by being verifiable in ninety seconds, because compilers drop anyone they cannot quickly confirm.",
+    "Paid badge placements on obscure sites, self-serving roundups on satellite domains, incentivised reviews, and chasing volume over relevance all fail.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

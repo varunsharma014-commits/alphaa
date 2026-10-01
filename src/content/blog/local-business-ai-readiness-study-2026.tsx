@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "We Checked 288 Local Business Websites for AI Readiness. Here’s What We Found (2026)",
   description:
     "Original research: Alphaa ran its 23-point AI-readiness check on 288 dentist, plumber/HVAC, law firm, veterinary and restaurant websites across six US cities. 17% turned away an automated reader, 71% had missing or incomplete structured business facts, and fewer than 2% passed 20 of 23 checks.",
+  subtitle:
+    "We checked 288 local business websites and found most are only partly readable by AI assistants, with the same few failures repeating.",
   date: "2026-09-25",
-  readMins: 7,
+  updated: "2026-10-01",
+  readMins: 4,
   tag: "Research",
+  kind: "news",
+  keyphrase: "local business ai readiness study",
+  takeaways: [
+    "We checked 288 websites belonging to dentists, plumbers and HVAC companies, law firms, veterinarians and restaurants in Austin, Denver, Phoenix, Miami, Seattle and Chicago.",
+    "About four in five: 239 of the 288 sites (83%) returned a readable homepage.",
+    "The most common gaps are the ones AI relies on to describe and trust a business: complete structured facts.",
+    "Law firms, dentists and plumbers scored about the same — roughly 15 of 23 checks — while restaurants scored lowest at 11 of 23.",
+    "Almost none: only 4 of the 239 readable sites (under 2%) passed 20 or more of the 23 checks, and the median site passed 15.",
+  ],
+  sources: [
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "Understand JavaScript SEO Basics", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Build and Submit a Sitemap", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 const industries: [string, number, number, string, string, string, string, string][] = [

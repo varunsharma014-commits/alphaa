@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Real Estate Agents Get Recommended by AI",
   description:
     "When a buyer or seller asks ChatGPT for a good agent in their area, the answer is built from your reviews, your sold listings, and consistent profiles across Zillow, Google, and your site — not from ads. Here is the honest playbook to become the agent AI names.",
+  subtitle:
+    "Agents get recommended when the public record of their work, their areas and their specialisms is complete and consistent across every profile.",
   date: "2026-07-24",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how real estate agents get recommended by ai",
+  takeaways: [
+    "A home is the biggest transaction most people ever make, and AI models are noticeably more cautious with money and high-stakes decisions.",
+    "No, so be skeptical of anyone selling AI visibility to agents with guarantees.",
+    "It is not instant: profile and listing fixes can register within weeks.",
+    "Agents commonly ask whether Zillow reviews matter, whether new licensees can show up, and whether paid \"featured agent\" slots help.",
+    "Agents get recommended by AI the same way they earn referrals in the real world — by being genuinely good and being easy to verify.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "Which AI Crawlers Should You Allow? A robots.txt Guide to GPTBot, ClaudeBot and PerplexityBot",
   description:
     "AI companies run two different kinds of bots: training crawlers that feed the models, and retrieval agents that fetch your pages to answer a question right now. Blocking the wrong one quietly removes you from AI answers. Here is what each user agent does and how to configure robots.txt deliberately.",
+  subtitle:
+    "Block the training crawlers if you want, but allow the retrieval agents that fetch pages to answer live questions, because those are what put you in AI answers.",
   date: "2026-07-27",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Technical",
+  kind: "guide",
+  keyphrase: "ai crawlers robots.txt",
+  takeaways: [
+    "There are two kinds because training crawlers collect text to build a model, while retrieval agents fetch pages in real time to answer and cite.",
+    "The ones that matter are the training crawlers and retrieval agents run by OpenAI, Anthropic, Perplexity, Google, Common Crawl, and Apple.",
+    "No — blocking Google-Extended does not remove you from AI Overviews.",
+    "Read the robots.txt you actually serve, look for a blanket block, write the rules you actually mean, and verify with your server logs.",
+    "robots.txt is a voluntary request, and allowing crawlers removes a blocker but does not make you get cited.",
+  ],
+  sources: [
+    { title: "Robots.txt Introduction and Guide", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/robots/intro" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+    { title: "Does Anthropic crawl data from the web, and how can site owners block the crawler? | Claude Help Center", publisher: "Anthropic", url: "https://support.anthropic.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler" },
+    { title: "Google's common crawlers", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers" },
+  ],
 }
 
 export function Body() {

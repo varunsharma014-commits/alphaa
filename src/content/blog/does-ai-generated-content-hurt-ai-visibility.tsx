@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Does AI-Generated Content Hurt Your AI Visibility?",
   description:
     "AI-written content is not penalised for being AI-written. It fails for a more basic reason: it contains nothing an AI engine could not already produce itself, so there is no reason to retrieve or cite it. Here are the four common failure modes, and the drafting workflow that avoids them.",
+  subtitle:
+    "AI engines do not penalise content for being AI-written; they ignore content that says nothing checkable, which is what most AI drafts do.",
   date: "2026-08-23",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "does ai generated content hurt ai visibility",
+  takeaways: [
+    "Google rewards high-quality content however it is produced, and its spam policies target scaled content abuse, not the use of a model.",
+    "Generic AI copy rarely gets cited because retrieval only uses passages that supply something the model cannot generate on its own.",
+    "The four common failure modes are zero verifiable specifics, unattributable claims, self-duplication at scale, and entity drift.",
+    "Let the model shape the structure and supply every fact yourself.",
+    "Open the page and highlight every sentence containing a checkable specific — a figure, a name, a date, a place, a procedure, a price.",
+  ],
+  sources: [
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "Our latest update to the quality rater guidelines: E-A-T gets an extra E for Experience", publisher: "Google Search Central", url: "https://developers.google.com/search/blog/2022/12/google-raters-guidelines-e-e-a-t" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

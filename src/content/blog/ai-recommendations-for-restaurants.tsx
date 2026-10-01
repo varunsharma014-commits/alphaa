@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "How Restaurants Get Recommended by AI (ChatGPT, Google AI & More)",
   description:
     "When diners ask ChatGPT or Google AI for the best spot near them, AI leans on your Google Business Profile, reviews, menu details, and consistent listings. Here is the restaurant playbook to become the place it names.",
+  subtitle:
+    "AI assembles restaurant recommendations from your menu, hours, reviews and third-party roundups, so the specifics you publish decide whether you can be matched.",
   date: "2026-06-17",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "ai recommendations for restaurants",
+  takeaways: [
+    "AI names the restaurants that are written about consistently and positively across many public sources, with strong reviews doing much of the gatekeeping.",
+    "A restaurant gets recommended by maintaining its Google Business Profile, reviews, menu details, occasion-specific content, schema, and listings, and by not blocking AI crawlers.",
+    "Restaurant AEO shapes the public signals AI relies on, but it can’t reach inside the model, buy a placement, or guarantee a ranking.",
+    "Before you change anything, find out what assistants actually say about your restaurant right now.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

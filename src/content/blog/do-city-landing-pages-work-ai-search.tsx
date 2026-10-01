@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Do City Landing Pages Still Work for AI Search?",
   description:
     "City landing pages still work for AI search, but only when each page contains facts that are true of that place and nowhere else. Templated pages that swap a city name are actively counterproductive. Here is the test, the build, and how many pages you should actually publish.",
+  subtitle:
+    "City pages still work when each one carries genuinely local facts, and actively hurt you when they are one page with the town name swapped.",
   date: "2026-08-21",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "do city landing pages work ai search",
+  takeaways: [
+    "It depends on the page: AI retrieval rewards distinctive, specific text and punishes near-duplicate templated pages.",
+    "Before you publish, apply this: if you swapped the city name for a different city, would any sentence on the page become false?",
+    "Facts that are true of that place and nowhere else.",
+    "Templated pages dilute your entity, spread contradictory addresses and phone numbers, and crowd out the pages that would have worked.",
+    "A rule of thumb that holds up: one page per place where you could write 400 words of true.",
+  ],
+  sources: [
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "How to Specify a Canonical with rel=\"canonical\" and Other Methods", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

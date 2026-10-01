@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "ChatGPT vs. Gemini vs. Perplexity (and Claude): How Each Picks Local Businesses in 2026",
   description:
     "Where ChatGPT, Gemini, Perplexity and Claude get their local business recommendations, which crawlers to allow, and what a dentist, plumber or restaurant should prioritise for each, based only on what the companies and published studies actually say.",
+  subtitle:
+    "Each assistant picks local businesses from a different source mix, which is why being strong in one does not carry over to the others.",
   date: "2026-09-25",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Guide",
+  kind: "comparison",
+  keyphrase: "chatgpt vs gemini vs perplexity local search",
+  takeaways: [
+    "ChatGPT searches the web when a question needs current information.",
+    "Perplexity’s top sources lean heavily toward community discussion.",
+    "Every engine starts with a live search, reads what it finds and names businesses that several sources back up.",
+    "Start by finding out what each engine says today.",
+  ],
+  sources: [
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+    { title: "Does Anthropic crawl data from the web, and how can site owners block the crawler? | Claude Help Center", publisher: "Anthropic", url: "https://support.anthropic.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+  ],
 }
 
 

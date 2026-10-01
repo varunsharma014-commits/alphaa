@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Law Firms Get Recommended by AI (Without Guarantee Scams)",
   description:
     "Law firms get recommended by ChatGPT, Gemini, and Perplexity when the public record about the firm is complete, consistent, and verifiable — not when a vendor promises to \"put you at the top.\" Here is the honest playbook, and how to spot the guarantee scams that target lawyers.",
+  subtitle:
+    "Law firms get recommended when the practice areas, jurisdictions and bar credentials are complete and verifiable, which is also why guarantee offers are a red flag.",
   date: "2026-07-18",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how law firms get recommended by ai",
+  takeaways: [
+    "Lawyers are targeted because legal is a high-value, high-anxiety market.",
+    "Law is a \"your money or your life\" topic, and AI models are noticeably more careful with legal, medical, and financial questions.",
+    "Roughly two-thirds of Google searches now end without a single click to a website (SparkToro/Similarweb, 2026).",
+    "No, so be skeptical of anyone selling AI visibility to law firms with guarantees.",
+    "Expect weeks for profile and citation fixes and months or more for reviews and content.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

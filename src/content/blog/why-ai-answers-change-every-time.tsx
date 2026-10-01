@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Why ChatGPT Gives a Different Answer Every Time (And How to Measure AI Visibility Anyway)",
   description:
     "AI assistants are non-deterministic and re-retrieve the web on every question, so the same prompt can name your business once and skip you the next time. Here is why that happens, and the sampling protocol we use to turn a moving target into a number you can actually track.",
+  subtitle:
+    "AI assistants are non-deterministic and retrieve fresh sources each time, so visibility has to be measured as a trend across repeated runs.",
   date: "2026-07-28",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Measurement",
+  kind: "guide",
+  keyphrase: "why ai answers change",
+  takeaways: [
+    "ChatGPT’s answers change because of sampling, live retrieval, session context and model or routing changes.",
+    "One screenshot is one sample from a variable answer, not evidence of a stable position.",
+    "Measure a mention rate: a fixed prompt set, run five times per engine in a clean session, repeated monthly.",
+    "A mention rate measures what assistants say, not what it earns you.",
+    "The variance is not a bug you can engineer away, and it is not evidence that AI visibility is unmeasurable.",
+  ],
+  sources: [
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Roofing Contractors Get Recommended by AI (Storm Season Included)",
   description:
     "Homeowners now ask ChatGPT who to call after a hailstorm and whether a roofer is legitimate. AI assistants answer from licence records, insurance-claim language, warranty terms and reviews — here is how roofing contractors become the named recommendation.",
+  subtitle:
+    "Roofers get recommended when licence and insurance proof, materials handled and storm response are retrievable in plain text rather than promised on a call.",
   date: "2026-08-10",
-  readMins: 12,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how roofing contractors get recommended by ai",
+  takeaways: [
+    "An assistant answering a roofing query synthesizes from retrieved documents such as Google Business Profile, marketplaces, manufacturer locators, licence registries, reviews and your own site.",
+    "A text credentials block, a page per roof type, a warranty page, an insurance-claim page, a service-area page, honest cost ranges and concrete emergency availability.",
+    "Because after a major storm, out-of-town contractors flood in and homeowners ask assistants who is real.",
+    "Volume, recency and what reviews say all matter, and roofers systematically under-collect them.",
+    "Keep key content out of JavaScript-only widgets and images, and add RoofingContractor schema that matches your listings.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

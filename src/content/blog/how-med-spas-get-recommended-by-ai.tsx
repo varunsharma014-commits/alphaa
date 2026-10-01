@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Med Spas Get Recommended by AI (ChatGPT, Gemini & Google AI)",
   description:
     "When someone asks ChatGPT or Google AI for a good med spa nearby, the answer is built from your Google Business Profile, reviews, and clear treatment pages — not from ads. Here is the honest playbook to become the med spa AI names.",
+  subtitle:
+    "Med spas get recommended when treatments, who supervises them and pricing are specific and checkable, and when outcome claims stay conservative.",
   date: "2026-07-20",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how med spas get recommended by ai",
+  takeaways: [
+    "When someone types \"best med spa near me for Botox\" or \"where to get laser hair removal in [city]\" into an AI assistant.",
+    "Aesthetic medicine sits squarely in what AI models treat as sensitive territory.",
+    "It is the one with a correct category, named and credentialed injectors, specific recent reviews and a treatment page for each service.",
+    "They ask whether they can pay to appear in AI answers, whether before-and-after photos help, and how long this takes.",
+    "No, so be skeptical of anyone selling AI visibility to aesthetic practices with guarantees.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

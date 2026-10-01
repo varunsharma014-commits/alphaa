@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "How Ecommerce Brands Get Their Products Recommended by AI",
   description:
     "AI assistants recommend products they can describe with specifics — price, materials, sizing, returns, warranty — sourced from your product pages, your feed, and third-party reviews. Here is the exact product-page and off-site setup we use to make a catalogue quotable.",
+  subtitle:
+    "AI recommends the products it can describe with confident specifics, so structured product data and real review text decide whether you get matched.",
   date: "2026-08-03",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "get ecommerce products recommended by ai",
+  takeaways: [
+    "Product queries need a set of constrained matches.",
+    "It reads roughly what survives with JavaScript disabled, and on many storefronts price, variants and reviews vanish because they are injected client-side.",
+    "Schema.org Product markup is the machine-readable version of everything above, and for ecommerce it is not optional.",
+    "Here is the uncomfortable part: assistants rarely recommend a product on the strength of the brand’s own page alone.",
+    "Store owners most often ask whether they can pay to be recommended, how long it takes, and whether this helps traditional SEO too.",
+  ],
+  sources: [
+    { title: "Structured Data for Ecommerce Sites", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/specialty/ecommerce/include-structured-data-relevant-to-ecommerce" },
+    { title: "Product - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/Product" },
+    { title: "Review Snippet (Review, AggregateRating) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/review-snippet" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

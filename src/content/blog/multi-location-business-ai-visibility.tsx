@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "How Multi-Location Businesses Get Recommended by AI",
   description:
     "AI assistants recommend a specific branch, not a brand. Multi-location businesses lose because their locations are interchangeable to a model — same page template, same copy, no distinguishing facts. Here's how to make each location its own retrievable entity.",
+  subtitle:
+    "Multi-location brands get recommended when every location has its own complete, distinct and consistent record rather than one shared page.",
   date: "2026-08-01",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "multi location ai visibility",
+  takeaways: [
+    "It is harder because the engine must also decide which branch to name, a disambiguation problem single-location businesses do not have.",
+    "Templated pages are near-identical, so none contains a distinguishing fact that lets retrieval tell branches apart.",
+    "Each location needs a real page, its own LocalBusiness schema, its own claimed profiles, its own reviews and some local content.",
+    "Decide, once, how each location is named, and then use that exact string everywhere: \"Meridian Physical Therapy — Round Rock\".",
+    "Ask the AI engines local questions and check the answers, page HTML and naming variants.",
+  ],
+  sources: [
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "How to Specify a Canonical with rel=\"canonical\" and Other Methods", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

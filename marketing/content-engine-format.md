@@ -22,15 +22,23 @@ Reference example using every field:
 
 ## 2. Word-count targets (body text, excluding meta)
 
-| kind | words |
-|---|---|
-| guide | 1,400–2,000 |
-| comparison, listicle | 1,600–2,400 |
-| glossary | 700–1,000 |
-| industry | 1,000–1,500 |
-| news | 600–1,000 |
+Targets to **write to** for a new post:
+
+| kind | target words | gate floor |
+|---|---|---|
+| guide | 1,400–2,000 | 1,000 |
+| comparison | 1,600–2,400 | 1,100 |
+| listicle | 1,600–2,400 | 900 |
+| glossary | 700–1,000 | 700 |
+| industry | 1,400–1,900 | 1,000 |
+| news | 600–1,000 | 600 |
 
 `readMins` = words / 230, rounded up.
+
+The gate enforces only the floor, and has no upper limit. Aim for the target, but
+never pad a focused answer to reach a number — thin filler is the anti-pattern
+these posts warn about, and answer density is what gets a page quoted. A
+thorough post that runs long is fine.
 
 ## 3. Structure rules (all mandatory)
 
@@ -43,7 +51,7 @@ Reference example using every field:
 - **An FAQ block** near the end with **4–6 Q&As**, each an `<h3>` ending in `?` directly followed by ONE `<p>` answer (≥ 40 characters, 2–3 sentences, answer in the first sentence). The section's own H2 is question-phrased like every other H2 ("What else do electricians ask about AI visibility?") — `extractFaq` in `src/content/blog/faq.ts` finds the pairs by shape, not by heading text, so the wording is free. What it does depend on: the `<p>` must come **directly** after the `<h3>`, with no list, wrapper or links-only paragraph between them, and the answer must be ≥ 40 characters. Don't repeat a question already used as an H2.
 - **takeaways**: 3–5 bullets, each one sentence, ≤ 25 words, each a standalone fact.
 - **sources**: 3–6 outbound citations to primary or authoritative pages (the vendor's own pricing page, Google Search Central, OpenAI, the study's own page). Not other SEO blogs. Open each URL and copy its real `<title>` into `title`. They render as a numbered "Sources" list at the end (`rel="noopener"`, followed), and as `citation` in the JSON-LD. Also link the most important ones inline in the body with `{...ext}`.
-- **2–4 internal links**, always `import Link from "next/link"` and `<Link href="/blog/<slug>">`. Never `<a href="/...">`. Good targets: related posts, `/start` (free check), `/pricing`, `/compare/...`.
+- **At least 2 internal links** (no upper limit — they help AI engines traverse the hub and pass topical context), always `import Link from "next/link"` and `<Link href="/blog/<slug>">`. Never `<a href="/...">`. Good targets: related posts, `/start` (free check), `/pricing`, `/compare/...`.
 - **JSX escaping**: write `&apos;` for apostrophes and `&quot;` for double quotes inside JSX text. Strings inside `meta` are normal JS strings and need no escaping.
 - **CTAs**: do NOT add your own CTA blocks; the template adds one near the top and one at the end.
 
@@ -226,7 +234,7 @@ IndexNow engines. A 200 or 202 response means accepted.
 `npm run check:content` enforces most of this list mechanically — run it instead
 of eyeballing. It checks: slug/filename/registration, duplicate slug and
 keyphrase, required meta, title ≤ 60, description 140–160, 3–5 takeaways, 3–6
-sources, 2–4 internal `<Link>`s, no internal `<a href="/...">`, no dead `/blog/`
+sources, at least 2 internal `<Link>`s, no internal `<a href="/...">`, no dead `/blog/`
 link, no self-link, only `article-prose`/`table-wrap` classNames, every `<table>`
 wrapped, "Short answer:" opening, every question H2 answered by the `<p>` after
 it, 4–6 FAQ `<h3>`/`<p>` pairs, **that those pairs actually reach FAQPage

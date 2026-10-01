@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Solar Installers Get Recommended by AI",
   description:
     "Homeowners now ask ChatGPT and Gemini which solar company to trust before they ever fill in a form. Here is what those engines actually read about a solar installer, why most companies get skipped, and the specific fixes that change the answer.",
+  subtitle:
+    "Solar installers get recommended when licence and certification details, equipment lines and financing options are published plainly and corroborated by reviews.",
   date: "2026-08-26",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how solar installers get recommended by ai",
+  takeaways: [
+    "Homeowners ask questions that are longer and more suspicious than typical local search, pre-screening for legitimacy, scope and business model.",
+    "Because the category has a reputation problem, aggregators dominate the visible surface, and incentives change constantly.",
+    "Publish the things a sceptical buyer wants and most competitors avoid, such as warranty, cancellation and financing terms.",
+    "Installers ask about EnergySage, town-by-town pages, old bad reviews, changing incentive rules, and whether ads can replace this work.",
+    "Solar is a trust purchase, and AI assistants have absorbed the industry’s trust problems along with everything else.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

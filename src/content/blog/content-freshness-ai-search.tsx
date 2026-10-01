@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Does Content Freshness Matter for AI Search? How Often to Update Your Pages",
   description:
     "Freshness matters to AI engines, but not the way SEO folklore suggests — it is about retrievability and verifiable dates, not edit frequency. Here is which pages actually decay, how often to update each type, and why changing a date without changing the content does nothing.",
+  subtitle:
+    "Freshness matters most where facts change, so update the pages carrying prices, hours and claims rather than rewriting everything on a schedule.",
   date: "2026-08-05",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "content freshness ai search",
+  takeaways: [
+    "Freshness matters because, when an assistant retrieves live pages for current questions, a verifiably current page is the safer thing to repeat.",
+    "The facts that go stale most are prices and packages, hours and locations, staff and credentials, and year-stamped claims.",
+    "Review pricing and contact details monthly, core service and team pages quarterly, statistics every six months, and explainers annually.",
+    "List every page carrying a checkable fact, search your site for stale year strings, cross-check facts against your other profiles, and ask an assistant directly.",
+    "When a topic you already cover needs new information, updating the existing URL is almost always the better move.",
+  ],
+  sources: [
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "Google's common crawlers", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

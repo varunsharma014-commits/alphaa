@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Does Your Google Business Profile Feed AI Answers?",
   description:
     "Your Google Business Profile is not plugged directly into ChatGPT — but it is the most widely copied description of your business on the internet, which is why it shapes what every AI assistant says about you. Here is which fields matter, how the data actually travels, and the fields most businesses leave empty.",
+  subtitle:
+    "Your Google Business Profile feeds Google's AI answers directly and the other assistants indirectly, which makes it the highest-leverage thing to fix first.",
   date: "2026-08-05",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "guide",
+  keyphrase: "google business profile ai answers",
+  takeaways: [
+    "It travels by copying: Google renders your profile publicly, aggregators and directories copy it, and AI engines retrieve those copies and synthesise what they read.",
+    "Primary category matters most, followed by your exact business name and your services list.",
+    "Three gaps show up in almost every audit: an empty or hostile Q&A section.",
+    "It will not make you the recommended business on its own, create authority, fix a site engines cannot read, or produce identical answers every time.",
+    "The common questions cover GBP posts, how long changes take to show up, businesses with no physical location, and wrong information posted by others.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Verify your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/6300665" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Do Comparison Pages Help You Get Recommended by AI?",
   description:
     "Yes — comparison pages are one of the highest-leverage assets in AI search, because \"X vs Y\" is how buyers actually decide. But only fair, specific ones get cited. Here is how AI engines read comparison content and how to write one worth quoting.",
+  subtitle:
+    "Yes, because comparison is the exact shape of the question people bring to AI, and a fair comparison page is unusually easy to retrieve and quote.",
   date: "2026-08-19",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "comparison pages ai search",
+  takeaways: [
+    "In AI search, the assistant returns a single synthesised verdict assembled from whatever comparison content it could retrieve, instead of ten links.",
+    "It retrieves pages about both entities, extracts attribute-level claims, cross-checks them for agreement, and synthesises a conditional recommendation.",
+    "Cited comparisons concede something real, compare attributes rather than adjectives, date their claims, frame the verdict by use case, and stay accurate about competitors.",
+    "Start with you vs your most-searched competitor, then an \"alternatives to [category leader]\" page, a category round-up, and approach comparisons.",
+    "Use a real HTML table, question-shaped headings, short lead paragraphs, a summary block near the top, and server-rendered text.",
+  ],
+  sources: [
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+  ],
 }
 
 export function Body() {

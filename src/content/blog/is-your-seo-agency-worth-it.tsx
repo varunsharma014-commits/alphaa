@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Is Your SEO Agency Worth It? A 10-Minute Audit You Can Run Yourself",
   description:
     "A practical 10-minute audit to judge whether your SEO agency is earning its retainer — six checks you can run without any tools, what a good answer looks like, and the questions that separate real work from busywork.",
+  subtitle:
+    "A worthwhile agency can show you work that changed something on your site or your public profiles, and this audit takes about ten minutes to run.",
   date: "2026-07-21",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Guide",
+  kind: "guide",
+  keyphrase: "is my seo agency worth it",
+  takeaways: [
+    "You are not judging whether your agency works hard.",
+    "You should be able to list three to six concrete artifacts per month, and this check takes two minutes.",
+    "Your homepage source shows in two minutes whether schema markup, a descriptive title and a meta description are in place.",
+    "Ask ChatGPT, Gemini, or Perplexity the question a customer would ask and see whether you are named accurately, absent, or named with wrong details.",
+    "A good report recommends decisions, not just charts, and you can check it in two minutes.",
+  ],
+  sources: [
+    { title: "Google Search Essentials (formerly Webmaster Guidelines)", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/essentials" },
+    { title: "SEO Starter Guide: The Basics", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Wedding Venues, Photographers and Planners Get Recommended by AI",
   description:
     "Couples now ask ChatGPT for shortlists before they open The Knot. AI assistants answer from marketplace profiles, capacity and pricing facts, and real reviews — here is how wedding vendors become the named recommendation.",
+  subtitle:
+    "Wedding vendors get recommended when the four facts couples filter on, price range, capacity, style and availability, are published as readable text.",
   date: "2026-08-09",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how wedding vendors get recommended by ai",
+  takeaways: [
+    "Couples ask filter-heavy questions combining location, guest count, budget, style and policy constraints.",
+    "They come mostly from wedding marketplaces, backed by Google Business Profile, reviews, editorial features and your own site.",
+    "Publish a real price basis first, then state capacity as numbers, name your style in words, make availability legible and complete every marketplace field.",
+    "Venues should use LocalBusiness or EventVenue, and photographers and planners ProfessionalService, plus FAQPage for a genuine FAQ.",
+    "Wedding vendors lose AI recommendations to withheld information, not to competition.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

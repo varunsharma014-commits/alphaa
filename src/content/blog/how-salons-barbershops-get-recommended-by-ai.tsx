@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "How Hair Salons and Barbershops Get Recommended by AI",
   description:
     "When someone asks ChatGPT for a good barber or a salon that does curly hair, the engines answer from reviews, structured business data and text on your site — not from your Instagram grid. Here is what decides whether you get named, and the fixes that matter most for salons and shops.",
+  subtitle:
+    "Salons get recommended when the service menu, prices and specialisms such as curly or textured hair are published as text an engine can read.",
   date: "2026-08-11",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how salons barbershops get recommended by ai",
+  takeaways: [
+    "Because the retrieval systems behind AI answers extract text and largely ignore pixels.",
+    "Five things decide it: a properly completed Google Business Profile.",
+    "Not directly: Instagram is where this industry lives, and it is genuinely how many clients choose a stylist.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

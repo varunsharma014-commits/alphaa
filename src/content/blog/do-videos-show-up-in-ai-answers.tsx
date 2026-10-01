@@ -6,9 +6,24 @@ export const meta: PostMeta = {
   title: "Do YouTube Videos Show Up in AI Answers? What Engines Actually Read",
   description:
     "AI assistants can and do cite video — but almost never by watching it. They read the text attached to it: the title, the description, the transcript and the pages that quote it. Here is what each engine does, and how to make a video citable.",
+  subtitle:
+    "Engines read your title, description and transcript rather than watching the video, which makes an unindexed transcript a missed citation.",
   date: "2026-08-07",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "do videos show up in ai answers",
+  takeaways: [
+    "AI engines read video because retrieval works on the text of a video page — title, description, metadata, and transcript — not on the frames.",
+    "If you take one thing from this article: the transcript is the thing that gets cited, not the video.",
+    "Video shows up in AI answers through its text.",
+  ],
+  sources: [
+    { title: "Structured Data Markup that Google Search Supports", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/search-gallery" },
+    { title: "Google's common crawlers", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Do Brand Mentions Without Links Help Your AI Visibility?",
   description:
     "Yes — and in AI search an unlinked mention often does more work than a link. Retrieval systems match on names and context, not on href attributes. Here is the mechanism, what makes a mention count, and how to earn more of them.",
+  subtitle:
+    "Unlinked mentions do help, because AI engines read text rather than follow links, and a brand that gets described is a brand that can be cited.",
   date: "2026-08-24",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "do brand mentions without links help ai search",
+  takeaways: [
+    "Links handle discovery and authority transfer, while any text that names you does the corroboration AI answers are built on.",
+    "The mention enters the retrieval index as text.",
+    "A mention counts when it uses your exact name, includes disambiguating context, comes from an independent crawlable source, and agrees with everything else.",
+    "They come from forum threads, review text, local news and trade press, roundups, transcripts, and association directories.",
+    "Be quotable in one sentence, answer journalist requests, get listed in your industry’s registries, ask reviewers for specifics, help in customer communities, and publish transcripts.",
+  ],
+  sources: [
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+  ],
 }
 
 export function Body() {

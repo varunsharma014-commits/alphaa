@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Dentists Get Recommended by ChatGPT and Google AI",
   description:
     "When a patient asks ChatGPT or Google AI for a good dentist nearby, the answer is built from your Google Business Profile, reviews, and clear service pages — not from ads. Here is the honest playbook to become the practice AI names.",
+  subtitle:
+    "Dentists get recommended when the public signals about the practice are complete, consistent and specific about treatments, insurance and availability.",
   date: "2026-07-13",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how dentists get recommended by ai",
+  takeaways: [
+    "It retrieves live signals, mainly your Google Business Profile, patient reviews, consistent listings and clear service pages, and summarizes them.",
+    "Dentistry is health care, and AI models are noticeably more cautious with health and money topics.",
+    "Perfect your Google Business Profile, build genuine reviews, make every listing match, write patient-question pages, and earn credible third-party mentions.",
+    "None of this is instant: profile and citation fixes can register within weeks.",
+    "Dentists get recommended by AI the same way they earn word-of-mouth in the real world — by being genuinely good and being easy to verify.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

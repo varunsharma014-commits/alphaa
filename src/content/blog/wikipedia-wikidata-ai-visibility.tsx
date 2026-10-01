@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Do Wikipedia and Wikidata Affect Your AI Visibility?",
   description:
     "Wikipedia and Wikidata are unusually influential sources for AI assistants — but most businesses do not qualify for either, and trying to force it backfires. Here is what each one actually does, who realistically qualifies, and the substitutes that work for everyone else.",
+  subtitle:
+    "Wikipedia and Wikidata carry outsized weight because both are heavily represented in training data and widely mirrored, but notability rules gate entry.",
   date: "2026-08-03",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Technical",
+  kind: "guide",
+  keyphrase: "wikipedia wikidata ai visibility",
+  takeaways: [
+    "They matter because of their training weight, stable identifiers and wide downstream propagation.",
+    "Probably not: most small and mid-sized businesses do not meet Wikipedia’s notability bar.",
+    "Often, yes, because Wikidata has a much lower bar than Wikipedia.",
+    "Use Organization or LocalBusiness schema with sameAs, consistent identifiers, independent third-party description and consistent profiles.",
+    "Wikipedia and Wikidata matter because they give machines something rare: a structured, corroborated, widely copied statement of who an entity is.",
+  ],
+  sources: [
+    { title: "Wikipedia:Notability (organizations and companies)", publisher: "Wikipedia", url: "https://en.wikipedia.org/wiki/Wikipedia:Notability_(organizations_and_companies)" },
+    { title: "Wikidata:Notability", publisher: "Wikidata", url: "https://www.wikidata.org/wiki/Wikidata:Notability" },
+    { title: "Organization - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/Organization" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "How to Get AI Visibility for a Brand-New Website",
   description:
     "A new site has no backlinks, no review history and no mentions anywhere — the exact signals AI engines rely on. Here is the cold-start problem explained honestly, and the order of operations that gets a new business named fastest.",
+  subtitle:
+    "A new site has no history for AI to read, so the fastest path is establishing a consistent entity and a few verifiable third-party records before writing content.",
   date: "2026-08-26",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "ai visibility for a new website",
+  takeaways: [
+    "A new site is not penalised; it is missing three inputs: corroboration, an entity record, and presence in training data.",
+    "Be fetchable first, fix your name, create corroboration, add structured data, write three strong pages, and then measure the right thing.",
+    "Expect occasional citations for narrow queries in weeks 3–8 and a settled entity record in months 2–6, though these are patterns, not promises.",
+    "A new website’s problem is missing evidence, not a penalty — and evidence can be assembled deliberately.",
+  ],
+  sources: [
+    { title: "Verify your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/6300665" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "Build and Submit a Sitemap", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,21 @@ export const meta: PostMeta = {
   title: "What Is AEO (Answer Engine Optimization)? A Plain-English Guide",
   description:
     "AEO is optimizing your content and signals so AI answer engines like ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews discover, cite, and recommend you. Here is how it works and how to get started.",
+  subtitle:
+    "AEO is the practice of making your business easy for AI answer engines to find, verify and cite when someone asks a question in your category.",
   date: "2026-06-17",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Guide",
+  kind: "glossary",
+  keyphrase: "what is answer engine optimization",
+  takeaways: [
+    "SEO optimizes you to rank in Google’s list of blue links so a person clicks through to your site.",
+    "AEO matters because people increasingly act on an AI assistant’s answer instead of clicking through links.",
+    "Most modern AI assistants answer using two sources: what they absorbed during training.",
+    "The core levers are answer-first content, accurate schema, consistency, reviews, freshness, open crawler access and an llms.txt file.",
+    "Local businesses, service providers and SaaS, and anyone who sells on trust and being chosen need AEO.",
+  ],
 }
 
 export function Body() {

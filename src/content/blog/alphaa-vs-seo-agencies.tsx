@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Alphaa vs. a Traditional SEO Agency: What $2,000 a Month Buys in 2026 (and What It Doesn't)",
   description:
     "A candid comparison for dentists, plumbers, lawyers and med spas deciding between a roughly $2,000/month SEO agency retainer and Alphaa — cost, contracts, who does the work, Google links vs. AI answers, and when an agency is still the right call.",
+  subtitle:
+    "A $2,000 retainer buys human strategy and slow manual execution, while Alphaa buys continuous monitoring and automated fixes for a fraction of the price.",
   date: "2026-09-25",
-  readMins: 7,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Comparison",
+  kind: "comparison",
+  keyphrase: "alphaa vs seo agencies",
+  takeaways: [
+    "A $2,000 retainer mostly pays for a few hours of specialist time each month: an account manager.",
+    "Most traditional retainers don’t check whether ChatGPT, Gemini, Claude or Perplexity actually name your business when customers ask for a recommendation.",
+    "Alphaa is an AI agent that works to get your business recommended by ChatGPT.",
+    "Good agencies are still better at work that needs human judgment and relationships: building links from real publications.",
+    "Neither an agency nor Alphaa can honestly promise a timeline, and you should be wary of anyone who does.",
+  ],
+  sources: [
+    { title: "Google Search Essentials (formerly Webmaster Guidelines)", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/essentials" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

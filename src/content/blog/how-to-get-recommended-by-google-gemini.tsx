@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "How to Get Your Business Recommended by Google Gemini",
   description:
     "Gemini answers through Google's own index, knowledge graph, and live retrieval — and the same engine powers AI Overviews. Getting recommended means being a clear, consistent, well-corroborated entity Google already trusts. Here is the practical playbook.",
+  subtitle:
+    "Gemini draws on what Google already understands about your business, so a clean entity and a complete Business Profile do most of the work.",
   date: "2026-07-25",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "How-to",
+  kind: "industry",
+  keyphrase: "how to get recommended by google gemini",
+  takeaways: [
+    "Gemini can lean on Google’s own web index, Knowledge Graph and local data that power Search and Maps.",
+    "The common questions are whether Gemini optimization is the same as SEO.",
+    "You cannot edit Gemini’s model, buy a recommendation, or trick it with hidden text stuffed into a page.",
+    "Getting recommended by Gemini is mostly about meeting Google where it already knows you.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "Find information in faster & easier ways with AI Overviews in Google Search - Computer", publisher: "Google Help", url: "https://support.google.com/websearch/answer/14901683" },
+  ],
 }
 
 export function Body() {

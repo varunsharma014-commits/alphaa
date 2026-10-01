@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Should You Publish Your Prices? How Pricing Pages Shape AI Recommendations",
   description:
     "AI assistants answer \"how much does X cost\" whether or not you publish a price — they just use someone else's number. Here is what a quotable pricing page looks like, how to publish ranges honestly, and when hiding price actually costs you the recommendation.",
+  subtitle:
+    "Publishing prices makes you matchable against budget-qualified questions, which is why withholding them quietly removes you from the shortlist.",
   date: "2026-08-08",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "guide",
+  keyphrase: "pricing pages ai recommendations",
+  takeaways: [
+    "Cost is the constraint that makes the rest of the search real, so it comes up early and constantly.",
+    "It quotes a competitor, substitutes a national average, or describes you as opaque.",
+    "A quotable pricing page gives a self-contained sentence with a unit, scope, qualifier, location and date.",
+    "Publish the structure of your pricing: the model, the floor, the drivers and a worked example.",
+    "Publishing a price does not guarantee you get recommended, and nobody can promise that it will.",
+  ],
+  sources: [
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "Product - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/Product" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Service - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/Service" },
+  ],
 }
 
 export function Body() {

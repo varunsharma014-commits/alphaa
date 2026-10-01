@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Is AEO Real? The Truth About Answer Engine Optimization",
   description:
     "Yes, AEO is real — it's rooted in how AI assistants actually retrieve and synthesize answers (RAG), not a magic switch. Here's the honest mechanism, what it can and can't do, and how to spot snake oil.",
+  subtitle:
+    "AEO is real because the retrieval mechanism behind it is real and documented, but it shifts probabilities rather than guaranteeing placement.",
   date: "2026-06-17",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Explainer",
+  kind: "guide",
+  keyphrase: "is aeo real",
+  takeaways: [
+    "People ask because AEO arrived wrapped in the same hype that once surrounded \"guaranteed #1 on Google,\" so skepticism is healthy.",
+    "AI engines combine training knowledge with live web retrieval, then weigh signal layers to decide who to name.",
+    "AEO is the discipline of strengthening those signal layers.",
+    "AEO cannot edit a model’s weights, inject you into answers, or guarantee a citation.",
+    "Legitimate AEO talks about influencing inputs and probabilities; snake oil promises guaranteed rankings or a secret backdoor into the models.",
+  ],
+  sources: [
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

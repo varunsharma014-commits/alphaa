@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Your Next Customer Is Asking ChatGPT First",
   description:
     "65% of consumers now use AI tools to research products before buying (Clutch, 2026), and ChatGPT serves 800M+ weekly active users (OpenAI, 2025). Here's what changes when the first question about your category goes to an AI instead of Google — and what to do about it.",
+  subtitle:
+    "A growing share of buying research now starts inside an AI assistant rather than a search box, which changes who gets considered at all.",
   date: "2026-07-21",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Death of the Blue Link",
+  kind: "guide",
+  keyphrase: "do people use chatgpt to find businesses",
+  takeaways: [
+    "Customers now collapse searching, scanning links and comparing tabs into one exchange with an AI assistant.",
+    "An assistant presents a few names with the filtering already done and the reasoning stated, which feels like a recommendation rather than a list.",
+    "It combines training knowledge with live retrieval and rewards businesses described verifiably, specifically and consistently across many sources.",
+    "Usually because your facts are inconsistent across the web while a competitor’s are consistent and specific.",
+    "Ask ChatGPT, Gemini and Perplexity the need and your name, check the facts and citations, and repeat across phrasings.",
+  ],
+  sources: [
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "We Studied 200,000 AI Overviews: Here's What We Learned", publisher: "Semrush", url: "https://www.semrush.com/blog/ai-overviews-study/" },
+  ],
 }
 
 export function Body() {

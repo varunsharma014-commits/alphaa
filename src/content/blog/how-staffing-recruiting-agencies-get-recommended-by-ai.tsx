@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Staffing and Recruiting Agencies Get Recommended by AI",
   description:
     "AI assistants recommend staffing firms that state a specific niche, publish verifiable placement details, and appear consistently across Google Business Profile, Clutch, LinkedIn and industry directories. Here is the playbook for recruiters, including the two-sided problem no other vertical has.",
+  subtitle:
+    "Staffing agencies get recommended when they are unambiguously specific about a niche, the roles they place and the markets they cover.",
   date: "2026-08-20",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how staffing recruiting agencies get recommended by ai",
+  takeaways: [
+    "Buyers ask far more specific questions than most owners expect, naming a role, a hiring model and usually a place.",
+    "Split your site into two clearly separated sections, because employers and candidates ask opposite questions.",
+    "Niche-plus-geography pages, a fee and model explainer, placement proof with real specifics, and a comparison page on hiring approaches.",
+    "Google Business Profile, Clutch and industry directories, reviews from both sides, LinkedIn, and trade associations and local press.",
+    "Rebrands, multiple trading names and shared office addresses can leave an assistant unsure whether you are one company or several.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

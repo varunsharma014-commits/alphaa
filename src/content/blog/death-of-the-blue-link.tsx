@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "The Death of the Blue Link: Why Ranking #1 on Google No Longer Brings the Customers It Used To",
   description:
     "Ranking #1 still works — it just delivers fewer visitors, because roughly two-thirds of Google searches now end without a click to any website. Here's what changed, why your traffic fell while your rankings held, and what to do about it.",
+  subtitle:
+    "Ranking #1 still helps, but roughly two-thirds of Google searches now end without a click, which makes the answer itself the destination.",
   date: "2026-07-17",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Explainer",
+  kind: "guide",
+  keyphrase: "death of the blue link",
+  takeaways: [
+    "Search used to be a simple trade: you supplied the content, and Google sent you the traffic.",
+    "Your ranking didn’t fall; the value of the ranking fell, because an AI Overview above the links can resolve the question first.",
+    "You get into the answer by being described verifiably, specifically, and consistently across many sources.",
+    "No — SEO isn’t dead, clicks aren’t worthless, and nobody can guarantee you a citation.",
+    "Start by finding out what the AI engines currently say about you, then make your basic facts identical everywhere.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Find information in faster & easier ways with AI Overviews in Google Search - Computer", publisher: "Google Help", url: "https://support.google.com/websearch/answer/14901683" },
+    { title: "We Studied 200,000 AI Overviews: Here's What We Learned", publisher: "Semrush", url: "https://www.semrush.com/blog/ai-overviews-study/" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "How to See What ChatGPT Says About Your Business (Free Methods + One Fast One)",
   description:
     "To see what ChatGPT says about your business, just ask it directly — then repeat the test across Claude, Gemini, and Perplexity. Here are the exact prompts, the free methods, and one faster way to check every engine at once.",
+  subtitle:
+    "Ask each assistant the questions your customers ask, in a fresh session with no memory of you, and record who gets named.",
   date: "2026-07-06",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "How-to",
+  kind: "guide",
+  keyphrase: "how to see what chatgpt says about my business",
+  takeaways: [
+    "Because you show up only if your business is described clearly and consistently across the sources AI engines read.",
+    "Open ChatGPT and run two prompts: a recognition test and a recommendation test.",
+    "It can, because ChatGPT can answer from frozen training knowledge or from live web retrieval, and the two can disagree.",
+    "Yes: ChatGPT is the loudest name, but your buyers use whatever assistant is in front of them.",
+    "Being named consistently means strong visibility; being recognized but not recommended, getting wrong details, or getting no information each point to a specific gap.",
+  ],
+  sources: [
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Does Page Speed Matter for AI Search?",
   description:
     "Page speed matters for AI search, but not the way Core Web Vitals matter for Google. What counts is whether a crawler gets complete HTML back quickly enough, before it gives up. Here is what actually breaks, how to test it, and what to fix first.",
+  subtitle:
+    "Speed matters less as a ranking factor than as a fetch timeout, because a crawler that gives up on your page cannot cite it.",
   date: "2026-08-25",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Technical",
+  kind: "guide",
+  keyphrase: "does page speed matter for ai search",
+  takeaways: [
+    "There are two kinds of speed: perceived speed (Core Web Vitals).",
+    "It fetches you in one of two ways, an indexing crawl or a live retrieval fetch, and speed costs you differently in each.",
+    "A client-rendered site can return its HTML quickly with no content in it.",
+    "Fix bot blocking first, then get content into the initial HTML, then time to first byte, redirect chains and reliability under load.",
+    "The common questions cover Core Web Vitals and AI Overviews.",
+  ],
+  sources: [
+    { title: "Web Vitals", publisher: "web.dev", url: "https://web.dev/articles/vitals" },
+    { title: "Understand JavaScript SEO Basics", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics" },
+    { title: "Google's common crawlers", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers" },
+  ],
 }
 
 export function Body() {

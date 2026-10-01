@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "AI Overviews Are Answering Your Customers Before They Reach Your Website",
   description:
     "Google's AI Overviews now answer many commercial searches on the results page itself — often without a click. Here's how they work, why they cut traffic, and how to become the business the overview cites.",
+  subtitle:
+    "AI Overviews answer your customer on the results page and cite only a handful of sources, so the goal shifts from ranking to being one of the cited few.",
   date: "2026-07-22",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Death of the Blue Link",
+  kind: "guide",
+  keyphrase: "ai overviews impact on local business traffic",
+  takeaways: [
+    "An AI Overview is a short, AI-generated answer Google places at the top of the search results for many queries.",
+    "AI Overviews now appear in up to ~48% of commercial-intent searches (BrightEdge, 2026).",
+    "When the answer is on the results page, fewer people click anything at all.",
+    "Aim to be in the answer: the work now is to be one of the sources the overview pulls from and names.",
+    "Make your business the most retrievable, verifiable, quotable source for the questions your customers ask.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Find information in faster & easier ways with AI Overviews in Google Search - Computer", publisher: "Google Help", url: "https://support.google.com/websearch/answer/14901683" },
+    { title: "We Studied 200,000 AI Overviews: Here's What We Learned", publisher: "Semrush", url: "https://www.semrush.com/blog/ai-overviews-study/" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+  ],
 }
 
 export function Body() {

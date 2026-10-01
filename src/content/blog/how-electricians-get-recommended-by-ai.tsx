@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Electricians Get Recommended by AI",
   description:
     "Homeowners now ask ChatGPT whether a panel upgrade needs a permit, what an EV charger install costs, and who to call. Here is what AI engines can actually read about an electrical contractor, why licence and safety signals decide the shortlist, and the fixes that change the answer.",
+  subtitle:
+    "Electricians get recommended when the licence number, specialisations, emergency availability and price ranges are published rather than hidden behind a contact form.",
   date: "2026-08-28",
-  readMins: 12,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how electricians get recommended by ai",
+  takeaways: [
+    "They ask longer, technical questions about the job, such as permits, costs and safety, rather than about a company.",
+    "Safety framing makes models cautious, licensing is jurisdictional and checkable, and the category is splitting fast.",
+    "It reads your pages’ raw HTML, your Google Business Profile, directories and licence registries, review text, and local mentions.",
+    "Five facts decide it: your licence details in text.",
+    "A better page puts a checkable fact in every sentence, such as licence, service area and specialties, instead of generic claims.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

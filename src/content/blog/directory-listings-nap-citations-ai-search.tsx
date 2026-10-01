@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Do Yelp, BBB and Angi Still Matter? How Directory Listings Shape AI Recommendations",
   description:
     "Directories are no longer traffic sources — they are corroboration sources. AI assistants use Yelp, BBB, Angi and industry directories to verify that your business is real and that your facts agree. Here is which listings matter, and how to fix the ones that contradict you.",
+  subtitle:
+    "Directories matter less as traffic and more as corroboration, because consistent listings are what let an assistant state your details confidently.",
   date: "2026-08-10",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "directory listings nap citations ai search",
+  takeaways: [
+    "Directory listings have moved from a traffic channel to a verification layer that AI uses to confirm claims about you.",
+    "An assistant uses a listing as an entity confirmation, a filter answer, and a trust proxy.",
+    "The listings worth your time are Google Business Profile.",
+    "When listings disagree, the assistant hedges, picks the wrong detail, or drops you.",
+    "Not as the primary number: use your real main line everywhere a machine reads it and keep tracking numbers to channels such as paid ads.",
+  ],
+  sources: [
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

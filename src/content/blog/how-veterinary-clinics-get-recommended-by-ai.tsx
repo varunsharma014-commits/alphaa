@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Veterinary Clinics Get Recommended by AI",
   description:
     "AI assistants recommend the vet practices they can describe precisely: species and services treated, emergency hours, pricing ranges, and consistent, well-reviewed public records. Here's the practical playbook for clinics and animal hospitals.",
+  subtitle:
+    "Veterinary clinics get recommended when species treated, emergency hours and pricing are published, because pet owners filter on all three at once.",
   date: "2026-07-30",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how veterinary clinics get recommended by ai",
+  takeaways: [
+    "Pet owners ask two kinds of question: the worried question about symptoms and costs, and the who question about which clinic to use.",
+    "Five signals decide it: species and service specificity, emergency and after-hours truth, actionable price ranges, consistent clinic records, and specific reviews.",
+    "Usable copy names the species, procedures, city, hours, urgency policy and an honest limit.",
+    "Audit and fix your records in week 1, rewrite services and publish price ranges in week 2, then add schema and answer common worried questions.",
+    "Veterinary practices lose AI recommendations to vagueness far more often than to competition.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

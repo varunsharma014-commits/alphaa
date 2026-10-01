@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Training Data vs Live Retrieval: Which One Decides Whether AI Recommends You?",
   description:
     "AI assistants answer from two completely different sources — what the model memorised during training, and what it fetches from the web while you wait. They behave differently, update on different clocks, and need different work from you. Here is how to tell which one is answering.",
+  subtitle:
+    "Live retrieval is the one that matters for almost every business, because training data is frozen and cannot learn about you after the fact.",
   date: "2026-08-27",
-  readMins: 12,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Technical",
+  kind: "comparison",
+  keyphrase: "training data vs live retrieval ai search",
+  takeaways: [
+    "Training data is what a model remembers from a frozen corpus; live retrieval is what it fetches from the web after someone asks.",
+    "Citations with links mean retrieval ran; no citations and no current specifics usually mean a memory answer.",
+    "Retrieval responds to extractable, fetchable, current content, training data to years of broad coverage, and consistent entity data helps both.",
+    "Ask a memory question and a retrieval question, read the citations, then check your pages are fetchable and in the HTML.",
+    "Stop trying to influence what the model remembers and start controlling what it can fetch.",
+  ],
+  sources: [
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Google's common crawlers", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers" },
+    { title: "Perplexity Crawlers", publisher: "Perplexity", url: "https://docs.perplexity.ai/guides/bots" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

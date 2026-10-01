@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Alphaa vs. BrightLocal: From Local SEO Tools to an AI Agent",
   description:
     "An honest comparison of BrightLocal and Alphaa for local business owners and small SEO agencies: a local SEO toolkit you operate versus an AI agent that does the work to get you named in AI answers.",
+  subtitle:
+    "BrightLocal reports on local SEO for you to act on, while Alphaa monitors what AI assistants say and writes the fixes itself with your approval.",
   date: "2026-09-25",
-  readMins: 7,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Comparison",
+  kind: "comparison",
+  keyphrase: "alphaa vs brightlocal",
+  takeaways: [
+    "Alphaa is an AI agent that works to get local businesses recommended by ChatGPT, Gemini, Claude and Perplexity.",
+    "The simplest way to see it: BrightLocal is broad local SEO software you run.",
+    "For AI recommendations specifically, Alphaa goes further because it writes and ships the site fixes AI engines read.",
+    "If you run a small agency, BrightLocal is probably still your core platform.",
+    "Choose BrightLocal if you or your agency have time to run local SEO software and want deep control of rankings, citations and reviews.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Why Reddit and Third-Party Mentions Decide What AI Says About Your Business",
   description:
     "AI assistants lean on Reddit, review sites, forums and directories because independent sources are the only way they can verify a claim. Here is why third-party mentions outweigh your own website, which surfaces matter, and how to earn them without astroturfing.",
+  subtitle:
+    "Third-party discussion carries disproportionate weight because engines treat it as independent corroboration of what you say about yourself.",
   date: "2026-07-28",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Off-Page",
+  kind: "guide",
+  keyphrase: "does reddit affect ai search",
+  takeaways: [
+    "AI engines quote Reddit because its threads match the shape of the query, look independent, and are available through content agreements.",
+    "Review platforms, forums, directories and editorial mentions move the answer most.",
+    "They decide which specific phrases the model attaches to you.",
+    "Ask for specific reviews, participate openly as yourself, audit listings quarterly and stay quotable on your own site.",
+    "Do not buy reviews, do not post as a fake customer, and do not pay for undisclosed positive threads.",
+  ],
+  sources: [
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+  ],
 }
 
 export function Body() {

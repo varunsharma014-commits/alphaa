@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "How Long Does AEO Take to Work? An Honest Timeline",
   description:
     "Answer engine optimization is not instant, but it is not the 6-to-12-month wait of classic SEO either. Some signals AI engines read update in days; deeper consensus builds over months. Here is an honest timeline of what changes when, and why.",
+  subtitle:
+    "On-site fixes can show up within days to weeks, while review and third-party signals usually take a couple of months to shift an answer.",
   date: "2026-07-26",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Explainer",
+  kind: "guide",
+  keyphrase: "how long does aeo take",
+  takeaways: [
+    "AEO has no fixed timeline because AI engines assemble answers from several layers that each update at a different speed.",
+    "Retrieval and profile fixes move in days to two weeks.",
+    "Your starting point, how crawlable you are, review velocity, competition and category, and consistency of effort decide the pace.",
+    "The common questions are whether AEO is faster than SEO.",
+    "AEO is faster to start than classic SEO and slower to fully mature than a sales pitch admits.",
+  ],
+  sources: [
+    { title: "Google's common crawlers", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

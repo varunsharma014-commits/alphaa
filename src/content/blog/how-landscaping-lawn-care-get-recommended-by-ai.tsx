@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Landscaping and Lawn Care Companies Get Recommended by AI",
   description:
     "AI assistants recommend landscaping and lawn care companies that publish what they actually do, where, in which season, and at roughly what price — and whose reviews and listings agree. Here is the seasonal, service-area playbook that gets a green-industry business named in AI answers.",
+  subtitle:
+    "Landscaping companies get recommended when services, seasonal scope and service area are published as text rather than implied by a photo gallery.",
   date: "2026-08-22",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how landscaping lawn care get recommended by ai",
+  takeaways: [
+    "Customers ask long, specific questions full of constraints; almost nobody types \"landscaper near me\" into ChatGPT.",
+    "Split \"landscaping\" into a real page for each named service you genuinely want to sell.",
+    "Yes: green-industry demand is a calendar, and almost no landscaping site publishes one.",
+    "List the towns, suburbs and ZIP codes you cover in plain text, not a map widget.",
+    "Yes, give a range: price filters heavily in these questions, and a page with no numbers cannot be cited on price.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

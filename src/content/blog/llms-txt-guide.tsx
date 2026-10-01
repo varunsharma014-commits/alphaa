@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "How to Create and Deploy an llms.txt File for Your Business Website",
   description:
     "A practical, step-by-step guide to llms.txt — what it is, why it matters for AI search, and how to write and host one for your business, with a copy-paste template.",
+  subtitle:
+    "An llms.txt file is a plain-text map of your site for AI assistants, cheap to add and worth doing, though its effect is still unproven.",
   date: "2026-06-17",
-  readMins: 6,
+  updated: "2026-10-01",
+  readMins: 3,
   tag: "AEO Guide",
+  kind: "guide",
+  keyphrase: "how to create an llms.txt file",
+  takeaways: [
+    "llms.txt is an emerging convention — proposed at llmstxt.org — for helping large language models understand your site.",
+    "It can help as a low-cost, forward-looking signal, but it is not a magic switch.",
+    "A good llms.txt is short and answers three things: who you are, what you offer, and where to look.",
+    "Host it at the root of your domain, at yourdomain.com/llms.txt.",
+  ],
+  sources: [
+    { title: "The /llms.txt file, v2", publisher: "llms-txt", url: "https://llmstxt.org" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Does Anthropic crawl data from the web, and how can site owners block the crawler? | Claude Help Center", publisher: "Anthropic", url: "https://support.anthropic.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler" },
+    { title: "Google's common crawlers", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers" },
+  ],
 }
 
 export function Body() {

@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Why AI Can't Read Your JavaScript Website (And How to Fix It)",
   description:
     "Many AI crawlers fetch raw HTML and don't wait for JavaScript to run. If your site renders content client-side, the crawler may see an empty shell. Here's the 60-second test and the fix for each stack.",
+  subtitle:
+    "Most AI crawlers do not run JavaScript, so anything rendered client-side is invisible to them and has to be server-rendered to be read.",
   date: "2026-07-29",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Technical",
+  kind: "guide",
+  keyphrase: "javascript rendering and ai crawlers",
+  takeaways: [
+    "Googlebot does render JavaScript, but the dedicated AI crawlers publish no rendering guarantee and in practice behave like plain HTML fetchers.",
+    "Fetch your page with curl, with no browser and no JavaScript, and count the words that come back.",
+    "It looks perfect to humans but hands crawlers a shell with a title tag and no body copy.",
+    "Make sure the meaningful text is in the server-rendered HTML: use SSR or static generation for single-page apps.",
+    "Before you invest in content, schema, or reviews, confirm the machines can read the page at all.",
+  ],
+  sources: [
+    { title: "Understand JavaScript SEO Basics", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics" },
+    { title: "Google's common crawlers", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Web Vitals", publisher: "web.dev", url: "https://web.dev/articles/vitals" },
+  ],
 }
 
 export function Body() {

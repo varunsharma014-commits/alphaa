@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Do FAQ Pages Still Work for AI Search?",
   description:
     "Google deprecated FAQ rich results in 2023, so most SEO advice now says skip them. For AI search the calculus is different: the Q&A format is the closest thing on the web to a pre-extracted answer. Here is what still works, what never did, and how to write one an engine will quote.",
+  subtitle:
+    "FAQ pages still work, but for a different reason than before: Google dropped FAQ rich results while AI engines lift question and answer pairs almost verbatim.",
   date: "2026-08-28",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "do faq pages work for ai search",
+  takeaways: [
+    "In August 2023 Google reduced FAQ rich results to a small number of authoritative sites.",
+    "A well-formed FAQ entry is topically matched to the query, makes sense on its own, and is short enough to quote.",
+    "Most fail because they ask questions nobody puts to an assistant and give answers with zero extractable facts.",
+    "Use the question people actually ask, answer it in the first sentence, keep it 40–120 words and standalone, and include a number, name, or condition.",
+    "Put four to eight questions at the bottom of each service page.",
+  ],
+  sources: [
+    { title: "FAQPage - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/FAQPage" },
+    { title: "Structured Data Markup that Google Search Supports", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/search-gallery" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

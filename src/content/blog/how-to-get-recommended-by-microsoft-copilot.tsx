@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "How to Get Recommended by Microsoft Copilot (and Bing's AI Answers)",
   description:
     "Copilot answers are grounded in the Bing index, which means the levers are different from ChatGPT or Perplexity: bingbot access, Bing Webmaster Tools, IndexNow, and a claimed Bing Places listing most businesses have never touched.",
+  subtitle:
+    "Copilot grounds its answers in Microsoft's index, so the levers are bingbot access, Bing Webmaster Tools, IndexNow and a claimed Bing Places listing.",
   date: "2026-08-03",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how to get recommended by microsoft copilot",
+  takeaways: [
+    "In retrieval terms, Copilot runs a search, reads the returned documents and writes an answer with links back to sources.",
+    "Check that your robots.txt does not block bingbot, and compare your Bing index count with Google’s.",
+    "Verify ownership by importing your site directly from Google Search Console.",
+    "IndexNow lets your site ping participating search engines, including Bing, the moment a page is published or updated.",
+    "Because Google Business Profile does not feed Microsoft, and Bing Places does.",
+  ],
+  sources: [
+    { title: "Bing Webmaster Tools", publisher: "Microsoft Bing", url: "https://www.bing.com/webmasters/about" },
+    { title: "Documentation | IndexNow.org", publisher: "IndexNow", url: "https://www.indexnow.org/documentation" },
+    { title: "Robots.txt Introduction and Guide", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/robots/intro" },
+    { title: "LocalBusiness - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/LocalBusiness" },
+  ],
 }
 
 export function Body() {

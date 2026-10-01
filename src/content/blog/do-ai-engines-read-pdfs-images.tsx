@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Do AI Engines Read PDFs, Menus and Images? What Actually Gets Extracted",
   description:
     "AI assistants read PDFs reasonably well and images barely at all. If your menu, price list, service area or hours only exist inside a JPG or a scanned PDF, the engines answering questions about you are working from an incomplete picture. Here is what gets extracted, what does not, and how to fix it.",
+  subtitle:
+    "PDFs usually get read and images usually do not, so any fact that exists only inside a picture is effectively invisible to AI.",
   date: "2026-08-11",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Technical",
+  kind: "guide",
+  keyphrase: "do ai engines read pdfs images",
+  takeaways: [
+    "Because they are two different systems: the model can see pixels a user uploads.",
+    "HTML text is fully extracted, text-layer PDFs usually are, scanned PDFs are unreliable, and images and embedded widgets effectively are not.",
+    "The most common mistake is putting your most decision-relevant information only in an image.",
+    "Audit what a text-only reader sees, give every image-only fact an HTML twin, convert critical PDFs into pages, and mirror key facts in structured data.",
+    "Answer engines can only recommend what they can read.",
+  ],
+  sources: [
+    { title: "Google's common crawlers", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers" },
+    { title: "Understand JavaScript SEO Basics", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

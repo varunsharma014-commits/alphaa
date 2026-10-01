@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "Why Your Google Reviews Now Decide Your AI Visibility",
   description:
     "Do Google reviews affect ChatGPT recommendations? Yes — reviews are one of the most-read third-party signals AI engines use to decide who to name. Here's the honest mechanism, and how to strengthen it.",
+  subtitle:
+    "Reviews now act as the evidence layer behind AI recommendations, and specific review text matters considerably more than your star average.",
   date: "2026-07-22",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 7,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "do google reviews affect ai recommendations",
+  takeaways: [
+    "Reviews are multi-source consensus in its purest form: many independent people describing your business in their own words on a platform the model reads.",
+    "It reads rating and volume together, the words customers use, recency and cadence, and your responses.",
+    "The business with more specific, recent, verifiable reviews tends to surface, even against a perfect rating on a thin, old sample.",
+    "Ask every satisfied customer at the moment of delivered value, and make it easy for them to mention specifics.",
+    "Buying reviews, writing your own, paying or discounting for reviews, and gating reviews all cross the line.",
+  ],
+  sources: [
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+    { title: "Review Snippet (Review, AggregateRating) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/review-snippet" },
+    { title: "Review - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/Review" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+  ],
 }
 
 export function Body() {

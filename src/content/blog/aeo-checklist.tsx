@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "The AEO Checklist: What Decides Whether AI Recommends Your Business",
   description:
     "A practical, skimmable checklist of the concrete signals that decide whether ChatGPT, Gemini, and other AI engines recommend your business — grouped by foundations, content, reviews, technical, and AI-specific.",
+  subtitle:
+    "AI recommends the businesses whose public signals are complete, consistent and specific, and these are the checks that decide it in priority order.",
   date: "2026-06-17",
-  readMins: 8,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "Checklist",
+  kind: "listicle",
+  keyphrase: "aeo checklist",
+  takeaways: [
+    "Write answer-first pages with question headings, specific facts, and plain language, because AI engines lift sentences they can reuse.",
+    "For local and service recommendations, reviews are often the gate.",
+    "Accurate schema, crawler access, fast server-rendered pages, clean URLs, a working sitemap, and HTTPS let AI read and trust your site.",
+    "Add an llms.txt file, a short summary for AI assistants, clear entity signals, honest comparison content, and regular re-checks of what AI says about you.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {

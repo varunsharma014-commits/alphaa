@@ -6,9 +6,27 @@ export const meta: PostMeta = {
   title: "How to Get Your Business Recommended by Claude",
   description:
     "Claude answers from what it learned in training plus what it retrieves through web search — so getting recommended means being a clearly described, well-corroborated business that Claude can find and cite with confidence. Here is the practical playbook.",
+  subtitle:
+    "Claude leans on clearly written, well-structured sources and reads llms.txt, so clarity and consistency matter more than volume.",
   date: "2026-07-26",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 5,
   tag: "How-to",
+  kind: "industry",
+  keyphrase: "how to get recommended by claude",
+  takeaways: [
+    "Claude answers general questions from training knowledge and uses web search for recent, local or specific ones.",
+    "Write answer-first pages, be one unambiguous entity everywhere, earn genuine third-party corroboration, add accurate schema markup, and make your site easy to crawl.",
+    "The common questions are whether Claude browses the web, whether you can pay to be recommended, and how Claude differs from ChatGPT or Gemini.",
+    "You cannot edit Claude’s model, buy your way into an answer, or trick it with hidden keyword text stuffed onto a page.",
+    "Getting recommended by Claude comes down to being findable and verifiable.",
+  ],
+  sources: [
+    { title: "Does Anthropic crawl data from the web, and how can site owners block the crawler? | Claude Help Center", publisher: "Anthropic", url: "https://support.anthropic.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler" },
+    { title: "The /llms.txt file, v2", publisher: "llms-txt", url: "https://llmstxt.org" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+  ],
 }
 
 export function Body() {

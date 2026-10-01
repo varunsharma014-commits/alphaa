@@ -6,9 +6,26 @@ export const meta: PostMeta = {
   title: "Does Paid Advertising Affect AI Recommendations?",
   description:
     "Running Google Ads or Meta ads does not make ChatGPT, Claude, Gemini or Perplexity more likely to recommend you. But advertising can move AI visibility indirectly — through the pages, reviews and coverage it generates. Here is the honest mechanism, and where ad money is genuinely wasted.",
+  subtitle:
+    "Paid ads do not buy organic AI recommendations, though the brand searches and reviews they generate can feed the signals that do.",
   date: "2026-08-18",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Mechanism",
+  kind: "guide",
+  keyphrase: "do paid ads affect ai recommendations",
+  takeaways: [
+    "AI answers are built from public content, and none of the steps that produce them consults an advertising auction.",
+    "Ads can help indirectly by forcing you to build indexable pages.",
+    "Ad money does nothing for AI visibility when it goes to bigger budgets on the same pages.",
+    "For one cleaning company, only the service with an indexable landing page got named by assistants, until two noindex ad pages were made visible.",
+    "Check that your ad landing pages are indexable and crawlable.",
+  ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Google Search Essentials (formerly Webmaster Guidelines)", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/essentials" },
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+  ],
 }
 
 export function Body() {

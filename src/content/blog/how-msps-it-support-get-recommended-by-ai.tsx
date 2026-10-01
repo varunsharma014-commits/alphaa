@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How MSPs and IT Support Companies Get Recommended by AI",
   description:
     "When an office manager asks ChatGPT for a managed IT provider who supports 40 seats, knows their industry and can meet a compliance requirement, the engines answer from what you have published. Here is what actually decides whether an MSP gets named.",
+  subtitle:
+    "MSPs get recommended when the stack they support, their client size and their response commitments are published instead of described as enterprise-grade.",
   date: "2026-08-18",
-  readMins: 10,
+  updated: "2026-10-01",
+  readMins: 8,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how msps it support get recommended by ai",
+  takeaways: [
+    "Six facts decide it: seat count and client size, compliance regimes, your stack by vendor name, pricing structure, service terms, and engagement models.",
+    "Because a short written case study gives engines text they can lift, while logo grids are invisible.",
+    "Prioritize Google Business Profile, Clutch and G2, your LinkedIn company page, and vendor partner directories.",
+    "The workable shape for an MSP is ProfessionalService schema.",
+    "Qualify in public in week 1, cover compliance and stack in week 2, add commercial clarity in week 3, and publish evidence in week 4.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

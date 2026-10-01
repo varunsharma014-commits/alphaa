@@ -26,15 +26,20 @@ const BUILT_MODE = args.includes("--built")
 const only = args.filter((a) => !a.startsWith("--"))
 
 // ── spec constants (marketing/content-engine-format.md) ──────────────────────
-const WORDS = {
-  guide: [1400, 2000],
-  comparison: [1600, 2400],
-  listicle: [1600, 2400],
-  glossary: [700, 1000],
-  industry: [1000, 1500],
-  news: [600, 1000],
+// Floors, not bands. The gate's job is catching thin content, not enforcing a
+// word target: padding a focused 1,200-word answer up to an arbitrary 1,400 is
+// the "thin content for volume" anti-pattern these posts warn against, and a
+// thorough 1,800-word industry post is good, not a defect. The aspirational
+// targets for NEW posts stay in marketing/content-engine-format.md.
+const WORD_FLOOR = {
+  guide: 1000,
+  comparison: 1100,
+  listicle: 900,
+  glossary: 700,
+  industry: 1000,
+  news: 600,
 }
-const KINDS = Object.keys(WORDS)
+const KINDS = Object.keys(WORD_FLOOR)
 const REQUIRED_META = ["slug", "title", "description", "subtitle", "date", "readMins", "tag", "kind", "keyphrase"]
 const ALLOWED_CLASSES = new Set(["article-prose", "table-wrap"])
 const FAQ_MIN = 4
@@ -114,15 +119,27 @@ function metaArrayLen(src, key) {
       if (depth === 0) {
         const body = src.slice(start + 1, j)
         if (!body.trim()) return 0
-        // count top-level entries
+        // Count top-level entries, skipping string literals: commas inside a
+        // quoted takeaway or source title are not separators.
         let d = 0,
-          n = 1
+          n = 1,
+          inStr = false,
+          esc = false,
+          last = ""
         for (const ch of body) {
-          if ("[{(".includes(ch)) d++
+          if (inStr) {
+            if (esc) esc = false
+            else if (ch === "\\") esc = true
+            else if (ch === '"') inStr = false
+            continue
+          }
+          if (ch === '"') inStr = true
+          else if ("[{(".includes(ch)) d++
           else if ("]})".includes(ch)) d--
           else if (ch === "," && d === 0) n++
+          if (!/\s/.test(ch)) last = ch
         }
-        return body.trim().endsWith(",") ? n - 1 : n
+        return last === "," ? n - 1 : n
       }
     }
   }
@@ -240,7 +257,9 @@ function lintSources() {
     if (internalAnchor) err(slug, `${internalAnchor.length} internal <a href="/..."> — must be <Link href>`)
     const links = body.match(/<Link\s+href="\/[^"]*"/g) || []
     if (links.length && !/from "next\/link"/.test(src)) err(slug, "<Link> used without importing next/link")
-    if (links.length < 2 || links.length > 4) warn(slug, `${links.length} internal <Link>s, want 2-4`)
+    // Minimum only, deliberately no cap: internal links help AI engines traverse
+    // the hub and pass topical context, so capping them would make the site worse.
+    if (links.length < 2) fmtErr(slug, `${links.length} internal <Link>s, want at least 2`)
     for (const l of body.match(/<Link\s+href="\/blog\/[^"]*"/g) || []) {
       const target = l.match(/href="\/blog\/([^"#]*)"/)[1]
       if (!slugToFile.has(target)) err(slug, `links to /blog/${target}, which is not a published slug`)
@@ -293,8 +312,8 @@ function lintSources() {
 
     // length
     const words = bodyWords(body)
-    const range = WORDS[kind]
-    if (range && (words < range[0] || words > range[1])) warn(slug, `${words} words, ${kind} wants ${range[0]}-${range[1]}`)
+    const floor = WORD_FLOOR[kind]
+    if (floor && words < floor) fmtErr(slug, `${words} words, ${kind} needs at least ${floor} — too thin`)
     const rm = Number((src.match(/readMins:\s*(\d+)/) || [])[1])
     if (rm && Math.abs(rm - Math.ceil(words / 230)) > 1) warn(slug, `readMins ${rm}, words/230 = ${Math.ceil(words / 230)}`)
   }

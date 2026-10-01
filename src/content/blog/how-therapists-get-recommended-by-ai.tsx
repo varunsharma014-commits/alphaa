@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How Therapists and Mental Health Practices Get Recommended by AI",
   description:
     "AI assistants answer \"find me a therapist\" mostly from directory profiles, insurance and licence records — rarely from a practice website. Here is how therapists become the named recommendation without review-farming, false claims, or crossing an ethics line.",
+  subtitle:
+    "Therapists get recommended when who they treat, their modalities, licensure and fees are stated plainly, which is also what clients filter on.",
   date: "2026-08-08",
-  readMins: 11,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how therapists get recommended by ai",
+  takeaways: [
+    "Every real query we see stacks three or four constraints together, because that is how someone in distress narrows a decision.",
+    "When an assistant answers a therapist query, it retrieves live documents and synthesizes from what they say.",
+    "Avoid soliciting client reviews, claiming untrained modalities, implying guaranteed outcomes, and publishing anything that could identify a client.",
+    "Therapists commonly ask whether their website matters, how to handle multi-state telehealth, and how long this takes.",
+    "Therapists lose AI recommendations to vagueness, not to competition.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {

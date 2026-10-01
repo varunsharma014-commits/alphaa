@@ -6,9 +6,21 @@ export const meta: PostMeta = {
   title: "AEO for SaaS & B2B: How to Get Your Software Recommended by AI",
   description:
     "When buyers ask AI for the best software in your category, what gets you named? A practical, non-local AEO playbook for SaaS and B2B teams — reviews, comparison content, docs, and schema.",
+  subtitle:
+    "SaaS gets recommended when review platforms, comparison pages and documentation describe it consistently, because software queries have no local signals to fall back on.",
   date: "2026-06-17",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 4,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "aeo for saas",
+  takeaways: [
+    "AI picks software by combining what it has indexed with live retrieval.",
+    "For SaaS and B2B, geography barely matters, so the levers are review platforms, comparison content, and docs rather than local signals.",
+    "Publish honest comparison pages, \"alternatives to [competitor]\" pages, and use-case pages so AI has credible content of yours for these comparative queries.",
+    "Review platforms are among the most heavily weighted sources AI uses for software recommendations — they’re structured, independent, and updated by real users.",
+    "AI can cite comparison and roundup content, use-case and integration pages, and clean documentation.",
+  ],
 }
 
 export function Body() {

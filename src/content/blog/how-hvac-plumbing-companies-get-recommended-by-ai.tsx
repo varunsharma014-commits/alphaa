@@ -6,9 +6,28 @@ export const meta: PostMeta = {
   title: "How HVAC & Plumbing Companies Get Recommended by AI",
   description:
     "When a homeowner asks ChatGPT or Google AI for a good plumber or HVAC company nearby, the answer comes from your Google Business Profile, reviews, and clear service pages — not from ads. Here is the honest playbook for the trades.",
+  subtitle:
+    "HVAC and plumbing companies get recommended when service area, emergency hours and call-out pricing are published and consistent everywhere AI looks.",
   date: "2026-07-15",
-  readMins: 9,
+  updated: "2026-10-01",
+  readMins: 6,
   tag: "Playbook",
+  kind: "industry",
+  keyphrase: "how hvac plumbing companies get recommended by ai",
+  takeaways: [
+    "Because homeowners increasingly ask an AI assistant for help at urgent moments, and that is high-intent, local demand AI answers directly.",
+    "Service area matters because most HVAC and plumbing companies serve a cluster of towns.",
+    "No, so be skeptical of anyone selling AI visibility to HVAC and plumbing companies with guarantees.",
+    "It is not instant: profile and listing fixes can register within a few weeks.",
+    "HVAC and plumbing companies get recommended by AI the same way they earn word-of-mouth on a street.",
+  ],
+  sources: [
+    { title: "Tips to improve your local ranking on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/7091" },
+    { title: "Guidelines for representing your business on Google", publisher: "Google Help", url: "https://support.google.com/business/answer/3038177" },
+    { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Manage customer reviews", publisher: "Google Help", url: "https://support.google.com/business/answer/3474050" },
+  ],
 }
 
 export function Body() {
