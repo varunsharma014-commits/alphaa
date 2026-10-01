@@ -244,7 +244,7 @@ export function Body() {
         classical search problem. But the ranking objective differs: retrieval selects passages that answer a
         question and can be summarised confidently, rather than pages that win a competitive keyword. That changes
         what you write and how you structure it, even when the underlying index is familiar. We compare the two
-        directly in <Link href="/blog/aeo-vs-seo">AEO vs SEO</Link>.
+        directly in <Link href="/blog/aeo-vs-seo-why-agencies-fail">AEO vs SEO</Link>.
       </p>
 
       <h3>Why does an assistant sometimes not search at all?</h3>

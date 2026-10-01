@@ -181,7 +181,7 @@ export function Body() {
         There is overlap, since several engines lean on a search index for retrieval, but the correlation is loose.
         Retrieval works at passage level, so a page ranking tenth can be cited over the page ranking first if it
         contains the paragraph that actually answers the question. Details in{" "}
-        <Link href="/blog/aeo-vs-seo">AEO vs SEO</Link>.
+        <Link href="/blog/aeo-vs-seo-why-agencies-fail">AEO vs SEO</Link>.
       </p>
       <h3>Can I pay to be cited?</h3>
       <p>

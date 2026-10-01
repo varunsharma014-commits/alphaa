@@ -40,47 +40,49 @@ export function Body() {
         A traditional SEO agency optimizes for Google&apos;s ranked links, while AEO optimizes for AI answers
         plus Google.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>&nbsp;</th>
-            <th>Traditional SEO agency</th>
-            <th>AEO (e.g. Alphaa)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Optimizes for</strong></td>
-            <td>Google&apos;s ranked links</td>
-            <td>AI answers + Google</td>
-          </tr>
-          <tr>
-            <td><strong>Where customers see you</strong></td>
-            <td>Page 1 of Google (if you click)</td>
-            <td>Inside ChatGPT / Claude / Gemini / Perplexity answers, AI Overviews, and Google</td>
-          </tr>
-          <tr>
-            <td><strong>Typical cost</strong></td>
-            <td>$1,000–$3,000 / month</td>
-            <td>$99 / month</td>
-          </tr>
-          <tr>
-            <td><strong>What you get</strong></td>
-            <td>Audits &amp; recommendations you (or your team) implement</td>
-            <td>Done-for-you content, schema, Google posts, and llms.txt — automated</td>
-          </tr>
-          <tr>
-            <td><strong>Your effort</strong></td>
-            <td>Calls, approvals, manual changes</td>
-            <td>Set up once, runs on autopilot</td>
-          </tr>
-          <tr>
-            <td><strong>Contracts</strong></td>
-            <td>Often 6–12 month retainers</td>
-            <td>Monthly, cancel anytime</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Traditional SEO agency</th>
+              <th>AEO (e.g. Alphaa)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Optimizes for</strong></td>
+              <td>Google&apos;s ranked links</td>
+              <td>AI answers + Google</td>
+            </tr>
+            <tr>
+              <td><strong>Where customers see you</strong></td>
+              <td>Page 1 of Google (if you click)</td>
+              <td>Inside ChatGPT / Claude / Gemini / Perplexity answers, AI Overviews, and Google</td>
+            </tr>
+            <tr>
+              <td><strong>Typical cost</strong></td>
+              <td>$1,000–$3,000 / month</td>
+              <td>$99 / month</td>
+            </tr>
+            <tr>
+              <td><strong>What you get</strong></td>
+              <td>Audits &amp; recommendations you (or your team) implement</td>
+              <td>Done-for-you content, schema, Google posts, and llms.txt — automated</td>
+            </tr>
+            <tr>
+              <td><strong>Your effort</strong></td>
+              <td>Calls, approvals, manual changes</td>
+              <td>Set up once, runs on autopilot</td>
+            </tr>
+            <tr>
+              <td><strong>Contracts</strong></td>
+              <td>Often 6–12 month retainers</td>
+              <td>Monthly, cancel anytime</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>Why do SEO agencies struggle with AI search?</h2>
       <p>

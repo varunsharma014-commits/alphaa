@@ -92,55 +92,57 @@ export function Body() {
       <p>
         Trade features, local news profiles, expert quotes, transcribed podcasts and &quot;best of&quot; roundups move answers; wire syndication sits near the bottom. Ranked by how often we see each one show up in the sources an engine cites back:
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Coverage type</th>
-            <th>Why an engine weights it</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Trade / industry publication feature</td>
-            <td>
-              Topically dense and unambiguous. A dental trade piece about you is the strongest possible evidence
-              that you belong in a dental answer.
-            </td>
-          </tr>
-          <tr>
-            <td>Local news or business journal profile</td>
-            <td>
-              Ties your name to your city in editorial prose — exactly the entity-plus-place association that
-              local queries depend on.
-            </td>
-          </tr>
-          <tr>
-            <td>Expert quote in someone else&apos;s article</td>
-            <td>
-              Attaches a named human at your company to a topic. Cheapest to earn and disproportionately quotable.
-            </td>
-          </tr>
-          <tr>
-            <td>Podcast or webinar with a written show page</td>
-            <td>
-              Only counts if there is indexable text. An audio file with a one-line description is invisible; a
-              transcript is a page of you explaining your expertise.
-            </td>
-          </tr>
-          <tr>
-            <td>Awards and &quot;best of&quot; roundups</td>
-            <td>
-              List pages are the literal shape of a recommendation query. Engines lift them almost verbatim.
-            </td>
-          </tr>
-          <tr>
-            <td>Wire press release syndication</td>
-            <td>
-              Deduplicated, self-authored, often labelled promotional. Near the bottom for a reason.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Coverage type</th>
+              <th>Why an engine weights it</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Trade / industry publication feature</td>
+              <td>
+                Topically dense and unambiguous. A dental trade piece about you is the strongest possible evidence
+                that you belong in a dental answer.
+              </td>
+            </tr>
+            <tr>
+              <td>Local news or business journal profile</td>
+              <td>
+                Ties your name to your city in editorial prose — exactly the entity-plus-place association that
+                local queries depend on.
+              </td>
+            </tr>
+            <tr>
+              <td>Expert quote in someone else&apos;s article</td>
+              <td>
+                Attaches a named human at your company to a topic. Cheapest to earn and disproportionately quotable.
+              </td>
+            </tr>
+            <tr>
+              <td>Podcast or webinar with a written show page</td>
+              <td>
+                Only counts if there is indexable text. An audio file with a one-line description is invisible; a
+                transcript is a page of you explaining your expertise.
+              </td>
+            </tr>
+            <tr>
+              <td>Awards and &quot;best of&quot; roundups</td>
+              <td>
+                List pages are the literal shape of a recommendation query. Engines lift them almost verbatim.
+              </td>
+            </tr>
+            <tr>
+              <td>Wire press release syndication</td>
+              <td>
+                Deduplicated, self-authored, often labelled promotional. Near the bottom for a reason.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>How can a small business earn media mentions?</h2>
       <p>

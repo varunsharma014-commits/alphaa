@@ -188,47 +188,49 @@ export function Body() {
       </p>
 
       <h2>How do the four engines compare side by side?</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Engine</th>
-            <th>Where live web results come from</th>
-            <th>Local data it leans on</th>
-            <th>Crawlers to allow</th>
-            <th>Prioritise</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>ChatGPT</td>
-            <td>Third-party search providers plus partners (OpenAI). Close match to Bing results (Seer study, not confirmed by OpenAI).</td>
-            <td>Yelp reviews, ratings, photos and details (confirmed by Yelp).</td>
-            <td><code>OAI-SearchBot</code>, <code>ChatGPT-User</code></td>
-            <td>Bing Places and Bing indexing, Yelp profile, crawlable site</td>
-          </tr>
-          <tr>
-            <td>Gemini</td>
-            <td>Google Search index. AI Overviews and AI Mode use query fan-out (Google).</td>
-            <td>Public Google Maps data: ratings, hours, websites (Google).</td>
-            <td><code>Googlebot</code></td>
-            <td>Google Business Profile, Google reviews, Google rankings</td>
-          </tr>
-          <tr>
-            <td>Perplexity</td>
-            <td>Its own search results, surfaced by PerplexityBot (Perplexity).</td>
-            <td>Reddit dominates its top sources. Yelp and Tripadvisor also rank in its top ten (Profound study).</td>
-            <td><code>PerplexityBot</code>, <code>Perplexity-User</code></td>
-            <td>Genuine Reddit presence, Yelp and Tripadvisor, citable pages</td>
-          </tr>
-          <tr>
-            <td>Claude</td>
-            <td>Claude web search. Brave reported as the backend, not stated in Anthropic&apos;s search docs. Images from Bing.</td>
-            <td>No documented local partner. Uses location from your IP (Anthropic).</td>
-            <td><code>Claude-SearchBot</code>, <code>Claude-User</code></td>
-            <td>Clear, factual site content, Brave visibility, third-party reviews</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Engine</th>
+              <th>Where live web results come from</th>
+              <th>Local data it leans on</th>
+              <th>Crawlers to allow</th>
+              <th>Prioritise</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ChatGPT</td>
+              <td>Third-party search providers plus partners (OpenAI). Close match to Bing results (Seer study, not confirmed by OpenAI).</td>
+              <td>Yelp reviews, ratings, photos and details (confirmed by Yelp).</td>
+              <td><code>OAI-SearchBot</code>, <code>ChatGPT-User</code></td>
+              <td>Bing Places and Bing indexing, Yelp profile, crawlable site</td>
+            </tr>
+            <tr>
+              <td>Gemini</td>
+              <td>Google Search index. AI Overviews and AI Mode use query fan-out (Google).</td>
+              <td>Public Google Maps data: ratings, hours, websites (Google).</td>
+              <td><code>Googlebot</code></td>
+              <td>Google Business Profile, Google reviews, Google rankings</td>
+            </tr>
+            <tr>
+              <td>Perplexity</td>
+              <td>Its own search results, surfaced by PerplexityBot (Perplexity).</td>
+              <td>Reddit dominates its top sources. Yelp and Tripadvisor also rank in its top ten (Profound study).</td>
+              <td><code>PerplexityBot</code>, <code>Perplexity-User</code></td>
+              <td>Genuine Reddit presence, Yelp and Tripadvisor, citable pages</td>
+            </tr>
+            <tr>
+              <td>Claude</td>
+              <td>Claude web search. Brave reported as the backend, not stated in Anthropic&apos;s search docs. Images from Bing.</td>
+              <td>No documented local partner. Uses location from your IP (Anthropic).</td>
+              <td><code>Claude-SearchBot</code>, <code>Claude-User</code></td>
+              <td>Clear, factual site content, Brave visibility, third-party reviews</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>What works across all four?</h2>
       <p>

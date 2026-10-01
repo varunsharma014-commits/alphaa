@@ -135,32 +135,34 @@ export function Body() {
       <p>
         Legitimate AEO talks about influencing inputs and probabilities; snake oil promises guaranteed rankings or a secret backdoor into the models.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Legitimate AEO</th>
-            <th>Snake oil</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Talks about influencing inputs and probabilities</td>
-            <td>Promises guaranteed rankings or &quot;insertion&quot; into ChatGPT</td>
-          </tr>
-          <tr>
-            <td>Works on content, schema, reviews, and consistency</td>
-            <td>Claims a secret backdoor or API into the models</td>
-          </tr>
-          <tr>
-            <td>Measures citations and mentions over time, honestly</td>
-            <td>Shows a single screenshot as &quot;proof&quot; of permanent placement</td>
-          </tr>
-          <tr>
-            <td>Admits results vary and take time</td>
-            <td>Quotes precise, suspiciously round success numbers</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Legitimate AEO</th>
+              <th>Snake oil</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Talks about influencing inputs and probabilities</td>
+              <td>Promises guaranteed rankings or &quot;insertion&quot; into ChatGPT</td>
+            </tr>
+            <tr>
+              <td>Works on content, schema, reviews, and consistency</td>
+              <td>Claims a secret backdoor or API into the models</td>
+            </tr>
+            <tr>
+              <td>Measures citations and mentions over time, honestly</td>
+              <td>Shows a single screenshot as &quot;proof&quot; of permanent placement</td>
+            </tr>
+            <tr>
+              <td>Admits results vary and take time</td>
+              <td>Quotes precise, suspiciously round success numbers</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         A simple test: ask the vendor <em>how</em> a tactic works. If the explanation maps to retrieval,
         sources, and consensus, it&apos;s grounded. If it relies on a mysterious lever no one else has,

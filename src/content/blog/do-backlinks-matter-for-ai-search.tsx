@@ -83,33 +83,35 @@ export function Body() {
         Here is a concrete pair. Both are &quot;off-page signals&quot; in the old vocabulary; they behave
         completely differently in an AI answer.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Asset</th>
-            <th>What an engine can do with it</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>A dofollow link from a paid guest post: &quot;check out this great company&quot;</td>
-            <td>
-              Adds a small amount of ranking signal to one page. Provides no describable fact. Nothing here can
-              be quoted in an answer.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              An unlinked Reddit comment: &quot;We used Northside for a cracked molar — same-day crown, $1,400,
-              done in one visit&quot;
-            </td>
-            <td>
-              Names you, states a service, a price, and a turnaround, in a user&apos;s own voice, on a domain
-              engines retrieve from constantly. Directly quotable and directly attributable.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>What an engine can do with it</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A dofollow link from a paid guest post: &quot;check out this great company&quot;</td>
+              <td>
+                Adds a small amount of ranking signal to one page. Provides no describable fact. Nothing here can
+                be quoted in an answer.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                An unlinked Reddit comment: &quot;We used Northside for a cracked molar — same-day crown, $1,400,
+                done in one visit&quot;
+              </td>
+              <td>
+                Names you, states a service, a price, and a turnaround, in a user&apos;s own voice, on a domain
+                engines retrieve from constantly. Directly quotable and directly attributable.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         If you have a fixed budget and have to choose, the second one wins for AI visibility. We go deeper on
         why third-party discussion carries so much weight in{" "}

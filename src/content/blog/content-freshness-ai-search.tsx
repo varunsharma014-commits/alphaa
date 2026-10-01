@@ -93,47 +93,49 @@ export function Body() {
         This is the cadence we actually run for clients. Treat it as a maintenance schedule, not a content
         quota — the review is mandatory, the edit only happens if something changed.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Page type</th>
-            <th>Review cadence</th>
-            <th>What you are checking</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Pricing, packages, offers</td>
-            <td>Monthly</td>
-            <td>Every figure matches what you actually charge today, and matches your other profiles</td>
-          </tr>
-          <tr>
-            <td>Hours, address, service area, phone</td>
-            <td>Monthly, plus immediately on any change</td>
-            <td>Site, Google Business Profile, and directories all agree exactly</td>
-          </tr>
-          <tr>
-            <td>Core service pages</td>
-            <td>Quarterly</td>
-            <td>Services listed are services you still sell; no dead links; specifics still true</td>
-          </tr>
-          <tr>
-            <td>Team, credentials, licences, certifications</td>
-            <td>Quarterly</td>
-            <td>Named people are current; licence and registration numbers still valid</td>
-          </tr>
-          <tr>
-            <td>Statistics, market claims, comparisons</td>
-            <td>Every 6 months</td>
-            <td>Source still exists, figure has not been superseded, attribution intact</td>
-          </tr>
-          <tr>
-            <td>Definitional and how-to explainers</td>
-            <td>Annually</td>
-            <td>Mechanism still accurate; only rewrite if the underlying reality changed</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Page type</th>
+              <th>Review cadence</th>
+              <th>What you are checking</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pricing, packages, offers</td>
+              <td>Monthly</td>
+              <td>Every figure matches what you actually charge today, and matches your other profiles</td>
+            </tr>
+            <tr>
+              <td>Hours, address, service area, phone</td>
+              <td>Monthly, plus immediately on any change</td>
+              <td>Site, Google Business Profile, and directories all agree exactly</td>
+            </tr>
+            <tr>
+              <td>Core service pages</td>
+              <td>Quarterly</td>
+              <td>Services listed are services you still sell; no dead links; specifics still true</td>
+            </tr>
+            <tr>
+              <td>Team, credentials, licences, certifications</td>
+              <td>Quarterly</td>
+              <td>Named people are current; licence and registration numbers still valid</td>
+            </tr>
+            <tr>
+              <td>Statistics, market claims, comparisons</td>
+              <td>Every 6 months</td>
+              <td>Source still exists, figure has not been superseded, attribution intact</td>
+            </tr>
+            <tr>
+              <td>Definitional and how-to explainers</td>
+              <td>Annually</td>
+              <td>Mechanism still accurate; only rewrite if the underlying reality changed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>How do you audit your site for stale content?</h2>
       <p>

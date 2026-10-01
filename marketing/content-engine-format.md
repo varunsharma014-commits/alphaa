@@ -40,7 +40,7 @@ Reference example using every field:
 - **First paragraph**: a 40–60-word direct answer, starting `<strong>Short answer:</strong>`. No preamble.
 - **H2s are questions** ("How much does AEO cost?"), each followed immediately by a `<p>` whose first sentence answers it. Those pairs become FAQPage schema automatically, so the answer paragraph must be ≥ 40 characters and self-contained.
 - **One comparison table or numbered steps** (`<ol>`) wherever it fits. Wrap every table in `<div className="table-wrap">…</div>` so it scrolls inside the column on phones.
-- **"Frequently asked questions" H2** near the end with **4–6 Q&As**, each an `<h3>` ending in `?` directly followed by ONE `<p>` answer (≥ 40 characters, 2–3 sentences, answer in the first sentence). `extractFaq` in `src/content/blog/faq.ts` reads exactly this shape: `<h2>Frequently asked questions</h2>` then `<h3>…?</h3><p>…</p>` pairs. Don't put lists, links-only paragraphs or extra wrappers between the `<h3>` and its `<p>`. Don't repeat a question already used as an H2.
+- **An FAQ block** near the end with **4–6 Q&As**, each an `<h3>` ending in `?` directly followed by ONE `<p>` answer (≥ 40 characters, 2–3 sentences, answer in the first sentence). The section's own H2 is question-phrased like every other H2 ("What else do electricians ask about AI visibility?") — `extractFaq` in `src/content/blog/faq.ts` finds the pairs by shape, not by heading text, so the wording is free. What it does depend on: the `<p>` must come **directly** after the `<h3>`, with no list, wrapper or links-only paragraph between them, and the answer must be ≥ 40 characters. Don't repeat a question already used as an H2.
 - **takeaways**: 3–5 bullets, each one sentence, ≤ 25 words, each a standalone fact.
 - **sources**: 3–6 outbound citations to primary or authoritative pages (the vendor's own pricing page, Google Search Central, OpenAI, the study's own page). Not other SEO blogs. Open each URL and copy its real `<title>` into `title`. They render as a numbered "Sources" list at the end (`rel="noopener"`, followed), and as `citation` in the JSON-LD. Also link the most important ones inline in the body with `{...ext}`.
 - **2–4 internal links**, always `import Link from "next/link"` and `<Link href="/blog/<slug>">`. Never `<a href="/...">`. Good targets: related posts, `/start` (free check), `/pricing`, `/compare/...`.
@@ -193,12 +193,23 @@ railway run node scripts/blog-image.mjs <slug> "<what the image shows>"
 
 ```bash
 set -o pipefail
+npm run check:content                     # format + correctness gate on the sources
 rm -rf .next/types && ./node_modules/.bin/tsc --noEmit > /tmp/tsc.log 2>&1; echo tsc=$?
 ./node_modules/.bin/next build > /tmp/build.log 2>&1; echo build=$?
+npm run check:content:built               # asserts the emitted JSON-LD and markup
 ```
 
 - NEVER run `npm run build` (it runs prod DB migrations).
-- Push only if both print `=0`. Never pipe these through `head`/`grep` before deciding.
+- Push only if all four pass: both `check:content` commands exit 0 and tsc/build print `=0`. Never pipe these through `head`/`grep` before deciding.
+- **`tsc` and `next build` passing is not enough.** They compile a post that has
+  lost its FAQ schema, links to a dead slug or overflows on phones just as
+  happily. `scripts/check-content.mjs` is the only thing that checks those, and
+  the `--built` pass is what catches a code change that silently drops schema
+  from every post at once. Run both.
+- If the gate reports an error on a post you just wrote, fix the post. Never add
+  a new slug to `scripts/content-baseline.json` — that file only grandfathers
+  pre-rework posts on format-completeness, and correctness rules apply to
+  everything regardless.
 - `git pull --rebase origin main`, commit (`Co-Authored-By` line), `git push origin main`.
 - After Railway deploys (watch for the URL to return 200):
 
@@ -212,13 +223,27 @@ IndexNow engines. A 200 or 202 response means accepted.
 
 ## 9. Pre-publish checklist
 
-- [ ] title ≤ 60 chars with keyphrase; description 140–160 chars; subtitle is one sentence
-- [ ] first paragraph 40–60 words, "Short answer:"
-- [ ] question H2s each followed directly by an answering `<p>`
-- [ ] one table (in `.table-wrap`) or numbered steps
-- [ ] "Frequently asked questions" H2 with 4–6 `<h3>`/`<p>` pairs
-- [ ] 3–5 takeaways; 3–6 sources with real page titles; 2–4 internal `<Link>`s
-- [ ] every number traceable to the Verified stats bank or a cited primary source; no "#1", no guarantees
-- [ ] hero image generated, viewed, `image` meta filled
-- [ ] registered in `index.ts`; tsc and next build both exit 0
+`npm run check:content` enforces most of this list mechanically — run it instead
+of eyeballing. It checks: slug/filename/registration, duplicate slug and
+keyphrase, required meta, title ≤ 60, description 140–160, 3–5 takeaways, 3–6
+sources, 2–4 internal `<Link>`s, no internal `<a href="/...">`, no dead `/blog/`
+link, no self-link, only `article-prose`/`table-wrap` classNames, every `<table>`
+wrapped, "Short answer:" opening, every question H2 answered by the `<p>` after
+it, 4–6 FAQ `<h3>`/`<p>` pairs, **that those pairs actually reach FAQPage
+schema**, DO-NOT-USE figures asserted rather than debunked, first-person
+guarantees, and word count vs `kind`.
+
+`npm run check:content:built` then asserts the emitted output: BlogPosting /
+BreadcrumbList / FAQPage all present and parseable, every hand-written FAQ
+question present in the built schema, no non-question or under-length schema
+entries, `dateModified` not before `datePublished`, correct canonical URL, every
+rendered table wrapped, and that no post is missing its prerendered HTML.
+
+What the gate cannot judge — still on you:
+
+- [ ] every number traceable to the Verified stats bank, with its qualifier intact
+- [ ] every source URL opened and confirmed to say what we cite, with its real page title
+- [ ] hero image generated, **looked at**, `image` meta filled with a literal alt
+- [ ] the "Short answer" genuinely answers the title question
+- [ ] claims are honest: no promised outcomes, limitations stated plainly
 - [ ] deployed URL returns 200; IndexNow pinged

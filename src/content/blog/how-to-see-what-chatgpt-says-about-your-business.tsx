@@ -100,32 +100,34 @@ export function Body() {
         Being named consistently means strong visibility; being recognized but not recommended, getting wrong
         details, or getting no information each point to a specific gap.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>What you see</th>
-            <th>What it means</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Named consistently in recommendation prompts</td>
-            <td>Strong AI visibility — protect it and keep sources fresh</td>
-          </tr>
-          <tr>
-            <td>Recognized by name, but never recommended</td>
-            <td>The model knows you exist but doesn&apos;t see enough evidence to vouch for you</td>
-          </tr>
-          <tr>
-            <td>Details returned are wrong or outdated</td>
-            <td>Inconsistent public data — your sources disagree with each other</td>
-          </tr>
-          <tr>
-            <td>&quot;I don&apos;t have information about that business&quot;</td>
-            <td>Thin footprint — few retrievable, verifiable sources describe you</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>What you see</th>
+              <th>What it means</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Named consistently in recommendation prompts</td>
+              <td>Strong AI visibility — protect it and keep sources fresh</td>
+            </tr>
+            <tr>
+              <td>Recognized by name, but never recommended</td>
+              <td>The model knows you exist but doesn&apos;t see enough evidence to vouch for you</td>
+            </tr>
+            <tr>
+              <td>Details returned are wrong or outdated</td>
+              <td>Inconsistent public data — your sources disagree with each other</td>
+            </tr>
+            <tr>
+              <td>&quot;I don&apos;t have information about that business&quot;</td>
+              <td>Thin footprint — few retrievable, verifiable sources describe you</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         Notice what none of these results can be fixed by: there is no button that inserts you into ChatGPT. AEO
         works by improving the public signals AI engines read — your website clarity, schema, reviews, and

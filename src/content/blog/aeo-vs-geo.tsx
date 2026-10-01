@@ -53,46 +53,48 @@ export function Body() {
       <p>
         AEO and GEO share the same target systems and core mechanism, and differ mainly in framing and origin.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Dimension</th>
-            <th>AEO</th>
-            <th>GEO</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Full name</td>
-            <td>Answer Engine Optimization</td>
-            <td>Generative Engine Optimization</td>
-          </tr>
-          <tr>
-            <td>Framing</td>
-            <td>Being the answer an engine gives</td>
-            <td>Being cited in the text an engine generates</td>
-          </tr>
-          <tr>
-            <td>Target systems</td>
-            <td>ChatGPT, Gemini, Perplexity, AI Overviews</td>
-            <td>The same large language models</td>
-          </tr>
-          <tr>
-            <td>Core mechanism</td>
-            <td>Influence the inputs models read; earn consensus</td>
-            <td>Influence the inputs models read; earn consensus</td>
-          </tr>
-          <tr>
-            <td>Typical origin</td>
-            <td>Marketing and local-SEO practitioners</td>
-            <td>Academic paper, then technical SEO circles</td>
-          </tr>
-          <tr>
-            <td>What neither can do</td>
-            <td colSpan={2}>Edit the model, buy a guaranteed citation, or force placement</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>AEO</th>
+              <th>GEO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Full name</td>
+              <td>Answer Engine Optimization</td>
+              <td>Generative Engine Optimization</td>
+            </tr>
+            <tr>
+              <td>Framing</td>
+              <td>Being the answer an engine gives</td>
+              <td>Being cited in the text an engine generates</td>
+            </tr>
+            <tr>
+              <td>Target systems</td>
+              <td>ChatGPT, Gemini, Perplexity, AI Overviews</td>
+              <td>The same large language models</td>
+            </tr>
+            <tr>
+              <td>Core mechanism</td>
+              <td>Influence the inputs models read; earn consensus</td>
+              <td>Influence the inputs models read; earn consensus</td>
+            </tr>
+            <tr>
+              <td>Typical origin</td>
+              <td>Marketing and local-SEO practitioners</td>
+              <td>Academic paper, then technical SEO circles</td>
+            </tr>
+            <tr>
+              <td>What neither can do</td>
+              <td colSpan={2}>Edit the model, buy a guaranteed citation, or force placement</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>Where do AEO and GEO actually differ?</h2>
       <p>

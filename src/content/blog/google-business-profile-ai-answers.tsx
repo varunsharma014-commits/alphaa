@@ -79,75 +79,77 @@ export function Body() {
         Primary category matters most, followed by your exact business name and your services list. Not all of GBP matters equally for AI answers. Ranked by how often we see each one change a scan
         result:
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Field</th>
-            <th>Why it matters to an AI engine</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Primary category</td>
-            <td>
-              The single strongest statement of what you are. It determines which questions you are even a
-              candidate for. Wrong category is the most expensive quiet mistake in local AEO.
-            </td>
-          </tr>
-          <tr>
-            <td>Business name (exact)</td>
-            <td>
-              The string every other source keys off. Variants fragment you into several weak entities instead
-              of one strong one.
-            </td>
-          </tr>
-          <tr>
-            <td>Services / products list</td>
-            <td>
-              Turns &quot;a plumber&quot; into &quot;a plumber who does boiler replacements and power
-              flushing&quot; — the specificity that lets an engine match a narrow query to you.
-            </td>
-          </tr>
-          <tr>
-            <td>Hours, including special hours</td>
-            <td>
-              Assistants answer &quot;open now?&quot; and &quot;open Sunday?&quot; constantly. Unset special
-              hours produce confidently wrong answers on exactly the days that matter.
-            </td>
-          </tr>
-          <tr>
-            <td>Attributes</td>
-            <td>
-              Wheelchair accessible, women-owned, free parking, appointment required. These map directly onto
-              qualifier queries and are the least-filled section we encounter.
-            </td>
-          </tr>
-          <tr>
-            <td>Business description (750 chars)</td>
-            <td>
-              The one place you write your own summary. It gets reused verbatim across sites, so it is the
-              closest thing you have to dictating your own entry.
-            </td>
-          </tr>
-          <tr>
-            <td>Reviews and your replies</td>
-            <td>
-              Third-party corroboration plus quotable specifics. Covered separately in{" "}
-              <Link href="/blog/google-reviews-ai-visibility">
-                how Google reviews affect your AI visibility
-              </Link>
-              .
-            </td>
-          </tr>
-          <tr>
-            <td>Q&amp;A section</td>
-            <td>
-              Literally question-and-answer text about your business, on a high-authority indexed page. It is
-              the most under-used asset on this list.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Why it matters to an AI engine</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Primary category</td>
+              <td>
+                The single strongest statement of what you are. It determines which questions you are even a
+                candidate for. Wrong category is the most expensive quiet mistake in local AEO.
+              </td>
+            </tr>
+            <tr>
+              <td>Business name (exact)</td>
+              <td>
+                The string every other source keys off. Variants fragment you into several weak entities instead
+                of one strong one.
+              </td>
+            </tr>
+            <tr>
+              <td>Services / products list</td>
+              <td>
+                Turns &quot;a plumber&quot; into &quot;a plumber who does boiler replacements and power
+                flushing&quot; — the specificity that lets an engine match a narrow query to you.
+              </td>
+            </tr>
+            <tr>
+              <td>Hours, including special hours</td>
+              <td>
+                Assistants answer &quot;open now?&quot; and &quot;open Sunday?&quot; constantly. Unset special
+                hours produce confidently wrong answers on exactly the days that matter.
+              </td>
+            </tr>
+            <tr>
+              <td>Attributes</td>
+              <td>
+                Wheelchair accessible, women-owned, free parking, appointment required. These map directly onto
+                qualifier queries and are the least-filled section we encounter.
+              </td>
+            </tr>
+            <tr>
+              <td>Business description (750 chars)</td>
+              <td>
+                The one place you write your own summary. It gets reused verbatim across sites, so it is the
+                closest thing you have to dictating your own entry.
+              </td>
+            </tr>
+            <tr>
+              <td>Reviews and your replies</td>
+              <td>
+                Third-party corroboration plus quotable specifics. Covered separately in{" "}
+                <Link href="/blog/google-reviews-ai-visibility">
+                  how Google reviews affect your AI visibility
+                </Link>
+                .
+              </td>
+            </tr>
+            <tr>
+              <td>Q&amp;A section</td>
+              <td>
+                Literally question-and-answer text about your business, on a high-authority indexed page. It is
+                the most under-used asset on this list.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>What Google Business Profile gaps hurt AI visibility most?</h2>
       <p>

@@ -77,29 +77,31 @@ export function Body() {
         The most common gaps are the ones AI relies on to describe and trust a business: complete structured facts, FAQ
         answers, reviews in plain text and fresh content. Among the 239 readable sites:
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Check</th>
-            <th>Sites failing</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>No fresh blog or news content in the last 90 days</td><td>80%</td></tr>
-          <tr><td>No llms.txt file</td><td>75%</td></tr>
-          <tr><td>Structured business facts missing or incomplete (address, phone, hours, map location, profiles)</td><td>71%</td></tr>
-          <tr><td>No FAQ content</td><td>66%</td></tr>
-          <tr><td>No reviews or testimonials readable as text</td><td>56%</td></tr>
-          <tr><td>No Google Maps link, or fewer than two profile links</td><td>52%</td></tr>
-          <tr><td>Phone, address or hours not readable on the homepage</td><td>46%</td></tr>
-          <tr><td>No business structured data at all</td><td>36%</td></tr>
-          <tr><td>Weak or missing page title and description</td><td>36%</td></tr>
-          <tr><td>Slow first response (over 1.5 seconds)</td><td>23%</td></tr>
-          <tr><td>No main heading (H1)</td><td>23%</td></tr>
-          <tr><td>No secure, single address (http/https or www split)</td><td>13%</td></tr>
-          <tr><td>Canonical tags pointing at the wrong page</td><td>5%</td></tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Check</th>
+              <th>Sites failing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>No fresh blog or news content in the last 90 days</td><td>80%</td></tr>
+            <tr><td>No llms.txt file</td><td>75%</td></tr>
+            <tr><td>Structured business facts missing or incomplete (address, phone, hours, map location, profiles)</td><td>71%</td></tr>
+            <tr><td>No FAQ content</td><td>66%</td></tr>
+            <tr><td>No reviews or testimonials readable as text</td><td>56%</td></tr>
+            <tr><td>No Google Maps link, or fewer than two profile links</td><td>52%</td></tr>
+            <tr><td>Phone, address or hours not readable on the homepage</td><td>46%</td></tr>
+            <tr><td>No business structured data at all</td><td>36%</td></tr>
+            <tr><td>Weak or missing page title and description</td><td>36%</td></tr>
+            <tr><td>Slow first response (over 1.5 seconds)</td><td>23%</td></tr>
+            <tr><td>No main heading (H1)</td><td>23%</td></tr>
+            <tr><td>No secure, single address (http/https or www split)</td><td>13%</td></tr>
+            <tr><td>Canonical tags pointing at the wrong page</td><td>5%</td></tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         Two failures deserve a note. Google says its AI features don&apos;t require an llms.txt file; other assistants
         can use it, which is why we check it, but it&apos;s the least critical item on this list. And 88% showed no sign
@@ -113,27 +115,29 @@ export function Body() {
         lowest at 11 of 23. Restaurants were the most likely to lack structured data, readable reviews, FAQ answers and
         profile links, which matters because diners ask AI for recommendations constantly.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Industry</th>
-            <th>Sampled</th>
-            <th>Readable</th>
-            <th>Avg. checks passed (of 23)</th>
-            <th>No business schema</th>
-            <th>Phone/address/hours missing</th>
-            <th>No FAQ</th>
-            <th>No readable reviews</th>
-          </tr>
-        </thead>
-        <tbody>
-          {industries.map(([n, s, r, avg, sc, f, faq, rev]) => (
-            <tr key={n}>
-              <td>{n}</td><td>{s}</td><td>{r}</td><td>{avg}</td><td>{sc}</td><td>{f}</td><td>{faq}</td><td>{rev}</td>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Industry</th>
+              <th>Sampled</th>
+              <th>Readable</th>
+              <th>Avg. checks passed (of 23)</th>
+              <th>No business schema</th>
+              <th>Phone/address/hours missing</th>
+              <th>No FAQ</th>
+              <th>No readable reviews</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {industries.map(([n, s, r, avg, sc, f, faq, rev]) => (
+              <tr key={n}>
+                <td>{n}</td><td>{s}</td><td>{r}</td><td>{avg}</td><td>{sc}</td><td>{f}</td><td>{faq}</td><td>{rev}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <h2>How many sites are fully ready?</h2>
       <p>

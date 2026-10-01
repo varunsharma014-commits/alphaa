@@ -115,42 +115,44 @@ export function Body() {
         Use Organization or LocalBusiness schema with sameAs, consistent identifiers, independent third-party description and consistent profiles. Strip away the brand names and Wikipedia and Wikidata give an AI system four things. Every one has an
         accessible substitute.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>What the Wikimedia sources provide</th>
-            <th>The substitute available to any business</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>A canonical, structured entity record</td>
-            <td>
-              <code>Organization</code> or <code>LocalBusiness</code> schema on your site, with{" "}
-              <code>sameAs</code> pointing at every profile you control
-            </td>
-          </tr>
-          <tr>
-            <td>A stable identifier for disambiguation</td>
-            <td>
-              One consistent legal name, address, and domain used identically everywhere — plus your company
-              registration number where it is public
-            </td>
-          </tr>
-          <tr>
-            <td>Independent description by third parties</td>
-            <td>
-              Reviews, trade-press mentions, industry directories, conference listings, podcast appearances
-            </td>
-          </tr>
-          <tr>
-            <td>Wide propagation of the same facts</td>
-            <td>
-              Deliberate consistency across profiles that are themselves widely crawled and mirrored
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>What the Wikimedia sources provide</th>
+              <th>The substitute available to any business</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A canonical, structured entity record</td>
+              <td>
+                <code>Organization</code> or <code>LocalBusiness</code> schema on your site, with{" "}
+                <code>sameAs</code> pointing at every profile you control
+              </td>
+            </tr>
+            <tr>
+              <td>A stable identifier for disambiguation</td>
+              <td>
+                One consistent legal name, address, and domain used identically everywhere — plus your company
+                registration number where it is public
+              </td>
+            </tr>
+            <tr>
+              <td>Independent description by third parties</td>
+              <td>
+                Reviews, trade-press mentions, industry directories, conference listings, podcast appearances
+              </td>
+            </tr>
+            <tr>
+              <td>Wide propagation of the same facts</td>
+              <td>
+                Deliberate consistency across profiles that are themselves widely crawled and mirrored
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         The concrete version of the first row is a single, well-formed <code>Organization</code> block whose{" "}
         <code>sameAs</code> array lists your LinkedIn company page, Crunchbase profile, Google Business

@@ -79,47 +79,49 @@ export function Body() {
         The simplest way to see it: BrightLocal is broad local SEO software you run, and Alphaa is a narrower
         agent that runs itself and focuses on AI answers. The table below sets out the practical differences.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>BrightLocal</th>
-            <th>Alphaa</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>What it is</strong></td>
-            <td>Local SEO toolkit (rank tracking, citations, listings sync, reviews, audits)</td>
-            <td>AI agent that audits, writes and drafts fixes for AI visibility</td>
-          </tr>
-          <tr>
-            <td><strong>Who does the work</strong></td>
-            <td>You or your agency. AI Insights recommends; people act (or you buy the managed service)</td>
-            <td>The agent does the work. You approve with one tap</td>
-          </tr>
-          <tr>
-            <td><strong>What it optimises for</strong></td>
-            <td>Google rankings and the map pack, plus tracking in ChatGPT and Google&apos;s AI results</td>
-            <td>Being named in answers from ChatGPT, Gemini, Claude and Perplexity</td>
-          </tr>
-          <tr>
-            <td><strong>Pricing model</strong></td>
-            <td>Tiered plans, price on request on its site; monthly or annual; 14-day free trial; citations and managed service extra</td>
-            <td>$99, $199 (up to 3 locations) or $299/mo Full Service; month to month, no contract, no free trial</td>
-          </tr>
-          <tr>
-            <td><strong>Reporting</strong></td>
-            <td>Dashboards, rank and geo-grid reports, visibility and share-of-voice charts</td>
-            <td>Plain-English weekly note: who the AIs named and what was done</td>
-          </tr>
-          <tr>
-            <td><strong>Best fit</strong></td>
-            <td>Agencies and in-house marketers who want depth and control across many locations</td>
-            <td>Owners with no time or staff to run SEO tools who care about AI recommendations</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>BrightLocal</th>
+              <th>Alphaa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>What it is</strong></td>
+              <td>Local SEO toolkit (rank tracking, citations, listings sync, reviews, audits)</td>
+              <td>AI agent that audits, writes and drafts fixes for AI visibility</td>
+            </tr>
+            <tr>
+              <td><strong>Who does the work</strong></td>
+              <td>You or your agency. AI Insights recommends; people act (or you buy the managed service)</td>
+              <td>The agent does the work. You approve with one tap</td>
+            </tr>
+            <tr>
+              <td><strong>What it optimises for</strong></td>
+              <td>Google rankings and the map pack, plus tracking in ChatGPT and Google&apos;s AI results</td>
+              <td>Being named in answers from ChatGPT, Gemini, Claude and Perplexity</td>
+            </tr>
+            <tr>
+              <td><strong>Pricing model</strong></td>
+              <td>Tiered plans, price on request on its site; monthly or annual; 14-day free trial; citations and managed service extra</td>
+              <td>$99, $199 (up to 3 locations) or $299/mo Full Service; month to month, no contract, no free trial</td>
+            </tr>
+            <tr>
+              <td><strong>Reporting</strong></td>
+              <td>Dashboards, rank and geo-grid reports, visibility and share-of-voice charts</td>
+              <td>Plain-English weekly note: who the AIs named and what was done</td>
+            </tr>
+            <tr>
+              <td><strong>Best fit</strong></td>
+              <td>Agencies and in-house marketers who want depth and control across many locations</td>
+              <td>Owners with no time or staff to run SEO tools who care about AI recommendations</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>Which one does more for getting recommended by AI?</h2>
       <p>

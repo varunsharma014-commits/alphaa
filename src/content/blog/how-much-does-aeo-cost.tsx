@@ -43,7 +43,7 @@ export function Body() {
         </li>
         <li>
           <strong>Fixes on your own property</strong> — schema markup, an{" "}
-          <Link href="/blog/llms-txt-guide">llms.txt file</Link>, server-rendered content, pages that answer
+          <Link href="/blog/how-to-create-llms-txt-file">llms.txt file</Link>, server-rendered content, pages that answer
           real questions.
         </li>
         <li>

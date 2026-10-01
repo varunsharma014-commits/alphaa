@@ -100,57 +100,59 @@ export function Body() {
         sells an always-on agent aimed at AI answers, month to month. The table below keeps the agency column
         general, because agencies vary widely. Check your own contract for the details.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Typical local SEO agency</th>
-            <th>Alphaa</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Monthly cost</td>
-            <td>Around $2,000 (varies widely)</td>
-            <td>$99 Starter, $199 Pro, $299 Full Service</td>
-          </tr>
-          <tr>
-            <td>Contract</td>
-            <td>Often a minimum term; check your agreement</td>
-            <td>Month to month, cancel in two clicks, no contract</td>
-          </tr>
-          <tr>
-            <td>Main target</td>
-            <td>Google search rankings and links</td>
-            <td>Being named by ChatGPT, Gemini, Claude and Perplexity</td>
-          </tr>
-          <tr>
-            <td>Who does the work</td>
-            <td>Account manager and specialists, on their schedule</td>
-            <td>An AI agent; a human on Full Service</td>
-          </tr>
-          <tr>
-            <td>Reporting</td>
-            <td>Usually a monthly report of rankings and traffic</td>
-            <td>A short weekly note: who the AIs named, what changed</td>
-          </tr>
-          <tr>
-            <td>Your approval</td>
-            <td>Varies; often changes go live without review</td>
-            <td>You approve anything public with one tap</td>
-          </tr>
-          <tr>
-            <td>Link building, site builds, ads</td>
-            <td>Often included or available</td>
-            <td>Not what Alphaa does</td>
-          </tr>
-          <tr>
-            <td>Guarantees</td>
-            <td>Reputable agencies don&apos;t guarantee rankings</td>
-            <td>No guaranteed rankings or timelines</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Typical local SEO agency</th>
+              <th>Alphaa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Monthly cost</td>
+              <td>Around $2,000 (varies widely)</td>
+              <td>$99 Starter, $199 Pro, $299 Full Service</td>
+            </tr>
+            <tr>
+              <td>Contract</td>
+              <td>Often a minimum term; check your agreement</td>
+              <td>Month to month, cancel in two clicks, no contract</td>
+            </tr>
+            <tr>
+              <td>Main target</td>
+              <td>Google search rankings and links</td>
+              <td>Being named by ChatGPT, Gemini, Claude and Perplexity</td>
+            </tr>
+            <tr>
+              <td>Who does the work</td>
+              <td>Account manager and specialists, on their schedule</td>
+              <td>An AI agent; a human on Full Service</td>
+            </tr>
+            <tr>
+              <td>Reporting</td>
+              <td>Usually a monthly report of rankings and traffic</td>
+              <td>A short weekly note: who the AIs named, what changed</td>
+            </tr>
+            <tr>
+              <td>Your approval</td>
+              <td>Varies; often changes go live without review</td>
+              <td>You approve anything public with one tap</td>
+            </tr>
+            <tr>
+              <td>Link building, site builds, ads</td>
+              <td>Often included or available</td>
+              <td>Not what Alphaa does</td>
+            </tr>
+            <tr>
+              <td>Guarantees</td>
+              <td>Reputable agencies don&apos;t guarantee rankings</td>
+              <td>No guaranteed rankings or timelines</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>What do good SEO agencies still do better than Alphaa?</h2>
       <p>

@@ -103,42 +103,44 @@ export function Body() {
         Yext is a broad system of record for many locations; Alphaa is a narrow, done-for-you agent for
         getting named in AI answers. The table below sums up the differences that matter most to a buyer.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Yext</th>
-            <th>Alphaa</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>What it does</strong></td>
-            <td>Syncs location data to 200+ publishers, manages reviews, builds local pages, tracks AI and search visibility (Scout)</td>
-            <td>Checks four AI assistants weekly, audits 23 on-site signals, writes fixes, drafts GBP posts and review replies</td>
-          </tr>
-          <tr>
-            <td><strong>What it optimises for</strong></td>
-            <td>Accurate, consistent data everywhere a brand appears, at scale</td>
-            <td>Being named when customers ask ChatGPT, Gemini, Claude or Perplexity</td>
-          </tr>
-          <tr>
-            <td><strong>Who does the work</strong></td>
-            <td>Your marketing team (or an agency) runs the platform, increasingly with Yext&apos;s agents helping</td>
-            <td>Alphaa does it; the owner approves anything public with one tap</td>
-          </tr>
-          <tr>
-            <td><strong>Pricing model</strong></td>
-            <td>Custom quote, typically billed annually; <a href="https://www.yext.com/knowledge-center/yext-faq" {...ext}>check Yext&apos;s pricing FAQ</a></td>
-            <td>Flat monthly: $99 Starter, $199 Pro (up to 3 locations), $299 Full Service; month to month</td>
-          </tr>
-          <tr>
-            <td><strong>Best fit</strong></td>
-            <td>Multi-location brands and enterprises with a team to run it</td>
-            <td>Single-location or small multi-location businesses that want the work done for them</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Yext</th>
+              <th>Alphaa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>What it does</strong></td>
+              <td>Syncs location data to 200+ publishers, manages reviews, builds local pages, tracks AI and search visibility (Scout)</td>
+              <td>Checks four AI assistants weekly, audits 23 on-site signals, writes fixes, drafts GBP posts and review replies</td>
+            </tr>
+            <tr>
+              <td><strong>What it optimises for</strong></td>
+              <td>Accurate, consistent data everywhere a brand appears, at scale</td>
+              <td>Being named when customers ask ChatGPT, Gemini, Claude or Perplexity</td>
+            </tr>
+            <tr>
+              <td><strong>Who does the work</strong></td>
+              <td>Your marketing team (or an agency) runs the platform, increasingly with Yext&apos;s agents helping</td>
+              <td>Alphaa does it; the owner approves anything public with one tap</td>
+            </tr>
+            <tr>
+              <td><strong>Pricing model</strong></td>
+              <td>Custom quote, typically billed annually; <a href="https://www.yext.com/knowledge-center/yext-faq" {...ext}>check Yext&apos;s pricing FAQ</a></td>
+              <td>Flat monthly: $99 Starter, $199 Pro (up to 3 locations), $299 Full Service; month to month</td>
+            </tr>
+            <tr>
+              <td><strong>Best fit</strong></td>
+              <td>Multi-location brands and enterprises with a team to run it</td>
+              <td>Single-location or small multi-location businesses that want the work done for them</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>How much does Yext cost compared with Alphaa?</h2>
       <p>

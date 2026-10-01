@@ -134,32 +134,34 @@ export function Body() {
       <p>
         Keyword SEO tries to rank a page for a phrase, while entity SEO tries to make the engine confident you are a specific, real business so you get named in the answer.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Keyword thinking</th>
-            <th>Entity thinking</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Rank a page for a phrase</td>
-            <td>Be recognized as a specific, real business</td>
-          </tr>
-          <tr>
-            <td>Optimize text density and links</td>
-            <td>Align identity signals across every source</td>
-          </tr>
-          <tr>
-            <td>Compete on the results page</td>
-            <td>Compete to be the entity the engine is confident about</td>
-          </tr>
-          <tr>
-            <td>Success is a position</td>
-            <td>Success is being named in the answer</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Keyword thinking</th>
+              <th>Entity thinking</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Rank a page for a phrase</td>
+              <td>Be recognized as a specific, real business</td>
+            </tr>
+            <tr>
+              <td>Optimize text density and links</td>
+              <td>Align identity signals across every source</td>
+            </tr>
+            <tr>
+              <td>Compete on the results page</td>
+              <td>Compete to be the entity the engine is confident about</td>
+            </tr>
+            <tr>
+              <td>Success is a position</td>
+              <td>Success is being named in the answer</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         The two aren&apos;t opposed — good pages still matter — but AI answers reward entity clarity in a way the
         old blue-link game never demanded. For the broader shift behind this, see{" "}

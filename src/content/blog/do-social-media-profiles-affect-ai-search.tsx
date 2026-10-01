@@ -68,59 +68,61 @@ export function Body() {
         LinkedIn and Facebook business pages contribute most, YouTube moderately to highly, and Instagram,
         TikTok, and X contribute little.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Platform</th>
-            <th>What an engine can typically read</th>
-            <th>Real contribution</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>LinkedIn (company page)</td>
-            <td>Name, tagline, About text, industry, size, location, website link</td>
-            <td>
-              High. Structured, factual, public, and heavily indexed — the single best social entity
-              confirmation for B2B and professional services.
-            </td>
-          </tr>
-          <tr>
-            <td>Facebook (business page)</td>
-            <td>Name, category, address, hours, phone, About section, some posts</td>
-            <td>
-              High for local. Its NAP fields are a genuine consistency signal alongside your Google Business
-              Profile.
-            </td>
-          </tr>
-          <tr>
-            <td>YouTube</td>
-            <td>Channel description, video titles, descriptions, and transcripts</td>
-            <td>
-              Moderate to high. Transcripts are plain text and often surface in answers — see{" "}
-              <Link href="/blog/do-videos-show-up-in-ai-answers">how video shows up in AI answers</Link>.
-            </td>
-          </tr>
-          <tr>
-            <td>Instagram</td>
-            <td>Bio text and the link in bio; captions inconsistently, images not at all</td>
-            <td>
-              Low. Login walls and image-first content make most of it unreadable. Your bio is doing nearly
-              all the work.
-            </td>
-          </tr>
-          <tr>
-            <td>TikTok</td>
-            <td>Profile bio, some captions</td>
-            <td>Low. Same problem as Instagram, plus heavier gating.</td>
-          </tr>
-          <tr>
-            <td>X</td>
-            <td>Bio, pinned post, sometimes little else without an account</td>
-            <td>Low and shrinking as access tightens.</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>What an engine can typically read</th>
+              <th>Real contribution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LinkedIn (company page)</td>
+              <td>Name, tagline, About text, industry, size, location, website link</td>
+              <td>
+                High. Structured, factual, public, and heavily indexed — the single best social entity
+                confirmation for B2B and professional services.
+              </td>
+            </tr>
+            <tr>
+              <td>Facebook (business page)</td>
+              <td>Name, category, address, hours, phone, About section, some posts</td>
+              <td>
+                High for local. Its NAP fields are a genuine consistency signal alongside your Google Business
+                Profile.
+              </td>
+            </tr>
+            <tr>
+              <td>YouTube</td>
+              <td>Channel description, video titles, descriptions, and transcripts</td>
+              <td>
+                Moderate to high. Transcripts are plain text and often surface in answers — see{" "}
+                <Link href="/blog/do-videos-show-up-in-ai-answers">how video shows up in AI answers</Link>.
+              </td>
+            </tr>
+            <tr>
+              <td>Instagram</td>
+              <td>Bio text and the link in bio; captions inconsistently, images not at all</td>
+              <td>
+                Low. Login walls and image-first content make most of it unreadable. Your bio is doing nearly
+                all the work.
+              </td>
+            </tr>
+            <tr>
+              <td>TikTok</td>
+              <td>Profile bio, some captions</td>
+              <td>Low. Same problem as Instagram, plus heavier gating.</td>
+            </tr>
+            <tr>
+              <td>X</td>
+              <td>Bio, pinned post, sometimes little else without an account</td>
+              <td>Low and shrinking as access tightens.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         The pattern is not about which platform is fashionable. It is about which platform publishes{" "}
         <strong>public, textual, factual</strong> content at a stable URL. That is the only currency here.

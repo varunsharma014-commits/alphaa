@@ -148,32 +148,34 @@ export function Body() {
       <p>
         It is three 30-day phases: measure, fix, then build.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Phase</th>
-            <th>Focus</th>
-            <th>Outcome you measure</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Days 1–30</td>
-            <td>Measure — baseline what AI says today</td>
-            <td>Engines that name you (of 4); fact contradictions; unclear service pages</td>
-          </tr>
-          <tr>
-            <td>Days 31–60</td>
-            <td>Fix — consistent facts, answer-first pages, schema</td>
-            <td>Contradictions resolved; pages rewritten; schema live</td>
-          </tr>
-          <tr>
-            <td>Days 61–90</td>
-            <td>Build — reviews, listings, genuine mentions</td>
-            <td>Re-measured engine mentions vs. baseline</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Focus</th>
+              <th>Outcome you measure</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Days 1–30</td>
+              <td>Measure — baseline what AI says today</td>
+              <td>Engines that name you (of 4); fact contradictions; unclear service pages</td>
+            </tr>
+            <tr>
+              <td>Days 31–60</td>
+              <td>Fix — consistent facts, answer-first pages, schema</td>
+              <td>Contradictions resolved; pages rewritten; schema live</td>
+            </tr>
+            <tr>
+              <td>Days 61–90</td>
+              <td>Build — reviews, listings, genuine mentions</td>
+              <td>Re-measured engine mentions vs. baseline</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>What results should I expect after 90 days of AEO?</h2>
       <p>

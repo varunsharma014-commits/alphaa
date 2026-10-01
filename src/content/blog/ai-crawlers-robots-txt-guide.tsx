@@ -54,72 +54,74 @@ export function Body() {
 
       <h2>Which AI user agents actually matter?</h2>
       <p>The ones that matter are the training crawlers and retrieval agents run by OpenAI, Anthropic, Perplexity, Google, Common Crawl, and Apple. Grouped by operator, with what each one is for:</p>
-      <table>
-        <thead>
-          <tr>
-            <th>User agent</th>
-            <th>Operator</th>
-            <th>Purpose</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>GPTBot</code></td>
-            <td>OpenAI</td>
-            <td>Training crawler</td>
-          </tr>
-          <tr>
-            <td><code>OAI-SearchBot</code></td>
-            <td>OpenAI</td>
-            <td>Indexes pages for ChatGPT search results and links</td>
-          </tr>
-          <tr>
-            <td><code>ChatGPT-User</code></td>
-            <td>OpenAI</td>
-            <td>Fetches a page because a user or agent asked for it</td>
-          </tr>
-          <tr>
-            <td><code>ClaudeBot</code></td>
-            <td>Anthropic</td>
-            <td>Training crawler</td>
-          </tr>
-          <tr>
-            <td><code>Claude-User</code></td>
-            <td>Anthropic</td>
-            <td>User-initiated fetch during a conversation</td>
-          </tr>
-          <tr>
-            <td><code>Claude-SearchBot</code></td>
-            <td>Anthropic</td>
-            <td>Indexes pages to improve search results Claude cites</td>
-          </tr>
-          <tr>
-            <td><code>PerplexityBot</code></td>
-            <td>Perplexity</td>
-            <td>Builds the search index behind Perplexity citations</td>
-          </tr>
-          <tr>
-            <td><code>Perplexity-User</code></td>
-            <td>Perplexity</td>
-            <td>Live fetch triggered by a user question</td>
-          </tr>
-          <tr>
-            <td><code>Google-Extended</code></td>
-            <td>Google</td>
-            <td>Permission token for Gemini training and grounding</td>
-          </tr>
-          <tr>
-            <td><code>CCBot</code></td>
-            <td>Common Crawl</td>
-            <td>Open dataset used by many model builders</td>
-          </tr>
-          <tr>
-            <td><code>Applebot-Extended</code></td>
-            <td>Apple</td>
-            <td>Permission token for Apple Intelligence training</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>User agent</th>
+              <th>Operator</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>GPTBot</code></td>
+              <td>OpenAI</td>
+              <td>Training crawler</td>
+            </tr>
+            <tr>
+              <td><code>OAI-SearchBot</code></td>
+              <td>OpenAI</td>
+              <td>Indexes pages for ChatGPT search results and links</td>
+            </tr>
+            <tr>
+              <td><code>ChatGPT-User</code></td>
+              <td>OpenAI</td>
+              <td>Fetches a page because a user or agent asked for it</td>
+            </tr>
+            <tr>
+              <td><code>ClaudeBot</code></td>
+              <td>Anthropic</td>
+              <td>Training crawler</td>
+            </tr>
+            <tr>
+              <td><code>Claude-User</code></td>
+              <td>Anthropic</td>
+              <td>User-initiated fetch during a conversation</td>
+            </tr>
+            <tr>
+              <td><code>Claude-SearchBot</code></td>
+              <td>Anthropic</td>
+              <td>Indexes pages to improve search results Claude cites</td>
+            </tr>
+            <tr>
+              <td><code>PerplexityBot</code></td>
+              <td>Perplexity</td>
+              <td>Builds the search index behind Perplexity citations</td>
+            </tr>
+            <tr>
+              <td><code>Perplexity-User</code></td>
+              <td>Perplexity</td>
+              <td>Live fetch triggered by a user question</td>
+            </tr>
+            <tr>
+              <td><code>Google-Extended</code></td>
+              <td>Google</td>
+              <td>Permission token for Gemini training and grounding</td>
+            </tr>
+            <tr>
+              <td><code>CCBot</code></td>
+              <td>Common Crawl</td>
+              <td>Open dataset used by many model builders</td>
+            </tr>
+            <tr>
+              <td><code>Applebot-Extended</code></td>
+              <td>Apple</td>
+              <td>Permission token for Apple Intelligence training</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         Each operator publishes its own list, and the lists change — OpenAI documents its bots at{" "}
         <a href="https://platform.openai.com/docs/bots" rel="noopener noreferrer">platform.openai.com/docs/bots</a>,

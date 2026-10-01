@@ -103,44 +103,46 @@ export function Body() {
         Open their site and their profiles beside yours and fill in a plain two-column comparison. The rows that
         matter:
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Evidence row</th>
-            <th>What to check</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Pricing</td>
-            <td>Is any number public — a range, a starting-from, a call-out fee?</td>
-          </tr>
-          <tr>
-            <td>Service area</td>
-            <td>Are towns and neighbourhoods named in text, or only implied by a map?</td>
-          </tr>
-          <tr>
-            <td>Who it is for</td>
-            <td>Is there an explicit sentence naming the customer served — and refused?</td>
-          </tr>
-          <tr>
-            <td>Review count and text</td>
-            <td>How many, and do the recent ones mention services and staff by name?</td>
-          </tr>
-          <tr>
-            <td>Third-party lists</td>
-            <td>Search &quot;best [category] [city]&quot; — who is on page one&apos;s roundups?</td>
-          </tr>
-          <tr>
-            <td>Name/address/phone</td>
-            <td>Identical across site, Google, Bing, Yelp, Facebook, industry directories?</td>
-          </tr>
-          <tr>
-            <td>Schema</td>
-            <td>View source, search for <code>application/ld+json</code>. Present or absent?</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Evidence row</th>
+              <th>What to check</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pricing</td>
+              <td>Is any number public — a range, a starting-from, a call-out fee?</td>
+            </tr>
+            <tr>
+              <td>Service area</td>
+              <td>Are towns and neighbourhoods named in text, or only implied by a map?</td>
+            </tr>
+            <tr>
+              <td>Who it is for</td>
+              <td>Is there an explicit sentence naming the customer served — and refused?</td>
+            </tr>
+            <tr>
+              <td>Review count and text</td>
+              <td>How many, and do the recent ones mention services and staff by name?</td>
+            </tr>
+            <tr>
+              <td>Third-party lists</td>
+              <td>Search &quot;best [category] [city]&quot; — who is on page one&apos;s roundups?</td>
+            </tr>
+            <tr>
+              <td>Name/address/phone</td>
+              <td>Identical across site, Google, Bing, Yelp, Facebook, industry directories?</td>
+            </tr>
+            <tr>
+              <td>Schema</td>
+              <td>View source, search for <code>application/ld+json</code>. Present or absent?</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <h3>Step 4 — Read the gaps, not the totals</h3>
       <p>
         You are not scoring who wins overall. You are looking for the two or three rows where they have a fact

@@ -109,54 +109,56 @@ export function Body() {
         show up, how you measure progress and which signals matter most.
       </p>
 
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>SEO</th>
-            <th>AEO</th>
-            <th>GEO</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Goal</strong></td>
-            <td>Rank high so people click</td>
-            <td>Be the answer shown directly</td>
-            <td>Be named or cited in an AI-written answer</td>
-          </tr>
-          <tr>
-            <td><strong>Where you show up</strong></td>
-            <td>The blue-link results</td>
-            <td>Featured snippets, &quot;People also ask&quot;, voice assistants</td>
-            <td>ChatGPT, Perplexity, Gemini, Claude, Google AI Overviews</td>
-          </tr>
-          <tr>
-            <td><strong>What the engine does with your content</strong></td>
-            <td>Lists a link to your page</td>
-            <td>Lifts a passage and displays it</td>
-            <td>Reads many sources and writes a new answer that may mention you</td>
-          </tr>
-          <tr>
-            <td><strong>Key signals</strong></td>
-            <td>Relevance, links, page quality, technical health</td>
-            <td>Clear question-and-answer formatting, structured data</td>
-            <td>Consistent facts across the web, reviews, third-party mentions, quotable specifics</td>
-          </tr>
-          <tr>
-            <td><strong>How you measure success</strong></td>
-            <td>Rankings, impressions, clicks</td>
-            <td>Snippets and answer boxes won</td>
-            <td>How often AI tools name you for your customers&apos; questions</td>
-          </tr>
-          <tr>
-            <td><strong>Typical tactics</strong></td>
-            <td>Keyword research, on-page fixes, link building, site speed</td>
-            <td>Answer-first writing, FAQ sections, schema markup</td>
-            <td>Statistics and sources on your pages, reviews, directory consistency, being mentioned on sites AI trusts</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>SEO</th>
+              <th>AEO</th>
+              <th>GEO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Goal</strong></td>
+              <td>Rank high so people click</td>
+              <td>Be the answer shown directly</td>
+              <td>Be named or cited in an AI-written answer</td>
+            </tr>
+            <tr>
+              <td><strong>Where you show up</strong></td>
+              <td>The blue-link results</td>
+              <td>Featured snippets, &quot;People also ask&quot;, voice assistants</td>
+              <td>ChatGPT, Perplexity, Gemini, Claude, Google AI Overviews</td>
+            </tr>
+            <tr>
+              <td><strong>What the engine does with your content</strong></td>
+              <td>Lists a link to your page</td>
+              <td>Lifts a passage and displays it</td>
+              <td>Reads many sources and writes a new answer that may mention you</td>
+            </tr>
+            <tr>
+              <td><strong>Key signals</strong></td>
+              <td>Relevance, links, page quality, technical health</td>
+              <td>Clear question-and-answer formatting, structured data</td>
+              <td>Consistent facts across the web, reviews, third-party mentions, quotable specifics</td>
+            </tr>
+            <tr>
+              <td><strong>How you measure success</strong></td>
+              <td>Rankings, impressions, clicks</td>
+              <td>Snippets and answer boxes won</td>
+              <td>How often AI tools name you for your customers&apos; questions</td>
+            </tr>
+            <tr>
+              <td><strong>Typical tactics</strong></td>
+              <td>Keyword research, on-page fixes, link building, site speed</td>
+              <td>Answer-first writing, FAQ sections, schema markup</td>
+              <td>Statistics and sources on your pages, reviews, directory consistency, being mentioned on sites AI trusts</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <p>Where they overlap is bigger than where they differ:</p>
       <ul>
