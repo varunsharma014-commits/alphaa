@@ -1,10 +1,28 @@
 import Link from "next/link"
+import Image from "next/image"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { ArrowLeft } from "lucide-react"
 import { getAllPosts, getPost } from "@/content/blog"
 import { extractFaq } from "@/content/blog/faq"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
+
+const SITE = "https://alphaa.app"
+const abs = (src: string) => (src.startsWith("http") ? src : `${SITE}${src.startsWith("/") ? "" : "/"}${src}`)
+const ORG = {
+  "@type": "Organization",
+  name: "Alphaa",
+  url: SITE,
+  logo: { "@type": "ImageObject", url: `${SITE}/logo.png` },
+}
+const KIND_SECTION: Record<string, string> = {
+  guide: "Guide",
+  comparison: "Comparison",
+  glossary: "Glossary",
+  listicle: "Roundup",
+  industry: "Industry guide",
+  news: "News",
+}
 
 export function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.meta.slug }))
@@ -18,11 +36,28 @@ export async function generateMetadata({
   const { slug } = await params
   const post = getPost(slug)
   if (!post) return { title: "Not found" }
+  const { meta } = post
+  const url = `${SITE}/blog/${meta.slug}`
+  const ogImage = meta.image
+    ? [{ url: abs(meta.image.src), width: meta.image.width, height: meta.image.height, alt: meta.image.alt }]
+    : undefined
   return {
-    title: post.meta.title,
-    description: post.meta.description,
-    alternates: { canonical: `/blog/${post.meta.slug}` },
-    openGraph: { title: post.meta.title, description: post.meta.description, type: "article", url: `https://alphaa.app/blog/${post.meta.slug}` },
+    title: meta.title,
+    description: meta.description,
+    ...(meta.keyphrase ? { keywords: [meta.keyphrase] } : {}),
+    alternates: { canonical: `/blog/${meta.slug}` },
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      type: "article",
+      url,
+      ...(ogImage
+        ? { images: ogImage, publishedTime: meta.date, modifiedTime: meta.updated ?? meta.date, ...(meta.tag ? { section: meta.tag } : {}) }
+        : {}),
+    },
+    ...(ogImage
+      ? { twitter: { card: "summary_large_image", title: meta.title, description: meta.description, images: [ogImage[0].url] } }
+      : {}),
   }
 }
 
@@ -45,17 +80,37 @@ export default async function BlogPostPage({
   if (!post) notFound()
 
   const { meta, Body } = post
+  // dateModified: the post's own `updated` date when set, else the blog-wide
+  // review date (never earlier than publication).
+  const modified = [meta.date, meta.updated ?? CONTENT_REVIEWED].sort().pop()!
+  const section = meta.tag ?? (meta.kind ? KIND_SECTION[meta.kind] : undefined)
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: meta.title,
     description: meta.description,
+    ...(meta.subtitle ? { abstract: meta.subtitle } : {}),
+    ...(meta.image
+      ? { image: { "@type": "ImageObject", url: abs(meta.image.src), width: meta.image.width, height: meta.image.height, caption: meta.image.alt } }
+      : {}),
     datePublished: meta.date,
-    dateModified: meta.date > CONTENT_REVIEWED ? meta.date : CONTENT_REVIEWED,
-    author: { "@type": "Organization", name: "Alphaa" },
-    publisher: { "@type": "Organization", name: "Alphaa", url: "https://alphaa.app" },
-    mainEntityOfPage: `https://alphaa.app/blog/${meta.slug}`,
-    url: `https://alphaa.app/blog/${meta.slug}`,
+    dateModified: modified,
+    author: ORG,
+    publisher: ORG,
+    ...(meta.keyphrase ? { keywords: meta.keyphrase, about: { "@type": "Thing", name: meta.keyphrase } } : {}),
+    ...(section ? { articleSection: section } : {}),
+    ...(meta.sources?.length
+      ? {
+          citation: meta.sources.map((s) => ({
+            "@type": "CreativeWork",
+            name: s.title,
+            url: s.url,
+            publisher: { "@type": "Organization", name: s.publisher },
+          })),
+        }
+      : {}),
+    mainEntityOfPage: `${SITE}/blog/${meta.slug}`,
+    url: `${SITE}/blog/${meta.slug}`,
     inLanguage: "en",
     isAccessibleForFree: true,
   }
@@ -106,9 +161,43 @@ export default async function BlogPostPage({
           </span>
         </div>
 
-        <h1 className="text-fg text-[37.4px] sm:text-[52.8px] lg:text-[57.2px] font-semibold leading-[1.1] tracking-[-0.02em] mb-8 text-balance">
+        <h1
+          className={`text-fg text-[37.4px] sm:text-[52.8px] lg:text-[57.2px] font-semibold leading-[1.1] tracking-[-0.02em] text-balance ${meta.subtitle || meta.updated ? "mb-4" : "mb-8"}`}
+        >
           {meta.title}
         </h1>
+
+        {meta.subtitle && <p className="blog-subtitle">{meta.subtitle}</p>}
+
+        {meta.updated && meta.updated > meta.date && (
+          <p className="blog-updated">
+            Updated <time dateTime={meta.updated}>{formatDate(meta.updated)}</time>
+          </p>
+        )}
+
+        {meta.image && (
+          <figure className="blog-hero">
+            <Image
+              src={meta.image.src}
+              alt={meta.image.alt}
+              width={meta.image.width}
+              height={meta.image.height}
+              priority
+              sizes="(min-width: 720px) 672px, calc(100vw - 32px)"
+            />
+          </figure>
+        )}
+
+        {meta.takeaways && meta.takeaways.length > 0 && (
+          <aside className="blog-takeaways" aria-labelledby="key-takeaways">
+            <h2 id="key-takeaways" className="blog-takeaways__title">Key takeaways</h2>
+            <ul>
+              {meta.takeaways.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </aside>
+        )}
 
         {/* Every post leads to the free check — once near the top, once at the end. */}
         <Link href="/start" className="blog-cta-top">
@@ -116,6 +205,22 @@ export default async function BlogPostPage({
         </Link>
 
         <Body />
+
+        {meta.sources && meta.sources.length > 0 && (
+          <section className="blog-sources" aria-labelledby="sources">
+            <h2 id="sources" className="blog-sources__title">Sources</h2>
+            <ol>
+              {meta.sources.map((src) => (
+                <li key={src.url}>
+                  <a href={src.url} target="_blank" rel="noopener">
+                    {src.title}
+                  </a>
+                  <span className="blog-sources__pub"> — {src.publisher}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
 
         <aside className="blog-cta" aria-label="Free AI check">
           <p className="blog-cta__eyebrow">Free · 60 seconds</p>

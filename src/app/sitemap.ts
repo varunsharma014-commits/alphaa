@@ -10,7 +10,7 @@ const BASE_URL = "https://alphaa.app"
 export default function sitemap(): MetadataRoute.Sitemap {
   const blogPosts: MetadataRoute.Sitemap = getAllPosts().map((p) => ({
     url: `${BASE_URL}/blog/${p.meta.slug}`,
-    lastModified: new Date(p.meta.date > CONTENT_REVIEWED ? p.meta.date : CONTENT_REVIEWED),
+    lastModified: new Date([p.meta.date, p.meta.updated ?? CONTENT_REVIEWED].sort().pop()!),
     changeFrequency: "monthly",
     priority: 0.7,
   }))

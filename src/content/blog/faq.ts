@@ -37,13 +37,30 @@ export function extractFaq(slug: string, max = 8): { q: string; a: string }[] {
     const src = fileFor(slug)
     if (!src) return []
     const out: { q: string; a: string }[] = []
+    const seen = new Set<string>()
+    const push = (rawQ: string, rawA: string | undefined) => {
+      const q = toText(rawQ)
+      const a = rawA ? toText(rawA) : ""
+      if (q.endsWith("?") && a.length >= 40 && !seen.has(q)) {
+        seen.add(q)
+        out.push({ q, a })
+      }
+    }
+    // A dedicated "Frequently asked questions" <h2> section (content-engine
+    // format) holds <h3> question + <p> answer pairs. Those go first: they are
+    // written to be lifted verbatim. Posts without that heading are unaffected.
+    const faqStart = src.search(/<h2[^>]*>\s*Frequently asked questions\s*<\/h2>/i)
+    if (faqStart >= 0) {
+      const rest = src.slice(faqStart)
+      const next = rest.slice(1).search(/<h2[^>]*>/)
+      const section = next >= 0 ? rest.slice(0, next + 1) : rest
+      const h3 = /<h3[^>]*>([\s\S]*?)<\/h3>\s*(?:<p[^>]*>([\s\S]*?)<\/p>)?/g
+      let f: RegExpExecArray | null
+      while ((f = h3.exec(section)) && out.length < max) push(f[1], f[2])
+    }
     const re = /<h2[^>]*>([\s\S]*?)<\/h2>\s*(?:<p[^>]*>([\s\S]*?)<\/p>)?/g
     let m: RegExpExecArray | null
-    while ((m = re.exec(src)) && out.length < max) {
-      const q = toText(m[1])
-      const a = m[2] ? toText(m[2]) : ""
-      if (q.endsWith("?") && a.length >= 40) out.push({ q, a })
-    }
+    while ((m = re.exec(src)) && out.length < max) push(m[1], m[2])
     return out
   } catch {
     return []

@@ -387,3 +387,27 @@ body {
 .blog-cta__btn { display: inline-block; margin-top: 24px; background: #0071e3; color: #fff; border-radius: 980px; padding: 12px 26px; font-size: 17px; transition: background-color .2s ease; }
 .blog-cta__btn:hover { background: #0077ed; color: #fff; }
 .blog-cta__fine { font-size: 13px; color: #6e6e73; margin: 10px 0 0; }
+
+/* ── Blog AI-citation blocks (subtitle, updated, hero, takeaways, sources) ──
+   Optional per post; see marketing/content-engine-format.md. Mobile-first,
+   nothing wider than the 672px column, so no horizontal scroll at 375px. */
+.blog-subtitle { font-size: 21px; line-height: 1.38; color: rgb(var(--muted-rgb)); margin: 0 0 12px; letter-spacing: 0.011em; text-wrap: pretty; }
+@media (min-width: 640px) { .blog-subtitle { font-size: 24px; line-height: 1.33; } }
+.blog-updated { font-size: 14px; color: rgb(var(--fg-rgb) / 0.56); margin: 0 0 28px; }
+.blog-hero { margin: 8px 0 32px; border-radius: 18px; overflow: hidden; background: #f5f5f7; }
+.blog-hero img { display: block; width: 100%; height: auto; }
+.blog-takeaways { margin: 0 0 36px; padding: 24px 22px; border-radius: 18px; background: #f5f5f7; }
+@media (min-width: 640px) { .blog-takeaways { padding: 28px 32px; } }
+.blog-takeaways__title { font-size: 14px; font-weight: 600; color: #bf4800; margin: 0 0 10px; letter-spacing: -0.01em; }
+.blog-takeaways ul { margin: 0; padding-left: 1.15em; list-style: disc; }
+.blog-takeaways li { font-size: 17px; line-height: 1.47; color: #1d1d1f; margin: 6px 0; overflow-wrap: anywhere; }
+.blog-sources { margin-top: 48px; padding-top: 28px; border-top: 1px solid rgb(var(--line-rgb) / 0.12); }
+.blog-sources__title { font-size: 24px; font-weight: 600; line-height: 1.17; color: rgb(var(--fg-rgb)); margin: 0 0 12px; letter-spacing: 0.009em; }
+.blog-sources ol { margin: 0; padding-left: 1.4em; list-style: decimal; }
+.blog-sources li { font-size: 15px; line-height: 1.5; color: rgb(var(--fg-rgb) / 0.8); margin: 8px 0; overflow-wrap: anywhere; }
+.blog-sources a { color: #0066cc; }
+.blog-sources a:hover { text-decoration: underline; }
+.blog-sources__pub { color: rgb(var(--muted-rgb)); }
+/* Wrap wide tables so they scroll inside the column on phones, not the page. */
+.article-prose .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1.25em 0; }
+.article-prose .table-wrap table { margin: 0; min-width: 560px; }
