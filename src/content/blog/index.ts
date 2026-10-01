@@ -94,6 +94,9 @@ import { meta as cleaningMeta, Body as CleaningBody } from "./how-cleaning-compa
 import { meta as trainingRetrievalMeta, Body as TrainingRetrievalBody } from "./training-data-vs-live-retrieval-ai-search"
 import { meta as electriciansMeta, Body as ElectriciansBody } from "./how-electricians-get-recommended-by-ai"
 import { meta as faqPagesMeta, Body as FaqPagesBody } from "./do-faq-pages-work-for-ai-search"
+import { meta as profoundPeecMeta, Body as ProfoundPeecBody } from "./profound-vs-peec-ai-vs-alphaa"
+import { meta as kwResearchMeta, Body as KwResearchBody } from "./keyword-research-for-ai-search"
+import { meta as propertyMgrsMeta, Body as PropertyMgrsBody } from "./how-property-managers-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -193,6 +196,9 @@ export const POSTS: Post[] = [
   { meta: trainingRetrievalMeta, Body: TrainingRetrievalBody },
   { meta: electriciansMeta, Body: ElectriciansBody },
   { meta: faqPagesMeta, Body: FaqPagesBody },
+  { meta: profoundPeecMeta, Body: ProfoundPeecBody },
+  { meta: kwResearchMeta, Body: KwResearchBody },
+  { meta: propertyMgrsMeta, Body: PropertyMgrsBody },
 ]
 
 export function getAllPosts(): Post[] {
