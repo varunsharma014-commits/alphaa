@@ -32,7 +32,7 @@ function toText(jsx: string): string {
     .trim()
 }
 
-export function extractFaq(slug: string, max = 8): { q: string; a: string }[] {
+export function extractFaq(slug: string, max = 12): { q: string; a: string }[] {
   try {
     const src = fileFor(slug)
     if (!src) return []
@@ -46,18 +46,16 @@ export function extractFaq(slug: string, max = 8): { q: string; a: string }[] {
         out.push({ q, a })
       }
     }
-    // A dedicated "Frequently asked questions" <h2> section (content-engine
-    // format) holds <h3> question + <p> answer pairs. Those go first: they are
-    // written to be lifted verbatim. Posts without that heading are unaffected.
-    const faqStart = src.search(/<h2[^>]*>\s*Frequently asked questions\s*<\/h2>/i)
-    if (faqStart >= 0) {
-      const rest = src.slice(faqStart)
-      const next = rest.slice(1).search(/<h2[^>]*>/)
-      const section = next >= 0 ? rest.slice(0, next + 1) : rest
-      const h3 = /<h3[^>]*>([\s\S]*?)<\/h3>\s*(?:<p[^>]*>([\s\S]*?)<\/p>)?/g
-      let f: RegExpExecArray | null
-      while ((f = h3.exec(section)) && out.length < max) push(f[1], f[2])
-    }
+    // Hand-written <h3> question + <p> answer pairs go first: they are written
+    // to be lifted verbatim. Match them anywhere in the post rather than under
+    // a fixed section heading — the FAQ heading is itself question-phrased and
+    // worded per post ("What else do electricians ask about AI visibility?"), so
+    // keying off a literal "Frequently asked questions" silently dropped these
+    // pairs on 94 of 95 posts. `push` keeps only "?"-terminated headings, so
+    // step and section <h3>s filter themselves out.
+    const h3 = /<h3[^>]*>([\s\S]*?)<\/h3>\s*(?:<p[^>]*>([\s\S]*?)<\/p>)?/g
+    let f: RegExpExecArray | null
+    while ((f = h3.exec(src)) && out.length < max) push(f[1], f[2])
     const re = /<h2[^>]*>([\s\S]*?)<\/h2>\s*(?:<p[^>]*>([\s\S]*?)<\/p>)?/g
     let m: RegExpExecArray | null
     while ((m = re.exec(src)) && out.length < max) push(m[1], m[2])
