@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "directory-listings-nap-citations-ai-search",
-  title: "Do Yelp, BBB and Angi Still Matter? How Directory Listings Shape AI Recommendations",
+  title: "Directory Listings and NAP Citations in AI Search",
   description:
     "Directories are corroboration sources now, not traffic sources. Which listings AI assistants check, and how to fix the ones that contradict your site.",
   subtitle:

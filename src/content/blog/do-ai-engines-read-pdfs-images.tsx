@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "do-ai-engines-read-pdfs-images",
-  title: "Do AI Engines Read PDFs, Menus and Images? What Actually Gets Extracted",
+  title: "Do AI Engines Read PDFs and Images?",
   description:
     "AI assistants read PDFs reasonably well and images barely at all. What gets extracted, what does not, and how to rescue facts trapped inside a JPG.",
   subtitle:

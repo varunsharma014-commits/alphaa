@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-to-track-ai-traffic-google-analytics",
-  title: "How to Track Traffic from ChatGPT, Perplexity and Gemini in Google Analytics",
+  title: "How to Track AI Traffic in Google Analytics",
   description:
     "AI assistants send real referral traffic, but GA4 hides it in Referral and Direct. How to build a reliable AI channel, and what it cannot tell you.",
   subtitle:

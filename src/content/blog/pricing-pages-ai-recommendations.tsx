@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "pricing-pages-ai-recommendations",
-  title: "Should You Publish Your Prices? How Pricing Pages Shape AI Recommendations",
+  title: "Pricing Pages and AI Recommendations: Publish?",
   description:
     "AI answers how much something costs whether you publish a price or not, using someone else's number. What a quotable pricing page looks like.",
   subtitle:

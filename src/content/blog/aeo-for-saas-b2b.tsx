@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "aeo-for-saas-b2b",
-  title: "AEO for SaaS & B2B: How to Get Your Software Recommended by AI",
+  title: "AEO for SaaS: Getting Your Software Recommended",
   description:
     "When buyers ask AI for the best software in your category, what gets you named? The non-local AEO playbook for SaaS: reviews, comparisons, docs, schema.",
   subtitle:

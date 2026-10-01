@@ -38,14 +38,20 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> A brand-new site can get into AI answers faster than it can rank on
-        Google, but only through a different door.{" "} <strong>Ranking takes accumulated authority; being cited
-        takes being findable, readable, and corroborated by at least one source the engine already
-        trusts.</strong> So the fastest path for a new business is not publishing thirty blog posts — it is
-        establishing a clean, consistent entity record across a handful of places engines already read, and then
-        writing the two or three pages that answer the specific questions your buyers ask. Expect weeks, not
-        days, and expect to be reachable through live retrieval long before you show up in a model&apos;s
-        baked-in knowledge. </p> <h2>Why is a new website at a disadvantage in AI search?</h2> <p> A new site is
+        <strong>Short answer:</strong> A brand-new site can get into AI answers faster than it can rank on Google, but only through a different
+        door.{" "}
+        <strong>
+          Ranking takes accumulated authority; being cited takes being findable, readable, and corroborated by at
+          least one source the engine already trusts.
+        </strong>
+      </p>
+
+      <p>
+        So the fastest path for a new business is not publishing thirty blog posts — it is establishing a clean,
+        consistent entity record across a handful of places engines already read, and then writing the two or three
+        pages that answer the specific questions your buyers ask. Expect weeks, not days, and expect to be reachable
+        through live retrieval long before you show up in a model&apos;s baked-in knowledge.
+      </p> <h2>Why is a new website at a disadvantage in AI search?</h2> <p> A new site is
         not penalised; it is missing three inputs: corroboration, an entity record, and presence in training
         data.{" "} It is worth being exact about the handicap, because it is narrower than most people assume. A
         new site is not penalised. It is simply missing inputs. There are three: </p> <ul> <li> <strong>No

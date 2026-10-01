@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-to-get-recommended-by-microsoft-copilot",
-  title: "How to Get Recommended by Microsoft Copilot (and Bing's AI Answers)",
+  title: "How to Get Recommended by Microsoft Copilot",
   description:
     "Copilot grounds answers in the Bing index, so the levers differ: bingbot access, Bing Webmaster Tools, IndexNow and a claimed Bing Places listing.",
   subtitle:

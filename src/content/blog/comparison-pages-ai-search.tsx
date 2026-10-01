@@ -38,12 +38,18 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> Yes. Comparison pages — &quot;X vs Y,&quot; &quot;alternatives to
-        X,&quot; &quot;best tools for Z&quot; — are among the most frequently retrieved and quoted pages in AI
-        search, because comparison is the exact shape of a buying question. But there is a catch that trips up
-        most companies: <strong>AI engines cite comparison pages that are fair, specific and verifiable, and
-        quietly ignore the ones that are thinly disguised sales copy.</strong> A page where you win every row is
-        not a comparison, and it reads that way to a model. </p> <h2>Why do comparison queries matter more in AI
+        <strong>Short answer:</strong> Yes. Comparison pages — &quot;X vs Y,&quot; &quot;alternatives to X,&quot; &quot;best tools for Z&quot; — are
+        among the most frequently retrieved and quoted pages in AI search, because comparison is the exact shape of a
+        buying question. But there is a catch that trips up most companies:{" "}
+        <strong>
+          AI engines cite comparison pages that are fair, specific and verifiable, and quietly ignore the ones that
+          are thinly disguised sales copy.
+        </strong>
+      </p>
+
+      <p>
+        A page where you win every row is not a comparison, and it reads that way to a model.
+      </p> <h2>Why do comparison queries matter more in AI
         search than SEO?</h2> <p> In AI search, the assistant returns a single synthesised verdict assembled
         from whatever comparison content it could retrieve, instead of ten links.{" "} In traditional search, a
         comparison query returned ten links and the buyer read three of them. In AI search, the assistant reads

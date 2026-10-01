@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "aeo-vs-seo-why-agencies-fail",
-  title: "AEO vs SEO: Why Traditional SEO Agencies Fail in the Age of AI Search",
+  title: "AEO vs SEO: Why Traditional Agencies Fall Short",
   description:
     "Should you hire an SEO agency or invest in AEO in 2026? A clear, honest comparison of cost, speed, and where customers actually find you — Google's links vs.",
   subtitle:

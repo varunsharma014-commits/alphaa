@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "aeo-checklist",
-  title: "The AEO Checklist: What Decides Whether AI Recommends Your Business",
+  title: "The AEO Checklist: What Decides AI Recommendations",
   description:
     "A skimmable checklist of the signals that decide whether AI engines recommend your business, grouped by foundations, content, reviews and technical.",
   subtitle:

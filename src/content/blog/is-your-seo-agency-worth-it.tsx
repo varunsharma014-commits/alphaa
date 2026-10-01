@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "is-your-seo-agency-worth-it",
-  title: "Is Your SEO Agency Worth It? A 10-Minute Audit You Can Run Yourself",
+  title: "Is Your SEO Agency Worth It? A 10-Minute Audit",
   description:
     "A ten-minute audit to judge whether your SEO agency earns its retainer: six checks you can run with no tools, and what a good answer looks like.",
   subtitle:
@@ -38,12 +38,15 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> Your SEO agency is worth it if it can show you work that changed something
-        on your site or your public profiles, tied to a number that moved, in language you understand. It is
-        probably not worth it if the monthly report is a traffic chart with no decisions attached, if nobody can
-        name what shipped last month, or if the answer to &quot;what did we change?&quot; is a list of activities
-        rather than a list of outcomes. Below is a six-check audit that takes about ten minutes and requires no
-        tools you don&apos;t already have.
+        <strong>Short answer:</strong> Your SEO agency is worth it if it can show you work that changed something on your site or your public
+        profiles, tied to a number that moved, in language you understand. It is probably not worth it if the monthly
+        report is a traffic chart with no decisions attached.
+      </p>
+
+      <p>
+        It is also a bad sign if nobody can name what shipped last month, or if the answer to &quot;what did we
+        change?&quot; is a list of activities rather than a list of outcomes. Below is a six-check audit that takes
+        about ten minutes and requires no tools you don&apos;t already have.
       </p>
 
       <h2>What am I actually judging when I audit my SEO agency?</h2>

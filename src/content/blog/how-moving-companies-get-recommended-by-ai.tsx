@@ -41,12 +41,18 @@ export function Body() {
 
       <p>
         <strong>Short answer:</strong> AI assistants recommend moving companies that are{" "}
-        <strong>verifiably licensed, unambiguously specific about what kind of move they do and where, and
-        corroborated by a recent, consistent review record the mover does not control</strong>. Movers are one
-        of the few categories where an assistant will actively hedge — it has been trained on a large body of
-        consumer-protection material about rogue movers, so it tends to recommend cautiously and prefers
-        businesses whose licence numbers and identity check out. Publishing your USDOT or state licence number
-        in machine-readable text is the single highest-leverage thing most movers are missing.
+        <strong>
+          verifiably licensed, unambiguously specific about what kind of move they do and where, and corroborated by a
+          recent, consistent review record the mover does not control
+        </strong>
+        . Movers are one of the few categories where an assistant will actively hedge.
+      </p>
+
+      <p>
+        It has been trained on a large body of consumer-protection material about rogue movers, so it tends to
+        recommend cautiously and prefers businesses whose licence numbers and identity check out. Publishing your
+        USDOT or state licence number in machine-readable text is the single highest-leverage thing most movers are
+        missing.
       </p>
 
       <h2>What do customers actually ask an AI assistant about movers?</h2>

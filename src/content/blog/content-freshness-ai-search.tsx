@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "content-freshness-ai-search",
-  title: "Does Content Freshness Matter for AI Search? How Often to Update Your Pages",
+  title: "Does Content Freshness Matter for AI Search?",
   description:
     "Freshness matters to AI engines, but not the way SEO folklore suggests — it is about retrievability and verifiable dates, not edit frequency.",
   subtitle:

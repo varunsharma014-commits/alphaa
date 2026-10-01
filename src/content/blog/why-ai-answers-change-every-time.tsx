@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "why-ai-answers-change-every-time",
-  title: "Why ChatGPT Gives a Different Answer Every Time (And How to Measure AI Visibility Anyway)",
+  title: "Why AI Answers Change Every Time You Ask",
   description:
     "AI assistants are non-deterministic and re-retrieve the web on every question, so the same prompt can name your business once and skip you the next time.",
   subtitle:

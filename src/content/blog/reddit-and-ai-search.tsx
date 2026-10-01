@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "reddit-and-ai-search",
-  title: "Why Reddit and Third-Party Mentions Decide What AI Says About Your Business",
+  title: "Does Reddit Affect AI Search? Why Mentions Decide",
   description:
     "AI assistants lean on Reddit, review sites and forums because independent sources are the only way to verify a claim. How to earn them honestly.",
   subtitle:

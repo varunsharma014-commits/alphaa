@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "training-data-vs-live-retrieval-ai-search",
-  title: "Training Data vs Live Retrieval: Which One Decides Whether AI Recommends You?",
+  title: "Training Data vs Live Retrieval in AI Search",
   description:
     "AI assistants answer from two completely different sources — what the model memorised during training, and what it fetches from the web while you wait.",
   subtitle:

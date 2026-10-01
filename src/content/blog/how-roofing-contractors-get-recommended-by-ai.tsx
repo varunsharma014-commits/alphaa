@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-roofing-contractors-get-recommended-by-ai",
-  title: "How Roofing Contractors Get Recommended by AI (Storm Season Included)",
+  title: "How Roofing Contractors Get Recommended by AI",
   description:
     "Homeowners ask AI who to call after a hailstorm. Engines answer from licence records, claim language, warranty terms and reviews. The playbook.",
   subtitle:

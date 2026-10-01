@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "javascript-rendering-ai-crawlers",
-  title: "Why AI Can't Read Your JavaScript Website (And How to Fix It)",
+  title: "JavaScript Rendering and AI Crawlers: The Fix",
   description:
     "Many AI crawlers fetch raw HTML and don't wait for JavaScript to run. If your site renders content client-side, the crawler may see an empty shell.",
   subtitle:

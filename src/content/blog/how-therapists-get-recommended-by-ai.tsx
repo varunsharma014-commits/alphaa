@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-therapists-get-recommended-by-ai",
-  title: "How Therapists and Mental Health Practices Get Recommended by AI",
+  title: "How Therapists Get Recommended by AI",
   description:
     "AI assistants answer \"find me a therapist\" mostly from directory profiles, insurance and licence records, rarely from a practice's own website.",
   subtitle:

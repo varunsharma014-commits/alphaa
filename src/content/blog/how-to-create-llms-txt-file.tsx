@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-to-create-llms-txt-file",
-  title: "How to Create and Deploy an llms.txt File for Your Business Website",
+  title: "How to Create an llms.txt File for Your Website",
   description:
     "A step-by-step guide to llms.txt: what it is, why it matters for AI search, and how to write and host one, with a copy-paste template to start from.",
   subtitle:

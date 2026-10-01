@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "chatgpt-vs-gemini-vs-perplexity-local-search",
-  title: "ChatGPT vs. Gemini vs. Perplexity (and Claude): How Each Picks Local Businesses in 2026",
+  title: "ChatGPT vs Gemini vs Perplexity for Local Search",
   description:
     "Where ChatGPT, Gemini, Perplexity and Claude get local recommendations, which crawlers to allow, and what to prioritise for each, based on published facts.",
   subtitle:

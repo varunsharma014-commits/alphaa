@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "ai-search-statistics-2026",
-  title: "AI Search Statistics 2026: How Many People Actually Ask AI First",
+  title: "AI Search Statistics 2026: Who Asks AI First",
   description:
     "The verified numbers on AI search in 2026, every figure sourced with its qualifier intact, plus the widely misquoted ones we deliberately flag.",
   subtitle:

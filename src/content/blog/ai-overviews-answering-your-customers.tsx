@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "ai-overviews-answering-your-customers",
-  title: "AI Overviews Are Answering Your Customers Before They Reach Your Website",
+  title: "AI Overviews and Local Business Traffic: The Impact",
   description:
     "Google's AI Overviews answer commercial searches on the results page, often without a click. How they work, why traffic falls, and how to get cited.",
   subtitle:

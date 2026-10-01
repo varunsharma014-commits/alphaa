@@ -4,7 +4,7 @@ import type { PostMeta } from "./types"
 export const meta: PostMeta = {
   slug: "get-recommended-by-ai-local-service-business",
   title:
-    "How Local Service Businesses Get Recommended by AI (Dentists, Clinics, Contractors & More)",
+    "How Local Service Businesses Get Recommended by AI",
   description:
     "When someone asks ChatGPT for the best dentist, plumber, or clinic nearby, AI leans on your Google Business Profile, reviews, and consistent local citations.",
   subtitle:

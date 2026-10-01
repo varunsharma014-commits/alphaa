@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "eeat-author-bios-ai-search",
-  title: "Do Author Bios and About Pages Affect AI Search? How Engines Judge Credibility",
+  title: "E-E-A-T, Author Bios and AI Search: What Counts",
   description:
     "AI engines do not score E-E-A-T directly, but they quote the pages carrying it. What an author bio and About page really do for your citation odds.",
   subtitle:

@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "alphaa-vs-seo-agencies",
-  title: "Alphaa vs. a Traditional SEO Agency: What $2,000 a Month Buys in 2026 (and What It Doesn't)",
+  title: "Alphaa vs SEO Agencies: What $2,000 a Month Buys",
   description:
     "A candid comparison for dentists, plumbers and lawyers choosing between a $2,000 monthly SEO retainer and Alphaa, including when an agency still wins.",
   subtitle:

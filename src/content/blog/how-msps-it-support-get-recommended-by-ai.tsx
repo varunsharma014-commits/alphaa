@@ -40,13 +40,16 @@ export function Body() {
       </p>
 
       <p>
-        <strong>Short answer:</strong> AI assistants recommend the MSPs whose fit criteria are written down
-        in plain, crawlable text. For this category that means four things above all: the client size you
-        actually serve (seat counts, not &quot;businesses of all sizes&quot;), the industries and compliance
-        regimes you work under (HIPAA, CMMC, PCI DSS, SOC 2), the stack you support by vendor name
-        (Microsoft 365, Entra ID, Datto, SentinelOne, Meraki), and your commercial terms — per-seat pricing
-        bands, contract length, response-time SLAs. MSP websites are unusually bad at all four, which is
-        exactly why this vertical is winnable.
+        <strong>Short answer:</strong> AI assistants recommend the MSPs whose fit criteria are written down in plain, crawlable text. For this
+        category that means four things above all: the client size you actually serve in seat counts, the industries
+        and compliance regimes you work under, the stack you support by vendor name, and your commercial terms.
+      </p>
+
+      <p>
+        In practice that means seat counts rather than &quot;businesses of all sizes&quot;, named regimes such as HIPAA,
+        CMMC, PCI DSS and SOC 2, named vendors such as Microsoft 365, Entra ID, Datto, SentinelOne and Meraki, and
+        concrete per-seat pricing bands, contract lengths and response-time SLAs. MSP websites are unusually bad at
+        all four, which is exactly why this vertical is winnable.
       </p>
 
       <h2>What do IT buyers actually ask an AI assistant about MSPs?</h2>

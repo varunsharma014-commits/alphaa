@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "seo-to-aeo-90-day-playbook",
-  title: "From SEO to AEO: The 90-Day Playbook for Getting Recommended by AI",
+  title: "From SEO to AEO: The 90-Day Playbook",
   description:
     "A concrete 90-day plan to move from ranking on Google to getting recommended by AI: three phases of measure, fix and build, with the exact tasks.",
   subtitle:

@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-law-firms-get-recommended-by-ai",
-  title: "How Law Firms Get Recommended by AI (Without Guarantee Scams)",
+  title: "How Law Firms Get Recommended by AI",
   description:
     "Law firms get recommended when the public record is complete and verifiable, not when a vendor promises the top spot. Plus how to spot the scams.",
   subtitle:

@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "aeo-vs-geo",
-  title: "AEO vs GEO: Is Generative Engine Optimization Different from Answer Engine Optimization?",
+  title: "AEO vs GEO: Is There Actually a Difference?",
   description:
     "AEO and GEO describe nearly the same discipline under two names. What each term means, where they diverge, and why the label matters less than the work.",
   subtitle:

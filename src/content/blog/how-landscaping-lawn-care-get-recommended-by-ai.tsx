@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-landscaping-lawn-care-get-recommended-by-ai",
-  title: "How Landscaping and Lawn Care Companies Get Recommended by AI",
+  title: "How Landscaping Companies Get Recommended by AI",
   description:
     "AI recommends landscapers that publish what they do, where, in which season and at what price. The seasonal, service-area playbook that works.",
   subtitle:

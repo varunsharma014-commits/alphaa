@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "ai-crawlers-robots-txt-guide",
-  title: "Which AI Crawlers Should You Allow? A robots.txt Guide to GPTBot, ClaudeBot and PerplexityBot",
+  title: "AI Crawlers and robots.txt: Which Bots to Allow",
   description:
     "AI companies run two different kinds of bots: training crawlers that feed the models, and retrieval agents that fetch your pages to answer a question right now.",
   subtitle:

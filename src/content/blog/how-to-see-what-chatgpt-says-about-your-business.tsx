@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-to-see-what-chatgpt-says-about-your-business",
-  title: "How to See What ChatGPT Says About Your Business (Free Methods + One Fast One)",
+  title: "How to See What ChatGPT Says About Your Business",
   description:
     "To see what ChatGPT says about you, ask it directly, then repeat across Claude, Gemini and Perplexity. The exact prompts, and one much faster method.",
   subtitle:

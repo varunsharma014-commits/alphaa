@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "local-business-ai-readiness-study-2026",
-  title: "We Checked 288 Local Business Websites for AI Readiness. Here’s What We Found (2026)",
+  title: "Local Business AI Readiness Study: 288 Sites",
   description:
     "Original research: Alphaa ran its 23-point AI-readiness check on 288 dentist, plumber/HVAC, law firm, veterinary and restaurant websites across six US cities.",
   subtitle:

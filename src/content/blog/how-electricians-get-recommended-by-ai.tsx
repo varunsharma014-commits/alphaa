@@ -41,13 +41,18 @@ export function Body() {
 
       <p>
         <strong>Short answer:</strong> AI engines recommend the electricians whose{" "}
-        <strong>licence number, service specialisations, permit and inspection handling, emergency availability
-        and price ranges are written in plain text on fetchable pages</strong>, and whose reviews and directory
-        listings agree with those facts. Electrical work is the most safety-and-compliance-loaded trade an
-        assistant will ever be asked about, so models behave conservatively: they favour contractors who are
-        visibly licensed, insured and specific, and they quietly skip the ones whose websites say only
-        &quot;residential and commercial electrical services, free estimates.&quot; The gap between being skipped
-        and being named is almost always missing facts, not a missing marketing budget.
+        <strong>
+          licence number, service specialisations, permit and inspection handling, emergency availability and price
+          ranges are written in plain text on fetchable pages
+        </strong>
+        , and whose reviews and directory listings agree with those facts. Electrical work is the most
+        safety-and-compliance-loaded trade an assistant will ever be asked about, so models behave conservatively.
+      </p>
+
+      <p>
+        They favour contractors who are visibly licensed, insured and specific, and they quietly skip the ones whose
+        websites say only &quot;residential and commercial electrical services, free estimates.&quot; The gap between
+        being skipped and being named is almost always missing facts, not a missing marketing budget.
       </p>
 
       <h2>What do people actually ask AI about electricians?</h2>

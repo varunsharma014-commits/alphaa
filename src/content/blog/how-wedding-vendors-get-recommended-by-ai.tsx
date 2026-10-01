@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-wedding-vendors-get-recommended-by-ai",
-  title: "How Wedding Venues, Photographers and Planners Get Recommended by AI",
+  title: "How Wedding Vendors Get Recommended by AI",
   description:
     "Couples ask ChatGPT for shortlists before they open The Knot. Engines answer from marketplace profiles, capacity, pricing and real reviews, not ads.",
   subtitle:

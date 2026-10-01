@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "do-videos-show-up-in-ai-answers",
-  title: "Do YouTube Videos Show Up in AI Answers? What Engines Actually Read",
+  title: "Do YouTube Videos Show Up in AI Answers?",
   description:
     "AI assistants do cite video, but almost never by watching it. They read the title, description and transcript. How to make a video genuinely citable.",
   subtitle:

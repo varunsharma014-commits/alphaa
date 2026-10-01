@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-hotels-get-recommended-by-ai",
-  title: "How Hotels, B&Bs and Short-Term Rentals Get Recommended by AI",
+  title: "How Hotels and B&Bs Get Recommended by AI",
   description:
     "Travellers plan by asking AI, which answers from booking sites and review platforms. How properties get named, and the specificity problem to fix.",
   subtitle:

@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "what-is-answer-engine-optimization",
-  title: "What Is AEO (Answer Engine Optimization)? A Plain-English Guide",
+  title: "What Is Answer Engine Optimization (AEO)?",
   description:
     "AEO is optimising your content and signals so AI answer engines discover, cite and recommend you. How it works, and how to get started this week.",
   subtitle:

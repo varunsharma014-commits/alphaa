@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "schema-markup-for-ai-search",
-  title: "Schema Markup for AI Search: A Practical Guide (With Examples)",
+  title: "Schema Markup for AI Search: A Practical Guide",
   description:
     "What JSON-LD schema is, why it matters for AI search, and copy-paste examples for LocalBusiness, FAQPage and Organization, plus how to validate it.",
   subtitle:

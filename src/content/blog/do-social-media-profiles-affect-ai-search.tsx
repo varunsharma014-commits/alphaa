@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "do-social-media-profiles-affect-ai-search",
-  title: "Do Social Media Profiles Affect AI Recommendations? What Instagram, Facebook and LinkedIn Actually Contribute",
+  title: "Do Social Media Profiles Affect AI Search?",
   description:
     "Social profiles influence AI recommendations indirectly — as entity confirmation and as text an engine can read — not as a popularity score.",
   subtitle:

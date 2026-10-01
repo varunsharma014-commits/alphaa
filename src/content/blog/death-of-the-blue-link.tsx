@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "death-of-the-blue-link",
-  title: "The Death of the Blue Link: Why Ranking #1 on Google No Longer Brings the Customers It Used To",
+  title: "The Death of the Blue Link: Why #1 No Longer Pays",
   description:
     "Ranking #1 still works — it just delivers fewer visitors, because roughly two-thirds of Google searches now end without a click to any website.",
   subtitle:

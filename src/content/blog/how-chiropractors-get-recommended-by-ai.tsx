@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-chiropractors-get-recommended-by-ai",
-  title: "How Chiropractors Get Recommended by AI (Without Overclaiming)",
+  title: "How Chiropractors Get Recommended by AI",
   description:
     "When a patient asks ChatGPT for a chiropractor who treats sciatica, engines answer from reviews and plain text. What decides whether you get named.",
   subtitle:

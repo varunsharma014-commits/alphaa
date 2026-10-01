@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "zero-click-search",
-  title: "Zero-Click Search: Two Thirds of Google Searches Now End Without a Website Visit",
+  title: "Zero-Click Search: Two Thirds of Searches End Cold",
   description:
     "Roughly two-thirds of Google searches now end without a single click to any website (SparkToro/Similarweb, 2026) — up from around 60% in 2024.",
   subtitle:

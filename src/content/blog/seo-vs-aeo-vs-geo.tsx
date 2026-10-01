@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "seo-vs-aeo-vs-geo",
-  title: "SEO vs. AEO vs. GEO: What's the Difference, and Which One Gets You Customers in 2026?",
+  title: "SEO vs AEO vs GEO: What Is the Real Difference?",
   description:
     "A plain-English comparison of SEO, AEO and GEO: what each one optimises for, what it measures, where the tactics overlap, and what to do first.",
   subtitle:

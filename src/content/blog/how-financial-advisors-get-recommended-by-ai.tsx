@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-financial-advisors-get-recommended-by-ai",
-  title: "How Financial Advisors Get Recommended by AI (Without Breaking Compliance)",
+  title: "How Financial Advisors Get Recommended by AI",
   description:
     "AI assistants answer \"who should manage my money\" from regulator filings, fee-only directories and specialist coverage — rarely from an advisor's own website.",
   subtitle:

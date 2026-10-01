@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-med-spas-get-recommended-by-ai",
-  title: "How Med Spas Get Recommended by AI (ChatGPT, Gemini & Google AI)",
+  title: "How Med Spas Get Recommended by AI",
   description:
     "When someone asks AI for a good med spa nearby, the answer comes from your profile, reviews and treatment pages, not ads. The honest playbook.",
   subtitle:

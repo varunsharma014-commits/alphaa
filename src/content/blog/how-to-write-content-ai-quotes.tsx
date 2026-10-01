@@ -3,7 +3,7 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "how-to-write-content-ai-quotes",
-  title: "How to Write Content AI Actually Quotes (The Passage-Level Guide)",
+  title: "How to Write Content AI Actually Quotes",
   description:
     "AI engines cite passages, not pages. How retrieval chunking works, and the paragraph-level rules that make your writing liftable into an answer.",
   subtitle:
