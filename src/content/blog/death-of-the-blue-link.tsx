@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "death-of-the-blue-link",
   title: "The Death of the Blue Link: Why Ranking #1 on Google No Longer Brings the Customers It Used To",
   description:
-    "Ranking #1 still works — it just delivers fewer visitors, because roughly two-thirds of Google searches now end without a click to any website. Here's what changed, why your traffic fell while your rankings held, and what to do about it.",
+    "Ranking #1 still works — it just delivers fewer visitors, because roughly two-thirds of Google searches now end without a click to any website.",
   subtitle:
     "Ranking #1 still helps, but roughly two-thirds of Google searches now end without a click, which makes the answer itself the destination.",
   date: "2026-07-17",

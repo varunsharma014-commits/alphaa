@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "pricing-pages-ai-recommendations",
   title: "Should You Publish Your Prices? How Pricing Pages Shape AI Recommendations",
   description:
-    "AI assistants answer \"how much does X cost\" whether or not you publish a price — they just use someone else's number. Here is what a quotable pricing page looks like, how to publish ranges honestly, and when hiding price actually costs you the recommendation.",
+    "AI answers how much something costs whether you publish a price or not, using someone else's number. What a quotable pricing page looks like.",
   subtitle:
     "Publishing prices makes you matchable against budget-qualified questions, which is why withholding them quietly removes you from the shortlist.",
   date: "2026-08-08",

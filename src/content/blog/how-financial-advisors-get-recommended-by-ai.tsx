@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-financial-advisors-get-recommended-by-ai",
   title: "How Financial Advisors Get Recommended by AI (Without Breaking Compliance)",
   description:
-    "AI assistants answer \"who should manage my money\" from regulator filings, fee-only directories and specialist coverage — rarely from an advisor's own website. Here is how advisors become the named recommendation while staying inside the SEC and FINRA marketing rules.",
+    "AI assistants answer \"who should manage my money\" from regulator filings, fee-only directories and specialist coverage — rarely from an advisor's own website.",
   subtitle:
     "Advisors get recommended when who they serve, how they charge and what they are registered to do are stated plainly and stay inside compliance.",
   date: "2026-08-07",

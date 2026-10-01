@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "your-next-customer-is-asking-chatgpt-first",
   title: "Your Next Customer Is Asking ChatGPT First",
   description:
-    "65% of consumers now use AI tools to research products before buying (Clutch, 2026), and ChatGPT serves 800M+ weekly active users (OpenAI, 2025). Here's what changes when the first question about your category goes to an AI instead of Google — and what to do about it.",
+    "65% of consumers now use AI tools to research products before buying (Clutch, 2026), and ChatGPT serves 800M+ weekly active users (OpenAI, 2025).",
   subtitle:
     "A growing share of buying research now starts inside an AI assistant rather than a search box, which changes who gets considered at all.",
   date: "2026-07-21",

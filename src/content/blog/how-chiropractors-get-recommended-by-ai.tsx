@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-chiropractors-get-recommended-by-ai",
   title: "How Chiropractors Get Recommended by AI (Without Overclaiming)",
   description:
-    "When a patient asks ChatGPT for a chiropractor who treats sciatica or takes their insurance, the engines answer from reviews, structured practice data and plain text on your site. Here is what decides whether you get named — and why health claims need more care than any other vertical.",
+    "When a patient asks ChatGPT for a chiropractor who treats sciatica, engines answer from reviews and plain text. What decides whether you get named.",
   subtitle:
     "Chiropractors get recommended when techniques, conditions treated and credentials are specific and checkable, without the outcome claims that make engines cautious.",
   date: "2026-08-17",

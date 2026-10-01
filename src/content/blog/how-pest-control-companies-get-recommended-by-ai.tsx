@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-pest-control-companies-get-recommended-by-ai",
   title: "How Pest Control Companies Get Recommended by AI",
   description:
-    "AI assistants recommend pest control companies that name the specific pest, the specific treatment, the license behind it and the safety answer — in plain text a crawler can read. Here is the pest-by-pest playbook, including the termite letter most operators never publish.",
+    "AI recommends pest control firms that name the pest, the treatment, the licence and the safety answer in plain text. The pest-by-pest playbook.",
   subtitle:
     "Pest control companies get recommended when the specific pests, treatment methods and service area are named, because these queries are almost always specific.",
   date: "2026-08-23",

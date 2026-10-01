@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "google-ai-overviews-local-business",
   title: "Google AI Overviews for Local Businesses: How to Show Up",
   description:
-    "Google AI Overviews pull from the same local signals that power the map pack — your Business Profile, reviews, and consistent citations — then synthesize an answer. Here is how local businesses earn a mention, honestly.",
+    "AI Overviews pull from the same local signals as the map pack, then synthesise an answer. How a local business earns a mention in one, honestly.",
   subtitle:
     "Showing up in AI Overviews means strengthening the local signals Google already trusts, then making the page on your site quotable.",
   date: "2026-07-13",

@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-veterinary-clinics-get-recommended-by-ai",
   title: "How Veterinary Clinics Get Recommended by AI",
   description:
-    "AI assistants recommend the vet practices they can describe precisely: species and services treated, emergency hours, pricing ranges, and consistent, well-reviewed public records. Here's the practical playbook for clinics and animal hospitals.",
+    "AI recommends the vet practices it can describe precisely: species treated, emergency hours and pricing. The playbook for clinics and hospitals.",
   subtitle:
     "Veterinary clinics get recommended when species treated, emergency hours and pricing are published, because pet owners filter on all three at once.",
   date: "2026-07-30",

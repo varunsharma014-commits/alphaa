@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-msps-it-support-get-recommended-by-ai",
   title: "How MSPs and IT Support Companies Get Recommended by AI",
   description:
-    "When an office manager asks ChatGPT for a managed IT provider who supports 40 seats, knows their industry and can meet a compliance requirement, the engines answer from what you have published. Here is what actually decides whether an MSP gets named.",
+    "Asked for managed IT at 40 seats with a compliance need, engines answer from what you published. What actually decides whether an MSP gets named.",
   subtitle:
     "MSPs get recommended when the stack they support, their client size and their response commitments are published instead of described as enterprise-grade.",
   date: "2026-08-18",

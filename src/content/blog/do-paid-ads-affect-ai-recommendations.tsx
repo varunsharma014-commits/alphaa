@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "do-paid-ads-affect-ai-recommendations",
   title: "Does Paid Advertising Affect AI Recommendations?",
   description:
-    "Running Google Ads or Meta ads does not make ChatGPT, Claude, Gemini or Perplexity more likely to recommend you. But advertising can move AI visibility indirectly — through the pages, reviews and coverage it generates. Here is the honest mechanism, and where ad money is genuinely wasted.",
+    "Ad spend does not make ChatGPT or Gemini recommend you, though it can move visibility indirectly. The honest mechanism, and where the money is wasted.",
   subtitle:
     "Paid ads do not buy organic AI recommendations, though the brand searches and reviews they generate can feed the signals that do.",
   date: "2026-08-18",

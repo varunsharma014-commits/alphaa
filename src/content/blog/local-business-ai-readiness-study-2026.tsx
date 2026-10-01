@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "local-business-ai-readiness-study-2026",
   title: "We Checked 288 Local Business Websites for AI Readiness. Here’s What We Found (2026)",
   description:
-    "Original research: Alphaa ran its 23-point AI-readiness check on 288 dentist, plumber/HVAC, law firm, veterinary and restaurant websites across six US cities. 17% turned away an automated reader, 71% had missing or incomplete structured business facts, and fewer than 2% passed 20 of 23 checks.",
+    "Original research: Alphaa ran its 23-point AI-readiness check on 288 dentist, plumber/HVAC, law firm, veterinary and restaurant websites across six US cities.",
   subtitle:
     "We checked 288 local business websites and found most are only partly readable by AI assistants, with the same few failures repeating.",
   date: "2026-09-25",

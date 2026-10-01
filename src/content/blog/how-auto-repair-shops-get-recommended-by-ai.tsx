@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-auto-repair-shops-get-recommended-by-ai",
   title: "How Auto Repair Shops Get Recommended by AI",
   description:
-    "AI assistants recommend the shops they can describe precisely: which makes you service, what your diagnostic fee is, what your warranty covers, and which certifications you actually hold. Here's the practical playbook for independent garages and specialist shops.",
+    "AI assistants recommend the shops they can describe precisely: makes serviced, diagnostic fee, warranty, certifications. The playbook for garages.",
   subtitle:
     "Repair shops get recommended when the makes they service, their certifications and their diagnostic fees are published rather than left to a phone call.",
   date: "2026-07-31",

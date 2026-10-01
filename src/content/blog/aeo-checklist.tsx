@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "aeo-checklist",
   title: "The AEO Checklist: What Decides Whether AI Recommends Your Business",
   description:
-    "A practical, skimmable checklist of the concrete signals that decide whether ChatGPT, Gemini, and other AI engines recommend your business — grouped by foundations, content, reviews, technical, and AI-specific.",
+    "A skimmable checklist of the signals that decide whether AI engines recommend your business, grouped by foundations, content, reviews and technical.",
   subtitle:
     "AI recommends the businesses whose public signals are complete, consistent and specific, and these are the checks that decide it in priority order.",
   date: "2026-06-17",

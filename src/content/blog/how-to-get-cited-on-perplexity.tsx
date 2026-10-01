@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-to-get-cited-on-perplexity",
   title: "How to Get Your Business Cited on Perplexity",
   description:
-    "Perplexity leans on live web retrieval and shows its sources inline, so getting cited comes down to being a recent, clear, citable source. Here is a practical playbook.",
+    "Perplexity retrieves live and shows sources inline, so citation comes down to being recent, clear and quotable. A practical playbook for businesses.",
   subtitle:
     "Perplexity cites recent, answer-first pages that state verifiable facts, because it retrieves live and shows its sources on every answer.",
   date: "2026-06-17",
@@ -30,7 +30,7 @@ export function Body() {
   return (
     <div className="article-prose">
       <p>
-        To get your business cited on Perplexity, publish recent, answer-first content that states
+        <strong>Short answer:</strong> To get your business cited on Perplexity, publish recent, answer-first content that states
         clear, verifiable facts an AI can quote — then earn references to it from other reputable
         sites so your information shows up consistently across the web. Perplexity answers questions
         by retrieving live web pages and listing the sources it used right inside the answer. So

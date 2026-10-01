@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-to-see-what-chatgpt-says-about-your-business",
   title: "How to See What ChatGPT Says About Your Business (Free Methods + One Fast One)",
   description:
-    "To see what ChatGPT says about your business, just ask it directly — then repeat the test across Claude, Gemini, and Perplexity. Here are the exact prompts, the free methods, and one faster way to check every engine at once.",
+    "To see what ChatGPT says about you, ask it directly, then repeat across Claude, Gemini and Perplexity. The exact prompts, and one much faster method.",
   subtitle:
     "Ask each assistant the questions your customers ask, in a fresh session with no memory of you, and record who gets named.",
   date: "2026-07-06",

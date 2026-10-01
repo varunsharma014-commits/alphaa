@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "seo-vs-aeo-vs-geo",
   title: "SEO vs. AEO vs. GEO: What's the Difference, and Which One Gets You Customers in 2026?",
   description:
-    "A plain-English, three-way comparison of SEO, AEO and GEO: what each one optimises for, what it measures, where the tactics overlap, and what a local business should do first.",
+    "A plain-English comparison of SEO, AEO and GEO: what each one optimises for, what it measures, where the tactics overlap, and what to do first.",
   subtitle:
     "SEO wins clicks, AEO and GEO win the answer, and in 2026 most businesses need the fundamentals of all three rather than a side to pick.",
   date: "2026-09-25",

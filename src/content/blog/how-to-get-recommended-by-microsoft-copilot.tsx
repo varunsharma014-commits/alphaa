@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-to-get-recommended-by-microsoft-copilot",
   title: "How to Get Recommended by Microsoft Copilot (and Bing's AI Answers)",
   description:
-    "Copilot answers are grounded in the Bing index, which means the levers are different from ChatGPT or Perplexity: bingbot access, Bing Webmaster Tools, IndexNow, and a claimed Bing Places listing most businesses have never touched.",
+    "Copilot grounds answers in the Bing index, so the levers differ: bingbot access, Bing Webmaster Tools, IndexNow and a claimed Bing Places listing.",
   subtitle:
     "Copilot grounds its answers in Microsoft's index, so the levers are bingbot access, Bing Webmaster Tools, IndexNow and a claimed Bing Places listing.",
   date: "2026-08-03",

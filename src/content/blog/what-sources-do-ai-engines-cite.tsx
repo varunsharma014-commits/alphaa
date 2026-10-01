@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "what-sources-do-ai-engines-cite",
   title: "What Sources Do AI Engines Actually Cite?",
   description:
-    "AI engines cite a predictable mix: your own site, review and map platforms, directories and association lists, forums like Reddit, news and trade press, reference sites like Wikipedia, and third-party best-of roundups. Here is what each category is used for, and how to measure the mix for your own category in about twenty minutes.",
+    "AI engines cite a predictable mix of your site, review platforms, directories, forums, trade press and roundups. What each one is used for, and why.",
   subtitle:
     "Engines cite a predictable set of source types, led by your own clear pages, third-party roundups, review platforms and community discussion.",
   date: "2026-08-22",

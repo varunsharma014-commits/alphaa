@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-moving-companies-get-recommended-by-ai",
   title: "How Moving Companies Get Recommended by AI",
   description:
-    "AI assistants recommend movers that publish a verifiable USDOT or state licence number, a specific service radius and move type, and a consistent review record across Google, Yelp and moving directories. Here is the playbook for movers, including the trust problem that decides most of these answers.",
+    "AI recommends movers with a verifiable licence number, a specific radius and move type, and a consistent review record. The trust problem explained.",
   subtitle:
     "Moving companies get recommended when licensing is verifiable, the type of move and coverage area are unambiguous, and recent reviews corroborate both.",
   date: "2026-08-21",

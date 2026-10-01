@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-dentists-get-recommended-by-ai",
   title: "How Dentists Get Recommended by ChatGPT and Google AI",
   description:
-    "When a patient asks ChatGPT or Google AI for a good dentist nearby, the answer is built from your Google Business Profile, reviews, and clear service pages — not from ads. Here is the honest playbook to become the practice AI names.",
+    "When a patient asks ChatGPT for a good dentist nearby, the answer comes from your profile, reviews and service pages, not ads. The honest playbook.",
   subtitle:
     "Dentists get recommended when the public signals about the practice are complete, consistent and specific about treatments, insurance and availability.",
   date: "2026-07-13",

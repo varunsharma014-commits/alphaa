@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-to-write-content-ai-quotes",
   title: "How to Write Content AI Actually Quotes (The Passage-Level Guide)",
   description:
-    "AI engines don't cite pages — they cite passages. Here's how retrieval chunking works, and the paragraph-level writing rules that make your content liftable into a ChatGPT, Perplexity or Gemini answer.",
+    "AI engines cite passages, not pages. How retrieval chunking works, and the paragraph-level rules that make your writing liftable into an answer.",
   subtitle:
     "Engines quote passages rather than pages, so every section has to make sense on its own once it is pulled out of the article.",
   date: "2026-07-30",

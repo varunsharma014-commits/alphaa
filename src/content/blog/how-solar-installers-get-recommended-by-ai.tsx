@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-solar-installers-get-recommended-by-ai",
   title: "How Solar Installers Get Recommended by AI",
   description:
-    "Homeowners now ask ChatGPT and Gemini which solar company to trust before they ever fill in a form. Here is what those engines actually read about a solar installer, why most companies get skipped, and the specific fixes that change the answer.",
+    "Homeowners ask AI which solar company to trust before filling in a form. What engines read, why most installers get skipped, and the fixes that help.",
   subtitle:
     "Solar installers get recommended when licence and certification details, equipment lines and financing options are published plainly and corroborated by reviews.",
   date: "2026-08-26",

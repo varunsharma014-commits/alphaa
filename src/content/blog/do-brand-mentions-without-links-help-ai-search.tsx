@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "do-brand-mentions-without-links-help-ai-search",
   title: "Do Brand Mentions Without Links Help Your AI Visibility?",
   description:
-    "Yes — and in AI search an unlinked mention often does more work than a link. Retrieval systems match on names and context, not on href attributes. Here is the mechanism, what makes a mention count, and how to earn more of them.",
+    "Yes — and in AI search an unlinked mention often does more work than a link. Retrieval systems match on names and context, not on href attributes.",
   subtitle:
     "Unlinked mentions do help, because AI engines read text rather than follow links, and a brand that gets described is a brand that can be cited.",
   date: "2026-08-24",

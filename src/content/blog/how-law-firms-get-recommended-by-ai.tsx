@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-law-firms-get-recommended-by-ai",
   title: "How Law Firms Get Recommended by AI (Without Guarantee Scams)",
   description:
-    "Law firms get recommended by ChatGPT, Gemini, and Perplexity when the public record about the firm is complete, consistent, and verifiable — not when a vendor promises to \"put you at the top.\" Here is the honest playbook, and how to spot the guarantee scams that target lawyers.",
+    "Law firms get recommended when the public record is complete and verifiable, not when a vendor promises the top spot. Plus how to spot the scams.",
   subtitle:
     "Law firms get recommended when the practice areas, jurisdictions and bar credentials are complete and verifiable, which is also why guarantee offers are a red flag.",
   date: "2026-07-18",

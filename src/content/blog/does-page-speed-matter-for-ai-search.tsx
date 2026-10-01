@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "does-page-speed-matter-for-ai-search",
   title: "Does Page Speed Matter for AI Search?",
   description:
-    "Page speed matters for AI search, but not the way Core Web Vitals matter for Google. What counts is whether a crawler gets complete HTML back quickly enough, before it gives up. Here is what actually breaks, how to test it, and what to fix first.",
+    "Page speed matters for AI search, but as a fetch timeout rather than a ranking factor. What actually breaks, how to test it, and what to fix first.",
   subtitle:
     "Speed matters less as a ranking factor than as a fetch timeout, because a crawler that gives up on your page cannot cite it.",
   date: "2026-08-25",

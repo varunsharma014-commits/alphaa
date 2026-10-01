@@ -276,8 +276,11 @@ function lintSources() {
     if (tables > wraps) err(slug, `${tables} <table> but ${wraps} .table-wrap — unwrapped tables overflow on phones`)
     if (!tables && !/<ol[\s>]/.test(body)) warn(slug, "no table and no <ol> — spec wants one comparison table or numbered steps")
 
-    // answer-first opening
-    const first = (body.match(/<p>([\s\S]*?)<\/p>/) || [])[1]
+    // answer-first opening. Skip a leading author/reviewer signal paragraph
+    // (the E-E-A-T byline, wrapped in <em>) — the answer is the one after it.
+    const paras = [...body.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((m) => m[1])
+    const isByline = (t) => /By the alphaa team/i.test(t) || /^\s*<em>[\s\S]*<\/em>\s*$/.test(t)
+    const first = paras.find((t) => !isByline(t))
     if (!first || !/Short answer:/.test(first)) fmtErr(slug, 'first paragraph must open with "<strong>Short answer:</strong>"')
     else {
       const n = toText(first).replace(/^Short answer:\s*/, "").split(/\s+/).length

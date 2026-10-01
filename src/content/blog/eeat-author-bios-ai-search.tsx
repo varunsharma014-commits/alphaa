@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "eeat-author-bios-ai-search",
   title: "Do Author Bios and About Pages Affect AI Search? How Engines Judge Credibility",
   description:
-    "AI engines do not score E-E-A-T directly, but they retrieve and quote the pages that carry it. Here is what an author bio, an About page and a named source actually do to whether an assistant is willing to name you.",
+    "AI engines do not score E-E-A-T directly, but they quote the pages carrying it. What an author bio and About page really do for your citation odds.",
   subtitle:
     "Named authors with checkable credentials give an engine a reason to trust a claim, which counts most on health, legal and financial topics.",
   date: "2026-08-09",

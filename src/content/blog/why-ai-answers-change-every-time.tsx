@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "why-ai-answers-change-every-time",
   title: "Why ChatGPT Gives a Different Answer Every Time (And How to Measure AI Visibility Anyway)",
   description:
-    "AI assistants are non-deterministic and re-retrieve the web on every question, so the same prompt can name your business once and skip you the next time. Here is why that happens, and the sampling protocol we use to turn a moving target into a number you can actually track.",
+    "AI assistants are non-deterministic and re-retrieve the web on every question, so the same prompt can name your business once and skip you the next time.",
   subtitle:
     "AI assistants are non-deterministic and retrieve fresh sources each time, so visibility has to be measured as a trend across repeated runs.",
   date: "2026-07-28",

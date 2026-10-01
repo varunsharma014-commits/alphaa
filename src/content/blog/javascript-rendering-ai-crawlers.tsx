@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "javascript-rendering-ai-crawlers",
   title: "Why AI Can't Read Your JavaScript Website (And How to Fix It)",
   description:
-    "Many AI crawlers fetch raw HTML and don't wait for JavaScript to run. If your site renders content client-side, the crawler may see an empty shell. Here's the 60-second test and the fix for each stack.",
+    "Many AI crawlers fetch raw HTML and don't wait for JavaScript to run. If your site renders content client-side, the crawler may see an empty shell.",
   subtitle:
     "Most AI crawlers do not run JavaScript, so anything rendered client-side is invisible to them and has to be server-rendered to be read.",
   date: "2026-07-29",

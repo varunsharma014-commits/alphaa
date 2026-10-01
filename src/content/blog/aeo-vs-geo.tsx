@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "aeo-vs-geo",
   title: "AEO vs GEO: Is Generative Engine Optimization Different from Answer Engine Optimization?",
   description:
-    "AEO and GEO describe nearly the same discipline under two names — making your business easy for AI engines to find, trust, and cite. The differences are mostly emphasis, not mechanism. Here is what each term means, where they diverge, and why the label matters less than the work.",
+    "AEO and GEO describe nearly the same discipline under two names. What each term means, where they diverge, and why the label matters less than the work.",
   subtitle:
     "AEO and GEO describe nearly the same discipline under two different names, so pick the term your audience uses and judge the work instead of the label.",
   date: "2026-07-25",

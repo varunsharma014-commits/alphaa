@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-salons-barbershops-get-recommended-by-ai",
   title: "How Hair Salons and Barbershops Get Recommended by AI",
   description:
-    "When someone asks ChatGPT for a good barber or a salon that does curly hair, the engines answer from reviews, structured business data and text on your site — not from your Instagram grid. Here is what decides whether you get named, and the fixes that matter most for salons and shops.",
+    "Asked for a barber or a salon that does curly hair, engines answer from reviews and site text, not your Instagram grid. The fixes that matter most.",
   subtitle:
     "Salons get recommended when the service menu, prices and specialisms such as curly or textured hair are published as text an engine can read.",
   date: "2026-08-11",

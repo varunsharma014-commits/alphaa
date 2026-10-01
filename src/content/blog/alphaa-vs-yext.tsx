@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "alphaa-vs-yext",
   title: "Alphaa vs. Yext: Managing Listings vs. Managing AI Answers",
   description:
-    "An honest comparison of Yext and Alphaa for local businesses and multi-location brands: what each does, who does the work, how pricing works, and when to use one, the other, or both.",
+    "An honest comparison of Yext and Alphaa for local and multi-location brands: what each does, who does the work, how pricing works, and when to use both.",
   subtitle:
     "Yext keeps your listings accurate across directories, while Alphaa checks what AI assistants actually say about you and fixes the signals behind it.",
   date: "2026-09-25",

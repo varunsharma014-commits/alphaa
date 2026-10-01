@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-long-does-aeo-take",
   title: "How Long Does AEO Take to Work? An Honest Timeline",
   description:
-    "Answer engine optimization is not instant, but it is not the 6-to-12-month wait of classic SEO either. Some signals AI engines read update in days; deeper consensus builds over months. Here is an honest timeline of what changes when, and why.",
+    "AEO is not instant, but it is not a 12-month wait either. Some signals update in days, consensus takes months. An honest timeline of what changes when.",
   subtitle:
     "On-site fixes can show up within days to weeks, while review and third-party signals usually take a couple of months to shift an answer.",
   date: "2026-07-26",

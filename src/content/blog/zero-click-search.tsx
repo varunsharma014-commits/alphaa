@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "zero-click-search",
   title: "Zero-Click Search: Two Thirds of Google Searches Now End Without a Website Visit",
   description:
-    "Roughly two-thirds of Google searches now end without a single click to any website (SparkToro/Similarweb, 2026) — up from around 60% in 2024. Here is what zero-click search means, why it's happening, and how businesses stay visible when the click disappears.",
+    "Roughly two-thirds of Google searches now end without a single click to any website (SparkToro/Similarweb, 2026) — up from around 60% in 2024.",
   subtitle:
     "Roughly two-thirds of Google searches now end without a click to any website, so the result page and the AI answer have become the destination.",
   date: "2026-07-20",

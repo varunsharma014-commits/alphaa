@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "ecommerce-products-recommended-by-ai",
   title: "How Ecommerce Brands Get Their Products Recommended by AI",
   description:
-    "AI assistants recommend products they can describe with specifics — price, materials, sizing, returns, warranty — sourced from your product pages, your feed, and third-party reviews. Here is the exact product-page and off-site setup we use to make a catalogue quotable.",
+    "AI assistants recommend products they can describe with specifics: price, materials, sizing, returns. The product page and off-site setup that works.",
   subtitle:
     "AI recommends the products it can describe with confident specifics, so structured product data and real review text decide whether you get matched.",
   date: "2026-08-03",

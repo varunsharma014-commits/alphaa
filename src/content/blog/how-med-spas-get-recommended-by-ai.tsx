@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-med-spas-get-recommended-by-ai",
   title: "How Med Spas Get Recommended by AI (ChatGPT, Gemini & Google AI)",
   description:
-    "When someone asks ChatGPT or Google AI for a good med spa nearby, the answer is built from your Google Business Profile, reviews, and clear treatment pages — not from ads. Here is the honest playbook to become the med spa AI names.",
+    "When someone asks AI for a good med spa nearby, the answer comes from your profile, reviews and treatment pages, not ads. The honest playbook.",
   subtitle:
     "Med spas get recommended when treatments, who supervises them and pricing are specific and checkable, and when outcome claims stay conservative.",
   date: "2026-07-20",

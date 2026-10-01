@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "aeo-vs-seo-why-agencies-fail",
   title: "AEO vs SEO: Why Traditional SEO Agencies Fail in the Age of AI Search",
   description:
-    "Should you hire an SEO agency or invest in AEO in 2026? A clear, honest comparison of cost, speed, and where customers actually find you — Google's links vs. AI answers.",
+    "Should you hire an SEO agency or invest in AEO in 2026? A clear, honest comparison of cost, speed, and where customers actually find you — Google's links vs.",
   subtitle:
     "SEO optimises you for Google's ranked links while AEO optimises you for the answer itself, and most agencies are still staffed and priced for the former.",
   date: "2026-06-17",

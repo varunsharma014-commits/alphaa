@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "do-city-landing-pages-work-ai-search",
   title: "Do City Landing Pages Still Work for AI Search?",
   description:
-    "City landing pages still work for AI search, but only when each page contains facts that are true of that place and nowhere else. Templated pages that swap a city name are actively counterproductive. Here is the test, the build, and how many pages you should actually publish.",
+    "City pages still work for AI search, but only with facts true of that place alone. The test, the build, and how many pages you should really publish.",
   subtitle:
     "City pages still work when each one carries genuinely local facts, and actively hurt you when they are one page with the town name swapped.",
   date: "2026-08-21",

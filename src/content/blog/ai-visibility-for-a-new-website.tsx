@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "ai-visibility-for-a-new-website",
   title: "How to Get AI Visibility for a Brand-New Website",
   description:
-    "A new site has no backlinks, no review history and no mentions anywhere — the exact signals AI engines rely on. Here is the cold-start problem explained honestly, and the order of operations that gets a new business named fastest.",
+    "A new site has no links, reviews or mentions, the exact signals AI engines use. The cold-start problem explained, and the order of operations that works.",
   subtitle:
     "A new site has no history for AI to read, so the fastest path is establishing a consistent entity and a few verifiable third-party records before writing content.",
   date: "2026-08-26",

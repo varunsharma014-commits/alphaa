@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-car-dealerships-get-recommended-by-ai",
   title: "How Car Dealerships Get Recommended by AI",
   description:
-    "AI assistants recommend dealerships whose website states the actual out-the-door pricing policy, live inventory in crawlable text, financing terms and service-department specifics — corroborated by reviews and marketplace listings. Here is the playbook, including the VDP problem almost every dealer has.",
+    "AI recommends dealerships that publish out-the-door pricing, crawlable inventory and financing terms. The playbook, including the VDP problem.",
   subtitle:
     "Dealerships get recommended when inventory, pricing and trade-in terms are crawlable text, because a database an engine cannot read may as well be empty.",
   date: "2026-08-25",

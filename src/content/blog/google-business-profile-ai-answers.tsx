@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "google-business-profile-ai-answers",
   title: "Does Your Google Business Profile Feed AI Answers?",
   description:
-    "Your Google Business Profile is not plugged directly into ChatGPT — but it is the most widely copied description of your business on the internet, which is why it shapes what every AI assistant says about you. Here is which fields matter, how the data actually travels, and the fields most businesses leave empty.",
+    "Your Business Profile is not wired into ChatGPT, but it is the most copied description of you online. Which fields matter and how the data travels.",
   subtitle:
     "Your Google Business Profile feeds Google's AI answers directly and the other assistants indirectly, which makes it the highest-leverage thing to fix first.",
   date: "2026-08-05",

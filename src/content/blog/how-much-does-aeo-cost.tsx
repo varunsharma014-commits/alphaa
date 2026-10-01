@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-much-does-aeo-cost",
   title: "How Much Does AEO Cost? An Honest 2026 Price Breakdown",
   description:
-    "AEO in 2026 costs roughly $0 to $500 if you do it yourself, $30 to $300 a month for monitoring tools, and $1,500 to $10,000 a month for an agency retainer. Here is what each tier actually buys, what the hidden costs are, and how to tell whether you need to spend anything at all.",
+    "AEO in 2026 costs roughly $0 to $500 if you do it yourself, $30 to $300 a month for monitoring tools, and $1,500 to $10,000 a month for an agency retainer.",
   subtitle:
     "Doing it yourself costs almost nothing but your time, tools run roughly $99 to $199 a month, and agency retainers start around ten times that.",
   date: "2026-08-20",

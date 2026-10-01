@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "does-ai-generated-content-hurt-ai-visibility",
   title: "Does AI-Generated Content Hurt Your AI Visibility?",
   description:
-    "AI-written content is not penalised for being AI-written. It fails for a more basic reason: it contains nothing an AI engine could not already produce itself, so there is no reason to retrieve or cite it. Here are the four common failure modes, and the drafting workflow that avoids them.",
+    "AI-written content is not penalised for being AI-written. It fails because it says nothing worth retrieving. The four failure modes, and how to avoid them.",
   subtitle:
     "AI engines do not penalise content for being AI-written; they ignore content that says nothing checkable, which is what most AI drafts do.",
   date: "2026-08-23",

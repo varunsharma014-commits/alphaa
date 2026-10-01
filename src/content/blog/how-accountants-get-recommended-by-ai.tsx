@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-accountants-get-recommended-by-ai",
   title: "How Accountants and CPA Firms Get Recommended by AI",
   description:
-    "AI assistants name accounting firms that are specific about who they serve, verifiable through licence and directory records, and well reviewed. Here's the practical playbook for CPAs, tax preparers and bookkeepers.",
+    "AI assistants name accounting firms that are specific about who they serve, verifiable through licence and directory records, and well reviewed.",
   subtitle:
     "Accounting firms get recommended when their specialisms, credentials and client type are written in plain text, because tax queries are always narrowly qualified.",
   date: "2026-07-29",

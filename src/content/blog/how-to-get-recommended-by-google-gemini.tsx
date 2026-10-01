@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-to-get-recommended-by-google-gemini",
   title: "How to Get Your Business Recommended by Google Gemini",
   description:
-    "Gemini answers through Google's own index, knowledge graph, and live retrieval — and the same engine powers AI Overviews. Getting recommended means being a clear, consistent, well-corroborated entity Google already trusts. Here is the practical playbook.",
+    "Gemini answers through Google's index, knowledge graph and live retrieval, the same engine behind AI Overviews. The practical playbook for businesses.",
   subtitle:
     "Gemini draws on what Google already understands about your business, so a clean entity and a complete Business Profile do most of the work.",
   date: "2026-07-25",

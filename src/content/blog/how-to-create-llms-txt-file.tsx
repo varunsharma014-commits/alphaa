@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-to-create-llms-txt-file",
   title: "How to Create and Deploy an llms.txt File for Your Business Website",
   description:
-    "A practical, step-by-step guide to llms.txt — what it is, why it matters for AI search, and how to write and host one for your business, with a copy-paste template.",
+    "A step-by-step guide to llms.txt: what it is, why it matters for AI search, and how to write and host one, with a copy-paste template to start from.",
   subtitle:
     "An llms.txt file is a plain-text map of your site for AI assistants, cheap to add and worth doing, though its effect is still unproven.",
   date: "2026-06-17",

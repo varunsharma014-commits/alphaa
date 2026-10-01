@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "aeo-for-saas-b2b",
   title: "AEO for SaaS & B2B: How to Get Your Software Recommended by AI",
   description:
-    "When buyers ask AI for the best software in your category, what gets you named? A practical, non-local AEO playbook for SaaS and B2B teams — reviews, comparison content, docs, and schema.",
+    "When buyers ask AI for the best software in your category, what gets you named? The non-local AEO playbook for SaaS: reviews, comparisons, docs, schema.",
   subtitle:
     "SaaS gets recommended when review platforms, comparison pages and documentation describe it consistently, because software queries have no local signals to fall back on.",
   date: "2026-06-17",
@@ -20,6 +20,12 @@ export const meta: PostMeta = {
     "Publish honest comparison pages, \"alternatives to [competitor]\" pages, and use-case pages so AI has credible content of yours for these comparative queries.",
     "Review platforms are among the most heavily weighted sources AI uses for software recommendations — they’re structured, independent, and updated by real users.",
     "AI can cite comparison and roundup content, use-case and integration pages, and clean documentation.",
+  ],
+  sources: [
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Organization - Schema.org Type", publisher: "Schema.org", url: "https://schema.org/Organization" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
   ],
 }
 

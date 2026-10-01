@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "training-data-vs-live-retrieval-ai-search",
   title: "Training Data vs Live Retrieval: Which One Decides Whether AI Recommends You?",
   description:
-    "AI assistants answer from two completely different sources — what the model memorised during training, and what it fetches from the web while you wait. They behave differently, update on different clocks, and need different work from you. Here is how to tell which one is answering.",
+    "AI assistants answer from two completely different sources — what the model memorised during training, and what it fetches from the web while you wait.",
   subtitle:
     "Live retrieval is the one that matters for almost every business, because training data is frozen and cannot learn about you after the fact.",
   date: "2026-08-27",

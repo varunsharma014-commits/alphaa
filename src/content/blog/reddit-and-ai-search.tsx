@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "reddit-and-ai-search",
   title: "Why Reddit and Third-Party Mentions Decide What AI Says About Your Business",
   description:
-    "AI assistants lean on Reddit, review sites, forums and directories because independent sources are the only way they can verify a claim. Here is why third-party mentions outweigh your own website, which surfaces matter, and how to earn them without astroturfing.",
+    "AI assistants lean on Reddit, review sites and forums because independent sources are the only way to verify a claim. How to earn them honestly.",
   subtitle:
     "Third-party discussion carries disproportionate weight because engines treat it as independent corroboration of what you say about yourself.",
   date: "2026-07-28",

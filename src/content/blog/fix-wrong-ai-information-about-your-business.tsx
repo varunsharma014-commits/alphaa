@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "fix-wrong-ai-information-about-your-business",
   title: "ChatGPT Is Wrong About My Business. How Do I Fix It?",
   description:
-    "You can't edit an AI model's memory — you fix the public sources it reads and re-checks. Here's how to diagnose whether an error comes from stale training or bad retrieval, the correction workflow in priority order, and how long each fix actually takes.",
+    "You cannot edit a model's memory, so you fix the sources it reads. How to tell stale training from bad retrieval, and the correction order that works.",
   subtitle:
     "You cannot edit the model, so you correct the public sources it reads and wait for retrieval to catch up.",
   date: "2026-07-31",

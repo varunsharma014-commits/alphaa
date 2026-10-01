@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-home-care-agencies-get-recommended-by-ai",
   title: "How Home Care and Senior Care Agencies Get Recommended by AI",
   description:
-    "AI assistants recommend home care agencies that publish their state license number, the exact level of care they provide, who pays for it, and how fast they can start — in plain readable text. Here is the playbook, including the payer page almost no agency has.",
+    "AI recommends agencies that publish their state licence, level of care, who pays and start times in plain text. Plus the payer page nobody has.",
   subtitle:
     "Home care agencies get recommended when the state licence, services offered and coverage area are published, because families filter on exactly those facts.",
   date: "2026-08-24",

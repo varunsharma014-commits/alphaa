@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-hotels-get-recommended-by-ai",
   title: "How Hotels, B&Bs and Short-Term Rentals Get Recommended by AI",
   description:
-    "Travellers now plan trips by asking an AI assistant, and the assistant answers from booking sites, review platforms and travel guides rather than your own website. Here is how hospitality properties get named in those answers, and the specificity problem that keeps most of them out.",
+    "Travellers plan by asking AI, which answers from booking sites and review platforms. How properties get named, and the specificity problem to fix.",
   subtitle:
     "Hotels get recommended when the property is described in specific, matchable terms across the sources assistants actually read, not just on the booking engine.",
   date: "2026-08-06",

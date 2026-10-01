@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-gyms-fitness-studios-get-recommended-by-ai",
   title: "How Gyms and Fitness Studios Get Recommended by AI",
   description:
-    "When someone asks ChatGPT for a gym near them, the answer is decided by class schedules, pricing transparency, review specifics and a claimed profile — not by your website's design. Here is the working playbook for gyms, boutique studios and personal trainers.",
+    "AI recommends the gym it can describe best: class schedule, published pricing, and who the gym is for. The playbook for studios and trainers.",
   subtitle:
     "Gyms get recommended when pricing, the class schedule and who the gym is for are published, because fitness queries are almost always filtered.",
   date: "2026-08-02",

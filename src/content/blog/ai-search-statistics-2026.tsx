@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "ai-search-statistics-2026",
   title: "AI Search Statistics 2026: How Many People Actually Ask AI First",
   description:
-    "The verified numbers on AI search in 2026: roughly two-thirds of Google searches end without a click, 65% of consumers research with AI before buying, and ChatGPT serves 800M+ weekly users. Every figure here is sourced — and we flag the ones that are widely misquoted.",
+    "The verified numbers on AI search in 2026, every figure sourced with its qualifier intact, plus the widely misquoted ones we deliberately flag.",
   subtitle:
     "The verified numbers on how many people now ask AI first, each one quoted with its source and its qualifier intact.",
   date: "2026-07-23",

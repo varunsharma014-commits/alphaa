@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "best-aeo-tools-2026",
   title: "Best AEO Tools in 2026: An Honest Comparison",
   description:
-    "The best AEO tool depends on who you are: agencies and analysts need tracking depth, while local businesses need something that also fixes what it finds. Here's an honest comparison of the AEO tool categories in 2026 and how to choose.",
+    "The best AEO tool depends on who you are: agencies and analysts need tracking depth, while local businesses need something that also fixes what it finds.",
   subtitle:
     "An honest comparison of the AEO tools worth considering in 2026, including where each one is the better choice than Alphaa.",
   date: "2026-07-06",

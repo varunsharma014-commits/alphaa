@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "is-aeo-real",
   title: "Is AEO Real? The Truth About Answer Engine Optimization",
   description:
-    "Yes, AEO is real — it's rooted in how AI assistants actually retrieve and synthesize answers (RAG), not a magic switch. Here's the honest mechanism, what it can and can't do, and how to spot snake oil.",
+    "Yes, AEO is real, because it is rooted in how AI assistants retrieve and synthesise answers. The honest mechanism, its limits, and how to spot hype.",
   subtitle:
     "AEO is real because the retrieval mechanism behind it is real and documented, but it shifts probabilities rather than guaranteeing placement.",
   date: "2026-06-17",

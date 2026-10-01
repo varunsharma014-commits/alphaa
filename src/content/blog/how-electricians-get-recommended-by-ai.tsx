@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-electricians-get-recommended-by-ai",
   title: "How Electricians Get Recommended by AI",
   description:
-    "Homeowners now ask ChatGPT whether a panel upgrade needs a permit, what an EV charger install costs, and who to call. Here is what AI engines can actually read about an electrical contractor, why licence and safety signals decide the shortlist, and the fixes that change the answer.",
+    "Homeowners ask ChatGPT about permits, EV chargers and who to call. Why licence and safety signals decide the shortlist, and the fixes that work.",
   subtitle:
     "Electricians get recommended when the licence number, specialisations, emergency availability and price ranges are published rather than hidden behind a contact form.",
   date: "2026-08-28",

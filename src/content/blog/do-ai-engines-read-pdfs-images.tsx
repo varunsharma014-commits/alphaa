@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "do-ai-engines-read-pdfs-images",
   title: "Do AI Engines Read PDFs, Menus and Images? What Actually Gets Extracted",
   description:
-    "AI assistants read PDFs reasonably well and images barely at all. If your menu, price list, service area or hours only exist inside a JPG or a scanned PDF, the engines answering questions about you are working from an incomplete picture. Here is what gets extracted, what does not, and how to fix it.",
+    "AI assistants read PDFs reasonably well and images barely at all. What gets extracted, what does not, and how to rescue facts trapped inside a JPG.",
   subtitle:
     "PDFs usually get read and images usually do not, so any fact that exists only inside a picture is effectively invisible to AI.",
   date: "2026-08-11",

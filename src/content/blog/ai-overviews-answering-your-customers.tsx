@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "ai-overviews-answering-your-customers",
   title: "AI Overviews Are Answering Your Customers Before They Reach Your Website",
   description:
-    "Google's AI Overviews now answer many commercial searches on the results page itself — often without a click. Here's how they work, why they cut traffic, and how to become the business the overview cites.",
+    "Google's AI Overviews answer commercial searches on the results page, often without a click. How they work, why traffic falls, and how to get cited.",
   subtitle:
     "AI Overviews answer your customer on the results page and cite only a handful of sources, so the goal shifts from ranking to being one of the cited few.",
   date: "2026-07-22",

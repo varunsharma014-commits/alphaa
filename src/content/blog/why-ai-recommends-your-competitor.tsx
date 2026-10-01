@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "why-ai-recommends-your-competitor",
   title: "Why AI Recommends Your Competitor Instead of You",
   description:
-    "If ChatGPT names a competitor and not you, it is rarely because they are better. It is because they are easier to describe. Here is the diff-based diagnostic we run to find the exact missing evidence — and how to close it.",
+    "If AI names a competitor and not you, they are easier to describe, not better. The diff-based diagnostic that finds the exact missing evidence.",
   subtitle:
     "Your competitor is easier to describe, not better, and a thirty-minute evidence diff shows you exactly which facts they publish and you do not.",
   date: "2026-08-03",

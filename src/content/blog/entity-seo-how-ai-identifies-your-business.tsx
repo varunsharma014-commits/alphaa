@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "entity-seo-how-ai-identifies-your-business",
   title: "Entity SEO: How AI Engines Figure Out Who Your Business Is",
   description:
-    "Before an AI engine can recommend you, it has to be sure who you are. Entity SEO is the work of resolving your business into one clear, consistent identity across the web so ChatGPT, Gemini, and Perplexity stop confusing you with someone else. Here is how it works and what to do.",
+    "Before an AI engine recommends you it must be sure who you are. Entity SEO resolves your business into one consistent identity across the whole web.",
   subtitle:
     "Entity SEO is the work of making your business resolve as one specific, well-described thing instead of several weak fragments.",
   date: "2026-07-24",

@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "multi-location-business-ai-visibility",
   title: "How Multi-Location Businesses Get Recommended by AI",
   description:
-    "AI assistants recommend a specific branch, not a brand. Multi-location businesses lose because their locations are interchangeable to a model — same page template, same copy, no distinguishing facts. Here's how to make each location its own retrievable entity.",
+    "AI recommends a branch, not a brand. Why interchangeable location pages lose, and how to make each location its own retrievable, distinct entity.",
   subtitle:
     "Multi-location brands get recommended when every location has its own complete, distinct and consistent record rather than one shared page.",
   date: "2026-08-01",

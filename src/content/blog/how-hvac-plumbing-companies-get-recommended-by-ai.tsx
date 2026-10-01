@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-hvac-plumbing-companies-get-recommended-by-ai",
   title: "How HVAC & Plumbing Companies Get Recommended by AI",
   description:
-    "When a homeowner asks ChatGPT or Google AI for a good plumber or HVAC company nearby, the answer comes from your Google Business Profile, reviews, and clear service pages — not from ads. Here is the honest playbook for the trades.",
+    "When a homeowner asks AI for a good plumber or HVAC company, the answer comes from your profile, reviews and service pages. The trades playbook.",
   subtitle:
     "HVAC and plumbing companies get recommended when service area, emergency hours and call-out pricing are published and consistent everywhere AI looks.",
   date: "2026-07-15",

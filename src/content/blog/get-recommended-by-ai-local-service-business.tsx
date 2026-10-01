@@ -6,7 +6,7 @@ export const meta: PostMeta = {
   title:
     "How Local Service Businesses Get Recommended by AI (Dentists, Clinics, Contractors & More)",
   description:
-    "When someone asks ChatGPT for the best dentist, plumber, or clinic nearby, AI leans on your Google Business Profile, reviews, and consistent local citations. Here is the practical playbook to become the business it names.",
+    "When someone asks ChatGPT for the best dentist, plumber, or clinic nearby, AI leans on your Google Business Profile, reviews, and consistent local citations.",
   subtitle:
     "Local service recommendations come from your profile, your reviews and third-party listings, so completeness and consistency beat website design.",
   date: "2026-06-17",

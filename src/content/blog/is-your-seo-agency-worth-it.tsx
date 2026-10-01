@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "is-your-seo-agency-worth-it",
   title: "Is Your SEO Agency Worth It? A 10-Minute Audit You Can Run Yourself",
   description:
-    "A practical 10-minute audit to judge whether your SEO agency is earning its retainer — six checks you can run without any tools, what a good answer looks like, and the questions that separate real work from busywork.",
+    "A ten-minute audit to judge whether your SEO agency earns its retainer: six checks you can run with no tools, and what a good answer looks like.",
   subtitle:
     "A worthwhile agency can show you work that changed something on your site or your public profiles, and this audit takes about ten minutes to run.",
   date: "2026-07-21",

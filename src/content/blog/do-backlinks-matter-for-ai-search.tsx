@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "do-backlinks-matter-for-ai-search",
   title: "Do Backlinks Still Matter for AI Search?",
   description:
-    "Backlinks still matter for AI search, but indirectly and less than they did for Google rankings. What AI engines actually reward is being mentioned and described by credible third parties — with or without a link. Here's the mechanism, and what to build instead of a link-buying budget.",
+    "Backlinks still matter for AI search, but indirectly. What engines actually reward is being described by credible third parties, with or without a link.",
   subtitle:
     "Backlinks still matter indirectly, by shaping what ranks and gets retrieved, but the words around the link often do more work than the link itself.",
   date: "2026-08-01",

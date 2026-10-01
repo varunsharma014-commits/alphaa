@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-cleaning-companies-get-recommended-by-ai",
   title: "How Cleaning Companies Get Recommended by AI",
   description:
-    "Homeowners and office managers now ask ChatGPT and Gemini which cleaning company to hire. Here is what those engines can actually read about a maid service or janitorial contractor, why most get skipped, and the specific fixes that change the answer.",
+    "Homeowners now ask ChatGPT which cleaner to hire. What engines can read about a maid or janitorial service, why most get skipped, and the fixes.",
   subtitle:
     "Cleaning companies get recommended when their service list, pricing model, insurance status and coverage area are published in plain text an engine can fetch.",
   date: "2026-08-27",

@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "ai-recommendations-for-restaurants",
   title: "How Restaurants Get Recommended by AI (ChatGPT, Google AI & More)",
   description:
-    "When diners ask ChatGPT or Google AI for the best spot near them, AI leans on your Google Business Profile, reviews, menu details, and consistent listings. Here is the restaurant playbook to become the place it names.",
+    "When diners ask ChatGPT or Google AI for the best spot near them, AI leans on your Google Business Profile, reviews, menu details, and consistent listings.",
   subtitle:
     "AI assembles restaurant recommendations from your menu, hours, reviews and third-party roundups, so the specifics you publish decide whether you can be matched.",
   date: "2026-06-17",

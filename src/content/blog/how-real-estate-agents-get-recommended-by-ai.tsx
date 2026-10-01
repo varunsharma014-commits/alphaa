@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-real-estate-agents-get-recommended-by-ai",
   title: "How Real Estate Agents Get Recommended by AI",
   description:
-    "When a buyer or seller asks ChatGPT for a good agent in their area, the answer is built from your reviews, your sold listings, and consistent profiles across Zillow, Google, and your site — not from ads. Here is the honest playbook to become the agent AI names.",
+    "When a buyer asks ChatGPT for a good agent nearby, the answer comes from reviews, sold listings and consistent profiles, not ads. The playbook.",
   subtitle:
     "Agents get recommended when the public record of their work, their areas and their specialisms is complete and consistent across every profile.",
   date: "2026-07-24",

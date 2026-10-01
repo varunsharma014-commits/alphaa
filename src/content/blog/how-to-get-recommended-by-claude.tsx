@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-to-get-recommended-by-claude",
   title: "How to Get Your Business Recommended by Claude",
   description:
-    "Claude answers from what it learned in training plus what it retrieves through web search — so getting recommended means being a clearly described, well-corroborated business that Claude can find and cite with confidence. Here is the practical playbook.",
+    "Claude answers from training plus web retrieval, so recommendation means being clearly described and well corroborated. The practical playbook.",
   subtitle:
     "Claude leans on clearly written, well-structured sources and reads llms.txt, so clarity and consistency matter more than volume.",
   date: "2026-07-26",

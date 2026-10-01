@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "do-social-media-profiles-affect-ai-search",
   title: "Do Social Media Profiles Affect AI Recommendations? What Instagram, Facebook and LinkedIn Actually Contribute",
   description:
-    "Social profiles influence AI recommendations indirectly — as entity confirmation and as text an engine can read — not as a popularity score. Here is which parts of a profile actually get crawled, which posts are effectively invisible, and how to make your accounts earn their keep.",
+    "Social profiles influence AI recommendations indirectly — as entity confirmation and as text an engine can read — not as a popularity score.",
   subtitle:
     "Social profiles contribute as entity corroboration rather than as content, so consistent names, bios and links matter more than your posting cadence.",
   date: "2026-08-17",

@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "press-releases-news-coverage-ai-visibility",
   title: "Do Press Releases and News Coverage Help Your AI Visibility?",
   description:
-    "Paid press release distribution does almost nothing for AI visibility. Genuine editorial coverage does a lot. Here is the difference an AI engine can actually detect, why syndicated wire copy gets discounted, and how to earn the kind of mention that gets quoted back to your customers.",
+    "Paid wire distribution does little for AI visibility; real editorial coverage does a lot. The difference engines detect, and how to earn a mention.",
   subtitle:
     "Press coverage helps when a real publication describes you in text that gets indexed, while paid wire distribution mostly does not.",
   date: "2026-08-06",

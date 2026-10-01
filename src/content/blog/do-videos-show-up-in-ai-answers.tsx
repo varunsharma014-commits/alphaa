@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "do-videos-show-up-in-ai-answers",
   title: "Do YouTube Videos Show Up in AI Answers? What Engines Actually Read",
   description:
-    "AI assistants can and do cite video — but almost never by watching it. They read the text attached to it: the title, the description, the transcript and the pages that quote it. Here is what each engine does, and how to make a video citable.",
+    "AI assistants do cite video, but almost never by watching it. They read the title, description and transcript. How to make a video genuinely citable.",
   subtitle:
     "Engines read your title, description and transcript rather than watching the video, which makes an unindexed transcript a missed citation.",
   date: "2026-08-07",

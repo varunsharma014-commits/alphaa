@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "what-is-answer-engine-optimization",
   title: "What Is AEO (Answer Engine Optimization)? A Plain-English Guide",
   description:
-    "AEO is optimizing your content and signals so AI answer engines like ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews discover, cite, and recommend you. Here is how it works and how to get started.",
+    "AEO is optimising your content and signals so AI answer engines discover, cite and recommend you. How it works, and how to get started this week.",
   subtitle:
     "AEO is the practice of making your business easy for AI answer engines to find, verify and cite when someone asks a question in your category.",
   date: "2026-06-17",
@@ -21,13 +21,18 @@ export const meta: PostMeta = {
     "The core levers are answer-first content, accurate schema, consistency, reviews, freshness, open crawler access and an llms.txt file.",
     "Local businesses, service providers and SaaS, and anyone who sells on trust and being chosen need AEO.",
   ],
+  sources: [
+    { title: "AI Features and Your Website", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/ai-features" },
+    { title: "Overview of OpenAI Crawlers", publisher: "OpenAI", url: "https://platform.openai.com/docs/bots" },
+    { title: "Creating Helpful, Reliable, People-First Content", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content" },
+  ],
 }
 
 export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Answer Engine Optimization (AEO)</strong> is the practice of optimizing your content and online
+        <strong>Short answer:</strong> Answer Engine Optimization (AEO) is the practice of optimizing your content and online
         signals so that AI answer engines — ChatGPT, Claude, Gemini, Perplexity, and Google&apos;s AI Overviews —
         discover your business, cite it, and recommend it when someone asks a relevant question. It does not change
         anything inside an AI model. Instead, it improves the public information those models read about you,

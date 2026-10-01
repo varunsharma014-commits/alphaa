@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "schema-markup-for-ai-search",
   title: "Schema Markup for AI Search: A Practical Guide (With Examples)",
   description:
-    "What schema markup (JSON-LD) is, why it matters for AI search, and copy-paste examples for LocalBusiness, FAQPage, and Organization — plus where to place and how to validate it.",
+    "What JSON-LD schema is, why it matters for AI search, and copy-paste examples for LocalBusiness, FAQPage and Organization, plus how to validate it.",
   subtitle:
     "Schema gives engines typed facts instead of guessed ones, and a handful of types do almost all the useful work.",
   date: "2026-06-17",

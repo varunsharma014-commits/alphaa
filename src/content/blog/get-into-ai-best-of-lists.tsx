@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "get-into-ai-best-of-lists",
   title: "How to Get Into the \"Best Of\" Lists AI Recommends From",
   description:
-    "When ChatGPT names the best plumber, dentist or CRM, it is usually paraphrasing a third-party roundup rather than judging your website. Here is how those lists get built, how to get considered for them legitimately, and what never works.",
+    "When ChatGPT names the best plumber or CRM it is usually paraphrasing a third-party roundup. How those lists get built, and how to be considered.",
   subtitle:
     "Assistants usually borrow their shortlist from third-party roundups, which makes getting onto those lists more valuable than improving your own page.",
   date: "2026-08-02",

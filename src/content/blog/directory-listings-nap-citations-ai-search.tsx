@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "directory-listings-nap-citations-ai-search",
   title: "Do Yelp, BBB and Angi Still Matter? How Directory Listings Shape AI Recommendations",
   description:
-    "Directories are no longer traffic sources — they are corroboration sources. AI assistants use Yelp, BBB, Angi and industry directories to verify that your business is real and that your facts agree. Here is which listings matter, and how to fix the ones that contradict you.",
+    "Directories are corroboration sources now, not traffic sources. Which listings AI assistants check, and how to fix the ones that contradict your site.",
   subtitle:
     "Directories matter less as traffic and more as corroboration, because consistent listings are what let an assistant state your details confidently.",
   date: "2026-08-10",

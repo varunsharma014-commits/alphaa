@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-to-track-ai-traffic-google-analytics",
   title: "How to Track Traffic from ChatGPT, Perplexity and Gemini in Google Analytics",
   description:
-    "AI assistants send real referral traffic, but GA4 buries it inside Referral and Direct by default. Here is how to build a reliable AI channel in GA4, what the numbers do and do not tell you, and why the biggest share of AI influence never shows up as a visit at all.",
+    "AI assistants send real referral traffic, but GA4 hides it in Referral and Direct. How to build a reliable AI channel, and what it cannot tell you.",
   subtitle:
     "AI assistants do send referral traffic, and you can isolate it in GA4 by filtering session source for the assistant hostnames.",
   date: "2026-07-27",

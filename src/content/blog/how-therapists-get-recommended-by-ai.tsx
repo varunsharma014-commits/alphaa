@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-therapists-get-recommended-by-ai",
   title: "How Therapists and Mental Health Practices Get Recommended by AI",
   description:
-    "AI assistants answer \"find me a therapist\" mostly from directory profiles, insurance and licence records — rarely from a practice website. Here is how therapists become the named recommendation without review-farming, false claims, or crossing an ethics line.",
+    "AI assistants answer \"find me a therapist\" mostly from directory profiles, insurance and licence records — rarely from a practice website.",
   subtitle:
     "Therapists get recommended when who they treat, their modalities, licensure and fees are stated plainly, which is also what clients filter on.",
   date: "2026-08-08",

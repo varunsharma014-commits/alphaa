@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-wedding-vendors-get-recommended-by-ai",
   title: "How Wedding Venues, Photographers and Planners Get Recommended by AI",
   description:
-    "Couples now ask ChatGPT for shortlists before they open The Knot. AI assistants answer from marketplace profiles, capacity and pricing facts, and real reviews — here is how wedding vendors become the named recommendation.",
+    "Couples ask ChatGPT for shortlists before they open The Knot. Engines answer from marketplace profiles, capacity, pricing and real reviews, not ads.",
   subtitle:
     "Wedding vendors get recommended when the four facts couples filter on, price range, capacity, style and availability, are published as readable text.",
   date: "2026-08-09",

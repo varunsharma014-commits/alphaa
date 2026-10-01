@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "ai-crawlers-robots-txt-guide",
   title: "Which AI Crawlers Should You Allow? A robots.txt Guide to GPTBot, ClaudeBot and PerplexityBot",
   description:
-    "AI companies run two different kinds of bots: training crawlers that feed the models, and retrieval agents that fetch your pages to answer a question right now. Blocking the wrong one quietly removes you from AI answers. Here is what each user agent does and how to configure robots.txt deliberately.",
+    "AI companies run two different kinds of bots: training crawlers that feed the models, and retrieval agents that fetch your pages to answer a question right now.",
   subtitle:
     "Block the training crawlers if you want, but allow the retrieval agents that fetch pages to answer live questions, because those are what put you in AI answers.",
   date: "2026-07-27",

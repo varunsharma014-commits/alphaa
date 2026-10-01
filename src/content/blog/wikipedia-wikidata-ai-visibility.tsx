@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "wikipedia-wikidata-ai-visibility",
   title: "Do Wikipedia and Wikidata Affect Your AI Visibility?",
   description:
-    "Wikipedia and Wikidata are unusually influential sources for AI assistants — but most businesses do not qualify for either, and trying to force it backfires. Here is what each one actually does, who realistically qualifies, and the substitutes that work for everyone else.",
+    "Wikipedia and Wikidata are unusually influential sources for AI assistants — but most businesses do not qualify for either, and trying to force it backfires.",
   subtitle:
     "Wikipedia and Wikidata carry outsized weight because both are heavily represented in training data and widely mirrored, but notability rules gate entry.",
   date: "2026-08-03",

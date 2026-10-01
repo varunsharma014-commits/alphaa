@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "content-freshness-ai-search",
   title: "Does Content Freshness Matter for AI Search? How Often to Update Your Pages",
   description:
-    "Freshness matters to AI engines, but not the way SEO folklore suggests — it is about retrievability and verifiable dates, not edit frequency. Here is which pages actually decay, how often to update each type, and why changing a date without changing the content does nothing.",
+    "Freshness matters to AI engines, but not the way SEO folklore suggests — it is about retrievability and verifiable dates, not edit frequency.",
   subtitle:
     "Freshness matters most where facts change, so update the pages carrying prices, hours and claims rather than rewriting everything on a schedule.",
   date: "2026-08-05",

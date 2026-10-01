@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "alphaa-vs-seo-agencies",
   title: "Alphaa vs. a Traditional SEO Agency: What $2,000 a Month Buys in 2026 (and What It Doesn't)",
   description:
-    "A candid comparison for dentists, plumbers, lawyers and med spas deciding between a roughly $2,000/month SEO agency retainer and Alphaa — cost, contracts, who does the work, Google links vs. AI answers, and when an agency is still the right call.",
+    "A candid comparison for dentists, plumbers and lawyers choosing between a $2,000 monthly SEO retainer and Alphaa, including when an agency still wins.",
   subtitle:
     "A $2,000 retainer buys human strategy and slow manual execution, while Alphaa buys continuous monitoring and automated fixes for a fraction of the price.",
   date: "2026-09-25",

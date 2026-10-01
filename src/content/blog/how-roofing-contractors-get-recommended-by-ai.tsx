@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-roofing-contractors-get-recommended-by-ai",
   title: "How Roofing Contractors Get Recommended by AI (Storm Season Included)",
   description:
-    "Homeowners now ask ChatGPT who to call after a hailstorm and whether a roofer is legitimate. AI assistants answer from licence records, insurance-claim language, warranty terms and reviews — here is how roofing contractors become the named recommendation.",
+    "Homeowners ask AI who to call after a hailstorm. Engines answer from licence records, claim language, warranty terms and reviews. The playbook.",
   subtitle:
     "Roofers get recommended when licence and insurance proof, materials handled and storm response are retrievable in plain text rather than promised on a call.",
   date: "2026-08-10",

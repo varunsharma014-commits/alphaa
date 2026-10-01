@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-landscaping-lawn-care-get-recommended-by-ai",
   title: "How Landscaping and Lawn Care Companies Get Recommended by AI",
   description:
-    "AI assistants recommend landscaping and lawn care companies that publish what they actually do, where, in which season, and at roughly what price — and whose reviews and listings agree. Here is the seasonal, service-area playbook that gets a green-industry business named in AI answers.",
+    "AI recommends landscapers that publish what they do, where, in which season and at what price. The seasonal, service-area playbook that works.",
   subtitle:
     "Landscaping companies get recommended when services, seasonal scope and service area are published as text rather than implied by a photo gallery.",
   date: "2026-08-22",

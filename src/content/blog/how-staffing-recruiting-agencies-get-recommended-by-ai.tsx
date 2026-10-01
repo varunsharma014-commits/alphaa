@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-staffing-recruiting-agencies-get-recommended-by-ai",
   title: "How Staffing and Recruiting Agencies Get Recommended by AI",
   description:
-    "AI assistants recommend staffing firms that state a specific niche, publish verifiable placement details, and appear consistently across Google Business Profile, Clutch, LinkedIn and industry directories. Here is the playbook for recruiters, including the two-sided problem no other vertical has.",
+    "AI recommends staffing firms with a specific niche, verifiable placements and consistent profiles. Plus the two-sided problem no other vertical has.",
   subtitle:
     "Staffing agencies get recommended when they are unambiguously specific about a niche, the roles they place and the markets they cover.",
   date: "2026-08-20",

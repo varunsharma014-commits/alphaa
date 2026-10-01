@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "alphaa-vs-brightlocal",
   title: "Alphaa vs. BrightLocal: From Local SEO Tools to an AI Agent",
   description:
-    "An honest comparison of BrightLocal and Alphaa for local business owners and small SEO agencies: a local SEO toolkit you operate versus an AI agent that does the work to get you named in AI answers.",
+    "An honest comparison for local owners and small agencies: a local SEO toolkit you operate yourself versus an AI agent that does the work to get you named.",
   subtitle:
     "BrightLocal reports on local SEO for you to act on, while Alphaa monitors what AI assistants say and writes the fixes itself with your approval.",
   date: "2026-09-25",

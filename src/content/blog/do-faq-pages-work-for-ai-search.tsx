@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "do-faq-pages-work-for-ai-search",
   title: "Do FAQ Pages Still Work for AI Search?",
   description:
-    "Google deprecated FAQ rich results in 2023, so most SEO advice now says skip them. For AI search the calculus is different: the Q&A format is the closest thing on the web to a pre-extracted answer. Here is what still works, what never did, and how to write one an engine will quote.",
+    "Google dropped FAQ rich results, but for AI search the Q&A format is the closest thing to a pre-extracted answer. What works, and how to write one.",
   subtitle:
     "FAQ pages still work, but for a different reason than before: Google dropped FAQ rich results while AI engines lift question and answer pairs almost verbatim.",
   date: "2026-08-28",

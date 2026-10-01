@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "comparison-pages-ai-search",
   title: "Do Comparison Pages Help You Get Recommended by AI?",
   description:
-    "Yes — comparison pages are one of the highest-leverage assets in AI search, because \"X vs Y\" is how buyers actually decide. But only fair, specific ones get cited. Here is how AI engines read comparison content and how to write one worth quoting.",
+    "Comparison pages are among the highest-leverage assets in AI search, because X vs Y is how buyers decide. How engines read them, and how to write one.",
   subtitle:
     "Yes, because comparison is the exact shape of the question people bring to AI, and a fair comparison page is unusually easy to retrieve and quote.",
   date: "2026-08-19",

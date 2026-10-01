@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "google-reviews-ai-visibility",
   title: "Why Your Google Reviews Now Decide Your AI Visibility",
   description:
-    "Do Google reviews affect ChatGPT recommendations? Yes — reviews are one of the most-read third-party signals AI engines use to decide who to name. Here's the honest mechanism, and how to strengthen it.",
+    "Do Google reviews affect ChatGPT recommendations? Yes — reviews are one of the most-read third-party signals AI engines use to decide who to name.",
   subtitle:
     "Reviews now act as the evidence layer behind AI recommendations, and specific review text matters considerably more than your star average.",
   date: "2026-07-22",

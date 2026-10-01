@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "chatgpt-vs-gemini-vs-perplexity-local-search",
   title: "ChatGPT vs. Gemini vs. Perplexity (and Claude): How Each Picks Local Businesses in 2026",
   description:
-    "Where ChatGPT, Gemini, Perplexity and Claude get their local business recommendations, which crawlers to allow, and what a dentist, plumber or restaurant should prioritise for each, based only on what the companies and published studies actually say.",
+    "Where ChatGPT, Gemini, Perplexity and Claude get local recommendations, which crawlers to allow, and what to prioritise for each, based on published facts.",
   subtitle:
     "Each assistant picks local businesses from a different source mix, which is why being strong in one does not carry over to the others.",
   date: "2026-09-25",

@@ -5,7 +5,7 @@ export const meta: PostMeta = {
   slug: "how-insurance-agencies-get-recommended-by-ai",
   title: "How Insurance Agencies and Brokers Get Recommended by AI",
   description:
-    "When someone asks ChatGPT for an agent who writes contractor general liability in Georgia, the engines answer from what agencies have published. Here is what actually decides whether an insurance agency or broker gets named.",
+    "When someone asks ChatGPT for an agent who writes contractor general liability in Georgia, the engines answer from what agencies have published.",
   subtitle:
     "Agencies and brokers get recommended when the lines they write, the carriers they represent and the states they are licensed in are all in readable text.",
   date: "2026-08-19",
