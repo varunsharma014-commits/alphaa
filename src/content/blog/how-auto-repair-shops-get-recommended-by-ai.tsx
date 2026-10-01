@@ -192,6 +192,32 @@ export function Body() {
         the hype.
       </p>
 
+      <h2>What else do repair shops ask about AI visibility?</h2>
+
+      <h3>Should I publish a diagnostic fee if competitors hide theirs?</h3>
+      <p>
+        Yes. A published fee makes you matchable against price-qualified questions, and hiding it mostly removes
+        you from the shortlist rather than protecting your margin.
+      </p>
+
+      <h3>Do manufacturer certifications actually help?</h3>
+      <p>
+        They do, when they are stated in text rather than shown as a logo. An assistant cannot read a badge
+        image, so name the certification and the makes it covers.
+      </p>
+
+      <h3>What if I specialise in one make?</h3>
+      <p>
+        Say so explicitly and prominently. Specialist queries are common and easy to win, because a shop that
+        names the make is far easier to match than a general garage.
+      </p>
+
+      <h3>Does my shop need a blog?</h3>
+      <p>
+        No. A clear services page, an honest pricing page and specific reviews do far more than a blog, and thin
+        posts add nothing an assistant can use.
+      </p>
+
       <h2>What wins AI recommendations for auto repair shops?</h2>
       <p>
         Specific, consistent facts win them. Auto repair shops lose AI recommendations to vagueness far more often than to competition. Say which

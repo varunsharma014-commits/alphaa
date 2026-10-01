@@ -217,6 +217,32 @@ export function Body() {
         <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> covers the wider market.
       </p>
 
+      <h2>What else do people ask about Alphaa vs BrightLocal?</h2>
+
+      <h3>Can I migrate from BrightLocal to Alphaa without losing history?</h3>
+      <p>
+        Your rankings history lives in BrightLocal and does not transfer, so export anything you want to keep
+        first. Alphaa starts its own baseline from your first scan.
+      </p>
+
+      <h3>Does Alphaa replace rank tracking entirely?</h3>
+      <p>
+        Not entirely. Alphaa focuses on what AI assistants say about you, so if classic local rank tracking is a
+        reporting requirement, keep a tool that does it or run both.
+      </p>
+
+      <h3>Which is better for an agency managing many clients?</h3>
+      <p>
+        BrightLocal is built around multi-client reporting, which Alphaa is not. Agencies that need white-label
+        client reports usually keep it and use Alphaa for the AI-answer side.
+      </p>
+
+      <h3>Do both tools need access to my Google Business Profile?</h3>
+      <p>
+        Both work better with it connected, because the profile is the single richest source of the facts
+        assistants and local search rely on.
+      </p>
+
       <h2>How should you choose between Alphaa and BrightLocal?</h2>
       <p>
         Choose BrightLocal if you or your agency have time to run local SEO software and want deep control of

@@ -110,7 +110,33 @@ export function Body() {
         promise a specific result. </li> <li> <strong>Keyword stuffing and fake reviews.</strong> These corrupt
         the very consensus you&apos;re trying to build and can get you penalized or excluded. </li> <li>
         <strong>Prompt-injection tricks</strong> — hidden text telling the AI to recommend you. Engines filter
-        these, and getting caught damages trust. </li> </ul> <h2>So how do you get recommended by ChatGPT?</h2>
+        these, and getting caught damages trust. </li> </ul>      <h2>What else do people ask about getting recommended by ChatGPT?</h2>
+
+      <h3>Does ChatGPT use my Google Business Profile?</h3>
+      <p>
+        Not directly, but the profile is the most widely copied description of your business online, so its
+        facts reach ChatGPT through the sources it does read.
+      </p>
+
+      <h3>Do I need to allow OAI-SearchBot?</h3>
+      <p>
+        Yes, if you want to appear in ChatGPT search results. It is the retrieval agent, and it is separate from
+        GPTBot, which collects training data.
+      </p>
+
+      <h3>Does ChatGPT memory affect what it says about me?</h3>
+      <p>
+        Only for that one user. Personalised context can change an individual answer, which is why you should
+        always test in a fresh session with memory off.
+      </p>
+
+      <h3>Why does ChatGPT sometimes invent details about my business?</h3>
+      <p>
+        Because it is filling gaps from a thin or contradictory source base. Publishing the fact clearly and
+        getting it corroborated is the practical fix.
+      </p>
+
+ <h2>So how do you get recommended by ChatGPT?</h2>
         <p> Getting recommended by ChatGPT isn&apos;t about hacking the model — it&apos;s about making the truth
         about your business easy to find, consistent, and well-reviewed across the web. Nail consistency,
         reviews, answer-first content, accurate schema, third-party mentions, and crawlability, and you&apos;ll

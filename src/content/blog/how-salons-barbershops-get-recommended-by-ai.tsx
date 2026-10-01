@@ -201,6 +201,32 @@ export function Body() {
         </li>
       </ul>
 
+      <h2>What else do salon owners ask about AI visibility?</h2>
+
+      <h3>Does my service menu need prices?</h3>
+      <p>
+        Yes, at least as ranges per service. Price and service are the two filters in almost every salon query,
+        and an image-only menu answers neither.
+      </p>
+
+      <h3>How do I get found for a speciality like curly or textured hair?</h3>
+      <p>
+        Name it in plain text on the services page and encourage reviews that mention it. Specialist queries are
+        common and the easiest ones to win.
+      </p>
+
+      <h3>Does a booking platform profile count?</h3>
+      <p>
+        Yes, as corroboration, provided the name, address and service list match your own site. Contradictory
+        details make an assistant hedge instead of recommending you.
+      </p>
+
+      <h3>Is Instagram enough on its own?</h3>
+      <p>
+        Rarely. Engines read the bio and captions rather than the images, so a profile helps as an entity signal
+        but cannot carry your prices or services.
+      </p>
+
       <h2>Does this guarantee AI will recommend my salon?</h2>
       <p>
         No, none of this guarantees you get recommended, and anyone selling you a guaranteed spot in an AI answer

@@ -175,6 +175,33 @@ export function Body() {
         <li><strong>Your own site:</strong> keep positioning and pricing current so you don&apos;t contradict the third-party record.</li>
       </ul>
 
+      <h2>What else do SaaS founders ask about AEO?</h2>
+
+      <h3>Does my SaaS need a G2 profile to get recommended?</h3>
+      <p>
+        It is not strictly required, but review platforms are among the most heavily weighted sources for
+        software questions, so a claimed profile with recent reviews is usually the highest-leverage single
+        step.
+      </p>
+
+      <h3>Should I write comparison pages against competitors?</h3>
+      <p>
+        Yes, provided they are genuinely fair. Honest comparisons get cited because they read as trustworthy,
+        while a page where you win every row reads as marketing and gets discounted.
+      </p>
+
+      <h3>Does this work for a pre-launch or very new product?</h3>
+      <p>
+        Partially. You can establish a clear entity, documentation and category pages immediately, but
+        third-party corroboration takes time, so expect to be retrievable well before you are recommended.
+      </p>
+
+      <h3>Is local AEO advice useless for SaaS?</h3>
+      <p>
+        Mostly. Geography barely features in software queries, so Business Profile and map listings matter far
+        less than reviews, documentation and comparison content.
+      </p>
+
       <h2>What results can you realistically expect from SaaS AEO?</h2>
       <p>
         None of this edits the model. AEO shapes the <em>public signals</em> AI reads, and engines change how

@@ -234,6 +234,32 @@ export function Body() {
         <Link href="/pricing">pricing page</Link>.
       </p>
 
+      <h2>What else do owners ask about replacing an SEO agency?</h2>
+
+      <h3>Is a cheaper tool really comparable to a human strategist?</h3>
+      <p>
+        Not for strategy. A tool executes defined work continuously and cheaply; an agency brings judgement,
+        negotiation and bespoke campaigns. The question is which you are actually paying for.
+      </p>
+
+      <h3>What should I ask an agency before renewing?</h3>
+      <p>
+        Ask what shipped last month, which number moved because of it, and whether they measure what AI
+        assistants say about you. Vague answers to all three are the signal.
+      </p>
+
+      <h3>Can I use both an agency and Alphaa?</h3>
+      <p>
+        Yes, and it is common. Agencies tend to focus on content and links while Alphaa handles the monitoring
+        and the mechanical fixes, so the overlap is smaller than it looks.
+      </p>
+
+      <h3>Does switching risk losing existing rankings?</h3>
+      <p>
+        Not inherently, as long as nobody removes existing pages or redirects. Rankings respond to the signals
+        on your site, not to who is paying the invoice.
+      </p>
+
       <h2>How should I decide between my SEO agency and Alphaa?</h2>
       <p>
         Decide by checking one thing first: when a customer asks ChatGPT, Gemini, Claude or Perplexity for a

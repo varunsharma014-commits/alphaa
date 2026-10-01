@@ -220,6 +220,33 @@ export function Body() {
         .
       </p>
 
+      <h2>What else do owners ask about fixing wrong AI information?</h2>
+
+      <h3>Can I contact OpenAI or Google to correct a fact?</h3>
+      <p>
+        There is no general correction channel for business facts. Google Business Profile has its own edit and
+        redressal routes for its data, but the assistants themselves take corrections only by re-reading public
+        sources.
+      </p>
+
+      <h3>What if a competitor is spreading the wrong information?</h3>
+      <p>
+        Treat it as a source problem. Correct the record where you can, publish the accurate fact clearly on
+        your own site, and get it corroborated elsewhere so the consensus moves.
+      </p>
+
+      <h3>Does the wrong answer disappear everywhere at once?</h3>
+      <p>
+        No. Retrieval-driven errors clear within days to weeks once the sources change, while anything baked
+        into training knowledge persists until the model is updated.
+      </p>
+
+      <h3>Do I need to ask for the old page to be removed?</h3>
+      <p>
+        Where you control it, yes, and redirect it. A contradicting page that stays live keeps feeding the
+        engine the fact you are trying to correct.
+      </p>
+
       <h2>What actually fixes a wrong AI answer?</h2>
       <p>
         Fixing the source does, because a wrong AI answer is almost always a wrong source, not a broken model. Diagnose which source, fix it at

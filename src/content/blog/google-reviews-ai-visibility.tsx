@@ -181,24 +181,28 @@ export function Body() {
       <p>
         The common questions are whether Google reviews affect ChatGPT, whether rating or count matters more, whether other review sites count, and how fast new reviews make a difference.
       </p>
+      <h3>Do Google reviews directly affect ChatGPT recommendations?</h3>
       <p>
-        <strong>Do Google reviews directly affect ChatGPT recommendations?</strong> Indirectly but meaningfully.
+        Indirectly but meaningfully.
         ChatGPT and other assistants retrieve and read the sources where your reviews live. Strong, specific,
         recent reviews give the model verifiable evidence to name you; a thin or stale profile gives it little to
         work with.
       </p>
+      <h3>Is star rating or review count more important?</h3>
       <p>
-        <strong>Is star rating or review count more important?</strong> Neither alone — models read them together
+        Neither alone — models read them together
         with recency and wording. A solid rating across a healthy volume of recent, specific reviews beats a
         perfect score on a tiny, old sample.
       </p>
+      <h3>Do reviews on Yelp and other sites matter, or only Google?</h3>
       <p>
-        <strong>Do reviews on Yelp and other sites matter, or only Google?</strong> Google Business Profile
+        Google Business Profile
         carries the most weight for local queries, but consistency across Yelp and reputable industry directories
         reinforces the same consensus. Matching details everywhere matters as much as the reviews themselves.
       </p>
+      <h3>How fast do new reviews change AI visibility?</h3>
       <p>
-        <strong>How fast do new reviews change AI visibility?</strong> There&apos;s no fixed timeline. Because
+        There&apos;s no fixed timeline. Because
         engines retrieve live and re-crawl on their own schedules, effects show up gradually as your improved
         profile gets read and re-read. Anyone promising an overnight change isn&apos;t being straight with you.
       </p>

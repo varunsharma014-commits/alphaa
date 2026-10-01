@@ -209,6 +209,12 @@ export function Body() {
         <Link href="/blog/is-aeo-real">is AEO real</Link> for the honest limits.
       </p>
 
+      <h3>Should I publish session fees?</h3>
+      <p>
+        Yes, as a clear figure or range, plus whether you take insurance or offer sliding scale. Cost and
+        coverage are the two filters in nearly every query of this kind.
+      </p>
+
       <h2>So how do therapists get recommended by AI?</h2>
       <p>
         Therapists lose AI recommendations to vagueness, not to competition. Say which modalities you practise,

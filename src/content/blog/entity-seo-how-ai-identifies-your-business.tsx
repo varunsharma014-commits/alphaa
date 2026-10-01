@@ -223,6 +223,12 @@ export function Body() {
         engine&apos;s confidence that it knows who you are.
       </p>
 
+      <h3>Does changing my business name break my entity?</h3>
+      <p>
+        It can, temporarily. Update every profile in the same pass and keep the old name visible as a former
+        name, so sources agree rather than describing two different businesses.
+      </p>
+
       <h2>Why does entity SEO matter for AI recommendations?</h2>
       <p>
         Before an AI engine can recommend your business, it has to be sure who your business is. Entity SEO is

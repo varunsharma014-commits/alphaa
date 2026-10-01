@@ -215,6 +215,12 @@ export function Body() {
         <Link href="/blog/why-ai-answers-change-every-time">why AI answers change every time</Link>.
       </p>
 
+      <h3>Does a service department need its own page?</h3>
+      <p>
+        Yes, with its own hours, services and pricing. Service queries are separate from sales queries, and a
+        dealership that only publishes sales information cannot answer them.
+      </p>
+
       <h2>Why is dealership AI visibility so winnable?</h2>
       <p>
         Dealership AI visibility is unusually winnable because the category&apos;s biggest problem is technical

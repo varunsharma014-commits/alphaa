@@ -207,6 +207,32 @@ export function Body() {
         <Link href="/blog/is-aeo-real">is AEO real</Link>.
       </p>
 
+      <h2>What else do insurance agencies ask about AI visibility?</h2>
+
+      <h3>Should I name the carriers I represent?</h3>
+      <p>
+        Yes, where your contracts allow. Carrier names are a common filter and are among the few checkable facts
+        that distinguish one independent agency from another.
+      </p>
+
+      <h3>Do I need a page for each line of insurance?</h3>
+      <p>
+        For each line you actually want enquiries in, yes. A single page listing every product cannot answer a
+        question about one of them specifically.
+      </p>
+
+      <h3>How should I handle multi-state licensing?</h3>
+      <p>
+        State the licensed states explicitly in text, and keep the list current. Assistants are cautious about
+        regulated advice and will skip an agency whose jurisdiction is unclear.
+      </p>
+
+      <h3>Does compliance stop me publishing useful detail?</h3>
+      <p>
+        Rarely as much as people assume. Describing coverages, carriers and process is generally fine; it is
+        outcome and savings claims that need care.
+      </p>
+
       <h2>Where should an insurance agency start this week?</h2>
       <p>
         Start by publishing your appetite, listing your licensed states in text, building two niche pages, making

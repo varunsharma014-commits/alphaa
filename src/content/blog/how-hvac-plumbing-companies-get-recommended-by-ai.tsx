@@ -176,6 +176,32 @@ export function Body() {
         become the company AI is best equipped to recommend when a homeowner needs help now.
       </p>
 
+      <h2>What else do contractors ask about AI recommendations?</h2>
+
+      <h3>Should I publish call-out and emergency pricing?</h3>
+      <p>
+        Yes, as a clear range or flat fee. Emergency queries are urgent and price-sensitive, and a published
+        number makes you matchable where a contact form does not.
+      </p>
+
+      <h3>How should I define my service area?</h3>
+      <p>
+        Name the towns and neighbourhoods in text, and keep the same list on your site and your Business
+        Profile. A map pin alone does not tell an engine where you work.
+      </p>
+
+      <h3>Do trade certifications matter?</h3>
+      <p>
+        Yes, when written as text with the licence number. Those are the facts an assistant uses to decide you
+        are legitimate, especially for gas and electrical work.
+      </p>
+
+      <h3>Does 24-hour availability need to be stated explicitly?</h3>
+      <p>
+        Yes, and accurately. If you answer calls overnight, say so and say what it costs; if you do not, saying
+        so avoids reviews that contradict your own claim.
+      </p>
+
       <h2>So how do HVAC and plumbing companies get recommended by AI?</h2>
       <p>
         HVAC and plumbing companies get recommended by AI the same way they earn word-of-mouth on a street — by

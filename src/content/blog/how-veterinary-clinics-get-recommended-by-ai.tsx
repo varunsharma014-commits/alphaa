@@ -215,6 +215,12 @@ export function Body() {
         not exist — see <Link href="/blog/is-aeo-real">is AEO real</Link> for the honest mechanism.
       </p>
 
+      <h3>Should we state which species we treat?</h3>
+      <p>
+        Yes, explicitly, including the ones you do not. Exotic and avian queries are common, and an assistant
+        can only match a species it sees named in text.
+      </p>
+
       <h2>So how does a vet clinic get recommended by AI?</h2>
       <p>
         Veterinary practices lose AI recommendations to vagueness far more often than to competition. Say which

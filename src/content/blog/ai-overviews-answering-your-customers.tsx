@@ -146,24 +146,28 @@ export function Body() {
       </ol>
 
       <h2>What else do people ask about AI Overviews?</h2>
+      <h3>Are AI Overviews the same as ChatGPT?</h3>
       <p>
-        <strong>Are AI Overviews the same as ChatGPT?</strong> No — AI Overviews are Google&apos;s feature inside
+        No — AI Overviews are Google&apos;s feature inside
         search results, while ChatGPT is a separate assistant. But they work on the same underlying idea:
         retrieve sources, synthesize an answer, cite a few. Optimizing for one tends to help with the other.
       </p>
+      <h3>Can I opt my business out of AI Overviews?</h3>
       <p>
-        <strong>Can I opt my business out of AI Overviews?</strong> Not meaningfully — they summarize the public
+        Not meaningfully — they summarize the public
         web. The productive move isn&apos;t to hide from them; it&apos;s to become a source they cite, so the
         summary sends attention your way rather than a competitor&apos;s.
       </p>
+      <h3>Do AI Overviews really reduce clicks?</h3>
       <p>
-        <strong>Do AI Overviews really reduce clicks?</strong> On the query types where they appear, yes —
+        On the query types where they appear, yes —
         they&apos;re part of why roughly two-thirds of Google searches now end without a click
         (SparkToro/Similarweb, 2026). The offset is that being cited in the overview can drive high-intent
         attention even without a traditional ranking.
       </p>
+      <h3>Is traditional SEO now pointless?</h3>
       <p>
-        <strong>Is traditional SEO now pointless?</strong> No. Crawlable, well-structured, authoritative pages are
+        No. Crawlable, well-structured, authoritative pages are
         exactly what overviews retrieve from. The fundamentals still matter — the goal they serve has shifted from
         ranking to being cited.
       </p>

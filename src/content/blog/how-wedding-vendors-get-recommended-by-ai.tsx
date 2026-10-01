@@ -204,6 +204,12 @@ export function Body() {
         <Link href="/blog/is-aeo-real">is AEO real</Link>.
       </p>
 
+      <h3>Does capacity need to be a specific number?</h3>
+      <p>
+        A range is fine, but publish something. Capacity is one of the hardest filters for an assistant to
+        satisfy and most venues leave it to an enquiry form.
+      </p>
+
       <h2>So how do wedding vendors get recommended by AI?</h2>
       <p>
         Wedding vendors lose AI recommendations to withheld information, not to competition. Couples ask in

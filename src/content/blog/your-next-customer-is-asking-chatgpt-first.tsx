@@ -193,6 +193,32 @@ export function Body() {
         </li>
       </ul>
 
+      <h2>What else do owners ask about customers using AI first?</h2>
+
+      <h3>Does this apply to older customers too?</h3>
+      <p>
+        Increasingly, though adoption is uneven. The practical point is that the work is the same whichever
+        surface your customers use, so it is rarely wasted.
+      </p>
+
+      <h3>How do I know if my customers use AI to find me?</h3>
+      <p>
+        Ask them at intake, and watch referral traffic from assistant hostnames in analytics. Both under-count,
+        because an assistant can send someone who then searches your name.
+      </p>
+
+      <h3>Is it too late to start?</h3>
+      <p>
+        No. The signals that decide these answers are the ordinary ones, and most businesses in most categories
+        have not addressed them yet.
+      </p>
+
+      <h3>What is the single first step?</h3>
+      <p>
+        Ask the engines your own category question in a fresh session and record who they name. Everything else
+        follows from knowing where you actually stand.
+      </p>
+
       <h2>So what should I do now that customers ask ChatGPT first?</h2>
       <p>
         The first question about your category is increasingly asked of an assistant, not a search box, and the

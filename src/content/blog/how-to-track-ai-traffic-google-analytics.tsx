@@ -190,6 +190,12 @@ export function Body() {
         canonical URL. UTMs remain useful for your own campaigns; they are the wrong tool here.
       </p>
 
+      <h3>Should I exclude AI crawler hits from my analytics?</h3>
+      <p>
+        Crawlers do not normally execute the GA4 tag, so they rarely appear as sessions. What you see in the AI
+        channel is almost always real people arriving from an answer.
+      </p>
+
       <h2>So how should you track AI traffic in GA4?</h2>
       <p>
         Build the AI channel in GA4 so you stop flying blind, place it above Referral so it actually collects

@@ -80,7 +80,33 @@ export function Body() {
         fallback. </blockquote> <h2>Step 3 — How do I check my llms.txt file is working?</h2> <p> Visit
         <code>https://yourdomain.com/llms.txt</code> in a browser. You should see your plain-text file (not a
         404 and not your site&apos;s HTML). If you get a 404, the file isn&apos;t at the root; if you see your
-        homepage, your routing is rewriting it. </p> <h2>How often should I update my llms.txt file?</h2> <p>
+        homepage, your routing is rewriting it. </p>      <h2>What else do people ask about llms.txt?</h2>
+
+      <h3>Will llms.txt hurt anything if engines ignore it?</h3>
+      <p>
+        No. It is a static text file that nothing else reads, so the realistic downside is the few minutes it
+        takes rather than any risk to your existing search visibility.
+      </p>
+
+      <h3>Does llms.txt replace robots.txt or a sitemap?</h3>
+      <p>
+        No, it sits alongside them. robots.txt controls access, the sitemap lists URLs for crawlers, and
+        llms.txt offers a curated summary aimed at assistants.
+      </p>
+
+      <h3>How long should an llms.txt file be?</h3>
+      <p>
+        Short enough to stay accurate, usually one screen. A focused list of your key pages with one-line
+        descriptions is more useful than an exhaustive dump of every URL.
+      </p>
+
+      <h3>Who actually reads llms.txt today?</h3>
+      <p>
+        Anthropic has said Claude reads it, and adoption elsewhere is partial and largely unconfirmed. Treat it
+        as cheap preparation for a standard rather than a proven lever.
+      </p>
+
+ <h2>How often should I update my llms.txt file?</h2> <p>
         Review it whenever your offering changes. Your <code>llms.txt</code> should reflect your current
         services, pages, and details. Stale info is worse than none — it teaches AI the wrong thing about you.
         Review it whenever your offering changes.

@@ -185,24 +185,28 @@ export function Body() {
       </p>
 
       <h2>What else do people ask about AEO tools?</h2>
+      <h3>What is the best AEO tool in 2026?</h3>
       <p>
-        <strong>What is the best AEO tool in 2026?</strong> There isn&apos;t one universal winner. Agencies and
+        There isn&apos;t one universal winner. Agencies and
         enterprise teams get the most from deep prompt-tracking platforms; local and small businesses get the
         most from a do-it-for-you tool that measures and then fixes their AI visibility. Match the tool to your
         situation, not to a leaderboard.
       </p>
+      <h3>Can any AEO tool guarantee I&apos;ll show up in ChatGPT?</h3>
       <p>
-        <strong>Can any AEO tool guarantee I&apos;ll show up in ChatGPT?</strong> No. No tool can edit a model or
+        No. No tool can edit a model or
         buy a slot in its answers. Legitimate tools improve the public signals engines read so you&apos;re more
         likely to be named. Treat any guarantee as a red flag.
       </p>
+      <h3>Do I need a separate tool for each AI engine?</h3>
       <p>
-        <strong>Do I need a separate tool for each AI engine?</strong> Usually not — good AEO tools check
+        Usually not — good AEO tools check
         ChatGPT, Claude, Gemini, and Perplexity together, since your buyers use whichever assistant is in front
         of them and the engines disagree often enough that checking just one is misleading.
       </p>
+      <h3>Is a free scan enough, or do I need a paid tool?</h3>
       <p>
-        <strong>Is a free scan enough, or do I need a paid tool?</strong> A free scan is the right first step —
+        A free scan is the right first step —
         it tells you whether you have a problem worth solving. A paid tool earns its place only if you need
         ongoing tracking or want the remediation work done for you.
       </p>

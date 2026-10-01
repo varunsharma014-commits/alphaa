@@ -184,6 +184,32 @@ export function Body() {
         <Link href="/blog/aeo-checklist">AEO checklist</Link> walks through it step by step.
       </p>
 
+      <h2>What else do people ask about the decline of the blue link?</h2>
+
+      <h3>If clicks are falling, is SEO a waste of money?</h3>
+      <p>
+        No. A third of searches still produce clicks, and high-intent searches still send visitors. What has
+        changed is that ranking alone no longer guarantees the visit.
+      </p>
+
+      <h3>How do I measure visibility when there is no click?</h3>
+      <p>
+        By tracking whether you get named and cited in answers, repeatedly, rather than by traffic alone. Single
+        checks are noisy because answers vary between runs.
+      </p>
+
+      <h3>Does this affect every industry equally?</h3>
+      <p>
+        No. Categories where people ask informational or comparative questions lose the most clicks, while
+        transactional and booking-led searches still convert to visits.
+      </p>
+
+      <h3>What is the first thing to change?</h3>
+      <p>
+        Make the facts a customer would filter on public and consistent, starting with your Business Profile and
+        the pages that answer your category question directly.
+      </p>
+
       <h2>What&apos;s the bottom line on the death of the blue link?</h2>
       <p>
         The blue link isn&apos;t gone — it&apos;s been relegated. Ranking #1 in a world where roughly two-thirds

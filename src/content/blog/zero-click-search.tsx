@@ -182,6 +182,32 @@ export function Body() {
         for you is warmer than one comparing ten open tabs.
       </p>
 
+      <h2>What else do people ask about zero-click search?</h2>
+
+      <h3>Is zero-click search bad for every business?</h3>
+      <p>
+        No. It removes informational clicks you were unlikely to convert anyway, while high-intent and
+        booking-led searches still send visitors.
+      </p>
+
+      <h3>Does appearing in a zero-click answer have any value?</h3>
+      <p>
+        Yes, as brand exposure and as a recommendation. Being the named business in an answer influences the
+        decision even when no click follows.
+      </p>
+
+      <h3>How do I prove value without click data?</h3>
+      <p>
+        Track citation and mention rates across engines alongside enquiries and calls. Clicks become one input
+        rather than the whole measurement.
+      </p>
+
+      <h3>Will clicks come back?</h3>
+      <p>
+        There is no sign of that. The trend has run in one direction for years, so planning on a reversal is
+        riskier than adapting to it.
+      </p>
+
       <h2>So what does zero-click search mean for my business?</h2>
       <p>
         Zero-click search means the results page increasingly answers the question itself, and roughly two-thirds

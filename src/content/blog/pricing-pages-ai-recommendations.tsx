@@ -208,6 +208,32 @@ export function Body() {
         <li>Re-run the three questions in three to four weeks and compare.</li>
       </ol>
 
+      <h2>What else do people ask about publishing prices?</h2>
+
+      <h3>What if my prices change often?</h3>
+      <p>
+        Publish a range with the date it was last reviewed, and update it on a set cadence. A dated range is far
+        more useful than no number and is easy to keep honest.
+      </p>
+
+      <h3>Will publishing prices lose me enquiries?</h3>
+      <p>
+        It filters some out, which is usually the point. The trade is fewer unqualified enquiries against being
+        matchable at all in budget-qualified questions.
+      </p>
+
+      <h3>What should I publish if every job is bespoke?</h3>
+      <p>
+        A starting point and the variables that move it: a from-price, typical project bands, and what changes
+        the number. That is enough to be quoted accurately.
+      </p>
+
+      <h3>Does a pricing page need schema markup?</h3>
+      <p>
+        It helps for products with fixed prices, but clear text does most of the work. The priority is that a
+        number exists in readable text at all.
+      </p>
+
       <h2>So should I publish my prices for AI search?</h2>
       <p>
         The cost question gets answered with or without you. Publishing a specific, qualified, dated range is

@@ -205,6 +205,12 @@ export function Body() {
         for the full contrast.
       </p>
 
+      <h3>Will one of these terms win out?</h3>
+      <p>
+        Probably, but it does not change the work. Both describe improving the same retrieval and consensus
+        signals, so pick the term your audience uses and judge vendors on method rather than vocabulary.
+      </p>
+
       <h2>What&apos;s the bottom line on AEO vs GEO?</h2>
       <p>
         AEO and GEO are two names for the same honest discipline: making true things about your business easy

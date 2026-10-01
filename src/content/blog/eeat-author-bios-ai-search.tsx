@@ -219,6 +219,12 @@ export function Body() {
         honestly.
       </p>
 
+      <h3>Does a bio need to be on a separate page?</h3>
+      <p>
+        No. An inline byline that links to a fuller profile works, and is often better, because the credential
+        sits next to the claim rather than one click away.
+      </p>
+
       <h2>What does E-E-A-T mean for AI search in practice?</h2>
       <p>
         In practice, AI engines reward attributability, not the appearance of credibility: a real name, a

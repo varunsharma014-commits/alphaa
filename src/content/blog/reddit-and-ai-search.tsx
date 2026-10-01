@@ -165,23 +165,27 @@ export function Body() {
       </p>
 
       <h2>What else do people ask about Reddit and AI search?</h2>
+      <h3>Should I create a subreddit or post about my own business?</h3>
       <p>
-        <strong>Should I create a subreddit or post about my own business?</strong> Generally no. Self-promotional
+        Generally no. Self-promotional
         threads get removed and do not read as independent. Answering existing questions works; announcing yourself
         does not.
       </p>
+      <h3>Do negative mentions hurt my AI visibility?</h3>
       <p>
-        <strong>Do negative mentions hurt my AI visibility?</strong> They shape the description more than the
+        They shape the description more than the
         appearance. Being named with a caveat is usually better than not being named. Reply publicly, factually, and
         without arguing — the reply is also retrievable text.
       </p>
+      <h3>How many mentions is enough?</h3>
       <p>
-        <strong>How many mentions is enough?</strong> There is no threshold anyone can honestly quote, and any
+        There is no threshold anyone can honestly quote, and any
         vendor giving you a number is inventing it. What we observe is directional: consistent descriptions across
         several unrelated sources beats volume on one.
       </p>
+      <h3>Does this matter if my customers still use Google?</h3>
       <p>
-        <strong>Does this matter if my customers still use Google?</strong> They use both. 65% of consumers now use
+        They use both. 65% of consumers now use
         AI tools to research products before buying (Clutch, 2026), and the same third-party sources feed Google&apos;s
         own AI answers.
       </p>

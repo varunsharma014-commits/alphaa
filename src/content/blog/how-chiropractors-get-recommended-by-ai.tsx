@@ -283,6 +283,12 @@ export function Body() {
         .
       </p>
 
+      <h3>Do I need to list which insurers I accept?</h3>
+      <p>
+        It helps a great deal, because insurance is one of the most common filters in these questions. Name the
+        plans and keep the list current rather than saying you accept most insurance.
+      </p>
+
       <h2>How do chiropractors win AI recommendations?</h2>
       <p>
         By publishing specific, checkable facts and avoiding claims the evidence does not support. Chiropractic is a specifics business, and AI recommendation is a specifics game — which is good news

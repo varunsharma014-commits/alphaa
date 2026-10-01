@@ -170,6 +170,32 @@ export function Body() {
         almost everyone else, it&apos;s becoming table stakes.
       </p>
 
+      <h2>What else do people ask about answer engine optimization?</h2>
+
+      <h3>Is AEO a real discipline or a buzzword?</h3>
+      <p>
+        The mechanism behind it is real and documented: engines retrieve sources and synthesise answers, and you
+        can influence those sources. The marketing around it is uneven.
+      </p>
+
+      <h3>Do I need special software to do AEO?</h3>
+      <p>
+        No. The core work is publishing clear facts and keeping them consistent everywhere. Tools help you
+        monitor and execute faster, but nothing here requires them.
+      </p>
+
+      <h3>How is AEO measured?</h3>
+      <p>
+        By whether engines name and cite you across repeated runs, plus referral traffic from assistant
+        hostnames. Both are trends, because single answers vary.
+      </p>
+
+      <h3>Who benefits most from AEO?</h3>
+      <p>
+        Businesses whose customers ask comparative or local questions, which is most local services,
+        professional practices and considered-purchase products.
+      </p>
+
       <h2>How do I get started with AEO?</h2>
       <p>
         Start by finding out what AI engines say about you, then fix your foundations and make your content answer-first.

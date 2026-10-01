@@ -152,6 +152,12 @@ export function Body() {
         so you can see the trend rather than guess at it.
       </p>
 
+      <h3>What is the fastest change I can make today?</h3>
+      <p>
+        Correcting a wrong or missing fact on your Business Profile and your own site. Retrieval-driven answers
+        can pick that up within days, which is faster than anything else on the list.
+      </p>
+
       <h2>So how long does AEO take to work?</h2>
       <p>
         AEO is faster to start than classic SEO and slower to fully mature than a sales pitch admits. Expect the

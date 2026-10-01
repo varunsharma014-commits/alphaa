@@ -318,6 +318,12 @@ Sitemap: https://yourdomain.com/sitemap.xml`}</code></pre>
         details, and answer-shaped content. Access is the floor, not the strategy.
       </p>
 
+      <h3>How do I check which bots are actually hitting my site?</h3>
+      <p>
+        Read your server or CDN access logs and filter by user agent. That tells you which crawlers reach you
+        and which are being blocked, which guesswork and plugin dashboards often get wrong.
+      </p>
+
       <h2>What&apos;s the bottom line on AI crawlers and robots.txt?</h2>
       <p>
         Treat crawler access as two separate decisions. Retrieval agents should almost always be allowed — they

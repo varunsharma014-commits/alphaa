@@ -183,6 +183,32 @@ export function Body() {
         to recommend — because you are the firm it can most easily verify.
       </p>
 
+      <h2>What else do law firms ask about AI recommendations?</h2>
+
+      <h3>Should a law firm publish fees?</h3>
+      <p>
+        A structure helps even where a number cannot: contingency percentages, consultation fees, or hourly
+        ranges. Cost is a common filter and silence removes you from it.
+      </p>
+
+      <h3>Do bar directory profiles matter?</h3>
+      <p>
+        Yes, considerably. They are independent, checkable records of your credentials and jurisdictions, which
+        is exactly what an assistant needs for a regulated category.
+      </p>
+
+      <h3>Do I need a page per practice area?</h3>
+      <p>
+        Yes, for each area you want matters in, with the jurisdictions it covers. Legal queries are narrow, and
+        a combined page cannot satisfy a narrow filter.
+      </p>
+
+      <h3>Can client testimonials be used?</h3>
+      <p>
+        Only within your bar rules, which vary by jurisdiction. Where testimonials are restricted, detailed
+        third-party reviews and directory records do the same job.
+      </p>
+
       <h2>So how do law firms get recommended by AI?</h2>
       <p>
         Law firms get recommended by AI the same way they earn referrals in the real world — by being

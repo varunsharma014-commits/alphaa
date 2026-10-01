@@ -146,6 +146,32 @@ export function Body() {
         signals it reads.
       </p>
 
+      <h2>What else do people ask about AEO vs SEO agencies?</h2>
+
+      <h3>Should I fire my SEO agency and start over?</h3>
+      <p>
+        Usually not. Ask whether they can show work that changed something on your site or profiles, and whether
+        they measure AI answers at all. If the answer to both is no, renegotiate the scope first.
+      </p>
+
+      <h3>Can an agency do AEO if I ask them to?</h3>
+      <p>
+        Some can. The practical test is whether they talk about retrieval, entity consistency and third-party
+        corroboration, or whether they relabel the same keyword-and-backlink retainer as AEO.
+      </p>
+
+      <h3>Do I need to stop doing SEO to do AEO?</h3>
+      <p>
+        No, and you should not. Crawlability, structured data and clear pages serve both, so AEO is mostly an
+        extension of the fundamentals rather than a replacement for them.
+      </p>
+
+      <h3>How is AEO priced compared with an agency retainer?</h3>
+      <p>
+        Doing it yourself costs time rather than money, tools sit in the low hundreds per month, and agency
+        retainers typically start near ten times that. The gap is mostly human labour, not capability.
+      </p>
+
       <h2>Should you hire an SEO agency or invest in AEO in 2026?</h2>
       <p>
         Most businesses are best served by getting the AEO foundations in place first, then layering paid SEO

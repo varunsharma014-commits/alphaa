@@ -239,6 +239,32 @@ export function Body() {
         best-supported case for choosing you, and then measure whether it is working.
       </p>
 
+      <h2>What else do people ask about SEO, AEO and GEO?</h2>
+
+      <h3>Are AEO and GEO just marketing labels?</h3>
+      <p>
+        Largely, yes. They describe substantially the same work under two names, which is why the useful
+        question is what a vendor actually does rather than which acronym they use.
+      </p>
+
+      <h3>Which one gets customers fastest?</h3>
+      <p>
+        For most local businesses, fixing the facts that both rely on. Profile completeness, consistency and
+        clear service pages move ranked results and AI answers at the same time.
+      </p>
+
+      <h3>Do I need three separate budgets?</h3>
+      <p>
+        No. Treat it as one programme with shared fundamentals, then decide whether to spend extra on link
+        acquisition or on third-party corroboration.
+      </p>
+
+      <h3>Will SEO still exist in five years?</h3>
+      <p>
+        Search will, in some form, and so will the work of being findable and clearly described. The surface
+        changes faster than the fundamentals do.
+      </p>
+
       <h2>Where do I start if I want to know how AI sees my business today?</h2>
       <p>
         Start by finding out whether AI tools already mention you, because that tells you which of the three

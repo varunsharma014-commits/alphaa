@@ -163,19 +163,28 @@ export function Body() {
         They ask whether they can pay to appear in AI answers, whether before-and-after photos help, and how long
         this takes.
       </p>
+      <h3>Can I pay to appear in ChatGPT or Google AI Overviews?</h3>
       <p>
-        <strong>Can I pay to appear in ChatGPT or Google AI Overviews?</strong> No. There is no paid slot and no
+        No. There is no paid slot and no
         API that inserts a business into an AI answer. Any vendor claiming a backdoor is selling hype.
       </p>
+      <h3>Do before-and-after photos help?</h3>
       <p>
-        <strong>Do before-and-after photos help?</strong> They help human visitors and can support your pages, but
+        They help human visitors and can support your pages, but
         AI mostly reads text and structured data. The bigger levers are your categories, review wording, and clear
         treatment pages. Follow platform and regulatory rules on medical imagery.
       </p>
+      <h3>How long does this take?</h3>
       <p>
-        <strong>How long does this take?</strong> Profile and listing fixes can register within weeks; a stronger
+        Profile and listing fixes can register within weeks; a stronger
         review profile builds over months; content and third-party mentions compound over a quarter or more. Anyone
         promising a fast, guaranteed result is guessing.
+      </p>
+
+      <h3>Should I publish treatment prices?</h3>
+      <p>
+        Ranges are usually better than nothing, because cost filters most of these questions. State what the
+        range includes and how many sessions are typical.
       </p>
 
       <h2>Can a marketing vendor guarantee AI will recommend my med spa?</h2>

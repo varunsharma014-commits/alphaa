@@ -208,23 +208,27 @@ export function Body() {
       </p>
 
       <h2>What else do people ask about backlinks and AI search?</h2>
+      <h3>Do backlinks directly improve AI citations?</h3>
       <p>
-        <strong>Do backlinks directly improve AI citations?</strong> Not directly. They improve the search
+        Not directly. They improve the search
         rankings that AI retrieval draws from, which indirectly raises your odds of being retrieved. The
         descriptive text around a link matters more than the link attribute itself.
       </p>
+      <h3>Do unlinked brand mentions count?</h3>
       <p>
-        <strong>Do unlinked brand mentions count?</strong> Yes. A named, described mention on a page an engine
+        Yes. A named, described mention on a page an engine
         retrieves is usable evidence with or without a hyperlink. That is the core reason AI-era off-page work
         looks more like PR than like link building.
       </p>
+      <h3>Does nofollow matter?</h3>
       <p>
-        <strong>Does nofollow matter?</strong> Far less than it did. A model reading a page does not care about
+        Far less than it did. A model reading a page does not care about
         the rel attribute; it reads the sentence. Nofollow mentions on Reddit, Wikipedia talk pages and review
         sites are demonstrably influential in AI answers.
       </p>
+      <h3>Will buying links get me into ChatGPT?</h3>
       <p>
-        <strong>Will buying links get me into ChatGPT?</strong> No, and no one can guarantee placement in any AI
+        No, and no one can guarantee placement in any AI
         answer. You can only improve the evidence the engines read. Any vendor promising guaranteed AI
         recommendations is selling something that does not exist — see{" "}
         <Link href="/blog/is-aeo-real">is AEO real?</Link> for how to tell the difference.

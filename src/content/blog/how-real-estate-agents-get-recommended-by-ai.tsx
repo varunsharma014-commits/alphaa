@@ -189,6 +189,12 @@ export function Body() {
         consistent profiles — not ad spend. Invest in the signals AI actually reads.
       </p>
 
+      <h3>Should I publish my sold listings and areas?</h3>
+      <p>
+        Yes, as text with neighbourhoods and property types named. Those are the facts a buyer or seller
+        question filters on, and a photo gallery cannot supply them.
+      </p>
+
       <h2>So how do real estate agents get recommended by AI?</h2>
       <p>
         Agents get recommended by AI the same way they earn referrals in the real world — by being genuinely good

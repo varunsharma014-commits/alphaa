@@ -176,6 +176,32 @@ export function Body() {
         landing on you.
       </p>
 
+      <h2>What else do restaurant owners ask about AI recommendations?</h2>
+
+      <h3>Does my menu need to be text rather than a PDF or image?</h3>
+      <p>
+        Yes, ideally. Assistants extract PDFs unevenly and images barely at all, so a menu that only exists as a
+        picture leaves the engine unable to answer questions about your dishes or prices.
+      </p>
+
+      <h3>Do delivery platform listings help or hurt?</h3>
+      <p>
+        They help as corroboration, provided the name, address and hours match your own site. Contradictory
+        listings are worse than missing ones, because they make an assistant hedge.
+      </p>
+
+      <h3>How much do reviews matter for restaurant recommendations?</h3>
+      <p>
+        A great deal, and the text matters more than the average. Reviews that name specific dishes, occasions
+        and service details give an assistant something concrete to quote.
+      </p>
+
+      <h3>Can I get recommended without a website?</h3>
+      <p>
+        Sometimes, on the strength of your profile and reviews alone. But without a site there is no source you
+        control, so anything not already in a review or listing is invisible.
+      </p>
+
       <h2>What should you check before changing anything?</h2>
       <p>
         Before you change anything, find out what assistants actually say about your restaurant right

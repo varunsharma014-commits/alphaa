@@ -154,6 +154,32 @@ export function Body() {
         AI is most equipped to recommend.
       </p>
 
+      <h2>What else do dentists ask about AI recommendations?</h2>
+
+      <h3>Should I publish treatment prices?</h3>
+      <p>
+        Publishing ranges is usually better than silence, because cost is one of the most common filters. An
+        honest from-price with what it includes is enough to be matchable.
+      </p>
+
+      <h3>Do I need separate pages for each treatment?</h3>
+      <p>
+        For the treatments people search for separately, yes, each with its own facts. Duplicated pages that
+        differ only by the treatment name add nothing retrievable.
+      </p>
+
+      <h3>Does being in a dental association help?</h3>
+      <p>
+        Yes, as corroboration. A directory listing with consistent details and a verifiable membership gives an
+        assistant an independent source for your credentials.
+      </p>
+
+      <h3>What if I am a new practice with few reviews?</h3>
+      <p>
+        Focus first on a complete profile, clear service and insurance facts, and a handful of detailed reviews.
+        Those are faster to establish than authority built over years.
+      </p>
+
       <h2>How do dentists get recommended by AI?</h2>
       <p>
         Dentists get recommended by AI the same way they earn word-of-mouth in the real world — by being

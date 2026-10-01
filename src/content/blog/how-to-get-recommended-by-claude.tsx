@@ -153,6 +153,12 @@ export function Body() {
         <Link href="/blog/how-to-get-cited-on-perplexity">how to get cited on Perplexity</Link>.
       </p>
 
+      <h3>Does Claude favour particular kinds of source?</h3>
+      <p>
+        It leans on clearly written, well-structured pages and is relatively cautious about naming businesses on
+        thin evidence, so clarity and corroboration matter more than volume.
+      </p>
+
       <h2>What doesn&apos;t work for getting recommended by Claude?</h2>
       <p>
         You cannot edit Claude&apos;s model, buy your way into an answer, or trick it with hidden keyword text

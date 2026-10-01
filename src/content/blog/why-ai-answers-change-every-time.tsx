@@ -158,22 +158,26 @@ export function Body() {
       </p>
 
       <h2>What else do people ask about changing AI answers?</h2>
+      <h3>Can I make the answer deterministic?</h3>
       <p>
-        <strong>Can I make the answer deterministic?</strong> No. You cannot set the temperature of a consumer
+        No. You cannot set the temperature of a consumer
         assistant, and you should not want to — you are trying to influence what the average customer sees, and the
         average customer gets a sampled answer.
       </p>
+      <h3>Does asking repeatedly train the model to mention me?</h3>
       <p>
-        <strong>Does asking repeatedly train the model to mention me?</strong> No. Your questions do not update the
+        No. Your questions do not update the
         model&apos;s weights, and they do not add you to a retrieval index. Repeated asking measures; it does not
         move the number.
       </p>
+      <h3>Why do I see my business but my customer does not?</h3>
       <p>
-        <strong>Why do I see my business but my customer does not?</strong> Memory, prior chats, and location.
+        Memory, prior chats, and location.
         Your account has told the assistant a great deal about your business. Always verify from a clean session.
       </p>
+      <h3>How long until a change shows up in the rate?</h3>
       <p>
-        <strong>How long until a change shows up in the rate?</strong> Longer than most people expect — the
+        Longer than most people expect — the
         constraint is re-crawl and re-index time on the sources, not your publishing speed. We walk through the
         realistic timeline in{" "}
         <Link href="/blog/how-long-does-aeo-take">how long AEO takes to work</Link>.

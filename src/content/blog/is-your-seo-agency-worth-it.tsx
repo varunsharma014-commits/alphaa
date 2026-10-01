@@ -229,6 +229,32 @@ export function Body() {
         passes, keep them.
       </p>
 
+      <h2>What else do owners ask about auditing an SEO agency?</h2>
+
+      <h3>What if my agency refuses to answer these questions?</h3>
+      <p>
+        Treat that as the finding. An agency doing real work can usually describe it in a sentence, so
+        reluctance is more informative than any report.
+      </p>
+
+      <h3>Is a traffic drop automatically the agency&apos;s fault?</h3>
+      <p>
+        No. Clicks are falling across the board as answers move onto the results page, so judge them on what
+        shipped and what moved rather than traffic alone.
+      </p>
+
+      <h3>Should I expect my agency to work on AI visibility?</h3>
+      <p>
+        It is reasonable to ask. If they cannot say which engines they check or what they changed because of it,
+        that is a scope gap to negotiate rather than a reason to leave.
+      </p>
+
+      <h3>What is a fair price for this kind of work?</h3>
+      <p>
+        It varies, but what matters is what the retainer buys in shipped changes. Compare the output to the
+        alternative of tooling plus a few hours of your own time.
+      </p>
+
       <h2>So is your SEO agency worth it?</h2>
       <p>
         Judge your agency on artifacts and decisions, not effort and charts. Ten minutes — three reports, a view

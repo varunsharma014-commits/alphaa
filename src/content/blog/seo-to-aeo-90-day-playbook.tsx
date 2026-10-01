@@ -215,6 +215,32 @@ export function Body() {
         optimization is</Link> defines the discipline this playbook applies.
       </p>
 
+      <h2>What else do people ask about the 90-day playbook?</h2>
+
+      <h3>Can I compress the 90 days?</h3>
+      <p>
+        The site-side work can go faster, but the third-party evidence in the final phase accumulates on its own
+        schedule. Rushing that phase mostly produces low-quality mentions.
+      </p>
+
+      <h3>What if I only have time for one phase?</h3>
+      <p>
+        Do the measurement phase, then the fact-fixing phase. Knowing what engines currently say about you
+        determines which fixes are worth anything.
+      </p>
+
+      <h3>Does this replace my existing SEO work?</h3>
+      <p>
+        No, it extends it. Crawlability, structured data and clear pages serve ranked links and synthesised
+        answers alike, so very little is wasted either way.
+      </p>
+
+      <h3>How do I report progress to someone who only knows traffic?</h3>
+      <p>
+        Show the citation trend across engines alongside referral traffic from assistant hostnames, and say
+        plainly that most AI influence never appears as a visit.
+      </p>
+
       <h2>So how do I move from SEO to AEO?</h2>
       <p>
         Moving from SEO to AEO is not a teardown; it is a 90-day reordering of effort. Measure honestly, fix your

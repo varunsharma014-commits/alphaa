@@ -195,6 +195,32 @@ export function Body() {
         breaks it down.
       </p>
 
+      <h2>What else do local service businesses ask about AI visibility?</h2>
+
+      <h3>Does this work if I serve customers at their location rather than mine?</h3>
+      <p>
+        Yes, but set a service-area business up properly: name the towns you cover in text, and keep the service
+        radius consistent between your site and your Business Profile.
+      </p>
+
+      <h3>How many reviews do I need before AI notices?</h3>
+      <p>
+        There is no threshold, and volume matters less than recency and detail. A steady trickle of reviews
+        naming specific jobs beats a large batch of old one-liners.
+      </p>
+
+      <h3>Should I build a page for every service I offer?</h3>
+      <p>
+        Build one for every service people actually search for separately, with its own facts and pricing. Pages
+        that only differ by a swapped keyword add nothing retrievable.
+      </p>
+
+      <h3>What if I work in a very small town?</h3>
+      <p>
+        That usually helps. Thin local competition means fewer sources contradict you, so a complete profile and
+        a handful of detailed reviews can be enough to be the named answer.
+      </p>
+
       <h2>Where should a local business start with AI visibility?</h2>
       <p>
         Start with your Google Business Profile, then reviews, consistent NAP, specific service pages, and schema plus crawler access.

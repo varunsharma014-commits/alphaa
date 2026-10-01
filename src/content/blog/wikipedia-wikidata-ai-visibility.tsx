@@ -216,6 +216,12 @@ export function Body() {
         <Link href="/blog/how-long-does-aeo-take">how long AEO takes</Link>.
       </p>
 
+      <h3>Can I edit my own Wikipedia article?</h3>
+      <p>
+        You should not edit it directly. Conflict-of-interest rules expect you to suggest corrections on the
+        talk page with sources and let independent editors make the change.
+      </p>
+
       <h2>So should I pursue Wikipedia or Wikidata for AI visibility?</h2>
       <p>
         Wikipedia and Wikidata matter because they give machines something rare: a structured, corroborated,

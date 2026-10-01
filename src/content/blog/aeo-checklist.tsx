@@ -116,6 +116,32 @@ export function Body() {
         <li><strong>Regular re-checks</strong> of what AI actually says about you, since the public inputs — and the models — keep changing.</li>
       </ul>
 
+      <h2>What else do people ask about the AEO checklist?</h2>
+
+      <h3>How long does it take to work through this checklist?</h3>
+      <p>
+        Most of it is one focused afternoon, plus review collection that runs continuously. The profile, schema
+        and page-structure items are one-off fixes; reviews and third-party mentions accumulate over weeks.
+      </p>
+
+      <h3>Do I need every item done before I see any effect?</h3>
+      <p>
+        No. The foundations carry most of the weight, so a complete profile and consistent business details move
+        more than the AI-specific extras. Work top to bottom rather than cherry-picking.
+      </p>
+
+      <h3>Does this work for a business with no website?</h3>
+      <p>
+        Partly. Your Business Profile, reviews and directory listings still do most of the work, but without a
+        site you lose the one source you fully control, so publishing a few pages is worth it.
+      </p>
+
+      <h3>How often should I re-run the checklist?</h3>
+      <p>
+        Once a quarter suits most businesses, plus any time your hours, services, pricing or location change.
+        Facts that have gone stale do more damage than facts you never published.
+      </p>
+
       <h2>How should you work through this AEO checklist?</h2>
       <p>
         Don&apos;t try to do everything at once. Fix the <strong>foundations</strong> first (NAP, Google

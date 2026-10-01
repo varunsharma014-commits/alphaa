@@ -276,6 +276,32 @@ export function Body() {
         <li><strong>Re-check regularly.</strong> Answers change from run to run (see <Link href="/blog/why-ai-answers-change-every-time">why AI answers change every time</Link>), so one screenshot tells you little.</li>
       </ul>
 
+      <h2>What else do people ask about the different AI engines?</h2>
+
+      <h3>Which engine should a local business prioritise?</h3>
+      <p>
+        Whichever your customers use, but if you must pick one, Google surfaces reach the most people through AI
+        Overviews and Gemini, and the work overlaps heavily with what the others need.
+      </p>
+
+      <h3>Do I need separate content for each engine?</h3>
+      <p>
+        No. The content is the same; what differs is crawler access, indexing and which third-party sources each
+        engine leans on.
+      </p>
+
+      <h3>Why does the same question get different businesses on each engine?</h3>
+      <p>
+        Because each retrieves from a different source mix and summarises what it finds. Strength in one engine
+        does not carry over, which is why checking all four is worth the few minutes.
+      </p>
+
+      <h3>Does Claude recommend local businesses at all?</h3>
+      <p>
+        It can when it retrieves live results, but it is generally more cautious about naming specific local
+        businesses than Perplexity or Gemini, and leans on clearly written sources.
+      </p>
+
       <h2>What should a local business do this week?</h2>
       <p>
         Start by finding out what each engine says today. Ask all four the question a real customer would

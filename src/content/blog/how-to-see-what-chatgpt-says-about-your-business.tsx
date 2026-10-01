@@ -178,21 +178,29 @@ export function Body() {
         The common questions are whether checking is free, why answers change every time, and how to correct
         wrong details.
       </p>
+      <h3>Is it really free to check what ChatGPT says about my business?</h3>
       <p>
-        <strong>Is it really free to check what ChatGPT says about my business?</strong> Yes. Asking ChatGPT,
+        Yes. Asking ChatGPT,
         Claude, Gemini, and Perplexity directly costs nothing beyond your time. The prompts above are all you
         need to start.
       </p>
+      <h3>Why do I get a different answer every time I ask?</h3>
       <p>
-        <strong>Why do I get a different answer every time I ask?</strong> AI models are probabilistic, and many
+        AI models are probabilistic, and many
         now retrieve live web results, so answers shift by wording, timing, and user. That&apos;s expected — it&apos;s
         why you run each prompt several times and look at how often you appear, not whether you appeared once.
       </p>
+      <h3>ChatGPT gave wrong details about my business. How do I correct it?</h3>
       <p>
-        <strong>ChatGPT gave wrong details about my business. How do I correct it?</strong> You can&apos;t edit
+        You can&apos;t edit
         the model directly. You fix it at the source: make your website, Google Business Profile, and directory
         listings state the correct, consistent details, so the next time the model retrieves information about
         you, the accurate version is what it finds.
+      </p>
+      <h3>Why should I turn memory off before testing?</h3>
+      <p>
+        Because memory and past chats personalise the answer to you specifically. A fresh session with memory
+        disabled is the closest you get to what a stranger would see.
       </p>
 
       <p>

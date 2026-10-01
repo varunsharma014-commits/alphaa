@@ -165,6 +165,12 @@ export function Body() {
         the odds in your favor — it does not flip a switch.
       </p>
 
+      <h3>Does my Business Profile matter more for Gemini than other engines?</h3>
+      <p>
+        Yes, materially. Gemini draws on Google&apos;s own understanding of your business, so profile
+        completeness and accuracy carry more weight here than with engines that read only the open web.
+      </p>
+
       <h2>What doesn&apos;t work for getting recommended by Gemini?</h2>
       <p>
         You cannot edit Gemini&apos;s model, buy a recommendation, or trick it with hidden text stuffed into a

@@ -164,6 +164,32 @@ export function Body() {
         . The tactics overlap heavily, because the underlying mechanism is the same everywhere.
       </p>
 
+      <h2>What else do local businesses ask about AI Overviews?</h2>
+
+      <h3>Do I need to rank on page one to appear in an Overview?</h3>
+      <p>
+        Not necessarily. Cited sources are often not the top-ranked pages, because the overview picks what
+        answers the question cleanly rather than what ranks highest.
+      </p>
+
+      <h3>Does running Google Ads help me appear?</h3>
+      <p>
+        No. Ads and organic AI Overview citations are separate systems, and paying for placement in one does
+        nothing for the other.
+      </p>
+
+      <h3>Why does my competitor appear and I do not?</h3>
+      <p>
+        Usually because their profile and pages state facts the query filters on and yours do not. Compare the
+        two side by side rather than assuming it is authority.
+      </p>
+
+      <h3>How do I track whether I appear?</h3>
+      <p>
+        Search your own category questions regularly and record which businesses the overview names. Single
+        checks are unreliable because the output varies between runs.
+      </p>
+
       <h2>What is the real way to show up in Google AI Overviews?</h2>
       <p>
         Showing up in Google AI Overviews isn&apos;t a trick — it is the disciplined, honest work of making

@@ -239,6 +239,32 @@ export function Body() {
         Neither can guarantee a ranking or a timeline, because AI answers vary and nobody controls them.
       </p>
 
+      <h2>What else do people ask about Alphaa vs Yext?</h2>
+
+      <h3>Does Alphaa push data to directories the way Yext does?</h3>
+      <p>
+        No. Yext is built for syndicating listings at scale across hundreds of directories, which Alphaa does
+        not attempt. Alphaa works on what AI assistants say and the signals behind it.
+      </p>
+
+      <h3>If my listings are already correct, do I still need Yext?</h3>
+      <p>
+        Often not. Listing syndication earns its cost when you have many locations or constant changes; a single
+        accurate location can usually be maintained directly.
+      </p>
+
+      <h3>Which one helps more with AI answers?</h3>
+      <p>
+        Alphaa, because that is what it measures and acts on. Accurate listings help AI answers indirectly as
+        corroboration, but they are an input rather than the outcome.
+      </p>
+
+      <h3>Is there overlap if I run both?</h3>
+      <p>
+        Some, around business details. Most teams let Yext own directory accuracy and let Alphaa own the
+        AI-answer monitoring and site-side fixes.
+      </p>
+
       <h2>How do you choose between Alphaa and Yext?</h2>
       <p>
         Start with how many locations you have and who will do the work. Many locations plus a marketing team

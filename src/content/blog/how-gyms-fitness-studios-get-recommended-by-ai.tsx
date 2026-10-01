@@ -220,24 +220,28 @@ export function Body() {
       <p>
         The common questions are whether you must publish prices, whether ClassPass or Mindbody covers you, and what applies to trainers without premises and franchise gyms.
       </p>
+      <h3>Do I really have to publish prices?</h3>
       <p>
-        <strong>Do I really have to publish prices?</strong> It is the highest-impact single change for a gym,
+        It is the highest-impact single change for a gym,
         because so many queries are price-constrained. A published range with the contract terms captures most of
         the benefit if exact numbers are commercially awkward.
       </p>
+      <h3>Does ClassPass or Mindbody handle this for me?</h3>
       <p>
-        <strong>Does ClassPass or Mindbody handle this for me?</strong> They help — those platforms are
+        They help — those platforms are
         themselves frequently cited sources. But your listing there describes their marketplace, not your
         business, and you do not control it. Treat them as additional surfaces to keep accurate, not as a
         substitute for your own pages.
       </p>
+      <h3>I am a personal trainer without a premises. Does this apply?</h3>
       <p>
-        <strong>I am a personal trainer without a premises. Does this apply?</strong> Yes, with two changes:
+        Yes, with two changes:
         define your service area explicitly (which suburbs, online or in-person, which gyms you train out of),
         and lead with specialism and credentials, since those are what a trainer query filters on.
       </p>
+      <h3>What about a franchise gym?</h3>
       <p>
-        <strong>What about a franchise gym?</strong> The brand site will not rescue your branch. Each location
+        The brand site will not rescue your branch. Each location
         needs its own claimed profile, its own reviews, and location-specific facts — timetable, coaches, access
         hours — that differ from the other branches.
       </p>

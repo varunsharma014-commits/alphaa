@@ -247,22 +247,26 @@ export function Body() {
       <p>
         The common questions are whether a list must link to you, whether to pay for a sponsored spot, and what to do when a list ranks a competitor above you.
       </p>
+      <h3>Does the list need to link to my site?</h3>
       <p>
-        <strong>Does the list need to link to my site?</strong> No. For AI answers, being named in the text is
+        No. For AI answers, being named in the text is
         what matters most; the link is a bonus that also helps classic search.
       </p>
+      <h3>Should I pay for a sponsored spot in a directory?</h3>
       <p>
-        <strong>Should I pay for a sponsored spot in a directory?</strong> Sometimes — if the directory has real
+        Sometimes — if the directory has real
         audience and editorial standing, a paid tier can be worth it for the traffic. Do not buy it expecting AI
         visibility specifically; completeness and reviews on a free profile usually do more.
       </p>
+      <h3>What if a list ranks a competitor above me?</h3>
       <p>
-        <strong>What if a list ranks a competitor above me?</strong> That is normal and not worth fighting. Being
+        That is normal and not worth fighting. Being
         named at all puts you in the candidate set, which is the part that decides whether you appear in an
         answer.
       </p>
+      <h3>How many lists is enough?</h3>
       <p>
-        <strong>How many lists is enough?</strong> Aim to be accurately present on every source that repeatedly
+        Aim to be accurately present on every source that repeatedly
         showed up in your citation audit. That is usually five to fifteen pages, not fifty.
       </p>
 

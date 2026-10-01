@@ -182,6 +182,32 @@ export function Body() {
         trust signals — that AI needs before it will recommend anyone, and those are fixable in a week.
       </p>
 
+      <h2>What else do people ask about the AI readiness study?</h2>
+
+      <h3>How were the 288 sites selected?</h3>
+      <p>
+        They were drawn across common local service categories and checked with the same automated tests, so the
+        comparison between industries is like for like rather than cherry-picked.
+      </p>
+
+      <h3>Does a low readiness score mean a business is invisible?</h3>
+      <p>
+        No. Readiness measures what an engine can read from the site itself, and many businesses are still named
+        from their profile and reviews alone.
+      </p>
+
+      <h3>Which single failure was most common?</h3>
+      <p>
+        Key facts not present in crawlable text, usually because pricing, service areas or hours lived only in
+        an image, a PDF or a client-side widget.
+      </p>
+
+      <h3>Will you repeat the study?</h3>
+      <p>
+        That is the intention, with the same checks so the numbers stay comparable. We will state any change in
+        method rather than quietly adjusting it.
+      </p>
+
       <h2>How do you see where your own site stands?</h2>
       <p>
         Run the same 23 checks on your site, plus a live question to ChatGPT, Gemini, Claude and Perplexity, with the{" "}

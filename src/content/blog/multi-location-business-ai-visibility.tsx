@@ -204,18 +204,21 @@ export function Body() {
       </p>
 
       <h2>What else do multi-location businesses ask about AI visibility?</h2>
+      <h3>Should each location have its own website?</h3>
       <p>
-        <strong>Should each location have its own website?</strong> Almost never. Separate domains split your
+        Almost never. Separate domains split your
         authority and multiply the maintenance. One brand domain with strong, distinct location pages is the
         better structure in nearly every case.
       </p>
+      <h3>Do I need a Google Business Profile for every location?</h3>
       <p>
-        <strong>Do I need a Google Business Profile for every location?</strong> Yes, one per physical location
+        Yes, one per physical location
         with a distinct address, each individually verified. It is the single highest-leverage item on this
         list.
       </p>
+      <h3>What about service-area businesses with no storefront?</h3>
       <p>
-        <strong>What about service-area businesses with no storefront?</strong> Define non-overlapping service
+        Define non-overlapping service
         areas per branch and say so explicitly in the page copy and in schema. Overlapping, vaguely-worded
         service areas are the service-business version of the template trap — the same logic in{" "}
         <Link href="/blog/get-recommended-by-ai-local-service-business">
@@ -223,8 +226,9 @@ export function Body() {
         </Link>{" "}
         applies per branch.
       </p>
+      <h3>How many location pages is too many?</h3>
       <p>
-        <strong>How many location pages is too many?</strong> There is no page-count limit — there is a
+        There is no page-count limit — there is a
         uniqueness limit. If a page has nothing true and specific to say, it should not exist.
       </p>
 

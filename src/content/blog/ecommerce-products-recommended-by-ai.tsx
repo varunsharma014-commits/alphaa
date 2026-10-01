@@ -233,6 +233,14 @@ export function Body() {
         them.
       </p>
 
+      <h2>What else do ecommerce teams ask about AI recommendations?</h2>
+
+      <h3>Do I need a product feed as well as product pages?</h3>
+      <p>
+        A feed helps, because it gives a clean structured copy of price, availability and attributes. But the
+        page itself has to carry the same facts in readable text, since that is what gets retrieved and quoted.
+      </p>
+
       <h2>What is the bottom line for ecommerce AI visibility?</h2>
       <p>
         Ecommerce AI visibility is mostly a specificity problem wearing a technology costume. The assistant is

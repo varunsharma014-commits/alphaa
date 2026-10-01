@@ -239,6 +239,32 @@ export function Body() {
         exactly the kind of specific, structured detail assistants extract well.
       </p>
 
+      <h2>What else do recruiters ask about AI visibility?</h2>
+
+      <h3>How do I avoid confusing employers and candidates?</h3>
+      <p>
+        Give each audience its own clearly labelled pages and keep the employer-facing facts, roles, markets and
+        fees, on the employer side. Mixed pages match neither query well.
+      </p>
+
+      <h3>Should I publish fee structures?</h3>
+      <p>
+        A structure helps even without exact numbers: percentage ranges, retained versus contingency, guarantee
+        periods. Buyers filter on it and silence removes you.
+      </p>
+
+      <h3>Do placement numbers help?</h3>
+      <p>
+        Yes, when they are specific and checkable rather than rounded marketing claims. Named roles, sectors and
+        markets are more useful than a total headcount.
+      </p>
+
+      <h3>Does Clutch or a similar directory matter?</h3>
+      <p>
+        Yes, as independent corroboration. For B2B service categories those profiles are frequently retrieved
+        and carry the kind of verified detail an assistant can quote.
+      </p>
+
       <h2>So how do staffing agencies get recommended by AI?</h2>
       <p>
         Recruiters lose AI visibility to vagueness more than to competition. Name the roles you fill, the

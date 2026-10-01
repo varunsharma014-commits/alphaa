@@ -145,6 +145,32 @@ export function Body() {
         the question.
       </p>
 
+      <h2>What else do people ask about getting cited on Perplexity?</h2>
+
+      <h3>Does Perplexity need my page to be recent?</h3>
+      <p>
+        Recency helps more than on other engines, because it favours current sources and shows publication
+        context. Keeping dates and facts current is worth more here than elsewhere.
+      </p>
+
+      <h3>Why does Perplexity cite Reddit so often?</h3>
+      <p>
+        Because threaded discussion reads as independent corroboration and directly answers comparative
+        questions. It is a signal about source type rather than about Reddit specifically.
+      </p>
+
+      <h3>Can I submit my site to Perplexity?</h3>
+      <p>
+        There is no submission route. Access is governed by your robots.txt and whether PerplexityBot can fetch
+        your pages, so unblocking it is the only control you have.
+      </p>
+
+      <h3>Do citations on Perplexity send traffic?</h3>
+      <p>
+        Some, because sources are shown inline and are clickable. It is generally a better click-through surface
+        than an AI Overview, though volumes are still modest.
+      </p>
+
       <h2>So how do you get cited on Perplexity?</h2>
       <p>
         Getting cited on Perplexity is mostly about meeting a retrieval engine where it works. Because

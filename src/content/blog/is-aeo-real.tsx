@@ -214,6 +214,32 @@ export function Body() {
         the disciplined work of making true things about your business easy for machines to find and verify.
       </p>
 
+      <h2>What else do people ask about whether AEO is real?</h2>
+
+      <h3>Is AEO just SEO with a new name?</h3>
+      <p>
+        There is real overlap, because crawlability and clear content serve both. What is genuinely different is
+        optimising to be quoted in a synthesised answer rather than ranked as a link.
+      </p>
+
+      <h3>Can I do AEO myself?</h3>
+      <p>
+        Yes. Most of the work is publishing facts you already know and keeping them consistent, which needs no
+        specialist tooling, only attention and follow-through.
+      </p>
+
+      <h3>How would I know AEO is working?</h3>
+      <p>
+        By tracking whether you get named and cited across repeated runs on several engines, and by watching
+        referral traffic from assistant hostnames. Both are trends rather than single readings.
+      </p>
+
+      <h3>Does AEO matter if my customers do not use AI yet?</h3>
+      <p>
+        It is cheap insurance either way, because the same work improves ordinary search. If your category
+        shifts, the lead time to build consensus is measured in months.
+      </p>
+
       <h2>So is AEO real or just hype?</h2>
       <p>
         AEO is real because the mechanism is real. AI assistants retrieve, weigh sources, and reward

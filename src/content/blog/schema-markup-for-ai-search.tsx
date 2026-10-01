@@ -257,6 +257,32 @@ export function Body() {
         Fix every error and review the warnings, then re-test until it&apos;s clean.
       </p>
 
+      <h2>What else do people ask about schema markup?</h2>
+
+      <h3>Does schema markup guarantee a rich result or a citation?</h3>
+      <p>
+        No. Schema makes your facts machine-readable and unambiguous, which improves eligibility and clarity,
+        but no markup compels an engine to show or cite you.
+      </p>
+
+      <h3>Which schema type should I add first?</h3>
+      <p>
+        LocalBusiness or its closest subtype for a local business, Organization otherwise. Those carry the
+        identity facts everything else depends on.
+      </p>
+
+      <h3>Can schema contradict my page content?</h3>
+      <p>
+        It can, and it is a real risk. Markup that claims facts the page does not show is treated as
+        untrustworthy, so generate it from the page rather than alongside it.
+      </p>
+
+      <h3>Do I need a plugin to add schema?</h3>
+      <p>
+        No. JSON-LD is a script block you can paste into the page head. A plugin only helps if it keeps the
+        markup in sync with content you change often.
+      </p>
+
       <h2>Will schema markup alone get me recommended by AI?</h2>
       <p>
         Schema markup won&apos;t single-handedly get you recommended by AI. But it removes guesswork: it states

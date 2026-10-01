@@ -129,7 +129,33 @@ export function Body() {
         a citation. Anyone who tells you otherwise is selling something. </p> <p> There is also a real risk
         worth naming: a comparison page that misstates a competitor can invite a legal complaint, and in some
         jurisdictions comparative advertising is regulated. Accuracy and dated sourcing are your protection on
-        both fronts. </p> <h2>What&apos;s the bottom line on comparison pages for AI search?</h2> <p> Comparison
+        both fronts. </p>      <h2>What else do people ask about comparison pages?</h2>
+
+      <h3>Should I name competitors directly on my own site?</h3>
+      <p>
+        Yes, if the comparison is genuinely fair and states where they are the better choice. One-sided pages
+        read as marketing and tend to reinforce the competitor association rather than yours.
+      </p>
+
+      <h3>Is it risky to publish a competitor comparison?</h3>
+      <p>
+        Commercially it invites scrutiny, so keep every claim checkable and dated. Factually it is low risk as
+        long as you describe only what is on their public site.
+      </p>
+
+      <h3>How often should a comparison page be updated?</h3>
+      <p>
+        Whenever the facts move, and at minimum every quarter. Comparison pages age badly because pricing and
+        features change, and a stale table is worse than no table.
+      </p>
+
+      <h3>Do comparison tables need schema markup?</h3>
+      <p>
+        It helps for structure but is not the deciding factor. A clean HTML table with clear headers is already
+        far easier to extract than prose, with or without markup.
+      </p>
+
+ <h2>What&apos;s the bottom line on comparison pages for AI search?</h2> <p> Comparison
         pages work in AI search for the same reason they work with a careful human buyer: they answer the actual
         question, which is not &quot;is this good&quot; but &quot;is this right for me versus that.&quot; Write
         attributes rather than adjectives, concede what is genuinely better elsewhere, date your claims, and
