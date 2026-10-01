@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "SaaS gets recommended when review platforms, comparison pages and documentation describe it consistently, because software queries have no local signals to fall back on.",
   date: "2026-06-17",
   updated: "2026-10-01",
-  readMins: 4,
+  readMins: 5,
   tag: "Playbook",
   kind: "industry",
   keyphrase: "aeo for saas",

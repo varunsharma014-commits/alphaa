@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Schema gives engines typed facts instead of guessed ones, and a handful of types do almost all the useful work.",
   date: "2026-06-17",
   updated: "2026-10-01",
-  readMins: 4,
+  readMins: 5,
   tag: "Technical Guide",
   kind: "guide",
   keyphrase: "schema markup for ai search",

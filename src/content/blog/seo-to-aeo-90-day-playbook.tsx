@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Three thirty-day phases: measure what AI says about you now, fix the facts and structure it reads, then build the third-party evidence it corroborates against.",
   date: "2026-07-23",
   updated: "2026-10-01",
-  readMins: 6,
+  readMins: 7,
   tag: "Playbook",
   kind: "guide",
   keyphrase: "how to switch from seo to aeo",

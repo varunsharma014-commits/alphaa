@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Ranking #1 still helps, but roughly two-thirds of Google searches now end without a click, which makes the answer itself the destination.",
   date: "2026-07-17",
   updated: "2026-10-01",
-  readMins: 5,
+  readMins: 6,
   tag: "Explainer",
   kind: "guide",
   keyphrase: "death of the blue link",

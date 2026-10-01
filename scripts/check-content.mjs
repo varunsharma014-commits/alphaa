@@ -7,6 +7,9 @@
 //   node scripts/check-content.mjs --built          assert the BUILT output
 //   node scripts/check-content.mjs --built <slug>   ditto, one post
 //
+// Every rule is an error. There is no grandfathering: the whole corpus passes,
+// so anything that fails is a regression.
+//
 // Two layers, because we have hit both failure modes:
 //   source  — authoring mistakes (unwrapped table, missing FAQ pairs, bad links)
 //   built   — code regressions that silently drop schema even though the source
@@ -14,7 +17,7 @@
 //             their hand-written FAQ pairs)
 //
 // Exit 1 if any ERROR. WARNs are printed and do not block.
-import { readFileSync, readdirSync, existsSync, writeFileSync } from "fs"
+import { readFileSync, readdirSync, existsSync } from "fs"
 import path from "path"
 
 const ROOT = process.cwd()
@@ -66,21 +69,14 @@ const BANNED_CLAIMS = [
 const DEBUNK =
   /\b(no|none|not|nothing|nobody|never|without|cannot|anyone|hype|snake oil|selling|exagger|overstat|guess|wary|myth|scam|impossible|beware|wrong|outdated|out of date|misleading|unsupported|inflated|avoid|risk|puffery|discount)\b|[""]|\?/i
 
-// Posts written before the AI-citation format rework. Correctness rules still
-// apply to them; the format-completeness rules (subtitle/kind/keyphrase/
-// takeaways/sources/lengths/FAQ block) are reported as warnings instead of
-// errors so the backlog does not block new publishing. New posts are NOT in
-// this list, so they are fully enforced. Regenerate only to retire entries.
-const BASELINE_FILE = path.join(ROOT, "scripts/content-baseline.json")
-const BASELINE = new Set(existsSync(BASELINE_FILE) ? JSON.parse(readFileSync(BASELINE_FILE, "utf8")).grandfathered : [])
-
 const problems = []
 const add = (sev, slug, msg, cat) => problems.push({ sev, slug, msg, cat })
 // Correctness: always an error. Broken links, lost schema, bad markup, false claims.
 const err = (slug, msg) => add("ERROR", slug, msg, "correctness")
 const warn = (slug, msg) => add("WARN", slug, msg, "format")
-// Format-completeness: an error for new posts, a warning for grandfathered ones.
-const fmtErr = (slug, msg) => add(BASELINE.has(slug) ? "WARN" : "ERROR", slug, msg, "format")
+// Format-completeness. Every post in the repo satisfies these, so the backlog
+// baseline that once downgraded them to warnings has been retired.
+const fmtErr = (slug, msg) => add("ERROR", slug, msg, "format")
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 // Mirrors toText() in src/content/blog/faq.ts.
@@ -274,7 +270,13 @@ function lintSources() {
     const tables = (body.match(/<table[\s>]/g) || []).length
     const wraps = (body.match(/className="table-wrap"/g) || []).length
     if (tables > wraps) err(slug, `${tables} <table> but ${wraps} .table-wrap — unwrapped tables overflow on phones`)
-    if (!tables && !/<ol[\s>]/.test(body)) warn(slug, "no table and no <ol> — spec wants one comparison table or numbered steps")
+    // The spec asks for a table or numbered steps "wherever it fits". What
+    // actually matters for extraction is that the page has some structured
+    // block an engine can lift, so a <ul> of factors counts too — renumbering
+    // an unordered list to satisfy a linter would invent an order that is not
+    // there. A post with no structure at all is still flagged.
+    if (!tables && !/<ol[\s>]/.test(body) && !/<ul[\s>]/.test(body))
+      fmtErr(slug, "no table, <ol> or <ul> — nothing structured for an engine to extract")
 
     // answer-first opening. Skip a leading author/reviewer signal paragraph
     // (the E-E-A-T byline, wrapped in <em>) — the answer is the one after it.
@@ -407,26 +409,6 @@ function lintBuilt() {
 }
 
 // ── run ──────────────────────────────────────────────────────────────────────
-// --baseline rewrites scripts/content-baseline.json from the posts that
-// currently fail format-completeness rules. Run it once at adoption, then only
-// to retire entries as the backlog is cleaned up. Never run it to silence a
-// freshly written post.
-if (args.includes("--baseline")) {
-  BASELINE.clear()
-  lintSources()
-  // Only format-completeness failures are grandfathered. Correctness failures
-  // are real bugs and must be fixed, so they never enter the baseline.
-  const failing = [...new Set(problems.filter((p) => p.sev === "ERROR" && p.cat === "format").map((p) => p.slug))].sort()
-  const body = {
-    note: "Posts predating the AI-citation format rework. Format-completeness rules are warnings for these; correctness rules still apply. New posts must not be added here.",
-    generated: new Date().toISOString().slice(0, 10),
-    grandfathered: failing,
-  }
-  writeFileSync(BASELINE_FILE, JSON.stringify(body, null, 2) + "\n")
-  console.log(`wrote ${path.relative(ROOT, BASELINE_FILE)} with ${failing.length} grandfathered post(s)`)
-  process.exit(0)
-}
-
 const checked = BUILT_MODE ? lintBuilt() : lintSources()
 const errors = problems.filter((p) => p.sev === "ERROR")
 const warns = problems.filter((p) => p.sev === "WARN")

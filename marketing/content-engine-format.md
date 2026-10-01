@@ -47,7 +47,7 @@ thorough post that runs long is fine.
 - **subtitle**: answers the title's question in ONE sentence (shown under the H1, used in llms.txt and RSS).
 - **First paragraph**: a 40–60-word direct answer, starting `<strong>Short answer:</strong>`. No preamble.
 - **H2s are questions** ("How much does AEO cost?"), each followed immediately by a `<p>` whose first sentence answers it. Those pairs become FAQPage schema automatically, so the answer paragraph must be ≥ 40 characters and self-contained.
-- **One comparison table or numbered steps** (`<ol>`) wherever it fits. Wrap every table in `<div className="table-wrap">…</div>` so it scrolls inside the column on phones.
+- **At least one structured block** — a comparison table, numbered steps (`<ol>`) or a list of factors (`<ul>`) — so there is something an engine can lift whole. Prefer a table or `<ol>` where the content really is comparative or sequential; do not renumber an unordered list to look like steps. Wrap every table in `<div className="table-wrap">…</div>` so it scrolls inside the column on phones.
 - **An FAQ block** near the end with **4–6 Q&As**, each an `<h3>` ending in `?` directly followed by ONE `<p>` answer (≥ 40 characters, 2–3 sentences, answer in the first sentence). The section's own H2 is question-phrased like every other H2 ("What else do electricians ask about AI visibility?") — `extractFaq` in `src/content/blog/faq.ts` finds the pairs by shape, not by heading text, so the wording is free. What it does depend on: the `<p>` must come **directly** after the `<h3>`, with no list, wrapper or links-only paragraph between them, and the answer must be ≥ 40 characters. Don't repeat a question already used as an H2.
 - **takeaways**: 3–5 bullets, each one sentence, ≤ 25 words, each a standalone fact.
 - **sources**: 3–6 outbound citations to primary or authoritative pages (the vendor's own pricing page, Google Search Central, OpenAI, the study's own page). Not other SEO blogs. Open each URL and copy its real `<title>` into `title`. They render as a numbered "Sources" list at the end (`rel="noopener"`, followed), and as `citation` in the JSON-LD. Also link the most important ones inline in the body with `{...ext}`.
@@ -214,10 +214,11 @@ npm run check:content:built               # asserts the emitted JSON-LD and mark
   happily. `scripts/check-content.mjs` is the only thing that checks those, and
   the `--built` pass is what catches a code change that silently drops schema
   from every post at once. Run both.
-- If the gate reports an error on a post you just wrote, fix the post. Never add
-  a new slug to `scripts/content-baseline.json` — that file only grandfathers
-  pre-rework posts on format-completeness, and correctness rules apply to
-  everything regardless.
+- If the gate reports an error on a post you just wrote, fix the post. Every rule
+  is an error and nothing is grandfathered — the entire corpus passes clean, so
+  any failure is a regression you just introduced. Never relax a rule to make a
+  post pass; if a rule is genuinely wrong, change it deliberately and say why in
+  the commit.
 - `git pull --rebase origin main`, commit (`Co-Authored-By` line), `git push origin main`.
 - After Railway deploys (watch for the URL to return 200):
 

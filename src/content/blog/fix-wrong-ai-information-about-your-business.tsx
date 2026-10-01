@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "You cannot edit the model, so you correct the public sources it reads and wait for retrieval to catch up.",
   date: "2026-07-31",
   updated: "2026-10-01",
-  readMins: 6,
+  readMins: 7,
   tag: "Technical",
   kind: "guide",
   keyphrase: "fix wrong ai information about your business",

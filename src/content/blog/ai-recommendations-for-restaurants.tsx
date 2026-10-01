@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "AI assembles restaurant recommendations from your menu, hours, reviews and third-party roundups, so the specifics you publish decide whether you can be matched.",
   date: "2026-06-17",
   updated: "2026-10-01",
-  readMins: 5,
+  readMins: 6,
   tag: "Playbook",
   kind: "industry",
   keyphrase: "ai recommendations for restaurants",
@@ -75,6 +75,17 @@ export function Body() {
         A restaurant gets recommended by maintaining its Google Business Profile, reviews, menu details,
         occasion-specific content, schema, and listings, and by not blocking AI crawlers.
       </p>
+
+      <p>The short version, in priority order:</p>
+      <ol>
+        <li>Complete and actively maintain your Google Business Profile.</li>
+        <li>Run a reviews strategy aimed at specifics, not just a review count.</li>
+        <li>Publish your menu, cuisine, price band and dietary options as readable text.</li>
+        <li>Write occasion- and dish-specific pages and FAQs.</li>
+        <li>Add <code>Restaurant</code> and <code>Menu</code> schema.</li>
+        <li>Keep your listings consistent everywhere.</li>
+        <li>Do not block the AI crawlers.</li>
+      </ol>
 
       <h3>1. Complete and actively maintained Google Business Profile</h3>
       <p>

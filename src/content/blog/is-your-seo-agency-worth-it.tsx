@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "A worthwhile agency can show you work that changed something on your site or your public profiles, and this audit takes about ten minutes to run.",
   date: "2026-07-21",
   updated: "2026-10-01",
-  readMins: 8,
+  readMins: 9,
   tag: "Guide",
   kind: "guide",
   keyphrase: "is my seo agency worth it",

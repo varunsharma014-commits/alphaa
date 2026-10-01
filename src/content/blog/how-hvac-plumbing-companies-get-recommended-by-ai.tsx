@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "HVAC and plumbing companies get recommended when service area, emergency hours and call-out pricing are published and consistent everywhere AI looks.",
   date: "2026-07-15",
   updated: "2026-10-01",
-  readMins: 6,
+  readMins: 7,
   tag: "Playbook",
   kind: "industry",
   keyphrase: "how hvac plumbing companies get recommended by ai",

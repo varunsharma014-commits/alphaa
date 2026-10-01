@@ -72,6 +72,15 @@ export function Body() {
         add accurate schema markup, and make your site easy to crawl.
       </p>
 
+      <p>The short version, in priority order:</p>
+      <ol>
+        <li>Write answer-first pages Claude can lift a clean sentence from.</li>
+        <li>Be one unambiguous entity everywhere you appear.</li>
+        <li>Earn genuine third-party corroboration.</li>
+        <li>Add accurate schema markup.</li>
+        <li>Keep your site easy to crawl, and consider an llms.txt file.</li>
+      </ol>
+
       <h3>1. Write answer-first pages Claude can lift</h3>
       <p>
         When Claude retrieves your site, it is looking for a clean, self-contained answer to the question at

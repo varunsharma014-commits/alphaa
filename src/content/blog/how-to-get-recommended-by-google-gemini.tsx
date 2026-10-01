@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Gemini draws on what Google already understands about your business, so a clean entity and a complete Business Profile do most of the work.",
   date: "2026-07-25",
   updated: "2026-10-01",
-  readMins: 5,
+  readMins: 6,
   tag: "How-to",
   kind: "industry",
   keyphrase: "how to get recommended by google gemini",
@@ -74,6 +74,16 @@ export function Body() {
         Complete and verify your Google Business Profile, be one unambiguous entity, write answer-first pages,
         add accurate schema, earn genuine reviews, and build corroboration across the web.
       </p>
+
+      <p>The short version, in priority order:</p>
+      <ol>
+        <li>Complete and verify your Google Business Profile.</li>
+        <li>Make your business one unambiguous entity.</li>
+        <li>Write answer-first pages that match real questions.</li>
+        <li>Add accurate schema markup.</li>
+        <li>Earn genuine reviews and keep replying to them.</li>
+        <li>Build corroboration across the web.</li>
+      </ol>
 
       <h3>1. Complete and verify your Google Business Profile</h3>
       <p>

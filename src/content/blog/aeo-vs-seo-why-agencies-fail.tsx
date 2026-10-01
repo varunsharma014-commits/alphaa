@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "SEO optimises you for Google's ranked links while AEO optimises you for the answer itself, and most agencies are still staffed and priced for the former.",
   date: "2026-06-17",
   updated: "2026-10-01",
-  readMins: 3,
+  readMins: 6,
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "aeo vs seo",
@@ -144,6 +144,71 @@ export function Body() {
         on-topic content — so when an engine summarizes the web to answer a question, your business is the
         obvious, well-described option. No one can edit an AI model&apos;s internals; you influence the public
         signals it reads.
+      </p>
+
+      <h2>Where do SEO and AEO actually overlap?</h2>
+      <p>
+        More than the marketing on either side suggests. The overlap is the technical and editorial groundwork, and
+        it is the reason moving to AEO is an extension of good SEO rather than a replacement for it.
+      </p>
+      <ul>
+        <li>
+          <strong>Crawlability.</strong> A page a crawler cannot fetch or render cannot rank and cannot be quoted.
+          Server-rendered HTML, a working sitemap and an unblocked robots.txt serve both goals identically.
+        </li>
+        <li>
+          <strong>Structured data.</strong> Schema has always helped search engines understand a page; it now also
+          gives an assistant typed facts instead of guessed ones.
+        </li>
+        <li>
+          <strong>Clear, specific content.</strong> The page that answers a question directly tends to rank and to
+          be lifted. The difference is that AEO rewards the paragraph rather than the page.
+        </li>
+        <li>
+          <strong>Consistent business details.</strong> Name, address, phone and hours matching everywhere has been
+          local SEO advice for a decade. It now also decides whether an assistant will state your details at all.
+        </li>
+      </ul>
+      <p>
+        Where they genuinely diverge is the goal and the measurement. SEO optimises a page to be chosen from a list
+        of links and measures clicks. AEO optimises the facts about your business to be repeated inside an answer,
+        and measures whether you get named. An agency that treats the second as a rebrand of the first will keep
+        reporting rankings while the answer in front of your customer names someone else.
+      </p>
+
+      <h2>What should you ask an agency before you sign or renew?</h2>
+      <p>
+        Ask four questions, and judge the answers on specifics rather than confidence. They separate an agency
+        doing real work from one selling activity reports.
+      </p>
+      <ol>
+        <li>
+          <strong>What shipped last month, and what moved because of it?</strong> A good answer names a change to
+          your site or your public profiles and the metric it was meant to affect. A bad answer lists hours spent,
+          keywords &quot;targeted&quot; or reports delivered.
+        </li>
+        <li>
+          <strong>Which AI engines do you check, and what did they say about us?</strong> If nobody has ever asked
+          ChatGPT, Gemini, Perplexity or Claude your category question, the agency has no visibility into the
+          surface where a growing share of your customers now start.
+        </li>
+        <li>
+          <strong>Who owns our Google Business Profile and our listings?</strong> You should. Agencies that hold
+          your profile under their own account make leaving expensive, and profile accuracy is the highest-leverage
+          thing in local AI visibility.
+        </li>
+        <li>
+          <strong>What happens to the work if we stop paying?</strong> Content, schema and corrected listings stay.
+          Rented links and third-party widgets disappear. The ratio tells you how much of the retainer is building
+          an asset and how much is renting one.
+        </li>
+      </ol>
+      <p>
+        None of this requires you to understand the technical detail. It requires the agency to describe what it
+        changed in language you can check, which is the part that distinguishes the good ones. If you want to run
+        the check yourself first, our{" "}
+        <Link href="/blog/is-your-seo-agency-worth-it">ten-minute SEO agency audit</Link> walks through six tests
+        you can do without any tools.
       </p>
 
       <h2>What else do people ask about AEO vs SEO agencies?</h2>

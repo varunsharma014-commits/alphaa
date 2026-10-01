@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Perplexity cites recent, answer-first pages that state verifiable facts, because it retrieves live and shows its sources on every answer.",
   date: "2026-06-17",
   updated: "2026-10-01",
-  readMins: 5,
+  readMins: 6,
   tag: "How-to",
   kind: "industry",
   keyphrase: "how to get cited on perplexity",
@@ -68,6 +68,17 @@ export function Body() {
         Publish recent content, lead with the answer, state clear citable facts, build a real FAQ page, earn
         third-party citations, add structured data, and keep your facts consistent everywhere.
       </p>
+
+      <p>The short version, in priority order:</p>
+      <ol>
+        <li>Publish recent content and keep it updated.</li>
+        <li>Lead with the answer, then support it.</li>
+        <li>State clear, citable facts with their sources.</li>
+        <li>Build a real FAQ page with question-and-answer pairs.</li>
+        <li>Earn third-party citations from sources Perplexity retrieves.</li>
+        <li>Add accurate structured data.</li>
+        <li>Keep your facts consistent everywhere.</li>
+      </ol>
 
       <h3>1. Publish recent, regularly updated content</h3>
       <p>

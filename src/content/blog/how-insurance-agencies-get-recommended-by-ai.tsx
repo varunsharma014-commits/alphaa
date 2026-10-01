@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Agencies and brokers get recommended when the lines they write, the carriers they represent and the states they are licensed in are all in readable text.",
   date: "2026-08-19",
   updated: "2026-10-01",
-  readMins: 6,
+  readMins: 7,
   tag: "Playbook",
   kind: "industry",
   keyphrase: "how insurance agencies get recommended by ai",

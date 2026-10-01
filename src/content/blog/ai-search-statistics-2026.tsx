@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "The verified numbers on how many people now ask AI first, each one quoted with its source and its qualifier intact.",
   date: "2026-07-23",
   updated: "2026-10-01",
-  readMins: 4,
+  readMins: 5,
   tag: "Data",
   kind: "listicle",
   keyphrase: "ai search statistics 2026",
@@ -128,6 +128,27 @@ export function Body() {
           <strong>Any precise &quot;X% of buyers now choose the AI-recommended business&quot; stat.</strong> We
           have not found a defensible source for figures like this, so we do not cite one. If a number sounds
           suspiciously round and specific and has no named study behind it, treat it as marketing, not data.
+        </li>
+      </ul>
+
+      <h2>How should you use these numbers in your own reporting?</h2>
+      <p>
+        Quote them as context, never as a forecast for your business. Category-level adoption figures describe the
+        whole market, so they tell you the direction of travel rather than what your own customers do.
+      </p>
+      <ul>
+        <li>
+          <strong>Keep the qualifier attached.</strong> &quot;Commercial-intent searches&quot; and &quot;all
+          searches&quot; are different denominators, and dropping the distinction is how most of the misquoted
+          versions above started.
+        </li>
+        <li>
+          <strong>Pair a market number with one of your own.</strong> Your referral traffic from assistant
+          hostnames, or your own citation rate across engines, is the number that should drive a decision.
+        </li>
+        <li>
+          <strong>Re-check the source before reusing a figure.</strong> These studies are reissued annually and the
+          numbers move, so a stat repeated from a blog post rather than its source is usually a year or more stale.
         </li>
       </ul>
 

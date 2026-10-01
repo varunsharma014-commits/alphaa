@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Staffing agencies get recommended when they are unambiguously specific about a niche, the roles they place and the markets they cover.",
   date: "2026-08-20",
   updated: "2026-10-01",
-  readMins: 6,
+  readMins: 7,
   tag: "Playbook",
   kind: "industry",
   keyphrase: "how staffing recruiting agencies get recommended by ai",

@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Each assistant picks local businesses from a different source mix, which is why being strong in one does not carry over to the others.",
   date: "2026-09-25",
   updated: "2026-10-01",
-  readMins: 6,
+  readMins: 7,
   tag: "Guide",
   kind: "comparison",
   keyphrase: "chatgpt vs gemini vs perplexity local search",

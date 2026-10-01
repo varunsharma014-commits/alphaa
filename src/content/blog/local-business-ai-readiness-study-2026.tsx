@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "We checked 288 local business websites and found most are only partly readable by AI assistants, with the same few failures repeating.",
   date: "2026-09-25",
   updated: "2026-10-01",
-  readMins: 4,
+  readMins: 5,
   tag: "Research",
   kind: "news",
   keyphrase: "local business ai readiness study",

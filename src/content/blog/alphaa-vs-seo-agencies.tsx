@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "A $2,000 retainer buys human strategy and slow manual execution, while Alphaa buys continuous monitoring and automated fixes for a fraction of the price.",
   date: "2026-09-25",
   updated: "2026-10-01",
-  readMins: 6,
+  readMins: 7,
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs seo agencies",

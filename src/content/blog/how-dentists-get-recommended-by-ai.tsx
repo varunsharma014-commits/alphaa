@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Dentists get recommended when the public signals about the practice are complete, consistent and specific about treatments, insurance and availability.",
   date: "2026-07-13",
   updated: "2026-10-01",
-  readMins: 5,
+  readMins: 6,
   tag: "Playbook",
   kind: "industry",
   keyphrase: "how dentists get recommended by ai",

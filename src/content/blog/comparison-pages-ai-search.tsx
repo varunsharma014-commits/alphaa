@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Yes, because comparison is the exact shape of the question people bring to AI, and a fair comparison page is unusually easy to retrieve and quote.",
   date: "2026-08-19",
   updated: "2026-10-01",
-  readMins: 5,
+  readMins: 6,
   tag: "Mechanism",
   kind: "guide",
   keyphrase: "comparison pages ai search",

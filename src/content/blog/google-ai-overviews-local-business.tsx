@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Showing up in AI Overviews means strengthening the local signals Google already trusts, then making the page on your site quotable.",
   date: "2026-07-13",
   updated: "2026-10-01",
-  readMins: 5,
+  readMins: 6,
   tag: "Playbook",
   kind: "guide",
   keyphrase: "google ai overviews for local business",

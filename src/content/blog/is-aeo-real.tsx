@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "AEO is real because the retrieval mechanism behind it is real and documented, but it shifts probabilities rather than guaranteeing placement.",
   date: "2026-06-17",
   updated: "2026-10-01",
-  readMins: 6,
+  readMins: 7,
   tag: "Explainer",
   kind: "guide",
   keyphrase: "is aeo real",

@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "Roughly two-thirds of Google searches now end without a click to any website, so the result page and the AI answer have become the destination.",
   date: "2026-07-20",
   updated: "2026-10-01",
-  readMins: 6,
+  readMins: 7,
   tag: "Explainer",
   kind: "guide",
   keyphrase: "zero click search",

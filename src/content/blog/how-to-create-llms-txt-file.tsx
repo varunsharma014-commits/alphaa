@@ -10,7 +10,7 @@ export const meta: PostMeta = {
     "An llms.txt file is a plain-text map of your site for AI assistants, cheap to add and worth doing, though its effect is still unproven.",
   date: "2026-06-17",
   updated: "2026-10-01",
-  readMins: 3,
+  readMins: 5,
   tag: "AEO Guide",
   kind: "guide",
   keyphrase: "how to create an llms.txt file",
@@ -80,6 +80,66 @@ export function Body() {
         fallback. </blockquote> <h2>Step 3 — How do I check my llms.txt file is working?</h2> <p> Visit
         <code>https://yourdomain.com/llms.txt</code> in a browser. You should see your plain-text file (not a
         404 and not your site&apos;s HTML). If you get a 404, the file isn&apos;t at the root; if you see your
+      <h2>What does a finished llms.txt look like for a small business?</h2>
+      <p>
+        It looks short and boring, which is the point. Here is the shape we use for a local service business: a
+        single H1 with the business name, a one-line summary in a blockquote, then grouped links with a short
+        description each.
+      </p>
+      <pre>{`# Riverside Plumbing
+
+> Licensed plumbing and drainage contractor serving Austin and
+> surrounding areas, available 24/7 for emergencies.
+
+## Core pages
+- [Services](https://example.com/services): Full list of residential and
+  commercial plumbing services with price ranges.
+- [Service area](https://example.com/areas): Named suburbs and response times.
+- [Pricing](https://example.com/pricing): Call-out fee and typical job costs.
+
+## Reference
+- [FAQ](https://example.com/faq): Common questions on permits, emergencies
+  and warranties.
+- [About](https://example.com/about): Licence number, insurance and history.`}</pre>
+      <p>
+        Two things matter more than the formatting. First, every description should state a fact rather than a
+        pitch, because the description is what an assistant reads to decide whether the page answers the question
+        in front of it. Second, every URL has to resolve — a stale link in llms.txt is worse than a missing one,
+        since it signals the file is not maintained. If you want the deeper reasoning on why clear, specific
+        wording gets quoted, see{" "}
+        <Link href="/blog/how-to-write-content-ai-quotes">how to write content AI actually quotes</Link>.
+      </p>
+
+      <h2>What are the common mistakes with llms.txt?</h2>
+      <p>
+        Nearly every broken llms.txt file we see fails in one of four ways, and all four are quick to check once
+        you know what to look for.
+      </p>
+      <ul>
+        <li>
+          <strong>Served with the wrong content type.</strong> It must come back as <code>text/plain</code>. Some
+          frameworks serve files from the public directory as <code>text/html</code>, which makes the file useless
+          even though it loads in a browser.
+        </li>
+        <li>
+          <strong>Put at the wrong path.</strong> It belongs at the domain root, <code>/llms.txt</code>, not in a
+          subfolder and not under a subdomain you do not use.
+        </li>
+        <li>
+          <strong>Blocked by robots.txt.</strong> A blanket disallow that catches the AI user agents also stops
+          them fetching this file, which defeats the purpose entirely.
+        </li>
+        <li>
+          <strong>Left to go stale.</strong> Links to pages you have since moved or deleted undermine the one thing
+          the file is for, which is telling an assistant your map is reliable.
+        </li>
+      </ul>
+      <p>
+        A final caution worth repeating: adoption of this standard is still partial and its measurable effect on
+        citations is unproven. Add it because it costs minutes and might matter later, not because anyone can show
+        you it moves answers today.
+      </p>
+
         homepage, your routing is rewriting it. </p>      <h2>What else do people ask about llms.txt?</h2>
 
       <h3>Will llms.txt hurt anything if engines ignore it?</h3>
