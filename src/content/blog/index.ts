@@ -97,6 +97,9 @@ import { meta as faqPagesMeta, Body as FaqPagesBody } from "./do-faq-pages-work-
 import { meta as profoundPeecMeta, Body as ProfoundPeecBody } from "./profound-vs-peec-ai-vs-alphaa"
 import { meta as kwResearchMeta, Body as KwResearchBody } from "./keyword-research-for-ai-search"
 import { meta as propertyMgrsMeta, Body as PropertyMgrsBody } from "./how-property-managers-get-recommended-by-ai"
+import { meta as ahrefsSemrushMeta, Body as AhrefsSemrushBody } from "./ahrefs-brand-radar-vs-semrush-ai-visibility"
+import { meta as measureAiVisMeta, Body as MeasureAiVisBody } from "./how-to-measure-ai-visibility"
+import { meta as citationShareMeta, Body as CitationShareBody } from "./what-is-ai-citation-share"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -199,6 +202,9 @@ export const POSTS: Post[] = [
   { meta: profoundPeecMeta, Body: ProfoundPeecBody },
   { meta: kwResearchMeta, Body: KwResearchBody },
   { meta: propertyMgrsMeta, Body: PropertyMgrsBody },
+  { meta: ahrefsSemrushMeta, Body: AhrefsSemrushBody },
+  { meta: measureAiVisMeta, Body: MeasureAiVisBody },
+  { meta: citationShareMeta, Body: CitationShareBody },
 ]
 
 export function getAllPosts(): Post[] {
