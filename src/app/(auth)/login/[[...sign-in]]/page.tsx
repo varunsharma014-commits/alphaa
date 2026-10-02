@@ -5,5 +5,5 @@ import { clerkAppearance } from "@/lib/clerk-appearance"
 // sign-up by Clerk; force that path to onboarding too (it used to fall back
 // to the homepage).
 export default function LoginPage() {
-  return <SignIn forceRedirectUrl="/dashboard" signUpForceRedirectUrl="/onboarding" appearance={clerkAppearance} />
+  return <SignIn routing="path" path="/login" signUpUrl="/signup" forceRedirectUrl="/dashboard" signUpForceRedirectUrl="/onboarding" appearance={clerkAppearance} />
 }

@@ -70,7 +70,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     // Provider lives here, not at the app root, so marketing pages never ship
     // Clerk's ~300 KiB browser SDK. <UserButton>/<UserProfile> need it.
-    <ClerkProvider appearance={clerkAppearance}>
+    <ClerkProvider appearance={clerkAppearance} signInUrl="/login" signUpUrl="/signup">
       <div data-dashboard-root="" data-agent="" data-theme={theme} data-brand="blue">
         {/* GA4: fires trial_start once when landing with ?upgraded=true (Stripe success redirect) */}
         <ConversionTracker event="trial_start" metaEvent="StartTrial" whenQueryParam="upgraded" />

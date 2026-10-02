@@ -28,6 +28,16 @@ export function MarketingNav() {
 
   useEffect(() => setMobileOpen(false), [pathname])
 
+  // Marketing pages don't load Clerk's SDK, so read its non-httpOnly
+  // __client_uat cookie (sign-in timestamp, "0" when signed out) to swap
+  // Login for Dashboard. Otherwise a signed-in user looks signed out here.
+  const [signedIn, setSignedIn] = useState(false)
+  useEffect(() => {
+    const uat = document.cookie.match(/(?:^|; )__client_uat=(\d+)/)?.[1]
+    setSignedIn(!!uat && uat !== "0")
+  }, [])
+  const account = signedIn ? { href: "/dashboard", label: "Dashboard" } : { href: "/login", label: "Login" }
+
   return (
     <>
       <header
@@ -69,10 +79,10 @@ export function MarketingNav() {
           {/* Desktop: Login sits directly beside the CTA */}
           <div className="hidden md:flex items-center gap-5">
             <Link
-              href="/login"
+              href={account.href}
               className="text-[12px] text-[#1d1d1f]/80 hover:text-[#1d1d1f] transition-colors duration-300"
             >
-              Login
+              {account.label}
             </Link>
             <Link
               href="/start"
@@ -111,10 +121,10 @@ export function MarketingNav() {
               </Link>
             ))}
             <Link
-              href="/login"
+              href={account.href}
               className="text-[28px] font-semibold tracking-[-0.015em] text-[#1d1d1f] py-1.5"
             >
-              Login
+              {account.label}
             </Link>
             <Link href="/start" className="mt-6 self-start text-[17px] text-white bg-[#0071e3] hover:bg-[#0077ed] rounded-full px-5 py-2.5 transition-colors">
               Free AI Scan
