@@ -33,12 +33,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!user.onboardingCompleted) redirect("/onboarding")
 
   // Paywall: onboarded users without a real Stripe subscription go to
-  // /start-trial (outside this layout — no redirect loop). The webhook sets
+  // /onboarding (outside this layout — no redirect loop), where the agent's
+  // resume step opens checkout. The webhook sets
   // stripeSubscriptionId + status seconds after checkout completes. Status
   // alone isn't trusted: the column's DB default is "trialing".
   // Founder account bypasses so the owner can always dogfood.
   if (!hasPaidPlan(user) && !FOUNDER_EMAILS.includes(user.email.toLowerCase())) {
-    redirect("/start-trial")
+    redirect("/onboarding")
   }
 
   // App theme is a cookie so the server paints the right one immediately (no

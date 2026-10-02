@@ -10,7 +10,7 @@ import { clerkAppearance } from "@/lib/clerk-appearance"
 // to payment. path/signInUrl keep every step (email code, etc.) on
 // alphaa.app: the Clerk instance's own defaults point at the accounts.alphaa.app
 // portal, whose after-sign-up URL is the homepage — new users landed there
-// signed in but stranded. Onboarding sends finished users on to /dashboard → /start-trial.
+// signed in but stranded. /onboarding is the agent conversation that ends in checkout.
 export default async function SignUpPage({ searchParams }: { searchParams: Promise<{ scan?: string }> }) {
   const { scan } = await searchParams
   const next = scan && /^[a-z0-9]{10,64}$/i.test(scan) ? `/onboarding?scan=${scan}` : "/onboarding"

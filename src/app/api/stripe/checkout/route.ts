@@ -65,16 +65,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: session.url })
   }
 
+  // `purchase: "starter"` comes from the agent conversation (/onboarding),
+  // which never handles price ids itself.
+  const fromAgent = purchase === "starter"
   const session = await stripe.checkout.sessions.create({
     customer: stripeCustomerId,
     branding_settings,
-    line_items: [{ price: priceId, quantity: 1 }],
+    line_items: [{ price: fromAgent ? STRIPE_PRICE_IDS.starter.monthly : priceId, quantity: 1 }],
     mode: "subscription",
     // No trial (decided 2026-09-24): the /start analysis does the convincing;
     // month to month, cancel any time.
     payment_method_collection: "always",
-    success_url: `${appUrl}/dashboard?upgraded=true`,
-    cancel_url: `${appUrl}/pricing`,
+    success_url: fromAgent ? `${appUrl}/onboarding?paid=1` : `${appUrl}/dashboard?upgraded=true`,
+    cancel_url: fromAgent ? `${appUrl}/onboarding` : `${appUrl}/pricing`,
   })
 
   return NextResponse.json({ url: session.url })

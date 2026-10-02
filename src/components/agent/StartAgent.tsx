@@ -56,18 +56,49 @@ const CANNED: Record<string, string> = {
     "$99 a month, month to month. Cancel in two clicks, no contract. An SEO agency charges around $2,000 a month for Google alone — and nothing for AI.",
 }
 
-export function StartAgent() {
-  const [messages, setMessages] = useState<Message[]>(() => [
+// Where the conversation runs:
+//  public — /start, a visitor; ends with "Start today" → sign up.
+//  setup  — /onboarding, just signed up; ends with checkout, no forms.
+//  resume — /onboarding, business already known; straight to checkout.
+export type StartMode = "public" | "setup" | "resume"
+
+const CHECKOUT = "#checkout"
+
+function greeting(mode: StartMode, name?: string): Message[] {
+  if (mode === "resume") {
+    return [
+      agent(
+        [
+          { kind: "text", text: name ? `Welcome back. I’ve got ${name} ready to go.` : "Welcome back. You’re all set up." },
+          { kind: "text", text: "$99 a month. Month to month.", big: true },
+          { kind: "text", text: "Cancel anytime in two clicks — no contract. I start the day you say go." },
+          { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: CHECKOUT }, primary: true } },
+        ],
+        "greet"
+      ),
+    ]
+  }
+  return [
     agent(
-      [
-        { kind: "text", text: "Hi. I’m Alphaa, an AI agent." },
-        { kind: "text", text: "I get local businesses recommended by ChatGPT, Gemini, Claude and Perplexity." },
-        { kind: "text", text: "What’s your website?", big: true },
-      ],
+      mode === "setup"
+        ? [
+            { kind: "text", text: "You’re in. I’m Alphaa, your AI agent." },
+            { kind: "text", text: "No forms. Give me your website and I’ll work out the rest." },
+            { kind: "text", text: "What’s your website?", big: true },
+          ]
+        : [
+            { kind: "text", text: "Hi. I’m Alphaa, an AI agent." },
+            { kind: "text", text: "I get local businesses recommended by ChatGPT, Gemini, Claude and Perplexity." },
+            { kind: "text", text: "What’s your website?", big: true },
+          ],
       "greet"
     ),
-  ])
-  const [phase, setPhase] = useState<Phase>("website")
+  ]
+}
+
+export function StartAgent({ mode = "public", resumeName }: { mode?: StartMode; resumeName?: string }) {
+  const [messages, setMessages] = useState<Message[]>(() => greeting(mode, resumeName))
+  const [phase, setPhase] = useState<Phase>(mode === "resume" ? "result" : "website")
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const [settled, setSettled] = useState(false)
@@ -188,8 +219,10 @@ export function StartAgent() {
       agent([
         { kind: "text", text: "$99 a month. Month to month.", big: true },
         { kind: "text", text: `An agency charges about $2,000 a month for Google alone. Cancel anytime in two clicks — no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
-        { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: `/signup?scan=${scanId}` }, primary: true } },
-        { kind: "chips", items: [{ label: "Email me this report", action: { type: "ask", text: "report" }, primary: false }] },
+        { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: mode === "public" ? `/signup?scan=${scanId}` : CHECKOUT }, primary: true } },
+        ...(mode === "public"
+          ? [{ kind: "chips", items: [{ label: "Email me this report", action: { type: "ask", text: "report" }, primary: false }] } as Block]
+          : []),
       ], "ask")
     )
     setBusy(false)
@@ -220,7 +253,7 @@ export function StartAgent() {
         : /how much|price|cost|\$|pay|expensive/.test(t) ? CANNED["How much?"]
         : /what (exactly )?(will|do|would) you|what.*do for me|how does it work/.test(t) ? CANNED["What exactly will you do?"]
         : null
-      push(agent([{ kind: "text", text: canned ?? "Once you start I answer anything you ask here. For now — tap Start today, or email yourself the report and I’ll take it from there." }]))
+      push(agent([{ kind: "text", text: canned ?? (mode === "public" ? "Once you start I answer anything you ask here. For now — tap Start today, or email yourself the report and I’ll take it from there." : "Once you start I answer anything you ask here. Tap Start today and I begin this week.") }]))
       return
     }
 
@@ -267,8 +300,40 @@ export function StartAgent() {
       push(user(chip.label), agent([{ kind: "text", text: "Sure. Where do I send it?" }, emailBlock()]))
     } else if (chip.action.type === "say") {
       push(user(chip.label), agent([{ kind: "text", text: chip.action.text }]))
+    } else if (chip.action.type === "link" && chip.action.href === CHECKOUT) {
+      await checkout()
     } else if (chip.action.type === "link") {
       window.location.href = chip.action.href
+    }
+  }
+
+  // setup/resume: the scan is the onboarding — save it, then straight to Stripe.
+  async function checkout() {
+    if (busy) return
+    setBusy(true)
+    try {
+      const scan = scanRef.current
+      if (mode === "setup" && scan) {
+        const r = await fetch("/api/user/onboarding-from-scan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ scanId: scan.id, businessType: identRef.current.businessType ?? "" }),
+        })
+        if (!r.ok) throw new Error("onboard")
+      }
+      fbTrack("InitiateCheckout", { value: 99, currency: "USD" })
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ purchase: "starter" }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.url) throw new Error("checkout")
+      push(agent([{ kind: "text", text: "Opening secure checkout…" }]))
+      window.location.href = data.url
+    } catch {
+      setBusy(false)
+      push(agent([{ kind: "text", text: "I couldn’t open checkout just now. Tap Start today again — or email hi@alphaa.app and we’ll set you up." }]))
     }
   }
 
@@ -329,7 +394,7 @@ export function StartAgent() {
           onSubmit={submit}
           disabled={busy || phase === "scanning"}
         />
-        <div className="ag-land__hint">Nothing to install. No card. Just your website.</div>
+        <div className="ag-land__hint">{mode === "public" ? "Nothing to install. No card. Just your website." : "Nothing to install. Just your website."}</div>
       </div>
     </div>
   )
