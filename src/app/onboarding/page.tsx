@@ -7,7 +7,7 @@ import { hasPaidPlan } from "@/lib/billing"
 import { completeOnboardingFromScan } from "@/lib/onboarding"
 import { StartAgent } from "@/components/agent/StartAgent"
 
-export const metadata = { title: "Getting started — Alphaa", robots: { index: false, follow: false } }
+export const metadata = { title: "Getting started", robots: { index: false, follow: false } }
 
 // Setup is the agent conversation from /start, not a form wizard: the agent
 // asks for the website, scans it, fills the profile from what it found and
