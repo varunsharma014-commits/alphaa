@@ -76,6 +76,9 @@ export async function POST(req: NextRequest) {
     // No trial (decided 2026-09-24): the /start analysis does the convincing;
     // month to month, cancel any time.
     payment_method_collection: "always",
+    // Expire after 1h (default 24h) so checkout.session.expired, and with it
+    // the abandoned-checkout email, arrives while the visit is still fresh.
+    expires_at: Math.floor(Date.now() / 1000) + 60 * 60,
     success_url: fromAgent ? `${appUrl}/onboarding?paid=1` : `${appUrl}/dashboard?upgraded=true`,
     cancel_url: fromAgent ? `${appUrl}/onboarding` : `${appUrl}/pricing`,
   })
