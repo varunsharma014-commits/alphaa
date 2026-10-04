@@ -42,7 +42,7 @@ export default function AuditResultsEmail({
           <Section style={content}>
             <Heading style={h1}>Your free AI visibility scan is ready</Heading>
             <Text style={paragraph}>
-              We scanned {businessName} ({city}) across {String(total)} major AI assistants. Here's what we found.
+              We scanned {businessName}{city.trim() ? ` (${city.trim()})` : ""} across {String(total)} major AI assistants. Here's what we found.
             </Text>
 
             {/* Score */}
@@ -73,7 +73,7 @@ export default function AuditResultsEmail({
                 <Column>
                   <Text style={engineName}>{e.name}</Text>
                   {e.snippet && <Text style={engineSnippet}>"{e.snippet}"</Text>}
-                  {!e.found && <Text style={engineMissing}>Not mentioned in responses about {city} businesses</Text>}
+                  {!e.found && <Text style={engineMissing}>Not mentioned in its answer{city.trim() ? ` about ${city.trim()} businesses` : ""}</Text>}
                 </Column>
               </Row>
             ))}

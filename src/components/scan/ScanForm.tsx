@@ -103,6 +103,9 @@ export function ScanForm() {
         >
           {loading ? "Scanning your business…" : "Get my free visibility score →"}
         </OrangePillButton>
+        <p className="text-center text-muted/60 text-xs">
+          We&rsquo;ll email your report and a few short follow-ups. Unsubscribe anytime.
+        </p>
       </form>
     </GlassCard>
   )

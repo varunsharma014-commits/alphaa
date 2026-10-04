@@ -118,6 +118,28 @@ async function processUser(
   movers.sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
   const keywordMovers = movers.slice(0, 5)
 
+  // 4b. What the agent actually did / is waiting on (real rows only) — feeds
+  // the "I asked ChatGPT about you this week. I did X. Y needs your OK." tone.
+  const [checksThisWeek, latestAuditEngines, draftsWaiting, reviewsUnanswered] = await Promise.all([
+    db.audit.count({ where: { userId: user.id, createdAt: { gte: sevenDaysAgo } } }),
+    newerAudit
+      ? db.audit.findFirst({
+          where: { userId: user.id, createdAt: { gte: sevenDaysAgo } },
+          orderBy: { createdAt: "desc" },
+          select: { aiEngineResults: { select: { engine: true, appeared: true } } },
+        })
+      : Promise.resolve(null),
+    db.gbpPost.count({ where: { userId: user.id, status: "draft" } }),
+    db.gmbReview.count({ where: { userId: user.id, reply: null, publishedAt: { gte: sevenDaysAgo } } }),
+  ])
+  const engineLabel = (e: string) => ENGINE_NAMES[e] ?? e
+  const namedThisWeek = latestAuditEngines
+    ? [...new Set(latestAuditEngines.aiEngineResults.filter((r) => r.appeared).map((r) => engineLabel(r.engine)))]
+    : []
+  const askedThisWeek = latestAuditEngines
+    ? [...new Set(latestAuditEngines.aiEngineResults.map((r) => engineLabel(r.engine)))]
+    : []
+
   // 5. Generate the weekly note (factual, first person — see rules in the prompt)
   const businessName = user.businessName ?? "your business"
   const city = user.city ?? ""
@@ -135,9 +157,13 @@ Data (the only facts you may use):
 - Google updates I published this week: ${postsPublished}
 - New Google reviews this week: ${reviewsNew}
 - Google search movers: ${keywordMovers.slice(0, 3).filter(k => k.change !== 0).map(k => `"${k.query}" moved ${k.change > 0 ? "up" : "down"} ${Math.abs(k.change)}`).join(", ") || "none"}
+- AI checks I ran this week: ${checksThisWeek > 0 ? `${checksThisWeek} (asked ${askedThisWeek.join(", ") || "the AIs"}; named the business: ${namedThisWeek.join(", ") || "none"})` : "none this week"}
+- Google post drafts waiting for the owner's OK: ${draftsWaiting}
+- New reviews this week without a reply yet: ${reviewsUnanswered}
 - Change in AI assistants naming the business: ${Object.entries(visibilityDelta).map(([e, d]) => `${ENGINE_NAMES[e] ?? e}: ${d > 0 ? "started naming it" : d < 0 ? "stopped naming it" : "no change"}`).join(", ")}
 
-Rules: state only what the data shows. If nothing changed, say so plainly and say what you'll do next week. Never describe results as "steady", "strong" or "holding firm" and never imply the business is being recommended unless the data says an AI started naming it. Name engines only as ChatGPT, Gemini, Claude or Perplexity. No hype, no exclamation marks, no lists.`,
+Shape: what you checked, then what you did, then what needs the owner's OK. Example of the tone (do not copy its facts): "I asked ChatGPT about you this week. I published two Google updates. One draft needs your OK." Only say you asked an AI if "AI checks I ran this week" is not "none". Only mention drafts or reviews waiting if their count is above 0.
+Rules: state only what the data shows. If nothing changed, say so plainly and say what you'll do next week. Never describe results as "steady", "strong" or "holding firm" and never imply the business is being recommended unless the data says an AI started naming it. Name engines only as ChatGPT, Gemini, Claude or Perplexity. No hype, no exclamation marks, no lists, no em-dashes.`,
         },
       ],
     })

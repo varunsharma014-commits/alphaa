@@ -174,6 +174,7 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 | `STRIPE_FULLSERVICE_MONTHLY_PRICE_ID` | $299/mo Full Service subscription (human-fulfilled, no trial) |
 | `PAGESPEED_API_KEY` | Optional. Google PageSpeed Insights key. **Without it the keyless quota 429s permanently and the speed page shows its honest failure state.** |
 | `APIFY_TOKEN` | Google SERP scraping for scan competitor evidence (optional; scan degrades without it) |
+| `COMPANY_MAILING_ADDRESS` | Physical mailing address in every marketing email footer (CAN-SPAM/CASL). **Unset = the nurture cron and abandoned-checkout email send nothing.** |
 
 ---
 
@@ -212,6 +213,8 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 - `/api/cron/weekly` (GET): generates `WeeklyReport` + sends email for all active/trialing users. Protected by `Authorization: Bearer <CRON_SECRET>`.
 - `/api/cron/gbp-posts` (GET): auto-generates and publishes GBP posts for connected users. Same auth guard.
 - Both have `maxDuration = 300` (5 minutes).
+- `/api/cron/nurture` (GET, daily 16:00 UTC): scan-lead nurture (Day 1/3/5/7/10/14 + 30/60/90 re-check) via `lib/nurture.ts` + `emails/NurtureEmail.tsx`. State in `ScanLead.ogData.nurture` (merged, never overwritten). Stops on unsubscribe, conversion, or an account with that email. `?dryRun=1` previews without sending.
+- Marketing email goes through `lib/marketing-email.ts` (footer + `List-Unsubscribe` one-click headers). Unsubscribe links are HMAC-signed (`lib/unsubscribe.ts`): `/unsubscribe` page (GET) and `/api/unsubscribe` (POST one-click). Abandoned checkout (`checkout.session.expired`) → `lib/abandoned-checkout.ts`, once per account.
 
 ### Webhooks
 - `/api/webhooks/clerk`: Creates `User` row on `user.created`, sends welcome email; deletes on `user.deleted`. Verified with Svix.

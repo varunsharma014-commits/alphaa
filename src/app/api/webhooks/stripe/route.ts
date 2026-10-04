@@ -6,6 +6,7 @@ import { sendPaymentFailureEmail } from "@/lib/email"
 import { resend } from "@/lib/resend"
 import { logActivity } from "@/lib/activity"
 import { SUPPORT_EMAIL } from "@/lib/constants"
+import { sendAbandonedCheckoutEmail } from "@/lib/abandoned-checkout"
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
@@ -63,6 +64,16 @@ export async function POST(req: NextRequest) {
             console.error("Concierge notification email failed:", e)
           }
         }
+      }
+      break
+    }
+    case "checkout.session.expired": {
+      // Unpaid subscription checkout timed out: one reminder (guarantee +
+      // refund), deduped per account. Never fail the webhook over email.
+      try {
+        await sendAbandonedCheckoutEmail(sub)
+      } catch (e) {
+        console.error("Abandoned checkout email failed:", e)
       }
       break
     }

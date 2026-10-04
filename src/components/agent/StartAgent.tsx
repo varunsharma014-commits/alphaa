@@ -235,7 +235,7 @@ export function StartAgent({ mode = "public", resumeName }: { mode?: StartMode; 
       label: "Your email",
       placeholder: "you@yourbusiness.com",
       cta: "Send it →",
-      fine: "You’ll get the report and, if you start a trial, one short note from me each week — nothing else.",
+      fine: "We’ll email your report and a few short follow-ups. Unsubscribe anytime.",
     }
   }
 

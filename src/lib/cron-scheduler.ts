@@ -61,5 +61,8 @@ export function startCron(): void {
     if (hour === 10) hit("/api/cron/content")
     // Daily 15:00 UTC — 90-day AI Visibility Guarantee credits (Stripe)
     if (hour === 15) hit("/api/cron/guarantee")
+    // Daily 16:00 UTC (noon ET) — scan-lead nurture emails (Resend only; sends
+    // nothing unless COMPANY_MAILING_ADDRESS is set)
+    if (hour === 16) hit("/api/cron/nurture")
   }, 60_000)
 }

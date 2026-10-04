@@ -56,6 +56,14 @@ export default function WinEmail({
               <Link href={winUrl} style={link}>{winUrl}</Link>
             </Text>
 
+            {/* Referral ask: only ever sent here, after a real measured win. */}
+            <Text style={shareNote}>
+              Know another owner who&apos;d want to know what AI says about them? Send them{" "}
+              <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/start?utm_source=email&utm_medium=win&utm_campaign=referral`} style={link}>alphaa.app/start</Link>.
+              If you refer businesses often, our{" "}
+              <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/refer`} style={link}>partner program</Link> pays 30% recurring.
+            </Text>
+
             <Hr style={hr} />
 
             <Text style={smallText}>
