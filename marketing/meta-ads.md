@@ -1,5 +1,7 @@
 # Meta Ads — Launch Plan
 
+> **SUPERSEDED (Oct 2026):** ad copy, creative spec and offer lines here are out of date (14-day trial, "no signup", orange palette, 5 to 6 AI engines). Use `marketing/ads/meta-ads-copy.md` and the creatives in `brand/ads/`. The pixel/conversion setup and launch checklist below are kept for reference; where they differ, `ads/meta-ads-copy.md` wins.
+
 > v1.0. Total **$20/day** ($600/mo): Retargeting $10/day, Prospecting $10/day. Geo US + Canada. Objective: **Leads/Conversions** optimizing for the `ScanCompleted` pixel event. Advantage+ placements ON except Audience Network (exclude — junk traffic for B2B-ish offers).
 
 ## Pixel events (install before launch — Day 1 of runbook)

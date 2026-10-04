@@ -1,5 +1,7 @@
 # Google Ads — Launch Plan
 
+> **SUPERSEDED (Oct 2026):** ad copy, creative spec and offer lines here are out of date (14-day trial, "no signup", orange palette, 5 to 6 AI engines). Use `marketing/ads/google-ads-copy.md` and the creatives in `brand/ads/`. The pixel/conversion setup and launch checklist below are kept for reference; where they differ, `ads/google-ads-copy.md` wins.
+
 > v1.0. Total budget **$40/day** ($1,200/mo). Geo: **US + Canada**, English. Network: **Search only** (uncheck Display + Search Partners). Bidding: **Maximize Clicks with $8 max CPC cap → switch to Maximize Conversions once the account has 30 conversions**.
 
 ## UTM convention (every final URL)

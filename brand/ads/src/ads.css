@@ -1,0 +1,134 @@
+/* Alphaa ad creatives: black & white only. Pure black, white type, #9a9a9a secondary, thin #333 outlines. */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#000;color:#fff;font-family:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+body.sq{width:1080px;height:1080px}
+body.st{width:1080px;height:1920px}
+body.ls{width:1200px;height:628px}
+
+.frame{position:absolute;inset:0;display:flex;flex-direction:column;padding:68px 80px 72px}
+/* Stories/Reels: keep all text out of the top 250px and bottom 340px */
+.st .frame{padding:280px 80px 370px}
+.ls .frame{display:grid;grid-template-columns:520px 1fr;grid-template-rows:auto auto auto 1fr;column-gap:44px;padding:48px 52px}
+
+.top{display:flex;align-items:center;gap:14px;font-size:26px;font-weight:600}
+.top img{width:46px;height:46px;border-radius:11px;border:1px solid #333}
+.top .url{margin-left:auto;font-size:24px;font-weight:500;color:#9a9a9a}
+.ls .top{font-size:20px}.ls .top img{width:36px;height:36px;border-radius:9px}.ls .top .url{display:none}
+
+h1{font-size:92px;line-height:1.0;letter-spacing:-.045em;font-weight:700;margin-top:44px}
+.st h1{font-size:118px;margin-top:56px}
+.ls h1{font-size:62px;margin-top:34px}
+.sub{font-size:34px;color:#9a9a9a;margin-top:22px;line-height:1.3;max-width:900px;text-wrap:balance}
+h1{text-wrap:balance}
+.st .sub{font-size:40px;margin-top:30px}
+.ls .sub{font-size:24px;margin-top:18px}
+
+.vis{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin-top:40px;position:relative}
+.st .vis{margin-top:56px}
+.ls .vis{grid-column:2;grid-row:1 / 5;margin-top:0}
+.vis>.inner{width:920px;transform-origin:center center;flex:none}
+
+.foot{display:none}
+.st .foot{display:flex;justify-content:space-between;align-items:center;margin-top:48px;font-size:32px;color:#9a9a9a}
+.st .foot b{color:#000;background:#fff;border-radius:999px;padding:16px 30px;font-size:30px}
+.ls .foot{display:block;grid-column:1;grid-row:4;align-self:end;font-size:22px;color:#9a9a9a}
+.ls .foot span{display:none}.ls .foot b{font-weight:600;color:#fff}
+
+/* shared bits */
+.ex{font-size:20px;font-weight:600;color:#9a9a9a;border:1px solid #444;border-radius:999px;padding:5px 14px;letter-spacing:.02em;text-transform:uppercase}
+.blur{filter:blur(7px);color:#ddd}
+.btns{display:flex;gap:14px;margin-top:22px}
+.btns span{font-size:24px;font-weight:600;border:1px solid #444;color:#ddd;border-radius:999px;padding:11px 24px}
+.btns span:first-child{background:#fff;color:#000;border-color:#fff}
+
+/* AI chat answer card */
+.chat{background:#0d0d0d;border:1px solid #2a2a2a;border-radius:32px;padding:34px 38px}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.app{font-size:28px;font-weight:700;letter-spacing:-.01em}
+.ubub{margin-left:auto;width:fit-content;max-width:80%;background:#222;border-radius:26px;padding:16px 24px;font-size:28px;line-height:1.3}
+.ans{margin-top:24px;font-size:27px;line-height:1.4;color:#e6e6e6}
+.ans ol{list-style:none;margin-top:14px}
+.ans li{display:flex;align-items:baseline;gap:16px;padding:12px 0;border-top:1px solid #222}
+.ans li:first-child{border-top:0}
+.ans li i{font-style:normal;color:#666;width:24px}
+.ans li .nm{font-weight:700;font-size:28px}
+.ans li .why{color:#8a8a8a;font-size:24px;margin-left:auto}
+.cfoot{margin-top:22px;padding-top:20px;border-top:1px dashed #444;font-size:28px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.cfoot .no{font-size:22px;font-weight:600;padding:7px 16px;border-radius:999px;border:1px solid #444;color:#9a9a9a}
+
+/* phone frame */
+.phone{width:620px;margin:0 auto;border:2px solid #333;border-radius:72px;padding:22px;background:#050505}
+.phone .notch{width:150px;height:34px;background:#000;border:1px solid #222;border-radius:20px;margin:0 auto 18px}
+.phone .chat{border:0;background:#0d0d0d;border-radius:46px;padding:30px 28px}
+.phone .ubub{font-size:26px}.phone .ans{font-size:25px}.phone .ans li .why{font-size:21px}
+.phone .ans li .nm{font-size:26px}
+.overlay{text-align:center;margin-top:30px;font-size:40px;font-weight:700;letter-spacing:-.02em}
+
+/* split screen */
+.split{display:flex;gap:22px}
+.pane{flex:1;border-radius:28px;padding:28px 26px;min-width:0}
+.pane.g{border:1px solid #333}
+.pane.c{background:#fff;color:#000}
+.ph{font-size:28px;font-weight:700;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+.ph small{font-size:18px;font-weight:600;color:#8a8a8a;text-transform:uppercase;letter-spacing:.04em}
+.sbar{border:1px solid #333;border-radius:999px;padding:12px 20px;font-size:24px;color:#9a9a9a;margin-bottom:16px}
+.res{padding:11px 0;border-top:1px solid #1e1e1e}
+.res .sp{font-size:15px;font-weight:700;color:#777;margin-bottom:6px}
+.ln{height:10px;border-radius:5px;background:#2a2a2a;margin:6px 0}
+.ln.t{height:13px;background:#555;width:80%}
+.pane.c .ubub{background:#eee;color:#000;font-size:24px;padding:12px 20px}
+.pane.c .ans{color:#111;font-size:25px;margin-top:18px}
+.pane.c .ans li{border-color:#ddd;padding:10px 0}
+.pane.c .ans li .nm{font-size:27px}
+.pane.c .blur{color:#000}
+.pane.c .ans li i{color:#999}
+.splitcap{display:flex;gap:22px;margin-top:20px;font-size:30px;font-weight:700}
+.splitcap span{flex:1;text-align:center}.splitcap span:first-child{color:#777}
+
+/* list cards: steps, tips, ai checks */
+.card{background:#0d0d0d;border:1px solid #2a2a2a;border-radius:32px;padding:36px 42px}
+.q{font-size:26px;color:#8a8a8a;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:34px;padding:17px 0;border-top:1px solid #222}
+.row:first-of-type{border-top:0}
+.pill{font-size:23px;font-weight:600;padding:8px 18px;border-radius:999px}
+.pill.no{border:1px solid #444;color:#8a8a8a}.pill.ok{background:#fff;color:#000}
+.step{display:flex;gap:30px;align-items:flex-start;padding:26px 0;border-top:1px solid #222}
+.step:first-of-type{border-top:0;padding-top:6px}
+.step .n{flex:none;width:68px;height:68px;border-radius:50%;border:1px solid #444;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700}
+.step h3{font-size:36px;letter-spacing:-.02em;line-height:1.2}
+.step p{font-size:26px;color:#9a9a9a;margin-top:8px;line-height:1.35}
+.step.hl .n{background:#fff;color:#000;border-color:#fff}
+
+/* diary / briefing */
+.log{font-size:28px;line-height:1.35}
+.log .e{display:flex;gap:22px;padding:16px 0;border-top:1px solid #222}
+.log .e:first-of-type{border-top:0}
+.log .t{flex:none;width:96px;color:#777;font-variant-numeric:tabular-nums;font-size:24px;padding-top:3px}
+.log .e b{font-weight:700}
+.approve{margin-top:16px;border:1px solid #333;border-radius:22px;padding:22px 24px}
+.approve .lbl{font-size:22px;color:#9a9a9a;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.approve .what{font-size:28px;margin-top:8px;font-weight:600}
+.tick{flex:none;width:34px;height:34px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;margin-top:2px}
+
+/* guarantee */
+.gcard{border:1px solid #333;border-radius:36px;padding:48px 50px;text-align:left}
+.gnum{display:flex;align-items:baseline;gap:20px}
+.gnum .n{font-size:220px;font-weight:800;letter-spacing:-.06em;line-height:.85}
+.gnum .u{font-size:48px;font-weight:700;color:#9a9a9a}
+.gtext{font-size:44px;font-weight:700;letter-spacing:-.02em;line-height:1.18;margin-top:30px}
+.gsmall{font-size:24px;color:#9a9a9a;margin-top:18px;line-height:1.4}
+.chips{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+.chips span{font-size:24px;font-weight:600;border:1px solid #444;border-radius:999px;padding:10px 22px}
+.chips span:first-child{background:#fff;color:#000;border-color:#fff}
+
+/* compare columns */
+.cols{display:flex;gap:24px}
+.col{flex:1;border-radius:32px;padding:38px 34px;font-size:29px;line-height:1.35}
+.col h3{font-size:38px;margin-bottom:8px;letter-spacing:-.02em}
+.col .pr{font-size:26px;margin-bottom:22px}
+.col ul{list-style:none}.col li{padding:11px 0;border-top:1px solid rgba(128,128,128,.25)}
+.col.old{border:1px solid #333;color:#8a8a8a}.col.old .pr{color:#666}
+.col.new{background:#fff;color:#000}.col.new .pr{color:#555}
+
+/* invisible slot */
+.slot{border:2px dashed #555;border-radius:18px;padding:14px 20px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:27px;color:#9a9a9a}

@@ -1,0 +1,429 @@
+<title>Alphaa Growth Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column with a sticky section index on wide screens; black & white like the brand. */
+:root{
+  --bg:#ffffff; --fg:#0a0a0a; --muted:#5f5f63; --line:#e6e6e8; --soft:#f4f4f5; --ink:#000000; --paper:#ffffff;
+  --font-display:"Geist",-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --font-body:"Geist",-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#000000;--fg:#f4f4f5;--muted:#a1a1a6;--line:#232326;--soft:#0f0f10;--ink:#ffffff;--paper:#000000;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000000;--fg:#f4f4f5;--muted:#a1a1a6;--line:#232326;--soft:#0f0f10;--ink:#ffffff;--paper:#000000;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;padding-inline:20px;padding-block:0 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;padding-top:40px;font-size:13px}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:5px 0;border-left:1px solid var(--line);padding-left:12px}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--fg);border-color:var(--fg);outline:none}
+main{min-width:0;max-width:720px}
+header.hero{padding-top:56px;padding-bottom:36px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--font-display);font-size:clamp(40px,7vw,64px);line-height:1;letter-spacing:-.045em;font-weight:800;margin:14px 0 18px;text-wrap:balance}
+.lede{font-size:19px;color:var(--muted);max-width:60ch;margin:0}
+section{padding-top:48px}
+h2{font-family:var(--font-display);font-size:28px;letter-spacing:-.03em;line-height:1.15;font-weight:700;margin:0 0 6px;text-wrap:balance}
+h3{font-size:17px;font-weight:600;margin:28px 0 8px;letter-spacing:-.01em}
+.kicker{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.06em;margin-bottom:10px;display:block}
+p{margin:0 0 14px;max-width:66ch}
+ul,ol{margin:0 0 14px;padding-left:20px;max-width:66ch}
+li{margin:0 0 7px}
+strong{font-weight:600}
+.thesis{background:var(--ink);color:var(--paper);padding:28px 28px 24px;border-radius:14px;margin:22px 0}
+.thesis .big{font-family:var(--font-display);font-size:clamp(24px,4vw,34px);letter-spacing:-.035em;line-height:1.1;font-weight:700;margin:0 0 10px}
+.thesis p{color:inherit;opacity:.75;margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0}
+.cell{border:1px solid var(--line);border-radius:12px;padding:16px 16px 14px;min-width:0}
+.cell .n{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-bottom:6px}
+.cell b{display:block;font-size:16px;margin-bottom:4px}
+.cell span{font-size:14px;color:var(--muted);line-height:1.5;display:block}
+.tbl{overflow-x:auto;margin:14px 0 18px;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--line)}
+th{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--soft)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+.hook{font-family:var(--font-display);font-size:17px;font-weight:600;letter-spacing:-.015em;border-left:2px solid var(--fg);padding:2px 0 2px 14px;margin:0 0 4px}
+.why{font-size:14px;color:var(--muted);padding-left:16px;margin:0 0 16px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0;font-size:14px}
+.flow span{border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--soft)}
+.flow i{font-style:normal;color:var(--muted)}
+.note{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:8px}
+.tag{font-family:var(--font-mono);font-size:11px;border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--muted);white-space:nowrap}
+@media (max-width:820px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}nav.toc{display:none}header.hero{padding-top:32px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Sections">
+  <a href="#thesis">The thesis</a>
+  <a href="#northstars">North stars</a>
+  <a href="#users">What users want</a>
+  <a href="#hooks">Hooks for 2026</a>
+  <a href="#copy">Ready-to-post copy</a>
+  <a href="#formats">Posts that work</a>
+  <a href="#content">Content strategy</a>
+  <a href="#acquire">Acquisition engine</a>
+  <a href="#ads">Paid ads</a>
+  <a href="#email">Email nurture</a>
+  <a href="#tone">Tone &amp; brand</a>
+  <a href="#roadmap">90-day roadmap</a>
+  <a href="#measure">Scorecard</a>
+  <a href="#rules">Guardrails</a>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">Alphaa AI Agent · Growth playbook · Oct 2026</div>
+  <h1>Be the answer.</h1>
+  <p class="lede">The full go-to-market plan: positioning, north stars, the hooks and formats that work in 2026, the acquisition engine, paid ads, email nurture and voice. Built for a founder-led team with a $2,000/month budget aiming at 1,000 paying customers.</p>
+</header>
+
+<section id="thesis">
+  <span class="kicker">01 · Positioning</span>
+  <h2>The thesis</h2>
+  <div class="thesis">
+    <p class="big">Google gives ten links.<br>AI gives one answer.<br>Alphaa makes sure you're in it.</p>
+    <p>One sentence everyone on the team can repeat. Every post, ad and email ladders up to it.</p>
+  </div>
+  <h3>The category we own</h3>
+  <p><strong>"AI agent for AI search."</strong> Not an SEO tool, not a GEO dashboard, not an agency. Tools ask owners to do work; agencies send PDFs. We're the third thing: an agent that checks what AI says, does the fix, and asks you to tap approve.</p>
+  <h3>The enemy</h3>
+  <p>Not competitors. The enemy is <strong>invisibility</strong>: the customer who asked ChatGPT, got three names, and never knew you existed. The secondary enemy is <strong>the $2,000 agency PDF</strong> that optimizes for a page of links fewer people look at.</p>
+  <h3>Why we win</h3>
+  <div class="grid">
+    <div class="cell"><div class="n">Proof in 60 seconds</div><b>The free check is the demo</b><span>Live answers from four AIs about their own business. No competitor shows the problem this fast.</span></div>
+    <div class="cell"><div class="n">Agent, not app</div><b>It does the work</b><span>Writes, fixes, publishes. The owner taps approve. Zero learning curve.</span></div>
+    <div class="cell"><div class="n">Price shock</div><b>$99 vs ~$2,000</b><span>Month to month. Cancel in two clicks. A 90-day guarantee.</span></div>
+    <div class="cell"><div class="n">Honesty</div><b>We don't promise #1</b><span>In a category full of snake oil, the straight talker wins trust.</span></div>
+  </div>
+</section>
+
+<section id="northstars">
+  <span class="kicker">02 · What we optimize</span>
+  <h2>North stars</h2>
+  <p>One number per layer. If an activity doesn't move one of these, we stop doing it.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Layer</th><th>North star</th><th>Why this one</th></tr></thead>
+    <tbody>
+      <tr><td>Company</td><td>Paying customers (goal: 1,000 by Dec 31)</td><td>Revenue truth. Everything else is a leading indicator.</td></tr>
+      <tr><td>Marketing</td><td><strong>Free AI checks completed per week</strong></td><td>The check is where people feel the problem. More checks → more customers, almost mechanically.</td></tr>
+      <tr><td>Conversion</td><td>Check → paid within 14 days</td><td>Tells us if the result moment, nurture and offer are doing their job.</td></tr>
+      <tr><td>Content</td><td>Saves + shares + "check yours" clicks per post</td><td>Likes are vanity. Saves and shares mean value; clicks mean intent.</td></tr>
+      <tr><td>Brand</td><td>Times AI names Alphaa for "AI visibility" questions</td><td>We sell being recommended by AI. We must be recommended by AI. The daily content engine feeds this.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Targets are ours to set and tune weekly. Start with a baseline in week 1–2, then commit to week-over-week growth on checks completed.</p>
+</section>
+
+<section id="users">
+  <span class="kicker">03 · Jobs to be done</span>
+  <h2>What users actually want</h2>
+  <p>Owners don't want "AI visibility." They want the phone to ring, without learning anything new, from someone who won't rip them off.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>They want</th><th>What they say</th><th>How we answer</th></tr></thead>
+    <tbody>
+      <tr><td>To know</td><td>"Does ChatGPT even know we exist?"</td><td>Free check: the real answer, in 60 seconds.</td></tr>
+      <tr><td>To win</td><td>"Why does AI recommend the place down the street?"</td><td>We show who got named and what they have that you don't.</td></tr>
+      <tr><td>To not do work</td><td>"I don't have time to learn another tool."</td><td>Your agent does it. You tap approve.</td></tr>
+      <tr><td>To not get burned</td><td>"My last agency locked me in for a year."</td><td>$99, month to month, cancel in two clicks, 90-day guarantee.</td></tr>
+      <tr><td>To see proof</td><td>"Show me it's working."</td><td>Weekly briefing: what changed, in plain English.</td></tr>
+      <tr><td>To look smart</td><td>"I want to be ahead of this AI thing."</td><td>Give them the language to tell their peers. Shareable wins.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>The emotional engine</h3>
+  <ul>
+    <li><strong>Fear:</strong> becoming invisible without noticing. (Strongest trigger.)</li>
+    <li><strong>Envy:</strong> a competitor getting named. (Fastest trigger.)</li>
+    <li><strong>Distrust:</strong> agencies and AI hype. (We turn it into trust by being straight.)</li>
+    <li><strong>Relief:</strong> "someone's handling it." (What they actually pay for.)</li>
+  </ul>
+</section>
+
+<section id="hooks">
+  <span class="kicker">04 · First 2 seconds</span>
+  <h2>Hooks that work in 2026</h2>
+  <p>Feeds are flooded with polished AI-generated content, so polish no longer stops the scroll. What stops it is <strong>specific, personal, provable</strong>: a real screen, a real question, the viewer's own situation. Seven hook families, each with a template.</p>
+
+  <h3>1 · The self-test</h3>
+  <p class="hook">"Open ChatGPT. Type 'best [your trade] in [your city]'. Are you in the answer?"</p>
+  <p class="why">Turns a scroll into an action. The viewer runs the experiment and feels the problem themselves.</p>
+
+  <h3>2 · Screen-proof</h3>
+  <p class="hook">"I asked ChatGPT for a dentist in Austin. Watch who it picked."</p>
+  <p class="why">A live screen recording of a real AI answer beats any claim. Real, unedited, on a phone.</p>
+
+  <h3>3 · The contrarian truth</h3>
+  <p class="hook">"Your SEO agency is optimizing for a page fewer of your customers ever see."</p>
+  <p class="why">Picks a fight with something owners already resent. Variants: "SEO isn't dead. It just isn't where your customers are anymore."</p>
+
+  <h3>4 · The lost customer</h3>
+  <p class="hook">"A customer asked ChatGPT who to call this morning. It named your competitor."</p>
+  <p class="why">Leads with the outcome we sell: customers from AI. Price never leads a hook; agency-fee math makes us look like a cheaper SEO agency. Keep $99 vs ~$2,000 for body copy, offer posts and retargeting.</p>
+
+  <h3>5 · The agent diary</h3>
+  <p class="hook">"My AI agent found out ChatGPT thinks we close at 5. We close at 8."</p>
+  <p class="why">First-person, small and specific. Shows the product without selling it. Label it as an example when it is one.</p>
+
+  <h3>6 · The insider secret</h3>
+  <p class="hook">"3 things ChatGPT checks before it recommends a local business."</p>
+  <p class="why">Save-bait. Gives real value and makes us the authority.</p>
+
+  <h3>7 · The callout</h3>
+  <p class="hook">"Plumbers: this one question decides if AI sends you jobs."</p>
+  <p class="why">Industry name in the first word. Narrow beats broad: the right person stops; everyone else scrolls on, which is fine.</p>
+
+  <h3>Hooks to retire</h3>
+  <ul>
+    <li>"AI is changing everything…" (everyone says it; nobody stops)</li>
+    <li>Agency-fee or "what does your SEO guy do" hooks (they put us in the SEO category)</li>
+    <li>"Did you know…?" and other quiz openers</li>
+    <li>Stock-photo or obviously AI-generated imagery</li>
+    <li>Any claim we can't show on screen</li>
+  </ul>
+</section>
+
+<section id="copy">
+  <span class="kicker">04b · Ready to post</span>
+  <h2>Copy you can use today</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Angle</th><th>Copy</th><th>Best on</th></tr></thead>
+    <tbody>
+      <tr><td>Competitor check</td><td>I asked ChatGPT for a dentist in Austin. It named three. Is your practice one of them? Check what AI says about you, free: alphaa.app/start</td><td>Meta ads, X</td></tr>
+      <tr><td>Lost customer</td><td>A customer asked ChatGPT who to call today. It named three businesses. Make sure yours is next. See what AI says about you, free: alphaa.app/start</td><td>LinkedIn, Meta ads</td></tr>
+      <tr><td>One answer</td><td>Google gives 10 links. ChatGPT gives 1 answer. If you're not in it, that customer never knew you existed.</td><td>Shorts, Reels, X</td></tr>
+      <tr><td>Fact fix</td><td>AI told a customer you close at 5. You close at 8. Here's how to fix what AI gets wrong, without touching code.</td><td>LinkedIn, Meta ads</td></tr>
+      <tr><td>Agent POV</td><td>I asked ChatGPT about you this morning. Here's what it said, and here's what I'll fix. You just tap approve.</td><td>Reels, TikTok</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">The Austin dentist line is an example scenario. Swap in a real check you ran before posting, and keep the screen recording.</p>
+</section>
+
+<section id="formats">
+  <span class="kicker">05 · Formats</span>
+  <h2>Posts that work in 2026</h2>
+  <p>Platforms now reward watch time, saves, shares and DMs over likes. The formats below earn those signals, ranked by expected return for us.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Format</th><th>What it looks like</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>Live AI check</td><td>20–40s vertical screen recording: ask an AI a local question, react to the answer, show the fix. Captions burned in.</td><td>TikTok, Reels, Shorts, LinkedIn video</td></tr>
+      <tr><td>Founder talking head</td><td>Varun to camera, phone-shot, 30–60s, one idea. Imperfect is fine; real beats produced.</td><td>LinkedIn, Reels, TikTok</td></tr>
+      <tr><td>Document carousel</td><td>6–9 black &amp; white slides: a checklist or "how AI picks" breakdown. Built to be saved.</td><td>LinkedIn (PDF), Instagram</td></tr>
+      <tr><td>Text-first opinion post</td><td>Strong first line, short lines, one lesson, a question at the end.</td><td>LinkedIn (personal profile)</td></tr>
+      <tr><td>Chat-bubble image</td><td>One image of an AI conversation with a 4–5 word headline.</td><td>All, and the best ad creative</td></tr>
+      <tr><td>Comment-to-get</td><td>"Comment CHECK and I'll send you the 3 things AI looks for." Auto-DM delivers it plus the check link.</td><td>Instagram, LinkedIn</td></tr>
+      <tr><td>Long-form audit</td><td>8–15 min "We asked 4 AIs about 10 HVAC companies in Denver" breakdown. Industry-level, no shaming.</td><td>YouTube (feeds AI answers too)</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Recurring series (people follow series, not posts)</h3>
+  <ul>
+    <li><strong>"Are you in the answer?"</strong> One industry and city per episode. The flagship series.</li>
+    <li><strong>"Agent diary"</strong> What the agent did this week, from its point of view.</li>
+    <li><strong>"SEO said / AI says"</strong> Myth-busting, side-by-side.</li>
+    <li><strong>"60-second fix"</strong> One thing an owner can fix today, with or without us.</li>
+    <li><strong>"Building Alphaa"</strong> Founder build-in-public: what we shipped, what broke, numbers.</li>
+  </ul>
+</section>
+
+<section id="content">
+  <span class="kicker">06 · The system</span>
+  <h2>Content strategy</h2>
+  <h3>Pillars and mix</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Pillar</th><th>Share</th><th>Job</th></tr></thead>
+    <tbody>
+      <tr><td>Proof</td><td>40%</td><td>Live AI checks, screen recordings, real answers. Makes the problem undeniable.</td></tr>
+      <tr><td>Teach</td><td>25%</td><td>How AI picks businesses. Checklists, myths, 60-second fixes. Builds authority.</td></tr>
+      <tr><td>Agent</td><td>15%</td><td>Product in action: agent diary, approve-with-one-tap moments.</td></tr>
+      <tr><td>Founder</td><td>10%</td><td>Build in public. Trust comes from a face.</td></tr>
+      <tr><td>Offer</td><td>10%</td><td>Direct CTA: free check, $99, guarantee.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Weekly cadence (founder-sized)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Channel</th><th>Cadence</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>LinkedIn (Varun)</td><td>5 posts/week</td><td>The main organic channel. Personal profile outperforms the company page; the page reshares.</td></tr>
+      <tr><td>TikTok + Reels + Shorts</td><td>4–5 videos/week</td><td>Record once, post everywhere. Batch on one day.</td></tr>
+      <tr><td>Instagram feed</td><td>2 carousels/week</td><td>Save-worthy. Plus stories that reshare videos.</td></tr>
+      <tr><td>Facebook page + groups</td><td>2 posts/week + group answers</td><td>Trades and dental owner groups: answer questions, never pitch. Link only when asked.</td></tr>
+      <tr><td>X</td><td>1–2 posts/day</td><td>Short takes and screenshots of real AI answers. Where marketers, founders and AI watchers argue about GEO. Good for the SaaS segment and press.</td></tr>
+      <tr><td>Reddit</td><td>3 helpful comments/week</td><td>r/smallbusiness, r/HVAC, r/Dentistry, r/LawFirm. Reddit is heavily cited by AI answers.</td></tr>
+      <tr><td>YouTube long-form</td><td>2/month</td><td>Industry audits. Evergreen and cited by AI.</td></tr>
+      <tr><td>Blog</td><td>3/day (automated)</td><td>The content engine already runs daily. Repurpose the best into posts.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>The repurposing chain</h3>
+  <div class="flow"><span>1 live AI check (record)</span><i>→</i><span>TikTok/Reel/Short</span><i>→</i><span>LinkedIn video + post</span><i>→</i><span>Carousel</span><i>→</i><span>Ad creative</span><i>→</i><span>Email story</span><i>→</i><span>Blog section</span></div>
+  <p>One recording a day feeds every channel. Batch: record 5 on Monday, cut on Tuesday, schedule for the week.</p>
+  <h3>The dogfood story (our best content asset)</h3>
+  <p>Run Alphaa on alphaa.app publicly. Post the baseline ("ChatGPT doesn't name us yet for 'AI visibility tools'"), then every change as it happens. It's proof, a series and a founder story at once, and it only works if we report it truthfully, including the weeks nothing moves.</p>
+</section>
+
+<section id="acquire">
+  <span class="kicker">07 · Funnel</span>
+  <h2>The acquisition engine</h2>
+  <div class="flow"><span>Attention</span><i>→</i><span>Free AI check</span><i>→</i><span>The result moment</span><i>→</i><span>Email</span><i>→</i><span>Nurture + retarget</span><i>→</i><span>$99 / month</span><i>→</i><span>First win</span><i>→</i><span>Share + refer</span></div>
+  <p>Everything points at one door: <strong>alphaa.app/start</strong>. The result moment ("ChatGPT named three businesses. You weren't one.") is our best salesperson. Protect it, test it, make it screenshot-able.</p>
+  <h3>Channels, ranked for us</h3>
+  <ol>
+    <li><strong>Meta ads → free check.</strong> Owners live on Facebook and Instagram. Cheapest path to volume.</li>
+    <li><strong>Google search ads.</strong> High intent: "seo agency alternative", "how to show up on chatgpt", "ai seo for [trade]".</li>
+    <li><strong>Founder-led LinkedIn.</strong> Free, compounding, and where lawyers and multi-location owners are.</li>
+    <li><strong>Short video (organic).</strong> Lottery-ticket reach; one hit can deliver weeks of checks.</li>
+    <li><strong>Partnerships.</strong> Web designers and small agencies who build sites for local businesses: they refer, we pay recurring commission. Also vertical newsletters, associations, chambers.</li>
+    <li><strong>Product-led loops.</strong> Customers share their "ChatGPT now names us" win (share pages already exist). Ask for a referral right after the first win.</li>
+    <li><strong>AI search itself.</strong> The daily blog engine and YouTube audits so AI names Alphaa when owners ask about this problem.</li>
+  </ol>
+  <h3>Outbound (light, targeted)</h3>
+  <p>Run the check on a prospect's business first, then send them their own result: "I asked ChatGPT about you. Here's what it said." Personal, relevant, 3 sentences. Use the separate outreach domain (tryalphaa.com) once warmed, never alphaa.app.</p>
+</section>
+
+<section id="ads">
+  <span class="kicker">08 · Paid</span>
+  <h2>Paid ads</h2>
+  <p><strong>Rule one: creative is the targeting.</strong> On Meta in 2026, broad audiences plus a strong creative beat narrow interest stacks. Our job is to ship new creative every week and let the algorithm find the owner.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Channel</th><th>Budget</th><th>Setup</th></tr></thead>
+    <tbody>
+      <tr><td>Meta prospecting</td><td>~$700/mo</td><td>Broad US + Canada, 30–65. Optimize for completed checks. 3–5 new creatives a week; kill losers at 3 days.</td></tr>
+      <tr><td>Meta retargeting</td><td>~$300/mo</td><td>People who started but didn't finish a check, and checkers who didn't buy. Show the guarantee and the agent at work.</td></tr>
+      <tr><td>Google search</td><td>~$800/mo</td><td>Exact and phrase match on intent terms. Send to /start or the matching /for/[industry] page.</td></tr>
+      <tr><td>Test budget</td><td>~$200/mo</td><td>TikTok Spark Ads boosting organic winners; YouTube in-stream later.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Ad creative that should win</h3>
+  <ul>
+    <li><strong>The phone-screen demo:</strong> someone types "best dentist near me" into ChatGPT; the answer appears; overlay "Is your practice here?" CTA: Check yours free.</li>
+    <li><strong>The founder ad:</strong> Varun, 20 seconds, "I built an AI agent because…" Founder ads earn trust on cold traffic.</li>
+    <li><strong>The split screen:</strong> left, a cluttered Google results page; right, ChatGPT's single answer with three names. Overlay: "Which one are your customers using?" Great as a Short or Reel.</li>
+    <li><strong>The offer card (retargeting only):</strong> black card, white type, "$99 a month. Month to month." plus the guarantee. Never a cold-traffic hook.</li>
+    <li><strong>The callout:</strong> "HVAC owners:" + the self-test. One version per top industry.</li>
+    <li><strong>UGC-style:</strong> once real customers exist, their own phone clip of "ChatGPT named us." Never fake this.</li>
+  </ul>
+  <p class="note">Measure cost per completed check and check → paid, not cost per click. Kill rule: a creative with a weak thumb-stop (3-second view) rate after ~$30 spend is off.</p>
+</section>
+
+<section id="email">
+  <span class="kicker">09 · Nurture</span>
+  <h2>Email nurture</h2>
+  <p>Most people who run the check won't buy that day. Email turns the result moment into a 14-day conversation. Write it from the agent, in plain text, short.</p>
+  <p class="note" style="margin-bottom:14px">Must-have before sending to non-customers: one-click unsubscribe, a mailing address in the footer, and consent wording at the email field (CASL for Canada). The copy is drafted in email-flows.md; the infra is the blocker.</p>
+  <h3>Scan-lead sequence (non-buyers)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Day</th><th>Subject idea</th><th>Job</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>What ChatGPT said about {business}</td><td>Deliver the report. One CTA: start today.</td></tr>
+      <tr><td>1</td><td>Why AI picked them instead</td><td>Show the gap: what the named businesses have.</td></tr>
+      <tr><td>3</td><td>I already drafted your fix</td><td>Show the FAQ draft the agent wrote. Product preview = desire.</td></tr>
+      <tr><td>5</td><td>Can anyone guarantee ChatGPT?</td><td>Honesty email. Handle the snake-oil objection, introduce the 90-day guarantee.</td></tr>
+      <tr><td>7</td><td>$2,000 vs $99</td><td>Agency math, itemised: for $99 you get weekly checks on 4 AIs, 2 Google posts a week, 2 AI-ready blog posts a month and review monitoring. No contract, cancel in two clicks, 7-day refund.</td></tr>
+      <tr><td>10</td><td>I asked again this morning</td><td>Re-run the check, report the (honest) result. Urgency from their own data.</td></tr>
+      <tr><td>14</td><td>Should I stop checking for you?</td><td>Break-up email. Highest reply rate in most sequences.</td></tr>
+      <tr><td>30+</td><td>Your AI check, one month later</td><td>Monthly re-check for anyone who didn't buy. Their own result is the reason to come back.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Behaviour triggers</h3>
+  <ul>
+    <li>Visited pricing but didn't buy → same-day "questions?" email from Varun.</li>
+    <li>Started checkout but didn't finish → 1 hour later, the guarantee + 7-day refund.</li>
+    <li>Ran a second check → they're interested; send the agent-diary story.</li>
+  </ul>
+  <h3>Customer emails (already partly live)</h3>
+  <ul>
+    <li><strong>Weekly briefing:</strong> what changed, what the agent did, what needs approval. Example tone: "I asked ChatGPT about you today. I fixed your hours and drafted three review replies. Two need your OK." Visible weekly work is what keeps people who left agencies over opaque reporting.</li>
+    <li><strong>First-win alert:</strong> "Perplexity named you today." With a share button.</li>
+    <li><strong>Referral ask:</strong> sent only after a first win, never before.</li>
+  </ul>
+</section>
+
+<section id="tone">
+  <span class="kicker">10 · Voice</span>
+  <h2>Tone and brand</h2>
+  <p><strong>The calm operator.</strong> Sounds like a sharp friend who already did the homework: plain, confident, a little dry, never hypey.</p>
+  <div class="grid">
+    <div class="cell"><div class="n">Plain</div><b>Say it like a customer would</b><span>"Show up when people ask AI," not "GEO-optimized entity signals."</span></div>
+    <div class="cell"><div class="n">Proof over promise</div><b>Show the screen</b><span>If we can't show it, we don't say it.</span></div>
+    <div class="cell"><div class="n">Agent voice</div><b>First person, specific</b><span>"I asked ChatGPT about you this morning."</span></div>
+    <div class="cell"><div class="n">Short</div><b>One idea per line</b><span>Built to be read in 2 seconds.</span></div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Say</th><th>Not</th></tr></thead>
+    <tbody>
+      <tr><td>Your agent does the work. You tap approve.</td><td>Our AI-powered platform automates optimization.</td></tr>
+      <tr><td>Get recommended by AI.</td><td>Dominate AI search rankings.</td></tr>
+      <tr><td>See what ChatGPT says about you.</td><td>Unlock your AI visibility score.</td></tr>
+      <tr><td>Nobody can promise #1. Here's what moves it.</td><td>Guaranteed #1 on ChatGPT.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Visual identity</h3>
+  <ul>
+    <li>Black and white only. Pure black, white type, grey secondary text.</li>
+    <li>Phone frames and chat bubbles of real AI answers: the visual signature.</li>
+    <li>One image, a 4–5 word headline, readable on a phone in 2 seconds.</li>
+    <li>Real faces (Varun, later customers) over stock or AI-generated people.</li>
+  </ul>
+</section>
+
+<section id="roadmap">
+  <span class="kicker">11 · Sequence</span>
+  <h2>90-day roadmap</h2>
+  <h3>Days 1–30 · Foundations and hook testing</h3>
+  <ul>
+    <li>Lock handles and profiles as Alphaa AI Agent everywhere; black and white.</li>
+    <li>Build email unsubscribe + consent, then switch on the scan-lead sequence.</li>
+    <li>Pixel/conversion events firing on check started, check completed, purchase.</li>
+    <li>Post daily on LinkedIn and short video; test 20+ hooks organically.</li>
+    <li>Launch Meta + Google with the top 5 organic hooks as ads.</li>
+    <li>Start the public dogfood series on alphaa.app.</li>
+  </ul>
+  <h3>Days 31–60 · Double down</h3>
+  <ul>
+    <li>Move budget to the 2–3 winning creatives; keep shipping 3 new per week.</li>
+    <li>Launch the "Are you in the answer?" series for the top 3 industries.</li>
+    <li>Recruit the first 10 web-designer partners.</li>
+    <li>Comment-to-get automation live on Instagram and LinkedIn.</li>
+  </ul>
+  <h3>Days 61–90 · Proof and loops</h3>
+  <ul>
+    <li>First real customer wins become content (with permission) and UGC ads.</li>
+    <li>Referral ask after first win; share pages promoted.</li>
+    <li>YouTube industry audits; pitch vertical newsletters and podcasts.</li>
+    <li>Cut every channel that isn't producing checks at a sane cost.</li>
+  </ul>
+</section>
+
+<section id="measure">
+  <span class="kicker">12 · Every Monday</span>
+  <h2>The weekly scorecard</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Metric</th><th>Tells us</th><th>Action if weak</th></tr></thead>
+    <tbody>
+      <tr><td>Checks completed</td><td>Top-of-funnel health</td><td>More hooks, more creative, more posts</td></tr>
+      <tr><td>Cost per check</td><td>Ad efficiency</td><td>New creative before new audiences</td></tr>
+      <tr><td>Check → email</td><td>Result-moment strength</td><td>Test the result screen and email ask</td></tr>
+      <tr><td>Check → paid (14 days)</td><td>Offer + nurture</td><td>Tune the sequence, guarantee placement</td></tr>
+      <tr><td>CAC</td><td>Unit economics (target ≤ $300)</td><td>Shift spend to the cheapest channel</td></tr>
+      <tr><td>Saves + shares / post</td><td>Content value</td><td>More "teach" and checklists</td></tr>
+      <tr><td>3-second view rate</td><td>Hook strength</td><td>Rewrite the first line, not the video</td></tr>
+      <tr><td>AI mentions of Alphaa</td><td>Our own AI visibility</td><td>Feed the content engine the missing topics</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="rules">
+  <span class="kicker">13 · Non-negotiable</span>
+  <h2>Guardrails</h2>
+  <ul>
+    <li><strong>Never fake proof.</strong> No invented customers, results, testimonials or counts. Example scenarios are labelled as examples. This is the fastest way to lose the honesty edge.</li>
+    <li><strong>No "#1", no promised rankings.</strong> We promise the work and the guarantee, not the outcome.</li>
+    <li><strong>Four AIs, named exactly:</strong> ChatGPT, Gemini, Claude, Perplexity.</li>
+    <li><strong>Don't shame named small businesses</strong> in public audits. Show industry patterns, blur names.</li>
+    <li><strong>Email law first:</strong> unsubscribe and consent before any marketing email to non-customers.</li>
+    <li><strong>Plain language beats legal language</strong> in posts ("tap approve"), as long as it stays true.</li>
+  </ul>
+</section>
+</main>
+</div>
