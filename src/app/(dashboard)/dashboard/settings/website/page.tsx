@@ -22,7 +22,7 @@ type Status = {
   available: Availability
 }
 
-const primaryBtnStyle: React.CSSProperties = { backgroundColor: 'var(--ds-accent)', color: 'var(--ds-text)', borderRadius: '8px', fontSize: '13px', fontWeight: 500 }
+const primaryBtnStyle: React.CSSProperties = { backgroundColor: 'var(--ds-accent)', color: 'var(--ds-on-accent)', borderRadius: '8px', fontSize: '13px', fontWeight: 500 }
 const secondaryBtnStyle: React.CSSProperties = { backgroundColor: 'transparent', border: '1px solid var(--ds-border-3)', color: 'var(--ds-text-mute)', borderRadius: '8px', fontSize: '11px', fontWeight: 500 }
 const labelStyle: React.CSSProperties = { fontSize: '10px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--ds-text-ghost)' }
 

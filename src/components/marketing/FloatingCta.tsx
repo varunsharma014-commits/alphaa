@@ -26,7 +26,7 @@ export function FloatingCta() {
     >
       <Link
         href="/start"
-        className="w-full flex flex-col items-center justify-center py-3 px-6 rounded-full text-white text-[17px] bg-[#0071e3] active:bg-[#006edb] shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
+        className="w-full flex flex-col items-center justify-center py-3 px-6 rounded-full text-white text-[17px] bg-black active:bg-[#333] shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
       >
         <span>Free AI Scan</span>
         <span className="text-[12px] text-white/80">Just enter your URL</span>

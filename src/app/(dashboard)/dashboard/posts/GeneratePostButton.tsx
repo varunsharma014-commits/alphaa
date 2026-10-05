@@ -44,7 +44,7 @@ export function GeneratePostButton() {
           alignItems: "center",
           gap: "8px",
           background: "var(--ds-accent)",
-          color: "var(--ds-text)",
+          color: "var(--ds-on-accent)",
           borderRadius: "8px",
           padding: "8px 18px",
           fontSize: "13px",
@@ -159,7 +159,7 @@ export function GeneratePostButton() {
               style={{
                 width: "100%",
                 background: "var(--ds-accent)",
-                color: "var(--ds-text)",
+                color: "var(--ds-on-accent)",
                 borderRadius: "8px",
                 padding: "10px 18px",
                 fontSize: "13px",

@@ -1,5 +1,6 @@
 "use client"
 
+import { Sparkles } from "lucide-react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { AgentFeed, Composer } from "./AgentFeed"
@@ -378,7 +379,7 @@ export function StartAgent({ mode = "public", resumeName }: { mode?: StartMode; 
     <div className="ag-land">
       <div className="ag-land__top">
         <Link className="ag-brand" href="/">
-          <span className="ag-dot ag-dot--live" />
+          <Sparkles className="ag-brand__mark" aria-hidden="true" />
           {BRAND.name}
         </Link>
         <span>AI agent · online</span>

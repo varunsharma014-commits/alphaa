@@ -347,7 +347,7 @@ export default function IntegrationsPage() {
   }
   const primaryBtnStyle: React.CSSProperties = {
     backgroundColor: 'var(--ds-accent)',
-    color: 'var(--ds-text)',
+    color: 'var(--ds-on-accent)',
     borderRadius: '8px',
     fontSize: '13px',
     fontWeight: 500,

@@ -5,7 +5,7 @@ import { OrangePillButton } from "@/components/common/OrangePillButton"
 const previews = [
   {
     industry: "Dental",
-    badge: "bg-blue-50 text-blue-700 border-blue-100",
+    badge: "bg-black/[0.04] text-[#1d1d1f] border-black/[0.08]",
     business: "Bright Smile Dental",
     location: "Austin, TX",
     initials: "SC",
@@ -19,7 +19,7 @@ const previews = [
   },
   {
     industry: "Legal",
-    badge: "bg-purple-50 text-purple-700 border-purple-100",
+    badge: "bg-black/[0.04] text-[#1d1d1f] border-black/[0.08]",
     business: "Torres Family Law",
     location: "Miami, FL",
     initials: "MT",
@@ -33,7 +33,7 @@ const previews = [
   },
   {
     industry: "HVAC",
-    badge: "bg-cyan-50 text-cyan-700 border-cyan-100",
+    badge: "bg-black/[0.04] text-[#1d1d1f] border-black/[0.08]",
     business: "CoolAir Pro",
     location: "Phoenix, AZ",
     initials: "JW",
@@ -86,7 +86,7 @@ export function CaseStudiesSection() {
                   </span>
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-[#f5a623] text-[#f5a623]" />
+                      <Star key={i} className="w-3 h-3 fill-[#1d1d1f] text-[#1d1d1f]" />
                     ))}
                   </div>
                 </div>

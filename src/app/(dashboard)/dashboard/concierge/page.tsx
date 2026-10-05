@@ -252,7 +252,7 @@ export default function ConciergePage() {
             disabled={busy !== null}
             style={{
               width: "100%", padding: "10px", borderRadius: "999px", border: "none", cursor: "pointer",
-              background: "var(--ds-accent)", color: "#fff", fontSize: "13.5px", fontWeight: 600,
+              background: "var(--ds-accent)", color: "var(--ds-on-accent)", fontSize: "13.5px", fontWeight: 600,
               opacity: busy && busy !== "setup" ? 0.5 : 1,
             }}
           >

@@ -6,7 +6,7 @@
 // ends up in the DOM.
 export const clerkAppearance = {
   variables: {
-    colorPrimary: "#0071E3",
+    colorPrimary: "#000000",
     colorBackground: "#ffffff",
     colorInputBackground: "#f5f5f7",
     colorInputText: "#1d1d1f",
@@ -23,9 +23,9 @@ export const clerkAppearance = {
     card: { boxShadow: "0 4px 24px rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.06)", borderRadius: "18px" },
     headerTitle: { fontSize: "24px", fontWeight: 600, letterSpacing: "-0.015em", color: "#1d1d1f" },
     headerSubtitle: { color: "#6e6e73" },
-    formButtonPrimary: { backgroundColor: "#0071e3", borderRadius: "980px", boxShadow: "none", fontWeight: 400, fontSize: "15px", textTransform: "none" },
+    formButtonPrimary: { backgroundColor: "#000000", borderRadius: "980px", boxShadow: "none", fontWeight: 400, fontSize: "15px", textTransform: "none" },
     socialButtonsBlockButton: { borderRadius: "12px", borderColor: "#d2d2d7" },
     formFieldInput: { borderRadius: "12px", borderColor: "#d2d2d7" },
-    footerActionLink: { color: "#0066cc" },
+    footerActionLink: { color: "#000000" },
   },
 }

@@ -373,7 +373,7 @@ export default async function AuditPage() {
                       href="mailto:hi@alphaa.app?subject=Help%20with%20a%20website%20issue"
                       style={{
                         background: "var(--ds-accent)",
-                        color: "var(--ds-text)",
+                        color: "var(--ds-on-accent)",
                         fontSize: "11px",
                         fontWeight: 500,
                         padding: "5px 12px",
@@ -434,7 +434,7 @@ export default async function AuditPage() {
               alignItems: "center",
               gap: "6px",
               background: "var(--ds-accent)",
-              color: "var(--ds-text)",
+              color: "var(--ds-on-accent)",
               fontSize: "13px",
               fontWeight: 500,
               padding: "8px 16px",

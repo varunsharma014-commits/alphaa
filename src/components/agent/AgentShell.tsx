@@ -72,7 +72,7 @@ export function AgentShell({
                 {trialDaysLeft === 0 ? "Trial ends today" : `${trialDaysLeft}d left in trial`} →
               </a>
             )}
-            {showUser && <UserButton appearance={{ variables: { colorPrimary: "#0071E3" }, elements: { avatarBox: "w-8 h-8" } }} />}
+            {showUser && <UserButton appearance={{ variables: { colorPrimary: "#000000" }, elements: { avatarBox: "w-8 h-8" } }} />}
           </div>
         </header>
         {/* Home owns its own scroll area so the composer stays pinned; legacy

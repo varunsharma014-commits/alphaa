@@ -15,7 +15,7 @@ export default function AccountSettingsPage() {
           // src/app/layout.tsx for the full explanation — this just repeats
           // the same light palette explicitly for this instance.
           variables: {
-            colorPrimary: "#0071E3",
+            colorPrimary: "#000000",
             colorBackground: "#ffffff",
             colorInputBackground: "#f5f5f7",
             colorInputText: "#1d1d1f",

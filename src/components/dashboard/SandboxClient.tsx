@@ -193,7 +193,7 @@ export default function SandboxClient({
               alignItems: "center",
               gap: "8px",
               background: "var(--ds-accent)",
-              color: "var(--ds-text)",
+              color: "var(--ds-on-accent)",
               fontSize: "13px",
               fontWeight: 500,
               borderRadius: "8px",

@@ -198,7 +198,7 @@ export default function BusinessSettingsPage() {
                   alignItems: "center",
                   gap: "8px",
                   background: "var(--ds-accent)",
-                  color: "var(--ds-text)",
+                  color: "var(--ds-on-accent)",
                   border: "none",
                   borderRadius: "8px",
                   padding: "9px 20px",

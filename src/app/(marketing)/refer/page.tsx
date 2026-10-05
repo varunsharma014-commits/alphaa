@@ -58,7 +58,7 @@ function EarningsCalculator() {
             max={50}
             value={referrals}
             onChange={(e) => setReferrals(Number(e.target.value))}
-            className="w-full accent-[#0071e3] h-2 cursor-pointer"
+            className="w-full accent-black h-2 cursor-pointer"
           />
           <div className="flex justify-between text-fg/25 text-xs mt-1">
             <span>1</span>

@@ -1,11 +1,8 @@
 import { EngineRotator } from "@/components/marketing/hero/EngineRotator"
 import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
 import Link from "next/link"
-import Image from "next/image"
 import { RevenueSection, TodoAccordion, EasyRail, AgencyToggle } from "@/components/marketing/apple/Sections"
-import { AVATARS } from "@/components/marketing/HeroSection"
 import { AgentHomeDemo } from "@/components/marketing/AgentHomeDemo"
-import { SocialProof } from "@/components/marketing/SocialProof"
 import { FaqSection } from "@/components/marketing/FaqSection"
 import { faqs } from "@/components/marketing/faq-data"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
@@ -87,12 +84,7 @@ export default function HomePage() {
         </div>
         <div className="ag-fine">No credit card required.</div>
         <div className="ag-trust ag-trust--small">
-          <div className="ag-trust__faces">
-            {AVATARS.map((src) => (
-              <Image key={src} src={src} width={36} height={36} alt="" aria-hidden="true" />
-            ))}
-          </div>
-          <span><b>Trusted by 1,200+ businesses</b> getting found on AI</span>
+          <span>Checks <b>ChatGPT, Gemini, Claude and Perplexity</b></span>
         </div>
         <div id="watch"><AgentHomeDemo /></div>
         </div>
@@ -106,8 +98,6 @@ export default function HomePage() {
       <EasyRail />
 
       <AgencyToggle />
-
-      <SocialProof />
 
       <section className="ag-section ag-section--grey">
         <h2>Hire your agent. Cancel your agency.</h2>

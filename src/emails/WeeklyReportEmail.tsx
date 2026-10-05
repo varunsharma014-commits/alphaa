@@ -236,7 +236,7 @@ const body = {
 const container = { maxWidth: "560px", margin: "24px auto", backgroundColor: "#ffffff", borderRadius: "18px", overflow: "hidden" as const }
 const header = { padding: "32px 40px 20px", borderBottom: "1px solid #d2d2d7" }
 const logoText = {
-  color: "#0066cc",
+  color: "#000000",
   fontSize: "20px",
   fontWeight: "600",
   margin: "0",
@@ -274,7 +274,7 @@ const statBoxMiddle = {
   margin: "0 8px",
 }
 const statValue = {
-  color: "#0066cc",
+  color: "#000000",
   fontSize: "32px",
   fontWeight: "600",
   margin: "0",
@@ -336,7 +336,7 @@ const tableCellMono = {
   margin: "0",
 }
 const button = {
-  backgroundColor: "#0071e3",
+  backgroundColor: "#000000",
   color: "#1d1d1f",
   borderRadius: "8px",
   fontSize: "15px",

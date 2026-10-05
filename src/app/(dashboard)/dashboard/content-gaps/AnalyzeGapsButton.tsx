@@ -86,7 +86,7 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
           disabled={loading || !competitorUrl.trim()}
           style={{
             background: "var(--ds-accent)",
-            color: "var(--ds-text)",
+            color: "var(--ds-on-accent)",
             border: "none",
             borderRadius: "8px",
             padding: "8px 18px",

@@ -1,5 +1,6 @@
 "use client"
 
+import { Sparkles } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import type { RailData } from "@/lib/agent/feed"
@@ -46,7 +47,7 @@ export function AgentRail({ rail, open, onClose }: { rail: RailData; open: boole
     <aside className={`ag-rail ${open ? "ag-rail--open" : ""}`}>
       <div className="ag-rail__biz">
         <Link href="/" className="ag-brand" style={{ marginBottom: 10 }}>
-          <span className="ag-dot ag-dot--live" />
+          <Sparkles className="ag-brand__mark" aria-hidden="true" />
           {BRAND.name}
         </Link>
         {rail.businessName}

@@ -103,7 +103,7 @@ export default async function ReviewsPage() {
               href="/dashboard/settings/integrations"
               style={{
                 background: "var(--ds-accent)",
-                color: "var(--ds-text)",
+                color: "var(--ds-on-accent)",
                 borderRadius: "8px",
                 padding: "8px 18px",
                 fontSize: "13px",

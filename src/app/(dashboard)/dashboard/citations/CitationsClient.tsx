@@ -74,7 +74,7 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
           disabled={running}
           style={{
             display: "inline-flex", alignItems: "center", gap: "8px",
-            background: "var(--ds-accent)", color: "#fff",
+            background: "var(--ds-accent)", color: "var(--ds-on-accent)",
             borderRadius: "980px", padding: "10px 20px",
             fontSize: "14px", fontWeight: 590, border: "none",
             cursor: running ? "default" : "pointer", opacity: running ? 0.7 : 1,

@@ -118,7 +118,7 @@ export function WinGapButton({ competitorId, gap }: { competitorId: string; gap:
               alignItems: "center",
               gap: 6,
               background: "var(--ds-accent)",
-              color: "var(--ds-text)",
+              color: "var(--ds-on-accent)",
               border: "none",
               borderRadius: 8,
               padding: "6px 12px",

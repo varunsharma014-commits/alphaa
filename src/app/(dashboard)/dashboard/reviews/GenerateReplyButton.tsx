@@ -184,7 +184,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
             disabled={posting || empty}
             style={{
               background: "var(--ds-accent)",
-              color: "var(--ds-text)",
+              color: "var(--ds-on-accent)",
               borderRadius: "8px",
               padding: "8px 18px",
               fontSize: "13px",
@@ -267,7 +267,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
           disabled={generating}
           style={{
             background: "var(--ds-accent)",
-            color: "var(--ds-text)",
+            color: "var(--ds-on-accent)",
             borderRadius: "8px",
             padding: "8px 18px",
             fontSize: "13px",

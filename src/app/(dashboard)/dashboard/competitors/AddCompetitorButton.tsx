@@ -58,7 +58,7 @@ export function AddCompetitorButton() {
           type="submit"
           disabled={loading || !url.trim()}
           className="flex items-center gap-2 rounded-[8px] disabled:opacity-50 disabled:cursor-not-allowed transition-opacity whitespace-nowrap"
-          style={{ background: "var(--ds-accent)", color: "var(--ds-text)", fontSize: 13, fontWeight: 500, padding: "8px 18px" }}
+          style={{ background: "var(--ds-accent)", color: "var(--ds-on-accent)", fontSize: 13, fontWeight: 500, padding: "8px 18px" }}
         >
           {loading ? (
             <>

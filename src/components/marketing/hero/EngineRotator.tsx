@@ -3,12 +3,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
 // The AI assistant in the headline changes every couple of seconds. Names in
-// each brand's colour (no official logos — their trademark rules restrict it).
+// plain black (B&W brand; no official logos — their trademark rules restrict it).
 const ENGINES = [
-  { name: "ChatGPT", color: "#10a37f" },
-  { name: "Claude", color: "#d97757" },
-  { name: "Gemini", color: "linear-gradient(90deg,#4285f4,#9b72cb 55%,#d96570)" },
-  { name: "Perplexity", color: "#1f8a99" },
+  { name: "ChatGPT", color: "#000" },
+  { name: "Claude", color: "#000" },
+  { name: "Gemini", color: "#000" },
+  { name: "Perplexity", color: "#000" },
 ]
 
 export function EngineRotator() {

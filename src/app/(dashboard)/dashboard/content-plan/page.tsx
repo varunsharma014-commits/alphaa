@@ -153,7 +153,7 @@ export default async function ContentPlanPage() {
               display: "inline-block",
               marginTop: "10px",
               background: "var(--ds-accent)",
-              color: "var(--ds-text)",
+              color: "var(--ds-on-accent)",
               borderRadius: "8px",
               padding: "7px 16px",
               fontSize: "12px",

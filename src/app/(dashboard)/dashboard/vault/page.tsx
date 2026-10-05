@@ -349,7 +349,7 @@ Thank you!`
             href="/dashboard/concierge"
             style={{
               flexShrink: 0, padding: "9px 18px", borderRadius: "999px", background: "var(--ds-accent)",
-              color: "#fff", fontSize: "13px", fontWeight: 600, textDecoration: "none",
+              color: "var(--ds-on-accent)", fontSize: "13px", fontWeight: 600, textDecoration: "none",
             }}
           >
             Do this for me →

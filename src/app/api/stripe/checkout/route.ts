@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
   const branding_settings = {
     display_name: "Alphaa",
     background_color: "#ffffff",
-    button_color: "#0071e3",
+    button_color: "#000000",
     border_style: "pill" as const,
     font_family: "default" as const,
   }

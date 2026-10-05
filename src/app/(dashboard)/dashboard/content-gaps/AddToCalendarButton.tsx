@@ -57,7 +57,7 @@ export default function AddToCalendarButton({ title }: Props) {
           alignItems: "center",
           gap: "6px",
           background: "var(--ds-accent)",
-          color: "var(--ds-text)",
+          color: "var(--ds-on-accent)",
           border: "none",
           borderRadius: "8px",
           padding: "7px 14px",

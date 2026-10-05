@@ -51,7 +51,7 @@ export function DashboardTopBar({ user, theme }: { user: AppUser; theme: Dashboa
       <div className="flex items-center gap-3">
         <UserButton
           appearance={{
-            variables: { colorPrimary: "#0071E3" },
+            variables: { colorPrimary: "#000000" },
             elements: { avatarBox: "w-8 h-8" },
           }}
         />

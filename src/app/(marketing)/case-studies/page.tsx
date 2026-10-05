@@ -20,7 +20,7 @@ function CaseStudyCard({ cs }: { cs: (typeof caseStudies)[0] }) {
           </span>
           <div className="flex gap-0.5">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-3 h-3 fill-[#f5a623] text-[#f5a623]" />
+              <Star key={i} className="w-3 h-3 fill-[#1d1d1f] text-[#1d1d1f]" />
             ))}
           </div>
         </div>

@@ -51,7 +51,7 @@ export async function POST(req: Request) {
   if (isEmail) {
     const inner = `<p style="margin:0 0 16px">Hi ${esc(first)},</p>
 <p style="margin:0 0 16px">Thanks for choosing <b>${esc(biz)}</b>. If you have a minute, would you leave us a quick review on Google? It really helps people nearby find us.</p>
-<p style="margin:24px 0"><a href="${esc(link)}" style="display:inline-block;background:#0071e3;color:#fff;text-decoration:none;border-radius:980px;padding:12px 24px;font-size:16px">Leave a review</a></p>
+<p style="margin:24px 0"><a href="${esc(link)}" style="display:inline-block;background:#000000;color:#fff;text-decoration:none;border-radius:980px;padding:12px 24px;font-size:16px">Leave a review</a></p>
 <p style="margin:0">Thank you,<br>${esc(user.fullName || biz)}</p>`
     try {
       await sendAs({

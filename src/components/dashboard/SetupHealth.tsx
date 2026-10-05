@@ -166,7 +166,7 @@ export function SetupHealth({
             href={cta.href}
             style={{
               background: "var(--ds-accent)",
-              color: "#ffffff",
+              color: "var(--ds-on-accent)",
               borderRadius: "980px",
               padding: "9px 20px",
               fontSize: "13px",
