@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
 import { stripe, STRIPE_PRICE_IDS, STRIPE_SETUP_FEE_PRICE_ID } from "@/lib/stripe"
 import { db } from "@/lib/db"
+import { FOUNDER_EMAILS } from "@/lib/billing"
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth()
@@ -15,6 +16,10 @@ export async function POST(req: NextRequest) {
 
   const user = await db.user.findUnique({ where: { clerkId: userId } })
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
+  // Comped accounts (founder, app-store reviewers) never pay: send them on.
+  if (purchase === "starter" && FOUNDER_EMAILS.includes(user.email.toLowerCase())) {
+    return NextResponse.json({ url: `${appUrl}/dashboard` })
+  }
 
   let stripeCustomerId = user.stripeCustomerId
   // Apple-style hosted checkout for Alphaa sessions only (the Stripe account is

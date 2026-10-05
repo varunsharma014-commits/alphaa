@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic"
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { hasPaidPlan } from "@/lib/billing"
+import { hasPaidPlan, FOUNDER_EMAILS } from "@/lib/billing"
 import { completeOnboardingFromScan } from "@/lib/onboarding"
 import { StartAgent } from "@/components/agent/StartAgent"
 
@@ -33,6 +33,9 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
     if (!user) redirect("/dashboard")
   }
   if (hasPaidPlan(user)) redirect(paid ? "/dashboard?upgraded=true" : "/dashboard")
+  // Comped accounts (founder, app-store reviewers) skip payment once set up.
+  const comped = FOUNDER_EMAILS.includes(user.email.toLowerCase())
+  if (comped && user.onboardingCompleted) redirect("/dashboard")
 
   if (scan && !user.onboardingCompleted) {
     user = (await completeOnboardingFromScan(clerkId, scan)) ?? user
