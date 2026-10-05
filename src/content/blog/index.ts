@@ -100,6 +100,9 @@ import { meta as propertyMgrsMeta, Body as PropertyMgrsBody } from "./how-proper
 import { meta as ahrefsSemrushMeta, Body as AhrefsSemrushBody } from "./ahrefs-brand-radar-vs-semrush-ai-visibility"
 import { meta as measureAiVisMeta, Body as MeasureAiVisBody } from "./how-to-measure-ai-visibility"
 import { meta as citationShareMeta, Body as CitationShareBody } from "./what-is-ai-citation-share"
+import { meta as otterlyPeecMeta, Body as OtterlyPeecBody } from "./otterly-ai-vs-peec-ai"
+import { meta as aioSourcesMeta, Body as AioSourcesBody } from "./how-google-ai-overviews-choose-sources"
+import { meta as whatIsGeoMeta, Body as WhatIsGeoBody } from "./what-is-generative-engine-optimization"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -205,6 +208,9 @@ export const POSTS: Post[] = [
   { meta: ahrefsSemrushMeta, Body: AhrefsSemrushBody },
   { meta: measureAiVisMeta, Body: MeasureAiVisBody },
   { meta: citationShareMeta, Body: CitationShareBody },
+  { meta: otterlyPeecMeta, Body: OtterlyPeecBody },
+  { meta: aioSourcesMeta, Body: AioSourcesBody },
+  { meta: whatIsGeoMeta, Body: WhatIsGeoBody },
 ]
 
 export function getAllPosts(): Post[] {
