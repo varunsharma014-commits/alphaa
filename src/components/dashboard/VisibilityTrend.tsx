@@ -61,7 +61,7 @@ export function VisibilityTrend({ points }: { points: TrendPoint[] }) {
         <span
           style={{
             fontSize: "12px",
-            color: delta > 0 ? "var(--ds-ok)" : delta < 0 ? "var(--ds-bad)" : "var(--ds-text-mute)",
+            color: delta > 0 ? "var(--ds-ok)" : delta < 0 ? "var(--ds-text-mute)" : "var(--ds-text-mute)",
           }}
         >
           {delta > 0 ? `▲ up ${delta} pts` : delta < 0 ? `▼ down ${Math.abs(delta)} pts` : "holding steady"}{" "}

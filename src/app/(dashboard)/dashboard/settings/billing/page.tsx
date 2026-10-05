@@ -51,7 +51,7 @@ export default function BillingSettingsPage() {
           switch plans.
         </p>
         {error && (
-          <p className="text-amber-400 text-xs mt-3 leading-relaxed">{error}</p>
+          <p className="text-xs mt-3 leading-relaxed" style={{ color: "var(--ds-bad)" }}>{error}</p>
         )}
       </GlassCard>
 

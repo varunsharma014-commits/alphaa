@@ -21,7 +21,7 @@ const PRIORITY_META: Record<
   { label: string; pill: PillVariant; accent: string }
 > = {
   high:   { label: "High opportunity", pill: "found",   accent: "var(--ds-ok)" },
-  medium: { label: "Medium",           pill: "warning", accent: "var(--ds-warn)" },
+  medium: { label: "Medium",           pill: "warning", accent: "var(--ds-partial)" },
   low:    { label: "Lower priority",   pill: "neutral", accent: "var(--ds-border-3)" },
 }
 

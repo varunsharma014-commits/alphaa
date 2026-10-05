@@ -27,7 +27,8 @@ export function ScoreGauge({ score }: ScoreGaugeProps) {
   const circumference = Math.PI * r // half circle
   const offset = circumference * (1 - displayed / 100)
 
-  const color = score < 40 ? "#EF4444" : score < 65 ? "#FBBF24" : "#22C55E"
+  // Black & white brand: foreground arc on a light grey track, no traffic lights.
+  const color = "rgb(var(--fg-rgb))"
   const label = score < 40 ? "Low" : score < 65 ? "Fair" : "Good"
 
   return (
@@ -37,7 +38,7 @@ export function ScoreGauge({ score }: ScoreGaugeProps) {
         <path
           d={`M ${strokeWidth / 2} ${size / 2} A ${r} ${r} 0 0 1 ${size - strokeWidth / 2} ${size / 2}`}
           fill="none"
-          stroke="rgba(255,255,255,0.08)"
+          stroke="rgb(var(--fg-rgb) / 0.1)"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
         />
@@ -50,11 +51,11 @@ export function ScoreGauge({ score }: ScoreGaugeProps) {
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          style={{ transition: "stroke-dashoffset 0.05s linear", filter: `drop-shadow(0 0 8px ${color}80)` }}
+          style={{ transition: "stroke-dashoffset 0.05s linear" }}
         />
       </svg>
       <div className="-mt-4 text-center">
-        <span className="mono text-5xl font-medium text-white">{displayed}</span>
+        <span className="mono text-5xl font-medium text-fg">{displayed}</span>
         <span className="text-muted text-xl">/100</span>
         <p className="text-sm font-medium mt-1" style={{ color }}>{label} visibility</p>
       </div>

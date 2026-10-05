@@ -143,7 +143,7 @@
 .ag-gpt__body:not(.ag-gpt__body--open)::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 60px; background: linear-gradient(to bottom, transparent, var(--ag-gpt)); }
 .ag-gpt__more { font-size: 12px; color: var(--ag-link); background: none; border: 0; padding: 6px 0 0; }
 .ag-gpt__body mark { background: var(--ag-btn); color: var(--ag-btn-fg); border-radius: 4px; padding: 0 3px; }
-.ag-gpt__body mark.ag-them { background: var(--ag-bg3); }
+.ag-gpt__body mark.ag-them { background: var(--ag-bg3); color: var(--ag-fg); }
 .ag-gpt__src { margin-top: 10px; font-size: 12px; color: var(--ag-muted); }
 .ag-gpt__src span { display: inline-block; background: var(--ag-bg3); border-radius: 6px; padding: 2px 7px; margin: 2px 4px 0 0; color: var(--ag-fg2); }
 .ag-gpt__you { margin-top: 10px; border-top: 1px dashed var(--ag-line); padding-top: 10px; color: var(--ag-bad-text); font-weight: 600; display: flex; gap: 8px; align-items: center; font-size: 14px; }

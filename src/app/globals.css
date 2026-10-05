@@ -29,7 +29,7 @@
   --text-on-cream: #1A1410;
 
   /* Status */
-  --success: #22C55E;
+  --success: #000000;
   --warning: #FBBF24;
   --error: #EF4444;
 
@@ -101,10 +101,16 @@
   --ds-text-faint: #555555;
   --ds-text-ghost: #444444;
 
-  --ds-ok: #22c55e;
-  --ds-ok-strong: #16a34a;
-  --ds-ok-bg: #0d2218;
-  --ds-ok-border: #14532d;
+  /* Black & white brand: "good" is solid foreground (white here), never green.
+     Partial = mid grey, missing = hollow grey. Only real warnings/errors keep
+     a hue (warn/bad below). */
+  --ds-ok: #ffffff;
+  --ds-ok-strong: #ffffff;
+  --ds-ok-bg: #1d1d1f;
+  --ds-ok-border: #48484a;
+
+  --ds-partial: #98989d;
+  --ds-missing: #6e6e73;
 
   --ds-warn: #f59e0b;
   --ds-warn-bg: #1a1200;
@@ -118,9 +124,9 @@
   --ds-accent: #ffffff;
   --ds-on-accent: #000000;
 
-  --ds-info: #3b82f6;
-  --ds-info-bg: #0d1520;
-  --ds-info-border: #1e2d45;
+  --ds-info: #cccccc;
+  --ds-info-bg: #161616;
+  --ds-info-border: #333333;
 }
 
 /* ── Light theme (default everywhere — apple.com has no dark mode) ── */
@@ -164,10 +170,16 @@
   --ds-text-faint: #98989d;
   --ds-text-ghost: #aeaeb2;
 
-  --ds-ok: #15803d;
-  --ds-ok-strong: #166534;
-  --ds-ok-bg: #edfaf1;
-  --ds-ok-border: #bde8cb;
+  /* Black & white brand: "good" is solid black, never green. Partial = mid
+     grey (#6e6e73 keeps 4.6:1 on white), missing = hollow light-grey ring.
+     Only real warnings/errors keep a hue (warn/bad below). */
+  --ds-ok: #000000;
+  --ds-ok-strong: #000000;
+  --ds-ok-bg: #f5f5f7;
+  --ds-ok-border: #c7c7cc;
+
+  --ds-partial: #6e6e73;
+  --ds-missing: #aeaeb2;
 
   --ds-warn: #b45309;
   --ds-warn-bg: #fdf6e8;
@@ -181,9 +193,9 @@
   --ds-accent: #000000;
   --ds-on-accent: #ffffff;
 
-  --ds-info: #1d4ed8;
-  --ds-info-bg: #eef4fd;
-  --ds-info-border: #c3d8f7;
+  --ds-info: #38383a;
+  --ds-info-bg: #fbfbfd;
+  --ds-info-border: #d2d2d7;
 }
 
 /* ── Light-mode text contrast remap ──

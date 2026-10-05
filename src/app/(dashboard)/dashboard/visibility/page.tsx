@@ -230,7 +230,7 @@ export default async function VisibilityPage() {
         <StatBox
           value={`${appearedCount} of 4`}
           label="AI engines mention you"
-          tone={appearedCount > 0 ? "success" : "danger"}
+          tone={appearedCount > 0 ? "success" : "muted"}
           delta={
             prevAppearedCount !== null && prevAppearedCount !== appearedCount
               ? `was ${prevAppearedCount} of 4 at the last check`

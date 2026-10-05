@@ -11,10 +11,9 @@ export function ScoreRing({ score, size = 88, strokeWidth = 7 }: ScoreRingProps)
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (Math.min(100, Math.max(0, score)) / 100) * circumference
 
-  const color =
-    score >= 75 ? "#22C55E"
-    : score >= 50 ? "rgb(var(--orange-rgb))"
-    : "#EF4444"
+  // Black & white brand: one foreground arc on a light grey track. The arc
+  // length carries the score; no traffic-light colours.
+  const color = "rgb(var(--fg-rgb))"
 
   return (
     <div className="relative flex-shrink-0" style={{ width: size, height: size }}>

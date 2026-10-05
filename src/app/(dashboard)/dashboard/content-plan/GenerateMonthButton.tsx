@@ -61,8 +61,8 @@ export function GenerateMonthButton() {
             style={{
               width: "16px",
               height: "16px",
-              border: "2px solid rgba(255,255,255,0.3)",
-              borderTopColor: "var(--ds-text)",
+              border: "2px solid rgb(127 127 127 / 0.4)",
+              borderTopColor: "var(--ds-on-accent)",
               borderRadius: "50%",
               animation: "spin 0.7s linear infinite",
             }}

@@ -56,9 +56,9 @@ function highlight(answer: string, ownName: string, competitors: string[]): Reac
         <mark
           key={i}
           style={{
-            background: isSelf ? "var(--ds-ok-bg)" : "var(--ds-bad-bg)",
-            color: isSelf ? "var(--ds-ok)" : "var(--ds-bad-soft)",
-            border: `1px solid ${isSelf ? "var(--ds-ok-border)" : "var(--ds-bad-border)"}`,
+            background: isSelf ? "var(--ds-accent)" : "var(--ds-bg)",
+            color: isSelf ? "var(--ds-on-accent)" : "var(--ds-text-strong)",
+            border: `1px solid ${isSelf ? "var(--ds-accent)" : "var(--ds-border-3)"}`,
             borderRadius: "4px",
             padding: "0 3px",
             fontWeight: 500,
@@ -340,10 +340,10 @@ export default function SandboxClient({
             }}
           >
             <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
-              <Check size={12} color="var(--ds-ok)" /> Green = your business
+              <Check size={12} color="var(--ds-ok)" /> Black = your business
             </span>
             <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
-              <X size={12} color="var(--ds-bad-soft)" /> Red = someone else the engine named
+              <X size={12} color="var(--ds-text-mute)" /> Grey = someone else the engine named
             </span>
           </div>
         </>

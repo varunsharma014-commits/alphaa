@@ -71,7 +71,7 @@ export function GeneratePostButton() {
             border: "1px solid var(--ds-border)",
             borderRadius: "10px",
             padding: "16px",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>

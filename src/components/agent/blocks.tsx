@@ -32,7 +32,7 @@ function stripMarkdown(s: string): string {
     .trim()
 }
 
-/** Wrap the business name (green) and named competitors (grey) in <mark>. */
+/** Wrap the business name (solid black) and named competitors (grey) in <mark>. */
 function highlight(answer: string, you: string, them: string[]): string {
   let html = escapeHtml(stripMarkdown(answer))
   const youRe = you.trim().length > 2 ? new RegExp(escapeRe(escapeHtml(you.trim())), "gi") : null

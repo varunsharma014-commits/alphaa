@@ -140,9 +140,9 @@ export default async function EngineVisibilityPage({
     : isFound
       ? { accent: "var(--ds-ok)", label: "Mentioned", color: "var(--ds-ok)", sub: "Customers can find you on " + config.label + " when they ask." }
       : isPartial
-        ? { accent: "var(--ds-warn)", label: "Sometimes", color: "var(--ds-warn)", sub: config.label + " mentions you for some searches — alphaa is working to make it consistent." }
+        ? { accent: "var(--ds-partial)", label: "Sometimes", color: "var(--ds-partial)", sub: config.label + " mentions you for some searches — alphaa is working to make it consistent." }
         : isUnknown
-          ? { accent: "var(--ds-warn)", label: "No data yet", color: "var(--ds-text-mute)", sub: "alphaa hasn't been able to check " + config.label + " recently — the next automatic check runs this week. Use “Check again now” or ask a live question to get a fresh answer." }
+          ? { accent: "var(--ds-missing)", label: "No data yet", color: "var(--ds-text-mute)", sub: "alphaa hasn't been able to check " + config.label + " recently — the next automatic check runs this week. Use “Check again now” or ask a live question to get a fresh answer." }
           : { accent: "var(--ds-text-ghost)", label: "Not yet", color: "var(--ds-text-mute)", sub: "alphaa is working to get you mentioned on " + config.label + "." }
 
   return (

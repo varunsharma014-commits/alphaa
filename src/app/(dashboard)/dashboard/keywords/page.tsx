@@ -26,11 +26,11 @@ function formatPosition(pos: number): string {
   return pos.toFixed(1)
 }
 
-// Position = colored number: green if <=10, amber 11-30, red if >30.
+// Position = monochrome number: black if <=10, mid grey 11-30, light grey if >30.
 function positionColor(pos: number): string {
   if (pos <= 10) return 'var(--ds-ok)'
-  if (pos <= 30) return 'var(--ds-warn)'
-  return 'var(--ds-bad)'
+  if (pos <= 30) return 'var(--ds-partial)'
+  return 'var(--ds-text-mute)'
 }
 
 function formatNumber(n: number): string {
@@ -352,7 +352,7 @@ export default async function KeywordsPage() {
                         ↑ {formatPosition(row.prevPosition)} → {formatPosition(row.position)}
                       </span>
                     ) : (
-                      <span style={{ color: 'var(--ds-bad)' }}>
+                      <span style={{ color: 'var(--ds-text-mute)' }}>
                         ↓ {formatPosition(row.prevPosition)} → {formatPosition(row.position)}
                       </span>
                     )}

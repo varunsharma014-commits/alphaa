@@ -36,8 +36,8 @@ const STATUS_META: Record<
   { label: string; dot: string; variant: "found" | "warning" | "info" | "error" }
 > = {
   posted: { label: "Published", dot: "var(--ds-ok)", variant: "found" },
-  draft: { label: "Draft", dot: "var(--ds-warn)", variant: "warning" },
-  scheduled: { label: "Scheduled", dot: "var(--ds-info)", variant: "info" },
+  draft: { label: "Draft", dot: "var(--ds-partial)", variant: "warning" },
+  scheduled: { label: "Scheduled", dot: "var(--ds-missing)", variant: "info" },
   failed: { label: "Needs attention", dot: "var(--ds-bad)", variant: "error" },
 }
 
@@ -222,7 +222,7 @@ export default async function ContentPlanPage() {
                 position: "relative",
                 borderRadius: "10px",
                 padding: "14px",
-                background: isCurrentWeek ? "var(--ds-warn-bg)" : "var(--ds-surface-2)",
+                background: isCurrentWeek ? "var(--ds-bg)" : "var(--ds-surface-2)",
                 border: isCurrentWeek ? "1px solid var(--ds-accent)" : ".5px solid var(--ds-border)",
               }}
             >
@@ -287,7 +287,7 @@ export default async function ContentPlanPage() {
                   <>
                     {postedInWeek > 0 && <span style={{ color: "var(--ds-ok)" }}>{postedInWeek} published</span>}
                     {postedInWeek > 0 && draftInWeek > 0 && <span style={{ color: "var(--ds-text-ghost)" }}> · </span>}
-                    {draftInWeek > 0 && <span style={{ color: "var(--ds-warn)" }}>{draftInWeek} draft</span>}
+                    {draftInWeek > 0 && <span style={{ color: "var(--ds-partial)" }}>{draftInWeek} draft</span>}
                   </>
                 )}
               </p>
@@ -300,8 +300,8 @@ export default async function ContentPlanPage() {
       <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "12px", flexWrap: "wrap" }}>
         {[
           { dot: "var(--ds-ok)", label: "Published" },
-          { dot: "var(--ds-warn)", label: "Draft" },
-          { dot: "var(--ds-info)", label: "Scheduled" },
+          { dot: "var(--ds-partial)", label: "Draft" },
+          { dot: "var(--ds-missing)", label: "Scheduled" },
           { dot: "var(--ds-surface)", label: "Empty slot", border: true },
         ].map((l) => (
           <div key={l.label} style={{ display: "flex", alignItems: "center", gap: "6px" }}>

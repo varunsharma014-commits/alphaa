@@ -67,32 +67,32 @@ function cwvSubtitle(id: string): string {
 // Plain-English label + tone for a Core Web Vital value.
 function cwvStatus(id: string, displayValue: string | undefined): {
   label: string
-  variant: "found" | "warning" | "error"
+  variant: "found" | "warning" | "error" | "neutral"
 } {
   const val = parseFloat(displayValue ?? "")
   if (Number.isNaN(val)) return { label: "Checking", variant: "warning" }
   if (id === "largest-contentful-paint") {
     if (val <= 2.5) return { label: "Good", variant: "found" }
     if (val <= 4) return { label: "Could be faster", variant: "warning" }
-    return { label: "Needs work", variant: "error" }
+    return { label: "Needs work", variant: "neutral" }
   }
   if (id === "total-blocking-time") {
     if (val <= 100) return { label: "Good", variant: "found" }
     if (val <= 300) return { label: "Could be faster", variant: "warning" }
-    return { label: "Needs work", variant: "error" }
+    return { label: "Needs work", variant: "neutral" }
   }
   if (id === "cumulative-layout-shift") {
     if (val <= 0.1) return { label: "Good", variant: "found" }
     if (val <= 0.25) return { label: "Could be steadier", variant: "warning" }
-    return { label: "Needs work", variant: "error" }
+    return { label: "Needs work", variant: "neutral" }
   }
   return { label: "Checking", variant: "warning" }
 }
 
 const SEV_DOT: Record<string, string> = {
   critical: "var(--ds-bad)",
-  warning: "var(--ds-warn)",
-  improvement: "var(--ds-info)",
+  warning: "var(--ds-partial)",
+  improvement: "var(--ds-missing)",
 }
 
 // Map an issue to a plain-English line. Prefer humanizing a code; otherwise use
@@ -343,7 +343,7 @@ export default async function AuditPage() {
                       width: "8px",
                       height: "8px",
                       borderRadius: "50%",
-                      background: SEV_DOT[issue.severity] ?? "var(--ds-warn)",
+                      background: SEV_DOT[issue.severity] ?? "var(--ds-partial)",
                       flexShrink: 0,
                       marginTop: "5px",
                     }}

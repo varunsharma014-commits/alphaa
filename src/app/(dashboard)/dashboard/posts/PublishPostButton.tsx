@@ -48,7 +48,7 @@ export function PublishPostButton({ postId }: { postId: string }) {
         }}
       >
         {loading ? (
-          <div className="w-3 h-3 border-2 border-green-400/30 border-t-green-400 rounded-full animate-spin" />
+          <div className="w-3 h-3 border-2 border-fg/20 border-t-fg rounded-full animate-spin" />
         ) : (
           <Send className="w-3 h-3" />
         )}

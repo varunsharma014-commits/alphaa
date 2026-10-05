@@ -39,7 +39,7 @@ export function DeletePostButton({ postId }: { postId: string }) {
       }}
     >
       {loading ? (
-        <div className="w-3 h-3 border-2 border-red-400/30 border-t-red-400 rounded-full animate-spin" />
+        <div className="w-3 h-3 border-2 border-fg/20 border-t-fg rounded-full animate-spin" />
       ) : (
         <Trash2 className="w-3 h-3" />
       )}

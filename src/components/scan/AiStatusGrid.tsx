@@ -9,9 +9,9 @@ const engines = [
 ] as const
 
 const statusConfig = {
-  not_appearing: { label: "Not appearing", color: "text-red-400", bg: "bg-red-500/10" },
-  occasionally: { label: "Occasionally", color: "text-yellow-400", bg: "bg-yellow-500/10" },
-  frequently: { label: "Frequently", color: "text-green-400", bg: "bg-green-500/10" },
+  not_appearing: { label: "Not appearing", color: "text-fg/50", bg: "bg-transparent" },
+  occasionally: { label: "Occasionally", color: "text-fg/70", bg: "bg-fg/[0.06]" },
+  frequently: { label: "Frequently", color: "text-fg", bg: "bg-fg/10" },
 }
 
 export function AiStatusGrid({ status }: { status: AuditResult["ai_search_status"] }) {
@@ -24,7 +24,7 @@ export function AiStatusGrid({ status }: { status: AuditResult["ai_search_status
           <div key={engine.key} className="glass-card rounded-xl p-4 flex items-center gap-3">
             <span className="text-2xl">{engine.icon}</span>
             <div>
-              <p className="text-white text-sm font-medium">{engine.label}</p>
+              <p className="text-fg text-sm font-medium">{engine.label}</p>
               <span className={cn("text-xs font-medium", cfg.color)}>{cfg.label}</span>
             </div>
           </div>

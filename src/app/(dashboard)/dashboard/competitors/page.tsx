@@ -180,16 +180,16 @@ function CompetitorCard({ competitor }: { competitor: CompetitorRow }) {
                 </div>
               )}
               {weaknesses.length > 0 && (
-                <div className="rounded-[8px] p-4" style={{ background: "var(--ds-bad-bg)", border: ".5px solid var(--ds-bad-border)" }}>
+                <div className="rounded-[8px] p-4" style={{ background: "var(--ds-surface-2)", border: ".5px solid var(--ds-border-2)" }}>
                   <div className="flex items-center gap-1.5" style={{ marginBottom: 10 }}>
-                    <AlertCircle className="w-3.5 h-3.5" style={{ color: "var(--ds-bad)" }} />
-                    <p style={{ color: "var(--ds-bad-soft)", fontSize: 11, fontWeight: 500 }}>Gaps you can win on</p>
+                    <AlertCircle className="w-3.5 h-3.5" style={{ color: "var(--ds-text-mute)" }} />
+                    <p style={{ color: "var(--ds-text-strong)", fontSize: 11, fontWeight: 500 }}>Gaps you can win on</p>
                   </div>
                   <ul className="space-y-3">
                     {weaknesses.map((w) => (
                       <li key={w} style={{ color: "var(--ds-text-mute)", fontSize: 11, lineHeight: 1.6 }}>
                         <div className="flex items-start gap-2">
-                          <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-bad)" }} />
+                          <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--ds-partial)" }} />
                           {w}
                         </div>
                         <div style={{ paddingLeft: 12 }}>

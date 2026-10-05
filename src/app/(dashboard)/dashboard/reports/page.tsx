@@ -42,7 +42,7 @@ function DeltaText({ value }: { value: number }) {
     </span>
   )
   if (value < 0) return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "var(--ds-bad)", fontSize: "11px", fontWeight: 500 }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "var(--ds-text-mute)", fontSize: "11px", fontWeight: 500 }}>
       <TrendingDown size={12} />{value}
     </span>
   )
@@ -208,7 +208,7 @@ export default async function ReportsPage() {
                                 fontSize: "12px",
                                 fontWeight: 500,
                                 flexShrink: 0,
-                                color: k.change > 0 ? "var(--ds-ok)" : k.change < 0 ? "var(--ds-bad)" : "var(--ds-text-faint)",
+                                color: k.change > 0 ? "var(--ds-ok)" : k.change < 0 ? "var(--ds-text-mute)" : "var(--ds-text-faint)",
                               }}
                             >
                               {k.change > 0 ? "+" : ""}{Number(k.change).toFixed(1)}

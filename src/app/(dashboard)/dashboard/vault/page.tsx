@@ -136,7 +136,7 @@ Thank you!`
     status === "good" ? (
       <StatusPill variant="found">Working</StatusPill>
     ) : status === "empty" ? (
-      <StatusPill variant="error">Action needed</StatusPill>
+      <StatusPill variant="neutral">Action needed</StatusPill>
     ) : status === "partial" ? (
       <StatusPill variant="warning">Partly there</StatusPill>
     ) : (
@@ -172,9 +172,9 @@ Thank you!`
           status === "good"
             ? "var(--ds-ok)"
             : status === "empty"
-              ? "var(--ds-bad)"
+              ? "var(--ds-missing)"
               : status === "partial"
-                ? "var(--ds-warn)"
+                ? "var(--ds-partial)"
                 : "var(--ds-border-3)"
         }
         style={{
@@ -182,9 +182,9 @@ Thank you!`
             status === "good"
               ? "var(--ds-ok-bg)"
               : status === "empty"
-                ? "var(--ds-bad-bg)"
+                ? "var(--ds-surface)"
                 : status === "partial"
-                  ? "var(--ds-warn-bg)"
+                  ? "var(--ds-bg)"
                   : "var(--ds-surface-2)",
           marginBottom: "6px",
         }}
@@ -224,7 +224,7 @@ Thank you!`
         )}
 
         {status === "empty" && (
-          <p style={{ fontSize: "13px", color: "var(--ds-bad-soft)", lineHeight: 1.6, marginTop: "6px" }}>
+          <p style={{ fontSize: "13px", color: "var(--ds-text-strong)", lineHeight: 1.6, marginTop: "6px" }}>
             alphaa checked your site and found no code describing your business. That means AI
             engines have to guess who you are. Copy the code in Step 1 and paste it onto your site —
             Step 2 shows you exactly where.

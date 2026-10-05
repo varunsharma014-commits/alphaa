@@ -2,11 +2,14 @@ import type { CSSProperties, ReactNode } from "react"
 
 export type PillVariant = "found" | "warning" | "error" | "neutral" | "info"
 
+// Black & white status language (same as /start and the ads): solid
+// black = good, solid mid-grey = partial, hollow grey ring = missing/neutral.
+// Only "error" keeps a hue, for real failures.
 const VARIANTS: Record<PillVariant, { bg: string; color: string; border: string }> = {
-  found: { bg: "var(--ds-ok-bg)", color: "var(--ds-ok)", border: "var(--ds-ok-border)" },
-  warning: { bg: "var(--ds-warn-bg)", color: "var(--ds-warn)", border: "var(--ds-warn-border)" },
+  found: { bg: "var(--ds-accent)", color: "var(--ds-on-accent)", border: "var(--ds-accent)" },
+  warning: { bg: "var(--ds-partial)", color: "var(--ds-on-accent)", border: "var(--ds-partial)" },
   error: { bg: "var(--ds-bad-bg)", color: "var(--ds-bad)", border: "var(--ds-bad-border)" },
-  neutral: { bg: "var(--ds-surface)", color: "var(--ds-text-soft)", border: "var(--ds-border-2)" },
+  neutral: { bg: "transparent", color: "var(--ds-text-mute)", border: "var(--ds-border-3)" },
   info: { bg: "var(--ds-info-bg)", color: "var(--ds-info)", border: "var(--ds-info-border)" },
 }
 

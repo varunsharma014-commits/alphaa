@@ -30,9 +30,9 @@ export function DashboardTopBar({ user, theme }: { user: AppUser; theme: Dashboa
         )}
 
         {isTrialing && trialDaysLeft !== null && trialDaysLeft <= 7 && (
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-amber-400 text-[13px] font-medium">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-fg/[0.04] border border-line/[0.12]">
+            <span className="w-1.5 h-1.5 rounded-full bg-fg animate-pulse" />
+            <span className="text-fg text-[13px] font-medium">
               {trialDaysLeft === 0
                 ? "Trial ends today"
                 : `${trialDaysLeft}d left in trial`}

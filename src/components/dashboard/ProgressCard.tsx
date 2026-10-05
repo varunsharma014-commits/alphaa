@@ -101,7 +101,7 @@ export function ProgressCard({
             <p style={{ fontSize: "22px", fontWeight: 600, color: "var(--ds-text)", marginTop: "4px" }}>
               {first.score} <span style={{ color: "var(--ds-text-faint)", fontWeight: 400 }}>→</span> {latest.score}
               {scoreDelta !== 0 && (
-                <span style={{ fontSize: "13px", marginLeft: "8px", color: scoreDelta > 0 ? "var(--ds-ok)" : "var(--ds-bad)" }}>
+                <span style={{ fontSize: "13px", marginLeft: "8px", color: scoreDelta > 0 ? "var(--ds-ok)" : "var(--ds-text-mute)" }}>
                   {scoreDelta > 0 ? `+${scoreDelta}` : scoreDelta} since you joined
                 </span>
               )}

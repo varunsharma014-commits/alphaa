@@ -64,24 +64,24 @@ function cwvSubtitle(id: string): string {
 
 function cwvStatus(id: string, displayValue: string | undefined): {
   label: string
-  variant: "found" | "warning" | "error"
+  variant: "found" | "warning" | "error" | "neutral"
 } {
   const val = parseFloat(displayValue ?? "")
   if (Number.isNaN(val)) return { label: "Checking", variant: "warning" }
   if (id === "largest-contentful-paint") {
     if (val <= 2.5) return { label: "Good", variant: "found" }
     if (val <= 4) return { label: "Could be faster", variant: "warning" }
-    return { label: "Needs work", variant: "error" }
+    return { label: "Needs work", variant: "neutral" }
   }
   if (id === "total-blocking-time") {
     if (val <= 100) return { label: "Good", variant: "found" }
     if (val <= 300) return { label: "Could be faster", variant: "warning" }
-    return { label: "Needs work", variant: "error" }
+    return { label: "Needs work", variant: "neutral" }
   }
   if (id === "cumulative-layout-shift") {
     if (val <= 0.1) return { label: "Good", variant: "found" }
     if (val <= 0.25) return { label: "Could be steadier", variant: "warning" }
-    return { label: "Needs work", variant: "error" }
+    return { label: "Needs work", variant: "neutral" }
   }
   return { label: "Checking", variant: "warning" }
 }
@@ -217,7 +217,7 @@ export default async function SpeedPage() {
               How fast your site feels to visitors
             </span>
             {perfPct !== null && (
-              <StatusPill variant={perfPct >= 70 ? "found" : perfPct >= 50 ? "warning" : "error"}>
+              <StatusPill variant={perfPct >= 70 ? "found" : perfPct >= 50 ? "warning" : "neutral"}>
                 {perfPct >= 70 ? "Fast" : perfPct >= 50 ? "Okay" : "Slow"} · {perfPct}/100
               </StatusPill>
             )}

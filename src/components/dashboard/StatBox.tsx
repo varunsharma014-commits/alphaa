@@ -5,7 +5,7 @@ export type StatTone = "default" | "success" | "warning" | "danger" | "muted"
 const TONE_COLOR: Record<StatTone, string> = {
   default: "var(--ds-text)",
   success: "var(--ds-ok)",
-  warning: "var(--ds-warn)",
+  warning: "var(--ds-partial)",
   danger: "var(--ds-bad)",
   muted: "var(--ds-text-mute)",
 }
@@ -44,7 +44,7 @@ export function StatBox({
           style={{
             fontSize: "10px",
             marginTop: "2px",
-            color: deltaDir === "down" ? "var(--ds-bad)" : "var(--ds-ok)",
+            color: deltaDir === "down" ? "var(--ds-text-mute)" : "var(--ds-ok)",
           }}
         >
           {deltaDir === "down" ? "↓" : "↑"} {delta}

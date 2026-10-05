@@ -19,8 +19,8 @@ function StarRating({ rating }: { rating: number }) {
         <Star
           key={n}
           size={13}
-          color={n <= rating ? "var(--ds-warn)" : "var(--ds-border-3)"}
-          fill={n <= rating ? "var(--ds-warn)" : "none"}
+          color={n <= rating ? "var(--ds-text)" : "var(--ds-border-3)"}
+          fill={n <= rating ? "var(--ds-text)" : "none"}
         />
       ))}
     </span>
@@ -172,7 +172,7 @@ export default async function ReviewsPage() {
               <SectionDivider>Needs your approval</SectionDivider>
               <div className="space-y-3">
                 {needsReply.map((review) => (
-                  <DsCard key={review.id} accent="var(--ds-warn)">
+                  <DsCard key={review.id} accent="var(--ds-accent)">
                     {/* Reviewer row */}
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-center gap-3">
@@ -181,15 +181,15 @@ export default async function ReviewsPage() {
                             width: "34px",
                             height: "34px",
                             borderRadius: "50%",
-                            background: "var(--ds-warn-bg)",
-                            border: "1px solid var(--ds-warn-border)",
+                            background: "var(--ds-bg)",
+                            border: "1px solid var(--ds-border-2)",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             flexShrink: 0,
                           }}
                         >
-                          <span style={{ color: "var(--ds-warn)", fontSize: "11px", fontWeight: 600 }}>
+                          <span style={{ color: "var(--ds-text-strong)", fontSize: "11px", fontWeight: 600 }}>
                             {getInitials(review.authorName)}
                           </span>
                         </div>
