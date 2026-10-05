@@ -4,16 +4,19 @@ import { db } from "@/lib/db"
 import { scanResultsUrl } from "@/lib/scan-token"
 import { mailingAddress, sendMarketingEmail } from "@/lib/marketing-email"
 import { isEmailSuppressed, leadIsUnsubscribed, mergeNurture, unsubscribeLinks } from "@/lib/unsubscribe"
-import { buildNurtureCopy, dueStep, extractLeadFacts } from "@/lib/nurture"
+import { buildNurtureCopy, currentStep, dueStep, extractLeadFacts, LAST_NURTURE_DAY, NURTURE_SCHEDULE } from "@/lib/nurture"
 import NurtureEmail from "@/emails/NurtureEmail"
 
 // Scan-lead nurture, fired daily by src/lib/cron-scheduler.ts.
 //
-// Day 0 is the report email (lib/scan-email.ts). This sends Day 1, 3, 5, 7, 10,
-// 14 and the 30/60/90 re-check nudges to people who ran a free check and
-// haven't bought. One sequence per email address, anchored on their most
-// recent completed scan. State lives in ScanLead.ogData.nurture (merged,
-// never overwritten): { step, lastSentAt, unsubscribed, unsubscribedAt }.
+// Day 0 is the report email (lib/scan-email.ts). This sends a daily burst on
+// Days 1-4, then one email a week on Days 11, 18, 25, 32, 39, 46, 53 and 60
+// (the last), to people who ran a free check and haven't bought. One sequence
+// per email address, anchored on their most recent completed scan. State lives
+// in ScanLead.ogData.nurture (merged, never overwritten):
+// { step, schedule, lastSentAt, unsubscribed, unsubscribedAt }. Steps stored
+// without schedule: 2 are from the old Day 1/3/5/.../90 schedule and are mapped
+// by lib/nurture.ts currentStep() so nothing is resent.
 //
 // Stops for good when: the address unsubscribed (any lead / account), any lead
 // for it converted, or an account exists with that email.
@@ -27,7 +30,8 @@ export const maxDuration = 300
 const DAY = 24 * 60 * 60 * 1000
 // Only leads who saw the consent notice at the email field (shipped 2026-10-04).
 const CONSENT_SINCE = new Date("2026-10-04T16:00:00Z")
-const MAX_AGE_DAYS = 95
+// Day 60 is the last step; a few days of slack for a late run.
+const MAX_AGE_DAYS = LAST_NURTURE_DAY + 5
 const MAX_SENDS_PER_RUN = 150
 // Resend's default limit is 2 requests/second.
 const SEND_GAP_MS = 600
@@ -38,7 +42,7 @@ function isRecord(v: unknown): v is Record<string, unknown> {
 
 function nurtureState(ogData: unknown): { step: number; lastSentAt: number | null } {
   const n = isRecord(ogData) && isRecord(ogData.nurture) ? ogData.nurture : {}
-  const step = typeof n.step === "number" ? n.step : 0
+  const step = currentStep(typeof n.step === "number" ? n.step : 0, n.schedule)
   const last = typeof n.lastSentAt === "string" ? Date.parse(n.lastSentAt) : NaN
   return { step, lastSentAt: Number.isFinite(last) ? last : null }
 }
@@ -160,7 +164,7 @@ export async function GET(req: NextRequest) {
       const fresh = await db.scanLead.findUnique({ where: { id: anchor.id }, select: { ogData: true } })
       await db.scanLead.update({
         where: { id: anchor.id },
-        data: { ogData: mergeNurture(fresh?.ogData ?? anchor.ogData, { step: day, lastSentAt: new Date().toISOString() }) },
+        data: { ogData: mergeNurture(fresh?.ogData ?? anchor.ogData, { step: day, schedule: NURTURE_SCHEDULE, lastSentAt: new Date().toISOString() }) },
       })
 
       sent++

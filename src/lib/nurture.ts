@@ -2,15 +2,20 @@
 // Pure (no DB, no network) so it can be rendered and checked locally.
 //
 // Day 0 is the report email (lib/scan-email.ts), sent when the scan finishes.
-// This module covers everything after it. Copy rules: the agent's first-person
+// This module covers everything after it: a daily burst on Days 1-4 (when
+// people are most likely to buy), then one short, useful email a week on Days
+// 11-60. Day 60 is the last email, ever. Copy rules: the agent's first-person
 // voice, 60-130 words, one CTA, no em-dashes, only facts from the lead's own
 // scan, and exactly the four AIs we check.
 
 import { CHECK_IMPACT, CHECK_SHORT, type CheckKey } from "@/lib/site-check-labels"
 import type { NurtureBlock } from "@/emails/NurtureEmail"
 
-export const NURTURE_DAYS = [1, 3, 5, 7, 10, 14, 30, 60, 90] as const
+export const NURTURE_DAYS = [1, 2, 3, 4, 11, 18, 25, 32, 39, 46, 53, 60] as const
 export type NurtureDay = (typeof NURTURE_DAYS)[number]
+export const LAST_NURTURE_DAY = 60
+/** Written to ogData.nurture.schedule on every send, so stored steps from the old schedule can be told apart. */
+export const NURTURE_SCHEDULE = 2
 
 export interface LeadFacts {
   leadId: string
@@ -164,12 +169,18 @@ export interface CopyLinks {
   start: string
 }
 
+
 export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks): NurtureCopy {
   const name = f.name
   const nl = namedLine(f)
   const where = f.city ? ` in ${f.city}` : ""
+  const you = f.nameIsGeneric ? "you" : name
+  const start = { label: "Start today", href: links.signup }
+  const recheck = { label: `Re-check ${f.nameIsGeneric ? "your business" : name}`, href: links.start }
 
   switch (day) {
+    // ---- Daily burst: the strongest emails, in order ----
+
     case 1: {
       const blocks: NurtureBlock[] = []
       blocks.push({ kind: "p", text: nl ? `When I checked ${name}, ${nl}.` : `I checked what the AIs say about ${name}.` })
@@ -190,7 +201,7 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
       }
     }
 
-    case 3: {
+    case 2: {
       if (f.draft) {
         return {
           subject: "I already drafted your fix",
@@ -202,7 +213,7 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
             { kind: "p", text: "Anything in [brackets] is a fact only you know, so I left it for you. I never guess." },
             { kind: "p", text: "Once you start, I keep writing these, add the code AI reads, and you approve each one before it goes live." },
           ],
-          cta: { label: "Start today", href: links.signup },
+          cta: start,
         }
       }
       return {
@@ -214,11 +225,11 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
           { kind: "p", text: "Then the behind-the-scenes code that tells AI your hours, address and services." },
           { kind: "p", text: "I don't guess facts. Anything only you know, I ask you for. You approve every piece before it goes live." },
         ],
-        cta: { label: "Start today", href: links.signup },
+        cta: start,
       }
     }
 
-    case 5:
+    case 3:
       return {
         subject: "Can anyone guarantee ChatGPT?",
         preview: "Short answer: no. Here's what I put in writing instead.",
@@ -228,10 +239,10 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
           { kind: "p", text: `So here is what I put in writing. If none of the 4 AIs names ${name} in our weekly checks during your first 90 days, your next month is free. Once per customer.` },
           { kind: "p", text: "And there's a 7-day refund on your first charge if it isn't for you." },
         ],
-        cta: { label: "Start today", href: links.signup },
+        cta: start,
       }
 
-    case 7:
+    case 4:
       return {
         subject: `What $99 a month does for ${name}`,
         preview: `What I'd do for ${name} every week.`,
@@ -249,60 +260,192 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
           { kind: "p", text: "That's Starter, $99 a month. Month to month. Cancel in two clicks. 7-day refund on the first charge." },
           { kind: "p", text: "For comparison, an agency is often around $2,000 a month, and most still work on Google links, not AI answers." },
         ],
-        cta: { label: "Start today", href: links.signup },
+        cta: start,
       }
 
-    case 10:
+    // ---- Weekly: one useful idea each, one CTA ----
+
+    case 11:
       return {
         subject: "AI answers change. Has yours?",
-        preview: `It's been 10 days since I checked ${name}.`,
+        preview: `It's been over a week since I checked ${name}.`,
         blocks: [
-          { kind: "p", text: `It's been 10 days since I checked ${name}.` },
+          { kind: "p", text: `It's been over a week since I checked ${name}.` },
           ...(nl ? [{ kind: "p" as const, text: `Back then, ${nl}.` }] : []),
           { kind: "p", text: "AI answers aren't fixed. They shift as businesses publish, collect reviews and update their details. Last week's answer can be different today." },
           { kind: "p", text: "The only way to know is to ask again. It takes about a minute and it's free." },
           { kind: "p", text: "You'll see the actual answer each AI gives, not a summary." },
         ],
-        cta: { label: `Re-check ${f.nameIsGeneric ? "your business" : name}`, href: links.start },
+        cta: recheck,
       }
 
-    case 14:
+    case 18:
       return {
-        subject: `Should I stop checking for ${f.nameIsGeneric ? "you" : name}?`,
-        preview: "This is the last note in this series.",
+        subject: "3 things AI checks before it names a business",
+        preview: "What AI looks for, in plain words.",
         blocks: [
-          { kind: "p", text: `I've sent a few notes since you checked ${name}. I don't want to be noise.` },
-          { kind: "p", text: "So this is the last one in this series. After today I'll only write once a month for the next three months, to remind you to re-check. Or unsubscribe below and I'll stop now." },
-          { kind: "p", text: "If you want me working on it, start today. If now isn't the right time, just reply \"later\". A person reads every reply." },
+          { kind: "p", text: "Before ChatGPT, Gemini, Claude or Perplexity names a local business, it looks for things it can trust. Three matter most:" },
+          {
+            kind: "bullets",
+            items: [
+              "Clear answers. A page that answers what customers ask, in the first sentence.",
+              "The same facts everywhere. Hours, address and services that match on your site, your Google profile and directories.",
+              "Reviews it can read. Recent ones, on sites AI can see.",
+            ],
+          },
+          { kind: "p", text: `If ${name} is missing one, that's usually where I'd start.` },
+          { kind: "p", text: "Once you start, I work on all three every week. You approve each change before it goes live." },
         ],
-        cta: { label: "Start today", href: links.signup },
+        cta: start,
       }
 
-    case 30:
-    case 60:
-    case 90: {
-      const months = day === 30 ? "one month" : day === 60 ? "two months" : "three months"
+    case 25: {
+      const rival = f.rivals[0] ?? "them"
       return {
-        subject: f.nameIsGeneric ? `Your AI check, ${months} later` : `${name}: your AI check, ${months} later`,
-        preview: "AI answers move. Here's a fresh look.",
+        subject: "Ask ChatGPT why it picked them",
+        preview: "A two-minute test you can run yourself.",
         blocks: [
-          { kind: "p", text: `${capital(months)} ago you asked me what AI says about ${name}.` },
-          ...(nl ? [{ kind: "p" as const, text: `Back then, ${nl}.` }] : []),
-          { kind: "p", text: "A lot can move in a month. Competitors publish, reviews come in, and the answers from ChatGPT, Gemini, Claude and Perplexity shift with them." },
-          { kind: "p", text: "Want a fresh answer? Run the check again. About a minute, and it's free. You'll see the actual answer each AI gives, not a summary." },
-          ...(day === 90 ? [{ kind: "p" as const, text: "This is my last reminder." }] : []),
+          { kind: "p", text: "Here's a quick test you can run yourself today." },
+          { kind: "p", text: `Ask ChatGPT for a business like yours${where}. Then ask it: "Why did you recommend ${rival} and not us?"` },
+          { kind: "p", text: "It will often tell you. More reviews. A clearer list of services. An FAQ that answers the question. Hours it could confirm." },
+          { kind: "p", text: "Write down what it says. That list is your to-do list." },
+          { kind: "p", text: "Want the same answer from Gemini, Claude and Perplexity too? The free check asks all four at once and shows who they named." },
         ],
-        cta: { label: "Run the check again", href: links.start },
+        cta: { label: "Run the free check", href: links.start },
       }
     }
+
+    case 32:
+      return {
+        subject: "When AI gets your hours wrong",
+        preview: "AI repeats what it finds. Here's an example.",
+        blocks: [
+          { kind: "p", text: "Here's an example of how this happens." },
+          { kind: "p", text: "Someone asks ChatGPT if a dental office is open on Saturday. It says no. The office is open on Saturday, but an old directory listing still had the old hours, and that's what AI repeated." },
+          { kind: "p", text: "AI repeats what it can find. Old hours, a closed location or a service you stopped offering can all end up in the answer." },
+          { kind: "p", text: "The fix is simple: the same facts on your website, your Google profile and the main directories, plus code on your site that states them clearly." },
+          { kind: "p", text: `Once you start, I check these facts for ${name} every week and fix what's wrong. You approve each change.` },
+        ],
+        cta: start,
+      }
+
+    case 39:
+      return {
+        subject: "Reviews AI can actually read",
+        preview: "Not every review helps you get named.",
+        blocks: [
+          { kind: "p", text: "Reviews help a business get recommended, but only the ones AI can find and trust." },
+          { kind: "p", text: "What tends to count:" },
+          {
+            kind: "bullets",
+            items: [
+              "Recent reviews, not only old ones",
+              "Reviews that name the service, like \"fixed our AC the same day\"",
+              "Your replies, which show the business is active",
+              "Reviews on more than one site",
+            ],
+          },
+          { kind: "p", text: "A simple habit: after a good job, ask the customer to mention what you did for them. Specific words give AI something to quote." },
+          { kind: "p", text: `Want to see what the four AIs say about ${you} now? The check is free and takes about a minute.` },
+        ],
+        cta: recheck,
+      }
+
+    case 46:
+      return {
+        subject: "One page per service",
+        preview: "Why one long services list gets passed over.",
+        blocks: [
+          { kind: "p", text: "When a customer asks AI for a specific service, AI looks for a page about that service." },
+          { kind: "p", text: "One services page listing ten things gives it little to quote. A page for each service gives it a clear answer." },
+          { kind: "p", text: "Each page needs three things:" },
+          {
+            kind: "bullets",
+            items: [
+              "What the service is, in plain words",
+              `Who it's for and where you offer it${where}`,
+              "Answers to the questions people ask before they book",
+            ],
+          },
+          { kind: "p", text: `Once you start, I draft these pages for ${name}. You approve each one before it goes live.` },
+        ],
+        cta: start,
+      }
+
+    case 53:
+      return {
+        subject: "Put the answer in the first sentence",
+        preview: "One small writing change AI notices.",
+        blocks: [
+          { kind: "p", text: "One small writing change makes a page easier for AI to quote." },
+          { kind: "p", text: "Put the answer first. If someone asks \"Do you do same-day repairs?\", start with \"Yes, same day, Monday to Saturday.\" Then explain." },
+          { kind: "p", text: "AI looks for short, direct answers. A paragraph of background before the answer makes it easy to skip." },
+          { kind: "p", text: "Look at your FAQ or service pages this week. Does each answer start with the answer?" },
+          { kind: "p", text: `Want to see whether the AIs name ${you} today? The check is free and takes about a minute.` },
+        ],
+        cta: recheck,
+      }
+
+    case 60:
+      return {
+        subject: `Should I stop checking for ${you}?`,
+        preview: "This is my last email.",
+        blocks: [
+          { kind: "p", text: `I've written to you a few times since you checked ${name}. I don't want to be noise.` },
+          { kind: "p", text: "So this is my last email. After today I won't write again." },
+          { kind: "p", text: "If you want me working on it, start today. Your check is saved, so I'll pick up where we left off." },
+          { kind: "p", text: "If now isn't the right time, that's fine. Just reply \"later\" and tell me what would help. A person reads every reply." },
+        ],
+        cta: start,
+      }
   }
 }
 
-/** Which step (if any) to send now: the latest step that's due and not yet sent. */
+/**
+ * Map a stored nurture step onto this schedule. Steps written before
+ * `schedule: 2` used the old days (1/3/5/7/10/14/30/60/90) and some numbers
+ * collide with new days, so map by content: whatever they already got is
+ * treated as sent, and nothing is ever resent.
+ */
+export function currentStep(rawStep: number, schedule: unknown): number {
+  if (schedule === NURTURE_SCHEDULE) return rawStep
+  if (rawStep <= 0) return 0
+  const legacy: Record<number, number> = {
+    1: 1, // why AI named them
+    3: 2, // drafted fix
+    5: 3, // guarantee
+    7: 4, // offer
+    10: 11, // re-check
+  }
+  // The old break-up (14) and monthly re-checks: the sequence is finished.
+  return legacy[rawStep] ?? LAST_NURTURE_DAY
+}
+
+/**
+ * Which step (if any) to send now. One step per call, never one already sent.
+ *
+ * Burst (Days 1-4): strictly in order, so a missed or late cron run delays a
+ * step by a day instead of skipping it. The cron runs once a day at 16:00 UTC,
+ * so a lead's first run with ageDays >= 1 sends Day 1 and the next three runs
+ * send Days 2, 3 and 4 on consecutive days (the 20h per-address guard allows a
+ * daily send). If the burst is still unfinished a week in, it stops catching up.
+ *
+ * Weekly (Days 11-60): only the latest due step is sent; missed ones are
+ * skipped, so a long outage never turns into a daily backlog.
+ *
+ * Steps count as due 2 hours early: the run fires at a fixed time each day but
+ * a few seconds late or early, and without slack a scan made right at 16:00 UTC
+ * would land at 2.9999 days and slip a burst step by a day. (The route still
+ * waits a full 24h after the scan before Day 1.)
+ */
+const DUE_SLACK_DAYS = 2 / 24
+
 export function dueStep(ageDays: number, lastStep: number): NurtureDay | null {
+  const age = ageDays + DUE_SLACK_DAYS
+  const next = NURTURE_DAYS.find((d) => d > lastStep)
+  if (next === undefined || age < next) return null
+  if (next <= 4 && age < 7) return next
   let due: NurtureDay | null = null
-  for (const d of NURTURE_DAYS) if (d > lastStep && ageDays >= d) due = d
-  // Don't send a stale weekly step long after its slot (e.g. Day 1 to a 25-day-old
-  // lead): only the latest due step is ever sent, and missed ones are skipped.
+  for (const d of NURTURE_DAYS) if (d > lastStep && age >= d) due = d
   return due
 }

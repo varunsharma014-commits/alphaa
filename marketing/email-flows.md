@@ -1,10 +1,10 @@
 # Email Flows
 
-> v1.0. Two systems: (A) the **customer lifecycle flow** — transactional/relationship email to signed-up users, runs in code; (B) the **scan-lead nurture** — marketing email to non-customers. **(B) is copy-drafts only. NOT YET AUTOMATED.**
+> v2.0 (Oct 2026). Two systems, both automated: (A) the **customer lifecycle flow**, transactional/relationship email to signed-up users; (B) the **scan-lead nurture**, marketing email to people who ran the free check and haven't bought.
 
 ## A. Customer lifecycle flow (automated in-app)
 
-Sent via Resend from `hello@alphaa.app` using React Email templates in `src/emails/`.
+Sent via Resend from `RESEND_FROM_EMAIL` (`ai-agent@alphaa.app`) using React Email templates in `src/emails/`.
 
 | Step | Trigger | Template / route | Status in code |
 |---|---|---|---|
@@ -25,106 +25,39 @@ These are fine to send without marketing-unsubscribe infra: recipients are accou
 
 ---
 
-## B. Scan-lead nurture sequence
+## B. Scan-lead nurture sequence (automated)
 
-> ⚠️ **NOT YET AUTOMATED — DO NOT SEND.** These recipients are non-customers who ran a free scan (`ScanLead` records). Sending them marketing email requires: (1) a working one-click unsubscribe link + suppression list, (2) physical mailing address in the footer, (3) for Canadian recipients, CASL express/implied-consent handling — add a consent checkbox or clear notice at scan-email capture. Build unsubscribe infra first (Resend Audiences supports suppression), then wire these as a cron. Until then this section is copy on a shelf.
+**Live in code.** Route `/api/cron/nurture` runs daily at 16:00 UTC (noon ET) from `src/lib/cron-scheduler.ts`. Copy and schedule: `src/lib/nurture.ts`. Template: `src/emails/NurtureEmail.tsx` (plain black-on-white text, one link CTA). Sender: `src/lib/marketing-email.ts`.
 
-Sequence targets `ScanLead` where `converted = false`. Stop the sequence immediately on signup. From: `Varun at Alphaa <hello@alphaa.app>`. Plain-ish text beats heavy HTML for this audience.
+- **From:** `Alphaa <ai-agent@alphaa.app>` (`RESEND_FROM_EMAIL`). **Reply-to:** `hi@alphaa.app`. A person reads every reply.
+- **Voice:** the agent, first person. 60-130 words, one idea, one CTA. Only facts from the lead's own scan; empty name falls back to "your business", empty city is left out.
+- **Offer (exact):** no free trial (the free check is the trial). Starter $99/month, month to month, cancel in two clicks, 7-day refund on the first charge, 90-day AI Visibility Guarantee. Never "#1", "best", "free trial", "no signup", invented stats or customers, or any engine beyond ChatGPT, Gemini, Claude and Perplexity. Lead with getting customers from AI; the agency price comparison appears only as the last line of the Day 4 offer.
 
-### Day 0 — results delivery (send within minutes of scan)
+### Schedule
 
-**Subject:** `Your AI visibility score: {score}/100`
-**Preheader:** What ChatGPT, Gemini and Perplexity say about {businessName} — full results inside.
+Day 0 is the report email (`src/lib/scan-email.ts`), sent when the scan finishes. People are most likely to buy in the first four days, so those go daily, then one email a week. Day 60 is the last email, ever.
 
-> Hi {firstName|there},
->
-> You just scanned **{businessName}** — here's the short version:
->
-> **AI Visibility Score: {score}/100**
->
-> - Engines where you appeared: {appearedCount} of {checkedCount}
-> - Biggest issue we found: {topIssue}
->
-> Your full results, including what each AI engine actually said, are here:
->
-> **[View my full results →]({resultsUrl})**
->
-> A quick honest note: nobody can guarantee AI rankings — anyone who says otherwise is selling snake oil. What CAN be done is fixing the public signals AI engines read: your content, schema, reviews, and Google Business Profile. That's exactly what Alphaa automates, for $99/month instead of a $1,000+/month agency retainer.
->
-> If you want it handled: **[Start your 14-day free trial →](https://alphaa.app/signup?utm_source=email&utm_medium=lifecycle&utm_campaign=scan-nurture&utm_content=day0)** — no credit card to start.
->
-> — Varun, founder of Alphaa
+| Day | Subject | Purpose | CTA |
+|---|---|---|---|
+| 1 | Why AI named {rival} instead | The gap: who got named and what their sites have that theirs doesn't | Their full report |
+| 2 | I already drafted your fix | Shows the stored quick-fix FAQ draft (fallback: "What I'd write first for {name}") | Start today |
+| 3 | Can anyone guarantee ChatGPT? | Honesty: nobody can. The 90-day guarantee + 7-day refund instead | Start today |
+| 4 | What $99 a month does for {name} | The offer, itemised. Agency comparison only as the last line | Start today |
+| 11 | AI answers change. Has yours? | Answers shift; re-run the check | Re-check (`/start`) |
+| 18 | 3 things AI checks before it names a business | Clear answers, consistent facts, readable reviews | Start today |
+| 25 | Ask ChatGPT why it picked them | A test they can run themselves | Free check (`/start`) |
+| 32 | When AI gets your hours wrong | The fact fix, as a labelled example | Start today |
+| 39 | Reviews AI can actually read | What makes a review count | Re-check (`/start`) |
+| 46 | One page per service | Why one services list gets passed over | Start today |
+| 53 | Put the answer in the first sentence | Writing so AI can quote you | Re-check (`/start`) |
+| 60 | Should I stop checking for {name}? | Break-up. Clearly the final email; reply "later" | Start today |
 
-### Day 2 — competitor fear
+"Start today" links to `/signup?scan={leadId}` so onboarding picks up their check. UTM: `utm_source=email&utm_medium=nurture&utm_campaign=scan-nurture&utm_content=day{N}`.
 
-**Subject:** `Someone is getting recommended in {city}. Is it you?`
-**Preheader:** AI engines pick one or two answers. Here's how they decide.
+### Rules (enforced in code)
 
-> Hi {firstName|there},
->
-> When someone in {city} asks ChatGPT for "the best {businessType} near me," it doesn't show a list of ten links like Google used to. It names one or two businesses, confidently, and most people never look further.
->
-> Your scan on {scanDate} scored {businessName} at **{score}/100**. That number is really a proxy for one question: when AI has to pick, are you pickable?
->
-> The engines decide from public signals — recent content, structured data, review activity, an up-to-date Google Business Profile. Businesses that feed those signals get named. Businesses that don't stay invisible, no matter how good they are at the actual work.
->
-> Alphaa feeds those signals automatically, every week, and shows you what each engine says about you over time.
->
-> **[Re-check my results →]({resultsUrl})** · **[Start free trial →](.../signup?...&utm_content=day2)**
->
-> — Varun
-
-### Day 5 — the savings math
-
-**Subject:** `$24,000/yr vs $1,188/yr — same job`
-**Preheader:** The honest math on agencies vs autopilot.
-
-> Hi {firstName|there},
->
-> If you're paying an SEO agency, here's the math nobody puts in the monthly PDF:
->
-> | | Typical agency | Alphaa |
-> |---|---|---|
-> | Cost | ~$2,000/mo → $24,000/yr | $99/mo → $1,188/yr |
-> | Contract | 6–12 month lock-in | None — cancel in one click |
-> | AI search (ChatGPT, Gemini, Perplexity) | Not their world | The whole point |
-> | Reporting | Jargon PDF | One plain-English email/week |
->
-> That's up to **$22,800/year** back — and coverage on the search channel that's actually growing.
->
-> And if you're paying nobody right now? $99/month is the price of not being invisible while your competitors figure this out.
->
-> There's a 14-day free trial you can cancel anytime, so the worst case is you spent two minutes connecting your Google account.
->
-> **[Start my free trial →](.../signup?...&utm_content=day5)**
->
-> — Varun
-
-### Day 9 — last touch
-
-**Subject:** `Closing the file on {businessName}`
-**Preheader:** One last thing before we stop emailing you.
-
-> Hi {firstName|there},
->
-> This is the last email in this series — no drip campaign that never ends, promise.
->
-> Your scan from {scanDate} scored **{score}/100**. Two things worth knowing before I go:
->
-> 1. That result is a snapshot. AI answers shift as competitors publish content and collect reviews. You can re-scan free anytime at alphaa.app/scan.
-> 2. If you'd rather never think about this again, that's literally the product: Alphaa runs your visibility on autopilot for $99/month, 14-day free trial, cancel anytime.
->
-> **[Start my free trial →](.../signup?...&utm_content=day9)**
->
-> Either way — thanks for scanning, and good luck out there.
->
-> — Varun
->
-> *P.S. Reply to this email with any question. It's me reading, not a bot.*
-
-### Sequence rules (for whoever automates this)
-
-- Suppress instantly on: signup (`converted = true`), unsubscribe, hard bounce.
-- Send window: 9am–5pm recipient-local-ish (fallback: 11am ET), never weekends for day 2/5/9.
-- UTM: `utm_source=email&utm_medium=lifecycle&utm_campaign=scan-nurture&utm_content=day{N}`.
-- Every send needs: unsubscribe link, physical address, "you're receiving this because you ran a scan at alphaa.app" line.
+- **Who:** `ScanLead` with an email, a completed scan and a sent report email, created after the consent notice shipped (2026-10-04 16:00 UTC) and within the last 65 days. One sequence per address, anchored on their newest scan.
+- **Stops for good on:** unsubscribe (any lead or account for that address), any lead converted, or an account with that email.
+- **Pacing:** at most one email per address per 20 hours, one step per run. Days 1-4 go strictly in order on consecutive days (a missed run delays a step, never skips it). Weekly steps send only the latest due one, so an outage never becomes a backlog. A step is never resent; `ogData.nurture = { step, schedule: 2, lastSentAt }`, and steps stored under the old schedule are mapped by content.
+- **Every send:** footer with "you ran a free AI check at alphaa.app", Alphaa + `COMPANY_MAILING_ADDRESS`, a signed unsubscribe link, and RFC 8058 one-click `List-Unsubscribe` headers. **Without `COMPANY_MAILING_ADDRESS` nothing is sent.**
+- **Preview:** `GET /api/cron/nurture?dryRun=1` (with `CRON_SECRET`) lists what would go out, with subjects and word counts, without sending or writing.
