@@ -20,6 +20,10 @@ api_version = "2026-07"
   uri = "https://alphaa.app/api/webhooks/shopify/app-uninstalled"
 
   [[webhooks.subscriptions]]
+  topics = ["app_subscriptions/update"]
+  uri = "https://alphaa.app/api/webhooks/shopify/app-subscriptions-update"
+
+  [[webhooks.subscriptions]]
   compliance_topics = ["customers/data_request"]
   uri = "https://alphaa.app/api/webhooks/shopify/customers-data-request"
 

@@ -3,7 +3,9 @@ import { db } from "@/lib/db"
 import { currentUser } from "@/lib/connector/user"
 import { saveAgentSettings } from "@/lib/agent/settings"
 import { encryptSecret } from "@/lib/checks/bing-webmaster"
-import { isShopDomain, shopifyExchange, shopifySetup, verifyShopifyHmac } from "@/lib/connector/shopify"
+import { isShopDomain, shopifyActiveSubscriptions, shopifyExchange, shopifySetup, verifyShopifyHmac } from "@/lib/connector/shopify"
+import { applyShopifySubscriptions, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
+import { FOUNDER_EMAILS, hasPaidPlan } from "@/lib/billing"
 import { platformAvailability } from "@/lib/connector/availability"
 
 export const dynamic = "force-dynamic"
@@ -66,6 +68,24 @@ export async function GET(req: NextRequest) {
         metadata: { siteUrl: setup.siteUrl, platform: "shopify", shop },
       },
     })
+
+    // Billing (Shopify Managed Pricing): an active plan on this shop makes the account paid.
+    // No plan and not already paid via Stripe / comped → Shopify's hosted plan picker instead of
+    // Stripe checkout. After approving, Shopify returns the merchant to the app URL (/start),
+    // which runs OAuth again and lands back here paid; app_subscriptions/update also covers it.
+    let subs: Awaited<ReturnType<typeof shopifyActiveSubscriptions>> | null = null
+    try {
+      subs = await shopifyActiveSubscriptions(shop, tokens.accessToken)
+    } catch (e) {
+      console.error("[shopify callback] billing check", e instanceof Error ? e.message : e) // don't block the connection on it
+    }
+    if (subs) {
+      const paidViaShopify = await applyShopifySubscriptions(user, shop, subs)
+      const fresh = paidViaShopify ? null : await db.user.findUnique({ where: { id: user.id } })
+      if (fresh && !hasPaidPlan(fresh) && !FOUNDER_EMAILS.includes(fresh.email.toLowerCase())) {
+        return NextResponse.redirect(shopifyPricingUrl(shop))
+      }
+    }
     return back({ connected: "shopify" })
   } catch (e) {
     console.error("[shopify callback]", e instanceof Error ? e.message : e)

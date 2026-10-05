@@ -214,6 +214,25 @@ export async function shopifySetup(
   }
 }
 
+// ---------- billing (Shopify Managed Pricing) ----------
+
+export type ShopifyAppSubscription = { name: string; status: string; test: boolean }
+
+/** The app's active subscriptions on this shop (Managed Pricing plans show up here once approved). */
+export async function shopifyActiveSubscriptions(shop: string, token: string): Promise<ShopifyAppSubscription[]> {
+  const d = await gql<{ currentAppInstallation: { activeSubscriptions: ShopifyAppSubscription[] } | null }>(
+    shop,
+    token,
+    `{ currentAppInstallation { activeSubscriptions { name status test } } }`,
+  )
+  return d.currentAppInstallation?.activeSubscriptions ?? []
+}
+
+/** Same, for a saved connection (refreshes an expiring token first). */
+export async function shopifyActiveSubscriptionsFor(conn: SiteConnection): Promise<ShopifyAppSubscription[]> {
+  return shopifyActiveSubscriptions(conn.config.shop, await accessToken(conn))
+}
+
 // ---------- URL → resource ----------
 
 export type ShopifyTarget = { type: "home" } | { type: "page"; handle: string } | { type: "article"; blog: string; handle: string } | { type: "other"; path: string }

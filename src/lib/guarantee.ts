@@ -3,6 +3,7 @@
 // of our weekly checks, their next month is free — applied automatically as a
 // Stripe customer credit (one month at their plan's price), once per customer.
 import { db } from "@/lib/db"
+import { shopifyBilledShop } from "@/lib/billing"
 import { getStripe } from "@/lib/stripe"
 import { sendAs, shell, esc } from "@/lib/connector/mail"
 
@@ -16,6 +17,7 @@ export type GuaranteeVerdict =
 export async function guaranteeVerdict(userId: string): Promise<GuaranteeVerdict> {
   const user = await db.user.findUnique({ where: { id: userId } })
   if (!user?.stripeSubscriptionId || !user.stripeCustomerId) return { eligible: false, reason: "no subscription" }
+  if (shopifyBilledShop(user)) return { eligible: false, reason: "billed through Shopify" } // no Stripe customer credit possible
   if (await db.mockActivity.findFirst({ where: { userId, type: "guarantee_credit" } })) return { eligible: false, reason: "already credited" }
   const sub = await getStripe().subscriptions.retrieve(user.stripeSubscriptionId)
   if (sub.status !== "active") return { eligible: false, reason: `subscription ${sub.status}` }

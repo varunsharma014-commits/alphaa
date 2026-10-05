@@ -174,6 +174,8 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 | `STRIPE_FULLSERVICE_MONTHLY_PRICE_ID` | $299/mo Full Service subscription (human-fulfilled, no trial) |
 | `PAGESPEED_API_KEY` | Optional. Google PageSpeed Insights key. **Without it the keyless quota 429s permanently and the speed page shows its honest failure state.** |
 | `APIFY_TOKEN` | Google SERP scraping for scan competitor evidence (optional; scan degrades without it) |
+| `SHOPIFY_API_KEY` / `SHOPIFY_API_SECRET` | Shopify app client id + secret (OAuth, callback HMAC, webhook HMAC) |
+| `SHOPIFY_APP_HANDLE` | Optional. App handle in the Shopify-hosted Managed Pricing URL (`admin.shopify.com/store/{store}/charges/{handle}/pricing_plans`). Default `alphaa`. |
 | `COMPANY_MAILING_ADDRESS` | Physical mailing address in every marketing email footer (CAN-SPAM/CASL). **Unset = the nurture cron and abandoned-checkout email send nothing.** |
 
 ---
@@ -219,6 +221,8 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 ### Webhooks
 - `/api/webhooks/clerk`: Creates `User` row on `user.created`, sends welcome email; deletes on `user.deleted`. Verified with Svix.
 - `/api/webhooks/stripe`: Handles `checkout.session.completed`, `customer.subscription.updated/deleted`, `invoice.payment_succeeded/failed`. Updates `User.subscriptionStatus` and `User.plan`.
+- `/api/webhooks/shopify/{topic}` (HMAC-verified, `lib/connector/shopify-webhooks.ts`; topics declared in `shopify-app/shopify.app.toml`, deployed by the owner with the Shopify CLI): `app/uninstalled`, `app_subscriptions/update`, and the 3 GDPR topics.
+- **Shopify billing (Managed Pricing, `lib/connector/shopify-billing.ts`)**: App Store merchants pay $99/mo through Shopify. Paid state = `stripeSubscriptionId: "shopify:<shop>.myshopify.com"` + `subscriptionStatus: "active"` + `plan: "starter"` (no schema change; `hasPaidPlan()` and the crons' "stripeSubscriptionId not null" filters cover it). Set by the Shopify OAuth callback (queries `currentAppInstallation.activeSubscriptions`; no plan and not Stripe-paid/comped → redirect to Shopify's hosted plan page) and by `app_subscriptions/update` (re-reads subscriptions with the shop token). Cleared on ended statuses and on `app/uninstalled`/`shop/redact`. Never overwrites a live Stripe sub; Stripe webhooks never match the marker. `test: true` charges count only when `NODE_ENV !== "production"` or the user is in `FOUNDER_EMAILS`. `/api/stripe/portal` sends Shopify-billed users to the Shopify plan page.
 
 ---
 

@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
         const priceId = subscription.items.data[0]?.price.id ?? ""
         const plan = getPlanFromPriceId(priceId)
         // Full Service checkouts carry no trial, so their status is active.
+        // A Shopify-billed account ("shopify:" marker, lib/billing.ts) that checks out here becomes
+        // Stripe-billed; Shopify webhooks only clear rows still carrying their marker.
         await db.user.updateMany({
           where: { stripeCustomerId: customerId },
           data: {
