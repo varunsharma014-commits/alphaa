@@ -39,7 +39,9 @@ export function isShopDomain(shop: string | null | undefined): shop is string {
 export function shopifyAuthUrl(shop: string, state: string): string {
   const u = new URL(`https://${shop}/admin/oauth/authorize`)
   u.searchParams.set("client_id", process.env.SHOPIFY_API_KEY ?? "")
-  u.searchParams.set("scope", SHOPIFY_SCOPES)
+  // No `scope` param: with Shopify-managed install the scopes come from shopify.app.toml
+  // (SHOPIFY_SCOPES mirrors it), and sending one makes Shopify reject the authorize request
+  // with oauth_error=application_cant_be_loaded_misconfigured.
   u.searchParams.set("redirect_uri", redirectUri())
   u.searchParams.set("state", state)
   return u.toString()
