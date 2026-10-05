@@ -3,6 +3,9 @@
 # which can only be declared here.
 client_id = "44b8e2ff65922ed68243c9e66449d1bf"
 name = "Alphaa"
+# App handle: used in admin URLs and the Managed Pricing plan page
+# (admin.shopify.com/store/{store}/charges/{handle}/pricing_plans). Must match Railway SHOPIFY_APP_HANDLE.
+handle = "alphaa-ai-agent"
 application_url = "https://alphaa.app/api/connect/shopify/start"
 embedded = false
 
