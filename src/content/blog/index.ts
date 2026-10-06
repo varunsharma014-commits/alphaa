@@ -103,6 +103,9 @@ import { meta as citationShareMeta, Body as CitationShareBody } from "./what-is-
 import { meta as otterlyPeecMeta, Body as OtterlyPeecBody } from "./otterly-ai-vs-peec-ai"
 import { meta as aioSourcesMeta, Body as AioSourcesBody } from "./how-google-ai-overviews-choose-sources"
 import { meta as whatIsGeoMeta, Body as WhatIsGeoBody } from "./what-is-generative-engine-optimization"
+import { meta as vsSemrushMeta, Body as VsSemrushBody } from "./alphaa-vs-semrush"
+import { meta as aiModeMeta, Body as AiModeBody } from "./how-to-show-up-in-google-ai-mode"
+import { meta as contractorsMeta, Body as ContractorsBody } from "./how-general-contractors-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -211,6 +214,9 @@ export const POSTS: Post[] = [
   { meta: otterlyPeecMeta, Body: OtterlyPeecBody },
   { meta: aioSourcesMeta, Body: AioSourcesBody },
   { meta: whatIsGeoMeta, Body: WhatIsGeoBody },
+  { meta: vsSemrushMeta, Body: VsSemrushBody },
+  { meta: aiModeMeta, Body: AiModeBody },
+  { meta: contractorsMeta, Body: ContractorsBody },
 ]
 
 export function getAllPosts(): Post[] {
