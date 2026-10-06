@@ -37,9 +37,9 @@
     "image": "brand/social/posts/w1_chat_dentist.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7513226844041588736/",
+    "posted_at": "2026-10-06T09:24:00-04:00"
   },
   {
     "id": "w1-mon-instagram",
@@ -167,9 +167,9 @@
     "image": "brand/social/posts/w1_self_test.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7513228540235071488/",
+    "posted_at": "2026-10-06T09:28:00-04:00"
   },
   {
     "id": "w1-tue-facebook",
@@ -188,9 +188,9 @@
     "image": "brand/social/posts/w1_scorecard.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/photo.php?fbid=122120160399401496",
+    "posted_at": "2026-10-06T09:39:00-04:00"
   },
   {
     "id": "w1-tue-x",
