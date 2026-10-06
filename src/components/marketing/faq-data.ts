@@ -15,7 +15,7 @@ export const faqs = [
   },
   {
     q: "What's this 'AI search' thing?",
-    a: "Instead of typing keywords into Google and scrolling through links, millions of consumers are now asking ChatGPT, Perplexity, and Gemini questions like, \"Who is the best plumber near me?\" If your business isn't optimized for AI, these bots will recommend your competitors.",
+    a: "Instead of typing keywords into Google and scrolling through links, more and more customers now ask ChatGPT, Gemini, Claude and Perplexity questions like, \"Who is the best plumber near me?\" If your business isn't optimized for AI, these bots will recommend your competitors.",
   },
   {
     q: "Will I see results in the first month?",

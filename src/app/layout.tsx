@@ -12,14 +12,14 @@ const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
 export const metadata: Metadata = {
   title: {
-    default: "Alphaa — Get Found on Google and ChatGPT",
+    default: "Alphaa AI Agent — Get Recommended by ChatGPT, Gemini, Claude and Perplexity",
     template: "%s | Alphaa",
   },
   description:
-    "Alphaa replaces your SEO agency. Automatically optimize your Google Business Profile, website, and content so customers find you on Google, ChatGPT, and AI search — whether you serve your town or the whole world. $99/month, no contracts.",
+    "Alphaa is an AI agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. It checks what they say about you, writes the fixes, and you tap approve. $99/month, month to month.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"),
   openGraph: {
-    title: "Alphaa — Get Found on Google and ChatGPT",
+    title: "Alphaa AI Agent — Get Recommended by ChatGPT, Gemini, Claude and Perplexity",
     description: "Replace your SEO agency. $99/month. No contracts.",
     url: "https://alphaa.app",
     siteName: "Alphaa",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alphaa — Get Found on Google and ChatGPT",
+    title: "Alphaa AI Agent — Get Recommended by ChatGPT, Gemini, Claude and Perplexity",
     description: "Replace your SEO agency. $99/month. No contracts.",
   },
   // No site-wide canonical: a root default made every page point at the homepage,
@@ -46,7 +46,7 @@ const orgSchema = {
   url: "https://alphaa.app",
   email: "hi@alphaa.app",
   description:
-    "Alphaa is an AI search optimization (AEO) platform that automatically gets businesses found, cited, and recommended on Google, ChatGPT, Claude, Gemini, and Perplexity.",
+    "Alphaa is an AI search optimization (AEO) platform that automatically gets businesses found, cited, and recommended by ChatGPT, Gemini, Claude and Perplexity.",
   logo: "https://alphaa.app/logo.png",
   // sameAs: ["https://www.linkedin.com/company/alphaa", "https://x.com/alphaa", ...],
 }
