@@ -32,7 +32,12 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
     }
     if (!user) redirect("/dashboard")
   }
-  if (hasPaidPlan(user)) redirect(paid ? "/dashboard?upgraded=true" : "/dashboard")
+  if (hasPaidPlan(user)) {
+    // Paid without finishing the agent setup (e.g. billed through Shopify, which never runs
+    // completeOnboardingFromScan): mark it done, or the dashboard layout bounces back here forever.
+    if (!user.onboardingCompleted) await db.user.update({ where: { id: user.id }, data: { onboardingCompleted: true } })
+    redirect(paid ? "/dashboard?upgraded=true" : "/dashboard")
+  }
   // Comped accounts (founder, app-store reviewers) skip payment once set up.
   const comped = FOUNDER_EMAILS.includes(user.email.toLowerCase())
   if (comped && user.onboardingCompleted) redirect("/dashboard")

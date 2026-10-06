@@ -60,6 +60,11 @@ export async function GET(req: NextRequest) {
         connectedAt: new Date().toISOString(),
       },
     })
+    // Merchants arriving from the Shopify App Store skip the agent setup, so fill the
+    // website from the store when the profile has none (stored without protocol).
+    if (!user.websiteUrl) {
+      await db.user.update({ where: { id: user.id }, data: { websiteUrl: setup.siteUrl.replace(/^https?:\/\//, "").replace(/\/$/, "") } })
+    }
     await db.mockActivity.create({
       data: {
         userId: user.id,
