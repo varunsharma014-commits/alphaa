@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
-import { db } from "@/lib/db"
-import { saveAgentSettings } from "@/lib/agent/settings"
-import { encryptSecret } from "@/lib/checks/bing-webmaster"
 import { currentUser } from "@/lib/connector/user"
-import { webflowExchange, webflowSetup } from "@/lib/connector/webflow"
+import { webflowExchange } from "@/lib/connector/webflow"
+import { attachWebflow, sealPending, WF_PENDING_COOKIE, WF_PENDING_MAX_AGE } from "@/lib/connector/webflow-attach"
 import { platformAvailability } from "@/lib/connector/availability"
 
 export const dynamic = "force-dynamic"
 
+const app = (path: string) => new URL(path, process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").toString()
 const back = (params: Record<string, string>) => {
   const u = new URL("/dashboard/t/site", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000")
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v)
@@ -43,43 +42,27 @@ export async function GET(request: NextRequest) {
 
   const user = await currentUser()
   if (!user) {
-    // Codes are short-lived: sign in, then straight back here with the same query.
-    const here = `/api/connect/webflow/callback${request.nextUrl.search}`
-    return NextResponse.redirect(new URL(`/login?redirect_url=${encodeURIComponent(here)}`, process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").toString())
+    // Signed out (typical for installs started on Webflow): exchange the short-lived code now,
+    // hold the token in an encrypted cookie, and attach it after sign-up / sign-in — so the
+    // owner authorizes Webflow exactly once.
+    try {
+      const { accessToken } = await webflowExchange(code)
+      const res = NextResponse.redirect(app(`/signup?redirect_url=${encodeURIComponent("/api/connect/webflow/finish")}`))
+      res.cookies.set(WF_PENDING_COOKIE, sealPending(accessToken), {
+        httpOnly: true, secure: true, sameSite: "lax", path: "/api/connect/webflow", maxAge: WF_PENDING_MAX_AGE,
+      })
+      return res
+    } catch (e) {
+      console.error("[Webflow Callback] exchange (signed out)", e)
+      return fail("Couldn’t finish connecting Webflow. Sign in and try again.")
+    }
   }
   if (state && stateUserId !== user.id) return fail("That Webflow sign-in didn’t match your account. Try connecting again.")
 
   try {
     const { accessToken } = await webflowExchange(code)
-    let host: string | null = null
-    try {
-      host = user.websiteUrl ? new URL(/^https?:\/\//i.test(user.websiteUrl) ? user.websiteUrl : `https://${user.websiteUrl}`).hostname : null
-    } catch {
-      host = null
-    }
-    const setup = await webflowSetup(accessToken, host)
-    if ("error" in setup) return fail(setup.error)
-
-    // One website per account: connecting Webflow replaces any WordPress connection.
-    await saveAgentSettings(user.id, {
-      wp: undefined,
-      site: {
-        platform: "webflow",
-        siteUrl: setup.siteUrl,
-        label: setup.label,
-        tokenEnc: encryptSecret(JSON.stringify({ accessToken })),
-        config: setup.config,
-        connectedAt: new Date().toISOString(),
-      },
-    })
-    await db.mockActivity.create({
-      data: {
-        userId: user.id,
-        type: "site_connected",
-        title: `Connected your Webflow site ${setup.label}`,
-        metadata: { platform: "webflow", siteUrl: setup.siteUrl, label: setup.label },
-      },
-    })
+    const err = await attachWebflow(user, accessToken)
+    if (err) return fail(err)
     return back({ connected: "webflow" })
   } catch (e) {
     console.error("[Webflow Callback]", e)

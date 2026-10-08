@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
+import { getAgentSettings } from "@/lib/agent/settings"
 import { db } from "@/lib/db"
 import { hasPaidPlan, FOUNDER_EMAILS } from "@/lib/billing"
 import { completeOnboardingFromScan } from "@/lib/onboarding"
@@ -47,8 +48,17 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
   }
 
   const mode = user.onboardingCompleted ? "resume" : "setup"
+  // A store connected before setup (e.g. installed from the Webflow Marketplace, then signed up)
+  // must be visible here, so the owner knows it carried over and never authorizes twice.
+  const site = (await getAgentSettings(user.id)).site
+  const PLATFORM: Record<string, string> = { webflow: "Webflow", shopify: "Shopify", wix: "Wix", wordpress: "WordPress" }
   return (
     <div data-agent="" data-theme="light" data-brand="blue" style={{ minHeight: "100dvh" }}>
+      {site?.platform && site.siteUrl ? (
+        <div role="status" style={{ maxWidth: 640, margin: "16px auto 0", padding: "10px 14px", border: "1px solid rgba(0,0,0,.12)", borderRadius: 12, fontSize: 14, background: "#fff", color: "#111" }}>
+          ✓ Your {PLATFORM[site.platform] ?? site.platform} site <strong>{site.label || site.siteUrl}</strong> is connected. Alphaa publishes there once you approve a change.
+        </div>
+      ) : null}
       <StartAgent mode={mode} resumeName={user.businessName ?? undefined} />
     </div>
   )
