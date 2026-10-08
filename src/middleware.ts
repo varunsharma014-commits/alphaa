@@ -35,6 +35,11 @@ const isPublicRoute = createRouteMatcher([
   "/api/img/(.*)",
   "/api/connect/shopify/callback",
   "/api/connect/webflow/callback",
+  // start/finish check the session themselves and send signed-out owners to our /login or
+  // /signup with redirect_url, so an install never detours through the hosted Clerk portal.
+  "/api/connect/webflow/start",
+  "/api/connect/webflow/finish",
+  "/api/connect/shopify/start",
   "/api/connect/wix/callback",
 ])
 
