@@ -109,6 +109,9 @@ import { meta as contractorsMeta, Body as ContractorsBody } from "./how-general-
 import { meta as vsAthenaMeta, Body as VsAthenaBody } from "./alphaa-vs-athenahq"
 import { meta as aiAgentsSiteMeta, Body as AiAgentsSiteBody } from "./optimize-website-for-ai-agents"
 import { meta as answerEngineMeta, Body as AnswerEngineBody } from "./what-is-an-answer-engine"
+import { meta as vsScrunchMeta, Body as VsScrunchBody } from "./alphaa-vs-scrunch"
+import { meta as wordpressAiMeta, Body as WordpressAiBody } from "./wordpress-ai-search-optimization"
+import { meta as llmSeoMeta, Body as LlmSeoBody } from "./what-is-llm-seo"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -223,6 +226,9 @@ export const POSTS: Post[] = [
   { meta: vsAthenaMeta, Body: VsAthenaBody },
   { meta: aiAgentsSiteMeta, Body: AiAgentsSiteBody },
   { meta: answerEngineMeta, Body: AnswerEngineBody },
+  { meta: vsScrunchMeta, Body: VsScrunchBody },
+  { meta: wordpressAiMeta, Body: WordpressAiBody },
+  { meta: llmSeoMeta, Body: LlmSeoBody },
 ]
 
 export function getAllPosts(): Post[] {
