@@ -304,9 +304,9 @@
     "image": "brand/social/posts/w1_one_answer.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7513589021084860416/",
+    "posted_at": "2026-10-07T09:27:00-04:00"
   },
   {
     "id": "w1-wed-instagram",
