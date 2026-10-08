@@ -1,9 +1,9 @@
 site,url,status,date,notes
-Fix /case-studies page (blocker),https://alphaa.app/case-studies,todo,,"Fabricated '1,200+ businesses' and fake case studies live; remove before any submission; 2026-10-07 still live + linked from homepage"
+Fix /case-studies page (blocker),https://alphaa.app/case-studies,todo,,"Fabricated '1,200+ businesses' and fake case studies live; remove before any submission; 2026-10-08 still live (1,200+, 'real customer', Bright Smile)"
 Crunchbase,https://www.crunchbase.com,needs_account,2026-10-06,Free; week 1; Resources > Create Profile
 G2,https://sell.g2.com/create-a-profile,needs_account,2026-10-06,Free; week 1; needs 10 real reviews for Grid; G2 now owns Capterra
 Capterra + GetApp + Software Advice,https://digital-markets.gartner.com/capterra-vendor-signup,needs_account,2026-10-06,Free listing; week 1; skip PPC
-SaaSHub,https://www.saashub.com,account_ready,2026-10-07,Free; week 1; 2026-10-07 logged-in session found; submit form at /services/new?url=https://alphaa.app started but not prefilled (Chrome tab group kept closing) - prefill next run
+SaaSHub,https://www.saashub.com,prefilled,2026-10-08,"Free; week 1; 2026-10-08 form prefilled at /services/new?url=https://alphaa.app (tagline, categories SEO Tools/Local SEO/Marketing Automation, competitors Profound/Otterly.AI, blog, hi@alphaa.app). Page showed Register/Login, so it may need login on submit. Choose the FREE tier, not Priority+ $75. Tab left open"
 AlternativeTo,https://alternativeto.net,needs_account,2026-10-06,Free; week 1; Suggest new application
 TrustRadius,https://www.trustradius.com/vendors,needs_account,2026-10-06,Free profile; week 1
 SourceForge,https://sourceforge.net/software/vendors/,needs_account,2026-10-06,Free; week 1
@@ -16,12 +16,12 @@ Featured.com,https://featured.com,needs_account,2026-10-06,Free plan; week 1
 There's An AI For That,https://theresanaiforthat.com/submit/,todo,,$49 basic; week 2; dofollow (reported)
 Toolify.ai,https://www.toolify.ai/submit,todo,,$99; week 2; dofollow (reported)
 TopAI.tools,https://topai.tools/submit,todo,,$47 fast listing; week 2; dofollow (reported)
-Future Tools,https://www.futuretools.io/submit-a-tool,todo,,"Free, curated; week 2; no account needed - prefill next run (Chrome unavailable 2026-10-07)"
+Future Tools,https://www.futuretools.io/submit-a-tool,prefilled,2026-10-08,"Free, curated; week 2; 2026-10-08 prefilled (Marketing, Paid, 50-word desc, hi@alphaa.app); Varun: clear the Cloudflare check + click Submit Tool. Tab left open"
 Startup Stash,https://startupstash.com/add-listing/,needs_account,2026-10-07,Free (reported); week 2; sign up at https://startupstash.com/add-listing/
 SaaSworthy,https://www.saasworthy.com,todo,,Free (they research + list); week 2
-Launching Next,https://www.launchingnext.com/submit/,todo,,Free ($99 express optional); week 2; no account needed - prefill next run (Chrome unavailable 2026-10-07)
+Launching Next,https://www.launchingnext.com/submit/,prefilled,2026-10-08,"Free ($99 express - skip on next page); week 2; 2026-10-08 prefilled (headline, 250-word desc, tags, Alphaa Team, hi@alphaa.app); Varun: pick startup type + 90-day marketing budget, answer the 2+3 check, Submit. Tab left open"
 Indie Hackers,https://www.indiehackers.com/products,needs_account,2026-10-07,Free; week 2; sign up at https://www.indiehackers.com/sign-up
-DMZ Oh Canada Tech Directory,https://dmz.torontomu.ca/oh-canada-directory,todo,,Free; week 2; Canadian-owned
+DMZ Oh Canada Tech Directory,https://dmz.torontomu.ca/oh-canada-directory,prefilled,2026-10-08,"Free; week 2; no account needed; form at https://mydmz.torontomu.ca/portal/apply/oh-canadas-tech-directory prefilled 2026-10-08 (logo, legal name, federal corp, HQ, IP, why-Canadian, Marketing & Advertising, contact Alphaa Team/hi@alphaa.app); Varun: tick eligibility attestation, answer tariffs Q, reCAPTCHA, Submit. Tab left open"
 Founded in Canada,https://tally.so/r/w5VM6b,todo,,Free; week 2; confirm startups are accepted
 Kanata North Business Association,https://www.kanatanorthba.ca,todo,,Email re membership/directory cost; week 2
 Product Hunt,https://www.producthunt.com/posts/new,todo,,Free; week 3 Tue/Wed; first check if already launched (planned Jul 28)
