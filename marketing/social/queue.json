@@ -283,9 +283,9 @@
     "image": "brand/social/posts/w1_agent_morning.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7513951705852514304/",
+    "posted_at": "2026-10-08T09:27:00-04:00"
   },
   {
     "id": "w1-wed-linkedin",
@@ -389,9 +389,9 @@
     "image": "brand/social/posts/w1_one_answer.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/61592044887737/posts/pfbid09NCPbWr1KHMTyWoCcEx81kjSKJtnZyL9iE8xX5sC5qyhEJx3f8vQNLjLtx6scCoPl/",
+    "posted_at": "2026-10-08T09:39:00-04:00"
   },
   {
     "id": "w1-thu-x",
