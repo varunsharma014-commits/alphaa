@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date([p.meta.date, p.meta.updated ?? CONTENT_REVIEWED].sort().pop()!),
     changeFrequency: "monthly",
     priority: 0.7,
+    ...(p.meta.image ? { images: [`${BASE_URL}${p.meta.image.src}`] } : {}),
   }))
 
   const verticalPages: MetadataRoute.Sitemap = VERTICALS.map((v) => ({
