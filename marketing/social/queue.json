@@ -484,9 +484,9 @@
     "image": "brand/social/posts/w1_chat_dentist.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:share:7516145592029351936/",
+    "posted_at": "2026-10-14T10:39:49-04:00"
   },
   {
     "id": "w1-fri-linkedin",
@@ -513,9 +513,9 @@
       "brand/social/posts/w1_car_howpicks-s7.png"
     ],
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7516144919648894977/",
+    "posted_at": "2026-10-14T10:37:09-04:00"
   },
   {
     "id": "w1-fri-instagram",
@@ -585,9 +585,9 @@
     "image": "brand/social/posts/w1_offer_check.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/61592044887737/posts/pfbid09yFqXDbNCcQdprr4nPuYkBxqVJ5hnMxFv4zzjtqt8CrkyMQhczK9rDUosEdryiukl/",
+    "posted_at": "2026-10-14T10:42:10-04:00"
   },
   {
     "id": "w1-sat-x",
