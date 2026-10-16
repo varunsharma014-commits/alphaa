@@ -701,9 +701,9 @@
     "image": "brand/social/posts/w2_three_things.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7516894458899038208/",
+    "posted_at": "2026-10-16T16:25:58Z"
   },
   {
     "id": "w2-mon-linkedin",
@@ -722,9 +722,9 @@
     "image": "brand/social/posts/w2_plumbers.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:share:7516903320519786497/",
+    "posted_at": "2026-10-16T16:50:23Z"
   },
   {
     "id": "w2-mon-instagram",
@@ -867,9 +867,9 @@
     "image": "brand/social/posts/w2_hvac.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/photo.php?fbid=122121925125401496",
+    "posted_at": "2026-10-16T16:53:04Z"
   },
   {
     "id": "w2-tue-x",
