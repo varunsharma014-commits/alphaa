@@ -7,6 +7,7 @@ import { db } from "@/lib/db"
 import { hasPaidPlan, FOUNDER_EMAILS } from "@/lib/billing"
 import { completeOnboardingFromScan } from "@/lib/onboarding"
 import { StartAgent } from "@/components/agent/StartAgent"
+import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
 
 export const metadata = { title: "Getting started", robots: { index: false, follow: false } }
 
@@ -42,6 +43,9 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
   // Comped accounts (founder, app-store reviewers) skip payment once set up.
   const comped = FOUNDER_EMAILS.includes(user.email.toLowerCase())
   if (comped && user.onboardingCompleted) redirect("/dashboard")
+  // Shopify merchants pay only through Shopify (App Store rule 1.2.1): its plan page, never Stripe checkout.
+  const shop = comped ? null : await shopifyMerchantShop(user)
+  if (shop) redirect(shopifyPricingUrl(shop))
 
   if (scan && !user.onboardingCompleted) {
     user = (await completeOnboardingFromScan(clerkId, scan)) ?? user

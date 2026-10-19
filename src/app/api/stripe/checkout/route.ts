@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server"
 import { stripe, STRIPE_PRICE_IDS, STRIPE_SETUP_FEE_PRICE_ID } from "@/lib/stripe"
 import { db } from "@/lib/db"
 import { FOUNDER_EMAILS } from "@/lib/billing"
+import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth()
@@ -19,6 +20,16 @@ export async function POST(req: NextRequest) {
   // Comped accounts (founder, app-store reviewers) never pay: send them on.
   if (purchase === "starter" && FOUNDER_EMAILS.includes(user.email.toLowerCase())) {
     return NextResponse.json({ url: `${appUrl}/dashboard` })
+  }
+
+  // Shopify merchants are billed only through Shopify (App Store rule 1.2.1): the plan opens
+  // Shopify's own plan page, and the Stripe-only human services aren't sold to them at all.
+  const shop = await shopifyMerchantShop(user)
+  if (shop) {
+    if (purchase === "setup" || purchase === "fullservice") {
+      return NextResponse.json({ error: "This service isn't available for Shopify stores. Email hi@alphaa.app and we'll help." }, { status: 403 })
+    }
+    return NextResponse.json({ url: shopifyPricingUrl(shop) })
   }
 
   let stripeCustomerId = user.stripeCustomerId

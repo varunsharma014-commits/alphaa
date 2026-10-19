@@ -9,9 +9,9 @@
 // Test charges (`test: true`, e.g. development stores) count as paid only outside production,
 // or for FOUNDER_EMAILS (owner + COMP_ACCESS_EMAILS app-review logins). Everyone else needs a real charge.
 import { db } from "@/lib/db"
-import type { AgentSettings } from "@/lib/agent/settings"
+import { getAgentSettings, type AgentSettings } from "@/lib/agent/settings"
 import { FOUNDER_EMAILS, hasStripePlan, shopifyBilledShop, shopifySubMarker } from "@/lib/billing"
-import { shopifyActiveSubscriptionsFor, type ShopifyAppSubscription } from "@/lib/connector/shopify"
+import { isShopDomain, shopifyActiveSubscriptionsFor, type ShopifyAppSubscription } from "@/lib/connector/shopify"
 
 /** The app's handle in the Shopify admin URL (Partner Dashboard → app → handle). */
 export const shopifyAppHandle = () => process.env.SHOPIFY_APP_HANDLE?.trim() || "alphaa"
@@ -20,6 +20,20 @@ export const shopifyAppHandle = () => process.env.SHOPIFY_APP_HANDLE?.trim() || 
 export function shopifyPricingUrl(shop: string): string {
   const store = shop.replace(/\.myshopify\.com$/, "")
   return `https://admin.shopify.com/store/${encodeURIComponent(store)}/charges/${encodeURIComponent(shopifyAppHandle())}/pricing_plans`
+}
+
+/**
+ * The Shopify store an account belongs to: billed through it, connected to it, or set up from it
+ * (website is a *.myshopify.com address, which survives an uninstall). Null for everyone else.
+ * App Store rule 1.2.1: these accounts must never be offered Stripe — every charge goes through Shopify.
+ */
+export async function shopifyMerchantShop(user: { id: string; stripeSubscriptionId: string | null; websiteUrl: string | null }): Promise<string | null> {
+  const billed = shopifyBilledShop(user)
+  if (billed) return billed
+  const site = (await getAgentSettings(user.id)).site
+  if (site?.platform === "shopify" && isShopDomain(site.config?.shop)) return site.config.shop
+  const host = user.websiteUrl?.replace(/^https?:\/\//, "").replace(/[/?#].*$/, "").toLowerCase()
+  return isShopDomain(host) ? host : null
 }
 
 const isComped = (email: string) => FOUNDER_EMAILS.includes(email.toLowerCase())

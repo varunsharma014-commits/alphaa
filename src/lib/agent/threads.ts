@@ -357,9 +357,11 @@ async function listingsTail(userId: string, plan: string, s: Awaited<ReturnType<
   out.push(...(l ? listingsMessages(l.data) : [agent([{ kind: "text", text: "Checking your details on the directories AI reads…" }], "listings-run")]))
   const extra = maxExtraLocations(plan)
   const locs = s.locations ?? []
+  const shopify = s.site?.platform === "shopify"
   out.push(agent([
-    { kind: "text", text: locs.length ? `Your other locations: ${locs.map((x) => `${x.name} (${x.city})`).join(", ")}.` : extra ? "Got more than one location? Add each one — I’ll write its page, give it its own structured data, and track questions for its city." : "More locations come with the Pro plan (up to 3)." },
-    { kind: "chips", items: extra > locs.length ? [{ label: "Add a location", action: { type: "location-add" } }] : locs.length ? [] : [{ label: "See plans", action: { type: "link", href: "/pricing" } }] },
+    // No Pro upsell for Shopify merchants: /pricing sells through Stripe (App Store rule 1.2.1).
+    { kind: "text", text: locs.length ? `Your other locations: ${locs.map((x) => `${x.name} (${x.city})`).join(", ")}.` : extra ? "Got more than one location? Add each one — I’ll write its page, give it its own structured data, and track questions for its city." : shopify ? "I cover your main location." : "More locations come with the Pro plan (up to 3)." },
+    { kind: "chips", items: extra > locs.length ? [{ label: "Add a location", action: { type: "location-add" } }] : locs.length || shopify ? [] : [{ label: "See plans", action: { type: "link", href: "/pricing" } }] },
   ], "ls-locs"))
   return out
 }
