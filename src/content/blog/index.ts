@@ -112,6 +112,9 @@ import { meta as answerEngineMeta, Body as AnswerEngineBody } from "./what-is-an
 import { meta as vsScrunchMeta, Body as VsScrunchBody } from "./alphaa-vs-scrunch"
 import { meta as wordpressAiMeta, Body as WordpressAiBody } from "./wordpress-ai-search-optimization"
 import { meta as llmSeoMeta, Body as LlmSeoBody } from "./what-is-llm-seo"
+import { meta as vsProfoundMeta, Body as VsProfoundBody } from "./alphaa-vs-profound"
+import { meta as shopifyAiMeta, Body as ShopifyAiBody } from "./shopify-ai-search-optimization"
+import { meta as locksmithsMeta, Body as LocksmithsBody } from "./how-locksmiths-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -229,6 +232,9 @@ export const POSTS: Post[] = [
   { meta: vsScrunchMeta, Body: VsScrunchBody },
   { meta: wordpressAiMeta, Body: WordpressAiBody },
   { meta: llmSeoMeta, Body: LlmSeoBody },
+  { meta: vsProfoundMeta, Body: VsProfoundBody },
+  { meta: shopifyAiMeta, Body: ShopifyAiBody },
+  { meta: locksmithsMeta, Body: LocksmithsBody },
 ]
 
 export function getAllPosts(): Post[] {
