@@ -164,13 +164,16 @@ async function scanClaude(
     // weights and almost never knows a local business, so "not named" said
     // nothing about the business and could never move. Falls back to a plain
     // answer if the tool is refused, so the engine never goes dark.
-    const searchTool = { type: "web_search_20250305", name: "web_search", max_uses: 3 } as const
+    // One search: each costs $0.01, which is most of a check's cost on Haiku 5.5.
+    const searchTool = { type: "web_search_20250305", name: "web_search", max_uses: 1 } as const
     let message
     try {
       message = await withTimeout(
         client.messages.create({
-          model: "claude-haiku-4-5",
-          max_tokens: 900,
+          model: "claude-haiku-5-5",
+          max_tokens: 1500,
+          // Haiku 5.5 thinks by default; a plain answer is what we score, and thinking would eat the token budget.
+          thinking: { type: "disabled" },
           tools: [searchTool as unknown as Anthropic.Messages.Tool],
           messages: [{ role: "user", content: query }],
         }),
@@ -179,7 +182,7 @@ async function scanClaude(
     } catch (toolErr) {
       console.warn("Claude web search unavailable, answering without it:", toolErr instanceof Error ? toolErr.message : toolErr)
       message = await withTimeout(
-        client.messages.create({ model: "claude-haiku-4-5", max_tokens: 600, messages: [{ role: "user", content: query }] }),
+        client.messages.create({ model: "claude-haiku-5-5", max_tokens: 1000, thinking: { type: "disabled" }, messages: [{ role: "user", content: query }] }),
         20000
       )
     }
