@@ -846,9 +846,9 @@
     "image": "brand/social/posts/w2_fact_hours.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7519498973179641856/",
+    "posted_at": "2026-10-23T16:44:35-04:00"
   },
   {
     "id": "w2-tue-facebook",
@@ -983,9 +983,9 @@
     "image": "brand/social/posts/w2_competitor.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:share:7519497798757568513/",
+    "posted_at": "2026-10-23T16:44:35-04:00"
   },
   {
     "id": "w2-wed-instagram",
@@ -1067,9 +1067,9 @@
     "image": "brand/social/posts/w2_agent_approve.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/61592044887737/posts/pfbid0drmntzHgCR7e4Gi32h7Gj4cvZectoyCanPgaNtYjWFvq1sws3icNwBgezn3Yxnqcl/",
+    "posted_at": "2026-10-23T16:48:54-04:00"
   },
   {
     "id": "w2-thu-x",
