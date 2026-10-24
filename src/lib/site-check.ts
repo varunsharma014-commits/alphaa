@@ -310,7 +310,11 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
   const smText = sitemap && sitemap.ok ? sitemap.text : ""
   const smIsIndex = /<sitemapindex/i.test(smText)
   const locs = (t: string) => [...t.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/gi)].map((m) => m[1].replace(/&amp;/g, "&"))
-  const blogLink = hrefs.find((h) => /\/(blog|news|articles|insights)(\/|$|\?)/i.test(h))
+  // Index page first ("/blog", "/blogs", "/news"…), else the section of a linked post.
+  const BLOG_SECTION = "blogs?|news|articles?|insights|journal"
+  const blogLink =
+    hrefs.find((h) => new RegExp(`/(${BLOG_SECTION})/?(\\?|#|$)`, "i").test(h)) ??
+    hrefs.map((h) => h.match(new RegExp(`^(.*?/(?:${BLOG_SECTION}))/[a-z0-9-]{6,}`, "i"))?.[1]).find(Boolean)
 
   type Inner = { count: number | null; innerPath: string | null; innerCanon: string | null }
   const innerTask: Promise<Inner> = (async () => {
@@ -341,7 +345,7 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
     const links = new Set<string>()
     $$("a[href]").each((_, a) => {
       const h = $$(a).attr("href") || ""
-      if (/\/(blog|news|articles|insights|posts?)\/[a-z0-9-]{6,}/i.test(h)) links.add(h)
+      if (new RegExp(`/(${BLOG_SECTION}|posts?)/[a-z0-9-]{6,}`, "i").test(h)) links.add(h)
     })
     const dates = [...page.text.matchAll(/\b(20\d{2})-(\d{2})-(\d{2})\b|\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2},?\s+(20\d{2})\b/gi)]
       .map((m) => new Date(m[0]))
