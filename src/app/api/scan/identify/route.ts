@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 30
 
 import { NextRequest, NextResponse } from "next/server"
+import { safeFetch } from "@/lib/safe-fetch"
 import { z } from "zod"
 import { anthropic } from "@/lib/claude"
 
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
   let description = ""
   let text = ""
   try {
-    const res = await fetch(websiteUrl, {
+    const res = await safeFetch(websiteUrl, {
       signal: AbortSignal.timeout(8000),
       headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36", Accept: "text/html,application/xhtml+xml,*/*" },
       redirect: "follow",

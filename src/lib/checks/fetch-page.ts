@@ -6,6 +6,7 @@ export const BROWSER_UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
 import { proxyGet } from "./apify"
+import { safeFetch } from "@/lib/safe-fetch"
 
 export type Page = { status: number | null; finalUrl: string; html: string; readable: boolean; via?: "direct" | "proxy" }
 
@@ -28,7 +29,7 @@ export async function fetchPage(url: string, ms = 8000): Promise<Page> {
 
 async function fetchDirect(url: string, ms: number): Promise<Page> {
   try {
-    const res = await fetch(url, {
+    const res = await safeFetch(url, {
       headers: { "User-Agent": BROWSER_UA, Accept: "text/html,application/xhtml+xml,*/*", "Accept-Language": "en-US,en;q=0.9" },
       redirect: "follow",
       signal: AbortSignal.timeout(ms),

@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 180
 
 import { NextResponse } from "next/server"
+import { safeFetch } from "@/lib/safe-fetch"
 import { auth } from "@clerk/nextjs/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
@@ -28,7 +29,7 @@ const body = z.object({
 async function threadText(url: string): Promise<string> {
   try {
     if (/reddit\.com/.test(url)) {
-      const res = await fetch(url.replace(/\/?(\?.*)?$/, ".json"), { headers: { "User-Agent": "Mozilla/5.0 (compatible; AlphaaBot/1.0)" }, signal: AbortSignal.timeout(8000) })
+      const res = await safeFetch(url.replace(/\/?(\?.*)?$/, ".json"), { headers: { "User-Agent": "Mozilla/5.0 (compatible; AlphaaBot/1.0)" }, signal: AbortSignal.timeout(8000) })
       if (res.ok) {
         const j = (await res.json()) as { data?: { children?: { data?: { title?: string; selftext?: string; body?: string } }[] } }[]
         const post = j[0]?.data?.children?.[0]?.data
@@ -36,7 +37,7 @@ async function threadText(url: string): Promise<string> {
         return [post?.title, post?.selftext, ...comments].filter(Boolean).join("\n---\n").slice(0, 5000)
       }
     }
-    const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) })
+    const res = await safeFetch(url, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) })
     if (!res.ok) return ""
     return (await res.text()).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").slice(0, 5000)
   } catch {
@@ -74,7 +75,7 @@ export async function POST(req: Request) {
     }
     if (input.mode === "meta") {
       const url = input.url ?? user.websiteUrl ?? ""
-      const page = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) }).then((r) => r.text()).catch(() => "")
+      const page = await safeFetch(url, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) }).then((r) => r.text()).catch(() => "")
       const currentTitle = page.match(/<title[^>]*>([^<]*)/i)?.[1]?.trim() ?? null
       const currentDescription = page.match(/<meta[^>]+name=["']description["'][^>]*content=["']([^"']*)/i)?.[1] ?? null
       const text = await writeMeta(user, { url, currentTitle, currentDescription })

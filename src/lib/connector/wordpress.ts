@@ -1,6 +1,6 @@
 import { connectionKey, indexNowKey, sign } from "./keys"
+import { safeFetch } from "@/lib/safe-fetch"
 import type { AgentSettings } from "@/lib/agent/settings"
-import { assertPublicHost } from "./user"
 
 export type WpOp = "page" | "schema" | "llms" | "robots" | "post" | "meta" | "sitemap" | "headers"
 export type WpStatus = {
@@ -19,8 +19,7 @@ export async function wpCall<T>(userId: string, wp: NonNullable<AgentSettings["w
   const ts = String(Math.floor(Date.now() / 1000))
   const raw = JSON.stringify(body)
   const base = wp.restUrl.endsWith("/") ? wp.restUrl : `${wp.restUrl}/`
-  await assertPublicHost(new URL(base).hostname)
-  const res = await fetch(`${base}${route}`, {
+  const res = await safeFetch(`${base}${route}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Alphaa-Timestamp": ts, "X-Alphaa-Signature": sign(key, ts, raw) },
     body: raw,

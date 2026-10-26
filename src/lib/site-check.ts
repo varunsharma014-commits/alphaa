@@ -7,6 +7,7 @@
 // Server-only (fetches + Anthropic). Client code imports the labels from
 // lib/site-check-labels.ts so the SDK never lands in a browser bundle.
 import { anthropic } from "@/lib/claude"
+import { safeFetch } from "@/lib/safe-fetch"
 import type { CheckKey } from "@/lib/site-check-labels"
 export type { CheckKey } from "@/lib/site-check-labels"
 
@@ -56,7 +57,7 @@ type Fetched = { ok: boolean; status: number; text: string; ms: number; finalUrl
 async function get(url: string, ms = 7000, ua = UA, redirect: RequestRedirect = "follow"): Promise<Fetched | null> {
   const t0 = Date.now()
   try {
-    const res = await fetch(url, { headers: { "User-Agent": ua, Accept: "text/html,application/xhtml+xml,*/*" }, redirect, signal: AbortSignal.timeout(ms) })
+    const res = await safeFetch(url, { headers: { "User-Agent": ua, Accept: "text/html,application/xhtml+xml,*/*" }, redirect, signal: AbortSignal.timeout(ms) })
     const text = res.ok ? (await res.text()).slice(0, 3_000_000) : ""
     return { ok: res.ok, status: res.status, text, ms: Date.now() - t0, finalUrl: res.url || url, headers: res.headers, location: res.headers.get("location") }
   } catch {

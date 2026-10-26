@@ -1,4 +1,5 @@
 import { googleSearch, isSearchConfigured, type SerpResult } from "./apify-search"
+import { safeFetch } from "@/lib/safe-fetch"
 import { checkAppearance } from "./ai-engines"
 
 // AI Citation Building.
@@ -106,7 +107,7 @@ async function checkPage(
   ownDomain: string | null
 ): Promise<{ status: CitationStatus; snippet: string | null }> {
   try {
-    const res = await fetch(url, {
+    const res = await safeFetch(url, {
       headers: {
         // Identify honestly. Some sites block unknown agents outright, which is
         // fine — that becomes "unknown", not a false "missing".

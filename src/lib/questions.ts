@@ -3,6 +3,7 @@
 // Also checks what the AIs say *about* the business against known facts, so
 // wrong hours, phone numbers or "permanently closed" get caught.
 import { db } from "@/lib/db"
+import { safeFetch } from "@/lib/safe-fetch"
 import { anthropic } from "@/lib/claude"
 import { scanAllEngines, type EngineResult } from "@/lib/ai-engines"
 import { extractMentionedBusinesses } from "@/lib/scan-insights"
@@ -44,7 +45,7 @@ export async function trackedQuestions(userId: string): Promise<string[]> {
   const cities = [user.city, ...(s.locations ?? []).map((l) => l.city)].filter((c, i, a): c is string => !!c && a.indexOf(c) === i)
   // Ground the questions in what the site actually says, not just a category label.
   const site = user.websiteUrl ? (user.websiteUrl.startsWith("http") ? user.websiteUrl : `https://${user.websiteUrl}`) : null
-  const page = site ? await fetch(site, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) }).then((r) => r.text()).catch(() => "") : ""
+  const page = site ? await safeFetch(site, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) }).then((r) => r.text()).catch(() => "") : ""
   const siteText = page
     .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/gi, " ").replace(/\s+/g, " ").trim().slice(0, 3500)

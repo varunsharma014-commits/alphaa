@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 45
 
 import { NextRequest, NextResponse } from "next/server"
+import { safeFetch } from "@/lib/safe-fetch"
 import { anthropic } from "@/lib/claude"
 
 interface WebsiteAnalysis {
@@ -16,7 +17,7 @@ interface WebsiteAnalysis {
 async function fetchPageText(url: string): Promise<string> {
   try {
     const normalized = url.startsWith("http") ? url : `https://${url}`
-    const res = await fetch(normalized, {
+    const res = await safeFetch(normalized, {
       headers: { "User-Agent": "AlphaaBot/1.0 (onboarding; +https://alphaa.app)" },
       signal: AbortSignal.timeout(8000),
     })

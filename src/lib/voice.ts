@@ -2,6 +2,7 @@
 // page and reply the agent writes reads like the owner wrote it. Saved to
 // User.voiceDescription (the owner can edit it; we never overwrite theirs).
 import { db } from "@/lib/db"
+import { safeFetch } from "@/lib/safe-fetch"
 import { anthropic } from "@/lib/claude"
 
 const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
@@ -14,7 +15,7 @@ function textOf(html: string): string {
 
 async function get(url: string): Promise<string> {
   try {
-    const r = await fetch(url, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(8000) })
+    const r = await safeFetch(url, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(8000) })
     return r.ok ? await r.text() : ""
   } catch {
     return ""

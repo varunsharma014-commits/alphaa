@@ -5,6 +5,7 @@
 
 // Server-only (node:tls).
 import tls from "node:tls"
+import { safeFetch } from "@/lib/safe-fetch"
 
 export type SecurityKey = "https" | "sslExpiry" | "hsts" | "headers" | "mixed" | "safeBrowsing" | "cms" | "exposed"
 export type SecurityItem = { key: SecurityKey; label: string; ok: boolean | null; detail: string; severity: "high" | "medium" | "low" }
@@ -31,7 +32,7 @@ type Fetched = { ok: boolean; status: number; text: string; finalUrl: string; he
 
 async function get(url: string, ms = 8000, redirect: RequestRedirect = "follow", maxBytes = 3_000_000): Promise<Fetched | null> {
   try {
-    const res = await fetch(url, { headers: { "User-Agent": BROWSER_UA, Accept: "text/html,application/xhtml+xml,*/*" }, redirect, signal: AbortSignal.timeout(ms) })
+    const res = await safeFetch(url, { headers: { "User-Agent": BROWSER_UA, Accept: "text/html,application/xhtml+xml,*/*" }, redirect, signal: AbortSignal.timeout(ms) })
     const text = res.ok ? (await res.text()).slice(0, maxBytes) : ""
     return { ok: res.ok, status: res.status, text, finalUrl: res.url || url, headers: res.headers }
   } catch {

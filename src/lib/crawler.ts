@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import { load } from "cheerio"
+import { safeFetch } from "@/lib/safe-fetch"
 
 type CheerioRoot = ReturnType<typeof load>
 // Use the element type that works with both old @types/cheerio and new cheerio
@@ -94,7 +95,7 @@ async function fetchPage(url: string): Promise<string | null> {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
   try {
-    const res = await fetch(url, {
+    const res = await safeFetch(url, {
       headers: { "User-Agent": USER_AGENT },
       signal: controller.signal,
     })
@@ -434,7 +435,7 @@ async function checkAiCrawlerBlocks(
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
   let txt = ""
   try {
-    const res = await fetch(`${origin}/robots.txt`, {
+    const res = await safeFetch(`${origin}/robots.txt`, {
       headers: { "User-Agent": USER_AGENT },
       signal: controller.signal,
     })
