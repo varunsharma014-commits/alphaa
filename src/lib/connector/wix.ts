@@ -570,14 +570,22 @@ export const wix: SiteConnector = {
     const pub = await wx<{ postId?: string }>(token, `/blog/v3/draft-posts/${encodeURIComponent(draftId)}/publish`, { method: "POST" })
     const postId = pub.postId || draftId
 
+    // Right after publishing, Wix can report url.path as a bare "/post/" (slug not filled in yet),
+    // which is a dead link; only accept a URL that ends in a slug.
+    const withSlug = (u: string | null) => (u && !/\/post\/?$/.test(u) ? u : null)
     let url: string | null = null
+    let liveSlug: string | undefined
     try {
       const got = await wx<{ post?: Post }>(token, `/blog/v3/posts/${encodeURIComponent(postId)}?fieldsets=URL`)
-      url = joinUrl(got.post?.url)
+      url = withSlug(joinUrl(got.post?.url))
+      liveSlug = got.post?.slug
     } catch {
       /* fall back below */
     }
-    url = url || joinUrl(created.draftPost?.url) || `${conn.siteUrl.replace(/\/+$/, "")}/post/${created.draftPost?.seoSlug || created.draftPost?.slug || draftPost.seoSlug}`
+    url =
+      url ||
+      withSlug(joinUrl(created.draftPost?.url)) ||
+      `${conn.siteUrl.replace(/\/+$/, "")}/post/${liveSlug || created.draftPost?.seoSlug || created.draftPost?.slug || draftPost.seoSlug}`
 
     return { id: draftId, url, ...(input.kind === "page" ? { note: PAGE_NOTE } : {}) }
   },
