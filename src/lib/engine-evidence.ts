@@ -56,7 +56,8 @@ export async function getEngineEvidence(user: {
       include: { aiEngineResults: true },
     }),
     db.scanLead.findFirst({
-      where: { email: user.email, visibilityScore: { not: null } },
+      // A /start scan is linked by userId at signup and usually has no email of its own.
+      where: { OR: [{ userId: user.id }, ...(user.email ? [{ email: user.email }] : [])], visibilityScore: { not: null } },
       orderBy: { createdAt: "desc" },
       select: { createdAt: true, aiSearchStatus: true, engineResponses: true },
     }),
