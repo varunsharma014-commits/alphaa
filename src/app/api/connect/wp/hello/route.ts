@@ -5,7 +5,7 @@ import { z } from "zod"
 import { db } from "@/lib/db"
 import { verifyConnectionKey, indexNowKey } from "@/lib/connector/keys"
 import { saveAgentSettings } from "@/lib/agent/settings"
-import { publicUrl, bareHost } from "@/lib/connector/user"
+import { publicUrl, bareHost, assertPublicHost } from "@/lib/connector/user"
 
 // Called by the WordPress plugin when the owner pastes their key.
 // Public route: the key itself is the proof.
@@ -26,6 +26,11 @@ export async function POST(req: Request) {
   const site = publicUrl(input.siteUrl)
   const rest = publicUrl(input.restUrl)
   if (!site || !rest || bareHost(site.hostname) !== bareHost(rest.hostname)) {
+    return NextResponse.json({ ok: false, error: "This site’s address can’t be reached from the internet." }, { status: 400 })
+  }
+  try {
+    await assertPublicHost(rest.hostname)
+  } catch {
     return NextResponse.json({ ok: false, error: "This site’s address can’t be reached from the internet." }, { status: 400 })
   }
   const own = user.websiteUrl ? publicUrl(user.websiteUrl.startsWith("http") ? user.websiteUrl : `https://${user.websiteUrl}`) : null
