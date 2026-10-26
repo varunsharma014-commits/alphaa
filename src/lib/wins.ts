@@ -57,7 +57,7 @@ export async function processWinsForAudit(user: WinUser, auditId: string): Promi
   try {
     const wins = await detectAndRecordWins(user, auditId)
     if (wins.length > 0) {
-      await maybeSendWinEmail(user, wins)
+      await maybeSendWinEmail(user, wins, auditId)
     }
     return wins
   } catch (err) {
@@ -170,7 +170,7 @@ async function recordWin(
 
 // ── Email ─────────────────────────────────────────────────────────────────────
 
-async function maybeSendWinEmail(user: WinUser, wins: DetectedWin[]): Promise<void> {
+async function maybeSendWinEmail(user: WinUser, wins: DetectedWin[], auditId: string): Promise<void> {
   try {
     // Cap: max 1 win email per user per 7 days.
     const since = new Date(Date.now() - WIN_EMAIL_COOLDOWN_MS)
@@ -183,33 +183,32 @@ async function maybeSendWinEmail(user: WinUser, wins: DetectedWin[]): Promise<vo
     // Prefer an engine win (the most shareable story), else the score jump.
     const win = wins.find((w) => w.kind === "engine_appeared") ?? wins[0]
     if (!win) return
+    const scoreWin = wins.find((w) => w.kind === "score_jump")
 
-    const businessName = user.businessName ?? "your business"
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://alphaa.app"
     const winUrl = `${appUrl}/w/${win.id}`
     const headline = win.title.replace(/^🎉\s*/u, "")
+    const engine = win.kind === "engine_appeared" ? ENGINE_LABELS[win.engine ?? ""] ?? null : null
 
-    let detail: string
-    if (win.kind === "engine_appeared") {
-      const engineLabel = ENGINE_LABELS[win.engine ?? ""] ?? win.engine ?? "an AI engine"
-      const category = user.businessType ?? "businesses like yours"
-      const cityPart = user.city ? ` in ${user.city}` : ""
-      detail = `A customer asking ${engineLabel} about ${category}${cityPart} now sees YOUR business. alphaa measured this on your latest visibility scan — real answer data, not a projection.`
-    } else {
-      detail = `Your AI visibility score rose from ${win.oldScore} to ${win.newScore} between your last two scans — measured by alphaa, not estimated.`
-    }
+    // "Measured on" is the scan's date, not the send date.
+    const audit = await db.audit.findUnique({ where: { id: auditId }, select: { createdAt: true } })
+    const measuredOn = (audit?.createdAt ?? new Date()).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })
 
     await sendWinEmail(user.email, {
-      firstName: user.fullName?.split(" ")[0] || undefined,
-      businessName,
-      headline,
-      detail,
+      firstName: user.fullName?.trim().split(/\s+/)[0] || null,
+      businessName: user.businessName,
+      engine,
+      city: user.city,
+      scoreRise:
+        scoreWin && typeof scoreWin.oldScore === "number" && typeof scoreWin.newScore === "number"
+          ? { from: scoreWin.oldScore, to: scoreWin.newScore }
+          : null,
+      measuredOn,
       winUrl,
-      measuredOn: new Date().toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      }),
     })
 
     // Ledger marker that enforces the 7-day cap (and reads honestly in the feed).

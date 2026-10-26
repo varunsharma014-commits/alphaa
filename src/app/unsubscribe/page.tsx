@@ -26,8 +26,8 @@ export default async function UnsubscribePage({
           <>
             <h1 className="text-2xl font-semibold text-fg mb-3">You’re unsubscribed.</h1>
             <p className="text-muted text-base">
-              You won’t get any more marketing email from Alphaa. If you have an account, billing and
-              account email still arrives.
+              You won’t get any more marketing email or weekly report emails from Alphaa. If you have an
+              account, billing and account email still arrives, and your weekly reports stay in your dashboard.
             </p>
           </>
         ) : (

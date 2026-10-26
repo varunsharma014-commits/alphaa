@@ -44,9 +44,9 @@ Billing Cycle: Monthly plans are billed every 30 days from the date of subscript
 
 Automatic Renewal: Your subscription will automatically renew at the end of each billing period unless you cancel before the renewal date.
 
-Cancellation: You may cancel your subscription at any time through your account dashboard or by emailing support@alphaa.app. Cancellations take effect at the end of the current billing period; you will retain access to the Service until that date. Alphaa does not issue prorated refunds for unused time within a billing period.
+Cancellation: You may cancel your subscription at any time through your account dashboard or by emailing hi@alphaa.app. Cancellations take effect at the end of the current billing period; you will retain access to the Service until that date. Alphaa does not issue prorated refunds for unused time within a billing period.
 
-Refund Policy: If you are dissatisfied with the Service, you may request a full refund within 7 calendar days of your first paid charge. Refund requests must be submitted to support@alphaa.app with your account email and reason for the request. Refunds are not available for charges after the initial 7-day window, for annual plan renewals (after the initial period), or for any account found to be in violation of these Terms.
+Refund Policy: If you are dissatisfied with the Service, you may request a full refund within 7 calendar days of your first paid charge. Refund requests must be submitted to hi@alphaa.app with your account email and reason for the request. Refunds are not available for charges after the initial 7-day window, for annual plan renewals (after the initial period), or for any account found to be in violation of these Terms.
 
 AI Visibility Guarantee: If, during the first 90 days of your paid subscription, none of ChatGPT, Gemini, Claude or Perplexity names your business in any of Alphaa's weekly visibility checks for your account, Alphaa will credit your account with one month of your plan's price (for annual plans, one twelfth of the annual price), applied automatically to your next invoice. The guarantee applies once per customer and business, requires an active subscription at day 90, and is not redeemable for cash. Alphaa's weekly check records are the basis for determining eligibility.
 

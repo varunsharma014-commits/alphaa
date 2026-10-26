@@ -6,6 +6,7 @@ import { db } from "@/lib/db"
 import { shopifyBilledShop } from "@/lib/billing"
 import { getStripe } from "@/lib/stripe"
 import { sendAs, shell, esc } from "@/lib/connector/mail"
+import { AGENT_SENDER_NAME, REPLY_TO } from "@/lib/email-sender"
 
 export const GUARANTEE_DAYS = 90
 const DAY = 86_400_000
@@ -56,11 +57,15 @@ export async function applyGuarantee(userId: string): Promise<GuaranteeVerdict> 
   )
   const dollars = (v.amountCents / 100).toFixed(2).replace(/\.00$/, "")
   await db.mockActivity.create({ data: { userId, type: "guarantee_credit", title: `Next month is free — the AI Visibility Guarantee applied $${dollars} to your account`, metadata: { amountCents: v.amountCents, start: v.start.toISOString(), checks: v.checks } } })
-  const biz = user.businessName || "your business"
-  const inner = `<p style="margin:0 0 16px">Hi${user.fullName ? ` ${esc(user.fullName.split(" ")[0])}` : ""},</p>
-<p style="margin:0 0 16px">In your first 90 days, none of the AI assistants named ${esc(biz)} in my weekly checks. That’s what our guarantee covers, so I’ve applied a <b>$${dollars} credit</b> — your next month is free. Nothing to do on your side.</p>
-<p style="margin:0">I’m still working on it every week, and I’ll tell you the moment one of them names you.</p>
-<p style="margin:16px 0 0;color:#6e6e73">— Alphaa</p>`
-  await sendAs({ fromName: "Alphaa", to: user.email, subject: "Your next month of Alphaa is free", html: shell(inner, "Alphaa 90-day AI Visibility Guarantee."), text: `In your first 90 days, none of the AI assistants named ${biz} in my weekly checks, so I've applied a $${dollars} credit — your next month is free.` }).catch((err) => console.error("[guarantee] email", err instanceof Error ? err.message : err))
+  const biz = user.businessName?.trim() || "your business"
+  const first = user.fullName?.trim().split(/\s+/)[0]
+  const hiLine = first ? `Hi ${first},` : "Hi,"
+  const inner = `<p style="margin:0 0 16px">${esc(hiLine)}</p>
+<p style="margin:0 0 16px">In your first 90 days, none of the 4 major AIs named ${esc(biz)} during my weekly checks.</p>
+<p style="margin:0 0 16px">That is exactly what our guarantee covers. I have applied a <b>$${dollars} credit</b> to your account. Your next month is free, and there is nothing you need to do.</p>
+<p style="margin:0">I am still working on this every week, and I will alert you the moment your name comes up.</p>
+<p style="margin:16px 0 0;color:#6e6e73">— Your AI Agent</p>`
+  const text = `${hiLine}\n\nIn your first 90 days, none of the 4 major AIs named ${biz} during my weekly checks.\n\nThat is exactly what our guarantee covers. I have applied a $${dollars} credit to your account. Your next month is free, and there is nothing you need to do.\n\nI am still working on this every week, and I will alert you the moment your name comes up.\n\n— Your AI Agent`
+  await sendAs({ fromName: AGENT_SENDER_NAME, replyTo: REPLY_TO, to: user.email, subject: "Your next month is free.", html: shell(inner, "Alphaa 90-day AI Visibility Guarantee."), text }).catch((err) => console.error("[guarantee] email", err instanceof Error ? err.message : err))
   return v
 }

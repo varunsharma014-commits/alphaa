@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   const today = await db.mockActivity.count({ where: { userId: user.id, type: "handoff_sent", createdAt: { gte: new Date(Date.now() - 86_400_000) } } })
   if (today >= 20) return NextResponse.json({ error: "That’s a lot of emails today — try again tomorrow." }, { status: 429 })
 
-  const biz = user.businessName || "our business"
+  const biz = user.businessName?.trim() || "Our business"
   const mail = await buildHandoffEmail(user, input)
   if ("error" in mail) return NextResponse.json({ error: mail.error }, { status: 400 })
   try {

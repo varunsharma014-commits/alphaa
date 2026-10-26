@@ -4,6 +4,7 @@ import { stripe } from "@/lib/stripe"
 import { db } from "@/lib/db"
 import { sendPaymentFailureEmail } from "@/lib/email"
 import { resend } from "@/lib/resend"
+import { fromAs } from "@/lib/email-sender"
 import { logActivity } from "@/lib/activity"
 import { SUPPORT_EMAIL } from "@/lib/constants"
 import { sendAbandonedCheckoutEmail } from "@/lib/abandoned-checkout"
@@ -57,10 +58,10 @@ export async function POST(req: NextRequest) {
           )
           try {
             await resend.emails.send({
-              from: `Alphaa <${process.env.RESEND_FROM_EMAIL}>`,
+              from: fromAs("Alphaa"),
               to: SUPPORT_EMAIL,
-              subject: `💰 White-glove setup PAID — ${user.businessName ?? user.email}`,
-              text: `${user.businessName ?? "Unknown business"} (${user.email}) paid the $149 setup fee.\n\nSLA: install + verify within 2 business days.\nIntake details: see the "concierge_request" activity for user ${user.id} (or the earlier intake email).\nWebsite: ${user.websiteUrl ?? "not set"}`,
+              subject: `💰 Setup PAID — ${user.businessName || user.email}`,
+              text: `${user.businessName || "Unknown business"} (${user.email}) paid the setup fee.\n\nSLA: Install and verify within 2 business days.\nWebsite: ${user.websiteUrl || "not set"}\nIntake details: the "concierge_request" activity for user ${user.id} (or the earlier intake email).`,
             })
           } catch (e) {
             console.error("Concierge notification email failed:", e)
@@ -107,14 +108,15 @@ export async function POST(req: NextRequest) {
         const amount = `$${((sub.amount_due ?? 0) / 100).toFixed(2)}`
         const retryDate = sub.next_payment_attempt
           ? new Date(sub.next_payment_attempt * 1000).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
-          : "soon"
+          : null
         try {
           await sendPaymentFailureEmail(user.email, {
-            firstName: user.fullName?.split(" ")[0] ?? "there",
-            businessName: user.fullName ?? "your business",
+            firstName: user.fullName?.trim().split(/\s+/)[0] || null,
+            // The business, never the person's name; null reads "your business".
+            businessName: user.businessName?.trim() || null,
             amount,
             retryDate,
-            updateUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`,
+            updateUrl: `${process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"}/dashboard/settings/billing`,
           })
         } catch (e) {
           console.error("Payment failure email failed:", e)

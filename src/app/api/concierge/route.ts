@@ -11,6 +11,7 @@ import { auth } from "@clerk/nextjs/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { logActivity } from "@/lib/activity"
+import { fromAs } from "@/lib/email-sender"
 import { resend } from "@/lib/resend"
 import { SUPPORT_EMAIL } from "@/lib/constants"
 
@@ -40,19 +41,18 @@ export async function POST(req: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: `Alphaa <${process.env.RESEND_FROM_EMAIL}>`,
+        from: fromAs("Alphaa"),
         to: SUPPORT_EMAIL,
-        subject: `🛠 Concierge intake — ${user.businessName ?? user.email} (${input.service})`,
+        subject: `🛠 Concierge Intake — ${user.businessName || user.email} (${input.service === "setup" ? "Setup" : "Full Service"})`,
         text:
-          `New "do it for me" intake.\n\n` +
-          `Business: ${user.businessName ?? "—"}\n` +
+          `New "Do it for me" request received.\n\n` +
+          `Business: ${user.businessName || "—"}\n` +
           `Email: ${user.email}\n` +
-          `Website: ${user.websiteUrl ?? "—"}\n` +
+          `Website: ${user.websiteUrl || "—"}\n` +
           `Platform: ${input.platform}\n` +
-          `Service: ${input.service === "setup" ? "White-glove setup ($149 one-time)" : "Full Service ($299/mo)"}\n` +
+          `Service: ${input.service === "setup" ? "Setup ($149 one-time)" : "Full Service ($299/mo)"}\n` +
           `Notes: ${input.notes || "—"}\n\n` +
-          `Payment status arrives in a separate "PAID" email once Stripe confirms.\n` +
-          `SLA: install + verify within 2 business days of payment.`,
+          `Waiting on Stripe confirmation.`,
       })
     } catch (e) {
       // The activity row above still records the request; don't fail the intake.

@@ -1,23 +1,28 @@
 import {
-  Body, Button, Container, Head, Heading, Hr, Html,
+  Body, Button, Container, Head, Html,
   Preview, Section, Text, Link,
 } from "@react-email/components"
+import { appUrl, hi, known, orYourBusiness } from "@/emails/copy"
 
 interface PaymentFailureEmailProps {
-  firstName: string
-  businessName: string
+  firstName?: string | null
+  /** The user's business (never their personal name). */
+  businessName?: string | null
   amount: string
-  retryDate: string
+  /** Formatted date of Stripe's next attempt, or null when Stripe gave none. */
+  retryDate?: string | null
   updateUrl: string
 }
 
 export default function PaymentFailureEmail({
   firstName, businessName, amount, retryDate, updateUrl,
 }: PaymentFailureEmailProps) {
+  const base = appUrl()
+  const retry = known(retryDate)
   return (
     <Html>
       <Head />
-      <Preview>Action required: payment failed for your Alphaa subscription</Preview>
+      <Preview>Your subscription payment of {amount} was declined. Please update your payment method.</Preview>
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
@@ -29,44 +34,29 @@ export default function PaymentFailureEmail({
               <Text style={alertText}>⚠ PAYMENT FAILED</Text>
             </Section>
 
-            <Heading style={h1}>We couldn't process your payment, {firstName}.</Heading>
+            <Text style={paragraph}>{hi(firstName)}</Text>
             <Text style={paragraph}>
-              Your subscription payment of <strong>{amount}</strong> for <strong>{businessName}</strong> was declined. Your AI visibility service is still active, but we'll retry on <strong>{retryDate}</strong>.
+              Your subscription payment of <strong>{amount}</strong> for <strong>{orYourBusiness(businessName)}</strong> was declined.
             </Text>
-
             <Text style={paragraph}>
-              If the retry fails, your account will be paused and your AI citation profile will stop updating. Please update your payment method now to avoid any interruption.
+              I am still working, but I will try the charge again {retry ? <>on <strong>{retry}</strong></> : "soon"}.
+            </Text>
+            <Text style={paragraph}>
+              If the next attempt fails, your account will be paused. Please update your payment method to keep your AI visibility tracking active.
             </Text>
 
             <Button style={button} href={updateUrl}>
               Update payment method →
             </Button>
 
-            <Hr style={hr} />
-
-            <Text style={sectionLabel}>COMMON REASONS FOR FAILURE</Text>
-            {[
-              "Card expired — update your card number and expiry date",
-              "Insufficient funds — ensure your account has sufficient balance",
-              "Bank blocked the charge — contact your bank to authorize recurring charges from Alphaa",
-              "Card details changed — update your billing information",
-            ].map((item) => (
-              <Text key={item} style={reasonItem}>• {item}</Text>
-            ))}
-
-            <Hr style={hr} />
-
-            <Text style={smallText}>
-              Need help? Reply to this email or contact us at{" "}
-              <Link href="mailto:support@alphaa.app" style={link}>support@alphaa.app</Link>. We're happy to assist.
-            </Text>
+            <Text style={paragraph}>— Your AI Agent</Text>
           </Section>
 
           <Section style={footer}>
             <Text style={footerText}>
-              <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`} style={footerLink}>Billing settings</Link>
+              <Link href={`${base}/dashboard/settings/billing`} style={footerLink}>Billing settings</Link>
               {" · "}
-              <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/privacy`} style={footerLink}>Privacy</Link>
+              <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
             </Text>
           </Section>
         </Container>
@@ -90,14 +80,8 @@ const logoText = { color: "#000000", fontSize: "20px", fontWeight: "600", margin
 const content = { padding: "32px 40px 0" }
 const alertBanner = { backgroundColor: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: "8px", padding: "10px 16px", margin: "0 0 24px" }
 const alertText = { color: "#d70015", fontSize: "12px", fontWeight: "600", letterSpacing: "1px", margin: "0", textAlign: "center" as const }
-const h1 = { color: "#1d1d1f", fontSize: "24px", fontWeight: "600", margin: "0 0 16px", lineHeight: "1.3" }
 const paragraph = { color: "#424245", fontSize: "15px", lineHeight: "1.6", margin: "0 0 20px" }
 const button = { backgroundColor: "#000000", color: "#ffffff", borderRadius: "980px", fontSize: "16px", fontWeight: "400", padding: "14px 28px", textDecoration: "none", display: "inline-block", margin: "0 0 24px" }
-const hr = { borderColor: "#d2d2d7", margin: "24px 0" }
-const sectionLabel = { color: "#86868b", fontSize: "10px", fontWeight: "600", letterSpacing: "2px", margin: "0 0 12px" }
-const reasonItem = { color: "#424245", fontSize: "14px", margin: "0 0 8px", lineHeight: "1.5" }
-const smallText = { color: "#6e6e73", fontSize: "13px", lineHeight: "1.6", margin: "0 0 24px" }
-const link = { color: "#000000", textDecoration: "underline" }
 const footer = { padding: "20px 40px", borderTop: "1px solid #d2d2d7" }
 const footerText = { color: "#86868b", fontSize: "12px", textAlign: "center" as const, margin: "0" }
 const footerLink = { color: "#86868b", textDecoration: "none" }

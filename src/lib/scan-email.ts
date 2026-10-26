@@ -5,38 +5,22 @@
 import { db } from "@/lib/db"
 import { sendAuditResultsEmail } from "@/lib/email"
 import { scanResultsUrl } from "@/lib/scan-token"
+import { scanEngineRows } from "@/lib/scan-engines"
+import { leadName } from "@/emails/copy"
 
 export async function sendScanReadyEmail(leadId: string) {
   const lead = await db.scanLead.findUnique({ where: { id: leadId } })
   if (!lead || !lead.visibilityScore || !lead.email) return
 
-  const status = (lead.aiSearchStatus ?? {}) as Record<string, string>
-  const engines = [
-    { key: "chatgpt", name: "ChatGPT" },
-    { key: "google_ai", name: "Claude" },
-    { key: "perplexity", name: "Perplexity" },
-    { key: "gemini", name: "Gemini" },
-  ].map((e) => ({
-    name: e.name,
-    found: status[e.key] === "occasionally" || status[e.key] === "frequently",
-    snippet: "",
-  }))
-
-  const issues = Array.isArray(lead.issues) ? (lead.issues as unknown[]) : []
-  const first = issues[0] as Record<string, unknown> | undefined
-  const topIssue =
-    (first && typeof first.explanation === "string" && first.explanation) ||
-    (first && typeof first.headline === "string" && first.headline) ||
-    "Your business is missing from most AI answers about your area."
-
+  const base = process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"
   await sendAuditResultsEmail(lead.email, {
-    businessName: lead.businessName || lead.businessUrl || "Your business",
-    city: lead.city ?? "",
+    businessName: leadName(lead.businessName, lead.businessUrl),
+    city: lead.city,
     overallScore: lead.visibilityScore,
-    engines,
-    topIssue,
-    isSubscriber: false,
+    engines: scanEngineRows(lead),
+    variant: "ready",
     resultsUrl: scanResultsUrl(lead.id, lead.email),
+    hireUrl: `${base}/signup?scan=${lead.id}&utm_source=email&utm_medium=report&utm_campaign=scan-report`,
   })
 
   // Record that the link actually reached them. The results gate keys off this:

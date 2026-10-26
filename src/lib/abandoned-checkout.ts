@@ -53,22 +53,22 @@ export async function sendAbandonedCheckoutEmail(session: {
   try {
     await sendMarketingEmail({
       to: user.email,
-      subject: "You were one step from starting",
+      subject: "You were one step away.",
       unsub,
       react: React.createElement(NurtureEmail, {
-        preview: "No charge was made. Here's what protects you if you start.",
+        preview: "You were not charged. Here is what protects you when you start.",
         blocks: [
-          { kind: "p", text: `You started checkout${name ? ` for ${name}` : ""} but didn't finish. No charge was made.` },
-          { kind: "p", text: "In case it helps you decide:" },
+          { kind: "p", text: `You started checkout for ${name || "your business"} but did not finish. You were not charged.` },
+          { kind: "p", text: "If it helps you decide, here is what protects you when you start:" },
           {
             kind: "bullets",
             items: [
-              "7-day refund on your first charge, no questions asked.",
-              "90-day AI Visibility Guarantee. If none of ChatGPT, Gemini, Claude or Perplexity names you in our weekly checks in your first 90 days, your next month is free. Once per customer.",
-              "Month to month. Cancel in two clicks.",
+              "A 7-day refund on your first charge, no questions asked.",
+              "Our 90-day AI Visibility Guarantee (if none of the 4 major AIs names you in our weekly checks in your first 90 days, your next month is free).",
+              "No contracts. Cancel in two clicks.",
             ],
           },
-          { kind: "p", text: "If something went wrong at checkout, reply and tell me. A person reads every reply." },
+          { kind: "p", text: "If something broke during checkout, just reply and tell me." },
         ],
         cta: { label: "Pick up where you left off", href: `${base}/onboarding?utm_source=email&utm_medium=lifecycle&utm_campaign=checkout-abandoned` },
         footer: { reason: "You’re getting this because you started checkout at alphaa.app.", address, unsubscribeUrl: unsub.pageUrl },

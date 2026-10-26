@@ -1,9 +1,9 @@
 import { Resend } from "resend"
+import { fromAs } from "@/lib/email-sender"
 
 // Plain, Apple-light emails the agent sends on the owner's behalf. Replies go
 // to the owner, never to us.
 const resend = new Resend(process.env.RESEND_API_KEY)
-const FROM_ADDR = process.env.RESEND_FROM_EMAIL ?? "hello@alphaa.app"
 
 export const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
 
@@ -20,7 +20,9 @@ export const codeBox = (code: string) =>
 
 export async function sendAs(opts: { fromName: string; to: string; replyTo?: string | null; subject: string; html: string; text: string }) {
   const { error } = await resend.emails.send({
-    from: `${opts.fromName.replace(/[<>"]/g, "")} <${FROM_ADDR}>`,
+    // Display name per email ("Bright Smile via Alphaa", "Alphaa AI Agent");
+    // the address is always RESEND_FROM_EMAIL, falling back to hi@alphaa.app.
+    from: fromAs(opts.fromName),
     to: opts.to,
     replyTo: opts.replyTo ?? undefined,
     subject: opts.subject,

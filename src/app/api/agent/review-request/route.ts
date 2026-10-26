@@ -33,9 +33,13 @@ export async function POST(req: Request) {
   const link = await reviewLinkFor(user.id)
   if (!link) return NextResponse.json({ error: "I need your Google review link first.", needLink: true }, { status: 400 })
 
-  const biz = user.businessName || "us"
+  const bizKnown = user.businessName?.trim() || null
+  const biz = bizKnown || "us"
+  const owner = user.fullName?.trim() || null
+  const signOff = owner || bizKnown
   const first = input.name.split(/\s+/)[0]
-  const message = `Hi ${first}, thanks for choosing ${biz}! If you have a minute, would you leave us a quick Google review? It really helps people nearby find us: ${link}`
+  const ask = "If you have a minute, would you mind leaving us a quick review on Google? Mentioning the specific service we provided really helps other people nearby find us."
+  const message = `Hi ${first}, thanks for choosing ${biz}. ${ask} ${link}`
 
   const isEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(input.contact)
   const phone = input.contact.replace(/[^\d+]/g, "")
@@ -50,17 +54,19 @@ export async function POST(req: Request) {
 
   if (isEmail) {
     const inner = `<p style="margin:0 0 16px">Hi ${esc(first)},</p>
-<p style="margin:0 0 16px">Thanks for choosing <b>${esc(biz)}</b>. If you have a minute, would you leave us a quick review on Google? It really helps people nearby find us.</p>
-<p style="margin:24px 0"><a href="${esc(link)}" style="display:inline-block;background:#000000;color:#fff;text-decoration:none;border-radius:980px;padding:12px 24px;font-size:16px">Leave a review</a></p>
-<p style="margin:0">Thank you,<br>${esc(user.fullName || biz)}</p>`
+<p style="margin:0 0 16px">Thanks for choosing ${bizKnown ? `<b>${esc(bizKnown)}</b>` : "us"}.</p>
+<p style="margin:0 0 16px">${esc(ask)}</p>
+<p style="margin:24px 0"><a href="${esc(link)}" style="display:inline-block;background:#000000;color:#fff;text-decoration:none;border-radius:980px;padding:12px 24px;font-size:16px">Leave a review →</a></p>
+<p style="margin:0">${signOff ? `Thank you,<br>${esc(signOff)}` : "Thank you."}</p>`
     try {
       await sendAs({
-        fromName: biz,
+        // Sender is the business itself; with no business name, the owner.
+        fromName: bizKnown || owner || "Alphaa",
         to: input.contact,
         replyTo: user.email,
-        subject: `${biz}: how did we do?`,
-        html: shell(inner, `You’re getting this one-time note because you were a customer of ${esc(biz)}${user.city ? ` in ${esc(user.city)}` : ""}. Reply to reach them directly. Sent with Alphaa.`),
-        text: `${message}\n\nThank you,\n${user.fullName || biz}`,
+        subject: "How did we do?",
+        html: shell(inner, `You’re getting this one-time note because you were a customer of ${bizKnown ? esc(bizKnown) : "this business"}${user.city?.trim() ? ` in ${esc(user.city.trim())}` : ""}. Reply to reach them directly. Sent with Alphaa.`),
+        text: `Hi ${first},\n\nThanks for choosing ${biz}.\n\n${ask}\n\nLeave a review: ${link}\n\n${signOff ? `Thank you,\n${signOff}` : "Thank you."}`,
       })
     } catch (err) {
       console.error("[review-request]", err instanceof Error ? err.message : err)

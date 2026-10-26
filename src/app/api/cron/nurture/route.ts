@@ -140,7 +140,7 @@ export async function GET(req: NextRequest) {
 
       if (dryRun) {
         const words = copy.blocks
-          .map((b) => (b.kind === "bullets" ? b.items.join(" ") : b.text))
+          .map((b) => ("items" in b ? b.items.join(" ") : b.text))
           .join(" ").split(/\s+/).filter(Boolean).length
         preview.push({ leadId: anchor.id, day, subject: copy.subject, words })
         continue

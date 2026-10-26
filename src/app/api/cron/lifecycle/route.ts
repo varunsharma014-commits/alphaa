@@ -85,8 +85,9 @@ export async function GET(request: NextRequest) {
         continue
       }
 
-      const firstName = user.fullName?.split(" ")[0] || undefined
-      const businessName = user.businessName || "your business"
+      const firstName = user.fullName?.trim().split(/\s+/)[0] || null
+      // Null falls back to "your business" inside the template.
+      const businessName = user.businessName?.trim() || null
 
       if (emailKey === "week-one-recap") {
         // Real numbers from the activity ledger (last 7 days) + latest audit.
@@ -120,6 +121,10 @@ export async function GET(request: NextRequest) {
           keywordTrackingOn: Boolean(firstKeywordSync),
           newReviewAlerts: countOf("reviews"),
           visibilityScore: latestAudit?.visibilityScore ?? null,
+          gbpConnected: Boolean(user.integration?.gmbLocationId),
+          // Same filter as /api/cron/weekly: only paying subscribers get the report.
+          weeklyReportOn:
+            Boolean(user.stripeSubscriptionId) && ["active", "trialing"].includes(user.subscriptionStatus ?? ""),
         })
         await logActivity(
           user.id,

@@ -38,7 +38,7 @@ export function humanizeIssue(code: string | null | undefined): string {
 
 /** Friendly, reassuring fallback for any failed external call. Never leak errors. */
 export function friendlyError(): string {
-  return "alphaa hit a snag and is retrying this automatically. If it keeps happening, contact support@alphaa.app."
+  return "alphaa hit a snag and is retrying this automatically. If it keeps happening, contact hi@alphaa.app."
 }
 
 /** "morning" | "afternoon" | "evening" for greetings. */

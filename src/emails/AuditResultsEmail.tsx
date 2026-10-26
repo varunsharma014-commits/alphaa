@@ -1,38 +1,49 @@
 import {
-  Body, Button, Container, Head, Heading, Hr, Html,
+  Body, Button, Container, Head, Hr, Html,
   Preview, Section, Text, Link, Row, Column,
 } from "@react-email/components"
-
-interface EngineResult {
-  name: string
-  found: boolean
-  snippet?: string
-}
+import { appUrl, inCity, orYou } from "@/emails/copy"
+import type { ScanEngineRow } from "@/lib/scan-engines"
 
 interface AuditResultsEmailProps {
-  businessName: string
-  city: string
+  /** Business name or the site's domain; null falls back to "you". */
+  businessName?: string | null
+  city?: string | null
   overallScore: number
-  engines: EngineResult[]
-  topIssue: string
-  isSubscriber: boolean
-  /** Tokenised link to the full report. The results page is gated, so this is
-   *  the only way the recipient can open it — always the primary button. */
-  resultsUrl?: string
+  /** found / missing / unknown per engine. Unknown (didn't answer) is never counted as "not named". */
+  engines: ScanEngineRow[]
+  /** "ready": the automatic Day-0 email. "requested": the "Email me this report" button (shows snippets). */
+  variant?: "ready" | "requested"
+  /** Unused since the 2026-10 rewrite; kept so older callers type-check. */
+  topIssue?: string
+  isSubscriber?: boolean
+  /** Tokenised link to the full report (the results page is gated). */
+  resultsUrl?: string | null
+  /** "Hire your AI Agent": /signup?scan=<id> when a scan exists, else /start. */
+  hireUrl?: string | null
 }
 
+const list = (xs: string[]) => (xs.length <= 1 ? xs[0] ?? "" : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`)
+
 export default function AuditResultsEmail({
-  businessName, city, overallScore, engines, topIssue, isSubscriber, resultsUrl,
+  businessName, city, overallScore, engines, variant = "ready", isSubscriber = false, resultsUrl, hireUrl,
 }: AuditResultsEmailProps) {
-  const found = engines.filter((e) => e.found).length
-  const total = engines.length
+  const base = appUrl()
+  const found = engines.filter((e) => e.status === "found").length
+  const answered = engines.filter((e) => e.status !== "unknown").length
+  const silent = engines.filter((e) => e.status === "unknown").map((e) => e.name)
   const scoreColor = overallScore >= 70 ? "#1d8a4e" : overallScore >= 40 ? "#b64400" : "#d70015"
-  const scoreLabel = overallScore >= 70 ? "Good" : overallScore >= 40 ? "Needs work" : "Critical gaps"
+  const who = orYou(businessName)
+  const hire = hireUrl || `${base}/start`
 
   return (
     <Html>
       <Head />
-      <Preview>{businessName}: your AI visibility score is {String(overallScore)}/100 — {String(found)}/{String(total)} engines found you</Preview>
+      <Preview>
+        {answered > 0
+          ? `${found} of the ${answered === 4 ? "4" : `${answered}`} AIs ${answered === 4 ? "I checked" : "that answered"} named ${who}.`
+          : `Here is what I found when I checked ${who}.`}
+      </Preview>
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
@@ -40,10 +51,21 @@ export default function AuditResultsEmail({
           </Section>
 
           <Section style={content}>
-            <Heading style={h1}>Your free AI visibility scan is ready</Heading>
-            <Text style={paragraph}>
-              We scanned {businessName}{city.trim() ? ` (${city.trim()})` : ""} across {String(total)} major AI assistants. Here's what we found.
-            </Text>
+            {variant === "requested" ? (
+              <Text style={paragraph}>Here is the AI visibility scan you requested{businessName?.trim() ? ` for ${businessName.trim()}` : ""}.</Text>
+            ) : (
+              <>
+                <Text style={paragraph}>Here is your free AI visibility scan.</Text>
+                <Text style={paragraph}>
+                  I checked what ChatGPT, Gemini, Claude, and Perplexity say about {who}{inCity(city)}.
+                </Text>
+              </>
+            )}
+            {silent.length > 0 && (
+              <Text style={paragraph}>
+                {list(silent)} didn&apos;t answer this time, so I left {silent.length === 1 ? "it" : "them"} out of the count.
+              </Text>
+            )}
 
             {/* Score */}
             <Section style={scoreCard}>
@@ -51,82 +73,86 @@ export default function AuditResultsEmail({
                 <Column style={{ textAlign: "center" as const }}>
                   <Text style={scoreLabel2}>VISIBILITY SCORE</Text>
                   <Text style={{ ...scoreValue, color: scoreColor }}>{overallScore}<span style={scoreUnit}>/100</span></Text>
-                  <Text style={{ ...scoreBadge, color: scoreColor }}>{scoreLabel}</Text>
                 </Column>
                 <Column style={{ textAlign: "center" as const }}>
-                  <Text style={scoreLabel2}>ENGINES FOUND YOU</Text>
-                  <Text style={scoreValue}>{found}<span style={scoreUnit}>/{total}</span></Text>
-                  <Text style={scoreBadge2}>{total - found} still missing you</Text>
+                  <Text style={scoreLabel2}>ENGINES THAT NAMED YOU</Text>
+                  {answered > 0 ? (
+                    <>
+                      <Text style={scoreValue}>{found}<span style={scoreUnit}>/{answered}</span></Text>
+                      {answered < 4 && <Text style={scoreBadge2}>of the {answered} that answered</Text>}
+                    </>
+                  ) : (
+                    <Text style={scoreBadge2}>No AI answered this time</Text>
+                  )}
                 </Column>
               </Row>
             </Section>
 
-            {/* Engine breakdown */}
-            <Text style={sectionLabel}>ENGINE-BY-ENGINE BREAKDOWN</Text>
-            {engines.map((e) => (
-              <Row key={e.name} style={engineRow}>
-                <Column style={engineIconCol}>
-                  <Text style={{ ...engineStatus, color: e.found ? "#1d8a4e" : "#d70015" }}>
-                    {e.found ? "✓" : "✗"}
-                  </Text>
-                </Column>
-                <Column>
-                  <Text style={engineName}>{e.name}</Text>
-                  {e.snippet && <Text style={engineSnippet}>"{e.snippet}"</Text>}
-                  {!e.found && <Text style={engineMissing}>Not mentioned in its answer{city.trim() ? ` about ${city.trim()} businesses` : ""}</Text>}
-                </Column>
-              </Row>
-            ))}
-
-            <Hr style={hr} />
-
-            {/* Top issue */}
-            <Section style={issueBox}>
-              <Text style={issueLabel}>TOP ISSUE FOUND</Text>
-              <Text style={issueText}>{topIssue}</Text>
-            </Section>
+            {/* Snippets of each engine's answer ("Email me this report" only) */}
+            {variant === "requested" && (
+              <>
+                <Text style={sectionLabel}>WHAT EACH AI SAID</Text>
+                {engines.map((e) => (
+                  <Row key={e.name} style={engineRow}>
+                    <Column style={engineIconCol}>
+                      <Text style={{ ...engineStatus, color: e.status === "found" ? "#1d8a4e" : e.status === "missing" ? "#d70015" : "#86868b" }}>
+                        {e.status === "found" ? "✓" : e.status === "missing" ? "✗" : "–"}
+                      </Text>
+                    </Column>
+                    <Column>
+                      <Text style={engineName}>{e.name}</Text>
+                      {e.status === "found" && e.snippet && <Text style={engineSnippet}>&ldquo;{e.snippet}&rdquo;</Text>}
+                      {e.status === "found" && !e.snippet && <Text style={engineNote}>Named you in its answer.</Text>}
+                      {e.status === "missing" && <Text style={engineNote}>Didn&apos;t name you in its answer.</Text>}
+                      {e.status === "unknown" && <Text style={engineNote}>Didn&apos;t answer this time.</Text>}
+                    </Column>
+                  </Row>
+                ))}
+              </>
+            )}
 
             {resultsUrl && (
               <>
                 <Button style={button} href={resultsUrl}>
                   View your full report →
                 </Button>
-                <Text style={trialNote}>
-                  This link is unique to you — it opens the full scan, including
-                  what each AI assistant actually said.
-                </Text>
+                <Text style={trialNote}>This unique link shows exactly what the AI assistants said.</Text>
               </>
             )}
 
-            {!isSubscriber && (
-              <>
-                <Text style={ctaHeading}>Let your agent fix it.</Text>
-                <Text style={paragraph}>
-                  Alphaa is an AI agent that does the work: it writes what AI needs to read about you, keeps your Google profile active, and asks ChatGPT, Gemini, Claude and Perplexity about you every week. You approve with one tap.
-                </Text>
-                <Button style={button} href={`${process.env.NEXT_PUBLIC_APP_URL}/pricing`}>
-                  Start today →
-                </Button>
-                <Text style={trialNote}>$99 a month. Month to month — cancel in two clicks.</Text>
-              </>
-            )}
+            <Hr style={hr} />
 
-            {isSubscriber && (
-              <Button style={button} href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`}>
-                View full audit in dashboard →
+            {isSubscriber ? (
+              <Button style={button} href={`${base}/dashboard`}>
+                See it in your dashboard →
               </Button>
+            ) : (
+              <>
+                <Text style={ctaHeading}>Let me fix it.</Text>
+                <Text style={paragraph}>
+                  {variant === "requested"
+                    ? "I am an AI agent that does the work to get you recommended. I write the answers, update your profile, and check your visibility weekly."
+                    : "I am an AI agent. I write the facts AI needs to read, update your Google profile, and check your visibility every week. You just tap approve."}
+                </Text>
+                <Button style={button} href={hire}>
+                  Hire your AI Agent →
+                </Button>
+                {variant === "ready" && <Text style={trialNote}>Month to month. Cancel in two clicks.</Text>}
+              </>
             )}
+
+            <Text style={paragraph}>— Alphaa</Text>
           </Section>
 
           <Section style={footer}>
             <Text style={footerText}>
-              <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/privacy`} style={footerLink}>Privacy</Link>
+              <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
               {" · "}
-              <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/terms`} style={footerLink}>Terms</Link>
+              <Link href={`${base}/terms`} style={footerLink}>Terms</Link>
             </Text>
             <Text style={footerDisclaimer}>
               AI visibility results vary by business, location, and industry. No specific rankings are guaranteed.
-              Alphaa is not affiliated with OpenAI, Anthropic, Google, Microsoft, or Perplexity.
+              Alphaa is not affiliated with OpenAI, Google, Anthropic, or Perplexity.
             </Text>
           </Section>
         </Container>
@@ -139,16 +165,15 @@ AuditResultsEmail.PreviewProps = {
   businessName: "CoolAir Pro",
   city: "Phoenix, AZ",
   overallScore: 31,
+  variant: "requested",
   engines: [
-    { name: "ChatGPT", found: true, snippet: "CoolAir Pro is a Phoenix-based HVAC service..." },
-    { name: "Claude", found: false },
-    { name: "Gemini", found: false },
-    { name: "Perplexity", found: true, snippet: "For HVAC in Phoenix, CoolAir Pro offers..." },
-    { name: "Claude", found: false },
-    { name: "Copilot", found: false },
+    { name: "ChatGPT", status: "found", snippet: "CoolAir Pro is a Phoenix-based HVAC service..." },
+    { name: "Gemini", status: "missing" },
+    { name: "Claude", status: "unknown" },
+    { name: "Perplexity", status: "found", snippet: "For HVAC in Phoenix, CoolAir Pro offers..." },
   ],
-  topIssue: "Your business has no structured schema markup, which is the primary signal AI engines use to identify and cite local businesses.",
-  isSubscriber: false,
+  resultsUrl: "https://alphaa.app/scan/results?id=abc&t=123",
+  hireUrl: "https://alphaa.app/signup?scan=abc",
 } satisfies AuditResultsEmailProps
 
 const body = { backgroundColor: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" }
@@ -156,25 +181,20 @@ const container = { maxWidth: "560px", margin: "24px auto", backgroundColor: "#f
 const header = { padding: "32px 40px 20px", borderBottom: "1px solid #d2d2d7" }
 const logoText = { color: "#000000", fontSize: "20px", fontWeight: "600", margin: "0" }
 const content = { padding: "32px 40px 0" }
-const h1 = { color: "#1d1d1f", fontSize: "26px", fontWeight: "600", margin: "0 0 12px", lineHeight: "1.2" }
 const paragraph = { color: "#424245", fontSize: "15px", lineHeight: "1.6", margin: "0 0 20px" }
 const scoreCard = { backgroundColor: "#ffffff", borderRadius: "12px", padding: "24px", margin: "0 0 28px", border: "1px solid #d2d2d7" }
 const scoreLabel2 = { color: "#86868b", fontSize: "10px", fontWeight: "600", letterSpacing: "2px", margin: "0 0 6px" }
 const scoreValue = { color: "#1d1d1f", fontSize: "44px", fontWeight: "600", margin: "0", lineHeight: "1" }
 const scoreUnit = { fontSize: "20px", color: "#86868b" }
-const scoreBadge = { fontSize: "13px", fontWeight: "600", margin: "6px 0 0" }
 const scoreBadge2 = { fontSize: "13px", color: "#6e6e73", margin: "6px 0 0" }
 const sectionLabel = { color: "#86868b", fontSize: "10px", fontWeight: "600", letterSpacing: "2px", margin: "0 0 12px" }
 const engineRow = { marginBottom: "14px" }
 const engineIconCol = { width: "32px" }
 const engineStatus = { fontSize: "16px", fontWeight: "600", margin: "0" }
 const engineName = { color: "#1d1d1f", fontSize: "14px", fontWeight: "600", margin: "0" }
+const engineNote = { color: "#6e6e73", fontSize: "12px", margin: "2px 0 0" }
 const engineSnippet = { color: "#6e6e73", fontSize: "13px", fontStyle: "italic", margin: "2px 0 0" }
-const engineMissing = { color: "#d70015", fontSize: "12px", margin: "2px 0 0", opacity: 0.7 }
 const hr = { borderColor: "#d2d2d7", margin: "24px 0" }
-const issueBox = { backgroundColor: "#f5f5f7", border: "1px solid #d2d2d7", borderRadius: "10px", padding: "16px 20px", margin: "0 0 24px" }
-const issueLabel = { color: "#000000", fontSize: "10px", fontWeight: "600", letterSpacing: "2px", margin: "0 0 6px" }
-const issueText = { color: "#1d1d1f", fontSize: "14px", lineHeight: "1.6", margin: "0" }
 const ctaHeading = { color: "#1d1d1f", fontSize: "20px", fontWeight: "600", margin: "0 0 12px" }
 const button = { backgroundColor: "#000000", color: "#ffffff", borderRadius: "980px", fontSize: "15px", fontWeight: "400", padding: "12px 24px", textDecoration: "none", display: "inline-block", margin: "0 0 12px" }
 const trialNote = { color: "#86868b", fontSize: "12px", margin: "0 0 24px" }

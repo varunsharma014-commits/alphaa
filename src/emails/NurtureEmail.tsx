@@ -10,6 +10,7 @@ import {
 export type NurtureBlock =
   | { kind: "p"; text: string }
   | { kind: "bullets"; items: string[] }
+  | { kind: "numbered"; items: string[] }
   | { kind: "quote"; text: string }
 
 export interface NurtureEmailProps {
@@ -43,6 +44,15 @@ export default function NurtureEmail({ preview, blocks, cta, after, footer }: Nu
                 </Section>
               )
             }
+            if (b.kind === "numbered") {
+              return (
+                <Section key={i} style={{ margin: "0 0 16px" }}>
+                  {b.items.map((item, n) => (
+                    <Text key={item} style={bullet}>{n + 1}. {item}</Text>
+                  ))}
+                </Section>
+              )
+            }
             if (b.kind === "quote") return <Text key={i} style={quote}>{b.text}</Text>
             return <Text key={i} style={paragraph}>{b.text}</Text>
           })}
@@ -51,7 +61,7 @@ export default function NurtureEmail({ preview, blocks, cta, after, footer }: Nu
             <Link href={cta.href} style={ctaLink}>{cta.label} →</Link>
           </Text>
 
-          <Text style={paragraph}>Alphaa</Text>
+          <Text style={paragraph}>— Alphaa</Text>
           {after && <Text style={small}>{after}</Text>}
 
           <Section style={footerBox}>

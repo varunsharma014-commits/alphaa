@@ -50,11 +50,12 @@ async function handleAuthFailure(userId: string): Promise<void> {
 
     const user = await db.user.findUnique({
       where: { id: userId },
-      select: { email: true, businessName: true },
+      select: { email: true, businessName: true, fullName: true },
     })
     if (user?.email) {
       await sendReconnectEmail(user.email, {
-        businessName: user.businessName || 'your business',
+        firstName: user.fullName?.trim().split(/\s+/)[0] || null,
+        businessName: user.businessName?.trim() || null,
       })
     }
   } catch (err) {

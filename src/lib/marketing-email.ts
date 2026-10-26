@@ -1,9 +1,10 @@
 import { render } from "@react-email/render"
 import { resend } from "@/lib/resend"
-import { SUPPORT_EMAIL } from "@/lib/constants"
+import { agentFrom, REPLY_TO } from "@/lib/email-sender"
 import type { UnsubLinks } from "@/lib/unsubscribe"
 
-// Sender for marketing email (scan-lead nurture, abandoned checkout).
+// Sender for marketing email (scan-lead nurture, abandoned checkout, weekly report).
+// From "Alphaa AI Agent" <RESEND_FROM_EMAIL>, replies to hi@alphaa.app.
 // Every send carries the footer (company + mailing address + unsubscribe) and
 // RFC 8058 one-click List-Unsubscribe headers. Without a mailing address we
 // legally can't send, so callers check mailingAddress() first and send nothing.
@@ -19,14 +20,14 @@ export async function sendMarketingEmail(opts: {
   react: React.ReactElement
   unsub: UnsubLinks
 }): Promise<{ id: string } | null> {
-  if (!process.env.RESEND_API_KEY || !process.env.RESEND_FROM_EMAIL) {
+  if (!process.env.RESEND_API_KEY) {
     throw new Error("Resend is not configured")
   }
   const [html, text] = await Promise.all([render(opts.react), render(opts.react, { plainText: true })])
   const { data, error } = await resend.emails.send({
-    from: `Alphaa <${process.env.RESEND_FROM_EMAIL}>`,
+    from: agentFrom(),
     to: opts.to,
-    replyTo: SUPPORT_EMAIL,
+    replyTo: REPLY_TO,
     subject: opts.subject,
     html,
     text,

@@ -10,6 +10,7 @@
 
 import { CHECK_IMPACT, CHECK_SHORT, type CheckKey } from "@/lib/site-check-labels"
 import type { NurtureBlock } from "@/emails/NurtureEmail"
+import { scanEngineRows } from "@/lib/scan-engines"
 
 export const NURTURE_DAYS = [1, 2, 3, 4, 11, 18, 25, 32, 39, 46, 53, 60] as const
 export type NurtureDay = (typeof NURTURE_DAYS)[number]
@@ -52,13 +53,6 @@ const noDash = (s: string) => s.replace(/\s*[—–]\s*/g, ", ").replace(/\s+/g,
 const stripTags = (s: string) =>
   s.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&#39;|&rsquo;/g, "’").replace(/&quot;/g, "\"").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()
 
-// Legacy: the Claude verdict is stored under google_ai.
-const ENGINES: { key: string; label: string }[] = [
-  { key: "chatgpt", label: "ChatGPT" },
-  { key: "gemini", label: "Gemini" },
-  { key: "google_ai", label: "Claude" },
-  { key: "perplexity", label: "Perplexity" },
-]
 
 export function extractLeadFacts(lead: {
   id: string
@@ -67,6 +61,8 @@ export function extractLeadFacts(lead: {
   city: string | null
   aiSearchStatus: unknown
   ogData: unknown
+  /** New-contract rows hold one entry per engine that actually answered. */
+  engineResponses?: unknown
 }): LeadFacts {
   let name = (lead.businessName ?? "").trim()
   if (!name && lead.businessUrl) {
@@ -83,14 +79,14 @@ export function extractLeadFacts(lead: {
   const rawCity = (lead.city ?? "").trim()
   const city = rawCity && !/^your area$/i.test(rawCity) ? rawCity : null
 
-  const status = isRecord(lead.aiSearchStatus) ? lead.aiSearchStatus : {}
+  // Only engines that actually answered count as "checked" (unknown is not
+  // "didn't name you"): shared with the report emails via scanEngineRows().
   let checked = 0
   const named: string[] = []
-  for (const e of ENGINES) {
-    const v = status[e.key]
-    if (typeof v !== "string" || !v) continue
+  for (const row of scanEngineRows({ aiSearchStatus: lead.aiSearchStatus, engineResponses: lead.engineResponses })) {
+    if (row.status === "unknown") continue
     checked++
-    if (v === "occasionally" || v === "frequently") named.push(e.label)
+    if (row.status === "found") named.push(row.name)
   }
 
   const og = isRecord(lead.ogData) ? lead.ogData : {}
@@ -174,28 +170,28 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
   const name = f.name
   const nl = namedLine(f)
   const where = f.city ? ` in ${f.city}` : ""
+  // [Business / you] and [Business / your website]
   const you = f.nameIsGeneric ? "you" : name
+  const site = f.nameIsGeneric ? "your website" : name
   const start = { label: "Start today", href: links.signup }
-  const recheck = { label: `Re-check ${f.nameIsGeneric ? "your business" : name}`, href: links.start }
+  const recheck = { label: "Re-check your business", href: links.start }
 
   switch (day) {
     // ---- Daily burst: the strongest emails, in order ----
 
     case 1: {
       const blocks: NurtureBlock[] = []
-      blocks.push({ kind: "p", text: nl ? `When I checked ${name}, ${nl}.` : `I checked what the AIs say about ${name}.` })
-      blocks.push({ kind: "p", text: `People ask ChatGPT, Gemini, Claude and Perplexity who to hire${where}. They get one answer with a few names.` })
-      if (f.rivals.length) blocks.push({ kind: "p", text: `The names I saw most were ${list(f.rivals)}.` })
+      // No verdict at all (no AI answered): never claim "none of the 4 named you".
+      blocks.push({ kind: "p", text: nl ? `When I checked ${site}, ${nl}.` : `I checked what the AIs say about ${site}.` })
+      blocks.push({ kind: "p", text: `When people ask ChatGPT or Gemini who to hire${where}, they get one answer with a few names.${f.rivals.length ? ` The names I saw most were ${list(f.rivals)}.` : ""}` })
       if (f.gaps.length) {
-        blocks.push({ kind: "p", text: "When I compared your website with theirs, here is what stood out on yours:" })
+        blocks.push({ kind: "p", text: "When I compared your website with theirs, here is why AI likely skipped you:" })
         blocks.push({ kind: "bullets", items: f.gaps.map(capital) })
-      } else {
-        blocks.push({ kind: "p", text: "AI tends to name businesses it can verify. Clear answers to the questions customers ask. The same hours, address and services everywhere. Reviews it can read." })
       }
-      blocks.push({ kind: "p", text: "None of this is hard. It just has to be done, and kept up." })
+      blocks.push({ kind: "p", text: "AI names businesses it can verify. It looks for clear answers, identical hours everywhere, and code it can read. None of this is hard. It just has to be done." })
       return {
-        subject: f.rivals.length ? `Why AI named ${f.rivals[0]} instead` : `Why AI picks other businesses over ${f.nameIsGeneric ? "yours" : name}`,
-        preview: f.rivals.length ? `What they have that ${name} doesn't, yet.` : "What AI looks for before it names a business.",
+        subject: `Why AI picked ${f.rivals[0] ?? "them"} instead of you.`,
+        preview: f.rivals.length ? `What ${f.rivals[0]} has that AI could verify.` : "What AI looks for before it names a business.",
         blocks,
         cta: { label: "See your full report", href: links.report },
       }
@@ -204,26 +200,27 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
     case 2: {
       if (f.draft) {
         return {
-          subject: "I already drafted your fix",
+          subject: "I already drafted your first fix.",
           preview: `A ready answer for "${f.draft.question}"`,
           blocks: [
-            { kind: "p", text: `I already drafted a fix for ${name}.` },
-            { kind: "p", text: "It answers a question your customers ask, written so AI can quote it:" },
-            { kind: "quote", text: `${f.draft.question} ${f.draft.answer}` },
-            { kind: "p", text: "Anything in [brackets] is a fact only you know, so I left it for you. I never guess." },
-            { kind: "p", text: "Once you start, I keep writing these, add the code AI reads, and you approve each one before it goes live." },
+            { kind: "p", text: `I already drafted a fix for ${site}.` },
+            { kind: "p", text: "It answers a question your customers ask, written so AI can quote it easily:" },
+            { kind: "quote", text: `"${f.draft.question} ${f.draft.answer}"` },
+            { kind: "p", text: "Anything in brackets is a fact only you know, so I left it for you. I never guess." },
+            { kind: "p", text: "Once you start, I keep writing these. I add the code AI reads, and you approve each one before it goes live." },
           ],
           cta: start,
         }
       }
+      // No stored draft for this lead: don't claim one exists.
       return {
-        subject: `What I'd write first for ${name}`,
+        subject: `What I'd write first for ${you}.`,
         preview: "A plain FAQ, written so AI can quote it.",
         blocks: [
-          { kind: "p", text: `Here is what I'd draft first for ${name}.` },
+          { kind: "p", text: `Here is what I'd draft first for ${site}.` },
           { kind: "p", text: `An FAQ that answers the questions your customers ask AI${where}. The answer comes in the first sentence, in plain words.` },
-          { kind: "p", text: "Then the behind-the-scenes code that tells AI your hours, address and services." },
-          { kind: "p", text: "I don't guess facts. Anything only you know, I ask you for. You approve every piece before it goes live." },
+          { kind: "p", text: "Then the code AI reads, stating your hours, address and services." },
+          { kind: "p", text: "I never guess facts. Anything only you know, I ask you for. You approve each piece before it goes live." },
         ],
         cta: start,
       }
@@ -232,33 +229,33 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
     case 3:
       return {
         subject: "Can anyone guarantee ChatGPT?",
-        preview: "Short answer: no. Here's what I put in writing instead.",
+        preview: "Short answer: no. Here is what I put in writing.",
         blocks: [
-          { kind: "p", text: "Short answer: no. Nobody controls what ChatGPT says. Anyone who promises you a top spot is guessing." },
-          { kind: "p", text: "What can be done is fixing what AI reads about you, then checking every week to see if it worked." },
-          { kind: "p", text: `So here is what I put in writing. If none of the 4 AIs names ${name} in our weekly checks during your first 90 days, your next month is free. Once per customer.` },
-          { kind: "p", text: "And there's a 7-day refund on your first charge if it isn't for you." },
+          { kind: "p", text: "Short answer: no." },
+          { kind: "p", text: "Nobody controls what ChatGPT says. Anyone who promises you a top spot is guessing." },
+          { kind: "p", text: "What can be done is fixing the facts AI reads about you, then checking every week to see if it worked." },
+          { kind: "p", text: `Here is what I put in writing. If none of the 4 major AIs names ${you} in our weekly checks during your first 90 days, your next month is free. Once per customer.` },
         ],
         cta: start,
       }
 
     case 4:
       return {
-        subject: `What $99 a month does for ${name}`,
-        preview: `What I'd do for ${name} every week.`,
+        subject: `What $99 a month does for ${you}.`,
+        preview: "Here is what I do every week so you are in the answer.",
         blocks: [
-          { kind: "p", text: `Customers ask AI who to hire. Here is what I'd do every week so ${name} is in the answer:` },
+          { kind: "p", text: "Customers ask AI who to hire. Here is what I do every week so you are in the answer:" },
           {
             kind: "bullets",
             items: [
-              "Ask ChatGPT, Gemini, Claude and Perplexity about you, and tell you what changed",
-              "Publish 2 Google posts a week",
-              "Write 2 blog posts a month that AI can quote",
-              "Watch your reviews",
+              "Ask ChatGPT, Gemini, Claude, and Perplexity about you.",
+              "Tell you exactly what changed.",
+              "Draft the answers AI needs to read.",
+              "Keep your Google profile active.",
             ],
           },
-          { kind: "p", text: "That's Starter, $99 a month. Month to month. Cancel in two clicks. 7-day refund on the first charge." },
-          { kind: "p", text: "For comparison, an agency is often around $2,000 a month, and most still work on Google links, not AI answers." },
+          { kind: "p", text: "That is $99 a month. Month to month. Cancel in two clicks." },
+          { kind: "p", text: "An agency is often $2,000 a month, and most still focus on Google links. I focus entirely on AI answers." },
         ],
         cta: start,
       }
@@ -268,133 +265,118 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
     case 11:
       return {
         subject: "AI answers change. Has yours?",
-        preview: `It's been over a week since I checked ${name}.`,
+        preview: "Last week's answer might be different today.",
         blocks: [
-          { kind: "p", text: `It's been over a week since I checked ${name}.` },
+          { kind: "p", text: `It has been over a week since I checked ${site}.` },
           ...(nl ? [{ kind: "p" as const, text: `Back then, ${nl}.` }] : []),
-          { kind: "p", text: "AI answers aren't fixed. They shift as businesses publish, collect reviews and update their details. Last week's answer can be different today." },
-          { kind: "p", text: "The only way to know is to ask again. It takes about a minute and it's free." },
-          { kind: "p", text: "You'll see the actual answer each AI gives, not a summary." },
+          { kind: "p", text: "AI answers shift as businesses publish new answers and update their details. Last week's answer might be different today." },
+          { kind: "p", text: "The only way to know is to ask again. It takes about a minute, and it is free." },
         ],
         cta: recheck,
       }
 
     case 18:
       return {
-        subject: "3 things AI checks before it names a business",
-        preview: "What AI looks for, in plain words.",
+        subject: "3 things AI checks before it names a business.",
+        preview: "Before AI names a business, it looks for facts it can trust.",
         blocks: [
-          { kind: "p", text: "Before ChatGPT, Gemini, Claude or Perplexity names a local business, it looks for things it can trust. Three matter most:" },
+          { kind: "p", text: "Before ChatGPT or Perplexity names a business, it looks for facts it can trust. Three matter most:" },
           {
-            kind: "bullets",
+            kind: "numbered",
             items: [
-              "Clear answers. A page that answers what customers ask, in the first sentence.",
-              "The same facts everywhere. Hours, address and services that match on your site, your Google profile and directories.",
-              "Reviews it can read. Recent ones, on sites AI can see.",
+              "Clear answers to customer questions.",
+              "The exact same hours and address everywhere.",
+              "Reviews it can actually read.",
             ],
           },
-          { kind: "p", text: `If ${name} is missing one, that's usually where I'd start.` },
-          { kind: "p", text: "Once you start, I work on all three every week. You approve each change before it goes live." },
+          { kind: "p", text: `If ${you} ${f.nameIsGeneric ? "are" : "is"} missing one, that is where I start.` },
+          { kind: "p", text: "Once you hire me, I work on this every week. You approve each change before it goes live." },
         ],
         cta: start,
       }
 
-    case 25: {
-      const rival = f.rivals[0] ?? "them"
+    case 25:
       return {
-        subject: "Ask ChatGPT why it picked them",
-        preview: "A two-minute test you can run yourself.",
+        subject: "Ask ChatGPT why it picked them.",
+        preview: "A test you can run yourself today.",
         blocks: [
-          { kind: "p", text: "Here's a quick test you can run yourself today." },
-          { kind: "p", text: `Ask ChatGPT for a business like yours${where}. Then ask it: "Why did you recommend ${rival} and not us?"` },
-          { kind: "p", text: "It will often tell you. More reviews. A clearer list of services. An FAQ that answers the question. Hours it could confirm." },
-          { kind: "p", text: "Write down what it says. That list is your to-do list." },
-          { kind: "p", text: "Want the same answer from Gemini, Claude and Perplexity too? The free check asks all four at once and shows who they named." },
+          { kind: "p", text: "Here is a test you can run yourself today." },
+          { kind: "p", text: `Ask ChatGPT for a business like yours${where}. Then ask it: "Why did you recommend them and not us?"` },
+          { kind: "p", text: "It will often tell you. They had a clearer list of services, hours it could verify, or an FAQ that answered the question directly." },
+          { kind: "p", text: "Write down what it says. That is your to-do list. Or, you can have me do it for you." },
         ],
-        cta: { label: "Run the free check", href: links.start },
+        cta: { label: "Run the free check to see all four AIs at once", href: links.start },
       }
-    }
 
     case 32:
       return {
-        subject: "When AI gets your hours wrong",
-        preview: "AI repeats what it finds. Here's an example.",
+        subject: "When AI gets your hours wrong.",
+        preview: "AI repeats what it finds.",
         blocks: [
-          { kind: "p", text: "Here's an example of how this happens." },
-          { kind: "p", text: "Someone asks ChatGPT if a dental office is open on Saturday. It says no. The office is open on Saturday, but an old directory listing still had the old hours, and that's what AI repeated." },
-          { kind: "p", text: "AI repeats what it can find. Old hours, a closed location or a service you stopped offering can all end up in the answer." },
-          { kind: "p", text: "The fix is simple: the same facts on your website, your Google profile and the main directories, plus code on your site that states them clearly." },
-          { kind: "p", text: `Once you start, I check these facts for ${name} every week and fix what's wrong. You approve each change.` },
+          { kind: "p", text: "Here is how this can happen. Someone asks ChatGPT if a business is open on Saturday. It says no. The business is actually open, but an old directory listing had the wrong hours, and AI repeated it." },
+          { kind: "p", text: "AI repeats what it finds. A closed location or an old service can easily end up in the answer." },
+          { kind: "p", text: "The fix is putting the exact same facts on your website and Google profile, plus adding the specific code AI engines read." },
+          { kind: "p", text: "Once you start, I check these facts every week and fix what is wrong." },
         ],
         cta: start,
       }
 
     case 39:
       return {
-        subject: "Reviews AI can actually read",
-        preview: "Not every review helps you get named.",
+        subject: "Reviews AI can actually read.",
+        preview: "Reviews help you get recommended, but only the ones AI can find.",
         blocks: [
-          { kind: "p", text: "Reviews help a business get recommended, but only the ones AI can find and trust." },
-          { kind: "p", text: "What tends to count:" },
+          { kind: "p", text: "Reviews help you get recommended, but only the ones AI can find." },
+          { kind: "p", text: "What counts:" },
           {
             kind: "bullets",
             items: [
-              "Recent reviews, not only old ones",
-              "Reviews that name the service, like \"fixed our AC the same day\"",
-              "Your replies, which show the business is active",
-              "Reviews on more than one site",
+              "Recent reviews.",
+              "Reviews that name the specific service provided.",
+              "Your replies to the customer.",
             ],
           },
-          { kind: "p", text: "A simple habit: after a good job, ask the customer to mention what you did for them. Specific words give AI something to quote." },
-          { kind: "p", text: `Want to see what the four AIs say about ${you} now? The check is free and takes about a minute.` },
+          { kind: "p", text: "A simple habit: after a great job, ask the customer to mention exactly what you fixed. Specific words give AI something to quote." },
+          { kind: "p", text: "Want to see what the AIs say about you today?" },
         ],
         cta: recheck,
       }
 
     case 46:
       return {
-        subject: "One page per service",
-        preview: "Why one long services list gets passed over.",
+        subject: "One page per service.",
+        preview: "AI looks for a page dedicated to the service a customer asks about.",
         blocks: [
-          { kind: "p", text: "When a customer asks AI for a specific service, AI looks for a page about that service." },
-          { kind: "p", text: "One services page listing ten things gives it little to quote. A page for each service gives it a clear answer." },
-          { kind: "p", text: "Each page needs three things:" },
-          {
-            kind: "bullets",
-            items: [
-              "What the service is, in plain words",
-              `Who it's for and where you offer it${where}`,
-              "Answers to the questions people ask before they book",
-            ],
-          },
-          { kind: "p", text: `Once you start, I draft these pages for ${name}. You approve each one before it goes live.` },
+          { kind: "p", text: "When a customer asks AI for a specific service, AI looks for a page dedicated to that service." },
+          { kind: "p", text: "One long page listing ten different services gives it nothing specific to quote." },
+          { kind: "p", text: "Each service needs its own page stating what it is, who it is for, and answers to common questions." },
+          { kind: "p", text: `Once you start, I draft these pages for ${you}. You tap approve, and I publish them.` },
         ],
         cta: start,
       }
 
     case 53:
       return {
-        subject: "Put the answer in the first sentence",
-        preview: "One small writing change AI notices.",
+        subject: "Put the answer in the first sentence.",
+        preview: "One small writing change makes it easier for AI to quote you.",
         blocks: [
-          { kind: "p", text: "One small writing change makes a page easier for AI to quote." },
-          { kind: "p", text: "Put the answer first. If someone asks \"Do you do same-day repairs?\", start with \"Yes, same day, Monday to Saturday.\" Then explain." },
-          { kind: "p", text: "AI looks for short, direct answers. A paragraph of background before the answer makes it easy to skip." },
-          { kind: "p", text: "Look at your FAQ or service pages this week. Does each answer start with the answer?" },
-          { kind: "p", text: `Want to see whether the AIs name ${you} today? The check is free and takes about a minute.` },
+          { kind: "p", text: "One small writing change makes it easier for AI to quote you: put the answer first." },
+          { kind: "p", text: "If someone asks \"Do you do same-day repairs?\", start your page with \"Yes, we do same-day repairs from Monday to Saturday.\" Then explain the details." },
+          { kind: "p", text: "AI skips paragraphs of background. It looks for direct answers." },
+          { kind: "p", text: "Want to see if this changed your AI visibility today?" },
         ],
         cta: recheck,
       }
 
     case 60:
       return {
-        subject: `Should I stop checking for ${you}?`,
+        subject: "Should I stop checking?",
         preview: "This is my last email.",
         blocks: [
-          { kind: "p", text: `I've written to you a few times since you checked ${name}. I don't want to be noise.` },
-          { kind: "p", text: "So this is my last email. After today I won't write again." },
-          { kind: "p", text: "If you want me working on it, start today. Your check is saved, so I'll pick up where we left off." },
-          { kind: "p", text: "If now isn't the right time, that's fine. Just reply \"later\" and tell me what would help. A person reads every reply." },
+          { kind: "p", text: "I have written a few times since I first checked your AI visibility. I do not want to be noise." },
+          { kind: "p", text: "This is my last email." },
+          { kind: "p", text: "If you want me working on getting you recommended by AI, start today. I saved your scan, so we can pick up right where we left off." },
+          { kind: "p", text: "If the timing is wrong, just reply \"later.\" A real person reads every reply." },
         ],
         cta: start,
       }

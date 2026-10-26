@@ -95,7 +95,8 @@ export function roiLines(r: Roi): string[] {
   }
   if (r.questions && r.questions.answers > 0) {
     lines.push(`Across ${r.questions.questions} customer questions, the four AIs named you in ${r.questions.named} of ${r.questions.answers} answers.`)
-    if (r.questions.wrongFacts) lines.push(`${plural(r.questions.wrongFacts, "AI answer gets", "AI answers get")} a fact about you wrong — I’ve flagged ${r.questions.wrongFacts === 1 ? "it" : "them"} below.`)
+    // Nothing is listed underneath in the email or the briefing, so no "flagged below".
+    if (r.questions.wrongFacts) lines.push(`${plural(r.questions.wrongFacts, "AI answer gets", "AI answers get")} a fact about you wrong.`)
   } else if (r.named) lines.push(`${r.named.count} of ${r.named.of} AI assistants named you in my latest check.`)
   if (r.traffic && r.traffic.sessions > 0) {
     const top = r.traffic.channels.map((c) => `${c.name} ${c.sessions}`).join(", ")

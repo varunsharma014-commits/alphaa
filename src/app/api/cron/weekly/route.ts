@@ -9,6 +9,9 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { sendEmail } from "@/lib/resend"
+import { mailingAddress, sendMarketingEmail } from "@/lib/marketing-email"
+import { isEmailSuppressed, unsubscribeLinks } from "@/lib/unsubscribe"
+import { subjects } from "@/lib/email"
 import { logActivity } from "@/lib/activity"
 import WeeklyReportEmail from "@/emails/WeeklyReportEmail"
 import React from "react"
@@ -50,7 +53,7 @@ function computeVisibilityDelta(
 }
 
 async function processUser(
-  user: { id: string; email: string; businessName: string | null; city: string | null }
+  user: { id: string; email: string; businessName: string | null; city: string | null; fullName: string | null }
 ): Promise<void> {
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
 
@@ -194,24 +197,34 @@ Rules: state only what the data shows. If nothing changed, say so plainly and sa
     summary ? `${summary.slice(0, 120)}${summary.length > 120 ? "…" : ""}` : undefined
   )
 
-  // 7. Send email
+  // 7. Send email — as "Alphaa AI Agent", with the marketing footer and a
+  // one-click List-Unsubscribe. Anyone who unsubscribed gets no report email
+  // (the report itself is still saved and shows in the dashboard).
   try {
-    const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/t/briefings`
+    if (await isEmailSuppressed(user.email)) {
+      console.log(`[weekly-cron] ${user.id} unsubscribed — report saved, no email`)
+      return
+    }
+    const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"}/dashboard/t/briefings`
     const results = await getRoi(user.id).then(roiLines).catch(() => [] as string[])
-    await sendEmail({
-      to: user.email,
-      subject: `Your weekly Alphaa report — ${businessName}`,
-      react: React.createElement(WeeklyReportEmail, {
-        businessName,
-        summary,
-        postsPublished,
-        reviewsNew,
-        visibilityDelta,
-        keywordMovers,
-        reportUrl,
-        results,
-      }),
+    const unsub = unsubscribeLinks(`u_${user.id}`, user.email)
+    const react = React.createElement(WeeklyReportEmail, {
+      firstName: user.fullName?.trim().split(/\s+/)[0] || null,
+      businessName: user.businessName?.trim() || null,
+      summary,
+      postsPublished,
+      reviewsNew,
+      visibilityDelta,
+      reportUrl,
+      results,
+      footer: { address: mailingAddress(), unsubscribeUrl: unsub?.pageUrl ?? null },
     })
+    const subject = subjects.weeklyReport({ businessName: user.businessName })
+    if (unsub) {
+      await sendMarketingEmail({ to: user.email, subject, react, unsub })
+    } else {
+      await sendEmail({ to: user.email, subject, react })
+    }
 
     await db.weeklyReport.update({
       where: { id: report.id },
@@ -235,7 +248,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       stripeSubscriptionId: { not: null },
       email: { not: "" },
     },
-    select: { id: true, email: true, businessName: true, city: true },
+    select: { id: true, email: true, businessName: true, city: true, fullName: true },
   })
 
   let processed = 0

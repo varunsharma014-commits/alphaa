@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { Webhook } from "svix"
 import { db } from "@/lib/db"
 import { sendWelcomeEmail } from "@/lib/email"
+import { leadName } from "@/emails/copy"
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
@@ -26,13 +27,23 @@ export async function POST(req: NextRequest) {
     const fullName = [first_name, last_name].filter(Boolean).join(" ") || null
     await db.user.create({ data: { clerkId: id, email, fullName, subscriptionStatus: "none" } })
 
-    const trialEndDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
-      .toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+    // The business isn't known at sign-up (onboarding comes later), but most
+    // people ran a free scan first: use that scan's business when there is one.
+    let businessName: string | null = null
+    if (email) {
+      const lead = await db.scanLead
+        .findFirst({
+          where: { email: { equals: email, mode: "insensitive" } },
+          orderBy: { createdAt: "desc" },
+          select: { businessName: true, businessUrl: true },
+        })
+        .catch(() => null)
+      businessName = lead ? leadName(lead.businessName, lead.businessUrl) : null
+    }
     try {
       await sendWelcomeEmail(email, {
-        firstName: first_name || "there",
-        businessName: "your business",
-        trialEndDate,
+        firstName: first_name || null,
+        businessName,
       })
     } catch (e) {
       console.error("Welcome email failed:", e)

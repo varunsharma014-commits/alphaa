@@ -1,21 +1,28 @@
 import {
-  Body, Button, Container, Head, Heading, Hr, Html,
+  Body, Button, Container, Head, Html,
   Preview, Section, Text, Link,
 } from "@react-email/components"
+import { appUrl, hi, orYourBusiness } from "@/emails/copy"
 
 interface ConnectGoogleNudgeEmailProps {
-  firstName?: string
-  businessName: string
+  firstName?: string | null
+  businessName?: string | null
   isSecondNudge?: boolean
 }
 
 export default function ConnectGoogleNudgeEmail({
   firstName, businessName, isSecondNudge,
 }: ConnectGoogleNudgeEmailProps) {
+  const base = appUrl()
+  const connectUrl = `${base}/dashboard/settings/integrations`
   return (
     <Html>
       <Head />
-      <Preview>alphaa is ready — one click to switch it on</Preview>
+      <Preview>
+        {isSecondNudge
+          ? "I am still waiting on a connection to your Google account."
+          : "Connecting takes about 30 seconds. You sign in with Google once, and I handle the rest."}
+      </Preview>
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
@@ -23,43 +30,37 @@ export default function ConnectGoogleNudgeEmail({
           </Section>
 
           <Section style={content}>
-            <Heading style={h1}>
-              {isSecondNudge ? "Quick reminder — " : ""}alphaa is ready{firstName ? `, ${firstName}` : ""} — one click to switch it on.
-            </Heading>
-            <Text style={paragraph}>
-              Your account for <strong>{businessName}</strong> is set up, but autopilot is
-              still waiting on one thing: a connection to your Google account. Until
-              it&apos;s connected, alphaa can&apos;t post to your Google Business Profile or
-              track where you rank.
-            </Text>
+            <Text style={paragraph}>{hi(firstName)}</Text>
 
-            <Section style={waitBox}>
-              {[
-                "Google Business Profile posting — waiting",
-                "Google ranking tracking — waiting",
-                "Review monitoring — waiting",
-              ].map((item) => (
-                <Text key={item} style={waitItem}>○ {item}</Text>
-              ))}
-            </Section>
+            {isSecondNudge ? (
+              <>
+                <Text style={paragraph}>
+                  A quick reminder that I am still waiting on a connection to your Google account.
+                </Text>
+                <Text style={paragraph}>
+                  I cannot publish updates or track your visibility until this is connected. It takes 30 seconds, and you can disconnect at any time.
+                </Text>
+                <Button style={button} href={connectUrl}>Connect Google (30 seconds) →</Button>
+              </>
+            ) : (
+              <>
+                <Text style={paragraph}>
+                  I am set up for {orYourBusiness(businessName)}, but my autopilot is paused.
+                </Text>
+                <Text style={paragraph}>
+                  Until I am connected to your Google account, I cannot publish updates to your Business Profile, check your reviews, or track your visibility.
+                </Text>
+                <Text style={paragraph}>
+                  Connecting takes about 30 seconds. You sign in with Google once, and I handle the rest.
+                </Text>
+                <Button style={button} href={connectUrl}>Connect Google (30 seconds) →</Button>
+                <Text style={reassureNote}>
+                  I use read-only access wherever possible, and you can disconnect anytime in Settings.
+                </Text>
+              </>
+            )}
 
-            <Text style={paragraph}>
-              Connecting takes about 30 seconds — one click, sign in with Google, done.
-              Everything switches on from there, automatically.
-            </Text>
-
-            <Button style={button} href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/integrations`}>
-              Connect Google (30 seconds) →
-            </Button>
-            <Text style={reassureNote}>
-              We use read-only access wherever possible, and you can disconnect anytime from Settings.
-            </Text>
-
-            <Hr style={hr} />
-
-            <Text style={smallText}>
-              Stuck or have questions? Just reply to this email and we&apos;ll walk you through it.
-            </Text>
+            <Text style={paragraph}>— Your AI Agent</Text>
           </Section>
 
           <Section style={footer}>
@@ -67,9 +68,9 @@ export default function ConnectGoogleNudgeEmail({
               You&apos;re receiving this because you have an alphaa account. Manage emails in Settings.
             </Text>
             <Text style={footerText}>
-              <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings`} style={footerLink}>Manage preferences</Link>
+              <Link href={`${base}/dashboard/settings`} style={footerLink}>Manage preferences</Link>
               {" · "}
-              <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/privacy`} style={footerLink}>Privacy</Link>
+              <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
             </Text>
           </Section>
         </Container>
@@ -89,14 +90,9 @@ const container = { maxWidth: "560px", margin: "24px auto", backgroundColor: "#f
 const header = { padding: "32px 40px 20px", borderBottom: "1px solid #d2d2d7" }
 const logoText = { color: "#000000", fontSize: "20px", fontWeight: "600", margin: "0" }
 const content = { padding: "32px 40px 0" }
-const h1 = { color: "#1d1d1f", fontSize: "24px", fontWeight: "600", margin: "0 0 16px", lineHeight: "1.3" }
 const paragraph = { color: "#424245", fontSize: "15px", lineHeight: "1.6", margin: "0 0 20px" }
-const waitBox = { backgroundColor: "#f5f5f7", border: "1px solid #d2d2d7", borderRadius: "12px", padding: "20px 24px", margin: "0 0 24px" }
-const waitItem = { color: "#424245", fontSize: "14px", margin: "0 0 8px", lineHeight: "1.5" }
-const button = { backgroundColor: "#000000", color: "#ffffff", borderRadius: "980px", fontSize: "16px", fontWeight: "400", padding: "14px 28px", textDecoration: "none", display: "inline-block", margin: "0 0 12px" }
-const reassureNote = { color: "#86868b", fontSize: "12px", margin: "0 0 24px" }
-const hr = { borderColor: "#d2d2d7", margin: "24px 0" }
-const smallText = { color: "#6e6e73", fontSize: "13px", lineHeight: "1.6", margin: "0 0 24px" }
+const button = { backgroundColor: "#000000", color: "#ffffff", borderRadius: "980px", fontSize: "16px", fontWeight: "400", padding: "14px 28px", textDecoration: "none", display: "inline-block", margin: "0 0 16px" }
+const reassureNote = { color: "#86868b", fontSize: "12px", margin: "0 0 20px" }
 const footer = { padding: "20px 40px", borderTop: "1px solid #d2d2d7" }
 const footerText = { color: "#86868b", fontSize: "12px", textAlign: "center" as const, margin: "0 0 4px" }
 const footerLink = { color: "#86868b", textDecoration: "none" }
