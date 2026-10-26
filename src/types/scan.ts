@@ -53,6 +53,8 @@ export interface ScanInsights {
   serp: ScanSerp | null
   competitorDetails: CompetitorDetail[]
   estimatedMonthlyLoss: { low: number; high: number; basis: string } | null
+  /** The customer question the engines were asked (scans after 2026-10-26). */
+  query?: string | null
 }
 
 export interface ScanResult {

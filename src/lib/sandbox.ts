@@ -23,3 +23,18 @@ export function suggestedQuestion(businessType?: string | null, city?: string | 
   if (where) return `What are the best local businesses in ${where}?`
   return "Who is the best local business near me?"
 }
+
+/**
+ * The question to ask the AIs for this account: the customer question its /start scan used
+ * (written from the site, so it names what the business actually sells), else the template.
+ */
+export async function accountQuestion(user: { id: string; email: string; businessType: string | null; city: string | null }): Promise<string> {
+  const { db } = await import("@/lib/db")
+  const lead = await db.scanLead.findFirst({
+    where: { OR: [{ userId: user.id }, ...(user.email ? [{ email: user.email }] : [])] },
+    orderBy: { createdAt: "desc" },
+    select: { ogData: true },
+  })
+  const q = (lead?.ogData as { insights?: { query?: unknown } } | null)?.insights?.query
+  return typeof q === "string" && q.trim().length > 10 ? q.trim() : suggestedQuestion(user.businessType, user.city)
+}

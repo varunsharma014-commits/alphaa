@@ -15,6 +15,8 @@ export async function completeOnboardingFromScan(clerkId: string, scanId: string
   // /start sends the placeholder "your area" when it can't read a city off the site; never store it.
   const leadCity = lead.city && !/^your area$/i.test(lead.city.trim()) ? lead.city.trim() : null
   // websiteUrl is stored without protocol or trailing slash (see CLAUDE.md gotcha 21).
+  const insights = (lead.ogData as { insights?: { industry?: string } } | null)?.insights
+  const leadType = insights?.industry?.trim() || null
   const leadSite = lead.businessUrl ? lead.businessUrl.trim().replace(/^https?:\/\//i, "").replace(/\/+$/, "") || null : null
   const updated = await db.user.update({
     where: { id: user.id },
@@ -22,7 +24,7 @@ export async function completeOnboardingFromScan(clerkId: string, scanId: string
       businessName: user.businessName || lead.businessName || null,
       city: user.city || leadCity,
       websiteUrl: user.websiteUrl || leadSite,
-      businessType: user.businessType || (type && type.toLowerCase() !== "business" ? type : null),
+      businessType: user.businessType || (type && type.toLowerCase() !== "business" ? type : null) || leadType,
       onboardingCompleted: true,
     },
   })

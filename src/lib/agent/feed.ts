@@ -6,7 +6,7 @@
 import { cache } from "react"
 import { db } from "@/lib/db"
 import { getEngineEvidence, type EngineKey } from "@/lib/engine-evidence"
-import { suggestedQuestion } from "@/lib/sandbox"
+import { accountQuestion } from "@/lib/sandbox"
 import { timeOfDayGreeting } from "@/lib/humanize"
 import type { CitationReport } from "@/lib/citations"
 import { agent, type Block, type Message, type VerdictState } from "@/lib/agent/types"
@@ -72,7 +72,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
   ])
 
   const businessName = user.businessName ?? "your business"
-  const question = suggestedQuestion(user.businessType, user.city)
+  const question = await accountQuestion(user)
   const messages: Message[] = []
   const now = new Date()
   messages.push({ id: "day", role: "agent", blocks: [{ kind: "divider", text: `${longDate(now)} · day ${dayNumber(user.createdAt)}` }] })

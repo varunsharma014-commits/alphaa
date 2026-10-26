@@ -300,6 +300,7 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
           serp,
           competitorDetails,
           estimatedMonthlyLoss: monthlyLoss,
+          query: profile?.query ?? null,
         }
       : null
 

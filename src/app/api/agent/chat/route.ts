@@ -7,7 +7,7 @@ import { z } from "zod"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { getEngineEvidence, ENGINE_KEYS } from "@/lib/engine-evidence"
-import { suggestedQuestion } from "@/lib/sandbox"
+import { accountQuestion } from "@/lib/sandbox"
 import { BRAND } from "@/lib/brand"
 
 // The agent's voice in the dashboard. Answers from the user's REAL data
@@ -95,7 +95,7 @@ ${facts}`
     if (!text) throw new Error("empty")
 
     const wantsLive = LIVE_RE.test(body.message)
-    const liveQuestion = wantsLive ? extractQuestion(body.message) ?? suggestedQuestion(user.businessType, user.city) : null
+    const liveQuestion = wantsLive ? extractQuestion(body.message) ?? (await accountQuestion(user)) : null
     return NextResponse.json({ text, liveQuestion })
   } catch (err) {
     console.error("[agent/chat]", err instanceof Error ? err.message : err)
