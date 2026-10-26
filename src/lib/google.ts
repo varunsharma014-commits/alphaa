@@ -33,7 +33,10 @@ export function getGoogleAuthUrl(state: string, opts: { analytics?: boolean } = 
     access_type: 'offline',
     scope,
     prompt: 'consent',
-    include_granted_scopes: true,
+    // Off on purpose: incremental auth folds in every scope this account ever granted Alphaa
+    // (e.g. the old analytics.readonly), and an unapproved one triggers Google's
+    // "Google hasn't verified this app" screen. Ask for exactly the approved scopes.
+    include_granted_scopes: false,
     state,
   })
 }
