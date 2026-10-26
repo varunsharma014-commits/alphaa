@@ -40,6 +40,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/connect/webflow/start",
   "/api/connect/webflow/finish",
   "/api/connect/shopify/start",
+  "/api/connect/wix/start",
   "/api/connect/wix/callback",
 ])
 
