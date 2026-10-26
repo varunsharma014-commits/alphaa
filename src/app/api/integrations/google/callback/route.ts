@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { autoSelectGoogle } from '@/lib/google-autoselect'
 import { exchangeCodeForTokens } from '@/lib/google'
 
 export const dynamic = 'force-dynamic'
@@ -81,7 +82,7 @@ export async function GET(request: NextRequest) {
         refreshToken: refreshToken ?? undefined,
         expiresAt,
         connectedAt: new Date(),
-        // Reset property selections on reconnect so user picks fresh
+        // Reset property selections on reconnect; autoSelectGoogle() picks them again below.
         gaPropertyId: null,
         gaPropertyName: null,
         gscSiteUrl: null,
@@ -92,7 +93,27 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    return NextResponse.redirect(buildRedirect(returnTo, { connected: 'true' }))
+    // Pick the owner's Search Console site / Business Profile / Analytics property ourselves.
+    let picked: Awaited<ReturnType<typeof autoSelectGoogle>> | null = null
+    try {
+      picked = await autoSelectGoogle(user.id)
+    } catch (e) {
+      console.error('[Google Callback] auto-select failed:', e instanceof Error ? e.message : e)
+    }
+    if (picked && (picked.gsc || picked.gbp || picked.ga)) {
+      // Same internal first sync save-properties starts.
+      fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/sync`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-internal-user-id': user.id, Authorization: `Bearer ${process.env.CRON_SECRET ?? ''}` },
+      }).catch((err) => console.error('[Google Callback] initial sync error:', err))
+    }
+    return NextResponse.redirect(
+      buildRedirect(returnTo, {
+        connected: 'true',
+        gsc: picked?.gsc ? 'found' : 'none',
+        gbp: picked?.gbp ? 'found' : 'none',
+      }),
+    )
   } catch (err) {
     console.error('[Google Callback] Token exchange / DB error:', err)
     return NextResponse.redirect(

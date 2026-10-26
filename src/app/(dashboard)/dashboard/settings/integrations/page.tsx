@@ -141,13 +141,8 @@ export default function IntegrationsPage() {
       const data: IntegrationStatus = await res.json()
       setStatus(data)
 
-      if (!data.connected) {
-        setState('not_connected')
-      } else if (!data.gaPropertyId && !data.gscSiteUrl) {
-        setState('selecting_properties')
-      } else {
-        setState('connected')
-      }
+      // Properties are picked automatically after OAuth (lib/google-autoselect.ts); no picker step.
+      setState(data.connected ? 'connected' : 'not_connected')
     } catch {
       setState('not_connected')
       setError('We could not check your Google connection just now. Your data is safe — try refreshing in a moment.')
@@ -196,11 +191,10 @@ export default function IntegrationsPage() {
     }
 
     if (connected === 'true') {
-      // Just returned from OAuth — go straight to property selection
+      // Just returned from OAuth — the server already picked the properties.
       setJustConnected(true)
-      setState('selecting_properties')
       setCrawlLoading(false)
-      fetchProperties()
+      fetchStatus()
       fetchCrawl()
       return
     }
@@ -641,13 +635,9 @@ export default function IntegrationsPage() {
                   {item.value}
                 </p>
               ) : (
-                <button
-                  onClick={() => setState('selecting_properties')}
-                  className="text-[12px] hover:underline"
-                  style={{ color: 'var(--ds-accent)' }}
-                >
-                  Set up →
-                </button>
+                <p className="text-[12px]" style={{ color: 'var(--ds-text-mute)' }}>
+                  Not in this Google account
+                </p>
               )}
             </div>
           ))}
@@ -701,8 +691,10 @@ export default function IntegrationsPage() {
         >
           <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
           <span className="flex-1">
-            Google connected successfully! alphaa is now syncing your data —
-            just pick what to manage below.
+            I’m connected to Google.{' '}
+            {status?.gscSiteUrl ? `I found ${status.gscSiteUrl.replace(/^sc-domain:/, '')} in Search Console` : 'This Google account has no Search Console property for your website'}
+            {status?.gmbLocationName ? ` and your Business Profile “${status.gmbLocationName}”.` : '.'}
+            {' '}I’m pulling your data now.
           </span>
         </div>
       )}

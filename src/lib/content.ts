@@ -24,6 +24,24 @@ export function factsOf(user: U): string {
 
 const RULES = `Use only the facts given; for anything you'd have to invent (prices, hours, years in business, staff names, insurance, guarantees) write a [bracketed placeholder]. Plain English, no hype, never claim to be "the best". Answer-first: the first sentence under every heading answers it directly.`
 
+/** One specific customer question this business hasn't written about yet (Haiku, ~1s). */
+async function suggestTopic(user: U, posted: string[]): Promise<string | null> {
+  const res = await anthropic.messages.create({
+    model: "claude-haiku-5-5",
+    max_tokens: 120,
+    messages: [{
+      role: "user",
+      content: `${factsOf(user)}
+Website: ${user.websiteUrl ?? "unknown"}
+${user.voiceDescription ? `How they talk: ${user.voiceDescription}\n` : ""}Already written about (don't repeat or rephrase these): ${posted.length ? posted.map((p) => `"${p}"`).join("; ") : "nothing yet"}
+
+Give ONE question a real prospective customer of this specific business would type into ChatGPT before choosing a provider — specific to what they sell (name the actual service or product category), not generic advice about "hiring a local business". Only mention a city if one is given above. Reply with the question only.`,
+    }],
+  })
+  const q = text(res).replace(/^["'\s]+|["'\s]+$/g, "")
+  return q.length > 10 && q.length < 160 ? q : null
+}
+
 /** A blog post answering a real customer question — markdown with ## question headings. */
 export async function writePost(user: U, topic?: string, opts: { noPlaceholders?: boolean } = {}): Promise<{ title: string; markdown: string; excerpt: string; topic: string }> {
   // First post for this business: learn how it sounds from its own site.
@@ -43,6 +61,19 @@ export async function writePost(user: U, topic?: string, opts: { noPlaceholders?
       const gaps = (Array.isArray(gap?.gaps) ? gap!.gaps : []) as { topic?: string; suggestedTitle?: string }[]
       t = gaps.map((g) => g.suggestedTitle || g.topic).find((x): x is string => !!x && !posted.includes(x))
     }
+    // New accounts have no tracked questions yet: the question their /start scan asked comes next.
+    if (!t) {
+      const lead = await db.scanLead.findFirst({
+        where: { OR: [{ userId: user.id }, ...(user.email ? [{ email: user.email }] : [])] },
+        orderBy: { createdAt: "desc" },
+        select: { ogData: true },
+      })
+      const q = (lead?.ogData as { insights?: { query?: unknown } } | null)?.insights?.query
+      if (typeof q === "string" && q.trim().length > 10 && !posted.includes(q.trim())) t = q.trim()
+    }
+    // Still nothing: ask for one specific question a customer of THIS business would ask, not a
+    // template ("…a local business in your area" came out three times for the same account).
+    if (!t) t = (await suggestTopic(user, posted.filter((x): x is string => !!x)).catch(() => null)) ?? undefined
     t ??= `What to know before hiring a ${user.businessType ?? "local business"}${user.city ? ` in ${user.city}` : ""}`
   }
   const res = await anthropic.messages.create({

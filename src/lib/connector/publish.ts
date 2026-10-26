@@ -87,4 +87,13 @@ export async function undoChange(userId: string, changeId: string): Promise<void
   const rows = await db.mockActivity.findMany({ where: { userId, type: "site_change" }, orderBy: { createdAt: "desc" }, take: 200 })
   const row = rows.find((r) => (r.metadata as { changeId?: string } | null)?.changeId === changeId)
   if (row) await db.mockActivity.update({ where: { id: row.id }, data: { metadata: { ...(row.metadata as object), undone: true } } })
+  // The draft it came from is no longer live: drop it from "published" counts (keeps the text).
+  const url = (row?.metadata as { url?: string } | null)?.url
+  const drafts = await db.mockActivity.findMany({ where: { userId, type: "post_draft" }, orderBy: { createdAt: "desc" }, take: 50 })
+  for (const d of drafts) {
+    const m = (d.metadata ?? {}) as { status?: string; url?: string; changeId?: string }
+    if (m.status === "published" && (m.changeId === changeId || (url && m.url === url))) {
+      await db.mockActivity.update({ where: { id: d.id }, data: { metadata: { ...m, status: "undone" } } })
+    }
+  }
 }

@@ -5,6 +5,7 @@ export interface GmbLocation {
   locationId: string
   locationName: string
   address: string
+  website?: string | null
 }
 
 export interface GmbReviewData {
@@ -27,6 +28,8 @@ export interface LocationInfo {
 const ACCOUNT_MANAGEMENT_BASE =
   'https://mybusinessaccountmanagement.googleapis.com/v1'
 const BUSINESS_BASE = 'https://mybusiness.googleapis.com/v4'
+// Locations live in the Business Information API, which requires a readMask.
+const BUSINESS_INFO_BASE = 'https://mybusinessbusinessinformation.googleapis.com/v1'
 
 async function gmbFetch<T>(
   accessToken: string,
@@ -78,14 +81,13 @@ export async function getLocationList(
       let pageToken: string | undefined
 
       do {
-        const query = pageToken
-          ? `?pageToken=${encodeURIComponent(pageToken)}`
-          : ''
+        const query = `?readMask=name,title,storefrontAddress,websiteUri&pageSize=100${pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : ''}`
 
         const locRes = await gmbFetch<{
           locations?: Array<{
             name: string
             title: string
+            websiteUri?: string
             storefrontAddress?: {
               addressLines?: string[]
               locality?: string
@@ -96,7 +98,7 @@ export async function getLocationList(
           nextPageToken?: string
         }>(
           accessToken,
-          `${ACCOUNT_MANAGEMENT_BASE}/accounts/${accountId}/locations${query}`,
+          `${BUSINESS_INFO_BASE}/accounts/${accountId}/locations${query}`,
         )
 
         for (const loc of locRes.locations ?? []) {
@@ -114,6 +116,7 @@ export async function getLocationList(
             locationId,
             locationName: loc.title,
             address: addressParts.join(', '),
+            website: loc.websiteUri ?? null,
           })
         }
 
