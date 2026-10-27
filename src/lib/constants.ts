@@ -1,5 +1,3 @@
-export const TRIAL_DAYS = 14
-
 export const PLANS = {
   NONE: "none",
   STARTER: "starter",
@@ -8,7 +6,7 @@ export const PLANS = {
 } as const
 
 export const PLAN_NAMES = {
-  none: "Free Trial",
+  none: "No plan",
   starter: "Starter",
   pro: "Pro",
   fullservice: "Full Service",

@@ -3,7 +3,6 @@ import { render } from "@react-email/render"
 import WelcomeEmail from "@/emails/WelcomeEmail"
 import WeeklyReportEmail from "@/emails/WeeklyReportEmail"
 import AuditResultsEmail from "@/emails/AuditResultsEmail"
-import TrialEndingEmail from "@/emails/TrialEndingEmail"
 import PaymentFailureEmail from "@/emails/PaymentFailureEmail"
 import ReconnectEmail from "@/emails/ReconnectEmail"
 import ConnectGoogleNudgeEmail from "@/emails/ConnectGoogleNudgeEmail"
@@ -51,14 +50,6 @@ export async function sendWeeklyReportEmail(to: string, props: Parameters<typeof
 
 export async function sendAuditResultsEmail(to: string, props: Parameters<typeof AuditResultsEmail>[0]) {
   await send(to, subjects.auditResults(props), AuditResultsEmail(props))
-}
-
-/** Dead: no caller since trials ended (2026-09). Left as it was on purpose. */
-export async function sendTrialEndingEmail(to: string, props: Parameters<typeof TrialEndingEmail>[0]) {
-  const subject = props.daysLeft === 1
-    ? `Last day: keep your AI visibility for ${props.businessName}`
-    : `${props.daysLeft} days left on your Alphaa trial`
-  await send(to, subject, TrialEndingEmail(props))
 }
 
 export async function sendPaymentFailureEmail(to: string, props: Parameters<typeof PaymentFailureEmail>[0]) {

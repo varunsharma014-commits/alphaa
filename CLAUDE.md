@@ -2,7 +2,7 @@
 
 ## 1. Project Overview
 
-Alphaa is a local-business SEO SaaS that replaces an SEO agency. It automatically improves a business's visibility on Google, ChatGPT, and Maps via: AI-powered visibility audits (anonymous public scan + authenticated dashboard scan), Google Business Profile post generation and publishing, website crawling for on-page SEO issues, schema markup generation, competitor analysis, content gap analysis, keyword ranking tracking via Google Search Console, review management via GMB API, and weekly automated reports. Paid plans are Starter ($99/month) and Pro ($199/month), with a 14-day free trial.
+Alphaa is a local-business SEO SaaS that replaces an SEO agency. It automatically improves a business's visibility on Google, ChatGPT, and Maps via: AI-powered visibility audits (anonymous public scan + authenticated dashboard scan), Google Business Profile post generation and publishing, website crawling for on-page SEO issues, schema markup generation, competitor analysis, content gap analysis, keyword ranking tracking via Google Search Console, review management via GMB API, and weekly automated reports. Paid plans are Starter ($99/month), Pro ($199/month) and Full Service ($299/month). There is no free trial — the free public scan is the trial (decided 2026-09-24).
 
 ---
 
@@ -78,7 +78,6 @@ alphaa/
 │   │   ├── WelcomeEmail.tsx
 │   │   ├── WeeklyReportEmail.tsx
 │   │   ├── AuditResultsEmail.tsx
-│   │   ├── TrialEndingEmail.tsx
 │   │   └── PaymentFailureEmail.tsx
 │   ├── lib/
 │   │   ├── db.ts              # Prisma singleton (PrismaPg adapter)
@@ -99,7 +98,7 @@ alphaa/
 │   │   ├── engine-evidence.ts # getEngineEvidence() — merges weekly/scan/sandbox evidence per engine
 │   │   ├── pagespeed.ts      # fetchPageSpeed() — shared PSI helper (protocol fix, 25s, 6h cache)
 │   │   ├── scan-insights.ts  # business profile, mention extraction, loss estimate, SERP
-│   │   ├── constants.ts       # TRIAL_DAYS, PLANS, PLAN_PRICES, SETUP_FEE_USD, CONCIERGE_SLA, SUPPORT_EMAIL
+│   │   ├── constants.ts       # PLANS, PLAN_PRICES, SETUP_FEE_USD, CONCIERGE_SLA, SUPPORT_EMAIL
 │   │   └── utils.ts           # cn(), formatCurrency(), formatDate(), slugify(), truncate()
 │   └── types/
 │       ├── user.ts            # AppUser interface
@@ -213,7 +212,7 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 
 ### Cron Jobs
 - `/api/cron/weekly` (GET): generates `WeeklyReport` + sends email for all active/trialing users. Protected by `Authorization: Bearer <CRON_SECRET>`.
-- `/api/cron/gbp-posts` (GET): auto-generates and publishes GBP posts for connected users. Same auth guard.
+- `/api/cron/gbp-posts` (GET, Mon/Tue/Thu/Fri 13:00 UTC): drafts a GBP post per active user on the plan's schedule (Starter Mon/Thu = 2/week, Pro/Full Service all four = 4/week). Drafts wait in the agent feed ("Post it" → `/api/gbp/posts/[id]/publish`). Publishes directly only for Pro/Full Service with `autoPublishPosts` on, a connected listing and no `[placeholders]`. Same auth guard.
 - Both have `maxDuration = 300` (5 minutes).
 - `/api/cron/nurture` (GET, daily 16:00 UTC): scan-lead nurture via `lib/nurture.ts` + `emails/NurtureEmail.tsx`. Daily burst Day 1-4 (why AI named a rival, drafted fix, guarantee, $99 offer; sent strictly in order on consecutive days), then weekly Day 11/18/25/32/39/46/53 (one useful tip + one CTA each) and Day 60 break-up = the last email. Max one email per address per 20h. State in `ScanLead.ogData.nurture` `{ step, schedule: 2, lastSentAt }` (merged, never overwritten); steps without `schedule: 2` are from the old 1/3/5/7/10/14/30/60/90 schedule and are mapped by `currentStep()` so nothing is resent. Only leads after the consent cutoff (2026-10-04 16:00 UTC). Stops on unsubscribe, conversion, or an account with that email. `?dryRun=1` previews without sending.
 - **Personal drip copy (`lib/personal/`)**: nurture + convert emails are written per recipient. `research.ts` builds a keyed fact dossier (scan/audit/competitors/GSC + fresh: one AI re-asked today, rivals' and own newest sitemap URL, homepage social links, optional Apify IG/FB posts; fresh part cached in `ScanLead.ogData.dossier` 6 days). `writer.ts` (claude-opus-5-5, structured output) + a strict validator (word count, no dashes/banned phrases/other AI names, every number must be in the dossier, required sentences verbatim); one retry, then the template. Used fact keys: `ogData.nurture.used` (leads) / `email_sent` metadata.factKeys (accounts). Preview without sending: `scripts/preview-personal-email.ts`.
@@ -265,7 +264,7 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 | POST | `/api/webhooks/clerk` | Svix-verified | Handle Clerk user lifecycle events |
 | POST | `/api/webhooks/stripe` | Stripe-verified | Handle Stripe billing events |
 | GET | `/api/cron/weekly` | Bearer token | Generate weekly reports + send emails |
-| GET | `/api/cron/gbp-posts` | Bearer token | Auto-publish GBP posts for connected users |
+| GET | `/api/cron/gbp-posts` | Bearer token | Draft GBP posts on the plan's schedule (auto-publish only for Pro + `autoPublishPosts`) |
 
 ---
 
@@ -289,7 +288,6 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 - **`WelcomeEmail`** — Sent on user.created. Props: `firstName`, `businessName`, `trialEndDate`.
 - **`WeeklyReportEmail`** — Weekly summary with posts, reviews, keyword movers, visibility delta.
 - **`AuditResultsEmail`** — Audit results with score + engine found count.
-- **`TrialEndingEmail`** — Trial expiry warning. Props include `daysLeft`.
 - **`PaymentFailureEmail`** — Payment failure with amount, retry date, update URL.
 
 ---
@@ -362,9 +360,9 @@ Status colors (not in Tailwind config, use standard Tailwind): `text-green-500` 
 
 14. **`next.config.mjs` allowlists** `img.clerk.com` and `images.clerk.dev` for Next.js Image optimization. Add other image domains there if needed.
 
-15. **Trial is 14 days** (`TRIAL_DAYS = 14` in constants). Stripe checkout also sets `trial_period_days: 14`. The `User.trialEndsAt` field is set by the Stripe webhook on `checkout.session.completed`.
+15. **There is no free trial** (removed 2026-09-24; see `/api/stripe/checkout`). `TRIAL_DAYS`, `TrialEndingEmail` and `sendTrialEndingEmail` were deleted on 2026-10-27. `User.trialEndsAt` and the `trialing` status are legacy columns — never gate work on `trialing`.
 
-16. **Plans:** `none` (free trial), `starter`, `pro`. `User.subscriptionStatus` mirrors Stripe statuses: `trialing`, `active`, `cancelled`, plus custom `"none"` default.
+16. **Plans:** `none` (no plan), `starter`, `pro`, `fullservice`. `User.subscriptionStatus` mirrors Stripe statuses: `trialing`, `active`, `cancelled`, plus custom `"none"` default.
 
 17. **`src/lib/resend.ts` vs `src/lib/email.ts`:** `resend.ts` is a low-level `sendEmail({ to, subject, react })` function. `email.ts` is higher-level wrappers (sendWelcomeEmail, etc.) that render React Email templates and call `send()`. Use the typed wrappers in `email.ts` unless you need to send ad-hoc email.
 
@@ -378,7 +376,7 @@ Status colors (not in Tailwind config, use standard Tailwind): `text-green-500` 
 
 22. **`POST /api/scan` returns immediately** and runs the pipeline in a background `processScan()` (safe on Railway's persistent process). The client redirects to `/scan/results` and polls. Failures write a fallback so polling always terminates.
 
-23. **The `claude` engine is stored under the `google_ai` key** in `aiSearchStatus` (Audit + ScanLead) for legacy reasons, and reports label that key "Google AI". Known misattribution — not yet fixed.
+23. **The `claude` engine is stored under the `google_ai` key** in `aiSearchStatus` (Audit + ScanLead) for legacy reasons. Every place that renders the key labels it "Claude" (fixed 2026-10-27). Never rename the storage key — existing rows use it.
 
 24. **`src/app/api/audit/` directory exists** but there is no `route.ts` in it at the top level — audits are triggered from `/api/dashboard/scan`. Do not confuse the directory name with a standalone audit endpoint.
 
