@@ -4,7 +4,8 @@ import type { AuditResult } from "@/types/audit"
 const engines = [
   { key: "chatgpt", label: "ChatGPT", icon: "🤖" },
   { key: "perplexity", label: "Perplexity", icon: "🔍" },
-  { key: "google_ai", label: "Google AI", icon: "🌐" },
+  // Legacy key: google_ai holds Claude's verdict — label it honestly.
+  { key: "google_ai", label: "Claude", icon: "🌐" },
   { key: "gemini", label: "Gemini", icon: "✨" },
 ] as const
 

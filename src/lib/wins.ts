@@ -103,7 +103,7 @@ async function detectAndRecordWins(user: WinUser, auditId: string): Promise<Dete
       title: `🎉 ${label} now mentions ${businessName}`,
       description: prevResult
         ? `Your latest visibility scan found ${businessName} in ${label}'s answers — it wasn't there on the previous scan.`
-        : `Your latest visibility scan found ${businessName} in ${label}'s answers for the first time.`,
+        : `Your latest visibility scan found ${businessName} in ${label}'s answers — it wasn't there before.`,
     })
   }
 

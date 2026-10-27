@@ -34,7 +34,7 @@ export const plans = [
       "Auto-approval rules for posts",
       "Monthly executive report",
       "Priority chat support",
-      "Free setup ($49 value)",
+      "$149 one-time setup by a person (optional)",
     ],
     cta: "Start today",
     priceId: { monthly: "pro_monthly", annual: "pro_annual" },

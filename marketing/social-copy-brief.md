@@ -75,7 +75,7 @@ Brand name on social: **Alphaa AI Agent** · Website: **alphaa.app** · Free che
 - A short weekly email is all you have to read.
 
 **It connects to your website**
-- WordPress (plugin) today. Webflow and Shopify apps are in review, so say "coming soon".
+- WordPress (plugin), Webflow and Shopify are live today. Wix is coming soon.
 
 ---
 
@@ -135,7 +135,7 @@ Brand name on social: **Alphaa AI Agent** · Website: **alphaa.app** · Free che
 - ❌ Invented stats, customer counts, testimonials or case studies (no "1,200+ businesses", no "Miami law firm got 14 leads")
 - ❌ "No signup" (the check asks for an email); "free trial" (there isn't one)
 - ❌ Copilot or Google AI Overviews as engines we check. We check exactly **ChatGPT, Gemini, Claude and Perplexity**.
-- ❌ Shopify or Webflow as live today (say "coming soon")
+- ❌ Wix as live today (say "coming soon")
 - ✅ Example scenarios are fine if labelled as examples ("Here's what a typical AI check looks like").
 
 ---

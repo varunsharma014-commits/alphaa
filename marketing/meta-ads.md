@@ -122,7 +122,7 @@ Start with the free 60-second scan.
 ⚠️ **HOLD until customer counts/testimonials are verified.** The site's "1,000+ customers / 4.9 rating" hero claim is a placeholder (marked so in code). FTC + Meta ad policy are stricter than a homepage — do not run this variant until you have real numbers or 2–3 real named testimonials with permission. Swap the bracketed proof below with verified facts.
 
 **Primary text (≈90 words):**
-"[Real customer quote — e.g., 'Two weeks in, our practice showed up in a ChatGPT answer for the first time. I checked myself.' — Dr. ____, ____, TX]"
+"[Real customer quote — e.g., 'Two weeks in, our practice showed up when we asked ChatGPT who to call. I checked myself.' — Dr. ____, ____, TX]"
 
 Business owners are done paying $2,000/month retainers for PDF reports. Alphaa handles the work — content, schema, reviews, Google Business Profile — and tracks how you show up across Google and five AI engines.
 
