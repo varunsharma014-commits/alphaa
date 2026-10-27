@@ -115,6 +115,9 @@ import { meta as llmSeoMeta, Body as LlmSeoBody } from "./what-is-llm-seo"
 import { meta as vsProfoundMeta, Body as VsProfoundBody } from "./alphaa-vs-profound"
 import { meta as shopifyAiMeta, Body as ShopifyAiBody } from "./shopify-ai-search-optimization"
 import { meta as locksmithsMeta, Body as LocksmithsBody } from "./how-locksmiths-get-recommended-by-ai"
+import { meta as vsWritesonicMeta, Body as VsWritesonicBody } from "./alphaa-vs-writesonic"
+import { meta as webflowAiMeta, Body as WebflowAiBody } from "./webflow-ai-search-optimization"
+import { meta as queryFanOutMeta, Body as QueryFanOutBody } from "./what-is-query-fan-out"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -235,6 +238,9 @@ export const POSTS: Post[] = [
   { meta: vsProfoundMeta, Body: VsProfoundBody },
   { meta: shopifyAiMeta, Body: ShopifyAiBody },
   { meta: locksmithsMeta, Body: LocksmithsBody },
+  { meta: vsWritesonicMeta, Body: VsWritesonicBody },
+  { meta: webflowAiMeta, Body: WebflowAiBody },
+  { meta: queryFanOutMeta, Body: QueryFanOutBody },
 ]
 
 export function getAllPosts(): Post[] {
