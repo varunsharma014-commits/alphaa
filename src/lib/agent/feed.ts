@@ -145,12 +145,12 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     if (wrong.length) {
       messages.push(agent([
         { kind: "text", text: high.length ? `${LABEL[high[0].engine as EngineKey] ?? "An AI"} is telling customers “${high[0].claim}”. That’s wrong — ${high[0].truth}.` : `${wrong.length} AI ${wrong.length === 1 ? "answer gets" : "answers get"} a detail about you wrong.`, big: true },
-        { kind: "chips", items: [{ label: "See what’s wrong and how I’ll fix it", action: { type: "link", href: "/dashboard/t/answers" }, primary: true }] },
+        { kind: "chips", items: [{ label: "Fix it", action: { type: "thread", topic: "answers" }, primary: true }] },
       ], "facts"))
     }
     messages.push(agent([
       { kind: "text", text: `Across your ${qs.scan.questions.length} customer questions, the four AIs named you in ${qs.scan.named} of ${qs.scan.answers} answers.${qs.scan.rivals[0] ? ` ${qs.scan.rivals[0].name} was named ${qs.scan.rivals[0].count} times.` : ""}` },
-      { kind: "chips", items: [{ label: "Question by question", action: { type: "link", href: "/dashboard/t/answers" } }] },
+      { kind: "chips", items: [{ label: "Question by question", action: { type: "thread", topic: "answers" } }] },
     ], "questions"))
   }
 
@@ -187,7 +187,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     const m = waitingPosts[0].metadata as { title?: string }
     messages.push(agent([
       { kind: "text", text: `I wrote ${waitingPosts.length === 1 ? "a new post" : `${waitingPosts.length} new posts`} for your website${m.title ? ` — “${m.title}”` : ""}. Want to read ${waitingPosts.length === 1 ? "it" : "them"}?` },
-      { kind: "chips", items: [{ label: "Read and approve", action: { type: "link", href: "/dashboard/t/content" }, primary: true }] },
+      { kind: "chips", items: [{ label: "Read and approve", action: { type: "thread", topic: "content" }, primary: true }] },
     ], "posts"))
   }
 
@@ -202,14 +202,14 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
         { kind: "text", text: `Where the AIs look before they recommend a ${user.businessType || "business"}${user.city ? ` in ${user.city}` : ""}: ${report.listed} of ${report.targets.length} pages mention you.` },
         { kind: "sources", items: targets.map((t) => ({ name: t.domain, detail: t.title.slice(0, 80), status: t.status === "listed" ? "You’re on it" : t.status === "missing" ? "Not on it" : "Couldn’t check", ok: t.status === "listed", href: t.url })) },
         ...(report.missing > 0 ? [{ kind: "text", text: `Getting onto the ${report.missing === 1 ? "missing one" : `${report.missing} missing pages`} is the fastest way to change the answers above. Most are directories you can claim in a few minutes — I’ll walk you through each.` } as Block] : []),
-        { kind: "chips", items: [{ label: "Open Source Tracking", action: { type: "link", href: "/dashboard/t/sources" }, primary: false }] },
+        { kind: "chips", items: [{ label: "Get me listed", action: { type: "thread", topic: "sources" }, primary: report.missing > 0 }] },
       ], "citations")
     )
   } else if (checked > 0) {
     messages.push(
       agent([
         { kind: "text", text: "Next I’ll check which pages the AIs read before they recommend someone like you. It takes about two minutes — I’ll post what I find in Source Tracking." },
-        { kind: "chips", items: [{ label: "Watch me do it", action: { type: "link", href: "/dashboard/t/sources" }, primary: true }] },
+        { kind: "chips", items: [{ label: "Do it now", action: { type: "thread", topic: "sources" }, primary: true }] },
       ], "citations")
     )
   }
@@ -224,7 +224,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
       agent([
         { kind: "text", text: `${rival} has a page on “${top.topic}”. You don’t. When AI gets asked about it, they’re the answer.` },
         ...(top.suggestedTitle ? [{ kind: "text", text: `I’d write it as “${top.suggestedTitle}” — from your own facts, nothing invented.` } as Block] : []),
-        { kind: "chips", items: [{ label: "Draft it for me", action: { type: "draft", topic: top.suggestedTitle || top.topic, competitor: rival }, primary: true }, { label: "All competitor gaps", action: { type: "link", href: "/dashboard/t/competitors" } }] },
+        { kind: "chips", items: [{ label: "Draft it for me", action: { type: "draft", topic: top.suggestedTitle || top.topic, competitor: rival }, primary: true }, { label: "All competitor gaps", action: { type: "thread", topic: "competitors" } }] },
       ], "gap")
     )
   }

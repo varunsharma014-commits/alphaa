@@ -469,7 +469,8 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .ag-status b { color: var(--ag-fg); font-weight: 600; }
 .ag-status__next { color: var(--ag-muted); margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--ag-line); }
 .ag-main .ag-divider { align-self: stretch; background: none; border-radius: 0; padding: 14px 0 0; margin: 6px 0 -4px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ag-muted); border-top: 1px solid var(--ag-line); }
-.ag-main .ag-feed > .ag-divider:first-child { border-top: 0; padding-top: 0; text-transform: none; letter-spacing: 0; font-weight: 500; }
+.ag-main .ag-feed > div:first-child > .ag-divider { border-top: 0; padding-top: 0; text-transform: none; letter-spacing: 0; font-weight: 500; }
+.ag-main .ag-msg__body:has(> .ag-receipt:only-child) { border: 0; padding: 0; background: none; }
 /* Agent output reads as work cards, not chat bubbles. */
 .ag-main .ag-msg { max-width: none; }
 .ag-main .ag-msg:not(.ag-msg--user) .ag-msg__av { display: none; }
