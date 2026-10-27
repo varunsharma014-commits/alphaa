@@ -568,7 +568,7 @@ export function DashboardAgent({
     if (p.kind === "location") {
       const { ok, data } = await post<{ location?: { id: string; city: string }; upgrade?: boolean }>("/api/agent/locations", values)
       if (!ok) {
-        if (data.upgrade) push(agent([{ kind: "text", text: data.error ?? "" }, { kind: "chips", items: [{ label: "See plans", action: { type: "link", href: "/dashboard/billing" }, primary: true }] }]))
+        if (data.upgrade) push(agent([{ kind: "text", text: data.error ?? "" }, { kind: "chips", items: [{ label: "See plans", action: { type: "link", href: "/dashboard/settings/billing" }, primary: true }] }]))
         return data.upgrade ? null : data.error ?? "That didn’t save."
       }
       const loc = data.location!
