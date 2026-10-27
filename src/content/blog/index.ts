@@ -118,6 +118,9 @@ import { meta as locksmithsMeta, Body as LocksmithsBody } from "./how-locksmiths
 import { meta as vsWritesonicMeta, Body as VsWritesonicBody } from "./alphaa-vs-writesonic"
 import { meta as webflowAiMeta, Body as WebflowAiBody } from "./webflow-ai-search-optimization"
 import { meta as queryFanOutMeta, Body as QueryFanOutBody } from "./what-is-query-fan-out"
+import { meta as vsSurferMeta, Body as VsSurferBody } from "./alphaa-vs-surfer"
+import { meta as chatgptBingMeta, Body as ChatgptBingBody } from "./does-chatgpt-use-bing"
+import { meta as physioMeta, Body as PhysioBody } from "./how-physical-therapists-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -241,6 +244,9 @@ export const POSTS: Post[] = [
   { meta: vsWritesonicMeta, Body: VsWritesonicBody },
   { meta: webflowAiMeta, Body: WebflowAiBody },
   { meta: queryFanOutMeta, Body: QueryFanOutBody },
+  { meta: vsSurferMeta, Body: VsSurferBody },
+  { meta: chatgptBingMeta, Body: ChatgptBingBody },
+  { meta: physioMeta, Body: PhysioBody },
 ]
 
 export function getAllPosts(): Post[] {
