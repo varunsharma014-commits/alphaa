@@ -20,6 +20,20 @@ const schema = z.object({
   history: z.array(z.object({ role: z.enum(["agent", "user"]), text: z.string().max(2000) })).max(12).optional().default([]),
 })
 
+// Which thread to offer after the answer, so "what are my competitors doing?"
+// ends with the actual competitor cards, not just a paragraph.
+const TOPIC_RES: [string, RegExp][] = [
+  ["competitors", /\bcompetit|\brivals?\b|\bthey (have|do)\b/i],
+  ["reviews", /\breviews?\b|\bstars?\b|\bratings?\b/i],
+  ["site", /\bschema\b|\bsite code\b|\bllms\.txt\b|\bstructured\b|\bwebsite fix|\bmy site\b/i],
+  ["sources", /\bsources?\b|\bwhere (does )?ai (look|read)|\bcitations?\b/i],
+  ["content", /\bposts?\b|\bblog\b|\barticles?\b|\bpages? to approve\b|\bdrafts?\b/i],
+  ["listings", /\blistings?\b|\bdirector(y|ies)\b|\bbing\b|\bapple maps\b|\bprofiles?\b/i],
+  ["briefings", /\bresults?\b|\broi\b|\bthis week\b|\bhow are we doing\b|\bprogress\b|\breport\b|\btraffic\b|\bvisitors?\b/i],
+  ["answers", /\bquestions?\b|\bwrong about\b|\bwhat do(es)? (the )?ai(s)? say\b/i],
+]
+const topicFor = (m: string) => TOPIC_RES.find(([, re]) => re.test(m))?.[0] ?? null
+
 const LIVE_RE = /\b(ask|check|test|try|run|see what|what does|what do|does (chatgpt|gemini|claude|perplexity|ai)|do the ais?)\b/i
 
 export async function POST(req: Request) {
@@ -96,7 +110,7 @@ ${facts}`
 
     const wantsLive = LIVE_RE.test(body.message)
     const liveQuestion = wantsLive ? extractQuestion(body.message) ?? (await accountQuestion(user)) : null
-    return NextResponse.json({ text, liveQuestion })
+    return NextResponse.json({ text, liveQuestion, topic: liveQuestion ? null : topicFor(body.message) })
   } catch (err) {
     console.error("[agent/chat]", err instanceof Error ? err.message : err)
     return NextResponse.json({ error: "I lost the thread for a second. Ask me again?" }, { status: 502 })

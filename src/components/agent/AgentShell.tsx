@@ -1,36 +1,24 @@
 "use client"
 
-import { useState } from "react"
-import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
 import { UserButton } from "@clerk/nextjs"
+import { Sparkles } from "lucide-react"
 import type { DashboardTheme } from "@/lib/theme"
 import type { RailData } from "@/lib/agent/feed"
-import { AgentRail } from "./AgentRail"
+import { BRAND } from "@/lib/brand"
+import { AgentMemory } from "./AgentMemory"
 
-const TITLES: [string, string][] = [
-  ["/dashboard/t/reviews", "Reviews"],
-  ["/dashboard/t/site", "Site Schema & Code"],
-  ["/dashboard/t/sources", "Source Tracking"],
-  ["/dashboard/t/answers", "AI Answers"],
-  ["/dashboard/t/content", "Posts & Pages"],
-  ["/dashboard/t/listings", "Listings & Profiles"],
-  ["/dashboard/t/competitors", "Competitors"],
-  ["/dashboard/t/briefings", "Weekly Briefings"],
-  ["/dashboard/reviews", "Reviews"],
-  ["/dashboard/vault", "What AI reads about you"],
-  ["/dashboard/citations", "Where AI looks you up"],
-  ["/dashboard/competitors", "Competitors"],
-  ["/dashboard/reports", "Weekly notes"],
-  ["/dashboard/sandbox", "Ask the AIs"],
-  ["/dashboard/settings", "Settings"],
-  ["/dashboard/concierge", "Have a human do it"],
-  ["/dashboard/posts", "Google listing"],
-  ["/dashboard/content", "Content"],
-  ["/dashboard/keywords", "Google rankings"],
-  ["/dashboard/audit", "Website health"],
-  ["/dashboard/speed", "Site speed"],
-  ["/dashboard/visibility", "AI answers"],
-]
+// No menu to hunt through: one conversation with the agent, chips to ask it
+// things, and a Memory panel on the right with the score, results,
+// connections and the work it has done. Settings live under the avatar.
+
+const MEM_KEY = "alphaa.memory"
+
+/** Ask the agent to bring a topic into the chat (handled by DashboardAgent). */
+export const ASK_EVENT = "alphaa:ask"
+export type AskDetail = { topic: string; label: string }
 
 export function AgentShell({
   rail,
@@ -45,25 +33,48 @@ export function AgentShell({
   showUser?: boolean // dev preview renders without a Clerk session
   children: React.ReactNode
 }) {
-  const [open, setOpen] = useState(false)
+  void theme
   const pathname = usePathname()
+  const router = useRouter()
   const isHome = pathname === "/dashboard" || pathname === "/preview" || pathname.startsWith("/dashboard/t/")
-  const title = TITLES.find(([p]) => pathname.startsWith(p))?.[1] ?? (isHome ? "Today" : "Detail")
+  const [memOpen, setMemOpen] = useState(false)
+
+  // Open by default on wide screens; remember the owner's choice.
+  useEffect(() => {
+    let saved: string | null = null
+    try { saved = localStorage.getItem(MEM_KEY) } catch {}
+    setMemOpen(saved ? saved === "open" : window.innerWidth >= 1180)
+  }, [])
+  const toggle = (next: boolean) => {
+    setMemOpen(next)
+    try { localStorage.setItem(MEM_KEY, next ? "open" : "closed") } catch {}
+  }
+
+  function ask(topic: string, label: string) {
+    if (window.innerWidth < 1180) toggle(false)
+    if (isHome) window.dispatchEvent(new CustomEvent<AskDetail>(ASK_EVENT, { detail: { topic, label } }))
+    else router.push(`/dashboard?ask=${encodeURIComponent(topic)}`)
+  }
+
+  const waiting = rail.waiting.reviews + rail.waiting.posts
 
   return (
-    <div className="ag-app">
-      <AgentRail rail={rail} open={open} onClose={() => setOpen(false)} />
+    <div className={`ag-app ${memOpen ? "ag-app--mem" : ""}`}>
       <div className="ag-main">
         <header className="ag-head">
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <button className="ag-head__menu" onClick={() => setOpen((o) => !o)} aria-label="Menu">
-              {open ? "Close" : "Menu"}
-            </button>
-            <h1>{title}</h1>
-            {isHome && (
+          <div className="ag-head__left">
+            <Link href="/dashboard" className="ag-brand" aria-label={`${BRAND.name} home`}>
+              <Sparkles className="ag-brand__mark" aria-hidden="true" />
+              {BRAND.name}
+            </Link>
+            <span className="ag-head__sep" />
+            <span className="ag-head__biz">{rail.businessName}</span>
+            {isHome ? (
               <span className="ag-head__since">
                 <span className="ag-dot ag-dot--live" style={{ width: 6, height: 6 }} /> working for you
               </span>
+            ) : (
+              <Link href="/dashboard" className="ag-head__back">← Back to your agent</Link>
             )}
           </div>
           <div className="ag-head__right">
@@ -72,7 +83,22 @@ export function AgentShell({
                 {trialDaysLeft === 0 ? "Trial ends today" : `${trialDaysLeft}d left in trial`} →
               </a>
             )}
-            {showUser && <UserButton appearance={{ variables: { colorPrimary: "#000000" }, elements: { avatarBox: "w-8 h-8" } }} />}
+            <button className={`ag-head__mem ${memOpen ? "on" : ""}`} onClick={() => toggle(!memOpen)} aria-pressed={memOpen}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="15" y1="3" x2="15" y2="21" /></svg>
+              Memory
+              {waiting > 0 && !memOpen && <b>{waiting}</b>}
+            </button>
+            {showUser && (
+              <UserButton appearance={{ variables: { colorPrimary: "#000000" }, elements: { avatarBox: "w-8 h-8" } }}>
+                <UserButton.MenuItems>
+                  <UserButton.Link label="Connections" labelIcon={<span aria-hidden="true">⇄</span>} href="/dashboard/settings/integrations" />
+                  <UserButton.Link label="Business details" labelIcon={<span aria-hidden="true">✎</span>} href="/dashboard/settings/account" />
+                  <UserButton.Link label="Billing" labelIcon={<span aria-hidden="true">$</span>} href="/dashboard/settings/billing" />
+                  <UserButton.Link label="Full reports" labelIcon={<span aria-hidden="true">≡</span>} href="/dashboard/reports" />
+                  <UserButton.Link label="Have a human do it" labelIcon={<span aria-hidden="true">☺</span>} href="/dashboard/concierge" />
+                </UserButton.MenuItems>
+              </UserButton>
+            )}
           </div>
         </header>
         {/* Home owns its own scroll area so the composer stays pinned; legacy
@@ -83,6 +109,8 @@ export function AgentShell({
           </div>
         )}
       </div>
+      <AgentMemory rail={rail} open={memOpen} onClose={() => toggle(false)} onAsk={ask} />
+      {memOpen && <div className="ag-mem__scrim" onClick={() => toggle(false)} aria-hidden="true" />}
     </div>
   )
 }

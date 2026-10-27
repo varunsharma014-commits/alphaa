@@ -1,0 +1,135 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import type { RailData } from "@/lib/agent/feed"
+
+// The agent's memory: what it knows about the business right now, so the
+// owner never has to ask "how are we doing?". Replaces the old left menu.
+// Visibility comes with the page (rail data); results, connections and work
+// load after the chat paints (/api/agent/memory).
+
+type Memory = {
+  results: string[]
+  google: { profile: string | null; searchConsole: string | null; analytics: string | null } | null
+  website: { platform: string; site: string } | null
+  work: { id: string; title: string; detail: string | null; at: string }[]
+}
+
+const ENGINES = ["ChatGPT", "Gemini", "Claude", "Perplexity"]
+
+function ago(iso: string): string {
+  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86_400_000)
+  if (days <= 0) return "Today"
+  if (days === 1) return "Yesterday"
+  if (days < 7) return `${days} days ago`
+  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+}
+
+export function AgentMemory({ rail, open, onClose, onAsk }: { rail: RailData; open: boolean; onClose: () => void; onAsk: (topic: string, label: string) => void }) {
+  const [mem, setMem] = useState<Memory | null>(null)
+  const [failed, setFailed] = useState(false)
+
+  useEffect(() => {
+    if (!open || mem || failed) return
+    fetch("/api/agent/memory").then((r) => (r.ok ? r.json() : null)).then((m) => (m ? setMem(m) : setFailed(true))).catch(() => setFailed(true))
+  }, [open, mem, failed])
+  const pending = failed ? "Couldn’t load this just now." : null
+
+  const waiting = rail.waiting.reviews + rail.waiting.posts
+
+  return (
+    <aside className={`ag-mem ${open ? "ag-mem--open" : ""}`} aria-label="What your agent knows" aria-hidden={!open}>
+      <div className="ag-mem__head">
+        <span>Business state</span>
+        <button onClick={onClose} aria-label="Close">Close</button>
+      </div>
+
+      <section className="ag-mem__card">
+        <div className="ag-mem__lbl">AI visibility</div>
+        <div className="ag-mem__big">
+          {rail.checked === 0 ? "—" : rail.named} <small>of 4 AIs name you</small>
+        </div>
+        <ul className="ag-mem__engines">
+          {ENGINES.map((name, i) => {
+            const s = rail.states[i] ?? "unknown"
+            return (
+              <li key={name}>
+                <i className={s === "found" ? "ok" : s === "partial" ? "half" : s === "missing" ? "no" : ""} />
+                {name}
+                <span>{s === "found" ? "Names you" : s === "partial" ? "Sometimes" : s === "missing" ? "Not yet" : "Not checked"}</span>
+              </li>
+            )
+          })}
+        </ul>
+        <div className="ag-mem__sub">Day {rail.dayNumber} of working for {rail.businessName}</div>
+      </section>
+
+      {waiting > 0 && (
+        <section className="ag-mem__sec">
+          <div className="ag-mem__lbl">Waiting for your yes</div>
+          {rail.waiting.reviews > 0 && (
+            <button className="ag-mem__row ag-mem__row--btn" onClick={() => onAsk("reviews", "Show me the reviews waiting for a reply")}>
+              {rail.waiting.reviews} review {rail.waiting.reviews === 1 ? "reply" : "replies"} <span>Review →</span>
+            </button>
+          )}
+          {rail.waiting.posts > 0 && (
+            <button className="ag-mem__row ag-mem__row--btn" onClick={() => onAsk("content", "Show me the posts waiting for my approval")}>
+              {rail.waiting.posts} {rail.waiting.posts === 1 ? "post" : "posts"} to approve <span>Review →</span>
+            </button>
+          )}
+        </section>
+      )}
+
+      <section className="ag-mem__sec">
+        <div className="ag-mem__lbl">Results this week</div>
+        {!mem ? (
+          <p className="ag-mem__muted">{pending ?? "Checking…"}</p>
+        ) : mem.results.length ? (
+          mem.results.map((r, i) => <p key={i} className="ag-mem__result">{r}</p>)
+        ) : (
+          <p className="ag-mem__muted">Connect Google and your website and I’ll show the calls, visits and AI referrals you get.</p>
+        )}
+      </section>
+
+      <section className="ag-mem__sec">
+        <div className="ag-mem__lbl">Connections</div>
+        <Link href="/dashboard/settings/integrations" className="ag-mem__row">
+          Google
+          <span className={mem?.google ? "on" : ""}>{mem ? (mem.google ? "Connected" : "Connect →") : rail.googleConnected ? "Connected" : "Connect →"}</span>
+        </Link>
+        {mem?.google && (
+          <div className="ag-mem__subrows">
+            <div>Business Profile <span>{mem.google.profile ?? "—"}</span></div>
+            <div>Search Console <span>{mem.google.searchConsole ?? "—"}</span></div>
+            <div>Analytics <span>{mem.google.analytics ?? "—"}</span></div>
+          </div>
+        )}
+        <Link href="/dashboard/settings/website" className="ag-mem__row">
+          Website
+          <span className={mem?.website ? "on" : ""}>{mem ? (mem.website ? `${mem.website.platform} · ${mem.website.site}` : "Connect →") : "…"}</span>
+        </Link>
+      </section>
+
+      <section className="ag-mem__sec">
+        <div className="ag-mem__lbl">Work I’ve done</div>
+        {!mem ? (
+          <p className="ag-mem__muted">{pending ?? "Loading…"}</p>
+        ) : mem.work.length ? (
+          <ol className="ag-mem__work">
+            {mem.work.map((w) => (
+              <li key={w.id}>
+                <b>{w.title}</b>
+                {w.detail && <span>{w.detail}</span>}
+                <time>{ago(w.at)}</time>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="ag-mem__muted">Nothing yet. My first full pass runs within a day.</p>
+        )}
+        <button className="ag-mem__more" onClick={() => onAsk("briefings", "What did you do this week?")}>Every week, in plain English →</button>
+      </section>
+    </aside>
+  )
+}

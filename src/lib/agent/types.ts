@@ -15,6 +15,7 @@ export type VerdictState = "found" | "partial" | "missing" | "unknown"
 
 export type ChipAction =
   | { type: "link"; href: string }
+  | { type: "thread"; topic: string } // pull a topic's thread into the conversation
   | { type: "say"; text: string } // canned agent reply, no network
   | { type: "ask"; text: string } // send to the chat endpoint as the user
   | { type: "live"; question: string } // ask the four AIs right now

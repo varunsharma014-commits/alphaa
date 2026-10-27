@@ -1,8 +1,9 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
+import type { Topic } from "@/lib/agent/threads"
+import { ASK_EVENT, type AskDetail } from "./AgentShell"
 import { AgentFeed, Composer } from "./AgentFeed"
 import { agent, mid, user as userMsg, type Block, type Chip, type Message, type SiteOp, type Task } from "@/lib/agent/types"
 import { securityMessages, profileMessages, listingsMessages, bingMessages } from "@/lib/agent/check-narration"
@@ -28,16 +29,19 @@ type Pending =
   | { kind: "shopify" }
 
 const OP_NAME: Record<SiteOp, string> = { page: "the page", schema: "your structured facts", llms: "your llms.txt", robots: "the robots.txt fix", post: "the post", meta: "the new title and description", sitemap: "your sitemap", headers: "the security settings" }
-const TOPIC_LINKS: { href: string; label: string }[] = [
-  { href: "/dashboard", label: "Today" },
-  { href: "/dashboard/t/reviews", label: "Reviews" },
-  { href: "/dashboard/t/site", label: "Site Schema & Code" },
-  { href: "/dashboard/t/sources", label: "Source Tracking" },
-  { href: "/dashboard/t/answers", label: "AI Answers" },
-  { href: "/dashboard/t/content", label: "Posts & Pages" },
-  { href: "/dashboard/t/listings", label: "Listings & Profiles" },
-  { href: "/dashboard/t/competitors", label: "Competitors" },
-  { href: "/dashboard/t/briefings", label: "Weekly Briefings" },
+// Quick asks above the composer. They do things in this conversation; none
+// of them is a page to go to.
+type QuickAsk = { label: string; topic?: Topic; say: string; kind?: "visibility" | "post" }
+const QUICK_ASKS: QuickAsk[] = [
+  { label: "Check my visibility now", say: "Check my visibility right now", kind: "visibility" },
+  { label: "Show my results", topic: "briefings", say: "How are we doing? Show me my results" },
+  { label: "Draft a post", say: "Write a new post for my site", kind: "post" },
+  { label: "What are competitors doing?", topic: "competitors", say: "What are my competitors doing?" },
+  { label: "Reply to reviews", topic: "reviews", say: "Show me my reviews" },
+  { label: "Fix my site code", topic: "site", say: "What does AI read on my site, and what needs fixing?" },
+  { label: "Where AI looks me up", topic: "sources", say: "Which pages does AI read before it recommends anyone?" },
+  { label: "My listings", topic: "listings", say: "Check my listings and profiles" },
+  { label: "Customer questions", topic: "answers", say: "Which customer questions do the AIs get wrong about us?" },
 ]
 
 export function DashboardAgent({
@@ -220,6 +224,8 @@ export function DashboardAgent({
   async function onChip(chip: Chip, messageId: string) {
     const a = chip.action
     switch (a.type) {
+      case "thread":
+        return pullThread(a.topic, chip.label === "Show me" ? `Show me` : chip.label)
       case "link":
         if (/^(sms|mailto|tel):/.test(a.href)) window.location.href = a.href
         else if (a.href.startsWith("http")) window.open(a.href, "_blank", "noopener")
@@ -627,6 +633,45 @@ export function DashboardAgent({
     return null
   }
 
+  // Bring a topic's thread into this conversation instead of opening a page.
+  async function pullThread(topic: string, label: string) {
+    push(userMsg(label))
+    setBusy(true)
+    const res = await fetch(`/api/agent/thread?topic=${encodeURIComponent(topic)}`).catch(() => null)
+    const data = res?.ok ? ((await res.json().catch(() => null)) as { messages?: Message[]; autorun?: Task[] } | null) : null
+    setBusy(false)
+    if (!data?.messages) return fail("I couldn’t pull that up just now. Ask me again in a moment.")
+    // Thread message ids are stable per topic; suffix them so a second pull doesn't collide.
+    const n = Date.now().toString(36)
+    push(...data.messages.map((m) => ({ ...m, id: `${m.id}~${n}` })))
+    for (const t of data.autorun ?? []) await runTask(t)
+  }
+
+  async function quick(q: QuickAsk) {
+    if (busy) return
+    if (q.topic) return pullThread(q.topic, q.say)
+    if (q.kind === "post") return onChip({ label: q.say, action: { type: "draft", topic: "auto", mode: "post" } }, "")
+    if (q.kind === "visibility") {
+      const r = await fetch("/api/agent/questions").then((x) => (x.ok ? x.json() : null)).catch(() => null) as { questions?: string[] } | null
+      const question = r?.questions?.[0]
+      return question ? liveCheck(question) : send(q.say)
+    }
+  }
+
+  // Asks from the Memory panel, and ?ask=<topic> when arriving from another page.
+  useEffect(() => {
+    const onAsk = (e: Event) => { const d = (e as CustomEvent<AskDetail>).detail; if (d) void pullThread(d.topic, d.label) }
+    window.addEventListener(ASK_EVENT, onAsk)
+    const fromUrl = new URLSearchParams(window.location.search).get("ask")
+    if (fromUrl) {
+      const q = QUICK_ASKS.find((x) => x.topic === fromUrl)
+      void pullThread(fromUrl, q?.say ?? "Show me that")
+      router.replace(window.location.pathname)
+    }
+    return () => window.removeEventListener(ASK_EVENT, onAsk)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   async function send(text?: string) {
     const q = (text ?? input).trim()
     if (!q) return
@@ -634,11 +679,12 @@ export function DashboardAgent({
     push(userMsg(q))
     setBusy(true)
     const history = messages.slice(-12).map((m) => ({ role: m.role, text: m.blocks.filter((b) => b.kind === "text").map((b) => (b as { text: string }).text).join(" ") })).filter((h) => h.text)
-    const { ok, data } = await post<{ text?: string; liveQuestion?: string | null }>("/api/agent/chat", { message: q, history, topic: current })
+    const { ok, data } = await post<{ text?: string; liveQuestion?: string | null; topic?: string | null }>("/api/agent/chat", { message: q, history, topic: current })
     setBusy(false)
     if (!ok || !data.text) return fail(data.error ?? "I lost the thread for a second. Ask me again?")
     const blocks: Block[] = [{ kind: "text", text: data.text }]
     if (data.liveQuestion) blocks.push({ kind: "chips", items: [{ label: `Ask the AIs: “${data.liveQuestion}”`, action: { type: "live", question: data.liveQuestion }, primary: true }] })
+    if (data.topic && data.topic !== current.replace("/dashboard/t/", "")) blocks.push({ kind: "chips", items: [{ label: "Show me", action: { type: "thread", topic: data.topic }, primary: true }] })
     push(agent(blocks))
   }
 
@@ -654,11 +700,11 @@ export function DashboardAgent({
           onDocEdit={(id, t) => { docEdits.current[id] = t }}
         />
       </div>
-      <nav className="ag-topics" aria-label="Topics">
-        {TOPIC_LINKS.map((t) => (
-          <Link key={t.href} href={t.href} className={t.href === current ? "on" : ""}>{t.label}</Link>
+      <div className="ag-quick" role="toolbar" aria-label="Ask your agent">
+        {QUICK_ASKS.map((q) => (
+          <button key={q.label} type="button" onClick={() => quick(q)} disabled={busy}>{q.label}</button>
         ))}
-      </nav>
+      </div>
       <Composer id="agent-input" inputRef={inputRef} placeholder="Ask anything… “why doesn’t ChatGPT name us?”" value={input} onChange={setInput} onSubmit={() => send()} disabled={busy} />
     </>
   )
