@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
 import { postToGmb, containsPlaceholders } from "@/lib/gbp-poster"
 import { logActivity } from "@/lib/activity"
+import { resolveAccessToken } from "@/lib/gmb"
 
 export const dynamic = "force-dynamic"
 
@@ -53,8 +54,12 @@ export async function POST(
       )
     }
 
+    // Drafts from the cron can sit for days before "Post it" — refresh the
+    // Google token if it has expired rather than failing on a stale one.
+    const accessToken = await resolveAccessToken(integration)
+
     const result = await postToGmb(
-      integration.accessToken,
+      accessToken,
       integration.gmbAccountId,
       integration.gmbLocationId,
       post.content,
