@@ -7,14 +7,13 @@ import { DashboardAgent } from "@/components/agent/DashboardAgent"
 
 export const metadata = { title: "Today — alphaa" }
 
-// The home screen is a conversation with the agent, built from real rows:
-// verdicts, reviews waiting, drafts to approve, where AI looks, this week's
-// receipt. See lib/agent/feed.ts. Legacy tile dashboard: _legacy-home.tsx.txt.
+// The home screen is the agent's work, built from real rows: what needs the
+// owner's OK, what it did this week, then where they stand with the AIs. See lib/agent/feed.ts. Legacy tile dashboard: _legacy-home.tsx.txt.
 export default async function DashboardPage() {
   const { userId } = await auth()
   if (!userId) redirect("/login")
   const user = await db.user.findUnique({ where: { clerkId: userId }, select: { id: true, businessName: true } })
   if (!user) redirect("/login")
   const feed = await getFeed(user.id)
-  return <DashboardAgent initial={feed?.messages ?? []} businessName={user.businessName ?? "your business"} />
+  return <DashboardAgent initial={feed?.messages ?? []} businessName={user.businessName ?? "your business"} status={feed?.status} />
 }

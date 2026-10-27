@@ -12,6 +12,7 @@ import { siteCheckBlocks, describeSchemas } from "@/lib/agent/site-narration"
 import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
 import { NONE_AVAILABLE, PLATFORM_NAME, platformPickerBlocks, type Availability } from "@/lib/connector/platforms"
 import type { Platform } from "@/lib/connector/types"
+import type { AgentStatus } from "@/lib/agent/feed"
 
 type LiveResult = { engine: EngineKey; answer: string; appeared: boolean; mentioned: string[]; status: string }
 
@@ -29,20 +30,31 @@ type Pending =
   | { kind: "shopify" }
 
 const OP_NAME: Record<SiteOp, string> = { page: "the page", schema: "your structured facts", llms: "your llms.txt", robots: "the robots.txt fix", post: "the post", meta: "the new title and description", sitemap: "your sitemap", headers: "the security settings" }
-// Quick asks above the composer. They do things in this conversation; none
-// of them is a page to go to.
+// Jobs to hand the agent. Each one starts work right here; none of them is a
+// page to go to.
 type QuickAsk = { label: string; topic?: Topic; say: string; kind?: "visibility" | "post" }
 const QUICK_ASKS: QuickAsk[] = [
-  { label: "Check my visibility now", say: "Check my visibility right now", kind: "visibility" },
-  { label: "Show my results", topic: "briefings", say: "How are we doing? Show me my results" },
-  { label: "Draft a post", say: "Write a new post for my site", kind: "post" },
-  { label: "What are competitors doing?", topic: "competitors", say: "What are my competitors doing?" },
-  { label: "Reply to reviews", topic: "reviews", say: "Show me my reviews" },
-  { label: "Fix my site code", topic: "site", say: "What does AI read on my site, and what needs fixing?" },
-  { label: "Where AI looks me up", topic: "sources", say: "Which pages does AI read before it recommends anyone?" },
-  { label: "My listings", topic: "listings", say: "Check my listings and profiles" },
-  { label: "Customer questions", topic: "answers", say: "Which customer questions do the AIs get wrong about us?" },
+  { label: "Run a fresh AI check", say: "Run a fresh AI check", kind: "visibility" },
+  { label: "Write a post for my site", say: "Write a post for my site", kind: "post" },
+  { label: "Reply to my reviews", topic: "reviews", say: "Reply to my reviews" },
+  { label: "Fix my site for AI", topic: "site", say: "Fix my site for AI" },
+  { label: "Out-rank my competitors", topic: "competitors", say: "Out-rank my competitors" },
+  { label: "Get me listed where AI looks", topic: "sources", say: "Get me listed where AI looks" },
+  { label: "Fix wrong AI answers", topic: "answers", say: "Fix what the AIs get wrong about us" },
+  { label: "Check my listings", topic: "listings", say: "Check my listings and profiles" },
+  { label: "Show this week's results", topic: "briefings", say: "Show this week's results" },
 ]
+
+function when(iso: string, future = false): string {
+  const d = new Date(iso)
+  const days = Math.round((d.getTime() - Date.now()) / 86_400_000)
+  const day = d.toLocaleDateString("en-US", { weekday: "long" })
+  if (future) return days <= 0 ? "today" : days === 1 ? "tomorrow" : day
+  const mins = Math.floor((Date.now() - d.getTime()) / 60_000)
+  if (mins < 60) return "just now"
+  if (mins < 24 * 60) return `${Math.floor(mins / 60)}h ago`
+  return mins < 48 * 60 ? "yesterday" : `${Math.floor(mins / 1440)} days ago`
+}
 
 export function DashboardAgent({
   initial,
@@ -50,12 +62,14 @@ export function DashboardAgent({
   autorun = [],
   current = "/dashboard",
   context,
+  status,
 }: {
   initial: Message[]
   businessName: string
   autorun?: Task[]
   current?: string
   context?: { businessType: string | null; city: string | null }
+  status?: AgentStatus
 }) {
   const router = useRouter()
   const [messages, setMessages] = useState<Message[]>(initial)
@@ -691,6 +705,19 @@ export function DashboardAgent({
   return (
     <>
       <div className="ag-scroll">
+        {status && (
+          <div className="ag-status" aria-live="polite">
+            <span className={`ag-dot ${busy ? "ag-dot--live" : "ag-dot--ok"}`} />
+            {busy ? (
+              <b>Working on it…</b>
+            ) : (
+              <span>
+                {status.last ? <>Last: <b>{status.last.title}</b> · {when(status.last.at)}</> : <b>Setting up your first pass</b>}
+                <span className="ag-status__next">Next AI check {when(status.next, true)}</span>
+              </span>
+            )}
+          </div>
+        )}
         <AgentFeed
           messages={messages}
           animate="stagger"
@@ -700,12 +727,13 @@ export function DashboardAgent({
           onDocEdit={(id, t) => { docEdits.current[id] = t }}
         />
       </div>
-      <div className="ag-quick" role="toolbar" aria-label="Ask your agent">
+      <div className="ag-quick" role="toolbar" aria-label="Give your agent a job">
+        <span className="ag-quick__lbl">Do it for me</span>
         {QUICK_ASKS.map((q) => (
           <button key={q.label} type="button" onClick={() => quick(q)} disabled={busy}>{q.label}</button>
         ))}
       </div>
-      <Composer id="agent-input" inputRef={inputRef} placeholder="Ask anything… “why doesn’t ChatGPT name us?”" value={input} onChange={setInput} onSubmit={() => send()} disabled={busy} />
+      <Composer id="agent-input" inputRef={inputRef} placeholder="Give me a job… “write a post about our spring sale”" value={input} onChange={setInput} onSubmit={() => send()} disabled={busy} />
     </>
   )
 }

@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { UserButton } from "@clerk/nextjs"
 import { Sparkles } from "lucide-react"
 import type { DashboardTheme } from "@/lib/theme"
 import type { RailData } from "@/lib/agent/feed"
 import { BRAND } from "@/lib/brand"
 import { AgentMemory } from "./AgentMemory"
+import { AccountMenu } from "./AccountMenu"
 
 // No menu to hunt through: one conversation with the agent, chips to ask it
 // things, and a Memory panel on the right with the score, results,
@@ -88,17 +88,7 @@ export function AgentShell({
               Memory
               {waiting > 0 && !memOpen && <b>{waiting}</b>}
             </button>
-            {showUser && (
-              <UserButton appearance={{ variables: { colorPrimary: "#000000" }, elements: { avatarBox: "w-8 h-8" } }}>
-                <UserButton.MenuItems>
-                  <UserButton.Link label="Connections" labelIcon={<span aria-hidden="true">⇄</span>} href="/dashboard/settings/integrations" />
-                  <UserButton.Link label="Business details" labelIcon={<span aria-hidden="true">✎</span>} href="/dashboard/settings/account" />
-                  <UserButton.Link label="Billing" labelIcon={<span aria-hidden="true">$</span>} href="/dashboard/settings/billing" />
-                  <UserButton.Link label="Full reports" labelIcon={<span aria-hidden="true">≡</span>} href="/dashboard/reports" />
-                  <UserButton.Link label="Have a human do it" labelIcon={<span aria-hidden="true">☺</span>} href="/dashboard/concierge" />
-                </UserButton.MenuItems>
-              </UserButton>
-            )}
+            {showUser && <AccountMenu />}
           </div>
         </header>
         {/* Home owns its own scroll area so the composer stays pinned; legacy

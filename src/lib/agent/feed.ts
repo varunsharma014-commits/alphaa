@@ -26,7 +26,10 @@ export type RailData = {
   googleConnected: boolean
 }
 
-export type FeedData = { messages: Message[]; rail: RailData }
+export type FeedData = { messages: Message[]; rail: RailData; status: AgentStatus }
+
+/** The strip above the work: what the agent did last and what it does next. */
+export type AgentStatus = { last: { title: string; at: string } | null; next: string }
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v)
@@ -241,12 +244,11 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
   if (items.length > 0) {
     messages.push(
       agent([
-        { kind: "receipt", title: "This week", sub: `${weekActivity.length} ${weekActivity.length === 1 ? "thing" : "things"} done`, items },
-        { kind: "text", text: "Ask me about any of it below." },
+        { kind: "receipt", title: "Done for you this week", sub: `${weekActivity.length} ${weekActivity.length === 1 ? "job" : "jobs"}`, items },
       ], "receipt")
     )
   } else {
-    messages.push(agent([{ kind: "text", text: "Nothing logged yet this week. Ask me anything below — or tell me what to do first." }], "receipt"))
+    messages.push(agent([{ kind: "text", text: "Nothing finished yet this week. My next pass is already scheduled, or give me a job below." }], "receipt"))
   }
 
   const rail: RailData = {
@@ -259,7 +261,35 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     waiting: { reviews: user.gmbReviews.length, posts: draft && gmbConnected ? 1 : 0 },
     googleConnected: !!user.integration,
   }
-  return { messages, rail }
+  const last = weekActivity[0] ?? (await db.mockActivity.findFirst({ where: { userId: user.id, type: { notIn: ["sandbox_query", "agent_settings", "ai_visit", "email_sent"] } }, orderBy: { createdAt: "desc" } }))
+  const status: AgentStatus = { last: last ? { title: last.title, at: last.createdAt.toISOString() } : null, next: nextCheck(now) }
+  return { messages: sections(messages), rail, status }
+}
+
+// Work first: what needs the owner's OK, then what was done, then where they stand.
+function sections(messages: Message[]): Message[] {
+  const needs = (id: string) => id === "facts" || id === "gap" || id === "setup" || id === "posts" || id.startsWith("review-") || id.startsWith("post-")
+  const head = (id: string, text: string): Message => ({ id, role: "agent", blocks: [{ kind: "divider", text }] })
+  const pick = (f: (id: string) => boolean) => messages.filter((m) => f(m.id))
+  const waiting = pick(needs)
+  return [
+    ...pick((id) => id === "day"),
+    head("h-needs", waiting.length ? `Needs your OK · ${waiting.length}` : "Nothing needs you right now"),
+    ...waiting,
+    head("h-done", "What I did"),
+    ...pick((id) => id === "receipt"),
+    head("h-stand", "Where you stand"),
+    ...pick((id) => id !== "day" && id !== "receipt" && !needs(id)),
+  ]
+}
+
+// The weekly AI re-check runs Wednesdays 09:00 UTC (lib/cron-scheduler.ts).
+function nextCheck(now: Date): string {
+  const d = new Date(now)
+  d.setUTCHours(9, 0, 0, 0)
+  d.setUTCDate(d.getUTCDate() + ((3 - d.getUTCDay() + 7) % 7))
+  if (d <= now) d.setUTCDate(d.getUTCDate() + 7)
+  return d.toISOString()
 }
 
 function dayNumber(createdAt: Date): number {
