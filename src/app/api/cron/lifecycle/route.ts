@@ -44,9 +44,13 @@ export async function GET(request: NextRequest) {
   const priorSends = userIds.length
     ? await db.mockActivity.findMany({
         where: { userId: { in: userIds }, type: "email_sent" },
-        select: { userId: true, metadata: true },
+        select: { userId: true, metadata: true, createdAt: true },
       })
     : []
+  // Never two emails within 20h to one account (the convert cron logs to the same ledger).
+  const recentlyEmailed = new Set(
+    priorSends.filter((r) => now - r.createdAt.getTime() < 20 * 60 * 60 * 1000).map((r) => r.userId),
+  )
   const alreadySent = new Set(
     priorSends.map((row) => {
       const key = (row.metadata as { emailKey?: string } | null)?.emailKey ?? ""
@@ -74,7 +78,7 @@ export async function GET(request: NextRequest) {
       else if (!connected && ageDays >= 4 && ageDays < 6) emailKey = "connect-nudge-2"
       else if (connected && ageDays >= 7 && ageDays < 10) emailKey = "week-one-recap"
 
-      if (!emailKey || alreadySent.has(`${user.id}:${emailKey}`)) {
+      if (!emailKey || alreadySent.has(`${user.id}:${emailKey}`) || recentlyEmailed.has(user.id)) {
         skipped++
         continue
       }

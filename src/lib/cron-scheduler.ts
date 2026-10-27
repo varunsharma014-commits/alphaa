@@ -64,5 +64,9 @@ export function startCron(): void {
     // Daily 16:00 UTC (noon ET) — scan-lead nurture emails (Resend only; sends
     // nothing unless COMPANY_MAILING_ADDRESS is set)
     if (hour === 16) hit("/api/cron/nurture")
+    // Daily 17:00 UTC — personal conversion emails to onboarded accounts with no
+    // paid plan (Anthropic + Resend; sends nothing without COMPANY_MAILING_ADDRESS).
+    // After lifecycle (14:00) so its 20h-per-account guard sees the day's nudge.
+    if (hour === 17) hit("/api/cron/convert")
   }, 60_000)
 }

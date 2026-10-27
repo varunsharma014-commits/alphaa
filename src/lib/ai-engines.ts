@@ -150,7 +150,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   ])
 }
 
-async function scanClaude(
+export async function scanClaude(
   businessName: string,
   businessType: string,
   city: string,
@@ -215,7 +215,7 @@ async function scanClaude(
   }
 }
 
-async function scanChatGPT(
+export async function scanChatGPT(
   businessName: string,
   businessType: string,
   city: string,
@@ -281,7 +281,7 @@ async function scanChatGPT(
   }
 }
 
-async function scanGemini(
+export async function scanGemini(
   businessName: string,
   businessType: string,
   city: string,
@@ -357,7 +357,7 @@ async function scanGemini(
   }
 }
 
-async function scanPerplexity(
+export async function scanPerplexity(
   businessName: string,
   businessType: string,
   city: string,

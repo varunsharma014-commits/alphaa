@@ -54,6 +54,29 @@ const stripTags = (s: string) =>
   s.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&#39;|&rsquo;/g, "’").replace(/&quot;/g, "\"").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()
 
 
+/**
+ * Checks this site fails that at least one rival site passes, ranked by impact
+ * (max 3). Keyed by check so personal emails can avoid repeating a gap.
+ */
+export function siteGaps(siteChecks: unknown): { key: CheckKey; text: string }[] {
+  const sc = isRecord(siteChecks) ? siteChecks : null
+  const you = sc && isRecord(sc.you) && Array.isArray(sc.you.checks) ? (sc.you.checks as unknown[]) : []
+  const rivalSites = sc && Array.isArray(sc.competitors) ? (sc.competitors as unknown[]) : []
+  if (!you.length || !rivalSites.length) return []
+  const rivalPass = new Set<string>()
+  for (const site of rivalSites) {
+    if (!isRecord(site) || !Array.isArray(site.checks)) continue
+    for (const c of site.checks) if (isRecord(c) && c.ok === true && typeof c.key === "string") rivalPass.add(c.key)
+  }
+  return you
+    .filter((c): c is Record<string, unknown> => isRecord(c) && c.ok === false && typeof c.key === "string" && rivalPass.has(c.key as string))
+    .map((c) => c.key as CheckKey)
+    .filter((k) => k in CHECK_SHORT)
+    .sort((a, b) => (CHECK_IMPACT[b] ?? 0) - (CHECK_IMPACT[a] ?? 0))
+    .slice(0, 3)
+    .map((k) => ({ key: k, text: CHECK_SHORT[k].replace(/\s*[—–]\s*/g, "; ") }))
+}
+
 export function extractLeadFacts(lead: {
   id: string
   businessName: string | null
@@ -106,23 +129,7 @@ export function extractLeadFacts(lead: {
   rivals = rivals.filter((r) => r && r.toLowerCase() !== name.toLowerCase()).slice(0, 2)
 
   // Gaps: checks this site fails that at least one rival site passes, ranked by impact.
-  const gaps: string[] = []
-  const sc = isRecord(og.siteChecks) ? og.siteChecks : null
-  const you = sc && isRecord(sc.you) && Array.isArray(sc.you.checks) ? (sc.you.checks as unknown[]) : []
-  const rivalSites = sc && Array.isArray(sc.competitors) ? (sc.competitors as unknown[]) : []
-  if (you.length && rivalSites.length) {
-    const rivalPass = new Set<string>()
-    for (const site of rivalSites) {
-      if (!isRecord(site) || !Array.isArray(site.checks)) continue
-      for (const c of site.checks) if (isRecord(c) && c.ok === true && typeof c.key === "string") rivalPass.add(c.key)
-    }
-    const missing = you
-      .filter((c): c is Record<string, unknown> => isRecord(c) && c.ok === false && typeof c.key === "string" && rivalPass.has(c.key as string))
-      .map((c) => c.key as CheckKey)
-      .filter((k) => k in CHECK_SHORT)
-      .sort((a, b) => (CHECK_IMPACT[b] ?? 0) - (CHECK_IMPACT[a] ?? 0))
-    for (const k of missing.slice(0, 3)) gaps.push(CHECK_SHORT[k].replace(/\s*[—–]\s*/g, "; "))
-  }
+  const gaps = siteGaps(og.siteChecks).map((g) => g.text)
 
   // The stored quick-fix draft (written by /api/scan/quick-fix). First Q&A only.
   let draft: LeadFacts["draft"] = null
