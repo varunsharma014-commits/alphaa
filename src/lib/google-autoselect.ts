@@ -4,7 +4,7 @@
 // else the only location. Analytics: only when the GA scope is enabled, same matching.
 // Anything that can't be matched with confidence is left empty and reported, never guessed.
 import { db } from '@/lib/db'
-import { getAuthenticatedClient, gaScopeEnabled } from '@/lib/google'
+import { getAuthenticatedClient } from '@/lib/google'
 import { getSiteList } from '@/lib/gsc'
 import { getLocationList } from '@/lib/gmb'
 import { getPropertyList } from '@/lib/ga'
@@ -40,7 +40,8 @@ export async function autoSelectGoogle(userId: string): Promise<AutoSelectResult
   const [sites, locations, gaProps] = await Promise.allSettled([
     getSiteList(token),
     getLocationList(token),
-    gaScopeEnabled() ? getPropertyList(token) : Promise.resolve([]),
+    // Fails (403) unless this grant included analytics.readonly; allSettled absorbs that.
+    getPropertyList(token),
   ])
 
   const data: Record<string, string | null> = {}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
-import { getGoogleAuthUrl } from '@/lib/google'
+import { currentUser } from '@clerk/nextjs/server'
+import { gaScopeAllowed, getGoogleAuthUrl } from '@/lib/google'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,7 +22,9 @@ export async function GET(request: NextRequest) {
       JSON.stringify({ userId: clerkId, nonce: crypto.randomUUID(), returnTo }),
     ).toString('base64url')
 
-    const authUrl = getGoogleAuthUrl(state, { analytics: request.nextUrl.searchParams.get('analytics') === '1' })
+    const wantsGa = request.nextUrl.searchParams.get('analytics') === '1'
+    const email = wantsGa ? (await currentUser())?.primaryEmailAddress?.emailAddress : null
+    const authUrl = getGoogleAuthUrl(state, { analytics: wantsGa && gaScopeAllowed(email) })
 
     // Agent chips navigate here directly (?go=1) rather than fetching JSON.
     if (request.nextUrl.searchParams.get('go') === '1') return NextResponse.redirect(authUrl)

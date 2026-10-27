@@ -218,7 +218,7 @@ export default function IntegrationsPage() {
     setConnecting(true)
     setError(null)
     try {
-      const res = await fetch('/api/integrations/google/connect')
+      const res = await fetch('/api/integrations/google/connect?analytics=1')
       if (!res.ok) throw new Error('Failed to get auth URL')
       const { authUrl } = (await res.json()) as { authUrl: string }
       window.location.href = authUrl
