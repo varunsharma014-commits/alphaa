@@ -99,6 +99,9 @@ OAuth Scopes We Request and Why:
 • https://www.googleapis.com/auth/webmasters.readonly (Google Search Console)
   We use this scope to retrieve your website's keyword ranking data, including search queries, click-through rates, impressions, and average position. This data is displayed in your Alphaa Keywords dashboard to help you understand your organic search performance.
 
+• https://www.googleapis.com/auth/analytics.readonly (Google Analytics, optional)
+  We use this read-only scope to count the visits your website receives, by channel, and how many of those visits came from AI assistants (ChatGPT, Gemini, Claude and Perplexity). These totals appear in your Weekly Briefing and weekly report email so you can see whether being named by AI assistants brings you visitors. We never change your Analytics settings or data, and we do not use it for advertising.
+
 Limited Use Commitments:
 • We access Google user data solely to provide the features and functionality of the Alphaa Service that you have explicitly requested and authorized.
 • We do not use Google user data to develop, improve, or train generalized AI or machine learning models.
@@ -229,7 +232,7 @@ export default function PrivacyPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Privacy Policy</h1>
-        <p className="text-muted text-sm mb-10">Last updated: September 28, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: October 27, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.
