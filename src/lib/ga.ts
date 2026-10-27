@@ -173,6 +173,28 @@ export async function getPropertyList(
   return properties
 }
 
+/** Each property's web-stream hosts ("www." stripped), for matching a property to the owner's website. */
+export async function getPropertyHosts(accessToken: string, ids: string[]): Promise<Map<string, string[]>> {
+  const auth = await getAuthenticatedClient({ accessToken, refreshToken: null, expiresAt: null })
+  const analyticsAdmin = google.analyticsadmin({ version: 'v1beta', auth })
+  const out = new Map<string, string[]>()
+  const settled = await Promise.allSettled(
+    ids.map((id) => analyticsAdmin.properties.dataStreams.list({ parent: `properties/${id}` }).then((r) => [id, r.data.dataStreams ?? []] as const)),
+  )
+  for (const s of settled) {
+    if (s.status !== 'fulfilled') continue
+    const [id, streams] = s.value
+    const hosts: string[] = []
+    for (const d of streams) {
+      try {
+        if (d.webStreamData?.defaultUri) hosts.push(new URL(d.webStreamData.defaultUri).hostname.toLowerCase().replace(/^www\./, ''))
+      } catch {}
+    }
+    out.set(id, hosts)
+  }
+  return out
+}
+
 /** Sessions that arrived from AI assistants, by assistant, over the last `days`. */
 export async function getAiReferrals(
   integration: StoredIntegration & { gaPropertyId?: string | null },

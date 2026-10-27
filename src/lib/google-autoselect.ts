@@ -7,7 +7,7 @@ import { db } from '@/lib/db'
 import { getAuthenticatedClient } from '@/lib/google'
 import { getSiteList } from '@/lib/gsc'
 import { getLocationList } from '@/lib/gmb'
-import { getPropertyList } from '@/lib/ga'
+import { getPropertyHosts, getPropertyList } from '@/lib/ga'
 
 const bare = (h: string) => h.toLowerCase().replace(/^www\./, '')
 function hostOf(u: string | null | undefined): string | null {
@@ -68,10 +68,15 @@ export async function autoSelectGoogle(userId: string): Promise<AutoSelectResult
 
   if (gaProps.status === 'fulfilled' && gaProps.value.length) {
     const props = gaProps.value
-    const name = user?.businessName ? norm(user.businessName) : ''
+    // Display names are free text ("GrowthTurbine - GA4"), so match on the web stream's
+    // address first, then on the name with spaces removed.
+    const hosts = siteHost ? await getPropertyHosts(token, props.map((p) => p.id)).catch(() => new Map<string, string[]>()) : new Map<string, string[]>()
+    const squash = (s: string) => norm(s).replace(/ /g, '')
+    const name = user?.businessName ? squash(user.businessName) : ''
     const pick =
-      (siteHost && props.find((p) => norm(p.name).includes(norm(siteHost)))) ||
-      (name && props.find((p) => norm(p.name).includes(name))) ||
+      (siteHost && props.find((p) => hosts.get(p.id)?.includes(siteHost))) ||
+      (siteHost && props.find((p) => squash(p.name).includes(squash(siteHost.split('.')[0])))) ||
+      (name && props.find((p) => squash(p.name).includes(name))) ||
       (props.length === 1 ? props[0] : null)
     if (pick) {
       out.ga = pick.name
