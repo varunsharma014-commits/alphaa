@@ -654,7 +654,7 @@ export function DashboardAgent({
   // Bring a topic's thread into this conversation instead of opening a page.
   async function pullThread(topic: string, label: string) {
     setFollowNew(true)
-    push(userMsg(label))
+    if (label) push(userMsg(label)) // no label: arrived by link, the owner didn't ask anything
     setBusy(true)
     const res = await fetch(`/api/agent/thread?topic=${encodeURIComponent(topic)}`).catch(() => null)
     const data = res?.ok ? ((await res.json().catch(() => null)) as { messages?: Message[]; autorun?: Task[] } | null) : null
@@ -672,7 +672,7 @@ export function DashboardAgent({
     window.addEventListener(ASK_EVENT, onAsk)
     const fromUrl = new URLSearchParams(window.location.search).get("ask")
     if (fromUrl) {
-      void pullThread(fromUrl, "Show me that")
+      void pullThread(fromUrl, "")
       router.replace(window.location.pathname)
     }
     return () => window.removeEventListener(ASK_EVENT, onAsk)
