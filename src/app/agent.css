@@ -540,3 +540,4 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
   .ag-brief__headline { font-size: 24px; }
   .ag-light__name { font-size: 12px; }
 }
+.ag-inbox__need { margin: 12px 0 0; font-size: 14px; color: var(--ag-fg2); }

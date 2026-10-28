@@ -21,6 +21,10 @@ function dayLabel(iso: string): string {
   return d.toLocaleDateString("en-US", { weekday: "long" })
 }
 
+// Drafts are Markdown; the owner reads plain text.
+const plain = (md: string) => md.replace(/^#{1,6}\s*/gm, "").replace(/^-{3,}\s*$/gm, "").replace(/\*\*(.+?)\*\*/g, "$1").replace(/\n{3,}/g, "\n\n").trim()
+const blanks = (t: string) => t.match(/\[[^\]]{2,}\]/g)?.length ?? 0
+
 const weekday = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long" })
 
 function asOfLabel(iso: string): string {
@@ -130,6 +134,7 @@ function InboxCard({ item, position, onDone, onShow }: { item: InboxItem; positi
   const [editing, setEditing] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const missing = blanks(text)
 
   async function call(action: "publish" | "draft") {
     setBusy(true)
@@ -160,11 +165,12 @@ function InboxCard({ item, position, onDone, onShow }: { item: InboxItem; positi
       ) : editing ? (
         <textarea className="ag-inbox__edit" value={text} onChange={(e) => setText(e.target.value)} rows={Math.min(14, Math.max(4, Math.ceil(text.length / 60)))} autoFocus />
       ) : text ? (
-        <div className={`ag-inbox__text ${item.kind === "post" ? "ag-inbox__text--clip" : ""}`}>{text}</div>
+        <div className={`ag-inbox__text ${item.kind === "post" ? "ag-inbox__text--clip" : ""}`}>{item.kind === "post" ? plain(text) : text}</div>
       ) : (
         <p className="ag-inbox__text ag-inbox__text--muted">I haven’t written this one yet.</p>
       )}
 
+      {missing > 0 && <p className="ag-inbox__need">{missing === 1 ? "One detail only you know is marked [like this]. Fill it in and it’s ready." : `${missing} details only you know are marked [like this]. Fill them in and it’s ready.`}</p>}
       <div className="ag-inbox__btns">
         {item.kind === "fix" ? (
           <button className="ag-btn-primary" onClick={() => onShow(item.topic, "Show me the fix")}>Show me the fix</button>
@@ -172,9 +178,11 @@ function InboxCard({ item, position, onDone, onShow }: { item: InboxItem; positi
           <a className="ag-btn-primary" href={item.href}>{item.cta}</a>
         ) : !text ? (
           <button className="ag-btn-primary" disabled={busy} onClick={() => call("draft")}>{busy ? "Writing…" : "Write my reply"}</button>
+        ) : missing > 0 && !editing ? (
+          <button className="ag-btn-primary" onClick={() => setEditing(true)}>{missing === 1 ? "Fill in 1 detail" : `Fill in ${missing} details`}</button>
         ) : (
           <>
-            <button className="ag-btn-primary" disabled={busy || !text.trim()} onClick={() => call("publish")}>
+            <button className="ag-btn-primary" disabled={busy || !text.trim() || missing > 0} onClick={() => call("publish")}>
               {busy ? "Publishing…" : editing ? "Save & publish" : "Approve & publish"}
             </button>
             {!editing && <button className="ag-btn-ghost" disabled={busy} onClick={() => setEditing(true)}>Edit</button>}

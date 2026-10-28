@@ -28,7 +28,9 @@ export async function GET(req: Request) {
         // connected and the post has no facts left for the owner to fill in.
         const s = await getAgentSettings(u.id)
         const auto = !!s.autoPublishPosts && /pro|full/i.test(user.plan) && (!!s.wp || !!s.site)
-        const p = await writePost(user, undefined, { noPlaceholders: auto })
+        // Never leave [placeholders]: the owner approves drafts in one tap from the
+        // briefing, so the writer leaves out facts it doesn't have.
+        const p = await writePost(user, undefined, { noPlaceholders: true })
         const img = await generatePostImage(u.id, { title: p.title, businessType: user.businessType, city: user.city })
         const draft = await db.mockActivity.create({ data: { userId: u.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null } } })
         if (auto && !/\[[^\]]{2,}\]/.test(p.markdown)) {
