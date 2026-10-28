@@ -30,11 +30,10 @@ const blanks = (t: string) => t.match(/\[[^\]]{2,}\]/g)?.length ?? 0
 
 function whenNext(iso: string): string {
   const d = new Date(iso)
-  const day = dayLabel(iso)
   const diff = Math.round((new Date(d.toDateString()).getTime() - new Date(new Date().toDateString()).getTime()) / 86_400_000)
   if (diff <= 0) return d.getHours() < 12 ? "this morning" : d.getHours() < 18 ? "this afternoon" : "tonight"
   if (diff === 1) return "tomorrow"
-  return day
+  return d.toLocaleDateString("en-US", { weekday: "long" })
 }
 
 const weekday = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long" })

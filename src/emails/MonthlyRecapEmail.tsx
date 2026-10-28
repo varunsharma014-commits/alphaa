@@ -55,7 +55,7 @@ export default function MonthlyRecapEmail({ firstName, recap: r, paysFor, dashbo
           )}
           {r.value && paysFor !== null && paysFor >= 1 && (
             <Section style={{ padding: "8px 32px" }}>
-              <Text style={para}>One new customer is worth about {money(r.value)} to you. Just one of them pays for {paysFor === 1 ? "a month" : `${paysFor} months`} of Alphaa.</Text>
+              <Text style={para}>One new customer is worth about {money(r.value)} to you. Just one of them pays for {paysFor > 24 ? "Alphaa for years" : paysFor === 1 ? "a month of Alphaa" : `${paysFor} months of Alphaa`}.</Text>
             </Section>
           )}
           <Section style={{ padding: "16px 32px 32px" }}>

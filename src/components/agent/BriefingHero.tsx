@@ -88,7 +88,7 @@ export function BriefingHero() {
             ) : (
               <p>
                 One new customer is worth about <b>{money(hero.value.amount)}</b> to you
-                {hero.paysFor !== null && hero.paysFor >= 1 && <>. Just one of them pays for <b>{hero.paysFor === 1 ? "a month" : `${hero.paysFor} months`}</b> of Alphaa</>}.{" "}
+                {hero.paysFor !== null && hero.paysFor >= 1 && (hero.paysFor > 24 ? <>. Just one of them pays for Alphaa <b>for years</b></> : <>. Just one of them pays for <b>{hero.paysFor === 1 ? "a month" : `${hero.paysFor} months`}</b> of Alphaa</>)}.{" "}
                 <span className="ag-hero__est">
                   {hero.value.source === "estimate" ? `My estimate${hero.value.basis ? `: ${hero.value.basis}` : ""}.` : "Your number."}{" "}
                   <button type="button" onClick={() => { setDraft(String(hero.value!.amount)); setEditing(true) }}>Change it</button>

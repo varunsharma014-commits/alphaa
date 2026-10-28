@@ -18,7 +18,7 @@ export async function briefingEmailProps(userId: string, firstName: string | nul
   const v = hero?.visitors
   const result = [
     v && v.total > 0 ? `${v.total} ${v.total === 1 ? "person" : "people"} found you through AI in the last 30 days${v.prev !== null && v.total > v.prev ? `, up ${v.total - v.prev} from the month before` : ""}.` : null,
-    hero?.value && hero.paysFor && hero.paysFor >= 1 ? `One new customer is worth about $${hero.value.amount.toLocaleString("en-US")} to you, so just one pays for ${hero.paysFor === 1 ? "a month" : `${hero.paysFor} months`} of Alphaa.` : null,
+    hero?.value && hero.paysFor && hero.paysFor >= 1 ? `One new customer is worth about $${hero.value.amount.toLocaleString("en-US")} to you, so just one pays for ${hero.paysFor > 24 ? "Alphaa for years" : hero.paysFor === 1 ? "a month of Alphaa" : `${hero.paysFor} months of Alphaa`}.` : null,
   ].filter(Boolean).join(" ") || null
   return {
     firstName: firstName ?? b.firstName,
