@@ -22,6 +22,8 @@ export type AgentSettings = {
   site?: import("@/lib/connector/types").SiteConnection
   /** Pro: publish blog posts without asking (only drafts with no [placeholders]). */
   autoPublishPosts?: boolean
+  /** What one new customer is worth: my estimate until the owner edits it (lib/customer-value.ts). */
+  customerValue?: { amount: number; source: "estimate" | "owner"; basis?: string; at: string }
 }
 
 export type Location = { id: string; name: string; street: string; city: string; state?: string; zip?: string; phone?: string; hours?: string }

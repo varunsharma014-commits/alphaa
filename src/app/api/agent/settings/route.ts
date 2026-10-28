@@ -15,6 +15,7 @@ const body = z.object({
   reviewLink: z.string().url().max(500).optional(),
   profileUrl: z.string().url().max(500).optional(), // add one profile
   autoPublishPosts: z.boolean().optional(), // Pro: publish posts with no placeholders without asking
+  customerValue: z.number().int().min(1).max(10_000_000).optional(), // owner's own figure replaces my estimate
 })
 
 export async function GET() {
@@ -46,6 +47,9 @@ export async function POST(req: Request) {
   if (input.autoPublishPosts !== undefined) {
     if (input.autoPublishPosts && !/pro|full/i.test(user.plan)) return NextResponse.json({ error: "Auto-publish comes with the Pro plan.", upgrade: true }, { status: 403 })
     await saveAgentSettings(user.id, { autoPublishPosts: input.autoPublishPosts })
+  }
+  if (input.customerValue !== undefined) {
+    await saveAgentSettings(user.id, { customerValue: { amount: input.customerValue, source: "owner", at: now } })
   }
   if (input.profileUrl) {
     if (!networkOf(input.profileUrl)) return NextResponse.json({ error: "That isn’t a Facebook, Instagram, LinkedIn, Yelp, YouTube, TikTok, X, Nextdoor or Google link." }, { status: 400 })

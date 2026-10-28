@@ -5,7 +5,6 @@ import { NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
 import { db } from "@/lib/db"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { getRoi, roiLines } from "@/lib/roi"
 import { PLATFORM_NAME } from "@/lib/connector/platforms"
 import type { SiteCheck } from "@/lib/site-check"
 
@@ -14,8 +13,8 @@ import type { SiteCheck } from "@/lib/site-check"
 type Health = { label: string; ok: boolean | null; fix?: { topic: string } | { href: string } }
 
 // The agent's "memory" panel: what it knows about the business right now
-// (results, connections, work done). Loaded after the chat paints, because
-// the results call Google and can take a few seconds.
+// (setup checklist, connections, work done). Results live on the main
+// briefing now (lib/agent/hero.ts).
 
 // Ledger rows that are bookkeeping, not work an owner would recognise.
 const NOISE = ["sandbox_query", "agent_settings", "question_scan_started", "ai_visit", "email_sent", "keywords_synced"]
@@ -26,7 +25,7 @@ export async function GET() {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const [settings, integration, work, roi, siteRow, llmsPush] = await Promise.all([
+  const [settings, integration, work, siteRow, llmsPush] = await Promise.all([
     getAgentSettings(user.id),
     db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationName: true, gmbLocationId: true, gscSiteUrl: true, gaPropertyId: true, gaPropertyName: true } }),
     db.mockActivity.findMany({
@@ -35,8 +34,6 @@ export async function GET() {
       take: 8,
       select: { id: true, title: true, description: true, createdAt: true },
     }),
-    // Results are a nice-to-have here: never fail the panel over a slow Google call.
-    Promise.race([getRoi(user.id).catch(() => null), new Promise<null>((r) => setTimeout(() => r(null), 12_000))]),
     db.mockActivity.findFirst({ where: { userId: user.id, type: "site_check" }, orderBy: { createdAt: "desc" }, select: { metadata: true } }),
     db.mockActivity.findFirst({ where: { userId: user.id, type: "site_change", metadata: { path: ["op"], equals: "llms" } }, orderBy: { createdAt: "desc" }, select: { metadata: true } }),
   ])
@@ -71,7 +68,6 @@ export async function GET() {
       : null
 
   return NextResponse.json({
-    results: roi ? roiLines(roi).slice(0, 3) : [],
     google: integration
       ? {
           profile: integration.gmbLocationName ?? null,

@@ -40,6 +40,21 @@ export type Briefing = {
   inbox: InboxItem[]
   ledger: LedgerItem[]
   nextCheck: string // ISO
+  /** What I'll do next and when: the work never looks idle. */
+  nextUp: { text: string; at: string }
+  /** Firsts worth remembering, oldest first. */
+  milestones: { text: string; at: string }[]
+}
+
+/** Next time a scheduler slot fires (UTC): `dows` = days of week (0 = Sun), or every day. */
+function nextSlot(hour: number, dows: number[] | null, after = new Date()): Date {
+  for (let i = 0; i < 8; i++) {
+    const d = new Date(after)
+    d.setUTCDate(d.getUTCDate() + i)
+    d.setUTCHours(hour, 0, 0, 0)
+    if (d > after && (!dows || dows.includes(d.getUTCDay()))) return d
+  }
+  return new Date(after.getTime() + 86_400_000)
 }
 
 const list = (names: string[]) => (names.length <= 1 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`)
@@ -70,7 +85,7 @@ const SITE_OP: Record<string, string> = {
   headers: "Added basic security settings to your site",
   meta: "Rewrote your page title and description so Google and AI know what you do",
 }
-function ledgerText(type: string, title: string, meta: Record<string, unknown>): string | null {
+export function ledgerText(type: string, title: string, meta: Record<string, unknown>): string | null {
   switch (type) {
     case "site_change":
       if (meta.undone) return null
@@ -90,12 +105,12 @@ function ledgerText(type: string, title: string, meta: Record<string, unknown>):
     case "handoff_sent": return title
     case "review_request": return title
     case "voice_learned": return "Learned how your business sounds from your website"
-    case "win": return title
+    case "win": return meta.kind === "engine_named" ? null : title.replace(/^🎉\s*/u, "")
     case "guarantee_credit": return title
     default: return null
   }
 }
-const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "win", "guarantee_credit"]
+export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "win", "guarantee_credit"]
 
 // The weekly AI re-check runs Wednesdays 09:00 UTC (lib/cron-scheduler.ts).
 export function nextCheck(now = new Date()): string {
@@ -192,5 +207,31 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
     if (ledger.length >= 25) break
   }
 
-  return { firstName: user.fullName?.trim().split(/\s+/)[0] || null, lights, headline: headlineFor(lights), asOf, rivalLine, planLine, inbox, ledger, nextCheck: nextCheck() }
+  // ── What I do next (times from lib/cron-scheduler.ts) ──────────────────────
+  const paid = hasPaidPlan(user)
+  const jobs: { text: string; at: Date }[] = [
+    { text: "Asking ChatGPT, Gemini, Claude and Perplexity about you again", at: nextSlot(9, [3]) },
+    { text: "Checking your listings and your site’s security", at: nextSlot(9, [2]) },
+  ]
+  if (gmb && user.gmbReviews.length) jobs.push({ text: "Writing replies to your new reviews", at: nextSlot(6, null) })
+  if (gmb && paid) jobs.push({ text: "Writing your next Google listing update", at: nextSlot(13, [1, 2, 4, 5]) })
+  if (paid) {
+    // The writer drafts a post at most every 3 days (api/cron/content).
+    const lastDraft = postDrafts[0]?.createdAt
+    jobs.push({ text: "Writing your next post", at: nextSlot(10, null, lastDraft ? new Date(Math.max(Date.now(), lastDraft.getTime() + 3 * 86_400_000 - 3_600_000)) : new Date()) })
+  }
+  const soonest = jobs.sort((a, b) => a.at.getTime() - b.at.getTime())[0]
+
+  // ── Milestones ────────────────────────────────────────────────────────────
+  const firsts = await db.mockActivity.findMany({ where: { userId, type: "win", metadata: { path: ["kind"], equals: "engine_appeared" } }, orderBy: { createdAt: "asc" }, take: 12, select: { metadata: true, createdAt: true } })
+  const milestones: Briefing["milestones"] = [{ text: "I started working for you", at: user.createdAt.toISOString() }]
+  const seenEngines = new Set<string>()
+  for (const f of firsts) {
+    const e = (f.metadata as { engine?: string } | null)?.engine
+    if (!e || seenEngines.has(e)) continue
+    seenEngines.add(e)
+    milestones.push({ text: `${ENGINE_NAME[e as EngineKey] ?? e} recommended you for the first time`, at: f.createdAt.toISOString() })
+  }
+
+  return { nextUp: { text: soonest.text, at: soonest.at.toISOString() }, milestones, firstName: user.fullName?.trim().split(/\s+/)[0] || null, lights, headline: headlineFor(lights), asOf, rivalLine, planLine, inbox, ledger, nextCheck: nextCheck() }
 }

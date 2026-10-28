@@ -71,5 +71,7 @@ export function startCron(): void {
     // paid plan (Anthropic + Resend; sends nothing without COMPANY_MAILING_ADDRESS).
     // After lifecycle (14:00) so its 20h-per-account guard sees the day's nudge.
     if (hour === 17) hit("/api/cron/convert")
+    // 1st of the month 18:00 UTC — "Your month with Alphaa" recap email (Resend + GA)
+    if (now.getUTCDate() === 1 && hour === 18) hit("/api/cron/monthly-recap")
   }, 60_000)
 }

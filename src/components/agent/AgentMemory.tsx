@@ -6,11 +6,11 @@ import type { RailData } from "@/lib/agent/feed"
 
 // The agent's memory: what it knows about the business right now, so the
 // owner never has to ask "how are we doing?". Replaces the old left menu.
-// Visibility comes with the page (rail data); results, connections and work
+// Visibility comes with the page (rail data); setup, connections and work
 // load after the chat paints (/api/agent/memory).
 
 type Memory = {
-  results: string[]
+
   google: { profile: string | null; searchConsole: string | null; analytics: string | null } | null
   website: { platform: string; site: string } | null
   work: { id: string; title: string; detail: string | null; at: string }[]
@@ -106,17 +106,6 @@ export function AgentMemory({ rail, open, onClose, onAsk }: { rail: RailData; op
           )}
         </section>
       )}
-
-      <section className="ag-mem__sec">
-        <div className="ag-mem__lbl">Results this week</div>
-        {!mem ? (
-          <p className="ag-mem__muted">{pending ?? "Checking…"}</p>
-        ) : mem.results.length ? (
-          mem.results.map((r, i) => <p key={i} className="ag-mem__result">{r}</p>)
-        ) : (
-          <p className="ag-mem__muted">Connect Google and your website and I’ll show the calls, visits and AI referrals you get.</p>
-        )}
-      </section>
 
       <section className="ag-mem__sec">
         <div className="ag-mem__lbl">Connections</div>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { useUser } from "@clerk/nextjs"
 import type { Briefing as BriefingData, InboxItem, LedgerItem } from "@/lib/agent/briefing"
+import { BriefingHero } from "./BriefingHero"
 
 // The morning briefing: am I winning, what's waiting for me, what did you do.
 // Built for a time-poor owner on a phone: read it top to bottom in seconds,
@@ -27,6 +28,15 @@ function dayLabel(iso: string): string {
 const plain = (md: string) => md.replace(/^#{1,6}\s*/gm, "").replace(/^-{3,}\s*$/gm, "").replace(/\*\*(.+?)\*\*/g, "$1").replace(/\n{3,}/g, "\n\n").trim()
 const blanks = (t: string) => t.match(/\[[^\]]{2,}\]/g)?.length ?? 0
 
+function whenNext(iso: string): string {
+  const d = new Date(iso)
+  const day = dayLabel(iso)
+  const diff = Math.round((new Date(d.toDateString()).getTime() - new Date(new Date().toDateString()).getTime()) / 86_400_000)
+  if (diff <= 0) return d.getHours() < 12 ? "this morning" : d.getHours() < 18 ? "this afternoon" : "tonight"
+  if (diff === 1) return "tomorrow"
+  return day
+}
+
 const weekday = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long" })
 
 function asOfLabel(iso: string): string {
@@ -36,7 +46,7 @@ function asOfLabel(iso: string): string {
 
 export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic: string, label: string) => void }) {
   const [hello, setHello] = useState("")
-  const [result, setResult] = useState<string | null>(null)
+  const [sharing, setSharing] = useState(false)
   const [inbox, setInbox] = useState<InboxItem[]>(data.inbox)
   const [done, setDone] = useState<LedgerItem[]>([])
   const [flash, setFlash] = useState<string | null>(null)
@@ -45,12 +55,18 @@ export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic:
 
   useEffect(() => {
     setHello(greeting(name))
-    // A real result (visits from AI, calls) when Google is connected. Slow, so after paint.
   }, [name])
 
-  useEffect(() => {
-    fetch("/api/agent/memory").then((r) => (r.ok ? r.json() : null)).then((m) => setResult(m?.results?.[0] ?? null)).catch(() => {})
-  }, [])
+  // "I'm on ChatGPT": a public, verified card the owner can post or text.
+  async function share(engine: string) {
+    setSharing(true)
+    const win = window.open("", "_blank")
+    const res = await fetch("/api/agent/share", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ engine }) }).catch(() => null)
+    const data = (await res?.json().catch(() => null)) as { id?: string } | null
+    setSharing(false)
+    if (data?.id && win) win.location.href = `/w/${data.id}`
+    else win?.close()
+  }
 
   const ledger = useMemo(() => [...done, ...data.ledger], [done, data.ledger])
   const days = useMemo(() => {
@@ -73,12 +89,22 @@ export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic:
   }
 
   const yes = data.lights.filter((l) => l.light === "yes").length
+  const firstYes = data.lights.find((l) => l.light === "yes")
 
   return (
     <div className="ag-brief">
+      <div>
+        <p className="ag-brief__hello">{hello}</p>
+        <p className="ag-brief__next">
+          <span className="ag-dot ag-dot--live" aria-hidden="true" /> Next up: {data.nextUp.text.charAt(0).toLowerCase() + data.nextUp.text.slice(1)} · {whenNext(data.nextUp.at)}
+        </p>
+      </div>
+
+      {/* The result: people AI sent them, and what that's worth */}
+      <BriefingHero />
+
       {/* 1. Am I winning? */}
       <section className="ag-brief__head">
-        <p className="ag-brief__hello">{hello}</p>
         <h1 className="ag-brief__headline">{data.headline}</h1>
         <div className="ag-brief__lights" aria-label={`${yes} of 4 AIs recommend you`}>
           {data.lights.map((l) => (
@@ -88,12 +114,16 @@ export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic:
             </div>
           ))}
         </div>
+        {firstYes && (
+          <button type="button" className="ag-share" onClick={() => share(firstYes.engine)} disabled={sharing}>
+            {sharing ? "Making your card…" : `Share it: “${firstYes.name} recommends us”`}
+          </button>
+        )}
         {(data.rivalLine || data.planLine) && (
           <p className="ag-brief__plan">
             {data.rivalLine} {data.planLine}
           </p>
         )}
-        {result && <p className="ag-brief__result">{result}</p>}
         <p className="ag-brief__asof">
           {data.asOf ? `As of ${asOfLabel(data.asOf)}. ` : ""}I check all four again {weekday(data.nextCheck)}.
         </p>
@@ -131,6 +161,19 @@ export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic:
           </div>
         ))}
       </section>
+
+      {data.milestones.length > 1 && (
+        <section className="ag-brief__sec">
+          <p className="ag-brief__lead">Milestones</p>
+          <ul className="ag-miles">
+            {[...data.milestones].reverse().map((m) => (
+              <li key={m.text}><span>★</span>{m.text}<time>{new Date(m.at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</time></li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {inbox.length === 0 && <p className="ag-brief__end">You’re all caught up. I’ll keep working while you get on with your day.</p>}
     </div>
   )
 }

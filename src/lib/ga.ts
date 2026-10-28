@@ -195,10 +195,11 @@ export async function getPropertyHosts(accessToken: string, ids: string[]): Prom
   return out
 }
 
-/** Sessions that arrived from AI assistants, by assistant, over the last `days`. */
+/** Sessions that arrived from AI assistants, by assistant, over the last `days` (or an earlier window ending `endDaysAgo` days ago). */
 export async function getAiReferrals(
   integration: StoredIntegration & { gaPropertyId?: string | null },
   days = 7,
+  endDaysAgo = 1,
 ): Promise<{ total: number; bySource: Record<string, number> } | null> {
   if (!integration.gaPropertyId) return null
   try {
@@ -207,7 +208,7 @@ export async function getAiReferrals(
     const res = await analyticsdata.properties.runReport({
       property: `properties/${integration.gaPropertyId}`,
       requestBody: {
-        dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'yesterday' }],
+        dateRanges: [{ startDate: `${days + endDaysAgo - 1}daysAgo`, endDate: endDaysAgo === 1 ? 'yesterday' : `${endDaysAgo}daysAgo` }],
         dimensions: [{ name: 'sessionSource' }],
         metrics: [{ name: 'sessions' }],
         dimensionFilter: {
