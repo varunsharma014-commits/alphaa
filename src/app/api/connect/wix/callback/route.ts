@@ -8,7 +8,7 @@ import { wixExchange, wixSetup, wixVerifyInstance } from "@/lib/connector/wix"
 export const dynamic = "force-dynamic"
 
 const back = (params: Record<string, string>) => {
-  const u = new URL("/dashboard/t/site", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000")
+  const u = new URL("/dashboard?ask=site", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000")
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v)
   return NextResponse.redirect(u.toString())
 }

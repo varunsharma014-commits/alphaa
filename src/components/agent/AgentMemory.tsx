@@ -11,8 +11,6 @@ import type { RailData } from "@/lib/agent/feed"
 
 type Memory = {
 
-  google: { profile: string | null; searchConsole: string | null; analytics: string | null } | null
-  website: { platform: string; site: string } | null
   work: { id: string; title: string; detail: string | null; at: string }[]
   health?: { label: string; ok: boolean | null; fix?: { topic: string } | { href: string } }[]
 }
@@ -106,25 +104,6 @@ export function AgentMemory({ rail, open, onClose, onAsk }: { rail: RailData; op
           )}
         </section>
       )}
-
-      <section className="ag-mem__sec">
-        <div className="ag-mem__lbl">Connections</div>
-        <Link href="/dashboard/settings/integrations" className="ag-mem__row">
-          Google
-          <span className={mem?.google ? "on" : ""}>{mem ? (mem.google ? "Connected" : "Connect →") : rail.googleConnected ? "Connected" : "Connect →"}</span>
-        </Link>
-        {mem?.google && (
-          <div className="ag-mem__subrows">
-            <div>Business Profile <span>{mem.google.profile ?? "—"}</span></div>
-            <div>Search Console <span>{mem.google.searchConsole ?? "—"}</span></div>
-            <div>Analytics <span>{mem.google.analytics ?? "—"}</span></div>
-          </div>
-        )}
-        <Link href="/dashboard/settings/website" className="ag-mem__row">
-          Website
-          <span className={mem?.website ? "on" : ""}>{mem ? (mem.website ? `${mem.website.platform} · ${mem.website.site}` : "Connect →") : "…"}</span>
-        </Link>
-      </section>
 
       <section className="ag-mem__sec">
         <div className="ag-mem__lbl">Work I’ve done</div>

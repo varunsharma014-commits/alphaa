@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic"
 export async function GET(req: NextRequest) {
   const base = process.env.NEXT_PUBLIC_APP_URL || req.nextUrl.origin
   const back = (params: Record<string, string>) => {
-    const u = new URL("/dashboard/t/site", base)
+    const u = new URL("/dashboard?ask=site", base)
     for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v)
     return NextResponse.redirect(u)
   }

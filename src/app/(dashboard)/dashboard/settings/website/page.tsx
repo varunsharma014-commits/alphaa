@@ -35,7 +35,7 @@ const WHAT: Record<Platform, string> = {
 
 /** Where each platform's connect flow starts. WordPress (plugin + key) and Shopify (store address) start in the agent chat. */
 function startHref(p: Platform, shop?: string): string {
-  if (p === 'wordpress') return '/dashboard/t/site?connect=wordpress'
+  if (p === 'wordpress') return '/dashboard?ask=site&connect=wordpress'
   if (p === 'shopify') return `/api/connect/shopify/start?shop=${encodeURIComponent(shop ?? '')}`
   return `/api/connect/${p}/start`
 }

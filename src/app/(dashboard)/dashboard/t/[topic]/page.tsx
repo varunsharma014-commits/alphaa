@@ -1,55 +1,11 @@
-export const dynamic = "force-dynamic"
-export const maxDuration = 60
+import { redirect } from "next/navigation"
 
-import { auth } from "@clerk/nextjs/server"
-import { notFound, redirect } from "next/navigation"
-import { db } from "@/lib/db"
-import { buildThread, isTopic, TOPICS } from "@/lib/agent/threads"
-import { agent, type Message } from "@/lib/agent/types"
-import { DashboardAgent } from "@/components/agent/DashboardAgent"
-import { PLATFORM_NAME as NAMES, platformPickerBlocks } from "@/lib/connector/platforms"
-import { platformAvailability } from "@/lib/connector/availability"
-
-export async function generateMetadata({ params }: { params: Promise<{ topic: string }> }) {
-  const { topic } = await params
-  return { title: `${TOPICS.find((t) => t.key === topic)?.label ?? "Alphaa"} — alphaa` }
-}
-
-// Every rail topic is a thread in the same conversation as Today — the agent
-// reports, asks, and hands you approval cards. Legacy pages stay under
-// "Full reports" for anyone who wants the raw tables.
-const PLATFORM_NAME: Record<string, string> = NAMES
-
-// Result of a website-connect round trip (?connected=… / ?connect_error=… / ?connect=<platform>-unavailable),
-// or a request to start one (?connect=pick from Settings → Website connection).
-function connectMessage(q: Record<string, string | string[] | undefined>): Message | null {
-  const one = (k: string) => (Array.isArray(q[k]) ? q[k]![0] : q[k]) as string | undefined
-  const ok = one("connected"), err = one("connect_error"), na = one("connect")
-  if (ok) return agent([{ kind: "text", text: `I’m connected to your ${PLATFORM_NAME[ok] ?? ok} site. ✓`, big: true }, { kind: "text", text: "From now on, when you approve a post or page, I publish it there myself — and every change has an Undo." }], "connect-result")
-  if (err) return agent([{ kind: "text", text: `That didn’t connect: ${err.slice(0, 300)}` }, { kind: "chips", items: [{ label: "Try again", action: { type: "wp-connect" }, primary: true }] }], "connect-result")
-  if (na === "pick") return agent(platformPickerBlocks(platformAvailability(), "Which website builder is your site on? Pick it and I’ll connect it."), "connect-result")
-  if (na === "wordpress") return agent([{ kind: "text", text: "Let’s connect your WordPress site." }, { kind: "chips", items: [{ label: "Show me how", action: { type: "wp-connect", direct: true }, primary: true }] }], "connect-result")
-  if (na?.endsWith("-unavailable")) return agent([{ kind: "text", text: `Connecting ${PLATFORM_NAME[na.replace("-unavailable", "")] ?? "that platform"} is coming soon. In the meantime I’ll email your web person exactly what to change, or our team can do it.` }], "connect-result")
-  return null
-}
-
+// Retired: every topic now opens inside the home briefing (/dashboard?ask=<topic>).
+// Kept as a redirect so old email links and website-connect callbacks still land
+// in the right place; any query (?connected=…, ?connect=…) is passed along.
 export default async function TopicPage({ params, searchParams }: { params: Promise<{ topic: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { topic } = await params
-  const notice = connectMessage(await searchParams)
-  if (!isTopic(topic)) notFound()
-  const { userId } = await auth()
-  if (!userId) redirect("/login")
-  const user = await db.user.findUnique({ where: { clerkId: userId }, select: { id: true, businessName: true, businessType: true, city: true } })
-  if (!user) redirect("/login")
-  const thread = await buildThread(topic, user.id)
-  return (
-    <DashboardAgent
-      key={topic}
-      initial={notice ? [notice, ...thread.messages] : thread.messages}
-      autorun={thread.autorun}
-      businessName={user.businessName ?? "your business"}
-      current={`/dashboard/t/${topic}`}
-      context={{ businessType: user.businessType, city: user.city }}
-    />
-  )
+  const q = new URLSearchParams({ ask: topic })
+  for (const [k, v] of Object.entries(await searchParams)) if (typeof v === "string") q.set(k, v)
+  redirect(`/dashboard?${q}`)
 }

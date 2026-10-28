@@ -18,14 +18,14 @@ export async function GET(request: NextRequest) {
     res.cookies.set(WF_PENDING_COOKIE, "", { path: "/api/connect/webflow", maxAge: 0 })
     return res
   }
-  if (!token) return done(`/dashboard/t/site?connect_error=${encodeURIComponent("That Webflow connection expired. Connect Webflow again from Settings → Website connection.")}`)
+  if (!token) return done(`/dashboard?ask=site&connect_error=${encodeURIComponent("That Webflow connection expired. Connect Webflow again from Settings → Website connection.")}`)
 
   try {
     const err = await attachWebflow(user, token)
-    if (err) return done(`/dashboard/t/site?connect_error=${encodeURIComponent(err)}`)
-    return done("/dashboard/t/site?connected=webflow")
+    if (err) return done(`/dashboard?ask=site&connect_error=${encodeURIComponent(err)}`)
+    return done("/dashboard?ask=site&connected=webflow")
   } catch (e) {
     console.error("[Webflow Finish]", e)
-    return done(`/dashboard/t/site?connect_error=${encodeURIComponent("Couldn’t finish connecting Webflow.")}`)
+    return done(`/dashboard?ask=site&connect_error=${encodeURIComponent("Couldn’t finish connecting Webflow.")}`)
   }
 }

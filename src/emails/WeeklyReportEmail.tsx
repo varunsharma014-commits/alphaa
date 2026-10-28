@@ -160,7 +160,7 @@ WeeklyReportEmail.PreviewProps = {
   postsPublished: 3,
   reviewsNew: 2,
   visibilityDelta: { chatgpt: 1, perplexity: 0, google_ai: 1, gemini: -1 },
-  reportUrl: "https://alphaa.app/dashboard/t/briefings",
+  reportUrl: "https://alphaa.app/dashboard",
   footer: { address: "123 Example St, City", unsubscribeUrl: "https://alphaa.app/unsubscribe?s=u_x&t=y" },
 } satisfies WeeklyReportEmailProps
 

@@ -12,7 +12,7 @@ export async function GET() {
   // Marketplace installs are mostly new owners: sign-up first (it links to sign-in), then straight
   // into one Webflow authorization.
   if (!user) return NextResponse.redirect(app(`/signup?redirect_url=${encodeURIComponent("/api/connect/webflow/start")}`))
-  if (!platformAvailability().webflow) return NextResponse.redirect(app("/dashboard/t/site?connect=webflow-unavailable"))
+  if (!platformAvailability().webflow) return NextResponse.redirect(app("/dashboard?ask=site&connect=webflow-unavailable"))
   const state = Buffer.from(JSON.stringify({ userId: user.id, nonce: crypto.randomUUID() })).toString("base64url")
   return NextResponse.redirect(webflowAuthUrl(state))
 }

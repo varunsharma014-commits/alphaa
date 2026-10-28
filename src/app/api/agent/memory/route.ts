@@ -5,7 +5,6 @@ import { NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
 import { db } from "@/lib/db"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { PLATFORM_NAME } from "@/lib/connector/platforms"
 import type { SiteCheck } from "@/lib/site-check"
 
 // One line per thing an owner can understand at a glance. ok: true = green
@@ -27,7 +26,7 @@ export async function GET() {
 
   const [settings, integration, work, siteRow, llmsPush] = await Promise.all([
     getAgentSettings(user.id),
-    db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationName: true, gmbLocationId: true, gscSiteUrl: true, gaPropertyId: true, gaPropertyName: true } }),
+    db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationId: true, gscSiteUrl: true, gaPropertyId: true } }),
     db.mockActivity.findMany({
       where: { userId: user.id, type: { notIn: NOISE } },
       orderBy: { createdAt: "desc" },
@@ -61,21 +60,7 @@ export async function GET() {
     { label: "Bing connected", ok: !!(settings.bingKeyEnc && settings.bingSite), fix: { topic: "listings" } },
   ]
 
-  const website = settings.wp
-    ? { platform: "WordPress", site: host(settings.wp.siteUrl) }
-    : settings.site
-      ? { platform: PLATFORM_NAME[settings.site.platform], site: settings.site.label || host(settings.site.siteUrl) }
-      : null
-
   return NextResponse.json({
-    google: integration
-      ? {
-          profile: integration.gmbLocationName ?? null,
-          searchConsole: integration.gscSiteUrl ? integration.gscSiteUrl.replace(/^sc-domain:/, "") : null,
-          analytics: integration.gaPropertyName ?? (integration.gaPropertyId ? "Connected" : null),
-        }
-      : null,
-    website,
     health,
     work: work.map((w) => ({ id: w.id, title: w.title, detail: w.description, at: w.createdAt.toISOString() })),
   })

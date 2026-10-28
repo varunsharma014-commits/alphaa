@@ -108,7 +108,7 @@ export function answersMessages(q: QuestionScan, at: Date): Message[] {
       { kind: "text", text: high.length ? `${ENGINE[high[0].engine]} is telling customers something wrong about you.` : "Some AI answers get a detail about you wrong.", big: true },
       { kind: "receipt", title: "What the AIs say vs. the truth", sub: `checked ${when}`, items: q.facts.issues.map((i) => `${ENGINE[i.engine]}: “${i.claim}” — actually ${i.truth}`) },
       { kind: "text", text: "AIs repeat what they find on your website, Google profile and directories. Fixing it there is what changes the answer — I check again every week." },
-      { kind: "chips", items: [{ label: "Check my listings", action: { type: "link", href: "/dashboard/t/listings" }, primary: true }, { label: "Check my site", action: { type: "link", href: "/dashboard/t/site" } }] },
+      { kind: "chips", items: [{ label: "Check my listings", action: { type: "thread", topic: "listings" }, primary: true }, { label: "Check my site", action: { type: "link", href: "/dashboard/t/site" } }] },
     ], "ans-facts"))
   }
   const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1)

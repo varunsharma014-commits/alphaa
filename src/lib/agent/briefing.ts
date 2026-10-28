@@ -211,7 +211,7 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
   const paid = hasPaidPlan(user)
   const jobs: { text: string; at: Date }[] = [
     { text: "Asking ChatGPT, Gemini, Claude and Perplexity about you again", at: nextSlot(9, [3]) },
-    { text: "Checking your listings and your site’s security", at: nextSlot(9, [2]) },
+    { text: "Re-checking your website, listings and security", at: nextSlot(9, [2]) },
   ]
   if (gmb && user.gmbReviews.length) jobs.push({ text: "Writing replies to your new reviews", at: nextSlot(6, null) })
   if (gmb && paid) jobs.push({ text: "Writing your next Google listing update", at: nextSlot(13, [1, 2, 4, 5]) })

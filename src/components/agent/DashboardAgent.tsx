@@ -50,6 +50,7 @@ export function DashboardAgent({
   context,
   status,
   briefing,
+  notice,
 }: {
   initial: Message[]
   businessName: string
@@ -58,15 +59,20 @@ export function DashboardAgent({
   context?: { businessType: string | null; city: string | null }
   status?: AgentStatus
   briefing?: BriefingData
+  /** Shown below the briefing on arrival (e.g. "I'm connected to your Wix site"). */
+  notice?: Message
 }) {
   const router = useRouter()
-  const [messages, setMessages] = useState<Message[]>(initial)
+  const [messages, setMessages] = useState<Message[]>(notice ? [...initial, notice] : initial)
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const [asking, setAsking] = useState(false)
   // With a briefing on top, the detail behind it stays folded until asked for.
   const [why, setWhy] = useState(!briefing)
   const detailIds = useRef(new Set(initial.map((m) => m.id)))
+  // The briefing opens at the top and stays put; the view only follows new
+  // messages once the owner has done something (or arrived with a result to see).
+  const [followNew, setFollowNew] = useState(!briefing || !!notice)
   const docEdits = useRef<Record<string, string>>({})
   const prefs = useRef<Prefs>({ webPersonEmail: null, wpConnected: false, siteConnected: false, platform: null, available: NONE_AVAILABLE })
   const pending = useRef<Record<string, Pending>>({})
@@ -208,7 +214,10 @@ export function DashboardAgent({
   }, [])
 
   async function liveCheck(question: string, own = false) {
-    if (!own) push(userMsg(question))
+    if (!own) {
+      setFollowNew(true)
+      push(userMsg(question))
+    }
     setBusy(true)
     push(agent([{ kind: "text", text: "Asking all four now. Takes about 20 seconds." }, { kind: "steps", items: ["Asking ChatGPT", "Asking Gemini", "Asking Claude", "Asking Perplexity"], done: 4 }]))
     const { ok, data } = await post<{ results?: LiveResult[]; remaining?: number }>("/api/sandbox/ask", { question })
@@ -230,6 +239,7 @@ export function DashboardAgent({
   }
 
   async function onChip(chip: Chip, messageId: string) {
+    setFollowNew(true)
     const a = chip.action
     switch (a.type) {
       case "thread":
@@ -643,6 +653,7 @@ export function DashboardAgent({
 
   // Bring a topic's thread into this conversation instead of opening a page.
   async function pullThread(topic: string, label: string) {
+    setFollowNew(true)
     push(userMsg(label))
     setBusy(true)
     const res = await fetch(`/api/agent/thread?topic=${encodeURIComponent(topic)}`).catch(() => null)
@@ -671,6 +682,7 @@ export function DashboardAgent({
   async function send(text?: string) {
     const q = (text ?? input).trim()
     if (!q) return
+    setFollowNew(true)
     setInput("")
     push(userMsg(q))
     setBusy(true)
@@ -680,7 +692,7 @@ export function DashboardAgent({
     if (!ok || !data.text) return fail(data.error ?? "I lost the thread for a second. Ask me again?")
     const blocks: Block[] = [{ kind: "text", text: data.text }]
     if (data.liveQuestion) blocks.push({ kind: "chips", items: [{ label: `Ask the AIs: “${data.liveQuestion}”`, action: { type: "live", question: data.liveQuestion }, primary: true }] })
-    if (data.topic && data.topic !== current.replace("/dashboard/t/", "")) blocks.push({ kind: "chips", items: [{ label: "Show me", action: { type: "thread", topic: data.topic }, primary: true }] })
+    if (data.topic) blocks.push({ kind: "chips", items: [{ label: "Show me", action: { type: "thread", topic: data.topic }, primary: true }] })
     push(agent(blocks))
   }
 
@@ -689,7 +701,7 @@ export function DashboardAgent({
       <div className="ag-scroll">
         {briefing && <Briefing data={briefing} onShow={(topic, label) => void pullThread(topic, label)} />}
         {briefing && initial.length > 0 && (
-          <button type="button" className="ag-why" onClick={() => setWhy(!why)} aria-expanded={why}>{why ? "Hide the details" : "Show me why"}</button>
+          <button type="button" className="ag-why" onClick={(e) => { const btn = e.currentTarget; setWhy(!why); if (!why) window.setTimeout(() => btn.scrollIntoView({ block: "start", behavior: "smooth" }), 50) }} aria-expanded={why}>{why ? "Hide the details" : "Show me why"}</button>
         )}
         {status && !briefing && (
           <div className="ag-status" aria-live="polite">
@@ -711,6 +723,7 @@ export function DashboardAgent({
           onChip={onChip}
           onForm={onForm}
           onDocEdit={(id, t) => { docEdits.current[id] = t }}
+          autoScroll={followNew}
         />
       </div>
       {/* The agent finds and fixes things on its own; questions are a quiet

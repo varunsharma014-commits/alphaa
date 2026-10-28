@@ -37,7 +37,7 @@ export function AgentShell({
   void theme
   const pathname = usePathname()
   const router = useRouter()
-  const isHome = pathname === "/dashboard" || pathname === "/preview" || pathname.startsWith("/dashboard/t/")
+  const isHome = pathname === "/dashboard" || pathname === "/preview"
   const [memOpen, setMemOpen] = useState(false)
 
   // Open by default on wide screens; remember the owner's choice.
