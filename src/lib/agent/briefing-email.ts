@@ -15,7 +15,7 @@ export async function briefingEmailProps(userId: string, firstName: string | nul
   const dashboardUrl = `${base()}/dashboard`
   const result = await Promise.race([getRoi(userId).then((r) => roiLines(r)[0] ?? null).catch(() => null), new Promise<null>((r) => setTimeout(() => r(null), 15_000))])
   return {
-    firstName,
+    firstName: firstName ?? b.firstName,
     headline: b.headline,
     lights: b.lights.map((l) => ({ name: l.name, light: l.light })),
     plan: [b.rivalLine, b.planLine].filter(Boolean).join(" ") || null,

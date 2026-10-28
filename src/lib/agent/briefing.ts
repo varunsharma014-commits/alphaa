@@ -31,6 +31,7 @@ export type InboxItem =
 export type LedgerItem = { text: string; href: string | null; at: string }
 
 export type Briefing = {
+  firstName: string | null
   lights: { engine: EngineKey; name: string; light: Light }[]
   headline: string
   asOf: string | null // ISO of the newest check
@@ -43,17 +44,19 @@ export type Briefing = {
 
 const list = (names: string[]) => (names.length <= 1 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`)
 
+// Upbeat and honest: lead with every AI that recommends them, then say who
+// I'm working on next. Never claim an AI recommends them unless it did.
 function headlineFor(lights: Briefing["lights"]): string {
   const yes = lights.filter((l) => l.light === "yes").map((l) => l.name)
   const no = lights.filter((l) => l.light === "no").map((l) => l.name)
   const unknown = lights.filter((l) => l.light === "unknown").map((l) => l.name)
-  if (yes.length === 0 && no.length === 0) return "I’m checking the four AIs for you now."
+  if (yes.length === 0 && no.length === 0) return "I’m checking the four AIs for you right now."
   const parts: string[] = []
-  if (yes.length === 4) parts.push("All four AIs are recommending you.")
-  else if (yes.length) parts.push(`${list(yes)} ${yes.length === 1 ? "is" : "are"} recommending you.`)
-  if (no.length === 4) parts.push("None of the four AIs recommend you yet.")
-  else if (no.length) parts.push(`${list(no)} ${no.length === 1 ? "isn’t" : "aren’t"} yet.`)
-  if (unknown.length) parts.push(`I haven’t checked ${list(unknown)} yet.`)
+  if (yes.length === 4) parts.push("Great news! All four AIs are recommending you to customers.")
+  else if (yes.length) parts.push(`Great news! ${list(yes)} ${yes.length === 1 ? "is" : "are"} recommending you to customers.`)
+  if (no.length === 4) parts.push("I’m working on getting all four AIs to recommend you.")
+  else if (no.length) parts.push(`I’m working on ${list(no)} next.`)
+  if (unknown.length) parts.push(`I’m checking ${list(unknown)} now.`)
   return parts.join(" ")
 }
 
@@ -189,5 +192,5 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
     if (ledger.length >= 25) break
   }
 
-  return { lights, headline: headlineFor(lights), asOf, rivalLine, planLine, inbox, ledger, nextCheck: nextCheck() }
+  return { firstName: user.fullName?.trim().split(/\s+/)[0] || null, lights, headline: headlineFor(lights), asOf, rivalLine, planLine, inbox, ledger, nextCheck: nextCheck() }
 }

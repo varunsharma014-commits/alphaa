@@ -1,15 +1,17 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { useUser } from "@clerk/nextjs"
 import type { Briefing as BriefingData, InboxItem, LedgerItem } from "@/lib/agent/briefing"
 
 // The morning briefing: am I winning, what's waiting for me, what did you do.
 // Built for a time-poor owner on a phone: read it top to bottom in seconds,
 // approve with one tap, close the app.
 
-function greeting(): string {
+function greeting(name: string | null): string {
   const h = new Date().getHours()
-  return h < 12 ? "Good morning." : h < 18 ? "Good afternoon." : "Good evening."
+  const part = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"
+  return name ? `${part}, ${name}.` : `${part}.`
 }
 
 function dayLabel(iso: string): string {
@@ -38,10 +40,15 @@ export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic:
   const [inbox, setInbox] = useState<InboxItem[]>(data.inbox)
   const [done, setDone] = useState<LedgerItem[]>([])
   const [flash, setFlash] = useState<string | null>(null)
+  const { user } = useUser()
+  const name = data.firstName ?? user?.firstName ?? null
 
   useEffect(() => {
-    setHello(greeting())
+    setHello(greeting(name))
     // A real result (visits from AI, calls) when Google is connected. Slow, so after paint.
+  }, [name])
+
+  useEffect(() => {
     fetch("/api/agent/memory").then((r) => (r.ok ? r.json() : null)).then((m) => setResult(m?.results?.[0] ?? null)).catch(() => {})
   }, [])
 

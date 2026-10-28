@@ -14,7 +14,8 @@ import { AccountMenu } from "./AccountMenu"
 // things, and a Memory panel on the right with the score, results,
 // connections and the work it has done. Settings live under the avatar.
 
-const MEM_KEY = "alphaa.memory"
+// v2: the panel is on by default for everyone (owners who closed it before start open again).
+const MEM_KEY = "alphaa.memory.v2"
 
 /** Ask the agent to bring a topic into the chat (handled by DashboardAgent). */
 export const ASK_EVENT = "alphaa:ask"

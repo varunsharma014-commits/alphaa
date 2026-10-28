@@ -541,3 +541,13 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
   .ag-light__name { font-size: 12px; }
 }
 .ag-inbox__need { margin: 12px 0 0; font-size: 14px; color: var(--ag-fg2); }
+.ag-health { list-style: none; margin: 0; padding: 0; background: var(--ag-card); border: 1px solid var(--ag-line); border-radius: 14px; overflow: hidden; }
+.ag-health li { display: flex; align-items: center; gap: 10px; padding: 9px 12px; font-size: 13.5px; color: var(--ag-fg); border-top: 1px solid var(--ag-bg2); }
+.ag-health li:first-child { border-top: 0; }
+.ag-health i { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 11px; font-weight: 800; color: #fff; }
+.ag-health li.ok i { background: #1f9d55; }
+.ag-health li.bad i { background: #d93025; }
+.ag-health li.unk i { background: var(--ag-line); color: var(--ag-muted); }
+.ag-health li span { flex: 1; min-width: 0; }
+.ag-health li a, .ag-health li button { flex: none; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ag-fg); background: var(--ag-bg2); border: 0; border-radius: 980px; padding: 4px 10px; cursor: pointer; text-decoration: none; }
+.ag-health li em { flex: none; font-style: normal; font-size: 12px; color: var(--ag-muted); }

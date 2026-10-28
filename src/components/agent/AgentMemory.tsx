@@ -14,6 +14,7 @@ type Memory = {
   google: { profile: string | null; searchConsole: string | null; analytics: string | null } | null
   website: { platform: string; site: string } | null
   work: { id: string; title: string; detail: string | null; at: string }[]
+  health?: { label: string; ok: boolean | null; fix?: { topic: string } | { href: string } }[]
 }
 
 const ENGINES = ["ChatGPT", "Gemini", "Claude", "Perplexity"]
@@ -63,6 +64,31 @@ export function AgentMemory({ rail, open, onClose, onAsk }: { rail: RailData; op
           })}
         </ul>
         <div className="ag-mem__sub">Day {rail.dayNumber} of working for {rail.businessName}</div>
+      </section>
+
+      <section className="ag-mem__sec">
+        <div className="ag-mem__lbl">Your setup</div>
+        {!mem?.health ? (
+          <p className="ag-mem__muted">{pending ?? "Checking…"}</p>
+        ) : (
+          <ul className="ag-health">
+            {mem.health.map((h) => (
+              <li key={h.label} className={h.ok === true ? "ok" : h.ok === false ? "bad" : "unk"}>
+                <i aria-hidden="true">{h.ok === true ? "✓" : h.ok === false ? "✕" : "–"}</i>
+                <span>{h.label}</span>
+                {h.ok === false && h.fix ? (
+                  "href" in h.fix ? (
+                    <Link href={h.fix.href}>{/Website|Google|Bing/.test(h.label) ? "Connect" : "Fix"}</Link>
+                  ) : (
+                    <button onClick={() => onAsk((h.fix as { topic: string }).topic, `Fix: ${h.label}`)}>{/Bing/.test(h.label) ? "Connect" : "Fix"}</button>
+                  )
+                ) : h.ok === null ? (
+                  <em>Not checked yet</em>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {waiting > 0 && (
