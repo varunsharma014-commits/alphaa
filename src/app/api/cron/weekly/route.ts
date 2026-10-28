@@ -4,16 +4,15 @@ const ENGINE_NAMES: Record<string, string> = { chatgpt: "ChatGPT", gemini: "Gemi
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
-import { getRoi, roiLines } from "@/lib/roi"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { sendEmail } from "@/lib/resend"
 import { mailingAddress, sendMarketingEmail } from "@/lib/marketing-email"
 import { isEmailSuppressed, unsubscribeLinks } from "@/lib/unsubscribe"
-import { subjects } from "@/lib/email"
 import { logActivity } from "@/lib/activity"
-import WeeklyReportEmail from "@/emails/WeeklyReportEmail"
+import BriefingEmail from "@/emails/BriefingEmail"
+import { briefingEmailProps } from "@/lib/agent/briefing-email"
 import React from "react"
 
 type AiSearchStatus = {
@@ -205,21 +204,14 @@ Rules: state only what the data shows. If nothing changed, say so plainly and sa
       console.log(`[weekly-cron] ${user.id} unsubscribed — report saved, no email`)
       return
     }
-    const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"}/dashboard/t/briefings`
-    const results = await getRoi(user.id).then(roiLines).catch(() => [] as string[])
+    // The email is the owner's briefing (headline, one-tap approvals, the
+    // week's work), the same three answers as the dashboard.
+    const props = await briefingEmailProps(user.id, user.fullName?.trim().split(/\s+/)[0] || null)
+    if (!props) return
     const unsub = unsubscribeLinks(`u_${user.id}`, user.email)
-    const react = React.createElement(WeeklyReportEmail, {
-      firstName: user.fullName?.trim().split(/\s+/)[0] || null,
-      businessName: user.businessName?.trim() || null,
-      summary,
-      postsPublished,
-      reviewsNew,
-      visibilityDelta,
-      reportUrl,
-      results,
-      footer: { address: mailingAddress(), unsubscribeUrl: unsub?.pageUrl ?? null },
-    })
-    const subject = subjects.weeklyReport({ businessName: user.businessName })
+    const react = React.createElement(BriefingEmail, { ...props, footer: { address: mailingAddress(), unsubscribeUrl: unsub?.pageUrl ?? null } })
+    const waiting = props.inbox.length
+    const subject = `${props.lights.filter((l) => l.light === "yes").length} of 4 AIs recommend you${waiting ? ` · ${waiting} ${waiting === 1 ? "thing needs" : "things need"} your OK` : ""}`
     if (unsub) {
       await sendMarketingEmail({ to: user.email, subject, react, unsub })
     } else {

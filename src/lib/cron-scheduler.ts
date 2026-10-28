@@ -41,6 +41,8 @@ export function startCron(): void {
     // Daily 05:00 UTC — pull GSC keywords + GA snapshot for every connected account.
     // (Google APIs only — no Anthropic spend — so left running.)
     if (hour === 5) hit("/api/cron/seo-sync")
+    // Daily 06:00 UTC — write replies to new Google reviews so approving is one tap (Anthropic)
+    if (hour === 6) hit("/api/cron/review-drafts")
 
     // Daily 14:00 UTC — lifecycle emails (connect nudges + week-one recap; Resend only)
     if (hour === 14) hit("/api/cron/lifecycle")

@@ -257,21 +257,12 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
   return { messages: sections(messages), rail, status }
 }
 
-// Work first: what needs the owner's OK, then what was done, then where they stand.
+// The briefing (lib/agent/briefing.ts) now carries the headline, everything
+// waiting for the owner's OK and the work ledger. What's left here is the
+// detail behind it, shown under "Show me why".
 function sections(messages: Message[]): Message[] {
-  const needs = (id: string) => id === "facts" || id === "setup" || id === "posts" || id.startsWith("review-") || id.startsWith("post-")
-  const head = (id: string, text: string): Message => ({ id, role: "agent", blocks: [{ kind: "divider", text }] })
-  const pick = (f: (id: string) => boolean) => messages.filter((m) => f(m.id))
-  const waiting = pick(needs)
-  return [
-    ...pick((id) => id === "day"),
-    head("h-needs", waiting.length ? `Needs your OK · ${waiting.length}` : "Nothing needs you right now"),
-    ...waiting,
-    head("h-done", "What I did"),
-    ...pick((id) => id === "receipt"),
-    head("h-stand", "Where you stand"),
-    ...pick((id) => id !== "day" && id !== "receipt" && !needs(id)),
-  ]
+  const inBriefing = (id: string) => id === "day" || id === "receipt" || id === "facts" || id === "setup" || id.startsWith("review-") || id.startsWith("post-")
+  return messages.filter((m) => !inBriefing(m.id))
 }
 
 // The weekly AI re-check runs Wednesdays 09:00 UTC (lib/cron-scheduler.ts).

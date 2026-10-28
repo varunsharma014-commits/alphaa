@@ -12,6 +12,8 @@ import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
 import { NONE_AVAILABLE, PLATFORM_NAME, platformPickerBlocks, type Availability } from "@/lib/connector/platforms"
 import type { Platform } from "@/lib/connector/types"
 import type { AgentStatus } from "@/lib/agent/feed"
+import type { Briefing as BriefingData } from "@/lib/agent/briefing"
+import { Briefing } from "./Briefing"
 
 type LiveResult = { engine: EngineKey; answer: string; appeared: boolean; mentioned: string[]; status: string }
 
@@ -47,6 +49,7 @@ export function DashboardAgent({
   current = "/dashboard",
   context,
   status,
+  briefing,
 }: {
   initial: Message[]
   businessName: string
@@ -54,12 +57,16 @@ export function DashboardAgent({
   current?: string
   context?: { businessType: string | null; city: string | null }
   status?: AgentStatus
+  briefing?: BriefingData
 }) {
   const router = useRouter()
   const [messages, setMessages] = useState<Message[]>(initial)
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const [asking, setAsking] = useState(false)
+  // With a briefing on top, the detail behind it stays folded until asked for.
+  const [why, setWhy] = useState(!briefing)
+  const detailIds = useRef(new Set(initial.map((m) => m.id)))
   const docEdits = useRef<Record<string, string>>({})
   const prefs = useRef<Prefs>({ webPersonEmail: null, wpConnected: false, siteConnected: false, platform: null, available: NONE_AVAILABLE })
   const pending = useRef<Record<string, Pending>>({})
@@ -680,7 +687,11 @@ export function DashboardAgent({
   return (
     <>
       <div className="ag-scroll">
-        {status && (
+        {briefing && <Briefing data={briefing} onShow={(topic, label) => void pullThread(topic, label)} />}
+        {briefing && initial.length > 0 && (
+          <button type="button" className="ag-why" onClick={() => setWhy(!why)} aria-expanded={why}>{why ? "Hide the details" : "Show me why"}</button>
+        )}
+        {status && !briefing && (
           <div className="ag-status" aria-live="polite">
             <span className={`ag-dot ${busy ? "ag-dot--live" : "ag-dot--ok"}`} />
             {busy ? (
@@ -694,7 +705,7 @@ export function DashboardAgent({
           </div>
         )}
         <AgentFeed
-          messages={messages}
+          messages={why ? messages : messages.filter((m) => !detailIds.current.has(m.id))}
           animate="stagger"
           busy={busy}
           onChip={onChip}

@@ -1,0 +1,187 @@
+"use client"
+
+import { useEffect, useMemo, useState } from "react"
+import type { Briefing as BriefingData, InboxItem, LedgerItem } from "@/lib/agent/briefing"
+
+// The morning briefing: am I winning, what's waiting for me, what did you do.
+// Built for a time-poor owner on a phone: read it top to bottom in seconds,
+// approve with one tap, close the app.
+
+function greeting(): string {
+  const h = new Date().getHours()
+  return h < 12 ? "Good morning." : h < 18 ? "Good afternoon." : "Good evening."
+}
+
+function dayLabel(iso: string): string {
+  const d = new Date(iso)
+  const today = new Date()
+  const diff = Math.round((new Date(today.toDateString()).getTime() - new Date(d.toDateString()).getTime()) / 86_400_000)
+  if (diff <= 0) return "Today"
+  if (diff === 1) return "Yesterday"
+  return d.toLocaleDateString("en-US", { weekday: "long" })
+}
+
+const weekday = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long" })
+
+function asOfLabel(iso: string): string {
+  const day = dayLabel(iso)
+  return day === "Today" ? "today’s check" : day === "Yesterday" ? "yesterday’s check" : `${day}’s check`
+}
+
+export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic: string, label: string) => void }) {
+  const [hello, setHello] = useState("")
+  const [result, setResult] = useState<string | null>(null)
+  const [inbox, setInbox] = useState<InboxItem[]>(data.inbox)
+  const [done, setDone] = useState<LedgerItem[]>([])
+  const [flash, setFlash] = useState<string | null>(null)
+
+  useEffect(() => {
+    setHello(greeting())
+    // A real result (visits from AI, calls) when Google is connected. Slow, so after paint.
+    fetch("/api/agent/memory").then((r) => (r.ok ? r.json() : null)).then((m) => setResult(m?.results?.[0] ?? null)).catch(() => {})
+  }, [])
+
+  const ledger = useMemo(() => [...done, ...data.ledger], [done, data.ledger])
+  const days = useMemo(() => {
+    const out: { label: string; items: LedgerItem[] }[] = []
+    for (const it of ledger) {
+      const label = dayLabel(it.at)
+      const last = out[out.length - 1]
+      if (last?.label === label) last.items.push(it)
+      else out.push({ label, items: [it] })
+    }
+    return out
+  }, [ledger])
+
+  function finished(item: InboxItem, url: string | null) {
+    setInbox((prev) => prev.filter((x) => !(x.kind === item.kind && x.id === item.id)))
+    const text = item.kind === "review" ? "Replied to a Google review" : item.kind === "gbp" ? "Posted an update to your Google listing" : item.kind === "post" ? item.title.replace(/^I wrote a new post for your website: /, "Published ") : ""
+    if (text) setDone((d) => [{ text, href: url, at: new Date().toISOString() }, ...d])
+    setFlash("Done. It’s live.")
+    window.setTimeout(() => setFlash(null), 2600)
+  }
+
+  const yes = data.lights.filter((l) => l.light === "yes").length
+
+  return (
+    <div className="ag-brief">
+      {/* 1. Am I winning? */}
+      <section className="ag-brief__head">
+        <p className="ag-brief__hello">{hello}</p>
+        <h1 className="ag-brief__headline">{data.headline}</h1>
+        <div className="ag-brief__lights" aria-label={`${yes} of 4 AIs recommend you`}>
+          {data.lights.map((l) => (
+            <div key={l.engine} className={`ag-light ag-light--${l.light}`}>
+              <span className="ag-light__dot" aria-hidden="true">{l.light === "yes" ? "✓" : l.light === "no" ? "" : "?"}</span>
+              <span className="ag-light__name">{l.name}</span>
+            </div>
+          ))}
+        </div>
+        {(data.rivalLine || data.planLine) && (
+          <p className="ag-brief__plan">
+            {data.rivalLine} {data.planLine}
+          </p>
+        )}
+        {result && <p className="ag-brief__result">{result}</p>}
+        <p className="ag-brief__asof">
+          {data.asOf ? `As of ${asOfLabel(data.asOf)}. ` : ""}I check all four again {weekday(data.nextCheck)}.
+        </p>
+      </section>
+
+      {/* 2. What's holding you up? */}
+      <section className="ag-brief__sec">
+        {inbox.length === 0 ? (
+          <p className="ag-brief__lead">{flash ?? "Nothing is waiting for you. I’ve got it from here."}</p>
+        ) : (
+          <>
+            <p className="ag-brief__lead">
+              {flash ? `${flash} ` : ""}
+              {inbox.length === 1 ? "I have one thing waiting for your OK:" : `I have ${inbox.length} things waiting for your OK:`}
+            </p>
+            <InboxCard key={`${inbox[0].kind}-${inbox[0].id}`} item={inbox[0]} position={inbox.length > 1 ? `1 of ${inbox.length}` : null} onDone={finished} onShow={onShow} />
+          </>
+        )}
+      </section>
+
+      {/* 3. Are you actually working? */}
+      <section className="ag-brief__sec">
+        <p className="ag-brief__lead">{ledger.length ? "Here’s what I did for you this week:" : "My first full pass is running. Everything I do will be listed here."}</p>
+        {days.map((d) => (
+          <div key={d.label} className="ag-ledger">
+            <div className="ag-ledger__day">{d.label}</div>
+            <ul>
+              {d.items.map((it, i) => (
+                <li key={i}>
+                  <span>{it.text}</span>
+                  {it.href && <a href={it.href} target="_blank" rel="noopener">See it</a>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+    </div>
+  )
+}
+
+function InboxCard({ item, position, onDone, onShow }: { item: InboxItem; position: string | null; onDone: (item: InboxItem, url: string | null) => void; onShow: (topic: string, label: string) => void }) {
+  const initial = item.kind === "review" || item.kind === "gbp" || item.kind === "post" ? item.text ?? "" : ""
+  const [text, setText] = useState(initial)
+  const [editing, setEditing] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function call(action: "publish" | "draft") {
+    setBusy(true)
+    setError(null)
+    const res = await fetch("/api/agent/approve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ kind: item.kind, id: item.id, action, ...(action === "publish" && text !== initial ? { text } : {}) }),
+    }).catch(() => null)
+    const data = (await res?.json().catch(() => ({}))) as { error?: string; text?: string; url?: string | null } | undefined
+    setBusy(false)
+    if (!res?.ok) return setError(data?.error ?? "That didn’t go through. Nothing was published.")
+    if (action === "draft") return setText(data?.text ?? "")
+    onDone(item, data?.url ?? null)
+  }
+
+  return (
+    <div className="ag-inbox">
+      <div className="ag-inbox__top">
+        <b>{item.title}</b>
+        {position && <span>{position}</span>}
+      </div>
+      {item.kind === "review" && item.quote && <blockquote className="ag-inbox__quote">“{item.quote}”</blockquote>}
+      {item.kind === "post" && item.image && !editing && <img className="ag-inbox__img" src={item.image} alt="" />}
+
+      {item.kind === "fix" || item.kind === "connect" ? (
+        <p className="ag-inbox__text">{item.text}</p>
+      ) : editing ? (
+        <textarea className="ag-inbox__edit" value={text} onChange={(e) => setText(e.target.value)} rows={Math.min(14, Math.max(4, Math.ceil(text.length / 60)))} autoFocus />
+      ) : text ? (
+        <div className={`ag-inbox__text ${item.kind === "post" ? "ag-inbox__text--clip" : ""}`}>{text}</div>
+      ) : (
+        <p className="ag-inbox__text ag-inbox__text--muted">I haven’t written this one yet.</p>
+      )}
+
+      <div className="ag-inbox__btns">
+        {item.kind === "fix" ? (
+          <button className="ag-btn-primary" onClick={() => onShow(item.topic, "Show me the fix")}>Show me the fix</button>
+        ) : item.kind === "connect" ? (
+          <a className="ag-btn-primary" href={item.href}>{item.cta}</a>
+        ) : !text ? (
+          <button className="ag-btn-primary" disabled={busy} onClick={() => call("draft")}>{busy ? "Writing…" : "Write my reply"}</button>
+        ) : (
+          <>
+            <button className="ag-btn-primary" disabled={busy || !text.trim()} onClick={() => call("publish")}>
+              {busy ? "Publishing…" : editing ? "Save & publish" : "Approve & publish"}
+            </button>
+            {!editing && <button className="ag-btn-ghost" disabled={busy} onClick={() => setEditing(true)}>Edit</button>}
+          </>
+        )}
+      </div>
+      {error && <p className="ag-inbox__err">{error}</p>}
+    </div>
+  )
+}

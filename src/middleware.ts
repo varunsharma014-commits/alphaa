@@ -22,6 +22,8 @@ const isPublicRoute = createRouteMatcher([
   "/privacy",
   "/unsubscribe",
   "/api/unsubscribe",
+  "/approve", // briefing-email approvals: a signed one-item token, no login
+  "/api/agent/approve", // checks the token or the Clerk session itself
   "/llms/(.*)",
   "/tag.js",
   "/api/tag/(.*)",
