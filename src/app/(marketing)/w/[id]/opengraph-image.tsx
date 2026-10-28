@@ -16,13 +16,18 @@ export default async function Image({ params }: { params: Promise<{ id: string }
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", background: "#000", color: "#fff", padding: "72px 80px", fontFamily: "sans-serif" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 30, fontWeight: 600 }}>✦ alphaa</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 30, fontWeight: 600 }}>
+          <div style={{ width: 22, height: 22, background: "#fff", transform: "rotate(45deg)", borderRadius: 4 }} />
+          alphaa
+        </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          {business && <div style={{ fontSize: 34, color: "#a1a1a6" }}>{business}</div>}
+          {business && !headline.includes(business) && <div style={{ fontSize: 34, color: "#a1a1a6" }}>{business}</div>}
           <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.05, letterSpacing: -2 }}>{headline}</div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 26, color: "#a1a1a6" }}>
-          <div style={{ width: 30, height: 30, borderRadius: 15, background: "#1f9d55", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>✓</div>
+          <div style={{ width: 30, height: 30, borderRadius: 15, background: "#1f9d55", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </div>
           {date ? `Verified by alphaa on ${date}` : "Verified by alphaa"}
         </div>
       </div>
