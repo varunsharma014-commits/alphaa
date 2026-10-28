@@ -7,7 +7,6 @@ import { cache } from "react"
 import { db } from "@/lib/db"
 import { getEngineEvidence, type EngineKey } from "@/lib/engine-evidence"
 import { accountQuestion } from "@/lib/sandbox"
-import { timeOfDayGreeting } from "@/lib/humanize"
 import type { CitationReport } from "@/lib/citations"
 import { agent, type Block, type Message, type VerdictState } from "@/lib/agent/types"
 import { latestQuestionScan } from "@/lib/questions"
@@ -86,12 +85,11 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
   const named = states.filter((s) => s === "found" || s === "partial").length
   const latest = user.audits[0]
   const previous = user.audits[1]
-  const greeting = `Good ${timeOfDayGreeting(now)}.`
 
   if (checked === 0) {
     // Never ask permission to do the job: the dashboard runs this check itself
     // on load (DashboardAgent firstCheck) and reports what the AIs said.
-    messages.push(agent([{ kind: "text", text: `${greeting} I’m asking the four AIs about ${businessName} right now, the way a customer would.` }], "standing"))
+    messages.push(agent([{ kind: "text", text: `I’m asking the four AIs about ${businessName} right now, the way a customer would.` }], "standing"))
   } else {
     const blocks: Block[] = []
     // A change since the previous check is the headline; otherwise the count.
@@ -112,7 +110,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
       blocks.push({ kind: "text", text: `${lost.map((e) => LABEL[e]).join(" and ")} stopped naming you.`, big: true })
       blocks.push({ kind: "text", text: "AI answers move. I’ll keep asking and tell you when it comes back." })
     } else {
-      blocks.push({ kind: "text", text: `${greeting} ${named === 0 ? "None" : named === checked ? "All" : `${named} of ${checked}`} of the AIs ${named === 1 ? "names" : "name"} you${named === 0 ? " yet" : ""}.` })
+      blocks.push({ kind: "text", text: `${named === 0 ? "None" : named === checked ? "All" : `${named} of ${checked}`} of the AIs ${named === 1 ? "names" : "name"} you${named === 0 ? " yet" : ""}.` })
     }
     blocks.push({
       kind: "verdicts",
