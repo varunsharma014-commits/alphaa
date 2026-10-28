@@ -9,6 +9,7 @@ import type { RailData } from "@/lib/agent/feed"
 import { BRAND } from "@/lib/brand"
 import { AgentMemory } from "./AgentMemory"
 import { AccountMenu } from "./AccountMenu"
+import { ToolsRail } from "./ToolsRail"
 
 // No menu to hunt through: one conversation with the agent, chips to ask it
 // things, and a Memory panel on the right with the score, results,
@@ -16,6 +17,8 @@ import { AccountMenu } from "./AccountMenu"
 
 // v2: the panel is on by default for everyone (owners who closed it before start open again).
 const MEM_KEY = "alphaa.memory.v2"
+// The detail pages on the left: folded by default, remembered once opened.
+const TOOLS_KEY = "alphaa.tools.v1"
 
 /** Ask the agent to bring a topic into the chat (handled by DashboardAgent). */
 export const ASK_EVENT = "alphaa:ask"
@@ -46,6 +49,16 @@ export function AgentShell({
     try { saved = localStorage.getItem(MEM_KEY) } catch {}
     setMemOpen(saved ? saved === "open" : window.innerWidth >= 1180)
   }, [])
+  const [toolsOpen, setToolsOpen] = useState(false)
+  useEffect(() => {
+    let saved: string | null = null
+    try { saved = localStorage.getItem(TOOLS_KEY) } catch {}
+    setToolsOpen(saved === "open" && window.innerWidth >= 900)
+  }, [])
+  const toggleTools = (next: boolean) => {
+    setToolsOpen(next)
+    if (window.innerWidth >= 900) try { localStorage.setItem(TOOLS_KEY, next ? "open" : "closed") } catch {}
+  }
   const toggle = (next: boolean) => {
     setMemOpen(next)
     try { localStorage.setItem(MEM_KEY, next ? "open" : "closed") } catch {}
@@ -61,9 +74,14 @@ export function AgentShell({
 
   return (
     <div className={`ag-app ${memOpen ? "ag-app--mem" : ""}`}>
+      <ToolsRail open={toolsOpen} onToggle={toggleTools} />
+      {toolsOpen && <div className="ag-tools__scrim" onClick={() => toggleTools(false)} aria-hidden="true" />}
       <div className="ag-main">
         <header className="ag-head">
           <div className="ag-head__left">
+            <button type="button" className="ag-head__tools" onClick={() => toggleTools(!toolsOpen)} aria-label="Show details">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="17" x2="20" y2="17" /></svg>
+            </button>
             <Link href="/dashboard" className="ag-brand" aria-label={`${BRAND.name} home`}>
               <Sparkles className="ag-brand__mark" aria-hidden="true" />
               {BRAND.name}

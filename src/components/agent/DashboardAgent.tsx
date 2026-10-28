@@ -207,7 +207,8 @@ export function DashboardAgent({
     ;(async () => {
       await loadPrefs()
       // Nothing checked yet: do the check now instead of asking permission.
-      if (status?.firstCheck) await liveCheck(status.firstCheck, true)
+      // (With the briefing, FirstAnswer asks it and shows the answer up top.)
+      if (status?.firstCheck && !briefing) await liveCheck(status.firstCheck, true)
       for (const t of autorun) await runTask(t)
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps

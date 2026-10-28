@@ -151,6 +151,8 @@ export async function POST(req: Request) {
   // daily rate limit counts sandbox_query rows, and a second row of that type
   // would make every ask count twice.
   const named = results.filter((r) => r.appeared).map((r) => r.engine)
+  const answered = results.filter((r) => r.answer.trim() && (r.status === "appeared" || r.status === "not_appearing"))
+  const lead = answered.find((r) => r.engine === "chatgpt") ?? answered[0]
   await logActivity(
     user.id,
     "sandbox_result",
@@ -159,6 +161,8 @@ export async function POST(req: Request) {
     {
       question: raw,
       results: results.map((r) => ({ engine: r.engine, appeared: r.appeared, status: r.status })),
+      // The answer itself (ChatGPT first), for the first-visit moment.
+      lead: lead ? { engine: lead.engine, answer: lead.answer.slice(0, 6000), appeared: lead.appeared, mentioned: lead.mentioned } : null,
     }
   )
 

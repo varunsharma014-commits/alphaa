@@ -24,6 +24,8 @@ export type AgentSettings = {
   autoPublishPosts?: boolean
   /** What one new customer is worth: my estimate until the owner edits it (lib/customer-value.ts). */
   customerValue?: { amount: number; source: "estimate" | "owner"; basis?: string; at: string }
+  /** The first-visit moment: the AI answer shown once, and when the owner saw it (lib/agent/first-answer.ts). */
+  firstAnswer?: import("@/lib/agent/first-answer").FirstAnswer
 }
 
 export type Location = { id: string; name: string; street: string; city: string; state?: string; zip?: string; phone?: string; hours?: string }

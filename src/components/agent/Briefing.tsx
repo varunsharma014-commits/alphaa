@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useUser } from "@clerk/nextjs"
 import type { Briefing as BriefingData, InboxItem, LedgerItem } from "@/lib/agent/briefing"
 import { BriefingHero } from "./BriefingHero"
+import { FirstAnswer } from "./FirstAnswer"
 
 // The morning briefing: am I winning, what's waiting for me, what did you do.
 // Built for a time-poor owner on a phone: read it top to bottom in seconds,
@@ -98,6 +99,9 @@ export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic:
           <span className="ag-dot ag-dot--live" aria-hidden="true" /> Next up: {data.nextUp.text.charAt(0).toLowerCase() + data.nextUp.text.slice(1)} · {whenNext(data.nextUp.at)}
         </p>
       </div>
+
+      {/* First visit only: the real answer their customers get */}
+      <FirstAnswer />
 
       {/* The result: people AI sent them, and what that's worth */}
       <BriefingHero />
