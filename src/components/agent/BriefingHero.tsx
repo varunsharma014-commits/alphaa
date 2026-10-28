@@ -13,6 +13,33 @@ type HeroData = Hero & { recap: Recap | null }
 const money = (n: number) => `$${n.toLocaleString("en-US")}`
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
 
+// The last 30 days of visits from AI, one point a day: a quiet area line, the
+// latest day marked, a hover label for each day. Shape only, no axes to read.
+function TrendLine({ series }: { series: number[] }) {
+  const W = 300, H = 56, pad = 4
+  const max = Math.max(1, ...series)
+  const x = (i: number) => (i / (series.length - 1)) * W
+  const y = (n: number) => H - pad - (n / max) * (H - pad * 2)
+  const pts = series.map((n, i) => `${x(i).toFixed(1)},${y(n).toFixed(1)}`)
+  const day = (i: number) => new Date(Date.now() - (series.length - i) * 86_400_000).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+  const last = series.length - 1
+  return (
+    <figure className="ag-trend" aria-label={`Visits from AI per day over the last 30 days, from ${series[0]} to ${series[last]}`}>
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img">
+        <path d={`M0,${H} L${pts.join(" L")} L${W},${H} Z`} className="ag-trend__area" />
+        <polyline points={pts.join(" ")} className="ag-trend__line" vectorEffect="non-scaling-stroke" />
+        {series.map((n, i) => (
+          <rect key={i} x={x(i) - W / series.length / 2} y={0} width={W / series.length} height={H} fill="transparent">
+            <title>{`${day(i)}: ${n} ${n === 1 ? "visit" : "visits"} from AI`}</title>
+          </rect>
+        ))}
+      </svg>
+      <span className="ag-trend__dot" style={{ left: "100%", top: `${(y(series[last]) / H) * 100}%` }} aria-hidden="true" />
+      <figcaption><span>30 days ago</span><span>Yesterday</span></figcaption>
+    </figure>
+  )
+}
+
 export function BriefingHero() {
   const [hero, setHero] = useState<HeroData | null>(null)
   const [state, setState] = useState<"loading" | "ready" | "failed">("loading")
@@ -55,6 +82,7 @@ export function BriefingHero() {
           <>
             <div className="ag-hero__num">{v.total}</div>
             <p className="ag-hero__what">{v.total === 1 ? "person found you through AI" : "people found you through AI"} in the last 30 days</p>
+            {v.series && v.series.some((n) => n > 0) && <TrendLine series={v.series} />}
             {diff !== null && diff !== 0 && <p className={`ag-hero__trend ${diff > 0 ? "up" : ""}`}>{diff > 0 ? `▲ Up ${diff} from the month before` : `${Math.abs(diff)} fewer than the month before. I’m on it.`}</p>}
             {sources.length > 0 && (
               <div className="ag-hero__src">

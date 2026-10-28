@@ -233,6 +233,44 @@ export async function getAiReferrals(
   }
 }
 
+/** Daily sessions from AI assistants for the last `days` days ending yesterday, oldest first (0 for empty days). */
+export async function getAiReferralsDaily(
+  integration: StoredIntegration & { gaPropertyId?: string | null },
+  days = 30,
+): Promise<number[] | null> {
+  if (!integration.gaPropertyId) return null
+  try {
+    const auth = await getAuthenticatedClient(integration)
+    const analyticsdata = google.analyticsdata({ version: 'v1beta', auth })
+    const res = await analyticsdata.properties.runReport({
+      property: `properties/${integration.gaPropertyId}`,
+      requestBody: {
+        dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'yesterday' }],
+        dimensions: [{ name: 'date' }],
+        metrics: [{ name: 'sessions' }],
+        dimensionFilter: {
+          filter: {
+            fieldName: 'sessionSource',
+            stringFilter: { matchType: 'PARTIAL_REGEXP', value: 'chatgpt|openai|perplexity|claude\\.ai|gemini\\.google|copilot' },
+          },
+        },
+        limit: '100',
+      },
+    })
+    const byDate = new Map<string, number>()
+    for (const row of res.data.rows ?? []) byDate.set(row.dimensionValues?.[0]?.value ?? '', parseInt(row.metricValues?.[0]?.value ?? '0', 10))
+    const out: number[] = []
+    for (let i = days; i >= 1; i--) {
+      const d = new Date(Date.now() - i * 86_400_000)
+      out.push(byDate.get(d.toISOString().slice(0, 10).replace(/-/g, '')) ?? 0)
+    }
+    return out
+  } catch (err) {
+    console.error('[GA] getAiReferralsDaily error:', err instanceof Error ? err.message : err)
+    return null
+  }
+}
+
 /** Sessions this week vs last, and the top channels — for the weekly briefing. */
 export async function getTrafficSummary(
   integration: StoredIntegration & { gaPropertyId?: string | null },

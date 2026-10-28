@@ -587,3 +587,9 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .ag-brief__end { margin: 0; padding: 18px 0 8px; text-align: center; font-size: 15px; color: var(--ag-muted); }
 @media (max-width: 520px) { .ag-hero__num { font-size: 52px; } .ag-recap__stats b { font-size: 22px; } }
 .ag-hero { text-align: center; } .ag-hero__src { justify-content: center; } .ag-hero__edit div { justify-content: center; }
+.ag-trend { position: relative; margin: 14px auto 2px; max-width: 420px; }
+.ag-trend svg { display: block; width: 100%; height: 56px; overflow: visible; }
+.ag-trend__area { fill: rgb(31 157 85 / 0.12); }
+.ag-trend__line { fill: none; stroke: #1f9d55; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.ag-trend__dot { position: absolute; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: #1f9d55; box-shadow: 0 0 0 3px var(--ag-card); }
+.ag-trend figcaption { display: flex; justify-content: space-between; margin-top: 4px; font-size: 11px; color: var(--ag-muted); }

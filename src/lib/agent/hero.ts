@@ -5,7 +5,7 @@
 // without visit data we fall back to how often the AIs named them in our checks.
 
 import { db } from "@/lib/db"
-import { getAiReferrals } from "@/lib/ga"
+import { getAiReferrals, getAiReferralsDaily } from "@/lib/ga"
 import { latestQuestionScan } from "@/lib/questions"
 import { getCustomerValue, type CustomerValue } from "@/lib/customer-value"
 import { PLAN_PRICES } from "@/lib/constants"
@@ -13,7 +13,8 @@ import { PLAN_PRICES } from "@/lib/constants"
 const DAY = 86_400_000
 
 export type Hero = {
-  visitors: { total: number; prev: number | null; bySource: Record<string, number>; via: "analytics" | "site" } | null
+  /** `series`: visits per day for the last 30 days, oldest first (the trend line). */
+  visitors: { total: number; prev: number | null; bySource: Record<string, number>; via: "analytics" | "site"; series: number[] | null } | null
   named: { named: number; answers: number; questions: number } | null
   value: CustomerValue | null
   /** Months of Alphaa one new customer pays for. */
@@ -26,10 +27,11 @@ export async function getHero(userId: string): Promise<Hero> {
   const user = await db.user.findUnique({ where: { id: userId }, select: { plan: true, integration: true } })
   const integ = user?.integration
   const since = new Date(Date.now() - 30 * DAY)
-  const [ga, gaPrev, siteNow, sitePrev, anySite, qs, value] = await Promise.all([
+  const [ga, gaDaily, gaPrev, siteNow, sitePrev, anySite, qs, value] = await Promise.all([
     integ?.gaPropertyId ? getAiReferrals(integ, 30) : Promise.resolve(null),
+    integ?.gaPropertyId ? getAiReferralsDaily(integ, 30) : Promise.resolve(null),
     integ?.gaPropertyId ? getAiReferrals(integ, 30, 31) : Promise.resolve(null),
-    db.mockActivity.findMany({ where: { userId, type: "ai_visit", createdAt: { gte: since } }, select: { metadata: true } }),
+    db.mockActivity.findMany({ where: { userId, type: "ai_visit", createdAt: { gte: since } }, select: { metadata: true, createdAt: true } }),
     db.mockActivity.count({ where: { userId, type: "ai_visit", createdAt: { gte: new Date(Date.now() - 60 * DAY), lt: since } } }),
     db.mockActivity.count({ where: { userId, type: "ai_visit" } }),
     latestQuestionScan(userId).catch(() => null),
@@ -37,14 +39,19 @@ export async function getHero(userId: string): Promise<Hero> {
   ])
 
   let visitors: Hero["visitors"] = null
-  if (ga) visitors = { total: ga.total, prev: gaPrev?.total ?? null, bySource: ga.bySource, via: "analytics" }
+  if (ga) visitors = { total: ga.total, prev: gaPrev?.total ?? null, bySource: ga.bySource, via: "analytics", series: gaDaily }
   else if (anySite > 0) {
     const bySource: Record<string, number> = {}
     for (const v of siteNow) {
       const src = (v.metadata as { source?: string } | null)?.source ?? "AI"
       bySource[src] = (bySource[src] ?? 0) + 1
     }
-    visitors = { total: siteNow.length, prev: sitePrev, bySource, via: "site" }
+    const series = Array.from({ length: 30 }, () => 0)
+    for (const v of siteNow) {
+      const daysAgo = Math.floor((Date.now() - v.createdAt.getTime()) / DAY)
+      if (daysAgo < 30) series[29 - daysAgo]++
+    }
+    visitors = { total: siteNow.length, prev: sitePrev, bySource, via: "site", series }
   }
 
   const named = qs && Date.now() - qs.at.getTime() < 14 * DAY ? { named: qs.scan.named, answers: qs.scan.answers, questions: qs.scan.questions.length } : null
