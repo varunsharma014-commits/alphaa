@@ -29,7 +29,7 @@ export type RailData = {
 export type FeedData = { messages: Message[]; rail: RailData; status: AgentStatus }
 
 /** The strip above the work: what the agent did last and what it does next. */
-export type AgentStatus = { last: { title: string; at: string } | null; next: string }
+export type AgentStatus = { last: { title: string; at: string } | null; next: string; firstCheck: string | null }
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v)
@@ -89,13 +89,9 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
   const greeting = `Good ${timeOfDayGreeting(now)}.`
 
   if (checked === 0) {
-    messages.push(
-      agent([
-        { kind: "text", text: greeting },
-        { kind: "text", text: `I haven’t asked the AIs about ${businessName} yet. Want me to do it now? I’ll ask all four the way a customer would.` },
-        { kind: "chips", items: [{ label: "Ask them now", action: { type: "live", question }, primary: true }, { label: "Change the question", action: { type: "link", href: "/dashboard/sandbox" } }] },
-      ], "standing")
-    )
+    // Never ask permission to do the job: the dashboard runs this check itself
+    // on load (DashboardAgent firstCheck) and reports what the AIs said.
+    messages.push(agent([{ kind: "text", text: `${greeting} I’m asking the four AIs about ${businessName} right now, the way a customer would.` }], "standing"))
   } else {
     const blocks: Block[] = []
     // A change since the previous check is the headline; otherwise the count.
@@ -133,7 +129,6 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
       blocks.push({ kind: "text", text: `Here’s what ${LABEL[row.engine as EngineKey] ?? row.engine} actually said ${ago(latest!.createdAt)}:` })
       blocks.push({ kind: "answer", engine: row.engine as EngineKey, query: row.query, answer: row.response, appeared: row.appeared, mentioned: [], businessName })
     }
-    blocks.push({ kind: "chips", items: [{ label: "Ask them again now", action: { type: "live", question }, primary: false }] })
     messages.push(agent(blocks, "standing"))
   }
 
@@ -145,7 +140,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     if (wrong.length) {
       messages.push(agent([
         { kind: "text", text: high.length ? `${LABEL[high[0].engine as EngineKey] ?? "An AI"} is telling customers “${high[0].claim}”. That’s wrong — ${high[0].truth}.` : `${wrong.length} AI ${wrong.length === 1 ? "answer gets" : "answers get"} a detail about you wrong.`, big: true },
-        { kind: "chips", items: [{ label: "Fix it", action: { type: "thread", topic: "answers" }, primary: true }] },
+        { kind: "chips", items: [{ label: "See my fix", action: { type: "thread", topic: "answers" }, primary: true }] },
       ], "facts"))
     }
     messages.push(agent([
@@ -162,8 +157,8 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
       agent([
         { kind: "text", text: `${r.authorName} left a ${stars} review ${ago(r.publishedAt)}${r.comment ? ":" : "."}` },
         ...(r.comment ? [{ kind: "doc", title: `${r.authorName} · Google`, meta: `${"★".repeat(r.rating)}`, text: r.comment.slice(0, 600) } as Block] : []),
-        { kind: "text", text: r.rating >= 4 ? "I’ll write a thank-you. You approve, I post it." : "I’ll draft a calm, specific reply. You approve every word before it goes up." },
-        { kind: "chips", items: [{ label: "Draft a reply", action: { type: "review-draft", reviewId: r.id }, primary: true }, { label: "Skip", action: { type: "dismiss" } }] },
+        { kind: "text", text: r.rating >= 4 ? "I’ll thank them for you. Nothing goes up without your OK." : "I’ll reply calmly and specifically. Nothing goes up without your OK." },
+        { kind: "chips", items: [{ label: "Show my reply", action: { type: "review-draft", reviewId: r.id }, primary: true }, { label: "Skip", action: { type: "dismiss" } }] },
       ], `review-${r.id}`)
     )
   }
@@ -201,15 +196,14 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
       agent([
         { kind: "text", text: `Where the AIs look before they recommend a ${user.businessType || "business"}${user.city ? ` in ${user.city}` : ""}: ${report.listed} of ${report.targets.length} pages mention you.` },
         { kind: "sources", items: targets.map((t) => ({ name: t.domain, detail: t.title.slice(0, 80), status: t.status === "listed" ? "You’re on it" : t.status === "missing" ? "Not on it" : "Couldn’t check", ok: t.status === "listed", href: t.url })) },
-        ...(report.missing > 0 ? [{ kind: "text", text: `Getting onto the ${report.missing === 1 ? "missing one" : `${report.missing} missing pages`} is the fastest way to change the answers above. Most are directories you can claim in a few minutes — I’ll walk you through each.` } as Block] : []),
-        { kind: "chips", items: [{ label: "Get me listed", action: { type: "thread", topic: "sources" }, primary: report.missing > 0 }] },
+        ...(report.missing > 0 ? [{ kind: "text", text: `Getting onto the ${report.missing === 1 ? "missing one" : `${report.missing} missing pages`} is the fastest way to change the answers above. Most are listings only the owner can claim, so I’ve lined them up with the steps for each.` } as Block] : []),
+        ...(report.missing > 0 ? [{ kind: "chips", items: [{ label: "See the list", action: { type: "thread", topic: "sources" } }] } as Block] : []),
       ], "citations")
     )
   } else if (checked > 0) {
     messages.push(
       agent([
-        { kind: "text", text: "Next I’ll check which pages the AIs read before they recommend someone like you. It takes about two minutes — I’ll post what I find in Source Tracking." },
-        { kind: "chips", items: [{ label: "Do it now", action: { type: "thread", topic: "sources" }, primary: true }] },
+        { kind: "text", text: "I’m checking which pages the AIs read before they recommend someone like you. You’ll see what I find here." },
       ], "citations")
     )
   }
@@ -223,8 +217,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     messages.push(
       agent([
         { kind: "text", text: `${rival} has a page on “${top.topic}”. You don’t. When AI gets asked about it, they’re the answer.` },
-        ...(top.suggestedTitle ? [{ kind: "text", text: `I’d write it as “${top.suggestedTitle}” — from your own facts, nothing invented.` } as Block] : []),
-        { kind: "chips", items: [{ label: "Draft it for me", action: { type: "draft", topic: top.suggestedTitle || top.topic, competitor: rival }, primary: true }, { label: "All competitor gaps", action: { type: "thread", topic: "competitors" } }] },
+        { kind: "text", text: `It’s on my writing list${top.suggestedTitle ? ` as “${top.suggestedTitle}”` : ""}, from your own facts. The draft lands here for your OK.` },
       ], "gap")
     )
   }
@@ -248,7 +241,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
       ], "receipt")
     )
   } else {
-    messages.push(agent([{ kind: "text", text: "Nothing finished yet this week. My next pass is already scheduled, or give me a job below." }], "receipt"))
+    messages.push(agent([{ kind: "text", text: "Nothing finished yet this week. My next pass is already scheduled." }], "receipt"))
   }
 
   const rail: RailData = {
@@ -262,13 +255,13 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     googleConnected: !!user.integration,
   }
   const last = weekActivity[0] ?? (await db.mockActivity.findFirst({ where: { userId: user.id, type: { notIn: ["sandbox_query", "agent_settings", "ai_visit", "email_sent"] } }, orderBy: { createdAt: "desc" } }))
-  const status: AgentStatus = { last: last ? { title: last.title, at: last.createdAt.toISOString() } : null, next: nextCheck(now) }
+  const status: AgentStatus = { last: last ? { title: last.title, at: last.createdAt.toISOString() } : null, next: nextCheck(now), firstCheck: checked === 0 ? question : null }
   return { messages: sections(messages), rail, status }
 }
 
 // Work first: what needs the owner's OK, then what was done, then where they stand.
 function sections(messages: Message[]): Message[] {
-  const needs = (id: string) => id === "facts" || id === "gap" || id === "setup" || id === "posts" || id.startsWith("review-") || id.startsWith("post-")
+  const needs = (id: string) => id === "facts" || id === "setup" || id === "posts" || id.startsWith("review-") || id.startsWith("post-")
   const head = (id: string, text: string): Message => ({ id, role: "agent", blocks: [{ kind: "divider", text }] })
   const pick = (f: (id: string) => boolean) => messages.filter((m) => f(m.id))
   const waiting = pick(needs)

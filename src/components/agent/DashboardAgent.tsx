@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
-import type { Topic } from "@/lib/agent/threads"
 import { ASK_EVENT, type AskDetail } from "./AgentShell"
 import { AgentFeed, Composer } from "./AgentFeed"
 import { agent, mid, user as userMsg, type Block, type Chip, type Message, type SiteOp, type Task } from "@/lib/agent/types"
@@ -30,21 +29,6 @@ type Pending =
   | { kind: "shopify" }
 
 const OP_NAME: Record<SiteOp, string> = { page: "the page", schema: "your structured facts", llms: "your llms.txt", robots: "the robots.txt fix", post: "the post", meta: "the new title and description", sitemap: "your sitemap", headers: "the security settings" }
-// Jobs to hand the agent. Each one starts work right here; none of them is a
-// page to go to.
-type QuickAsk = { label: string; topic?: Topic; say: string; kind?: "visibility" | "post" }
-const QUICK_ASKS: QuickAsk[] = [
-  { label: "Run a fresh AI check", say: "Run a fresh AI check", kind: "visibility" },
-  { label: "Write a post for my site", say: "Write a post for my site", kind: "post" },
-  { label: "Reply to my reviews", topic: "reviews", say: "Reply to my reviews" },
-  { label: "Fix my site for AI", topic: "site", say: "Fix my site for AI" },
-  { label: "Out-rank my competitors", topic: "competitors", say: "Out-rank my competitors" },
-  { label: "Get me listed where AI looks", topic: "sources", say: "Get me listed where AI looks" },
-  { label: "Fix wrong AI answers", topic: "answers", say: "Fix what the AIs get wrong about us" },
-  { label: "Check my listings", topic: "listings", say: "Check my listings and profiles" },
-  { label: "Show this week's results", topic: "briefings", say: "Show this week's results" },
-]
-
 function when(iso: string, future = false): string {
   const d = new Date(iso)
   const days = Math.round((d.getTime() - Date.now()) / 86_400_000)
@@ -75,6 +59,7 @@ export function DashboardAgent({
   const [messages, setMessages] = useState<Message[]>(initial)
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
+  const [asking, setAsking] = useState(false)
   const docEdits = useRef<Record<string, string>>({})
   const prefs = useRef<Prefs>({ webPersonEmail: null, wpConnected: false, siteConnected: false, platform: null, available: NONE_AVAILABLE })
   const pending = useRef<Record<string, Pending>>({})
@@ -208,18 +193,20 @@ export function DashboardAgent({
     started.current = true
     ;(async () => {
       await loadPrefs()
+      // Nothing checked yet: do the check now instead of asking permission.
+      if (status?.firstCheck) await liveCheck(status.firstCheck, true)
       for (const t of autorun) await runTask(t)
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  async function liveCheck(question: string) {
-    push(userMsg(question))
+  async function liveCheck(question: string, own = false) {
+    if (!own) push(userMsg(question))
     setBusy(true)
     push(agent([{ kind: "text", text: "Asking all four now. Takes about 20 seconds." }, { kind: "steps", items: ["Asking ChatGPT", "Asking Gemini", "Asking Claude", "Asking Perplexity"], done: 4 }]))
     const { ok, data } = await post<{ results?: LiveResult[]; remaining?: number }>("/api/sandbox/ask", { question })
     setBusy(false)
-    if (!ok || !data.results) return fail(data.error ?? "The AIs didn’t answer this time. Try again in a minute.")
+    if (!ok || !data.results) return fail(own ? "The AIs didn’t answer just now. I’ll ask again on my next pass and post it here." : data.error ?? "The AIs didn’t answer this time. Try again in a minute.")
     const results = data.results
     const answered = results.filter((r) => r.status === "appeared" || r.status === "not_appearing")
     const named = answered.filter((r) => r.appeared)
@@ -661,25 +648,13 @@ export function DashboardAgent({
     for (const t of data.autorun ?? []) await runTask(t)
   }
 
-  async function quick(q: QuickAsk) {
-    if (busy) return
-    if (q.topic) return pullThread(q.topic, q.say)
-    if (q.kind === "post") return onChip({ label: q.say, action: { type: "draft", topic: "auto", mode: "post" } }, "")
-    if (q.kind === "visibility") {
-      const r = await fetch("/api/agent/questions").then((x) => (x.ok ? x.json() : null)).catch(() => null) as { questions?: string[] } | null
-      const question = r?.questions?.[0]
-      return question ? liveCheck(question) : send(q.say)
-    }
-  }
-
   // Asks from the Memory panel, and ?ask=<topic> when arriving from another page.
   useEffect(() => {
     const onAsk = (e: Event) => { const d = (e as CustomEvent<AskDetail>).detail; if (d) void pullThread(d.topic, d.label) }
     window.addEventListener(ASK_EVENT, onAsk)
     const fromUrl = new URLSearchParams(window.location.search).get("ask")
     if (fromUrl) {
-      const q = QUICK_ASKS.find((x) => x.topic === fromUrl)
-      void pullThread(fromUrl, q?.say ?? "Show me that")
+      void pullThread(fromUrl, "Show me that")
       router.replace(window.location.pathname)
     }
     return () => window.removeEventListener(ASK_EVENT, onAsk)
@@ -727,13 +702,13 @@ export function DashboardAgent({
           onDocEdit={(id, t) => { docEdits.current[id] = t }}
         />
       </div>
-      <div className="ag-quick" role="toolbar" aria-label="Give your agent a job">
-        <span className="ag-quick__lbl">Do it for me</span>
-        {QUICK_ASKS.map((q) => (
-          <button key={q.label} type="button" onClick={() => quick(q)} disabled={busy}>{q.label}</button>
-        ))}
-      </div>
-      <Composer id="agent-input" inputRef={inputRef} placeholder="Give me a job… “write a post about our spring sale”" value={input} onChange={setInput} onSubmit={() => send()} disabled={busy} />
+      {/* The agent finds and fixes things on its own; questions are a quiet
+          side door, not the main control. */}
+      {asking ? (
+        <Composer id="agent-input" inputRef={inputRef} placeholder="Ask about anything I’ve done…" value={input} onChange={setInput} onSubmit={() => send()} disabled={busy} />
+      ) : (
+        <button type="button" className="ag-askdoor" onClick={() => { setAsking(true); setTimeout(() => inputRef.current?.focus(), 0) }}>Have a question about my work?</button>
+      )}
     </>
   )
 }

@@ -479,7 +479,7 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .ag-main .ag-msg--user { align-self: stretch; flex-direction: row; margin-bottom: -8px; }
 .ag-main .ag-msg--user .ag-msg__av { display: none; }
 .ag-main .ag-msg--user .ag-msg__body { background: none; color: var(--ag-fg2); padding: 0; border-radius: 0; font-size: 13px; font-weight: 600; }
-.ag-main .ag-msg--user .ag-msg__body::before { content: "New job · "; color: var(--ag-muted); font-weight: 500; }
+.ag-main .ag-msg--user .ag-msg__body::before { content: "You asked · "; color: var(--ag-muted); font-weight: 500; }
 .ag-quick__lbl { flex: none; align-self: center; font-size: 12px; font-weight: 600; color: var(--ag-muted); padding-right: 2px; }
 .ag-quick button:first-of-type { background: var(--ag-btn); color: var(--ag-btn-fg); border-color: var(--ag-btn); }
 
@@ -492,3 +492,5 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .ag-acct__menu a, .ag-acct__menu button { text-align: left; font: inherit; font-size: 14px; color: var(--ag-fg); background: none; border: 0; padding: 9px 10px; border-radius: 8px; cursor: pointer; text-decoration: none; }
 .ag-acct__menu a:hover, .ag-acct__menu button:hover { background: var(--ag-bg2); }
 .ag-acct__menu hr { border: 0; border-top: 1px solid var(--ag-line); margin: 4px 0; }
+.ag-askdoor { display: block; margin: 6px auto 18px; font: inherit; font-size: 13px; color: var(--ag-muted); background: none; border: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ag-line); }
+.ag-askdoor:hover { color: var(--ag-fg); }
