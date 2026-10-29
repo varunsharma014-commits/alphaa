@@ -2,9 +2,9 @@ import { pageMeta } from "@/lib/seo"
 
 // page.tsx is a client component (category filtering), so metadata lives here.
 export const metadata = pageMeta({
-  title: "Case studies — businesses getting found on AI search",
+  title: "Examples: what an AI Agent does to get you named by AI",
   description:
-    "How local businesses went from invisible on AI search to being named by ChatGPT, Claude, Gemini, and Perplexity — with the timelines, the work involved, and what it replaced.",
+    "Illustrative examples for dentists, law firms and HVAC companies: what Alphaa's AI Agent does, week by week, to get a business named by ChatGPT, Gemini, Claude and Perplexity.",
   path: "/case-studies",
 })
 

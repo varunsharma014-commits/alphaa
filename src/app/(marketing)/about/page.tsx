@@ -54,12 +54,17 @@ export default function AboutPage() {
           <h2>Does Alphaa guarantee rankings?</h2>
           <p>
             No. AI assistants decide their own answers, so no one can honestly guarantee a ranking or a timeline. Alphaa improves the public signals
-            those assistants read and shows, week by week, whether they name the business.
+            those assistants read and shows, week by week, whether they name the business. If none of the four AIs names the business in any weekly
+            check during its first 90 days on a paid plan, the next month is free.
           </p>
           <h2>What research has Alphaa published?</h2>
           <p>
             In September 2026 Alphaa checked 288 local business websites for AI readiness. Read{" "}
             <Link href="/blog/local-business-ai-readiness-study-2026">the study</Link>, or browse the <Link href="/blog">guides</Link>.
+          </p>
+          <h2>Who founded Alphaa?</h2>
+          <p>
+            Alphaa was founded by <Link href="/author/varun-sharma">Varun Sharma</Link>, who has spent over a decade in performance marketing.
           </p>
           <h2>How do I contact Alphaa?</h2>
           <p>

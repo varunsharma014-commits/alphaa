@@ -6,6 +6,7 @@ const isPublicRoute = createRouteMatcher([
   "/pricing",
   "/how-it-works",
   "/about",
+  "/author(.*)",
   "/compare(.*)",
   "/integrations(.*)",
   "/for(.*)",
@@ -50,6 +51,13 @@ const isPublicRoute = createRouteMatcher([
 const isAuthRoute = createRouteMatcher(["/login(.*)", "/signup(.*)"])
 
 export default clerkMiddleware(async (auth, req) => {
+  // One canonical host: www.alphaa.app → alphaa.app, path and query kept.
+  const host = req.headers.get("host") ?? ""
+  if (host.startsWith("www.")) {
+    const url = new URL(req.nextUrl.pathname + req.nextUrl.search, `https://${host.slice(4)}`)
+    return NextResponse.redirect(url, 301)
+  }
+
   const { userId } = await auth()
 
   // Already signed in → bounce away from login/signup to dashboard

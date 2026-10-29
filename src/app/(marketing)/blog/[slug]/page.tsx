@@ -7,6 +7,7 @@ import { getAllPosts, getPost } from "@/content/blog"
 import { extractFaq } from "@/content/blog/faq"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
 import { clipDescription, ogImage as ogCard } from "@/lib/seo"
+import { AUTHOR, AUTHOR_SCHEMA } from "@/lib/author"
 
 const SITE = "https://alphaa.app"
 const abs = (src: string) => (src.startsWith("http") ? src : `${SITE}${src.startsWith("/") ? "" : "/"}${src}`)
@@ -56,6 +57,7 @@ export async function generateMetadata({
       url,
       images: ogImage,
       publishedTime: meta.date,
+      authors: [`${SITE}${AUTHOR.path}`],
       modifiedTime: meta.updated ?? meta.date,
       ...(meta.tag ? { section: meta.tag } : {}),
     },
@@ -99,7 +101,7 @@ export default async function BlogPostPage({
       : {}),
     datePublished: meta.date,
     dateModified: modified,
-    author: ORG,
+    author: AUTHOR_SCHEMA,
     publisher: ORG,
     ...(meta.keyphrase ? { keywords: meta.keyphrase, about: { "@type": "Thing", name: meta.keyphrase } } : {}),
     ...(section ? { articleSection: section } : {}),
@@ -161,7 +163,11 @@ export default async function BlogPostPage({
             </span>
           )}
           <span className="text-fg/30 text-xs">
-            {formatDate(meta.date)} · {meta.readMins} min read
+            By{" "}
+            <Link href={AUTHOR.path} rel="author" className="hover:text-fg transition-colors">
+              {AUTHOR.name}
+            </Link>{" "}
+            · {formatDate(meta.date)} · {meta.readMins} min read
           </span>
         </div>
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Star, ArrowRight, MapPin } from "lucide-react"
+import { ArrowRight, MapPin } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { caseStudies } from "./data"
 
@@ -18,11 +18,7 @@ function CaseStudyCard({ cs }: { cs: (typeof caseStudies)[0] }) {
           <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${cs.badge}`}>
             {cs.industry}
           </span>
-          <div className="flex gap-0.5">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-3 h-3 fill-[#f5b301] text-[#f5b301]" />
-            ))}
-          </div>
+          <span className="text-fg/40 text-xs font-medium">Illustrative example</span>
         </div>
 
         <h3 className="text-fg text-xl font-semibold leading-snug mb-1">{cs.business}</h3>
@@ -56,7 +52,7 @@ function CaseStudyCard({ cs }: { cs: (typeof caseStudies)[0] }) {
           href={`/case-studies/${cs.slug}`}
           className="flex items-center justify-between w-full text-fg/60 hover:text-brand-orange text-sm font-medium transition-colors duration-200 group"
         >
-          Read full case study
+          Read the example
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
         </Link>
       </div>
@@ -83,24 +79,23 @@ export default function CaseStudiesPage() {
         />
         <div className="relative max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-semibold mb-7 tracking-[-0.01em]">
-            Case Studies
+            Examples
           </div>
           <h1 className="text-[41.8px] sm:text-[61.6px] lg:text-[70.4px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-5 text-balance">
-            Real businesses.{" "}
-            <span className="text-brand-orange">Real AI visibility.</span>
+            What your AI Agent does.{" "}
             <br />
-            Real results.
+            <span className="text-[#0071e3]">Industry by industry.</span>
           </h1>
           <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
-            Every case study below is a real customer. Real numbers. Real timelines. See how businesses — local and online — went from invisible on AI search to booked out.
+            Illustrative examples, not customer stories: what Alphaa's AI Agent does, week by week, when ChatGPT, Gemini, Claude and Perplexity name a competitor instead of you.
           </p>
 
           {/* Aggregate stats */}
           <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
             {[
-              { value: "2 weeks", label: "avg. time to first AI mention" },
-              { value: "$1,400/mo", label: "avg. agency savings" },
-              { value: "1,200+", label: "businesses on Alphaa" },
+              { value: "4 AIs", label: "checked every week" },
+              { value: "$99/mo", label: "month to month" },
+              { value: "90 days", label: "named by AI, or next month free" },
             ].map((s) => (
               <div key={s.label} className="rounded-2xl border border-line/[0.07] bg-fg/[0.03] px-2 py-4 sm:p-5 text-center min-w-0">
                 <p className="text-fg text-lg sm:text-2xl font-bold mb-1 whitespace-nowrap">{s.value}</p>
@@ -154,12 +149,12 @@ export default function CaseStudiesPage() {
               <br />knows your business.
             </h2>
             <p className="text-muted text-base sm:text-lg mb-8 max-w-xl mx-auto">
-              Run a free scan in 2 minutes. No credit card required. See your AI visibility score and exactly where you're missing.
+              See what ChatGPT, Gemini, Claude and Perplexity say about your business, and who they name instead. Free, in about 60 seconds.
             </p>
-            <OrangePillButton href="/scan" size="lg">
-              See where I rank on AI →
+            <OrangePillButton href="/start" size="lg">
+              Run the free check →
             </OrangePillButton>
-            <p className="text-muted text-xs mt-4">$99/mo · No setup fee · Cancel anytime</p>
+            <p className="text-muted text-xs mt-4">$99/mo · Month to month · Cancel in 2 clicks</p>
           </div>
         </div>
       </section>

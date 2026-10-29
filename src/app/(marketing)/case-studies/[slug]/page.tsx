@@ -2,6 +2,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { caseStudies, getCaseStudy } from "../data"
+import { pageMeta } from "@/lib/seo"
 import { FullCaseStudy } from "@/components/marketing/FullCaseStudy"
 
 // The listing page has always linked to /case-studies/<slug>, but this route
@@ -16,11 +17,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const cs = getCaseStudy(slug)
   if (!cs) return { title: "Case study not found" }
 
-  return {
-    title: `${cs.business} — ${cs.keyResult}`,
-    description: `${cs.headline} How ${cs.business} (${cs.location}) went from invisible on AI search to being recommended by ChatGPT, Claude, Gemini and Perplexity.`,
-    alternates: { canonical: `/case-studies/${cs.slug}` },
-  }
+  return pageMeta({
+    title: `${cs.industry} example: how an AI Agent gets you recommended by AI`,
+    description: `${cs.headline} An illustrative, week-by-week walkthrough of what Alphaa does for ${cs.business.toLowerCase()}.`,
+    path: `/case-studies/${cs.slug}`,
+    eyebrow: "Example",
+  })
 }
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -38,7 +40,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           className="inline-flex items-center gap-2 text-muted hover:text-fg text-sm font-medium mb-8 transition-colors duration-200"
         >
           <ArrowLeft className="w-4 h-4" />
-          All case studies
+          All examples
         </Link>
 
         <FullCaseStudy cs={cs} />
@@ -46,7 +48,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         {others.length > 0 && (
           <div className="mt-16 pt-10 border-t border-line/[0.08]">
             <p className="text-muted text-xs font-semibold tracking-[-0.01em] mb-6">
-              More case studies
+              More examples
             </p>
             <div className="grid sm:grid-cols-2 gap-4">
               {others.map((o) => (

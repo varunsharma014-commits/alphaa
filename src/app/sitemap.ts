@@ -21,6 +21,7 @@ const PAGE_UPDATED: Record<string, string> = {
   "/scan": "2026-10-29",
   "/case-studies": "2026-10-29",
   "/refer": "2026-10-29",
+  "/author/varun-sharma": "2026-10-29",
 }
 const updated = (path: string) => new Date(PAGE_UPDATED[path])
 
@@ -95,6 +96,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: updated("/about"),
       changeFrequency: "monthly",
       priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/author/varun-sharma`,
+      lastModified: updated("/author/varun-sharma"),
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
     {
       url: `${BASE_URL}/how-it-works`,

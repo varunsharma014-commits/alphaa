@@ -1,4 +1,4 @@
-import { MapPin, BadgeCheck } from "lucide-react"
+import { MapPin } from "lucide-react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import type { CaseStudy } from "@/app/(marketing)/case-studies/data"
 
@@ -11,6 +11,9 @@ export function FullCaseStudy({ cs }: { cs: CaseStudy }) {
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${cs.badge}`}>
               {cs.industry}
+            </span>
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border border-line/[0.08] text-muted">
+              Illustrative example
             </span>
             <div className="flex items-center gap-1 text-fg/40 text-sm">
               <MapPin className="w-3.5 h-3.5" />
@@ -96,38 +99,20 @@ export function FullCaseStudy({ cs }: { cs: CaseStudy }) {
         </div>
       </div>
 
-      {/* Pull quote */}
-      <div className="rounded-2xl border border-brand-orange/20 bg-brand-orange/5 p-7 sm:p-9 mb-6">
-        <div className="max-w-3xl mx-auto">
-          <svg className="w-8 h-8 text-brand-orange/40 mb-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-          </svg>
-          <p className="text-fg text-lg sm:text-xl leading-relaxed font-medium mb-6">
-            {cs.quote.text}
-          </p>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-brand-orange/20 flex items-center justify-center text-brand-orange text-sm font-bold flex-shrink-0">
-              {cs.initials}
-            </div>
-            <div>
-              <div className="flex items-center gap-1">
-                <p className="text-fg font-semibold text-sm">{cs.quote.name}</p>
-                <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
-              </div>
-              <p className="text-fg/40 text-xs">{cs.quote.role} · {cs.quote.location}</p>
-            </div>
-          </div>
-        </div>
+      {/* Example disclosure (replaces the old pull quote: these are examples, not customers) */}
+      <div className="rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 sm:p-7 mb-6">
+        <p className="text-muted text-xs font-semibold tracking-[-0.01em] mb-2">About this example</p>
+        <p className="text-muted text-sm leading-relaxed">{cs.note}</p>
       </div>
 
       {/* CTA */}
       <div className="rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <p className="text-fg font-semibold mb-1">Get similar results for your business</p>
-          <p className="text-muted text-sm">Free AI visibility scan — see exactly where you stand in 2 minutes.</p>
+          <p className="text-fg font-semibold mb-1">See what AI says about your business</p>
+          <p className="text-muted text-sm">Free check: what ChatGPT, Gemini, Claude and Perplexity say about you, in about 60 seconds.</p>
         </div>
-        <OrangePillButton href="/scan" size="md" className="flex-shrink-0">
-          See where you rank →
+        <OrangePillButton href="/start" size="md" className="flex-shrink-0">
+          Run the free check →
         </OrangePillButton>
       </div>
     </article>
