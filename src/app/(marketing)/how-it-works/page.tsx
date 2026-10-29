@@ -75,7 +75,7 @@ export default function HowItWorksPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howTo) }} />
       <section className="ap-sec ap-sec--grey" style={{ paddingTop: 120 }}>
         <h1 className="ap-h2 ap-center" style={{ fontSize: "clamp(44px, 7.7vw, 88px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}>
-          Everything {A} does.<br /><span className="ap-quiet">Explained.</span>
+          Everything {A} does.<br /><span className="ap-quiet">Your AI Agent, explained.</span>
         </h1>
         <p className="ap-lead ap-center">No black boxes. Here’s exactly what happens — from a free check to AI saying your name.</p>
         <div className="ap-story">

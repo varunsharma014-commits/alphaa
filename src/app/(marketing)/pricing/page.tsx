@@ -48,7 +48,7 @@ export default function PricingPage() {
           An SEO agency charges ~$2,000 a month for Google alone. Your agent starts at <b style={{ color: "#1d1d1f" }}>$99</b>.
         </p>
         <h1 className="ap-h2 ap-center" style={{ fontSize: "clamp(44px, 7.7vw, 88px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}>
-          From $99/month.<br /><span className="ap-quiet">No contracts.</span>
+          From $99/month.<br /><span className="ap-quiet">An AI Agent working for you. No contracts.</span>
         </h1>
         <p className="ap-lead ap-center">Month to month. Cancel in two clicks. No technical skills needed — your agent does the work.</p>
         <p className="ap-center" style={{ fontSize: 15, color: "#1d1d1f", margin: "14px auto 0", padding: "0 22px" }}><b>90-day AI Visibility Guarantee:</b> if no AI assistant names you in our weekly checks, your next month is free.</p>

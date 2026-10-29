@@ -23,7 +23,7 @@ export default function CompareHub() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <section className="ap-sec cmp-hero">
         <h1 className="ap-h2 ap-center cmp-h1">
-          Compare.<br /><span className="ap-quiet">Honestly.</span>
+          Compare.<br /><span className="ap-quiet">Tools that tell you, or an AI Agent that does it.</span>
         </h1>
         <p className="ap-lead ap-center">
           How Alphaa stacks up against agencies, freelancers and SEO tools — and what SEO, AEO and GEO actually mean.

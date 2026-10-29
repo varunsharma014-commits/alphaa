@@ -113,7 +113,7 @@ export function TodoAccordion() {
   const [open, setOpen] = useState(0)
   return (
     <section className="ap-sec">
-      <h2 className="ap-h2 ap-center">Most tools give you a to-do list.<br /><span className="ap-quiet">{A} just does the to-dos.</span></h2>
+      <h2 className="ap-h2 ap-center">Most tools give you a to-do list.<br /><span className="ap-quiet">{A}’s AI Agent does them for you.</span></h2>
       <p className="ap-lead ap-center">Marketing tools show you a complicated dashboard and leave you to figure it out. {A} reads, writes, fixes and publishes — then tells you exactly what it did, in plain English.</p>
       <div className="ap-feature">
         <div className="ap-acc">
@@ -197,7 +197,7 @@ export function EasyRail() {
   )
   return (
     <section className="ap-sec ap-sec--grey">
-      <h2 className="ap-h2 ap-center">Zero technical skills required.<br /><span className="ap-quiet">Your agent does the heavy lifting.</span></h2>
+      <h2 className="ap-h2 ap-center">Zero technical skills required.<br /><span className="ap-quiet">Your AI Agent does the work for you.</span></h2>
       <p className="ap-center" style={{ marginTop: 18 }}><Link href="/how-it-works" className="ap-link" style={{ fontSize: 19 }}>See how it works ›</Link></p>
       <div className="ap-bento">
         <Card c={lead} wide />
@@ -217,7 +217,7 @@ const ROWS: [string, string, string][] = [
 export function AgencyToggle() {
   return (
     <section className="ap-sec">
-      <h2 className="ap-h2 ap-center">Your SEO agency charges $2,000 a month<br /><span className="ap-quiet">for a job AI is taking over.</span></h2>
+      <h2 className="ap-h2 ap-center">Your SEO agency charges $2,000 a month<br /><span className="ap-quiet">for work an AI Agent now does for you.</span></h2>
       <p className="ap-lead ap-center">Even a “good” Google SEO agency leaves you invisible where customers are actually asking questions today.</p>
       <div className="ap-vs">
         <div className="ap-vs__col ap-vs__col--them">

@@ -9,7 +9,8 @@
 .ap-sec--grey { background: #f5f5f7; }
 .ap-center { text-align: center; }
 .ap-h2 { font-size: clamp(34px, 5.2vw, 56px); font-weight: 600; line-height: 1.07; letter-spacing: -0.005em; margin: 0 auto; max-width: 1024px; padding: 0 22px; text-wrap: balance; }
-.ap-quiet { color: #86868b; }
+/* The good news line in two-tone headlines: Apple blue. */
+.ap-quiet { color: #0071e3; }
 .ap-lead { font-size: clamp(19px, 1.9vw, 21px); line-height: 1.38; letter-spacing: 0.011em; color: #1d1d1f; max-width: 720px; margin: 22px auto 0; padding: 0 22px; text-wrap: balance; }
 .ap-link { color: #000; font-size: 17px; white-space: nowrap; }
 .ap-link:hover { text-decoration: underline; }
