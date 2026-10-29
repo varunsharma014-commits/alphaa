@@ -443,13 +443,14 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .hx-card__dot { width: 8px; height: 8px; border-radius: 50%; flex: none; box-shadow: 0 0 0 4px rgb(0 0 0 / 0.04); }
 .hx-card__t b { font-weight: 600; margin-right: 6px; }
 @keyframes hx-float { 50% { transform: translateY(-10px); } }
-/* Cards live in the side margins, outside the 900px hero column. */
-.hx-c1 { right: calc(50% + 470px); top: 12%; animation-delay: 0s; }
-.hx-c2 { left: calc(50% + 470px); top: 17%; animation-delay: -2s; }
-.hx-c3 { right: calc(50% + 500px); top: 38%; animation-delay: -4s; }
-.hx-c4 { left: calc(50% + 500px); top: 42%; animation-delay: -1s; }
-.hx-c5 { right: calc(50% + 460px); top: 62%; animation-delay: -3s; }
-.hx-c6 { left: calc(50% + 460px); top: 66%; animation-delay: -5s; }
+/* Cards live in the side margins, below the headline (which runs ~1100px wide),
+   beside the narrower subhead, button and demo. */
+.hx-c1 { right: calc(50% + 430px); top: 318px; animation-delay: 0s; }
+.hx-c2 { left: calc(50% + 430px); top: 352px; animation-delay: -2s; }
+.hx-c3 { right: calc(50% + 470px); top: 478px; animation-delay: -4s; }
+.hx-c4 { left: calc(50% + 470px); top: 510px; animation-delay: -1s; }
+.hx-c5 { right: calc(50% + 470px); top: 640px; animation-delay: -3s; }
+.hx-c6 { left: calc(50% + 470px); top: 676px; animation-delay: -5s; }
 @media (max-width: 1560px) { .hx-card { display: none; } }
 @media (prefers-reduced-motion: reduce) { .hx-grid, .hx-glow, .hx-card { animation: none; } }
 
