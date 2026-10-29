@@ -30,7 +30,7 @@ export default function BlogIndexPage() {
           </p>
           <h1 className="text-fg text-[41.8px] sm:text-[61.6px] lg:text-[70.4px] font-semibold leading-[1.05] tracking-[-0.02em] text-balance">
             Getting found in the age of{" "}
-            <span className="text-[#86868b]">AI search</span>
+            <span className="text-[#0071e3]">AI search</span>
           </h1>
           <p className="text-muted text-base mt-4 max-w-xl mx-auto">
             Practical, no-fluff guides on AI Search Optimization — how AI assistants decide what to

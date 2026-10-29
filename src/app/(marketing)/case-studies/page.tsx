@@ -102,8 +102,8 @@ export default function CaseStudiesPage() {
               { value: "$1,400/mo", label: "avg. agency savings" },
               { value: "1,200+", label: "businesses on Alphaa" },
             ].map((s) => (
-              <div key={s.label} className="rounded-2xl border border-line/[0.07] bg-fg/[0.03] p-5 text-center">
-                <p className="text-fg text-2xl font-bold mb-1">{s.value}</p>
+              <div key={s.label} className="rounded-2xl border border-line/[0.07] bg-fg/[0.03] px-2 py-4 sm:p-5 text-center min-w-0">
+                <p className="text-fg text-lg sm:text-2xl font-bold mb-1 whitespace-nowrap">{s.value}</p>
                 <p className="text-fg/35 text-xs leading-snug">{s.label}</p>
               </div>
             ))}

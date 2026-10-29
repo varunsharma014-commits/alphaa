@@ -208,7 +208,7 @@ export default function ReferPage() {
 
           <h1 className="text-[41.8px] sm:text-[61.6px] lg:text-[70.4px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-6 text-balance">
             Get paid every month.{" "}
-            <span className="text-[#86868b]">
+            <span className="text-[#0071e3]">
               Forever.
             </span>
           </h1>
