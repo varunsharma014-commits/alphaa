@@ -21,11 +21,14 @@ export type ScanEngineResults = {
   queriesUsed: string[]
 }
 
+// No city on file: ask the way a customer would ("near me"), never "near ?".
 function buildQueries(businessType: string, city: string): string[] {
+  const trade = businessType.trim() || "local business"
+  const place = city.trim()
   return [
-    `I'm looking for recommendations for ${businessType} in ${city}. What are some good options?`,
-    `What are the best ${businessType} near ${city}? I'd love some highly rated recommendations.`,
-    `Can you suggest top-rated ${businessType} in the ${city} area? Looking for reliable options.`,
+    `I'm looking for recommendations for ${trade}${place ? ` in ${place}` : ""}. What are some good options?`,
+    `What are the best ${trade} ${place ? `near ${place}` : "near me"}? I'd love some highly rated recommendations.`,
+    `Can you suggest top-rated ${trade}${place ? ` in the ${place} area` : " near me"}? Looking for reliable options.`,
   ]
 }
 
