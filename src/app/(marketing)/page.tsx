@@ -4,6 +4,7 @@ import Link from "next/link"
 import { RevenueSection, TodoAccordion, EasyRail, AgencyToggle } from "@/components/marketing/apple/Sections"
 import { StartAgent } from "@/components/agent/StartAgent"
 import { HeroCta } from "@/components/marketing/hero/HeroCta"
+import { HeroArrows } from "@/components/marketing/hero/HeroArrows"
 import { FaqSection } from "@/components/marketing/FaqSection"
 import { faqs } from "@/components/marketing/faq-data"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
@@ -91,7 +92,7 @@ export default function HomePage() {
         </div>
         <div className="ag-fine">No credit card required. Checks <b>ChatGPT, Gemini, Claude and Perplexity</b>.</div>
         {/* The real /start conversation, right in the hero. */}
-        <div id="check"><StartAgent embedded /></div>
+        <div id="check" className="hx-check"><HeroArrows /><StartAgent embedded /></div>
         </div>
       </section>
       </div>
