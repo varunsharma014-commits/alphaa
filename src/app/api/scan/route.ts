@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic"
+import { computeScore, buildFindings, findingsToIssues, type ReportEngine } from "@/lib/scan-report"
 import { NextRequest, NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
 import { z } from "zod"
@@ -304,6 +305,20 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
         }
       : null
 
+    // Score and findings from what this scan measured (the four AIs + the site
+    // checks), never from a model's guess about the business.
+    const ENGINE_LABEL: Record<string, string> = { chatgpt: "ChatGPT", claude: "Claude", gemini: "Gemini", perplexity: "Perplexity" }
+    const reportEngines: ReportEngine[] = engineResults
+      .filter((r) => r.status !== "not_configured")
+      .map((r) => ({
+        name: ENGINE_LABEL[r.engine] ?? r.engine,
+        appeared: r.appeared,
+        mentioned: mentionedByEngine[r.engine] ?? [],
+        answered: !!r.response && r.status !== "error",
+      }))
+    const realScore = computeScore(reportEngines, siteChecks)
+    const reportIssues = realScore === null ? [] : findingsToIssues(buildFindings(input.businessName, reportEngines, siteChecks))
+
     // ogData is ALWAYS an object for new scans and always carries `insights`
     // (possibly null), even when the OG fetch itself failed.
     const ogData = { ...(site.og ?? {}), insights, auditFallback, siteChecks }
@@ -313,8 +328,8 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
     await db.scanLead.update({
       where: { id: leadId },
       data: {
-        visibilityScore: auditResult.visibility_score,
-        issues: auditResult.issues,
+        visibilityScore: realScore ?? auditResult.visibility_score,
+        issues: reportIssues as object,
         aiSearchStatus,
         ogData: ogData as object,
         engineResponses: engineResponses as object,

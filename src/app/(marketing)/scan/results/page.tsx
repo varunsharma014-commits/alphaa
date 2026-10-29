@@ -8,10 +8,13 @@ import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { track } from "@/lib/gtag"
 import { fbTrack } from "@/lib/pixel"
 import type { ScanResult, EngineEvidence, ScanInsights } from "@/types/scan"
+import type { SiteChecks } from "@/lib/site-check"
+import { computeScore, buildFindings, scoreLabel, type Finding, type ReportEngine } from "@/lib/scan-report"
+import "./report.css"
 import {
-  MapPin, AlertTriangle, Globe, Sparkles, MessageSquare, Search,
-  Check, Mail, Wand2, ChevronDown, ChevronUp, X, ExternalLink,
-  Lock, BarChart3, Copy, Gift,
+  AlertTriangle, Globe, Sparkles, MessageSquare, Search,
+  Check, Mail, ChevronDown, ChevronUp, X, ExternalLink,
+  Copy,
 } from "lucide-react"
 
 // ── Runtime guards (Json columns — old rows store strings) ─────────────────
@@ -224,21 +227,6 @@ function highlightNames(
   })
 }
 
-function scoreColor(score: number): string {
-  if (score >= 75) return "#22C55E"
-  if (score >= 50) return "rgb(var(--orange-rgb))"
-  return "#EF4444"
-}
-
-// Plain-English verdict — hero fallback when no search estimate exists.
-function buildVerdict(aiMentions: number, total: number, businessName: string): string {
-  if (aiMentions === 0)
-    return `When customers ask AI who to call, ${businessName} never comes up. They're being sent to your competitors instead.`
-  if (aiMentions < total)
-    return `${aiMentions} of ${total} AI assistants mention ${businessName}. The other ${total - aiMentions} are still sending customers elsewhere.`
-  return `AI assistants know ${businessName} today — the work now is staying in the answer as competitors catch on.`
-}
-
 // NOTE: the `google_ai` storage key holds CLAUDE's response — a legacy naming
 // choice kept so existing ScanLead/Audit rows still resolve. It must be LABELLED
 // Claude: showing Anthropic's output under Google's name misattributes one
@@ -268,484 +256,6 @@ interface EngineRow {
   appeared: boolean
   evidence: EngineEvidence | null // new-shape rows only
   legacyText: string | null       // old-shape rows only
-}
-
-// ── Score gauge (adapted from ScoreRing — bigger, with glow) ────────────────
-
-function ScoreGaugeBig({ score }: { score: number }) {
-  const size = 168
-  const strokeWidth = 11
-  const radius = (size - strokeWidth * 2) / 2
-  const circumference = 2 * Math.PI * radius
-  const offset = circumference - (Math.min(100, Math.max(0, score)) / 100) * circumference
-  const color = scoreColor(score)
-
-  return (
-    <div className="relative mx-auto" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90" aria-hidden>
-        <circle
-          cx={size / 2} cy={size / 2} r={radius}
-          stroke="rgb(var(--fg-rgb) / 0.08)" strokeWidth={strokeWidth} fill="none"
-        />
-        <circle
-          cx={size / 2} cy={size / 2} r={radius}
-          stroke={color} strokeWidth={strokeWidth} fill="none"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          style={{ filter: `drop-shadow(0 0 10px ${color}66)`, transition: "stroke-dashoffset 1s ease" }}
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="mono text-fg font-bold leading-none" style={{ fontSize: 46 }}>
-          {score}
-        </span>
-        <span className="text-fg/40 text-sm mt-1">/100</span>
-        {/* Plain-language severity — "44" alone doesn't tell a business owner
-            whether that's fine or a fire. */}
-        <span className="text-[10px] font-semibold tracking-[-0.01em] mt-1" style={{ color }}>
-          {score < 50 ? "Critical" : score < 75 ? "Needs work" : "Strong"}
-        </span>
-      </div>
-    </div>
-  )
-}
-
-// ── Trust strip — honest items only, shown near every CTA ───────────────────
-
-const TRUST_ITEMS = [
-  { Icon: Check,     text: "$99 a month · month to month" },
-  { Icon: Check,     text: "Cancel anytime in two clicks" },
-  { Icon: Lock,      text: "Payments secured by Stripe" },
-  { Icon: BarChart3, text: "Weekly progress report — measured, not promised" },
-] as const
-
-function TrustStrip({ compact = false }: { compact?: boolean }) {
-  if (compact) {
-    return (
-      <p className="text-fg/35 text-[11px] text-center leading-relaxed mt-3 mb-0">
-        $99 a month · month to month · cancel anytime in two clicks · payments secured by Stripe
-      </p>
-    )
-  }
-  return (
-    <div className="grid grid-cols-2 gap-x-5 gap-y-2 mt-4">
-      {TRUST_ITEMS.map(({ Icon, text }) => (
-        <div key={text} className="flex items-start gap-1.5">
-          <Icon className="w-3 h-3 text-green-400/80 flex-shrink-0 mt-[3px]" />
-          <span className="text-muted text-[11px] leading-snug">{text}</span>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-// ── Primary CTA (hero + decision block) ─────────────────────────────────────
-
-function SignupCta({ placement }: { placement: string }) {
-  return (
-    <div className="max-w-md mx-auto">
-      <Link
-        href="/signup"
-        onClick={() => track("results_cta_click", { placement })}
-        className="btn-orange block w-full text-center text-base font-semibold px-6 py-3.5 !rounded-xl"
-      >
-        Fix this automatically — start free →
-      </Link>
-      <p className="text-fg/35 text-[11px] text-center mt-2 mb-0">then $99/mo</p>
-      <TrustStrip />
-    </div>
-  )
-}
-
-// ── Mid-page CTA (between evidence and findings) ────────────────────────────
-
-// ── Sticky bottom CTA bar (appears after ~800px scroll, dismissible) ────────
-
-function StickyCtaBar({
-  businessName,
-  losing,
-}: {
-  businessName: string
-  losing: boolean
-}) {
-  const [visible, setVisible] = useState(false)
-  const [dismissed, setDismissed] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 800)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-
-  if (dismissed) return null
-
-  return (
-    <div
-      className={`fixed bottom-0 inset-x-0 z-50 transition-all duration-300 ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 pointer-events-none"
-      }`}
-    >
-      <div className="mx-auto max-w-2xl px-4 pb-4">
-        <div className="flex items-center gap-3 bg-bg-tertiary/95 backdrop-blur-md border border-line/[0.12] rounded-2xl pl-4 pr-2 py-2.5 shadow-2xl">
-          <p className="flex-1 min-w-0 text-fg/80 text-[13px] leading-snug m-0">
-            <span className="text-fg font-semibold">{businessName}</span>
-            {losing
-              ? ", AI is recommending your competitors — fix it from $99/mo"
-              : ", AI knows you today — keep it that way from $99/mo"}
-          </p>
-          <Link
-            href="/signup"
-            onClick={() => track("results_cta_click", { placement: "sticky_bar" })}
-            className="btn-orange flex-shrink-0 text-[13px] font-semibold px-4 py-2 !rounded-lg whitespace-nowrap"
-          >
-            Start free →
-          </Link>
-          <button
-            type="button"
-            aria-label="Dismiss"
-            onClick={() => setDismissed(true)}
-            className="flex-shrink-0 p-1.5 text-fg/40 hover:text-fg transition-colors"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex items-center gap-3 mb-4">
-      <span className="text-xs font-semibold tracking-[-0.01em] text-fg/40 whitespace-nowrap">
-        {children}
-      </span>
-      <div className="flex-1 h-px bg-fg/[0.08]" />
-    </div>
-  )
-}
-
-// ── Hero headline — the FOMO line IS the hero ───────────────────────────────
-
-function HeroHeadline({
-  loss,
-  keyword,
-  searchesLabel,
-  isLocal,
-  city,
-  aiMentions,
-  totalEngines,
-  verdict,
-  missedNames,
-  foundNames,
-}: {
-  loss: LossInfo | null
-  keyword: string | null
-  searchesLabel: string
-  isLocal: boolean
-  city: string
-  aiMentions: number
-  totalEngines: number
-  verdict: string
-  missedNames: string[]
-  foundNames: string[]
-}) {
-  const missing = totalEngines - aiMentions
-  const mentionsClass =
-    aiMentions === 0
-      ? "text-red-400"
-      : aiMentions === totalEngines
-        ? "text-green-400"
-        : "text-fg"
-
-  // One short claim, then the supporting detail underneath. This used to be a
-  // single ~26-word sentence that fused the search estimate and the miss count
-  // into one headline — too much to take in at a glance on the page that has to
-  // land a single message.
-  // "ChatGPT, Claude and Gemini" — an owner knows those names; "AI assistant"
-  // and "3 of 4 answers" make them do the translation themselves.
-  const list = (names: string[]) =>
-    names.length <= 1
-      ? names[0] ?? ""
-      : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`
-
-  const headline =
-    aiMentions === 0 ? (
-      <>{list(missedNames)} <span className="text-red-500">didn&rsquo;t find you</span>.</>
-    ) : aiMentions === totalEngines ? (
-      <>{list(foundNames)} <span className="text-green-600">all found you</span>.</>
-    ) : (
-      <>{list(missedNames)} <span className="text-red-500">didn&rsquo;t find you</span>.</>
-    )
-
-  return (
-    <>
-      <h1 className="text-fg text-[33px] sm:text-[44px] font-bold leading-[1.15] tracking-[-0.02em] m-0">
-        {headline}
-      </h1>
-      {loss ? (
-        <p className="text-muted text-[15px] leading-relaxed mt-4 mb-0">
-          An estimated{" "}
-          <span className="mono whitespace-nowrap">
-            {loss.low.toLocaleString("en-US")}–{loss.high.toLocaleString("en-US")}
-          </span>{" "}
-          buyers asked AI for{" "}
-          {keyword ? (
-            <span className="text-fg">&ldquo;{keyword}&rdquo;</span>
-          ) : (
-            <>{searchesLabel} {isLocal ? "in or near" : "in"} {city}</>
-          )}{" "}
-          in the last 30 days.
-        </p>
-      ) : (
-        <p className="text-muted text-[15px] leading-relaxed mt-4 mb-0">{verdict}</p>
-      )}
-    </>
-  )
-}
-
-// ── Evidence card (chat-style, per engine) ──────────────────────────────────
-
-function EvidenceCard({
-  engine,
-  businessName,
-  city,
-}: {
-  engine: EngineRow
-  businessName: string
-  city: string
-}) {
-  const [expanded, setExpanded] = useState(false)
-  const fullText = engine.evidence?.response ?? engine.legacyText ?? ""
-  const mentioned = engine.evidence
-    ? engine.evidence.mentioned.filter((m): m is string => typeof m === "string")
-    : []
-  const query =
-    engine.evidence && typeof engine.evidence.query === "string" && engine.evidence.query.trim()
-      ? engine.evidence.query.trim()
-      : null
-  const cleanText = stripMarkdown(fullText)
-  const isLong = cleanText.length > 190
-  const shownText = expanded ? cleanText : truncateAtWord(cleanText, 190)
-
-  return (
-    <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-5">
-      {/* Header: engine + verdict chip */}
-      <div className="flex items-center justify-between gap-2 mb-4">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-8 h-8 rounded-lg bg-fg/[0.06] flex items-center justify-center flex-shrink-0">
-            <engine.Icon className="w-4 h-4" style={{ color: engine.iconColor }} />
-          </div>
-          <div className="min-w-0">
-            <span className="text-fg text-sm font-semibold truncate block">{engine.name}</span>
-            {ENGINE_SUBS[engine.name] && (
-              <span className="text-fg/35 text-[11px] leading-tight truncate block">
-                {ENGINE_SUBS[engine.name]}
-              </span>
-            )}
-          </div>
-        </div>
-        {engine.appeared ? (
-          <span className="flex-shrink-0 text-[11px] font-semibold text-green-400 bg-green-500/10 border border-green-500/25 rounded-full px-2.5 py-1">
-            You were mentioned ✓
-          </span>
-        ) : (
-          <span className="flex-shrink-0 text-[11px] font-semibold text-red-400 bg-red-500/10 border border-red-500/25 rounded-full px-2.5 py-1">
-            You weren&apos;t mentioned
-          </span>
-        )}
-      </div>
-
-      {/* The question — verbatim when we have it */}
-      {query ? (
-        <div className="flex justify-end mb-3">
-          <div className="max-w-[85%] bg-bg-tertiary border border-line/[0.06] rounded-2xl rounded-br-md px-4 py-2.5">
-            <p className="text-[10px] tracking-[-0.01em] text-fg/30 mb-1">A customer asks</p>
-            <p className="text-fg/85 text-[13px] leading-relaxed m-0">&ldquo;{query}&rdquo;</p>
-          </div>
-        </div>
-      ) : (
-        <p className="text-fg/35 text-xs mb-3">
-          We asked {engine.name} about businesses like yours in {city}.
-        </p>
-      )}
-
-      {/* The answer — verbatim excerpt */}
-      {fullText ? (
-        <div className="bg-fg/[0.04] border border-line/[0.06] rounded-2xl rounded-tl-md px-4 py-3">
-          <p className="text-[10px] tracking-[-0.01em] text-fg/30 mb-1.5">
-            {engine.name} answered
-          </p>
-          <p className="text-fg/75 text-[13px] leading-relaxed m-0 whitespace-pre-line">
-            {highlightNames(shownText, mentioned, businessName)}
-          </p>
-          {isLong && (
-            <button
-              type="button"
-              onClick={() => setExpanded((v) => !v)}
-              className="mt-2 inline-flex items-center gap-1 text-brand-orange text-xs font-medium hover:text-brand-orange-light transition-colors"
-            >
-              {expanded ? <>Show less <ChevronUp className="w-3 h-3" /></> : <>Show full response <ChevronDown className="w-3 h-3" /></>}
-            </button>
-          )}
-        </div>
-      ) : (
-        <p className="text-fg/35 text-[13px] bg-fg/[0.03] border border-line/[0.06] rounded-xl px-4 py-3 m-0">
-          {engine.name} didn&apos;t return a usable answer during this scan
-          {engine.appeared ? "" : ` — and your business wasn't in the results we could check`}.
-        </p>
-      )}
-    </div>
-  )
-}
-
-// ── Competitor intel table (new contract) ───────────────────────────────────
-
-function MentionsPill({
-  count,
-  total,
-  tone,
-}: {
-  count: number
-  total: number
-  tone: "competitor" | "you"
-}) {
-  // Competitors: orange = threat (never green). You: red when absent, green when everywhere.
-  const cls =
-    tone === "you"
-      ? count === 0
-        ? "text-red-400 bg-red-500/10 border-red-500/25"
-        : count === total
-          ? "text-green-400 bg-green-500/10 border-green-500/25"
-          : "text-brand-orange bg-brand-orange/10 border-brand-orange/25"
-      : count === 0
-        ? "text-fg/40 bg-fg/[0.04] border-line/[0.1]"
-        : "text-brand-orange bg-brand-orange/10 border-brand-orange/25"
-  return (
-    <span className={`inline-flex items-center whitespace-nowrap text-[11px] font-medium border rounded-full px-2.5 py-1 ${cls}`}>
-      Mentioned by&nbsp;<span className="mono font-bold">{count}</span>&nbsp;of {total} AI assistants
-    </span>
-  )
-}
-
-function GoogleRankCell({
-  rank,
-  keyword,
-}: {
-  rank: number | null
-  keyword: string | null
-}) {
-  if (rank === null) return <span className="text-fg/25 text-xs">—</span>
-  return (
-    <span className="text-muted text-xs leading-snug">
-      Ranks <span className="mono text-fg font-semibold">#{rank}</span> on Google
-      {keyword ? <> for &ldquo;{keyword}&rdquo;</> : null}
-    </span>
-  )
-}
-
-const INTEL_GRID = "sm:grid sm:grid-cols-[minmax(0,1fr)_215px_170px] sm:gap-x-4 sm:items-center"
-
-function CompetitorIntelTable({
-  competitors,
-  you,
-  totalEngines,
-  keyword,
-  serpCount,
-  serpCountry,
-}: {
-  competitors: CompetitorDetail[]
-  you: { name: string; aiMentions: number; googleRank: number | null }
-  totalEngines: number
-  keyword: string | null
-  serpCount: number | null
-  serpCountry: string | null
-}) {
-  const googleLabel = serpCountry && serpCountry !== "us" ? `google.${serpCountry}` : "Google"
-
-  return (
-    <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl overflow-hidden">
-      {/* Column header */}
-      <div className={`hidden ${INTEL_GRID} px-5 py-2.5 border-b border-line/[0.06] bg-fg/[0.02]`}>
-        <span className="text-[10px] font-semibold tracking-[-0.01em] text-fg/30">Business</span>
-        <span className="text-[10px] font-semibold tracking-[-0.01em] text-fg/30">AI mentions</span>
-        <span className="text-[10px] font-semibold tracking-[-0.01em] text-fg/30">Google rank</span>
-      </div>
-
-      <div className="divide-y divide-line/[0.06]">
-        {competitors.map((c, i) => {
-          const href = c.url ?? (c.domain ? `https://${c.domain}` : null)
-          const linkLabel = c.domain ?? (c.url ? hostFromUrl(c.url) : null)
-          return (
-            <div key={`${c.name}-${i}`} className={`${INTEL_GRID} px-4 sm:px-5 py-3.5`}>
-              <div className="min-w-0">
-                <p className="text-fg text-sm font-semibold truncate m-0">{c.name}</p>
-                {href && linkLabel && (
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    className="inline-flex items-center gap-1 text-[11px] text-fg/40 hover:text-brand-orange transition-colors"
-                  >
-                    <span className="truncate max-w-[220px]">{linkLabel}</span>
-                    <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                  </a>
-                )}
-              </div>
-              <div className="mt-2 sm:mt-0">
-                <MentionsPill count={c.aiMentions} total={totalEngines} tone="competitor" />
-              </div>
-              <div className="mt-1.5 sm:mt-0">
-                <GoogleRankCell rank={c.googleRank} keyword={keyword} />
-              </div>
-            </div>
-          )
-        })}
-
-        {/* The scanned business — contrasting bottom row */}
-        <div
-          className={`${INTEL_GRID} px-4 sm:px-5 py-3.5 ${
-            you.aiMentions === 0 ? "bg-red-500/[0.05]" : "bg-fg/[0.02]"
-          }`}
-        >
-          <div className="min-w-0 flex items-center gap-2">
-            <p className="text-fg text-sm font-semibold truncate m-0">{you.name}</p>
-            <span className="flex-shrink-0 text-[10px] font-semibold tracking-[-0.01em] text-fg/50 border border-line/[0.18] rounded px-1.5 py-0.5">
-              You
-            </span>
-          </div>
-          <div className="mt-2 sm:mt-0">
-            <MentionsPill count={you.aiMentions} total={totalEngines} tone="you" />
-          </div>
-          <div className="mt-1.5 sm:mt-0">
-            {you.googleRank !== null ? (
-              <GoogleRankCell rank={you.googleRank} keyword={keyword} />
-            ) : serpCount !== null ? (
-              <span className="text-red-400/80 text-xs leading-snug">
-                Not in {googleLabel}&apos;s top {serpCount}
-                {keyword ? <> for &ldquo;{keyword}&rdquo;</> : null}
-              </span>
-            ) : (
-              <span className="text-fg/25 text-xs">—</span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <p className="text-fg/30 text-[11px] leading-relaxed px-4 sm:px-5 py-3 border-t border-line/[0.06] m-0">
-        AI mentions from this live scan
-        {serpCount !== null && keyword ? (
-          <>
-            {" "}· Positions from a live, non-personalized search on {googleLabel} for &ldquo;{keyword}&rdquo; — your
-            own Google results are personalized and may rank you differently
-          </>
-        ) : null}
-        .
-      </p>
-    </div>
-  )
 }
 
 // ── Competitor bar chart (v1 fallback — inline SVG, no libraries) ───────────
@@ -811,139 +321,214 @@ function CompetitorChart({
   )
 }
 
-// ── Findings (triaged, top 3 expanded, rest behind toggle) ──────────────────
+// ── Report building blocks (design: rp-* classes in report.css) ─────────────
 
-function FindingCard({
-  issue,
-  compact,
-}: {
-  issue: { severity: string; headline: string; explanation: string; fix_summary: string }
-  compact?: boolean
-}) {
-  const isCritical = issue.severity === "critical"
+function listNames(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? ""
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`
+}
+
+function ScoreDial({ score }: { score: number }) {
+  const size = 132
+  const stroke = 10
+  const r = (size - stroke) / 2
+  const c = 2 * Math.PI * r
+  const label = scoreLabel(score)
   return (
-    <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-4 sm:p-5">
-      <div className="flex items-start gap-3">
-        <span
-          className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${isCritical ? "bg-red-500" : "bg-amber-400"}`}
-          aria-hidden
-        />
-        <div className="flex-1 min-w-0">
-          <p className="text-fg text-sm font-semibold m-0 leading-snug">{issue.headline}</p>
-          {!compact && (
-            <p className="text-muted text-[13px] leading-relaxed mt-1.5 mb-2.5">
-              {firstSentence(issue.explanation)}
-            </p>
-          )}
-          <div className="flex items-start gap-2 bg-green-500/[0.08] border border-green-500/20 rounded-lg px-3 py-2">
-            <Wand2 className="w-3.5 h-3.5 text-green-400 flex-shrink-0 mt-0.5" />
-            <p className="text-green-400/90 text-xs leading-relaxed m-0">
-              <span className="font-semibold text-green-400">alphaa&apos;s fix:</span> {issue.fix_summary}
-            </p>
-          </div>
+    <div className="rp-dial" style={{ width: size }}>
+      <div className="rp-dial__ring" style={{ width: size, height: size }}>
+        <svg width={size} height={size} aria-hidden>
+          <circle cx={size / 2} cy={size / 2} r={r} stroke="#e8e8ed" strokeWidth={stroke} fill="none" />
+          <circle
+            cx={size / 2} cy={size / 2} r={r}
+            stroke={label.color} strokeWidth={stroke} fill="none" strokeLinecap="round"
+            strokeDasharray={c} strokeDashoffset={c - (Math.min(100, Math.max(0, score)) / 100) * c}
+            transform={`rotate(-90 ${size / 2} ${size / 2})`}
+            style={{ transition: "stroke-dashoffset 1s ease" }}
+          />
+        </svg>
+        <div className="rp-dial__num">
+          <b>{score}</b>
+          <span>/100</span>
         </div>
       </div>
+      <p className="rp-dial__label" style={{ color: label.color }}>{label.text}</p>
+      <p className="rp-dial__cap">AI score</p>
     </div>
   )
 }
 
-function FindingsList({
-  issues,
-}: {
-  issues: { severity: string; headline: string; explanation: string; fix_summary: string }[]
-}) {
-  const [showAll, setShowAll] = useState(false)
-  const order = { critical: 0, warning: 1, improvement: 2 } as Record<string, number>
-  const sorted = [...issues].sort(
-    (a, b) => (order[a.severity] ?? 3) - (order[b.severity] ?? 3)
+function HireButton({ placement, small }: { placement: string; small?: boolean }) {
+  return (
+    <Link
+      href="/signup"
+      onClick={() => track("results_cta_click", { placement })}
+      className={small ? "rp-hire rp-hire--small" : "rp-hire"}
+    >
+      Hire me — $99/mo →
+    </Link>
   )
-  const top = sorted.slice(0, 3)
-  const rest = sorted.slice(3)
-  const criticalCount = sorted.filter((i) => i.severity === "critical").length
-  const otherCount = sorted.length - criticalCount
+}
 
+function EngineCard({ engine, businessName }: { engine: EngineRow; businessName: string }) {
+  const [expanded, setExpanded] = useState(false)
+  const fullText = engine.evidence?.response ?? engine.legacyText ?? ""
+  const mentioned = engine.evidence
+    ? engine.evidence.mentioned.filter((m): m is string => typeof m === "string")
+    : []
+  const query = engine.evidence?.query?.trim() || null
+  const clean = stripMarkdown(fullText)
+  const isLong = clean.length > 220
+  const shown = expanded ? clean : truncateAtWord(clean, 220)
+  return (
+    <div className="rp-card rp-engine">
+      <div className="rp-engine__head">
+        <div className="rp-engine__name">
+          <span className="rp-engine__icon"><engine.Icon className="w-4 h-4" style={{ color: engine.iconColor }} /></span>
+          <div>
+            <b>{engine.name}</b>
+            {ENGINE_SUBS[engine.name] && <small>{ENGINE_SUBS[engine.name]}</small>}
+          </div>
+        </div>
+        {engine.appeared ? (
+          <span className="rp-status rp-status--ok"><Check className="w-3.5 h-3.5" /> Named you</span>
+        ) : (
+          <span className="rp-status rp-status--no">Didn&rsquo;t name you</span>
+        )}
+      </div>
+      {query && (
+        <div className="rp-query"><span>A customer asks</span>&ldquo;{query}&rdquo;</div>
+      )}
+      {fullText ? (
+        <>
+          <div className="rp-answer">{highlightNames(shown, mentioned, businessName)}</div>
+          {isLong && (
+            <button type="button" className="rp-link" onClick={() => setExpanded((v) => !v)}>
+              {expanded ? <>Show less <ChevronUp className="w-3.5 h-3.5" /></> : <>Show full answer <ChevronDown className="w-3.5 h-3.5" /></>}
+            </button>
+          )}
+        </>
+      ) : (
+        <p className="rp-muted">{engine.name} didn&rsquo;t return a usable answer during this check.</p>
+      )}
+    </div>
+  )
+}
+
+function RivalTable({
+  competitors,
+  you,
+  totalEngines,
+  keyword,
+  serpCount,
+  serpCountry,
+}: {
+  competitors: CompetitorDetail[]
+  you: { name: string; aiMentions: number; googleRank: number | null }
+  totalEngines: number
+  keyword: string | null
+  serpCount: number | null
+  serpCountry: string | null
+}) {
+  const google = serpCountry && serpCountry !== "us" ? `google.${serpCountry}` : "Google"
+  const rows = [
+    { name: you.name, isYou: true, aiMentions: you.aiMentions, googleRank: you.googleRank, href: null as string | null, label: null as string | null },
+    ...[...competitors]
+      .sort((a, b) => b.aiMentions - a.aiMentions || (a.googleRank ?? 99) - (b.googleRank ?? 99))
+      .map((c) => ({
+        name: c.name,
+        isYou: false,
+        aiMentions: c.aiMentions,
+        googleRank: c.googleRank,
+        href: c.url ?? (c.domain ? `https://${c.domain}` : null),
+        label: c.domain ?? (c.url ? hostFromUrl(c.url) : null),
+      })),
+  ]
+  return (
+    <div className="rp-card rp-table">
+      <div className="rp-table__row rp-table__head">
+        <span>Business</span><span>Named by AI</span><span>Google</span>
+      </div>
+      {rows.map((r, i) => (
+        <div key={`${r.name}-${i}`} className={`rp-table__row ${r.isYou ? "rp-table__you" : ""}`}>
+          <div className="rp-table__biz">
+            <b>{r.name}</b>
+            {r.isYou && <em>You</em>}
+            {r.href && r.label && (
+              <a href={r.href} target="_blank" rel="noopener noreferrer nofollow">{r.label} <ExternalLink className="w-3 h-3" /></a>
+            )}
+          </div>
+          <div>
+            <span className="rp-table__count">{r.aiMentions} of {totalEngines}</span>
+            <div className="rp-bar"><i style={{ width: `${(r.aiMentions / totalEngines) * 100}%`, background: r.isYou ? "#34c759" : "#0071e3" }} /></div>
+          </div>
+          <div className="rp-table__rank">
+            {r.googleRank !== null ? (
+              <>#{r.googleRank} on {google}</>
+            ) : r.isYou && serpCount !== null ? (
+              <span className="rp-red">Not in the top {serpCount}</span>
+            ) : (
+              <span className="rp-faint">—</span>
+            )}
+          </div>
+        </div>
+      ))}
+      <p className="rp-table__note">
+        AI results from this live check.
+        {serpCount !== null && keyword ? <> Google positions from a live search for &ldquo;{keyword}&rdquo;; your own results may differ.</> : null}
+      </p>
+    </div>
+  )
+}
+
+function FindingsBlock({ findings }: { findings: Finding[] }) {
+  const [all, setAll] = useState(false)
+  const shown = all ? findings : findings.slice(0, 3)
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-2 mb-3">
-        {criticalCount > 0 && (
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-red-400 bg-red-500/10 border border-red-500/25 rounded-full px-2.5 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> {criticalCount} critical
-          </span>
-        )}
-        {otherCount > 0 && (
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/25 rounded-full px-2.5 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> {otherCount} worth fixing
-          </span>
-        )}
-      </div>
-      <div className="space-y-3">
-        {top.map((issue, i) => <FindingCard key={i} issue={issue} />)}
-        {showAll && rest.map((issue, i) => <FindingCard key={`r-${i}`} issue={issue} compact />)}
-      </div>
-      {rest.length > 0 && (
-        <button
-          type="button"
-          onClick={() => setShowAll((v) => !v)}
-          className="mt-3 w-full text-center text-sm font-medium text-fg/60 hover:text-fg bg-fg/[0.03] hover:bg-fg/[0.06] border border-line/[0.08] rounded-xl py-2.5 transition-colors"
-        >
-          {showAll ? "Show fewer findings" : `Show all ${issues.length} findings`}
+      {shown.map((f, i) => (
+        <div key={i} className="rp-card rp-finding">
+          <div className="rp-finding__head">
+            <span className={`rp-warn rp-warn--${f.severity}`}>!</span>
+            <div>
+              <b>{f.title}</b>
+              <p>{f.why}</p>
+            </div>
+          </div>
+          <div className="rp-plan">
+            <span className="rp-plan__a">a</span>
+            <div><strong>My plan</strong>{f.plan}</div>
+          </div>
+        </div>
+      ))}
+      {findings.length > 3 && (
+        <button type="button" className="rp-more" onClick={() => setAll((v) => !v)}>
+          {all ? "Show fewer" : `Show all ${findings.length}`}
         </button>
       )}
     </div>
   )
 }
 
-// ── Fix timeline (visual, honest phrasing) ──────────────────────────────────
-
-const TIMELINE = [
-  {
-    label: "Week 1",
-    title: "First fixes go live",
-    body: "Your first Google Business posts publish and the profile gaps from this scan get fixed.",
-  },
-  {
-    label: "Weeks 2–3",
-    title: "Signals build",
-    body: "Fresh content and consistent business info accumulate — the sources AI reads start pointing at you.",
-  },
-  {
-    label: "Week 4+",
-    title: "AI re-checks, weekly",
-    body: "alphaa re-runs this same scan every week and reports movement across ChatGPT, Claude, Gemini and Perplexity.",
-  },
+const STEPS = [
+  { when: "Week 1", title: "I fix what this check found", body: "I start with the problems above and draft each fix. Nothing goes live until you tap approve." },
+  { when: "Weeks 2–3", title: "I build what AI reads", body: "Fresh posts on your Google listing and pages that answer the questions your customers ask." },
+  { when: "Every week", title: "I ask all four AIs again", body: "Then I send you a short briefing: what changed, what I did, and what needs your yes." },
 ]
 
-function FixTimeline() {
+function Timeline() {
   return (
-    <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-5 sm:p-6">
-      <ol className="relative m-0 p-0 list-none">
-        {TIMELINE.map((step, i) => (
-          <li key={step.label} className="relative pl-9 pb-6 last:pb-0">
-            {/* Connector line */}
-            {i < TIMELINE.length - 1 && (
-              <span
-                className="absolute left-[9px] top-5 bottom-0 w-px"
-                style={{ background: "linear-gradient(to bottom, rgb(var(--orange-rgb) / 0.5), rgb(var(--orange-rgb) / 0.1))" }}
-                aria-hidden
-              />
-            )}
-            {/* Dot */}
-            <span
-              className="absolute left-0 top-0.5 w-[19px] h-[19px] rounded-full border-2 border-brand-orange bg-bg-secondary flex items-center justify-center"
-              aria-hidden
-            >
-              <span className="w-[7px] h-[7px] rounded-full bg-brand-orange" />
-            </span>
-            <p className="text-brand-orange text-[11px] font-semibold tracking-[-0.01em] m-0">
-              {step.label}
-            </p>
-            <p className="text-fg text-sm font-semibold mt-1 mb-0.5">{step.title}</p>
-            <p className="text-muted text-[13px] leading-relaxed m-0">{step.body}</p>
-          </li>
-        ))}
-      </ol>
-      <p className="text-fg/30 text-[11px] leading-relaxed mt-5 mb-0">
-        No ranking guarantees — alphaa controls the work and shows you the movement weekly.
+    <div className="rp-card rp-timeline">
+      {STEPS.map((s) => (
+        <div key={s.when} className="rp-step">
+          <span className="rp-step__dot" />
+          <small>{s.when}</small>
+          <b>{s.title}</b>
+          <p>{s.body}</p>
+        </div>
+      ))}
+      <p className="rp-timeline__note">
+        If no AI names you within 90 days, your next month is free. No one can promise exactly what an AI will say, so I show you every week.
       </p>
     </div>
   )
@@ -996,7 +581,6 @@ function EmailReportButton({ scanId }: { scanId: string }) {
   )
 }
 
-// ── Quick fix (the free, paste-ready gift — generated on view) ──────────────
 
 interface QuickFix {
   faqHtml: string
@@ -1068,16 +652,27 @@ function CopyBlock({
   )
 }
 
-function QuickFixSection({ scanId }: { scanId: string }) {
+function htmlToText(html: string): string {
+  return html
+    .replace(/<\/(h[1-6]|p|li|div)>/gi, "\n")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&#39;/g, "'")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
+}
+
+function QuickFixSection({ scanId, businessName }: { scanId: string; businessName: string }) {
   const [fix, setFix] = useState<QuickFix | null>(null)
   const [failed, setFailed] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const [showCode, setShowCode] = useState(false)
   const requested = useRef(false)
 
   useEffect(() => {
     if (requested.current) return
     requested.current = true
     let cancelled = false
-
     ;(async () => {
       try {
         const res = await fetch("/api/scan/quick-fix", {
@@ -1087,124 +682,96 @@ function QuickFixSection({ scanId }: { scanId: string }) {
         })
         if (!res.ok) throw new Error("generate failed")
         const data = await res.json()
-        if (
-          typeof data?.faqHtml !== "string" ||
-          typeof data?.jsonLd !== "string" ||
-          !data.faqHtml.trim() ||
-          !data.jsonLd.trim()
-        ) {
+        if (typeof data?.faqHtml !== "string" || typeof data?.jsonLd !== "string" || !data.faqHtml.trim() || !data.jsonLd.trim()) {
           throw new Error("bad shape")
         }
         if (cancelled) return
-        setFix({
-          faqHtml: data.faqHtml,
-          jsonLd: data.jsonLd,
-          targetQuestion: typeof data.targetQuestion === "string" ? data.targetQuestion : "",
-        })
+        setFix({ faqHtml: data.faqHtml, jsonLd: data.jsonLd, targetQuestion: typeof data.targetQuestion === "string" ? data.targetQuestion : "" })
         track("quickfix_generated")
-        // Strong intent signal — someone who received real work from us.
         fbTrack("ViewContent", { content_name: "quick_fix" })
       } catch {
         if (!cancelled) setFailed(true)
       }
     })()
-
     return () => { cancelled = true }
   }, [scanId])
 
-  // Generation failed → hide the section entirely rather than show a broken box.
   if (failed) return null
 
   if (!fix) {
     return (
       <div>
-        <SectionHeading>Your free fix</SectionHeading>
-        <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl px-5 py-8 text-center">
-          <Sparkles className="w-5 h-5 text-brand-orange mx-auto mb-3 animate-pulse" />
-          <p className="text-muted text-[13px] m-0">
-            Writing a fix you can paste on your site today…
-          </p>
+        <h2 className="rp-h2">A fix you can use today</h2>
+        <div className="rp-card rp-center">
+          <Sparkles className="w-5 h-5 mx-auto mb-3 animate-pulse" style={{ color: "#0071e3" }} />
+          <p className="rp-muted">I&rsquo;m writing an answer for your website that AI can quote…</p>
         </div>
       </div>
     )
   }
 
+  const text = htmlToText(fix.faqHtml)
+  const copyText = async () => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+      track("quickfix_copied", { kind: "text" })
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // clipboard blocked; the text is selectable
+    }
+  }
+  const mailBody = [
+    `Hi,`,
+    ``,
+    `Can you add this to our website (${businessName})? It answers a question customers ask AI assistants like ChatGPT, so they can quote us.`,
+    ``,
+    `1) Add this block to the page, ideally the homepage or FAQ page:`,
+    ``,
+    fix.faqHtml,
+    ``,
+    `2) Add this inside the page's <head>:`,
+    ``,
+    fix.jsonLd,
+    ``,
+    `Anything in [square brackets] needs our real details.`,
+    ``,
+    `Thanks!`,
+  ].join("\n")
+  const mailto = `mailto:?subject=${encodeURIComponent("Please add this to our website")}&body=${encodeURIComponent(mailBody)}`
+
   return (
     <div>
-      <SectionHeading>Your free fix</SectionHeading>
-
-      <div className="relative overflow-hidden bg-bg-secondary border border-brand-orange/25 rounded-2xl px-5 py-6 sm:px-6">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: "transparent" }}
-          aria-hidden
-        />
-        <div className="relative">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-brand-orange/15 border border-brand-orange/30 flex items-center justify-center flex-shrink-0">
-              <Gift className="w-4 h-4 text-brand-orange" />
-            </div>
-            <div className="min-w-0">
-              <h2 className="text-fg text-xl sm:text-[22px] font-bold leading-snug m-0">
-                Here&apos;s a fix you can use right now &mdash;{" "}
-                <span className="text-brand-orange">free</span>
-              </h2>
-              <p className="text-muted text-[13px] leading-relaxed mt-2 mb-0">
-                No signup, no card. Paste this on your site and it&apos;s yours to keep, whether or
-                not you ever use alphaa.
-              </p>
-            </div>
-          </div>
-
-          {fix.targetQuestion && (
-            <div className="mt-5 bg-bg-tertiary border border-line/[0.06] rounded-xl px-4 py-3">
-              <p className="text-[10px] tracking-[-0.01em] text-fg/30 mb-1 mt-0">
-                The customer question this answers
-              </p>
-              <p className="text-fg/85 text-[13px] leading-relaxed m-0">
-                &ldquo;{fix.targetQuestion}&rdquo;
-              </p>
-            </div>
-          )}
-
-          <div className="mt-4 space-y-3">
-            <CopyBlock label="1. FAQ block — paste into your page" code={fix.faqHtml} kind="faq_html" />
-            <CopyBlock label="2. Matching JSON-LD — paste before </head>" code={fix.jsonLd} kind="json_ld" />
-          </div>
-
-          {/* Honest explainer — plain English, no invented jargon. */}
-          <div className="mt-4 bg-fg/[0.03] border border-line/[0.08] rounded-xl px-4 py-3.5 space-y-2">
-            <p className="text-muted text-[13px] leading-relaxed m-0">
-              <span className="text-fg font-semibold">Why this works:</span> this is the text AI
-              reads about you. When your page answers a customer&apos;s question in plain words,
-              ChatGPT, Claude and Perplexity can quote that answer back to whoever asks. Right now
-              there&apos;s nothing on your page for them to quote.
-            </p>
-            <p className="text-muted text-[13px] leading-relaxed m-0">
-              <span className="text-fg font-semibold">Why it&apos;s HTML, not a script:</span>{" "}
-              those assistants only read the plain page &mdash; they don&apos;t run JavaScript. So
-              the words have to be in the HTML itself, which is why you paste this rather than
-              install something.
-            </p>
-            <p className="text-amber-400/90 text-[13px] leading-relaxed m-0">
-              <span className="font-semibold">Before you paste:</span> fill in anything in
-              [square brackets] with your real details. We left those blank on purpose &mdash;
-              we&apos;d rather hand you a gap than make something up about your business.
-            </p>
-          </div>
-
-          {/* No CTA here. This block now sits below the decision block, so a
-              third identical "start free" button is just repetition. */}
-          <div className="mt-5 pt-5 border-t border-line/[0.08]">
-            <p className="text-fg text-[15px] font-semibold leading-snug text-center m-0">
-              That&apos;s one page. alphaa does this for every page, every week.
-            </p>
-          </div>
+      <h2 className="rp-h2">A fix you can use today, free</h2>
+      <p className="rp-lead">No signup, no card. It&rsquo;s yours to keep whether or not you hire me.</p>
+      <div className="rp-card rp-fix">
+        {fix.targetQuestion && (
+          <div className="rp-query"><span>The customer question this answers</span>&ldquo;{fix.targetQuestion}&rdquo;</div>
+        )}
+        <div className="rp-fix__text">{text}</div>
+        <p className="rp-fix__note">Fill in anything in [square brackets] with your real details. I left those blank so I don&rsquo;t make anything up about you.</p>
+        <div className="rp-fix__actions">
+          <a className="rp-btn rp-btn--blue" href={mailto} onClick={() => track("quickfix_copied", { kind: "email_web_person" })}>
+            <Mail className="w-4 h-4" /> Email it to my web person
+          </a>
+          <button type="button" className="rp-btn" onClick={copyText}>
+            {copied ? <><Check className="w-4 h-4" /> Copied</> : <><Copy className="w-4 h-4" /> Copy the answer</>}
+          </button>
+          <button type="button" className="rp-link" onClick={() => setShowCode((v) => !v)}>
+            {showCode ? "Hide the code" : "I’ll add it myself: show the code"}
+          </button>
         </div>
+        {showCode && (
+          <div className="rp-fix__code">
+            <CopyBlock label="1. Add this to the page" code={fix.faqHtml} kind="faq_html" />
+            <CopyBlock label="2. Add this inside <head> (the background code AI reads)" code={fix.jsonLd} kind="json_ld" />
+          </div>
+        )}
       </div>
     </div>
   )
 }
+
 
 // ── Main component ───────────────────────────────────────────────────────────
 
@@ -1333,7 +900,6 @@ function ScanResultsContent() {
   const businessName = result.businessName || result.businessUrl
   const initials     = getInitials(businessName)
   const issues       = Array.isArray(result.issues) ? result.issues : []
-  const score        = result.visibilityScore
   const insights     = readInsights(result.ogData)
   const loss         = readLoss(insights)
   const competitors  = readCompetitors(insights)
@@ -1370,7 +936,6 @@ function ScanResultsContent() {
   // words they already know.
   const missedNames  = engineData.filter((e) => !e.appeared).map((e) => e.name)
   const foundNames   = engineData.filter((e) => e.appeared).map((e) => e.name)
-  const verdict      = buildVerdict(aiMentions, totalEngines, businessName)
 
   // The scanned business's own Google position, from live SERP data if present.
   const ownDomain =
@@ -1407,114 +972,99 @@ function ScanResultsContent() {
 
   const searchesLabel = industry ?? "businesses like yours"
 
+  // Score and findings from this scan's measurements (same code /api/scan
+  // stores), so older reports also stop contradicting their own evidence.
+  const siteChecks =
+    isRecord(result.ogData) && isRecord((result.ogData as Record<string, unknown>).siteChecks)
+      ? ((result.ogData as Record<string, unknown>).siteChecks as unknown as SiteChecks)
+      : null
+  const reportEngines: ReportEngine[] = engineData.map((e) => ({
+    name: e.name,
+    appeared: e.appeared,
+    mentioned: e.evidence ? e.evidence.mentioned.filter((m): m is string => typeof m === "string") : [],
+    answered: !!(e.evidence && e.evidence.response.trim().length > 20),
+  }))
+  const measured = reportEngines.some((e) => e.answered)
+  const score = (measured ? computeScore(reportEngines, siteChecks) : null) ?? result.visibilityScore
+  const findings: Finding[] = measured
+    ? buildFindings(businessName, reportEngines, siteChecks)
+    : issues.map((i) => ({
+        severity: i.severity === "critical" ? "critical" : i.severity === "warning" ? "warning" : "improvement",
+        title: i.headline,
+        why: firstSentence(i.explanation),
+        plan: i.fix_summary,
+      }))
+
+  // Who got named instead, for the headline.
+  const rivalNames = competitorDetails.filter((c) => c.aiMentions > 0).sort((a, b) => b.aiMentions - a.aiMentions).map((c) => c.name)
+  const topRival = rivalNames[0] ?? competitorRows.find((r) => r.count > 0)?.name ?? null
+  const headline =
+    aiMentions === totalEngines ? (
+      <>{totalEngines === 4 ? "All four AIs" : listNames(foundNames)} <span className="rp-green">name you today.</span></>
+    ) : aiMentions === 0 ? (
+      topRival ? <>AI recommended <span className="rp-red">{topRival}</span> instead of you.</> : <>None of the four AIs <span className="rp-red">named you.</span></>
+    ) : (
+      <>{listNames(missedNames)} <span className="rp-red">{topRival ? `recommended ${topRival} instead.` : "didn’t name you."}</span></>
+    )
+  const subline =
+    aiMentions === totalEngines
+      ? rivalNames.length
+        ? `They also named ${listNames(rivalNames.slice(0, 2))}. Here’s how I keep you first.`
+        : "Here’s how I keep it that way as competitors catch on."
+      : aiMentions === 0
+        ? "When customers asked, you weren’t in the answer. Here’s why, and what I’ll do about it."
+        : `${listNames(foundNames)} named you. Here’s why the others didn’t, and what I’ll do about it.`
+  const stickyLine =
+    aiMentions === totalEngines ? "AI names you today. I’ll keep it that way." : `${missedNames.length} of ${totalEngines} AIs skip you. I can fix that.`
+
   return (
-    <div className="pt-20 pb-20 px-4 sm:px-6">
-      <div className="max-w-[680px] mx-auto space-y-10">
+    <div className="rp">
+      <div className="rp-top">
+        <span className="rp-top__biz">
+          {result.ogData?.favicon ? (
+            <img src={result.ogData.favicon} alt="" onError={(e) => { e.currentTarget.style.display = "none" }} />
+          ) : (
+            <i>{initials}</i>
+          )}
+          {businessName}
+        </span>
+        <span className="rp-top__url">{result.ogData?.domain ?? result.businessUrl}</span>
+      </div>
 
-        {/* ── Business header bar ─────────────────────────────────── */}
-        <div className="flex items-center gap-3 bg-bg-secondary border border-line/[0.08] rounded-xl px-4 py-3.5">
-          <div className="w-10 h-10 rounded-lg bg-brand-orange flex items-center justify-center flex-shrink-0">
-            {result.ogData?.favicon ? (
-              <img
-                src={result.ogData.favicon}
-                alt=""
-                className="w-5 h-5 rounded"
-                onError={(e) => { e.currentTarget.style.display = "none" }}
-              />
-            ) : (
-              <span className="text-fg text-[13px] font-bold">{initials}</span>
+      <div className="rp-wrap">
+        {/* 1. The answer, in one line */}
+        <div className="rp-card rp-hero">
+          <div className="rp-hero__text">
+            <p className="rp-eyebrow">What AI says about {businessName}</p>
+            <h1>{headline}</h1>
+            <p className="rp-hero__sub">{subline}</p>
+            {loss && (
+              <div className="rp-badge">
+                ✦ An estimated {loss.low.toLocaleString("en-US")}–{loss.high.toLocaleString("en-US")} buyers asked AI for{" "}
+                {keyword ? <>&ldquo;{keyword}&rdquo;</> : <>{searchesLabel} {isLocal ? "near" : "in"} {result.city}</>} in the last 30 days.
+              </div>
             )}
+            {loss?.basis && <p className="rp-fine">Estimate: {loss.basis}</p>}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-fg text-[15px] font-medium truncate m-0">{businessName}</p>
-            <div className="flex items-center gap-1 mt-0.5">
-              <MapPin className="w-3 h-3 text-fg/30" />
-              <span className="text-fg/40 text-xs truncate">
-                {result.city}
-                {result.ogData?.domain ? ` · ${result.ogData.domain}` : ""}
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center gap-1.5 flex-shrink-0 bg-green-500/10 border border-green-500/25 rounded-full px-2.5 py-1">
-            <Check className="w-3 h-3 text-green-400" />
-            <span className="text-green-400 text-xs font-medium">Scan complete</span>
-          </div>
+          <ScoreDial score={score} />
+        </div>
+        <div className="rp-hero__cta">
+          <HireButton placement="top" />
+          <p className="rp-fine">Month to month · cancel in two clicks · payments secured by Stripe</p>
         </div>
 
-        {/* ── 1. HERO — the FOMO number is the headline ───────────── */}
-        <div className="relative overflow-hidden bg-bg-secondary border border-line/[0.08] rounded-2xl px-6 py-8 sm:px-8 sm:py-9 !mt-4">
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: "transparent" }}
-            aria-hidden
-          />
-          <div className="relative">
-            <div className="sm:flex sm:items-center sm:gap-8 text-center sm:text-left">
-              <div className="flex-1 min-w-0">
-                <p className="text-xs tracking-[-0.01em] text-fg/40 mb-4">
-                  Your free AI visibility scan
-                </p>
-                <HeroHeadline
-                  loss={loss}
-                  keyword={keyword}
-                  searchesLabel={searchesLabel}
-                  isLocal={isLocal}
-                  city={result.city}
-                  aiMentions={aiMentions}
-                  totalEngines={totalEngines}
-                  verdict={verdict}
-                  missedNames={missedNames}
-                  foundNames={foundNames}
-                />
-                {loss && loss.basis && (
-                  <p className="text-fg/30 text-[11px] leading-relaxed mt-3 mb-0">
-                    Estimate — {loss.basis}
-                  </p>
-                )}
-              </div>
-              <div className="mt-7 sm:mt-0 flex-shrink-0">
-                <ScoreGaugeBig score={score} />
-                <p className="text-fg/40 text-[11px] text-center mt-2 mb-0">
-                  AI visibility score
-                </p>
-              </div>
-            </div>
+        {/* 2. The evidence */}
+        <h2 className="rp-h2">What AI actually said today</h2>
+        <p className="rp-lead">The real answers from {totalEngines} AI assistants, word for word.</p>
+        {engineData.map((engine) => (
+          <EngineCard key={engine.key} engine={engine} businessName={businessName} />
+        ))}
 
-            <div className="mt-8">
-              <SignupCta placement="top" />
-            </div>
-          </div>
-        </div>
-
-        {/* ── 2. THE EVIDENCE ─────────────────────────────────────── */}
-        <div>
-          <SectionHeading>What AI actually said</SectionHeading>
-          <p className="text-muted text-sm leading-relaxed mb-4 -mt-1">
-            The real answers from {totalEngines} AI assistants, word for word.
-          </p>
-          <div className="space-y-3">
-            {engineData.map((engine) => (
-              <EvidenceCard
-                key={engine.key}
-                engine={engine}
-                businessName={businessName}
-                city={result.city}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* ── 3. WHO AI RECOMMENDS INSTEAD ─────────────────────────
-            The page previously ran nine numbered sections and three separate
-            signup CTAs. A scan result has to land one decision, so the pitch is
-            now: proof, why, one ask. The mid-page CTA is gone (the sticky bar
-            already follows the reader), the free-fix block moved below the ask
-            (two code blocks are not what a dentist needs mid-pitch), and the
-            findings / fix-timeline / first-week trio is one section. */}
+        {/* 3. Who else gets named */}
         {hasIntelTable ? (
-          <div>
-            <SectionHeading>Who AI recommends instead</SectionHeading>
-            <CompetitorIntelTable
+          <>
+            <h2 className="rp-h2">Who AI recommends{aiMentions === totalEngines ? " alongside you" : " instead"}</h2>
+            <RivalTable
               competitors={competitorDetails}
               you={{ name: businessName, aiMentions, googleRank: youGoogleRank }}
               totalEngines={totalEngines}
@@ -1522,62 +1072,67 @@ function ScanResultsContent() {
               serpCount={serpResults ? serpResults.length : null}
               serpCountry={readSerpCountry(insights)}
             />
-          </div>
+          </>
         ) : showChartFallback ? (
-          <div>
-            <SectionHeading>Who AI recommends instead</SectionHeading>
-            <div className="bg-bg-secondary border border-line/[0.08] rounded-2xl p-5 sm:p-6">
+          <>
+            <h2 className="rp-h2">Who AI recommends instead</h2>
+            <div className="rp-card">
               <CompetitorChart rows={chartRows} totalEngines={totalEngines} />
-              <p className="text-muted text-xs leading-relaxed mt-4 mb-0">
-                How many of the {totalEngines} AI answers named each business.
-              </p>
             </div>
-          </div>
+          </>
         ) : null}
 
-        {/* ── 4. WHY, AND HOW IT GETS FIXED (one section) ─────────── */}
-        {issues.length > 0 && (
-          <div>
-            <SectionHeading>Why this is happening</SectionHeading>
-            <FindingsList issues={issues} />
-          </div>
+        {/* 4. Why, and my plan for each */}
+        {findings.length > 0 && (
+          <>
+            <h2 className="rp-h2">Why this is happening</h2>
+            <p className="rp-lead">
+              {findings.filter((f) => f.severity === "critical").length > 0
+                ? `${findings.filter((f) => f.severity === "critical").length} need fixing first. Each one comes with what I’ll do about it.`
+                : "Nothing urgent. Each item comes with what I’ll do about it."}
+            </p>
+            <FindingsBlock findings={findings} />
+          </>
         )}
 
-        <div>
-          <SectionHeading>How alphaa fixes it</SectionHeading>
-          <FixTimeline />
+        <h2 className="rp-h2">How I fix it for you</h2>
+        <Timeline />
+
+        {/* 5. The ask */}
+        <div className="rp-card rp-ask">
+          <h2>I can start on this today.</h2>
+          <p>$99 a month instead of a $2,000-a-month agency. I do the work, you tap approve.</p>
+          <HireButton placement="bottom" />
+          <p className="rp-fine">Month to month · cancel in two clicks · payments secured by Stripe</p>
+          <div className="rp-ask__email"><EmailReportButton scanId={result.scanId} /></div>
         </div>
 
-        {/* ── 5. THE ASK ──────────────────────────────────────────── */}
-        <div className="relative overflow-hidden bg-bg-secondary border border-line/[0.08] rounded-2xl px-6 py-9 sm:px-9">
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: "transparent" }}
-            aria-hidden
-          />
-          <div className="relative">
-            <h2 className="text-fg text-[26px] sm:text-[32px] font-bold text-center leading-[1.15] tracking-[-0.02em] m-0">
-              alphaa fixes <span className="text-brand-orange">all of this.</span>
-            </h2>
-            <p className="text-muted text-[15px] text-center leading-relaxed max-w-md mx-auto mt-4 mb-7">
-              Automatically, every week — $99/mo instead of a $2,000/mo agency.
-            </p>
-
-            <SignupCta placement="bottom" />
-
-            <div className="mt-6">
-              <EmailReportButton scanId={result.scanId} />
-            </div>
-          </div>
-        </div>
-
-        {/* ── 6. FREE FIX — a bonus after the ask, not a step in it ── */}
-        <QuickFixSection scanId={result.scanId} />
-
+        {/* 6. A free fix, after the ask */}
+        <QuickFixSection scanId={result.scanId} businessName={businessName} />
       </div>
 
-      {/* Sticky bottom CTA — appears after ~800px scroll, dismissible */}
-      <StickyCtaBar businessName={businessName} losing={aiMentions < totalEngines} />
+      <HireBar line={stickyLine} />
+    </div>
+  )
+}
+
+function HireBar({ line }: { line: string }) {
+  const [visible, setVisible] = useState(false)
+  const [dismissed, setDismissed] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 700)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+  if (dismissed) return null
+  return (
+    <div className={`rp-bar-fixed ${visible ? "is-on" : ""}`}>
+      <div className="rp-bar-fixed__in">
+        <p><b>{line}</b><span>$99/mo · month to month</span></p>
+        <HireButton placement="sticky_bar" small />
+        <button type="button" aria-label="Dismiss" onClick={() => setDismissed(true)} className="rp-bar-fixed__x"><X className="w-4 h-4" /></button>
+      </div>
     </div>
   )
 }
