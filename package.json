@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "postinstall": "prisma generate",
-    "build": "prisma migrate deploy && next build",
+    "build": "DATABASE_URL=\"${DATABASE_BUILD_URL:-$DATABASE_URL}\" sh -c 'prisma migrate deploy && next build'",
     "check:content": "node scripts/check-content.mjs",
     "check:content:built": "node scripts/check-content.mjs --built",
     "start": "next start",
