@@ -8,7 +8,7 @@ const footerLinks = {
     { href: "/pricing", label: "Pricing" },
     { href: "/compare", label: "Compare" },
     { href: "/integrations", label: "Integrations" },
-    { href: "/start", label: "Free visibility scan" },
+    { href: "/start", label: "Free AI check" },
     { href: "/refer", label: "Refer & Earn" },
   ],
   Company: [

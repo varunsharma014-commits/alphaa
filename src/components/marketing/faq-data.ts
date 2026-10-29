@@ -7,11 +7,11 @@ export const faqs = [
     a: "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. Every week it asks those four AIs the questions your customers ask, shows you who they name instead of you, then does the work to fix it: service pages, FAQs and blog posts, the facts AI reads about you, Google Business Profile posts and review replies. You approve with one tap.",
   },
   {
-    q: "How is this different from an SEO agency?",
-    a: "A typical SEO agency costs around $2,000 a month, which is $24,000 a year, and mostly works on Google's links. Alphaa is $99 a month ($1,188 a year), works on the answers AI gives, does the work itself, and tells you in plain English what it did. Month to month, no contract.",
+    q: "How is this different from a marketing agency?",
+    a: "A typical search marketing agency costs around $2,000 a month, which is $24,000 a year, and mostly works on Google's links. Alphaa is $99 a month ($1,188 a year), works on the answers AI gives, does the work itself, and tells you in plain English what it did. Month to month, no contract.",
   },
   {
-    q: "Do I need to know anything about marketing or SEO?",
+    q: "Do I need to know anything about marketing or websites?",
     a: "No. Alphaa is built for business owners, not marketers. It does the work, then tells you what it did. If you can tap \"Approve\", you can use Alphaa.",
   },
   {

@@ -50,11 +50,11 @@ const PROGRESS_DONE: Record<string, number> = { site: 0, profile: 1, engines: 2,
 // Not shown as pills (they invited doubt at checkout) — answered when typed.
 const CANNED: Record<string, string> = {
   "What exactly will you do?":
-    "This week: fix everything in the checklist above — llms.txt, the FAQ page, the facts AI couldn’t find. Every week after: ask the four AIs your customers’ questions and tell you what changed, keep your Google listing active, draft replies to reviews, and watch what your competitors publish. Anything public gets a one-tap approve from you first. You never touch code.",
+    "This week: fix everything in the checklist above — the FAQ page, the facts AI couldn’t find, the settings that keep AI out. Every week after: ask the four AIs your customers’ questions and tell you what changed, keep your Google listing active, draft replies to reviews, and watch what your competitors publish. Anything public gets a one-tap approve from you first. You never touch code.",
   "Is this real?":
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
-    "$99 a month, month to month. Cancel in two clicks, no contract. An SEO agency charges around $2,000 a month for Google alone — and nothing for AI.",
+    "$99 a month, month to month. Cancel in two clicks, no contract. A marketing agency charges around $2,000 a month for Google alone — and nothing for AI.",
 }
 
 // Where the conversation runs:
@@ -97,7 +97,17 @@ function greeting(mode: StartMode, name?: string): Message[] {
   ]
 }
 
-export function StartAgent({ mode = "public", resumeName }: { mode?: StartMode; resumeName?: string }) {
+// embedded: the same conversation inside the homepage hero window. It scrolls
+// inside its own box and never moves the page.
+export function StartAgent({
+  mode = "public",
+  resumeName,
+  embedded = false,
+}: {
+  mode?: StartMode
+  resumeName?: string
+  embedded?: boolean
+}) {
   const [messages, setMessages] = useState<Message[]>(() => greeting(mode, resumeName))
   const [phase, setPhase] = useState<Phase>(mode === "resume" ? "result" : "website")
   const [input, setInput] = useState("")
@@ -113,9 +123,27 @@ export function StartAgent({ mode = "public", resumeName }: { mode?: StartMode; 
     setMessages((prev) => prev.map((m) => (m.id === id ? fn(m) : m)))
   }, [])
 
+  const boxRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    if (settled && !busy) inputRef.current?.focus()
-  }, [settled, busy])
+    // Embedded: focus without scrolling, and only once the visitor has typed.
+    if (settled && !busy && (!embedded || phase !== "website")) inputRef.current?.focus({ preventScroll: embedded })
+  }, [settled, busy, embedded, phase])
+
+  // Embedded: keep the box pinned to the newest line unless the visitor has
+  // scrolled up to read.
+  useEffect(() => {
+    const box = boxRef.current
+    if (!embedded || !box) return
+    let lastHeight = box.scrollHeight
+    const obs = new MutationObserver(() => {
+      const nearBottom = lastHeight - box.scrollTop - box.clientHeight < 140
+      if (nearBottom) box.scrollTop = box.scrollHeight
+      lastHeight = box.scrollHeight
+    })
+    obs.observe(box, { childList: true, subtree: true, characterData: true })
+    return () => obs.disconnect()
+  }, [embedded])
 
   // ── step 2: run the real scan and narrate it ──────────────────────────────
   async function runScan(ident: { businessName: string; city: string; businessType: string; websiteUrl: string }) {
@@ -213,7 +241,7 @@ export function StartAgent({ mode = "public", resumeName }: { mode?: StartMode; 
       agent([
         { kind: "text", text: "Here’s what I’d do for you this week.", big: true },
         { kind: "receipt", title: "Your first week", sub: `${plan.length} things`, items: plan },
-        { kind: "text", text: "Your SEO agency is working on Google’s list of ten links. Your customers are getting one answer now — from AI. Nobody on your side has to learn anything: I do the work, you tap approve." },
+        { kind: "text", text: "Your marketing agency is working on Google’s list of ten links. Your customers are getting one answer now — from AI. Nobody on your side has to learn anything: I do the work, you tap approve." },
       ])
     )
     push(
@@ -375,6 +403,36 @@ export function StartAgent({ mode = "public", resumeName }: { mode?: StartMode; 
   const placeholder =
     phase === "website" ? "yourbusiness.com" : phase === "manual" ? "Business name, City" : phase === "scanning" ? "Working…" : "Reply…"
 
+  const composer = (
+    <div className="ag-land__stick">
+      <Composer
+        id="start-input"
+        inputRef={inputRef}
+        placeholder={placeholder}
+        value={input}
+        onChange={setInput}
+        onSubmit={submit}
+        disabled={busy || phase === "scanning"}
+      />
+      <div className="ag-land__hint">{mode === "public" ? "Nothing to install. No card. Just your website." : "Nothing to install. Just your website."}</div>
+    </div>
+  )
+
+  if (embedded) {
+    return (
+      <div className="ag-window ag-window--live">
+        <div className="ag-window__bar">
+          <i /><i /><i />
+          <span>{BRAND.name} · AI agent · online</span>
+        </div>
+        <div className="ag-window__box" ref={boxRef}>
+          <AgentFeed messages={messages} animate="type" busy={busy} autoScroll={false} onChip={onChip} onEmail={onEmail} onSettled={() => setSettled(true)} />
+        </div>
+        <div className="ag-window__compose">{composer}</div>
+      </div>
+    )
+  }
+
   return (
     <div className="ag-land">
       <div className="ag-land__top">
@@ -385,18 +443,7 @@ export function StartAgent({ mode = "public", resumeName }: { mode?: StartMode; 
         <span>AI agent · online</span>
       </div>
       <AgentFeed messages={messages} animate="type" busy={busy} onChip={onChip} onEmail={onEmail} onSettled={() => setSettled(true)} />
-      <div className="ag-land__stick">
-        <Composer
-          id="start-input"
-          inputRef={inputRef}
-          placeholder={placeholder}
-          value={input}
-          onChange={setInput}
-          onSubmit={submit}
-          disabled={busy || phase === "scanning"}
-        />
-        <div className="ag-land__hint">{mode === "public" ? "Nothing to install. No card. Just your website." : "Nothing to install. Just your website."}</div>
-      </div>
+      {composer}
     </div>
   )
 }
@@ -516,9 +563,9 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
     out.push(
       agent([
         { kind: "text", text: `I tried to read ${you.domain} the way an AI does. It turned me away${b.status && b.status >= 300 ? ` (error ${b.status})` : b.status ? " with a bot check" : ""}${b.redirectedTo ? ` — after sending me to ${b.redirectedTo}` : ""}.`, big: false },
-        { kind: "text", text: "That’s the biggest finding today. Some AI crawlers get the same door, so they fall back on what other sites say about you — and that’s where the competitors above win. Fixing it is a one-line change your host or web person can make; I’ll write the exact instruction." },
+        { kind: "text", text: "That’s the biggest finding today. Some AI assistants get the same closed door, so they fall back on what other sites say about you — and that’s where the competitors above win. Fixing it is a one-line change your host or web person can make; I’ll write the exact instruction." },
         { kind: "sources", items: known.map(srcItem) },
-        { kind: "text", text: `The other ${you.total - known.length} checks — structured facts, reviews, service pages, how Google treats your pages — need your site to let me in. I’ll run them the moment it does.` },
+        { kind: "text", text: `The other ${you.total - known.length} checks — your business facts, reviews, service pages, how Google treats your pages — need your site to let me in. I’ll run them the moment it does.` },
       ])
     )
   } else if (sc?.you) {
@@ -592,17 +639,17 @@ function softLower(label: string): string {
 }
 
 const PLAN_STEP: Partial<Record<CheckKey, string>> = {
-  aibots: "Get your host to let ChatGPT, Claude and Perplexity’s crawlers through — I’ll write the exact setting",
-  robots: "Fix your robots.txt so AI search can read you",
-  indexable: "Remove the tag telling search engines to skip your homepage",
-  render: "Make your key facts readable without JavaScript — I’ll hand your web person the exact list",
-  canonical: "Fix the tags telling Google your pages are copies, so they get indexed",
+  aibots: "Get your website host to let ChatGPT, Claude and Perplexity in — I’ll write the exact setting",
+  robots: "Change the setting on your site that keeps AI out",
+  indexable: "Remove the hidden note telling Google to skip your homepage",
+  render: "Make your key facts show up for AI, not just for people — I’ll hand your web person the exact list",
+  canonical: "Fix the hidden notes telling Google your pages are copies, so Google shows them",
   https: "Point every version of your address at one secure site",
   bing: "Set you up with Bing — ChatGPT search leans on it",
-  llms: "Write and host your llms.txt — the file AI assistants read first",
-  sitemap: "Add a sitemap so nothing on your site is missed",
-  schema: "Add the structured facts block so AI reads your business, not just your words",
-  schemaFacts: "Fill in your address, phone, hours and map location in your structured facts",
+  llms: "Add a short summary file about your business — the one AI assistants read first",
+  sitemap: "Add a list of your pages so Google and AI miss nothing",
+  schema: "Add your business facts in the format AI reads, not just as words on the page",
+  schemaFacts: "Add your address, phone, hours and map location to your site’s business facts",
   facts: "Put the facts AI needs on your homepage — the ones it couldn’t find",
   local: "Put your city in your page title and main heading so AI knows where you work",
   depth: "Add the words AI needs to quote you — services, prices, areas you cover",
@@ -612,7 +659,7 @@ const PLAN_STEP: Partial<Record<CheckKey, string>> = {
   profiles: "Link your Google, Yelp and social profiles so AI ties them to you",
   about: "Write your About page — who you are, since when, credentials",
   blog: "First fresh page AI can quote, written from your site",
-  meta: "Rewrite your page title and description in plain words",
+  meta: "Rewrite your page title and Google summary in plain words",
   headings: "Give your homepage one clear main heading",
 }
 

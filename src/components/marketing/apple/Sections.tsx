@@ -79,7 +79,7 @@ export function RevenueSection() {
 // ── 2. "Does the to-dos": accordion that swaps the phone shot ────────────────
 const TODOS = [
   {
-    title: "It tracks your AI visibility.",
+    title: "It checks what AI says about you.",
     body: `Every week, ${A} asks ChatGPT, Gemini, Claude and Perplexity the exact questions your customers ask — then tells you who got recommended: you, or the shop down the street.`,
     art: (
       <Phone>
@@ -148,12 +148,12 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
     art: <AgentNote title="Post this to Google?" body="“Now booking same-week cleanings — call or book online.”" actions={["Approve", "Edit"]} />,
   },
   {
-    eyebrow: "The jargon, handled",
-    title: "Schema? llms.txt? Not your problem.",
-    body: "You don’t need to know what those words mean.",
-    more: `${A} checks 23 things AI reads on your site — crawler access, structured facts, reviews, service pages — and fixes what it can for you.`,
+    eyebrow: "The tech, handled",
+    title: "The technical stuff? Not your problem.",
+    body: "You don’t need to learn any of it.",
+    more: `${A} checks 23 things AI reads on your site — whether AI can get in, your business facts, reviews, service pages — and fixes what it can for you.`,
     tone: "sky",
-    art: <Checklist rows={[{ label: "AI crawlers can get in", ok: true }, { label: "Structured facts complete", ok: true }, { label: "llms.txt published", ok: true }, { label: "Reviews AI can read", ok: true }]} />,
+    art: <Checklist rows={[{ label: "AI can read your site", ok: true }, { label: "Address, phone and hours clear", ok: true }, { label: "Summary for AI assistants", ok: true }, { label: "Reviews AI can read", ok: true }]} />,
   },
   {
     eyebrow: "Plain English",
@@ -217,11 +217,11 @@ const ROWS: [string, string, string][] = [
 export function AgencyToggle() {
   return (
     <section className="ap-sec">
-      <h2 className="ap-h2 ap-center">Your SEO agency charges $2,000 a month<br /><span className="ap-quiet">for work an AI Agent now does for you.</span></h2>
-      <p className="ap-lead ap-center">Even a “good” Google SEO agency leaves you invisible where customers are actually asking questions today.</p>
+      <h2 className="ap-h2 ap-center">Your marketing agency charges $2,000 a month<br /><span className="ap-quiet">for work an AI Agent now does for you.</span></h2>
+      <p className="ap-lead ap-center">Even a “good” agency leaves you invisible where customers are actually asking questions today.</p>
       <div className="ap-vs">
         <div className="ap-vs__col ap-vs__col--them">
-          <div className="ap-vs__name">SEO agency</div>
+          <div className="ap-vs__name">Marketing agency</div>
           <div className="ap-vs__price"><b>$2,000</b><span>/mo</span></div>
           <div className="ap-vs__year">$24,000 a year</div>
         </div>
