@@ -16,7 +16,7 @@ export function ReCrawlButton() {
       const res = await fetch("/api/crawl", { method: "POST" })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
-        throw new Error(data?.error ?? "Crawl failed")
+        throw new Error(data?.error ?? "I couldn’t read your website")
       }
       setDone(true)
       // Refresh page after short delay
@@ -49,7 +49,7 @@ export function ReCrawlButton() {
         }}
       >
         <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
-        {done ? "Check started" : loading ? "Checking…" : "Check my site now"}
+        {done ? "Check started" : loading ? "I’m timing how fast your pages load…" : "Check my site now"}
       </button>
       {error && (
         <p style={{ color: "var(--ds-warn)", fontSize: "11px", maxWidth: "260px", textAlign: "right", lineHeight: 1.5 }}>

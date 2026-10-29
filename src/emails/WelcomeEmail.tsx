@@ -44,7 +44,7 @@ export default function WelcomeEmail({ firstName, businessName }: WelcomeEmailPr
             </Section>
 
             <Text style={paragraph}>
-              I don&apos;t use a complicated dashboard. When I draft an update or finish a report, I send it straight to you. You just tap approve.
+              There&apos;s no software for you to learn. When I draft an update or finish a report, I send it straight to you. You just tap approve.
             </Text>
             <Text style={paragraph}>
               I&apos;ll reach out when your first visibility report is ready.
@@ -53,7 +53,7 @@ export default function WelcomeEmail({ firstName, businessName }: WelcomeEmailPr
 
             <Hr style={hr} />
 
-            <Text style={smallText}>$99/mo · No contract · Cancel anytime in Settings</Text>
+            <Text style={smallText}>$99/mo · No contract · Cancel anytime in two clicks</Text>
           </Section>
 
           <Section style={footer}>
@@ -63,7 +63,7 @@ export default function WelcomeEmail({ firstName, businessName }: WelcomeEmailPr
               {" · "}
               <Link href={`${base}/terms`} style={footerLink}>Terms</Link>
               {" · "}
-              <Link href={`${base}/dashboard/settings`} style={footerLink}>Unsubscribe</Link>
+              <Link href={`${base}/briefing/preferences`} style={footerLink}>Unsubscribe</Link>
             </Text>
           </Section>
         </Container>

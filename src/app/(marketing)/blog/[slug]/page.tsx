@@ -239,7 +239,7 @@ export default async function BlogPostPage({
             Alphaa asks ChatGPT, Gemini, Claude and Perplexity the question your customers ask, shows you who they named,
             and runs 23 checks on what AI can read on your site.
           </p>
-          <Link href="/start" className="blog-cta__btn">Scan Your Website – It’s Free</Link>
+          <Link href="/start" className="blog-cta__btn">Check my business — free</Link>
           <p className="blog-cta__fine">No credit card required.</p>
         </aside>
       </div>

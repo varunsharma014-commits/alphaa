@@ -97,7 +97,7 @@ export default function AnalyzeGapsButton({ prominent }: Props) {
             whiteSpace: "nowrap",
           }}
         >
-          {loading ? "Finding your gaps…" : "Find my gaps →"}
+          {loading ? "I’m reading what your competitors publish…" : "Find my gaps →"}
         </button>
       </div>
       {prominent && (

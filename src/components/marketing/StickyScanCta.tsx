@@ -29,7 +29,7 @@ export function StickyScanCta({ href = "#scan-input" }: { href?: string }) {
           href={href}
           className="flex-1 flex items-center justify-center py-3 px-4 rounded-full text-white text-[17px] bg-black active:bg-[#333]"
         >
-          Run my free AI scan →
+          Check my business free →
         </Link>
         <button
           type="button"

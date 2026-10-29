@@ -67,7 +67,7 @@ export function AgentMemory({ rail, open, onClose, onAsk }: { rail: RailData; op
       <section className="ag-mem__sec">
         <div className="ag-mem__lbl">Your setup</div>
         {!mem?.health ? (
-          <p className="ag-mem__muted">{pending ?? "Checking…"}</p>
+          <p className="ag-mem__muted">{pending ?? "I’m checking what’s waiting for you…"}</p>
         ) : (
           <ul className="ag-health">
             {mem.health.map((h) => (
@@ -108,7 +108,7 @@ export function AgentMemory({ rail, open, onClose, onAsk }: { rail: RailData; op
       <section className="ag-mem__sec">
         <div className="ag-mem__lbl">Work I’ve done</div>
         {!mem ? (
-          <p className="ag-mem__muted">{pending ?? "Loading…"}</p>
+          <p className="ag-mem__muted">{pending ?? "I’m gathering my notes…"}</p>
         ) : mem.work.length ? (
           <ol className="ag-mem__work">
             {mem.work.map((w) => (

@@ -33,7 +33,7 @@ export function MarketingNav() {
     const uat = document.cookie.match(/(?:^|; )__client_uat=(\d+)/)?.[1]
     setSignedIn(!!uat && uat !== "0")
   }, [])
-  const account = signedIn ? { href: "/dashboard", label: "Dashboard" } : { href: "/login", label: "Login" }
+  const account = signedIn ? { href: "/dashboard", label: "Your briefing" } : { href: "/login", label: "Login" }
 
   return (
     <>

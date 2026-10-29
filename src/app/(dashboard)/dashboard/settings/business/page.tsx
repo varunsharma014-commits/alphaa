@@ -112,17 +112,17 @@ export default function BusinessSettingsPage() {
 
   return (
     <div>
-      <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Business details</h1>
+      <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Agent preferences</h1>
       <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", marginTop: "4px", marginBottom: "20px", lineHeight: 1.6 }}>
-        alphaa uses these details to write your posts and check your visibility. Keep them
-        accurate and alphaa does the rest.
+        This is what I know about your business. I use it to write your posts and to ask the AIs the
+        questions your customers ask. Keep it accurate and I’ll do the rest.
       </p>
 
       <DsCard>
         {loading ? (
           <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "12px 0", color: "var(--ds-text-mute)", fontSize: "13px" }}>
             <Loader2 size={15} className="animate-spin" />
-            Loading your details…
+            I’m pulling up what I know about your business…
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -209,7 +209,7 @@ export default function BusinessSettingsPage() {
                 }}
               >
                 {saving && <Loader2 size={14} className="animate-spin" />}
-                {saving ? "Saving…" : "Save changes"}
+                {saving ? "I’m saving that…" : "Save changes"}
               </button>
               {saved && (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "12px", color: "var(--ds-ok)" }}>

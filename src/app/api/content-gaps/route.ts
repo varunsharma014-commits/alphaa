@@ -27,7 +27,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 
     if (!user.websiteUrl) {
       return NextResponse.json(
-        { error: "Add your website URL in settings before running a content gap analysis." },
+        { error: "Tell me your website in Agent preferences first, then I’ll compare you with competitors." },
         { status: 400 }
       )
     }

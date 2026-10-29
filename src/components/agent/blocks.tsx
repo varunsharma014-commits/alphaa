@@ -515,7 +515,7 @@ export function FormBlock({
           </div>
         )
       })}
-      <button className="ag-pill ag-pill--blue" type="submit" disabled={busy}>{busy ? "Working…" : b.cta}</button>
+      <button className="ag-pill ag-pill--blue" type="submit" disabled={busy}>{busy ? "I’m on it…" : b.cta}</button>
       {err && <div className="ag-error">{err}</div>}
       {b.fine && <p className="ag-ask__fine">{b.fine}</p>}
     </form>

@@ -124,6 +124,11 @@ export function StartAgent({
   }, [])
 
   const boxRef = useRef<HTMLDivElement>(null)
+  // Embedded, before the first answer: the box stays short and the website
+  // field sits right under the question, with a "start here" cue.
+  const [started, setStarted] = useState(false)
+  const idle = embedded && !started && phase === "website"
+  const typed = useTypedExamples(idle && !input)
 
   useEffect(() => {
     // Embedded: focus without scrolling, and only once the visitor has typed.
@@ -358,7 +363,7 @@ export function StartAgent({
       })
       const data = await res.json()
       if (!res.ok || !data.url) throw new Error("checkout")
-      push(agent([{ kind: "text", text: "Opening secure checkout…" }]))
+      push(agent([{ kind: "text", text: "I’m opening secure checkout…" }]))
       window.location.href = data.url
     } catch {
       setBusy(false)
@@ -405,22 +410,35 @@ export function StartAgent({
 
   const composer = (
     <div className="ag-land__stick">
+      {idle && (
+        <div className="ag-starthere" aria-hidden="true">
+          <span className="ag-starthere__pill">Start here</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14" /><path d="M6 13l6 6 6-6" /></svg>
+        </div>
+      )}
       <Composer
         id="start-input"
         inputRef={inputRef}
-        placeholder={placeholder}
+        placeholder={idle && !input ? typed : placeholder}
         value={input}
         onChange={setInput}
-        onSubmit={submit}
+        onSubmit={() => {
+          setStarted(true)
+          submit()
+        }}
         disabled={busy || phase === "scanning"}
       />
-      <div className="ag-land__hint">{mode === "public" ? "Nothing to install. No card. Just your website." : "Nothing to install. Just your website."}</div>
+      <div className="ag-land__hint">
+        {idle
+          ? "Type your website and press Enter. I’ll ask ChatGPT, Gemini, Claude and Perplexity about you live — about 60 seconds, no card."
+          : mode === "public" ? "Nothing to install. No card. Just your website." : "Nothing to install. Just your website."}
+      </div>
     </div>
   )
 
   if (embedded) {
     return (
-      <div className="ag-window ag-window--live">
+      <div className={`ag-window ag-window--live ${idle ? "ag-window--idle" : ""}`}>
         <div className="ag-window__bar">
           <i /><i /><i />
           <span>{BRAND.name} · AI agent · online</span>
@@ -446,6 +464,35 @@ export function StartAgent({
       {composer}
     </div>
   )
+}
+
+// Types example websites into the empty field, one letter at a time, so the
+// box reads as "type yours here".
+const EXAMPLES = ["joesplumbing.com", "brightsmiledental.com", "yourbusiness.com", "austinhvacpros.com"]
+function useTypedExamples(on: boolean): string {
+  const [text, setText] = useState(EXAMPLES[0])
+  useEffect(() => {
+    if (!on) return
+    let word = 0
+    let len = 0
+    let deleting = false
+    const id = window.setInterval(() => {
+      const w = EXAMPLES[word]
+      if (!deleting) {
+        len = Math.min(len + 1, w.length)
+        if (len === w.length) deleting = true
+      } else {
+        len -= 1
+        if (len === 0) {
+          deleting = false
+          word = (word + 1) % EXAMPLES.length
+        }
+      }
+      setText(EXAMPLES[word].slice(0, Math.max(len, 0)) || " ")
+    }, 110)
+    return () => window.clearInterval(id)
+  }, [on])
+  return text
 }
 
 // ── turn a ScanResult into agent messages ────────────────────────────────────

@@ -109,7 +109,7 @@ export async function GET(req: NextRequest) {
   await mapPool(jobs, CONCURRENCY, async ({ user, day, used, unsub }, i) => {
     try {
       const utm = `utm_source=email&utm_medium=lifecycle&utm_campaign=account-convert&utm_content=day${day}`
-      const cta = { label: day === 45 ? "Pick up where we left off" : "Start your plan", href: `${base}/dashboard/settings/billing?${utm}` }
+      const cta = { label: day === 45 ? "Pick up where we left off" : "Start your plan", href: `${base}/briefing/billing?${utm}` }
 
       if (dryRun && i >= previewLimit) {
         preview.push({ userId: user.id, day, subject: "(not written: over ?limit)", words: 0 })

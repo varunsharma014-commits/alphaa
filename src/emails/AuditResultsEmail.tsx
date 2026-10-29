@@ -123,8 +123,8 @@ export default function AuditResultsEmail({
             <Hr style={hr} />
 
             {isSubscriber ? (
-              <Button style={button} href={`${base}/dashboard`}>
-                See it in your dashboard →
+              <Button style={button} href={`${base}/briefing`}>
+                Open my briefing →
               </Button>
             ) : (
               <>

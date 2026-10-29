@@ -106,9 +106,9 @@ BriefingEmail.PreviewProps = {
   plan: "When they don’t name you, they name Smith Heating instead. I’m writing pages that answer the questions your customers ask them.",
   result: "6 people came to your site from ChatGPT this week.",
   asOf: "As of Wednesday’s check.",
-  inbox: [{ title: "Dan left you a 5-star review. Here’s my reply:", quote: "Fast and friendly, fixed our furnace same day.", text: "Thank you, Dan! We’re glad we could get your heat back the same day.", approveUrl: "https://alphaa.app/approve?t=x", openUrl: "https://alphaa.app/dashboard", openLabel: "Open Alphaa" }],
+  inbox: [{ title: "Dan left you a 5-star review. Here’s my reply:", quote: "Fast and friendly, fixed our furnace same day.", text: "Thank you, Dan! We’re glad we could get your heat back the same day.", approveUrl: "https://alphaa.app/approve?t=x", openUrl: "https://alphaa.app/briefing", openLabel: "Open Alphaa" }],
   ledger: [{ day: "Tuesday", text: "Posted an update to your Google listing" }, { day: "Monday", text: "Wrote the background file AI assistants read about you (llms.txt) and added it to your site" }],
-  dashboardUrl: "https://alphaa.app/dashboard",
+  dashboardUrl: "https://alphaa.app/briefing",
 } satisfies BriefingEmailProps
 
 const body = { backgroundColor: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" }

@@ -46,7 +46,7 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
       if (!res.ok) setError(data.error ?? "Scan failed.")
       else setReport(data.report)
     } catch {
-      setError("Scan failed. Check your connection and try again.")
+      setError("I couldn’t finish that check. Check your connection and try again.")
     } finally {
       setRunning(false)
     }
@@ -82,7 +82,7 @@ export function CitationsClient({ initial }: { initial: CitationReport | null })
           }}
         >
           {running ? <Loader2 size={15} className="animate-spin" /> : <RefreshCw size={15} />}
-          {running ? "Checking…" : report ? "Check again" : "Check now"}
+          {running ? "I’m checking the sites AI looks you up on…" : report ? "Check again" : "Check now"}
         </button>
       </div>
 

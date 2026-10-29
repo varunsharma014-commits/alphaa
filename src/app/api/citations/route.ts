@@ -43,7 +43,7 @@ export async function POST() {
 
   if (!user.businessName?.trim()) {
     return NextResponse.json(
-      { error: "Add your business name in Settings first so we know what to look for." },
+      { error: "Tell me your business name in Agent preferences first, so I know what to look for." },
       { status: 400 }
     )
   }

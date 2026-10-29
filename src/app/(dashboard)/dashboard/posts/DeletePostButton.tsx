@@ -43,7 +43,7 @@ export function DeletePostButton({ postId }: { postId: string }) {
       ) : (
         <Trash2 className="w-3 h-3" />
       )}
-      {loading ? "Deleting…" : "Discard"}
+      {loading ? "I’m deleting it…" : "Discard"}
     </button>
   )
 }

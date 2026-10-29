@@ -21,7 +21,7 @@ export default function GenerateSchemaButton({ prominent }: Props) {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error ?? "Generation failed. Please try again.")
+        setError(data.error ?? "I couldn’t finish that. Try again?")
         return
       }
 
@@ -64,7 +64,7 @@ export default function GenerateSchemaButton({ prominent }: Props) {
               }
         }
       >
-        {loading ? "Generating…" : prominent ? "Generate structured data" : "Regenerate"}
+        {loading ? "I’m writing the background code AI reads…" : prominent ? "Write the background code AI reads" : "Write it again"}
       </button>
       {error && <p style={{ color: "var(--ds-bad)", fontSize: "11px" }}>{error}</p>}
     </div>

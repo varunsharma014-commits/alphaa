@@ -16,7 +16,7 @@ export function SyncReviewsButton() {
       const res = await fetch("/api/integrations/sync", { method: "POST" })
       if (!res.ok) {
         const data = (await res.json()) as { error?: string }
-        throw new Error(data.error ?? "Sync failed")
+        throw new Error(data.error ?? "I couldn’t reach Google")
       }
       const data = (await res.json()) as { synced?: { reviews?: number } }
       const count = data.synced?.reviews ?? 0
@@ -52,7 +52,7 @@ export function SyncReviewsButton() {
         }}
       >
         <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
-        {loading ? "Checking…" : "Check now"}
+        {loading ? "I’m checking Google for new reviews…" : "Check now"}
       </button>
     </div>
   )

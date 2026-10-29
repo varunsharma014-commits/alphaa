@@ -13,7 +13,7 @@ import { EmptyState } from "@/components/dashboard/EmptyState"
 import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import { DsCard } from "@/components/dashboard/DsCard"
 
-export const metadata = { title: "Reports" }
+export const metadata = { title: "Weekly briefings" }
 
 type KeywordMover = {
   query: string

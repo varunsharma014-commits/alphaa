@@ -24,7 +24,7 @@ export async function POST(): Promise<NextResponse> {
   }
   if (!user.businessType) {
     return NextResponse.json(
-      { error: "Add your business details in settings first." },
+      { error: "Tell me about your business in Agent preferences first." },
       { status: 400 },
     )
   }

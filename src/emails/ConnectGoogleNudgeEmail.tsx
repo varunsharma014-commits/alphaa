@@ -14,7 +14,7 @@ export default function ConnectGoogleNudgeEmail({
   firstName, businessName, isSecondNudge,
 }: ConnectGoogleNudgeEmailProps) {
   const base = appUrl()
-  const connectUrl = `${base}/dashboard/settings/integrations`
+  const connectUrl = `${base}/briefing/connections`
   return (
     <Html>
       <Head />
@@ -40,7 +40,7 @@ export default function ConnectGoogleNudgeEmail({
                 <Text style={paragraph}>
                   I cannot publish updates or track your visibility until this is connected. It takes 30 seconds, and you can disconnect at any time.
                 </Text>
-                <Button style={button} href={connectUrl}>Connect Google (30 seconds) →</Button>
+                <Button style={button} href={connectUrl}>Connect me to your Google (30 seconds) →</Button>
               </>
             ) : (
               <>
@@ -53,9 +53,9 @@ export default function ConnectGoogleNudgeEmail({
                 <Text style={paragraph}>
                   Connecting takes about 30 seconds. You sign in with Google once, and I handle the rest.
                 </Text>
-                <Button style={button} href={connectUrl}>Connect Google (30 seconds) →</Button>
+                <Button style={button} href={connectUrl}>Connect me to your Google (30 seconds) →</Button>
                 <Text style={reassureNote}>
-                  I use read-only access wherever possible, and you can disconnect anytime in Settings.
+                  I use read-only access wherever possible, and you can disconnect me anytime from your briefing.
                 </Text>
               </>
             )}
@@ -65,10 +65,10 @@ export default function ConnectGoogleNudgeEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              You&apos;re receiving this because you have an alphaa account. Manage emails in Settings.
+              You&apos;re receiving this because you have an alphaa account. Change what I email you in Agent preferences.
             </Text>
             <Text style={footerText}>
-              <Link href={`${base}/dashboard/settings`} style={footerLink}>Manage preferences</Link>
+              <Link href={`${base}/briefing/preferences`} style={footerLink}>Agent preferences</Link>
               {" · "}
               <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
             </Text>

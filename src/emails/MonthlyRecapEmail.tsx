@@ -76,7 +76,7 @@ MonthlyRecapEmail.PreviewProps = {
   firstName: "Maria",
   recap: { month: "October", visitors: 37, jobs: 41, highlights: ["Published “When to replace your furnace” on your website", "Replied to a Google review", "Added the behind-the-scenes code AI uses to confirm who you are and where you are"], firsts: ["Claude recommended you for the first time"], recommending: ["ChatGPT", "Claude"], value: 850 },
   paysFor: 8,
-  dashboardUrl: "https://alphaa.app/dashboard",
+  dashboardUrl: "https://alphaa.app/briefing",
 } satisfies MonthlyRecapEmailProps
 
 const body = { backgroundColor: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" }

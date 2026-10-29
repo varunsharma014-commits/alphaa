@@ -54,7 +54,7 @@ export default function PaymentFailureEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              <Link href={`${base}/dashboard/settings/billing`} style={footerLink}>Billing settings</Link>
+              <Link href={`${base}/briefing/billing`} style={footerLink}>Billing</Link>
               {" · "}
               <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
             </Text>
@@ -70,7 +70,7 @@ PaymentFailureEmail.PreviewProps = {
   businessName: "Bright Smile Dental",
   amount: "$99.00",
   retryDate: "May 27, 2026",
-  updateUrl: "https://alphaa.app/dashboard/settings/billing",
+  updateUrl: "https://alphaa.app/briefing/billing",
 } satisfies PaymentFailureEmailProps
 
 const body = { backgroundColor: "#f5f5f7", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" }

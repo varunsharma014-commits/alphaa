@@ -358,6 +358,24 @@
 .ag-window--live .ag-feed { min-height: 0; }
 .ag-window__compose { padding: 0 22px; border-top: 1px solid var(--ag-line); }
 .ag-window__compose .ag-land__stick { position: static; background: none; padding: 12px 0 14px; }
+/* Before the first answer: short box, field right under the question, a cue to start. */
+.ag-window--idle .ag-window__box { height: auto; overflow: visible; }
+.ag-window--idle .ag-feed { padding-bottom: 4px; }
+.ag-window--idle .ag-window__compose { border-top: 0; padding-bottom: 8px; }
+.ag-window--idle { box-shadow: 0 0 0 4px rgb(0 113 227 / 0.10), 0 30px 80px -30px rgb(0 113 227 / 0.45); border-color: rgb(0 113 227 / 0.35); }
+.ag-starthere { display: flex; align-items: center; gap: 8px; margin: 0 0 10px 6px; color: #0071e3; }
+.ag-starthere__pill { background: #0071e3; color: #fff; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; padding: 5px 12px; border-radius: 980px; box-shadow: 0 6px 18px rgb(0 113 227 / 0.35); }
+.ag-starthere svg { width: 20px; height: 20px; animation: ag-nudge 1.4s ease-in-out infinite; }
+@keyframes ag-nudge { 50% { transform: translateY(5px); } }
+.ag-window--idle .ag-composer { position: relative; border: 2px solid transparent; padding: 10px 10px 10px 20px; border-radius: 20px;
+  background: linear-gradient(var(--ag-card), var(--ag-card)) padding-box, conic-gradient(from var(--ag-ring, 0deg), #0071e3, #5ac8fa, #af52de, #0071e3) border-box;
+  animation: ag-ring 4s linear infinite; box-shadow: 0 10px 34px rgb(0 113 227 / 0.22); }
+.ag-window--idle .ag-composer input { font-size: 19px; }
+.ag-window--idle .ag-composer button { width: 42px; height: 42px; background: #0071e3; color: #fff; opacity: 1; }
+.ag-window--idle .ag-land__hint { font-size: 13px; }
+@property --ag-ring { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes ag-ring { to { --ag-ring: 360deg; } }
+@media (prefers-reduced-motion: reduce) { .ag-starthere svg, .ag-window--idle .ag-composer { animation: none; } }
 @media (max-width: 600px) { .ag-window .ag-feed { padding: 16px; } .ag-window__compose { padding: 0 14px; } .ag-window__box { height: min(480px, 64vh); } }
 .ag-section { padding: clamp(80px, 11vw, 140px) 16px; text-align: center; }
 .ag-section--grey { background: var(--ag-bg2); }

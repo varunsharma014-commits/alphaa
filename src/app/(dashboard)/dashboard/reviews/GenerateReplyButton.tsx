@@ -281,7 +281,7 @@ export function GenerateReplyButton({ reviewId }: { reviewId: string }) {
           }}
         >
           {generating && <span style={spinnerStyle} />}
-          {generating ? "Writing draft…" : "Write a reply for me"}
+          {generating ? "I’m writing your reply…" : "Write a reply for me"}
         </button>
       </div>
 

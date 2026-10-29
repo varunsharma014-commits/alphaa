@@ -80,8 +80,8 @@ export default function WeekOneRecapEmail({
               ))}
             </Section>
 
-            <Button style={button} href={`${base}/dashboard`}>
-              See the details in your dashboard →
+            <Button style={button} href={`${base}/briefing`}>
+              Open my briefing →
             </Button>
 
             <Text style={paragraph}>— Your AI Agent</Text>
@@ -89,10 +89,10 @@ export default function WeekOneRecapEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              You&apos;re receiving this because you have an alphaa account. Manage emails in Settings.
+              You&apos;re receiving this because you have an alphaa account. Change what I email you in Agent preferences.
             </Text>
             <Text style={footerText}>
-              <Link href={`${base}/dashboard/settings`} style={footerLink}>Manage preferences</Link>
+              <Link href={`${base}/briefing/preferences`} style={footerLink}>Agent preferences</Link>
               {" · "}
               <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
             </Text>

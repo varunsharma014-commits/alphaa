@@ -26,7 +26,7 @@ const GROUPS = [
   {
     label: "Google", icon: TrendingUp,
     items: [
-      { href: "/dashboard/keywords", label: "Google rankings", icon: TrendingUp },
+      { href: "/dashboard/keywords", label: "Where you show up on Google", icon: TrendingUp },
       { href: "/dashboard/audit", label: "Website health", icon: Activity },
       { href: "/dashboard/speed", label: "Site speed", icon: Gauge },
     ],
@@ -49,7 +49,7 @@ const GROUPS = [
     label: "Research", icon: Users,
     items: [
       { href: "/dashboard/competitors", label: "Competitors", icon: Users },
-      { href: "/dashboard/reports", label: "Weekly reports", icon: BarChart3 },
+      { href: "/dashboard/reports", label: "Weekly briefings", icon: BarChart3 },
     ],
   },
 ]

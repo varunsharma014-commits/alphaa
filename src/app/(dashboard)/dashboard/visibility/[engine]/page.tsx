@@ -50,7 +50,7 @@ const CONFIG: Record<
     explainer:
       "Claude cites authoritative, well-structured sources. Clear service pages and an llms.txt file help Claude find and describe your business accurately.",
     actions: [
-      "Generating and hosting your llms.txt so Claude understands your business",
+      "Writing and hosting a short summary file so Claude understands your business",
       "Publishing authoritative, well-structured service pages",
       "Keeping your name, address and phone consistent across your site",
     ],

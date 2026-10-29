@@ -110,7 +110,7 @@ export function BriefingHero() {
                 <div>
                   <span>$</span>
                   <input id="cv" inputMode="numeric" autoFocus value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={String(hero.value.amount)} />
-                  <button type="submit" disabled={saving}>{saving ? "Saving…" : "Save"}</button>
+                  <button type="submit" disabled={saving}>{saving ? "I’m saving that…" : "Save"}</button>
                 </div>
               </form>
             ) : (

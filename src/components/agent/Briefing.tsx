@@ -230,13 +230,13 @@ function InboxCard({ item, position, onDone, onShow }: { item: InboxItem; positi
         ) : item.kind === "connect" ? (
           <a className="ag-btn-primary" href={item.href}>{item.cta}</a>
         ) : !text ? (
-          <button className="ag-btn-primary" disabled={busy} onClick={() => call("draft")}>{busy ? "Writing…" : "Write my reply"}</button>
+          <button className="ag-btn-primary" disabled={busy} onClick={() => call("draft")}>{busy ? "I’m writing it…" : "Write my reply"}</button>
         ) : missing > 0 && !editing ? (
           <button className="ag-btn-primary" onClick={() => setEditing(true)}>{missing === 1 ? "Fill in 1 detail" : `Fill in ${missing} details`}</button>
         ) : (
           <>
             <button className="ag-btn-primary" disabled={busy || !text.trim() || missing > 0} onClick={() => call("publish")}>
-              {busy ? "Publishing…" : editing ? "Save & publish" : "Approve & publish"}
+              {busy ? "I’m publishing it…" : editing ? "Save & publish" : "Approve & publish"}
             </button>
             {!editing && <button className="ag-btn-ghost" disabled={busy} onClick={() => setEditing(true)}>Edit</button>}
           </>

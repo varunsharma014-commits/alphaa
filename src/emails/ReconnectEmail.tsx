@@ -39,7 +39,7 @@ export default function ReconnectEmail({
               Reconnecting takes 30 seconds, and I will pick up right where I left off.
             </Text>
 
-            <Button style={button} href={`${base}/dashboard/settings/integrations`}>
+            <Button style={button} href={`${base}/briefing/connections`}>
               Reconnect Google →
             </Button>
 
@@ -48,7 +48,7 @@ export default function ReconnectEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              <Link href={`${base}/dashboard/settings`} style={footerLink}>Manage preferences</Link>
+              <Link href={`${base}/briefing/preferences`} style={footerLink}>Agent preferences</Link>
               {" · "}
               <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
             </Text>

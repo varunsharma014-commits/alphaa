@@ -30,7 +30,7 @@ export function ApproveButton({ token, kind, id }: { token: string; kind: string
   return (
     <>
       <button onClick={go} disabled={state === "busy"} className="w-full rounded-full bg-black text-white py-3.5 text-base font-semibold disabled:opacity-60">
-        {state === "busy" ? "Publishing…" : "Approve & publish"}
+        {state === "busy" ? "I’m publishing it…" : "Approve & publish"}
       </button>
       {error && <p className="mt-3 text-red-600 text-sm">{error}</p>}
     </>

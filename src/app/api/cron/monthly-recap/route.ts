@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
         firstName: u.fullName?.trim().split(/\s+/)[0] || null,
         recap,
         paysFor: recap.value ? Math.floor(recap.value / price) : null,
-        dashboardUrl: `${process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"}/dashboard`,
+        dashboardUrl: `${process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"}/briefing`,
         footer: { address: mailingAddress(), unsubscribeUrl: unsub.pageUrl },
       })
       await sendMarketingEmail({ to: u.email, subject: `Your ${recap.month} with Alphaa: ${recap.jobs} jobs done for you`, react, unsub })

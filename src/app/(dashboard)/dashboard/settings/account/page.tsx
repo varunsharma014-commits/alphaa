@@ -1,11 +1,11 @@
 import { UserProfile } from "@clerk/nextjs"
 
-export const metadata = { title: "Account Settings" }
+export const metadata = { title: "Your account" }
 
 export default function AccountSettingsPage() {
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-fg font-semibold text-[1.65rem]/[2.2rem] mb-6">Account</h1>
+      <h1 className="text-fg font-semibold text-[1.65rem]/[2.2rem] mb-6">Your account</h1>
       <UserProfile
         appearance={{
           // Literal hex, not var(--ds-*): nested modals this opens (Update

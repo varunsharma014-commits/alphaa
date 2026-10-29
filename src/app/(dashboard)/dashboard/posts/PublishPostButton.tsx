@@ -52,7 +52,7 @@ export function PublishPostButton({ postId }: { postId: string }) {
         ) : (
           <Send className="w-3 h-3" />
         )}
-        {loading ? "Publishing…" : "Publish now"}
+        {loading ? "I’m posting it to Google…" : "Post it to Google"}
       </button>
       {error && <p style={{ color: "var(--ds-bad)", fontSize: "11px", marginTop: "4px" }}>{error}</p>}
     </div>

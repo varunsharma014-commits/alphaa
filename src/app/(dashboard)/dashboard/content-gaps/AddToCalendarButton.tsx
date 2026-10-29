@@ -69,7 +69,7 @@ export default function AddToCalendarButton({ title }: Props) {
         }}
       >
         <CalendarPlus size={13} />
-        {state === "loading" ? "Adding…" : "Add to content calendar →"}
+        {state === "loading" ? "I’m adding it to your calendar…" : "Add to content calendar →"}
       </button>
       {state === "error" && (
         <p style={{ fontSize: "11px", color: "var(--ds-text-mute)", marginTop: "6px", lineHeight: 1.6 }}>

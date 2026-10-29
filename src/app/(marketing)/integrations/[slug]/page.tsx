@@ -66,7 +66,7 @@ export default async function IntegrationPage({ params }: { params: Promise<{ sl
 
       <section className="ap-sec cmp-hero">
         <nav className="cmp-crumbs" aria-label="Breadcrumb">
-          <Link href="/integrations">Integrations</Link> <span aria-hidden="true">›</span> <span>{i.name}</span>
+          <Link href="/integrations">Connections</Link> <span aria-hidden="true">›</span> <span>{i.name}</span>
         </nav>
         <div className="int-hero__icon"><PlatformIcon platform={i.slug} size={64} /></div>
         <h1 className="ap-h2 ap-center cmp-h1">
@@ -77,13 +77,13 @@ export default async function IntegrationPage({ params }: { params: Promise<{ sl
           <p>{i.tldr}</p>
         </div>
         <div className="cmp-hero__cta">
-          <Link href="/start" className="cmp-btn">See what AI says about you</Link>
+          <Link href="/start" className="cmp-btn">Let me check your business</Link>
           <span>Free scan · No credit card required</span>
         </div>
       </section>
 
       <section className="ap-sec ap-sec--grey">
-        <h2 className="ap-h2 ap-center">{soon ? `What Alphaa does for Wix sites.` : `What Alphaa does on ${i.name}.`}</h2>
+        <h2 className="ap-h2 ap-center">{soon ? `What I’ll do for Wix sites.` : `What I do on ${i.name}.`}</h2>
         <p className="ap-lead ap-center">You approve each change, or turn on auto-publish for blog posts on Pro. Every change has Undo.</p>
         <div className="int-grid">
           {i.does.map(([t, d]) => (
@@ -95,14 +95,14 @@ export default async function IntegrationPage({ params }: { params: Promise<{ sl
         </div>
         {i.cant.length > 0 && (
           <div className="cmp-prose" style={{ marginTop: 48 }}>
-            <h2>{soon ? "Until then" : `What it can’t do on ${i.name}`}</h2>
+            <h2>{soon ? "Until then" : `What I can’t do on ${i.name}`}</h2>
             <ul className="int-list">{i.cant.map((c) => <li key={c}>{c}</li>)}</ul>
           </div>
         )}
       </section>
 
       <section className="ap-sec">
-        <h2 className="ap-h2 ap-center">{soon ? "How to use Alphaa on Wix today." : "Connect it in three steps."}</h2>
+        <h2 className="ap-h2 ap-center">{soon ? "How I work on Wix today." : "Connect me in three steps."}</h2>
         <ol className="int-steps">
           {i.steps.map((s, n) => (
             <li key={s}>
@@ -114,7 +114,7 @@ export default async function IntegrationPage({ params }: { params: Promise<{ sl
       </section>
 
       <section className="ap-sec ap-sec--grey">
-        <h2 className="ap-h2 ap-center">{soon ? "Permissions." : "The permissions it asks for, and why."}</h2>
+        <h2 className="ap-h2 ap-center">{soon ? "The access I ask for." : "The access I ask for, and why."}</h2>
         <div className="cmp-table-wrap">
           <table className="cmp-table int-table">
             <caption className="sr-only">Permissions Alphaa asks for on {i.name}</caption>
@@ -158,16 +158,16 @@ export default async function IntegrationPage({ params }: { params: Promise<{ sl
       </section>
 
       <section className="ap-sec ap-sec--grey ap-cta">
-        <h2 className="ap-h2">See what AI says about you.</h2>
+        <h2 className="ap-h2">Let me check what AI says about you.</h2>
         <p className="ap-lead">Free. About a minute. Just your website.</p>
-        <Link href="/start" className="ap-btn">Scan Your Website – It’s Free</Link>
+        <Link href="/start" className="ap-btn">Check my business — free</Link>
         <p className="ap-fine">No credit card required.</p>
       </section>
 
       <section className="ap-sec" style={{ paddingTop: 64, paddingBottom: 64 }}>
-        <h2 className="ap-h2 ap-center" style={{ fontSize: 28 }}>Other integrations.</h2>
+        <h2 className="ap-h2 ap-center" style={{ fontSize: 28 }}>Other connections.</h2>
         <div className="cmp-related">
-          <Link href="/integrations">All integrations</Link>
+          <Link href="/integrations">All connections</Link>
           {others.map((r) => (
             <Link key={r.slug} href={`/integrations/${r.slug}`}>{r.name}{r.status === "soon" ? " (coming soon)" : ""}</Link>
           ))}

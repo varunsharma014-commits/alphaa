@@ -17,7 +17,7 @@ export default function RunScanButton({ prominent = false }: RunScanButtonProps)
     setError(null)
     try {
       const res = await fetch("/api/dashboard/scan", { method: "POST" })
-      if (!res.ok) throw new Error("Scan failed")
+      if (!res.ok) throw new Error("I couldn’t finish the check")
       router.refresh()
     } catch {
       setError("The check didn't finish this time. Please try again in a minute — alphaa also re-checks automatically every week.")

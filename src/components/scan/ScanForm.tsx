@@ -101,7 +101,7 @@ export function ScanForm() {
           className="w-full justify-center mt-2"
           size="lg"
         >
-          {loading ? "Scanning your business…" : "Get my free visibility score →"}
+          {loading ? "I’m asking the AIs about your business…" : "Get my free visibility score →"}
         </OrangePillButton>
         <p className="text-center text-muted/60 text-xs">
           We&rsquo;ll email your report and a few short follow-ups. Unsubscribe anytime.

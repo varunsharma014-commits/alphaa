@@ -12,7 +12,7 @@ export function GenerateMonthButton() {
   async function handleGenerate() {
     if (
       !confirm(
-        "Generate 8 draft posts for this month? This will use AI to create a mix of Update, Offer, and Event posts."
+        "Want me to draft 8 posts for this month? I’ll write a mix of updates, offers and events for you to approve."
       )
     )
       return
@@ -26,7 +26,7 @@ export function GenerateMonthButton() {
         throw new Error(data.error ?? "Failed to generate posts")
       }
       const data = (await res.json()) as { count?: number }
-      setMessage(`Generated ${data.count ?? 8} draft posts!`)
+      setMessage(`I’ve drafted ${data.count ?? 8} posts. They’re waiting for your approval.`)
       router.refresh()
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Something went wrong")
@@ -70,7 +70,7 @@ export function GenerateMonthButton() {
         ) : (
           <CalendarDays style={{ width: "16px", height: "16px" }} />
         )}
-        {loading ? "Generating…" : "Generate my first month →"}
+        {loading ? "I’m drafting this month’s posts…" : "Draft my first month of posts →"}
       </button>
       {message && <span style={{ fontSize: "11px", color: "var(--ds-text-mute)" }}>{message}</span>}
     </div>

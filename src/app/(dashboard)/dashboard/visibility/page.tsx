@@ -12,7 +12,7 @@ import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import RunScanButton from "./RunScanButton"
 import { VisibilityTrend } from "@/components/dashboard/VisibilityTrend"
 
-export const metadata = { title: "AI Visibility" }
+export const metadata = { title: "What AI says about you" }
 
 type EngineKey = "chatgpt" | "claude" | "gemini" | "perplexity"
 

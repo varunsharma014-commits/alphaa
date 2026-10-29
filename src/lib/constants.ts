@@ -77,12 +77,12 @@ export const BUSINESS_TYPES = [
 export const AI_ENGINES = ["chatgpt", "perplexity", "google_ai", "gemini"] as const
 
 export const SCAN_MESSAGES = [
-  "Checking your Google Business Profile…",
-  "Asking ChatGPT about your business…",
-  "Scanning your website for issues…",
-  "Analyzing local competitors…",
-  "Reading the answers AI gives about your area…",
-  "Checking AI search citations…",
-  "Comparing you to top-ranked locals…",
-  "Generating your visibility score…",
+  "I’m checking your Google listing…",
+  "I’m asking ChatGPT about your business…",
+  "I’m reading your website the way AI does…",
+  "I’m looking at who else nearby gets named…",
+  "I’m reading the answers AI gives about your area…",
+  "I’m checking which sites AI quotes about you…",
+  "I’m comparing you with the businesses AI recommends…",
+  "I’m adding up what I found…",
 ]

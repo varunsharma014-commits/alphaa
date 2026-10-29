@@ -9,9 +9,10 @@ import { useClerk, useUser } from "@clerk/nextjs"
 
 const ITEMS = [
   { label: "Connections", href: "/dashboard/settings/integrations" },
-  { label: "Business details", href: "/dashboard/settings/account" },
+  { label: "Agent preferences", href: "/dashboard/settings/business" },
   { label: "Billing", href: "/dashboard/settings/billing" },
-  { label: "Full reports", href: "/dashboard/reports" },
+  { label: "Your account", href: "/dashboard/settings/account" },
+  { label: "Weekly briefings", href: "/dashboard/reports" },
   { label: "Have a human do it", href: "/dashboard/concierge" },
 ]
 

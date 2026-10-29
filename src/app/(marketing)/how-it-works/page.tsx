@@ -93,9 +93,9 @@ export default function HowItWorksPage() {
         </div>
       </section>
       <section className="ap-sec ap-cta">
-        <h2 className="ap-h2">See what AI says about you.</h2>
+        <h2 className="ap-h2">Let me check what AI says about you.</h2>
         <p className="ap-lead">It takes about a minute. Just your website.</p>
-        <Link href="/start" className="ap-btn">Scan Your Website – It’s Free</Link>
+        <Link href="/start" className="ap-btn">Check my business — free</Link>
         <p className="ap-fine">No credit card required.</p>
       </section>
     </>

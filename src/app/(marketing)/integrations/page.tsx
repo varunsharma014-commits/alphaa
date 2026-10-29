@@ -35,7 +35,7 @@ export default function IntegrationsHub() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <section className="ap-sec cmp-hero">
         <h1 className="ap-h2 ap-center cmp-h1">
-          Integrations.<br /><span className="ap-quiet">Your AI Agent fixes your site for you.</span>
+          Connections.<br /><span className="ap-quiet">Your AI Agent fixes your site for you.</span>
         </h1>
         <p className="ap-lead ap-center">
           Connect your website once. Alphaa publishes the FAQ pages, blog posts and page titles you approve, and every change has Undo.
@@ -75,9 +75,9 @@ export default function IntegrationsHub() {
         </div>
       </section>
       <section className="ap-sec ap-sec--grey ap-cta">
-        <h2 className="ap-h2">See what AI says about you.</h2>
+        <h2 className="ap-h2">Let me check what AI says about you.</h2>
         <p className="ap-lead">Free. About a minute. Just your website.</p>
-        <Link href="/start" className="ap-btn">Scan Your Website – It’s Free</Link>
+        <Link href="/start" className="ap-btn">Check my business — free</Link>
         <p className="ap-fine">No credit card required.</p>
       </section>
     </>

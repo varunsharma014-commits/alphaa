@@ -75,7 +75,7 @@ export function GeneratePostButton() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
-            <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>Generate a new post</h3>
+            <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>Draft a new post</h3>
             <button
               onClick={() => setOpen(false)}
               style={{ color: "var(--ds-text-mute)", background: "none", border: "none", cursor: "pointer", display: "flex" }}

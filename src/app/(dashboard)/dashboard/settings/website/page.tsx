@@ -204,7 +204,7 @@ export default function WebsiteConnectionPage() {
                 style={{ backgroundColor: 'transparent', border: '1px solid var(--ds-bad-border)', color: 'var(--ds-bad)', borderRadius: '8px', fontSize: '11px', fontWeight: 500 }}
               >
                 {disconnecting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Unlink className="w-3.5 h-3.5" />}
-                {disconnecting ? 'Disconnecting…' : 'Disconnect'}
+                {disconnecting ? 'I’m disconnecting…' : 'Disconnect'}
               </button>
             </div>
           </div>

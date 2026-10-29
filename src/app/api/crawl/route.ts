@@ -20,7 +20,7 @@ export async function POST(): Promise<NextResponse> {
 
     if (!user.websiteUrl) {
       return NextResponse.json(
-        { error: "Add your website URL in settings" },
+        { error: "Tell me your website in Agent preferences first." },
         { status: 400 }
       )
     }

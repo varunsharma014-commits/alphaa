@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils"
 // Settings shell: without this, the Account / Business / Connections / Billing
 // pages were unreachable from each other (sidebar only links to /settings).
 const TABS = [
-  { href: "/dashboard/settings/account", label: "Account" },
-  { href: "/dashboard/settings/business", label: "Business details" },
-  { href: "/dashboard/settings/integrations", label: "Google connection" },
-  { href: "/dashboard/settings/website", label: "Website connection" },
+  { href: "/dashboard/settings/business", label: "Agent preferences" },
+  { href: "/dashboard/settings/account", label: "Your account" },
+  { href: "/dashboard/settings/integrations", label: "Connect me to Google" },
+  { href: "/dashboard/settings/website", label: "Connect me to your website" },
   { href: "/dashboard/settings/billing", label: "Billing & plan" },
 ]
 

@@ -260,7 +260,7 @@ export default function IntegrationsPage() {
     setError(null)
     try {
       const res = await fetch('/api/integrations/sync', { method: 'POST' })
-      if (!res.ok) throw new Error('Sync failed')
+      if (!res.ok) throw new Error('I couldn’t reach Google')
       await fetchStatus()
     } catch {
       setError('The sync did not finish. We will keep trying automatically — or click Sync now to retry.')
@@ -301,7 +301,7 @@ export default function IntegrationsPage() {
     setCrawlError(null)
     try {
       const res = await fetch('/api/crawl', { method: 'POST' })
-      if (!res.ok) throw new Error('Crawl failed')
+      if (!res.ok) throw new Error('I couldn’t read your website')
       const { result } = (await res.json()) as { result: CrawlSummary }
       setCrawlData(result)
     } catch {
@@ -539,7 +539,7 @@ export default function IntegrationsPage() {
                 ) : (
                   <Zap className="w-4 h-4" />
                 )}
-                {saving ? 'Saving…' : 'Save & let alphaa take over'}
+                {saving ? 'I’m saving that…' : 'Save & let alphaa take over'}
               </button>
 
               {!selectedGa && !selectedGsc && !selectedGmbLocation && (
@@ -594,7 +594,7 @@ export default function IntegrationsPage() {
               <RefreshCw
                 className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`}
               />
-              {syncing ? 'Syncing…' : 'Sync now'}
+              {syncing ? 'I’m reading your Google data…' : 'Check Google now'}
             </button>
             <button
               onClick={handleDisconnect}
@@ -603,7 +603,7 @@ export default function IntegrationsPage() {
               style={{ backgroundColor: 'transparent', border: '1px solid var(--ds-bad-border)', color: 'var(--ds-bad)', borderRadius: '8px', fontSize: '11px', fontWeight: 500 }}
             >
               <Unlink className="w-3.5 h-3.5" />
-              {disconnecting ? 'Disconnecting…' : 'Disconnect'}
+              {disconnecting ? 'I’m disconnecting…' : 'Disconnect'}
             </button>
           </div>
         </div>
@@ -675,11 +675,11 @@ export default function IntegrationsPage() {
       {/* Header */}
       <div>
         <h1 className="font-medium" style={{ fontSize: '22px', color: 'var(--ds-text)' }}>
-          Integrations
+          Connections
         </h1>
         <p className="text-[13px] mt-1" style={{ color: 'var(--ds-text-mute)', lineHeight: 1.6 }}>
-          Connect your tools once. From there, alphaa pulls your data and works
-          for you automatically.
+          Connect me to your Google account once. From then on, I do the work
+          and tell you what I did.
         </p>
       </div>
 
@@ -781,7 +781,7 @@ export default function IntegrationsPage() {
                   Website health check
                 </h3>
                 {crawlLoading ? (
-                  <p className="text-[11px] mt-0.5" style={{ color: 'var(--ds-text-faint)' }}>Loading…</p>
+                  <p className="text-[11px] mt-0.5" style={{ color: 'var(--ds-text-faint)' }}>I’m checking when I last read your site…</p>
                 ) : crawlData ? (
                   <p className="text-[11px] mt-0.5 flex items-center gap-1" style={{ color: 'var(--ds-text-faint)' }}>
                     <Clock className="w-3 h-3" />
@@ -807,7 +807,7 @@ export default function IntegrationsPage() {
               ) : (
                 <RefreshCw className="w-3.5 h-3.5" />
               )}
-              {crawling ? 'Checking…' : 'Check my website'}
+              {crawling ? 'I’m reading your pages the way AI does…' : 'Check my website'}
             </button>
           </div>
 

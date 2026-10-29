@@ -35,7 +35,7 @@ export function ScanLoader() {
       <p className="text-fg font-medium text-lg mb-2 text-center h-7 transition-all">
         {SCAN_MESSAGES[msgIdx]}
       </p>
-      <p className="text-muted text-sm mb-8">Analyzing your local visibility…</p>
+      <p className="text-muted text-sm mb-8">I’m checking what AI says about you…</p>
 
       {/* Progress bar */}
       <div className="w-full max-w-xs h-1 bg-fg/5 rounded-full overflow-hidden">

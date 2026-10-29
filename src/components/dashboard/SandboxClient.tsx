@@ -105,7 +105,7 @@ export default function SandboxClient({
 
     // Narrates the real work: all four engines are asked in parallel, so this
     // is a progress narration, not a fake per-engine stream.
-    const steps = ["Asking ChatGPT…", "Asking Claude…", "Asking Gemini…", "Asking Perplexity…", "Reading the answers…"]
+    const steps = ["Asking ChatGPT…", "Asking Claude…", "Asking Gemini…", "Asking Perplexity…", "I’m reading the answers…"]
     let step = 0
     setProgress(steps[0])
     const timer = setInterval(() => {

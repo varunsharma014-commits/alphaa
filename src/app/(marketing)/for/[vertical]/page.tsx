@@ -119,7 +119,7 @@ export default async function VerticalPage({
             <HeroScanInput
               compact
               source={`vertical_${v.slug}`}
-              ctaLabel="Run my free AI scan →"
+              ctaLabel="Check my business free →"
             />
           </div>
           <p className="mt-5 text-fg/40 text-xs">2 minutes · no credit card · results emailed to you</p>
@@ -168,7 +168,7 @@ export default async function VerticalPage({
               The playbook
             </span>
             <h2 className="text-[28px] sm:text-[36px] font-semibold text-fg tracking-tight text-balance">
-              What alphaa does for {v.plural}
+              What I do for {v.plural}
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -298,15 +298,15 @@ export default async function VerticalPage({
             }}
           >
             <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-6 text-balance">
-              Find out if AI recommends your {v.noun} —{" "}
+              Let me check if AI recommends your {v.noun} —{" "}
               <span className="text-[#86868b]">or your competitor.</span>
             </h2>
             <p className="text-muted text-lg sm:text-xl mb-9 max-w-xl mx-auto">
-              Run a free scan and see exactly what ChatGPT, Claude, and Gemini say when customers
-              ask about {v.plural} like you.
+              I’ll ask ChatGPT, Gemini, Claude and Perplexity what they say when customers
+              ask about {v.plural} like you, and show you their exact answers.
             </p>
             <OrangePillButton href="/scan" size="lg">
-              Run my free AI scan →
+              Check my business free →
             </OrangePillButton>
             <p className="mt-6 text-fg/25 text-sm">2 minutes · no credit card · results emailed to you</p>
           </div>

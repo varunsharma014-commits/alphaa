@@ -20,7 +20,7 @@ export async function POST(): Promise<NextResponse> {
 
     if (!user.websiteUrl) {
       return NextResponse.json(
-        { error: "Add your website URL in settings before generating schema markup." },
+        { error: "Tell me your website in Agent preferences first, then I’ll write this." },
         { status: 400 }
       )
     }

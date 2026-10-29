@@ -66,8 +66,8 @@ export default function WinEmail({
               </Text>
             )}
 
-            <Button style={button} href={`${base}/dashboard`}>
-              {engine ? "See the exact answer in your dashboard →" : "See it in your dashboard →"}
+            <Button style={button} href={`${base}/briefing`}>
+              {engine ? "Show me the exact answer →" : "See what I found →"}
             </Button>
 
             <Text style={paragraph}>
@@ -78,7 +78,7 @@ export default function WinEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              <Link href={`${base}/dashboard/settings`} style={footerLink}>Manage preferences</Link>
+              <Link href={`${base}/briefing/preferences`} style={footerLink}>Agent preferences</Link>
               {" · "}
               <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
             </Text>

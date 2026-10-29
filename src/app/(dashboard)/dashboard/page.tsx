@@ -7,7 +7,7 @@ import { buildBriefing } from "@/lib/agent/briefing"
 import { connectMessage } from "@/lib/agent/connect-notice"
 import { DashboardAgent } from "@/components/agent/DashboardAgent"
 
-export const metadata = { title: "Today — alphaa" }
+export const metadata = { title: "Your briefing — Alphaa" }
 
 // The home screen is the owner's morning briefing (lib/agent/briefing.ts):
 // am I winning, what's waiting for my OK, what did you do. The detail behind

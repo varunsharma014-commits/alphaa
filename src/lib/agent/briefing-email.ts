@@ -12,7 +12,7 @@ const weekday = (iso: string) => new Date(iso).toLocaleDateString("en-US", { wee
 export async function briefingEmailProps(userId: string, firstName: string | null): Promise<Omit<BriefingEmailProps, "footer"> | null> {
   const b = await buildBriefing(userId)
   if (!b) return null
-  const dashboardUrl = `${base()}/dashboard`
+  const dashboardUrl = `${base()}/briefing`
   // Same top number as the dashboard: people AI sent them in the last 30 days, and what one customer is worth.
   const hero = await Promise.race([getHero(userId).catch(() => null), new Promise<null>((r) => setTimeout(() => r(null), 20_000))])
   const v = hero?.visitors

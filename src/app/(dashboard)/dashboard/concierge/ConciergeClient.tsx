@@ -256,7 +256,7 @@ export function ConciergeClient() {
               opacity: busy && busy !== "setup" ? 0.5 : 1,
             }}
           >
-            {busy === "setup" ? "Opening checkout…" : "Book my setup — $149"}
+            {busy === "setup" ? "I’m opening secure checkout…" : "Book my setup — $149"}
           </button>
         </DsCard>
 
@@ -283,7 +283,7 @@ export function ConciergeClient() {
               opacity: busy && busy !== "fullservice" ? 0.5 : 1,
             }}
           >
-            {busy === "fullservice" ? "Opening checkout…" : "Upgrade to Full Service"}
+            {busy === "fullservice" ? "I’m opening secure checkout…" : "Upgrade to Full Service"}
           </button>
         </DsCard>
       </div>
