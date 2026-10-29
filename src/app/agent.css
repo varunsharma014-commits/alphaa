@@ -340,7 +340,7 @@
 /* ── marketing home (agent edition) ── */
 .ag-hero { text-align: center; padding: clamp(110px, 14vh, 150px) 16px 72px; max-width: 900px; margin: 0 auto; }
 .ag-hero__eyebrow { font-size: clamp(17px, 2vw, 21px); color: var(--ag-fg); font-weight: 600; margin-bottom: 14px; letter-spacing: -0.01em; }
-.ag-hero h1 { font-size: clamp(44px, 7.7vw, 88px); font-weight: 600; line-height: 1.05; letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
+.ag-hero h1 { font-size: clamp(40px, 6.2vw, 76px); font-weight: 600; line-height: 1.05; letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
 .ag-hero__sub { font-size: clamp(19px, 2.4vw, 26px); color: var(--ag-fg2); line-height: 1.3; margin: 22px auto 0; max-width: 640px; text-wrap: balance; }
 .ag-hero__cta { margin-top: 34px; display: flex; gap: 22px; justify-content: center; align-items: center; flex-wrap: wrap; }
 .ag-hero__cta .ag-pill { font-size: 17px; padding: 12px 22px; }
@@ -431,6 +431,8 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 @media (prefers-reduced-motion: reduce) { .hx-rot__w { transition: none; } }
 
 .hx-wrap { position: relative; overflow: hidden; }
+/* Hero line 1 stays on one line on wide screens so the rotating word doesn't reflow it. */
+@media (min-width: 900px) { .hx-wrap .ag-hero { max-width: 1120px; } .hx-l1 { white-space: nowrap; } }
 .hx-wrap > .ag-hero { position: relative; z-index: 1; }
 .hx-bg { position: absolute; inset: 0 0 auto 0; height: 980px; z-index: 0; pointer-events: none; overflow: hidden; }
 .hx-grid { position: absolute; inset: 0; background-image: linear-gradient(to right, rgb(0 0 0 / 0.045) 1px, transparent 1px), linear-gradient(to bottom, rgb(0 0 0 / 0.045) 1px, transparent 1px); background-size: 56px 56px; -webkit-mask-image: radial-gradient(ellipse 55% 60% at 50% 38%, #000 30%, transparent 75%); mask-image: radial-gradient(ellipse 55% 60% at 50% 38%, #000 30%, transparent 75%); animation: hx-pan 40s linear infinite; }

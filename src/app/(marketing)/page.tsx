@@ -70,9 +70,9 @@ export default function HomePage() {
       <HeroBackdrop />
       <section className="ag-hero">
         <div className="ag-hero__in">
-        <h1>Get customers<br />from <EngineRotator /></h1>
+        <h1><span className="hx-l1">Get customers from <EngineRotator /></span><br /><span className="ap-quiet">Your AI agent does the work.</span></h1>
         <p className="ag-hero__sub">
-          Meet {BRAND.agentName}: the AI agent that works 24/7 to put your business at the top of AI search answers. You watch. It does the work.
+          Meet {BRAND.agentName}: it works 24/7 to put your business at the top of AI search answers, then tells you exactly what it did.
         </p>
         <div className="ag-hero__cta ag-hero__cta--big">
           <Link className="ag-hero__big" href="/start">Scan your website free</Link>
