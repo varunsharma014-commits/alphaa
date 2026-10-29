@@ -121,6 +121,9 @@ import { meta as queryFanOutMeta, Body as QueryFanOutBody } from "./what-is-quer
 import { meta as vsSurferMeta, Body as VsSurferBody } from "./alphaa-vs-surfer"
 import { meta as chatgptBingMeta, Body as ChatgptBingBody } from "./does-chatgpt-use-bing"
 import { meta as physioMeta, Body as PhysioBody } from "./how-physical-therapists-get-recommended-by-ai"
+import { meta as aiSeoAgentsMeta, Body as AiSeoAgentsBody } from "./best-ai-seo-agents"
+import { meta as originalResearchMeta, Body as OriginalResearchBody } from "./original-research-ai-citations"
+import { meta as daycaresMeta, Body as DaycaresBody } from "./how-daycares-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -247,6 +250,9 @@ export const POSTS: Post[] = [
   { meta: vsSurferMeta, Body: VsSurferBody },
   { meta: chatgptBingMeta, Body: ChatgptBingBody },
   { meta: physioMeta, Body: PhysioBody },
+  { meta: aiSeoAgentsMeta, Body: AiSeoAgentsBody },
+  { meta: originalResearchMeta, Body: OriginalResearchBody },
+  { meta: daycaresMeta, Body: DaycaresBody },
 ]
 
 export function getAllPosts(): Post[] {
