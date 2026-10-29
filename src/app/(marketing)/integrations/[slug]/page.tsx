@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { ChevronDown } from "lucide-react"
 import { INTEGRATIONS, INTEGRATIONS_CHECKED, getIntegration } from "@/content/integrations"
 import { PlatformIcon } from "@/components/brand/PlatformIcon"
+import { clipDescription, ogImage } from "@/lib/seo"
 
 const BASE = "https://alphaa.app"
 
@@ -17,9 +18,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!i) return { title: "Not found" }
   return {
     title: { absolute: i.metaTitle },
-    description: i.description,
+    description: clipDescription(i.description),
     alternates: { canonical: `/integrations/${i.slug}` },
-    openGraph: { title: i.metaTitle, description: i.description, type: "article", url: `${BASE}/integrations/${i.slug}` },
+    openGraph: { title: i.metaTitle, description: clipDescription(i.description), type: "article", url: `${BASE}/integrations/${i.slug}`, images: ogImage(i.metaTitle) },
+    twitter: { card: "summary_large_image", images: ogImage(i.metaTitle).map((x) => x.url) },
   }
 }
 

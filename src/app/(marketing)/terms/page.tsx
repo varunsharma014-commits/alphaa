@@ -1,4 +1,9 @@
-export const metadata = { title: "Terms of Service", alternates: { canonical: "/terms" } }
+import { pageMeta } from "@/lib/seo"
+export const metadata = pageMeta({
+  title: "Terms of Service",
+  description: "The terms that apply when you use Alphaa, the AI Agent that gets businesses recommended by ChatGPT, Gemini, Claude and Perplexity.",
+  path: "/terms",
+})
 
 const sections = [
   {

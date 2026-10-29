@@ -1,16 +1,17 @@
 import Link from "next/link"
-import type { Metadata } from "next"
 import { INTEGRATIONS } from "@/content/integrations"
 import { PlatformIcon } from "@/components/brand/PlatformIcon"
+import { pageMeta } from "@/lib/seo"
 
 const BASE = "https://alphaa.app"
 
-export const metadata: Metadata = {
-  title: { absolute: "Integrations — Alphaa for WordPress, Shopify, Webflow and Wix" },
+export const metadata = pageMeta({
+  title: "Integrations — Alphaa for WordPress, Shopify, Webflow and Wix",
+  absolute: true,
   description:
     "Alphaa publishes the AI-visibility fixes you approve straight to your website: WordPress (free plugin), Shopify and Webflow (one-click apps). Wix is coming soon. Any other site: Alphaa emails your web person the exact change.",
-  alternates: { canonical: "/integrations" },
-}
+  path: "/integrations",
+})
 
 export default function IntegrationsHub() {
   const schema = [

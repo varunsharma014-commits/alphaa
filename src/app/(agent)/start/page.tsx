@@ -1,13 +1,19 @@
-import type { Metadata } from "next"
 import { StartAgent } from "@/components/agent/StartAgent"
+import { pageMeta } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "See what AI says about your business",
   description:
-    "Alphaa is an AI agent that gets local businesses recommended by ChatGPT, Gemini, Claude and Perplexity. Give it your website — it shows you what the AIs say today and starts fixing it.",
-  alternates: { canonical: "https://alphaa.app/start" },
-}
+    "Alphaa is an AI Agent that gets local businesses recommended by ChatGPT, Gemini, Claude and Perplexity. Give it your website and see what the AIs say today.",
+  path: "/start",
+})
 
 export default function StartPage() {
-  return <StartAgent />
+  // The conversation renders in the browser, so crawlers saw no heading at all.
+  return (
+    <>
+      <h1 className="sr-only">See what ChatGPT, Gemini, Claude and Perplexity say about your business</h1>
+      <StartAgent />
+    </>
+  )
 }

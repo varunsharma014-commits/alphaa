@@ -16,19 +16,22 @@ export const metadata: Metadata = {
     template: "%s | Alphaa",
   },
   description:
-    "Alphaa is an AI agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. It checks what they say about you, writes the fixes, and you tap approve. $99/month, month to month.",
+    "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. It does the work, you tap approve. $99/month, month to month.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"),
+  // Defaults for pages that don't declare their own card. No og:url here: a
+  // root og:url made every inheriting page claim to be the homepage.
   openGraph: {
     title: "Alphaa AI Agent — Get Recommended by ChatGPT, Gemini, Claude and Perplexity",
-    description: "Replace your SEO agency. $99/month. No contracts.",
-    url: "https://alphaa.app",
+    description: "Get customers from ChatGPT. Your AI Agent does the work. $99/month, month to month.",
     siteName: "Alphaa",
     type: "website",
+    images: [{ url: "/og", width: 1200, height: 630, alt: "Alphaa: get customers from ChatGPT. Your AI Agent does the work." }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Alphaa AI Agent — Get Recommended by ChatGPT, Gemini, Claude and Perplexity",
-    description: "Replace your SEO agency. $99/month. No contracts.",
+    description: "Get customers from ChatGPT. Your AI Agent does the work. $99/month, month to month.",
+    images: ["/og"],
   },
   // No site-wide canonical: a root default made every page point at the homepage,
   // so Google dropped them as duplicates. Each page declares its own.

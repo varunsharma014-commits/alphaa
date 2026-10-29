@@ -15,6 +15,7 @@ const isPublicRoute = createRouteMatcher([
   "/start(.*)",
   "/preview", // dev-only agent UI preview; 404s in production
   "/w(.*)",
+  "/og", // social preview cards
   "/refer",
   "/login(.*)",
   "/signup(.*)",

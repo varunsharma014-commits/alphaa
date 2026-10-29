@@ -1,14 +1,14 @@
-import type { Metadata } from "next"
 import Link from "next/link"
 import { Panel, ChatAnswer, AgentNote, DraftDoc, Phone, EngineChips, Checklist } from "@/components/marketing/apple/Mockups"
 import { BRAND } from "@/lib/brand"
+import { pageMeta } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "How it works — from a free check to AI recommending you",
   description:
     "Exactly what happens: a free 60-second check of what ChatGPT, Gemini, Claude and Perplexity say about you, one-click setup, the weekly work your agent does, and what you approve.",
-  alternates: { canonical: "/how-it-works" },
-}
+  path: "/how-it-works",
+})
 
 const A = BRAND.agentName
 

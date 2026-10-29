@@ -1,12 +1,12 @@
-import type { Metadata } from "next"
 import Link from "next/link"
+import { pageMeta } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "About Alphaa — the AI agent that gets local businesses recommended by AI",
+export const metadata = pageMeta({
+  title: "About Alphaa — the AI Agent for AI search",
   description:
-    "Alphaa (alphaa.app) is an AI agent that works to get local businesses recommended by ChatGPT, Gemini, Claude and Perplexity. What it does, how it works, pricing, research and contact details.",
-  alternates: { canonical: "/about" },
-}
+    "Alphaa (alphaa.app) is an AI Agent that gets local businesses recommended by ChatGPT, Gemini, Claude and Perplexity. What it does, pricing, research and contact.",
+  path: "/about",
+})
 
 const org = {
   "@context": "https://schema.org",

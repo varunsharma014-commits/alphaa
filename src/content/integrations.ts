@@ -32,7 +32,7 @@ export const INTEGRATIONS: Integration[] = [
     slug: "wordpress",
     name: "WordPress",
     status: "live",
-    metaTitle: "Alphaa for WordPress — publish AI-ready pages, schema and llms.txt",
+    metaTitle: "Alphaa for WordPress — AI-ready pages, schema and llms.txt",
     description:
       "Connect WordPress to Alphaa with a small free plugin. Alphaa publishes FAQ pages and blog posts, updates page titles and descriptions, and adds structured data, llms.txt and AI-crawler rules. You approve every change, and each one has Undo.",
     h1: "Alphaa for WordPress.",

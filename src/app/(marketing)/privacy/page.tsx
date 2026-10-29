@@ -1,4 +1,9 @@
-export const metadata = { title: "Privacy Policy", alternates: { canonical: "/privacy" } }
+import { pageMeta } from "@/lib/seo"
+export const metadata = pageMeta({
+  title: "Privacy Policy",
+  description: "How Alphaa collects, uses and protects your information, including the Google data you connect, and the choices you have.",
+  path: "/privacy",
+})
 
 const sections = [
   {

@@ -7,11 +7,18 @@ import { FaqSection } from "@/components/marketing/FaqSection"
 import { faqs } from "@/components/marketing/faq-data"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
 import { BRAND } from "@/lib/brand"
+import { pageMeta } from "@/lib/seo"
 
 // SoftwareApplication structured data so AI engines / Google can state exactly
 // what Alphaa is, its category, and its price. No aggregateRating (we won't
 // publish unverifiable review counts).
-export const metadata = { alternates: { canonical: "/" } }
+export const metadata = pageMeta({
+  title: "Get Recommended by ChatGPT, Gemini, Claude & Perplexity | Alphaa",
+  absolute: true,
+  description:
+    "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. It does the work, you tap approve. $99/month, month to month.",
+  path: "/",
+})
 
 const softwareSchema = {
   "@context": "https://schema.org",

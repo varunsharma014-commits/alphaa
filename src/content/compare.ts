@@ -46,7 +46,7 @@ export const COMPARES: Compare[] = [
     label: "Alphaa vs. SEO agencies",
     left: "SEO agency",
     right: "Alphaa",
-    metaTitle: "Alphaa vs. a Traditional SEO Agency (2026): Cost, Contracts & AI Search",
+    metaTitle: "Alphaa vs. an SEO Agency (2026): Cost, Contracts & AI Search",
     description:
       "An honest comparison of a ~$2,000/month local SEO agency and Alphaa, the AI agent that gets local businesses recommended by ChatGPT, Gemini, Claude and Perplexity for $99/month.",
     h1: "Alphaa vs. an SEO agency.",
@@ -133,7 +133,7 @@ export const COMPARES: Compare[] = [
     label: "Alphaa vs. freelance SEOs",
     left: "Freelance SEO",
     right: "Alphaa",
-    metaTitle: "Alphaa vs. Hiring a Freelance SEO (2026): Cost, Speed & AI Search",
+    metaTitle: "Alphaa vs. a Freelance SEO (2026): Cost, Speed & AI Search",
     description:
       "Freelance SEO or an AI agent? Compare cost, turnaround, coverage and AI-search expertise for local businesses deciding between a freelancer and Alphaa.",
     h1: "Alphaa vs. a freelance SEO.",
@@ -206,7 +206,7 @@ export const COMPARES: Compare[] = [
     label: "SEO vs. AEO",
     left: "SEO",
     right: "AEO",
-    metaTitle: "SEO vs. AEO (Answer Engine Optimization): What’s the Difference in 2026?",
+    metaTitle: "SEO vs. AEO (Answer Engine Optimization): 2026 Differences",
     description:
       "SEO earns you a link in a list. AEO earns you the answer. A plain-English comparison of search engine optimization and answer engine optimization for local businesses.",
     h1: "SEO vs. AEO.",
@@ -278,7 +278,7 @@ export const COMPARES: Compare[] = [
     label: "Local SEO vs. GEO",
     left: "Local SEO",
     right: "GEO",
-    metaTitle: "Local SEO vs. GEO (Generative Engine Optimization): Why Your Google Profile Isn’t Enough",
+    metaTitle: "Local SEO vs. GEO: Why Your Google Profile Isn’t Enough",
     description:
       "Local SEO gets you into the Google Map Pack. GEO gets you named by ChatGPT, Gemini, Claude and Perplexity. Here’s how they differ and what local businesses should do.",
     h1: "Local SEO vs. GEO.",
@@ -351,7 +351,7 @@ export const COMPARES: Compare[] = [
     label: "Alphaa vs. Peec AI",
     left: "Peec AI",
     right: "Alphaa",
-    metaTitle: "Alphaa vs. Peec AI (2026): AI Search Analytics Dashboard vs. an AI Agent That Fixes It",
+    metaTitle: "Alphaa vs. Peec AI (2026): Analytics vs. an AI Agent",
     description:
       "Peec AI tells marketing teams why they’re losing on ChatGPT. Alphaa is an AI agent that fixes it for local businesses — writing and publishing content, fixing the site, and replying to reviews. An honest comparison.",
     h1: "Alphaa vs. Peec AI.",
@@ -433,7 +433,7 @@ export const COMPARES: Compare[] = [
     label: "Alphaa vs. Otterly.AI",
     left: "Otterly.AI",
     right: "Alphaa",
-    metaTitle: "Alphaa vs. Otterly.AI (2026): AI Search Monitoring vs. an AI Agent That Does the Work",
+    metaTitle: "Alphaa vs. Otterly.AI (2026): Monitoring vs. an AI Agent",
     description:
       "Otterly.AI monitors your brand across ChatGPT, Perplexity, Copilot and AI Overviews. Alphaa is an AI agent that fixes what stops local businesses being recommended. Price, features and fit, compared honestly.",
     h1: "Alphaa vs. Otterly.AI.",
@@ -510,7 +510,7 @@ export const COMPARES: Compare[] = [
     label: "Alphaa vs. BabyLoveGrowth",
     left: "BabyLoveGrowth",
     right: "Alphaa",
-    metaTitle: "Alphaa vs. BabyLoveGrowth (2026): Content Autopilot vs. a Local AI-Visibility Agent",
+    metaTitle: "Alphaa vs. BabyLoveGrowth (2026): Autopilot vs. an AI Agent",
     description:
       "BabyLoveGrowth auto-publishes lots of SEO articles and trades backlinks through its network. Alphaa is an AI agent for local businesses that gets them named by ChatGPT, Gemini, Claude and Perplexity — with your approval on everything. An honest comparison.",
     h1: "Alphaa vs. BabyLoveGrowth.",
@@ -666,7 +666,7 @@ export const COMPARES: Compare[] = [
     label: "Alphaa vs. Ahrefs",
     left: "Ahrefs",
     right: "Alphaa",
-    metaTitle: "Alphaa vs. Ahrefs (2026): Research Tool vs. AI Agent for Local Businesses",
+    metaTitle: "Alphaa vs. Ahrefs (2026): Research Tool vs. AI Agent",
     description:
       "Ahrefs is a leading SEO research platform with Brand Radar for AI mentions. Alphaa is an AI agent that does AI-visibility work for local businesses. Compare price, features and fit.",
     h1: "Alphaa vs. Ahrefs.",

@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { ChevronDown } from "lucide-react"
 import { COMPARES, COMPARE_CHECKED, getCompare } from "@/content/compare"
 import { AgencyToggle } from "@/components/marketing/apple/Sections"
+import { clipDescription, ogImage } from "@/lib/seo"
 
 const BASE = "https://alphaa.app"
 const CHECKED_LABEL = new Date(COMPARE_CHECKED + "T12:00:00Z").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
@@ -18,9 +19,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!c) return { title: "Not found" }
   return {
     title: { absolute: c.metaTitle },
-    description: c.description,
+    description: clipDescription(c.description),
     alternates: { canonical: `/compare/${c.slug}` },
-    openGraph: { title: c.metaTitle, description: c.description, type: "article", url: `${BASE}/compare/${c.slug}` },
+    openGraph: { title: c.metaTitle, description: clipDescription(c.description), type: "article", url: `${BASE}/compare/${c.slug}`, images: ogImage(c.metaTitle) },
+    twitter: { card: "summary_large_image", images: ogImage(c.metaTitle).map((x) => x.url) },
   }
 }
 

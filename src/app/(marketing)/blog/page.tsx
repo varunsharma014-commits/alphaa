@@ -1,11 +1,15 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { getAllPosts } from "@/content/blog"
+import { pageMeta } from "@/lib/seo"
 
 export const metadata = {
-  title: "Blog — AI Search Optimization (AEO) guides",
-  description:
-    "Practical guides on getting your business found, cited, and recommended by AI assistants like ChatGPT, Claude, Gemini, and Perplexity.",
+  ...pageMeta({
+    title: "Blog — AI Search Optimization (AEO) guides",
+    description:
+      "Practical guides on getting your business found, cited, and recommended by AI assistants like ChatGPT, Claude, Gemini, and Perplexity.",
+    path: "/blog",
+  }),
   alternates: { canonical: "/blog", types: { "application/rss+xml": "https://alphaa.app/blog/rss.xml" } },
 }
 

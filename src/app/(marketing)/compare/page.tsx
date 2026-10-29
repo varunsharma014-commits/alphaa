@@ -1,15 +1,16 @@
 import Link from "next/link"
-import type { Metadata } from "next"
 import { COMPARES, COMPARE_GROUPS } from "@/content/compare"
+import { pageMeta } from "@/lib/seo"
 
 const BASE = "https://alphaa.app"
 
-export const metadata: Metadata = {
-  title: { absolute: "Compare Alphaa — vs. Peec AI, Otterly, SEO Agencies, Semrush, Yext & BrightLocal" },
+export const metadata = pageMeta({
+  title: "Compare Alphaa: vs. Peec AI, Otterly, Semrush, Yext & Agencies",
+  absolute: true,
   description:
     "Honest side-by-side comparisons: Alphaa vs. Peec AI, Otterly.AI, SEO agencies, freelancers, Semrush, Ahrefs, Yext, BrightLocal and Whitespark — plus SEO vs. AEO and local SEO vs. GEO explained.",
-  alternates: { canonical: "/compare" },
-}
+  path: "/compare",
+})
 
 export default function CompareHub() {
   const schema = {

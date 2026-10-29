@@ -1,8 +1,13 @@
 import { ScanForm } from "@/components/scan/ScanForm"
 import { SectionLabel } from "@/components/common/SectionLabel"
 import { Bot } from "lucide-react"
+import { pageMeta } from "@/lib/seo"
 
-export const metadata = { title: "Free Visibility Scan", alternates: { canonical: "/scan" } }
+export const metadata = pageMeta({
+  title: "Free AI Visibility Scan",
+  description: "See what ChatGPT, Gemini, Claude and Perplexity say about your business, and who they name instead of you. Free, in about 60 seconds.",
+  path: "/scan",
+})
 
 export default function ScanPage() {
   return (

@@ -7,6 +7,23 @@ import { INTEGRATIONS, INTEGRATIONS_CHECKED } from "@/content/integrations"
 
 const BASE_URL = "https://alphaa.app"
 
+// Real last-edit dates (from git) for pages without their own content date.
+// lastModified used to be the build time, which tells Google every page
+// changed on every deploy — so it learns to ignore our dates. Bump the date
+// here when you actually change one of these pages.
+const PAGE_UPDATED: Record<string, string> = {
+  "/": "2026-10-29",
+  "/start": "2026-10-29",
+  "/for": "2026-10-29",
+  "/pricing": "2026-10-29",
+  "/about": "2026-10-29",
+  "/how-it-works": "2026-10-29",
+  "/scan": "2026-10-29",
+  "/case-studies": "2026-10-29",
+  "/refer": "2026-10-29",
+}
+const updated = (path: string) => new Date(PAGE_UPDATED[path])
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const blogPosts: MetadataRoute.Sitemap = getAllPosts().map((p) => ({
     url: `${BASE_URL}/blog/${p.meta.slug}`,
@@ -18,7 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const verticalPages: MetadataRoute.Sitemap = VERTICALS.map((v) => ({
     url: `${BASE_URL}/for/${v.slug}`,
-    lastModified: new Date(),
+    lastModified: updated("/for"),
     changeFrequency: "monthly",
     priority: 0.8,
   }))
@@ -48,19 +65,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...integrationPages,
     {
       url: BASE_URL,
-      lastModified: new Date(),
+      lastModified: updated("/"),
       changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: `${BASE_URL}/start`,
-      lastModified: new Date(),
+      lastModified: updated("/start"),
       changeFrequency: "weekly",
       priority: 0.95,
     },
     {
       url: `${BASE_URL}/blog`,
-      lastModified: new Date(),
+      // The blog index changes when a post is added or updated.
+      lastModified: new Date(blogPosts.map((b) => (b.lastModified as Date).toISOString()).sort().pop()!),
       changeFrequency: "weekly",
       priority: 0.8,
     },
@@ -68,37 +86,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...verticalPages,
     {
       url: `${BASE_URL}/pricing`,
-      lastModified: new Date(),
+      lastModified: updated("/pricing"),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${BASE_URL}/about`,
-      lastModified: new Date(),
+      lastModified: updated("/about"),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${BASE_URL}/how-it-works`,
-      lastModified: new Date(),
+      lastModified: updated("/how-it-works"),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/scan`,
-      lastModified: new Date(),
+      lastModified: updated("/scan"),
       changeFrequency: "monthly",
       priority: 0.5,
     },
     {
       url: `${BASE_URL}/case-studies`,
-      lastModified: new Date(),
+      lastModified: updated("/case-studies"),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/refer`,
-      lastModified: new Date(),
+      lastModified: updated("/refer"),
       changeFrequency: "monthly",
       priority: 0.6,
     },

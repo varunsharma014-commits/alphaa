@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react"
 import { getAllPosts, getPost } from "@/content/blog"
 import { extractFaq } from "@/content/blog/faq"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
+import { clipDescription, ogImage as ogCard } from "@/lib/seo"
 
 const SITE = "https://alphaa.app"
 const abs = (src: string) => (src.startsWith("http") ? src : `${SITE}${src.startsWith("/") ? "" : "/"}${src}`)
@@ -40,20 +41,23 @@ export async function generateMetadata({
   const url = `${SITE}/blog/${meta.slug}`
   const ogImage = meta.image
     ? [{ url: abs(meta.image.src), width: meta.image.width, height: meta.image.height, alt: meta.image.alt }]
-    : undefined
+    : ogCard(meta.title, meta.tag ?? "Blog")
+  const description = clipDescription(meta.description)
   return {
-    title: meta.title,
-    description: meta.description,
+    // Long headlines drop the " | Alphaa" suffix so Google shows the whole title.
+    title: `${meta.title} | Alphaa`.length > 65 ? { absolute: meta.title } : meta.title,
+    description,
     ...(meta.keyphrase ? { keywords: [meta.keyphrase] } : {}),
     alternates: { canonical: `/blog/${meta.slug}` },
     openGraph: {
       title: meta.title,
-      description: meta.description,
+      description,
       type: "article",
       url,
-      ...(ogImage
-        ? { images: ogImage, publishedTime: meta.date, modifiedTime: meta.updated ?? meta.date, ...(meta.tag ? { section: meta.tag } : {}) }
-        : {}),
+      images: ogImage,
+      publishedTime: meta.date,
+      modifiedTime: meta.updated ?? meta.date,
+      ...(meta.tag ? { section: meta.tag } : {}),
     },
     ...(ogImage
       ? { twitter: { card: "summary_large_image", title: meta.title, description: meta.description, images: [ogImage[0].url] } }

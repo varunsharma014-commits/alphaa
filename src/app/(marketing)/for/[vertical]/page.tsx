@@ -7,6 +7,7 @@ import { getPost } from "@/content/blog"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { HeroScanInput } from "@/components/marketing/HeroScanInput"
 import { StickyScanCta } from "@/components/marketing/StickyScanCta"
+import { clipDescription, ogImage } from "@/lib/seo"
 
 const ALPHAA_ANNUAL = 1188 // $99/mo × 12
 
@@ -31,13 +32,16 @@ export async function generateMetadata({
   const v = getVertical(vertical)
   if (!v) return { title: "Not found" }
   // Layout applies a "%s | Alphaa" title template — don't append the brand here.
-  const title = `AI Search Optimization for ${displayPlural(v.plural)} — Get Recommended by ChatGPT`
-  const description = `Get your ${v.noun} recommended by ChatGPT, Claude & Gemini automatically. $99/mo instead of a ${v.agencyCostLabel} agency retainer. Free 2-minute scan.`
+  // Layout appends " | Alphaa"; keep the whole thing inside Google's ~65 chars.
+  const long = `AI Search Optimization for ${displayPlural(v.plural)}: ChatGPT & Gemini`
+  const title = long.length + 9 <= 65 ? long : `AI Search Optimization for ${displayPlural(v.plural)}`
+  const description = clipDescription(`Get your ${v.noun} recommended by ChatGPT, Gemini, Claude and Perplexity. An AI Agent does the work for $99/mo instead of a ${v.agencyCostLabel} agency retainer.`)
   return {
     title,
     description,
     alternates: { canonical: `/for/${v.slug}` },
-    openGraph: { title, description, type: "website", url: `https://alphaa.app/for/${v.slug}` },
+    openGraph: { title, description, type: "website", url: `https://alphaa.app/for/${v.slug}`, images: ogImage(title, "For " + displayPlural(v.plural)) },
+    twitter: { card: "summary_large_image", images: ogImage(title).map((x) => x.url) },
   }
 }
 
