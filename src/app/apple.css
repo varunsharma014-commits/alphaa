@@ -256,7 +256,8 @@
 @media (max-width: 734px) {
   .ap-versus { grid-template-columns: 1fr; gap: 16px; }
   .ap-hero-panel .ap-panel { height: auto; padding: 36px 0; }
-  .ap-vs { grid-template-columns: 1fr 1fr; column-gap: 10px; }
+  .ap-vs { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; padding: 0 16px; }
+  .ap-vs__price { flex-wrap: wrap; } .ap-vs__price b { font-size: 38px; }
   .ap-vs__col--them { grid-column: 1; } .ap-vs__col--us { grid-column: 2; }
   .ap-vs__col { padding: 22px 16px 18px; border-radius: 22px 22px 0 0; }
   .ap-vs__k { grid-column: 1 / -1; padding: 16px 4px 8px; border-top: 0; }
