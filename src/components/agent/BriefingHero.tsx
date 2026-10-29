@@ -68,7 +68,7 @@ export function BriefingHero() {
     setEditing(false)
   }
 
-  if (state === "loading") return <div className="ag-hero ag-hero--loading"><p>Counting the people AI sent you…</p></div>
+  if (state === "loading") return <div className="ag-win ag-win--loading"><p>Counting the people AI sent you…</p></div>
   if (state === "failed" || !hero) return null
 
   const v = hero.visitors
@@ -77,35 +77,35 @@ export function BriefingHero() {
 
   return (
     <>
-      <section className="ag-hero">
+      <section className="ag-win">
         {v && v.total > 0 ? (
           <>
-            <div className="ag-hero__num">{v.total}</div>
-            <p className="ag-hero__what">{v.total === 1 ? "person found you through AI" : "people found you through AI"} in the last 30 days</p>
+            <div className="ag-win__num">{v.total}</div>
+            <p className="ag-win__what">{v.total === 1 ? "person found you through AI" : "people found you through AI"} in the last 30 days</p>
             {v.series && v.series.some((n) => n > 0) && <TrendLine series={v.series} />}
-            {diff !== null && diff !== 0 && <p className={`ag-hero__trend ${diff > 0 ? "up" : ""}`}>{diff > 0 ? `▲ Up ${diff} from the month before` : `${Math.abs(diff)} fewer than the month before. I’m on it.`}</p>}
+            {diff !== null && diff !== 0 && <p className={`ag-win__trend ${diff > 0 ? "up" : ""}`}>{diff > 0 ? `▲ Up ${diff} from the month before` : `${Math.abs(diff)} fewer than the month before. I’m on it.`}</p>}
             {sources.length > 0 && (
-              <div className="ag-hero__src">
+              <div className="ag-win__src">
                 {sources.map(([name, n]) => <span key={name}>{name} <b>{n}</b></span>)}
               </div>
             )}
           </>
         ) : hero.named && hero.named.named > 0 ? (
           <>
-            <div className="ag-hero__num">{hero.named.named}<small> of {hero.named.answers}</small></div>
-            <p className="ag-hero__what">times the AIs named you when I asked your customers’ {hero.named.questions} questions this week</p>
-            {v && <p className="ag-hero__trend">No visitors from AI yet this month. Getting named is the step before they come.</p>}
+            <div className="ag-win__num">{hero.named.named}<small> of {hero.named.answers}</small></div>
+            <p className="ag-win__what">times the AIs named you when I asked your customers’ {hero.named.questions} questions this week</p>
+            {v && <p className="ag-win__trend">No visitors from AI yet this month. Getting named is the step before they come.</p>}
           </>
         ) : (
           <>
-            <p className="ag-hero__what ag-hero__what--big">I’m building your AI visibility. The first visitors from ChatGPT and the others will show up here.</p>
+            <p className="ag-win__what ag-win__what--big">I’m building your AI visibility. The first visitors from ChatGPT and the others will show up here.</p>
           </>
         )}
 
         {hero.value && (
-          <div className="ag-hero__value">
+          <div className="ag-win__value">
             {editing ? (
-              <form onSubmit={(e) => { e.preventDefault(); void saveValue() }} className="ag-hero__edit">
+              <form onSubmit={(e) => { e.preventDefault(); void saveValue() }} className="ag-win__edit">
                 <label htmlFor="cv">What’s a new customer worth to you?</label>
                 <div>
                   <span>$</span>
@@ -117,7 +117,7 @@ export function BriefingHero() {
               <p>
                 One new customer is worth about <b>{money(hero.value.amount)}</b> to you
                 {hero.paysFor !== null && hero.paysFor >= 1 && (hero.paysFor > 24 ? <>. Just one of them pays for Alphaa <b>for years</b></> : <>. Just one of them pays for <b>{hero.paysFor === 1 ? "a month" : `${hero.paysFor} months`}</b> of Alphaa</>)}.{" "}
-                <span className="ag-hero__est">
+                <span className="ag-win__est">
                   {hero.value.source === "estimate" ? `My estimate${hero.value.basis ? `: ${hero.value.basis}` : ""}.` : "Your number."}{" "}
                   <button type="button" onClick={() => { setDraft(String(hero.value!.amount)); setEditing(true) }}>Change it</button>
                 </span>
