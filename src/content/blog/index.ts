@@ -124,6 +124,9 @@ import { meta as physioMeta, Body as PhysioBody } from "./how-physical-therapist
 import { meta as aiSeoAgentsMeta, Body as AiSeoAgentsBody } from "./best-ai-seo-agents"
 import { meta as originalResearchMeta, Body as OriginalResearchBody } from "./original-research-ai-citations"
 import { meta as daycaresMeta, Body as DaycaresBody } from "./how-daycares-get-recommended-by-ai"
+import { meta as vsRankscaleMeta, Body as VsRankscaleBody } from "./alphaa-vs-rankscale"
+import { meta as aiVisAuditMeta, Body as AiVisAuditBody } from "./ai-visibility-audit"
+import { meta as groundingMeta, Body as GroundingBody } from "./what-is-grounding-in-ai-search"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -253,6 +256,9 @@ export const POSTS: Post[] = [
   { meta: aiSeoAgentsMeta, Body: AiSeoAgentsBody },
   { meta: originalResearchMeta, Body: OriginalResearchBody },
   { meta: daycaresMeta, Body: DaycaresBody },
+  { meta: vsRankscaleMeta, Body: VsRankscaleBody },
+  { meta: aiVisAuditMeta, Body: AiVisAuditBody },
+  { meta: groundingMeta, Body: GroundingBody },
 ]
 
 export function getAllPosts(): Post[] {
