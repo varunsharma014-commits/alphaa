@@ -424,7 +424,7 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 /* ── Hero: rotating engine, living backdrop, big CTA ─────────────────── */
 .ag-hero { position: relative; isolation: isolate; }
 .ag-hero__in { position: relative; z-index: 1; }
-.hx-rot { display: inline-grid; vertical-align: bottom; text-align: left; transition: width .5s cubic-bezier(.28,.11,.32,1); white-space: nowrap; }
+.hx-rot { display: inline-grid; vertical-align: baseline; text-align: left; transition: width .5s cubic-bezier(.28,.11,.32,1); white-space: nowrap; }
 .hx-rot__w { grid-area: 1 / 1; opacity: 0; transform: translateY(0.45em); filter: blur(6px); transition: opacity .55s ease, transform .55s cubic-bezier(.28,.11,.32,1), filter .55s ease; width: max-content; padding-bottom: 0.08em; }
 .hx-rot__w.is-on { opacity: 1; transform: none; filter: none; }
 .hx-rot__w.is-out { opacity: 0; transform: translateY(-0.45em); filter: blur(6px); }
