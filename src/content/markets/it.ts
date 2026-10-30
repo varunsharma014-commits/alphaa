@@ -1,0 +1,221 @@
+import type { Market } from "./types"
+
+export const market: Market = {
+  copy: {
+    key: "it",
+    path: "/it",
+    lang: "it-IT",
+    hreflang: "it-IT",
+    country: "Italia",
+    title: "Fatti consigliare da ChatGPT e dall’IA | Alphaa",
+    description:
+      "Alphaa è un agente IA che fa consigliare la tua attività da ChatGPT, Gemini, Claude e Perplexity. Lui lavora, tu approvi. Controllo gratuito in 60 secondi.",
+    h1a: "Nuovi clienti da",
+    h1b: "Il tuo agente IA fa il lavoro al posto tuo.",
+    sub: "Quando qualcuno a Milano, Roma o Napoli chiede a ChatGPT “chi mi consigli?”, faccio in modo che nella risposta ci sia la tua attività. Poi ti dico esattamente cosa ho fatto.",
+    cta: "Controlla la mia attività gratis",
+    guarantee: ["Se nessuna IA ti nomina entro 90 giorni,", "il mese successivo non lo paghi."],
+    fine: "Nessuna carta richiesta. Controllo ChatGPT, Gemini, Claude e Perplexity.",
+    arrows: ["è dal vivo, provalo", "le tue risposte vere in 60 secondi"],
+    greet: {
+      startHere: "Inizia da qui",
+      lines: ["Ciao, sono Alphaa, un agente IA.", "Faccio in modo che ChatGPT, Gemini, Claude e Perplexity consiglino la tua attività."],
+      ask: "Qual è il tuo sito?",
+      hint: "Niente da installare, nessuna carta. Mi basta il tuo sito. Le IA le interrogo in italiano; il report per ora è in inglese.",
+      idleHint: "Scrivi l’indirizzo del tuo sito e premi Invio. Chiedo di te a ChatGPT, Gemini, Claude e Perplexity, in italiano e dal vivo, in circa 60 secondi. Il report per ora è in inglese.",
+    },
+    pillarsTitle: "Cosa faccio per chi ha un’attività in Italia",
+    pillars: [
+      {
+        title: "Scopro perché l’IA consiglia un altro",
+        body: "Ogni settimana faccio alle quattro IA le domande che fanno i tuoi clienti, in italiano e come le fanno nella tua città (“un dentista bravo a Bologna?”), e ti mostro chi viene nominato al posto tuo.",
+      },
+      {
+        title: "Mi metto al lavoro",
+        body: "Scrivo le pagine e le risposte che l’IA cita, correggo i dati sbagliati (telefono, indirizzo, orari) e tengo vivo il tuo profilo Google con post e risposte alle recensioni. Tu approvi ogni modifica con un tocco.",
+      },
+      {
+        title: "Ti dico cosa è cambiato",
+        body: "Un breve riepilogo ogni settimana, senza paroloni: cosa ho fatto, cosa è cambiato nelle risposte delle IA e cosa aspetta il tuo ok.",
+      },
+    ],
+    whereTitle: "Dove l’IA si informa su di te in Italia",
+    whereIntro: "Prima di consigliare un’attività, l’IA legge cosa dicono di lei gli altri siti. In Italia pesano soprattutto questi:",
+    where: [
+      { name: "Profilo dell’attività su Google", why: "Orari, categoria, foto e recensioni: è la prima cosa che l’IA controlla." },
+      { name: "PagineGialle", why: "L’elenco storico delle attività italiane, che l’IA legge spesso per i servizi locali." },
+      { name: "MioDottore, Treatwell, ProntoPro e TripAdvisor", why: "I portali di settore dove i clienti lasciano recensioni: l’IA li usa per capire di chi fidarsi." },
+      { name: "Il tuo sito", why: "Pagine dei servizi chiare e risposte in buon italiano, che l’IA può citare parola per parola." },
+    ],
+    priceTitle: "Un agente IA che lavora per te. Non un’altra agenzia.",
+    priceSub: "Tutto quello che serve per farti nominare dall’IA, fatto da me. A te resta solo dire sì.",
+    priceItems: [
+      "Ogni settimana controllo cosa dicono di te ChatGPT, Gemini, Claude e Perplexity",
+      "Il tuo profilo Google sempre aggiornato: post e risposte alle recensioni le scrivo io",
+      "Niente va online senza il tuo ok",
+      "Nessun vincolo: si paga mese per mese e si disdice in due clic",
+      "Se nessuna IA ti nomina entro 90 giorni, il mese successivo non lo paghi",
+    ],
+    priceCta: "Fatti consigliare dall’IA — {starter}/mese",
+    priceNote: "Starter {starter}, Pro {pro} (fino a 3 sedi), Full Service {full} al mese. Addebito mensile, disdici quando vuoi. Prezzi IVA esclusa per le aziende.",
+    faqTitle: "Le domande che ci fanno le attività italiane",
+    faq: [
+      {
+        q: "Alphaa funziona anche per un’attività italiana?",
+        a: "Sì. Faccio a ChatGPT, Gemini, Claude e Perplexity le domande dei tuoi clienti, in italiano, controllo i siti che l’IA legge in Italia (il tuo profilo Google, PagineGialle, i portali del tuo settore) e sistemo quello che manca.",
+      },
+      {
+        q: "Quanto costa?",
+        a: "Starter costa {starter} al mese, Pro {pro} (fino a 3 sedi), Full Service {full}, con una persona che pubblica tutto per te. Mese per mese, disdetta in due clic, rimborso entro 7 giorni sul primo addebito. Il controllo in questa pagina è gratuito.",
+      },
+      {
+        q: "Devo capirne di marketing o di siti web?",
+        a: "No. Il lavoro lo faccio io e ti spiego cosa ho fatto in parole semplici. Se il sito lo gestisce il tuo webmaster, gli mando io la modifica esatta da fare.",
+      },
+      {
+        q: "E il GDPR?",
+        a: "Uso solo il tuo sito e informazioni pubbliche per verificare cosa dice l’IA. I cookie di statistica e pubblicità si attivano solo con il tuo consenso, e puoi chiedere la cancellazione dei tuoi dati in qualsiasi momento.",
+      },
+      {
+        q: "È tutto in italiano?",
+        a: "Le IA le interrogo in italiano, come fanno i tuoi clienti, e le pagine che scrivo per il tuo sito sono in italiano. Il report del controllo e il riepilogo settimanale, per ora, sono in inglese.",
+      },
+    ],
+    english: "Vai al sito in inglese",
+  },
+
+  extra: {
+    questionsTitle: "Cosa chiedono davvero gli italiani all’IA",
+    questionsIntro: "Non scrivono più parole chiave su Google. Chiedono a ChatGPT come chiederebbero a un amico, e l’IA risponde con due o tre nomi. Ecco domande vere, come le fanno i tuoi clienti:",
+    questions: [
+      { q: "Mi consigli un dentista bravo a Milano zona Città Studi che faccia anche impianti?", who: "Un paziente in cerca di dentista" },
+      { q: "Idraulico a Roma che venga oggi per una perdita sotto il lavandino, chi chiamo?", who: "Un’urgenza in casa" },
+      { q: "Avvocato a Torino per una separazione consensuale, chi è affidabile?", who: "Chi cerca uno studio legale" },
+      { q: "Centro estetico a Bologna per la laser epilazione, quale ha buone recensioni?", who: "Una cliente in cerca di estetista" },
+      { q: "Ristorante tipico a Firenze per una cena di lavoro, non turistico: cosa mi suggerisci?", who: "Chi organizza una cena" },
+    ],
+    industriesTitle: "Per i mestieri dove un cliente vale tanto",
+    industriesIntro: "Un nuovo paziente, una causa o un impianto nuovo ripagano l’abbonamento molte volte. Ecco come lavoro per ciascun settore:",
+    industryLinkPrefix: "Scopri di più per",
+    industries: [
+      {
+        slug: "dentisti",
+        name: "Dentisti",
+        title: "Fai consigliare il tuo studio dentistico da ChatGPT",
+        description: "Quando un paziente chiede a ChatGPT un dentista bravo nella sua zona, il tuo studio può essere nella risposta. Lavoro io, tu approvi. Controllo gratis.",
+        h1: "Il tuo studio dentistico, consigliato da ChatGPT",
+        sub: "Sempre più pazienti chiedono all’IA “un dentista di fiducia vicino a me”. Io scopro chi nomina al posto tuo, sistemo quello che manca e ti chiedo solo l’ok.",
+        questions: [
+          "Mi consigli un dentista bravo a Milano zona Porta Romana per un impianto?",
+          "Studio dentistico a Roma Prati che lavori anche il sabato?",
+          "Ortodontista a Verona per apparecchio invisibile a un adulto, chi è affidabile?",
+        ],
+        where: [
+          { name: "MioDottore", why: "Il portale dove gli italiani prenotano e recensiscono i medici: l’IA lo legge per capire chi è affidabile." },
+          { name: "Profilo dell’attività su Google", why: "Orari, indirizzo e recensioni dello studio: se sono sbagliati, l’IA ripete l’errore." },
+          { name: "PagineGialle", why: "Un elenco che l’IA usa spesso per verificare nome, indirizzo e telefono." },
+          { name: "Il sito dello studio", why: "Pagine chiare per ogni trattamento (impianti, ortodonzia, igiene) che l’IA può citare." },
+        ],
+        steps: [
+          { title: "Chiedo alle IA quello che chiedono i tuoi pazienti", body: "Ogni settimana faccio a ChatGPT, Gemini, Claude e Perplexity domande come “dentista per impianti a Bari” e ti mostro quali studi vengono nominati e perché." },
+          { title: "Scrivo le pagine dei trattamenti", body: "Preparo pagine e risposte informative sui tuoi trattamenti, con toni misurati come si addice a uno studio medico. Niente va online senza il tuo ok." },
+          { title: "Curo il profilo Google e le recensioni", body: "Correggo orari e dati sbagliati, scrivo i post e preparo risposte cortesi alle recensioni, senza mai citare dati sanitari dei pazienti." },
+        ],
+        faq: [
+          { q: "La pubblicità sanitaria ha regole precise. Come vi comportate?", a: "Scrivo contenuti informativi sui trattamenti, senza promesse né toni da offerta commerciale, e tu rivedi ogni testo prima che vada online. Se hai dubbi su un testo, non lo approvi e resta fermo." },
+          { q: "Ho già il profilo su MioDottore. Serve altro?", a: "MioDottore aiuta, ma l’IA incrocia più fonti: il profilo Google, il tuo sito, gli elenchi. Io controllo che dicano tutti la stessa cosa e che il tuo sito risponda alle domande dei pazienti." },
+          { q: "Funziona per uno studio con più sedi?", a: "Sì. Con il piano Pro seguo fino a 3 sedi, ognuna con le sue pagine e le sue domande locali." },
+        ],
+      },
+      {
+        slug: "idraulici",
+        name: "Idraulici e artigiani",
+        title: "Idraulici e artigiani consigliati da ChatGPT",
+        description: "Quando qualcuno chiede a ChatGPT un idraulico o un elettricista in zona, il tuo nome può comparire. Il lavoro lo faccio io, tu approvi. Controllo gratis.",
+        h1: "Il tuo nome, quando chiedono all’IA un idraulico in zona",
+        sub: "Perdite, caldaie, impianti elettrici: sempre più persone chiedono a ChatGPT chi chiamare. Io faccio in modo che sappia chi sei, dove lavori e che sei affidabile.",
+        questions: [
+          "Idraulico a Napoli Vomero che venga oggi per una perdita, chi mi consigli?",
+          "Tecnico caldaie a Torino per la revisione annuale, chi è serio?",
+          "Elettricista a Bologna per rifare l’impianto di casa, chi ha buone recensioni?",
+        ],
+        where: [
+          { name: "Profilo dell’attività su Google", why: "Zona servita, orari e recensioni: per le urgenze l’IA guarda soprattutto qui." },
+          { name: "ProntoPro e Instapro", why: "I portali dove i privati cercano e recensiscono artigiani: l’IA li usa come prova di fiducia." },
+          { name: "PagineGialle", why: "Per tanti artigiani è la scheda più vecchia online: se ha un numero vecchio, l’IA lo ripete." },
+          { name: "Il tuo sito", why: "Una pagina per ogni servizio e ogni zona servita, che l’IA può citare." },
+        ],
+        steps: [
+          { title: "Scopro chi chiamano al posto tuo", body: "Ogni settimana chiedo alle quattro IA “idraulico a [la tua città]” e simili, e ti dico chi viene nominato e cosa ha che a te manca." },
+          { title: "Metto in ordine i tuoi dati", body: "Telefono, zona servita, orari e reperibilità: li allineo tra Google, PagineGialle e il tuo sito, così l’IA non dà un numero sbagliato." },
+          { title: "Rispondo alle recensioni e scrivo i post", body: "Preparo le risposte alle recensioni e i post sul profilo Google per te. Tu li approvi dal telefono, anche tra un lavoro e l’altro." },
+        ],
+        faq: [
+          { q: "Lavoro da solo e non ho tempo. Quanto mi impegna?", a: "Pochi secondi a settimana: ti arriva quello che ho preparato e tu tocchi “approva”. Il resto lo faccio io." },
+          { q: "Non ho un sito, solo la pagina Google. Funziona lo stesso?", a: "Sì, partiamo dal profilo Google e dai portali. Un sito aiuta molto l’IA a citarti; se vuoi, con Full Service una persona lo mette online per te." },
+          { q: "Faccio anche il termoidraulico e l’elettricista. Posso coprire tutto?", a: "Sì. Chiedo alle IA per ogni servizio che fai e preparo una pagina per ciascuno, nelle zone dove lavori davvero." },
+        ],
+      },
+      {
+        slug: "avvocati",
+        name: "Avvocati e studi legali",
+        title: "Avvocati e studi legali consigliati da ChatGPT",
+        description: "Quando qualcuno chiede a ChatGPT un avvocato per una separazione o un licenziamento, il tuo studio può esserci. Lavoro io, tu approvi. Controllo gratis.",
+        h1: "Il tuo studio legale, nella risposta dell’IA",
+        sub: "Prima di chiamare un avvocato, molti ora chiedono a ChatGPT. Io scopro quali studi nomina nella tua città e lavoro perché nomini anche il tuo, con toni sobri.",
+        questions: [
+          "Avvocato divorzista a Milano, chi mi consigli per una separazione?",
+          "Avvocato del lavoro a Roma per un licenziamento, chi è bravo?",
+          "Studio legale a Firenze per una successione con immobili, chi contatto?",
+        ],
+        where: [
+          { name: "Albo dell’Ordine degli Avvocati", why: "L’IA lo usa per verificare che tu sia iscritto e in quale foro eserciti." },
+          { name: "Profilo dell’attività su Google", why: "Indirizzo dello studio, materie e recensioni: la scheda che l’IA legge per prima." },
+          { name: "PagineGialle", why: "Uno degli elenchi da cui l’IA ricava nome, indirizzo e telefono dello studio." },
+          { name: "Il sito dello studio", why: "Pagine chiare per ogni area di pratica e risposte alle domande che i clienti fanno davvero." },
+        ],
+        steps: [
+          { title: "Ascolto le domande dei tuoi futuri clienti", body: "Ogni settimana chiedo alle quattro IA cose come “avvocato per separazione a Bari” e ti mostro quali studi nominano e perché." },
+          { title: "Scrivo pagine informative, non slogan", body: "Preparo pagine e risposte chiare sulle tue aree di pratica, con toni sobri e senza promesse di risultato. Le leggi tu prima che vadano online." },
+          { title: "Tengo in ordine la tua presenza online", body: "Correggo i dati dello studio dove sono sbagliati e preparo risposte misurate alle recensioni, senza mai entrare nel merito delle pratiche." },
+        ],
+        faq: [
+          { q: "E il codice deontologico?", a: "Scrivo solo contenuti informativi: niente confronti con altri colleghi, niente promesse di risultato, niente toni da offerta. Ogni testo passa da te prima di uscire, e se non ti convince resta fermo." },
+          { q: "Il mio studio ha più soci e più materie. Come funziona?", a: "Preparo pagine separate per ogni area di pratica, così l’IA capisce di cosa vi occupate e può nominarvi per la domanda giusta." },
+          { q: "Toccate i dati dei miei clienti?", a: "No. Lavoro solo sul sito dello studio e su informazioni pubbliche. Non ho mai accesso alle tue pratiche." },
+        ],
+      },
+      {
+        slug: "centri-estetici",
+        name: "Centri estetici",
+        title: "Fai consigliare il tuo centro estetico da ChatGPT",
+        description: "Quando una cliente chiede a ChatGPT un centro estetico in zona, il tuo può essere nella risposta. Lavoro io, tu approvi con un tocco. Controllo gratis.",
+        h1: "Il tuo centro estetico, consigliato dall’IA",
+        sub: "Laser, trattamenti viso, unghie: sempre più clienti chiedono a ChatGPT dove andare. Io faccio in modo che conosca i tuoi trattamenti e le tue recensioni.",
+        questions: [
+          "Centro estetico a Milano zona Navigli per la laser epilazione, quale mi consigli?",
+          "Dove faccio una pulizia del viso fatta bene a Roma Monteverde?",
+          "Estetista a Bari per la ricostruzione unghie, chi ha buone recensioni?",
+        ],
+        where: [
+          { name: "Treatwell", why: "Il portale dove tante clienti prenotano e recensiscono: l’IA lo legge per capire quali centri sono apprezzati." },
+          { name: "Profilo dell’attività su Google", why: "Foto, orari e recensioni: per “centro estetico vicino a me” l’IA guarda qui." },
+          { name: "Instagram", why: "Il profilo del centro conferma all’IA che sei attivo e cosa offri." },
+          { name: "Il tuo sito", why: "Una pagina per ogni trattamento, con prezzi indicativi e risposte che l’IA può citare." },
+        ],
+        steps: [
+          { title: "Scopro quali centri nomina l’IA", body: "Ogni settimana chiedo alle quattro IA cose come “laser epilazione a Verona” e ti mostro chi viene consigliato al posto tuo." },
+          { title: "Scrivo le pagine dei trattamenti", body: "Una pagina chiara per ogni trattamento, con le domande che fanno le clienti (quante sedute, quanto dura, fa male?). Niente va online senza il tuo ok." },
+          { title: "Tengo vivo il profilo Google", body: "Scrivo i post settimanali e preparo risposte gentili a ogni recensione. Tu approvi dal telefono, tra una cliente e l’altra." },
+        ],
+        faq: [
+          { q: "Ho già Treatwell e Instagram. Non basta?", a: "Aiutano, ma l’IA incrocia più fonti. Se il tuo sito non spiega bene i trattamenti, tende a citare chi lo fa. Io sistemo proprio questo." },
+          { q: "Faccio anche medicina estetica con un medico. Lo gestite?", a: "Sì, ma con toni informativi e misurati, come richiede l’ambito sanitario. Ogni testo lo rivedi tu prima che esca." },
+          { q: "Ho due centri in città diverse. Si può?", a: "Sì. Con il piano Pro seguo fino a 3 sedi, ognuna con le sue pagine e le domande della sua zona." },
+        ],
+      },
+    ],
+    backToMarket: "Torna ad Alphaa Italia",
+    industryCta: "Controlla la mia attività gratis",
+  },
+}

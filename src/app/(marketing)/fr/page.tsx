@@ -1,8 +1,8 @@
 import { LocalHome, localMeta } from "@/components/marketing/local/LocalHome"
-import { LOCALES } from "@/content/locales"
+import { MARKETS } from "@/content/locales"
 
-export const metadata = localMeta(LOCALES.fr)
+export const metadata = localMeta(MARKETS.fr.copy)
 
 export default function Page() {
-  return <LocalHome l={LOCALES.fr} />
+  return <LocalHome m={MARKETS.fr} />
 }

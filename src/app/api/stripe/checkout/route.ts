@@ -5,6 +5,26 @@ import { stripe, STRIPE_PRICE_IDS, STRIPE_SETUP_FEE_PRICE_ID } from "@/lib/strip
 import { db } from "@/lib/db"
 import { FOUNDER_EMAILS } from "@/lib/billing"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
+import { MARKET_CURRENCY, MARKET_COOKIE, isMarketKey } from "@/content/markets/prices"
+import type Stripe from "stripe"
+
+// Visitors who came through a market page (/uk, /de…) pay in that market's
+// currency. The monthly prices carry currency options in Stripe; if one is
+// missing, Stripe rejects the currency and we fall back to USD.
+function marketCurrency(req: NextRequest): string | undefined {
+  const m = req.cookies.get(MARKET_COOKIE)?.value
+  return isMarketKey(m) ? MARKET_CURRENCY[m] : undefined
+}
+
+async function createSession(params: Stripe.Checkout.SessionCreateParams, currency: string | undefined) {
+  if (!currency) return stripe.checkout.sessions.create(params)
+  try {
+    return await stripe.checkout.sessions.create({ ...params, currency })
+  } catch (e) {
+    console.error("[checkout] local currency failed, using USD", currency, e instanceof Error ? e.message : e)
+    return stripe.checkout.sessions.create(params)
+  }
+}
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth()
@@ -66,10 +86,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: session.url })
   }
 
+  const currency = marketCurrency(req)
+
   // Full Service subscription ($299/mo, human-fulfilled). No trial: a person
   // starts doing real work immediately.
   if (purchase === "fullservice") {
-    const session = await stripe.checkout.sessions.create({
+    const session = await createSession({
       customer: stripeCustomerId,
       branding_settings,
       line_items: [{ price: STRIPE_PRICE_IDS.fullservice.monthly, quantity: 1 }],
@@ -77,17 +99,20 @@ export async function POST(req: NextRequest) {
       payment_method_collection: "always",
       success_url: `${appUrl}/dashboard/concierge?upgraded=1`,
       cancel_url: `${appUrl}/dashboard/concierge`,
-    })
+    }, currency)
     return NextResponse.json({ url: session.url })
   }
 
   // `purchase: "starter"` comes from the agent conversation (/onboarding),
   // which never handles price ids itself.
   const fromAgent = purchase === "starter"
-  const session = await stripe.checkout.sessions.create({
+  const price = fromAgent ? STRIPE_PRICE_IDS.starter.monthly : priceId
+  // Local currencies exist on the monthly prices only; annual stays in USD.
+  const monthly = [STRIPE_PRICE_IDS.starter.monthly, STRIPE_PRICE_IDS.pro.monthly].includes(price)
+  const session = await createSession({
     customer: stripeCustomerId,
     branding_settings,
-    line_items: [{ price: fromAgent ? STRIPE_PRICE_IDS.starter.monthly : priceId, quantity: 1 }],
+    line_items: [{ price, quantity: 1 }],
     mode: "subscription",
     // No trial (decided 2026-09-24): the /start analysis does the convincing;
     // month to month, cancel any time.
@@ -97,7 +122,7 @@ export async function POST(req: NextRequest) {
     expires_at: Math.floor(Date.now() / 1000) + 60 * 60,
     success_url: fromAgent ? `${appUrl}/onboarding?paid=1` : `${appUrl}/dashboard?upgraded=true`,
     cancel_url: fromAgent ? `${appUrl}/onboarding` : `${appUrl}/pricing`,
-  })
+  }, monthly ? currency : undefined)
 
   return NextResponse.json({ url: session.url })
 }

@@ -4,7 +4,7 @@ import { VERTICALS } from "@/content/verticals"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
 import { COMPARES, COMPARE_CHECKED } from "@/content/compare"
 import { INTEGRATIONS, INTEGRATIONS_CHECKED } from "@/content/integrations"
-import { HREFLANG, LOCALE_LIST } from "@/content/locales"
+import { HREFLANG, LOCALE_LIST, MARKETS } from "@/content/locales"
 
 const BASE_URL = "https://alphaa.app"
 
@@ -80,6 +80,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       alternates: { languages: Object.fromEntries(Object.entries(HREFLANG).map(([k, v]) => [k, `${BASE_URL}${v === "/" ? "" : v}`])) },
     })),
+    ...Object.values(MARKETS).flatMap((m) =>
+      m.extra.industries.map((i) => ({
+        url: `${BASE_URL}${m.copy.path}/${i.slug}`,
+        lastModified: updated("/markets"),
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      })),
+    ),
+    { url: `${BASE_URL}/impressum`, lastModified: updated("/markets"), changeFrequency: "yearly" as const, priority: 0.2 },
     {
       url: `${BASE_URL}/start`,
       lastModified: updated("/start"),

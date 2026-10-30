@@ -11,6 +11,7 @@ import type { ScanResult, EngineEvidence, ScanInsights, ScanQuestion } from "@/t
 import type { SiteChecks } from "@/lib/site-check"
 import { computeScore, buildFindings, scoreLabel, type Finding, type ReportEngine, type ReportQuestion } from "@/lib/scan-report"
 import "./report.css"
+import { localPrice } from "@/lib/local-price"
 import {
   AlertTriangle, Globe, Sparkles, MessageSquare, Search,
   Check, Mail, ChevronDown, ChevronUp, X, ExternalLink,
@@ -1131,7 +1132,7 @@ function ScanResultsContent() {
         </div>
         <div className="rp-hero__cta">
           <HireButton placement="top" label={ctaLabel} />
-          <p className="rp-fine">$99/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
+          <p className="rp-fine">{localPrice()}/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
         </div>
 
         {/* 2. The evidence */}
@@ -1190,9 +1191,9 @@ function ScanResultsContent() {
         {/* 5. The ask */}
         <div className="rp-card rp-ask">
           <h2>I can start on this today.</h2>
-          <p>$99 a month instead of a $2,000-a-month agency. I do the work, you tap approve.</p>
+          <p>{localPrice()} a month instead of an agency retainer. I do the work, you tap approve.</p>
           <HireButton placement="bottom" label={ctaLabel} />
-          <p className="rp-fine">$99/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
+          <p className="rp-fine">{localPrice()}/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
           <div className="rp-ask__email"><EmailReportButton scanId={result.scanId} /></div>
         </div>
 
@@ -1218,7 +1219,7 @@ function HireBar({ line, ctaShort }: { line: string; ctaShort: string }) {
   return (
     <div className={`rp-bar-fixed ${visible ? "is-on" : ""}`}>
       <div className="rp-bar-fixed__in">
-        <p><b>{line}</b><span>$99/mo · month to month</span></p>
+        <p><b>{line}</b><span>{localPrice()}/mo · month to month</span></p>
         <HireButton placement="sticky_bar" small label={ctaShort} />
         <button type="button" aria-label="Dismiss" onClick={() => setDismissed(true)} className="rp-bar-fixed__x"><X className="w-4 h-4" /></button>
       </div>

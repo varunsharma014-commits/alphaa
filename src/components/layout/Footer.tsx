@@ -16,6 +16,7 @@ const footerLinks = {
     { href: "/blog", label: "Blog" },
     { href: "/terms", label: "Terms of Service" },
     { href: "/privacy", label: "Privacy Policy" },
+    { href: "/impressum", label: "Impressum" },
   ],
   Markets: [
     { href: "/", label: "United States & Canada" },
@@ -24,6 +25,7 @@ const footerLinks = {
     { href: "/fr", label: "France" },
     { href: "/it", label: "Italia" },
     { href: "/ae", label: "UAE" },
+    { href: "/ae/ar", label: "الإمارات (العربية)" },
   ],
 }
 

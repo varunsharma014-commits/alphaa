@@ -17,7 +17,8 @@ const isPublicRoute = createRouteMatcher([
   "/preview", // dev-only agent UI preview; 404s in production
   "/w(.*)",
   "/og", // social preview cards
-  "/uk", "/de", "/fr", "/it", "/ae", // local market pages
+  "/impressum",
+  "/uk(.*)", "/de(.*)", "/fr(.*)", "/it(.*)", "/ae(.*)", // local market pages
   "/refer",
   "/login(.*)",
   "/signup(.*)",
@@ -59,6 +60,12 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(url, 301)
   }
 
+  // Remember which market page someone came through, so checkout can charge
+  // that market's currency (see /api/stripe/checkout).
+  const seg = req.nextUrl.pathname.split("/")[1]
+  const market = seg === "ae" && req.nextUrl.pathname.startsWith("/ae/ar") ? "ar" : seg
+  const marketPage = ["uk", "de", "fr", "it", "ae", "ar"].includes(market)
+
   const { userId } = await auth()
 
   // Already signed in → bounce away from login/signup to dashboard
@@ -68,6 +75,12 @@ export default clerkMiddleware(async (auth, req) => {
 
   if (!isPublicRoute(req)) {
     await auth.protect()
+  }
+
+  if (marketPage) {
+    const res = NextResponse.next()
+    res.cookies.set("alphaa_market", market, { path: "/", maxAge: 60 * 60 * 24 * 180, sameSite: "lax" })
+    return res
   }
 })
 

@@ -13,6 +13,7 @@ import { CHECK_SHORT, CHECK_GROUP, CHECK_IMPACT, GROUP_TITLE, type CheckGroup, t
 import type { SiteCheck, SiteCheckItem } from "@/lib/site-check"
 import type { IdentifyResult } from "@/app/api/scan/identify/route"
 import { BRAND } from "@/lib/brand"
+import { localPrice } from "@/lib/local-price"
 
 type Phase = "website" | "manual" | "scanning" | "result" | "claimed"
 
@@ -78,7 +79,7 @@ function greeting(mode: StartMode, name?: string, greet?: StartGreet): Message[]
       agent(
         [
           { kind: "text", text: name ? `Welcome back. I’ve got ${name} ready to go.` : "Welcome back. You’re all set up." },
-          { kind: "text", text: "$99 a month. Month to month.", big: true },
+          { kind: "text", text: `${localPrice()} a month. Month to month.`, big: true },
           { kind: "text", text: "Cancel anytime in two clicks — no contract. I start the day you say go." },
           { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: CHECKOUT }, primary: true } },
         ],
@@ -260,7 +261,7 @@ export function StartAgent({
     )
     push(
       agent([
-        { kind: "text", text: "$99 a month. Month to month.", big: true },
+        { kind: "text", text: `${localPrice()} a month. Month to month.`, big: true },
         { kind: "text", text: `An agency charges about $2,000 a month for Google alone. Cancel anytime in two clicks — no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
         { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: mode === "public" ? `/signup?scan=${scanId}` : CHECKOUT }, primary: true } },
         ...(mode === "public"
@@ -293,7 +294,7 @@ export function StartAgent({
       const t = text.toLowerCase()
       const canned =
         /real|legit|trust|fake|true/.test(t) ? CANNED["Is this real?"]
-        : /how much|price|cost|\$|pay|expensive/.test(t) ? CANNED["How much?"]
+        : /how much|price|cost|\$|pay|expensive/.test(t) ? CANNED["How much?"].replace("$99", localPrice())
         : /what (exactly )?(will|do|would) you|what.*do for me|how does it work/.test(t) ? CANNED["What exactly will you do?"]
         : null
       push(agent([{ kind: "text", text: canned ?? (mode === "public" ? "Once you start I answer anything you ask here. For now — tap Start today, or email yourself the report and I’ll take it from there." : "Once you start I answer anything you ask here. Tap Start today and I begin this week.") }]))
@@ -398,7 +399,7 @@ export function StartAgent({
         user(email),
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
-          { kind: "text", text: "If you want me to actually fix this — not just report it — start today and I begin this week. $99 a month, cancel any time." },
+          { kind: "text", text: `If you want me to actually fix this — not just report it — start today and I begin this week. ${localPrice()} a month, cancel any time.` },
           { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
           {
             kind: "chips",

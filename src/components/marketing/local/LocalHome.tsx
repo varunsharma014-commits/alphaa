@@ -6,6 +6,13 @@ import { HeroArrows } from "@/components/marketing/hero/HeroArrows"
 import { StartAgent } from "@/components/agent/StartAgent"
 import { pageMeta } from "@/lib/seo"
 import { HREFLANG, type LocaleCopy } from "@/content/locales"
+import type { Market } from "@/content/markets/types"
+import { MARKET_CURRENCY, AMOUNTS, formatPrice, type MarketKey } from "@/content/markets/prices"
+import { Noto_Sans_Arabic } from "next/font/google"
+
+const arabic = Noto_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "600", "700"], display: "swap" })
+
+const PER_MONTH: Record<string, string> = { en: "/mo", de: "/Monat", fr: "/mois", it: "/mese", ar: "/شهريًا" }
 
 const SITE = "https://alphaa.app"
 
@@ -20,7 +27,13 @@ export function localMeta(l: LocaleCopy) {
 
 // One market page (alphaa.app/uk, /de, /fr, /it, /ae): the homepage hero with
 // the live check, in the market's language, plus where AI looks you up there.
-export function LocalHome({ l }: { l: LocaleCopy }) {
+export function LocalHome({ m }: { m: Market }) {
+  const l = m.copy
+  const x = m.extra
+  const lang2 = l.lang.slice(0, 2)
+  const rtl = lang2 === "ar"
+  const currency = MARKET_CURRENCY[l.key as MarketKey]
+  const price = formatPrice(currency, "starter", l.lang)
   const schema = [
     {
       "@context": "https://schema.org",
@@ -29,7 +42,7 @@ export function LocalHome({ l }: { l: LocaleCopy }) {
       description: l.description,
       url: `${SITE}${l.path}`,
       inLanguage: l.lang,
-      about: { "@type": "SoftwareApplication", name: "Alphaa", applicationCategory: "BusinessApplication", offers: { "@type": "Offer", price: "99", priceCurrency: "USD" } },
+      about: { "@type": "SoftwareApplication", name: "Alphaa", applicationCategory: "BusinessApplication", offers: { "@type": "Offer", price: String(AMOUNTS[currency].starter), priceCurrency: currency.toUpperCase() } },
       areaServed: { "@type": "Country", name: l.country },
     },
     {
@@ -40,7 +53,7 @@ export function LocalHome({ l }: { l: LocaleCopy }) {
     },
   ]
   return (
-    <div lang={l.lang}>
+    <div lang={l.lang} dir={rtl ? "rtl" : "ltr"} className={rtl ? `lc-rtl ${arabic.className}` : undefined}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <div className="hx-wrap">
         <HeroBackdrop />
@@ -81,6 +94,33 @@ export function LocalHome({ l }: { l: LocaleCopy }) {
       </section>
 
       <section className="ag-section ag-section--grey">
+        <h2>{x.questionsTitle}</h2>
+        <p className="ag-section__sub">{x.questionsIntro}</p>
+        <div className="lc-qs">
+          {x.questions.map((q) => (
+            <div key={q.q} className="lc-q">
+              <p>&ldquo;{q.q}&rdquo;</p>
+              <small>{q.who}</small>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="ag-section">
+        <h2>{x.industriesTitle}</h2>
+        <p className="ag-section__sub">{x.industriesIntro}</p>
+        <div className="lc-grid lc-grid--4">
+          {x.industries.map((ind) => (
+            <Link key={ind.slug} href={`${l.path}/${ind.slug}`} className="lc-card lc-card--link">
+              <h3>{ind.name}</h3>
+              <p>{ind.sub}</p>
+              <span className="lc-more">{x.industryLinkPrefix} {ind.name} ›</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="ag-section ag-section--grey">
         <h2>{l.whereTitle}</h2>
         <p className="ag-section__sub">{l.whereIntro}</p>
         <div className="lc-grid lc-grid--4">
@@ -97,7 +137,7 @@ export function LocalHome({ l }: { l: LocaleCopy }) {
         <h2>{l.priceTitle}</h2>
         <p className="ag-section__sub">{l.priceSub}</p>
         <div className="ag-price">
-          <div className="ag-price__amt">$99<small>/mo</small></div>
+          <div className="ag-price__amt">{price}<small>{PER_MONTH[lang2] ?? "/mo"}</small></div>
           <ul className="ag-price__list">
             {l.priceItems.map((i) => <li key={i}>{i}</li>)}
           </ul>
@@ -116,7 +156,11 @@ export function LocalHome({ l }: { l: LocaleCopy }) {
             </details>
           ))}
         </div>
-        <p className="lc-en"><Link href="/" hrefLang="en">{l.english} ›</Link></p>
+        <p className="lc-en">
+          <Link href={l.key === "ar" ? "/ae" : "/"} hrefLang="en">{l.english} ›</Link>
+          {l.key === "ae" && <> · <Link href="/ae/ar" hrefLang="ar">العربية ›</Link></>}
+          {l.key === "de" && <> · <Link href="/impressum">Impressum</Link></>}
+        </p>
       </section>
     </div>
   )
