@@ -162,13 +162,13 @@ Alphaa reserves the right to assume exclusive control of any matter subject to i
   },
   {
     title: "14. Governing Law",
-    body: `These Terms shall be governed by and construed in accordance with the laws of the State of Delaware, United States of America, without regard to its conflict of law principles. To the extent any dispute is not subject to arbitration as set forth in Section 15, you consent to the exclusive jurisdiction and venue of the state and federal courts located in the State of Delaware.`,
+    body: `Alphaa is operated by 9629033 Canada Inc. These Terms shall be governed by and construed in accordance with the laws of the Province of Ontario and the federal laws of Canada applicable there, without regard to conflict of law principles. To the extent any dispute is not subject to arbitration as set forth in Section 15, you consent to the exclusive jurisdiction of the courts of the Province of Ontario, sitting in Ottawa. If you are a consumer, nothing in these Terms removes the mandatory consumer protections of the country where you live.`,
   },
   {
     title: "15. Dispute Resolution — Binding Arbitration",
     body: `PLEASE READ THIS SECTION CAREFULLY. IT AFFECTS YOUR LEGAL RIGHTS, INCLUDING YOUR RIGHT TO FILE A LAWSUIT IN COURT.
 
-Agreement to Arbitrate: You and Alphaa agree that any dispute, claim, or controversy arising out of or relating to these Terms or your use of the Service (collectively, "Disputes") shall be resolved exclusively by binding individual arbitration administered by the American Arbitration Association ("AAA") under its Consumer Arbitration Rules, rather than in a court of law.
+Agreement to Arbitrate: You and Alphaa agree that any dispute, claim, or controversy arising out of or relating to these Terms or your use of the Service (collectively, "Disputes") shall be resolved exclusively by binding individual arbitration under the Arbitration Act, 1991 (Ontario), administered by the ADR Institute of Canada under its arbitration rules, seated in Ottawa, Ontario, rather than in a court of law. Where the law of your country does not allow a binding arbitration agreement with a consumer, this section does not apply to you.
 
 Class Action Waiver: YOU AND ALPHAA EACH WAIVE THE RIGHT TO PARTICIPATE IN A CLASS ACTION LAWSUIT OR CLASS-WIDE ARBITRATION. All Disputes must be brought in the parties' individual capacities, not as a plaintiff or class member in any purported class, collective, or representative proceeding.
 
@@ -206,7 +206,7 @@ export default function TermsPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Terms of Service</h1>
-        <p className="text-muted text-sm mb-10">Last updated: September 28, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: October 30, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           These Terms of Service govern your access to and use of the Alphaa platform. By creating an account or using the Service, you agree to be bound by these Terms. Please read them carefully.

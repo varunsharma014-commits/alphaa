@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
             trialEndsAt: trialEnd,
           },
         })
+        await flagFirstMarketCustomer(customerId, sub.metadata?.market)
       } else if (sub.mode === "payment" && sub.metadata?.purpose === "concierge_setup") {
         // One-time white-glove setup fee paid — a human owes this customer a
         // completed installation within the stated SLA. Record it and alert
@@ -138,4 +139,31 @@ function getPlanFromPriceId(priceId: string) {
     [process.env.STRIPE_FULLSERVICE_MONTHLY_PRICE_ID!]: "fullservice",
   }
   return ids[priceId] ?? "starter"
+}
+
+const MARKET_NAMES: Record<string, string> = { uk: "United Kingdom", de: "Germany", fr: "France", it: "Italy", ae: "UAE (English)", ar: "UAE (Arabic)" }
+
+// Varun, 2026-10-30: translate the report, weekly briefing and emails for a
+// market only once it has its first paying customer. The first paid checkout
+// that came through a market page emails the team that reminder, once per market.
+async function flagFirstMarketCustomer(customerId: string, market: string | undefined) {
+  if (!market || !MARKET_NAMES[market]) return
+  try {
+    const user = await db.user.findFirst({ where: { stripeCustomerId: customerId } })
+    if (!user) return
+    const seen = await db.mockActivity.count({ where: { type: "market_customer", metadata: { path: ["market"], equals: market } } })
+    await logActivity(user.id, "market_customer", "New customer", `Signed up through the ${MARKET_NAMES[market]} page.`, { market })
+    if (seen > 0) return
+    await resend.emails.send({
+      from: fromAs("Alphaa"),
+      to: SUPPORT_EMAIL,
+      subject: `🌍 First paying customer in ${MARKET_NAMES[market]}: time to translate`,
+      text:
+        `${user.businessName || user.email} (${user.email}) just became the first paying customer through alphaa.app/${market === "ar" ? "ae/ar" : market}.\n\n` +
+        `Reminder you asked for (2026-10-30): now translate the scan report, the weekly briefing and the customer emails for ${MARKET_NAMES[market]}. ` +
+        `Until then this customer gets them in English.\n\nAsk Claude: "translate Alphaa's report, briefing and emails for ${MARKET_NAMES[market]}".`,
+    })
+  } catch (e) {
+    console.error("[stripe] first market customer check failed", market, e)
+  }
 }

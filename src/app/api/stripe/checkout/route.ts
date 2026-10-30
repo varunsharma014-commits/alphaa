@@ -16,7 +16,14 @@ function marketCurrency(req: NextRequest): string | undefined {
   return isMarketKey(m) ? MARKET_CURRENCY[m] : undefined
 }
 
-async function createSession(params: Stripe.Checkout.SessionCreateParams, currency: string | undefined) {
+function marketOf(req: NextRequest): string | undefined {
+  const m = req.cookies.get(MARKET_COOKIE)?.value
+  return isMarketKey(m) ? m : undefined
+}
+
+async function createSession(params: Stripe.Checkout.SessionCreateParams, currency: string | undefined, market?: string) {
+  // The market rides along so the webhook can flag a market's first customer.
+  if (market) params = { ...params, metadata: { ...(params.metadata ?? {}), market } }
   if (!currency) return stripe.checkout.sessions.create(params)
   try {
     return await stripe.checkout.sessions.create({ ...params, currency })
@@ -87,6 +94,7 @@ export async function POST(req: NextRequest) {
   }
 
   const currency = marketCurrency(req)
+  const market = marketOf(req)
 
   // Full Service subscription ($299/mo, human-fulfilled). No trial: a person
   // starts doing real work immediately.
@@ -99,7 +107,7 @@ export async function POST(req: NextRequest) {
       payment_method_collection: "always",
       success_url: `${appUrl}/dashboard/concierge?upgraded=1`,
       cancel_url: `${appUrl}/dashboard/concierge`,
-    }, currency)
+    }, currency, market)
     return NextResponse.json({ url: session.url })
   }
 
@@ -122,7 +130,7 @@ export async function POST(req: NextRequest) {
     expires_at: Math.floor(Date.now() / 1000) + 60 * 60,
     success_url: fromAgent ? `${appUrl}/onboarding?paid=1` : `${appUrl}/dashboard?upgraded=true`,
     cancel_url: fromAgent ? `${appUrl}/onboarding` : `${appUrl}/pricing`,
-  }, monthly ? currency : undefined)
+  }, monthly ? currency : undefined, market)
 
   return NextResponse.json({ url: session.url })
 }
