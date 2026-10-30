@@ -60,7 +60,7 @@ def agent(paras, time="8:02 AM", buttons=("Post it", "Edit", "Skip")):
     ps = "".join(f"<p>{p}</p>" for p in paras)
     bs = "".join(f"<span class={'ok' if i == 0 else ''}>{e(b)}</span>" for i, b in enumerate(buttons))
     btn = f"<div class=btns>{bs}</div>" if buttons else ""
-    return (f"<div class=agent><div class=ag-h><img src='{ICON}'><b>Alphaa</b> · your AI agent · {e(time)}</div>"
+    return (f"<div class=agent><div class=ag-h><img src='{ICON}'><b>Alphaa</b> · your AI Agent · {e(time)}</div>"
             f"<div class=ag-b>{ps}</div>{btn}</div>")
 
 
@@ -90,9 +90,20 @@ def quote(text, by="Varun Sharma, founder of Alphaa"):
     return f"<div class=quote>{e(text)}<span class=by>{e(by)}</span></div>"
 
 
-def browser(title, sub):
+def grid(rows):
+    """Question-by-AI grid, as in the scan report. rows: [(question, "yyn?")]."""
+    head = "<div class=gr-h><span></span>" + "".join(f"<span>{a}</span>" for a in AIS) + "</div>"
+    body = ""
+    for q, marks in rows:
+        cells = "".join({"y": "<span class='c y'>Named</span>", "n": "<span class='c n'>Not named</span>",
+                         "?": "<span class='c u'>?</span>"}[m] for m in marks)
+        body += f"<div class=gr-r><span class=gq>{e(q)}</span>{cells}</div>"
+    return f"<div class=grid>{head}{body}</div>"
+
+
+def browser(title, sub, url="alphaa.app/start"):
     chips = "".join(f"<span>{a}</span>" for a in AIS)
-    return (f"<div class=browser><div class=br-top><i></i><i></i><i></i><span class=url>alphaa.app/start</span></div>"
+    return (f"<div class=browser><div class=br-top><i></i><i></i><i></i><span class=url>{e(url)}</span></div>"
             f"<div class=br-body><div style='font-size:36px;font-weight:600'>{e(title)}</div>"
             f"<div style='font-size:26px;color:#9a9a9a;margin-top:8px'>{e(sub)}</div>"
             f"<div class=inp><span class=f>yourwebsite.com</span><span class=go>Check</span></div>"
@@ -220,6 +231,127 @@ IMAGES = {
                   time="7:40 AM", buttons=("Post both", "Edit", "Skip")), example=True),
     "w4_founder_weeks": dict(tag="Building Alphaa", h1="Some weeks AI doesn't change",
         vis=quote("We'll show you those weeks too. An honest report beats a pretty one.")),
+    # ---- week 5 (2026-11-02..08) ----
+    "w5_niche_gap": dict(tag="Our own test", h1="ChatGPT named it. Then didn't.",
+        sub="A niche agency: named by all 4 AIs for its niche. Not once for the broad question.",
+        vis=grid([("Its exact niche question", "yyyy"),
+                  ("\"How do I find and market to accredited investors?\"", "nnnn")]),
+        note="Real check · name withheld"),
+    "w5_word_for_word": dict(tag="Free AI check", h1="ChatGPT's answer, word for word",
+        vis=browser("What does AI say about you?", "Real answers from 4 AIs, word for word, in about 60 seconds.",
+                    url="alphaa.app")),
+    "w5_broad_question": dict(tag="Try this today", h1="Ask ChatGPT the broad question",
+        vis=steps([("Your exact question", "\"Who does Invisalign in Plano?\""),
+                   ("Your wider category", "\"Good family dentist in Plano?\""),
+                   ("The problem, in buyers' words", "\"Why does my jaw click when I chew?\""),
+                   ("Compare the names", "Named for one? Missing from the others?")])),
+    "w5_dentist": dict(tag="Dentists", h1="Dentists: is ChatGPT naming you?",
+        vis=chat("ChatGPT", "I cracked a tooth tonight. Who can see me tomorrow in Dallas?",
+                 "Three practices that offer urgent appointments:", ["Practice A", "Practice B", "Practice C"],
+                 "Your practice: <b>not mentioned</b>"), example=True),
+    "w5_my_plan": dict(tag="Agent diary", h1="AI Agent: here's my plan",
+        vis=agent(["Gemini and Perplexity named two clinics with a page for emergency visits. You don't have one.",
+                   "<b>My plan:</b> I'll write that page in your voice and add it to your services menu.",
+                   "<span class=g>Nothing goes live until you approve.</span>"],
+                  time="8:05 AM", buttons=("Approve", "Edit", "Skip")), example=True),
+    "w5_web_person": dict(tag="Free AI check", h1="Fix emailed to your webmaster",
+        sub="Your free AI check drafts the fix. One tap sends it.",
+        vis=agent(["I drafted an FAQ answer from your check while you waited.",
+                   "<span class=g>Your web person can paste it in a few minutes. No passwords to share.</span>"],
+                  time="just now", buttons=("Email it to my web person", "Copy")), example=True),
+    "w5_measured": dict(tag="Building Alphaa", h1="Your AI score isn't guessed",
+        vis=quote("Every score in the report comes from real AI answers and 23 site checks. "
+                  "If we didn't measure it, we don't show it.")),
+    # ---- week 6 (2026-11-09..15) ----
+    "w6_site_read": dict(tag="Save this", h1="Can AI read your website?",
+        sub="The free check runs 23 site checks. They boil down to 3 questions.",
+        vis=steps([("Can AI get in?", "Some sites turn AI assistants away without knowing it."),
+                   ("Can AI understand what you do?", "Your city, services, phone and hours in plain text."),
+                   ("Does AI have a reason to trust you?", "Reviews, an About page, your Google and Yelp profiles.")])),
+    "w6_twelve": dict(tag="New in the free check", h1="Named in X of 12",
+        sub="3 questions x 4 AIs = 12 answers. Unlocks when 3 or 4 AIs name you.",
+        vis=grid([("Your exact question", "????"), ("Your wider category", "????"),
+                  ("The problem, in the buyer's words", "????")])),
+    "w6_hvac": dict(tag="HVAC", h1="HVAC: does Gemini name you?",
+        vis=chat("Gemini", "My furnace is making a banging noise. Who should I call in Columbus?",
+                 "A few local companies with strong reviews:", ["HVAC company A", "HVAC company B", "HVAC company C"],
+                 "Your company: <b>not mentioned</b>"), example=True),
+    "w6_buyers_broad": dict(tag="SEO said / AI says", h1="Buyers ask AI broader questions",
+        vis=versus("You check", ["Your exact service", "Your city", "Your business name"],
+                   "Buyers ask", ["The wider category", "The problem, in their words", "No business names at all"])),
+    "w6_90_days": dict(tag="Risk off", h1="Not named in 90 days?",
+        sub="If no AI names you within 90 days, your next month is free.",
+        vis=factboxes([("4 AIs", "Checked every week."), ("90 days", "Not named? Next month free."),
+                       ("7 days", "Refund on your first charge.")])),
+    "w6_lawyer": dict(tag="Lawyers", h1="Lawyers: is Claude naming you?",
+        vis=chat("Claude", "I was hurt at work in Cleveland. Which lawyer should I call?",
+                 "Here are a few workers' compensation firms to consider:", ["Firm A", "Firm B", "Firm C"],
+                 "Your firm: <b>not mentioned</b>"), example=True),
+    "w6_ads_stop": dict(tag="Building Alphaa", h1="Ads stop. AI answers don't.",
+        vis=quote("Ads stop the day you stop paying. Being the answer ChatGPT gives keeps working.")),
+    # ---- week 7 (2026-11-16..22) ----
+    "w7_zero_of_four": dict(tag="Our own test", h1="Broad question: 0 of 4",
+        sub="Same agency: named by all 4 AIs for its niche question.",
+        vis=score("Asked: \"How do I find and market to accredited investors?\"", "nnnn"),
+        note="Real check · name withheld"),
+    "w7_old_number": dict(tag="Agent diary", h1="ChatGPT has your old number",
+        vis=fact([("ChatGPT told a customer", "(512) 555-0142", "s"), ("Your real number", "(512) 555-0199", "w")]),
+        sub="Example. Your AI Agent finds it and drafts the fix.", example=True),
+    "w7_new_rival": dict(tag="Agent diary", h1="AI named a new rival",
+        vis=agent(["This week Perplexity started naming Clinic B for same-day crowns. They just published a page about it. You don't have one.",
+                   "<b>My plan:</b> I'll draft your same-day crowns page today.",
+                   "<span class=g>You approve before it goes live.</span>"],
+                  time="7:52 AM", buttons=("Approve", "Edit", "Skip")), example=True),
+    "w7_medspa": dict(tag="Med spas", h1="Med spas: Perplexity named three",
+        vis=chat("Perplexity", "Who's good for lip filler in Miami with natural results?",
+                 "Based on reviews and local listings:", ["Med spa A", "Med spa B", "Med spa C"],
+                 "Yours: <b>not mentioned</b>", sources=True), example=True),
+    "w7_sixty": dict(tag="Free AI check", h1="4 AIs. 60 seconds. Free.",
+        vis=browser("Type your website.", "See what ChatGPT, Gemini, Claude and Perplexity say about you.",
+                    url="alphaa.app")),
+    "w7_inside_check": dict(tag="Free AI check", h1="Inside your free AI check",
+        vis=steps([("The question your customers ask", "Asked live to 4 AIs."),
+                   ("Each AI's answer, word for word", "Not a summary. What it actually said."),
+                   ("Who got named instead", "The businesses AI picked over you."),
+                   ("A measured score", "Real answers plus 23 site checks."),
+                   ("A fix, drafted while you wait", "Email it straight to your web person.")])),
+    "w7_new_markets": dict(tag="Building Alphaa · Coming soon", h1="London asks ChatGPT too",
+        sub="Local pages for the UK, Germany, France, Italy and the UAE are coming.",
+        vis=steps([("UK", "\"Who's a good emergency plumber in Leeds?\""),
+                   ("Germany", "\"Welcher Zahnarzt in München nimmt neue Patienten?\""),
+                   ("France", "\"Quel avocat contacter à Lyon pour un divorce ?\""),
+                   ("Italy", "\"Un idraulico a Milano disponibile oggi?\""),
+                   ("UAE", "\"Which dental clinic in Dubai Marina is open on Friday?\"")], outline=True)),
+    # ---- week 8 (2026-11-23..29) ----
+    "w8_plumber": dict(tag="Plumbers", h1="Plumbers: does Claude name you?",
+        vis=chat("Claude", "Burst pipe under the sink. Who can come tonight in Charlotte?",
+                 "These plumbers list emergency service:", ["Plumber A", "Plumber B", "Plumber C"],
+                 "Your company: <b>not mentioned</b>"), example=True),
+    "w8_problem": dict(tag="Are you in the answer?", h1="Customers ask AI about problems",
+        vis=chat_why("ChatGPT", "Why is my AC blowing warm air?",
+                     ["Common causes: a dirty filter, a tripped breaker or low refrigerant.",
+                      "If it keeps happening, call a licensed HVAC technician. Local options include Company A and Company B."]),
+        example=True),
+    "w8_drafts": dict(tag="Agent diary", h1="AI Agent drafts. You approve.",
+        vis=agent(["I drafted 2 Google posts for this week and replies to 3 new reviews.",
+                   "<b>My plan:</b> I'll post them Thursday morning once you approve.",
+                   "<span class=g>Every change is logged and can be undone.</span>"],
+                  time="8:10 AM", buttons=("Approve all", "Edit", "Skip")), example=True),
+    "w8_one_patient": dict(tag="Do the maths", h1="One ChatGPT patient. One year.",
+        sub="One new patient is worth more than a year of your AI Agent.",
+        vis=factboxes([("$99/mo", "Starter. Your AI Agent, every week."), ("$1,188", "A full year."),
+                       ("1 patient", "Often worth more than that.")])),
+    "w8_your_ok": dict(tag="Risk off", h1="Nothing goes live without you",
+        sub="Your AI Agent works to get you named by ChatGPT. You approve every change.",
+        vis=factboxes([("Approve", "Nothing public without your OK."), ("Undo", "Every site change is logged."),
+                       ("2 clicks", "To cancel. Month to month.")])),
+    "w8_strong_gap": dict(tag="Building Alphaa", h1="Named by ChatGPT? Ask broader.",
+        vis=quote("Being named for your exact niche isn't the same as being named when buyers ask broadly. "
+                  "That's where strong businesses usually find their gap.")),
+    "w8_ai_visitors": dict(tag="Agent diary", h1="Count customers ChatGPT sends you",
+        vis=agent(["I count the people ChatGPT, Gemini, Claude and Perplexity send to your website, every 30 days.",
+                   "<span class=g>Connect me to your Google Analytics and I'll show you the trend in your briefing.</span>"],
+                  time="9:00 AM", buttons=("Connect Google", "Later")), example=True),
 }
 
 # Carousels: id -> list of slides. Slide kinds: cover, item, end.
@@ -306,7 +438,7 @@ def page(body_cls, w, h, inner):
 
 
 def foot(example, right=None):
-    r = right or ("<span class=ex>Example scenario</span>" if example else "")
+    r = (f"<span class=ex>{e(right)}</span>" if right else "") or ("<span class=ex>Example scenario</span>" if example else "")
     return f"<div class=foot><div class=brand><img src='{ICON}'>alphaa.app</div>{r}</div>"
 
 
@@ -314,7 +446,7 @@ def single_html(spec, land):
     sub = f"<p class=sub>{e(spec['sub'])}</p>" if spec.get("sub") else ""
     tag = f"<div class=tag>{e(spec['tag'])}</div>" if spec.get("tag") else ""
     inner = (f"<div class=bg><div class=txt>{tag}<h1>{e(spec['h1'])}</h1>{sub}</div>"
-             f"<div class=vis>{spec['vis']}</div>{foot(spec.get('example'))}</div>")
+             f"<div class=vis>{spec['vis']}</div>{foot(spec.get('example'), spec.get('note'))}</div>")
     return page("x" if land else "p", 1600 if land else 1080, 900 if land else 1350, inner)
 
 

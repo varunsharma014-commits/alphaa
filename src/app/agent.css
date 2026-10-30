@@ -671,3 +671,26 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .hx-arrow--r .hx-arrow__note { left: 0; transform: rotate(6deg); }
 @keyframes hx-fade { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .hx-arrow__line, .hx-arrow__head, .hx-arrow__note { animation: none; stroke-dashoffset: 0; opacity: 1; } }
+
+/* Cookie choice (EU/UK). Both buttons equal weight. */
+.cc { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 80; max-width: 560px; margin: 0 auto; background: #fff; color: #1d1d1f; border: 1px solid rgb(0 0 0 / 0.1); border-radius: 16px; box-shadow: 0 12px 40px rgb(0 0 0 / 0.15); padding: 16px 18px; display: flex; gap: 14px; align-items: center; font-size: 14px; line-height: 1.45; }
+.cc p { margin: 0; flex: 1; }
+.cc a { color: #0071e3; text-decoration: underline; }
+.cc__btns { display: flex; gap: 8px; flex: none; }
+.cc__btns button { border: 1px solid #1d1d1f; background: #fff; color: #1d1d1f; border-radius: 980px; padding: 8px 16px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.cc__btns button:last-child { background: #1d1d1f; color: #fff; }
+@media (max-width: 560px) { .cc { flex-direction: column; align-items: stretch; } .cc__btns button { flex: 1; } }
+
+/* Local market pages (/uk /de /fr /it /ae) */
+.lc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1040px; margin: 40px auto 0; text-align: left; }
+.lc-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.lc-card { background: var(--ag-card); border: 1px solid var(--ag-line); border-radius: 18px; padding: 24px; }
+.lc-card h3 { font-size: 19px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em; }
+.lc-card p { margin: 0; color: var(--ag-muted); font-size: 15px; line-height: 1.55; }
+.lc-faq { max-width: 760px; margin: 36px auto 0; text-align: left; }
+.lc-faq details { border-bottom: 1px solid var(--ag-line); padding: 18px 4px; }
+.lc-faq summary { font-size: 18px; font-weight: 600; cursor: pointer; }
+.lc-faq p { color: var(--ag-muted); font-size: 16px; line-height: 1.6; margin: 10px 0 0; }
+.lc-en { margin-top: 28px; font-size: 14px; }
+.lc-en a { color: var(--ag-link); }
+@media (max-width: 900px) { .lc-grid, .lc-grid--4 { grid-template-columns: 1fr; } }

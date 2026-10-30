@@ -2,7 +2,7 @@
 
 // The hero button: the check runs right below it, so jump there and put the
 // cursor in the website box instead of leaving the page.
-export function HeroCta() {
+export function HeroCta({ label = "Scan your website free" }: { label?: string }) {
   return (
     <a
       className="ag-hero__big"
@@ -15,7 +15,7 @@ export function HeroCta() {
         window.setTimeout(() => input.focus({ preventScroll: true }), 400)
       }}
     >
-      Scan your website free
+      {label}
     </a>
   )
 }

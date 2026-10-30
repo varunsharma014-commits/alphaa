@@ -143,6 +143,7 @@ export async function inferBusinessProfile(input: {
               `- "broad": the wider category in everyday words, e.g. "What's the best marketing agency for raising capital?" or "Who's a good dentist in Kanata?"\n` +
               `- "problem": the problem the buyer has, with no category name, e.g. "How do I find investors for my Reg CF raise?" or "Where can I get a tooth fixed today in Kanata?"\n` +
               `Both must be different from the first question, about the CATEGORY or PROBLEM, and must never name the business. LOCAL: include the city.\n` +
+              `LANGUAGE: write the question, the two follow-up questions and the keyword in the SAME language as the website text (a German site gets German questions, a French site French, an Italian site Italian). Customers ask AI in their own language. Industry stays in English.\n` +
               `Step 4 — Write the SHORT keyword phrase (2-4 words) the same customer would type into Google when shopping in this category.\n` +
               `- LOCAL: include the city, e.g. "dentist in Kanata".\n` +
               `- NON-LOCAL: category only, e.g. "equity crowdfunding agency".\n` +

@@ -139,19 +139,21 @@ Disconnecting: in Settings → Website connection, click Disconnect. We delete t
   },
   {
     title: "7. Cookies and Tracking",
-    body: `We use a minimal set of cookies strictly necessary to operate the Service:
+    body: `Strictly necessary cookies (always on):
 
 Session Cookies: Used to maintain your authenticated session while you use the Service. These expire when you close your browser or log out.
 
 Authentication Cookies: Set by Clerk to maintain your login state across sessions if you select "Remember me."
 
-We do NOT use:
-• Third-party advertising cookies
-• Cross-site tracking cookies
-• Analytics cookies from Google Analytics, Meta Pixel, or similar advertising platforms
-• Any cookies for behavioral profiling or ad targeting
+Measurement and advertising (on our public website):
+• Google Analytics, to count visits and see which pages are used.
+• Meta Pixel, to measure whether our ads on Facebook and Instagram lead to visits and sign-ups.
 
-You can control cookie settings through your browser preferences. Disabling session cookies will prevent you from logging in to the Service.`,
+If you visit from the European Economic Area or the United Kingdom, or use our UK, German, French or Italian pages, these measurement and advertising tools stay off until you choose "Accept" in the cookie notice. If you choose "Reject", they stay off. Your choice is stored in your browser; clear your browser's site data for alphaa.app to see the notice again and change it.
+
+We do NOT use cookies for behavioral profiling, and we never sell personal information.
+
+You can also control cookies through your browser preferences. Disabling session cookies will prevent you from logging in to the Service.`,
   },
   {
     title: "8. Data Retention",
@@ -237,7 +239,7 @@ export default function PrivacyPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Privacy Policy</h1>
-        <p className="text-muted text-sm mb-10">Last updated: October 27, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: October 29, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.

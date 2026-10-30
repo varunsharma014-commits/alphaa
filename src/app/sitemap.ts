@@ -4,6 +4,7 @@ import { VERTICALS } from "@/content/verticals"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
 import { COMPARES, COMPARE_CHECKED } from "@/content/compare"
 import { INTEGRATIONS, INTEGRATIONS_CHECKED } from "@/content/integrations"
+import { HREFLANG, LOCALE_LIST } from "@/content/locales"
 
 const BASE_URL = "https://alphaa.app"
 
@@ -22,6 +23,7 @@ const PAGE_UPDATED: Record<string, string> = {
   "/case-studies": "2026-10-29",
   "/refer": "2026-10-29",
   "/author/varun-sharma": "2026-10-29",
+  "/markets": "2026-10-29", // the /uk /de /fr /it /ae pages
 }
 const updated = (path: string) => new Date(PAGE_UPDATED[path])
 
@@ -69,7 +71,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: updated("/"),
       changeFrequency: "weekly",
       priority: 1,
+      alternates: { languages: Object.fromEntries(Object.entries(HREFLANG).map(([k, v]) => [k, `${BASE_URL}${v === "/" ? "" : v}`])) },
     },
+    ...LOCALE_LIST.map((l) => ({
+      url: `${BASE_URL}${l.path}`,
+      lastModified: updated("/markets"),
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+      alternates: { languages: Object.fromEntries(Object.entries(HREFLANG).map(([k, v]) => [k, `${BASE_URL}${v === "/" ? "" : v}`])) },
+    })),
     {
       url: `${BASE_URL}/start`,
       lastModified: updated("/start"),

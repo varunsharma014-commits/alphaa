@@ -1,6 +1,6 @@
 # Alphaa: Backlink and Credibility Submission Kit
 
-> v1.0, 2026-10-06. Nothing has been submitted and no accounts have been created. Track progress in `tracker.csv` next to this file.
+> v1.1, 2026-10-29 (integrations, social links and guarantee line updated). v1.0 2026-10-06. Nothing has been submitted and no accounts have been created. Track progress in `tracker.csv` next to this file.
 > Costs and link types were checked by web search on 2026-10-06. Directories change prices often, so check the live form before paying.
 
 ---
@@ -96,6 +96,7 @@ TAGLINE (≤60 chars, pick by field length)
 - The AI agent that gets local businesses recommended by AI   (57)
 - Get recommended by ChatGPT, Gemini, Claude and Perplexity   (57)
 - Get your business recommended by ChatGPT and Gemini         (51)
+- Get customers from ChatGPT. Your AI Agent does the work.     (57)
 - Your AI agent for AI search                                 (27)
 
 ONE-LINER
@@ -116,9 +117,9 @@ Every week, Alphaa asks the four AI engines the questions your customers actuall
 
 Then it does the work. It writes and publishes FAQ pages and blog posts that AI engines quote. It fixes facts AI gets wrong, like your hours or services. It adds structured data and llms.txt to your site, keeps your Google Business Profile active, and drafts replies to your reviews.
 
-It talks to you in plain English, not a dashboard. Anything public needs your one-tap approval, and every change can be undone. A short weekly email is all you have to read. It connects to WordPress today, with Webflow and Shopify coming soon.
+It talks to you in plain English, not a dashboard. Anything public needs your one-tap approval, and every change can be undone. A short weekly email is all you have to read. It publishes straight to WordPress, Shopify and Webflow, or emails your web person the exact change.
 
-Plans start at $99/month, month to month, with no contract. Nobody can promise a top spot in AI answers, so Alphaa shows you the measured change every week instead. You can see what AI says about your business with a free check at alphaa.app/start.
+Plans start at $99/month, month to month, with no contract. If none of the four AIs names you in your first 90 days, your next month is free. You can see what AI says about your business with a free check at alphaa.app/start.
 
 PRIMARY CATEGORY
 AI Search Optimization / Generative Engine Optimization (GEO)
@@ -146,7 +147,7 @@ GUARANTEE (only where a form asks)
 90-day AI Visibility Guarantee: if none of the four AIs names your business in any weekly check during your first 90 days, your next month is free (once per customer).
 
 INTEGRATIONS
-WordPress (plugin, live). Webflow and Shopify: coming soon.
+WordPress (plugin), Shopify (app, billed through Shopify) and Webflow (app): all live. Wix: coming soon. Any other site: Alphaa emails the web person the exact change.
 
 FOUNDED
 2026
@@ -168,8 +169,10 @@ Pricing:      https://alphaa.app/pricing
 About:        https://alphaa.app/about
 How it works: https://alphaa.app/how-it-works
 Support:      hi@alphaa.app
-LinkedIn:     https://www.linkedin.com/company/alphaa   (confirm before use)
-X:            https://x.com/alphaa                      (confirm before use)
+LinkedIn:     https://www.linkedin.com/company/135966599/
+Facebook:     https://www.facebook.com/61592044887737
+Medium:       https://medium.com/@alphaaaiagent
+X:            none yet (leave blank)
 (Do not link /case-studies until it's rebuilt with real data.)
 
 ASSETS (all black & white)
@@ -187,7 +190,7 @@ Covers:              brand/mono/alphaa-mono-linkedin-cover.png, -facebook-cover.
 - No "#1", "best", "leading" or "top-rated". No customer counts, ratings, testimonials or results.
 - Name only ChatGPT, Gemini, Claude and Perplexity as engines. No Copilot, no "Google AI Overviews".
 - Never write "free trial" or "no signup". The only free thing is the check at alphaa.app/start.
-- Shopify and Webflow are always "coming soon".
+- WordPress, Shopify and Webflow are live; only Wix is "coming soon".
 - Don't fill optional "customers", "users" or "revenue" fields. Leave them blank or put "Not disclosed".
 - Where a form asks for founders, put the company or "Alphaa team" in public fields.
 

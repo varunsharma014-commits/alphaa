@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Script from "next/script"
+import { ConsentBanner } from "@/components/common/ConsentBanner"
 import { Toaster } from "sonner"
 import "./globals.css"
 import "./agent.css"
@@ -12,11 +13,11 @@ const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
 export const metadata: Metadata = {
   title: {
-    default: "Alphaa AI Agent — Get Recommended by ChatGPT, Gemini, Claude and Perplexity",
+    default: "Alphaa — Get Recommended by ChatGPT, Gemini & Claude",
     template: "%s | Alphaa",
   },
   description:
-    "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. It does the work, you tap approve. $99/month, month to month.",
+    "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. It does the work; you approve. $99/month, month to month.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"),
   // Defaults for pages that don't declare their own card. No og:url here: a
   // root og:url made every inheriting page claim to be the homepage.
@@ -83,6 +84,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
           />
+          {/* Cookie consent (GDPR / UK GDPR): visitors in Europe, or on the
+              /uk /de /fr /it pages, get analytics and ads cookies only after
+              they accept. Runs before GA and the pixel so both start denied. */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(){var c=null;try{c=localStorage.getItem('alphaa.consent')}catch(e){}var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}var seg=location.pathname.split('/')[1]||'';var eu=tz.indexOf('Europe/')===0||['uk','de','fr','it'].indexOf(seg)>-1;window.__ccNeed=eu&&!c;window.__ccDenied=eu&&c!=='granted';window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}if(window.__ccDenied){g('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'})}})();`,
+            }}
+          />
           {/* GA4 — only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set */}
           {GA_ID && (
             <>
@@ -106,12 +115,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               id="fb-pixel"
               strategy="afterInteractive"
               dangerouslySetInnerHTML={{
-                __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${FB_PIXEL_ID}');fbq('track','PageView');`,
+                __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');if(window.__ccDenied)fbq('consent','revoke');fbq('init','${FB_PIXEL_ID}');fbq('track','PageView');`,
               }}
             />
           )}
         </head>
         <body className="bg-bg-primary text-fg font-sans antialiased">
+          <ConsentBanner />
           {FB_PIXEL_ID && (
             <noscript>
               {/* eslint-disable-next-line @next/next/no-img-element */}

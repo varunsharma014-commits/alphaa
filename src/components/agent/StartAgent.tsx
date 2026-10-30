@@ -65,7 +65,14 @@ export type StartMode = "public" | "setup" | "resume"
 
 const CHECKOUT = "#checkout"
 
-function greeting(mode: StartMode, name?: string): Message[] {
+/** Opening lines for a local market page (/de, /fr…): the rest of the
+ *  conversation is still English. */
+export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint: string; startHere?: string }
+
+function greeting(mode: StartMode, name?: string, greet?: StartGreet): Message[] {
+  if (greet && mode === "public") {
+    return [agent([...greet.lines.map((t) => ({ kind: "text" as const, text: t })), { kind: "text", text: greet.ask, big: true }], "greet")]
+  }
   if (mode === "resume") {
     return [
       agent(
@@ -103,12 +110,14 @@ export function StartAgent({
   mode = "public",
   resumeName,
   embedded = false,
+  greet,
 }: {
   mode?: StartMode
   resumeName?: string
   embedded?: boolean
+  greet?: StartGreet
 }) {
-  const [messages, setMessages] = useState<Message[]>(() => greeting(mode, resumeName))
+  const [messages, setMessages] = useState<Message[]>(() => greeting(mode, resumeName, greet))
   const [phase, setPhase] = useState<Phase>(mode === "resume" ? "result" : "website")
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
@@ -412,7 +421,7 @@ export function StartAgent({
     <div className="ag-land__stick">
       {idle && (
         <div className="ag-starthere" aria-hidden="true">
-          <span className="ag-starthere__pill">Start here</span>
+          <span className="ag-starthere__pill">{greet?.startHere ?? "Start here"}</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14" /><path d="M6 13l6 6 6-6" /></svg>
         </div>
       )}
@@ -430,8 +439,8 @@ export function StartAgent({
       />
       <div className="ag-land__hint">
         {idle
-          ? "Type your website and press Enter. I’ll ask ChatGPT, Gemini, Claude and Perplexity about you live — about 60 seconds, no card."
-          : mode === "public" ? "Nothing to install. No card. Just your website." : "Nothing to install. Just your website."}
+          ? greet?.idleHint ?? "Type your website and press Enter. I’ll ask ChatGPT, Gemini, Claude and Perplexity about you live — about 60 seconds, no card."
+          : greet?.hint ?? (mode === "public" ? "Nothing to install. No card. Just your website." : "Nothing to install. Just your website.")}
       </div>
     </div>
   )

@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { EngineRotator } from "@/components/marketing/hero/EngineRotator"
 import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
 import Link from "next/link"
@@ -10,17 +11,20 @@ import { faqs } from "@/components/marketing/faq-data"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
 import { BRAND } from "@/lib/brand"
 import { pageMeta } from "@/lib/seo"
+import { HREFLANG } from "@/content/locales"
 
 // SoftwareApplication structured data so AI engines / Google can state exactly
 // what Alphaa is, its category, and its price. No aggregateRating (we won't
 // publish unverifiable review counts).
-export const metadata = pageMeta({
+export const metadata: Metadata = pageMeta({
   title: "Get Recommended by ChatGPT, Gemini, Claude & Perplexity | Alphaa",
   absolute: true,
   description:
     "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. It does the work, you tap approve. $99/month, month to month.",
   path: "/",
 })
+// Same page in each market's language (hreflang).
+metadata.alternates = { canonical: "/", languages: HREFLANG }
 
 const softwareSchema = {
   "@context": "https://schema.org",

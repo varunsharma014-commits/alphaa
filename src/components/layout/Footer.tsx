@@ -7,7 +7,7 @@ const footerLinks = {
     { href: "/case-studies", label: "Case studies" },
     { href: "/pricing", label: "Pricing" },
     { href: "/compare", label: "Compare" },
-    { href: "/integrations", label: "Integrations" },
+    { href: "/integrations", label: "Connections" },
     { href: "/start", label: "Free AI check" },
     { href: "/refer", label: "Refer & Earn" },
   ],
@@ -16,6 +16,14 @@ const footerLinks = {
     { href: "/blog", label: "Blog" },
     { href: "/terms", label: "Terms of Service" },
     { href: "/privacy", label: "Privacy Policy" },
+  ],
+  Markets: [
+    { href: "/", label: "United States & Canada" },
+    { href: "/uk", label: "United Kingdom" },
+    { href: "/de", label: "Deutschland" },
+    { href: "/fr", label: "France" },
+    { href: "/it", label: "Italia" },
+    { href: "/ae", label: "UAE" },
   ],
 }
 

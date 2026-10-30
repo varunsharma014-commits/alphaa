@@ -136,3 +136,14 @@ h1.lg{font-size:118px}
 .p .facts b{font-size:52px;margin:0;min-width:300px;letter-spacing:-.02em}
 .p .quote{font-size:52px}
 .slide .sub{font-size:40px}
+
+/* question-by-AI grid (scan report) */
+.grid{border:1px solid #2a2a2a;border-radius:32px;background:#0d0d0d;padding:26px 30px}
+.gr-h,.gr-r{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:10px;align-items:center}
+.gr-h{font-size:22px;color:#9a9a9a;padding-bottom:16px;border-bottom:1px solid #222;text-align:center}
+.gr-r{padding:20px 0;border-top:1px solid #222}
+.gr-h+.gr-r{border-top:0}
+.gq{font-size:25px;line-height:1.3}
+.c{font-size:19px;font-weight:600;text-align:center;border-radius:999px;padding:9px 4px;white-space:nowrap}
+.c.y{background:#fff;color:#000}.c.n{border:1px solid #444;color:#8a8a8a}.c.u{border:1px dashed #555;color:#9a9a9a;font-size:24px}
+.x .gq{font-size:22px}.x .c{font-size:16px}

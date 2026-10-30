@@ -8,12 +8,12 @@
 - 90-day AI Visibility Guarantee: if none of ChatGPT, Gemini, Claude or Perplexity names the business in Alphaa's weekly checks during the first 90 days on a paid plan, the next month is free (credited automatically, once per customer).
 - Month to month. No contract, no exit fees, cancel in two clicks. There is no free trial — the free check below is how you see what you'd get.
 - No technical skills needed: the agent does the work, the owner approves.
-- Built for local businesses (dentists, plumbers, restaurants, lawyers, clinics) and also works for online businesses.
+- Built for local businesses (dentists, plumbers, restaurants, lawyers, clinics) in the US, Canada, the UK, Germany, France, Italy and the UAE, and also works for online businesses.
 - An SEO agency typically charges around $2,000/month and works on Google's ten blue links. Alphaa works on the single answer AI assistants give.
 
 ## Free check
 
-- [See what AI says about you](https://alphaa.app/start): enter your website and, in about 60 seconds, the agent asks ChatGPT, Gemini, Claude and Perplexity a real customer question about your business, shows who they named instead, and runs 23 checks on what AI can read on your site — crawler access, structured facts, reviews, service pages, and more. No card needed.
+- [See what AI says about you](https://alphaa.app/start) (also on the homepage): enter your website and, in about 60 seconds, the agent asks ChatGPT, Gemini, Claude and Perplexity a real customer question about your business, in your website's language, shows who they named instead, and runs 23 checks on what AI can read on your site. If three or four of the AIs name you, it also asks two broader buyer questions and reports how many of the 12 answers named you. The score is measured from those answers and the checks, never estimated. No card needed.
 
 ## Pages
 
@@ -26,6 +26,7 @@
 - [Integrations](https://alphaa.app/integrations): WordPress, Shopify and Webflow today; Wix coming soon.
 - [For dentists](https://alphaa.app/for/dentists), [plumbers](https://alphaa.app/for/plumbers), [HVAC](https://alphaa.app/for/hvac), [lawyers](https://alphaa.app/for/lawyers), [med spas](https://alphaa.app/for/med-spas), [restaurants](https://alphaa.app/for/restaurants)
 - [Referral program](https://alphaa.app/refer)
+- Local pages: [United Kingdom](https://alphaa.app/uk), [Deutschland](https://alphaa.app/de), [France](https://alphaa.app/fr), [Italia](https://alphaa.app/it), [United Arab Emirates](https://alphaa.app/ae). Prices are in US dollars everywhere.
 - [Privacy policy](https://alphaa.app/privacy) · [Terms](https://alphaa.app/terms)
 
 ## Original research
