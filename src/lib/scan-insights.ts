@@ -32,6 +32,9 @@ export type BusinessProfile = {
   isLocal: boolean
   query: string
   keyword: string
+  /** Two broader questions real buyers ask (asked only when the first
+   *  question is answered too well: see /api/scan). */
+  followUps: { kind: "broad" | "problem"; query: string }[]
 }
 
 export type MonthlyLossEstimate = {
@@ -116,7 +119,7 @@ export async function inferBusinessProfile(input: {
     const msg = await withTimeout(
       anthropic.messages.create({
         model: HAIKU,
-        max_tokens: 300,
+        max_tokens: 450,
         messages: [
           {
             role: "user",
@@ -136,12 +139,16 @@ export async function inferBusinessProfile(input: {
               `- LOCAL: include the city, e.g. "Who is the best dental practice in Kanata?" or "Can you recommend a good dentist in Kanata?"\n` +
               `- NON-LOCAL: no city, e.g. "What is the best AI marketing software for a small business?"\n` +
               `The question must be about the CATEGORY — never name the business itself.\n` +
+              `Step 3b — Write TWO more questions real buyers ask, broader than the first. Most buyers don't know the exact niche name:\n` +
+              `- "broad": the wider category in everyday words, e.g. "What's the best marketing agency for raising capital?" or "Who's a good dentist in Kanata?"\n` +
+              `- "problem": the problem the buyer has, with no category name, e.g. "How do I find investors for my Reg CF raise?" or "Where can I get a tooth fixed today in Kanata?"\n` +
+              `Both must be different from the first question, about the CATEGORY or PROBLEM, and must never name the business. LOCAL: include the city.\n` +
               `Step 4 — Write the SHORT keyword phrase (2-4 words) the same customer would type into Google when shopping in this category.\n` +
               `- LOCAL: include the city, e.g. "dentist in Kanata".\n` +
               `- NON-LOCAL: category only, e.g. "equity crowdfunding agency".\n` +
               `The keyword must be about the CATEGORY — never name the business itself, no quotes, no punctuation.\n\n` +
               `Return ONLY valid JSON, no markdown fences, exactly:\n` +
-              `{"industry": "<plain-English industry>", "is_local": true|false, "query": "<the customer question>", "keyword": "<the 2-4 word Google search phrase>"}`,
+              `{"industry": "<plain-English industry>", "is_local": true|false, "query": "<the customer question>", "broad": "<broad question>", "problem": "<problem question>", "keyword": "<the 2-4 word Google search phrase>"}`,
           },
         ],
       }),
@@ -163,7 +170,15 @@ export async function inferBusinessProfile(input: {
     if (keyword.length < 3 || keyword.length > 60 || words.length > 6) {
       keyword = fallbackKeyword(industry, isLocal, input.city)
     }
-    return { industry, isLocal, query, keyword }
+    const followUps: BusinessProfile["followUps"] = []
+    for (const kind of ["broad", "problem"] as const) {
+      const q = typeof parsed[kind] === "string" ? parsed[kind].trim() : ""
+      const name = input.businessName.trim().toLowerCase()
+      if (q.length >= 10 && q.toLowerCase() !== query.toLowerCase() && !(name.length >= 4 && q.toLowerCase().includes(name))) {
+        followUps.push({ kind, query: q })
+      }
+    }
+    return { industry, isLocal, query, keyword, followUps }
   } catch (err) {
     console.error("inferBusinessProfile error:", err)
     return null

@@ -14,6 +14,15 @@ export interface EngineEvidence {
   mentioned: string[]
 }
 
+// Every question the scan asked and each AI's answer to it. The first is the
+// specific question; "broad" and "problem" are only asked when 3+ AIs named
+// the business for the first one. Stored in ScanLead.ogData.questions.
+export interface ScanQuestion {
+  kind: "specific" | "broad" | "problem"
+  query: string
+  answers: Record<string, EngineEvidence>
+}
+
 // One organic Google result captured for the scan keyword (v2 scans).
 export interface SerpEntry {
   position: number

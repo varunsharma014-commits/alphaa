@@ -7,7 +7,7 @@ import { AgentFeed, Composer } from "./AgentFeed"
 import { agent, user, type Block, type Chip, type Message } from "@/lib/agent/types"
 import { track } from "@/lib/gtag"
 import { fbTrack } from "@/lib/pixel"
-import type { ScanResult, EngineEvidence } from "@/types/scan"
+import type { ScanResult, EngineEvidence, ScanQuestion } from "@/types/scan"
 import type { SiteChecks } from "@/lib/site-check"
 import { CHECK_SHORT, CHECK_GROUP, CHECK_IMPACT, GROUP_TITLE, type CheckGroup, type CheckKey } from "@/lib/site-check-labels"
 import type { SiteCheck, SiteCheckItem } from "@/lib/site-check"
@@ -190,7 +190,7 @@ export function StartAgent({
     // Poll. Real stage markers drive the step list.
     const started = Date.now()
     let result: ScanResult | null = null
-    while (Date.now() - started < 100_000) {
+    while (Date.now() - started < 160_000) {
       await new Promise((r) => setTimeout(r, 2500))
       try {
         const r = await fetch(`/api/scan/result?id=${scanId}`, { cache: "no-store" })
@@ -528,6 +528,31 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
       named >= checked - 1 ? `${named} of ${checked} named you. Strong. The one that didn’t is where I start.` :
       `${named} of ${checked} named you.`
     blocks.push({ kind: "text", text: summary })
+    out.push(agent(blocks))
+  }
+
+  // 2b. When 3+ named you, the scan also asked two broader buyer questions.
+  const asked = isRecord(result.ogData) && Array.isArray((result.ogData as Record<string, unknown>).questions)
+    ? ((result.ogData as Record<string, unknown>).questions as ScanQuestion[]).slice(1)
+    : []
+  if (asked.length > 0) {
+    const blocks: Block[] = [{ kind: "text", text: "That question was close to how you describe yourself, so I also asked what most buyers ask first." }]
+    let skipped = 0
+    let total = 0
+    for (const q of asked) {
+      const items = ENGINES.map((e) => {
+        const ev = isRecord(q.answers) && isEvidence(q.answers[e]) ? q.answers[e] : null
+        if (ev) { total += 1; if (!ev.appeared) skipped += 1 }
+        return { engine: e, state: (ev ? (ev.appeared ? "found" : "missing") : "unknown") as "found" | "missing" | "unknown" }
+      })
+      blocks.push({ kind: "text", text: `“${q.query}”` }, { kind: "verdicts", items })
+    }
+    blocks.push({
+      kind: "text",
+      text: skipped === 0
+        ? "They named you for those too. Strong. The job now is staying there."
+        : `They skipped you in ${skipped} of those ${total} answers. That’s where buyers who don’t know your niche go elsewhere, and it’s where I’d start.`,
+    })
     out.push(agent(blocks))
   }
 

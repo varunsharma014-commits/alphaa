@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic"
-import { computeScore, buildFindings, findingsToIssues, type ReportEngine } from "@/lib/scan-report"
+import { computeScore, buildFindings, findingsToIssues, type ReportEngine, type ReportQuestion } from "@/lib/scan-report"
 import { NextRequest, NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
 import { z } from "zod"
@@ -21,7 +21,7 @@ import {
 import { sendScanReadyEmail } from "@/lib/scan-email"
 import { checkSites, findCompetitorDomain, type SiteChecks } from "@/lib/site-check"
 import type { AiSearchStatus } from "@/types/audit"
-import type { EngineEvidence, ScanInsights, ScanSerp, CompetitorDetail } from "@/types/scan"
+import type { EngineEvidence, ScanInsights, ScanSerp, CompetitorDetail, ScanQuestion } from "@/types/scan"
 
 type SiteOg = {
   title: string
@@ -147,7 +147,20 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
         input.websiteUrl,
         profile?.query
       )
-      return { site, profile, scan }
+      // One question is enough when AI already skips the business. When 3+ of
+      // the 4 AIs name it, that question was probably too close to its own
+      // pitch, so ask the two broader questions real buyers ask as well.
+      const named = scan.results.filter((r) => r.status !== "not_configured" && r.appeared).length
+      const followUps =
+        named > 2 && profile?.followUps.length
+          ? await Promise.all(
+              profile.followUps.map(async (f) => ({
+                ...f,
+                scan: await scanAllEngines(input.businessName, input.businessType, input.city, input.websiteUrl, f.query),
+              }))
+            )
+          : []
+      return { site, profile, scan, followUps }
     })()
 
     const [claudeResult, pipelineSettled] = await Promise.allSettled([
@@ -183,6 +196,7 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
     const pipeline = pipelineSettled.status === "fulfilled" ? pipelineSettled.value : null
     const profile = pipeline?.profile ?? null
     const engineResults: EngineResult[] = pipeline?.scan.results ?? []
+    const followUps = pipeline?.followUps ?? []
     const site = pipeline?.site ?? { og: null, text: "" }
 
     // Merge real engine results into aiSearchStatus (overwrite Claude estimates where we have real data)
@@ -226,6 +240,11 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
     // SERP evidence for the keyword, all in parallel. SERP is the scan's ONE
     // Apify run (20s cap inside fetchKeywordSerp). Everything is best-effort —
     // failures degrade to []/null, never break the scan.
+    const followMentions = Promise.all(
+      followUps.map((f) =>
+        extractMentionedBusinesses(f.scan.results, input.businessName, input.websiteUrl).catch(() => ({ mentioned: {}, domains: {} }))
+      )
+    )
     const [mentionedSettled, lossSettled, serpSettled] = await Promise.allSettled([
       extractMentionedBusinesses(engineResults, input.businessName, input.websiteUrl),
       industry ? estimateMonthlyLoss(industry, isLocal, input.city, keyword) : Promise.resolve(null),
@@ -305,6 +324,23 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
         }
       : null
 
+    // Every question asked, with each AI's answer (see ScanQuestion).
+    const toAnswers = (results: EngineResult[], mentioned: Record<string, string[]>) => {
+      const out: Record<string, EngineEvidence> = {}
+      for (const r of results) {
+        if (r.status === "not_configured" || !r.response) continue
+        out[r.engine] = { query: r.query, response: r.response.slice(0, 900), appeared: r.appeared, mentioned: mentioned[r.engine] ?? [] }
+      }
+      return out
+    }
+    const followExtractions = await followMentions
+    const questions: ScanQuestion[] = followUps.length
+      ? [
+          { kind: "specific", query: engineResults.find((r) => r.query)?.query ?? profile?.query ?? "", answers: engineResponses },
+          ...followUps.map((f, i) => ({ kind: f.kind, query: f.query, answers: toAnswers(f.scan.results, followExtractions[i]?.mentioned ?? {}) })),
+        ]
+      : []
+
     // Score and findings from what this scan measured (the four AIs + the site
     // checks), never from a model's guess about the business.
     const ENGINE_LABEL: Record<string, string> = { chatgpt: "ChatGPT", claude: "Claude", gemini: "Gemini", perplexity: "Perplexity" }
@@ -316,12 +352,17 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
         mentioned: mentionedByEngine[r.engine] ?? [],
         answered: !!r.response && r.status !== "error",
       }))
-    const realScore = computeScore(reportEngines, siteChecks)
-    const reportIssues = realScore === null ? [] : findingsToIssues(buildFindings(input.businessName, reportEngines, siteChecks))
+    const extraQuestions: ReportQuestion[] = questions.slice(1).map((q) => ({
+      kind: q.kind,
+      query: q.query,
+      engines: Object.entries(q.answers).map(([k, a]) => ({ name: ENGINE_LABEL[k] ?? k, appeared: a.appeared, mentioned: a.mentioned, answered: a.response.trim().length > 20 })),
+    }))
+    const realScore = computeScore(reportEngines, siteChecks, extraQuestions)
+    const reportIssues = realScore === null ? [] : findingsToIssues(buildFindings(input.businessName, reportEngines, siteChecks, extraQuestions))
 
     // ogData is ALWAYS an object for new scans and always carries `insights`
     // (possibly null), even when the OG fetch itself failed.
-    const ogData = { ...(site.og ?? {}), insights, auditFallback, siteChecks }
+    const ogData = { ...(site.og ?? {}), insights, auditFallback, siteChecks, ...(questions.length ? { questions } : {}) }
 
     // Update lead with results — this write is what flips the result poller
     // from { ready: false } to { ready: true }.

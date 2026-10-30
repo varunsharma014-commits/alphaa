@@ -70,6 +70,26 @@
 .rp-table__rank { font-size: 13px; color: var(--rp-mute); }
 .rp-table__note { font-size: 12px; color: var(--rp-faint); padding: 12px 20px; margin: 0; }
 
+/* Question grid */
+.rp-grid { padding: 0; overflow: hidden; }
+.rp-grid__row { display: grid; grid-template-columns: minmax(0, 1fr) repeat(4, 76px); align-items: center; gap: 8px; padding: 14px 20px; border-bottom: 1px solid var(--rp-line); font-size: 14px; }
+.rp-grid__row:last-child { border-bottom: 0; }
+.rp-grid__head { background: var(--rp-bg); font-size: 12px; font-weight: 600; color: var(--rp-faint); padding-top: 11px; padding-bottom: 11px; }
+.rp-grid__head span:not(:first-child) { text-align: center; }
+.rp-grid__q { line-height: 1.45; }
+.rp-grid__q small { display: block; font-size: 12px; font-weight: 600; color: var(--rp-blue); margin-bottom: 2px; }
+.rp-grid__q em { display: block; font-style: normal; font-size: 12px; color: var(--rp-mute); margin-top: 4px; }
+.rp-grid__cell { justify-self: center; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; color: var(--rp-faint); }
+.rp-grid__cell--yes { background: #e8f5e9; color: #1b5e20; }
+.rp-grid__cell--no { background: #ffebee; color: #d70015; }
+@media (max-width: 640px) {
+  .rp-grid__head { display: none; }
+  .rp-grid__row { grid-template-columns: repeat(4, 1fr); row-gap: 10px; }
+  .rp-grid__q { grid-column: 1 / -1; }
+  .rp-grid__cell { width: auto; height: auto; border-radius: 8px; padding: 6px 4px; display: flex; flex-direction: column; gap: 2px; justify-self: stretch; }
+  .rp-grid__cell::after { content: attr(data-engine); font-size: 11px; }
+}
+
 /* Findings */
 .rp-finding__head { display: flex; gap: 14px; }
 .rp-finding__head b { display: block; font-size: 16px; font-weight: 600; padding-top: 4px; margin-bottom: 4px; }

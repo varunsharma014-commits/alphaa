@@ -14,6 +14,13 @@ export interface ReportEngine {
   answered: boolean
 }
 
+/** A broader buyer question, asked only when 3+ AIs named the business for the first one. */
+export interface ReportQuestion {
+  kind: "specific" | "broad" | "problem"
+  query: string
+  engines: ReportEngine[]
+}
+
 export interface Finding {
   severity: "critical" | "warning" | "improvement"
   title: string
@@ -89,11 +96,11 @@ function sameBusiness(a: string, b: string): boolean {
   return !!x && !!y && (x.includes(y) || y.includes(x))
 }
 
-/** 0–100. Six tenths: how many of the AIs that answered named you. Four tenths:
- *  the site checks you pass, weighted by how much each one matters. Without
- *  site checks the score is the AI part alone. */
-export function computeScore(engines: ReportEngine[], siteChecks: SiteChecks | null): number | null {
-  const answered = engines.filter((e) => e.answered)
+/** 0–100. Six tenths: the share of AI answers that named you, across every
+ *  question asked. Four tenths: the site checks you pass, weighted by how much
+ *  each one matters. Without site checks the score is the AI part alone. */
+export function computeScore(engines: ReportEngine[], siteChecks: SiteChecks | null, extra: ReportQuestion[] = []): number | null {
+  const answered = [...engines, ...extra.flatMap((q) => q.engines)].filter((e) => e.answered)
   if (answered.length === 0) return null
   const ai = answered.filter((e) => e.appeared).length / answered.length
   const known = siteChecks?.you?.checks.filter((c) => c.ok !== null) ?? []
@@ -115,6 +122,7 @@ export function buildFindings(
   businessName: string,
   engines: ReportEngine[],
   siteChecks: SiteChecks | null,
+  extra: ReportQuestion[] = [],
 ): Finding[] {
   const out: Finding[] = []
   const answered = engines.filter((e) => e.answered)
@@ -153,6 +161,20 @@ export function buildFindings(
     }
   }
 
+  // The broader questions: where most buyers actually start.
+  for (const q of extra) {
+    const asked = q.engines.filter((e) => e.answered)
+    const skipped = asked.filter((e) => !e.appeared)
+    if (asked.length === 0 || skipped.length === 0) continue
+    const rivals = others(skipped).slice(0, 3)
+    out.push({
+      severity: skipped.length >= 2 ? "critical" : "warning",
+      title: `${skipped.length} of ${asked.length} AIs skip you when buyers ask “${q.query}”`,
+      why: `${q.kind === "broad" ? "This is the wider question most buyers ask before they know your niche." : "This is how buyers describe their problem before they know what to search for."}${rivals.length ? ` ${list(skipped.map((e) => e.name))} recommended ${list(rivals)} instead.` : ""}`,
+      plan: "I’ll publish a clear page that answers exactly this question and get you onto the sites those AIs quoted.",
+    })
+  }
+
   const you = siteChecks?.you
   if (you?.blocked) {
     out.push({
@@ -176,7 +198,9 @@ export function buildFindings(
       plan: PLAN[c.key] ?? "I’ll fix this for you and show you the change before it goes live.",
     })
   }
-  return out
+  // Most serious first; order within a severity is kept.
+  const rank = { critical: 0, warning: 1, improvement: 2 }
+  return out.sort((a, b) => rank[a.severity] - rank[b.severity])
 }
 
 /** The shape the rest of the app (emails, nurture) already reads from ScanLead.issues. */

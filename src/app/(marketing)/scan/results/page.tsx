@@ -7,9 +7,9 @@ import { ScanLoader } from "@/components/scan/ScanLoader"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { track } from "@/lib/gtag"
 import { fbTrack } from "@/lib/pixel"
-import type { ScanResult, EngineEvidence, ScanInsights } from "@/types/scan"
+import type { ScanResult, EngineEvidence, ScanInsights, ScanQuestion } from "@/types/scan"
 import type { SiteChecks } from "@/lib/site-check"
-import { computeScore, buildFindings, scoreLabel, type Finding, type ReportEngine } from "@/lib/scan-report"
+import { computeScore, buildFindings, scoreLabel, type Finding, type ReportEngine, type ReportQuestion } from "@/lib/scan-report"
 import "./report.css"
 import {
   AlertTriangle, Globe, Sparkles, MessageSquare, Search,
@@ -534,6 +534,46 @@ function Timeline() {
   )
 }
 
+const KIND_LABEL: Record<string, string> = { specific: "Your niche", broad: "Broader", problem: "The buyer’s problem" }
+
+function QuestionGrid({ questions }: { questions: ScanQuestion[] }) {
+  return (
+    <div className="rp-card rp-grid">
+      <div className="rp-grid__row rp-grid__head">
+        <span>Question</span>
+        {ENGINES.map((e) => <span key={e.key}>{e.name}</span>)}
+      </div>
+      {questions.map((q, i) => {
+        const instead: string[] = []
+        for (const e of ENGINES) {
+          const a = q.answers[e.responseKey]
+          if (isEvidence(a) && !a.appeared) for (const m of a.mentioned ?? []) {
+            if (typeof m === "string" && !instead.some((x) => x.toLowerCase() === m.toLowerCase())) instead.push(m)
+          }
+        }
+        return (
+          <div key={i} className="rp-grid__row">
+            <div className="rp-grid__q">
+              <small>{KIND_LABEL[q.kind] ?? "Question"}</small>
+              &ldquo;{q.query}&rdquo;
+              {instead.length > 0 && <em>Named instead: {listNames(instead.slice(0, 3))}</em>}
+            </div>
+            {ENGINES.map((e) => {
+              const a = q.answers[e.responseKey]
+              const state = !isEvidence(a) || a.response.trim().length <= 20 ? "na" : a.appeared ? "yes" : "no"
+              return (
+                <span key={e.key} className={`rp-grid__cell rp-grid__cell--${state}`} data-engine={e.name}>
+                  {state === "yes" ? <Check className="w-4 h-4" /> : state === "no" ? <X className="w-4 h-4" /> : "–"}
+                </span>
+              )
+            })}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 // ── Email-report button ─────────────────────────────────────────────────────
 
 function EmailReportButton({ scanId }: { scanId: string }) {
@@ -807,11 +847,11 @@ function ScanResultsContent() {
           }
         }
         attempts++
-        if (attempts < 45) setTimeout(poll, 2000)
+        if (attempts < 80) setTimeout(poll, 2000)
         else if (!cancelled) { setError(true); setLoading(false) }
       } catch {
         attempts++
-        if (attempts < 45) setTimeout(poll, 2000)
+        if (attempts < 80) setTimeout(poll, 2000)
         else if (!cancelled) { setError(true); setLoading(false) }
       }
     }
@@ -984,10 +1024,33 @@ function ScanResultsContent() {
     mentioned: e.evidence ? e.evidence.mentioned.filter((m): m is string => typeof m === "string") : [],
     answered: !!(e.evidence && e.evidence.response.trim().length > 20),
   }))
+  // Broader buyer questions (asked only when 3+ AIs named you for the first).
+  const askedQuestions: ScanQuestion[] =
+    isRecord(result.ogData) && Array.isArray((result.ogData as Record<string, unknown>).questions)
+      ? ((result.ogData as Record<string, unknown>).questions as ScanQuestion[]).filter((q) => q && typeof q.query === "string" && isRecord(q.answers))
+      : []
+  const extraQuestions: ReportQuestion[] = askedQuestions.slice(1).map((q) => ({
+    kind: q.kind,
+    query: q.query,
+    engines: ENGINES.flatMap((e) => {
+      const a = q.answers[e.responseKey]
+      return isEvidence(a)
+        ? [{ name: e.name, appeared: a.appeared, mentioned: (a.mentioned ?? []).filter((m): m is string => typeof m === "string"), answered: a.response.trim().length > 20 }]
+        : []
+    }),
+  }))
+  const allAnswers = [...reportEngines, ...extraQuestions.flatMap((q) => q.engines)].filter((e) => e.answered)
+  const namedAll = allAnswers.filter((e) => e.appeared).length
+  const broadSkips = extraQuestions.flatMap((q) => q.engines.filter((e) => e.answered && !e.appeared))
+  const broadRivals: string[] = []
+  for (const e of broadSkips) for (const m of e.mentioned) {
+    if (!broadRivals.some((r) => r.toLowerCase() === m.toLowerCase()) && !m.toLowerCase().includes(businessName.toLowerCase())) broadRivals.push(m)
+  }
+
   const measured = reportEngines.some((e) => e.answered)
-  const score = (measured ? computeScore(reportEngines, siteChecks) : null) ?? result.visibilityScore
+  const score = (measured ? computeScore(reportEngines, siteChecks, extraQuestions) : null) ?? result.visibilityScore
   const findings: Finding[] = measured
-    ? buildFindings(businessName, reportEngines, siteChecks)
+    ? buildFindings(businessName, reportEngines, siteChecks, extraQuestions)
     : issues.map((i) => ({
         severity: i.severity === "critical" ? "critical" : i.severity === "warning" ? "warning" : "improvement",
         title: i.headline,
@@ -999,7 +1062,11 @@ function ScanResultsContent() {
   const rivalNames = competitorDetails.filter((c) => c.aiMentions > 0).sort((a, b) => b.aiMentions - a.aiMentions).map((c) => c.name)
   const topRival = rivalNames[0] ?? competitorRows.find((r) => r.count > 0)?.name ?? null
   const headline =
-    aiMentions === totalEngines ? (
+    broadSkips.length > 0 ? (
+      <>AI names you in {namedAll} of {allAnswers.length} answers. <span className="rp-red">It skips you when buyers ask more broadly.</span></>
+    ) : extraQuestions.length > 0 && aiMentions === totalEngines ? (
+      <>All four AIs name you, <span className="rp-green">even for broader questions.</span></>
+    ) : aiMentions === totalEngines ? (
       <>{totalEngines === 4 ? "All four AIs" : listNames(foundNames)} <span className="rp-green">name you today.</span></>
     ) : aiMentions === 0 ? (
       topRival ? <>AI recommended <span className="rp-red">{topRival}</span> instead of you.</> : <>None of the four AIs <span className="rp-red">named you.</span></>
@@ -1007,7 +1074,9 @@ function ScanResultsContent() {
       <>{listNames(missedNames)} <span className="rp-red">{topRival ? `recommended ${topRival} instead.` : "didn’t name you."}</span></>
     )
   const subline =
-    aiMentions === totalEngines
+    broadSkips.length > 0
+      ? `${aiMentions === totalEngines ? "All four" : aiMentions} named you for your niche question. For the questions most buyers start with${broadRivals.length ? `, they recommended ${listNames(broadRivals.slice(0, 2))} instead` : ", you weren’t in the answer"}.`
+      : aiMentions === totalEngines
       ? rivalNames.length
         ? `They also named ${listNames(rivalNames.slice(0, 2))}. Here’s how I keep you first.`
         : "Here’s how I keep it that way as competitors catch on."
@@ -1016,14 +1085,18 @@ function ScanResultsContent() {
         : `${listNames(foundNames)} named you. Here’s why the others didn’t, and what I’ll do about it.`
   // The button names the outcome for this business, not the product.
   const ctaLabel =
-    aiMentions === totalEngines
+    broadSkips.length > 0
+      ? "Get recommended for every buyer question →"
+      : aiMentions === totalEngines
       ? "Keep all four AIs recommending me →"
       : aiMentions === 0
         ? "Get AI to recommend me →"
         : `Get ${listNames(missedNames)} to recommend me →`
-  const ctaShort = aiMentions === totalEngines ? "Keep my spot →" : "Get recommended →"
+  const ctaShort = aiMentions === totalEngines && broadSkips.length === 0 ? "Keep my spot →" : "Get recommended →"
   const stickyLine =
-    aiMentions === totalEngines ? "AI names you today. I’ll keep it that way." : `${missedNames.length} of ${totalEngines} AIs skip you. I can fix that.`
+    broadSkips.length > 0
+      ? `AI skips you in ${allAnswers.length - namedAll} of ${allAnswers.length} answers. I can fix that.`
+      : aiMentions === totalEngines ? "AI names you today. I’ll keep it that way." : `${missedNames.length} of ${totalEngines} AIs skip you. I can fix that.`
 
   return (
     <div className="rp">
@@ -1062,7 +1135,15 @@ function ScanResultsContent() {
         </div>
 
         {/* 2. The evidence */}
-        <h2 className="rp-h2">What AI actually said today</h2>
+        {askedQuestions.length > 1 && (
+          <>
+            <h2 className="rp-h2">The questions I asked</h2>
+            <p className="rp-lead">All four AIs named you for the first one, so I also asked the broader questions most buyers start with.</p>
+            <QuestionGrid questions={askedQuestions} />
+          </>
+        )}
+
+        <h2 className="rp-h2">{askedQuestions.length > 1 ? "What AI said to the first question" : "What AI actually said today"}</h2>
         <p className="rp-lead">The real answers from {totalEngines} AI assistants, word for word.</p>
         {engineData.map((engine) => (
           <EngineCard key={engine.key} engine={engine} businessName={businessName} />
