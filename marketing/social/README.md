@@ -98,3 +98,19 @@ Per week: LinkedIn Varun 5, LinkedIn page 3, Facebook 3, Instagram 3 (2 carousel
 - **Dogfood posts (real data only, never staged):** `w1-thu-linkedin-varun` (fill the `[FILL IN]` line, then set the 4 pills in `build.py` `w1_dogfood` from `????` to y/n and rebuild) and `w2-sat-tiktok_reels_shorts` (bracketed lines).
 - **Recommended, not required:** the playbook prefers real screenshots over examples. Any "Example check" image can be swapped for a real check screenshot (same headline) if you have permission from the business.
 - **Bios:** Instagram and TikTok bios must link to alphaa.app/start before the "link in bio" posts go out.
+
+## Local market posts (Nov 2026)
+24 LinkedIn company-page posts (`account: alphaa_page`) for the country pages that went live 2026-10-30. Ids are `m-<market>-w<n>-linkedin`; each carries an extra field `market`: `uk`, `de`, `fr`, `it`, `ae` (Gulf English) or `ar` (Arabic, RTL). `week` uses the global numbering (5-8), `w<n>` in the id is the market's post number (1-4).
+
+| Day | Market | Language | Dates |
+|---|---|---|---|
+| Mon | uk | UK English | Nov 2, 9, 16, 23 |
+| Tue | de | German, "Sie" | Nov 3, 10, 17, 24 |
+| Wed | fr | French, "vous" | Nov 4, 11, 18, 25 |
+| Thu | it | Italian, "tu" | Nov 5, 12, 19, 26 |
+| Fri | ae | English for the Gulf | Nov 6, 13, 20, 27 |
+| Sat | ar | Modern Standard Arabic | Nov 7, 14, 21, 28 |
+
+Per market, in order: (1) the country page, chat example; (2) trade page, example check across the 4 AIs; (3) the "which sites AI reads" guide; (4) a second trade page, agent message example. The body is link-free and says "link in the comments" in the local language; `first_comment` holds the local page or guide URL. Prices are never in the copy.
+
+Images: `brand/social/posts/m_<market>_w<n>.png` (1080x1350 only, no X version), specs in `MARKET_IMAGES` in `build.py`, rebuild with `python3 brand/social/posts/build.py m_`. Example labels are localised (Beispiel, Exemple, Esempio, مثال); Arabic renders RTL with SF Arabic / Geeza Pro (rules at the end of `src/post.css`).

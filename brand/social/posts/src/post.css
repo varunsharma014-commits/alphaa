@@ -147,3 +147,16 @@ h1.lg{font-size:118px}
 .c{font-size:19px;font-weight:600;text-align:center;border-radius:999px;padding:9px 4px;white-space:nowrap}
 .c.y{background:#fff;color:#000}.c.n{border:1px solid #444;color:#8a8a8a}.c.u{border:1px dashed #555;color:#9a9a9a;font-size:24px}
 .x .gq{font-size:22px}.x .c{font-size:16px}
+
+/* local market posts: example label inside agent messages */
+.ag-ex{margin-inline-start:auto;font-size:22px;color:#9a9a9a;border:1px solid #333;border-radius:999px;padding:6px 16px}
+
+/* Arabic (RTL): Arabic system font, no negative tracking (it breaks letter joining), mirrored bubbles */
+html[dir=rtl] body{font-family:"SF Arabic","Geeza Pro",-apple-system,sans-serif}
+html[dir=rtl] *{letter-spacing:0!important}
+html[dir=rtl] h1{line-height:1.2;font-size:94px}
+html[dir=rtl] .tag{text-transform:none;font-size:28px}
+html[dir=rtl] .b.user{margin-left:0;margin-right:auto;border-bottom-right-radius:28px;border-bottom-left-radius:8px}
+html[dir=rtl] .b.ai{border-bottom-left-radius:28px;border-bottom-right-radius:8px}
+html[dir=rtl] .b.ai ol{margin:12px 34px 0 0}
+html[dir=rtl] .col li{margin:0 28px 14px 0}

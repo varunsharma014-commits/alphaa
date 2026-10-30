@@ -1,3 +1,6 @@
+> Superseded by marketing/outreach/ (2026-10-30)
+
+
 # Cold Email Outreach Kit — Scan-Led Sequence
 
 > v1.0 — 2026-07-14. The backbone channel of 1000-customers-plan.md. Motion: **run THEIR scan first, lead with THEIR result.** Every email is about the prospect's business, never about us. Not legal advice — compliance box below is a working checklist, confirm with counsel before Canada sends.

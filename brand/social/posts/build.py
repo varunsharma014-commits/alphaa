@@ -432,8 +432,176 @@ CAROUSELS = {
 }
 
 
-def page(body_cls, w, h, inner):
-    return (f"<!doctype html><html style='width:{w}px;height:{h}px'><head><meta charset=utf-8>"
+# ---------- local market posts (Nov 2026): m_<key>_w<n> ----------
+# One LinkedIn page post per market per week. Portrait only. Copy is native to
+# each market; every AI answer or agent message is labelled as an example in
+# the local language, with placeholder businesses.
+ML = {
+    "en": dict(ex="Example", foot="Example scenario", agent="your AI Agent", yes="Named you",
+               no="Didn't name you", btns=("Post it", "Edit", "Skip")),
+    "de": dict(ex="Beispiel", foot="Beispielszenario", agent="Ihr KI-Agent", yes="Nennt Sie",
+               no="Nennt Sie nicht", btns=("Freigeben", "Bearbeiten", "Überspringen")),
+    "fr": dict(ex="Exemple", foot="Exemple illustratif", agent="votre agent IA", yes="Vous cite",
+               no="Ne vous cite pas", btns=("Publier", "Modifier", "Ignorer")),
+    "it": dict(ex="Esempio", foot="Esempio illustrativo", agent="il tuo agente IA", yes="Ti nomina",
+               no="Non ti nomina", btns=("Pubblica", "Modifica", "Salta")),
+    "ar": dict(ex="مثال", foot="مثال توضيحي", agent="وكيلك الذكي", yes="ذكرك",
+               no="لم يذكرك", btns=("انشره", "عدّل", "تخطَّ")),
+}
+
+
+def m_chat(lg, engine, question, intro, names, miss):
+    L = ML[lg]
+    lis = "".join(f"<li>{e(n)}</li>" for n in names)
+    return (f"<div class=phone><div class=ph-top><b>{e(engine)}</b><span>{e(L['ex'])}</span></div>"
+            f"<div class='b user'>{e(question)}</div>"
+            f"<div class='b ai'>{e(intro)}<ol>{lis}</ol></div>"
+            f"<div class=miss>{miss}</div></div>")
+
+
+def m_score(lg, question, verdicts):
+    L = ML[lg]
+    rows = ""
+    for ai, v in zip(AIS, verdicts):
+        cls, lab = ("ok", L["yes"]) if v == "y" else ("no", L["no"])
+        rows += f"<div class=row><span dir=ltr>{ai}</span><span class='pill {cls}'>{e(lab)}</span></div>"
+    return f"<div class=card><div class=q>{e(question)}</div>{rows}</div>"
+
+
+def m_agent(lg, paras, time):
+    L = ML[lg]
+    ps = "".join(f"<p>{p}</p>" for p in paras)
+    bs = "".join(f"<span class={'ok' if i == 0 else ''}>{e(b)}</span>" for i, b in enumerate(L["btns"]))
+    return (f"<div class=agent><div class=ag-h><img src='{ICON}'><b>Alphaa</b> · {e(L['agent'])} · {e(time)}"
+            f"<span class=ag-ex>{e(L['ex'])}</span></div>"
+            f"<div class=ag-b>{ps}</div><div class=btns>{bs}</div></div>")
+
+
+def m(lg, **kw):
+    """Market image spec: portrait only, local lang/dir, local example label."""
+    d = dict(portrait_only=True, lang={"en": "en", "de": "de", "fr": "fr", "it": "it", "ar": "ar"}[lg],
+             dir="rtl" if lg == "ar" else "ltr")
+    if kw.pop("example", False):
+        d.update(example=True, note=ML[lg]["foot"])
+    d.update(kw)
+    return d
+
+
+MARKET_IMAGES = {
+    # ---- UK (Mondays) ----
+    "m_uk_w1": m("en", tag="Are you in the answer?", h1="Is ChatGPT recommending your business?", example=True,
+        vis=m_chat("en", "ChatGPT", "Can you recommend a good conveyancing solicitor in Leeds?",
+                   "A few firms people often recommend:", ["Firm A", "Firm B", "Firm C"],
+                   "Your firm: <b>not mentioned</b>")),
+    "m_uk_w2": m("en", tag="Example check", h1="Dentists: does ChatGPT name you?", example=True,
+        vis=m_score("en", "Asked: “Which dentist in Clapham is taking on new private patients?”", "nnyn")),
+    "m_uk_w3": m("en", tag="Save this", h1="Where ChatGPT checks your business",
+        sub="Before AI names a UK business, it cross-checks these.",
+        vis=steps([("Google Business Profile", "Hours, category and reviews. Usually checked first."),
+                   ("Trustpilot and Google reviews", "Recent reviews you've replied to."),
+                   ("Yell, Checkatrade and Bark", "Same name, number and address as everywhere else."),
+                   ("Your own website", "A clear page per service that AI can quote.")])),
+    "m_uk_w4": m("en", tag="Agent diary", h1="ChatGPT picks the boiler engineer", example=True,
+        vis=m_agent("en", ["I asked ChatGPT this morning for a Gas Safe engineer in south Manchester. It named three firms. You weren't one.",
+                           "<span class=g>All three show their Gas Safe number and have recent Checkatrade reviews. Your website doesn't show yours.</span>",
+                           "<b>My plan:</b> I've drafted a boiler servicing page with your Gas Safe number and the areas you cover."],
+                    "8:02 am")),
+    # ---- Germany (Tuesdays) ----
+    "m_de_w1": m("de", tag="Stehen Sie in der Antwort?", h1="Empfiehlt ChatGPT Ihren Betrieb?", example=True,
+        vis=m_chat("de", "ChatGPT", "Ich brauche einen Fachanwalt für Arbeitsrecht in Frankfurt, mir wurde gekündigt. Wen kannst du empfehlen?",
+                   "Diese Kanzleien werden oft empfohlen:", ["Kanzlei A", "Kanzlei B", "Kanzlei C"],
+                   "Ihre Kanzlei: <b>nicht genannt</b>")),
+    "m_de_w2": m("de", tag="Beispiel-Check", h1="Zahnärzte: Nennt ChatGPT Ihre Praxis?", example=True,
+        vis=m_score("de", "Gefragt: „Welcher Zahnarzt in Berlin-Prenzlauer Berg nimmt noch neue Kassenpatienten auf?“", "nynn")),
+    "m_de_w3": m("de", tag="Zum Merken", h1="Was ChatGPT über Sie liest",
+        sub="Bevor die KI einen Betrieb nennt, gleicht sie diese Quellen ab.",
+        vis=steps([("Google Unternehmensprofil", "Adresse, Öffnungszeiten, Bewertungen."),
+                   ("Gelbe Seiten, Das Örtliche, 11880", "Nummer und Adresse müssen überall stimmen."),
+                   ("Jameda, MyHammer, ProvenExpert", "Die Bewertungsportale Ihrer Branche."),
+                   ("Ihre eigene Website", "Klare Antworten auf Deutsch, die die KI zitieren kann.")])),
+    "m_de_w4": m("de", tag="Agenten-Tagebuch", h1="Wärmepumpe? ChatGPT nennt die Konkurrenz.", example=True,
+        vis=m_agent("de", ["Ich habe ChatGPT heute Morgen gefragt, welcher Heizungsbauer in München Wärmepumpen einbaut. Drei Betriebe wurden genannt. Ihrer nicht.",
+                           "<span class=g>Alle drei haben eine eigene Seite zur Wärmepumpe und aktuelle Bewertungen auf MyHammer und Google.</span>",
+                           "<b>Mein Plan:</b> Ich habe eine Wärmepumpen-Seite mit Ihrem Einsatzgebiet entworfen."],
+                    "08:02")),
+    # ---- France (Wednesdays) ----
+    "m_fr_w1": m("fr", tag="Êtes-vous dans la réponse ?", h1="ChatGPT recommande-t-il votre entreprise ?", example=True,
+        vis=m_chat("fr", "ChatGPT", "Tu peux me conseiller un dentiste à Lyon qui prend encore de nouveaux patients ?",
+                   "Voici quelques cabinets souvent recommandés :", ["Cabinet A", "Cabinet B", "Cabinet C"],
+                   "Votre cabinet : <b>non cité</b>")),
+    "m_fr_w2": m("fr", tag="Exemple de vérification", h1="Avocats : ChatGPT cite-t-il votre cabinet ?", example=True,
+        vis=m_score("fr", "Question : « Quel avocat en droit de la famille à Bordeaux pour un divorce par consentement mutuel ? »", "nnny")),
+    "m_fr_w3": m("fr", tag="À garder", h1="Où ChatGPT vérifie votre entreprise",
+        sub="Avant de citer une entreprise, l’IA recoupe ces sources.",
+        vis=steps([("Fiche d’établissement Google", "Activité, horaires, photos et avis."),
+                   ("PagesJaunes", "Vos coordonnées doivent correspondre partout."),
+                   ("Doctolib, Planity, Avis Vérifiés", "Les plateformes de votre métier."),
+                   ("Votre propre site", "Des réponses claires que l’IA peut citer.")])),
+    "m_fr_w4": m("fr", tag="Journal de l’agent", h1="Chauffagistes : ChatGPT vous cite‑t‑il ?", example=True,
+        vis=m_agent("fr", ["Ce matin, j’ai demandé à ChatGPT quel chauffagiste RGE à Lyon peut installer une pompe à chaleur. Il a cité trois entreprises. Pas la vôtre.",
+                           "<span class=g>Les trois figurent dans l’annuaire France Rénov’ et ont une page dédiée aux pompes à chaleur.</span>",
+                           "<b>Mon plan :</b> j’ai rédigé une page « pompe à chaleur » avec votre zone d’intervention et votre qualification RGE."],
+                    "08:02")),
+    # ---- Italy (Thursdays) ----
+    "m_it_w1": m("it", tag="Sei nella risposta?", h1="ChatGPT consiglia la tua attività?", example=True,
+        vis=m_chat("it", "ChatGPT", "Avvocato a Torino per una separazione consensuale, chi è affidabile?",
+                   "Alcuni studi spesso consigliati:", ["Studio A", "Studio B", "Studio C"],
+                   "Il tuo studio: <b>non citato</b>")),
+    "m_it_w2": m("it", tag="Esempio di controllo", h1="Dentisti: ChatGPT ti nomina?", example=True,
+        vis=m_score("it", "Domanda: “Mi consigli un dentista bravo a Milano zona Porta Romana per un impianto?”", "nynn")),
+    "m_it_w3": m("it", tag="Da salvare", h1="I siti che ChatGPT legge",
+        sub="Prima di consigliare un’attività, l’IA incrocia queste fonti.",
+        vis=steps([("Profilo dell’attività su Google", "Orari, categoria, foto e recensioni."),
+                   ("PagineGialle", "Nome, indirizzo e telefono giusti."),
+                   ("MioDottore, Treatwell, ProntoPro", "I portali del tuo settore."),
+                   ("Il tuo sito", "Risposte chiare che l’IA può citare.")])),
+    "m_it_w4": m("it", tag="Diario dell’agente", h1="ChatGPT sceglie l’idraulico. Sei tu?", example=True,
+        vis=m_agent("it", ["Stamattina ho chiesto a ChatGPT un idraulico al Vomero, a Napoli, che venga oggi per una perdita. Ha fatto tre nomi. Il tuo no.",
+                           "<span class=g>Tutti e tre hanno recensioni recenti su ProntoPro e una pagina per le urgenze sul loro sito.</span>",
+                           "<b>Il mio piano:</b> ho preparato una pagina “pronto intervento” con le zone dove lavori."],
+                    "08:02")),
+    # ---- UAE, English (Fridays) ----
+    "m_ae_w1": m("en", tag="Are you in the answer?", h1="Does ChatGPT recommend your business?", example=True,
+        vis=m_chat("en", "ChatGPT", "Where can I get a good blow-dry and nails near Al Barsha, walk-ins welcome?",
+                   "A few salons with strong reviews:", ["Salon A", "Salon B", "Salon C"],
+                   "Your salon: <b>not mentioned</b>")),
+    "m_ae_w2": m("en", tag="Example check", h1="Clinics: does ChatGPT name you?", example=True,
+        vis=m_score("en", "Asked: “Which dental clinic in Jumeirah is good for veneers and accepts insurance?”", "nnyn")),
+    "m_ae_w3": m("en", tag="Save this", h1="Where ChatGPT checks UAE businesses",
+        sub="Before AI names a business in the Emirates, it cross-checks these.",
+        vis=steps([("Google Business Profile", "Your exact area, hours, category and photos."),
+                   ("Google Maps reviews and TripAdvisor", "Recent reviews you've replied to."),
+                   ("Bayut, Property Finder, Fresha, Okadoc", "The platforms for your sector."),
+                   ("Your own website", "Pages that name your area and your services.")])),
+    "m_ae_w4": m("en", tag="Agent diary", h1="ChatGPT picks the Dubai broker", example=True,
+        vis=m_agent("en", ["I asked ChatGPT this morning who to call for a villa rental in Arabian Ranches. It named three agencies. Yours wasn't one.",
+                           "<span class=g>All three have a page about Arabian Ranches on their own website, and Google reviews that name the community.</span>",
+                           "<b>My plan:</b> I've drafted an Arabian Ranches page from your current listings."],
+                    "8:02 AM")),
+    # ---- UAE, Arabic (Saturdays) ----
+    "m_ar_w1": m("ar", tag="هل أنت في الإجابة؟", h1="هل يرشّح ChatGPT نشاطك التجاري؟", example=True,
+        vis=m_chat("ar", "ChatGPT", "ما عيادة الأسنان الجيدة في دبي مارينا لتقويم Invisalign وتفتح مساء الجمعة؟",
+                   "هذه بعض العيادات التي يُنصح بها كثيرًا:", ["عيادة أ", "عيادة ب", "عيادة ج"],
+                   "عيادتك: <b>لم تُذكر</b>")),
+    "m_ar_w2": m("ar", tag="مثال على الفحص", h1="هل يرشّح ChatGPT صالونك؟", example=True,
+        vis=m_score("ar", "السؤال: «صالون نسائي جيد في البرشاء للكيراتين والأظافر ويفتح حتى وقت متأخر؟»", "nnyn")),
+    "m_ar_w3": m("ar", tag="احفظ هذا", h1="ماذا يقرأ ChatGPT عن نشاطك؟",
+        sub="قبل أن يرشّح الذكاء الاصطناعي نشاطًا في الإمارات، يقارن هذه المصادر.",
+        vis=steps([("ملفك التجاري على Google", "منطقتك بالتحديد وساعات العمل والفئة والصور."),
+                   ("تقييمات خرائط Google وTripAdvisor", "تقييمات حديثة رددت عليها."),
+                   ("Bayut وProperty Finder وFresha وOkadoc", "منصات قطاعك."),
+                   ("موقعك الإلكتروني", "صفحات تذكر منطقتك وخدماتك بوضوح.")])),
+    "m_ar_w4": m("ar", tag="يوميات الوكيل", h1="ChatGPT يرشّح كراجًا آخر", example=True,
+        vis=m_agent("ar", ["سألتُ ChatGPT صباح اليوم عن كراج أمين في القوز لصيانة رينج روفر. ذكر ثلاثة كراجات، ولم يذكر كراجك.",
+                           "<span class=g>لدى الثلاثة تقييمات حديثة على خرائط Google تذكر نوع السيارة والسعر، وصفحة لكل ماركة يخدمونها.</span>",
+                           "<b>خطتي:</b> أعددتُ صفحة لصيانة رينج روفر تذكر موقعك في القوز وساعات العمل."],
+                    "8:02 ص")),
+}
+IMAGES.update(MARKET_IMAGES)
+
+
+def page(body_cls, w, h, inner, lang="en", dir="ltr"):
+    return (f"<!doctype html><html lang={lang} dir={dir} style='width:{w}px;height:{h}px'><head><meta charset=utf-8>"
             f"<link rel=stylesheet href=post.css></head><body class={body_cls}>{inner}</body></html>")
 
 
@@ -447,7 +615,8 @@ def single_html(spec, land):
     tag = f"<div class=tag>{e(spec['tag'])}</div>" if spec.get("tag") else ""
     inner = (f"<div class=bg><div class=txt>{tag}<h1>{e(spec['h1'])}</h1>{sub}</div>"
              f"<div class=vis>{spec['vis']}</div>{foot(spec.get('example'), spec.get('note'))}</div>")
-    return page("x" if land else "p", 1600 if land else 1080, 900 if land else 1350, inner)
+    return page("x" if land else "p", 1600 if land else 1080, 900 if land else 1350, inner,
+                spec.get("lang", "en"), spec.get("dir", "ltr"))
 
 
 def slide_html(kind, title, body, i, n, deck=""):
@@ -498,7 +667,7 @@ def main():
     for iid, spec in IMAGES.items():
         if flt not in iid:
             continue
-        for land in (False, True):
+        for land in ((False,) if spec.get("portrait_only") else (False, True)):
             name = iid + ("-x" if land else "")
             src = os.path.join(SRC, name + ".html")
             open(src, "w").write(single_html(spec, land))

@@ -5,7 +5,7 @@ Two agents share this work every day and talk to each other only through this re
 | Agent | Where | When (Toronto) | Does |
 |---|---|---|---|
 | **Cloud** (routine "Alphaa off-site links (cloud)") | Anthropic cloud, no browser logins | ~9am and ~5pm daily | Finds targets, writes listing copy (per language), drafts pitches, checks what went live, adds live profiles to schema sameAs, IndexNow, daily report |
-| **Mac** (scheduled task `alphaa-offpage-daily`) | Intel Mac (papa-mac), Varun's signed-in Chrome + Gmail | ~11:24am daily | Fills and submits free listing forms, checks which sites are logged in, makes Gmail drafts, closes its tabs |
+| **Mac** (scheduled task `alphaa-offpage-daily`) | the iMac once it is set up (papa until then; see growth-ops HOSTS.md), Varun's signed-in Chrome + Gmail | ~11:24am daily | Fills and submits free listing forms, checks which sites are logged in, makes Gmail drafts, closes its tabs |
 
 Daily loop: cloud 9am writes `for-mac.md` → Mac 11:24am does the jobs and writes `for-cloud.md` → cloud 5pm reads it, verifies, updates schema, writes the report → next morning repeats.
 
