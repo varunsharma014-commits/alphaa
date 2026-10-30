@@ -1,3 +1,5 @@
+> **Partly superseded (2026-10-30):** there is no trial (paid only since 2026-09-24; the free check at /start is the trial). Read every "trial" below as "paid signup". Focus is US + Canada first; UK/EU/UAE pages get paid ads only (`marketing/ads/markets-ads-copy.md`).
+
 # 1,000 Customers by Dec 31, 2026 — Master Execution Plan
 
 > v1.0 — 2026-07-14. Owner: founder + Claude automation. Pricing: $99/mo Starter ($199 Pro), 14-day **card-upfront** trial, free 60-second scan at alphaa.app/scan as the wedge.

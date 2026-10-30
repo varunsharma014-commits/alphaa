@@ -23,7 +23,7 @@
 > One thing from your report worth acting on regardless of any tool: {{top_issue_plain_english — e.g. "your site has no structured data, so AI engines can't confirm what you do or where"}}. Your web person can fix that in an afternoon. The other gaps are in the report.
 
 **Touch 3 — the soft close (day 7–8):**
-> Last note from me, {{first_name}}. If you'd rather this whole problem just be handled: Alphaa fixes those signals automatically — $99/mo, 14-day trial, cancel anytime, and we never guarantee rankings because nobody honestly can. Either way the report stays live. Good luck out there.
+> Last note from me, {{first_name}}. If you'd rather this whole problem just be handled: Alphaa fixes those signals automatically — $99/mo, month to month, 7-day refund, and we never guarantee rankings because nobody honestly can. Either way the report stays live. Good luck out there.
 
 **Rules:** no pitch in the connection note beyond the scan offer; never send a third message if two went unanswered AND unopened; log everything in a simple sheet (name, firm, stage, scan URL, outcome).
 

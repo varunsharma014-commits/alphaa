@@ -15,7 +15,7 @@
 
 | Item | Setting |
 |---|---|
-| Prospecting | ~$700/mo (~$23/day). One campaign, one broad ad set: US + Canada, age 30 to 65, Advantage+ audience, no interest stacks (creative is the targeting). Advantage+ placements, exclude Audience Network. |
+| Prospecting | ~$700/mo (~$23/day). One campaign, one broad ad set: US + Canada excluding Quebec (Quebec ads must be in French, Bill 96), age 30 to 65, Advantage+ audience, no interest stacks (creative is the targeting). Advantage+ placements, exclude Audience Network. |
 | Retargeting | ~$300/mo (~$10/day). Separate campaign, audiences below. Frequency cap watch: if 7-day frequency > 4, add creative or trim budget. |
 | Optimization event | `Lead`. In code it fires on `/start` when the visitor enters their email to get the report (`StartAgent.tsx`, same moment as GA4 `scan_completed`) and on submit of the legacy `/scan` form (the `/for/` pages use that one). |
 | Other pixel events in code | `ViewContent` (scan results), `InitiateCheckout` (Start today, value 99), `StartTrial` (dashboard `?upgraded=true`, i.e. paid). Use `StartTrial` as the purchase signal for check-to-paid reporting. |

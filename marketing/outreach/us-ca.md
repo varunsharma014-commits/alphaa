@@ -3,7 +3,7 @@
 4 emails, plain text, one ask each. Body 100-130 words (footer excluded). Read `README.md` first: segments, which scans you may use, compliance.
 
 **Before any Canadian send:** the address must pass CASL's conspicuous-publication test (published by the person on their own site, no "no unsolicited email" notice next to it, offer relevant to their role). Keep `{{source_url}}` + date + screenshot. Addresses from directories, scrapers or pattern-guessing tools: US only, never Canada.
-**Quebec:** send in French (adapt `fr.md`, prices in USD) or skip. Don't send English-only cold email into Quebec without checking the French-language rules with counsel.
+**Quebec: excluded (Varun, 2026-10-30).** Remove every Quebec address from the list (province = QC, or a Quebec phone area code 418/438/450/514/579/581/819/873). Quebec's French-language law (Bill 96) expects commercial messages in French and its privacy law (Law 25) is stricter. Revisit with a Quebec-French version only if Canada proves out.
 Prices are USD for both countries ($99 / $199 / $299).
 
 ## Merge fields

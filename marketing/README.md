@@ -29,14 +29,14 @@
         ┌────────────┴────────────┐
         ▼                         ▼
      SIGNUP                 scan-lead email nurture
-   (14-day trial)          (day 0/2/5/9 — see email-flows.md)
+   (paid, no trial)        (day 0/2/5/9 — see email-flows.md)
         │                         │
         ▼                         └──► back to signup
   ACTIVATION EMAILS
   (welcome → connect-Google nudges → day-7 recap)
         │
         ▼
-   TRIAL → PAID ($99 Starter / $199 Pro)
+   PAID ($99 Starter / $199 Pro / $299 Full Service)
 ```
 
 ## Who/what runs each piece
@@ -44,7 +44,7 @@
 | Piece | Runs how | Cadence | Human time |
 |---|---|---|---|
 | Free scan + results | Automated (`/api/scan`) | Always on | 0 |
-| Lifecycle emails (welcome, trial-ending, weekly recap) | Automated in code (Clerk webhook + crons) | Always on | 0 |
+| Lifecycle emails (welcome, weekly briefing, monthly recap) | Automated in code (Clerk webhook + crons) | Always on | 0 |
 | GBP posts / weekly reports for customers | Automated (crons) | Always on | 0 |
 | Scan-lead nurture | ⚠️ NOT automated yet (see email-flows.md) | — | Blocked on unsubscribe infra |
 | Google Ads | Human launches, then weekly review | Weekly 15 min | Founder |
@@ -59,7 +59,7 @@
 |---|---|---|
 | Visitor → scan started | ≥ 8% | Scan is zero-friction (no signup, 60s) |
 | Scan → signup | ≥ 25% | Results page shows the gap + CTA |
-| Trial → paid | ≥ 40% | Autopilot value visible in week 1 (posts published, score tracked) |
+| Signup → paid | ≥ 40% | Autopilot value visible in week 1 (posts published, score tracked) |
 | CAC (blended paid) | ≤ $300 | ≈ 3-month payback at $99/mo |
 | CPC ceiling | ≤ $8 | Above this, unit math breaks at 8%/25% rates |
 | LTV assumption | ~$1,200–$1,800 | $99–$199/mo × assumed 12–15 mo retention (⚠️ unproven — revisit at 6 months of churn data) |

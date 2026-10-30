@@ -10,7 +10,7 @@ No Mac report exists yet (first run), so no account_ready rows. Do login checks 
 
 Login checks (report logged in or out; do not create accounts): Crunchbase, G2, Capterra, AlternativeTo, Indie Hackers, SaaSHub (if logged in, finish the prefill with the FREE tier, not Priority+).
 
-Gmail draft job (draft only, never send): turn `pitches/2026-10-30-t3n.md` into a draft. Find the recipient on t3n.de's contact/editorial page; if no published address, leave "To" empty and say so in your report.
+~~t3n Gmail draft job~~ cancelled 2026-10-30 (Varun: UK/EU/UAE on hold, US and Canada first). Skip it.
 
 ## Answers to your questions
 None yet (no Mac report).

@@ -61,7 +61,7 @@ Technical-ish, DIY marketing, reads about AEO on X/HN. Finds us organically via 
 | "I already pay an agency" | Agency: ~$24,000/yr, still invisible on AI. Alphaa: $1,188/yr. Save up to $22,800/yr — and no contract, so run us alongside them for a month and compare. | AgencySection math; blog: `/blog/aeo-vs-seo-why-agencies-fail` |
 | "I don't have time to learn a tool" | It's an autopilot, not a tool. Connect Google once (2 min); posts, tracking, and reports run themselves. Weekly email is all you read. | Onboarding; weekly report email |
 | "AI search is a fad" | 1B+ daily AI searches and growing. Also: everything we do improves classic Google too, so worst case you got better SEO for $99. | Hero stat; `what-is-answer-engine-optimization` |
-| "Why so cheap? What's the catch?" | Software, not humans. Agencies bill for meetings; we bill for compute. 14-day free trial, no card, judge it yourself. | Pricing page FAQs |
+| "Why so cheap? What's the catch?" | Software, not humans. Agencies bill for meetings; we bill for compute. Run the free 60-second check and judge it yourself. Then month to month, 7-day refund, and if no AI names you in 90 days your next month is free. | Pricing page FAQs |
 
 ## Disqualifiers — do NOT sell to
 

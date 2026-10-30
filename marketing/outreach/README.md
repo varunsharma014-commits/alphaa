@@ -10,7 +10,7 @@ Motion, unchanged: run the prospect's check first, then write only about what th
 
 | File | Market | Channel |
 |---|---|---|
-| `us-ca.md` | US + Canada (English) | Cold email, 4 steps |
+| `us-ca.md` | US + Canada excluding Quebec (English) | Cold email, 4 steps. **Start here: US and Canada are the only cold-email markets for now (2026-10-30).** |
 | `uk.md` | UK (UK English) | Cold email, 4 steps, limited companies and LLPs only |
 | `fr.md` | France (French) | Cold email, 4 steps, professional addresses only |
 | `ae.md` | UAE (English + Arabic) | Email, 4 steps, consent or counsel sign-off required first |
@@ -26,9 +26,10 @@ Motion, unchanged: run the prospect's check first, then write only about what th
 4. **Agent voice and outcome CTAs.** Alphaa is "an AI Agent", never a tool/platform/engine. Asks name the outcome ("get {{business_name}} named by ChatGPT"), never "Hire me", "Start today", "Start free" or "Sign up".
 5. **A real person sends.** v1 signed as the founder in the copy. v2 uses `{{sender_name}}` so any real person on the team can send from their own inbox.
 6. **Segments by what the check found** (A/B/C, plus D = do not send). v1 had only "rival named" or "(B) not named".
-7. **Six markets, not one.** Local prices (USD, EUR, GBP, AED), local wording, and a compliance verdict per country. Germany and Italy get no cold email at all.
-8. **No em dashes, no "#1"/"best", no invented stats** (v1's "$22,800/yr back" and the yield estimates are gone).
-9. **Opens are not tracked.** No tracking pixels anywhere (the CNIL says pixels need consent; they also hurt deliverability). Track replies and report-link visits only.
+7. **US and Canada first (Varun, 2026-10-30).** UK, France, Germany, Italy and the UAE get paid ads to their local pages only (`marketing/ads/markets-ads-copy.md`); their files here are ready for later. Quebec is excluded.
+8. **Six markets, not one.** Local prices (USD, EUR, GBP, AED), local wording, and a compliance verdict per country. Germany and Italy get no cold email at all.
+9. **No em dashes, no "#1"/"best", no invented stats** (v1's "$22,800/yr back" and the yield estimates are gone).
+10. **Opens are not tracked.** No tracking pixels anywhere (the CNIL says pixels need consent; they also hurt deliverability). Track replies and report-link visits only.
 
 ## Which scans you may use (read before building a batch)
 

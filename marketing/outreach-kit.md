@@ -82,7 +82,7 @@ Merge fields: `{{first_name}}` `{{business_name}}` `{{city}}` `{{vertical_noun}}
 >
 > One honest caveat: nobody can guarantee AI rankings, and anyone who does is lying to you. What we do is fix the signals engines read and show you the measured change, every week, in plain English.
 >
-> 14-day trial: https://alphaa.app/signup — or just re-read your report first: {{scan_url}}
+> From $99/mo, month to month: https://alphaa.app/signup — or just re-read your report first: {{scan_url}}
 >
 > — Varun
 
@@ -134,7 +134,7 @@ Expected yield *(est., benchmark ranges for hyper-personalized scan-led B2SMB)*:
 
 | Reply type | Move |
 |---|---|
-| **Positive / "tell me more"** | Answer in-thread same day, plain text. Give the 2–3 concrete fixes from their scan free, THEN: "Or Alphaa just does all of it — 14-day trial, cancel anytime." Only offer a call if they ask; this is a $99 product, not a demo sale. |
+| **Positive / "tell me more"** | Answer in-thread same day, plain text. Give the 2–3 concrete fixes from their scan free, THEN: "Or Alphaa just does all of it — month to month, 7-day refund." Only offer a call if they ask; this is a $99 product, not a demo sale. |
 | **"How much / what do I get"** | One-paragraph answer + pricing link. No PDF decks. |
 | **"How did you get my email?"** | Honest: "Your address is public on {source}. I ran your scan because the result seemed worth telling you about. One click below and you'll never hear from me again." Converts surprisingly often; suppress if they ask. |
 | **"We have an agency"** | "Keep them — run Alphaa alongside for a month and compare what each finds. That comparison is kind of the point." Link the agency-math blog post. |

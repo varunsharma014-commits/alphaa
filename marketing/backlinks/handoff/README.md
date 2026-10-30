@@ -22,6 +22,7 @@ Daily loop: cloud 9am writes `for-mac.md` → Mac 11:24am does the jobs and writ
 - Cloud: adds `todo` rows; `submitted` → `live`; `live` → notes "sameAs added"; `skipped` for dead/paid-only sites.
 - Mac: `todo`/`needs_account` → `account_ready` (session found) → `prefilled` → `submitted`.
 - Varun: creates accounts, does CAPTCHAs / phone checks / payments, sends emails.
+- `hold` (Varun only): paused. Nobody researches, prefills or pitches a `hold` row. Since 2026-10-30 every UK/DE/FR/IT/UAE row is on hold: **US and Canada sites first**; local markets get paid ads only. Don't add new non-US/CA rows until Varun lifts it.
 
 ## Git rules (both agents)
 - `git pull --rebase origin main` before editing and again before pushing. Push straight to main (solo repo).

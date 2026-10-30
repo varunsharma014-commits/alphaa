@@ -4,7 +4,7 @@
 
 ## Setup (founder action; no ad account was touched)
 
-- Budget ~$800/mo (~$26/day). Search network only (no Display, no Search Partners). Geo US + Canada, "Presence". English.
+- Budget ~$800/mo (~$26/day). Search network only (no Display, no Search Partners). Geo US + Canada, excluding Quebec (Quebec ads must be in French, Bill 96), "Presence". English.
 - Bidding: Maximize Clicks with an $8 max CPC cap until ~30 conversions, then Maximize Conversions.
 - Primary conversion: GA4 `scan_completed` (fires on `/start` when the email is entered). Secondary: `trial_start` (paid). Import both from GA4.
 - Tracking template (account level): `{lpurl}?utm_source=google&utm_medium=cpc&utm_campaign={_campaign}&utm_content={adgroupid}&utm_term={keyword}` with a `{_campaign}` custom parameter per campaign.
