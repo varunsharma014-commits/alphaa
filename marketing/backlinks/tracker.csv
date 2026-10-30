@@ -34,12 +34,12 @@ Microlaunch,https://microlaunch.net,todo,,Free or $39; week 4
 WordPress.org plugin directory,https://wordpress.org/plugins/developers/add/,todo,,Free; week 4; submit alphaa-connector
 Futurepedia,https://futurepedia.io,todo,,$497 verified; optional; decide week 4
 Add sameAs links to Organization schema,https://alphaa.app,todo,,src/app/layout.tsx; add each live profile URL; week 4
-OMR Reviews (DE),https://omr.com/en/reviews,todo,,Market DE; free vendor profile; German copy from copy/de.md
+OMR Reviews (DE),https://omr.com/en/reviews,todo,,"Market DE; free vendor profile; German copy from copy/de.md; 2026-10-30 cloud: basic profile is free (omr.com/en/reviews/b2b/pricing, paid tiers add review campaigns; skip them). Use copy/de.md"
 Capterra.de / GetApp.de (DE),https://www.capterra.com.de,todo,,Market DE; same Gartner/G2 vendor listing as Capterra row; add German description
 trusted.de (DE),https://trusted.de,todo,,Market DE; check free listing
-Appvizer (FR),https://www.appvizer.fr,todo,,Market FR; free vendor listing; French copy from copy/fr.md
+Appvizer (FR),https://www.appvizer.fr,todo,,"Market FR; free vendor listing; French copy from copy/fr.md; 2026-10-30 cloud: free basic listing reported by JDN/Le Monde Informatique but selective; vendor page not confirmed, check live form. copy/fr.md not written yet"
 Trustpilot local reviews (UK/FR/IT/DE),https://business.trustpilot.com/signup,todo,,One Trustpilot profile covers all markets; depends on the Trustpilot row
-MAGNiTT (AE),https://magnitt.com,todo,,Market AE; free startup database profile
+MAGNiTT (AE),https://magnitt.com,todo,,"Market AE; free startup database profile; 2026-10-30 cloud: free account + company profile reported (helpdesk.magnitt.com step-1 registration, email verification needed); current terms unconfirmed"
 Wamda (AE),https://www.wamda.com,todo,,Market AE; press pitch draft (pitches/); English + Arabic
 Startups.co.uk (UK),https://startups.co.uk,todo,,Market UK; press pitch draft
 t3n / Deutsche Startups (DE),https://t3n.de,todo,,Market DE; press pitch draft in German
