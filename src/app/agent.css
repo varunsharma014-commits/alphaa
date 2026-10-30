@@ -711,3 +711,20 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .lc-rtl, .lc-rtl h1, .lc-rtl h2, .lc-rtl h3 { letter-spacing: 0; }
 .lc-rtl .ag-hero__big::after { content: "←"; }
 .lc-rtl .ag-hero__big:hover::after { transform: translateX(-3px); }
+
+/* Local guides (/de/ratgeber/…) */
+.lg { max-width: 720px; margin: 0 auto; padding: 110px 16px 80px; color: var(--ag-fg); }
+.lg__by { color: var(--ag-muted); font-size: 14px; margin: 14px 0 26px; }
+.lg__by a { color: var(--ag-link); }
+.lg__answer { font-size: 19px; line-height: 1.6; padding: 18px 20px; background: var(--ag-bg2); border-radius: 14px; margin: 0 0 22px; }
+.lg__take { margin: 0 0 30px; padding-inline-start: 20px; line-height: 1.6; }
+.lg h2 { font-size: 26px; letter-spacing: -0.01em; margin: 40px 0 12px; }
+.lg h3 { font-size: 18px; margin: 22px 0 6px; }
+.lg p, .lg li { font-size: 17px; line-height: 1.7; }
+.lg ul { padding-inline-start: 20px; }
+.lg__cta { margin: 44px 0 0; text-align: center; }
+.lc-rtl .lg { text-align: right; }
+
+.lc-guides { max-width: 760px; margin: 44px auto 0; text-align: start; }
+.lc-guides h3 { font-size: 17px; margin: 0 0 10px; }
+.lc-guides a { display: block; color: var(--ag-link); font-size: 16px; padding: 8px 0; border-bottom: 1px solid var(--ag-line); }

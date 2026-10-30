@@ -4,7 +4,9 @@ import { VERTICALS } from "@/content/verticals"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
 import { COMPARES, COMPARE_CHECKED } from "@/content/compare"
 import { INTEGRATIONS, INTEGRATIONS_CHECKED } from "@/content/integrations"
-import { HREFLANG, LOCALE_LIST, MARKETS } from "@/content/locales"
+import { HREFLANG, LOCALE_LIST, MARKETS, type LocaleKey } from "@/content/locales"
+import { GUIDES } from "@/content/markets/guides"
+import { tradeAlternates } from "@/content/markets/equivalents"
 
 const BASE_URL = "https://alphaa.app"
 
@@ -23,7 +25,7 @@ const PAGE_UPDATED: Record<string, string> = {
   "/case-studies": "2026-10-29",
   "/refer": "2026-10-29",
   "/author/varun-sharma": "2026-10-29",
-  "/markets": "2026-10-29", // the /uk /de /fr /it /ae pages
+  "/markets": "2026-10-30", // the /uk /de /fr /it /ae /ae/ar pages
 }
 const updated = (path: string) => new Date(PAGE_UPDATED[path])
 
@@ -81,13 +83,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: Object.fromEntries(Object.entries(HREFLANG).map(([k, v]) => [k, `${BASE_URL}${v === "/" ? "" : v}`])) },
     })),
     ...Object.values(MARKETS).flatMap((m) =>
-      m.extra.industries.map((i) => ({
-        url: `${BASE_URL}${m.copy.path}/${i.slug}`,
-        lastModified: updated("/markets"),
-        changeFrequency: "monthly" as const,
-        priority: 0.8,
-      })),
+      m.extra.industries.map((i) => {
+        const alt = tradeAlternates(m.copy.key, i.slug)
+        return {
+          url: `${BASE_URL}${m.copy.path}/${i.slug}`,
+          lastModified: updated("/markets"),
+          changeFrequency: "monthly" as const,
+          priority: 0.8,
+          ...(alt ? { alternates: { languages: Object.fromEntries(Object.entries(alt).map(([k, v]) => [k, `${BASE_URL}${v}`])) } } : {}),
+        }
+      }),
     ),
+    ...(Object.keys(GUIDES) as LocaleKey[]).flatMap((k) => {
+      const g = GUIDES[k]
+      const base = `${BASE_URL}${MARKETS[k].copy.path}/${g.base}`
+      return [
+        { url: base, lastModified: updated("/markets"), changeFrequency: "monthly" as const, priority: 0.6 },
+        ...g.guides.map((x) => ({ url: `${base}/${x.slug}`, lastModified: new Date(x.date), changeFrequency: "monthly" as const, priority: 0.7 })),
+      ]
+    }),
     { url: `${BASE_URL}/impressum`, lastModified: updated("/markets"), changeFrequency: "yearly" as const, priority: 0.2 },
     {
       url: `${BASE_URL}/start`,

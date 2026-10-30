@@ -4,6 +4,8 @@ import type { Metadata } from "next"
 import { Noto_Sans_Arabic } from "next/font/google"
 import type { Market } from "@/content/markets/types"
 import { MARKETS } from "@/content/locales"
+import { tradeAlternates } from "@/content/markets/equivalents"
+import { GUIDES } from "@/content/markets/guides"
 
 const arabic = Noto_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "600", "700"], display: "swap" })
 const SITE = "https://alphaa.app"
@@ -12,11 +14,9 @@ function find(m: Market, slug: string) {
   return m.extra.industries.find((i) => i.slug === slug)
 }
 
-// The UAE pages exist in English and Arabic with the same slugs, so those two
-// point at each other; other markets have one language each.
+// The same trade in other markets and languages (src/content/markets/equivalents.ts).
 function languages(m: Market, slug: string): Record<string, string> | undefined {
-  if (m.copy.key !== "ae" && m.copy.key !== "ar") return undefined
-  return { "en-AE": `/ae/${slug}`, "ar-AE": `/ae/ar/${slug}` }
+  return tradeAlternates(m.copy.key, slug)
 }
 
 export function industryParams(m: Market) {
@@ -27,7 +27,9 @@ export function industryMeta(m: Market, slug: string): Metadata {
   const ind = find(m, slug)
   if (!ind) return { title: "Not found" }
   const path = `${m.copy.path}/${ind.slug}`
-  const og = `${SITE}/og?title=${encodeURIComponent(ind.h1)}&eyebrow=${encodeURIComponent(m.copy.country)}`
+  // The preview-card renderer has no Arabic font, so Arabic pages get the English card.
+  const card = m.copy.lang.startsWith("ar") ? MARKETS.ae.extra.industries.find((i) => i.slug === slug) ?? ind : ind
+  const og = `${SITE}/og?title=${encodeURIComponent(card.h1)}&eyebrow=${encodeURIComponent(m.copy.lang.startsWith("ar") ? "United Arab Emirates" : m.copy.country)}`
   return {
     title: { absolute: `${ind.title} | Alphaa` },
     description: ind.description,
@@ -122,6 +124,12 @@ export function LocalIndustry({ m, slug }: { m: Market; slug: string }) {
         </div>
         <div className="ag-hero__cta" style={{ marginTop: 36 }}>
           <Link className="ag-hero__big" href={`${l.path}#check`}>{m.extra.industryCta}</Link>
+        </div>
+        <div className="lc-guides">
+          <h3>{GUIDES[l.key].label}</h3>
+          {GUIDES[l.key].guides.map((g) => (
+            <Link key={g.slug} href={`${l.path}/${GUIDES[l.key].base}/${g.slug}`}>{g.h1} ›</Link>
+          ))}
         </div>
         <p className="lc-en"><Link href={l.path}>{m.extra.backToMarket}</Link></p>
       </section>

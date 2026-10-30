@@ -19,6 +19,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "*", allow: "/", disallow: PRIVATE },
       { userAgent: AI_SEARCH_BOTS, allow: ["/", "/llms.txt", "/compare/"], disallow: PRIVATE },
     ],
-    sitemap: "https://alphaa.app/sitemap.xml",
+    sitemap: ["https://alphaa.app/sitemap.xml", ...["uk", "de", "fr", "it", "ae", "ar"].map((k) => `https://alphaa.app/sitemaps/${k}.xml`)],
   }
 }

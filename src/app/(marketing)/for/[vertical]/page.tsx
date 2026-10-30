@@ -1,3 +1,4 @@
+import { tradeAlternates } from "@/content/markets/equivalents"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
@@ -39,7 +40,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: `/for/${v.slug}` },
+    alternates: { canonical: `/for/${v.slug}`, ...(tradeAlternates("us", v.slug) ? { languages: tradeAlternates("us", v.slug) } : {}) },
     openGraph: { title, description, type: "website", url: `https://alphaa.app/for/${v.slug}`, images: ogImage(title, "For " + displayPlural(v.plural)) },
     twitter: { card: "summary_large_image", images: ogImage(title).map((x) => x.url) },
   }

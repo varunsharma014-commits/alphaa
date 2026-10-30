@@ -4,7 +4,8 @@ import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
 import { HeroCta } from "@/components/marketing/hero/HeroCta"
 import { HeroArrows } from "@/components/marketing/hero/HeroArrows"
 import { StartAgent } from "@/components/agent/StartAgent"
-import { pageMeta } from "@/lib/seo"
+import { pageMeta, ogImage } from "@/lib/seo"
+import { GUIDES } from "@/content/markets/guides"
 import { HREFLANG, type LocaleCopy } from "@/content/locales"
 import type { Market } from "@/content/markets/types"
 import { MARKET_CURRENCY, AMOUNTS, formatPrice, type MarketKey } from "@/content/markets/prices"
@@ -18,6 +19,12 @@ const SITE = "https://alphaa.app"
 
 export function localMeta(l: LocaleCopy) {
   const base = pageMeta({ title: l.title, absolute: true, description: l.description, path: l.path, eyebrow: l.country })
+  // The preview-card renderer has no Arabic font: Arabic pages share the English card.
+  if (l.lang.startsWith("ar")) {
+    const card = ogImage("Get Recommended by ChatGPT in the UAE", "United Arab Emirates")
+    base.openGraph = { ...base.openGraph, images: card }
+    base.twitter = { ...base.twitter, images: card.map((c) => c.url) } as typeof base.twitter
+  }
   return {
     ...base,
     alternates: { canonical: l.path, languages: HREFLANG },
@@ -154,6 +161,12 @@ export function LocalHome({ m }: { m: Market }) {
               <summary>{f.q}</summary>
               <p>{f.a}</p>
             </details>
+          ))}
+        </div>
+        <div className="lc-guides">
+          <h3>{GUIDES[l.key].label}</h3>
+          {GUIDES[l.key].guides.map((g) => (
+            <Link key={g.slug} href={`${l.path}/${GUIDES[l.key].base}/${g.slug}`}>{g.h1} ›</Link>
           ))}
         </div>
         <p className="lc-en">
