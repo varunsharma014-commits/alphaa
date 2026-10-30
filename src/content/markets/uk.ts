@@ -12,7 +12,7 @@ export const market: Market = {
       "Alphaa is an AI Agent that gets UK businesses recommended by ChatGPT, Gemini, Claude and Perplexity. I do the work; you tap approve. Free 60-second check.",
     h1a: "Get customers from",
     h1b: "Your AI Agent does the work.",
-    sub: "When someone in Manchester, Leeds or Bristol asks AI who to ring, it names a business. I make sure it can name yours, then tell you exactly what I did.",
+    sub: "Your customers in Manchester, Leeds or Bristol ask ChatGPT who to ring. It names someone. If it isn’t you, I find out why, fix it, and tell you exactly what I did.",
     cta: "Check my business — free",
     guarantee: ["If no AI names you within 90 days,", "your next month is free."],
     fine: "No card needed. I check ChatGPT, Gemini, Claude and Perplexity.",

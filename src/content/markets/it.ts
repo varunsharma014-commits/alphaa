@@ -12,7 +12,7 @@ export const market: Market = {
       "Alphaa è un agente IA che fa consigliare la tua attività da ChatGPT, Gemini, Claude e Perplexity. Lui lavora, tu approvi. Controllo gratuito in 60 secondi.",
     h1a: "Nuovi clienti da",
     h1b: "Il tuo agente IA fa il lavoro al posto tuo.",
-    sub: "Quando qualcuno a Milano, Roma o Napoli chiede a ChatGPT “chi mi consigli?”, faccio in modo che nella risposta ci sia la tua attività. Poi ti dico esattamente cosa ho fatto.",
+    sub: "I tuoi clienti a Milano, Roma o Napoli chiedono a ChatGPT chi chiamare. ChatGPT fa un nome. Se non è il tuo, scopro perché, lo sistemo e ti dico esattamente cosa ho fatto.",
     cta: "Controlla la mia attività gratis",
     guarantee: ["Se nessuna IA ti nomina entro 90 giorni,", "il mese successivo non lo paghi."],
     fine: "Nessuna carta richiesta. Controllo ChatGPT, Gemini, Claude e Perplexity.",

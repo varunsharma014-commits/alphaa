@@ -18,21 +18,21 @@ export function RevenueSection() {
       tone: "lavender" as const,
       step: "Save on ads",
       title: "Skip the Google Ads bidding war.",
-      body: "Stop paying $15 a click to fight for attention on Google. When an AI recommends you as the “best local option,” you get organic trust that money can’t buy.",
+      body: "Stop paying for every click to fight for attention on Google. When an AI names you as a good local option, that recommendation isn’t for sale. It has to be earned, and I do the earning.",
       art: <div className="ap-price-chip"><b>$0</b><span>per click</span><em>AI recommendations aren’t auctioned</em></div>,
     },
     {
       tone: "sky" as const,
       step: "Ready to hire",
-      title: "Capture high-intent buyers.",
-      body: `People asking Perplexity or Gemini for “the best HVAC contractor near me” are looking to hire someone today. ${A} works to put you in that answer.`,
+      title: "Reach people ready to book today.",
+      body: `People asking Perplexity or Gemini for “the best HVAC contractor near me” are looking to hire someone today. I work to put you in that answer.`,
       art: <ChatAnswer engine="Perplexity" q="Best HVAC contractor near me?" name="Desert Air Heating & Cooling" rest=" — same-day service, 4.9★ from 380 reviews." />,
     },
     {
       tone: "sage" as const,
       step: "The end goal",
-      title: "More calls, more bookings, more foot traffic.",
-      body: `The goal isn’t better metrics. It’s a ringing phone. Businesses using ${A} report more inbound calls and appointments within weeks of their first AI mention.`,
+      title: "The goal is a ringing phone.",
+      body: `Not better metrics: a customer who calls because ChatGPT gave them your name. When you connect Google Analytics, I count the visitors AI sends you, so you can see it for yourself.`,
       art: (
         <Phone>
           <IncomingCall from="New customer" sub="“ChatGPT said you’re the best in town.”" />
@@ -79,8 +79,8 @@ export function RevenueSection() {
 // ── 2. "Does the to-dos": accordion that swaps the phone shot ────────────────
 const TODOS = [
   {
-    title: "It checks what AI says about you.",
-    body: `Every week, ${A} asks ChatGPT, Gemini, Claude and Perplexity the exact questions your customers ask — then tells you who got recommended: you, or the shop down the street.`,
+    title: "I check what AI says about you.",
+    body: `Every week I ask ChatGPT, Gemini, Claude and Perplexity the exact questions your customers ask, then tell you who got recommended: you, or the shop down the street.`,
     art: (
       <Phone>
         <AgentNote title="Good morning." body="I asked ChatGPT for the “best dentist near Zilker.” It named 3 clinics. You weren’t one. Here’s why — and what I’m doing to fix it." />
@@ -89,8 +89,8 @@ const TODOS = [
     ),
   },
   {
-    title: "It writes what the AI needs to read.",
-    body: `${A} builds the answers, facts and pages AI checks before it recommends anyone. It writes them, places them and keeps them current.`,
+    title: "I write what AI needs to read.",
+    body: `I build the answers, facts and pages AI checks before it recommends anyone. I write them, place them and keep them current.`,
     art: (
       <Phone>
         <AgentNote title="New page ready" body="I wrote a page answering “Do you take Delta Dental?” — the #2 question in your area." actions={["Publish", "Edit"]} />
@@ -114,7 +114,7 @@ export function TodoAccordion() {
   return (
     <section className="ap-sec">
       <h2 className="ap-h2 ap-center">Most tools give you a to-do list.<br /><span className="ap-quiet">{A}’s AI Agent does them for you.</span></h2>
-      <p className="ap-lead ap-center">Marketing tools show you a complicated dashboard and leave you to figure it out. {A} reads, writes, fixes and publishes — then tells you exactly what it did, in plain English.</p>
+      <p className="ap-lead ap-center">Marketing tools hand you a dashboard and leave you to figure it out. I read, write, fix and publish, then tell you exactly what I did, in plain English.</p>
       <div className="ap-feature">
         <div className="ap-acc">
           {TODOS.map((t, i) => (
@@ -143,7 +143,7 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
     eyebrow: "No new software",
     title: "If you can tap “Approve,” you can use it.",
     body: "There’s no massive dashboard to memorize.",
-    more: `${A} messages you like a person would. Read it, tap Approve or Edit, done.`,
+    more: `I message you like a person would. Read it, tap Approve or Edit, done.`,
     tone: "mist",
     art: <AgentNote title="Post this to Google?" body="“Now booking same-week cleanings — call or book online.”" actions={["Approve", "Edit"]} />,
   },
@@ -151,7 +151,7 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
     eyebrow: "The tech, handled",
     title: "The technical stuff? Not your problem.",
     body: "You don’t need to learn any of it.",
-    more: `${A} checks 23 things AI reads on your site — whether AI can get in, your business facts, reviews, service pages — and fixes what it can for you.`,
+    more: `I check 23 things AI reads on your site (whether AI can get in, your business facts, reviews, service pages) and fix what I can for you.`,
     tone: "sky",
     art: <Checklist rows={[{ label: "AI can read your site", ok: true }, { label: "Address, phone and hours clear", ok: true }, { label: "Summary for AI assistants", ok: true }, { label: "Reviews AI can read", ok: true }]} />,
   },
@@ -166,7 +166,7 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
   {
     eyebrow: "Month to month",
     title: "No contract. Cancel in two clicks.",
-    body: "It keeps its job only if the AIs keep saying your name.",
+    body: "I keep my job only if the AIs keep saying your name.",
     more: "No minimum term and no exit fees. From $99 a month.",
     tone: "sage",
     art: <div className="ap-price-chip"><b>$99</b><span>/month</span><em>Cancel anytime</em></div>,
@@ -175,7 +175,7 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
     eyebrow: "Works with your site",
     title: "Keep your website. Keep your host.",
     body: "WordPress, Shopify, Webflow — or anything else.",
-    more: `${A} never needs your passwords. It connects to WordPress, Shopify and Webflow with one secure approval (Wix is coming soon) and hands your web person exact instructions for anything else.`,
+    more: `I never need your passwords. I connect to WordPress, Shopify and Webflow with one secure approval (Wix is coming soon) and hand your web person exact instructions for anything else.`,
     tone: "lavender",
     art: <ChatAnswer q="Who does emergency plumbing in Austin?" name="Lone Star Plumbing" rest=" — open 24/7, licensed, 4.8★." />,
   },
@@ -198,7 +198,7 @@ export function EasyRail() {
   return (
     <section className="ap-sec ap-sec--grey">
       <h2 className="ap-h2 ap-center">Zero technical skills required.<br /><span className="ap-quiet">Your AI Agent does the work for you.</span></h2>
-      <p className="ap-center" style={{ marginTop: 18 }}><Link href="/how-it-works" className="ap-link" style={{ fontSize: 19 }}>See how it works ›</Link></p>
+      <p className="ap-center" style={{ marginTop: 18 }}><Link href="/how-it-works" className="ap-link" style={{ fontSize: 19 }}>See how I work ›</Link></p>
       <div className="ap-bento">
         <Card c={lead} wide />
         {rest.map((c) => <Card key={c.title} c={c} />)}
@@ -209,9 +209,9 @@ export function EasyRail() {
 
 // ── 4. Agency vs agent: side-by-side, prices on one line, savings right under ──
 const ROWS: [string, string, string][] = [
-  ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what it did today, what changed, what it needs from you."],
-  ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel in two clicks. It only stays if the AIs keep saying your name."],
-  ["The focus", "Google’s ten blue links. Ask about ChatGPT or Claude and watch them stumble.", "Getting you recommended by AI assistants is the only thing it does."],
+  ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what I did today, what changed, what I need from you."],
+  ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel in two clicks. I only stay if the AIs keep saying your name."],
+  ["The focus", "Google’s ten blue links. Ask about ChatGPT or Claude and watch them stumble.", "Getting you recommended by AI assistants is the only thing I do."],
 ]
 
 export function AgencyToggle() {

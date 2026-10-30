@@ -15,7 +15,7 @@ export const plans = [
       "Review monitoring",
       "Email support",
     ],
-    cta: "Start today",
+    cta: "Get recommended by AI",
     priceId: { monthly: "starter_monthly", annual: "starter_annual" },
   },
   {
@@ -36,7 +36,7 @@ export const plans = [
       "Priority chat support",
       "$149 one-time setup by a person (optional)",
     ],
-    cta: "Start today",
+    cta: "Get recommended by AI",
     priceId: { monthly: "pro_monthly", annual: "pro_annual" },
   },
   {

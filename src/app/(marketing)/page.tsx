@@ -85,7 +85,7 @@ export default function HomePage() {
         <div className="ag-hero__in">
         <h1><span className="hx-l1">Get customers from <EngineRotator /></span><br /><span className="ap-quiet">Your AI agent does the work.</span></h1>
         <p className="ag-hero__sub">
-          Meet {BRAND.agentName}: it works around the clock to get your business named when people ask AI for a recommendation, then tells you exactly what it did.
+          Your customers ask ChatGPT who to call. It names someone. If it isn’t you, I find out why, fix it, and tell you exactly what I did.
         </p>
         <div className="ag-hero__cta ag-hero__cta--big">
           <HeroCta />
@@ -110,7 +110,7 @@ export default function HomePage() {
       <AgencyToggle />
 
       <section className="ag-section ag-section--grey">
-        <h2>Hire your agent. Cancel your agency.</h2>
+        <h2>Your AI Agent. Instead of an agency.</h2>
         <p className="ag-section__sub">Everything it takes to get named by AI, done for you.</p>
         <div className="ag-price">
           <div className="ag-price__amt">$99<small>/month</small></div>

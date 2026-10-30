@@ -59,7 +59,7 @@ const CANNED: Record<string, string> = {
 }
 
 // Where the conversation runs:
-//  public — /start, a visitor; ends with "Start today" → sign up.
+//  public — /start, a visitor; ends with "Get recommended by AI" → sign up.
 //  setup  — /onboarding, just signed up; ends with checkout, no forms.
 //  resume — /onboarding, business already known; straight to checkout.
 export type StartMode = "public" | "setup" | "resume"
@@ -81,7 +81,7 @@ function greeting(mode: StartMode, name?: string, greet?: StartGreet): Message[]
           { kind: "text", text: name ? `Welcome back. I’ve got ${name} ready to go.` : "Welcome back. You’re all set up." },
           { kind: "text", text: `${localPrice()} a month. Month to month.`, big: true },
           { kind: "text", text: "Cancel anytime in two clicks — no contract. I start the day you say go." },
-          { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: CHECKOUT }, primary: true } },
+          { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: CHECKOUT }, primary: true } },
         ],
         "greet"
       ),
@@ -263,7 +263,7 @@ export function StartAgent({
       agent([
         { kind: "text", text: `${localPrice()} a month. Month to month.`, big: true },
         { kind: "text", text: `An agency charges about $2,000 a month for Google alone. Cancel anytime in two clicks — no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
-        { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: mode === "public" ? `/signup?scan=${scanId}` : CHECKOUT }, primary: true } },
+        { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: mode === "public" ? `/signup?scan=${scanId}` : CHECKOUT }, primary: true } },
         ...(mode === "public"
           ? [{ kind: "chips", items: [{ label: "Email me this report", action: { type: "ask", text: "report" }, primary: false }] } as Block]
           : []),
@@ -297,7 +297,7 @@ export function StartAgent({
         : /how much|price|cost|\$|pay|expensive/.test(t) ? CANNED["How much?"].replace("$99", localPrice())
         : /what (exactly )?(will|do|would) you|what.*do for me|how does it work/.test(t) ? CANNED["What exactly will you do?"]
         : null
-      push(agent([{ kind: "text", text: canned ?? (mode === "public" ? "Once you start I answer anything you ask here. For now — tap Start today, or email yourself the report and I’ll take it from there." : "Once you start I answer anything you ask here. Tap Start today and I begin this week.") }]))
+      push(agent([{ kind: "text", text: canned ?? (mode === "public" ? "Once you start I answer anything you ask here. For now, tap “Get recommended by AI”, or email yourself the report and I’ll take it from there." : "Once you start I answer anything you ask here. Tap “Get recommended by AI” and I begin this week.") }]))
       return
     }
 
@@ -377,7 +377,7 @@ export function StartAgent({
       window.location.href = data.url
     } catch {
       setBusy(false)
-      push(agent([{ kind: "text", text: "I couldn’t open checkout just now. Tap Start today again — or email hi@alphaa.app and we’ll set you up." }]))
+      push(agent([{ kind: "text", text: "I couldn’t open checkout just now. Tap “Get recommended by AI” again, or email hi@alphaa.app and we’ll set you up." }]))
     }
   }
 
@@ -400,7 +400,7 @@ export function StartAgent({
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
           { kind: "text", text: `If you want me to actually fix this — not just report it — start today and I begin this week. ${localPrice()} a month, cancel any time.` },
-          { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
+          { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
           {
             kind: "chips",
             items: [

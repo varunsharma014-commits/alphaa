@@ -23,6 +23,7 @@ export const guides: MarketGuides = {
         {
           h2: "Warum die KI-Empfehlung für lokale Betriebe zählt",
           paragraphs: [
+            "Ein ganz normaler Dienstagabend: Eine Kundin in Köln-Nippes fragt ChatGPT, welchen Heizungsbauer sie anrufen soll, weil die Therme nicht mehr anspringt. Die KI nennt einen Namen, vielleicht zwei. Ihrer ist nicht dabei. Die Kundin ruft dort an, und Sie erfahren nie, dass es diese Anfrage überhaupt gab. Diese Anleitung zeigt, was Sie dagegen tun können.",
             "Immer mehr Menschen tippen ihre Frage nicht mehr in Google, sondern stellen sie direkt einem KI-Assistenten. Und zwar nicht als Stichwort, sondern als ganzen Satz: „Welcher Heizungsbauer in Köln-Nippes kommt noch diese Woche?“ oder „Kannst du mir eine Zahnärztin in Hamburg-Altona empfehlen, die gut mit Angstpatienten umgeht?“",
             "Der Unterschied zur klassischen Google-Suche ist erheblich. Google zeigt zehn Treffer, eine Karte und Anzeigen; der Kunde wählt selbst. ChatGPT oder Perplexity nennen meist zwei, drei, manchmal fünf Namen, oft mit einer kurzen Begründung. Wer nicht genannt wird, existiert für diese Anfrage schlicht nicht. Fachleute nennen die Arbeit daran KI-Suchoptimierung, GEO (Generative Engine Optimization) oder AEO (Answer Engine Optimization). Der Name ist zweitrangig; entscheidend ist, dass die KI genug verlässliche Informationen über Sie findet.",
             "Die gute Nachricht: Fast alles, was dafür nötig ist, können Sie selbst erledigen. Die folgenden Schritte sind so geordnet, dass die wirkungsvollsten zuerst kommen.",
@@ -63,6 +64,11 @@ export const guides: MarketGuides = {
             "KI-Assistenten zitieren gern Text, der eine Frage direkt beantwortet. Eine Startseite mit „Wir sind Ihr kompetenter Partner rund ums Haus“ gibt dafür nichts her. Eine Seite „Badsanierung in Stuttgart: Ablauf, Dauer, barrierefreier Umbau“ dagegen schon.",
             "Legen Sie für jede wichtige Leistung eine eigene Seite an. Beginnen Sie jede Seite mit zwei, drei Sätzen, die die Kernfrage beantworten: was Sie machen, für wen, wo und wie es abläuft. Darunter folgen Details, typische Fragen und ein klarer Hinweis auf Ihren Einzugsbereich, etwa „Wir arbeiten in Leipzig, Markkleeberg und Taucha“.",
             "Ergänzen Sie einen FAQ-Bereich mit den Fragen, die Sie am Telefon wirklich hören: „Übernimmt die Krankenkasse das?“, „Wie schnell können Sie kommen?“, „Was kostet eine Erstberatung?“ Wer Kosten nennen darf, sollte zumindest eine Spanne oder die Berechnungsgrundlage angeben.",
+            "Ein Beispiel zum Übernehmen. So könnte eine Kundin ihre Frage an ChatGPT stellen, auf Deutsch und mit Ort: „Unsere Gastherme in Köln-Ehrenfeld zeigt seit gestern eine Störung an und wir haben kein warmes Wasser. Welcher Heizungsbauer kommt hier kurzfristig, und was kostet das ungefähr?“ Die KI sucht dann nach Betrieben, deren Website genau solche Fragen beantwortet: Ort, Anlass, Zeitrahmen, Kosten.",
+            "Eine FAQ-Antwort auf Ihrer Seite „Heizungsnotdienst in Köln“ könnte so aussehen:",
+            "„Wie schnell können Sie bei einem Heizungsausfall in Köln kommen? Bei einem Ausfall in Ehrenfeld, Nippes, Lindenthal und den angrenzenden Stadtteilen sind wir werktags in der Regel am selben oder am nächsten Tag vor Ort. Am Wochenende gibt es einen Notdienst mit Zuschlag. Anfahrt und die erste halbe Stunde Fehlersuche berechnen wir pauschal; den genauen Betrag nennen wir Ihnen am Telefon, bevor wir losfahren. Häufige Ursachen wie zu niedriger Wasserdruck lassen sich oft schon beim ersten Termin beheben. Halten Sie beim Anruf bitte das Typenschild Ihrer Therme bereit.“",
+            "Warum diese Antwort funktioniert: Sie wiederholt die Frage in den Worten der Kundin, nennt konkrete Stadtteile, gibt einen ehrlichen Zeitrahmen statt „schnell und zuverlässig“, erklärt, wie der Preis zustande kommt, und sagt, was als Nächstes zu tun ist. Genau diese Bausteine kann eine KI in ihre eigene Antwort übernehmen. Das Prinzip gilt für jede Branche: Eine Zahnarztpraxis beantwortet „Behandeln Sie Angstpatienten, und wie läuft der erste Termin ab?“, eine Kanzlei „Was kostet die Erstberatung nach einer Kündigung?“, jeweils mit Ort und in ganzen Sätzen.",
+            "Schreiben Sie zehn solcher Fragen auf, die Sie in dieser Woche am Telefon oder per E-Mail gehört haben. Das ist Ihr FAQ-Bereich. Erfinden Sie nichts dazu: Preise, Reaktionszeiten und Leistungen müssen stimmen, sonst fällt es spätestens in der nächsten Bewertung auf.",
           ],
         },
         {
@@ -85,6 +91,27 @@ export const guides: MarketGuides = {
           paragraphs: [
             "Neben Verzeichnissen lesen KI-Assistenten auch redaktionelle Quellen: die Lokalzeitung, Stadtportale, Kammer- und Verbandsseiten, Vereinsseiten. Ein Bericht über Ihren Ausbildungsbetrieb, ein Eintrag im Betriebsverzeichnis der Handwerkskammer oder ein Fachbeitrag auf einem Branchenportal sind Erwähnungen, die die KI als unabhängige Bestätigung wertet.",
             "Wiederholen Sie dann Schritt 1 einmal im Monat mit denselben Fragen. KI-Antworten schwanken, und Änderungen an Verzeichnissen brauchen Wochen, bis sie überall ankommen. Halten Sie fest, welche Assistenten Sie nennen und welche nicht.",
+          ],
+        },
+        {
+          h2: "Häufige Fehler, die sich leicht vermeiden lassen",
+          paragraphs: [
+            "Die meisten Betriebe scheitern nicht an der Technik, sondern an Kleinigkeiten, die sich über Jahre angesammelt haben. Diese Fehler kommen besonders häufig vor:",
+          ],
+          bullets: [
+            "Eine alte Telefonnummer in einem Verzeichnis, die seit dem Umzug ins Leere läuft. Die KI übernimmt sie und schickt Kunden zu einem Anschluss, den es nicht mehr gibt.",
+            "Leistungen und Preise nur als eingescanntes PDF oder Bild. Solche Dateien kann eine KI oft nicht zuverlässig lesen; wichtige Angaben gehören als normaler Text auf die Seite.",
+            "Werbesprache statt Antworten: „Qualität seit 1985“ beantwortet keine Kundenfrage. „Wir sanieren Bäder in Stuttgart-West in drei bis vier Wochen“ schon.",
+            "Kein Einzugsgebiet: Wer nicht schreibt, dass er auch in Fellbach und Esslingen arbeitet, wird für diese Orte kaum genannt.",
+            "Bewertungen nur in einer Welle: Zwanzig Bewertungen in einer Woche und danach ein Jahr Stille wirken weniger glaubwürdig als zwei, drei jeden Monat.",
+            "Profile, die eine frühere Agentur angelegt hat und für die heute niemand im Betrieb die Zugangsdaten kennt.",
+          ],
+        },
+        {
+          h2: "So kommen Sie durch die ersten 30 Tage",
+          paragraphs: [
+            "Ein realistischer Plan neben dem Tagesgeschäft. Tag 1 bis 3: zehn Kundenfragen notieren, den KI-Test aus Schritt 1 machen und die Ergebnisse in einer einfachen Tabelle festhalten. Tag 4 bis 10: Google Unternehmensprofil vervollständigen und alle Verzeichnisse auf dieselbe Schreibweise bringen. Tag 11 bis 20: die zwei wichtigsten Leistungsseiten mit direkter Antwort und FAQ umschreiben, strukturierte Daten per Plugin oder über Ihre Agentur einrichten. Tag 21 bis 30: zehn zufriedene Kunden um eine Bewertung bitten, jede neue Bewertung beantworten und am Ende dieselben Fragen erneut an die KI stellen.",
+            "Erwarten Sie nach 30 Tagen keine Wunder. Manche Assistenten reagieren schnell, andere brauchen Monate. Aber Sie haben dann eine saubere Grundlage, eine Vergleichstabelle und eine Liste, die Sie jeden Monat weiter abarbeiten können.",
             "Wenn Ihnen die regelmäßige Prüfung zu aufwendig ist: Unter alphaa.app/de können Sie kostenlos in etwa 60 Sekunden sehen, was ChatGPT, Gemini, Claude und Perplexity heute auf Deutsch über Ihren Betrieb antworten. Alphaa ist ein KI-Agent, der diese Prüfung jede Woche wiederholt und die Korrekturen vorbereitet; Sie geben jede Änderung frei.",
           ],
         },
@@ -127,6 +154,7 @@ export const guides: MarketGuides = {
         {
           h2: "Wie eine KI sich über einen Betrieb informiert",
           paragraphs: [
+            "Ein Patient in Hamburg-Eimsbüttel fragt Perplexity nach einer Zahnärztin, die auch samstags behandelt. Die KI nennt eine Praxis und verlinkt deren Jameda-Profil und Google-Eintrag. Ihre Praxis hat samstags ebenfalls geöffnet, aber bei Jameda stehen noch die Sprechzeiten von vor zwei Jahren. Die Empfehlung geht an die andere Praxis. Solche Fälle lassen sich fast immer an einzelnen Einträgen festmachen, und genau um diese Einträge geht es hier.",
             "Wenn jemand fragt „Welcher Elektriker in Nürnberg hat gute Bewertungen?“, greifen Assistenten mit Websuche auf aktuelle Suchergebnisse zurück: Gemini auf Google, andere Assistenten auf verschiedene Suchindizes, darunter Bing. Hinzu kommt, was die Modelle beim Training gelernt haben. Die KI fasst dann zusammen, welche Betriebe in mehreren Quellen positiv und mit stimmigen Angaben auftauchen.",
             "Für Sie bedeutet das: Es reicht nicht, auf einer Plattform gut dazustehen. Die KI sucht Bestätigung über mehrere unabhängige Seiten hinweg. Unten gehen wir die wichtigsten Quellen in Deutschland einzeln durch, jeweils mit dem, was Sie konkret tun sollten. Am Anfang steht aber eine einfache Übung: Legen Sie ein Dokument mit Ihren Stammdaten an, also exakter Firmenname, Adresse, Telefonnummer, Website, E-Mail, Öffnungszeiten, Kategorie und eine Kurzbeschreibung in zwei Sätzen. Diese Daten kopieren Sie überall hin, ohne Abweichung.",
           ],
@@ -187,9 +215,39 @@ export const guides: MarketGuides = {
           ],
         },
         {
+          h2: "So fragen Kunden, und welche Quellen die KI dann liest",
+          paragraphs: [
+            "Es hilft, die typischen Fragen Ihrer Branche einmal neben die Quellen zu legen, auf die die KI bei der Antwort zurückgreift. Drei Beispiele, so formuliert, wie Menschen in Deutschland tatsächlich fragen. Sie werden merken, dass die KI selten nur eine Quelle nutzt: Sie verbindet Bewertungen, Verzeichnisse und Ihre Website zu einem Gesamtbild, und jede Lücke in diesem Bild ist ein Grund, lieber einen anderen Betrieb zu nennen. Wer die Lücke kennt, kann sie gezielt schließen, statt überall ein bisschen zu machen.",
+          ],
+          bullets: [
+            "„Welcher Elektriker in Nürnberg-Gostenhof kann kurzfristig eine Wallbox installieren?“ Hier liest die KI typischerweise Google-Profile, MyHammer-Bewertungen, in denen eine Wallbox erwähnt wird, und Leistungsseiten von Betrieben, die das Wort Wallbox und den Ort überhaupt nennen.",
+            "„Ich suche eine Hausärztin in Leipzig-Connewitz, die noch neue Patienten aufnimmt.“ Hier spielen Jameda, Doctolib, die Arztsuche der Kassenärztlichen Vereinigung und eine Praxis-Website mit dem schlichten Satz „Wir nehmen neue Patienten auf“ zusammen.",
+            "„Brauche einen Anwalt für Verkehrsrecht in Bremen, nach einem Unfall zahlt die Versicherung des Gegners nicht.“ Hier zählen anwalt.de-Profile mit Rechtstipps, das Anwaltsverzeichnis und eine Kanzleiseite, die den Ablauf einer Unfallregulierung in einfachen Worten erklärt.",
+          ],
+        },
+        {
+          h2: "Checkliste pro Plattform und die häufigsten Fehler",
+          paragraphs: [
+            "Machen Sie die Übung von oben für Ihren eigenen Betrieb: drei Kundenfragen, und daneben die Quellen, die die KI in ihrer Antwort verlinkt. Wo Ihre Konkurrenz auftaucht und Sie nicht, liegt Ihre nächste Aufgabe. Oft fehlt nur ein Satz: Wenn eine Kundin nach „neuen Patienten“ fragt und dieser Satz nirgends steht, kann die KI ihn auch nicht finden.",
+            "Die häufigsten Fehler sind unspektakulär. Ein Firmenname, der bei Google „Malermeister Schneider GmbH Maler Dortmund günstig“ lautet, weil jemand Suchbegriffe angehängt hat; das verstößt gegen die Google-Richtlinien und passt zu keinem anderen Eintrag. Eine Praxis, die nach einem Inhaberwechsel unter zwei Namen geführt wird. Ein Betrieb, der Profile von einer Agentur hat anlegen lassen und selbst keine Zugangsdaten besitzt. Und Bewertungsportale, auf denen seit zwei Jahren niemand mehr geantwortet hat. Jeder dieser Punkte lässt sich meist in einer Stunde beheben, aber nur, wenn man ihn kennt.",
+            "Nehmen Sie sich für jede Plattform eine Viertelstunde und haken Sie diese Punkte ab:",
+          ],
+          bullets: [
+            "Google Unternehmensprofil: Name ohne angehängte Suchbegriffe, passende Hauptkategorie, Öffnungszeiten inklusive Feiertage, jede Leistung einzeln, alle Bewertungen der letzten drei Monate beantwortet.",
+            "Gelbe Seiten, Das Örtliche, 11880: Eintrag beansprucht, aktuelle Telefonnummer, Website verlinkt, keine Doppeleinträge unter einer alten Adresse.",
+            "Bing Places und Apple Business Connect: Eintrag vorhanden, Daten identisch mit Google, Kategorie stimmt.",
+            "Jameda oder Doctolib: Schwerpunkte, Sprechzeiten, Sprachen, Hinweis auf neue Patienten, aktuelles Foto.",
+            "anwalt.de: Rechtsgebiete, Fachanwaltstitel, mindestens ein Rechtstipp zur häufigsten Frage Ihrer Mandanten.",
+            "MyHammer und Handwerkskammer: Gewerke, Einzugsgebiet mit Ortsnamen, Meistertitel, Referenzfotos.",
+            "ProvenExpert oder Trustpilot, falls genutzt: Firmenname identisch, Einladungen nur über die offizielle Funktion, Antworten auf kritische Bewertungen.",
+            "Website: Impressum mit denselben Stammdaten, Links zu allen Profilen, eine Seite pro Leistung.",
+          ],
+        },
+        {
           h2: "Eine einfache Reihenfolge für die nächsten vier Wochen",
           paragraphs: [
             "Woche 1: Stammdaten-Dokument anlegen, Google Unternehmensprofil vollständig machen. Woche 2: Gelbe Seiten, Das Örtliche, 11880, Bing Places und Apple Business Connect prüfen und korrigieren. Woche 3: Das wichtigste Branchenportal pflegen und zehn zufriedene Kunden um eine Bewertung bitten. Woche 4: Website-Leistungsseiten und FAQ ergänzen, dann die KI erneut fragen.",
+            "Nach diesen vier Wochen genügt ein fester Termin im Monat, etwa der erste Montag. Dann prüfen Sie die Änderungsvorschläge im Google Unternehmensprofil, beantworten neue Bewertungen, stellen der KI Ihre drei Kundenfragen erneut und vergleichen die genannten Quellen mit dem Vormonat. Wenn Sie umziehen, eine neue Nummer bekommen oder Öffnungszeiten ändern, gehen Sie die Checkliste sofort durch, nicht erst beim nächsten Termin.",
             "Wer wissen will, welche dieser Quellen die KI bei seinem Betrieb tatsächlich heranzieht, kann das unter alphaa.app/de kostenlos prüfen: Der Check fragt ChatGPT, Gemini, Claude und Perplexity auf Deutsch und zeigt, wer statt Ihnen genannt wird.",
           ],
         },
@@ -210,6 +268,10 @@ export const guides: MarketGuides = {
         {
           q: "Auf wie vielen Portalen sollte ich aktiv sein?",
           a: "Google Unternehmensprofil, die drei großen Verzeichnisse und ein bis zwei Bewertungsportale Ihrer Branche reichen für die meisten Betriebe. Lieber wenige Profile gut gepflegt als viele halb leer.",
+        },
+        {
+          q: "Wie finde ich heraus, welche Quellen die KI bei meinem Betrieb nutzt?",
+          a: "Stellen Sie Perplexity oder ChatGPT mit Websuche eine typische Kundenfrage mit Ort und schauen Sie sich die verlinkten Quellen unter der Antwort an. Wiederholen Sie das mit zwei, drei weiteren Fragen; die Seiten, die mehrfach auftauchen, sollten Sie zuerst in Ordnung bringen.",
         },
       ],
       date: "2026-10-30",

@@ -15,10 +15,10 @@ const BASE_URL = "https://alphaa.app"
 // changed on every deploy — so it learns to ignore our dates. Bump the date
 // here when you actually change one of these pages.
 const PAGE_UPDATED: Record<string, string> = {
-  "/": "2026-10-29",
-  "/start": "2026-10-29",
+  "/": "2026-10-30",
+  "/start": "2026-10-30",
   "/for": "2026-10-29",
-  "/pricing": "2026-10-29",
+  "/pricing": "2026-10-30",
   "/about": "2026-10-29",
   "/how-it-works": "2026-10-29",
   "/scan": "2026-10-29",
