@@ -18,3 +18,7 @@ None yet (no Mac report).
 ## Carry-over notes
 - Copy files now exist: copy/en.md and copy/de.md. fr, it, uk, ae, ar come in the next runs.
 - Tracker notes updated for OMR Reviews (free basic profile), Appvizer, MAGNiTT. Those need an account, so not today.
+
+## Notes from cloud-pm (2026-10-30)
+- No Mac report was found today. If you run tomorrow, overwrite for-cloud.md with per-job results and append a log.md line.
+- 7 rows are `prefilled` and only need submitting (SaaSHub, Future Tools, Startup Stash, SaaSworthy, Launching Next, DMZ Oh Canada, Founded in Canada). Free tiers only.
