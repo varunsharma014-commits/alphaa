@@ -358,14 +358,14 @@ function ScoreDial({ score }: { score: number }) {
   )
 }
 
-function HireButton({ placement, small }: { placement: string; small?: boolean }) {
+function HireButton({ placement, small, label }: { placement: string; small?: boolean; label: string }) {
   return (
     <Link
       href="/signup"
       onClick={() => track("results_cta_click", { placement })}
       className={small ? "rp-hire rp-hire--small" : "rp-hire"}
     >
-      Hire me — $99/mo →
+      {label}
     </Link>
   )
 }
@@ -1014,6 +1014,14 @@ function ScanResultsContent() {
       : aiMentions === 0
         ? "When customers asked, you weren’t in the answer. Here’s why, and what I’ll do about it."
         : `${listNames(foundNames)} named you. Here’s why the others didn’t, and what I’ll do about it.`
+  // The button names the outcome for this business, not the product.
+  const ctaLabel =
+    aiMentions === totalEngines
+      ? "Keep all four AIs recommending me →"
+      : aiMentions === 0
+        ? "Get AI to recommend me →"
+        : `Get ${listNames(missedNames)} to recommend me →`
+  const ctaShort = aiMentions === totalEngines ? "Keep my spot →" : "Get recommended →"
   const stickyLine =
     aiMentions === totalEngines ? "AI names you today. I’ll keep it that way." : `${missedNames.length} of ${totalEngines} AIs skip you. I can fix that.`
 
@@ -1049,8 +1057,8 @@ function ScanResultsContent() {
           <ScoreDial score={score} />
         </div>
         <div className="rp-hero__cta">
-          <HireButton placement="top" />
-          <p className="rp-fine">Month to month · cancel in two clicks · payments secured by Stripe</p>
+          <HireButton placement="top" label={ctaLabel} />
+          <p className="rp-fine">$99/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
         </div>
 
         {/* 2. The evidence */}
@@ -1102,8 +1110,8 @@ function ScanResultsContent() {
         <div className="rp-card rp-ask">
           <h2>I can start on this today.</h2>
           <p>$99 a month instead of a $2,000-a-month agency. I do the work, you tap approve.</p>
-          <HireButton placement="bottom" />
-          <p className="rp-fine">Month to month · cancel in two clicks · payments secured by Stripe</p>
+          <HireButton placement="bottom" label={ctaLabel} />
+          <p className="rp-fine">$99/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
           <div className="rp-ask__email"><EmailReportButton scanId={result.scanId} /></div>
         </div>
 
@@ -1111,12 +1119,12 @@ function ScanResultsContent() {
         <QuickFixSection scanId={result.scanId} businessName={businessName} />
       </div>
 
-      <HireBar line={stickyLine} />
+      <HireBar line={stickyLine} ctaShort={ctaShort} />
     </div>
   )
 }
 
-function HireBar({ line }: { line: string }) {
+function HireBar({ line, ctaShort }: { line: string; ctaShort: string }) {
   const [visible, setVisible] = useState(false)
   const [dismissed, setDismissed] = useState(false)
   useEffect(() => {
@@ -1130,7 +1138,7 @@ function HireBar({ line }: { line: string }) {
     <div className={`rp-bar-fixed ${visible ? "is-on" : ""}`}>
       <div className="rp-bar-fixed__in">
         <p><b>{line}</b><span>$99/mo · month to month</span></p>
-        <HireButton placement="sticky_bar" small />
+        <HireButton placement="sticky_bar" small label={ctaShort} />
         <button type="button" aria-label="Dismiss" onClick={() => setDismissed(true)} className="rp-bar-fixed__x"><X className="w-4 h-4" /></button>
       </div>
     </div>

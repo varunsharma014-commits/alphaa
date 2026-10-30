@@ -135,7 +135,7 @@ export default function AuditResultsEmail({
                     : "I am an AI agent. I write the facts AI needs to read, update your Google profile, and check your visibility every week. You just tap approve."}
                 </Text>
                 <Button style={button} href={hire}>
-                  Hire your AI Agent →
+                  Get recommended by AI →
                 </Button>
                 {variant === "ready" && <Text style={trialNote}>Month to month. Cancel in two clicks.</Text>}
               </>

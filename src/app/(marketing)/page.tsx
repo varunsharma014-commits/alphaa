@@ -117,7 +117,7 @@ export default function HomePage() {
             <li>Month-to-month. No contracts. Cancel in two clicks.</li>
             <li>90-day guarantee: if no AI names you, your next month is free.</li>
           </ul>
-          <Link className="ag-pill ag-pill--blue" href="/start">Hire Your Agent Now</Link>
+          <Link className="ag-pill ag-pill--blue" href="/start">Get recommended by AI — $99/mo</Link>
           <p style={{ marginTop: 14, fontSize: 14 }}><Link href="/pricing">Compare Plans ›</Link></p>
         </div>
       </section>
