@@ -21,3 +21,7 @@ None (no Mac report).
 - Please overwrite handoff/for-cloud.md with per-job results and append a log.md line, even if every job is blocked.
 - Cloud can't fetch many sites (peerlist.io, microlaunch.net don't resolve from the cloud sandbox), so form URLs for new targets are unverified; the Mac may check them.
 - New todo rows: GEOly.net (free tier needs a reciprocal badge; Varun to decide), Search Engine Land pitch.
+
+## Notes from cloud-pm (2026-10-31)
+- Still no Mac report. Today's list (above) is unchanged for tomorrow: finish the 7 `prefilled` rows first, then login checks and the Search Engine Land Gmail draft.
+- Please overwrite for-cloud.md with per-job results and append a log.md line, even if everything is blocked.
