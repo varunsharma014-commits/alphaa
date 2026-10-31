@@ -66,9 +66,9 @@
       "brand/social/posts/w1_car_howpicks-s7.png"
     ],
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.instagram.com/p/DfLHVMrmW7w/",
+    "posted_at": "2026-10-31T17:24:15-0400"
   },
   {
     "id": "w1-mon-x",
@@ -1197,9 +1197,9 @@
       "brand/social/posts/w2_car_trades-s7.png"
     ],
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7522406229680259073/",
+    "posted_at": "2026-10-31T17:17:51-0400"
   },
   {
     "id": "w2-fri-instagram",
@@ -1268,9 +1268,9 @@
     "image": "brand/social/posts/w2_offer_month.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/61592044887737/posts/pfbid02UQKimZ9SjGoDUwPduFNcRvNU5CagsPd6NCaBCeuUDtBf9rc7zAjKay4n5xPdAHSml/",
+    "posted_at": "2026-10-31T17:21:03-0400"
   },
   {
     "id": "w2-sat-x",
