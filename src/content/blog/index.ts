@@ -127,6 +127,9 @@ import { meta as daycaresMeta, Body as DaycaresBody } from "./how-daycares-get-r
 import { meta as vsRankscaleMeta, Body as VsRankscaleBody } from "./alphaa-vs-rankscale"
 import { meta as aiVisAuditMeta, Body as AiVisAuditBody } from "./ai-visibility-audit"
 import { meta as groundingMeta, Body as GroundingBody } from "./what-is-grounding-in-ai-search"
+import { meta as vsLlmrefsMeta, Body as VsLlmrefsBody } from "./alphaa-vs-llmrefs"
+import { meta as aboutPageMeta, Body as AboutPageBody } from "./about-page-for-ai-search"
+import { meta as promptTrackingMeta, Body as PromptTrackingBody } from "./what-is-prompt-tracking"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -259,6 +262,9 @@ export const POSTS: Post[] = [
   { meta: vsRankscaleMeta, Body: VsRankscaleBody },
   { meta: aiVisAuditMeta, Body: AiVisAuditBody },
   { meta: groundingMeta, Body: GroundingBody },
+  { meta: vsLlmrefsMeta, Body: VsLlmrefsBody },
+  { meta: aboutPageMeta, Body: AboutPageBody },
+  { meta: promptTrackingMeta, Body: PromptTrackingBody },
 ]
 
 export function getAllPosts(): Post[] {
