@@ -130,6 +130,9 @@ import { meta as groundingMeta, Body as GroundingBody } from "./what-is-groundin
 import { meta as vsLlmrefsMeta, Body as VsLlmrefsBody } from "./alphaa-vs-llmrefs"
 import { meta as aboutPageMeta, Body as AboutPageBody } from "./about-page-for-ai-search"
 import { meta as promptTrackingMeta, Body as PromptTrackingBody } from "./what-is-prompt-tracking"
+import { meta as vsOtterlyMeta, Body as VsOtterlyBody } from "./alphaa-vs-otterly-ai"
+import { meta as multilingualMeta, Body as MultilingualBody } from "./multilingual-ai-search-optimization"
+import { meta as optometristsMeta, Body as OptometristsBody } from "./how-optometrists-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -265,6 +268,9 @@ export const POSTS: Post[] = [
   { meta: vsLlmrefsMeta, Body: VsLlmrefsBody },
   { meta: aboutPageMeta, Body: AboutPageBody },
   { meta: promptTrackingMeta, Body: PromptTrackingBody },
+  { meta: vsOtterlyMeta, Body: VsOtterlyBody },
+  { meta: multilingualMeta, Body: MultilingualBody },
+  { meta: optometristsMeta, Body: OptometristsBody },
 ]
 
 export function getAllPosts(): Post[] {
