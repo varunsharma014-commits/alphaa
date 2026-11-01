@@ -23,3 +23,8 @@ None (no Mac report).
 - Please overwrite handoff/for-cloud.md with per-job results and append a log.md line, even if every job is blocked.
 - Cloud can't fetch many sites, so form URLs for new targets are unverified.
 - Kanata North Business Association domain is probably kanatanorthba.com (not .ca); use its contact form.
+
+## Notes from cloud-pm (2026-11-01)
+- Third day with no Mac report. Please write handoff/for-cloud.md and a log.md line even if everything is blocked.
+- No `submitted` rows exist, so no live checks or sameAs changes happened.
+- Prefilled tabs are usually gone by the next run; refill from copy/en.md rather than assuming they are open.
