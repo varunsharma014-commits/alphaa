@@ -325,9 +325,9 @@
     "image": "brand/social/posts/w1_agent_morning.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.instagram.com/p/DfM9n9kBI4b/",
+    "posted_at": "2026-11-01T09:42:00-04:00"
   },
   {
     "id": "w1-wed-x",
@@ -1405,9 +1405,9 @@
     "image": "brand/social/posts/w3_lawyer_chat.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:share:7522666873117675520/",
+    "posted_at": "2026-11-01T09:34:00-04:00"
   },
   {
     "id": "w3-mon-instagram",
@@ -1550,9 +1550,9 @@
     "image": "brand/social/posts/w3_seo_vs_ai.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0B9rKoNZMCxaUuciw4cCMyhEFTYvYoVmWiCXV85UiYyZaa5bArCdvDcSw4n71eJ9Jl&id=61592044887737",
+    "posted_at": "2026-11-01T09:37:00-04:00"
   },
   {
     "id": "w3-tue-x",
