@@ -27,3 +27,7 @@ None (no Mac report).
 - Please overwrite handoff/for-cloud.md with per-job results and append a log.md line, even if every job is blocked.
 - Cloud can't fetch many sites, so new form URLs are unverified.
 - Prefilled tabs are usually gone; refill from copy/en.md.
+
+## Notes from cloud-pm (2026-11-02)
+- No Mac report again; no `submitted` rows, nothing went live, sameAs unchanged.
+- Tomorrow's morning run will repeat the unfinished prefilled forms first. If you can only do one thing: overwrite for-cloud.md with per-job results and append to log.md, even if all blocked.
