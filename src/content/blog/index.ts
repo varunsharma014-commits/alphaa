@@ -133,6 +133,9 @@ import { meta as promptTrackingMeta, Body as PromptTrackingBody } from "./what-i
 import { meta as vsOtterlyMeta, Body as VsOtterlyBody } from "./alphaa-vs-otterly-ai"
 import { meta as multilingualMeta, Body as MultilingualBody } from "./multilingual-ai-search-optimization"
 import { meta as optometristsMeta, Body as OptometristsBody } from "./how-optometrists-get-recommended-by-ai"
+import { meta as hubspotGraderMeta, Body as HubspotGraderBody } from "./hubspot-aeo-grader-vs-alphaa"
+import { meta as topicalAuthorityMeta, Body as TopicalAuthorityBody } from "./topical-authority-for-ai-search"
+import { meta as mortgageBrokersMeta, Body as MortgageBrokersBody } from "./how-mortgage-brokers-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -271,6 +274,9 @@ export const POSTS: Post[] = [
   { meta: vsOtterlyMeta, Body: VsOtterlyBody },
   { meta: multilingualMeta, Body: MultilingualBody },
   { meta: optometristsMeta, Body: OptometristsBody },
+  { meta: hubspotGraderMeta, Body: HubspotGraderBody },
+  { meta: topicalAuthorityMeta, Body: TopicalAuthorityBody },
+  { meta: mortgageBrokersMeta, Body: MortgageBrokersBody },
 ]
 
 export function getAllPosts(): Post[] {
