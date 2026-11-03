@@ -1,6 +1,4 @@
-import { Caveat } from "next/font/google"
-
-const hand = Caveat({ subsets: ["latin"], weight: ["600"], display: "swap" })
+import { hand } from "@/fonts"
 
 // Two hand-drawn arrows in the side margins that sweep from the hero down into
 // the live check. Decorative; they hide once the conversation starts.

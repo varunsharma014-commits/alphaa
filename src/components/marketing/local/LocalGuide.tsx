@@ -1,13 +1,11 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { Noto_Sans_Arabic } from "next/font/google"
+import { arabic } from "@/fonts"
 import { MARKETS, type LocaleKey } from "@/content/locales"
 import { GUIDES } from "@/content/markets/guides"
 import { AUTHOR, AUTHOR_SCHEMA } from "@/lib/author"
 import { clipDescription } from "@/lib/seo"
-
-const arabic = Noto_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "600", "700"], display: "swap" })
 const SITE = "https://alphaa.app"
 
 const BY: Record<string, string> = { en: "By", de: "Von", fr: "Par", it: "Di", ar: "بقلم" }

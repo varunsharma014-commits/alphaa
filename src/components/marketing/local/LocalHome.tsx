@@ -9,9 +9,7 @@ import { GUIDES } from "@/content/markets/guides"
 import { HREFLANG, type LocaleCopy } from "@/content/locales"
 import type { Market } from "@/content/markets/types"
 import { MARKET_CURRENCY, AMOUNTS, formatPrice, type MarketKey } from "@/content/markets/prices"
-import { Noto_Sans_Arabic } from "next/font/google"
-
-const arabic = Noto_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "600", "700"], display: "swap" })
+import { arabic } from "@/fonts"
 
 const PER_MONTH: Record<string, string> = { en: "/mo", de: "/Monat", fr: "/mois", it: "/mese", ar: "/شهريًا" }
 

@@ -1,13 +1,11 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { Noto_Sans_Arabic } from "next/font/google"
+import { arabic } from "@/fonts"
 import type { Market } from "@/content/markets/types"
 import { MARKETS } from "@/content/locales"
 import { tradeAlternates } from "@/content/markets/equivalents"
 import { GUIDES } from "@/content/markets/guides"
-
-const arabic = Noto_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "600", "700"], display: "swap" })
 const SITE = "https://alphaa.app"
 
 function find(m: Market, slug: string) {
