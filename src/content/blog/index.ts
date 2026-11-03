@@ -136,6 +136,9 @@ import { meta as optometristsMeta, Body as OptometristsBody } from "./how-optome
 import { meta as hubspotGraderMeta, Body as HubspotGraderBody } from "./hubspot-aeo-grader-vs-alphaa"
 import { meta as topicalAuthorityMeta, Body as TopicalAuthorityBody } from "./topical-authority-for-ai-search"
 import { meta as mortgageBrokersMeta, Body as MortgageBrokersBody } from "./how-mortgage-brokers-get-recommended-by-ai"
+import { meta as vsSearchAtlasMeta, Body as VsSearchAtlasBody } from "./alphaa-vs-search-atlas"
+import { meta as nearMeMeta, Body as NearMeBody } from "./ai-near-me-searches"
+import { meta as funeralHomesMeta, Body as FuneralHomesBody } from "./how-funeral-homes-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -277,6 +280,9 @@ export const POSTS: Post[] = [
   { meta: hubspotGraderMeta, Body: HubspotGraderBody },
   { meta: topicalAuthorityMeta, Body: TopicalAuthorityBody },
   { meta: mortgageBrokersMeta, Body: MortgageBrokersBody },
+  { meta: vsSearchAtlasMeta, Body: VsSearchAtlasBody },
+  { meta: nearMeMeta, Body: NearMeBody },
+  { meta: funeralHomesMeta, Body: FuneralHomesBody },
 ]
 
 export function getAllPosts(): Post[] {
