@@ -26,3 +26,8 @@ None (no Mac report).
 - Cloud can't fetch many sites, so form URLs are unverified.
 - Prefilled tabs are usually gone; refill from copy/en.md.
 - Kanata North Business Association: domain is probably kanatanorthba.com; use its contact form to ask about membership/directory cost (no account).
+
+## Notes from cloud-pm (2026-11-03)
+- Still no Mac report (5th day). Nothing is `submitted`, so no live checks or sameAs changes happened.
+- Please overwrite handoff/for-cloud.md and append a log.md line every run, even if all jobs are blocked.
+- Tomorrow's morning run will repeat the same jobs unless the Mac reports.
