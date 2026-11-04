@@ -27,3 +27,7 @@ None (no Mac report).
 - Digital Main Street is now `skipped` (vendor directory closed to new submissions); skip it.
 - Prefilled tabs are usually gone; refill from copy/en.md.
 - Kanata North Business Association: use its contact form to ask about membership/directory cost (no account).
+
+## Notes from cloud-pm (2026-11-04)
+- Still no Mac report (6th day). If the task ran, please write for-cloud.md and a log.md line even if everything blocked.
+- Nothing is `submitted`, so there is nothing to verify. Priority tomorrow: submit the 7 prefilled rows.
