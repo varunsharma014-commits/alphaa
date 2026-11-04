@@ -5,12 +5,22 @@ import { usePathname } from "next/navigation"
 import {
   Bot, BookOpen, Link2, MessagesSquare, Globe, Sparkles, Search, TrendingUp, Activity, Gauge,
   MapPin, Star, CalendarDays, Lightbulb, Users, BarChart3, PanelLeftOpen, PanelLeftClose, X,
+  FileText, Plug,
 } from "lucide-react"
 
-// The detail pages for owners who want to see under the hood. Folded to a
-// slim strip of section icons by default; the briefing stays the main screen.
+// The left menu: the owner's website first (posts and pages I write, and the
+// site connection), then the detail pages for owners who want to see under the
+// hood. Open on desktop by default so it can be found (Shopify review, 2026-11-04).
 
-const GROUPS = [
+type Item = { href: string; label: string; icon: typeof Bot; ask?: string }
+const GROUPS: { label: string; icon: typeof Bot; items: Item[] }[] = [
+  {
+    label: "Your website", icon: Globe,
+    items: [
+      { href: "/dashboard?ask=content", ask: "content", label: "Posts & pages", icon: FileText },
+      { href: "/dashboard/settings/website", label: "Website connection", icon: Plug },
+    ],
+  },
   {
     label: "AI search", icon: Bot,
     items: [
@@ -54,9 +64,9 @@ const GROUPS = [
   },
 ]
 
-export function ToolsRail({ open, onToggle }: { open: boolean; onToggle: (next: boolean) => void }) {
+export function ToolsRail({ open, onToggle, onAsk }: { open: boolean; onToggle: (next: boolean) => void; onAsk: (topic: string, label: string) => void }) {
   const pathname = usePathname()
-  const active = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
+  const active = (href: string) => !href.includes("?") && (pathname === href || pathname.startsWith(`${href}/`))
   const narrow = () => typeof window !== "undefined" && window.innerWidth < 900
 
   return (
@@ -71,7 +81,10 @@ export function ToolsRail({ open, onToggle }: { open: boolean; onToggle: (next: 
             <div key={g.label} className="ag-tools__group">
               <p>{g.label}</p>
               {g.items.map((it) => (
-                <Link key={it.href} href={it.href} className={active(it.href) ? "on" : ""} aria-current={active(it.href) ? "page" : undefined} onClick={() => narrow() && onToggle(false)}>
+                <Link key={it.href} href={it.href} className={active(it.href) ? "on" : ""} aria-current={active(it.href) ? "page" : undefined} onClick={(e) => {
+                  if (it.ask) { e.preventDefault(); onAsk(it.ask, it.label) }
+                  if (narrow()) onToggle(false)
+                }}>
                   <it.icon size={16} aria-hidden="true" />
                   {it.label}
                 </Link>

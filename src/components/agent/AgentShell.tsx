@@ -18,7 +18,7 @@ import { ToolsRail } from "./ToolsRail"
 // v2: the panel is on by default for everyone (owners who closed it before start open again).
 const MEM_KEY = "alphaa.memory.v2"
 // The detail pages on the left: folded by default, remembered once opened.
-const TOOLS_KEY = "alphaa.tools.v1"
+const TOOLS_KEY = "alphaa.tools.v2" // v2: open by default on desktop
 
 /** Ask the agent to bring a topic into the chat (handled by DashboardAgent). */
 export const ASK_EVENT = "alphaa:ask"
@@ -53,7 +53,7 @@ export function AgentShell({
   useEffect(() => {
     let saved: string | null = null
     try { saved = localStorage.getItem(TOOLS_KEY) } catch {}
-    setToolsOpen(saved === "open" && window.innerWidth >= 900)
+    setToolsOpen(window.innerWidth >= 900 && (saved ? saved === "open" : window.innerWidth >= 1180))
   }, [])
   const toggleTools = (next: boolean) => {
     setToolsOpen(next)
@@ -74,7 +74,7 @@ export function AgentShell({
 
   return (
     <div className={`ag-app ${memOpen ? "ag-app--mem" : ""}`}>
-      <ToolsRail open={toolsOpen} onToggle={toggleTools} />
+      <ToolsRail open={toolsOpen} onToggle={toggleTools} onAsk={ask} />
       {toolsOpen && <div className="ag-tools__scrim" onClick={() => toggleTools(false)} aria-hidden="true" />}
       <div className="ag-main">
         <header className="ag-head">
