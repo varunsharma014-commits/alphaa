@@ -9,7 +9,7 @@ Customers in Denver now ask ChatGPT which HVAC company to call. We built a free 
 
 We can run the check live for your readers on any local business and city you choose, and send you the raw answers from each engine so you can verify them yourself.
 
-Alphaa is an AI agent from 9629033 Canada Inc. (alphaa.app). The check is at alphaa.app/start; plans are paid, from $99/month.
+Alphaa is an AI agent from 18355355 Canada INC. (alphaa.app). The check is at alphaa.app/start; plans are paid, from $99/month.
 
 If useful, name a city and trade and I will send the results.
 

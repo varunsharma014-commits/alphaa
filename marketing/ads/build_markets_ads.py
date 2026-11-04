@@ -209,7 +209,7 @@ w("| Budget | **Varun to set.** Suggested test: ~$10/day per market on Meta for 
 w("| Structure | One Meta campaign per market (separate budgets, separate learning). Geo = that country, language = the ad language. Advantage+ audience, age 30 to 65, exclude Audience Network. |")
 w("| Optimization event | `Lead` (fires on the market home's check when the email is entered). Retargeting audiences as in `meta-ads-copy.md`, scoped to the market's URL path. |")
 w("| EU/UK consent | The cookie banner blocks GA and the Meta pixel until Accept, so reported conversions will be lower than real ones. Judge by checks in our own database (`ScanLead` by market), not only by Ads Manager. |")
-w("| EU ads on Meta (DSA) | Beneficiary and payer: **9629033 Canada Inc.** |")
+w("| EU ads on Meta (DSA) | Beneficiary and payer: **18355355 Canada INC.** |")
 w("| Prices in ads | Local prices only (they match the pages and Stripe). Annual plans and the setup fee are billed in USD, so don't quote those in ads. |")
 w("| Report language | The check asks the AIs in the page's language, but the report and emails are in English (the pages say so). Don't promise a translated report. |")
 w("| Creatives | Reuse `brand/ads/` images whose on-image text is language-neutral or English; for DE/FR/IT/AR, use the local-language LinkedIn images in `brand/social/posts/m_<key>_w<n>.png` until localized ad creatives are made. |")

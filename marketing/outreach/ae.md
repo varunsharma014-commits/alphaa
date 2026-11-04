@@ -57,7 +57,7 @@ English gap texts: the table in `us-ca.md`.
 English:
 ```
 {{sender_name}}, Alphaa
-9629033 Canada Inc., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
+18355355 Canada INC., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
 alphaa.app | {{sender_email}}
 You're getting this because {{consent_basis}}. Your data and rights: alphaa.app/privacy. To stop these emails, reply "stop" or click: {{unsubscribe_link}}
 ```
@@ -65,7 +65,7 @@ You're getting this because {{consent_basis}}. Your data and rights: alphaa.app/
 Arabic:
 ```
 {{sender_name}}، Alphaa
-9629033 Canada Inc., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
+18355355 Canada INC., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
 alphaa.app | {{sender_email}}
 تصلك هذه الرسالة لأن {{consent_basis_ar}}. بياناتك وحقوقك: alphaa.app/privacy. لإيقاف هذه الرسائل، ردّ بكلمة «إيقاف» أو اضغط هنا: {{unsubscribe_link}}
 ```

@@ -69,7 +69,7 @@ Sie-Form throughout. Prices: 99 € / 199 € / 299 € im Monat, netto zzgl. US
 One page, plain, signed. Body about 170 words plus the mandatory data-protection note.
 
 ```
-Alphaa · 9629033 Canada Inc. · 1000 Innovation Drive, Suite 500 · Kanata, ON K2K 3E7 · Kanada
+Alphaa · 18355355 Canada INC. · 1000 Innovation Drive, Suite 500 · Kanata, ON K2K 3E7 · Kanada
 
 {{business_name}}
 {{inhaber}}
@@ -103,7 +103,7 @@ Mit freundlichen Grüßen
 {{sender_name}}
 Alphaa · alphaa.app
 
-Datenschutz: Ihre Geschäftsadresse stammt aus {{source_url}}. Verantwortlich ist 9629033 Canada Inc. (Anschrift oben). Wir verwenden sie nur für dieses Schreiben (Art. 6 Abs. 1 lit. f DSGVO). Sie können der Nutzung jederzeit widersprechen (Art. 21 DSGVO), formlos an {{sender_email}}; dann schreiben wir Ihnen nicht mehr. Details: alphaa.app/privacy
+Datenschutz: Ihre Geschäftsadresse stammt aus {{source_url}}. Verantwortlich ist 18355355 Canada INC. (Anschrift oben). Wir verwenden sie nur für dieses Schreiben (Art. 6 Abs. 1 lit. f DSGVO). Sie können der Nutzung jederzeit widersprechen (Art. 21 DSGVO), formlos an {{sender_email}}; dann schreiben wir Ihnen nicht mehr. Details: alphaa.app/privacy
 ```
 
 Send one letter. No follow-up letter unless the person replies. Log every objection on the global suppression list.
@@ -171,5 +171,5 @@ Fallbacks: no gap found → Nachricht 3, replace the list with `Ihre Website hat
 Courts treat a pitch through a contact form like advertising email. Use this text only as a reply when the business itself asked for it (e.g. answered the letter via its own form, or invited proposals on that topic). Under 600 characters for form limits.
 
 ```
-Guten Tag, Sie hatten um das Ergebnis gebeten: Ich habe ChatGPT, Gemini, Claude und Perplexity gefragt: „{{question}}“. {{missed_count}} von {{answered_count}} haben {{business_name}} nicht genannt[, {{rival_engine}} hat {{rival_1}} empfohlen]. Alle Antworten (Bericht vorerst auf Englisch): {{scan_url}}. Wenn Sie wissen möchten, was ich zuerst ändern würde: {{sender_email}}. {{sender_name}}, Alphaa (9629033 Canada Inc., Kanata, Kanada). Datenschutz: alphaa.app/privacy
+Guten Tag, Sie hatten um das Ergebnis gebeten: Ich habe ChatGPT, Gemini, Claude und Perplexity gefragt: „{{question}}“. {{missed_count}} von {{answered_count}} haben {{business_name}} nicht genannt[, {{rival_engine}} hat {{rival_1}} empfohlen]. Alle Antworten (Bericht vorerst auf Englisch): {{scan_url}}. Wenn Sie wissen möchten, was ich zuerst ändern würde: {{sender_email}}. {{sender_name}}, Alphaa (18355355 Canada INC., Kanata, Kanada). Datenschutz: alphaa.app/privacy
 ```

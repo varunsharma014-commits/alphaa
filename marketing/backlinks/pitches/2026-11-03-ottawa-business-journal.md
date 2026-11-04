@@ -5,7 +5,7 @@
 
 Hello,
 
-Customers in Ottawa now ask ChatGPT which dentist, plumber or law firm to call, and many local businesses have never looked at the answer. Alphaa AI Agent is built by 9629033 Canada Inc in Kanata. It has a 60-second check that shows what ChatGPT, Gemini, Claude and Perplexity actually answer for a local business, and which rivals they name instead.
+Customers in Ottawa now ask ChatGPT which dentist, plumber or law firm to call, and many local businesses have never looked at the answer. Alphaa AI Agent is built by 18355355 Canada INC in Kanata. It has a 60-second check that shows what ChatGPT, Gemini, Claude and Perplexity actually answer for a local business, and which rivals they name instead.
 
 We can run the check live for OBJ readers on any Ottawa business you pick, and send you the raw answers from each engine so you can verify them yourself.
 

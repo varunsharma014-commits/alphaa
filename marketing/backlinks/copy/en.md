@@ -4,7 +4,7 @@ Source: submission-kit.md section 2. Use exact text; do not paraphrase.
 
 ## Product
 - Name: Alphaa (social profiles: Alphaa AI Agent)
-- Company: 9629033 Canada Inc., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
+- Company: 18355355 Canada INC., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
 - Contact: hi@alphaa.app
 - Website: https://alphaa.app | Free check: https://alphaa.app/start | Pricing: https://alphaa.app/pricing
 

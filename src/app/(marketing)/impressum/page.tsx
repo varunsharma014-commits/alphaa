@@ -3,7 +3,7 @@ import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Impressum",
-  description: "Impressum und Anbieterkennzeichnung von Alphaa, betrieben von 9629033 Canada Inc. / Legal notice for Alphaa.",
+  description: "Impressum und Anbieterkennzeichnung von Alphaa, betrieben von 18355355 Canada INC. / Legal notice for Alphaa.",
   alternates: { canonical: "/impressum" },
 }
 
@@ -16,7 +16,7 @@ export default function ImpressumPage() {
 
         <h2 className="text-lg font-semibold mt-8 mb-2">Angaben gemäß § 5 DDG</h2>
         <p className="leading-relaxed">
-          9629033 Canada Inc. (handelnd als „Alphaa“)
+          18355355 Canada INC. (handelnd als „Alphaa“)
           <br />500-1000 Innovation Drive
           <br />Ottawa (Kanata), ON K2K 3E7
           <br />Kanada
@@ -29,7 +29,7 @@ export default function ImpressumPage() {
         <p>E-Mail: <a className="underline" href="mailto:hi@alphaa.app">hi@alphaa.app</a></p>
 
         <h2 className="text-lg font-semibold mt-8 mb-2">Registereintrag</h2>
-        <p>Kanadische Bundeskapitalgesellschaft, eingetragen bei Corporations Canada (Innovation, Science and Economic Development Canada), Unternehmensnummer 962903-3.</p>
+        <p>Kanadische Bundeskapitalgesellschaft, eingetragen bei Corporations Canada (Innovation, Science and Economic Development Canada), Unternehmensnummer 1835535-5.</p>
 
         <h2 className="text-lg font-semibold mt-8 mb-2">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
         <p>Varun Sharma, Anschrift wie oben.</p>
@@ -41,8 +41,8 @@ export default function ImpressumPage() {
 
         <h2 lang="en" className="text-lg font-semibold mb-2">Legal notice (English)</h2>
         <p lang="en" className="leading-relaxed">
-          Alphaa is operated by 9629033 Canada Inc., 500-1000 Innovation Drive, Ottawa (Kanata), ON K2K 3E7, Canada, a federal
-          corporation registered with Corporations Canada (corporation number 962903-3), represented by Varun Sharma, Director.
+          Alphaa is operated by 18355355 Canada INC., 500-1000 Innovation Drive, Ottawa (Kanata), ON K2K 3E7, Canada, a federal
+          corporation registered with Corporations Canada (corporation number 1835535-5), represented by Varun Sharma, Director.
           Contact: hi@alphaa.app. See also our <Link className="underline" href="/privacy">privacy policy</Link> and{" "}
           <Link className="underline" href="/terms">terms</Link>.
         </p>

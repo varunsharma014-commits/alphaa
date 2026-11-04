@@ -24,7 +24,7 @@ Gap texts: use the table in `us-ca.md` with UK spelling (no changes needed excep
 
 ```
 {{sender_name}}, Alphaa
-9629033 Canada Inc., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
+18355355 Canada INC., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
 alphaa.app | {{sender_email}}
 I found this business address on {{source_url}} and wrote because it concerns how {{business_name}} gets found. How we handle your details and your rights: alphaa.app/privacy. Reply "no" or unsubscribe here and I'll stop for good: {{unsubscribe_link}}
 ```

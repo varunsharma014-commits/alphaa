@@ -162,7 +162,7 @@ Alphaa reserves the right to assume exclusive control of any matter subject to i
   },
   {
     title: "14. Governing Law",
-    body: `Alphaa is operated by 9629033 Canada Inc. These Terms shall be governed by and construed in accordance with the laws of the Province of Ontario and the federal laws of Canada applicable there, without regard to conflict of law principles. To the extent any dispute is not subject to arbitration as set forth in Section 15, you consent to the exclusive jurisdiction of the courts of the Province of Ontario, sitting in Ottawa. If you are a consumer, nothing in these Terms removes the mandatory consumer protections of the country where you live.`,
+    body: `Alphaa is operated by 18355355 Canada INC. These Terms shall be governed by and construed in accordance with the laws of the Province of Ontario and the federal laws of Canada applicable there, without regard to conflict of law principles. To the extent any dispute is not subject to arbitration as set forth in Section 15, you consent to the exclusive jurisdiction of the courts of the Province of Ontario, sitting in Ottawa. If you are a consumer, nothing in these Terms removes the mandatory consumer protections of the country where you live.`,
   },
   {
     title: "15. Dispute Resolution — Binding Arbitration",

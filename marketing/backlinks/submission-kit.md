@@ -90,7 +90,7 @@ Alphaa
 (On social profiles: Alphaa AI Agent. Always two a's. Never "Alpha".)
 
 LEGAL ENTITY
-9629033 Canada Inc.
+18355355 Canada INC.
 
 TAGLINE (≤60 chars, pick by field length)
 - The AI agent that gets local businesses recommended by AI   (57)
@@ -246,7 +246,7 @@ Check first whether Alphaa already launched (see section 0). If it hasn't:
 - Post on a weekday morning ET. Only post once. Don't ask for votes.
 
 ### Canadian and local
-- **DMZ Oh Canada:** stress Canadian ownership, HQ and IP (9629033 Canada Inc., Kanata).
+- **DMZ Oh Canada:** stress Canadian ownership, HQ and IP (18355355 Canada INC., Kanata).
 - **BetaKit:** pitch news, not a listing. Example: the Product Hunt launch, or WordPress plugin live on wordpress.org. Two short paragraphs, offer data from Alphaa's own public checks if you have it.
 - **Kanata North BA:** email to ask whether membership includes a member-directory listing and a Kanata Networker mention, and what it costs. Join only if the price is reasonable.
 

@@ -90,7 +90,7 @@ The merge fields come from `ScanLead` (`prisma/schema.prisma`) as written by `sr
 - [ ] **Sending tool:** Instantly or Smartlead (inbox rotation, warmup, per-campaign country tags, unified inbox, global block list, plain-text sending). Open tracking OFF, link tracking OFF (link rewriting also hurts deliverability). One campaign per country so each gets its own footer.
 - [ ] **Records for each contact:** `source_url`, `source_date`, screenshot, entity type (UK), segment, scan ID. Canada and the GDPR markets need this as proof.
 - [ ] **Seed row:** one of our own inboxes in each batch to check rendering and links.
-- [ ] **Footer per country** set at campaign level (texts are in each file). Physical address on every email: 9629033 Canada Inc., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada.
+- [ ] **Footer per country** set at campaign level (texts are in each file). Physical address on every email: 18355355 Canada INC., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada.
 
 ## Compliance table (checked 2026-10-30)
 

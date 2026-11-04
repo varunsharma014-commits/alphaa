@@ -60,7 +60,7 @@ Prices are USD for both countries ($99 / $199 / $299).
 
 ```
 {{sender_name}}, Alphaa
-9629033 Canada Inc., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
+18355355 Canada INC., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
 alphaa.app | {{sender_email}}
 I found your address on {{source_url}} and wrote because this concerns how {{business_name}} gets found. Not interested? Reply "no" or unsubscribe here and you won't hear from me again: {{unsubscribe_link}}
 ```

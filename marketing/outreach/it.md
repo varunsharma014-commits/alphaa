@@ -66,7 +66,7 @@ Prices: 99 € / 199 € / 299 € al mese, IVA esclusa. The check asks the AIs 
 One page, signed. About 170 words plus the privacy note.
 
 ```
-Alphaa · 9629033 Canada Inc. · 1000 Innovation Drive, Suite 500 · Kanata, ON K2K 3E7 · Canada
+Alphaa · 18355355 Canada INC. · 1000 Innovation Drive, Suite 500 · Kanata, ON K2K 3E7 · Canada
 
 {{business_name}}
 c.a. {{titolare}}
@@ -100,7 +100,7 @@ Cordiali saluti,
 {{sender_name}}
 Alphaa · alphaa.app
 
-Privacy: il Suo indirizzo professionale proviene da {{source_url}}. Titolare del trattamento: 9629033 Canada Inc. (indirizzo sopra). Lo usiamo solo per questa lettera, sulla base del legittimo interesse (art. 6.1.f GDPR). Può opporsi in qualsiasi momento (art. 21 GDPR) scrivendo a {{sender_email}}: non La contatteremo più. Dettagli: alphaa.app/privacy
+Privacy: il Suo indirizzo professionale proviene da {{source_url}}. Titolare del trattamento: 18355355 Canada INC. (indirizzo sopra). Lo usiamo solo per questa lettera, sulla base del legittimo interesse (art. 6.1.f GDPR). Può opporsi in qualsiasi momento (art. 21 GDPR) scrivendo a {{sender_email}}: non La contatteremo più. Dettagli: alphaa.app/privacy
 ```
 
 One letter only. Follow up only if they reply.
@@ -166,5 +166,5 @@ Fallback (no gap found), Messaggio 3: replace the list with `Il Suo sito ha supe
 Same rule as email. Use only when the business asked for it (e.g. replied to the letter through its own form). Under 600 characters.
 
 ```
-Buongiorno, come richiesto: ho chiesto a ChatGPT, Gemini, Claude e Perplexity «{{question}}». {{missed_count}} su {{answered_count}} non hanno nominato {{business_name}}[, {{rival_engine}} ha consigliato {{rival_1}}]. Tutte le risposte (report per ora in inglese): {{scan_url}}. Se vuole sapere da dove partirei: {{sender_email}}. {{sender_name}}, Alphaa (9629033 Canada Inc., Kanata, Canada). Privacy: alphaa.app/privacy
+Buongiorno, come richiesto: ho chiesto a ChatGPT, Gemini, Claude e Perplexity «{{question}}». {{missed_count}} su {{answered_count}} non hanno nominato {{business_name}}[, {{rival_engine}} ha consigliato {{rival_1}}]. Tutte le risposte (report per ora in inglese): {{scan_url}}. Se vuole sapere da dove partirei: {{sender_email}}. {{sender_name}}, Alphaa (18355355 Canada INC., Kanata, Canada). Privacy: alphaa.app/privacy
 ```

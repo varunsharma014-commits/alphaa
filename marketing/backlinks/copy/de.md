@@ -2,7 +2,7 @@
 
 ## Produkt
 - Name: Alphaa (Social Media: Alphaa AI Agent)
-- Unternehmen: 9629033 Canada Inc., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Kanada
+- Unternehmen: 18355355 Canada INC., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Kanada
 - Kontakt: hi@alphaa.app
 - Marktseite: https://alphaa.app/de | Impressum: https://alphaa.app/impressum
 - Kostenloser Check: https://alphaa.app/start

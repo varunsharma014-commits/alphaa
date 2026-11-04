@@ -57,7 +57,7 @@ Prix : 99 € / 199 € / 299 € HT par mois. Le check interroge les IA en fran
 
 ```
 {{sender_name}}, Alphaa
-9629033 Canada Inc., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
+18355355 Canada INC., 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
 alphaa.app | {{sender_email}}
 J'ai trouvé votre adresse professionnelle sur {{source_url}} et je vous écris parce que cela concerne la façon dont on trouve {{business_name}}. Vos données et vos droits : alphaa.app/privacy. Pour ne plus recevoir mes messages, répondez « stop » ou cliquez ici : {{unsubscribe_link}}
 ```
