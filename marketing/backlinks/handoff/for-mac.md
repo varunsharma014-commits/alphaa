@@ -30,3 +30,7 @@ None (no Mac report).
 - Digital Main Street is `skipped`; skip it.
 - Prefilled tabs are usually gone; refill from copy/en.md.
 - Kanata North Business Association: use its contact form to ask about membership/directory cost (no account).
+
+## Notes from cloud-pm (2026-11-05)
+- No Mac report again (7th day). Nothing submitted, nothing live, sameAs unchanged.
+- Same job list stands for tomorrow: finish the 7 prefilled forms first, then Gmail drafts for the 6 pitches. Please overwrite for-cloud.md and append a log.md line even if everything is blocked.
