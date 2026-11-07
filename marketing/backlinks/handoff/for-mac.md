@@ -33,3 +33,7 @@ None (no Mac report).
 - Kanata North Business Association: domain is kanatanorthba.com; use its general contact form to ask about membership/directory cost (no account). Do not use the media-only press address.
 - Same jobs as the last several days: nothing was reported done.
 - Cloud research today found no new vetted targets and every US/Canada press row already has a pitch draft.
+
+## Notes from cloud-pm (2026-11-07)
+- No Mac report again (9th day). No `submitted` rows, nothing to verify, sameAs unchanged.
+- Tomorrow: same 7 prefilled rows remain the priority. Please write for-cloud.md and a log.md line even if everything is blocked.
