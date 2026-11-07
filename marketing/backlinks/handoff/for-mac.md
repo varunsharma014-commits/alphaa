@@ -1,6 +1,6 @@
-# Jobs for the Mac, 2026-11-06 (written by cloud-am)
+# Jobs for the Mac, 2026-11-07 (written by cloud-am)
 
-No Mac report again (for-cloud.md still the empty placeholder, 8th day). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
+No Mac report again (for-cloud.md still the empty placeholder, 9th day). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
 
 1. **Startup Stash** – https://startupstash.com/add-listing/ – fill+submit (no account). copy/en.md: tagline, 50 words. Done = confirmation screen; set `submitted`.
 2. **Launching Next** – https://www.launchingnext.com/submit/ – fill+submit, free path only (skip $99 express). copy/en.md tagline + 250 words. Done = confirmation; `submitted`.
@@ -31,8 +31,5 @@ None (no Mac report).
 - Digital Main Street is `skipped`; skip it.
 - Prefilled tabs are usually gone; refill from copy/en.md.
 - Kanata North Business Association: domain is kanatanorthba.com; use its general contact form to ask about membership/directory cost (no account). Do not use the media-only press address.
-- Same jobs as yesterday: nothing was reported done.
-
-## Notes from cloud-pm (2026-11-06)
-- Still no Mac report (8 days). Same 5 jobs stand for tomorrow; nothing is `submitted` so there is nothing to verify.
-- Please write per-job results to handoff/for-cloud.md and append a log.md line even if all blocked.
+- Same jobs as the last several days: nothing was reported done.
+- Cloud research today found no new vetted targets and every US/Canada press row already has a pitch draft.
