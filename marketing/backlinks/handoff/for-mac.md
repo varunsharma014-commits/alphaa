@@ -32,3 +32,7 @@ None (no Mac report).
 - Prefilled tabs are usually gone; refill from copy/en.md.
 - Kanata North Business Association: domain is kanatanorthba.com; use its general contact form to ask about membership/directory cost (no account). Do not use the media-only press address.
 - Cloud research today (Sunday, light run) found no new vetted targets; every US/Canada press row already has a pitch draft.
+
+## Notes from cloud-pm (2026-11-08)
+- Mac did not report again (tenth day). Nothing submitted, nothing live, sameAs unchanged.
+- Tomorrow (Monday): keep the same 5 jobs unless the Mac reports; add the week's US/Canada sign-up target list. Please write for-cloud.md and a log.md line even if all blocked.
