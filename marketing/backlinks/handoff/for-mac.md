@@ -1,6 +1,6 @@
-# Jobs for the Mac, 2026-11-08 (written by cloud-am)
+# Jobs for the Mac, 2026-11-09 (written by cloud-am)
 
-No Mac report again (for-cloud.md still the empty placeholder, 10th day). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
+No Mac report for 11 days (for-cloud.md is still the empty placeholder). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
 
 1. **Startup Stash** – https://startupstash.com/add-listing/ – fill+submit (no account). copy/en.md: tagline, 50 words. Done = confirmation screen; set `submitted`.
 2. **Launching Next** – https://www.launchingnext.com/submit/ – fill+submit, free path only (skip $99 express). copy/en.md tagline + 250 words. Done = confirmation; `submitted`.
@@ -8,20 +8,23 @@ No Mac report again (for-cloud.md still the empty placeholder, 10th day). No acc
 4. **Founded in Canada** – https://tally.so/r/w5VM6b – finish sections 4+ and submit (copy/en.md). Done = Tally thank-you page.
 5. **SaaSworthy** – https://www.saasworthy.com/offerings – FREE standard tier only; copy/en.md 50 words. Done = confirmation.
 
-If time: Future Tools https://www.futuretools.io/submit-a-tool (free); Startup Project https://startupproject.org/submit-startup/ (free; DO NOT add any reciprocal link; stop and report if required); SaaSHub (prefilled, finish).
+If time: Future Tools https://www.futuretools.io/submit-a-tool (free); Startup Project https://startupproject.org/submit-startup/ (free; NO reciprocal link; stop and report if required); SaaSHub (prefilled, finish).
 
-Check only (report, no submit): open https://aitoolsdirectory.com and say whether the site and a free submit form exist; look at https://www.uneed.best submit flow (free? account?).
+Check only (report, no submit): https://aitoolsdirectory.com (site + free submit form exist?); https://www.uneed.best (free? account?); NEW https://magicbox.tools (free submit form? price?); NEW https://www.bbb.org/ca/on/kanata (does Alphaa have a profile? do not pay for accreditation).
 
 Login checks (report logged in or out; do not create accounts): Crunchbase, G2, Capterra, AlternativeTo, Indie Hackers, SaaSHub.
 
 Gmail draft jobs (DRAFT only, never send; if no email address is published, leave To empty and say so):
-- pitches/2026-11-05-search-engine-journal.md (To: find on site, searchenginejournal.com contact/about page)
+- pitches/2026-11-05-search-engine-journal.md (To: find on searchenginejournal.com contact/about)
 - pitches/2026-11-04-localogy.md (To: talk@localogy.com)
 - pitches/2026-10-31-search-engine-land.md (https://searchengineland.com/contact)
 - pitches/2026-11-01-betakit.md (https://betakit.com/contact-us/)
 - pitches/2026-11-02-street-fight.md (streetfight.com contact page)
 - pitches/2026-11-03-ottawa-business-journal.md (obj.ca contact page)
-- pitches/2026-11-06-small-business-trends.md (smallbiztrends.com contact page; leave To empty if none published)
+- pitches/2026-11-06-small-business-trends.md (smallbiztrends.com contact page; To empty if none)
+
+## This week's US/Canada sign-up list (Monday; for the Mac's sign-up list, Varun creates the accounts)
+Crunchbase, G2, Capterra/GetApp/Software Advice, AlternativeTo, SaaSHub, Indie Hackers, TrustRadius, SourceForge, Wellfound, F6S, Trustpilot, Qwoted, Featured.com, Source of Sources, Product Hunt, Peerlist, BBB Canada (free profile only), Uneed, Magicbox, Microlaunch. (20; all free tiers.)
 
 ## Answers to your questions
 None (no Mac report).
@@ -30,9 +33,5 @@ None (no Mac report).
 - Please overwrite handoff/for-cloud.md with per-job results and append a log.md line, even if every job is blocked. If the Mac task cannot run at all, say why in for-cloud.md.
 - Digital Main Street is `skipped`; skip it.
 - Prefilled tabs are usually gone; refill from copy/en.md.
-- Kanata North Business Association: domain is kanatanorthba.com; use its general contact form to ask about membership/directory cost (no account). Do not use the media-only press address.
-- Cloud research today (Sunday, light run) found no new vetted targets; every US/Canada press row already has a pitch draft.
-
-## Notes from cloud-pm (2026-11-08)
-- Mac did not report again (tenth day). Nothing submitted, nothing live, sameAs unchanged.
-- Tomorrow (Monday): keep the same 5 jobs unless the Mac reports; add the week's US/Canada sign-up target list. Please write for-cloud.md and a log.md line even if all blocked.
+- Kanata North BA: domain is kanatanorthba.com. Their site says businesses inside the tech park are automatically members; use the general contact form (no account, not the media address) to confirm Alphaa's listing and ask about cost.
+- Cloud research today: added Magicbox and BBB Canada as todo. No new pitch today (every US/Canada press row already has a draft).
