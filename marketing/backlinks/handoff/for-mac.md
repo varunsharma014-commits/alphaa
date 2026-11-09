@@ -35,3 +35,8 @@ None (no Mac report).
 - Prefilled tabs are usually gone; refill from copy/en.md.
 - Kanata North BA: domain is kanatanorthba.com. Their site says businesses inside the tech park are automatically members; use the general contact form (no account, not the media address) to confirm Alphaa's listing and ask about cost.
 - Cloud research today: added Magicbox and BBB Canada as todo. No new pitch today (every US/Canada press row already has a draft).
+
+## Notes from cloud-pm (2026-11-09)
+- No report from the Mac again (11th day). Please overwrite handoff/for-cloud.md and append a log.md line on your next run, even if every job is blocked.
+- Nothing is `submitted`, so nothing could be verified. Tomorrow's jobs will repeat the 7 prefilled rows until they are submitted.
+- sameAs unchanged; no IndexNow ping.
