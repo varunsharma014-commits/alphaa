@@ -139,6 +139,9 @@ import { meta as mortgageBrokersMeta, Body as MortgageBrokersBody } from "./how-
 import { meta as vsSearchAtlasMeta, Body as VsSearchAtlasBody } from "./alphaa-vs-search-atlas"
 import { meta as nearMeMeta, Body as NearMeBody } from "./ai-near-me-searches"
 import { meta as funeralHomesMeta, Body as FuneralHomesBody } from "./how-funeral-homes-get-recommended-by-ai"
+import { meta as vsPeecMeta, Body as VsPeecBody } from "./alphaa-vs-peec-ai"
+import { meta as bingAiPerfMeta, Body as BingAiPerfBody } from "./bing-ai-performance-report"
+import { meta as tutoringMeta, Body as TutoringBody } from "./how-tutoring-centers-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -283,6 +286,9 @@ export const POSTS: Post[] = [
   { meta: vsSearchAtlasMeta, Body: VsSearchAtlasBody },
   { meta: nearMeMeta, Body: NearMeBody },
   { meta: funeralHomesMeta, Body: FuneralHomesBody },
+  { meta: vsPeecMeta, Body: VsPeecBody },
+  { meta: bingAiPerfMeta, Body: BingAiPerfBody },
+  { meta: tutoringMeta, Body: TutoringBody },
 ]
 
 export function getAllPosts(): Post[] {
