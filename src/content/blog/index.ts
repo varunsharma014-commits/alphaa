@@ -142,6 +142,9 @@ import { meta as funeralHomesMeta, Body as FuneralHomesBody } from "./how-funera
 import { meta as vsPeecMeta, Body as VsPeecBody } from "./alphaa-vs-peec-ai"
 import { meta as bingAiPerfMeta, Body as BingAiPerfBody } from "./bing-ai-performance-report"
 import { meta as tutoringMeta, Body as TutoringBody } from "./how-tutoring-centers-get-recommended-by-ai"
+import { meta as bestSmallBizMeta, Body as BestSmallBizBody } from "./best-aeo-software-small-business"
+import { meta as servicePageMeta, Body as ServicePageBody } from "./service-page-for-ai-search"
+import { meta as preferredSourcesMeta, Body as PreferredSourcesBody } from "./google-preferred-sources-ai-overviews"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -289,6 +292,9 @@ export const POSTS: Post[] = [
   { meta: vsPeecMeta, Body: VsPeecBody },
   { meta: bingAiPerfMeta, Body: BingAiPerfBody },
   { meta: tutoringMeta, Body: TutoringBody },
+  { meta: bestSmallBizMeta, Body: BestSmallBizBody },
+  { meta: servicePageMeta, Body: ServicePageBody },
+  { meta: preferredSourcesMeta, Body: PreferredSourcesBody },
 ]
 
 export function getAllPosts(): Post[] {
