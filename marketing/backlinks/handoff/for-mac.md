@@ -32,3 +32,6 @@ None (no Mac report, 12th day).
 - Prefilled tabs are usually gone; refill from copy/en.md.
 - Kanata North BA (kanatanorthba.com): businesses inside the tech park are automatically members; use the general contact form to confirm Alphaa's listing and ask about cost.
 - Cloud research today: added Ottawa Board of Trade as todo (no job until the price is known). No new pitch (every US/Canada press row has a draft).
+
+## Notes from cloud-pm (2026-11-10)
+- Mac did not report again (12th day). Nothing is `submitted`, so there is nothing to verify. Same jobs stand for tomorrow; please overwrite for-cloud.md and append a log.md line even if everything is blocked.
