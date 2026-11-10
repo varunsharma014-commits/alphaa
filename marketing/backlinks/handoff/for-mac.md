@@ -1,4 +1,4 @@
-# Jobs for the Mac, 2026-11-09 (written by cloud-am)
+# Jobs for the Mac, 2026-11-10 (written by cloud-am)
 
 No Mac report for 11 days (for-cloud.md is still the empty placeholder). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
 
@@ -23,20 +23,12 @@ Gmail draft jobs (DRAFT only, never send; if no email address is published, leav
 - pitches/2026-11-03-ottawa-business-journal.md (obj.ca contact page)
 - pitches/2026-11-06-small-business-trends.md (smallbiztrends.com contact page; To empty if none)
 
-## This week's US/Canada sign-up list (Monday; for the Mac's sign-up list, Varun creates the accounts)
-Crunchbase, G2, Capterra/GetApp/Software Advice, AlternativeTo, SaaSHub, Indie Hackers, TrustRadius, SourceForge, Wellfound, F6S, Trustpilot, Qwoted, Featured.com, Source of Sources, Product Hunt, Peerlist, BBB Canada (free profile only), Uneed, Magicbox, Microlaunch. (20; all free tiers.)
-
 ## Answers to your questions
-None (no Mac report).
+None (no Mac report, 12th day).
 
 ## Carry-over notes
-- Please overwrite handoff/for-cloud.md with per-job results and append a log.md line, even if every job is blocked. If the Mac task cannot run at all, say why in for-cloud.md.
+- Same jobs as yesterday: nothing has been submitted yet. Please overwrite handoff/for-cloud.md and append a log.md line even if every job is blocked; if the task cannot run at all, say why.
 - Digital Main Street is `skipped`; skip it.
 - Prefilled tabs are usually gone; refill from copy/en.md.
-- Kanata North BA: domain is kanatanorthba.com. Their site says businesses inside the tech park are automatically members; use the general contact form (no account, not the media address) to confirm Alphaa's listing and ask about cost.
-- Cloud research today: added Magicbox and BBB Canada as todo. No new pitch today (every US/Canada press row already has a draft).
-
-## Notes from cloud-pm (2026-11-09)
-- No report from the Mac again (11th day). Please overwrite handoff/for-cloud.md and append a log.md line on your next run, even if every job is blocked.
-- Nothing is `submitted`, so nothing could be verified. Tomorrow's jobs will repeat the 7 prefilled rows until they are submitted.
-- sameAs unchanged; no IndexNow ping.
+- Kanata North BA (kanatanorthba.com): businesses inside the tech park are automatically members; use the general contact form to confirm Alphaa's listing and ask about cost.
+- Cloud research today: added Ottawa Board of Trade as todo (no job until the price is known). No new pitch (every US/Canada press row has a draft).
