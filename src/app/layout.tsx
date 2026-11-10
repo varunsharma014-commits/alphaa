@@ -52,7 +52,7 @@ const orgSchema = {
   description:
     "Alphaa is an AI search optimization (AEO) platform that automatically gets businesses found, cited, and recommended by ChatGPT, Gemini, Claude and Perplexity.",
   logo: "https://alphaa.app/logo.png",
-  sameAs: ["https://www.linkedin.com/company/135966599/", "https://www.facebook.com/61592044887737", "https://medium.com/@alphaaaiagent"],
+  sameAs: ["https://www.linkedin.com/company/135966599/", "https://www.facebook.com/61592044887737", "https://www.instagram.com/alphaa.ai.agent/", "https://medium.com/@alphaaaiagent"],
 }
 
 const websiteSchema = {

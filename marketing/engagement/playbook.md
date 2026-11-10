@@ -23,7 +23,7 @@ What this routine is NOT:
 |---|---|---|---|---|
 | LinkedIn | Company page "Alphaa AI Agent" (id 135966599) | The PAGE, via the "comment as" switcher | **LIVE** | 15/day across 2 runs (ramp below) |
 | Facebook | Page "Alphaa.app" (renaming to Alphaa AI Agent), id 61592044887737 | The PAGE, after switching into the page profile | **LIVE** | 10/day |
-| Instagram | @alphaa.app.scan (rename pending) | The brand account | **PENDING ACCOUNT** (Chrome is on the founder's personal IG) | 10/day once live |
+| Instagram | @alphaa.ai.agent (renamed 2026-11-10) | The brand account | **PENDING ACCOUNT** (Chrome is on the founder's personal IG) | 10/day once live |
 | X | none yet | Brand account | **PENDING ACCOUNT** | 20/day once live (see X warning in section 9) |
 | TikTok | none yet | Brand account | **PENDING ACCOUNT** | 10/day once live |
 | Reddit | Varun's PERSONAL account only | Varun, as himself | **MANUAL / DRAFTS ONLY** | 3 helpful answers/week, posted by Varun |
