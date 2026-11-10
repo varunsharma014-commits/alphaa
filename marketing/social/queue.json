@@ -2100,9 +2100,9 @@
     "image": "brand/social/posts/w4_medspa_chat.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7525928333088313344/",
+    "posted_at": "2026-11-10T09:33:00-05:00"
   },
   {
     "id": "w4-mon-instagram",
@@ -2245,9 +2245,9 @@
     "image": "brand/social/posts/w4_accountant.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/profile.php?id=61592044887737",
+    "posted_at": "2026-11-10T09:37:00-05:00"
   },
   {
     "id": "w4-tue-x",
