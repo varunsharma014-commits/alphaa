@@ -145,6 +145,9 @@ import { meta as tutoringMeta, Body as TutoringBody } from "./how-tutoring-cente
 import { meta as bestSmallBizMeta, Body as BestSmallBizBody } from "./best-aeo-software-small-business"
 import { meta as servicePageMeta, Body as ServicePageBody } from "./service-page-for-ai-search"
 import { meta as preferredSourcesMeta, Body as PreferredSourcesBody } from "./google-preferred-sources-ai-overviews"
+import { meta as vsBirdeyeMeta, Body as VsBirdeyeBody } from "./alphaa-vs-birdeye"
+import { meta as indexNowMeta, Body as IndexNowBody } from "./indexnow-for-ai-search"
+import { meta as paintersMeta, Body as PaintersBody } from "./how-painters-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -295,6 +298,9 @@ export const POSTS: Post[] = [
   { meta: bestSmallBizMeta, Body: BestSmallBizBody },
   { meta: servicePageMeta, Body: ServicePageBody },
   { meta: preferredSourcesMeta, Body: PreferredSourcesBody },
+  { meta: vsBirdeyeMeta, Body: VsBirdeyeBody },
+  { meta: indexNowMeta, Body: IndexNowBody },
+  { meta: paintersMeta, Body: PaintersBody },
 ]
 
 export function getAllPosts(): Post[] {
