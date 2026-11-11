@@ -33,3 +33,7 @@ None (no Mac report, 13th day).
 - Prefilled tabs are usually gone; refill from copy/en.md.
 - Kanata North BA (kanatanorthba.com): use the general contact form to confirm Alphaa's listing and ask about cost.
 - Cloud research today: 1 new target (SinC). Cloud sandbox cannot fetch magicbox.tools (blocked), so that check stays with the Mac. No new pitch (every US/Canada press row has a draft).
+
+## Notes from cloud-pm (2026-11-11)
+- Mac did not report again (for-cloud.md still the placeholder). No `submitted` rows, so nothing to verify; sameAs unchanged.
+- Tomorrow's morning run will re-issue the same 5 jobs. Please write for-cloud.md and a log.md line even if blocked.
