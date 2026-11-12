@@ -390,8 +390,6 @@ Status colors (not in Tailwind config, use standard Tailwind): `text-green-500` 
 
 24. **`src/app/api/audit/` directory exists** but there is no `route.ts` in it at the top level — audits are triggered from `/api/dashboard/scan`. Do not confuse the directory name with a standalone audit endpoint.
 
----
-
 25. **One login, many websites (2026-11-12, `src/lib/sites.ts`).** Each website is its own `User` row with its own plan, Stripe customer/subscription, data and crons. Extra websites have `clerkId = "site:<ownerClerkId>:<tag>"` and email `name+as-<tag>@domain` (User.email is unique; no schema change). The open website is the `alphaa_site` cookie (a row id, only the owner's rows accepted). **Always import `auth` from `@/lib/auth`** (it swaps `userId` to the open website's clerkId); `realAuth()` gives the real Clerk id (sites API, Clerk webhook, middleware). **Never send mail to `user.email` raw**: the four send functions (`lib/resend.ts`, `lib/email.ts`, `lib/marketing-email.ts`, `lib/connector/mail.ts`) apply `realEmail()`; use `isComped(email)` / `compedEmailWhere()` instead of `FOUNDER_EMAILS.includes`. Switcher = `components/agent/SiteSwitcher.tsx`; API = `/api/sites` (GET list, POST add, DELETE unpaid extra) + `/api/sites/switch`.
 
 ---

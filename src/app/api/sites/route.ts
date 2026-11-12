@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { realAuth } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { isComped } from "@/lib/billing"
 import { MAX_SITES, SITE_COOKIE, isSiteClerkId, listSites, newSiteIdentity, sitePrefix } from "@/lib/sites"
 
 export const dynamic = "force-dynamic"
@@ -11,7 +12,8 @@ const cookieOpts = { httpOnly: true, sameSite: "lax" as const, secure: process.e
 export async function GET(req: NextRequest) {
   const { userId } = await realAuth()
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  const sites = await listSites(userId)
+  // Comped logins (founder, app review) count as paid; the tagged email never leaves the server.
+  const sites = (await listSites(userId)).map(({ email, ...s }) => ({ ...s, paid: s.paid || isComped(email) }))
   const cookie = req.cookies.get(SITE_COOKIE)?.value
   const activeId = sites.find((s) => s.id === cookie)?.id ?? sites[0]?.id ?? null
   return NextResponse.json({ sites, activeId, max: MAX_SITES })

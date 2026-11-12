@@ -55,7 +55,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   // the /dashboard page uses — React's cache() makes that one query set.
   const feed = await getFeed(user.id)
   const rail = feed?.rail ?? {
-    businessName: user.businessName ?? "your business",
+    businessName: user.businessName?.trim() || user.websiteUrl || "your business",
     location: [user.city, user.state].filter(Boolean).join(", "),
     dayNumber: 1,
     named: 0,

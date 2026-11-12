@@ -70,7 +70,7 @@ export function SiteSwitcher({ name }: { name: string }) {
           <hr />
           <button role="menuitem" disabled={busy} onClick={() => go("/api/sites", { method: "POST" })}>
             <span className="ag-site__name"><Plus size={14} aria-hidden="true" /> Add a website</span>
-            <span className="ag-site__sub">Each website gets its own plan and its own results.</span>
+            <span className="ag-site__sub">Its own plan and its own results.</span>
           </button>
           {error && <p className="ag-site__note ag-site__note--err">{error}</p>}
         </div>

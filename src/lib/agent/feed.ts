@@ -73,7 +73,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     }),
   ])
 
-  const businessName = user.businessName ?? "your business"
+  const businessName = user.businessName?.trim() || user.websiteUrl || "your business"
   const question = await accountQuestion(user)
   const messages: Message[] = []
   const now = new Date()

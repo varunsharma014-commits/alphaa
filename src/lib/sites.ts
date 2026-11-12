@@ -58,13 +58,13 @@ export function cleanSiteUrl(raw: string): string | null {
   }
 }
 
-export type SiteSummary = { id: string; name: string; url: string | null; paid: boolean; ready: boolean }
+export type SiteSummary = { id: string; name: string; url: string | null; paid: boolean; ready: boolean; email: string }
 
 /** All of an owner's websites, the first one first. */
 export async function listSites(ownerClerk: string): Promise<SiteSummary[]> {
   const rows = await db.user.findMany({
     where: { OR: [{ clerkId: ownerClerk }, { clerkId: { startsWith: sitePrefix(ownerClerk) } }] },
-    select: { id: true, clerkId: true, businessName: true, websiteUrl: true, stripeSubscriptionId: true, subscriptionStatus: true, onboardingCompleted: true, createdAt: true },
+    select: { id: true, clerkId: true, email: true, businessName: true, websiteUrl: true, stripeSubscriptionId: true, subscriptionStatus: true, onboardingCompleted: true, createdAt: true },
     orderBy: { createdAt: "asc" },
   })
   rows.sort((a, b) => Number(isSiteClerkId(a.clerkId)) - Number(isSiteClerkId(b.clerkId)))
@@ -74,6 +74,7 @@ export async function listSites(ownerClerk: string): Promise<SiteSummary[]> {
     url: r.websiteUrl,
     paid: !!r.stripeSubscriptionId && ["active", "trialing"].includes(r.subscriptionStatus),
     ready: r.onboardingCompleted,
+    email: r.email,
   }))
 }
 
