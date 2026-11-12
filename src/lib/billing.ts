@@ -1,3 +1,4 @@
+import { realEmail } from "@/lib/sites"
 /**
  * Where a paying customer's subscription lives. `User.stripeSubscriptionId` holds either a real
  * Stripe subscription id ("sub_…") or, for merchants billed through Shopify Managed Pricing, the
@@ -32,3 +33,19 @@ export const FOUNDER_EMAILS = [
   "varunsharma014@gmail.com",
   ...(process.env.COMP_ACCESS_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean),
 ]
+
+/** Prisma OR-clauses matching comp-access rows, their extra websites included. */
+export function compedEmailWhere() {
+  return [
+    { email: { in: FOUNDER_EMAILS } },
+    ...FOUNDER_EMAILS.filter((e) => e.includes("@")).map((e) => {
+      const at = e.lastIndexOf("@")
+      return { AND: [{ email: { startsWith: `${e.slice(0, at)}+as-` } }, { email: { endsWith: e.slice(at) } }] }
+    }),
+  ]
+}
+
+/** Founder / comp-access login, including that login\'s extra websites (lib/sites.ts). */
+export function isComped(email: string | null | undefined): boolean {
+  return !!email && FOUNDER_EMAILS.includes(realEmail(email).trim().toLowerCase())
+}

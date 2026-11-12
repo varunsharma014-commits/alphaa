@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
 import { NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { runAutoDiscovery } from "@/lib/discover-competitors"
 import { isSearchConfigured } from "@/lib/apify-search"

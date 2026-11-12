@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import Link from "next/link"
 import { ReCrawlButton } from "./ReCrawlButton"

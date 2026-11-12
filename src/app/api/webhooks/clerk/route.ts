@@ -51,7 +51,8 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "user.deleted") {
-    await db.user.deleteMany({ where: { clerkId: event.data.id } })
+    // The login and every extra website it owns (lib/sites.ts).
+    await db.user.deleteMany({ where: { OR: [{ clerkId: event.data.id }, { clerkId: { startsWith: `site:${event.data.id}:` } }] } })
   }
 
   return NextResponse.json({ received: true })

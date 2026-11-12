@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import React from "react"
 import { db } from "@/lib/db"
 import { logActivity } from "@/lib/activity"
-import { FOUNDER_EMAILS, hasPaidPlan } from "@/lib/billing"
+import { isComped, hasPaidPlan } from "@/lib/billing"
 import { mailingAddress, sendMarketingEmail } from "@/lib/marketing-email"
 import { isEmailSuppressed, unsubscribeLinks, type UnsubLinks } from "@/lib/unsubscribe"
 import NurtureEmail from "@/emails/NurtureEmail"
@@ -62,11 +62,13 @@ export async function GET(req: NextRequest) {
     where: {
       onboardingCompleted: true,
       createdAt: { gte: new Date(now - (LAST_CONVERT_DAY + 2) * DAY), lte: new Date(now - 1 * DAY) },
+      // An existing customer's extra website (lib/sites.ts) gets no sales drip.
+      NOT: { clerkId: { startsWith: "site:" } },
     },
     orderBy: { createdAt: "desc" },
     select: { id: true, email: true, createdAt: true, subscriptionStatus: true, stripeSubscriptionId: true },
   })
-  const candidates = users.filter((u) => u.email.includes("@") && !hasPaidPlan(u) && !FOUNDER_EMAILS.includes(u.email.trim().toLowerCase()))
+  const candidates = users.filter((u) => u.email.includes("@") && !hasPaidPlan(u) && !isComped(u.email))
 
   const ids = candidates.map((u) => u.id)
   const ledger = ids.length

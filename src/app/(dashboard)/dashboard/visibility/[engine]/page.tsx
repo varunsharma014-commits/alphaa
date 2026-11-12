@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { redirect, notFound } from "next/navigation"
 import { db } from "@/lib/db"
 import type { LucideIcon } from "lucide-react"

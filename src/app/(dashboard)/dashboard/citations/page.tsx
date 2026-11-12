@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { CitationsClient } from "./CitationsClient"
 import type { CitationReport } from "@/lib/citations"

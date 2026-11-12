@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 60
 
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { draftContentForGap, type WinGapItem } from "@/lib/win-gap"
 import { logActivity } from "@/lib/activity"

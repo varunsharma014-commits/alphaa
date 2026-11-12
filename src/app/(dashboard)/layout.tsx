@@ -1,9 +1,10 @@
 export const dynamic = "force-dynamic"
-import { auth, clerkClient } from "@clerk/nextjs/server"
+import { clerkClient } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { hasPaidPlan, FOUNDER_EMAILS } from "@/lib/billing"
+import { hasPaidPlan, isComped } from "@/lib/billing"
 import { AgentShell } from "@/components/agent/AgentShell"
 import { getFeed } from "@/lib/agent/feed"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
@@ -38,7 +39,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   // stripeSubscriptionId + status seconds after checkout completes. Status
   // alone isn't trusted: the column's DB default is "trialing".
   // Founder account bypasses so the owner can always dogfood.
-  if (!hasPaidPlan(user) && !FOUNDER_EMAILS.includes(user.email.toLowerCase())) {
+  if (!hasPaidPlan(user) && !isComped(user.email)) {
     redirect("/onboarding")
   }
 

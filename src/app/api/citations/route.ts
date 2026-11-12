@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { logActivity } from "@/lib/activity"
 import { buildCitationReport, type CitationReport } from "@/lib/citations"

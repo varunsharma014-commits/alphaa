@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { stripe } from "@/lib/stripe"
 import { db } from "@/lib/db"
 import { shopifyBilledShop } from "@/lib/billing"

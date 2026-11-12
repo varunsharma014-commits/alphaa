@@ -10,12 +10,13 @@ import WeekOneRecapEmail from "@/emails/WeekOneRecapEmail"
 import WinEmail from "@/emails/WinEmail"
 import { agentFrom, REPLY_TO } from "@/lib/email-sender"
 import { orYou } from "@/emails/copy"
+import { realEmail } from "@/lib/sites"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 async function send(to: string, subject: string, react: React.ReactElement) {
   const [html, text] = await Promise.all([render(react), render(react, { plainText: true })])
-  const { error } = await resend.emails.send({ from: agentFrom(), replyTo: REPLY_TO, to, subject, html, text })
+  const { error } = await resend.emails.send({ from: agentFrom(), replyTo: REPLY_TO, to: realEmail(to), subject, html, text })
   if (error) throw new Error(`Resend error: ${error.message}`)
 }
 

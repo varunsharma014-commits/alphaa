@@ -2,6 +2,7 @@ import { render } from "@react-email/render"
 import { resend } from "@/lib/resend"
 import { agentFrom, REPLY_TO } from "@/lib/email-sender"
 import type { UnsubLinks } from "@/lib/unsubscribe"
+import { realEmail } from "@/lib/sites"
 
 // Sender for marketing email (scan-lead nurture, abandoned checkout, weekly report).
 // From "Alphaa AI Agent" <RESEND_FROM_EMAIL>, replies to hi@alphaa.app.
@@ -26,7 +27,7 @@ export async function sendMarketingEmail(opts: {
   const [html, text] = await Promise.all([render(opts.react), render(opts.react, { plainText: true })])
   const { data, error } = await resend.emails.send({
     from: agentFrom(),
-    to: opts.to,
+    to: realEmail(opts.to),
     replyTo: REPLY_TO,
     subject: opts.subject,
     html,

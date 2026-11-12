@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 
 /** Signed-in Alphaa user for an API route, or null. */

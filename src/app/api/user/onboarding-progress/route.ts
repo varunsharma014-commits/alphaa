@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 
 // Saves onboarding progress WITHOUT completing onboarding, and lets the

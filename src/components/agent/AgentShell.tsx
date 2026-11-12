@@ -10,6 +10,7 @@ import { BRAND } from "@/lib/brand"
 import { AgentMemory } from "./AgentMemory"
 import { AccountMenu } from "./AccountMenu"
 import { ToolsRail } from "./ToolsRail"
+import { SiteSwitcher } from "./SiteSwitcher"
 
 // No menu to hunt through: one conversation with the agent, chips to ask it
 // things, and a Memory panel on the right with the score, results,
@@ -87,7 +88,7 @@ export function AgentShell({
               {BRAND.name}
             </Link>
             <span className="ag-head__sep" />
-            <span className="ag-head__biz">{rail.businessName}</span>
+            {showUser ? <SiteSwitcher name={rail.businessName} /> : <span className="ag-head__biz">{rail.businessName}</span>}
             {isHome ? (
               <span className="ag-head__since">
                 <span className="ag-dot ag-dot--live" style={{ width: 6, height: 6 }} /> working for you

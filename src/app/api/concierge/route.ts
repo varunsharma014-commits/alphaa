@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic"
 // activity row so it's visible in the DB without a schema change).
 
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { logActivity } from "@/lib/activity"

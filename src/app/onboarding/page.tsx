@@ -1,12 +1,14 @@
 export const dynamic = "force-dynamic"
 
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { db } from "@/lib/db"
-import { hasPaidPlan, FOUNDER_EMAILS } from "@/lib/billing"
+import { hasPaidPlan, isComped } from "@/lib/billing"
 import { completeOnboardingFromScan } from "@/lib/onboarding"
 import { StartAgent } from "@/components/agent/StartAgent"
+import { NewSiteBar } from "@/components/agent/NewSiteBar"
+import { isSiteClerkId } from "@/lib/sites"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
 
 export const metadata = { title: "Getting started", robots: { index: false, follow: false } }
@@ -41,7 +43,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
     redirect(paid ? "/dashboard?upgraded=true" : "/dashboard")
   }
   // Comped accounts (founder, app-store reviewers) skip payment once set up.
-  const comped = FOUNDER_EMAILS.includes(user.email.toLowerCase())
+  const comped = isComped(user.email)
   if (comped && user.onboardingCompleted) redirect("/dashboard")
   // Shopify merchants pay only through Shopify (App Store rule 1.2.1): its plan page, never Stripe checkout.
   const shop = comped ? null : await shopifyMerchantShop(user)
@@ -58,6 +60,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
   const PLATFORM: Record<string, string> = { webflow: "Webflow", shopify: "Shopify", wix: "Wix", wordpress: "WordPress" }
   return (
     <div data-agent="" data-theme="light" data-brand="blue" style={{ minHeight: "100dvh" }}>
+      {isSiteClerkId(user.clerkId) && !hasPaidPlan(user) ? <NewSiteBar siteId={user.id} /> : null}
       {site?.platform && site.siteUrl ? (
         <div role="status" style={{ maxWidth: 640, margin: "16px auto 0", padding: "10px 14px", border: "1px solid rgba(0,0,0,.12)", borderRadius: 12, fontSize: 14, background: "#fff", color: "#111" }}>
           ✓ Your {PLATFORM[site.platform] ?? site.platform} site <strong>{site.label || site.siteUrl}</strong> is connected. Alphaa publishes there once you approve a change.

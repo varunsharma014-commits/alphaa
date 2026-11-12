@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { Globe, Users, Zap, AlertCircle, CheckCircle2, TrendingUp, Search } from "lucide-react"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"

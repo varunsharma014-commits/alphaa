@@ -1,6 +1,6 @@
 import { google } from 'googleapis'
 import { OAuth2Client } from 'google-auth-library'
-import { FOUNDER_EMAILS } from '@/lib/billing'
+import { isComped } from '@/lib/billing'
 
 export const SCOPES = [
   // analytics.readonly was removed (Jul 2026): GA data was synced but never
@@ -28,7 +28,7 @@ function createOAuth2Client(): OAuth2Client {
 export const GA_SCOPE = 'https://www.googleapis.com/auth/analytics.readonly'
 export const gaScopeEnabled = () => process.env.GA_SCOPE_ENABLED === '1'
 export const gaScopeAllowed = (email: string | null | undefined) =>
-  gaScopeEnabled() || (!!email && FOUNDER_EMAILS.includes(email.trim().toLowerCase()))
+  gaScopeEnabled() || (!!email && isComped(email))
 
 export function getGoogleAuthUrl(state: string, opts: { analytics?: boolean } = {}): string {
   const client = createOAuth2Client()

@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 60
 
 import { NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { checkSite, type SiteCheck } from "@/lib/site-check"
 

@@ -1,12 +1,13 @@
 export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { stripe, STRIPE_PRICE_IDS, STRIPE_SETUP_FEE_PRICE_ID } from "@/lib/stripe"
 import { db } from "@/lib/db"
-import { FOUNDER_EMAILS } from "@/lib/billing"
+import { isComped } from "@/lib/billing"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
 import { MARKET_CURRENCY, MARKET_COOKIE, isMarketKey } from "@/content/markets/prices"
 import type Stripe from "stripe"
+import { realEmail } from "@/lib/sites"
 
 // Visitors who came through a market page (/uk, /de…) pay in that market's
 // currency. The monthly prices carry currency options in Stripe; if one is
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
   const user = await db.user.findUnique({ where: { clerkId: userId } })
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
   // Comped accounts (founder, app-store reviewers) never pay: send them on.
-  if (purchase === "starter" && FOUNDER_EMAILS.includes(user.email.toLowerCase())) {
+  if (purchase === "starter" && isComped(user.email)) {
     return NextResponse.json({ url: `${appUrl}/dashboard` })
   }
 
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (!stripeCustomerId) {
-    const customer = await stripe.customers.create({ email: user.email, name: user.fullName ?? undefined })
+    const customer = await stripe.customers.create({ email: realEmail(user.email), name: user.fullName ?? undefined, description: user.websiteUrl ? `Alphaa: ${user.websiteUrl}` : undefined })
     stripeCustomerId = customer.id
     await db.user.update({ where: { id: user.id }, data: { stripeCustomerId } })
   }

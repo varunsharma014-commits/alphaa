@@ -10,7 +10,7 @@
 // or for FOUNDER_EMAILS (owner + COMP_ACCESS_EMAILS app-review logins). Everyone else needs a real charge.
 import { db } from "@/lib/db"
 import { getAgentSettings, type AgentSettings } from "@/lib/agent/settings"
-import { FOUNDER_EMAILS, hasStripePlan, shopifyBilledShop, shopifySubMarker } from "@/lib/billing"
+import { isComped as isCompedEmail, hasStripePlan, shopifyBilledShop, shopifySubMarker } from "@/lib/billing"
 import { isShopDomain, shopifyActiveSubscriptionsFor, type ShopifyAppSubscription } from "@/lib/connector/shopify"
 
 /** The app's handle in the Shopify admin URL (Partner Dashboard → app → handle). */
@@ -36,7 +36,7 @@ export async function shopifyMerchantShop(user: { id: string; stripeSubscription
   return isShopDomain(host) ? host : null
 }
 
-const isComped = (email: string) => FOUNDER_EMAILS.includes(email.toLowerCase())
+const isComped = (email: string) => isCompedEmail(email)
 
 /** Does this subscription pay for Alphaa? ACTIVE, and a real charge unless test charges are allowed here. */
 export function subscriptionCountsAsPaid(sub: ShopifyAppSubscription, email: string): boolean {

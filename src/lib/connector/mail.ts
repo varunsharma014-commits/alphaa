@@ -1,5 +1,6 @@
 import { Resend } from "resend"
 import { fromAs } from "@/lib/email-sender"
+import { realEmail } from "@/lib/sites"
 
 // Plain, Apple-light emails the agent sends on the owner's behalf. Replies go
 // to the owner, never to us.
@@ -23,7 +24,7 @@ export async function sendAs(opts: { fromName: string; to: string; replyTo?: str
     // Display name per email ("Bright Smile via Alphaa", "Alphaa AI Agent");
     // the address is always RESEND_FROM_EMAIL, falling back to hi@alphaa.app.
     from: fromAs(opts.fromName),
-    to: opts.to,
+    to: realEmail(opts.to),
     replyTo: opts.replyTo ?? undefined,
     subject: opts.subject,
     html: opts.html,

@@ -3,7 +3,7 @@ export const maxDuration = 180
 
 import { NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"

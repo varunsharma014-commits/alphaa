@@ -1,5 +1,6 @@
 import { Resend } from "resend"
 import { agentFrom, REPLY_TO } from "@/lib/email-sender"
+import { realEmail } from "@/lib/sites"
 
 export const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -19,7 +20,7 @@ export async function sendEmail({
     const { data, error } = await resend.emails.send({
       from: agentFrom(),
       replyTo: REPLY_TO,
-      to,
+      to: realEmail(to),
       subject,
       react,
       headers,

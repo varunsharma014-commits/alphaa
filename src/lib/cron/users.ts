@@ -1,5 +1,5 @@
 import { db } from "@/lib/db"
-import { FOUNDER_EMAILS } from "@/lib/billing"
+import { compedEmailWhere } from "@/lib/billing"
 
 /** Paying or trialing customers (plus anyone in their first 14 days) — who the agent works for. */
 export async function activeUsers() {
@@ -8,7 +8,7 @@ export async function activeUsers() {
       onboardingCompleted: true,
       OR: [
         { subscriptionStatus: { in: ["active", "trialing"] }, stripeSubscriptionId: { not: null } },
-        { email: { in: FOUNDER_EMAILS } },
+        ...compedEmailWhere(),
         { createdAt: { gte: new Date(Date.now() - 14 * 86_400_000) } },
       ],
     },

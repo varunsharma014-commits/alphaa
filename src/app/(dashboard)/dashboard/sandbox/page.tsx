@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { MessagesSquare } from "lucide-react"
 import { db } from "@/lib/db"

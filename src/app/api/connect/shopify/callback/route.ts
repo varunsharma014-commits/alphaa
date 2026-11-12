@@ -5,7 +5,7 @@ import { saveAgentSettings } from "@/lib/agent/settings"
 import { encryptSecret } from "@/lib/checks/bing-webmaster"
 import { isShopDomain, shopifyActiveSubscriptions, shopifyExchange, shopifySetup, verifyShopifyHmac } from "@/lib/connector/shopify"
 import { applyShopifySubscriptions, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
-import { FOUNDER_EMAILS, hasPaidPlan } from "@/lib/billing"
+import { isComped, hasPaidPlan } from "@/lib/billing"
 import { platformAvailability } from "@/lib/connector/availability"
 
 export const dynamic = "force-dynamic"
@@ -87,7 +87,7 @@ export async function GET(req: NextRequest) {
     if (subs) {
       const paidViaShopify = await applyShopifySubscriptions(user, shop, subs)
       const fresh = paidViaShopify ? null : await db.user.findUnique({ where: { id: user.id } })
-      if (fresh && !hasPaidPlan(fresh) && !FOUNDER_EMAILS.includes(fresh.email.toLowerCase())) {
+      if (fresh && !hasPaidPlan(fresh) && !isComped(fresh.email)) {
         return NextResponse.redirect(shopifyPricingUrl(shop))
       }
     }

@@ -728,3 +728,20 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .lc-guides { max-width: 760px; margin: 44px auto 0; text-align: start; }
 .lc-guides h3 { font-size: 17px; margin: 0 0 10px; }
 .lc-guides a { display: block; color: var(--ag-link); font-size: 16px; padding: 8px 0; border-bottom: 1px solid var(--ag-line); }
+
+/* Website switcher (lib/sites.ts) */
+.ag-site { position: relative; min-width: 0; }
+.ag-site__btn { display: inline-flex; align-items: center; gap: 4px; max-width: 260px; font: inherit; font-size: 14px; font-weight: 500; color: var(--ag-fg); background: none; border: 0; padding: 4px 8px; margin-left: -8px; border-radius: 8px; cursor: pointer; }
+.ag-site__btn span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ag-site__btn:hover { background: var(--ag-bg2); }
+.ag-site__menu { position: absolute; left: -8px; top: calc(100% + 8px); z-index: 60; width: 300px; max-width: calc(100vw - 32px); max-height: 70vh; overflow-y: auto; background: var(--ag-card); border: 1px solid var(--ag-line); border-radius: 14px; box-shadow: var(--ag-shadow); padding: 6px; display: flex; flex-direction: column; }
+.ag-site__label { font-size: 12px; color: var(--ag-muted); padding: 8px 10px 6px; margin: 0; }
+.ag-site__menu > button { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; font: inherit; color: var(--ag-fg); background: none; border: 0; padding: 9px 30px 9px 10px; border-radius: 8px; cursor: pointer; }
+.ag-site__menu > button:hover:not(:disabled) { background: var(--ag-bg2); }
+.ag-site__menu > button:disabled { opacity: .6; cursor: default; }
+.ag-site__name { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-site__sub { font-size: 12px; color: var(--ag-muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-site__check { position: absolute; right: 10px; top: 12px; }
+.ag-site__menu hr { border: 0; border-top: 1px solid var(--ag-line); margin: 4px 0; }
+.ag-site__note { font-size: 13px; color: var(--ag-muted); padding: 8px 10px; margin: 0; }
+.ag-site__note--err { color: #c4302b; }

@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { Star, Globe } from "lucide-react"
 import { GenerateReplyButton } from "./GenerateReplyButton"
