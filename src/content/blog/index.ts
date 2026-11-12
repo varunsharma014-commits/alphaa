@@ -151,6 +151,9 @@ import { meta as paintersMeta, Body as PaintersBody } from "./how-painters-get-r
 import { meta as freeCheckersMeta, Body as FreeCheckersBody } from "./best-free-ai-visibility-checkers"
 import { meta as gscGenAiMeta, Body as GscGenAiBody } from "./search-console-generative-ai-report"
 import { meta as aioOptOutMeta, Body as AioOptOutBody } from "./how-to-opt-out-of-ai-overviews"
+import { meta as vsGoodieMeta, Body as VsGoodieBody } from "./alphaa-vs-goodie"
+import { meta as duplicateContentMeta, Body as DuplicateContentBody } from "./duplicate-content-ai-search"
+import { meta as garageDoorsMeta, Body as GarageDoorsBody } from "./how-garage-door-companies-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -307,6 +310,9 @@ export const POSTS: Post[] = [
   { meta: freeCheckersMeta, Body: FreeCheckersBody },
   { meta: gscGenAiMeta, Body: GscGenAiBody },
   { meta: aioOptOutMeta, Body: AioOptOutBody },
+  { meta: vsGoodieMeta, Body: VsGoodieBody },
+  { meta: duplicateContentMeta, Body: DuplicateContentBody },
+  { meta: garageDoorsMeta, Body: GarageDoorsBody },
 ]
 
 export function getAllPosts(): Post[] {
