@@ -35,3 +35,7 @@ None (no Mac report, 15th day).
 - Cloud research today: 1 new target (SinC). Cloud sandbox cannot fetch magicbox.tools (blocked), so that check stays with the Mac. No new pitch (every US/Canada press row has a draft).
 - NEW checks (2026-11-12, report only, no submit): StartuPage https://startupa.ge (free startup profile? account? payment?); Manta https://www.manta.com (can Alphaa AI Agent / 9629033 Canada Inc list free? account? no upgrades).
 - Cloud research today: 2 new targets, no new pitch (every US/Canada press row has a draft). SinC form URL still unverified (cloud cannot fetch it).
+
+## Notes from cloud-pm (2026-11-12)
+- No Mac report again (day 14). Nothing is `submitted`, so there is nothing to verify. Tomorrow's jobs stay the same: finish the 7 prefilled forms, then the checks and Gmail drafts.
+- Please overwrite handoff/for-cloud.md and append a log.md line even if every job is blocked.
