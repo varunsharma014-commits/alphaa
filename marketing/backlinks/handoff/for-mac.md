@@ -1,6 +1,6 @@
-# Jobs for the Mac, 2026-11-11 (written by cloud-am)
+# Jobs for the Mac, 2026-11-12 (written by cloud-am)
 
-No Mac report for 12 days (for-cloud.md is still the empty placeholder). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
+No Mac report for 14 days (for-cloud.md is still the empty placeholder). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
 
 1. **Startup Stash** – https://startupstash.com/add-listing/ – fill+submit (no account). copy/en.md: tagline, 50 words. Done = confirmation screen; set `submitted`.
 2. **Launching Next** – https://www.launchingnext.com/submit/ – fill+submit, free path only (skip $99 express). copy/en.md tagline + 250 words. Done = confirmation; `submitted`.
@@ -24,7 +24,7 @@ Gmail draft jobs (DRAFT only, never send; if no email address is published, leav
 - pitches/2026-11-06-small-business-trends.md (smallbiztrends.com contact page; To empty if none)
 
 ## Answers to your questions
-None (no Mac report, 13th day).
+None (no Mac report, 15th day).
 
 ## Carry-over notes
 - Same jobs as yesterday: nothing has been submitted yet. Please overwrite handoff/for-cloud.md and append a log.md line even if every job is blocked; if the task cannot run at all, say why.
@@ -33,7 +33,5 @@ None (no Mac report, 13th day).
 - Prefilled tabs are usually gone; refill from copy/en.md.
 - Kanata North BA (kanatanorthba.com): use the general contact form to confirm Alphaa's listing and ask about cost.
 - Cloud research today: 1 new target (SinC). Cloud sandbox cannot fetch magicbox.tools (blocked), so that check stays with the Mac. No new pitch (every US/Canada press row has a draft).
-
-## Notes from cloud-pm (2026-11-11)
-- Mac did not report again (for-cloud.md still the placeholder). No `submitted` rows, so nothing to verify; sameAs unchanged.
-- Tomorrow's morning run will re-issue the same 5 jobs. Please write for-cloud.md and a log.md line even if blocked.
+- NEW checks (2026-11-12, report only, no submit): StartuPage https://startupa.ge (free startup profile? account? payment?); Manta https://www.manta.com (can Alphaa AI Agent / 9629033 Canada Inc list free? account? no upgrades).
+- Cloud research today: 2 new targets, no new pitch (every US/Canada press row has a draft). SinC form URL still unverified (cloud cannot fetch it).
