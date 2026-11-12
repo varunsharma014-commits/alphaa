@@ -13,7 +13,8 @@ export async function GET(req: NextRequest) {
   const { userId } = await realAuth()
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   // Comped logins (founder, app review) count as paid; the tagged email never leaves the server.
-  const sites = (await listSites(userId)).map(({ email, ...s }) => ({ ...s, paid: s.paid || isComped(email) }))
+  // `billed` = a real live subscription (blocks removal); `paid` also counts comped logins.
+  const sites = (await listSites(userId)).map(({ email, ...s }) => ({ ...s, billed: s.paid, paid: s.paid || isComped(email) }))
   const cookie = req.cookies.get(SITE_COOKIE)?.value
   const activeId = sites.find((s) => s.id === cookie)?.id ?? sites[0]?.id ?? null
   return NextResponse.json({ sites, activeId, max: MAX_SITES })

@@ -58,7 +58,7 @@ export function cleanSiteUrl(raw: string): string | null {
   }
 }
 
-export type SiteSummary = { id: string; name: string; url: string | null; paid: boolean; ready: boolean; email: string }
+export type SiteSummary = { id: string; name: string; url: string | null; paid: boolean; ready: boolean; extra: boolean; email: string }
 
 /** All of an owner's websites, the first one first. */
 export async function listSites(ownerClerk: string): Promise<SiteSummary[]> {
@@ -74,6 +74,7 @@ export async function listSites(ownerClerk: string): Promise<SiteSummary[]> {
     url: r.websiteUrl,
     paid: !!r.stripeSubscriptionId && ["active", "trialing"].includes(r.subscriptionStatus),
     ready: r.onboardingCompleted,
+    extra: isSiteClerkId(r.clerkId),
     email: r.email,
   }))
 }

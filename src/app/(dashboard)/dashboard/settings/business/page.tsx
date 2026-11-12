@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Loader2, Check } from "lucide-react"
 import { DsCard } from "@/components/dashboard/DsCard"
+import { RemoveWebsite } from "@/components/agent/RemoveWebsite"
 
 // Business details — the info alphaa uses to write posts and run checks.
 // Previously this was only editable during onboarding; users had no way to fix
@@ -221,6 +222,7 @@ export default function BusinessSettingsPage() {
           </div>
         )}
       </DsCard>
+      <RemoveWebsite />
     </div>
   )
 }
