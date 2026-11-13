@@ -1,5 +1,6 @@
 "use client"
 
+import { hasPlaceholders, withoutPlaceholders } from "@/lib/brackets"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { ASK_EVENT, type AskDetail } from "./AgentShell"
@@ -402,10 +403,23 @@ export function DashboardAgent({
         setBusy(false)
         // Keep a way to retry: the chip above is spent, and the usual fix (filling in
         // [bracketed] facts) happens in the draft, which the retry re-reads via docEdits.
-        if (!ok || !data.url) return push(agent([
-          { kind: "text", text: data.error ?? "Your site didn’t accept it. Nothing changed." },
-          { kind: "chips", items: [{ label: "Try publishing again", action: a, primary: true }] },
-        ]))
+        if (!ok || !data.url) {
+          // Placeholders left: offer to publish without the sentences that need them (one tap),
+          // or to fill them in and retry. Never guess the facts.
+          const trimmed = text && hasPlaceholders(text) ? withoutPlaceholders(text) : ""
+          if (trimmed && !hasPlaceholders(trimmed) && trimmed.length > 200) return push(agent([
+            { kind: "text", text: "A few details in this draft are facts only you know, like your city or your guarantee. I left them in [brackets] instead of guessing." },
+            { kind: "text", text: "I can publish it without those sentences now, or you can tap the draft, fill them in, and publish the full version." },
+            { kind: "chips", items: [
+              { label: "Publish without them", action: { ...a, text: trimmed, docId: undefined }, primary: true },
+              { label: "I filled them in, publish", action: a },
+            ] },
+          ]))
+          return push(agent([
+            { kind: "text", text: data.error ?? "Your site didn’t accept it. Nothing changed." },
+            { kind: "chips", items: [{ label: "Try publishing again", action: a, primary: true }] },
+          ]))
+        }
         const blocks: Block[] = [
           // Webflow sites that were never published only take staged CMS items (see connector note).
           ...(/isn’t published yet/.test(data.note ?? "")

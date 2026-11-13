@@ -3,7 +3,7 @@ import { db } from "@/lib/db"
 import { currentUser } from "@/lib/connector/user"
 import { saveAgentSettings } from "@/lib/agent/settings"
 import { encryptSecret } from "@/lib/checks/bing-webmaster"
-import { isShopDomain, shopifyActiveSubscriptions, shopifyExchange, shopifySetup, verifyShopifyHmac } from "@/lib/connector/shopify"
+import { isShopDomain, shopifyActiveSubscriptions, shopifyExchange, shopifyProfile, shopifySetup, verifyShopifyHmac } from "@/lib/connector/shopify"
 import { applyShopifySubscriptions, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
 import { hasPaidPlan } from "@/lib/billing"
 import { platformAvailability } from "@/lib/connector/availability"
@@ -74,6 +74,15 @@ export async function GET(req: NextRequest) {
         },
       })
     }
+    // A store-only profile (no setup scan) leaves posts full of [city]-style gaps; fill what the store knows.
+    if (!user.city || !user.businessType) {
+      const p = await shopifyProfile(shop, tokens.accessToken)
+      const data = {
+        ...(!user.city && p.city ? { city: p.city } : {}),
+        ...(!user.businessType && p.description ? { businessType: p.description.slice(0, 120) } : {}),
+      }
+      if (Object.keys(data).length) await db.user.update({ where: { id: user.id }, data })
+    }
     await db.mockActivity.create({
       data: {
         userId: user.id,
@@ -101,6 +110,12 @@ export async function GET(req: NextRequest) {
       if (fresh && !hasPaidPlan(fresh)) {
         return NextResponse.redirect(shopifyPricingUrl(shop))
       }
+    }
+    // Paid through Shopify: the store is the setup, so the dashboard opens straight away (without
+    // this the layout detours through /onboarding and the "connected" confirmation is lost).
+    if (!user.onboardingCompleted) {
+      const now = await db.user.findUnique({ where: { id: user.id }, select: { subscriptionStatus: true, stripeSubscriptionId: true } })
+      if (now && hasPaidPlan(now)) await db.user.update({ where: { id: user.id }, data: { onboardingCompleted: true } })
     }
     return back({ connected: "shopify" })
   } catch (e) {

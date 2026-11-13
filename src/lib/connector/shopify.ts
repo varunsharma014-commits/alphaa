@@ -217,6 +217,20 @@ export async function shopifySetup(
   }
 }
 
+/** Best effort: what the store says about itself (city, description), to fill an empty profile. */
+export async function shopifyProfile(shop: string, accessToken: string): Promise<{ city: string | null; description: string | null }> {
+  try {
+    const d = await gql<{ shop: { description: string | null; billingAddress: { city: string | null } | null } }>(
+      shop,
+      accessToken,
+      `{ shop { description billingAddress { city } } }`,
+    )
+    return { city: d.shop.billingAddress?.city?.trim() || null, description: d.shop.description?.trim() || null }
+  } catch {
+    return { city: null, description: null }
+  }
+}
+
 // ---------- billing (Shopify Managed Pricing) ----------
 
 export type ShopifyAppSubscription = { name: string; status: string; test: boolean }
