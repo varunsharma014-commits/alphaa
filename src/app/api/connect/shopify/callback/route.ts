@@ -5,7 +5,7 @@ import { saveAgentSettings } from "@/lib/agent/settings"
 import { encryptSecret } from "@/lib/checks/bing-webmaster"
 import { isShopDomain, shopifyActiveSubscriptions, shopifyExchange, shopifySetup, verifyShopifyHmac } from "@/lib/connector/shopify"
 import { applyShopifySubscriptions, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
-import { isComped, hasPaidPlan } from "@/lib/billing"
+import { hasPaidPlan } from "@/lib/billing"
 import { platformAvailability } from "@/lib/connector/availability"
 
 export const dynamic = "force-dynamic"
@@ -62,8 +62,17 @@ export async function GET(req: NextRequest) {
     })
     // Merchants arriving from the Shopify App Store skip the agent setup, so fill the
     // website from the store when the profile has none (stored without protocol).
-    if (!user.websiteUrl) {
-      await db.user.update({ where: { id: user.id }, data: { websiteUrl: setup.siteUrl.replace(/^https?:\/\//, "").replace(/\/$/, "") } })
+    // A website added for this store (lib/connector/shopify-sites.ts) starts as the bare
+    // *.myshopify.com address; use the storefront domain and the store's name.
+    const storeHost = setup.siteUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")
+    if (!user.websiteUrl || user.websiteUrl === shop || !user.businessName?.trim()) {
+      await db.user.update({
+        where: { id: user.id },
+        data: {
+          ...(!user.websiteUrl || user.websiteUrl === shop ? { websiteUrl: storeHost } : {}),
+          ...(!user.businessName?.trim() && (!user.websiteUrl || user.websiteUrl === shop) ? { businessName: setup.name } : {}),
+        },
+      })
     }
     await db.mockActivity.create({
       data: {
@@ -87,7 +96,9 @@ export async function GET(req: NextRequest) {
     if (subs) {
       const paidViaShopify = await applyShopifySubscriptions(user, shop, subs)
       const fresh = paidViaShopify ? null : await db.user.findUnique({ where: { id: user.id } })
-      if (fresh && !hasPaidPlan(fresh) && !isComped(fresh.email)) {
+      // Comped logins (app review) go through Shopify's plan page too, so the review sees the
+      // real merchant path; on development stores the plan is free.
+      if (fresh && !hasPaidPlan(fresh)) {
         return NextResponse.redirect(shopifyPricingUrl(shop))
       }
     }

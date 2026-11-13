@@ -197,7 +197,7 @@ async function storeUrl(shop: string, token: string): Promise<string> {
 export async function shopifySetup(
   shop: string,
   accessToken: string,
-): Promise<{ siteUrl: string; label: string; config: { shop: string; blogId: string } } | { error: string }> {
+): Promise<{ siteUrl: string; label: string; name: string; config: { shop: string; blogId: string } } | { error: string }> {
   try {
     const d = await gql<{
       shop: { name: string; url: string; primaryDomain: { url: string } | null }
@@ -209,6 +209,7 @@ export async function shopifySetup(
     return {
       siteUrl: clean(d.shop.primaryDomain?.url || d.shop.url || `https://${shop}`),
       label: shop,
+      name: d.shop.name?.trim() || shop,
       config: { shop, blogId: blog.id },
     }
   } catch (e) {

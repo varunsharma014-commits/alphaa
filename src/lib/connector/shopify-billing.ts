@@ -6,11 +6,10 @@
 // Paid state is stored without a schema change: User.stripeSubscriptionId = "shopify:<shop>",
 // subscriptionStatus "active", plan "starter" (see lib/billing.ts for why that can't clash with Stripe).
 //
-// Test charges (`test: true`, e.g. development stores) count as paid only outside production,
-// or for FOUNDER_EMAILS (owner + COMP_ACCESS_EMAILS app-review logins). Everyone else needs a real charge.
+// Test charges (`test: true`) count as paid: Shopify only issues them on development stores.
 import { db } from "@/lib/db"
 import { getAgentSettings, type AgentSettings } from "@/lib/agent/settings"
-import { isComped as isCompedEmail, hasStripePlan, shopifyBilledShop, shopifySubMarker } from "@/lib/billing"
+import { hasStripePlan, shopifyBilledShop, shopifySubMarker } from "@/lib/billing"
 import { isShopDomain, shopifyActiveSubscriptionsFor, type ShopifyAppSubscription } from "@/lib/connector/shopify"
 
 /** The app's handle in the Shopify admin URL (Partner Dashboard → app → handle). */
@@ -36,12 +35,14 @@ export async function shopifyMerchantShop(user: { id: string; stripeSubscription
   return isShopDomain(host) ? host : null
 }
 
-const isComped = (email: string) => isCompedEmail(email)
-
-/** Does this subscription pay for Alphaa? ACTIVE, and a real charge unless test charges are allowed here. */
-export function subscriptionCountsAsPaid(sub: ShopifyAppSubscription, email: string): boolean {
-  if (sub.status !== "ACTIVE") return false
-  return !sub.test || process.env.NODE_ENV !== "production" || isComped(email)
+/**
+ * Does this subscription pay for Alphaa? ACTIVE is enough. With Managed Pricing, Shopify only
+ * makes test charges on development stores (which can't take real orders), so a test charge is
+ * a store that can't be a real customer: App Store reviewers and partners. Refusing them sent a
+ * fresh reviewer signup round the plan page forever.
+ */
+export function subscriptionCountsAsPaid(sub: ShopifyAppSubscription, _email?: string): boolean {
+  return sub.status === "ACTIVE"
 }
 
 type BillingUser = { id: string; email: string; stripeSubscriptionId: string | null; subscriptionStatus: string }

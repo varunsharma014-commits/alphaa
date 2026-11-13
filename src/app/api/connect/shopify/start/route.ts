@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
-import { normalizeShop, shopifyAuthUrl } from "@/lib/connector/shopify"
+import { normalizeShop, shopifyAuthUrl, verifyShopifyHmac } from "@/lib/connector/shopify"
+import { siteForShop } from "@/lib/connector/shopify-sites"
+import { realAuth } from "@/lib/auth"
+import { db } from "@/lib/db"
+import { SITE_COOKIE } from "@/lib/sites"
 import { platformAvailability } from "@/lib/connector/availability"
 
 export const dynamic = "force-dynamic"
@@ -25,6 +29,23 @@ export async function GET(req: NextRequest) {
   const shop = normalizeShop(req.nextUrl.searchParams.get("shop"))
   if (!shop) return back({ connect_error: "Enter your store's Shopify address, like yourstore.myshopify.com." })
 
-  const state = Buffer.from(JSON.stringify({ userId: user.id, nonce: crypto.randomUUID(), shop })).toString("base64url")
-  return NextResponse.redirect(shopifyAuthUrl(shop, state))
+  // Opened from the Shopify admin (install, plan approval, "Open app"): work on this store's own
+  // website, adding one if the owner's open website is a different business (lib/connector/shopify-sites.ts).
+  let rowId = user.id
+  let ownerRow = false
+  if (req.nextUrl.searchParams.has("hmac") && verifyShopifyHmac(req.nextUrl.searchParams)) {
+    const { userId: ownerClerk } = await realAuth()
+    if (ownerClerk) {
+      rowId = (await siteForShop(ownerClerk, user, shop)).id
+      ownerRow = rowId !== user.id && (await db.user.count({ where: { id: rowId, clerkId: ownerClerk } })) > 0
+    }
+  }
+
+  const state = Buffer.from(JSON.stringify({ userId: rowId, nonce: crypto.randomUUID(), shop })).toString("base64url")
+  const res = NextResponse.redirect(shopifyAuthUrl(shop, state))
+  if (rowId !== user.id) {
+    if (ownerRow) res.cookies.delete(SITE_COOKIE)
+    else res.cookies.set(SITE_COOKIE, rowId, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: 60 * 60 * 24 * 365 })
+  }
+  return res
 }
