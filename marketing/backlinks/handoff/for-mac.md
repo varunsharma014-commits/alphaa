@@ -40,3 +40,7 @@ None (no Mac report, 15th day).
 ## Notes from cloud-pm (2026-11-12, kept)
 - No Mac report again (day 14). Nothing is `submitted`, so there is nothing to verify. Tomorrow's jobs stay the same: finish the 7 prefilled forms, then the checks and Gmail drafts.
 - Please overwrite handoff/for-cloud.md and append a log.md line even if every job is blocked.
+
+## Notes from cloud-pm (2026-11-13)
+- No Mac report again (day 15). Nothing is `submitted`, so nothing to verify. Tomorrow's jobs stay the same: finish the 7 prefilled forms, then the checks and Gmail drafts.
+- Please overwrite handoff/for-cloud.md and append a log.md line even if every job is blocked.
