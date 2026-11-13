@@ -152,6 +152,9 @@ import { meta as freeCheckersMeta, Body as FreeCheckersBody } from "./best-free-
 import { meta as gscGenAiMeta, Body as GscGenAiBody } from "./search-console-generative-ai-report"
 import { meta as aioOptOutMeta, Body as AioOptOutBody } from "./how-to-opt-out-of-ai-overviews"
 import { meta as vsGoodieMeta, Body as VsGoodieBody } from "./alphaa-vs-goodie"
+import { meta as vsLocalFalconMeta, Body as VsLocalFalconBody } from "./alphaa-vs-local-falcon"
+import { meta as bingPlacesMeta, Body as BingPlacesBody } from "./bing-places-for-ai-search"
+import { meta as bingGroundingMeta, Body as BingGroundingBody } from "./bing-ai-grounding-preference"
 import { meta as duplicateContentMeta, Body as DuplicateContentBody } from "./duplicate-content-ai-search"
 import { meta as garageDoorsMeta, Body as GarageDoorsBody } from "./how-garage-door-companies-get-recommended-by-ai"
 
@@ -311,6 +314,9 @@ export const POSTS: Post[] = [
   { meta: gscGenAiMeta, Body: GscGenAiBody },
   { meta: aioOptOutMeta, Body: AioOptOutBody },
   { meta: vsGoodieMeta, Body: VsGoodieBody },
+  { meta: vsLocalFalconMeta, Body: VsLocalFalconBody },
+  { meta: bingPlacesMeta, Body: BingPlacesBody },
+  { meta: bingGroundingMeta, Body: BingGroundingBody },
   { meta: duplicateContentMeta, Body: DuplicateContentBody },
   { meta: garageDoorsMeta, Body: GarageDoorsBody },
 ]
