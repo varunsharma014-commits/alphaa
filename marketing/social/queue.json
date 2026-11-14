@@ -2840,9 +2840,9 @@
     "image": "brand/social/posts/w5_my_plan.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7527377909624356864/",
+    "posted_at": "2026-11-14T09:32:00-05:00"
   },
   {
     "id": "w5-sat-facebook",
@@ -2861,9 +2861,9 @@
     "image": "brand/social/posts/w5_web_person.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/profile.php?id=61592044887737",
+    "posted_at": "2026-11-14T09:43:00-05:00"
   },
   {
     "id": "w5-sun-x",
