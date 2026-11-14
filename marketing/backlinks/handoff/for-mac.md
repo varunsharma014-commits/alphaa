@@ -35,3 +35,6 @@ None (no Mac report, 16th day).
 
 ## Notes from cloud-pm (2026-11-13, kept)
 - No Mac report again (day 15). Nothing is `submitted`, so nothing to verify.
+
+## Notes from cloud-pm (2026-11-14)
+- No Mac report again (day 16). Nothing is `submitted`, nothing to verify. Same jobs as this morning stand; please overwrite for-cloud.md and append to log.md even if everything is blocked.
