@@ -6,7 +6,7 @@ export function FinalCta() {
     <section className="ag-final">
       <h2>See what AI says about you.</h2>
       <p>About 60 seconds. No card. If you hire me and no AI names you within 90 days, your next month is free.</p>
-      <HeroCta label="Check my website" />
+      <HeroCta label="Check my website" href="/start" />
     </section>
   )
 }

@@ -120,6 +120,7 @@ export function StartAgent({
   embedded = false,
   greet,
   autoCheckout = false,
+  handoff,
 }: {
   mode?: StartMode
   resumeName?: string
@@ -127,6 +128,8 @@ export function StartAgent({
   greet?: StartGreet
   /** resume only: the visitor already tapped "Get recommended by AI" before signing up — open checkout now, no second tap. */
   autoCheckout?: boolean
+  /** embedded only: send the typed website to this page (e.g. /start?site=…) instead of scanning in place. */
+  handoff?: string
 }) {
   const [messages, setMessages] = useState<Message[]>(() => greeting(mode, resumeName, greet, embedded))
   const [phase, setPhase] = useState<Phase>(mode === "resume" ? "result" : "website")
@@ -157,6 +160,18 @@ export function StartAgent({
     void checkout()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoCheckout, mode])
+
+  // /start?site=… (handed over from the homepage box): start on that website straight away.
+  const siteRan = useRef(false)
+  useEffect(() => {
+    if (mode !== "public" || embedded || siteRan.current) return
+    const site = new URLSearchParams(window.location.search).get("site")?.trim()
+    if (!site) return
+    siteRan.current = true
+    setStarted(true)
+    void submit(site.slice(0, 200))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const boxRef = useRef<HTMLDivElement>(null)
   // Embedded, before the first answer: the box stays short and the website
@@ -328,9 +343,14 @@ export function StartAgent({
   }
 
   // ── step 1: website → identify ────────────────────────────────────────────
-  async function submit() {
-    const text = input.trim()
+  async function submit(override?: string) {
+    const text = (override ?? input).trim()
     if (!text) return
+    if (handoff && phase === "website") {
+      track("scan_input_submit", { from: "home_box" })
+      window.location.href = `${handoff}?site=${encodeURIComponent(text.slice(0, 200))}`
+      return
+    }
     setInput("")
     push(user(text))
 
