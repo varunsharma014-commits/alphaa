@@ -51,6 +51,7 @@ export default function CompareHub() {
         <p className="ap-lead">Free. About a minute. Just your website.</p>
         <Link href="/start" className="ap-btn">Check my business — free</Link>
         <p className="ap-fine">No credit card required.</p>
+        <p className="ap-fine">Peec AI and other names are trademarks of their owners; no affiliation.</p>
       </section>
     </>
   )

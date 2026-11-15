@@ -174,6 +174,7 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
             ))}
           </ul>
           <p>Checked {CHECKED_LABEL}. Prices and features change — check each vendor’s site for the latest.</p>
+          <p>Peec AI and other names are trademarks of their owners; no affiliation.</p>
         </div>
       </section>
 
