@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Sparkles } from "lucide-react"
+import { MarketSwitcher } from "@/components/layout/MarketSwitcher"
 
 const footerLinks = {
   Product: [
@@ -17,15 +18,6 @@ const footerLinks = {
     { href: "/terms", label: "Terms of Service" },
     { href: "/privacy", label: "Privacy Policy" },
     { href: "/impressum", label: "Impressum" },
-  ],
-  Markets: [
-    { href: "/", label: "United States & Canada" },
-    { href: "/uk", label: "United Kingdom" },
-    { href: "/de", label: "Deutschland" },
-    { href: "/fr", label: "France" },
-    { href: "/it", label: "Italia" },
-    { href: "/ae", label: "UAE" },
-    { href: "/ae/ar", label: "الإمارات (العربية)" },
   ],
 }
 
@@ -123,6 +115,7 @@ export function Footer() {
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <p className="text-[#6e6e73] text-[12px]">Copyright © {new Date().getFullYear()} Alphaa. All rights reserved.</p>
+            <MarketSwitcher />
           </div>
         </div>
       </div>
