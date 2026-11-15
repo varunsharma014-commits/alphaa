@@ -17,7 +17,7 @@ const COPY: Record<string, { text: string; accept: string; reject: string; more:
   de: { text: "Wir verwenden Cookies, um Besuche und unsere Anzeigen zu messen. Erst nach Ihrer Wahl wird etwas gespeichert.", accept: "Akzeptieren", reject: "Ablehnen", more: "Datenschutz" },
   fr: { text: "Nous utilisons des cookies pour mesurer les visites et nos publicités. Rien n’est déposé avant votre choix.", accept: "Accepter", reject: "Refuser", more: "Confidentialité" },
   it: { text: "Usiamo i cookie per misurare le visite e i nostri annunci. Nulla viene salvato prima della tua scelta.", accept: "Accetta", reject: "Rifiuta", more: "Privacy" },
-  ar: { text: "نستخدم ملفات تعريف الارتباط لقياس الزيارات وإعلاناتنا. لا يُحفظ أي شيء قبل أن تختار.", accept: "قبول", reject: "رفض", more: "الخصوصية" },
+  ar: { text: "نستخدم ملفات تعريف الارتباط لقياس الزيارات وإعلاناتنا. لا يُحفظ أي شيء قبل أن تختار.", accept: "قبول", reject: "رفض", more: "سياسة الخصوصية (بالإنجليزية)" },
 }
 
 type W = Window & {
@@ -83,7 +83,7 @@ export function ConsentBanner() {
   return (
     <div className="cc" role="dialog" aria-live="polite" aria-label="Cookies" dir={rtl ? "rtl" : undefined} lang={rtl ? "ar" : undefined}>
       <p>
-        {t.text} <Link href="/privacy">{t.more}</Link>
+        {t.text} <Link href="/privacy#cookies" hrefLang="en">{t.more}</Link>
       </p>
       <div className="cc__btns">
         <button type="button" onClick={() => choose(false)}>{t.reject}</button>

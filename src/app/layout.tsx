@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import Script from "next/script"
 import { ConsentBanner } from "@/components/common/ConsentBanner"
+import { HtmlLang } from "@/components/common/HtmlLang"
+import { PATH_LANG_JS } from "@/lib/path-lang"
 import { Toaster } from "sonner"
 import "./globals.css"
 import "./agent.css"
@@ -71,8 +73,11 @@ const websiteSchema = {
 // every marketing visitor. Those two route groups mount it themselves.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="light">
+    // lang/dir follow the route (lib/path-lang.ts): set before first paint by the
+    // inline script below and kept in sync on navigation by <HtmlLang />.
+    <html lang="en" dir="ltr" data-theme="light" suppressHydrationWarning>
         <head>
+          <script dangerouslySetInnerHTML={{ __html: PATH_LANG_JS }} />
           {/* No preconnect to fonts.googleapis.com / fonts.gstatic.com: fonts are
               self-hosted via next/font now, so those origins are never hit.
               Lighthouse was flagging both as unused preconnects. */}
@@ -123,6 +128,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           )}
         </head>
         <body className="bg-bg-primary text-fg font-sans antialiased">
+          <HtmlLang />
           <ConsentBanner />
           <div className="dot-grid" aria-hidden="true" />
           {children}

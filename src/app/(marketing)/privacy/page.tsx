@@ -295,7 +295,7 @@ export default function PrivacyPage() {
         </p>
 
         {sections.map((s) => (
-          <div key={s.title} className="mb-10">
+          <div key={s.title} id={s.title.startsWith("7.") ? "cookies" : undefined} className="mb-10 scroll-mt-24">
             <h2 className="text-fg font-semibold text-lg mb-3">{s.title}</h2>
             <div className="text-muted text-sm leading-relaxed whitespace-pre-line">{s.body}</div>
           </div>

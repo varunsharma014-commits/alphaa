@@ -74,7 +74,7 @@ const GUARANTEE = GUARANTEE_LINE
 
 /** Opening lines for a local market page (/de, /fr…): the rest of the
  *  conversation is still English. */
-export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint: string; startHere?: string; work?: { title: string; steps: string[] } }
+export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint: string; startHere?: string; work?: { title: string; steps: string[] }; agentLabel?: string }
 
 function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded = false): Message[] {
   if (greet && mode === "public") {
@@ -523,7 +523,7 @@ export function StartAgent({
       <div className={`ag-window ag-window--live ${idle ? "ag-window--idle" : ""}`}>
         <div className="ag-window__bar">
           <i /><i /><i />
-          <span>{BRAND.name} · AI agent · online</span>
+          <span>{BRAND.name} · {greet?.agentLabel ?? "AI agent · online"}</span>
         </div>
         <div className="ag-window__box" ref={boxRef}>
           <AgentFeed messages={messages} animate="type" busy={busy} autoScroll={false} onChip={onChip} onEmail={onEmail} onSettled={() => setSettled(true)} />
@@ -542,7 +542,7 @@ export function StartAgent({
           <Sparkles className="ag-brand__mark" aria-hidden="true" />
           {BRAND.name}
         </Link>
-        <span>AI agent · online</span>
+        <span>{greet?.agentLabel ?? "AI agent · online"}</span>
       </div>
       <AgentFeed messages={messages} animate="type" busy={busy} onChip={onChip} onEmail={onEmail} onSettled={() => setSettled(true)} />
       {composer}

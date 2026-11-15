@@ -165,6 +165,7 @@ export function LocalHome({ m }: { m: Market }) {
             <Link key={g.slug} href={`${l.path}/${GUIDES[l.key].base}/${g.slug}`}>{g.h1} ›</Link>
           ))}
         </div>
+        {l.regNote && <p className="lc-en" style={{ fontSize: 13, opacity: 0.85 }}>{l.regNote}</p>}
         <p className="lc-en">
           <Link href={l.key === "ar" ? "/ae" : "/"} hrefLang="en">{l.english} ›</Link>
           {l.key === "ae" && <> · <Link href="/ae/ar" hrefLang="ar">العربية ›</Link></>}

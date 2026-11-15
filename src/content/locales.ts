@@ -21,7 +21,9 @@ export interface LocaleCopy {
   guarantee: [string, string] // plain, bold
   fine: string
   arrows: [string, string]
-  greet: { lines: string[]; ask: string; hint: string; idleHint: string; startHere: string; work?: { title: string; steps: string[] } }
+  greet: { lines: string[]; ask: string; hint: string; idleHint: string; startHere: string; work?: { title: string; steps: string[] }; agentLabel?: string }
+  /** Short note for regulated sectors (health, property, finance), shown near the FAQ. */
+  regNote?: string
   pillarsTitle: string
   pillars: { title: string; body: string }[]
   whereTitle: string
