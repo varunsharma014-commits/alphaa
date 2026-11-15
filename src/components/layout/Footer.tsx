@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Sparkles } from "lucide-react"
 import { MarketSwitcher } from "@/components/layout/MarketSwitcher"
+import { CookieSettingsLink } from "@/components/common/CookieSettingsLink"
 
 const footerLinks = {
   Product: [
@@ -99,6 +100,11 @@ export function Footer() {
                     </Link>
                   </li>
                 ))}
+                {section === "Company" && (
+                  <li>
+                    <CookieSettingsLink className="text-[#424245] text-[12px] hover:underline" />
+                  </li>
+                )}
               </ul>
             </div>
           ))}

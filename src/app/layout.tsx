@@ -90,24 +90,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               and the pixel so both start denied. */}
           <script
             dangerouslySetInnerHTML={{
-              __html: `(function(){var c=null;try{c=localStorage.getItem('alphaa.consent')}catch(e){}var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}var seg=location.pathname.split('/')[1]||'';var eu=tz.indexOf('Europe/')===0||['Atlantic/Canary','Atlantic/Madeira','Atlantic/Azores','Atlantic/Reykjavik','Atlantic/Faroe','Arctic/Longyearbyen','Asia/Nicosia','Asia/Famagusta','Asia/Dubai'].indexOf(tz)>-1||['uk','de','fr','it','ae'].indexOf(seg)>-1;window.__ccNeed=eu&&!c;window.__ccDenied=eu&&c!=='granted';window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}if(window.__ccDenied){g('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'})}})();`,
+              __html: `(function(){var c=null;try{c=localStorage.getItem('alphaa.consent')}catch(e){}var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}var seg=location.pathname.split('/')[1]||'';var eu=tz.indexOf('Europe/')===0||['Atlantic/Canary','Atlantic/Madeira','Atlantic/Azores','Atlantic/Reykjavik','Atlantic/Faroe','Arctic/Longyearbyen','Asia/Nicosia','Asia/Famagusta','Asia/Dubai'].indexOf(tz)>-1||['uk','de','fr','it','ae'].indexOf(seg)>-1;window.__ccEu=eu;window.__ccNeed=eu&&!c;window.__ccDenied=(eu&&c!=='granted')||c==='denied';window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}if(window.__ccDenied){g('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'})}})();`,
             }}
           />
-          {/* GA4 — only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set */}
+          {/* GA4 — only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set. Same rule as
+              the pixel: where consent is needed (window.__ccDenied) the gtag
+              script is not loaded at all until Accept (ConsentBanner calls
+              window.__alphaaGA()); never on Reject. */}
           {GA_ID && (
-            <>
-              <Script
-                src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-                strategy="afterInteractive"
-              />
-              <Script
-                id="ga4-init"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                  __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`,
-                }}
-              />
-            </>
+            <Script
+              id="ga4-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `window.__alphaaGA=function(){if(window.__gaOn)return;window.__gaOn=1;var t=document.createElement('script');t.async=true;t.src='https://www.googletagmanager.com/gtag/js?id=${GA_ID}';document.head.appendChild(t);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${GA_ID}')};if(!window.__ccDenied)window.__alphaaGA();`,
+              }}
+            />
           )}
           {/* Meta Pixel — only when NEXT_PUBLIC_FB_PIXEL_ID is set. Where consent
               is needed (window.__ccDenied) nothing is loaded from Meta and
