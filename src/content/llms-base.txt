@@ -5,11 +5,12 @@
 ## Key facts
 
 - Price: from $99/month (Starter). Pro is $199/month, Full Service (a human does the setup and publishing) is $299/month.
+- Local prices (charged in local currency; Starter / Pro / Full Service a month): UK £79 / £159 / £239 (alphaa.app/uk); Germany, France and Italy 99 € / 199 € / 299 € (alphaa.app/de, /fr, /it); UAE AED 369 / 739 / 1,099 (alphaa.app/ae). US, Canada and everywhere else: $99 / $199 / $299 USD. Business customers only; Alphaa is not VAT-registered and adds no VAT.
 - 90-day AI Visibility Guarantee: if none of ChatGPT, Gemini, Claude or Perplexity names the business in Alphaa's weekly checks during the first 90 days on a paid plan, the next month is free (credited automatically, once per customer).
-- Month to month. No contract, no exit fees, cancel in two clicks. There is no free trial — the free check below is how you see what you'd get.
+- Month to month. No contract, no exit fees, cancel online in a minute. There is no free trial — the free check below is how you see what you'd get.
 - No technical skills needed: the agent does the work, the owner approves.
 - Built for local businesses (dentists, plumbers, restaurants, lawyers, clinics) in the US, Canada, the UK, Germany, France, Italy and the UAE, and also works for online businesses.
-- An SEO agency typically charges around $2,000/month and works on Google's ten blue links. Alphaa works on the single answer AI assistants give.
+- SEO agencies often charge $1,000+ a month (for example) and work on Google's ten blue links. Alphaa works on the single answer AI assistants give.
 
 ## Free check
 
@@ -38,7 +39,7 @@
 Side-by-side comparison pages, each with a short answer, a feature table, where the other option is better, sources and an FAQ. Competitor details checked September 25, 2026.
 
 - [All comparisons](https://alphaa.app/compare)
-- [Alphaa vs. an SEO agency](https://alphaa.app/compare/alphaa-vs-seo-agency): ~$2,000/month ($24,000/yr) on contract, mostly for Google, vs. $99/month ($1,188/yr) month to month for AI answers.
+- [Alphaa vs. an SEO agency](https://alphaa.app/compare/alphaa-vs-seo-agency): an agency retainer (often $1,000+ a month, for example) on contract, mostly for Google, vs. $99/month ($1,188/yr) month to month for AI answers.
 - [Alphaa vs. a freelance SEO](https://alphaa.app/compare/alphaa-vs-freelance-seo): a freelancer's hours (~$1,348/month average per Ahrefs) vs. an agent that works every week.
 - [SEO vs. AEO](https://alphaa.app/compare/seo-vs-aeo): ranking in a list of links vs. being named in the AI answer.
 - [Local SEO vs. GEO](https://alphaa.app/compare/local-seo-vs-geo): the Google Map Pack vs. AI-written local recommendations.
@@ -53,7 +54,7 @@ Side-by-side comparison pages, each with a short answer, a feature table, where 
 
 Long-form comparison guides:
 
-- [Alphaa vs. a traditional SEO agency](https://alphaa.app/blog/alphaa-vs-seo-agencies): what a ~$2,000/month retainer buys versus an AI agent at $99/month.
+- [Alphaa vs. a traditional SEO agency](https://alphaa.app/blog/alphaa-vs-seo-agencies): what an agency retainer (often $1,000+ a month, for example) buys versus an AI agent at $99/month.
 - [Alphaa vs. Yext](https://alphaa.app/blog/alphaa-vs-yext): managing listings vs. managing AI answers.
 - [Alphaa vs. BrightLocal](https://alphaa.app/blog/alphaa-vs-brightlocal): local SEO toolkit vs. an AI agent that does the work.
 - [SEO vs. AEO vs. GEO](https://alphaa.app/blog/seo-vs-aeo-vs-geo): the differences and which gets a local business customers.

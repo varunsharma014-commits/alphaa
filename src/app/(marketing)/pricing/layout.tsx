@@ -6,7 +6,7 @@ import { pageMeta } from "@/lib/seo"
 export const metadata = pageMeta({
   title: "Pricing — $99/month, no contracts",
   description:
-    "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. From $99/month, month to month, instead of a ~$2,000/month SEO agency.",
+    "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. From $99/month, month to month, instead of an SEO agency retainer that often runs $1,000+ a month.",
   path: "/pricing",
 })
 

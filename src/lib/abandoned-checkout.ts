@@ -63,9 +63,9 @@ export async function sendAbandonedCheckoutEmail(session: {
           {
             kind: "bullets",
             items: [
-              "A 7-day refund on your first charge, no questions asked.",
+              "A full refund if you ask within 7 days of your first charge.",
               "Our 90-day AI Visibility Guarantee (if none of the 4 major AIs names you in our weekly checks in your first 90 days, your next month is free).",
-              "No contracts. Cancel in two clicks.",
+              "No contracts. Cancel online in a minute.",
             ],
           },
           { kind: "p", text: "If something broke during checkout, just reply and tell me." },

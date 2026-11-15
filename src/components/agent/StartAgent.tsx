@@ -15,6 +15,7 @@ import type { SiteCheck, SiteCheckItem } from "@/lib/site-check"
 import type { IdentifyResult } from "@/app/api/scan/identify/route"
 import { BRAND } from "@/lib/brand"
 import { localPrice } from "@/lib/local-price"
+import { GUARANTEE_LINE } from "@/lib/offer-copy"
 import { NURTURE_EU_FINE, NURTURE_NOTICE, NURTURE_OPTIN_LABEL, visitorConsentRegion } from "@/lib/nurture-consent"
 
 type Phase = "website" | "manual" | "scanning" | "result" | "claimed"
@@ -57,7 +58,7 @@ const CANNED: Record<string, string> = {
   "Is this real?":
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
-    "$99 a month, month to month. Cancel in two clicks, no contract. A marketing agency charges around $2,000 a month for Google alone — and nothing for AI.",
+    "$99 a month, month to month. Cancel online in a minute, no contract. Agencies often charge $1,000+ a month for Google alone — and do little for AI.",
 }
 
 // Where the conversation runs:
@@ -69,7 +70,7 @@ export type StartMode = "public" | "setup" | "resume"
 const CHECKOUT = "#checkout"
 
 // Same promise as the homepage hero (lib/... cron/guarantee enforces it). Shown wherever the price is.
-const GUARANTEE = "If no AI names you within 90 days, your next month is free."
+const GUARANTEE = GUARANTEE_LINE
 
 /** Opening lines for a local market page (/de, /fr…): the rest of the
  *  conversation is still English. */
@@ -87,7 +88,7 @@ function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded =
         [
           { kind: "text", text: name ? `Welcome back. I’ve got ${name} ready to go.` : "Welcome back. You’re all set up." },
           { kind: "text", text: `${localPrice()} a month. Month to month.`, big: true },
-          { kind: "text", text: `${GUARANTEE} Cancel anytime in two clicks, no contract. I start the day you say go.` },
+          { kind: "text", text: `${GUARANTEE} Cancel online in a minute, no contract. I start the day you say go.` },
           { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: CHECKOUT }, primary: true } },
         ],
         "greet"
@@ -318,7 +319,7 @@ export function StartAgent({
     push(
       agent([
         { kind: "text", text: `${localPrice()} a month. Month to month.`, big: true },
-        { kind: "text", text: `${GUARANTEE} Cancel anytime in two clicks, no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
+        { kind: "text", text: `${GUARANTEE} Cancel online in a minute, no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
         { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
         ...(mode === "public" && !emailRef.current
           ? [{ kind: "chips", items: [{ label: "Email me this report", action: { type: "ask", text: "report" }, primary: false }] } as Block]

@@ -50,7 +50,7 @@ const orgSchema = {
   url: "https://alphaa.app",
   email: "hi@alphaa.app",
   description:
-    "Alphaa is an AI search optimization (AEO) platform that automatically gets businesses found, cited, and recommended by ChatGPT, Gemini, Claude and Perplexity.",
+    "Alphaa is an AI search optimization (AEO) agent that checks what ChatGPT, Gemini, Claude and Perplexity say about a business every week and works to get it found, cited and recommended by those 4 AIs.",
   logo: "https://alphaa.app/logo.png",
   sameAs: ["https://www.linkedin.com/company/135966599/", "https://www.facebook.com/61592044887737", "https://www.instagram.com/alphaa.ai.agent/", "https://medium.com/@alphaaaiagent"],
 }

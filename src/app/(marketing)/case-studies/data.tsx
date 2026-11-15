@@ -58,7 +58,7 @@ const caseStudies = [
     metrics: [
       { icon: Search, label: "AIs checked every week", value: "4", sub: "ChatGPT, Gemini, Claude, Perplexity" },
       { icon: FileText, label: "Blog posts a month", value: "2", sub: "on Starter (4 on Pro)" },
-      { icon: Clock, label: "Cancel", value: "2 clicks", sub: "month to month, no contract" },
+      { icon: Clock, label: "Cancel", value: "1 minute", sub: "month to month, no contract" },
       { icon: DollarSign, label: "Yearly cost difference", value: "$20,412", sub: "$21,600 agency vs $1,188 Alphaa" },
     ],
     problem: {

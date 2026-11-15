@@ -11,7 +11,7 @@ const contrasts = [
   {
     them: "The retainer",
     theirs: "6-month minimums, 12-month contracts, and exit fees. They lock you in before they deliver.",
-    ours: "Month-to-month. Cancel in two clicks. We only stay if the AIs keep saying your name.",
+    ours: "Month-to-month. Cancel online in a minute. We only stay if the AIs keep saying your name.",
   },
   {
     them: "Google-era only",

@@ -60,7 +60,7 @@ export function Footer() {
               <span className="text-[#1d1d1f] font-semibold text-[14px]">alphaa</span>
             </Link>
             <p className="text-[#6e6e73] text-[12px] leading-[1.5] max-w-xs mb-3">
-              Get your business found on every AI search engine — ChatGPT, Claude, Gemini, and Perplexity. Automatically. $99/month.
+              I work to get your business named by the 4 AIs I check every week: ChatGPT, Claude, Gemini and Perplexity. $99/month.
             </p>
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               {engines.map((e) => (

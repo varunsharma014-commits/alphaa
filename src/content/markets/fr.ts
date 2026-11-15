@@ -14,7 +14,7 @@ export const market: Market = {
     h1b: "Votre agent IA fait le travail.",
     sub: "Vos clients demandent à ChatGPT qui appeler à Paris, Lyon ou Bordeaux. Il cite un nom. Ce n’est pas le vôtre. Je découvre pourquoi, je corrige, et je vous dis exactement ce que j’ai fait.",
     cta: "Vérifier mon entreprise, c’est gratuit",
-    guarantee: ["Si aucune IA ne vous cite sous 90 jours,", "le mois suivant vous est offert."],
+    guarantee: ["Si aucune IA ne vous cite d’ici le jour 90, vérifications hebdo actives,", "le mois suivant est pour nous."],
     fine: "Sans carte bancaire. ChatGPT, Gemini, Claude et Perplexity vérifiés en direct.",
     arrows: ["c’est en direct, essayez", "les vraies réponses en 60 s"],
     greet: {
@@ -60,12 +60,12 @@ export const market: Market = {
       "Pages, FAQ et articles rédigés pour vous, en français",
       "Votre fiche Google tenue à jour : publications et réponses aux avis",
       "Rien n’est publié sans votre accord, et chaque modification peut être annulée",
-      "Sans engagement, résiliable en deux clics, remboursement possible sous 7 jours après le premier prélèvement",
-      "Si aucune IA ne vous cite sous 90 jours, le mois suivant vous est offert.",
+      "Sans engagement, résiliable en ligne en une minute, remboursement possible sous 7 jours après le premier prélèvement",
+      "Si aucune IA ne vous cite d’ici le jour 90, vérifications hebdomadaires actives, le mois suivant vous est offert.",
     ],
     priceCta: "Être recommandé par l’IA, {starter}/mois",
     priceNote:
-      "Starter {starter}/mois, Pro {pro}/mois (jusqu’à 3 établissements), Accompagnement complet {full}/mois (une personne publie tout pour vous). Facturation mensuelle, sans engagement. Réservé aux professionnels (B2B). Prix HT.",
+      "Starter {starter}/mois, Pro {pro}/mois (jusqu’à 3 établissements), Accompagnement complet {full}/mois (une personne publie tout pour vous). Facturation mensuelle, sans engagement. Réservé aux professionnels (B2B). Nous ne sommes pas immatriculés à la TVA : aucune TVA n’est facturée ; si elle s’applique, vous l’autoliquidez.",
     faqTitle: "Les questions des pros en France",
     faq: [
       {
@@ -74,7 +74,7 @@ export const market: Market = {
       },
       {
         q: "Combien ça coûte ?",
-        a: "Starter : {starter} par mois. Pro : {pro} par mois, jusqu’à 3 établissements. Accompagnement complet : {full} par mois, une personne publie tout pour vous. Sans engagement, résiliable en deux clics, et remboursement sous 7 jours sur le premier prélèvement. La vérification sur cette page est gratuite.",
+        a: "Starter : {starter} par mois. Pro : {pro} par mois, jusqu’à 3 établissements. Accompagnement complet : {full} par mois, une personne publie tout pour vous. Sans engagement, résiliable en ligne en une minute, et remboursement sous 7 jours sur le premier prélèvement. La vérification sur cette page est gratuite.",
       },
       {
         q: "Je dois vous donner mes mots de passe ?",

@@ -137,7 +137,7 @@ export default function AuditResultsEmail({
                 <Button style={button} href={hire}>
                   Get recommended by AI →
                 </Button>
-                {variant === "ready" && <Text style={trialNote}>Month to month. Cancel in two clicks.</Text>}
+                {variant === "ready" && <Text style={trialNote}>Month to month. Cancel online in a minute.</Text>}
               </>
             )}
 

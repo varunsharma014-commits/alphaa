@@ -14,7 +14,7 @@ export const market: Market = {
     h1b: "Ihr KI-Agent erledigt die Arbeit.",
     sub: "Ihre Kunden in Berlin, München oder Köln fragen ChatGPT, wen sie anrufen sollen. Die KI nennt einen Namen. Wenn es nicht Ihrer ist, finde ich heraus, warum, behebe es und sage Ihnen genau, was ich getan habe.",
     cta: "Meinen Betrieb kostenlos prüfen",
-    guarantee: ["Nennt Sie innerhalb von 90 Tagen keine KI,", "ist Ihr nächster Monat kostenlos."],
+    guarantee: ["Nennt Sie bis Tag 90 bei aktiven Wochenchecks keine KI,", "geht der nächste Monat auf uns."],
     fine: "Keine Kreditkarte nötig. Ich prüfe ChatGPT, Gemini, Claude und Perplexity.",
     arrows: ["läuft live, probieren Sie es", "Ihre echten Antworten in 60 Sekunden"],
     greet: {
@@ -22,7 +22,7 @@ export const market: Market = {
       startHere: "Hier starten",
       lines: [
         "Guten Tag. Ich bin Alphaa, ein KI-Agent.",
-        "Ich sorge dafür, dass ChatGPT, Gemini, Claude und Perplexity Ihren Betrieb empfehlen.",
+        "Ich arbeite daran, dass ChatGPT, Gemini, Claude und Perplexity Ihren Betrieb empfehlen.",
       ],
       ask: "Wie lautet Ihre Website?",
       hint: "Nichts installieren, keine Karte, nur Ihre Website. Ich frage die KIs auf Deutsch; den Bericht schreibe ich vorerst auf Englisch.",
@@ -60,11 +60,11 @@ export const market: Market = {
       "Ihr Google Unternehmensprofil bleibt aktiv: Beiträge und Antworten auf Bewertungen schreibe ich für Sie",
       "Nichts geht online, bevor Sie freigeben",
       "Pro für bis zu 3 Standorte: {pro} im Monat. Full Service, bei dem ein Mensch alles für Sie veröffentlicht: {full} im Monat.",
-      "Monatlich kündbar, mit zwei Klicks. 7 Tage Geld zurück auf die erste Abbuchung.",
-      "Nennt Sie innerhalb von 90 Tagen keine KI, ist Ihr nächster Monat kostenlos.",
+      "Monatlich kündbar, online in einer Minute. 7 Tage Geld zurück auf die erste Abbuchung.",
+      "Nennt Sie bis Tag 90 bei aktiven Wochenchecks keine KI, ist der nächste Monat kostenlos.",
     ],
     priceCta: "Von der KI empfohlen werden: {starter}/Monat",
-    priceNote: "Monatliche Abrechnung, jederzeit zum Monatsende kündbar. Nur für Unternehmen (B2B): alle Preise netto zzgl. USt.",
+    priceNote: "Monatliche Abrechnung, jederzeit zum Monatsende kündbar. Nur für Unternehmen (B2B). Wir sind nicht umsatzsteuerlich registriert und berechnen keine USt.; fällt USt. an, schulden Sie sie im Reverse-Charge-Verfahren.",
     faqTitle: "Fragen von Betrieben in Deutschland",
     faq: [
       {
@@ -73,7 +73,7 @@ export const market: Market = {
       },
       {
         q: "Was kostet das?",
-        a: "Starter kostet {starter} im Monat, Pro {pro} (bis zu 3 Standorte), Full Service {full}, dann veröffentlicht ein Mensch alles für Sie. Monatlich kündbar mit zwei Klicks, 7 Tage Geld zurück auf die erste Abbuchung. Der Check auf dieser Seite ist kostenlos.",
+        a: "Starter kostet {starter} im Monat, Pro {pro} (bis zu 3 Standorte), Full Service {full}, dann veröffentlicht ein Mensch alles für Sie. Monatlich online in einer Minute kündbar, 7 Tage Geld zurück auf die erste Abbuchung. Der Check auf dieser Seite ist kostenlos.",
       },
       {
         q: "Muss ich mich mit Marketing auskennen?",
@@ -113,7 +113,7 @@ export const market: Market = {
         description:
           "Wenn Patienten ChatGPT nach einem Zahnarzt in ihrer Nähe fragen, sorgt Alphaa dafür, dass Ihre Praxis genannt wird. Sie geben jede Änderung frei.",
         h1: "Neue Patienten, die ChatGPT zu Ihnen schickt",
-        sub: "Patienten fragen die KI inzwischen direkt, welcher Zahnarzt in ihrem Viertel gut ist und noch Termine hat. Ich sorge dafür, dass Ihre Praxis in der Antwort steht.",
+        sub: "Patienten fragen die KI inzwischen direkt, welcher Zahnarzt in ihrem Viertel gut ist und noch Termine hat. Ich arbeite daran, dass Ihre Praxis in der Antwort steht.",
         questions: [
           "Welcher Zahnarzt in Berlin-Prenzlauer Berg nimmt noch neue Kassenpatienten auf?",
           "Guter Zahnarzt für Angstpatienten in Hamburg-Eimsbüttel, am liebsten mit Behandlung unter Sedierung?",
@@ -161,7 +161,7 @@ export const market: Market = {
         description:
           "Fragen Hausbesitzer ChatGPT nach einem Heizungsbauer oder Installateur in ihrer Stadt, sorgt Alphaa dafür, dass Ihr SHK-Betrieb genannt wird.",
         h1: "Neue Aufträge, wenn Kunden die KI nach einem Heizungsbauer fragen",
-        sub: "Ob Wärmepumpe, Badsanierung oder Rohrbruch: Hausbesitzer fragen zuerst die KI, wer in ihrer Gegend zuverlässig ist. Ich sorge dafür, dass Ihr Betrieb dabei ist.",
+        sub: "Ob Wärmepumpe, Badsanierung oder Rohrbruch: Hausbesitzer fragen zuerst die KI, wer in ihrer Gegend zuverlässig ist. Ich arbeite daran, dass Ihr Betrieb dabei ist.",
         questions: [
           "Welcher Heizungsbauer in München baut Wärmepumpen ein und hilft beim Förderantrag?",
           "Notdienst Sanitär in Hamburg-Wandsbek, wer kommt auch am Wochenende bei einem Rohrbruch?",
@@ -209,7 +209,7 @@ export const market: Market = {
         description:
           "Wenn Mandanten ChatGPT nach einem Anwalt oder Fachanwalt in ihrer Stadt fragen, sorgt Alphaa dafür, dass Ihre Kanzlei in der Antwort steht.",
         h1: "Neue Mandate, wenn die KI nach einem Anwalt gefragt wird",
-        sub: "Wer eine Kündigung, eine Scheidung oder Ärger mit dem Vermieter hat, fragt heute oft zuerst ChatGPT. Ich sorge dafür, dass Ihre Kanzlei genannt wird.",
+        sub: "Wer eine Kündigung, eine Scheidung oder Ärger mit dem Vermieter hat, fragt heute oft zuerst ChatGPT. Ich arbeite daran, dass Ihre Kanzlei genannt wird.",
         questions: [
           "Ich habe eine Kündigung bekommen. Welcher Fachanwalt für Arbeitsrecht in Düsseldorf ist gut?",
           "Anwalt für Familienrecht in Berlin-Charlottenburg, der sich mit Scheidung und Unterhalt auskennt?",
@@ -257,7 +257,7 @@ export const market: Market = {
         description:
           "Fragen Patienten ChatGPT nach einer Physiotherapiepraxis mit freien Terminen in ihrer Nähe, sorgt Alphaa dafür, dass Ihre Praxis genannt wird.",
         h1: "Neue Patienten, wenn die KI nach Physiotherapie gefragt wird",
-        sub: "Mit dem Rezept in der Hand fragen Patienten die KI, welche Praxis in der Nähe freie Termine hat. Ich sorge dafür, dass Ihre Praxis in der Antwort auftaucht.",
+        sub: "Mit dem Rezept in der Hand fragen Patienten die KI, welche Praxis in der Nähe freie Termine hat. Ich arbeite daran, dass Ihre Praxis in der Antwort auftaucht.",
         questions: [
           "Physiotherapie in Leipzig-Gohlis mit freien Terminen diese Woche, ich habe ein Rezept für Krankengymnastik.",
           "Welche Praxis in Stuttgart macht Manuelle Therapie und Lymphdrainage und hat gute Bewertungen?",

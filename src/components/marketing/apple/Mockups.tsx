@@ -20,7 +20,7 @@ export function Panel({ tone, children, tall }: { tone: "lavender" | "sky" | "sa
 export function ChatAnswer({ q, name, rest, engine = "ChatGPT" }: { q: string; name: string; rest: string; engine?: string }) {
   return (
     <div className="ap-chat">
-      <div className="ap-chat__bar"><span className="ap-chat__dot" />{engine}</div>
+      <div className="ap-chat__bar"><span className="ap-chat__dot" />{engine}<span style={{ marginLeft: "auto", border: "1px solid #d2d2d7", borderRadius: 6, padding: "0 6px", fontWeight: 600 }}>Example</span></div>
       <div className="ap-chat__q">{q}</div>
       <div className="ap-chat__a">
         I’d recommend <mark>{name}</mark>{rest}

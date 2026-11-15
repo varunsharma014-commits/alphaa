@@ -154,7 +154,7 @@ export default function CaseStudiesPage() {
             <OrangePillButton href="/start" size="lg">
               Run the free check →
             </OrangePillButton>
-            <p className="text-muted text-xs mt-4">$99/mo · Month to month · Cancel in 2 clicks</p>
+            <p className="text-muted text-xs mt-4">$99/mo · Month to month · Cancel online in a minute</p>
           </div>
         </div>
       </section>

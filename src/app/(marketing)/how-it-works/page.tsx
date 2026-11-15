@@ -20,7 +20,7 @@ const STEPS = [
     eyebrow: "Step 1 · Free, 60 seconds",
     title: "See what AI says about you.",
     body: `Enter your website. ${A} asks ChatGPT, Gemini, Claude and Perplexity the question a real customer would, shows you exactly who they named, and reads your site the way they do — 23 checks, from crawler access to reviews.`,
-    art: <ChatAnswer q="Best dentist near Zilker, Austin?" name="Bright Smile Dental" rest=" — gentle with nervous patients, open Saturdays, 4.9★." />,
+    art: <ChatAnswer q="Best dentist near Zilker, Austin?" name="Example Dental Co." rest=" — gentle with nervous patients, open Saturdays. (Fictional business.)" />,
   },
   {
     tone: "lavender" as const,

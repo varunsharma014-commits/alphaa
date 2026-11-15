@@ -14,7 +14,7 @@ export const market: Market = {
     h1b: "Il tuo agente IA fa il lavoro al posto tuo.",
     sub: "I tuoi clienti a Milano, Roma o Napoli chiedono a ChatGPT chi chiamare. ChatGPT fa un nome. Se non è il tuo, scopro perché, lo sistemo e ti dico esattamente cosa ho fatto.",
     cta: "Controlla la mia attività gratis",
-    guarantee: ["Se nessuna IA ti nomina entro 90 giorni,", "il mese successivo non lo paghi."],
+    guarantee: ["Se nessuna IA ti nomina entro il giorno 90, con i controlli settimanali attivi,", "il mese successivo lo offriamo noi."],
     fine: "Nessuna carta richiesta. Controllo ChatGPT, Gemini, Claude e Perplexity.",
     arrows: ["è dal vivo, provalo", "le tue risposte vere in 60 secondi"],
     greet: {
@@ -54,11 +54,11 @@ export const market: Market = {
       "Ogni settimana controllo cosa dicono di te ChatGPT, Gemini, Claude e Perplexity",
       "Il tuo profilo Google sempre aggiornato: post e risposte alle recensioni le scrivo io",
       "Niente va online senza il tuo ok",
-      "Nessun vincolo: si paga mese per mese e si disdice in due clic",
-      "Se nessuna IA ti nomina entro 90 giorni, il mese successivo non lo paghi",
+      "Nessun vincolo: si paga mese per mese e si disdice online in un minuto",
+      "Se nessuna IA ti nomina entro il giorno 90, con i controlli settimanali attivi, il mese successivo non lo paghi",
     ],
     priceCta: "Fatti consigliare dall’IA — {starter}/mese",
-    priceNote: "Starter {starter}, Pro {pro} (fino a 3 sedi), Full Service {full} al mese. Addebito mensile, disdici quando vuoi. Solo per aziende e professionisti (B2B). Prezzi IVA esclusa.",
+    priceNote: "Starter {starter}, Pro {pro} (fino a 3 sedi), Full Service {full} al mese. Addebito mensile, disdici quando vuoi. Solo per aziende e professionisti (B2B). Non siamo registrati ai fini IVA: nessuna IVA in fattura; se dovuta, la versi tu con il reverse charge.",
     faqTitle: "Le domande che ci fanno le attività italiane",
     faq: [
       {
@@ -67,7 +67,7 @@ export const market: Market = {
       },
       {
         q: "Quanto costa?",
-        a: "Starter costa {starter} al mese, Pro {pro} (fino a 3 sedi), Full Service {full}, con una persona che pubblica tutto per te. Mese per mese, disdetta in due clic, rimborso entro 7 giorni sul primo addebito. Il controllo in questa pagina è gratuito.",
+        a: "Starter costa {starter} al mese, Pro {pro} (fino a 3 sedi), Full Service {full}, con una persona che pubblica tutto per te. Mese per mese, disdetta online in un minuto, rimborso entro 7 giorni sul primo addebito. Il controllo in questa pagina è gratuito.",
       },
       {
         q: "Devo capirne di marketing o di siti web?",

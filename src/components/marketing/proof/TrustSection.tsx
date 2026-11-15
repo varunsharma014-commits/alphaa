@@ -18,8 +18,8 @@ const POINTS = [
     body: "Posts, pages and review replies wait for your one-tap yes. Nothing goes public in your name without it.",
   },
   {
-    title: "Guaranteed.",
-    body: "If no AI names you within 90 days, your next month is free. Month to month, cancel in two clicks.",
+    title: "Next month on us.",
+    body: "If no AI names you by day 90 with weekly checks active, next month is free. Month to month, cancel online in a minute.",
   },
 ]
 

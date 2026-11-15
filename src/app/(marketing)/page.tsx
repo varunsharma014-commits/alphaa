@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { EngineRotator } from "@/components/marketing/hero/EngineRotator"
 import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
 import Link from "next/link"
+import { GUARANTEE_LINE, RENEWAL_LINE } from "@/lib/offer-copy"
 import { TodoAccordion, EasyRail, AgencyToggle } from "@/components/marketing/apple/Sections"
 import { TrustSection } from "@/components/marketing/proof/TrustSection"
 import { FinalCta } from "@/components/marketing/proof/FinalCta"
@@ -93,7 +94,7 @@ export default function HomePage() {
           <HeroCta href="/start" />
           <span className="ag-hero__promise">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 9.9C8 19.4 5 15.6 5 11V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg>
-            <span>If no AI names you within 90 days, <b>your next month is free. Guaranteed!</b></span>
+            <span>If no AI names you by day 90 with weekly checks active, <b>next month is on us.</b></span>
           </span>
         </div>
         <div className="ag-fine">No credit card required. Checks <b>ChatGPT, Gemini, Claude and Perplexity</b>.</div>
@@ -123,10 +124,11 @@ export default function HomePage() {
             <li>Weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about you</li>
             <li>Your Google listing kept fresh: posts and review replies written for you</li>
             <li>Nothing goes live until you tap approve</li>
-            <li>Month-to-month. No contracts. Cancel in two clicks.</li>
-            <li>90-day guarantee: if no AI names you, your next month is free.</li>
+            <li>Month-to-month. No contracts. Cancel online in a minute.</li>
+            <li>{GUARANTEE_LINE}</li>
           </ul>
           <Link className="ag-pill ag-pill--blue" href="/start">Get recommended by AI — $99/mo</Link>
+          <p style={{ marginTop: 10, fontSize: 12, color: "#6e6e73" }}>{RENEWAL_LINE}</p>
           <p style={{ marginTop: 14, fontSize: 14 }}><Link href="/pricing">Compare Plans ›</Link></p>
         </div>
       </section>

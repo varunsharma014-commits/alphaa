@@ -55,7 +55,7 @@ export const COMPARES: Compare[] = [
       "The main difference between Alphaa and a traditional SEO agency is who does the work and for which search engine. An agency sells monthly hours, usually on a contract, mostly aimed at Google rankings. Alphaa is an AI agent that works every week to get you named in ChatGPT, Gemini, Claude and Perplexity answers, from $99 a month.",
     rows: [
       ["Typical price", "Around $2,000/month ($24,000/year); varies widely", "$99/month ($1,188/year). Pro $199, Full Service $299"],
-      ["Contract", "Often 6–12 months", "Month to month. Cancel in two clicks"],
+      ["Contract", "Often 6–12 months", "Month to month. Cancel online in a minute"],
       ["Main target", "Google blue-link rankings and Maps", "Being named in ChatGPT, Gemini, Claude and Perplexity answers"],
       ["Who does the work", "Account manager + specialists, a few hours a month", "An AI agent, every week. You approve anything public"],
       ["Checks AI answers", "Rarely, and usually by hand", "Every week, across four AI assistants"],
@@ -116,7 +116,7 @@ export const COMPARES: Compare[] = [
     ],
     faq: [
       { q: "Is Alphaa cheaper than an SEO agency?", a: "Yes. A typical local SEO agency retainer is around $2,000 a month ($24,000 a year). Alphaa starts at $99 a month ($1,188 a year), which saves up to $22,800 a year." },
-      { q: "Does Alphaa require a contract?", a: "No. Alphaa is month to month and you can cancel in two clicks. Many agencies ask for 6 to 12 months." },
+      { q: "Does Alphaa require a contract?", a: "No. Alphaa is month to month and you can cancel online in a minute. Many agencies ask for 6 to 12 months." },
       { q: "Do SEO agencies optimize for ChatGPT?", a: "Some are starting to, but most agency work and reporting is still built around Google rankings. Alphaa checks ChatGPT, Gemini, Claude and Perplexity every week and fixes what stops them naming you." },
       { q: "Can Alphaa replace my SEO agency?", a: "For AI visibility, Google Business Profile posts, FAQs, structured data and review replies, yes. For link building, PR, website redesigns or paid ads, keep a specialist." },
       { q: "Who publishes changes to my website?", a: "You approve everything public. On Starter and Pro you publish with one tap or send it to your web person. On Full Service, a person on our team installs it for you." },

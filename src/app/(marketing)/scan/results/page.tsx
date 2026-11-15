@@ -12,6 +12,7 @@ import type { SiteChecks } from "@/lib/site-check"
 import { computeScore, buildFindings, scoreLabel, type Finding, type ReportEngine, type ReportQuestion } from "@/lib/scan-report"
 import "./report.css"
 import { localPrice } from "@/lib/local-price"
+import { GUARANTEE_LINE, RENEWAL_LINE } from "@/lib/offer-copy"
 import {
   AlertTriangle, Globe, Sparkles, MessageSquare, Search,
   Check, Mail, ChevronDown, ChevronUp, X, ExternalLink,
@@ -530,7 +531,7 @@ function Timeline() {
         </div>
       ))}
       <p className="rp-timeline__note">
-        If no AI names you within 90 days, your next month is free. No one can promise exactly what an AI will say, so I show you every week.
+        If no AI names you by day 90 with weekly checks active, next month is free. No one can promise exactly what an AI will say, so I show you every week.
       </p>
     </div>
   )
@@ -1133,8 +1134,8 @@ function ScanResultsContent() {
         </div>
         <div className="rp-hero__cta">
           <HireButton placement="top" label={ctaLabel} scanId={result.scanId} />
-          <p className="rp-fine">{localPrice()}/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
-          <p className="rp-fine"><b>If no AI names you within 90 days, your next month is free.</b></p>
+          <p className="rp-fine">{localPrice()}/mo · month to month · cancel online in a minute · payments secured by Stripe</p>
+          <p className="rp-fine"><b>{GUARANTEE_LINE}</b> {RENEWAL_LINE}</p>
         </div>
 
         {/* 2. The evidence */}
@@ -1195,8 +1196,8 @@ function ScanResultsContent() {
           <h2>I can start on this today.</h2>
           <p>{localPrice()} a month instead of an agency retainer. I do the work, you tap approve.</p>
           <HireButton placement="bottom" label={ctaLabel} scanId={result.scanId} />
-          <p className="rp-fine">{localPrice()}/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
-          <p className="rp-fine"><b>If no AI names you within 90 days, your next month is free.</b></p>
+          <p className="rp-fine">{localPrice()}/mo · month to month · cancel online in a minute · payments secured by Stripe</p>
+          <p className="rp-fine"><b>{GUARANTEE_LINE}</b> {RENEWAL_LINE}</p>
           <div className="rp-ask__email"><EmailReportButton scanId={result.scanId} /></div>
         </div>
 

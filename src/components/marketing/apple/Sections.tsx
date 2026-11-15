@@ -26,7 +26,7 @@ export function RevenueSection() {
       step: "Ready to hire",
       title: "Reach people ready to book today.",
       body: `People asking Perplexity or Gemini for “the best HVAC contractor near me” are looking to hire someone today. I work to put you in that answer.`,
-      art: <ChatAnswer engine="Perplexity" q="Best HVAC contractor near me?" name="Desert Air Heating & Cooling" rest=" — same-day service, 4.9★ from 380 reviews." />,
+      art: <ChatAnswer engine="Perplexity" q="Best HVAC contractor near me?" name="Example HVAC Co." rest=" — same-day service, well reviewed. (Fictional business.)" />,
     },
     {
       tone: "sage" as const,
@@ -165,7 +165,7 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
   },
   {
     eyebrow: "Month to month",
-    title: "No contract. Cancel in two clicks.",
+    title: "No contract. Cancel online in a minute.",
     body: "I keep my job only if the AIs keep saying your name.",
     more: "No minimum term and no exit fees. From $99 a month.",
     tone: "sage",
@@ -177,7 +177,7 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
     body: "WordPress, Shopify, Webflow — or anything else.",
     more: `I never need your passwords. I connect to WordPress, Shopify and Webflow with one secure approval (Wix is coming soon) and hand your web person exact instructions for anything else.`,
     tone: "lavender",
-    art: <ChatAnswer q="Who does emergency plumbing in Austin?" name="Lone Star Plumbing" rest=" — open 24/7, licensed, 4.8★." />,
+    art: <ChatAnswer q="Who does emergency plumbing in Austin?" name="Example Plumbing Co." rest=" — open 24/7, licensed. (Fictional business.)" />,
   },
 ]
 
@@ -210,20 +210,20 @@ export function EasyRail() {
 // ── 4. Agency vs agent: side-by-side, prices on one line, savings right under ──
 const ROWS: [string, string, string][] = [
   ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what I did today, what changed, what I need from you."],
-  ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel in two clicks. I only stay if the AIs keep saying your name."],
+  ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel online in a minute. I only stay if the AIs keep saying your name."],
   ["The focus", "Google’s ten blue links. Ask about ChatGPT or Claude and watch them stumble.", "Getting you recommended by AI assistants is the only thing I do."],
 ]
 
 export function AgencyToggle() {
   return (
     <section className="ap-sec">
-      <h2 className="ap-h2 ap-center">Your marketing agency charges $2,000 a month<br /><span className="ap-quiet">for work an AI Agent now does for you.</span></h2>
+      <h2 className="ap-h2 ap-center">Agencies often charge $1,000+ a month<br /><span className="ap-quiet">for work an AI Agent now does for you.</span></h2>
       <p className="ap-lead ap-center">Even a “good” agency leaves you invisible where customers are actually asking questions today.</p>
       <div className="ap-vs">
         <div className="ap-vs__col ap-vs__col--them">
-          <div className="ap-vs__name">Marketing agency</div>
-          <div className="ap-vs__price"><b>$2,000</b><span>/mo</span></div>
-          <div className="ap-vs__year">$24,000 a year</div>
+          <div className="ap-vs__name">Marketing agency (example)</div>
+          <div className="ap-vs__price"><b>$1,000+</b><span>/mo</span></div>
+          <div className="ap-vs__year">for example, $12,000+ a year</div>
         </div>
         <div className="ap-vs__col ap-vs__col--us">
           <div className="ap-vs__name">{A}</div>
@@ -238,8 +238,8 @@ export function AgencyToggle() {
           </div>
         ))}
         <div className="ap-vs__save">
-          <span>Save up to</span>
-          <b>$22,800 a year</b>
+          <span>For example, against a $1,000 a month agency, save</span>
+          <b>$10,812 a year</b>
           <em>…and actually show up where your customers now ask.</em>
         </div>
       </div>

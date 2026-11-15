@@ -14,7 +14,7 @@ export const market: Market = {
     h1b: "Your AI Agent does the work.",
     sub: "Your customers in Manchester, Leeds or Bristol ask ChatGPT who to ring. It names someone. If it isn’t you, I find out why, fix it, and tell you exactly what I did.",
     cta: "Check my business — free",
-    guarantee: ["If no AI names you within 90 days,", "your next month is free."],
+    guarantee: ["If no AI names you by day 90 with weekly checks active,", "next month is on us."],
     fine: "No card needed. I check ChatGPT, Gemini, Claude and Perplexity.",
     arrows: ["it's live, have a go", "your real answers, in 60s"],
     greet: {
@@ -59,11 +59,11 @@ export const market: Market = {
       "Weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about you",
       "Your Google Business Profile kept fresh: posts and review replies drafted for you",
       "Nothing goes live until you tap approve",
-      "Month to month. Cancel in two clicks. 7-day refund on your first charge.",
-      "If no AI names you within 90 days, your next month is free.",
+      "Month to month. Cancel online in a minute. 7-day refund on your first charge.",
+      "If no AI names you by day 90 with weekly checks active, next month is free.",
     ],
     priceCta: "Get recommended by AI — {starter}/month",
-    priceNote: "Starter {starter}, Pro {pro} (up to 3 locations), Full Service {full}. Monthly, cancel any time. For business customers only; prices exclude VAT where it applies.",
+    priceNote: "Starter {starter}, Pro {pro} (up to 3 locations), Full Service {full}. Monthly, cancel any time. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
     faqTitle: "Questions from UK business owners",
     faq: [
       {
@@ -72,7 +72,7 @@ export const market: Market = {
       },
       {
         q: "How much does it cost?",
-        a: "Starter is {starter} a month, Pro is {pro} (up to 3 locations) and Full Service is {full}, where a person publishes everything for you. Month to month, cancel in two clicks, and the check on this page is free.",
+        a: "Starter is {starter} a month, Pro is {pro} (up to 3 locations) and Full Service is {full}, where a person publishes everything for you. Month to month, cancel online in a minute, and the check on this page is free.",
       },
       {
         q: "I'm a sole trader with no time for marketing. Is this for me?",
@@ -112,7 +112,7 @@ export const market: Market = {
         description:
           "When patients ask ChatGPT for a dentist in their area, your practice should be in the answer. I find out why it isn't, fix it, and you approve each change.",
         h1: "Get your dental practice recommended by AI",
-        sub: "Patients now ask ChatGPT which practice to book with, private or NHS. I make sure it can name yours, and I show you who it names today.",
+        sub: "Patients now ask ChatGPT which practice to book with, private or NHS. I work to get yours named, and I show you who it names today.",
         questions: [
           "Which dentist in Clapham is taking on new private patients?",
           "Who does affordable Invisalign in Manchester city centre?",
@@ -172,7 +172,7 @@ export const market: Market = {
         description:
           "Homeowners ask ChatGPT who to call for a boiler or a leak. I find out why AI names another engineer, fix it, and you approve each change from your phone.",
         h1: "Get your plumbing and heating business recommended by AI",
-        sub: "When a boiler packs up, more people ask ChatGPT who to ring. I make sure it can name you, and I do the work while you're out on jobs.",
+        sub: "When a boiler packs up, more people ask ChatGPT who to ring. I work to get you named, and I do the work while you're out on jobs.",
         questions: [
           "Who's a reliable Gas Safe engineer for a boiler service in south Manchester?",
           "Can you recommend an emergency plumber in Liverpool who'll come out tonight?",
@@ -202,7 +202,7 @@ export const market: Market = {
         description:
           "Clients ask ChatGPT where to go for Botox or filler safely. I find out why AI names another clinic, fix it, and you approve every change first.",
         h1: "Get your aesthetics clinic recommended by AI",
-        sub: "People ask ChatGPT where's safe for Botox, filler or skin treatments. AI looks for qualified, well-reviewed clinics. I make sure it can find yours.",
+        sub: "People ask ChatGPT where's safe for Botox, filler or skin treatments. AI looks for qualified, well-reviewed clinics. I work to get your clinic named.",
         questions: [
           "Where's a safe, qualified clinic for lip filler in Birmingham?",
           "Who's a medically trained Botox practitioner in Chelsea?",

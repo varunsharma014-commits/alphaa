@@ -8,7 +8,7 @@ export const faqs = [
   },
   {
     q: "How is this different from a marketing agency?",
-    a: "A typical search marketing agency costs around $2,000 a month, which is $24,000 a year, and mostly works on Google's links. Alphaa is $99 a month ($1,188 a year), works on the answers AI gives, does the work itself, and tells you in plain English what it did. Month to month, no contract.",
+    a: "Search marketing agencies often charge $1,000+ a month, for example $12,000+ a year, and mostly works on Google's links. Alphaa is $99 a month ($1,188 a year), works on the answers AI gives, does the work itself, and tells you in plain English what it did. Month to month, no contract.",
   },
   {
     q: "Do I need to know anything about marketing or websites?",
@@ -28,7 +28,7 @@ export const faqs = [
   },
   {
     q: "Can I cancel anytime?",
-    a: "Yes. It's month to month and you cancel in two clicks. No contract, no phone call.",
+    a: "Yes. It's month to month and you can cancel online in a minute. No contract, no phone call.",
   },
   {
     q: "What kinds of businesses is this for?",

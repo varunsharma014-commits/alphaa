@@ -14,7 +14,7 @@ export const market: Market = {
     h1b: "Your AI Agent does the work.",
     sub: "Your customers in Dubai Marina, Al Barsha or Abu Dhabi ask ChatGPT for a dentist, a salon or a broker. It names someone. If it isn’t you, I find out why, fix it, and tell you exactly what I did.",
     cta: "Check my business free",
-    guarantee: ["If no AI names you within 90 days,", "your next month is free."],
+    guarantee: ["If no AI names you by day 90 with weekly checks active,", "next month is on us."],
     fine: "No card needed. Checks ChatGPT, Gemini, Claude and Perplexity.",
     arrows: ["it's live, try it", "your real answers, in 60s"],
     greet: {
@@ -59,11 +59,11 @@ export const market: Market = {
       "Weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about you",
       "Your Google listing kept fresh: posts and review replies drafted for you",
       "Nothing goes live until you tap approve",
-      "Month to month. Cancel in two clicks. 7-day refund on your first charge.",
-      "If no AI names you within 90 days, your next month is free.",
+      "Month to month. Cancel online in a minute. 7-day refund on your first charge.",
+      "If no AI names you by day 90 with weekly checks active, next month is free.",
     ],
     priceCta: "Get recommended by AI — {starter}/month",
-    priceNote: "Monthly, cancel any time. For business customers only; prices exclude VAT where it applies.",
+    priceNote: "Monthly, cancel any time. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
     faqTitle: "Questions from UAE business owners",
     faq: [
       {
@@ -72,7 +72,7 @@ export const market: Market = {
       },
       {
         q: "How much does it cost?",
-        a: "Starter is {starter} a month, Pro is {pro} a month for up to 3 locations, and Full Service is {full} a month, where a person publishes everything for you. Month to month, cancel in two clicks. The check on this page is free.",
+        a: "Starter is {starter} a month, Pro is {pro} a month for up to 3 locations, and Full Service is {full} a month, where a person publishes everything for you. Month to month, cancel online in a minute. The check on this page is free.",
       },
       {
         q: "My customers search in Arabic and English. Do you cover both?",
@@ -109,7 +109,7 @@ export const market: Market = {
         description:
           "Patients in Dubai and Abu Dhabi ask ChatGPT which clinic to trust. Alphaa's AI Agent works to get your dental or aesthetic clinic named. Free check.",
         h1: "Get patients who ask AI which clinic to trust",
-        sub: "People in Jumeirah, Downtown Dubai and Khalifa City ask ChatGPT for a dentist or an aesthetic doctor before they ever open Google. I make sure your clinic is part of that answer.",
+        sub: "People in Jumeirah, Downtown Dubai and Khalifa City ask ChatGPT for a dentist or an aesthetic doctor before they ever open Google. I work to get your clinic named in that answer.",
         questions: [
           "Which dental clinic in Jumeirah is good for veneers and accepts insurance?",
           "Best place for Botox in Downtown Dubai with a licensed doctor, not a salon?",
@@ -139,7 +139,7 @@ export const market: Market = {
         description:
           "Buyers and tenants ask ChatGPT which Dubai broker to call. Alphaa's AI Agent works to get your agency named for your communities. Check it free.",
         h1: "Be the brokerage AI names for your communities",
-        sub: "Investors abroad and new arrivals ask ChatGPT who knows Dubai Hills, JVC or Al Reem Island. I make sure your agency and your area expertise are in that answer.",
+        sub: "Investors abroad and new arrivals ask ChatGPT who knows Dubai Hills, JVC or Al Reem Island. I work to get your agency and your area expertise into that answer.",
         questions: [
           "Which real estate agency is good for off-plan in Dubai Creek Harbour?",
           "Who is a trustworthy broker for renting a villa in Arabian Ranches?",
@@ -169,7 +169,7 @@ export const market: Market = {
         description:
           "Clients ask ChatGPT for a salon or spa near them in Dubai, Abu Dhabi and Sharjah. Alphaa's AI Agent works to get your business named. Free check.",
         h1: "Be the salon AI sends clients to",
-        sub: "When someone in JLT, Al Barsha or Al Majaz asks ChatGPT for a good salon, a Moroccan bath or a ladies' spa, I make sure your name comes up, with the right area and hours.",
+        sub: "When someone in JLT, Al Barsha or Al Majaz asks ChatGPT for a good salon, a Moroccan bath or a ladies' spa, I work to get your name in the answer, with the right area and hours.",
         questions: [
           "Good ladies' salon in Al Barsha for keratin and nails, open late?",
           "Where can I get a proper Moroccan bath in Jumeirah?",
@@ -199,7 +199,7 @@ export const market: Market = {
         description:
           "Drivers ask ChatGPT which garage to trust in Al Quoz, Mussafah or Sharjah. Alphaa's AI Agent works to get your workshop or detailing studio named.",
         h1: "Be the garage AI tells drivers to trust",
-        sub: "When someone asks ChatGPT for an honest garage in Al Quoz, a ceramic coating in Mussafah or a quick AC repair in Sharjah, I make sure your workshop is in the answer.",
+        sub: "When someone asks ChatGPT for an honest garage in Al Quoz, a ceramic coating in Mussafah or a quick AC repair in Sharjah, I work to get your workshop named in the answer.",
         questions: [
           "Which garage in Al Quoz is good for Range Rover service, cheaper than the dealer?",
           "Where can I get PPF and ceramic coating done properly in Dubai?",

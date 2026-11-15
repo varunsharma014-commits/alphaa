@@ -261,8 +261,8 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
               "Keep your Google profile active.",
             ],
           },
-          { kind: "p", text: "That is $99 a month. Month to month. Cancel in two clicks." },
-          { kind: "p", text: "An agency is often $2,000 a month, and most still focus on Google links. I focus entirely on AI answers." },
+          { kind: "p", text: "That is $99 a month. Month to month. Cancel online in a minute." },
+          { kind: "p", text: "Agencies often charge $1,000+ a month, and most still focus on Google links. I focus entirely on AI answers." },
         ],
         cta: start,
       }
