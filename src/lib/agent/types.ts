@@ -76,7 +76,7 @@ export type Block =
   | { kind: "chips"; items: Chip[] }
   | { kind: "cta"; chip: Chip; sub?: string } // the one big button a message ends on
   | { kind: "divider"; text: string }
-  | { kind: "email"; label: string; placeholder: string; cta: string; fine: string }
+  | { kind: "email"; label: string; placeholder: string; cta: string; fine: string; optIn?: string }
   | { kind: "form"; formId: string; fields: FormField[]; cta: string; fine?: string }
   | { kind: "platforms"; items: { platform: import("@/lib/connector/types").Platform; available: boolean }[] } // "connect your website" picker with logos; unavailable = Coming soon
 

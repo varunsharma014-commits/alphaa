@@ -401,9 +401,10 @@ export function EmailBlock({
   onSubmit,
 }: {
   b: Extract<Block, { kind: "email" }>
-  onSubmit: (email: string) => Promise<string | null>
+  onSubmit: (email: string, optIn?: boolean) => Promise<string | null>
 }) {
   const [value, setValue] = useState("")
+  const [optIn, setOptIn] = useState(false)
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
   const [sent, setSent] = useState(false)
@@ -420,7 +421,7 @@ export function EmailBlock({
         }
         setBusy(true)
         setErr(null)
-        const problem = await onSubmit(v)
+        const problem = await onSubmit(v, b.optIn ? optIn : undefined)
         setBusy(false)
         if (problem) setErr(problem)
         else setSent(true)
@@ -443,6 +444,12 @@ export function EmailBlock({
         </button>
       </div>
       {err && <div className="ag-error">{err}</div>}
+      {b.optIn && (
+        <label className="ag-optin">
+          <input type="checkbox" checked={optIn} onChange={(e) => setOptIn(e.target.checked)} disabled={busy} />
+          <span>{b.optIn}</span>
+        </label>
+      )}
       <p className="ag-ask__fine">{b.fine}</p>
     </form>
   )

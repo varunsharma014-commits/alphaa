@@ -15,6 +15,7 @@ import type { SiteCheck, SiteCheckItem } from "@/lib/site-check"
 import type { IdentifyResult } from "@/app/api/scan/identify/route"
 import { BRAND } from "@/lib/brand"
 import { localPrice } from "@/lib/local-price"
+import { NURTURE_EU_FINE, NURTURE_NOTICE, NURTURE_OPTIN_LABEL, visitorConsentRegion } from "@/lib/nurture-consent"
 
 type Phase = "website" | "manual" | "scanning" | "result" | "claimed"
 
@@ -333,12 +334,14 @@ export function StartAgent({
   }
 
   function emailBlock(cta = "Send it →"): Block {
+    const region = visitorConsentRegion()
     return {
       kind: "email",
       label: "Your email",
       placeholder: "you@yourbusiness.com",
       cta,
-      fine: "We’ll email your report and a few short follow-ups. Unsubscribe anytime.",
+      fine: region.de ? "We’ll email your report. Unsubscribe anytime." : region.eu ? NURTURE_EU_FINE : NURTURE_NOTICE,
+      ...(region.eu && !region.de ? { optIn: NURTURE_OPTIN_LABEL } : {}),
     }
   }
 
@@ -448,14 +451,14 @@ export function StartAgent({
     }
   }
 
-  async function onEmail(email: string): Promise<string | null> {
+  async function onEmail(email: string, optIn?: boolean): Promise<string | null> {
     const scan = scanRef.current
     if (!scan) return "I don’t have a finished scan to send yet."
     try {
       const res = await fetch("/api/scan/claim", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ scanId: scan.id, email }),
+        body: JSON.stringify({ scanId: scan.id, email, nurture: { ...visitorConsentRegion(), optIn: optIn === true } }),
       })
       const data = await res.json()
       if (!res.ok) return data.error || "I couldn’t save that address. Try again?"

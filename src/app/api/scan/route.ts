@@ -22,6 +22,7 @@ import { sendScanReadyEmail } from "@/lib/scan-email"
 import { checkSites, findCompetitorDomain, type SiteChecks } from "@/lib/site-check"
 import type { AiSearchStatus } from "@/types/audit"
 import type { EngineEvidence, ScanInsights, ScanSerp, CompetitorDetail, ScanQuestion } from "@/types/scan"
+import { parseNurtureConsent } from "@/lib/nurture-consent"
 
 type SiteOg = {
   title: string
@@ -67,6 +68,8 @@ const schema = z.object({
   // Optional: the agent conversation on /start runs the scan first and asks
   // for the address afterwards (POST /api/scan/claim attaches it).
   email: z.string().email().optional().default(""),
+  // Nurture consent from the form (lib/nurture-consent.ts).
+  nurture: z.unknown().optional(),
 })
 
 export async function POST(req: NextRequest) {
@@ -76,7 +79,10 @@ export async function POST(req: NextRequest) {
 
     // Create scan lead immediately (so result polling can find it)
     const lead = await db.scanLead.create({
-      data: { email: input.email, businessName: input.businessName, businessUrl: input.websiteUrl, city: input.city },
+      data: {
+        email: input.email, businessName: input.businessName, businessUrl: input.websiteUrl, city: input.city,
+        ...(input.email && parseNurtureConsent(input.nurture) ? { ogData: { nurtureConsent: parseNurtureConsent(input.nurture) } as object } : {}),
+      },
     })
 
     // Kick off the scan WITHOUT awaiting it. The POST used to block for the
@@ -362,7 +368,9 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
 
     // ogData is ALWAYS an object for new scans and always carries `insights`
     // (possibly null), even when the OG fetch itself failed.
-    const ogData = { ...(site.og ?? {}), insights, auditFallback, siteChecks, ...(questions.length ? { questions } : {}) }
+    // Keep the nurture consent stored at create / claim (lib/nurture-consent.ts).
+    const consent = await keptConsent(leadId)
+    const ogData = { ...(site.og ?? {}), insights, auditFallback, siteChecks, ...(questions.length ? { questions } : {}), ...consent }
 
     // Update lead with results — this write is what flips the result poller
     // from { ready: false } to { ready: true }.
@@ -396,8 +404,14 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
 // Best-effort: a failed write must never touch the scan itself.
 async function setProgress(leadId: string, stage: "profile" | "engines" | "insights") {
   try {
-    await db.scanLead.update({ where: { id: leadId }, data: { ogData: { progress: stage } as object } })
+    await db.scanLead.update({ where: { id: leadId }, data: { ogData: { progress: stage, ...(await keptConsent(leadId)) } as object } })
   } catch {}
+}
+
+async function keptConsent(leadId: string): Promise<{ nurtureConsent?: unknown }> {
+  const row = await db.scanLead.findUnique({ where: { id: leadId }, select: { ogData: true } })
+  const og = row?.ogData
+  return og && typeof og === "object" && !Array.isArray(og) && "nurtureConsent" in og ? { nurtureConsent: (og as Record<string, unknown>).nurtureConsent } : {}
 }
 
 function getFallbackAudit(businessName: string, city: string, businessType: string) {

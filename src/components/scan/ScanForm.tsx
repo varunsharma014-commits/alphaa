@@ -8,6 +8,7 @@ import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { cn } from "@/lib/utils"
 import { track } from "@/lib/gtag"
 import { fbTrack } from "@/lib/pixel"
+import { NURTURE_EU_FINE, NURTURE_NOTICE, NURTURE_OPTIN_LABEL, visitorConsentRegion } from "@/lib/nurture-consent"
 
 interface FormData {
   businessName: string
@@ -21,6 +22,9 @@ export function ScanForm() {
   const [form, setForm] = useState<FormData>({ businessName: "", city: "", websiteUrl: "", email: "" })
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Partial<FormData>>({})
+  const [region, setRegion] = useState({ eu: false, de: false })
+  const [optIn, setOptIn] = useState(false)
+  useEffect(() => setRegion(visitorConsentRegion()), [])
 
   // Prefill the website URL when arriving from the hero scan field (/scan?url=…).
   // Read from window.location to avoid a useSearchParams Suspense boundary.
@@ -49,7 +53,7 @@ export function ScanForm() {
       const res = await fetch("/api/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, nurture: { ...visitorConsentRegion(), optIn } }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || "Scan failed")
@@ -103,8 +107,14 @@ export function ScanForm() {
         >
           {loading ? "I’m asking the AIs about your business…" : "Get my free visibility score →"}
         </OrangePillButton>
-        <p className="text-center text-muted/60 text-xs">
-          We&rsquo;ll email your report and a few short follow-ups. Unsubscribe anytime.
+        {region.eu && !region.de && (
+          <label className="flex items-start gap-2 text-fg text-xs leading-snug cursor-pointer">
+            <input type="checkbox" checked={optIn} onChange={(e) => setOptIn(e.target.checked)} className="mt-0.5" />
+            <span>{NURTURE_OPTIN_LABEL}</span>
+          </label>
+        )}
+        <p className="text-center text-muted text-xs">
+          {region.de ? "We’ll email your report. Unsubscribe anytime." : region.eu ? NURTURE_EU_FINE : NURTURE_NOTICE}
         </p>
       </form>
     </GlassCard>

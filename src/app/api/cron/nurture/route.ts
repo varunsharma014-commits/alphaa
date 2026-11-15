@@ -10,6 +10,7 @@ import { buildLeadDossier } from "@/lib/personal/research"
 import { bodyWords, copyToText, writePersonalEmail, type WriteResult } from "@/lib/personal/writer"
 import { leadBrief } from "@/lib/personal/briefs"
 import { mapPool, spacedQueue } from "@/lib/personal/pool"
+import { nurtureAllowed } from "@/lib/nurture-consent"
 
 // Scan-lead nurture, fired daily by src/lib/cron-scheduler.ts.
 //
@@ -124,6 +125,9 @@ export async function GET(req: NextRequest) {
       // automatic send sets reportEmailed, the "email me this report" button sets sentEmail).
       const anchor = group.find((l) => isRecord(l.ogData) && (l.ogData.reportEmailed === true || l.ogData.sentEmail === true))
       if (!anchor) { skipped++; continue }
+
+      // Consent (lib/nurture-consent.ts): EU/UK/UAE leads only if they ticked the box; German leads never.
+      if (!nurtureAllowed(anchor.ogData)) { skipped++; continue }
 
       // Stop conditions within this window.
       if (group.some((l) => l.converted || l.userId || leadIsUnsubscribed(l.ogData))) { skipped++; continue }

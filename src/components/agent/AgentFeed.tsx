@@ -32,7 +32,7 @@ export function AgentFeed({
   animate?: Animate
   busy?: boolean
   onChip: (chip: Chip, messageId: string) => void | Promise<void>
-  onEmail?: (email: string) => Promise<string | null>
+  onEmail?: (email: string, optIn?: boolean) => Promise<string | null>
   onForm?: (formId: string, values: Record<string, string | boolean>) => Promise<string | null>
   onDocEdit?: (docId: string, text: string) => void
   onSettled?: () => void
