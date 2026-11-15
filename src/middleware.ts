@@ -24,6 +24,7 @@ const isPublicRoute = createRouteMatcher([
   "/signup(.*)",
   "/terms",
   "/privacy",
+  "/accessibility",
   "/unsubscribe",
   "/api/unsubscribe",
   "/approve", // briefing-email approvals: a signed one-item token, no login

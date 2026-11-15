@@ -19,6 +19,7 @@ const footerLinks = {
     { href: "/terms", label: "Terms of Service" },
     { href: "/privacy", label: "Privacy Policy" },
     { href: "/impressum", label: "Impressum" },
+    { href: "/accessibility", label: "Accessibility" },
   ],
 }
 
@@ -50,7 +51,7 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#f5f5f7] text-[12px] leading-[1.33] tracking-[-0.01em] text-[#6e6e73]">
+    <footer className="bg-[#f5f5f7] text-[12px] leading-[1.33] tracking-[-0.01em] text-[#515154]">
       <div className="max-w-[980px] mx-auto px-4 sm:px-6 pt-10 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
@@ -59,12 +60,12 @@ export function Footer() {
               <Sparkles className="w-4 h-4 text-[#1d1d1f]" />
               <span className="text-[#1d1d1f] font-semibold text-[14px]">alphaa</span>
             </Link>
-            <p className="text-[#6e6e73] text-[12px] leading-[1.5] max-w-xs mb-3">
+            <p className="text-[#515154] text-[12px] leading-[1.5] max-w-xs mb-3">
               I work to get your business named by the 4 AIs I check every week: ChatGPT, Claude, Gemini and Perplexity. $99/month.
             </p>
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               {engines.map((e) => (
-                <span key={e} className="text-[12px] text-[#86868b]">
+                <span key={e} className="text-[12px] text-[#515154]">
                   {e}
                 </span>
               ))}
@@ -112,15 +113,15 @@ export function Footer() {
 
         <div className="border-t border-[#d2d2d7] pt-4 space-y-3">
           <div className="flex flex-col gap-2">
-            <p className="text-[#6e6e73] text-[12px]">
+            <p className="text-[#515154] text-[12px]">
               AI visibility results vary by business, location, and industry. No specific rankings or revenue outcomes are guaranteed.
             </p>
-            <p className="text-[#6e6e73] text-[12px]">
+            <p className="text-[#515154] text-[12px]">
               Alphaa is not affiliated with, endorsed by, or sponsored by OpenAI, Anthropic, Google LLC, Microsoft Corporation, or Perplexity AI.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-[#6e6e73] text-[12px]">Copyright © {new Date().getFullYear()} Alphaa. All rights reserved.</p>
+            <p className="text-[#515154] text-[12px]">Copyright © {new Date().getFullYear()} Alphaa. All rights reserved.</p>
             <MarketSwitcher />
           </div>
         </div>
