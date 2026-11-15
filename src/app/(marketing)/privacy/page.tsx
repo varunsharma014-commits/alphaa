@@ -52,7 +52,7 @@ Security and Fraud Prevention: To detect, investigate, and prevent fraudulent ac
 
 Legal Compliance: To comply with applicable laws, regulations, and legal processes.
 
-We do NOT use your information for behavioral advertising, third-party ad targeting, or to sell your personal information to any third party.`,
+We do NOT sell your personal information to any third party. Apart from the Meta Pixel and Google Analytics measurement on our public website described in Section 7 (which, where consent is required, runs only after you accept), we do not use your information for advertising or share it for third-party ad targeting.`,
   },
   {
     title: "4. Third-Party Processors",
@@ -147,11 +147,13 @@ Authentication Cookies: Set by Clerk to maintain your login state across session
 
 Measurement and advertising (on our public website):
 • Google Analytics, to count visits and see which pages are used.
-• Meta Pixel, to measure whether our ads on Facebook and Instagram lead to visits and sign-ups.
+• Meta Pixel, to measure whether our ads on Facebook and Instagram lead to visits and sign-ups, and to show our ads on Facebook and Instagram to people who have visited our website (retargeting).
 
-If you visit from the European Economic Area or the United Kingdom, or use our UK, German, French or Italian pages, these measurement and advertising tools stay off until you choose "Accept" in the cookie notice. If you choose "Reject", they stay off. Your choice is stored in your browser; clear your browser's site data for alphaa.app to see the notice again and change it.
+Meta Pixel and retargeting: when the Meta Pixel is on, your browser sends Meta Platforms the page you viewed, actions such as starting a free check or opening checkout, and standard technical data (IP address, browser and device information, and Meta's own cookies). We do not send Meta your name, email address or the results of your check. Meta may combine this with information it holds if you use Facebook or Instagram, so it can measure our ads and include you in audiences of recent visitors that we advertise to. Meta acts as an independent controller for its own use of this data; see Meta's Privacy Policy (https://www.facebook.com/privacy/policy) and your Facebook or Instagram ad preferences to control the ads you see.
 
-We do NOT use cookies for behavioral profiling, and we never sell personal information.
+If you visit from the European Economic Area, the United Kingdom or the United Arab Emirates, or use our UK, German, French, Italian or UAE pages, these measurement and advertising tools stay off, and the Meta Pixel is not loaded at all, until you choose "Accept" in the cookie notice. If you choose "Reject", they stay off. Your choice is stored in your browser; clear your browser's site data for alphaa.app to see the notice again and change it.
+
+We never sell personal information.
 
 You can also control cookies through your browser preferences. Disabling session cookies will prevent you from logging in to the Service.`,
   },
@@ -239,7 +241,7 @@ export default function PrivacyPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Privacy Policy</h1>
-        <p className="text-muted text-sm mb-10">Last updated: October 29, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: November 14, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.

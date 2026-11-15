@@ -84,12 +84,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
           />
-          {/* Cookie consent (GDPR / UK GDPR): visitors in Europe, or on the
-              /uk /de /fr /it pages, get analytics and ads cookies only after
-              they accept. Runs before GA and the pixel so both start denied. */}
+          {/* Cookie consent (GDPR / UK GDPR / UAE PDPL): visitors in Europe or
+              the UAE (by time zone), or on the /uk /de /fr /it /ae pages, get
+              analytics and ads cookies only after they accept. Runs before GA
+              and the pixel so both start denied. */}
           <script
             dangerouslySetInnerHTML={{
-              __html: `(function(){var c=null;try{c=localStorage.getItem('alphaa.consent')}catch(e){}var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}var seg=location.pathname.split('/')[1]||'';var eu=tz.indexOf('Europe/')===0||['uk','de','fr','it'].indexOf(seg)>-1;window.__ccNeed=eu&&!c;window.__ccDenied=eu&&c!=='granted';window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}if(window.__ccDenied){g('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'})}})();`,
+              __html: `(function(){var c=null;try{c=localStorage.getItem('alphaa.consent')}catch(e){}var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}var seg=location.pathname.split('/')[1]||'';var eu=tz.indexOf('Europe/')===0||['Atlantic/Canary','Atlantic/Madeira','Atlantic/Azores','Atlantic/Reykjavik','Atlantic/Faroe','Arctic/Longyearbyen','Asia/Nicosia','Asia/Famagusta','Asia/Dubai'].indexOf(tz)>-1||['uk','de','fr','it','ae'].indexOf(seg)>-1;window.__ccNeed=eu&&!c;window.__ccDenied=eu&&c!=='granted';window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}if(window.__ccDenied){g('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'})}})();`,
             }}
           />
           {/* GA4 — only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set */}
@@ -108,32 +109,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               />
             </>
           )}
-          {/* Meta Pixel — only when NEXT_PUBLIC_FB_PIXEL_ID is set. PageView
-              fires here; funnel events fire from lib/pixel.ts. */}
+          {/* Meta Pixel — only when NEXT_PUBLIC_FB_PIXEL_ID is set. Where consent
+              is needed (window.__ccDenied) nothing is loaded from Meta and
+              nothing fires until the visitor taps Accept: ConsentBanner calls
+              window.__alphaaPixel(). On Reject it is never loaded. PageView
+              fires on load; funnel events fire from lib/pixel.ts (no-op while
+              fbq is undefined). No <noscript> pixel: it can't check consent. */}
           {FB_PIXEL_ID && (
             <Script
               id="fb-pixel"
               strategy="afterInteractive"
               dangerouslySetInnerHTML={{
-                __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');if(window.__ccDenied)fbq('consent','revoke');fbq('init','${FB_PIXEL_ID}');fbq('track','PageView');`,
+                __html: `window.__alphaaPixel=function(){if(window.__pxOn)return;window.__pxOn=1;!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${FB_PIXEL_ID}');fbq('track','PageView')};if(!window.__ccDenied)window.__alphaaPixel();`,
               }}
             />
           )}
         </head>
         <body className="bg-bg-primary text-fg font-sans antialiased">
           <ConsentBanner />
-          {FB_PIXEL_ID && (
-            <noscript>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                height="1"
-                width="1"
-                style={{ display: "none" }}
-                alt=""
-                src={`https://www.facebook.com/tr?id=${FB_PIXEL_ID}&ev=PageView&noscript=1`}
-              />
-            </noscript>
-          )}
           <div className="dot-grid" aria-hidden="true" />
           {children}
           <Toaster

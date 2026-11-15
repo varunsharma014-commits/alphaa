@@ -4,8 +4,9 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 
 // GDPR / UK GDPR cookie choice. Shown only when the inline script in the root
-// layout set window.__ccNeed (a visitor in Europe, or on /uk /de /fr /it, who
-// hasn't chosen yet). Reject is as easy as Accept.
+// layout set window.__ccNeed (a visitor in Europe or the UAE, or on /uk /de
+// /fr /it /ae, who hasn't chosen yet). Reject is as easy as Accept; on Reject
+// the Meta Pixel is never loaded.
 const COPY: Record<string, { text: string; accept: string; reject: string; more: string }> = {
   en: { text: "We use cookies to measure visits and our ads. Nothing is set until you choose.", accept: "Accept", reject: "Reject", more: "Privacy" },
   de: { text: "Wir verwenden Cookies, um Besuche und unsere Anzeigen zu messen. Erst nach Ihrer Wahl wird etwas gespeichert.", accept: "Akzeptieren", reject: "Ablehnen", more: "Datenschutz" },
@@ -17,7 +18,7 @@ type W = Window & {
   __ccNeed?: boolean
   __ccDenied?: boolean
   dataLayer?: unknown[]
-  fbq?: (...a: unknown[]) => void
+  __alphaaPixel?: () => void
 }
 
 export function ConsentBanner() {
@@ -47,7 +48,8 @@ export function ConsentBanner() {
         // eslint-disable-next-line prefer-rest-params
         w.dataLayer!.push(arguments)
       })("consent", "update", { ad_storage: "granted", analytics_storage: "granted", ad_user_data: "granted", ad_personalization: "granted" })
-      if (typeof w.fbq === "function") w.fbq("consent", "grant")
+      // Meta Pixel loads only now (see the fb-pixel script in the root layout).
+      if (typeof w.__alphaaPixel === "function") w.__alphaaPixel()
     }
     setShow(false)
   }
