@@ -218,7 +218,7 @@ export default async function VerticalPage({
                   ${ALPHAA_ANNUAL.toLocaleString()}
                   <span className="text-xl text-fg/50">/yr</span>
                 </p>
-                <p className="text-fg/30 text-xs mt-3">$99/mo · built for AI search</p>
+                <p className="text-muted text-xs mt-3">$99/mo · built for AI search. If no AI names you by day 90 with weekly checks active, next month is free.</p>
               </div>
             </div>
             <div className="text-center mt-9 pt-9 border-t border-line/[0.08]">

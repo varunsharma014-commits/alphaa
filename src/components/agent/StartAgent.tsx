@@ -58,7 +58,7 @@ const CANNED: Record<string, string> = {
   "Is this real?":
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
-    "$99 a month, month to month. Cancel online in a minute, no contract. Agencies often charge $1,000+ a month for Google alone — and do little for AI.",
+    "$99 a month, month to month. Cancel online in a minute, no contract. If no AI names you by day 90 with weekly checks active, next month is free. Agencies often charge $1,000+ a month for Google alone — and do little for AI.",
 }
 
 // Where the conversation runs:
@@ -477,7 +477,7 @@ export function StartAgent({
         user(email),
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
-          { kind: "text", text: `If you want me to actually fix this — not just report it — start today and I begin this week. ${localPrice()} a month, cancel any time.` },
+          { kind: "text", text: `If you want me to actually fix this — not just report it — start today and I begin this week. ${localPrice()} a month, cancel any time. ${GUARANTEE}` },
           { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
           {
             kind: "chips",
