@@ -2,7 +2,6 @@ import Link from "next/link"
 import { EngineRotator } from "@/components/marketing/hero/EngineRotator"
 import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
 import { HeroCta } from "@/components/marketing/hero/HeroCta"
-import { HeroArrows } from "@/components/marketing/hero/HeroArrows"
 import { StartAgent } from "@/components/agent/StartAgent"
 import { pageMeta, ogImage } from "@/lib/seo"
 import { GUIDES } from "@/content/markets/guides"
@@ -79,7 +78,6 @@ export function LocalHome({ m }: { m: Market }) {
             </div>
             <div className="ag-fine">{l.fine}</div>
             <div id="check" className="hx-check">
-              <HeroArrows notes={l.arrows} />
               <StartAgent embedded greet={l.greet} />
             </div>
           </div>

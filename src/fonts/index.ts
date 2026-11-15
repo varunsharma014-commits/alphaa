@@ -10,8 +10,3 @@ export const arabic = localFont({
   ],
   display: "swap",
 })
-
-export const hand = localFont({
-  src: [{ path: "./caveat-600.woff2", weight: "600", style: "normal" }],
-  display: "swap",
-})
