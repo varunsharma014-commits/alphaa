@@ -55,6 +55,18 @@ Legal Compliance: To comply with applicable laws, regulations, and legal process
 We do NOT sell your personal information to any third party. Apart from the Meta Pixel and Google Analytics measurement on our public website described in Section 7 (which, where consent is required, runs only after you accept), we do not use your information for advertising or share it for third-party ad targeting.`,
   },
   {
+    title: "3a. Legal Bases for Processing (GDPR Art. 6)",
+    body: `If the GDPR or UK GDPR applies to you, we rely on these legal bases:
+
+Contract (Art. 6(1)(b)): to create and run your account, deliver the Service you subscribe to, bill you and provide support.
+
+Legitimate interests (Art. 6(1)(f)): to run the free AI visibility check you request, keep the Service secure, prevent fraud, improve the Service, and research public information about your business (such as what AI assistants and public websites say about it). We balance these interests against your rights, and you may object at any time.
+
+Consent (Art. 6(1)(a)): for measurement and advertising cookies (Google Analytics, Meta Pixel) and, for visitors in the EEA, UK and UAE, for the follow-up emails after a free check. You can withdraw consent at any time, with the cookie settings link or the unsubscribe link in any email, without affecting processing before withdrawal.
+
+Legal obligation (Art. 6(1)(c)): to keep tax and accounting records and respond to lawful requests.`,
+  },
+  {
     title: "4. Third-Party Processors",
     body: `We share your information with the following service providers solely to operate the Service. Each provider is bound by data processing agreements and contractual obligations to protect your data:
 
@@ -87,6 +99,40 @@ Google APIs (Google Business Profile Integration)
 Purpose: Posting content to your Google Business Profile, retrieving performance metrics.
 Data shared: OAuth tokens and business profile data as authorized by you. See Section 5 for full Google API disclosure.
 Privacy policy: https://policies.google.com/privacy
+
+OpenAI (AI visibility checks and content)
+Purpose: Asking ChatGPT models the questions your customers ask, to see whether your business is named, and helping draft content.
+Data shared: Your business name, website, city, category and the questions we ask. No payment data; we do not send your personal contact details.
+Privacy policy: https://openai.com/policies/privacy-policy
+
+Google Gemini (AI visibility checks)
+Purpose: Asking Google's Gemini models the same customer questions.
+Data shared: Your business name, website, city, category and the questions we ask.
+Privacy policy: https://policies.google.com/privacy
+
+Perplexity (AI visibility checks)
+Purpose: Asking Perplexity the same customer questions.
+Data shared: Your business name, website, city, category and the questions we ask.
+Privacy policy: https://www.perplexity.ai/hub/legal/privacy-policy
+
+Apify (public web data)
+Purpose: Collecting public search results and public social media posts about your business and its competitors, used in your checks and in emails written for you.
+Data shared: Your business name, city, website and public profile addresses. Only publicly available information is collected.
+Privacy policy: https://apify.com/privacy-policy
+
+Google PageSpeed Insights and Safe Browsing (website checks)
+Purpose: Measuring your website's speed and checking it is not flagged as unsafe.
+Data shared: Your website address only.
+Privacy policy: https://policies.google.com/privacy
+
+IndexNow and Bing Webmaster Tools (search indexing)
+Purpose: Telling search engines when Alphaa publishes or updates a page on your website.
+Data shared: The page address only.
+Privacy policy: https://www.microsoft.com/privacy/privacystatement
+
+Meta Platforms and Google Analytics (our website only)
+Purpose: Measuring visits and our ads, as described in Section 7. Where consent is required, these run only after you accept.
+Privacy policy: https://www.facebook.com/privacy/policy and https://policies.google.com/privacy
 
 We do not share your personal information with any other third parties except as required by law.`,
   },
@@ -181,6 +227,7 @@ GDPR Rights (EEA and UK Residents):
 • Right to Restrict Processing: Request that we limit our processing of your data in certain circumstances.
 • Right to Object: Object to our processing of your personal data for certain purposes.
 • Right to Withdraw Consent: Where processing is based on consent, withdraw that consent at any time.
+• Right to Complain: You may lodge a complaint with a data protection supervisory authority, in particular in the country where you live or work or where you believe your rights were infringed (for example the ICO in the UK, or your national authority in the EU). In Canada you may contact the Office of the Privacy Commissioner of Canada. We would appreciate the chance to resolve your concern first at privacy@alphaa.app.
 
 CCPA Rights (California Residents):
 • Right to Know: Request disclosure of the categories and specific pieces of personal information we have collected about you.
@@ -198,7 +245,7 @@ If we become aware that we have inadvertently collected personal information fro
   },
   {
     title: "11. International Data Transfers",
-    body: `Alphaa is operated by 18355355 Canada INC. (500-1000 Innovation Drive, Ottawa (Kanata), ON K2K 3E7, Canada), the controller of your personal data, and our servers are in the United States. If you are accessing the Service from the European Economic Area (EEA), United Kingdom, or other regions with laws governing data collection and use that may differ from U.S. law, please be aware that your information may be transferred to, stored, and processed in the United States and other countries.
+    body: `Alphaa is operated by 18355355 Canada INC (1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada), the controller of your personal data, and our servers are in the United States. If you are accessing the Service from the European Economic Area (EEA), United Kingdom, or other regions with laws governing data collection and use that may differ from U.S. law, please be aware that your information may be transferred to, stored, and processed in the United States and other countries.
 
 For transfers of personal data from the EEA or UK to the United States, Alphaa relies on the following transfer mechanisms:
 • Standard Contractual Clauses (SCCs) approved by the European Commission, incorporated into our data processing agreements with sub-processors.
@@ -227,8 +274,8 @@ Subject line: Privacy Request — [your request type]
 Website: https://alphaa.app
 
 Mailing address:
-Alphaa
-1000 Innovation Dr
+18355355 Canada INC (Alphaa)
+1000 Innovation Drive, Suite 500
 Kanata, ON K2K 3E7
 Canada
 
@@ -241,7 +288,7 @@ export default function PrivacyPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Privacy Policy</h1>
-        <p className="text-muted text-sm mb-10">Last updated: November 14, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: November 15, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.
