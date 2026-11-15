@@ -63,10 +63,10 @@ export const plans = [
 
 export const billingFaqs = [
   { q: "Is there a free trial?", a: "No — the free check at /start shows you exactly what the AIs say about you today, and that's the trial. Plans are month to month from day one." },
-  { q: "What is the AI Visibility Guarantee?", a: "If, in your first 90 days on a paid plan, none of ChatGPT, Gemini, Claude or Perplexity names your business in any of our weekly checks, your next month is free. We apply the credit to your account automatically — you don't have to ask. Once per customer." },
-  { q: "Can I cancel anytime?", a: "Yes. Two clicks in Billing. No phone calls, no contracts, no exit fees." },
+  { q: "What is the AI Visibility Guarantee?", a: "If, in your first 90 days on a paid plan, none of ChatGPT, Gemini, Claude or Perplexity names your business in any of our weekly checks, your next month is free. Your plan must be active at day 90. We apply the credit automatically (through Shopify billing if Shopify bills you) — you don't have to ask. Once per customer." },
+  { q: "Can I cancel anytime?", a: "Yes. Online in a minute, in Billing. No phone calls, no contracts, no exit fees." },
   { q: "Do I need technical skills?", a: "No. Your agent writes, fixes and publishes; you approve with one tap. If you'd rather not touch your website at all, Full Service has a human do it." },
   { q: "Can I switch plans?", a: "Yes. Upgrade or downgrade anytime from your billing settings." },
-  { q: "Do you offer refunds?", a: "We offer a full refund within 7 days of your first charge if you're not satisfied. No questions asked." },
+  { q: "Do you offer refunds?", a: "Yes, on your first charge: if you're not satisfied, email hi@alphaa.app from your account email within 7 calendar days of your first paid charge and we refund it in full. Later charges and renewals aren't refunded; cancelling stops the next renewal. See Terms, Section 5." },
 ]
 

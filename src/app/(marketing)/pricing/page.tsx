@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { Panel, AgentNote, EngineChips, Phone } from "@/components/marketing/apple/Mockups"
 import { AgencyToggle } from "@/components/marketing/apple/Sections"
 import { plans, billingFaqs } from "./pricing-data"
+import { GUARANTEE_LINE, RENEWAL_LINE } from "@/lib/offer-copy"
 
 // Each plan gets its own "product shot" — what that plan looks like in use.
 const ART: Record<string, { tone: "sky" | "lavender" | "sage"; art: React.ReactNode }> = {
@@ -45,13 +46,13 @@ export default function PricingPage() {
     <>
       <section className="ap-sec" style={{ paddingTop: 120 }}>
         <p className="ap-center" style={{ fontSize: 15, color: "#6e6e73", margin: "0 auto 18px", padding: "0 22px" }}>
-          An SEO agency charges ~$2,000 a month for Google alone. Your agent starts at <b style={{ color: "#1d1d1f" }}>$99</b>.
+          Agencies often charge $1,000+ a month for Google alone. Your agent starts at <b style={{ color: "#1d1d1f" }}>$99</b>.
         </p>
         <h1 className="ap-h2 ap-center" style={{ fontSize: "clamp(44px, 7.7vw, 88px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}>
           From $99/month.<br /><span className="ap-quiet">An AI Agent working for you. No contracts.</span>
         </h1>
-        <p className="ap-lead ap-center">Month to month. Cancel in two clicks. No technical skills needed — your agent does the work.</p>
-        <p className="ap-center" style={{ fontSize: 15, color: "#1d1d1f", margin: "14px auto 0", padding: "0 22px" }}><b>90-day AI Visibility Guarantee:</b> if no AI assistant names you in our weekly checks, your next month is free.</p>
+        <p className="ap-lead ap-center">Month to month. Cancel online in a minute. No technical skills needed — your agent does the work.</p>
+        <p className="ap-center" style={{ fontSize: 15, color: "#1d1d1f", margin: "14px auto 0", padding: "0 22px" }}><b>90-day AI Visibility Guarantee:</b> {GUARANTEE_LINE}</p>
 
         <div className="ap-seg" role="tablist" aria-label="Billing period">
           <button role="tab" aria-selected={!annual} className={!annual ? "is-on" : ""} onClick={() => setAnnual(false)}>Monthly</button>
@@ -76,6 +77,7 @@ export default function PricingPage() {
                     {"monthlyOnly" in plan && plan.monthlyOnly ? "Monthly only — human-fulfilled service" : annual ? `Billed annually ($${price * 12}/yr)` : "Month to month · cancel anytime"}
                   </div>
                   <Link href={href} className={cn("ap-plan__cta", plan.highlight && "is-primary")}>{plan.cta}</Link>
+                  <p style={{ fontSize: 12, lineHeight: 1.4, color: "#6e6e73", margin: "10px 0 0" }}>{GUARANTEE_LINE} {RENEWAL_LINE}</p>
                   <ul className="ap-plan__list">
                     {plan.features.map((f) => <li key={f}>{f}</li>)}
                   </ul>

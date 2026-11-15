@@ -31,7 +31,9 @@ Some features require you to connect a Google Business Profile or your website; 
     title: "3. Eligibility",
     body: `You must be at least 18 years of age to use the Service. By agreeing to these Terms, you represent and warrant that: (a) you are at least 18 years old; (b) if you are using the Service on behalf of a business, organization, or other legal entity, you have the full legal authority to bind that entity to these Terms; and (c) your use of the Service does not violate any applicable law or regulation in your jurisdiction.
 
-If you are accepting these Terms on behalf of a business, "you" refers to that business entity and all references to your obligations apply to the entity and its authorized personnel. Alphaa may, at its discretion, request documentation verifying your authority to act on behalf of a business.`,
+If you are accepting these Terms on behalf of a business, "you" refers to that business entity and all references to your obligations apply to the entity and its authorized personnel. Alphaa may, at its discretion, request documentation verifying your authority to act on behalf of a business.
+
+Businesses Only (B2B): The Service is offered only to businesses, organizations and professionals acting for their trade, business, craft or profession. It is not offered to consumers, and you must not use it for personal, family or household purposes. By subscribing, you confirm that you are acting as a business.`,
   },
   {
     title: "4. Free Scan; No Free Trial",
@@ -51,9 +53,9 @@ Automatic Renewal: Your subscription will automatically renew at the end of each
 
 Cancellation: You may cancel your subscription at any time through your account dashboard or by emailing hi@alphaa.app. Cancellations take effect at the end of the current billing period; you will retain access to the Service until that date. Alphaa does not issue prorated refunds for unused time within a billing period.
 
-Refund Policy: If you are dissatisfied with the Service, you may request a full refund within 7 calendar days of your first paid charge. Refund requests must be submitted to hi@alphaa.app with your account email and reason for the request. Refunds are not available for charges after the initial 7-day window, for annual plan renewals (after the initial period), or for any account found to be in violation of these Terms.
+Refund Policy: If you are not satisfied with the Service, you may request a full refund of your first paid charge within 7 calendar days of that charge. Send the request to hi@alphaa.app from your account email; you do not need to justify it, though we welcome a reason. Refunds are not available for charges after the initial 7-day window, for annual plan renewals (after the initial period), or for any account found to be in violation of these Terms.
 
-AI Visibility Guarantee: If, during the first 90 days of your paid subscription, none of ChatGPT, Gemini, Claude or Perplexity names your business in any of Alphaa's weekly visibility checks for your account, Alphaa will credit your account with one month of your plan's price (for annual plans, one twelfth of the annual price), applied automatically to your next invoice. The guarantee applies once per customer and business, requires an active subscription at day 90, and is not redeemable for cash. Alphaa's weekly check records are the basis for determining eligibility.
+AI Visibility Guarantee: If, during the first 90 days of your paid subscription, none of ChatGPT, Gemini, Claude or Perplexity names your business in any of Alphaa's weekly visibility checks for your account, Alphaa will credit your account with one month of your plan's price (for annual plans, one twelfth of the annual price), applied automatically to your next invoice. The guarantee applies once per customer and business, requires an active subscription at day 90, and is not redeemable for cash. If you are billed through Shopify, the guarantee applies in the same way and the credit is issued through your Shopify billing. Alphaa's weekly check records are the basis for determining eligibility.
 
 Price Changes: Alphaa reserves the right to modify subscription pricing upon 30 days' written notice to your registered email address. Your continued use of the Service after the price change takes effect constitutes your acceptance of the new pricing.
 
@@ -194,8 +196,8 @@ Email: hi@alphaa.app
 Website: https://alphaa.app
 
 Mailing address:
-Alphaa
-1000 Innovation Dr
+18355355 Canada INC (Alphaa)
+1000 Innovation Drive, Suite 500
 Kanata, ON K2K 3E7
 Canada`,
   },
@@ -206,7 +208,7 @@ export default function TermsPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Terms of Service</h1>
-        <p className="text-muted text-sm mb-10">Last updated: October 30, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: November 15, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           These Terms of Service govern your access to and use of the Alphaa platform. By creating an account or using the Service, you agree to be bound by these Terms. Please read them carefully.
