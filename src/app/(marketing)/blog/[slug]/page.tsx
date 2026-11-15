@@ -170,6 +170,7 @@ export default async function BlogPostPage({
             · {formatDate(meta.date)} · {meta.readMins} min read
           </span>
         </div>
+        <p className="text-muted text-xs mb-4">Written with AI assistance and reviewed by {AUTHOR.name}.</p>
 
         <h1
           className={`text-fg text-[37.4px] sm:text-[52.8px] lg:text-[57.2px] font-semibold leading-[1.1] tracking-[-0.02em] text-balance ${meta.subtitle || meta.updated ? "mb-4" : "mb-8"}`}

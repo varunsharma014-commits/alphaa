@@ -57,6 +57,8 @@ thorough post that runs long is fine.
 
 ## 4. Facts and claims
 
+- **AI-assistance note (legal, 2026-11-15):** every post carries the line "Written with AI assistance and reviewed by Varun Sharma." under the byline. The post template (`src/app/(marketing)/blog/[slug]/page.tsx`) adds it automatically from `AUTHOR`; do not remove it, and do not add a second copy in the post body.
+
 - Every statistic must come from the **"Verified stats bank"** in `marketing/content-engine.md`, quoted with its source and year. Never invent, round up or "estimate" numbers. If a stat is not in the bank, leave it out or describe it qualitatively.
 - Competitor details only from the competitor's own site, with "as of <Month YYYY>".
 - Never claim Alphaa is "#1", "the best", or that anything guarantees rankings, recommendations or timelines. Alphaa improves public signals; it cannot edit an AI model.
