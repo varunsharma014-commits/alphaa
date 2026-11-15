@@ -67,6 +67,9 @@ export type StartMode = "public" | "setup" | "resume"
 
 const CHECKOUT = "#checkout"
 
+// Same promise as the homepage hero (lib/... cron/guarantee enforces it). Shown wherever the price is.
+const GUARANTEE = "If no AI names you within 90 days, your next month is free."
+
 /** Opening lines for a local market page (/de, /fr…): the rest of the
  *  conversation is still English. */
 export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint: string; startHere?: string; work?: { title: string; steps: string[] } }
@@ -83,7 +86,7 @@ function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded =
         [
           { kind: "text", text: name ? `Welcome back. I’ve got ${name} ready to go.` : "Welcome back. You’re all set up." },
           { kind: "text", text: `${localPrice()} a month. Month to month.`, big: true },
-          { kind: "text", text: "Cancel anytime in two clicks — no contract. I start the day you say go." },
+          { kind: "text", text: `${GUARANTEE} Cancel anytime in two clicks, no contract. I start the day you say go.` },
           { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: CHECKOUT }, primary: true } },
         ],
         "greet"
@@ -116,14 +119,20 @@ export function StartAgent({
   resumeName,
   embedded = false,
   greet,
+  autoCheckout = false,
 }: {
   mode?: StartMode
   resumeName?: string
   embedded?: boolean
   greet?: StartGreet
+  /** resume only: the visitor already tapped "Get recommended by AI" before signing up — open checkout now, no second tap. */
+  autoCheckout?: boolean
 }) {
   const [messages, setMessages] = useState<Message[]>(() => greeting(mode, resumeName, greet, embedded))
   const [phase, setPhase] = useState<Phase>(mode === "resume" ? "result" : "website")
+  // Read inside async handlers (onEmail runs mid-scan), where the state value would be stale.
+  const phaseRef = useRef(phase)
+  phaseRef.current = phase
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const [settled, setSettled] = useState(false)
@@ -131,11 +140,23 @@ export function StartAgent({
   const scanRef = useRef<{ id: string; businessName: string; domain: string } | null>(null)
   const identRef = useRef<Partial<IdentifyResult>>({})
   const draftedRef = useRef(false)
+  // The address given while the scan was still running (so the close doesn't ask twice).
+  const emailRef = useRef<string | null>(null)
 
   const push = useCallback((...m: Message[]) => setMessages((prev) => [...prev, ...m]), [])
   const patch = useCallback((id: string, fn: (m: Message) => Message) => {
     setMessages((prev) => prev.map((m) => (m.id === id ? fn(m) : m)))
   }, [])
+
+  // Signed up from the scan's "Get recommended by AI": they already said yes, so go
+  // straight to checkout instead of asking a second time on /onboarding.
+  const autoRan = useRef(false)
+  useEffect(() => {
+    if (!autoCheckout || mode !== "resume" || autoRan.current) return
+    autoRan.current = true
+    void checkout()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoCheckout, mode])
 
   const boxRef = useRef<HTMLDivElement>(null)
   // Embedded, before the first answer: the box stays short and the website
@@ -200,6 +221,16 @@ export function StartAgent({
       return
     }
     scanRef.current = { id: scanId, businessName: ident.businessName, domain }
+    // The 60-second wait is the best moment to ask for the address: most visitors who
+    // leave never come back, and 2 of 21 left one when we only asked at the end (Nov 2026).
+    if (mode === "public") {
+      push(
+        agent([
+          { kind: "text", text: "While I work: where should I send your full report? It’s yours to keep either way." },
+          emailBlock("Send it to me"),
+        ], "scan-email")
+      )
+    }
 
     // Poll. Real stage markers drive the step list.
     const started = Date.now()
@@ -238,7 +269,12 @@ export function StartAgent({
       .then((r) => (r.ok ? r.json() : null))
       .catch(() => null)
 
-    push(...narrate(result, ident.businessName, domain))
+    {
+      const resp = isRecord(result.engineResponses) ? result.engineResponses : {}
+      const ev = ENGINES.map((e) => (isEvidence(resp[e]) ? (resp[e] as EngineEvidence) : null))
+      track("scan_result_shown", { named: ev.filter((x) => x?.appeared).length, checked: ev.filter(Boolean).length })
+    }
+    push(...narrate(result, ident.businessName, domain, hireHref(scanId)))
 
     const qf = (await quickFix) as { faqHtml?: string; quickFix?: { faqHtml?: string } } | null
     const faq = qf?.faqHtml ?? qf?.quickFix?.faqHtml
@@ -266,9 +302,9 @@ export function StartAgent({
     push(
       agent([
         { kind: "text", text: `${localPrice()} a month. Month to month.`, big: true },
-        { kind: "text", text: `An agency charges about $2,000 a month for Google alone. Cancel anytime in two clicks — no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
-        { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: mode === "public" ? `/signup?scan=${scanId}` : CHECKOUT }, primary: true } },
-        ...(mode === "public"
+        { kind: "text", text: `${GUARANTEE} Cancel anytime in two clicks, no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
+        { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
+        ...(mode === "public" && !emailRef.current
           ? [{ kind: "chips", items: [{ label: "Email me this report", action: { type: "ask", text: "report" }, primary: false }] } as Block]
           : []),
       ], "ask")
@@ -277,12 +313,16 @@ export function StartAgent({
     setPhase("result")
   }
 
-  function emailBlock(): Block {
+  function hireHref(scanId: string) {
+    return mode === "public" ? `/signup?scan=${scanId}` : CHECKOUT
+  }
+
+  function emailBlock(cta = "Send it →"): Block {
     return {
       kind: "email",
       label: "Your email",
       placeholder: "you@yourbusiness.com",
-      cta: "Send it →",
+      cta,
       fine: "We’ll email your report and a few short follow-ups. Unsubscribe anytime.",
     }
   }
@@ -349,8 +389,10 @@ export function StartAgent({
     } else if (chip.action.type === "say") {
       push(user(chip.label), agent([{ kind: "text", text: chip.action.text }]))
     } else if (chip.action.type === "link" && chip.action.href === CHECKOUT) {
+      track("hire_click", { mode })
       await checkout()
     } else if (chip.action.type === "link") {
+      if (chip.action.href.startsWith("/signup")) track("hire_click", { mode })
       window.location.href = chip.action.href
     }
   }
@@ -370,6 +412,7 @@ export function StartAgent({
         if (!r.ok) throw new Error("onboard")
       }
       fbTrack("InitiateCheckout", { value: 99, currency: "USD" })
+      track("begin_checkout", { value: 99, currency: "USD" })
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -397,7 +440,14 @@ export function StartAgent({
       const data = await res.json()
       if (!res.ok) return data.error || "I couldn’t save that address. Try again?"
       track("scan_completed", { scan_id: scan.id })
+      track("generate_lead", { source: phaseRef.current === "scanning" ? "during_scan" : "after_scan" })
       fbTrack("Lead")
+      emailRef.current = email
+      if (phaseRef.current === "scanning") {
+        // Still working: just confirm, the results keep coming in below.
+        push(user(email), agent([{ kind: "text", text: `Got it. The full report goes to ${email} the moment I’m done.` }]))
+        return null
+      }
       setPhase("claimed")
       push(
         user(email),
@@ -506,7 +556,7 @@ function useTypedExamples(on: boolean): string {
 }
 
 // ── turn a ScanResult into agent messages ────────────────────────────────────
-function narrate(result: ScanResult, businessName: string, domain: string): Message[] {
+function narrate(result: ScanResult, businessName: string, domain: string, hire: string): Message[] {
   const out: Message[] = []
   const responses = isRecord(result.engineResponses) ? result.engineResponses : {}
   const evidence = ENGINES.map((e) => ({ engine: e, ev: isEvidence(responses[e]) ? (responses[e] as EngineEvidence) : null }))
@@ -592,6 +642,18 @@ function narrate(result: ScanResult, businessName: string, domain: string): Mess
     } else {
       out.push(agent([{ kind: "text", text: `You were named every time. Also in the mix: ${rivals.map((r) => r.name).join(", ")}. The job now is staying ahead of them.` }]))
     }
+  }
+
+  // 3b. The offer, right where it hurts: one tap, before the detail below. Most visitors
+  // never scroll the whole report, so the close can't only live at the very end.
+  if (checked > 0 && named < checked) {
+    out.push(
+      agent([
+        { kind: "text", text: rivals.length > 0 ? `I can fix this and get you into those answers. I start this week, and nothing goes live until you approve it.` : "I can fix this. I start this week, and nothing goes live until you approve it." },
+        { kind: "cta", chip: { label: "Fix this for me →", action: { type: "link", href: hire }, primary: true } },
+        { kind: "text", text: `${localPrice()} a month. ${GUARANTEE} The details are below.` },
+      ])
+    )
   }
 
   // 4. Where AI looks.

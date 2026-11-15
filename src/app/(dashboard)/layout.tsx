@@ -74,8 +74,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
     // Clerk's ~300 KiB browser SDK. <UserButton>/<UserProfile> need it.
     <ClerkProvider appearance={clerkAppearance} signInUrl="/login" signUpUrl="/signup">
       <div data-dashboard-root="" data-agent="" data-theme={theme} data-brand="blue">
-        {/* GA4: fires trial_start once when landing with ?upgraded=true (Stripe success redirect) */}
-        <ConversionTracker event="trial_start" metaEvent="StartTrial" whenQueryParam="upgraded" />
+        {/* Funnel's last step: fires once when Stripe's success redirect lands (?upgraded=true).
+            GA4 gets a real `purchase` (no trial since Oct 2026). Meta keeps StartTrial so any ad set
+            already optimizing on it doesn't lose its signal. */}
+        <ConversionTracker event="purchase" metaEvent="StartTrial" whenQueryParam="upgraded" params={{ value: 99, currency: "USD" }} />
         <AgentShell rail={rail} theme={theme} trialDaysLeft={trialDaysLeft}>
           {children}
         </AgentShell>

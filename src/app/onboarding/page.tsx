@@ -7,6 +7,7 @@ import { db } from "@/lib/db"
 import { hasPaidPlan, isComped } from "@/lib/billing"
 import { completeOnboardingFromScan } from "@/lib/onboarding"
 import { StartAgent } from "@/components/agent/StartAgent"
+import { ConversionTracker } from "@/components/common/ConversionTracker"
 import { NewSiteBar } from "@/components/agent/NewSiteBar"
 import { isSiteClerkId } from "@/lib/sites"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
@@ -66,7 +67,9 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
           ✓ Your {PLATFORM[site.platform] ?? site.platform} site <strong>{site.label || site.siteUrl}</strong> is connected. Alphaa publishes there once you approve a change.
         </div>
       ) : null}
-      <StartAgent mode={mode} resumeName={user.businessName ?? undefined} />
+      {/* Funnel step: account created from a scan (fires once per session). */}
+      {scan ? <ConversionTracker event="sign_up" metaEvent="CompleteRegistration" /> : null}
+      <StartAgent mode={mode} resumeName={user.businessName ?? undefined} autoCheckout={!!scan && mode === "resume" && !comped} />
     </div>
   )
 }

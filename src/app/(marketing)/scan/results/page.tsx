@@ -359,11 +359,12 @@ function ScoreDial({ score }: { score: number }) {
   )
 }
 
-function HireButton({ placement, small, label }: { placement: string; small?: boolean; label: string }) {
+// Carries the scan id so signup skips setup and opens checkout straight away (/onboarding?scan=).
+function HireButton({ placement, small, label, scanId }: { placement: string; small?: boolean; label: string; scanId?: string }) {
   return (
     <Link
-      href="/signup"
-      onClick={() => track("results_cta_click", { placement })}
+      href={scanId ? `/signup?scan=${encodeURIComponent(scanId)}` : "/signup"}
+      onClick={() => { track("results_cta_click", { placement }); track("hire_click", { mode: "report", placement }) }}
       className={small ? "rp-hire rp-hire--small" : "rp-hire"}
     >
       {label}
@@ -1131,8 +1132,9 @@ function ScanResultsContent() {
           <ScoreDial score={score} />
         </div>
         <div className="rp-hero__cta">
-          <HireButton placement="top" label={ctaLabel} />
+          <HireButton placement="top" label={ctaLabel} scanId={result.scanId} />
           <p className="rp-fine">{localPrice()}/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
+          <p className="rp-fine"><b>If no AI names you within 90 days, your next month is free.</b></p>
         </div>
 
         {/* 2. The evidence */}
@@ -1192,8 +1194,9 @@ function ScanResultsContent() {
         <div className="rp-card rp-ask">
           <h2>I can start on this today.</h2>
           <p>{localPrice()} a month instead of an agency retainer. I do the work, you tap approve.</p>
-          <HireButton placement="bottom" label={ctaLabel} />
+          <HireButton placement="bottom" label={ctaLabel} scanId={result.scanId} />
           <p className="rp-fine">{localPrice()}/mo · month to month · cancel in two clicks · payments secured by Stripe</p>
+          <p className="rp-fine"><b>If no AI names you within 90 days, your next month is free.</b></p>
           <div className="rp-ask__email"><EmailReportButton scanId={result.scanId} /></div>
         </div>
 
@@ -1201,12 +1204,12 @@ function ScanResultsContent() {
         <QuickFixSection scanId={result.scanId} businessName={businessName} />
       </div>
 
-      <HireBar line={stickyLine} ctaShort={ctaShort} />
+      <HireBar line={stickyLine} ctaShort={ctaShort} scanId={result.scanId} />
     </div>
   )
 }
 
-function HireBar({ line, ctaShort }: { line: string; ctaShort: string }) {
+function HireBar({ line, ctaShort, scanId }: { line: string; ctaShort: string; scanId?: string }) {
   const [visible, setVisible] = useState(false)
   const [dismissed, setDismissed] = useState(false)
   useEffect(() => {
@@ -1220,7 +1223,7 @@ function HireBar({ line, ctaShort }: { line: string; ctaShort: string }) {
     <div className={`rp-bar-fixed ${visible ? "is-on" : ""}`}>
       <div className="rp-bar-fixed__in">
         <p><b>{line}</b><span>{localPrice()}/mo · month to month</span></p>
-        <HireButton placement="sticky_bar" small label={ctaShort} />
+        <HireButton placement="sticky_bar" small label={ctaShort} scanId={scanId} />
         <button type="button" aria-label="Dismiss" onClick={() => setDismissed(true)} className="rp-bar-fixed__x"><X className="w-4 h-4" /></button>
       </div>
     </div>

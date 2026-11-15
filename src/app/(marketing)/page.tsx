@@ -2,9 +2,10 @@ import type { Metadata } from "next"
 import { EngineRotator } from "@/components/marketing/hero/EngineRotator"
 import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
 import Link from "next/link"
-import { RevenueSection, TodoAccordion, EasyRail, AgencyToggle } from "@/components/marketing/apple/Sections"
+import { TodoAccordion, EasyRail, AgencyToggle } from "@/components/marketing/apple/Sections"
+import { TrustSection } from "@/components/marketing/proof/TrustSection"
+import { FinalCta } from "@/components/marketing/proof/FinalCta"
 import { StartAgent } from "@/components/agent/StartAgent"
-import { HeroCta } from "@/components/marketing/hero/HeroCta"
 import { FaqSection } from "@/components/marketing/FaqSection"
 import { faqs } from "@/components/marketing/faq-data"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
@@ -86,8 +87,9 @@ export default function HomePage() {
         <p className="ag-hero__sub">
           Your customers ask ChatGPT who to call. It names someone. If it isn’t you, I find out why, fix it, and tell you exactly what I did.
         </p>
+        {/* One action above the fold: the website box below. (The separate "Scan your website
+            free" button only scrolled to it — a second choice for the same thing.) */}
         <div className="ag-hero__cta ag-hero__cta--big">
-          <HeroCta />
           <span className="ag-hero__promise">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 9.9C8 19.4 5 15.6 5 11V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg>
             <span>If no AI names you within 90 days, <b>your next month is free. Guaranteed!</b></span>
@@ -100,9 +102,12 @@ export default function HomePage() {
       </section>
       </div>
 
-      <RevenueSection />
+      {/* CRO pass 2026-11-15: proof straight after the hero; the "AI = revenue" section
+          (generic, with illustrative ad prices) is gone; one closing CTA after the FAQ. */}
+      <TrustSection />
 
       <TodoAccordion />
+      <p className="ag-ex-note">Examples of the messages I send. Your real results show up in your scan.</p>
 
       <EasyRail />
 
@@ -126,6 +131,8 @@ export default function HomePage() {
       </section>
 
       <FaqSection />
+
+      <FinalCta />
     </>
   )
 }

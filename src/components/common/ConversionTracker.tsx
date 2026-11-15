@@ -13,10 +13,12 @@ export function ConversionTracker({
   event,
   metaEvent,
   whenQueryParam,
+  params,
 }: {
   event: string
   metaEvent?: MetaEvent
   whenQueryParam?: string
+  params?: Record<string, string | number>
 }) {
   useEffect(() => {
     if (whenQueryParam) {
@@ -30,8 +32,9 @@ export function ConversionTracker({
     } catch {
       // storage unavailable — fire anyway
     }
-    track(event)
-    if (metaEvent) fbTrack(metaEvent)
+    track(event, params)
+    if (metaEvent) fbTrack(metaEvent, params)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event, metaEvent, whenQueryParam])
 
   return null

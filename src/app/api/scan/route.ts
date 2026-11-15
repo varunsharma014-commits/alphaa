@@ -381,7 +381,10 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
     // send is what actually delivers the result — fire it here rather than
     // waiting for the visitor to ask. Never let a mail failure fail the scan;
     // the results page offers a resend.
-    if (input.email) {
+    // The /start conversation asks for the address while the scan runs (POST /api/scan/claim),
+    // so read it fresh: a mid-scan claim couldn't send yet because the score wasn't written.
+    const owner = input.email ? { email: input.email } : await db.scanLead.findUnique({ where: { id: leadId }, select: { email: true } })
+    if (owner?.email) {
       void sendScanReadyEmail(leadId).catch((e) =>
         console.error("[scan] results email failed", leadId, e)
       )
