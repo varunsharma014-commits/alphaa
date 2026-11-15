@@ -4,7 +4,7 @@ import { pageMeta } from "@/lib/seo"
 export const metadata = pageMeta({
   title: "About Alphaa — the AI Agent for AI search",
   description:
-    "Alphaa (alphaa.app) is an AI Agent that gets local businesses recommended by ChatGPT, Gemini, Claude and Perplexity. What it does, pricing, research and contact.",
+    "Alphaa (alphaa.app) is an AI Agent that gets local businesses recommended by ChatGPT, Gemini, Claude and Perplexity. What it does, pricing, guides and contact.",
   path: "/about",
 })
 
@@ -57,10 +57,10 @@ export default function AboutPage() {
             those assistants read and shows, week by week, whether they name the business. If none of the four AIs names the business in any weekly
             check during its first 90 days on a paid plan, the next month is free.
           </p>
-          <h2>What research has Alphaa published?</h2>
+          <h2>What guides has Alphaa published?</h2>
           <p>
-            In September 2026 Alphaa checked 288 local business websites for AI readiness. Read{" "}
-            <Link href="/blog/local-business-ai-readiness-study-2026">the study</Link>, or browse the <Link href="/blog">guides</Link>.
+            Alphaa publishes practical guides on getting a local business named by AI assistants, such as{" "}
+            <Link href="/blog/local-business-ai-readiness-study-2026">what local business sites most often miss</Link>. Browse the <Link href="/blog">guides</Link>.
           </p>
           <h2>Who founded Alphaa?</h2>
           <p>

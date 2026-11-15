@@ -3,23 +3,23 @@ import type { PostMeta } from "./types"
 
 export const meta: PostMeta = {
   slug: "local-business-ai-readiness-study-2026",
-  title: "Local Business AI Readiness Study: 288 Sites",
+  title: "Local Business AI Readiness: What I Keep Seeing",
   description:
-    "Original research: Alphaa ran its 23-point AI-readiness check on 288 dentist, plumber/HVAC, law firm, veterinary and restaurant websites across six US cities.",
+    "An opinion piece on why so many local business websites are hard for AI assistants to read, the gaps that come up again and again, and what to fix first.",
   subtitle:
-    "We checked 288 local business websites and found most are only partly readable by AI assistants, with the same few failures repeating.",
+    "Most local business websites I look at are only partly readable by AI assistants, and the same few basics are usually what's missing.",
   date: "2026-09-25",
-  updated: "2026-10-01",
+  updated: "2026-11-14",
   readMins: 5,
-  tag: "Research",
-  kind: "news",
-  keyphrase: "local business ai readiness study",
+  tag: "Opinion",
+  kind: "guide",
+  keyphrase: "local business ai readiness",
   takeaways: [
-    "We checked 288 websites belonging to dentists, plumbers and HVAC companies, law firms, veterinarians and restaurants in Austin, Denver, Phoenix, Miami, Seattle and Chicago.",
-    "About four in five: 239 of the 288 sites (83%) returned a readable homepage.",
-    "The most common gaps are the ones AI relies on to describe and trust a business: complete structured facts.",
-    "Law firms, dentists and plumbers scored about the same — roughly 15 of 23 checks — while restaurants scored lowest at 11 of 23.",
-    "Almost none: only 4 of the 239 readable sites (under 2%) passed 20 or more of the 23 checks, and the median site passed 15.",
+    "This is opinion and observation from running AI-readiness checks, not a statistical study.",
+    "A site an AI crawler can't get into, or can't read without JavaScript, is effectively invisible to that assistant.",
+    "The gaps that come up most are the basics: plain-text phone, address and hours, complete structured business facts, FAQ answers and reviews readable as text.",
+    "Businesses that lean on menus in PDFs, photo galleries and review widgets tend to give AI the least to work with.",
+    "Fix access first, then facts, then trust signals. Most of it is a week of work, not a rebuild.",
   ],
   sources: [
     { title: "Local Business (LocalBusiness) Structured Data", publisher: "Google Search Central", url: "https://developers.google.com/search/docs/appearance/structured-data/local-business" },
@@ -30,139 +30,100 @@ export const meta: PostMeta = {
   ],
 }
 
-const industries: [string, number, number, string, string, string, string, string][] = [
-  // name, sites sampled, readable, avg checks passed (of 23), no/incomplete-schema %, facts missing %, no FAQ %, no readable reviews %
-  ["Dentists", 60, 50, "15.3", "36%", "38%", "62%", "42%"],
-  ["Plumbers & HVAC", 48, 33, "15.1", "36%", "48%", "64%", "48%"],
-  ["Law firms", 60, 51, "15.5", "25%", "55%", "51%", "33%"],
-  ["Veterinarians", 60, 57, "14.3", "32%", "30%", "67%", "67%"],
-  ["Restaurants", 60, 48, "11.2", "54%", "65%", "85%", "88%"],
-]
-
 export function Body() {
   return (
     <div className="article-prose">
       <p>
-        <strong>Short answer:</strong> Most local business websites are only partly readable by AI assistants. In
-        September 2026 we ran Alphaa&apos;s 23-point AI-readiness check on 288 real local business websites: 17% turned
-        away an automated reader entirely, 71% of the readable sites had missing or incomplete structured business
-        facts, 46% didn&apos;t show a phone number, address or hours in text AI can read, and fewer than 2% passed 20 of
-        the 23 checks.
+        <strong>Short answer:</strong> In my experience most local business websites are only partly readable by AI
+        assistants. Some turn automated readers away entirely, many hide their key facts in images, widgets or
+        JavaScript, and very few have the structured business facts, FAQ answers and plain-text reviews that make an
+        assistant confident enough to recommend them.
+      </p>
+      <p>
+        <em>
+          A note on this page: it was rewritten on November 14, 2026 as an opinion piece. It shares what I see when
+          running AI-readiness checks; it doesn&apos;t report statistics from a formal study.
+        </em>
       </p>
 
       <h2>What did we check, and on which businesses?</h2>
       <p>
-        We checked 288 websites belonging to dentists, plumbers and HVAC companies, law firms, veterinarians and
-        restaurants in Austin, Denver, Phoenix, Miami, Seattle and Chicago. The businesses came from OpenStreetMap
-        (public listings that include a website), sampled at random — up to 60 per industry — and each site was checked
-        once on September 25, 2026.
+        The checks are the same 23 that Alphaa runs in its free{" "}
+        <Link href="/start">60-second AI check</Link>, and the businesses I think about most are the ones that depend
+        on local customers: dentists, plumbers and HVAC companies, law firms, veterinarians and restaurants.
       </p>
       <ul>
         <li>
-          <strong>The check:</strong> the same 23 checks Alphaa runs in its free{" "}
-          <Link href="/start">60-second AI check</Link> — whether AI crawlers can get in, whether the content is readable
-          without JavaScript, structured data, phone/address/hours, FAQ content, reviews readable as text, profile links,
-          freshness and more.
+          <strong>Access:</strong> can AI crawlers get in, and is the content readable without JavaScript?
         </li>
         <li>
-          <strong>How:</strong> plain HTTP requests for the homepage, robots.txt, sitemap, llms.txt and one inner page,
-          plus homepage requests using the ChatGPT, Claude and Perplexity crawler identities.
+          <strong>Facts:</strong> structured data, and phone, address and hours in plain text.
         </li>
         <li>
-          <strong>Limits:</strong> one snapshot, one network location, homepages only for most checks. A firewall can
-          treat our requests differently from the real crawlers, so &quot;blocked&quot; means <em>likely</em> blocked.
-          Bing verification by DNS can&apos;t be seen from outside, so that figure is an upper bound.
+          <strong>Trust:</strong> FAQ content, reviews readable as text, profile links and fresh content.
+        </li>
+        <li>
+          <strong>Limits:</strong> a check from outside is a snapshot. A firewall can treat an automated check
+          differently from the real crawlers, so &quot;blocked&quot; means <em>likely</em> blocked, and some things,
+          like Bing verification by DNS, can&apos;t be seen from outside at all.
         </li>
       </ul>
 
       <h2>How many local business websites can AI actually read?</h2>
       <p>
-        About four in five: 239 of the 288 sites (83%) returned a readable homepage, while 49 (17%) refused an automated
-        visitor with an error or a bot challenge. A site that turns away automated readers is invisible to any AI
+        I don&apos;t have a reliable number to give you, and I&apos;d be wary of anyone who quotes one without
+        publishing their data. What I can say is that a site turning away automated readers is common enough to check
+        first. A site that refuses an automated visitor with an error or a bot challenge is invisible to any AI
         assistant that gets the same treatment, so the assistant falls back on what other websites say about the
         business.
       </p>
       <ul>
-        <li>Plumbing and HVAC sites turned readers away most often: 15 of 48 (31%).</li>
+        <li>Hosting firewalls and bot-protection settings are the usual cause, often switched on by default.</li>
         <li>
-          Of the 239 readable sites, 17% served a block or challenge to at least one AI crawler identity (ChatGPT,
-          Claude or Perplexity) while letting a normal browser in.
+          Some sites let a normal browser in but serve a block or challenge to AI crawler identities such as ChatGPT,
+          Claude or Perplexity.
         </li>
-        <li>10% showed almost no readable text before JavaScript runs — and most AI crawlers don&apos;t run it.</li>
+        <li>
+          Sites built so the text only appears after JavaScript runs can look almost empty to crawlers that don&apos;t
+          run it.
+        </li>
       </ul>
 
       <h2>What are local websites most often missing?</h2>
       <p>
-        The most common gaps are the ones AI relies on to describe and trust a business: complete structured facts, FAQ
-        answers, reviews in plain text and fresh content. Among the 239 readable sites:
+        The gaps I see most are the ones AI relies on to describe and trust a business: complete structured facts, FAQ
+        answers, reviews in plain text and fresh content. In no particular order:
       </p>
-      <div className="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Check</th>
-              <th>Sites failing</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>No fresh blog or news content in the last 90 days</td><td>80%</td></tr>
-            <tr><td>No llms.txt file</td><td>75%</td></tr>
-            <tr><td>Structured business facts missing or incomplete (address, phone, hours, map location, profiles)</td><td>71%</td></tr>
-            <tr><td>No FAQ content</td><td>66%</td></tr>
-            <tr><td>No reviews or testimonials readable as text</td><td>56%</td></tr>
-            <tr><td>No Google Maps link, or fewer than two profile links</td><td>52%</td></tr>
-            <tr><td>Phone, address or hours not readable on the homepage</td><td>46%</td></tr>
-            <tr><td>No business structured data at all</td><td>36%</td></tr>
-            <tr><td>Weak or missing page title and description</td><td>36%</td></tr>
-            <tr><td>Slow first response (over 1.5 seconds)</td><td>23%</td></tr>
-            <tr><td>No main heading (H1)</td><td>23%</td></tr>
-            <tr><td>No secure, single address (http/https or www split)</td><td>13%</td></tr>
-            <tr><td>Canonical tags pointing at the wrong page</td><td>5%</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <ul>
+        <li>No fresh blog or news content in months.</li>
+        <li>Structured business facts missing or incomplete (address, phone, hours, map location, profiles).</li>
+        <li>No FAQ content answering what customers ask before they call.</li>
+        <li>Reviews shown only inside a widget, with none readable as text.</li>
+        <li>No Google Maps link, or few links to the business&apos;s other profiles.</li>
+        <li>Phone, address or hours shown only in an image, a PDF or a footer script.</li>
+        <li>Weak or missing page titles, descriptions and main headings.</li>
+        <li>No llms.txt file.</li>
+      </ul>
       <p>
-        Two failures deserve a note. Google says its AI features don&apos;t require an llms.txt file; other assistants
-        can use it, which is why we check it, but it&apos;s the least critical item on this list. And 88% showed no sign
-        of Bing Webmaster Tools — worth fixing because ChatGPT search results have been found to overlap heavily with
-        Bing&apos;s — but some of those sites may be verified by DNS, which we can&apos;t see.
+        Two notes on that list. Google says there&apos;s nothing special you need to add for its AI features, and that
+        includes llms.txt; other assistants can use it, which is why we check it, but it&apos;s the least critical
+        item here. And Bing Webmaster Tools is worth setting up, but a site may already be verified by DNS, which a
+        check from outside can&apos;t see.
       </p>
 
       <h2>Which industries are most ready for AI search?</h2>
       <p>
-        Law firms, dentists and plumbers scored about the same — roughly 15 of 23 checks — while restaurants scored
-        lowest at 11 of 23. Restaurants were the most likely to lack structured data, readable reviews, FAQ answers and
-        profile links, which matters because diners ask AI for recommendations constantly.
+        I don&apos;t rank industries, because I haven&apos;t measured them in a way I&apos;d stand behind. My
+        impression is that the businesses that struggle most are the ones whose sites lean on visuals: restaurants
+        with menus in PDFs and reviews in widgets, and contractors with photo galleries and a quote form. That matters
+        because people ask AI for exactly these recommendations.
       </p>
-      <div className="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Industry</th>
-              <th>Sampled</th>
-              <th>Readable</th>
-              <th>Avg. checks passed (of 23)</th>
-              <th>No business schema</th>
-              <th>Phone/address/hours missing</th>
-              <th>No FAQ</th>
-              <th>No readable reviews</th>
-            </tr>
-          </thead>
-          <tbody>
-            {industries.map(([n, s, r, avg, sc, f, faq, rev]) => (
-              <tr key={n}>
-                <td>{n}</td><td>{s}</td><td>{r}</td><td>{avg}</td><td>{sc}</td><td>{f}</td><td>{faq}</td><td>{rev}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
 
       <h2>How many sites are fully ready?</h2>
       <p>
-        Almost none: only 4 of the 239 readable sites (under 2%) passed 20 or more of the 23 checks, and the median site
-        passed 15. In practice that means most local businesses are leaving AI to guess — or to recommend the competitor
-        whose facts are easier to read.
+        Again, I won&apos;t put a number on it. In practice the bar isn&apos;t high, and the sites that clear it
+        usually just have their basics in order. Most local businesses are leaving AI to guess, or to recommend the
+        competitor whose facts are easier to read.
       </p>
 
       <h2>What should a local business fix first?</h2>
@@ -172,22 +133,22 @@ export function Body() {
       </p>
       <ol>
         <li>Check that your host or firewall isn&apos;t turning away AI crawlers, and that your homepage text loads without JavaScript.</li>
-        <li>Put your name, phone, address, hours and service area on the homepage — as text, not an image.</li>
+        <li>Put your name, phone, address, hours and service area on the homepage, as text, not an image.</li>
         <li>Add LocalBusiness structured data with address, phone, hours, map location and links to your Google, Yelp and social profiles.</li>
         <li>Publish answers to the five questions customers ask before they call.</li>
         <li>Show a handful of real reviews as text, not only inside a widget.</li>
       </ol>
       <p>
-        The key takeaway is that the gap is rarely exotic: most local sites fail on basics — access, facts and plain-text
-        trust signals — that AI needs before it will recommend anyone, and those are fixable in a week.
+        The key takeaway is that the gap is rarely exotic: most local sites fall short on basics (access, facts and
+        plain-text trust signals) that AI needs before it will recommend anyone, and those are fixable in a week.
       </p>
 
       <h2>What else do people ask about the AI readiness study?</h2>
 
-      <h3>How were the 288 sites selected?</h3>
+      <h3>Is this based on a formal study?</h3>
       <p>
-        They were drawn across common local service categories and checked with the same automated tests, so the
-        comparison between industries is like for like rather than cherry-picked.
+        No. It&apos;s opinion and observation from running AI-readiness checks. If we publish numbers in future, we
+        will publish the method and the data with them.
       </p>
 
       <h3>Does a low readiness score mean a business is invisible?</h3>
@@ -196,16 +157,24 @@ export function Body() {
         from their profile and reviews alone.
       </p>
 
-      <h3>Which single failure was most common?</h3>
+      <h3>Which failure comes up most often?</h3>
       <p>
-        Key facts not present in crawlable text, usually because pricing, service areas or hours lived only in
-        an image, a PDF or a client-side widget.
+        In my experience, key facts not present in crawlable text, usually because pricing, service areas or hours
+        lived only in an image, a PDF or a client-side widget.
       </p>
 
-      <h3>Will you repeat the study?</h3>
+      <h3>How often should a local business re-check its site?</h3>
       <p>
-        That is the intention, with the same checks so the numbers stay comparable. We will state any change in
-        method rather than quietly adjusting it.
+        After any website change, and otherwise every few months. Redesigns, new hosting, a new booking widget or a
+        security plugin can quietly block crawlers or move your phone number and hours into a script, and nobody
+        notices until customers stop hearing your name from AI assistants.
+      </p>
+
+      <h3>Can I fix these gaps without rebuilding my website?</h3>
+      <p>
+        Usually, yes. Most of the fixes are edits to the site you already have: a line of text with your phone,
+        address and hours, a block of structured data, an FAQ section and a few reviews copied in as text. A
+        firewall setting is often a single switch in your hosting dashboard.
       </p>
 
       <h2>How do you see where your own site stands?</h2>

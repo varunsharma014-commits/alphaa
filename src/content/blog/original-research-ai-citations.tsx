@@ -110,11 +110,6 @@ export function Body() {
           causes of a breakdown.
         </li>
       </ul>
-      <p>
-        Our own{" "}
-        <Link href="/blog/local-business-ai-readiness-study-2026">local business AI readiness study</Link> is an
-        example of the audit type: a defined sample, a fixed checklist and the method published with the results.
-      </p>
 
       <h2>How do you create original research that AI engines cite, step by step?</h2>
       <p>

@@ -1,6 +1,6 @@
 # Blog titles — November 2026 (Varun Sharma, named author)
 
-Written in Varun's own voice. SEO terms (AEO, GEO, schema, "best") are allowed in blog titles; the "Do not claim" rules still apply in the body: no invented statistics, no customer results, no promised rankings. Every stat used in a post needs a cited source or our own measured data (the 288-site study, or a real check with the business name withheld).
+Written in Varun's own voice. SEO terms (AEO, GEO, schema, "best") are allowed in blog titles; the "Do not claim" rules still apply in the body: no invented statistics, no customer results, no promised rankings. Every stat used in a post needs a cited source or our own measured data (a real check with the business name withheld; there is no Alphaa site study to cite).
 
 Checked against the 132 existing posts in `src/content/blog/` (2026-10-29). Already covered and NOT repeated here: the general "how [industry] get recommended by AI" guides (dentists, med spas, law firms, HVAC/plumbing, restaurants), how to see what ChatGPT says, fixing wrong AI info, Google reviews, GBP, directories/NAP, FAQ pages, city landing pages, why AI recommends your competitor, multi-location. The titles below go narrower (one question, one service, one market) so they don't cannibalise those pages; link up to them.
 

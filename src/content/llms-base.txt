@@ -31,7 +31,7 @@
 
 ## Original research
 
-- [We checked 288 local business websites for AI readiness (2026)](https://alphaa.app/blog/local-business-ai-readiness-study-2026): dentists, plumbers/HVAC, law firms, veterinarians and restaurants in six US cities, checked on September 25, 2026 with Alphaa's 23-point check. 17% turned away an automated reader; of readable sites, 71% had missing or incomplete structured business facts, 66% had no FAQ content, 56% had no reviews readable as text, 46% didn't show phone/address/hours in readable text; fewer than 2% passed 20 of 23 checks. Restaurants scored lowest (11.2 of 23 on average).
+- [Local Business AI Readiness: What I Keep Seeing](https://alphaa.app/blog/local-business-ai-readiness-study-2026): opinion piece on the gaps that most often stop AI assistants reading a local business website (crawler access, JavaScript-only text, missing structured facts, no FAQ, reviews only in widgets) and what to fix first. Not a statistical study.
 
 ## Comparisons
 

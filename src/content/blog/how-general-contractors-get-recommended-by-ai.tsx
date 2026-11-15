@@ -92,10 +92,9 @@ export function Body() {
         Because the typical contractor site gives an engine nothing checkable: a hero image, a slogan, a gallery
         loaded by script, and a form. There is no license number in the text, no list of project types, no price
         range, no service area beyond &quot;and surrounding areas&quot;, and the reviews live in a third-party
-        widget the crawler cannot read. In our September 2026 check of 288 local business sites across five
-        service industries, 17% turned away an automated reader outright, and most of the rest were missing
-        structured business facts; the details are in{" "}
-        <Link href="/blog/local-business-ai-readiness-study-2026">the local business AI readiness study</Link>.
+        widget the crawler cannot read. The same basic gaps come up across local business sites in general; I
+        cover them in{" "}
+        <Link href="/blog/local-business-ai-readiness-study-2026">what I keep seeing on local business sites</Link>.
       </p>
       <p>
         Assistants are built to avoid confident mistakes about a trade where a bad recommendation costs a homeowner
