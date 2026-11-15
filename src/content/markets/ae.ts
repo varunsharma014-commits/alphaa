@@ -62,7 +62,7 @@ export const market: Market = {
       "If no AI names you within 90 days, your next month is free.",
     ],
     priceCta: "Get recommended by AI — {starter}/month",
-    priceNote: "Monthly, cancel any time. Prices exclude VAT where it applies.",
+    priceNote: "Monthly, cancel any time. For business customers only; prices exclude VAT where it applies.",
     faqTitle: "Questions from UAE business owners",
     faq: [
       {

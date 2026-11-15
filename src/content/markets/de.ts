@@ -63,7 +63,7 @@ export const market: Market = {
       "Nennt Sie innerhalb von 90 Tagen keine KI, ist Ihr nächster Monat kostenlos.",
     ],
     priceCta: "Von der KI empfohlen werden: {starter}/Monat",
-    priceNote: "Monatliche Abrechnung, jederzeit zum Monatsende kündbar. Für Unternehmen: alle Preise netto zzgl. USt.",
+    priceNote: "Monatliche Abrechnung, jederzeit zum Monatsende kündbar. Nur für Unternehmen (B2B): alle Preise netto zzgl. USt.",
     faqTitle: "Fragen von Betrieben in Deutschland",
     faq: [
       {

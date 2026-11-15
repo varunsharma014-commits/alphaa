@@ -57,7 +57,7 @@ export const market: Market = {
       "Se nessuna IA ti nomina entro 90 giorni, il mese successivo non lo paghi",
     ],
     priceCta: "Fatti consigliare dall’IA — {starter}/mese",
-    priceNote: "Starter {starter}, Pro {pro} (fino a 3 sedi), Full Service {full} al mese. Addebito mensile, disdici quando vuoi. Prezzi IVA esclusa per le aziende.",
+    priceNote: "Starter {starter}, Pro {pro} (fino a 3 sedi), Full Service {full} al mese. Addebito mensile, disdici quando vuoi. Solo per aziende e professionisti (B2B). Prezzi IVA esclusa.",
     faqTitle: "Le domande che ci fanno le attività italiane",
     faq: [
       {

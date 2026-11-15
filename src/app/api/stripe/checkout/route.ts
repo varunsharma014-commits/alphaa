@@ -22,15 +22,37 @@ function marketOf(req: NextRequest): string | undefined {
   return isMarketKey(m) ? m : undefined
 }
 
+// Alphaa is sold to businesses only. Every Alphaa checkout lets the buyer
+// add a VAT/tax ID (Stripe's "purchasing as a business" box) and says
+// business-only on the pay button. Not VAT-registered and no Stripe Tax, so
+// nothing here charges tax. customer_update is required when tax IDs are
+// collected for an existing customer: it saves the name/address/tax ID they enter.
+const BUSINESS_ONLY = {
+  tax_id_collection: { enabled: true },
+  customer_update: { name: "auto", address: "auto" },
+  custom_text: { submit: { message: "Alphaa is sold to business customers only. Buying from the EU or UK? Add your VAT number above." } },
+} satisfies Partial<Stripe.Checkout.SessionCreateParams>
+
+// If Stripe ever rejects the business-only params, checkout must still work:
+// log it and retry once without them.
+async function create(params: Stripe.Checkout.SessionCreateParams) {
+  try {
+    return await stripe.checkout.sessions.create({ ...BUSINESS_ONLY, ...params })
+  } catch (e) {
+    console.error("[checkout] business-only params rejected, retrying without", e instanceof Error ? e.message : e)
+    return stripe.checkout.sessions.create(params)
+  }
+}
+
 async function createSession(params: Stripe.Checkout.SessionCreateParams, currency: string | undefined, market?: string) {
   // The market rides along so the webhook can flag a market's first customer.
   if (market) params = { ...params, metadata: { ...(params.metadata ?? {}), market } }
-  if (!currency) return stripe.checkout.sessions.create(params)
+  if (!currency) return create(params)
   try {
-    return await stripe.checkout.sessions.create({ ...params, currency })
+    return await create({ ...params, currency })
   } catch (e) {
     console.error("[checkout] local currency failed, using USD", currency, e instanceof Error ? e.message : e)
-    return stripe.checkout.sessions.create(params)
+    return create(params)
   }
 }
 
@@ -82,7 +104,7 @@ export async function POST(req: NextRequest) {
     if (!STRIPE_SETUP_FEE_PRICE_ID) {
       return NextResponse.json({ error: "Setup service is not available right now" }, { status: 500 })
     }
-    const session = await stripe.checkout.sessions.create({
+    const session = await create({
       customer: stripeCustomerId,
       branding_settings,
       line_items: [{ price: STRIPE_SETUP_FEE_PRICE_ID, quantity: 1 }],

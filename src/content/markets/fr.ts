@@ -64,7 +64,7 @@ export const market: Market = {
     ],
     priceCta: "Être recommandé par l’IA, {starter}/mois",
     priceNote:
-      "Starter {starter}/mois, Pro {pro}/mois (jusqu’à 3 établissements), Accompagnement complet {full}/mois (une personne publie tout pour vous). Facturation mensuelle, sans engagement. Prix HT pour les professionnels.",
+      "Starter {starter}/mois, Pro {pro}/mois (jusqu’à 3 établissements), Accompagnement complet {full}/mois (une personne publie tout pour vous). Facturation mensuelle, sans engagement. Réservé aux professionnels (B2B). Prix HT.",
     faqTitle: "Les questions des pros en France",
     faq: [
       {

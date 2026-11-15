@@ -19,13 +19,13 @@ const PAGE_UPDATED: Record<string, string> = {
   "/start": "2026-10-30",
   "/for": "2026-10-29",
   "/pricing": "2026-10-30",
-  "/about": "2026-10-29",
+  "/about": "2026-11-14",
   "/how-it-works": "2026-10-29",
   "/scan": "2026-10-29",
   "/case-studies": "2026-10-29",
   "/refer": "2026-10-29",
   "/author/varun-sharma": "2026-10-29",
-  "/markets": "2026-10-30", // the /uk /de /fr /it /ae /ae/ar pages
+  "/markets": "2026-11-14", // the /uk /de /fr /it /ae /ae/ar pages
 }
 const updated = (path: string) => new Date(PAGE_UPDATED[path])
 
