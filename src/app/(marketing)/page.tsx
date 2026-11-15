@@ -5,6 +5,7 @@ import Link from "next/link"
 import { TodoAccordion, EasyRail, AgencyToggle } from "@/components/marketing/apple/Sections"
 import { TrustSection } from "@/components/marketing/proof/TrustSection"
 import { FinalCta } from "@/components/marketing/proof/FinalCta"
+import { HeroCta } from "@/components/marketing/hero/HeroCta"
 import { StartAgent } from "@/components/agent/StartAgent"
 import { FaqSection } from "@/components/marketing/FaqSection"
 import { faqs } from "@/components/marketing/faq-data"
@@ -87,9 +88,9 @@ export default function HomePage() {
         <p className="ag-hero__sub">
           Your customers ask ChatGPT who to call. It names someone. If it isn’t you, I find out why, fix it, and tell you exactly what I did.
         </p>
-        {/* One action above the fold: the website box below. (The separate "Scan your website
-            free" button only scrolled to it — a second choice for the same thing.) */}
+        {/* The big button jumps to the website box below (put back by Varun, 2026-11-15). */}
         <div className="ag-hero__cta ag-hero__cta--big">
+          <HeroCta />
           <span className="ag-hero__promise">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 9.9C8 19.4 5 15.6 5 11V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg>
             <span>If no AI names you within 90 days, <b>your next month is free. Guaranteed!</b></span>
