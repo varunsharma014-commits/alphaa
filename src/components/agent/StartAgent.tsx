@@ -69,11 +69,13 @@ const CHECKOUT = "#checkout"
 
 /** Opening lines for a local market page (/de, /fr…): the rest of the
  *  conversation is still English. */
-export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint: string; startHere?: string }
+export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint: string; startHere?: string; work?: { title: string; steps: string[] } }
 
 function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded = false): Message[] {
   if (greet && mode === "public") {
-    return [agent([...greet.lines.map((t) => ({ kind: "text" as const, text: t })), { kind: "text", text: greet.ask, big: true }], "greet")]
+    // Embedded with a work list: the question sits under the list instead (AgentWorkPreview).
+    const ask = embedded && greet.work ? [] : [{ kind: "text" as const, text: greet.ask, big: true }]
+    return [agent([...greet.lines.map((t) => ({ kind: "text" as const, text: t })), ...ask], "greet")]
   }
   if (mode === "resume") {
     return [
@@ -451,8 +453,8 @@ export function StartAgent({
         </div>
         <div className="ag-window__box" ref={boxRef}>
           <AgentFeed messages={messages} animate="type" busy={busy} autoScroll={false} onChip={onChip} onEmail={onEmail} onSettled={() => setSettled(true)} />
-          {idle && !greet && <AgentWorkPreview />}
-          {idle && !greet && <p className="ag-work__ask">What’s your website?</p>}
+          {idle && (!greet || greet.work) && <AgentWorkPreview {...(greet?.work ?? {})} />}
+          {idle && (!greet || greet.work) && <p className="ag-work__ask">{greet?.ask ?? "What’s your website?"}</p>}
         </div>
         <div className="ag-window__compose">{composer}</div>
       </div>

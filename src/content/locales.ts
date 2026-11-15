@@ -21,7 +21,7 @@ export interface LocaleCopy {
   guarantee: [string, string] // plain, bold
   fine: string
   arrows: [string, string]
-  greet: { lines: string[]; ask: string; hint: string; idleHint: string; startHere: string }
+  greet: { lines: string[]; ask: string; hint: string; idleHint: string; startHere: string; work?: { title: string; steps: string[] } }
   pillarsTitle: string
   pillars: { title: string; body: string }[]
   whereTitle: string

@@ -745,3 +745,6 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 @media (max-width: 640px) { .ag-work__ask { margin: 16px 12px 0; font-size: 19px; } }
 /* Hero headline: second line in quiet grey, not brand blue (Varun, 2026-11-14: black & white, professional). */
 .ag-hero h1 .ap-quiet { color: #86868b; }
+.lc-rtl .ag-work { margin: 4px 62px 6px 22px; text-align: right; }
+.lc-rtl .ag-work__ask { margin: 18px 62px 0 22px; text-align: right; }
+@media (max-width: 640px) { .lc-rtl .ag-work { margin: 4px 12px 6px; } .lc-rtl .ag-work__ask { margin: 16px 12px 0; } }

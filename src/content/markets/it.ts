@@ -18,6 +18,7 @@ export const market: Market = {
     fine: "Nessuna carta richiesta. Controllo ChatGPT, Gemini, Claude e Perplexity.",
     arrows: ["è dal vivo, provalo", "le tue risposte vere in 60 secondi"],
     greet: {
+      work: { title: "Cosa faccio per te, ogni settimana", steps: ["Chiedere a ChatGPT, Gemini, Claude e Perplexity cosa chiedono i tuoi clienti", "Leggere il tuo sito come lo legge l’IA", "Sistemare ciò che manca: le tue informazioni, le FAQ e i dati strutturati", "Scrivere articoli e pagine che approvi tu", "Ricontrollare ogni settimana e dirti cosa è cambiato"] },
       startHere: "Inizia da qui",
       lines: ["Ciao, sono Alphaa, un agente IA.", "Faccio in modo che ChatGPT, Gemini, Claude e Perplexity consiglino la tua attività."],
       ask: "Qual è il tuo sito?",

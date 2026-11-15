@@ -18,6 +18,7 @@ export const market: Market = {
     fine: "No card needed. Checks ChatGPT, Gemini, Claude and Perplexity.",
     arrows: ["it's live, try it", "your real answers, in 60s"],
     greet: {
+      work: { title: "What I do for you, every week", steps: ["Ask ChatGPT, Gemini, Claude and Perplexity what your customers ask", "Read your website the way AI reads it", "Fix what’s missing: your facts, FAQs and structured data", "Write posts and pages for you to approve", "Check again every week and tell you what changed"] },
       startHere: "Start here",
       lines: [
         "Hi. I'm Alphaa, an AI Agent.",

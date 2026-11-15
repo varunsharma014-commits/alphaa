@@ -18,6 +18,7 @@ export const market: Market = {
     fine: "Sans carte bancaire. ChatGPT, Gemini, Claude et Perplexity vérifiés en direct.",
     arrows: ["c’est en direct, essayez", "les vraies réponses en 60 s"],
     greet: {
+      work: { title: "Ce que je fais pour vous, chaque semaine", steps: ["Demander à ChatGPT, Gemini, Claude et Perplexity ce que vos clients demandent", "Lire votre site comme l’IA le lit", "Corriger ce qui manque : vos informations, vos FAQ et vos données structurées", "Rédiger des articles et des pages que vous validez", "Revérifier chaque semaine et vous dire ce qui a changé"] },
       startHere: "Commencez ici",
       lines: [
         "Bonjour, je suis Alphaa, un agent IA.",

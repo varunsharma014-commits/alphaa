@@ -18,6 +18,7 @@ export const market: Market = {
     fine: "Keine Kreditkarte nötig. Ich prüfe ChatGPT, Gemini, Claude und Perplexity.",
     arrows: ["läuft live, probieren Sie es", "Ihre echten Antworten in 60 Sekunden"],
     greet: {
+      work: { title: "Was ich jede Woche für Sie erledige", steps: ["ChatGPT, Gemini, Claude und Perplexity fragen, was Ihre Kunden fragen", "Ihre Website so lesen, wie KI sie liest", "Ergänzen, was fehlt: Ihre Fakten, FAQs und strukturierten Daten", "Beiträge und Seiten schreiben, die Sie freigeben", "Jede Woche neu prüfen und Ihnen sagen, was sich geändert hat"] },
       startHere: "Hier starten",
       lines: [
         "Guten Tag. Ich bin Alphaa, ein KI-Agent.",
