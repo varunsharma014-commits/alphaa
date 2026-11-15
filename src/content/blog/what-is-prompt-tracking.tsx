@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Glossary",
   kind: "glossary",
   keyphrase: "what is prompt tracking",
-  image: {
-    src: "/blog/what-is-prompt-tracking.webp",
-    alt: "A row of identical cream ceramic cups on a long table, two of them tagged with small blank paper labels on string.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Prompt tracking repeats a fixed set of questions in AI assistants on a schedule and records mentions, citations and position.",
     "Most AI visibility tools price by prompts tracked, for example 15 to 400 a month on Otterly AI's self-serve plans.",

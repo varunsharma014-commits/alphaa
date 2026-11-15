@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs semrush",
-  image: {
-    src: "/blog/alphaa-vs-semrush.webp",
-    alt: "A set of steel measuring tools laid out on a cloth beside one finished pale wooden box on a workbench.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Semrush bundles AI visibility into its SEO plans from $139 a month billed monthly, and sells a standalone AI Visibility Toolkit at $99 a month per domain billed annually.",
     "Alphaa is $99 a month for Starter, $199 for Pro and $299 for Full Service, month to month, for one business.",

@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "otterly ai vs peec ai",
-  image: {
-    src: "/blog/otterly-ai-vs-peec-ai.webp",
-    alt: "Two brass magnifying glasses of different sizes lying side by side on a pale stone surface.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Otterly AI starts at $29 a month for 15 prompts; Peec AI starts at $95 a month for 50, as of October 2026.",
     "Per tracked prompt the two entry plans cost almost the same, about $1.90 a month.",

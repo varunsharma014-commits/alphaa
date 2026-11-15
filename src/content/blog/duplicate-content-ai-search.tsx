@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "does duplicate content hurt ai search",
-  image: {
-    src: "/blog/duplicate-content-ai-search.webp",
-    alt: "Four sheets of blank white paper fanned out on a pale grey surface, the top sheet held by a brass paperclip and lit by a soft beam of light.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Bing says duplicate content does not trigger a penalty on its own, but it dilutes signals and slows updates.",
     "Bing says AI systems group near-duplicate URLs and choose one page to represent the whole set.",

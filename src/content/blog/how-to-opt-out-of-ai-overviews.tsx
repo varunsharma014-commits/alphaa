@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "News",
   kind: "news",
   keyphrase: "opt out of ai overviews",
-  image: {
-    src: "/blog/how-to-opt-out-of-ai-overviews.webp",
-    alt: "A single brass toggle switch on a brushed brass plate mounted on a pale wooden wall, in soft side light.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Google began testing a Search Console toggle for its generative AI features on 3 June 2026 and rolled it out worldwide by 31 August 2026.",
     "The control covers AI Overviews, AI Mode and generative AI features in Discover, and sits under Settings, Search generative AI.",

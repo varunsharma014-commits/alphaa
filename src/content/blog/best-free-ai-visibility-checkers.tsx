@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Listicle",
   kind: "listicle",
   keyphrase: "free ai visibility checker",
-  image: {
-    src: "/blog/best-free-ai-visibility-checkers.webp",
-    alt: "Six brass magnifying glasses in increasing sizes laid out in a row on a pale linen-coloured surface.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Ahrefs' free AI Visibility Checker queries ChatGPT, Gemini, Perplexity, Copilot and Google AI Overviews and shows the top five results per section.",
     "Semrush's free AI Visibility Checker covers ChatGPT, Gemini, AI Mode and AI Overviews, three times a day without an account.",

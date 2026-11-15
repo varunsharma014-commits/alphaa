@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "about page for ai search",
-  image: {
-    src: "/blog/about-page-for-ai-search.webp",
-    alt: "An open blank notebook beside a plain brass name plate and two brass keys on a ring, on a walnut counter.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Google suggests putting Organization markup on the home page or a single page describing the organisation, such as an About page.",
     "An About page for AI search should state names, services, location, founding year and credentials as plain, checkable sentences.",

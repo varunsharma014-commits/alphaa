@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "profound vs peec ai",
-  image: {
-    src: "/blog/profound-vs-peec-ai-vs-alphaa.webp",
-    alt: "Three plain glass cylinders of increasing height standing side by side on a pale studio surface.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Peec AI publishes self-serve prices: $95, $245 and $495 a month as of October 2026.",
     "Profound publishes no monthly price at all — a free 7-day trial, then custom Enterprise quotes.",

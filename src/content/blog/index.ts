@@ -327,12 +327,22 @@ export const POSTS: Post[] = [
   { meta: petGroomersMeta, Body: PetGroomersBody },
 ]
 
+// Every post's hero / og:image is its generated black & white title cover
+// (scripts/blog-covers.mjs → public/blog-covers/<slug>.jpg). No stock or AI images.
+const COVERED: Post[] = POSTS.map((p) => ({
+  ...p,
+  meta: {
+    ...p.meta,
+    image: { src: `/blog-covers/${p.meta.slug}.jpg`, alt: p.meta.title, width: 1200, height: 675 },
+  },
+}))
+
 export function getAllPosts(): Post[] {
-  return [...POSTS].sort((a, b) => (a.meta.date < b.meta.date ? 1 : -1))
+  return [...COVERED].sort((a, b) => (a.meta.date < b.meta.date ? 1 : -1))
 }
 
 export function getPost(slug: string): Post | undefined {
-  return POSTS.find((p) => p.meta.slug === slug)
+  return COVERED.find((p) => p.meta.slug === slug)
 }
 
 export type { Post, PostMeta } from "./types"

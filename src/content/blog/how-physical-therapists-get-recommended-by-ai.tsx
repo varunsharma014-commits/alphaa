@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Playbook",
   kind: "industry",
   keyphrase: "how physical therapists get recommended by ai",
-  image: {
-    src: "/blog/how-physical-therapists-get-recommended-by-ai.webp",
-    alt: "An empty, bright physical therapy room with a padded treatment table, resistance bands hanging on the wall and a foam roller by a large window.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Patients ask AI assistants for physical therapy with a constraint attached: an injury, a specialty, an insurer, a schedule or a referral question.",
     "APTA says all 50 states, DC and the US Virgin Islands allowed provisional or unrestricted direct access to physical therapists as of July 2025.",

@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "News",
   kind: "news",
   keyphrase: "bing ai grounding preference",
-  image: {
-    src: "/blog/bing-ai-grounding-preference.webp",
-    alt: "Two brass rotary switches on a pale plaster wall, one turned left and one turned right, casting long soft shadows.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Microsoft announced separate AI Training and AI Grounding preferences on 30 October 2026, replacing NoArchive and NoCache for those uses.",
     "AI Grounding is set per page with a meta tag or X-Robots-Tag header: allow, disallowextended or disallow; there is no site-wide robots.txt option.",

@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs profound",
-  image: {
-    src: "/blog/alphaa-vs-profound.webp",
-    alt: "A brass surveyor's telescope on a tripod base beside an open brass pocket compass on a pale wooden table.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Profound lists a free trial and custom-priced Enterprise plans, with no monthly price on its pricing page as of October 2026.",
     "Profound's Enterprise plan tracks up to nine AI surfaces; its free trial covers ChatGPT, Gemini and Google AI Overviews.",

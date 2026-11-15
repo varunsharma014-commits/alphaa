@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs peec ai",
-  image: {
-    src: "/blog/alphaa-vs-peec-ai.webp",
-    alt: "A brass balance scale on a wooden desk holding a card with a line chart and a blank notepad, beside a notebook and pen.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Peec AI lists Starter at $95 a month for 50 prompts, Pro at $245 for 150 and Advanced at $495 for 350, as of November 2026.",
     "Each Peec AI self-serve plan tracks three models chosen from ChatGPT, AI Mode, AI Overviews, Copilot, Gemini and Naver AI.",

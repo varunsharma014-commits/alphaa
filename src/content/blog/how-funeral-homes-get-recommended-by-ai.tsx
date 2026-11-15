@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Industry",
   kind: "industry",
   keyphrase: "how funeral homes get recommended by ai",
-  image: {
-    src: "/blog/how-funeral-homes-get-recommended-by-ai.webp",
-    alt: "White lilies in a cream ceramic vase on a wooden table beside a folded leaflet in a calm, softly lit reception room.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI assistants can only quote funeral prices that are published on a page they can read.",
     "An FTC staff report found fewer than 40 percent of funeral provider websites it reviewed showed any prices online (FTC, 2022).",

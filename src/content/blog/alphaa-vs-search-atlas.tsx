@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs search atlas",
-  image: {
-    src: "/blog/alphaa-vs-search-atlas.webp",
-    alt: "A small brass press with exposed gears beside an open notebook holding a fountain pen and a red wax seal on a walnut desk.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Search Atlas lists Starter at $99, Growth at $199, Pro at $399 and Agency from $999 a month, as of November 2026.",
     "Search Atlas tracks one unnamed AI provider on Starter and six engines, including Claude and Perplexity, only from the $399 Pro plan.",

@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Industry",
   kind: "industry",
   keyphrase: "how mortgage brokers get recommended by ai",
-  image: {
-    src: "/blog/how-mortgage-brokers-get-recommended-by-ai.webp",
-    alt: "A brass house key on a ring lying on a plain cream folder beside a small wooden model house on a walnut desk.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Home buyers ask AI assistants for brokers by loan type and place, such as first-time buyer or self-employed loans in one city.",
     "The CFPB points consumers to the free NMLS Consumer Access lookup to confirm a broker is authorised in their state.",

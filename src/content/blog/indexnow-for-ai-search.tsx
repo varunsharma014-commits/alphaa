@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "indexnow for ai search",
-  image: {
-    src: "/blog/indexnow-for-ai-search.webp",
-    alt: "A brass desk bell beside a stack of white paper with a paper airplane flying above it, against a pale blue-grey wall.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "IndexNow lets a site notify search engines when a URL is added, updated or deleted, instead of waiting for a crawl.",
     "IndexNow.org lists Amazon, Bing, Naver, Seznam.cz, Yandex and Yep as participants; Google is not on the list.",

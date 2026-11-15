@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Glossary",
   kind: "glossary",
   keyphrase: "what is llm seo",
-  image: {
-    src: "/blog/what-is-llm-seo.webp",
-    alt: "An open blank notebook with a magnifying glass lying on its page, next to a stack of index cards tied with string.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "LLM SEO means optimizing to be mentioned or cited inside AI assistant answers, not just to rank as a link.",
     "It is largely the same practice that others call GEO, AEO or AI SEO; the names differ more than the work.",

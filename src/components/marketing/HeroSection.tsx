@@ -1,4 +1,4 @@
-import Image from "next/image"
+import { Store, ShoppingBag, MapPin, Wrench } from "lucide-react"
 import { HeroScanInput } from "@/components/marketing/HeroScanInput"
 import { HeroCyclingWord } from "@/components/marketing/HeroCyclingWord"
 import { ScoreRing } from "@/components/common/ScoreRing"
@@ -42,7 +42,9 @@ const DASHBOARD_TONE: Record<"green" | "amber" | "muted", string> = {
 // Social-proof — deliberately unquantified. A customer count and a star rating
 // here contradicted the numbers used further down the page, so this stays
 // generic until there are real figures to publish.
-export const AVATARS = ["/avatars/a1.jpg", "/avatars/a2.jpg", "/avatars/a3.jpg", "/avatars/a4.jpg"]
+// Social-proof stack: kinds of businesses, drawn as mono icon chips. No stock
+// or AI photos of people (~/growth-ops/rules/legal-safety.md).
+export const AVATARS = [Store, ShoppingBag, MapPin, Wrench]
 
 export function HeroSection() {
   return (
@@ -128,17 +130,15 @@ export function HeroSection() {
         {/* Social proof */}
         <div className="mt-9 flex items-center justify-center gap-3 flex-wrap">
           <div className="flex items-center">
-            {AVATARS.map((src, i) => (
-              <Image
-                key={src}
-                src={src}
-                width={32}
-                height={32}
-                alt=""
+            {AVATARS.map((Icon, i) => (
+              <span
+                key={i}
                 aria-hidden="true"
-                className="w-8 h-8 rounded-full ring-2 ring-bg-primary object-cover"
-                style={{ marginLeft: i === 0 ? 0 : "-10px" }}
-              />
+                className="w-8 h-8 rounded-full ring-2 ring-bg-primary inline-flex items-center justify-center"
+                style={{ marginLeft: i === 0 ? 0 : "-10px", background: i % 2 ? "#1c1c1e" : "#ffffff", color: i % 2 ? "#ffffff" : "#000000", zIndex: AVATARS.length - i }}
+              >
+                <Icon size={15} strokeWidth={2.2} />
+              </span>
             ))}
           </div>
           <div className="text-left">

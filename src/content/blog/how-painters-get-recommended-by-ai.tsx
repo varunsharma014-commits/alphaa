@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Industry",
   kind: "industry",
   keyphrase: "how painters get recommended by ai",
-  image: {
-    src: "/blog/how-painters-get-recommended-by-ai.webp",
-    alt: "A sage green paint roller in a matching tray on a drop cloth, in a room corner where one wall is painted sage green and one is white.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI assistants match a homeowner's question to job type, surface, area and trust signals, so each must be written on your site in plain text.",
     "Google says local results depend on relevance, distance and prominence, and that more reviews and positive ratings can help.",

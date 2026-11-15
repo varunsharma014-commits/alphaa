@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Industry",
   kind: "industry",
   keyphrase: "how property managers get recommended by ai",
-  image: {
-    src: "/blog/how-property-managers-get-recommended-by-ai.webp",
-    alt: "Five brass door keys in a row beneath a wooden peg rail on a pale wall.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Owners ask assistants about fees and terms before they ask for a company name, so your pricing page decides the recommendation.",
     "Publish the management percentage, leasing fee, renewal fee and what is excluded, or an engine will cite a competitor who did.",

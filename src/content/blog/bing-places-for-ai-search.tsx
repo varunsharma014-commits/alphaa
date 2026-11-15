@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "bing places for ai search",
-  image: {
-    src: "/blog/bing-places-for-ai-search.webp",
-    alt: "A lit, empty shop window at dusk with a blank wooden hanging sign outside and a paper street map with one red pin taped inside the glass.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Bing Places for Business is Microsoft's free listing tool, now at bing.com/forbusiness, and listings appear in Bing search and Bing Maps.",
     "Microsoft says web-grounded answers in Bing, Copilot and Microsoft 365 use content collected by its crawlers.",

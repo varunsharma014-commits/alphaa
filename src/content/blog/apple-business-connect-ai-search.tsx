@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "apple business connect for ai search",
-  image: {
-    src: "/blog/apple-business-connect-ai-search.webp",
-    alt: "A dark smartphone lying face down on a cream stone table beside a folded paper map with a red pin and a cup of coffee.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Apple Business Connect is a free Apple tool for claiming and editing your business's Apple Maps place card.",
     "Apple says place card information appears across Maps, Messages, Wallet, Siri and other Apple apps.",

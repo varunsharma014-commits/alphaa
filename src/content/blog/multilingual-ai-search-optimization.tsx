@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "multilingual ai search optimization",
-  image: {
-    src: "/blog/multilingual-ai-search-optimization.webp",
-    alt: "A brass desk globe beside a stack of blank cream card bundles tied with ribbons in different colours.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI assistants can only cite a page in a customer's language if that page exists at a URL they can fetch.",
     "Google says it detects a page's language from its visible content, not from lang attributes or the URL.",

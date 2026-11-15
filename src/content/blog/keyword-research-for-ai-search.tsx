@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "keyword research for ai search",
-  image: {
-    src: "/blog/keyword-research-for-ai-search.webp",
-    alt: "A roll of plain paper tape unspooling across a beige surface and splitting into three separate strips.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI assistants take whole questions, so the unit of research is a prompt, not a two-word keyword.",
     "Google says its AI features issue multiple related searches at once, so one prompt pulls in many sub-queries.",

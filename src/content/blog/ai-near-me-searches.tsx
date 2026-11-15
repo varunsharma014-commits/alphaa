@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "ai near me searches",
-  image: {
-    src: "/blog/ai-near-me-searches.webp",
-    alt: "A smartphone on a cafe table showing a simple map with three location pins, with a blurred street outside the window.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "ChatGPT estimates a user's general location from their IP address and may rewrite \"near me\" into a city-specific search.",
     "Precise device location in ChatGPT is optional and off by default, so most local answers rely on approximate location.",

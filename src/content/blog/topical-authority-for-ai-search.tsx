@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "topical authority for ai search",
-  image: {
-    src: "/blog/topical-authority-for-ai-search.webp",
-    alt: "A long row of identical dark green books on a cream shelf with one open green book and two ribbon bookmarks in front.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Google's only publicly confirmed topic authority system, announced in May 2023, ranks news sources for specialised topics.",
     "Its signals are notability for a topic or place, original reporting that others cite, and a track record of quality.",

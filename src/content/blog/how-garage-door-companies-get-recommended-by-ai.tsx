@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Industry",
   kind: "industry",
   keyphrase: "how garage door companies get recommended by ai",
-  image: {
-    src: "/blog/how-garage-door-companies-get-recommended-by-ai.webp",
-    alt: "A white panelled sectional garage door partly open on a beige house at golden hour, with a black toolbox and a coiled spring on the concrete driveway.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI assistants match a homeowner's question to the job, the area, the hours and trust signals, so each must be written plainly on your site.",
     "Google says local results depend on relevance, distance and prominence, and that more reviews and positive ratings can help.",

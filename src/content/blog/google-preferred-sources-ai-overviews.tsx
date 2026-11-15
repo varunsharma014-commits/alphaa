@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "News",
   kind: "news",
   keyphrase: "google preferred sources ai overviews",
-  image: {
-    src: "/blog/google-preferred-sources-ai-overviews.webp",
-    alt: "An open blank book on a dark surface with a single glowing ribbon bookmark lying along its centre",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Google extended Preferred Sources to AI Overviews and AI Mode in an announcement dated May 27, 2026.",
     "Links from sites a person selected can be labeled Preferred inside that person's AI responses.",

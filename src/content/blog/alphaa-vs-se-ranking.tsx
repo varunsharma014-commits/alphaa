@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs se ranking",
-  image: {
-    src: "/blog/alphaa-vs-se-ranking.webp",
-    alt: "Two brass compasses on a light oak desk, one resting on a printed bar chart and one on a blank notebook beside a fountain pen.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "SE Ranking is an all-in-one SEO platform with rank tracking, site audits, backlinks, content and local tools, plus AI visibility tracking.",
     "SE Ranking's Core and Growth plans include 25 AI prompts tracked daily; SE Visible adds 75 to 1,000 daily prompts from $71 a month billed annually.",

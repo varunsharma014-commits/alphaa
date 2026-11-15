@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs athenahq",
-  image: {
-    src: "/blog/alphaa-vs-athenahq.webp",
-    alt: "A brass panel of five dial gauges beside a plain finished wooden birdhouse and a hand file on a light oak table.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AthenaHQ lists a free plan with 300 credits and a Starter plan at $295 a month with 3,600 credits, as of October 2026.",
     "One AthenaHQ credit equals one AI response, and Starter covers 11 AI models including Google AI Overviews and AI Mode.",

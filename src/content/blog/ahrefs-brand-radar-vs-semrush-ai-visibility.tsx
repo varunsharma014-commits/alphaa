@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "ahrefs brand radar vs semrush",
-  image: {
-    src: "/blog/ahrefs-brand-radar-vs-semrush-ai-visibility.webp",
-    alt: "Two identical pale ceramic dials with blank unmarked faces standing side by side on a neutral studio surface.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Ahrefs sells Brand Radar inside its Standard and Advanced plans, and Brand Radar AI standalone from $199 a month.",
     "Semrush lists its AI Visibility Toolkit at $99 a month per domain billed annually, including 25 tracked prompts.",

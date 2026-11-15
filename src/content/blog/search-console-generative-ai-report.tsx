@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "search console generative ai report",
-  image: {
-    src: "/blog/search-console-generative-ai-report.webp",
-    alt: "A small brass telescope on a tripod standing on a wooden desk next to an open blank notebook and a pencil, in soft window light.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Google announced the generative AI performance reports on 3 June 2026 and rolled them out to all websites worldwide by 31 August 2026.",
     "The Search report counts impressions in AI Overviews and AI Mode, grouped by page, country, device or date.",

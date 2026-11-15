@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs local falcon",
-  image: {
-    src: "/blog/alphaa-vs-local-falcon.webp",
-    alt: "A small bronze falcon figurine standing on a sheet of grid paper, next to a brass magnifying glass on a light oak desk.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Local Falcon runs the same prompt from up to 441 grid points across a market and maps where AI and Google Maps name you.",
     "Local Falcon's AI visibility page lists ChatGPT, Gemini, Google AI Overviews and AI Mode; it does not list Claude or Perplexity.",

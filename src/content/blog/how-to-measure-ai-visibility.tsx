@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Measurement",
   kind: "guide",
   keyphrase: "how to measure ai visibility",
-  image: {
-    src: "/blog/how-to-measure-ai-visibility.webp",
-    alt: "A brass sliding caliper lying beside a neat stack of blank white index cards on a pale tabletop.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI visibility is measured on prompts, not keywords: a fixed question set re-asked on a fixed schedule.",
     "Track four things — mention rate, citation rate, recommendation rank and sentiment — and ignore single answers.",

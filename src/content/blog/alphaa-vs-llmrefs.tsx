@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs llmrefs",
-  image: {
-    src: "/blog/alphaa-vs-llmrefs.webp",
-    alt: "A brass sextant standing beside a wooden hand plane resting on a fresh pine board on a pale oak desk.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "LLMrefs lists one public plan, All in One, at $79 a month for 500 prompts, with a 7-day free trial, as of October 2026.",
     "LLMrefs says every keyword updates at least once a week and lists about ten AI engines with no extra engine fees.",

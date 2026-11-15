@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "does chatgpt use bing",
-  image: {
-    src: "/blog/does-chatgpt-use-bing.webp",
-    alt: "A brass card-catalog drawer pulled open with index cards inside, next to a magnifying glass on a wooden desk by a window.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Microsoft announced in May 2023 that Bing would become the default search experience in ChatGPT.",
     "OpenAI's help center says ChatGPT search sometimes partners with other search providers and links Microsoft's and Shopify's privacy policies.",

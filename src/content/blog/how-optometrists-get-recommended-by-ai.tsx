@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Playbook",
   kind: "industry",
   keyphrase: "how optometrists get recommended by ai",
-  image: {
-    src: "/blog/how-optometrists-get-recommended-by-ai.webp",
-    alt: "Three pairs of eyeglass frames in tortoiseshell, gold and black on a pale wooden shelf, with a phoropter out of focus behind them.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Patients ask AI assistants about insurance, exam types, contact lenses and children's eye care, not just for an eye doctor nearby.",
     "The vision and medical plans you accept are the fact AI answers most often need and most practice sites hide.",

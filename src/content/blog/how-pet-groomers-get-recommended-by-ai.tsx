@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Industry",
   kind: "industry",
   keyphrase: "how pet groomers get recommended by ai",
-  image: {
-    src: "/blog/how-pet-groomers-get-recommended-by-ai.webp",
-    alt: "A fluffy white dog seen from behind, sitting on a grey grooming table beside a slicker brush, a metal comb and a folded towel.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Pet owners ask AI about breed, coat, temperament, price and location in one sentence, so each must be written on your site.",
     "Google says local results depend on relevance, distance and prominence, and that more reviews and positive ratings can help.",

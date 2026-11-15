@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Glossary",
   kind: "glossary",
   keyphrase: "grounding in ai search",
-  image: {
-    src: "/blog/what-is-grounding-in-ai-search.webp",
-    alt: "A dark iron anchor on a chain resting in clear shallow water over pale sand, with a calm sea behind it.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Google Cloud defines grounding as the ability to connect model output to verifiable sources of information.",
     "Google describes grounding as providing content from the Google Search index to the model at prompt time.",

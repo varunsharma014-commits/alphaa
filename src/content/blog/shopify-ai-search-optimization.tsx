@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "shopify ai search optimization",
-  image: {
-    src: "/blog/shopify-ai-search-optimization.webp",
-    alt: "A stack of folded cream linen and two kraft-paper parcels tied with string on a wooden sideboard under a paper lantern.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Shopify says Agentic Storefronts give merchants access to ChatGPT, Microsoft Copilot, AI Mode in Google Search and the Gemini app.",
     "Shopify's changelog says products reach AI channels such as ChatGPT and Copilot automatically through Shopify Catalog.",

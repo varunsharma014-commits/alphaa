@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs otterly ai",
-  image: {
-    src: "/blog/alphaa-vs-otterly-ai.webp",
-    alt: "A brass spyglass on a wooden tripod beside a row of six wood-handled chisels and a wooden mallet on an oak workbench.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Otterly AI lists Lite at $29 a month for 15 prompts, Standard at $189 for 100 and Premium at $489 for 400, as of November 2026.",
     "Otterly AI's core plans track ChatGPT, Google AI Overviews, Perplexity and Microsoft Copilot; Gemini, AI Mode and Claude are paid add-ons.",

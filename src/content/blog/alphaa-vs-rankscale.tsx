@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs rankscale",
-  image: {
-    src: "/blog/alphaa-vs-rankscale.webp",
-    alt: "A brass balance scale on an oak desk, one pan holding a stack of metal tokens and the other a fountain pen on folded paper.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Rankscale Pro costs $99 a month, or $84 a month billed yearly, for 1,200 credits, as of October 2026.",
     "Rankscale charges credits per engine per prompt, typically 0.25 credits, so engine choice and schedule decide what a plan covers.",

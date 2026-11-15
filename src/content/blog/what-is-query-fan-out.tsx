@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Glossary",
   kind: "glossary",
   keyphrase: "what is query fan-out",
-  image: {
-    src: "/blog/what-is-query-fan-out.webp",
-    alt: "A beam of light passing through a glass prism and spreading into a rainbow toward five blank white cards in an arc.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Google describes query fan-out as issuing multiple related searches across subtopics and data sources, then combining the results.",
     "Google says both AI Overviews and AI Mode may use query fan-out.",

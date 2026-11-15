@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "listicle",
   keyphrase: "best ai seo agents",
-  image: {
-    src: "/blog/best-ai-seo-agents.webp",
-    alt: "A small robotic arm on a wooden desk placing paper cards onto a corkboard laid out like a website wireframe",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "An AI SEO agent changes your site or content for you; a tracker only reports what AI engines say.",
     "Search Atlas OTTO deploys changes on autopilot by default through a JavaScript pixel, with an optional approval mode.",

@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Playbook",
   kind: "industry",
   keyphrase: "how daycares get recommended by ai",
-  image: {
-    src: "/blog/how-daycares-get-recommended-by-ai.webp",
-    alt: "A sunlit, empty daycare classroom with small wooden chairs around a pile of colourful building blocks and a low shelf",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Parents ask AI detailed questions about ages, hours, cost, openings and safety, not just for a daycare near them.",
     "Federal law requires states to post child care monitoring and inspection reports online, so licensing is publicly checkable.",

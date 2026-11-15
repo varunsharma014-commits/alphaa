@@ -424,3 +424,13 @@ npx prisma migrate deploy
 # Database: open Prisma Studio
 npx prisma studio
 ```
+
+---
+
+## 12. Legal safety (images, claims, privacy)
+
+All content follows `~/growth-ops/rules/legal-safety.md` (no stock or web images, no invented claims, securities and privacy rules). Read it before adding any page, post or image.
+
+- **No stock, web-sourced or AI-generated images** on the marketing site and blog, and no photos of people (Copytrack claim against growthturbine.com, 2026-11). Brand visuals stay black & white (`brand/mono/`).
+- **Blog covers are generated:** `scripts/blog-covers.mjs` renders a black & white title cover per post (`public/blog-covers/<slug>.jpg`, Inter OFL fonts, resvg) plus a text-free `_backdrop.jpg`. `src/content/blog/index.ts` sets every post's `meta.image` to its cover (hero, og:image, sitemap, RSS), so posts carry no `image` field; `npm run check:content` rejects one. `npm run build` makes any missing cover; `node scripts/blog-covers.mjs --slug <slug>` regenerates one, `--force` all.
+- Page social cards come from the self-rendered `/og` route; keep it text-only.

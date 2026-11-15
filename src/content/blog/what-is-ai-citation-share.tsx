@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Glossary",
   kind: "glossary",
   keyphrase: "what is ai citation share",
-  image: {
-    src: "/blog/what-is-ai-citation-share.webp",
-    alt: "A plain cream ceramic disc seen from above with one wedge-shaped slice cut away and set apart.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI citation share is your cited answers divided by all answers in a fixed prompt set, usually shown against competitors.",
     "A citation means the answer links your domain as a source, which is stricter than being mentioned by name.",

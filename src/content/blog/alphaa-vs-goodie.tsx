@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs goodie",
-  image: {
-    src: "/blog/alphaa-vs-goodie.webp",
-    alt: "A large cream ceramic mug with four loop handles next to a small plain cream mug with one handle on a light oak table.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Goodie's pricing page lists Core at $295 a month, Pro at $999 a month and a quote-based Enterprise plan, as of November 2026.",
     "Goodie's Core plan tracks five answer engines; its pricing table shows Gemini from Pro and Claude only on Enterprise.",

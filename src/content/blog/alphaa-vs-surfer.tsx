@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs surfer",
-  image: {
-    src: "/blog/alphaa-vs-surfer.webp",
-    alt: "Two surfboards, one sleek white board and one compact wooden board, standing upright side by side against a pale sand dune in morning light.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Surfer's plans cost $49, $82, $99, $182 and $299 a month billed yearly, as listed on its pricing page in October 2026.",
     "Surfer's Standard plan tracks 25 prompts weekly in ChatGPT only; its AI Search Analytics, Pro and Peace of Mind plans track five engines daily.",

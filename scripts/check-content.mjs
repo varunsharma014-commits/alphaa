@@ -235,10 +235,10 @@ function lintSources() {
     const sub = metaString(src, "subtitle")
     if (sub && /[.!?]\s+\S/.test(sub)) warn(slug, "subtitle looks like more than one sentence")
 
-    // hero image must exist on disk
-    const img = metaString(src, "src")
-    if (img && img.startsWith("/") && !existsSync(path.join(ROOT, "public", img.slice(1))))
-      err(slug, `meta.image.src ${img} does not exist in public/`)
+    // hero image = generated title cover (scripts/blog-covers.mjs); no hand-set images
+    if (/\n\s*image:\s*\{/.test(src)) err(slug, "meta.image must not be set: the cover is generated (scripts/blog-covers.mjs)")
+    if (slug && !existsSync(path.join(ROOT, "public/blog-covers", `${slug}.jpg`)))
+      warn(slug, `no cover yet: run node scripts/blog-covers.mjs (the build also makes it)`)
 
     // counts the spec makes mandatory
     const tk = metaArrayLen(src, "takeaways")

@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs writesonic",
-  image: {
-    src: "/blog/alphaa-vs-writesonic.webp",
-    alt: "Two fountain pens, one steel and one brass, lying side by side on an open blank notebook on a light oak desk.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Writesonic's self-serve plans cost $79, $199 and $399 a month billed annually, as listed on its pricing page in October 2026.",
     "Writesonic's Starter, Basic and Growth plans track ChatGPT, Gemini and Google AI Overviews; Claude and Perplexity are listed on Enterprise.",

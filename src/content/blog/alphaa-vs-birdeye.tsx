@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs birdeye",
-  image: {
-    src: "/blog/alphaa-vs-birdeye.webp",
-    alt: "A brass bird figurine on a stack of white cards beside a closed notebook with a black fountain pen on a light wooden desk.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Birdeye describes itself as AI coworkers for multi-location brands, with AI Search sitting inside its Jay marketing agent.",
     "Birdeye's AI Search page lists ChatGPT, Gemini, Claude, Perplexity, Google AI Overviews, AI Mode and Grok, as of November 2026.",

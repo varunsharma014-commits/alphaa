@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "wordpress ai search optimization",
-  image: {
-    src: "/blog/wordpress-ai-search-optimization.webp",
-    alt: "An empty wooden type case with neat square compartments beside a stack of cream cards with an old brass key on top.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "WordPress's Discourage search engines box adds a noindex, nofollow robots meta tag to every page, so check it first.",
     "OpenAI says sites that block OAI-SearchBot will not be shown in ChatGPT search answers, apart from navigational links.",

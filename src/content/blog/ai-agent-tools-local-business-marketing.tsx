@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "listicle",
   keyphrase: "AI agent tools for local business",
-  image: {
-    src: "/blog/ai-agent-tools-local-business-marketing.webp",
-    alt: "A tidy desk with a closed laptop and a coffee cup under a ring of softly glowing orbs, suggesting AI agents working in the background",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "An AI agent does a task for you; a tool is something you have to operate yourself.",
     "No single AI tool covers local marketing end to end, so pick the job where you lose the most customers.",

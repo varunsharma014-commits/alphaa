@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "ai visibility audit",
-  image: {
-    src: "/blog/ai-visibility-audit.webp",
-    alt: "A clipboard with a blank checklist and a pen on a wooden desk beside a magnifying glass, a tape measure and a flashlight.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "An AI visibility audit has two halves: test what assistants answer, then trace each gap to a fixable cause.",
     "OpenAI says sites that block OAI-SearchBot will not be shown in ChatGPT search answers, except as navigational links.",

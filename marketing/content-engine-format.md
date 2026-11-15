@@ -1,7 +1,7 @@
 # Content engine: blog post format (canonical spec)
 
 The daily content task follows this file exactly. One post = one `.tsx` file in
-`src/content/blog/`, one hero image in `public/blog/`, and one entry in
+`src/content/blog/`, one generated cover in `public/blog-covers/`, and one entry in
 `src/content/blog/index.ts`. Everything else (sitemap, blog index, RSS at
 `/blog/rss.xml`, the "All guides" list in `/llms.txt`, BlogPosting / FAQPage /
 BreadcrumbList JSON-LD, OpenGraph and Twitter cards) is generated from the post's
@@ -80,12 +80,6 @@ export const meta: PostMeta = {
   tag: "Guide", // short visible label: Guide, Comparison, Glossary, Industry, News
   kind: "guide", // guide | comparison | glossary | listicle | industry | news
   keyphrase: "example keyphrase",
-  image: {
-    src: "/blog/how-to-example-keyphrase.webp", // from scripts/blog-image.mjs
-    alt: "Literal description of what is in the image",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "First standalone takeaway in one sentence.",
     "Second standalone takeaway in one sentence.",
@@ -181,21 +175,20 @@ edit `llms-base.txt` when a post deserves a spot in a curated section ("Key guid
 `- [Title](https://alphaa.app/blog/<slug>): one-sentence summary.` Do NOT recreate
 `public/llms.txt`; it would conflict with the route and break the build.
 
-## 7. Hero image
+## 7. Hero image (generated, never sourced)
 
-Run from the repo root (the key comes from Railway env; never print or paste it):
+No `image` field in `meta`. Every post's hero, card and og:image is a black &
+white title cover made from its title + tag:
 
 ```bash
-railway run node scripts/blog-image.mjs <slug> "<what the image shows>"
+node scripts/blog-covers.mjs --slug <slug>
 ```
 
-- Describe a scene or object, not the title. The script already prepends the
-  house style (clean editorial photography or minimal 3D illustration; no text,
-  logos, real brands or UI screenshots).
-- Output: `public/blog/<slug>.webp`, 1600x900, under ~200KB. The script prints the
-  `image: {…}` line to paste into `meta`; write a literal `alt`.
-- Open the file and look at it. Regenerate if it contains text, logos, faces or anything off-brand.
-- Optional env: `BLOG_IMAGE_QUALITY=low|medium|high` (default medium), `OPENAI_IMAGE_MODEL`.
+- Output: `public/blog-covers/<slug>.jpg` (1200x675). Commit it with the post.
+  `npm run build` also makes any missing cover, so a post never ships without one.
+- Open the file and look at it (title fits, nothing cut off).
+- Never use stock photos, web images, AI-generated images or third-party charts
+  (`~/growth-ops/rules/legal-safety.md`). `scripts/blog-image.mjs` was removed.
 
 ## 8. Verify, ship, ping
 
@@ -252,7 +245,7 @@ What the gate cannot judge — still on you:
 
 - [ ] every number traceable to the Verified stats bank, with its qualifier intact
 - [ ] every source URL opened and confirmed to say what we cite, with its real page title
-- [ ] hero image generated, **looked at**, `image` meta filled with a literal alt
+- [ ] cover generated (`node scripts/blog-covers.mjs --slug <slug>`) and **looked at**; no `image` in meta
 - [ ] the "Short answer" genuinely answers the title question
 - [ ] claims are honest: no promised outcomes, limitations stated plainly
 - [ ] deployed URL returns 200; IndexNow pinged

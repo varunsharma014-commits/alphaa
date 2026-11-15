@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "listicle",
   keyphrase: "best aeo software for small business",
-  image: {
-    src: "/blog/best-aeo-software-small-business.webp",
-    alt: "A brass drawing compass, a closed cream notebook and a small potted plant on a pale wooden desk in soft morning light",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Listed entry prices for six AEO tools ran from $29 to $139 a month in November 2026.",
     "Most AEO software measures and recommends, so someone on your team still has to make the changes.",

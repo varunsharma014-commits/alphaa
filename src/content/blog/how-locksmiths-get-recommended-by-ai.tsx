@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Playbook",
   kind: "industry",
   keyphrase: "how locksmiths get recommended by ai",
-  image: {
-    src: "/blog/how-locksmiths-get-recommended-by-ai.webp",
-    alt: "Five brass keys hanging in a row on a cream wall above a brass lock cylinder and a file lying on a wooden shelf.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Locksmithing is a category Google treats as fraud-prone: its ads require Advanced Verification for locksmith services in the US and Canada.",
     "Google's guidelines say a business name should reflect its real-world name, and virtual offices are not eligible for a profile.",

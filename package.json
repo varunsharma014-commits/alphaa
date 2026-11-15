@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "postinstall": "prisma generate",
-    "build": "DATABASE_URL=\"${DATABASE_BUILD_URL:-$DATABASE_URL}\" sh -c 'prisma migrate deploy && next build'",
+    "build": "node scripts/blog-covers.mjs && DATABASE_URL=\"${DATABASE_BUILD_URL:-$DATABASE_URL}\" sh -c 'prisma migrate deploy && next build'",
     "check:content": "node scripts/check-content.mjs",
     "check:content:built": "node scripts/check-content.mjs --built",
     "start": "next start",
@@ -50,11 +50,14 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "^15.3.0",
+    "jpeg-js": "^0.4.4",
+    "opentype.js": "^1.3.4",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"

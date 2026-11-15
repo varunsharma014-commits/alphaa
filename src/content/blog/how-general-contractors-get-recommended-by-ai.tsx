@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Industry",
   kind: "industry",
   keyphrase: "how general contractors get recommended by ai",
-  image: {
-    src: "/blog/how-general-contractors-get-recommended-by-ai.webp",
-    alt: "A spirit level and a folded wooden rule resting on a sanded pale oak plank in a white, half-renovated room.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Homeowners ask assistants about cost, timeline and trust before they ask for a company name, so the project pages decide the recommendation.",
     "Publish your license number, insurance status and project types where an engine can read and cross-check them against the state licensing board.",

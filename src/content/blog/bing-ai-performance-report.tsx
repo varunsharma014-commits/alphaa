@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "bing ai performance report",
-  image: {
-    src: "/blog/bing-ai-performance-report.webp",
-    alt: "A brass sextant, a pocket compass, a magnifying glass and a pencil lying on a pale nautical chart.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Microsoft launched AI Performance in Bing Webmaster Tools as a public preview on 10 February 2026, free for verified sites.",
     "It counts citations of your pages in Microsoft Copilot, AI summaries in Bing and select partner AI experiences.",

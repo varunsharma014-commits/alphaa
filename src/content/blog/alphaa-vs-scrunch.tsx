@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs scrunch",
-  image: {
-    src: "/blog/alphaa-vs-scrunch.webp",
-    alt: "A brass telescope on a small tripod beside a terracotta pot holding a green seedling, on a pale wooden table.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Scrunch Starter costs $250 a month billed annually or $300 month to month, with a 7-day trial and no card, as of October 2026.",
     "Scrunch tracks ChatGPT, Claude, Gemini, Perplexity, Google AI Mode, AI Overviews and Meta, according to its pricing page.",

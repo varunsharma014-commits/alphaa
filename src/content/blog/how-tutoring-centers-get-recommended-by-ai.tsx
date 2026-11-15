@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Industry",
   kind: "industry",
   keyphrase: "how tutoring centers get recommended by ai",
-  image: {
-    src: "/blog/how-tutoring-centers-get-recommended-by-ai.webp",
-    alt: "A spiral notebook, a yellow pencil and a wooden ruler on a cream desk beside a lamp, a small plant and a stack of books.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI assistants match a parent's question to subjects, grade levels, location and format, so each must be written on your site in plain text.",
     "Google Business Profile allows a profile for a business with a location customers visit or one that travels to customers.",

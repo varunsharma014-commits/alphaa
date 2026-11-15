@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "how google ai overviews choose sources",
-  image: {
-    src: "/blog/how-google-ai-overviews-choose-sources.webp",
-    alt: "A single beam of light passing through a glass prism and fanning out into many thin rays across a pale surface.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI Overviews use query fan-out: Google runs multiple related searches and builds one answer from the results.",
     "Google publishes two eligibility rules: the page must be indexed and able to show a snippet in Search.",

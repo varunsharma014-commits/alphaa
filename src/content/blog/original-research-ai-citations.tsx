@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "original research for ai citations",
-  image: {
-    src: "/blog/original-research-ai-citations.webp",
-    alt: "An open notebook with two hand-drawn bar charts beside a magnifying glass and a stack of printed checklist forms",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Original research gives AI engines a fact they can only attribute to you, which makes your page the source to cite.",
     "Google's people-first content guidance asks whether content provides original information, reporting, research or analysis.",

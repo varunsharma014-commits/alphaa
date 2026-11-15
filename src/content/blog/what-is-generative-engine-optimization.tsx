@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Glossary",
   kind: "glossary",
   keyphrase: "what is generative engine optimization",
-  image: {
-    src: "/blog/what-is-generative-engine-optimization.webp",
-    alt: "Four blank sheets of paper fanned above a wooden funnel with one small blank card standing below it.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Generative engine optimization is the practice of getting your content used and cited in AI-written answers.",
     "The term comes from a 2023 research paper, GEO: Generative Engine Optimization, later presented at KDD 2024.",

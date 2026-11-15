@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "how to show up in google ai mode",
-  image: {
-    src: "/blog/how-to-show-up-in-google-ai-mode.webp",
-    alt: "A clear glass prism on a pale surface splitting one beam of light into several thin beams that fan out across the table.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Google states there are no additional requirements or special optimisations to appear in AI Mode or AI Overviews.",
     "AI Mode uses query fan-out: it issues many related searches across subtopics, so a page that answers one sub-question can be cited.",

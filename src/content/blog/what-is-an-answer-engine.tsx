@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Glossary",
   kind: "glossary",
   keyphrase: "what is an answer engine",
-  image: {
-    src: "/blog/what-is-an-answer-engine.webp",
-    alt: "A folded white paper note coming out of a brass tube on a pale desk, with a neat stack of blank cards behind it.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "An answer engine replies with one written answer and its sources, where a search engine replies with a ranked list of links.",
     "ChatGPT search, Perplexity, Claude with web search and Google AI Overviews and AI Mode all work as answer engines.",

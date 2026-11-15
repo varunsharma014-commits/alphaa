@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "optimize your website for ai agents",
-  image: {
-    src: "/blog/optimize-website-for-ai-agents.webp",
-    alt: "A white robotic hand pressing a round brass doorbell on a cream wall beside a wooden front door.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "AI agents such as ChatGPT agent and Claude in Chrome navigate websites, click buttons and fill forms for a user.",
     "OpenAI says ChatGPT Atlas uses ARIA roles and labels to understand page structure and interactive elements.",

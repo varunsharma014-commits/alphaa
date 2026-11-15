@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "service page for ai search",
-  image: {
-    src: "/blog/service-page-for-ai-search.webp",
-    alt: "A canvas tool roll laid open on a pale oak table, with a hammer, pliers, screwdrivers and a file each in its own pocket",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "A service page should answer what you do, where, for whom, what it costs and how long it takes.",
     "Google says AI Overviews and AI Mode need no special markup, only pages eligible to appear with a snippet.",

@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Guide",
   kind: "guide",
   keyphrase: "webflow ai search optimization",
-  image: {
-    src: "/blog/webflow-ai-search-optimization.webp",
-    alt: "A pencil-drawn floor plan on a pale desk beside a brass drawing compass and a small potted succulent.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "Webflow sets robots.txt rules in Site settings, SEO, Indexing, and its Traffic control toggles can block whole groups of AI bots.",
     "OpenAI says sites that block OAI-SearchBot will not be shown in ChatGPT search answers, apart from navigational links.",

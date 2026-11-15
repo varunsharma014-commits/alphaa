@@ -14,12 +14,6 @@ export const meta: PostMeta = {
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "hubspot aeo grader",
-  image: {
-    src: "/blog/hubspot-aeo-grader-vs-alphaa.webp",
-    alt: "A small wooden robot arm holding a pencil over a blank sheet of paper beside an empty instant photo on a pale wooden desk.",
-    width: 1600,
-    height: 900,
-  },
   takeaways: [
     "HubSpot's AEO Grader is a free, one-time brand check that needs no account and scores a brand out of 100.",
     "The Grader checks ChatGPT, Perplexity and Gemini, and weights sentiment most heavily at up to 40 of the 100 points.",
