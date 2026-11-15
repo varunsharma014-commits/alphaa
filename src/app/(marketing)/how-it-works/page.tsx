@@ -34,7 +34,7 @@ const STEPS = [
     eyebrow: "Step 3 · Every week",
     title: "It does the work.",
     body: `${A} asks the four AIs your customers’ questions, writes the pages and facts AI needs to read — FAQ answers, structured facts, llms.txt — drafts Google posts and review replies, and watches what your competitors publish.`,
-    art: <DraftDoc title="FAQ · Bright Smile Dental" lines={["Are you accepting new patients?", "Do you offer same-day crowns?", "Is there parking?"]} fresh="Do you take Delta Dental? Yes — we’re in network…" />,
+    art: <DraftDoc title="FAQ · Example Dental Co. (example)" lines={["Are you accepting new patients?", "Do you offer same-day crowns?", "Is there parking?"]} fresh="Do you take Delta Dental? Yes — we’re in network…" />,
   },
   {
     tone: "mist" as const,

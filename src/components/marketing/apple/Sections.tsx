@@ -94,7 +94,7 @@ const TODOS = [
     art: (
       <Phone>
         <AgentNote title="New page ready" body="I wrote a page answering “Do you take Delta Dental?” — the #2 question in your area." actions={["Publish", "Edit"]} />
-        <DraftDoc title="FAQ · Bright Smile Dental" lines={["Are you accepting new patients?", "Do you offer same-day crowns?"]} fresh="Do you take Delta Dental? Yes — we’re in network…" />
+        <DraftDoc title="FAQ · Example Dental Co. (example)" lines={["Are you accepting new patients?", "Do you offer same-day crowns?"]} fresh="Do you take Delta Dental? Yes — we’re in network…" />
       </Phone>
     ),
   },
