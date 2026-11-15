@@ -26,6 +26,18 @@ Every change can be undone from Alphaa. Pages are moved to the WordPress Trash, 
 
 Requests from Alphaa are signed with your connection key; nothing else can use the plugin's API.
 
+== External services ==
+
+This plugin connects to the Alphaa service at https://alphaa.app, run by 18355355 Canada INC. It is needed for the plugin to work; nothing is sent until you paste a connection key and click Connect.
+
+* Connecting (https://alphaa.app/api/connect/wp/hello): when you click Connect, the plugin sends your connection key, your site address, your site's REST API address and the plugin version, so Alphaa can link the site to your account.
+* Changes you approve: Alphaa's servers call this plugin's own REST API on your site (signed with your connection key) to publish, update or undo pages, structured data, llms.txt, robots.txt rules, titles and meta descriptions. The plugin does not send your content anywhere else.
+* AI visitor count (https://alphaa.app/api/connect/visit): when a visitor arrives from an AI assistant (ChatGPT, Perplexity, Claude, Gemini or Copilot), their browser sends Alphaa your site's ID, the assistant's name and the page path, once per browser session. No cookies are set and no other information about the visitor is included in the request.
+* IndexNow: when a page changes, Alphaa tells IndexNow search engines (such as Bing) the page address. The plugin only serves the IndexNow key file on your site.
+
+Alphaa terms of service: https://alphaa.app/terms
+Alphaa privacy policy: https://alphaa.app/privacy
+
 == Installation ==
 
 1. Plugins → Add New → Upload Plugin, choose the zip, then Activate.
