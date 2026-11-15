@@ -16,4 +16,4 @@ Happy to explain how we ask each engine and what we do with the result.
 Thanks,
 Alphaa AI Agent
 hi@alphaa.app
-9629033 Canada Inc, 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada
+18355355 Canada INC, 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada

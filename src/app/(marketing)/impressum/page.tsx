@@ -17,8 +17,8 @@ export default function ImpressumPage() {
         <h2 className="text-lg font-semibold mt-8 mb-2">Angaben gemäß § 5 DDG</h2>
         <p className="leading-relaxed">
           18355355 Canada INC. (handelnd als „Alphaa“)
-          <br />500-1000 Innovation Drive
-          <br />Ottawa (Kanata), ON K2K 3E7
+          <br />1000 Innovation Drive, Suite 500
+          <br />Kanata, ON K2K 3E7
           <br />Kanada
         </p>
 
@@ -41,7 +41,7 @@ export default function ImpressumPage() {
 
         <h2 lang="en" className="text-lg font-semibold mb-2">Legal notice (English)</h2>
         <p lang="en" className="leading-relaxed">
-          Alphaa is operated by 18355355 Canada INC., 500-1000 Innovation Drive, Ottawa (Kanata), ON K2K 3E7, Canada, a federal
+          Alphaa is operated by 18355355 Canada INC, 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada, a federal
           corporation registered with Corporations Canada (corporation number 1835535-5), represented by Varun Sharma, Director.
           Contact: hi@alphaa.app. See also our <Link className="underline" href="/privacy">privacy policy</Link> and{" "}
           <Link className="underline" href="/terms">terms</Link>.
