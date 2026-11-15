@@ -156,6 +156,9 @@ import { meta as vsLocalFalconMeta, Body as VsLocalFalconBody } from "./alphaa-v
 import { meta as vsSeRankingMeta, Body as VsSeRankingBody } from "./alphaa-vs-se-ranking"
 import { meta as appleBizConnectMeta, Body as AppleBizConnectBody } from "./apple-business-connect-ai-search"
 import { meta as petGroomersMeta, Body as PetGroomersBody } from "./how-pet-groomers-get-recommended-by-ai"
+import { meta as vsAhrefsMeta, Body as VsAhrefsBody } from "./alphaa-vs-ahrefs"
+import { meta as caseStudyPagesMeta, Body as CaseStudyPagesBody } from "./case-study-pages-ai-search"
+import { meta as treeServiceMeta, Body as TreeServiceBody } from "./how-tree-service-companies-get-recommended-by-ai"
 import { meta as bingPlacesMeta, Body as BingPlacesBody } from "./bing-places-for-ai-search"
 import { meta as bingGroundingMeta, Body as BingGroundingBody } from "./bing-ai-grounding-preference"
 import { meta as duplicateContentMeta, Body as DuplicateContentBody } from "./duplicate-content-ai-search"
@@ -325,6 +328,9 @@ export const POSTS: Post[] = [
   { meta: vsSeRankingMeta, Body: VsSeRankingBody },
   { meta: appleBizConnectMeta, Body: AppleBizConnectBody },
   { meta: petGroomersMeta, Body: PetGroomersBody },
+  { meta: vsAhrefsMeta, Body: VsAhrefsBody },
+  { meta: caseStudyPagesMeta, Body: CaseStudyPagesBody },
+  { meta: treeServiceMeta, Body: TreeServiceBody },
 ]
 
 // Every post's hero / og:image is its generated black & white title cover
