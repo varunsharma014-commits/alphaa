@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { sendAuditResultsEmail } from "@/lib/email"
+import { footerAddress } from "@/lib/marketing-email"
+import { unsubscribeLinks } from "@/lib/unsubscribe"
 import type { Prisma } from "@prisma/client"
 import { scanResultsUrl } from "@/lib/scan-token"
 import { scanEngineRows } from "@/lib/scan-engines"
@@ -54,6 +56,8 @@ export async function POST(req: NextRequest) {
         // link to the full report is safe to include.
         resultsUrl: scanResultsUrl(lead.id, lead.email),
         hireUrl: `${base}/signup?scan=${lead.id}&utm_source=email&utm_medium=report&utm_campaign=email-me-report`,
+        address: footerAddress(),
+        unsubscribeUrl: unsubscribeLinks(`l_${lead.id}`, lead.email)?.pageUrl ?? null,
       })
     } catch (sendErr) {
       // Roll the claim back so the user can retry.

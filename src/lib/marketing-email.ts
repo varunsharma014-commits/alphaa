@@ -15,6 +15,12 @@ export function mailingAddress(): string | null {
   return a ? a : null
 }
 
+/** The company address for email footers that must always carry one (report, review request). */
+export const COMPANY_POSTAL = "18355355 Canada INC, 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada"
+export function footerAddress(): string {
+  return mailingAddress() ?? COMPANY_POSTAL
+}
+
 export async function sendMarketingEmail(opts: {
   to: string
   subject: string

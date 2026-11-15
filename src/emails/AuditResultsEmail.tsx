@@ -21,12 +21,16 @@ interface AuditResultsEmailProps {
   resultsUrl?: string | null
   /** "Hire your AI Agent": /signup?scan=<id> when a scan exists, else /start. */
   hireUrl?: string | null
+  /** Company mailing address for the footer (lib/marketing-email footerAddress()). */
+  address?: string | null
+  /** Signed unsubscribe link for the lead (lib/unsubscribe). */
+  unsubscribeUrl?: string | null
 }
 
 const list = (xs: string[]) => (xs.length <= 1 ? xs[0] ?? "" : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`)
 
 export default function AuditResultsEmail({
-  businessName, city, overallScore, engines, variant = "ready", isSubscriber = false, resultsUrl, hireUrl,
+  businessName, city, overallScore, engines, variant = "ready", isSubscriber = false, resultsUrl, hireUrl, address, unsubscribeUrl,
 }: AuditResultsEmailProps) {
   const base = appUrl()
   const found = engines.filter((e) => e.status === "found").length
@@ -149,7 +153,14 @@ export default function AuditResultsEmail({
               <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
               {" · "}
               <Link href={`${base}/terms`} style={footerLink}>Terms</Link>
+              {unsubscribeUrl && (
+                <>
+                  {" · "}
+                  <Link href={unsubscribeUrl} style={footerLink}>Unsubscribe</Link>
+                </>
+              )}
             </Text>
+            {address && <Text style={footerText}>Alphaa · {address}</Text>}
             <Text style={footerDisclaimer}>
               AI visibility results vary by business, location, and industry. No specific rankings are guaranteed.
               Alphaa is not affiliated with OpenAI, Google, Anthropic, or Perplexity.

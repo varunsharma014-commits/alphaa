@@ -4,6 +4,8 @@
 // (the /start conversation attaches the address after the result).
 import { db } from "@/lib/db"
 import { sendAuditResultsEmail } from "@/lib/email"
+import { footerAddress } from "@/lib/marketing-email"
+import { unsubscribeLinks } from "@/lib/unsubscribe"
 import { scanResultsUrl } from "@/lib/scan-token"
 import { scanEngineRows } from "@/lib/scan-engines"
 import { leadName } from "@/emails/copy"
@@ -21,6 +23,8 @@ export async function sendScanReadyEmail(leadId: string) {
     variant: "ready",
     resultsUrl: scanResultsUrl(lead.id, lead.email),
     hireUrl: `${base}/signup?scan=${lead.id}&utm_source=email&utm_medium=report&utm_campaign=scan-report`,
+    address: footerAddress(),
+    unsubscribeUrl: unsubscribeLinks(`l_${lead.id}`, lead.email)?.pageUrl ?? null,
   })
 
   // Record that the link actually reached them. The results gate keys off this:

@@ -46,6 +46,23 @@ export interface UnsubLinks {
   oneClickUrl: string
 }
 
+/**
+ * Review-request recipients (a business's own customer) have no lead or
+ * account with us; only a one-way fingerprint of their address is kept. Their
+ * subject is "r_<userId>.<fingerprint>", signed over a fixed marker.
+ */
+const REVIEW_MARK = "review-request"
+const REVIEW_OPTOUT = "review_request_optout"
+export function reviewRequestUnsubLinks(userId: string, fingerprint: string): UnsubLinks | null {
+  return unsubscribeLinks(`r_${userId}.${fingerprint}`, REVIEW_MARK)
+}
+
+/** True when this person (by fingerprint) opted out of review requests sent through Alphaa, for any business. */
+export async function reviewRequestOptedOut(fingerprint: string): Promise<boolean> {
+  const hit = await db.mockActivity.findFirst({ where: { type: REVIEW_OPTOUT, metadata: { path: ["to"], equals: fingerprint } }, select: { id: true } })
+  return Boolean(hit)
+}
+
 export function unsubscribeLinks(subject: string, email: string): UnsubLinks | null {
   const t = makeUnsubToken(subject, email)
   if (!t) return null
@@ -86,6 +103,16 @@ async function resolve(subject: string, token: string): Promise<string | null> {
  * any account with that address. Idempotent. Returns false for a bad link.
  */
 export async function unsubscribeBySignedLink(subject: string, token: string): Promise<boolean> {
+  const r = /^r_([a-z0-9]{10,64})\.([a-f0-9]{64})$/i.exec(subject)
+  if (r) {
+    if (!/^[a-f0-9]{32}$/.test(token) || !verify(subject, REVIEW_MARK, token)) return false
+    const [, userId, to] = r
+    if (await reviewRequestOptedOut(to)) return true
+    const owner = await db.user.findUnique({ where: { id: userId }, select: { id: true } })
+    if (!owner) return false
+    await db.mockActivity.create({ data: { userId, type: REVIEW_OPTOUT, title: "A customer opted out of review request emails", metadata: { to } } })
+    return true
+  }
   const email = await resolve(subject, token)
   if (!email) return false
   const now = new Date().toISOString()

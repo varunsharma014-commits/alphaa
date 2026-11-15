@@ -7,6 +7,8 @@ import { db } from "@/lib/db"
 import { currentUser } from "@/lib/connector/user"
 import { reviewLinkFor } from "@/lib/agent/review-link"
 import { esc, sendAs, shell } from "@/lib/connector/mail"
+import { reviewRequestOptedOut, reviewRequestUnsubLinks } from "@/lib/unsubscribe"
+import { footerAddress } from "@/lib/marketing-email"
 
 // Ask a real customer for a Google review. Email goes out from
 // "<Business> via Alphaa" with replies to the owner; for a phone number we hand
@@ -53,6 +55,10 @@ export async function POST(req: Request) {
   if (recent.some((r) => (r.metadata as { to?: string } | null)?.to === key)) return NextResponse.json({ error: `You already asked ${first} in the last 90 days — I don’t ask twice.` }, { status: 409 })
 
   if (isEmail) {
+    if (await reviewRequestOptedOut(key)) return NextResponse.json({ error: `${first} has opted out of review request emails, so I won’t send one.` }, { status: 409 })
+    const unsub = reviewRequestUnsubLinks(user.id, key)
+    if (!unsub) return NextResponse.json({ error: "Email isn’t set up right now. Try again later." }, { status: 503 })
+    const address = footerAddress()
     const inner = `<p style="margin:0 0 16px">Hi ${esc(first)},</p>
 <p style="margin:0 0 16px">Thanks for choosing ${bizKnown ? `<b>${esc(bizKnown)}</b>` : "us"}.</p>
 <p style="margin:0 0 16px">${esc(ask)}</p>
@@ -65,8 +71,8 @@ export async function POST(req: Request) {
         to: input.contact,
         replyTo: user.email,
         subject: "How did we do?",
-        html: shell(inner, `You’re getting this one-time note because you were a customer of ${bizKnown ? esc(bizKnown) : "this business"}${user.city?.trim() ? ` in ${esc(user.city.trim())}` : ""}. Reply to reach them directly. Sent with Alphaa.`),
-        text: `Hi ${first},\n\nThanks for choosing ${biz}.\n\n${ask}\n\nLeave a review: ${link}\n\n${signOff ? `Thank you,\n${signOff}` : "Thank you."}`,
+        html: shell(inner, `You’re getting this one-time note because you were a customer of ${bizKnown ? esc(bizKnown) : "this business"}${user.city?.trim() ? ` in ${esc(user.city.trim())}` : ""}. Reply to reach them directly. Sent with Alphaa, ${esc(address)}. <a href="${esc(unsub.pageUrl)}" style="color:#6e6e73">Unsubscribe</a>`),
+        text: `Hi ${first},\n\nThanks for choosing ${biz}.\n\n${ask}\n\nLeave a review: ${link}\n\n${signOff ? `Thank you,\n${signOff}` : "Thank you."}\n\n--\nSent with Alphaa, ${address}.\nUnsubscribe: ${unsub.pageUrl}`,
       })
     } catch (err) {
       console.error("[review-request]", err instanceof Error ? err.message : err)
