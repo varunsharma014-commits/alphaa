@@ -163,6 +163,9 @@ import { meta as bingPlacesMeta, Body as BingPlacesBody } from "./bing-places-fo
 import { meta as bingGroundingMeta, Body as BingGroundingBody } from "./bing-ai-grounding-preference"
 import { meta as duplicateContentMeta, Body as DuplicateContentBody } from "./duplicate-content-ai-search"
 import { meta as garageDoorsMeta, Body as GarageDoorsBody } from "./how-garage-door-companies-get-recommended-by-ai"
+import { meta as vsConductorMeta, Body as VsConductorBody } from "./alphaa-vs-conductor"
+import { meta as knowledgePanelMeta, Body as KnowledgePanelBody } from "./google-knowledge-panel-ai-search"
+import { meta as poolServiceMeta, Body as PoolServiceBody } from "./how-pool-service-companies-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -331,6 +334,9 @@ export const POSTS: Post[] = [
   { meta: vsAhrefsMeta, Body: VsAhrefsBody },
   { meta: caseStudyPagesMeta, Body: CaseStudyPagesBody },
   { meta: treeServiceMeta, Body: TreeServiceBody },
+  { meta: vsConductorMeta, Body: VsConductorBody },
+  { meta: knowledgePanelMeta, Body: KnowledgePanelBody },
+  { meta: poolServiceMeta, Body: PoolServiceBody },
 ]
 
 // Every post's hero / og:image is its generated black & white title cover
