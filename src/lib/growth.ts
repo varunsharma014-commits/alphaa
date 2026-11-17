@@ -11,6 +11,7 @@ export const GROWTH_EARLY_ACCESS_HREF = "mailto:hi@alphaa.app?subject=Growth%20p
 export const GROWTH_FEATURES = [
   "Everything in Pro",
   "Social posts written for you to approve: Facebook, Instagram, LinkedIn",
+  "Email campaigns to your customer list, written for you to approve",
   "Google Analytics and Meta Pixel set up and checked on your site",
   "Google and Meta ad campaigns built for you, paused until you approve",
   "Weekly ad tuning: cut wasted spend, refresh ads, move budget to what works",
