@@ -5,7 +5,8 @@
 import { Fragment } from "react"
 import Link from "next/link"
 import "./home-v2.css"
-import { AiAnswers, Autopilot, BrandStudio, ChatDemo, CostTable, FeatureVideo } from "./HomeV2Client"
+import { AiAnswers, Autopilot, BrandStudio, CostTable, FeatureVideo } from "./HomeV2Client"
+import { StartAgent, type StartGreet } from "@/components/agent/StartAgent"
 import { GUARANTEE_LINE } from "@/lib/offer-copy"
 import { GROWTH_EARLY_ACCESS_HREF, GROWTH_ON_SALE } from "@/lib/growth"
 import { AUTHOR } from "@/lib/author"
@@ -106,6 +107,14 @@ const WHY = [
   { t: "No contracts, no lock-in", p: "Month to month. Cancel online in a minute.", d: "M7 11V8a5 5 0 0 1 9.6-2M5 11h14v10H5z" },
 ]
 
+const GREET: StartGreet = {
+  lines: ["Hi. I’m Alphaa, your AI marketing agent.", "Give me your website and I’ll get to work on your marketing right now."],
+  ask: "What’s your website?",
+  hint: "Nothing to install. No card. Just your website.",
+  idleHint: "Type your website and I’ll start working on it right now.",
+  agentLabel: "AI agent · online",
+}
+
 export function HomeV2() {
   const growthHref = GROWTH_ON_SALE ? "/signup?plan=growth" : GROWTH_EARLY_ACCESS_HREF
   return (
@@ -134,7 +143,9 @@ export function HomeV2() {
           <Link className="hv-cta" href="/start">Get started</Link>
           <div className="hv-promise"><Shield /><span>{GUARANTEE_LINE}</span></div>
           <p className="hv-fine">Month to month. Cancel online in a minute.</p>
-          <ChatDemo />
+          {/* The real agent (same conversation as /start): the website typed here goes to
+              /start?site=…, where the agent starts working on it straight away. */}
+          <div className="hv-demo" id="demo"><StartAgent embedded handoff="/start" greet={GREET} /></div>
         </div>
       </section>
 
