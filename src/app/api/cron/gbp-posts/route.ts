@@ -9,6 +9,7 @@ import { containsPlaceholders, postToGmb } from "@/lib/gbp-poster"
 import { resolveAccessToken } from "@/lib/gmb"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { voiceFor } from "@/lib/voice"
+import { approveGbpPost } from "@/lib/approvals"
 
 // Google Business Profile posts on the plan's schedule (UTC day of week):
 // Starter 2 a week (Mon, Thu), Pro / Full Service 4 (Mon, Tue, Thu, Fri).
@@ -173,6 +174,15 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
+  // Google updates the agent scheduled for today (the weekly plan, autopilot on).
+  const due = await db.gbpPost.findMany({ where: { status: "scheduled", scheduledFor: { lte: new Date() } }, select: { id: true, userId: true }, take: 200 })
+  let scheduledPosted = 0
+  for (const p of due) {
+    const r = await approveGbpPost(p.userId, p.id).catch(() => ({ ok: false as const, error: "error" }))
+    if (r.ok) scheduledPosted++
+    else await db.gbpPost.update({ where: { id: p.id }, data: { status: "draft" } }).catch(() => null)
+  }
+
   const dow = new Date().getUTCDay()
 
   const users = (
@@ -226,5 +236,5 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
   }
 
-  return NextResponse.json({ due: users.length, processed, posted, drafted, skipped, failed, errors })
+  return NextResponse.json({ due: users.length, processed, posted, drafted, skipped, failed, errors, scheduledPosted })
 }

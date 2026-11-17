@@ -6,15 +6,21 @@ import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { ensureVoice, type Voice } from "@/lib/voice"
-import { voiceMessages } from "@/lib/agent/voice-narration"
+import { brandMessages, voiceMessages } from "@/lib/agent/voice-narration"
+import { ensureBrandKit, saveBrand, HEX_RE, type BrandKit } from "@/lib/brand-kit"
+import { imageUrl } from "@/lib/images"
+import type { Voice as V } from "@/lib/voice"
 import { agent } from "@/lib/agent/types"
 
-// "How I sound": learn the voice from the owner's own words, pick one of three, or tune it.
+// "Your brand & voice": logo + colours, and the voice. Learn the voice from the owner's own words, pick one of three, or tune it.
 // Every answer is the thread's messages, so the chat just shows them.
 const body = z.discriminatedUnion("op", [
   z.object({ op: z.literal("learn") }),
   z.object({ op: z.literal("pick"), id: z.string().max(20) }),
   z.object({ op: z.literal("custom"), text: z.string().trim().min(10).max(1200) }),
+  z.object({ op: z.literal("brand-read") }),
+  z.object({ op: z.literal("brand-color"), value: z.string().trim().max(10) }),
+  z.object({ op: z.literal("brand-logo"), value: z.string().trim().url().max(600) }),
   z.object({ op: z.literal("style"), key: z.enum(["language", "formality", "emoji", "length", "person"]), value: z.string().trim().min(1).max(30) }),
 ])
 
@@ -26,10 +32,16 @@ const STYLE_VALUES: Record<string, string[] | null> = {
   person: ["we", "i"],
 }
 
+/** The whole thread: brand first, then voice. */
+function brandAndVoice(brand: BrandKit | null | undefined, voice: V | null | undefined) {
+  return [...brandMessages(brand, brand?.sampleId ? imageUrl(brand.sampleId) : null), ...voiceMessages(voice)]
+}
+
 export async function GET() {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  return NextResponse.json({ messages: voiceMessages((await getAgentSettings(user.id)).voice) })
+  const s = await getAgentSettings(user.id)
+  return NextResponse.json({ messages: brandAndVoice(s.brand, s.voice) })
 }
 
 export async function POST(req: Request) {
@@ -43,9 +55,29 @@ export async function POST(req: Request) {
   }
 
   if (input.op === "learn") {
-    const had = !!(await getAgentSettings(user.id)).voice
-    const v = await ensureVoice(user.id, { force: had }).catch(() => null)
-    return NextResponse.json({ messages: voiceMessages(v) })
+    const had = await getAgentSettings(user.id)
+    // "Read my site again" (both learned) re-reads both; a first visit only fills what's missing.
+    const again = !!had.voice && !!had.brand
+    const [v, b] = await Promise.all([ensureVoice(user.id, { force: again }).catch(() => null), ensureBrandKit(user.id, { force: again }).catch(() => null)])
+    return NextResponse.json({ messages: brandAndVoice(b, v) })
+  }
+  if (input.op === "brand-read" || input.op === "brand-color" || input.op === "brand-logo") {
+    let b: BrandKit | null
+    let said: string
+    if (input.op === "brand-read") {
+      b = await ensureBrandKit(user.id, { force: true }).catch(() => null)
+      said = b ? "I read your website again." : "I couldn’t open your website just now."
+    } else if (input.op === "brand-color") {
+      const hex = input.value.startsWith("#") ? input.value.toLowerCase() : `#${input.value.toLowerCase()}`
+      if (!HEX_RE.test(hex)) return NextResponse.json({ error: "That should look like #1A73E8." }, { status: 400 })
+      b = await saveBrand(user.id, { primary: hex })
+      said = `Done. Your images use ${hex} from now on.`
+    } else {
+      b = await saveBrand(user.id, { logo: input.value })
+      said = b.sampleId ? "Done. Here’s how it looks." : "Saved. If the logo doesn’t show, try a PNG link."
+    }
+    const v = (await getAgentSettings(user.id)).voice
+    return NextResponse.json({ messages: [agent([{ kind: "text", text: said }]), ...brandAndVoice(b, v)] })
   }
 
   const s = await getAgentSettings(user.id)

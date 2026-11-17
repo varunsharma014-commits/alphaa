@@ -104,13 +104,14 @@ export function ledgerText(type: string, title: string, meta: Record<string, unk
     case "handoff_sent": return title
     case "review_request": return title
     case "voice_learned": return "Learned how your business sounds from your website"
+    case "week_run": return (meta.status === "done") ? title : null
     case "insights": return "Looked at what’s working for you and in your niche"
     case "win": return meta.kind === "engine_named" ? null : title.replace(/^🎉\s*/u, "")
     case "guarantee_credit": return title
     default: return null
   }
 }
-export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "insights", "win", "guarantee_credit"]
+export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "insights", "week_run", "win", "guarantee_credit"]
 
 // The weekly AI re-check runs Wednesdays 09:00 UTC (lib/cron-scheduler.ts).
 export function nextCheck(now = new Date()): string {

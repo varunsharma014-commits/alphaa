@@ -6,6 +6,8 @@ import type { RailData } from "@/lib/agent/feed"
 import { answersMessages, securityMessages } from "@/lib/agent/check-narration"
 import { voiceMessages } from "@/lib/agent/voice-narration"
 import { insightsMessages } from "@/lib/agent/insights-narration"
+import { brandMessages } from "@/lib/agent/voice-narration"
+import { weekDoneMessages } from "@/lib/agent/week-narration"
 
 // Dev-only: renders the app shell with sample messages so the agent UI can be
 // checked in a browser without a Clerk session. 404s in production.
@@ -54,7 +56,20 @@ export default function PreviewPage() {
       { title: "3 things parents ask before a child’s first visit", format: "social", why: "Your post about a child’s first visit got 64 views in 28 days.", keys: ["b"] },
     ],
   }, { google: true })
+  const brand = brandMessages({ logo: "x", colors: ["#00473c", "#e6ff55", "#2d6b52"], primary: "#00473c", font: "Inter", source: "site", at: "" }, "/blog-covers/_backdrop.jpg")
+  const week = weekDoneMessages({
+    status: "done", startedAt: "", steps: [], notes: ["Connect your Google listing and I’ll add two Google updates to every week."],
+    summary: "I planned and wrote 1 blog post, 2 Google updates and 3 social posts. 3 are published or scheduled. 3 are waiting for your yes.",
+    trends: [{ title: "Austin Marathon road closures Sunday", why: "Patients may struggle to reach you on Sunday morning.", url: "https://example.com", when: "Feb 15" }],
+    items: [
+      { kind: "blog", day: "Tuesday", title: "What should you do in a dental emergency in Austin?", why: "“emergency dentist austin” was seen 420 times but you’re around position 11.", status: "published", text: "## Call us first\nMost emergencies…", href: "https://example.com" },
+      { kind: "google", day: "Thursday", title: "Saturday visits", why: "AI names Austin Family Dental for Saturday questions.", status: "scheduled", text: "Need a dentist this Saturday? …", postId: "p1" },
+      { kind: "social", day: "Friday", title: "3 things parents ask", why: "Your kids’ post got 64 views.", status: "ready", text: "Is your child nervous about the dentist? …", image: "/blog-covers/_backdrop.jpg" },
+    ],
+  }, "demo", () => [{ label: "Publish it to my site", action: { type: "dismiss" }, primary: true }])
   const messages = [
+    ...week,
+    ...brand,
     ...insights,
     log,
     ...voice,

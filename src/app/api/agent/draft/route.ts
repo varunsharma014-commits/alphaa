@@ -8,7 +8,7 @@ import { auth } from "@/lib/auth"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
-import { writePost, writeMeta, writeLocationPage } from "@/lib/content"
+import { writePost, writeMeta, writeLocationPage, writeSocial } from "@/lib/content"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { generatePostImage } from "@/lib/images"
 import { generateGbpPost } from "@/lib/gbp-poster"
@@ -61,19 +61,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ title: "Google listing update", text: g.content, postId: post.id })
     }
     if (input.mode === "social") {
-      const res = await anthropic.messages.create({
-        model: "claude-sonnet-5-5",
-        max_tokens: 700,
-        messages: [{ role: "user", content: `Write one social media post (Facebook / Instagram / LinkedIn) for this business about: "${input.topic}".
-Hook in the first line, then 2-4 short lines that give the reader something useful, then one simple call to action. Under 90 words. At most 3 hashtags at the end, only if they fit. Use only the facts below; never invent prices, numbers, awards or guarantees. Never say "best", "#1" or "leading". Return only the post text.
-
-FACTS
-${facts}` }],
-      })
-      const text = res.content[0]?.type === "text" ? res.content[0].text.trim() : ""
-      if (!text) throw new Error("empty")
-      await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Wrote a social post: “${input.topic}”`, metadata: { topic: input.topic, text, kind: "social" } } })
-      return NextResponse.json({ title: "Social post", text })
+      const sp = await writeSocial(user, input.topic)
+      const { ensureBrandKit } = await import("@/lib/brand-kit")
+      const { renderSocialCard } = await import("@/lib/social-card")
+      const brand = await ensureBrandKit(user.id).catch(() => null)
+      const card = await renderSocialCard(user.id, { headline: sp.headline, businessName: user.businessName, brand }).catch(() => null)
+      await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Wrote a social post: “${input.topic}”`, metadata: { topic: input.topic, text: sp.text, kind: "social", imageId: card?.id ?? null } } })
+      return NextResponse.json({ title: "Social post", text: sp.text, image: card?.url ?? null })
     }
     if (input.mode === "meta") {
       const url = input.url ?? user.websiteUrl ?? ""

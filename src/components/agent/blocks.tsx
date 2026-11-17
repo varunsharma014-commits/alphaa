@@ -284,7 +284,7 @@ export function DocBlock({
       </div>
       {b.image && !editing && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img className="ag-doc__img" src={b.image} alt={b.title} loading="lazy" />
+        <img className={`ag-doc__img${b.square ? " ag-doc__img--square" : ""}`} src={b.image} alt={b.title} loading="lazy" />
       )}
       {editing && b.docId ? (
         <textarea

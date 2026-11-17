@@ -8,6 +8,29 @@ import { AgentFeed, Composer } from "./AgentFeed"
 import { agent, mid, user as userMsg, type AgentOpEndpoint, type Block, type Chip, type Message, type SiteOp, type Task } from "@/lib/agent/types"
 import { voiceRunMessage } from "@/lib/agent/voice-narration"
 import { insightsRunMessage } from "@/lib/agent/insights-narration"
+import { weekDoneMessages, weekRunningMessage } from "@/lib/agent/week-narration"
+import type { WeekRun } from "@/lib/agent/week"
+
+// "Hey Alphaa, run my whole marketing for this week" (typed or spoken).
+const WEEK_RE = /\b(run|do|handle|take care of|plan|manage)\b[\s\S]{0,40}\b(marketing|everything|my week|this week|the week)\b/i
+const WAKE_RE = /^\s*(hey|hi|ok|okay)?[\s,]*(alpha+|alfa+|alpha a)[\s,.!:]*/i
+
+type Recognition = { lang: string; interimResults: boolean; continuous: boolean; start: () => void; stop: () => void; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }> }) => void) | null; onend: (() => void) | null; onerror: ((e: { error: string }) => void) | null }
+function recognizer(): Recognition | null {
+  if (typeof window === "undefined") return null
+  const W = window as unknown as { SpeechRecognition?: new () => Recognition; webkitSpeechRecognition?: new () => Recognition }
+  const C = W.SpeechRecognition ?? W.webkitSpeechRecognition
+  return C ? new C() : null
+}
+function speak(text: string) {
+  try {
+    if (!("speechSynthesis" in window)) return
+    window.speechSynthesis.cancel()
+    const u = new SpeechSynthesisUtterance(text)
+    u.lang = navigator.language || "en-US"
+    window.speechSynthesis.speak(u)
+  } catch { /* no voice output */ }
+}
 import { securityMessages, profileMessages, listingsMessages, bingMessages } from "@/lib/agent/check-narration"
 import type { EngineKey } from "@/lib/agent/types"
 import { siteCheckBlocks, describeSchemas } from "@/lib/agent/site-narration"
@@ -344,8 +367,11 @@ export function DashboardAgent({
         if (a.mode === "social") {
           push(agent([
             { kind: "text", text: "Here’s the post, in your voice. Copy it to Facebook, Instagram or LinkedIn." },
-            { kind: "doc", title: "Social post", meta: "draft", text: data.text, docId, editable: true },
-            { kind: "chips", items: [{ label: "Copy it", action: { type: "copy", text: data.text, done: "Copied. Paste it into your post." }, primary: true }] },
+            { kind: "doc", title: "Social post", meta: "draft", text: data.text, docId, editable: true, image: (data as { image?: string | null }).image ?? undefined, square: true },
+            { kind: "chips", items: [
+              { label: "Copy it", action: { type: "copy", text: data.text, done: "Copied. Paste it into your post." }, primary: true },
+              ...((data as { image?: string | null }).image ? [{ label: "Open the image", action: { type: "link" as const, href: (data as { image: string }).image } }] : []),
+            ] },
           ]))
           return
         }
@@ -794,9 +820,74 @@ export function DashboardAgent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  async function send(text?: string) {
+  // ── Run my week ─────────────────────────────────────────────────────────
+  async function runWeek(spoken = false) {
+    setFollowNew(true)
+    const { ok, data } = await post<{ id?: string; again?: boolean; upgrade?: boolean }>("/api/agent/week")
+    if (!ok || !data.id) {
+      if (data.upgrade) return push(agent([{ kind: "text", text: data.error ?? "" }, { kind: "chips", items: [{ label: "See plans", action: { type: "link", href: "/dashboard/settings/billing" }, primary: true }] }]))
+      return fail(data.error ?? "I couldn’t start that just now. Try again in a minute.")
+    }
+    const id = data.id
+    push(weekRunningMessage(null, id))
+    if (spoken) speak("On it. I’m running your marketing for the week. I’ll show you every step.")
+    for (let i = 0; i < 240; i++) {
+      const r = await fetch(`/api/agent/week?id=${id}`).then((x) => (x.ok ? x.json() : null)).catch(() => null) as { run?: WeekRun } | null
+      const run = r?.run
+      if (run && run.status !== "running") {
+        swapIn(weekDoneMessages(run, id, (op, extra) => siteChips(op, extra), !!data.again))
+        if (spoken && run.spoken) speak(run.spoken)
+        return
+      }
+      if (run) setMessages((prev) => prev.map((m) => (base(m.id) === `week-${id}` ? { ...weekRunningMessage(run, id), id: m.id } : m)))
+      await new Promise((res) => setTimeout(res, 2500))
+    }
+    fail("This is taking longer than usual. I’ll keep going; check back in a few minutes.")
+  }
+
+  // ── Talk to Alphaa ────────────────────────────────────────────────────────
+  const [listening, setListening] = useState(false)
+  const [heard, setHeard] = useState("")
+  const rec = useRef<Recognition | null>(null)
+  const [canTalk, setCanTalk] = useState(false)
+  useEffect(() => { setCanTalk(!!recognizer()) }, [])
+  function talk() {
+    if (listening) { rec.current?.stop(); return }
+    const r = recognizer()
+    if (!r) return
+    rec.current = r
+    r.lang = navigator.language || "en-US"
+    r.interimResults = true
+    r.continuous = false
+    let final = ""
+    r.onresult = (e) => {
+      let interim = ""
+      for (let i = 0; i < e.results.length; i++) {
+        const res = e.results[i]
+        if (res.isFinal) final += res[0].transcript
+        else interim += res[0].transcript
+      }
+      setHeard((final + interim).replace(WAKE_RE, ""))
+    }
+    r.onerror = (e) => { if (e.error === "not-allowed") fail("I can’t hear you: your browser blocked the microphone. Allow it in the address bar and tap the mic again.") }
+    r.onend = () => {
+      setListening(false)
+      setHeard("")
+      const said = final.replace(WAKE_RE, "").trim()
+      if (said) void send(said, true)
+    }
+    setListening(true)
+    r.start()
+  }
+
+  async function send(text?: string, spoken = false) {
     const q = (text ?? input).trim()
     if (!q) return
+    if (WEEK_RE.test(q)) {
+      setInput("")
+      push(userMsg(q))
+      return runWeek(spoken)
+    }
     setFollowNew(true)
     setInput("")
     push(userMsg(q))
@@ -809,6 +900,7 @@ export function DashboardAgent({
     if (data.liveQuestion) blocks.push({ kind: "chips", items: [{ label: `Ask the AIs: “${data.liveQuestion}”`, action: { type: "live", question: data.liveQuestion }, primary: true }] })
     if (data.topic) blocks.push({ kind: "chips", items: [{ label: "Show me", action: { type: "thread", topic: data.topic }, primary: true }] })
     push(agent(blocks))
+    if (spoken) speak(data.text)
   }
 
   return (
@@ -843,11 +935,22 @@ export function DashboardAgent({
       </div>
       {/* The agent finds and fixes things on its own; questions are a quiet
           side door, not the main control. */}
-      {asking ? (
-        <Composer id="agent-input" inputRef={inputRef} placeholder="Ask about anything I’ve done…" value={input} onChange={setInput} onSubmit={() => send()} disabled={busy} />
-      ) : (
-        <button type="button" className="ag-askdoor" onClick={() => { setAsking(true); setTimeout(() => inputRef.current?.focus(), 0) }}>Have a question about my work?</button>
-      )}
+      {listening && <div className="ag-heard" aria-live="polite">{heard || "Listening… try “Run my marketing for this week”"}</div>}
+      <div className="ag-bar">
+        {canTalk && (
+          <button type="button" className={`ag-mic ${listening ? "ag-mic--on" : ""}`} onClick={talk} aria-pressed={listening} aria-label={listening ? "Stop listening" : "Talk to Alphaa"} title="Talk to Alphaa">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="9" y="2" width="6" height="12" rx="3" /><path d="M5 10a7 7 0 0 0 14 0" /><path d="M12 17v5" /></svg>
+          </button>
+        )}
+        {asking ? (
+          <Composer id="agent-input" inputRef={inputRef} placeholder="Ask me anything, or “run my marketing for this week”" value={input} onChange={setInput} onSubmit={() => send()} disabled={busy} />
+        ) : (
+          <>
+            <button type="button" className="ag-weekbtn" onClick={() => { push(userMsg("Run my marketing for this week")); void runWeek() }}>Run my marketing for this week</button>
+            <button type="button" className="ag-askdoor" onClick={() => { setAsking(true); setTimeout(() => inputRef.current?.focus(), 0) }}>Ask me something</button>
+          </>
+        )}
+      </div>
     </>
   )
 }

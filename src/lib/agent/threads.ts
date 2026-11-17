@@ -14,7 +14,7 @@ import { answersMessages, changeChips, profileMessages, listingsMessages, bingMe
 import { maxExtraLocations } from "@/lib/agent/settings"
 import { imageUrl } from "@/lib/images"
 import { trackingMessages } from "@/lib/agent/tracking-narration"
-import { voiceMessages, voiceRunMessage } from "@/lib/agent/voice-narration"
+import { brandMessages, voiceMessages, voiceRunMessage } from "@/lib/agent/voice-narration"
 import { autopilotMessages } from "@/lib/agent/autopilot"
 import { workMessages } from "@/lib/agent/worklog"
 import { insightsMessages, insightsRunMessage } from "@/lib/agent/insights-narration"
@@ -26,7 +26,7 @@ export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "c
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "insights", label: "What’s working", blurb: "What’s working and what isn’t, from your real numbers, and what to create next" },
   { key: "work", label: "What I’ve done", blurb: "Every step I took for you, day by day" },
-  { key: "voice", label: "How I sound", blurb: "Your language, tone and voice, learned from your own words, with options to pick from" },
+  { key: "voice", label: "Your brand & voice", blurb: "Your logo, colours, language, tone and voice, learned from your own site, with options to pick from" },
   { key: "autopilot", label: "What I do without asking", blurb: "Approve once: posts, review replies, social, email and ads" },
   { key: "reviews", label: "Reviews", blurb: "Your Google reviews and my reply drafts" },
   { key: "site", label: "Site Schema & Code", blurb: "What AI can read on your site, and the fixes I wrote" },
@@ -164,8 +164,8 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       return { autorun: [], messages: await workMessages(user.id) }
 
     case "voice": {
-      const v = (await getAgentSettings(user.id)).voice
-      return v ? { autorun: [], messages: voiceMessages(v) } : { autorun: ["voice"], messages: [voiceRunMessage()] }
+      const s = await getAgentSettings(user.id)
+      return s.voice && s.brand ? { autorun: [], messages: [...brandMessages(s.brand, s.brand.sampleId ? imageUrl(s.brand.sampleId) : null), ...voiceMessages(s.voice)] } : { autorun: ["voice"], messages: [voiceRunMessage()] }
     }
 
     case "insights": {

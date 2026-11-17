@@ -251,6 +251,8 @@
 .ag-ask__fine { font-size: 12px; color: var(--ag-muted); margin: 10px 0 0; line-height: 1.4; }
 .ag-error { color: var(--ag-error); font-size: 13px; margin-top: 8px; }
 .ag-doc__img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-bottom: 1px solid var(--ag-line); }
+/* Square social images: show the whole card, not a crop. */
+.ag-doc__img--square { width: min(100%, 360px); aspect-ratio: 1; object-fit: contain; margin: 14px auto; border: 1px solid var(--ag-line); border-radius: 12px; }
 .ag-doc__md { white-space: normal; }
 .ag-doc__md h2 { font-size: 17px; font-weight: 600; margin: 18px 0 6px; }
 .ag-doc__md h3 { font-size: 15px; font-weight: 600; margin: 14px 0 4px; }
@@ -784,3 +786,15 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .ag-final p { max-width: 560px; margin: 0 auto 26px; font-size: 17px; line-height: 1.5; color: #6e6e73; }
 .ag-ex-note { text-align: center; font-size: 13px; color: #86868b; margin: 18px 16px 0; }
 @media (max-width: 760px) { .ag-trust__grid { grid-template-columns: 1fr; } .ag-trust { padding-top: 56px; } }
+
+/* ── Bottom bar: talk, run my week, ask ─────────────────────────────────── */
+.ag-bar { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; max-width: 760px; width: 100%; margin: 6px auto 14px; padding: 0 16px; box-sizing: border-box; }
+.ag-bar .ag-composer { flex: 1; min-width: 0; }
+.ag-bar .ag-askdoor { margin: 0; }
+.ag-mic { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--ag-line); background: var(--ag-card); color: var(--ag-fg); display: grid; place-items: center; cursor: pointer; box-shadow: var(--ag-shadow); }
+.ag-mic:focus-visible, .ag-weekbtn:focus-visible { outline: 2px solid var(--ag-fg); outline-offset: 2px; }
+.ag-mic--on { background: var(--ag-fg); color: var(--ag-bg); animation: ag-mic-pulse 1.4s ease-in-out infinite; }
+@keyframes ag-mic-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,.25); } 50% { box-shadow: 0 0 0 10px rgba(0,0,0,0); } }
+@media (prefers-reduced-motion: reduce) { .ag-mic--on { animation: none; } }
+.ag-weekbtn { min-height: 44px; padding: 0 20px; border-radius: 980px; border: 0; background: var(--ag-btn); color: var(--ag-btn-fg); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.ag-heard { max-width: 640px; margin: 0 auto 4px; padding: 0 16px; text-align: center; font-size: 15px; color: var(--ag-fg2); }

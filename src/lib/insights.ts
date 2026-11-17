@@ -167,7 +167,7 @@ const Schema = z.object({
   })),
 })
 
-const numbers = (s: string) => (s.match(/\d[\d,.]*/g) ?? []).map((x) => x.replace(/[,.]+$/, "").replace(/,/g, ""))
+export const numbers = (s: string) => (s.match(/\d[\d,.]*/g) ?? []).map((x) => x.replace(/[,.]+$/, "").replace(/,/g, ""))
 
 /** Content ideas from the facts. Drops any idea that cites no real fact or uses a number not in its facts. */
 export async function ideasFrom(userId: string, facts: InsightLine[]): Promise<Idea[]> {

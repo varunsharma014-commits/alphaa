@@ -2,6 +2,44 @@
 // from, and the dials (language, formality, emoji, length, we/I). Every choice is one tap.
 import { agent, type Block, type Chip, type Message } from "@/lib/agent/types"
 import type { Voice, VoiceStyle } from "@/lib/voice"
+import type { BrandKit } from "@/lib/brand-kit"
+
+/** Logo, colours and a sample social image. `sample` is the image URL (built on the server). */
+export function brandMessages(b: BrandKit | null | undefined, sample: string | null): Message[] {
+  if (!b) {
+    return [agent([
+      { kind: "text", text: "I couldn’t read your logo and colours from your website yet." },
+      { kind: "chips", items: [{ label: "Read my site again", action: { type: "agent-op", endpoint: "voice", body: { op: "brand-read" } } }, colorChip(), logoChip()] },
+    ], "vc-brand")]
+  }
+  const colors = Array.from(new Set([...(b.primary ? [b.primary] : []), ...b.colors])).slice(0, 4)
+  return [agent([
+    { kind: "text", text: "Your brand", big: true },
+    { kind: "text", text: `${b.logo ? "I found your logo" : "I didn’t find a logo"}${b.primary ? ` and your main colour, ${b.primary}` : ""}${b.font ? `. Your site uses the ${b.font} font` : ""}. Every social image I make uses them, with a short headline people get in two seconds.` },
+    ...(sample ? [{ kind: "doc", title: "How your social images will look", meta: b.source === "owner" ? "your choices" : "from your website", image: sample, square: true, text: "" } as const] : []),
+    { kind: "text", text: "Main colour" },
+    { kind: "chips", items: [
+      ...colors.map((c) => ({ label: b.primary === c ? `✓ ${c}` : c, primary: b.primary === c, action: { type: "agent-op" as const, endpoint: "voice" as const, body: { op: "brand-color", value: c } } })),
+      colorChip(),
+    ] },
+    { kind: "chips", items: [logoChip(!!b.logo), { label: "Read my site again", action: { type: "agent-op", endpoint: "voice", body: { op: "brand-read" } } }] },
+  ], "vc-brand")]
+}
+
+function colorChip(): Chip {
+  return { label: "Another colour", action: { type: "agent-op", endpoint: "voice", body: { op: "brand-color" }, form: {
+    text: "Which colour should your images use? Paste the colour code, like #1A73E8.",
+    fields: [{ name: "value", label: "Colour code", type: "text", placeholder: "#1A73E8", required: true }],
+    cta: "Use it",
+  } } }
+}
+function logoChip(has = false): Chip {
+  return { label: has ? "Use a different logo" : "Add my logo", action: { type: "agent-op", endpoint: "voice", body: { op: "brand-logo" }, form: {
+    text: "Paste a link to your logo (a PNG, JPG or SVG). Right-click your logo on your website and choose “Copy image address”.",
+    fields: [{ name: "value", label: "Logo link", type: "url", placeholder: "https://…/logo.png", required: true }],
+    cta: "Use this logo",
+  } } }
+}
 
 export const VOICE_LANGUAGES = ["English", "French", "Spanish", "German", "Portuguese", "Italian", "Arabic", "Hindi", "Chinese"]
 
@@ -15,8 +53,8 @@ const op = (body: Record<string, string>, label: string, on: boolean): Chip => (
 
 export function voiceRunMessage(): Message {
   return agent([
-    { kind: "text", text: "Let me read how you write first.", big: true },
-    { kind: "steps", items: ["Reading your homepage", "Reading your about and services pages", "Reading replies you wrote to your reviews", "Writing three ways I could sound"], done: 0, ticker: [["Looking at your headlines", "Noting the words you use"], ["Seeing how you describe what you do"], ["Hearing how you talk to customers"], ["Matching your tone", "Writing an example for each"]] },
+    { kind: "text", text: "Let me read your website first.", big: true },
+    { kind: "steps", items: ["Finding your logo and colours", "Reading your about and services pages", "Reading replies you wrote to your reviews", "Writing three ways I could sound"], done: 0, ticker: [["Looking at your headlines", "Noting the words you use"], ["Seeing how you describe what you do"], ["Hearing how you talk to customers"], ["Matching your tone", "Writing an example for each"]] },
   ], "voice-run")
 }
 

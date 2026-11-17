@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Native renderer for social post images (lib/social-card.ts).
+  serverExternalPackages: ['@resvg/resvg-js'],
   images: {
     domains: ['img.clerk.com', 'images.clerk.dev'],
   },

@@ -24,7 +24,7 @@ const schema = z.object({
 // ends with the actual competitor cards, not just a paragraph.
 const TOPIC_RES: [string, RegExp][] = [
   ["insights", /\bwhat'?s working\b|\bwhat (should|to) (i )?(post|write|create)\b|\bcontent ideas?\b|\bniche\b|\bnot working\b/i],
-  ["voice", /\b(tone|voice|sound like|language|formal|emoji)\b/i],
+  ["voice", /\b(tone|voice|sound like|language|formal|emoji|logo|colou?rs?|brand)\b/i],
   ["autopilot", /\bwithout asking\b|\bauto[- ]?(post|publish|pilot|reply)|\bbudget\b/i],
   ["work", /\bwhat (have )?you (done|did)\b|\bwhat are you doing\b|\bactivity\b|\bwork log\b/i],
   ["competitors", /\bcompetit|\brivals?\b|\bthey (have|do)\b/i],
