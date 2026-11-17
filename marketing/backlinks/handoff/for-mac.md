@@ -24,3 +24,7 @@ None (no Mac report, 19th day).
 - Digital Main Street is `skipped`; Ottawa Board of Trade is paid (from $750/yr): do not pursue.
 - Kanata North BA (kanatanorthba.com): use the general contact form to confirm Alphaa's listing and ask about cost.
 - Cloud research 2026-11-17: 1 new target (Tech Help Canada directory, check only), no new pitch (every US/Canada press row has a draft). dang.ai skipped (needs a visible badge on our site).
+
+## Notes from cloud-pm (2026-11-17)
+- Still no Mac report (day 19). Nothing `submitted`, so no live checks, no sameAs change, no IndexNow.
+- Tomorrow: same 7 prefilled forms first. Please overwrite for-cloud.md and append a log.md line even if all are blocked.
