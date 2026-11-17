@@ -1,17 +1,8 @@
 import type { Metadata } from "next"
-import { EngineRotator } from "@/components/marketing/hero/EngineRotator"
-import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
-import Link from "next/link"
-import { GUARANTEE_LINE, RENEWAL_LINE } from "@/lib/offer-copy"
-import { TodoAccordion, EasyRail, AgencyToggle } from "@/components/marketing/apple/Sections"
-import { TrustSection } from "@/components/marketing/proof/TrustSection"
-import { FinalCta } from "@/components/marketing/proof/FinalCta"
-import { HeroCta } from "@/components/marketing/hero/HeroCta"
-import { StartAgent } from "@/components/agent/StartAgent"
 import { FaqSection } from "@/components/marketing/FaqSection"
+import { HomeV2, HomeV2Final } from "@/components/marketing/home/HomeV2"
 import { faqs } from "@/components/marketing/faq-data"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
-import { BRAND } from "@/lib/brand"
 import { pageMeta } from "@/lib/seo"
 import { HREFLANG } from "@/content/locales"
 
@@ -80,62 +71,12 @@ export default function HomePage() {
       {/* Social proof and FAQ use data-reveal — invisible until this runs. */}
       <ScrollReveal />
 
-      {/* Hero — the agent, not the dashboard, is the product. */}
-      <div className="hx-wrap">
-      <HeroBackdrop />
-      <section className="ag-hero">
-        <div className="ag-hero__in">
-        <h1><span className="hx-l1">Get customers from <EngineRotator /></span><br /><span className="ap-quiet">Your AI agent does the work.</span></h1>
-        <p className="ag-hero__sub">
-          Your customers ask ChatGPT who to call. It names someone. If it isn’t you, I find out why, fix it, and tell you exactly what I did.
-        </p>
-        {/* The big button and the box below both go to /start (Varun, 2026-11-15); the box carries the website along. */}
-        <div className="ag-hero__cta ag-hero__cta--big">
-          <HeroCta href="/start" />
-          <span className="ag-hero__promise">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 9.9C8 19.4 5 15.6 5 11V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg>
-            <span>If no AI names you by day 90 with weekly checks active, <b>next month is on us.</b></span>
-          </span>
-        </div>
-        <div className="ag-fine">No credit card required. Checks <b>ChatGPT, Gemini, Claude and Perplexity</b>.</div>
-        {/* The real /start conversation, right in the hero. */}
-        <div id="check" className="hx-check"><StartAgent embedded handoff="/start" /></div>
-        </div>
-      </section>
-      </div>
-
-      {/* CRO pass 2026-11-15: proof straight after the hero; the "AI = revenue" section
-          (generic, with illustrative ad prices) is gone; one closing CTA after the FAQ. */}
-      <TrustSection />
-
-      <TodoAccordion />
-      <p className="ag-ex-note">Examples of the messages I send. Your real results show up in your scan.</p>
-
-      <EasyRail />
-
-      <AgencyToggle />
-
-      <section className="ag-section ag-section--grey">
-        <h2>Your AI Agent. Instead of an agency.</h2>
-        <p className="ag-section__sub">Everything it takes to get named by AI, done for you.</p>
-        <div className="ag-price">
-          <div className="ag-price__amt">$99<small>/month</small></div>
-          <ul className="ag-price__list">
-            <li>Weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about you</li>
-            <li>Your Google listing kept fresh: posts and review replies written for you</li>
-            <li>Nothing goes live until you tap approve</li>
-            <li>Month-to-month. No contracts. Cancel online in a minute.</li>
-            <li>{GUARANTEE_LINE}</li>
-          </ul>
-          <Link className="ag-pill ag-pill--blue" href="/start">Get recommended by AI — $99/mo</Link>
-          <p style={{ marginTop: 10, fontSize: 12, color: "#6e6e73" }}>{RENEWAL_LINE}</p>
-          <p style={{ marginTop: 14, fontSize: 14 }}><Link href="/pricing">Compare Plans ›</Link></p>
-        </div>
-      </section>
+      {/* Homepage v2 (2026-11-17): run your entire marketing using an AI agent. */}
+      <HomeV2 />
 
       <FaqSection />
 
-      <FinalCta />
+      <HomeV2Final />
     </>
   )
 }

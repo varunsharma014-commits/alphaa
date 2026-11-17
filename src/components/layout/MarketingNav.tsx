@@ -85,7 +85,7 @@ export function MarketingNav() {
               href="/start"
               className="text-[14px] font-medium text-white bg-black hover:bg-[#333] rounded-full px-5 py-[7px] min-w-[132px] text-center transition-colors duration-200"
             >
-              Free AI Scan
+              Get started
             </Link>
           </div>
 
@@ -124,7 +124,7 @@ export function MarketingNav() {
               {account.label}
             </Link>
             <Link href="/start" className="mt-6 self-start text-[17px] text-white bg-black hover:bg-[#333] rounded-full px-5 py-2.5 transition-colors">
-              Free AI Scan
+              Get started
             </Link>
           </div>
         </div>
