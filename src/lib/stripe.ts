@@ -29,6 +29,12 @@ export const STRIPE_PRICE_IDS = {
     monthly: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
     annual: process.env.STRIPE_PRO_ANNUAL_PRICE_ID!,
   },
+  // Growth ($499/mo, 2026-11-17): everything in Pro plus social posts, Google + Meta ads and
+  // tracking setup. Monthly only.
+  growth: {
+    monthly: process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID!,
+    annual: process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID!,
+  },
   fullservice: {
     // Human-fulfilled tier — monthly only, both keys point at the same price
     // so existing {monthly|annual} lookups can't produce undefined.

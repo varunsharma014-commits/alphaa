@@ -55,7 +55,7 @@ export async function getHero(userId: string): Promise<Hero> {
   }
 
   const named = qs && Date.now() - qs.at.getTime() < 14 * DAY ? { named: qs.scan.named, answers: qs.scan.answers, questions: qs.scan.questions.length } : null
-  const price = /full/i.test(user?.plan ?? "") ? PLAN_PRICES.fullservice.monthly : /pro/i.test(user?.plan ?? "") ? PLAN_PRICES.pro.monthly : PLAN_PRICES.starter.monthly
+  const price = /growth/i.test(user?.plan ?? "") ? PLAN_PRICES.growth.monthly : /full/i.test(user?.plan ?? "") ? PLAN_PRICES.fullservice.monthly : /pro/i.test(user?.plan ?? "") ? PLAN_PRICES.pro.monthly : PLAN_PRICES.starter.monthly
   const paysFor = value ? Math.floor(value.amount / price) : null
   return { visitors, named, value, paysFor, price }
 }

@@ -100,7 +100,7 @@ async function processUser(user: CronUser): Promise<{ status: "draft" | "posted"
   const settings = await getAgentSettings(user.id)
   const auto =
     !!settings.autoPublishPosts &&
-    /pro|full/i.test(user.plan) &&
+    /pro|full|growth/i.test(user.plan) &&
     hasGmb &&
     !containsPlaceholders(content)
 
@@ -198,7 +198,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         },
       },
     })
-  ).filter((u) => DAYS[/pro|full/i.test(u.plan) ? "pro" : "starter"].includes(dow))
+  ).filter((u) => DAYS[/pro|full|growth/i.test(u.plan) ? "pro" : "starter"].includes(dow))
 
   let processed = 0
   let drafted = 0

@@ -33,7 +33,7 @@ export function nameOf(user: { businessName: string | null; websiteUrl: string |
   return host ? host.charAt(0).toUpperCase() + host.slice(1) : null
 }
 
-export const questionLimit = (plan: string) => (/pro|full/i.test(plan) ? 20 : 10)
+export const questionLimit = (plan: string) => (/pro|full|growth/i.test(plan) ? 20 : 10)
 
 /** The questions we track: the owner's own list, else written once from the business profile. */
 export async function trackedQuestions(userId: string): Promise<string[]> {

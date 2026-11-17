@@ -49,3 +49,12 @@ export function compedEmailWhere() {
 export function isComped(email: string | null | undefined): boolean {
   return !!email && FOUNDER_EMAILS.includes(realEmail(email).trim().toLowerCase())
 }
+
+/**
+ * Growth plan ($499/mo, 2026-11-17): social posts, Google + Meta ads, ad tuning and tracking
+ * setup, on top of everything in Pro. Comped accounts get it too, so the founder and app
+ * reviewers can see every feature.
+ */
+export function hasGrowth(u: { plan: string; email?: string | null }): boolean {
+  return /growth/i.test(u.plan) || isComped(u.email)
+}

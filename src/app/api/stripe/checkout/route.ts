@@ -3,11 +3,12 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { stripe, STRIPE_PRICE_IDS, STRIPE_SETUP_FEE_PRICE_ID } from "@/lib/stripe"
 import { db } from "@/lib/db"
-import { isComped } from "@/lib/billing"
+import { isComped, hasStripePlan } from "@/lib/billing"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
 import { MARKET_CURRENCY, MARKET_COOKIE, isMarketKey } from "@/content/markets/prices"
 import type Stripe from "stripe"
 import { realEmail } from "@/lib/sites"
+import { GROWTH_ON_SALE } from "@/lib/growth"
 
 // Visitors who came through a market page (/uk, /de…) pay in that market's
 // currency. The monthly prices carry currency options in Stripe; if one is
@@ -68,15 +69,20 @@ export async function POST(req: NextRequest) {
   const user = await db.user.findUnique({ where: { clerkId: userId } })
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
   // Comped accounts (founder, app-store reviewers) never pay: send them on.
-  if (purchase === "starter" && isComped(user.email)) {
+  if ((purchase === "starter" || purchase === "pro" || purchase === "growth") && isComped(user.email)) {
     return NextResponse.json({ url: `${appUrl}/dashboard` })
+  }
+
+  // Growth stays early access (no charge) until ads and social posting are approved and live.
+  if (purchase === "growth" && !GROWTH_ON_SALE) {
+    return NextResponse.json({ error: "Growth is in early access. Email hi@alphaa.app and we'll set you up first." }, { status: 403 })
   }
 
   // Shopify merchants are billed only through Shopify (App Store rule 1.2.1): the plan opens
   // Shopify's own plan page, and the Stripe-only human services aren't sold to them at all.
   const shop = await shopifyMerchantShop(user)
   if (shop) {
-    if (purchase === "setup" || purchase === "fullservice") {
+    if (purchase === "setup" || purchase === "fullservice" || purchase === "growth") {
       return NextResponse.json({ error: "This service isn't available for Shopify stores. Email hi@alphaa.app and we'll help." }, { status: 403 })
     }
     return NextResponse.json({ url: shopifyPricingUrl(shop) })
@@ -134,12 +140,31 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: session.url })
   }
 
-  // `purchase: "starter"` comes from the agent conversation (/onboarding),
+  // Already paying by Stripe and moving up a plan (e.g. Starter → Growth): switch the price on
+  // the existing subscription (prorated) instead of opening a second subscription.
+  if ((purchase === "pro" || purchase === "growth") && hasStripePlan(user) && user.stripeSubscriptionId) {
+    const target = STRIPE_PRICE_IDS[purchase as "pro" | "growth"].monthly
+    if (!target) return NextResponse.json({ error: "This plan isn't available right now. Email hi@alphaa.app." }, { status: 500 })
+    const sub = await stripe.subscriptions.retrieve(user.stripeSubscriptionId)
+    const item = sub.items.data[0]
+    if (item && item.price.id !== target) {
+      await stripe.subscriptions.update(sub.id, {
+        items: [{ id: item.id, price: target }],
+        proration_behavior: "always_invoice",
+        metadata: { ...sub.metadata, upgraded_to: purchase },
+      })
+      await db.user.update({ where: { id: user.id }, data: { plan: purchase } })
+    }
+    return NextResponse.json({ url: `${appUrl}/dashboard?upgraded=${purchase}` })
+  }
+
+  // `purchase: "starter" | "pro" | "growth"` comes from the agent conversation (/onboarding),
   // which never handles price ids itself.
-  const fromAgent = purchase === "starter"
-  const price = fromAgent ? STRIPE_PRICE_IDS.starter.monthly : priceId
+  const fromAgent = purchase === "starter" || purchase === "pro" || purchase === "growth"
+  const price = fromAgent ? STRIPE_PRICE_IDS[purchase as "starter" | "pro" | "growth"].monthly : priceId
+  if (!price) return NextResponse.json({ error: "This plan isn't available right now. Email hi@alphaa.app." }, { status: 500 })
   // Local currencies exist on the monthly prices only; annual stays in USD.
-  const monthly = [STRIPE_PRICE_IDS.starter.monthly, STRIPE_PRICE_IDS.pro.monthly].includes(price)
+  const monthly = [STRIPE_PRICE_IDS.starter.monthly, STRIPE_PRICE_IDS.pro.monthly, STRIPE_PRICE_IDS.growth.monthly].includes(price)
   const session = await createSession({
     customer: stripeCustomerId,
     branding_settings,

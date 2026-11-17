@@ -1,18 +1,18 @@
 // Local prices per market (Varun, 2026-10-30): local round numbers, roughly
-// equal to $99 / $199 / $299. Checkout charges these through currency options
+// equal to $99 / $199 / $299 / $499 (Growth added 2026-11-17). Checkout charges these through currency options
 // on the same Stripe prices (see scripts/stripe-local-currencies.ts).
 export type MarketKey = "uk" | "de" | "fr" | "it" | "ae" | "ar"
-export type Plan = "starter" | "pro" | "full"
+export type Plan = "starter" | "pro" | "full" | "growth"
 export type Currency = "usd" | "eur" | "gbp" | "aed"
 
 export const MARKET_CURRENCY: Record<MarketKey, Currency> = { uk: "gbp", de: "eur", fr: "eur", it: "eur", ae: "aed", ar: "aed" }
 
 /** Monthly amounts in whole units. */
 export const AMOUNTS: Record<Currency, Record<Plan, number>> = {
-  usd: { starter: 99, pro: 199, full: 299 },
-  eur: { starter: 99, pro: 199, full: 299 },
-  gbp: { starter: 79, pro: 159, full: 239 },
-  aed: { starter: 369, pro: 739, full: 1099 },
+  usd: { starter: 99, pro: 199, full: 299, growth: 499 },
+  eur: { starter: 99, pro: 199, full: 299, growth: 499 },
+  gbp: { starter: 79, pro: 159, full: 239, growth: 399 },
+  aed: { starter: 369, pro: 739, full: 1099, growth: 1849 },
 }
 
 /** "99 €", "£79", "AED 369", "369 درهم", "$99". */

@@ -208,7 +208,7 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       const drafts = await db.mockActivity.findMany({ where: { userId, type: "post_draft" }, orderBy: { createdAt: "desc" }, take: 12 })
       const ready = drafts.filter((d) => (d.metadata as { status?: string } | null)?.status === "ready").slice(0, 4)
       const published = drafts.filter((d) => (d.metadata as { status?: string } | null)?.status === "published")
-      const perMonth = /pro|full/i.test(user.plan) ? 4 : 2
+      const perMonth = /pro|full|growth/i.test(user.plan) ? 4 : 2
       const voiceMsg: Message | null = user.voiceDescription?.trim()
         ? agent([
             { kind: "receipt", title: "How I write for you", sub: "learned from your website", items: user.voiceDescription.split("\n").map((l) => l.trim()).filter(Boolean).slice(0, 5) },
@@ -237,7 +237,7 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
         ], `ct-auto-${d.id}`))
       }
       msgs.push(agent([{ kind: "chips", items: [{ label: "Write a post now", action: { type: "draft", topic: "auto", mode: "post" }, primary: !ready.length }] }], "ct-more"))
-      if (/pro|full/i.test(user.plan)) {
+      if (/pro|full|growth/i.test(user.plan)) {
         msgs.push(agent([
           { kind: "text", text: s.autoPublishPosts ? "Auto-publish is on: posts with no missing facts go live without asking, and you can undo any of them." : "Want me to publish posts without asking? Only posts with no missing facts go live, and each one has an Undo." },
           { kind: "chips", items: [s.autoPublishPosts

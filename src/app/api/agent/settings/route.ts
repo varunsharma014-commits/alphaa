@@ -29,7 +29,7 @@ export async function GET() {
     platform: s.wp ? "wordpress" : s.site?.platform ?? null,
     available: platformAvailability(),
     autoPublishPosts: !!s.autoPublishPosts,
-    canAutoPublish: /pro|full/i.test(user.plan),
+    canAutoPublish: /pro|full|growth/i.test(user.plan),
     reviewLink: s.reviewLink ?? null,
   })
 }
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
   }
   const now = new Date().toISOString()
   if (input.autoPublishPosts !== undefined) {
-    if (input.autoPublishPosts && !/pro|full/i.test(user.plan)) return NextResponse.json({ error: "Auto-publish comes with the Pro plan.", upgrade: true }, { status: 403 })
+    if (input.autoPublishPosts && !/pro|full|growth/i.test(user.plan)) return NextResponse.json({ error: "Auto-publish comes with the Pro plan.", upgrade: true }, { status: 403 })
     await saveAgentSettings(user.id, { autoPublishPosts: input.autoPublishPosts })
   }
   if (input.customerValue !== undefined) {

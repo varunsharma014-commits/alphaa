@@ -267,7 +267,7 @@
 }
 
 /* ── Pricing plans ── */
-.ap-plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1100px; margin: 48px auto 0; padding: 0 22px; align-items: start; }
+.ap-plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1320px; margin: 48px auto 0; padding: 0 22px; align-items: start; }
 .ap-plan { background: #fff; border-radius: 28px; overflow: hidden; box-shadow: 0 0 0 1px rgba(0,0,0,0.06); transition: transform .6s cubic-bezier(.28,.11,.32,1), box-shadow .6s cubic-bezier(.28,.11,.32,1); }
 .ap-plan:hover { transform: scale(1.01); box-shadow: 0 14px 40px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.06); }
 .ap-plan--hi { box-shadow: 0 0 0 2px #000; }
@@ -288,7 +288,8 @@
 .ap-plan__list { list-style: none; margin: 26px 0 0; padding: 0; }
 .ap-plan__list li { font-size: 15px; line-height: 1.4; padding: 11px 0 11px 26px; border-top: 1px solid #e8e8ed; position: relative; color: #1d1d1f; }
 .ap-plan__list li::before { content: "✓"; position: absolute; left: 0; top: 11px; color: #000; font-weight: 600; }
-@media (max-width: 1068px) { .ap-plans { grid-template-columns: 1fr; max-width: 560px; } .ap-plan__desc { min-height: 0; } }
+@media (max-width: 1240px) { .ap-plans { grid-template-columns: repeat(2, 1fr); max-width: 1000px; } }
+@media (max-width: 740px) { .ap-plans { grid-template-columns: 1fr; max-width: 560px; } .ap-plan__desc { min-height: 0; } }
 
 /* ── Story rows (How it works): picture one side, words the other ── */
 .ap-story { max-width: 1100px; margin: 64px auto 0; padding: 0 22px; display: flex; flex-direction: column; gap: 28px; }

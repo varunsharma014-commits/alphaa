@@ -137,6 +137,7 @@ function getPlanFromPriceId(priceId: string) {
     [process.env.STRIPE_PRO_MONTHLY_PRICE_ID!]: "pro",
     [process.env.STRIPE_PRO_ANNUAL_PRICE_ID!]: "pro",
     [process.env.STRIPE_FULLSERVICE_MONTHLY_PRICE_ID!]: "fullservice",
+    ...(process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID ? { [process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID]: "growth" } : {}),
   }
   return ids[priceId] ?? "starter"
 }

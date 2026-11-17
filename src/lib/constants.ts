@@ -18,6 +18,7 @@ export const PLAN_PRICES = {
   // Full Service is human-fulfilled (a real person publishes to the
   // customer's CMS), so no discounted annual — monthly only.
   fullservice: { monthly: 299, annual: 299 },
+  growth: { monthly: 499, annual: 499 },
 } as const
 
 // One-time white-glove setup: a real person installs the Vault code on the

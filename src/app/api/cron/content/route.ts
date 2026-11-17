@@ -16,7 +16,7 @@ const DAYS: Record<string, number[]> = { starter: [1, 15], pro: [1, 8, 15, 22] }
 export async function GET(req: Request) {
   if (!authorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const day = new Date().getUTCDate()
-  const users = (await activeUsers()).filter((u) => (DAYS[/pro|full/i.test(u.plan) ? "pro" : "starter"]).includes(day))
+  const users = (await activeUsers()).filter((u) => (DAYS[/pro|full|growth/i.test(u.plan) ? "pro" : "starter"]).includes(day))
   void (async () => {
     for (const u of users) {
       const already = await db.mockActivity.findFirst({ where: { userId: u.id, type: "post_draft", createdAt: { gte: new Date(Date.now() - 3 * 86_400_000) } } })
@@ -27,7 +27,7 @@ export async function GET(req: Request) {
         // Pro owners can let posts go live without asking — only when the site is
         // connected and the post has no facts left for the owner to fill in.
         const s = await getAgentSettings(u.id)
-        const auto = !!s.autoPublishPosts && /pro|full/i.test(user.plan) && (!!s.wp || !!s.site)
+        const auto = !!s.autoPublishPosts && /pro|full|growth/i.test(user.plan) && (!!s.wp || !!s.site)
         // Never leave [placeholders]: the owner approves drafts in one tap from the
         // briefing, so the writer leaves out facts it doesn't have.
         const p = await writePost(user, undefined, { noPlaceholders: true })

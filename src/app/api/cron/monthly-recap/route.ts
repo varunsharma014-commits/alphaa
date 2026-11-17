@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
       const unsub = unsubscribeLinks(`u_${u.id}`, u.email)
       if (!unsub) { out.push({ userId: u.id, sent: false, reason: "no signing key" }); continue }
       if (dryRun) { out.push({ userId: u.id, sent: false, reason: "dry run" }); continue }
-      const price = /full/i.test(u.plan) ? PLAN_PRICES.fullservice.monthly : /pro/i.test(u.plan) ? PLAN_PRICES.pro.monthly : PLAN_PRICES.starter.monthly
+      const price = /growth/i.test(u.plan) ? PLAN_PRICES.growth.monthly : /full/i.test(u.plan) ? PLAN_PRICES.fullservice.monthly : /pro/i.test(u.plan) ? PLAN_PRICES.pro.monthly : PLAN_PRICES.starter.monthly
       const react = React.createElement(MonthlyRecapEmail, {
         firstName: u.fullName?.trim().split(/\s+/)[0] || null,
         recap,

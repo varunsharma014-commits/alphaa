@@ -1,3 +1,5 @@
+import { GROWTH_FEATURES, GROWTH_ON_SALE, GROWTH_EARLY_ACCESS_HREF } from "@/lib/growth"
+
 // Plans + billing FAQs, shared by the pricing page and its structured data.
 export const plans = [
   {
@@ -40,6 +42,19 @@ export const plans = [
     priceId: { monthly: "pro_monthly", annual: "pro_annual" },
   },
   {
+    name: "Growth",
+    monthly: 499,
+    annual: 499,
+    monthlyOnly: true,
+    description: "Everything in Pro, plus your social posts and your Google and Meta ads.",
+    highlight: false,
+    badge: GROWTH_ON_SALE ? "New" : "Early access",
+    features: GROWTH_FEATURES,
+    cta: GROWTH_ON_SALE ? "Get Growth" : "Get early access",
+    href: GROWTH_ON_SALE ? "/signup?plan=growth" : GROWTH_EARLY_ACCESS_HREF,
+    priceId: { monthly: "growth", annual: "growth" },
+  },
+  {
     name: "Full Service",
     monthly: 299,
     annual: 299,
@@ -67,6 +82,7 @@ export const billingFaqs = [
   { q: "Can I cancel anytime?", a: "Yes. Online in a minute, in Billing. No phone calls, no contracts, no exit fees." },
   { q: "Do I need technical skills?", a: "No. Your agent writes, fixes and publishes; you approve with one tap. If you'd rather not touch your website at all, Full Service has a human do it." },
   { q: "Can I switch plans?", a: "Yes. Upgrade or downgrade anytime from your billing settings." },
+  { q: "Does the Growth plan include ad spend?", a: "No. Your ad budget is paid to Google and Meta directly from your own ad accounts, and we never mark it up. Campaigns are built paused, and nothing spends until you approve it." },
   { q: "Do you offer refunds?", a: "Yes, on your first charge: if you're not satisfied, email hi@alphaa.app from your account email within 7 calendar days of your first paid charge and we refund it in full. Later charges and renewals aren't refunded; cancelling stops the next renewal. See Terms, Section 5." },
 ]
 

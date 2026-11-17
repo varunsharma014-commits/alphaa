@@ -28,6 +28,15 @@ const ART: Record<string, { tone: "sky" | "lavender" | "sage"; art: React.ReactN
       </Phone>
     ),
   },
+  Growth: {
+    tone: "sky",
+    art: (
+      <Phone>
+        <AgentNote title="Ready for your yes" body="I built your Google ad campaign. It’s paused, so nothing spends until you approve the budget." />
+        <AgentNote title="Instagram post drafted" body="“Same-week cleanings, now on Saturdays too.” Tap to approve or edit." />
+      </Phone>
+    ),
+  },
   "Full Service": {
     tone: "sage",
     art: (
@@ -74,9 +83,9 @@ export default function PricingPage() {
                   <p className="ap-plan__desc">{plan.description}</p>
                   <div className="ap-plan__price"><b>${price}</b><span>/month</span></div>
                   <div className="ap-plan__note">
-                    {"monthlyOnly" in plan && plan.monthlyOnly ? "Monthly only — human-fulfilled service" : annual ? `Billed annually ($${price * 12}/yr)` : "Month to month · cancel anytime"}
+                    {"monthlyOnly" in plan && plan.monthlyOnly ? (plan.name === "Growth" ? "Monthly only · ad spend paid to Google and Meta" : "Monthly only — human-fulfilled service") : annual ? `Billed annually ($${price * 12}/yr)` : "Month to month · cancel anytime"}
                   </div>
-                  <Link href={href} className={cn("ap-plan__cta", plan.highlight && "is-primary")}>{plan.cta}</Link>
+                  {href.startsWith("mailto:") ? <a href={href} className="ap-plan__cta">{plan.cta}</a> : <Link href={href} className={cn("ap-plan__cta", plan.highlight && "is-primary")}>{plan.cta}</Link>}
                   <p style={{ fontSize: 12, lineHeight: 1.4, color: "#6e6e73", margin: "10px 0 0" }}>{GUARANTEE_LINE} {RENEWAL_LINE}</p>
                   <ul className="ap-plan__list">
                     {plan.features.map((f) => <li key={f}>{f}</li>)}
