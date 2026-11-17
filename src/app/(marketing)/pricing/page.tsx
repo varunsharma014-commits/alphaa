@@ -32,8 +32,8 @@ const ART: Record<string, { tone: "sky" | "lavender" | "sage"; art: React.ReactN
     tone: "sky",
     art: (
       <Phone>
-        <AgentNote title="Ready for your yes" body="I built your Google ad campaign. It’s paused, so nothing spends until you approve the budget." />
-        <AgentNote title="Instagram post drafted" body="“Same-week cleanings, now on Saturdays too.” Tap to approve or edit." />
+        <AgentNote title="This week’s marketing is done" body="A blog post, 2 Google updates and 3 social posts, all in your voice. 4 are already live." />
+        <AgentNote title="Your Google ads are ready" body="Aimed at people near you searching for what you sell. Say yes and they start today." />
       </Phone>
     ),
   },

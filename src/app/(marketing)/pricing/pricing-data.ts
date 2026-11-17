@@ -46,7 +46,7 @@ export const plans = [
     monthly: 499,
     annual: 499,
     monthlyOnly: true,
-    description: "Everything in Pro, plus your social posts and your Google and Meta ads.",
+    description: "Your whole marketing, handled. You run the business.",
     highlight: false,
     badge: GROWTH_ON_SALE ? "New" : "Early access",
     features: GROWTH_FEATURES,

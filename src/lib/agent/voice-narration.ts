@@ -14,8 +14,8 @@ export function brandMessages(b: BrandKit | null | undefined, sample: string | n
   }
   const colors = Array.from(new Set([...(b.primary ? [b.primary] : []), ...b.colors])).slice(0, 4)
   return [agent([
-    { kind: "text", text: "Your brand", big: true },
-    { kind: "text", text: `${b.logo ? "I found your logo" : "I didn’t find a logo"}${b.primary ? ` and your main colour, ${b.primary}` : ""}${b.font ? `. Your site uses the ${b.font} font` : ""}. Every social image I make uses them, with a short headline people get in two seconds.` },
+    { kind: "text", text: "Every post will look like it came from you.", big: true },
+    { kind: "text", text: `${b.logo ? "I found your logo" : "I didn’t find a logo"}${b.primary ? ` and your main colour, ${b.primary}` : ""}${b.font ? `. Your site uses the ${b.font} font` : ""}. Every social image I make uses them, with a short headline people get in two seconds while they scroll.` },
     ...(sample ? [{ kind: "doc", title: "How your social images will look", meta: b.source === "owner" ? "your choices" : "from your website", image: sample, square: true, text: "" } as const] : []),
     { kind: "text", text: "Main colour" },
     { kind: "chips", items: [
@@ -71,13 +71,13 @@ export function voiceMessages(v: Voice | null | undefined): Message[] {
   const out: Message[] = []
 
   out.push(agent([
-    { kind: "text", text: v.pickedAt ? "Here’s how I write for you." : "Here’s how you sound today.", big: true },
+    { kind: "text", text: v.pickedAt ? "Here’s how I write for you." : "Your customers won’t be able to tell it wasn’t you.", big: true },
     { kind: "text", text: `I read ${list(v.read)}. You write in ${v.detected.language}, ${FORMALITY_WORD[v.detected.formality]}, and speak as “${v.detected.person === "we" ? "we" : "I"}”.` },
     ...(v.phrases.length ? [{ kind: "receipt", title: "Words you use", sub: "I’ll keep using them", items: v.phrases.map((p) => `“${p}”`) } as Block] : []),
   ], "vc-now"))
 
   const blocks: Block[] = [
-    { kind: "text", text: v.pickedAt ? "Your posts, emails, ads and review replies use the one marked “using this”. Switch any time." : "Pick how I should sound in your posts, emails, ads and review replies. Until you choose, I use the first one." },
+    { kind: "text", text: v.pickedAt ? "Your posts, emails, ads and review replies use the one marked “using this”. Switch any time." : "Pick the one that sounds most like you. It’s how your posts, emails, ads and review replies will read. Until you choose, I use the first one." },
   ]
   for (const [i, o] of v.options.entries()) {
     const on = v.chosen === o.id

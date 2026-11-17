@@ -4,12 +4,12 @@ import { agent, type Block, type Chip, type Message } from "@/lib/agent/types"
 import type { WeekItem, WeekKind, WeekRun } from "@/lib/agent/week"
 
 const LABEL: Record<WeekKind, string> = { blog: "Blog post", google: "Google listing update", social: "Social post" }
-const STATUS: Record<WeekItem["status"], string> = { writing: "writing", ready: "waiting for your yes", published: "published", scheduled: "scheduled", failed: "didn’t work this time" }
+const STATUS: Record<WeekItem["status"], string> = { writing: "writing", ready: "needs your OK", published: "published", scheduled: "scheduled", failed: "didn’t work this time" }
 
 export function weekRunningMessage(run: WeekRun | null, id: string): Message {
   const steps = run?.steps ?? [{ text: "Getting started", done: false }]
   return agent([
-    { kind: "text", text: "On it. I’m running your marketing for the week.", big: true },
+    { kind: "text", text: "On it. You run the business, I’ll handle this week’s marketing.", big: true },
     { kind: "steps", items: steps.map((s) => s.text), done: steps.filter((s) => s.done).length },
   ], `week-${id}`)
 }
@@ -18,13 +18,13 @@ export function weekDoneMessages(run: WeekRun, id: string, siteChips: (op: "post
   if (run.status === "failed") return [agent([{ kind: "text", text: "Something went wrong running your week. Nothing was published. Try again in a few minutes." }, { kind: "chips", items: [{ label: "Try again", action: { type: "ask", text: "Run my marketing for this week" }, primary: true }] }], `week-${id}`)]
   const out: Message[] = []
   out.push(agent([
-    { kind: "text", text: again ? "You already ran this week’s marketing today. Here it is." : "Your week is planned and written.", big: true },
+    { kind: "text", text: again ? "Your marketing for this week is already done. Here it is." : "Your marketing for this week is done.", big: true },
     { kind: "text", text: run.summary ?? "" },
     { kind: "receipt", title: "This week", items: run.items.map((i) => `${i.day} · ${LABEL[i.kind]} · ${i.title} (${STATUS[i.status]})`) },
   ], `week-${id}`))
   if (run.trends.length) {
     out.push(agent([
-      { kind: "text", text: "What’s happening this week that I planned around:" },
+      { kind: "text", text: "What your customers are paying attention to this week:" },
       { kind: "sources", items: run.trends.map((t) => ({ name: t.title, detail: t.why, status: t.when ?? "", ok: true, href: t.url })) },
     ], `week-${id}-trends`))
   }

@@ -219,15 +219,18 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   // 6. Notes and summary
   const reviews = google ? await db.gmbReview.count({ where: { userId, reply: null, publishedAt: { gte: new Date(Date.now() - 60 * DAY) } } }) : 0
   if (reviews) run.notes.push(s.autopilot?.reviews && s.autopilot.reviews !== "ask" ? `I’m replying to your ${reviews} new ${reviews === 1 ? "review" : "reviews"} overnight, the way you told me to.` : `${reviews} new ${reviews === 1 ? "review is" : "reviews are"} waiting for a reply. I’ve written them; they’re on your home screen.`)
-  if (!google) run.notes.push("Connect your Google listing and I’ll add two Google updates to every week.")
-  if (!growth) run.notes.push("Social posts, email campaigns and ads come with the Growth plan.")
-  else run.notes.push("Ads and email campaigns join your week once Google and Meta approve Alphaa’s access. I’ll tell you here when they do.")
+  if (!google) run.notes.push("Connect your Google listing and I’ll add two Google updates every week, so you show up when people nearby search for what you do.")
+  if (!growth) run.notes.push("Want me to post on your social media, email your customers and run your ads too? That’s the Growth plan.")
+  else run.notes.push("Your ads and email campaigns join the week as soon as Google and Meta approve Alphaa. I’ll tell you here when they do.")
   const live = run.items.filter((i) => i.status === "published" || i.status === "scheduled").length
   const waiting = run.items.filter((i) => i.status === "ready").length
   const count = (k: WeekKind, one: string, many: string) => { const n = run.items.filter((i) => i.kind === k && i.status !== "failed").length; return n ? `${n} ${n === 1 ? one : many}` : null }
   const parts = [count("blog", "blog post", "blog posts"), count("google", "Google update", "Google updates"), count("social", "social post", "social posts")].filter(Boolean)
-  run.summary = `I planned and wrote ${parts.join(", ") || "nothing this time"}.${live ? ` ${live} ${live === 1 ? "is" : "are"} published or scheduled.` : ""}${waiting ? ` ${waiting} ${waiting === 1 ? "is" : "are"} waiting for your yes.` : ""}`
-  run.spoken = `Done. ${run.summary}`
+  const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} and ${parts[parts.length - 1]}` : parts[0]
+  run.summary = list
+    ? `This week you’ll show up with ${list}, each aimed at customers your numbers say you’re missing or at what people care about right now.${live ? ` ${live} ${live === 1 ? "is" : "are"} already live or scheduled.` : ""}${waiting ? ` ${waiting} just ${waiting === 1 ? "needs" : "need"} your OK.` : ""}`
+    : "I couldn’t write this week’s pieces this time. Nothing was published."
+  run.spoken = list ? `Done. Your marketing for this week is ready.${live ? ` ${live} ${live === 1 ? "is" : "are"} live.` : ""}${waiting ? ` ${waiting} just ${waiting === 1 ? "needs" : "need"} your OK.` : ""}` : "Sorry, I couldn’t finish this week’s marketing. Nothing was published."
   run.status = "done"
   run.finishedAt = new Date().toISOString()
   for (const st of run.steps) st.done = true

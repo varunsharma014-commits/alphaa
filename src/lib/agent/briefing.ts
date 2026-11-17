@@ -189,9 +189,9 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
     }
   }
   // Weekly: what's working, what isn't, and what to create next.
-  if (hasPaidPlan(user) && (!settings.insightsSeenAt || Date.now() - Date.parse(settings.insightsSeenAt) > 7 * 86_400_000)) inbox.push({ kind: "fix", id: "insights", title: "What’s working, what isn’t, and what to post next", text: "I looked at your Google searches, website visits, what AI says when customers ask, and what your competitors are publishing. Here’s what the numbers say, with ideas I can write for you in one tap.", topic: "insights", cta: "Show me what’s working" })
+  if (hasPaidPlan(user) && (!settings.insightsSeenAt || Date.now() - Date.parse(settings.insightsSeenAt) > 7 * 86_400_000)) inbox.push({ kind: "fix", id: "insights", title: "Where you’re winning customers, and where you’re losing them", text: "I compared your Google searches, website visits and what AI tells your customers with what your competitors are doing. Here’s what to double down on, and what I’d post next.", topic: "insights", cta: "Show me" })
   // Once: show the owner how I'll sound, learned from their own words, with options to change it.
-  if (hasPaidPlan(user) && !settings.voice?.pickedAt) inbox.push({ kind: "fix", id: "voice", title: "Here’s how I’ll sound when I write for you", text: "I read your website and the replies you’ve written, and wrote three ways I could sound, in your language. I’m using the closest match. Pick another, or set the tone, emoji and length, in one tap.", topic: "voice", cta: "Show me my voice" })
+  if (hasPaidPlan(user) && !settings.voice?.pickedAt) inbox.push({ kind: "fix", id: "voice", title: "Everything I post will sound like you", text: "I read your website and the replies you’ve written to customers, and found your logo and colours. Your customers won’t be able to tell it wasn’t you. Want to fine-tune it?", topic: "voice", cta: "See how I’ll sound" })
   if (!user.integration) inbox.push({ kind: "connect", id: "google", title: "Connect your Google listing", text: "Then I can reply to your reviews and post updates to Google for you. It takes about a minute.", href: "/api/integrations/google/connect?go=1", cta: "Connect Google" })
 
   // ── 3. Are you actually working? ──────────────────────────────────────────

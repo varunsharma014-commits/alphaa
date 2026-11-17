@@ -50,7 +50,7 @@ export async function workMessages(userId: string): Promise<Message[]> {
     byDay.set(k, [...(byDay.get(k) ?? []), it])
   }
   const msgs: Message[] = [agent([
-    { kind: "text", text: `Here’s everything I did in the last two weeks: ${items.length} ${items.length === 1 ? "step" : "steps"}.`, big: true },
+    { kind: "text", text: `I did ${items.length} ${items.length === 1 ? "thing" : "things"} for you in the last two weeks, so you didn’t have to.`, big: true },
     { kind: "text", text: "Tap a day to see each step. New work shows up in this chat as I do it." },
   ], "wk-head")]
   let i = 0

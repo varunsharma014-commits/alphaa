@@ -10,10 +10,11 @@ export const GROWTH_EARLY_ACCESS_HREF = "mailto:hi@alphaa.app?subject=Growth%20p
 
 export const GROWTH_FEATURES = [
   "Everything in Pro",
-  "Social posts written for you to approve: Facebook, Instagram, LinkedIn",
-  "Email campaigns to your customer list, written for you to approve",
-  "Google Analytics and Meta Pixel set up and checked on your site",
-  "Google and Meta ad campaigns built for you, paused until you approve",
-  "Weekly ad tuning: cut wasted spend, refresh ads, move budget to what works",
-  "Ad spend is paid to Google and Meta directly, never marked up",
+  "A full week of marketing done in one tap, or just say it out loud",
+  "Social posts that sound like you and look like your brand",
+  "Emails that keep past customers coming back",
+  "Google and Meta ads that reach people looking for what you sell",
+  "Less wasted ad spend: I tune your ads every week",
+  "See which calls, emails and forms your marketing brought in",
+  "Your ad budget goes straight to Google and Meta. We never take a cut.",
 ]

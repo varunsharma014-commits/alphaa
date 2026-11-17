@@ -10,8 +10,8 @@ const APP = () => process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"
 export function upgradeMessages(): Message[] {
   return [
     agent([
-      { kind: "text", text: "Setting up your tracking and running your Google and Meta ads comes with the Growth plan.", big: true },
-      { kind: "text", text: "I set up Google Analytics and the Meta Pixel, count every call, email and form you get from your website, and build your ads for you to approve." },
+      { kind: "text", text: "Know exactly which ads bring you customers.", big: true },
+      { kind: "text", text: "On the Growth plan I count every call, email and form your website gets, then run your Google and Meta ads and keep moving money to the ones that bring people in." },
       { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade" }, primary: true }] },
     ], "trk-upgrade"),
   ]
@@ -38,8 +38,8 @@ export async function trackingMessages(user: User, opts: { fresh?: boolean } = {
 
   if (!t?.on || (!t.ga4 && !t.pixel)) {
     const blocks: Block[] = [
-      { kind: "text", text: "Before I run any ads, I make sure every call, email and form from your website gets counted.", big: true },
-      { kind: "text", text: "Ads only get better when Google and Meta can see which clicks turned into customers. I set up Google Analytics and the Meta Pixel, and I count phone taps, email taps and form sends as leads." },
+      { kind: "text", text: "Stop guessing which marketing works.", big: true },
+      { kind: "text", text: "Once every call, email and form from your website is counted, Google and Meta learn who your customers are and send you more people like them. I set it up in a few minutes." },
     ]
     const line = check ? foundLine(check) : null
     if (line) blocks.push({ kind: "text", text: `${line} I’ll use what’s there and won’t add a second copy.` })

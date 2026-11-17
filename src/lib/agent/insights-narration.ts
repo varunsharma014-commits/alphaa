@@ -28,17 +28,17 @@ export function insightsMessages(i: Insights | null, opts: { google: boolean }):
   const when = new Date(i.at).toLocaleDateString("en-US", { month: "long", day: "numeric" })
   const empty = !i.working.length && !i.notWorking.length && !i.niche.length
   out.push(agent([
-    { kind: "text", text: empty ? "I don’t have enough data yet to say what’s working." : "Here’s what’s working, what isn’t, and what I’d create next.", big: true },
-    { kind: "text", text: i.sources.length ? `From ${list(i.sources)}. Updated ${when}.` : `Updated ${when}.` },
-    ...(!opts.google ? [{ kind: "text" as const, text: "Connect Google and I can also see which searches bring you customers and which pages they visit." }, { kind: "chips" as const, items: [{ label: "Connect Google", action: { type: "link" as const, href: "/api/integrations/google/connect?go=1" }, primary: true }] }] : []),
+    { kind: "text", text: empty ? "I don’t have enough data yet to say what’s working." : "Here’s where you’re winning customers, and where you’re losing them.", big: true },
+    { kind: "text", text: i.sources.length ? `Based on ${list(i.sources)}. Updated ${when}.` : `Updated ${when}.` },
+    ...(!opts.google ? [{ kind: "text" as const, text: "Connect Google and I’ll show you which searches bring you customers and which pages turn them into calls." }, { kind: "chips" as const, items: [{ label: "Connect Google", action: { type: "link" as const, href: "/api/integrations/google/connect?go=1" }, primary: true }] }] : []),
   ], "in-head"))
 
-  if (i.working.length) out.push(agent([{ kind: "receipt", title: "What’s working", items: i.working.map((l) => l.text) }], "in-working"))
-  if (i.notWorking.length) out.push(agent([{ kind: "receipt", title: "What isn’t working", items: i.notWorking.map((l) => l.text) }], "in-not"))
-  if (i.niche.length) out.push(agent([{ kind: "receipt", title: "In your niche", items: i.niche.map((l) => l.text) }], "in-niche"))
+  if (i.working.length) out.push(agent([{ kind: "receipt", title: "Working for you", items: i.working.map((l) => l.text) }], "in-working"))
+  if (i.notWorking.length) out.push(agent([{ kind: "receipt", title: "Costing you customers", items: i.notWorking.map((l) => l.text) }], "in-not"))
+  if (i.niche.length) out.push(agent([{ kind: "receipt", title: "What your competitors are doing", items: i.niche.map((l) => l.text) }], "in-niche"))
 
   if (i.ideas.length) {
-    out.push(agent([{ kind: "text", text: i.ideas.length === 1 ? "One thing I’d create next:" : `${i.ideas.length} things I’d create next, based on that:` }], "in-ideas"))
+    out.push(agent([{ kind: "text", text: i.ideas.length === 1 ? "Here’s what I’d post next to win more of them:" : `Here are ${i.ideas.length} things I’d post next to win more of them:` }], "in-ideas"))
     i.ideas.forEach((idea, k) => {
       const f = FORMAT[idea.format]
       out.push(agent([
@@ -48,7 +48,7 @@ export function insightsMessages(i: Insights | null, opts: { google: boolean }):
     })
   }
   out.push(agent([
-    { kind: "text", text: "I look again every week. Ask me anything about these numbers." },
+    { kind: "text", text: "I check again every week, so you always know where your next customers are coming from." },
     { kind: "chips", items: [refresh] },
   ], "in-end"))
   return out

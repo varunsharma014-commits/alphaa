@@ -171,8 +171,8 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
     case "insights": {
       if (!hasPaidPlan(user) && !isComped(user.email)) {
         return { autorun: [], messages: [agent([
-          { kind: "text", text: "This comes with every paid plan.", big: true },
-          { kind: "text", text: "Each week I read your Google search results, website visits, what AI says about you and your competitors, then tell you what’s working and what to create next." },
+          { kind: "text", text: "Find out where your next customers are coming from.", big: true },
+          { kind: "text", text: "Every week I show you what’s bringing you customers, what’s costing you customers, and what to post next to win more. It comes with every paid plan." },
           { kind: "chips", items: [{ label: "See plans", action: { type: "link", href: "/dashboard/settings/billing" }, primary: true }] },
         ], "in-upgrade")] }
       }

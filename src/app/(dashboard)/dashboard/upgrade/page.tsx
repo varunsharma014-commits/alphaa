@@ -24,8 +24,8 @@ export default async function UpgradePage() {
 
   return (
     <div style={{ maxWidth: "640px", margin: "0 auto" }}>
-      <h1 style={h}>{already ? "You’re on Growth." : "Growth: $499 a month"}</h1>
-      <p style={p}>Everything you have now, plus I handle your social posts and your Google and Meta ads. Nothing posts and no ad spends until you approve it.</p>
+      <h1 style={h}>{already ? "You’re on Growth." : "Your whole marketing, handled."}</h1>
+      <p style={p}>Everything you have now, plus I post to your social media, email your customers and run your Google and Meta ads, so more people find you and the ones you have come back. You decide what goes live. {already ? "" : "$499 a month."}</p>
       <ul style={{ ...p, margin: "16px 0 20px", paddingLeft: "18px", color: "var(--ds-text)" }}>
         {GROWTH_FEATURES.map((f) => <li key={f}>{f}</li>)}
       </ul>

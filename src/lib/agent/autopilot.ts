@@ -25,8 +25,8 @@ export async function autopilotMessages(user: User): Promise<Message[]> {
   const out: Message[] = []
 
   out.push(agent([
-    { kind: "text", text: "Tell me once what I can do without asking.", big: true },
-    { kind: "text", text: "Whatever you choose, every step I take shows up in this chat as I do it, and you can undo the changes I make to your website." },
+    { kind: "text", text: "Get your time back.", big: true },
+    { kind: "text", text: "Tell me once what I can handle on my own, and you won’t have to approve every post. You’ll still see everything I do here, and anything I change on your website can be undone." },
   ], "ap-intro"))
 
   out.push(agent([
@@ -59,7 +59,7 @@ export async function autopilotMessages(user: User): Promise<Message[]> {
   const budget = a.adBudget
   out.push(agent([
     { kind: "text", text: "Social posts, email campaigns and ads" },
-    { kind: "text", text: "Choose now. Each choice takes effect when that work starts on your account." },
+    { kind: "text", text: "Set it once now. Each choice kicks in the day that work starts on your account." },
     { kind: "text", text: "Social posts" },
     { kind: "chips", items: [op({ op: "set", key: "social", value: "ask" }, "Ask me first", (a.social ?? "ask") === "ask"), op({ op: "set", key: "social", value: "auto" }, "Post without asking", a.social === "auto")] },
     { kind: "text", text: "Email campaigns to your customers" },
