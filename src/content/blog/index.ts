@@ -126,6 +126,9 @@ import { meta as originalResearchMeta, Body as OriginalResearchBody } from "./or
 import { meta as daycaresMeta, Body as DaycaresBody } from "./how-daycares-get-recommended-by-ai"
 import { meta as vsRankscaleMeta, Body as VsRankscaleBody } from "./alphaa-vs-rankscale"
 import { meta as aiVisAuditMeta, Body as AiVisAuditBody } from "./ai-visibility-audit"
+import { meta as vsYoastMeta, Body as VsYoastBody } from "./alphaa-vs-yoast-ai-brand-insights"
+import { meta as internalLinkingMeta, Body as InternalLinkingBody } from "./internal-linking-for-ai-search"
+import { meta as whatIsAiVisMeta, Body as WhatIsAiVisBody } from "./what-is-ai-visibility"
 import { meta as groundingMeta, Body as GroundingBody } from "./what-is-grounding-in-ai-search"
 import { meta as vsLlmrefsMeta, Body as VsLlmrefsBody } from "./alphaa-vs-llmrefs"
 import { meta as aboutPageMeta, Body as AboutPageBody } from "./about-page-for-ai-search"
@@ -337,6 +340,9 @@ export const POSTS: Post[] = [
   { meta: vsConductorMeta, Body: VsConductorBody },
   { meta: knowledgePanelMeta, Body: KnowledgePanelBody },
   { meta: poolServiceMeta, Body: PoolServiceBody },
+  { meta: vsYoastMeta, Body: VsYoastBody },
+  { meta: internalLinkingMeta, Body: InternalLinkingBody },
+  { meta: whatIsAiVisMeta, Body: WhatIsAiVisBody },
 ]
 
 // Every post's hero / og:image is its generated black & white title cover
