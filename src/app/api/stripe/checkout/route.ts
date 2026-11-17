@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { stripe, STRIPE_PRICE_IDS, STRIPE_SETUP_FEE_PRICE_ID } from "@/lib/stripe"
 import { db } from "@/lib/db"
-import { isComped, hasStripePlan } from "@/lib/billing"
+import { isComped, hasStripePlan, isExtraBrand, EXTRA_BRAND_COUPON, EXTRA_BRAND_PERCENT } from "@/lib/billing"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
 import { MARKET_CURRENCY, MARKET_COOKIE, isMarketKey } from "@/content/markets/prices"
 import type Stripe from "stripe"
@@ -55,6 +55,22 @@ async function createSession(params: Stripe.Checkout.SessionCreateParams, curren
     console.error("[checkout] local currency failed, using USD", currency, e instanceof Error ? e.message : e)
     return create(params)
   }
+}
+
+// The extra-brand coupon must exist in whichever Stripe mode is live; create it once if not.
+let couponReady = false
+async function ensureExtraBrandCoupon(): Promise<boolean> {
+  if (couponReady) return true
+  try {
+    await stripe.coupons.retrieve(EXTRA_BRAND_COUPON())
+  } catch (e) {
+    if ((e as { code?: string }).code !== "resource_missing") { console.error("[checkout] coupon lookup", e); return false }
+    try {
+      await stripe.coupons.create({ id: EXTRA_BRAND_COUPON(), percent_off: EXTRA_BRAND_PERCENT, duration: "forever", name: `Extra brand: ${EXTRA_BRAND_PERCENT}% off` })
+    } catch (err) { console.error("[checkout] coupon create", err); return false }
+  }
+  couponReady = true
+  return true
 }
 
 export async function POST(req: NextRequest) {
@@ -125,6 +141,10 @@ export async function POST(req: NextRequest) {
   const currency = marketCurrency(req)
   const market = marketOf(req)
 
+  // A second (third…) brand on the same login: 50% off, forever.
+  const extra = await isExtraBrand(user)
+  const discounts = extra && (await ensureExtraBrandCoupon()) ? [{ coupon: EXTRA_BRAND_COUPON() }] : undefined
+
   // Full Service subscription ($299/mo, human-fulfilled). No trial: a person
   // starts doing real work immediately.
   if (purchase === "fullservice") {
@@ -133,6 +153,7 @@ export async function POST(req: NextRequest) {
       branding_settings,
       line_items: [{ price: STRIPE_PRICE_IDS.fullservice.monthly, quantity: 1 }],
       mode: "subscription",
+      ...(discounts ? { discounts, metadata: { extra_brand: "1" } } : {}),
       payment_method_collection: "always",
       success_url: `${appUrl}/dashboard/concierge?upgraded=1`,
       cancel_url: `${appUrl}/dashboard/concierge`,
@@ -170,6 +191,7 @@ export async function POST(req: NextRequest) {
     branding_settings,
     line_items: [{ price, quantity: 1 }],
     mode: "subscription",
+    ...(discounts ? { discounts, metadata: { extra_brand: "1" } } : {}),
     // No trial (decided 2026-09-24): the /start analysis does the convincing;
     // month to month, cancel any time.
     payment_method_collection: "always",

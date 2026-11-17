@@ -20,6 +20,9 @@ import { writePost, writeSocial } from "@/lib/content"
 import { generatePostImage } from "@/lib/images"
 import { generateGbpPost, containsPlaceholders } from "@/lib/gbp-poster"
 import { approveSitePost } from "@/lib/approvals"
+import { countUsage } from "@/lib/usage"
+import { listAccounts, createPost } from "@/lib/social/store"
+import { PLATFORM_NAME } from "@/lib/social/types"
 
 export const WEEK_RUN = "week_run"
 const MODEL = "claude-opus-5-5"
@@ -37,6 +40,10 @@ export type WeekItem = {
   href?: string | null
   draftId?: string
   postId?: string
+  /** Social: the queued post on the owner's connected accounts. */
+  socialId?: string
+  socialStatus?: "draft" | "scheduled"
+  socialWhere?: string[]
 }
 export type WeekRun = {
   status: "running" | "done" | "failed"
@@ -206,6 +213,15 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
         const card = await renderSocialCard(userId, { headline: sp.headline, businessName: user.businessName, brand }).catch(() => null)
         await db.mockActivity.create({ data: { userId, type: "draft_written", title: `Wrote a social post: “${it.title}”`, metadata: { topic: it.title, text: sp.text, kind: "social", imageId: card?.id ?? null, week: id, day: it.day } } })
         Object.assign(it, { text: sp.text, image: card?.url ?? null, status: "ready" })
+        // Queue it on the connected accounts: scheduled if the owner lets me post without asking.
+        const accounts = (await listAccounts(userId)).filter((a) => a.status === "active" && (card || (a.platform !== "instagram" && a.platform !== "tiktok")))
+        if (accounts.length) {
+          const auto = s.autopilot?.social === "auto"
+          const when = dateFor(it.day)
+          when.setUTCHours(15, 0, 0, 0)
+          const q = await createPost(userId, { text: sp.text, imageId: card?.id ?? null, accountIds: accounts.map((a) => a.id), status: auto ? "scheduled" : "draft", scheduledFor: when.toISOString(), source: "week", title: it.title })
+          Object.assign(it, { socialId: q.id, socialStatus: auto ? "scheduled" : "draft", socialWhere: Array.from(new Set(accounts.map((a) => PLATFORM_NAME[a.platform]))), status: auto ? "scheduled" : "ready" })
+        }
       }
     } catch (err) {
       console.error("[week] write failed", it.kind, err instanceof Error ? err.message : err)
@@ -233,6 +249,7 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   run.spoken = list ? `Done. Your marketing for this week is ready.${live ? ` ${live} ${live === 1 ? "is" : "are"} live.` : ""}${waiting ? ` ${waiting} just ${waiting === 1 ? "needs" : "need"} your OK.` : ""}` : "Sorry, I couldn’t finish this week’s marketing. Nothing was published."
   run.status = "done"
   run.finishedAt = new Date().toISOString()
+  countUsage(userId, "week_run")
   for (const st of run.steps) st.done = true
   await save()
 }

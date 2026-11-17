@@ -82,6 +82,7 @@ export const billingFaqs = [
   { q: "Can I cancel anytime?", a: "Yes. Online in a minute, in Billing. No phone calls, no contracts, no exit fees." },
   { q: "Do I need technical skills?", a: "No. Your agent writes, fixes and publishes; you approve with one tap. If you'd rather not touch your website at all, Full Service has a human do it." },
   { q: "Can I switch plans?", a: "Yes. Upgrade or downgrade anytime from your billing settings." },
+  { q: "Do you have a discount for more than one brand?", a: "Yes. Every extra brand or website on the same login is 50% off its plan, for as long as you keep it. Each brand gets its own voice, results and marketing. Add one from the website menu in your dashboard." },
   { q: "Does the Growth plan include ad spend?", a: "No. Your ad budget is paid to Google and Meta directly from your own ad accounts, and we never mark it up. Campaigns are built paused, and nothing spends until you approve it." },
   { q: "Do you offer refunds?", a: "Yes, on your first charge: if you're not satisfied, email hi@alphaa.app from your account email within 7 calendar days of your first paid charge and we refund it in full. Later charges and renewals aren't refunded; cancelling stops the next renewal. See Terms, Section 5." },
 ]

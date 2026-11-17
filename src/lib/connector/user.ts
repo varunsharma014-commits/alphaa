@@ -1,11 +1,14 @@
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { asUser } from "@/lib/usage"
 
 /** Signed-in Alphaa user for an API route, or null. */
 export async function currentUser() {
   const { userId: clerkId } = await auth()
   if (!clerkId) return null
-  return db.user.findUnique({ where: { clerkId } })
+  const user = await db.user.findUnique({ where: { clerkId } })
+  if (user) asUser(user.id) // AI usage in this request is counted for this brand
+  return user
 }
 
 const PRIVATE = /^(localhost|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.|\[?::1\]?$|\[?f[cd][0-9a-f]{2}:|\[?fe80:)|\.(localhost|local|internal)$/i

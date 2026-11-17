@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import {
   Bot, BookOpen, LineChart, MessagesSquare, Globe, Sparkles, Search, TrendingUp, Activity, Gauge,
   MapPin, Star, CalendarDays, Lightbulb, Users, BarChart3, PanelLeftOpen, PanelLeftClose, X,
-  FileText, Plug, ListChecks, Mic, ToggleRight, Bot as AgentIcon,
+  FileText, Plug, ListChecks, Mic, ToggleRight, Share2, Bot as AgentIcon,
 } from "lucide-react"
 
 // The left menu: the owner's website first (posts and pages I write, and the
@@ -17,7 +17,9 @@ const GROUPS: { label: string; icon: typeof Bot; items: Item[] }[] = [
   {
     label: "Your agent", icon: AgentIcon,
     items: [
+      { href: "/dashboard?ask=channels", ask: "channels", label: "Your marketing channels", icon: Plug },
       { href: "/dashboard?ask=insights", ask: "insights", label: "What’s working", icon: Lightbulb },
+      { href: "/dashboard?ask=social", ask: "social", label: "Social accounts & posts", icon: Share2 },
       { href: "/dashboard?ask=work", ask: "work", label: "What I’ve done", icon: ListChecks },
       { href: "/dashboard?ask=voice", ask: "voice", label: "Your brand & voice", icon: Mic },
       { href: "/dashboard?ask=autopilot", ask: "autopilot", label: "What I do without asking", icon: ToggleRight },

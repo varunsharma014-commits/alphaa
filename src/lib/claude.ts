@@ -1,10 +1,12 @@
 import Anthropic from "@anthropic-ai/sdk"
 import { installPauseGuard } from "./ai-paused"
+import { installUsageMeter } from "./usage"
 
 export const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 installPauseGuard(anthropic)
+installUsageMeter(anthropic)
 
 export function buildAuditPrompt(businessName: string, city: string, websiteUrl: string) {
   return `You are Alphaa's visibility audit engine. Analyze this business and generate a realistic visibility audit.

@@ -9,6 +9,7 @@ import { containsPlaceholders, postToGmb } from "@/lib/gbp-poster"
 import { resolveAccessToken } from "@/lib/gmb"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { voiceFor } from "@/lib/voice"
+import { asUser } from "@/lib/usage"
 import { approveGbpPost } from "@/lib/approvals"
 
 // Google Business Profile posts on the plan's schedule (UTC day of week):
@@ -82,6 +83,7 @@ type CronUser = {
 }
 
 async function processUser(user: CronUser): Promise<{ status: "draft" | "posted" | "failed" | "skipped"; gmbPostId?: string | null }> {
+  asUser(user.id)
   const recent = await db.gbpPost.findFirst({
     where: { userId: user.id, createdAt: { gte: new Date(Date.now() - DEDUPE_MS) } },
     select: { id: true },

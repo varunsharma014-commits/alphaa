@@ -32,6 +32,8 @@ export type AgentSettings = {
   autopilot?: Autopilot
   /** Logo, colours and font read from the site, or set by the owner (lib/brand-kit.ts). */
   brand?: import("@/lib/brand-kit").BrandKit
+  /** One-time note for the Social thread (the result of the last connect). */
+  socialNote?: string
   /** When the owner last opened "What's working" (the briefing card shows weekly until then). */
   insightsSeenAt?: string
   /** The first-visit moment: the AI answer shown once, and when the owner saw it (lib/agent/first-answer.ts). */

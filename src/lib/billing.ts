@@ -58,3 +58,27 @@ export function isComped(email: string | null | undefined): boolean {
 export function hasGrowth(u: { plan: string; email?: string | null }): boolean {
   return /growth/i.test(u.plan) || isComped(u.email)
 }
+
+
+// ── Extra brands (Varun, 2026-11-17): every brand after the first on one login is 50% off ──
+// Each brand is its own User row with its own subscription (lib/sites.ts). A brand gets the
+// Stripe coupon EXTRA_BRAND_COUPON (50% off, forever) when the same owner already pays for
+// another brand. Shopify-billed brands count as paid.
+export const EXTRA_BRAND_COUPON = () => process.env.STRIPE_EXTRA_BRAND_COUPON || "EXTRA_BRAND_50"
+export const EXTRA_BRAND_PERCENT = 50
+
+export async function isExtraBrand(user: { id: string; clerkId: string }): Promise<boolean> {
+  const { db } = await import("@/lib/db")
+  const { ownerClerkId, sitePrefix } = await import("@/lib/sites")
+  const owner = ownerClerkId(user.clerkId)
+  const other = await db.user.findFirst({
+    where: {
+      id: { not: user.id },
+      OR: [{ clerkId: owner }, { clerkId: { startsWith: sitePrefix(owner) } }],
+      stripeSubscriptionId: { not: null },
+      subscriptionStatus: { in: ["active", "trialing", "past_due"] },
+    },
+    select: { id: true },
+  })
+  return !!other
+}

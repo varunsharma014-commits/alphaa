@@ -8,6 +8,7 @@ import { voiceMessages } from "@/lib/agent/voice-narration"
 import { insightsMessages } from "@/lib/agent/insights-narration"
 import { brandMessages } from "@/lib/agent/voice-narration"
 import { weekDoneMessages } from "@/lib/agent/week-narration"
+import { socialMessages } from "@/lib/agent/social-narration"
 
 // Dev-only: renders the app shell with sample messages so the agent UI can be
 // checked in a browser without a Clerk session. 404s in production.
@@ -67,7 +68,17 @@ export default function PreviewPage() {
       { kind: "social", day: "Friday", title: "3 things parents ask", why: "Your kids’ post got 64 views.", status: "ready", text: "Is your child nervous about the dentist? …", image: "/blog-covers/_backdrop.jpg" },
     ],
   }, "demo", () => [{ label: "Publish it to my site", action: { type: "dismiss" }, primary: true }])
+  const social = socialMessages({ growth: true, note: "Connected Bright Smile Dental, @brightsmile.", accounts: [
+    { id: "a1", platform: "facebook", externalId: "1", name: "Bright Smile Dental", tokenEnc: "", status: "active", connectedAt: "" },
+    { id: "a2", platform: "instagram", externalId: "2", name: "@brightsmile", handle: "brightsmile", tokenEnc: "", status: "active", connectedAt: "" },
+    { id: "a3", platform: "linkedin", externalId: "3", name: "Dr. Sam Lee", tokenEnc: "", status: "expired", connectedAt: "" },
+  ], posts: [
+    { id: "p1", text: "Need a check-up but can’t miss work? Saturday mornings are open again.", accountIds: ["a1", "a2"], status: "draft", scheduledFor: new Date(Date.now() + 2 * 86400000).toISOString(), title: "Saturday visits are back" },
+    { id: "p2", text: "What to do in a dental emergency on a weekend.", accountIds: ["a1"], status: "scheduled", scheduledFor: new Date(Date.now() + 4 * 86400000).toISOString(), title: "Weekend emergencies" },
+    { id: "p3", text: "Kids’ first visit tips.", accountIds: ["a3"], status: "failed", results: [{ accountId: "a3", platform: "linkedin", ok: false, error: "LinkedIn access expired. Reconnect LinkedIn." }], title: "First visit tips" },
+  ] })
   const messages = [
+    ...social,
     ...week,
     ...brand,
     ...insights,

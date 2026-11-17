@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic"
 
+import { asUser } from "@/lib/usage"
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { activeUsers, authorized } from "@/lib/cron/users"
@@ -13,6 +14,7 @@ export async function GET(req: Request) {
   const users = await activeUsers()
   void (async () => {
     for (const u of users) {
+      asUser(u.id)
       const recent = await db.mockActivity.findFirst({ where: { userId: u.id, type: "question_scan", createdAt: { gte: new Date(Date.now() - 5 * 86_400_000) } } })
       if (recent) continue
       await runQuestionScan(u.id).catch((err) => console.error(`[cron/questions] ${u.id}`, err instanceof Error ? err.message : err))

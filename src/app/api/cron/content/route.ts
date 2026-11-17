@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic"
 
+import { asUser } from "@/lib/usage"
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { activeUsers, authorized } from "@/lib/cron/users"
@@ -19,6 +20,7 @@ export async function GET(req: Request) {
   const users = (await activeUsers()).filter((u) => (DAYS[/pro|full|growth/i.test(u.plan) ? "pro" : "starter"]).includes(day))
   void (async () => {
     for (const u of users) {
+      asUser(u.id)
       const already = await db.mockActivity.findFirst({ where: { userId: u.id, type: "post_draft", createdAt: { gte: new Date(Date.now() - 3 * 86_400_000) } } })
       if (already) continue
       const user = await db.user.findUnique({ where: { id: u.id } })

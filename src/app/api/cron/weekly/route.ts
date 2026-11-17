@@ -4,6 +4,7 @@ const ENGINE_NAMES: Record<string, string> = { chatgpt: "ChatGPT", gemini: "Gemi
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { asUser } from "@/lib/usage"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
@@ -54,6 +55,7 @@ function computeVisibilityDelta(
 async function processUser(
   user: { id: string; email: string; businessName: string | null; city: string | null; fullName: string | null }
 ): Promise<void> {
+  asUser(user.id)
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
 
   // 1. Last two audits for visibility delta

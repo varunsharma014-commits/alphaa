@@ -4,6 +4,7 @@
 import path from "path"
 import { readFile } from "fs/promises"
 import { Resvg } from "@resvg/resvg-js"
+import jpeg from "jpeg-js"
 import opentype, { type Font } from "opentype.js"
 import { db } from "@/lib/db"
 import { safeFetch } from "@/lib/safe-fetch"
@@ -88,17 +89,31 @@ async function logoData(url: string | null): Promise<{ uri: string; w: number; h
 
 /** Draws the card and saves it. Null when the headline uses letters the font can't draw. */
 export async function renderSocialCard(userId: string, input: CardInput): Promise<{ id: string; url: string } | null> {
-  const png = await renderCardPng(input)
-  if (!png) return null
+  // JPEG: Instagram and TikTok only take JPEG for photo posts.
+  const img = await renderCardJpeg(input)
+  if (!img) return null
   const headline = input.headline.trim().replace(/\s+/g, " ").slice(0, 80)
-  const row = await db.mockActivity.create({ data: { userId, type: "post_image", title: `Made an image for “${headline}”`, metadata: { b64: png.toString("base64"), mime: "image/png", alt: headline, kind: "social_card" } } })
+  const row = await db.mockActivity.create({ data: { userId, type: "post_image", title: `Made an image for “${headline}”`, metadata: { b64: img.toString("base64"), mime: "image/jpeg", alt: headline, kind: "social_card" } } })
   return { id: row.id, url: imageUrl(row.id) }
 }
 
 export type CardInput = { headline: string; businessName: string | null; brand: Pick<BrandKit, "logo" | "primary"> | null | undefined }
 
+/** The card as a JPEG (what social platforms accept). */
+export async function renderCardJpeg(input: CardInput): Promise<Buffer | null> {
+  const svg = await cardSvg(input)
+  if (!svg) return null
+  const r = new Resvg(svg, { fitTo: { mode: "width", value: S }, background: "#ffffff" }).render()
+  return Buffer.from(jpeg.encode({ data: Buffer.from(r.pixels), width: r.width, height: r.height }, 90).data)
+}
+
 /** The card as a PNG, without saving it (the public first-week preview stores it itself). */
 export async function renderCardPng(input: CardInput): Promise<Buffer | null> {
+  const svg = await cardSvg(input)
+  return svg ? Buffer.from(new Resvg(svg, { fitTo: { mode: "width", value: S } }).render().asPng()) : null
+}
+
+async function cardSvg(input: CardInput): Promise<string | null> {
   const f = await loadFonts()
   const headline = input.headline.trim().replace(/\s+/g, " ").slice(0, 80)
   const name = (input.businessName ?? "").trim().slice(0, 40)
@@ -127,5 +142,5 @@ export async function renderCardPng(input: CardInput): Promise<Buffer | null> {
     parts.push(pathFor(f.bold, name, PAD, S - PAD, 40, ink, -0.01))
   }
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">${parts.join("")}</svg>`
-  return Buffer.from(new Resvg(svg, { fitTo: { mode: "width", value: S } }).render().asPng())
+  return svg
 }

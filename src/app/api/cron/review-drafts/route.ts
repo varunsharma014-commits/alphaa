@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { approveReviewReply, draftReviewReply, REVIEW_DRAFT } from "@/lib/approvals"
 import { getAgentSettings } from "@/lib/agent/settings"
+import { asUser } from "@/lib/usage"
 import { containsPlaceholders } from "@/lib/gbp-poster"
 
 // Overnight: write a reply for every new Google review that doesn't have one,
@@ -36,6 +37,7 @@ export async function GET(req: NextRequest) {
   let posted = 0
   const errors: string[] = []
   for (const r of reviews) {
+    asUser(r.userId)
     if (have.has(r.id) || (perUser.get(r.userId) ?? 0) >= PER_USER) continue
     try {
       const text = await draftReviewReply(r.userId, r.id)

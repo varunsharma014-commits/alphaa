@@ -32,13 +32,16 @@ export function weekDoneMessages(run: WeekRun, id: string, siteChips: (op: "post
     if (it.status === "failed" || !it.text) return
     const docId = `week-${id}-${k}`
     const blocks: Block[] = [
-      { kind: "text", text: `${it.day}: ${it.why}` },
+      { kind: "text", text: `${it.day}: ${it.why}${it.socialWhere?.length ? ` Goes to ${it.socialWhere.join(", ")}.` : ""}` },
       { kind: "doc", title: it.title, meta: `${LABEL[it.kind]} · ${STATUS[it.status]}`, text: it.text, docId, editable: it.status === "ready", markdown: it.kind === "blog", image: it.image ?? undefined, square: it.kind === "social" },
     ]
     let chips: Chip[] = []
     if (it.kind === "blog") chips = it.status === "published" && it.href ? [{ label: "See it live", action: { type: "link", href: it.href }, primary: true }] : siteChips("post", { title: it.title, text: it.text, draftId: it.draftId, docId })
     else if (it.kind === "google" && it.postId) chips = [{ label: it.status === "scheduled" ? "Post it now instead" : "Post it to Google", action: { type: "post-publish", postId: it.postId }, primary: it.status !== "scheduled" }, { label: "Delete it", action: { type: "post-delete", postId: it.postId } }]
-    else if (it.kind === "social") chips = [{ label: "Copy the post", action: { type: "copy", text: it.text, done: "Copied. Paste it into Facebook, Instagram or LinkedIn with the image." }, primary: true }, ...(it.image ? [{ label: "Open the image", action: { type: "link" as const, href: it.image } }] : [])]
+    else if (it.kind === "social" && it.socialId) chips = it.socialStatus === "scheduled"
+      ? [{ label: "Post it now", action: { type: "agent-op", endpoint: "social", body: { op: "post_now", id: it.socialId } } }, { label: "Hold it", action: { type: "agent-op", endpoint: "social", body: { op: "unschedule", id: it.socialId } } }]
+      : [{ label: `Approve for ${it.day}`, primary: true, action: { type: "agent-op", endpoint: "social", body: { op: "approve", id: it.socialId } } }, { label: "Post it now", action: { type: "agent-op", endpoint: "social", body: { op: "post_now", id: it.socialId } } }]
+    else if (it.kind === "social") chips = [{ label: "Copy the post", action: { type: "copy", text: it.text, done: "Copied. Paste it into Facebook, Instagram or LinkedIn with the image." }, primary: true }, ...(it.image ? [{ label: "Open the image", action: { type: "link" as const, href: it.image } }] : []), { label: "Connect my social accounts", action: { type: "thread", topic: "social" } }]
     if (chips.length) blocks.push({ kind: "chips", items: chips })
     out.push(agent(blocks, `week-${id}-${k}`))
   })

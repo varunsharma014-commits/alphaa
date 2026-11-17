@@ -17,13 +17,17 @@ import { trackingMessages } from "@/lib/agent/tracking-narration"
 import { brandMessages, voiceMessages, voiceRunMessage } from "@/lib/agent/voice-narration"
 import { autopilotMessages } from "@/lib/agent/autopilot"
 import { workMessages } from "@/lib/agent/worklog"
+import { socialThreadFor } from "@/lib/social/thread"
+import { channelsMessages } from "@/lib/agent/channels"
 import { insightsMessages, insightsRunMessage } from "@/lib/agent/insights-narration"
 import { latestInsights, insightsFresh } from "@/lib/insights"
 import { hasPaidPlan, isComped } from "@/lib/billing"
 import { saveAgentSettings } from "@/lib/agent/settings"
 
-export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights"
+export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights" | "social" | "channels"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
+  { key: "channels", label: "Your marketing channels", blurb: "Everything I work on, what’s connected and what to connect next" },
+  { key: "social", label: "Social accounts & posts", blurb: "Connect Facebook, Instagram, LinkedIn, TikTok and X; see what’s scheduled and what went out" },
   { key: "insights", label: "What’s working", blurb: "What’s working and what isn’t, from your real numbers, and what to create next" },
   { key: "work", label: "What I’ve done", blurb: "Every step I took for you, day by day" },
   { key: "voice", label: "Your brand & voice", blurb: "Your logo, colours, language, tone and voice, learned from your own site, with options to pick from" },
@@ -181,6 +185,12 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       if (!insightsFresh(i)) return { autorun: ["insights"], messages: [insightsRunMessage()] }
       return { autorun: [], messages: insightsMessages(i, { google: !!user.integration }) }
     }
+
+    case "channels":
+      return { autorun: [], messages: await channelsMessages(user) }
+
+    case "social":
+      return { autorun: [], messages: await socialThreadFor(user) }
 
     case "autopilot":
       return { autorun: [], messages: await autopilotMessages(user) }

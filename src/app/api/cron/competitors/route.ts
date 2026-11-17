@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { asUser } from "@/lib/usage"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { runAutoDiscovery } from "@/lib/discover-competitors"
@@ -27,6 +28,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   let processed = 0
   let discovered = 0
   for (const u of users) {
+      asUser(u.id)
     const existing = await db.competitor.count({ where: { userId: u.id } })
     if (existing > 0) continue // already has competitors — skip to save SERP spend
     try {

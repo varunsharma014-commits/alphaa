@@ -104,3 +104,32 @@ of the approve-then-post flow.
 
 When an approval lands: build that feature's screens, record the screencast if the review
 needs one, then set `NEXT_PUBLIC_GROWTH_ON_SALE=1` on Railway once ads + social are live.
+
+
+---
+
+## Social posting: what Varun sets up (built 2026-11-17)
+
+The code to connect, schedule and publish is live (`src/lib/social/`). Each platform turns on
+the moment its keys are on Railway; until then the dashboard says "coming soon".
+
+| Platform | Create the app at | Callback URL to register | Railway env vars | Approval needed before customers (not just you) can use it |
+|---|---|---|---|---|
+| Facebook + Instagram | developers.facebook.com → the Alphaa app → add "Facebook Login for Business" | `https://alphaa.app/api/social/callback/meta` | `META_APP_ID`, `META_APP_SECRET` | Business Verification + App Review for `pages_show_list`, `pages_manage_posts`, `pages_read_engagement`, `instagram_basic`, `instagram_content_publish`, `business_management` (section 2 above). Works today for people with a role on the app. |
+| LinkedIn | linkedin.com/developers → app "Alphaa" → Products: "Sign In with LinkedIn using OpenID Connect" + "Share on LinkedIn" (self-serve) | `https://alphaa.app/api/social/callback/linkedin` | `LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET` (+ `LINKEDIN_ORG_SCOPES=1` once Community Management is approved) | Personal profiles: none. Company Pages: Community Management API (section 3 above). |
+| TikTok | developers.tiktok.com → app → Login Kit + Content Posting API (Direct Post), verify the domain `alphaa.app` | `https://alphaa.app/api/social/callback/tiktok` | `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET` (+ `TIKTOK_AUDITED=1` after the audit) | Content Posting API audit. Until then posts are private ("only me"). |
+| X | developer.x.com → project → app → User authentication: OAuth 2.0, Web App, read + write | `https://alphaa.app/api/social/callback/x` | `X_CLIENT_ID`, `X_CLIENT_SECRET` | None, but posting volume depends on the X API plan (the free tier is very limited). |
+
+Google Business Profile posting already works through the existing Google connection.
+
+## Extra brands
+
+Every brand after the first on one login gets the Stripe coupon `EXTRA_BRAND_50` (50% off,
+forever) at checkout. It exists in Stripe test mode (created 2026-11-17); checkout creates it
+automatically in live mode the first time it's needed.
+
+## Usage
+
+Founders see what Alphaa did for each brand and the AI tokens it used at
+`/dashboard/admin/usage`. To show estimated AI cost, set `AI_PRICES_JSON` on Railway, e.g.
+`{"claude-opus-5-5":[in,out],"claude-sonnet-4-6":[in,out]}` in dollars per million tokens.

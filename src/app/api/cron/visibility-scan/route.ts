@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { asUser } from "@/lib/usage"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { compedEmailWhere } from "@/lib/billing"
@@ -44,6 +45,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   let failed = 0
 
   for (const u of users) {
+      asUser(u.id)
     try {
       // Skip if scanned (via cron or manually) within the last 5 days.
       const lastAudit = await db.audit.findFirst({
