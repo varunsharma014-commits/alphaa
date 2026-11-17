@@ -11,6 +11,7 @@ import { anthropic } from "@/lib/claude"
 import { writePost, writeMeta, writeLocationPage } from "@/lib/content"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { generatePostImage } from "@/lib/images"
+import { generateGbpPost } from "@/lib/gbp-poster"
 
 // Writes a short, publish-ready FAQ section that closes a competitor gap —
 // from the business's own facts only. Unknown facts become [bracketed]
@@ -19,7 +20,7 @@ const body = z.object({
   topic: z.string().min(3).max(200),
   competitor: z.string().max(200).optional(),
   // post: a blog post; meta: page title + description; location: a location page.
-  mode: z.enum(["faq", "post", "meta", "location"]).optional(),
+  mode: z.enum(["faq", "post", "meta", "location", "gbp", "social"]).optional(),
   url: z.string().url().max(500).optional(),
   locationId: z.string().max(40).optional(),
 })
@@ -52,6 +53,28 @@ export async function POST(req: Request) {
       const img = await generatePostImage(user.id, { title: p.title, businessType: user.businessType, city: user.city })
       const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null } } })
       return NextResponse.json({ title: p.title, text: p.markdown, draftId: row.id, image: img?.url ?? null })
+    }
+    if (input.mode === "gbp") {
+      const integ = await db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationName: true } })
+      const g = await generateGbpPost(integ?.gmbLocationName ?? user.businessName ?? "Our Business", user.businessType ?? "local business", user.city ?? "", "UPDATE", input.topic, await voiceFor(user.id).catch(() => null))
+      const post = await db.gbpPost.create({ data: { userId: user.id, content: g.content, postType: "UPDATE", status: "draft" } })
+      return NextResponse.json({ title: "Google listing update", text: g.content, postId: post.id })
+    }
+    if (input.mode === "social") {
+      const voice = await voiceFor(user.id).catch(() => null)
+      const res = await anthropic.messages.create({
+        model: "claude-sonnet-5-5",
+        max_tokens: 700,
+        messages: [{ role: "user", content: `Write one social media post (Facebook / Instagram / LinkedIn) for this business about: "${input.topic}".
+Hook in the first line, then 2-4 short lines that give the reader something useful, then one simple call to action. Under 90 words. At most 3 hashtags at the end, only if they fit. Use only the facts below; never invent prices, numbers, awards or guarantees. Never say "best", "#1" or "leading". Return only the post text.
+
+FACTS
+${facts}` }],
+      })
+      const text = res.content[0]?.type === "text" ? res.content[0].text.trim() : ""
+      if (!text) throw new Error("empty")
+      await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Wrote a social post: “${input.topic}”`, metadata: { topic: input.topic, text, kind: "social" } } })
+      return NextResponse.json({ title: "Social post", text })
     }
     if (input.mode === "meta") {
       const url = input.url ?? user.websiteUrl ?? ""

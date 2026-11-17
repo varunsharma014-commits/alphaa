@@ -30,6 +30,8 @@ export type AgentSettings = {
   voice?: import("@/lib/voice").Voice
   /** What I do without asking (lib/agent/autopilot.ts). Blog/Google posts use autoPublishPosts. */
   autopilot?: Autopilot
+  /** When the owner last opened "What's working" (the briefing card shows weekly until then). */
+  insightsSeenAt?: string
   /** The first-visit moment: the AI answer shown once, and when the owner saw it (lib/agent/first-answer.ts). */
   firstAnswer?: import("@/lib/agent/first-answer").FirstAnswer
 }

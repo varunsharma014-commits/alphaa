@@ -5,6 +5,7 @@ import { agent } from "@/lib/agent/types"
 import type { RailData } from "@/lib/agent/feed"
 import { answersMessages, securityMessages } from "@/lib/agent/check-narration"
 import { voiceMessages } from "@/lib/agent/voice-narration"
+import { insightsMessages } from "@/lib/agent/insights-narration"
 
 // Dev-only: renders the app shell with sample messages so the agent UI can be
 // checked in a browser without a Clerk session. 404s in production.
@@ -41,7 +42,20 @@ export default function PreviewPage() {
     { text: "Wrote and published a post: “How long does a sourdough loaf stay fresh?”", at: new Date(now - 60_000).toISOString(), href: "https://example.com" },
     { text: "Rewrote your page title and description so Google and AI know what you do", at: new Date(now).toISOString(), href: null },
   ] }])
+  const insights = insightsMessages({
+    at: new Date().toISOString(),
+    sources: ["Google Search Console", "Google Analytics", "the questions I ask ChatGPT, Gemini, Claude and Perplexity each week", "your competitors’ websites"],
+    working: [{ key: "a", text: "“dentist austin” brought 41 clicks from Google in the last 28 days, up 11 from the 4 weeks before." }, { key: "b", text: "The post I published, “What happens at a child’s first dental visit?”, got 64 views in the last 28 days." }],
+    notWorking: [{ key: "c", text: "“emergency dentist austin” was seen 420 times on Google, but you’re around position 11, just off the first page." }, { key: "d", text: "When customers ask AI “Emergency dentist open Saturday in Austin”, it doesn’t name you. It names Austin Family Dental and SmileNow." }],
+    niche: [{ key: "e", text: "Austin Family Dental is the business AI names most in your area: 7 times across 12 answers." }],
+    ideas: [
+      { title: "What should you do in a dental emergency in Austin?", format: "blog", why: "“emergency dentist austin” was seen 420 times but you’re around position 11, and AI names Austin Family Dental instead of you.", keys: ["c"] },
+      { title: "Teeth whitening: what to expect at your first visit", format: "google", why: "Your whitening page is your most visited page after the homepage.", keys: ["a"] },
+      { title: "3 things parents ask before a child’s first visit", format: "social", why: "Your post about a child’s first visit got 64 views in 28 days.", keys: ["b"] },
+    ],
+  }, { google: true })
   const messages = [
+    ...insights,
     log,
     ...voice,
     ...sample,

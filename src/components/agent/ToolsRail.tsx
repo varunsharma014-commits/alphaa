@@ -17,6 +17,7 @@ const GROUPS: { label: string; icon: typeof Bot; items: Item[] }[] = [
   {
     label: "Your agent", icon: AgentIcon,
     items: [
+      { href: "/dashboard?ask=insights", ask: "insights", label: "What’s working", icon: Lightbulb },
       { href: "/dashboard?ask=work", ask: "work", label: "What I’ve done", icon: ListChecks },
       { href: "/dashboard?ask=voice", ask: "voice", label: "How I sound", icon: Mic },
       { href: "/dashboard?ask=autopilot", ask: "autopilot", label: "What I do without asking", icon: ToggleRight },

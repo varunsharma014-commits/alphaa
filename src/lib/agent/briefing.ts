@@ -104,12 +104,13 @@ export function ledgerText(type: string, title: string, meta: Record<string, unk
     case "handoff_sent": return title
     case "review_request": return title
     case "voice_learned": return "Learned how your business sounds from your website"
+    case "insights": return "Looked at what’s working for you and in your niche"
     case "win": return meta.kind === "engine_named" ? null : title.replace(/^🎉\s*/u, "")
     case "guarantee_credit": return title
     default: return null
   }
 }
-export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "win", "guarantee_credit"]
+export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "insights", "win", "guarantee_credit"]
 
 // The weekly AI re-check runs Wednesdays 09:00 UTC (lib/cron-scheduler.ts).
 export function nextCheck(now = new Date()): string {
@@ -186,6 +187,8 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
       inbox.push({ kind: "post", id: d.id, title: `I wrote a new post for your website: “${m.title ?? "New post"}”`, text: m.markdown, image: m.imageId ? imageUrl(m.imageId) : null })
     }
   }
+  // Weekly: what's working, what isn't, and what to create next.
+  if (hasPaidPlan(user) && (!settings.insightsSeenAt || Date.now() - Date.parse(settings.insightsSeenAt) > 7 * 86_400_000)) inbox.push({ kind: "fix", id: "insights", title: "What’s working, what isn’t, and what to post next", text: "I looked at your Google searches, website visits, what AI says when customers ask, and what your competitors are publishing. Here’s what the numbers say, with ideas I can write for you in one tap.", topic: "insights", cta: "Show me what’s working" })
   // Once: show the owner how I'll sound, learned from their own words, with options to change it.
   if (hasPaidPlan(user) && !settings.voice?.pickedAt) inbox.push({ kind: "fix", id: "voice", title: "Here’s how I’ll sound when I write for you", text: "I read your website and the replies you’ve written, and wrote three ways I could sound, in your language. I’m using the closest match. Pick another, or set the tone, emoji and length, in one tap.", topic: "voice", cta: "Show me my voice" })
   if (!user.integration) inbox.push({ kind: "connect", id: "google", title: "Connect your Google listing", text: "Then I can reply to your reviews and post updates to Google for you. It takes about a minute.", href: "/api/integrations/google/connect?go=1", cta: "Connect Google" })

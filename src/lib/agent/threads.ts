@@ -17,9 +17,14 @@ import { trackingMessages } from "@/lib/agent/tracking-narration"
 import { voiceMessages, voiceRunMessage } from "@/lib/agent/voice-narration"
 import { autopilotMessages } from "@/lib/agent/autopilot"
 import { workMessages } from "@/lib/agent/worklog"
+import { insightsMessages, insightsRunMessage } from "@/lib/agent/insights-narration"
+import { latestInsights, insightsFresh } from "@/lib/insights"
+import { hasPaidPlan, isComped } from "@/lib/billing"
+import { saveAgentSettings } from "@/lib/agent/settings"
 
-export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot"
+export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
+  { key: "insights", label: "What’s working", blurb: "What’s working and what isn’t, from your real numbers, and what to create next" },
   { key: "work", label: "What I’ve done", blurb: "Every step I took for you, day by day" },
   { key: "voice", label: "How I sound", blurb: "Your language, tone and voice, learned from your own words, with options to pick from" },
   { key: "autopilot", label: "What I do without asking", blurb: "Approve once: posts, review replies, social, email and ads" },
@@ -161,6 +166,20 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
     case "voice": {
       const v = (await getAgentSettings(user.id)).voice
       return v ? { autorun: [], messages: voiceMessages(v) } : { autorun: ["voice"], messages: [voiceRunMessage()] }
+    }
+
+    case "insights": {
+      if (!hasPaidPlan(user) && !isComped(user.email)) {
+        return { autorun: [], messages: [agent([
+          { kind: "text", text: "This comes with every paid plan.", big: true },
+          { kind: "text", text: "Each week I read your Google search results, website visits, what AI says about you and your competitors, then tell you what’s working and what to create next." },
+          { kind: "chips", items: [{ label: "See plans", action: { type: "link", href: "/dashboard/settings/billing" }, primary: true }] },
+        ], "in-upgrade")] }
+      }
+      await saveAgentSettings(user.id, { insightsSeenAt: new Date().toISOString() })
+      const i = await latestInsights(user.id)
+      if (!insightsFresh(i)) return { autorun: ["insights"], messages: [insightsRunMessage()] }
+      return { autorun: [], messages: insightsMessages(i, { google: !!user.integration }) }
     }
 
     case "autopilot":

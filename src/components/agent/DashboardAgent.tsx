@@ -7,6 +7,7 @@ import { ASK_EVENT, type AskDetail } from "./AgentShell"
 import { AgentFeed, Composer } from "./AgentFeed"
 import { agent, mid, user as userMsg, type AgentOpEndpoint, type Block, type Chip, type Message, type SiteOp, type Task } from "@/lib/agent/types"
 import { voiceRunMessage } from "@/lib/agent/voice-narration"
+import { insightsRunMessage } from "@/lib/agent/insights-narration"
 import { securityMessages, profileMessages, listingsMessages, bingMessages } from "@/lib/agent/check-narration"
 import type { EngineKey } from "@/lib/agent/types"
 import { siteCheckBlocks, describeSchemas } from "@/lib/agent/site-narration"
@@ -150,6 +151,20 @@ export function DashboardAgent({
       const d = data.data as never
       const msgs = task === "security" ? securityMessages(d, prefs.current.wpConnected) : task === "profiles" ? profileMessages(d) : task === "listings" ? listingsMessages(d) : bingMessages(d)
       push(...msgs.map((m) => ({ ...m, id: mid(m.id) })))
+      return
+    }
+    if (task === "insights") {
+      setMessages((prev) => [...prev.filter((m) => !["in-run", `${task}-run`].includes(base(m.id))), insightsRunMessage()])
+      let n = 0
+      const t = window.setInterval(() => {
+        n = Math.min(n + 1, 4)
+        setMessages((prev) => prev.map((m) => (base(m.id) === "in-run" ? { ...m, blocks: m.blocks.map((b) => (b.kind === "steps" ? { ...b, done: n } : b)) } : m)))
+      }, 8000)
+      const { ok, data } = await post<{ messages?: Message[] }>("/api/agent/insights")
+      window.clearInterval(t)
+      setMessages((prev) => prev.filter((m) => base(m.id) !== "in-run"))
+      if (!ok) return fail(data.error ?? "I couldn’t pull your numbers just now. I’ll try again shortly.")
+      swapIn(data.messages ?? [])
       return
     }
     if (task === "voice") {
@@ -314,6 +329,23 @@ export function DashboardAgent({
             { kind: "text", text: "Here’s the post — written to be the answer AI quotes. The highlighted bits are facts only you know: tap Edit and fill them in, then pick who publishes it." },
             { kind: "doc", title: d.title ?? "New post", meta: "draft · not published", text: d.text, docId, editable: true, markdown: true, image: d.image ?? undefined },
             { kind: "chips", items: siteChips("post", { title: d.title, text: d.text, docId, draftId: d.draftId }) },
+          ]))
+          return
+        }
+        if (a.mode === "gbp") {
+          const d = data as { text?: string; postId?: string }
+          push(agent([
+            { kind: "text", text: "Here’s the update for your Google listing. Edit anything, then post it." },
+            { kind: "doc", title: "Google listing update", meta: "draft · not posted", text: d.text, docId, editable: true },
+            { kind: "chips", items: d.postId ? [{ label: "Post it to Google", action: { type: "post-publish", postId: d.postId }, primary: true }, { label: "Delete it", action: { type: "post-delete", postId: d.postId } }] : [] },
+          ]))
+          return
+        }
+        if (a.mode === "social") {
+          push(agent([
+            { kind: "text", text: "Here’s the post, in your voice. Copy it to Facebook, Instagram or LinkedIn." },
+            { kind: "doc", title: "Social post", meta: "draft", text: data.text, docId, editable: true },
+            { kind: "chips", items: [{ label: "Copy it", action: { type: "copy", text: data.text, done: "Copied. Paste it into your post." }, primary: true }] },
           ]))
           return
         }
