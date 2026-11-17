@@ -61,7 +61,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ title: "Google listing update", text: g.content, postId: post.id })
     }
     if (input.mode === "social") {
-      const voice = await voiceFor(user.id).catch(() => null)
       const res = await anthropic.messages.create({
         model: "claude-sonnet-5-5",
         max_tokens: 700,
