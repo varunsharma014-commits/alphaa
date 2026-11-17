@@ -10,10 +10,10 @@ import { HREFLANG } from "@/content/locales"
 // what Alphaa is, its category, and its price. No aggregateRating (we won't
 // publish unverifiable review counts).
 export const metadata: Metadata = pageMeta({
-  title: "Get Recommended by ChatGPT, Gemini, Claude & Perplexity | Alphaa",
+  title: "Alphaa: AI Marketing Agent for Small Businesses | Social, Ads, SEO & AI Search",
   absolute: true,
   description:
-    "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. It does the work, you tap approve. $99/month, month to month.",
+    "Run your entire marketing with an AI agent: social media, Google and Meta ads, SEO, blogs, email, and getting recommended by ChatGPT. In your voice, every week. From $99/month, month to month.",
   path: "/",
 })
 // Same page in each market's language (hreflang).
@@ -24,11 +24,11 @@ const softwareSchema = {
   "@type": "SoftwareApplication",
   name: "Alphaa",
   applicationCategory: "BusinessApplication",
-  applicationSubCategory: "AI Search Optimization (AEO)",
+  applicationSubCategory: "AI Marketing Agent",
   operatingSystem: "Web",
   url: "https://alphaa.app",
   description:
-    "Alphaa is an AI agent that works to get businesses recommended by ChatGPT, Gemini, Claude and Perplexity: it checks what those AIs say about you, fixes what they can't read on your site, writes the pages they quote, and keeps your Google Business Profile active — from $99/month, month to month, instead of a $2,000/month SEO agency.",
+    "Alphaa is an AI marketing agent for small businesses. Every week it runs their marketing: social media posts with branded images, Google Business Profile updates, blog posts, review replies, website fixes so ChatGPT, Gemini, Claude and Perplexity can recommend them, and, on the Growth plan (early access), Google and Meta ads and email campaigns. Written in the owner's own voice. From $99/month, month to month.",
   offers: [
     {
       "@type": "Offer",

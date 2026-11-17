@@ -7,6 +7,7 @@ import { INTEGRATIONS, INTEGRATIONS_CHECKED } from "@/content/integrations"
 import { HREFLANG, LOCALE_LIST, MARKETS, type LocaleKey } from "@/content/locales"
 import { GUIDES } from "@/content/markets/guides"
 import { tradeAlternates } from "@/content/markets/equivalents"
+import { SERVICES, SERVICES_UPDATED } from "@/content/services"
 
 const BASE_URL = "https://alphaa.app"
 
@@ -15,12 +16,12 @@ const BASE_URL = "https://alphaa.app"
 // changed on every deploy — so it learns to ignore our dates. Bump the date
 // here when you actually change one of these pages.
 const PAGE_UPDATED: Record<string, string> = {
-  "/": "2026-10-30",
-  "/start": "2026-10-30",
+  "/": "2026-11-17",
+  "/start": "2026-11-17",
   "/for": "2026-10-29",
   "/pricing": "2026-10-30",
   "/about": "2026-11-14",
-  "/how-it-works": "2026-10-29",
+  "/how-it-works": "2026-11-17",
   "/scan": "2026-10-29",
   "/case-studies": "2026-10-29",
   "/refer": "2026-10-29",
@@ -65,7 +66,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ]
 
+  const servicePages: MetadataRoute.Sitemap = [
+    { url: `${BASE_URL}/services`, lastModified: new Date(SERVICES_UPDATED), changeFrequency: "monthly", priority: 0.9 },
+    ...SERVICES.map((s) => ({ url: `${BASE_URL}/services/${s.slug}`, lastModified: new Date(SERVICES_UPDATED), changeFrequency: "monthly" as const, priority: 0.9 })),
+  ]
+
   return [
+    ...servicePages,
     ...comparePages,
     ...integrationPages,
     {

@@ -7,6 +7,7 @@ import { Menu, X, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
+  { href: "/services", label: "Services" },
   { href: "/how-it-works", label: "How it Works" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/pricing", label: "Pricing" },

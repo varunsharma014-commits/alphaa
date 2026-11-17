@@ -2,9 +2,9 @@ import { StartAgent } from "@/components/agent/StartAgent"
 import { pageMeta } from "@/lib/seo"
 
 export const metadata = pageMeta({
-  title: "See what AI says about your business",
+  title: "Start with your AI marketing agent",
   description:
-    "Alphaa is an AI Agent that gets local businesses recommended by ChatGPT, Gemini, Claude and Perplexity. Give it your website and see what the AIs say today.",
+    "Give Alphaa your website. Your AI marketing agent checks where customers find you, including ChatGPT and Google, then writes your first week of marketing in your voice and your brand colours.",
   path: "/start",
 })
 
@@ -12,7 +12,7 @@ export default function StartPage() {
   // The conversation renders in the browser, so crawlers saw no heading at all.
   return (
     <>
-      <h1 className="sr-only">See what ChatGPT, Gemini, Claude and Perplexity say about your business</h1>
+      <h1 className="sr-only">Start with your AI marketing agent: give it your website and get your first week of marketing</h1>
       <StartAgent />
     </>
   )

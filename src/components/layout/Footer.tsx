@@ -4,13 +4,20 @@ import { MarketSwitcher } from "@/components/layout/MarketSwitcher"
 import { CookieSettingsLink } from "@/components/common/CookieSettingsLink"
 
 const footerLinks = {
+  Services: [
+    { href: "/services/social-media-management", label: "Social media management" },
+    { href: "/services/ads-management", label: "Ads management" },
+    { href: "/services/ai-search-optimization", label: "SEO & AI search" },
+    { href: "/services/content-writing", label: "Blog & content writing" },
+    { href: "/services/email-marketing", label: "Email marketing" },
+  ],
   Product: [
     { href: "/how-it-works", label: "How it works" },
     { href: "/case-studies", label: "Case studies" },
     { href: "/pricing", label: "Pricing" },
     { href: "/compare", label: "Compare" },
     { href: "/integrations", label: "Connections" },
-    { href: "/start", label: "Free AI check" },
+    { href: "/start", label: "Get started" },
     { href: "/refer", label: "Refer & Earn" },
   ],
   Company: [
@@ -53,7 +60,7 @@ export function Footer() {
   return (
     <footer className="bg-[#f5f5f7] text-[12px] leading-[1.33] tracking-[-0.01em] text-[#515154]">
       <div className="max-w-[980px] mx-auto px-4 sm:px-6 pt-10 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
@@ -61,7 +68,7 @@ export function Footer() {
               <span className="text-[#1d1d1f] font-semibold text-[14px]">alphaa</span>
             </Link>
             <p className="text-[#515154] text-[12px] leading-[1.5] max-w-xs mb-3">
-              I work to get your business named by the 4 AIs I check every week: ChatGPT, Claude, Gemini and Perplexity. $99/month.
+              Your AI marketing agent. I run your social media, ads, SEO, blogs and email every week, and work to get you recommended by ChatGPT, Claude, Gemini and Perplexity. From $99/month.
             </p>
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               {engines.map((e) => (

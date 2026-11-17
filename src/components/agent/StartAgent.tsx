@@ -55,7 +55,7 @@ const PROGRESS_DONE: Record<string, number> = { site: 0, profile: 1, engines: 2,
 // Not shown as pills (they invited doubt at checkout) — answered when typed.
 const CANNED: Record<string, string> = {
   "What exactly will you do?":
-    "This week: fix everything in the checklist above — the FAQ page, the facts AI couldn’t find, the settings that keep AI out. Every week after: ask the four AIs your customers’ questions and tell you what changed, keep your Google listing active, draft replies to reviews, and watch what your competitors publish. Anything public gets a one-tap approve from you first. You never touch code.",
+    "Every week I run your marketing: posts for your Google listing and social media in your voice and brand colours, blog posts that answer what your customers ask, replies to your reviews, and fixes to your website so ChatGPT and Google can recommend you. On Growth I also run your Google and Meta ads and email your past customers. You approve what goes out, or let me run on my own. You never touch code.",
   "Is this real?":
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
@@ -99,7 +99,7 @@ function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded =
           ...(PLAN_LINE[plan] ? [{ kind: "text" as const, text: PLAN_LINE[plan] }] : []),
           { kind: "text", text: `${localPrice(plan)} a month. Month to month.`, big: true },
           { kind: "text", text: `${GUARANTEE} Cancel online in a minute, no contract. I start the day you say go.` },
-          { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: CHECKOUT }, primary: true } },
+          { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: CHECKOUT }, primary: true } },
         ],
         "greet"
       ),
@@ -114,8 +114,8 @@ function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded =
             { kind: "text", text: "What’s your website?", big: true },
           ]
         : [
-            { kind: "text", text: "Hi. I’m Alphaa, an AI agent." },
-            { kind: "text", text: "Give me your website and I’ll get to work." },
+            { kind: "text", text: "Hi. I’m Alphaa, your AI marketing agent." },
+            { kind: "text", text: "Give me your website. I’ll see where your customers find you today, then write your first week of marketing." },
             // In the homepage hero the question sits under the work list instead (AgentWorkPreview).
             ...(embedded ? [] : [{ kind: "text" as const, text: "What’s your website?", big: true }]),
           ],
@@ -223,7 +223,7 @@ export function StartAgent({
     const where = ident.city ? `, ${ident.city}` : ""
     push(
       agent([
-        { kind: "text", text: `${ident.businessName}${where}. Give me 60 seconds — I’m going to ask the AIs about you the way a customer would.` },
+        { kind: "text", text: `${ident.businessName}${where}. First, let me see where your customers find you today. I’ll ask the AIs about you the way a customer would. About 60 seconds.` },
         { kind: "steps", items: STEP_LABELS(domain, !!ident.city), done: 0, ticker: STEP_TICKER(domain) },
       ], "scan-steps")
     )
@@ -343,7 +343,7 @@ export function StartAgent({
         ...(PLAN_LINE[buyPlan] ? [{ kind: "text", text: PLAN_LINE[buyPlan] } as Block] : []),
         { kind: "text", text: `${localPrice(buyPlan)} a month. Month to month.`, big: true },
         { kind: "text", text: `${GUARANTEE} Cancel online in a minute, no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
-        { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
+        { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
       ], "ask")
     )
     setBusy(false)
@@ -355,7 +355,7 @@ export function StartAgent({
       ...(PLAN_LINE[buyPlan] ? [{ kind: "text", text: PLAN_LINE[buyPlan] } as Block] : []),
       { kind: "text", text: afterWeek ? "Want me to post these and do this every week?" : `${localPrice(buyPlan)} a month. Month to month.`, big: true },
       { kind: "text", text: `${afterWeek ? `${localPrice(buyPlan)} a month, month to month. ` : ""}${GUARANTEE} Cancel online in a minute, no contract.` },
-      { kind: "cta", chip: { label: afterWeek ? "Get started →" : "Get recommended by AI →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
+      { kind: "cta", chip: { label: afterWeek ? "Get started →" : "Get started →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
     ], "ask")
   }
 
@@ -589,7 +589,7 @@ export function StartAgent({
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
           { kind: "text", text: `If you want me to actually fix this — not just report it — start today and I begin this week. ${localPrice()} a month, cancel any time. ${GUARANTEE}` },
-          { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
+          { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
           {
             kind: "chips",
             items: [

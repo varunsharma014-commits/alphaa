@@ -2,7 +2,6 @@
 // Server-rendered so every word is crawlable; the interactive pieces live in HomeV2Client.
 // Rules: sell the outcome, not the mechanics. No invented ratings, quotes or results:
 // every example business, number and answer is labelled as an example.
-import { Fragment } from "react"
 import Link from "next/link"
 import "./home-v2.css"
 import { AiAnswers, Autopilot, BrandStudio, CostTable, FeatureVideo } from "./HomeV2Client"
@@ -10,6 +9,7 @@ import { StartAgent, type StartGreet } from "@/components/agent/StartAgent"
 import { GUARANTEE_LINE } from "@/lib/offer-copy"
 import { GROWTH_EARLY_ACCESS_HREF, GROWTH_ON_SALE } from "@/lib/growth"
 import { AUTHOR } from "@/lib/author"
+import { SERVICE_BY_SLUG, type ServiceSlug } from "@/content/services"
 
 const Tick = () => (
   <span className="hv-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7" /></svg></span>
@@ -18,9 +18,11 @@ const Shield = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 9.9C8 19.4 5 15.6 5 11V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg>
 )
 
-const SERVICES: [string, string][] = [
-  ["Social Media Management", "#ffd6e0"], ["Ads Management", "#d6ecff"], ["SEO & AEO", "#dcf7e3"], ["Content Writing", "#fff0c2"],
-  ["Email Marketing", "#eadcff"], ["Website Fixes", "#ffe3cc"], ["Analytics & Tracking", "#d4f4f2"],
+const PILLS: [string, string, string][] = [
+  ["Social Media Management", "#ffd6e0", "/services/social-media-management"], ["Ads Management", "#d6ecff", "/services/ads-management"],
+  ["SEO & AEO", "#dcf7e3", "/services/ai-search-optimization"], ["Content Writing", "#fff0c2", "/services/content-writing"],
+  ["Email Marketing", "#eadcff", "/services/email-marketing"], ["Website Fixes", "#ffe3cc", "/services/ai-search-optimization"],
+  ["Analytics & Tracking", "#d4f4f2", "/services/ads-management"],
 ]
 
 // Drawn avatars (no photos or AI renders of people).
@@ -42,63 +44,8 @@ function Face({ bg, skin, hair, style }: { bg: string; skin: string; hair: strin
   )
 }
 
-const FEATURES = [
-  {
-    tag: "Social Media Content", c: "#ffd6e0", title: "Show up every week without lifting a finger.",
-    body: "No more staring at a blank screen at 11pm. Your Facebook, Instagram and LinkedIn stay active with posts people stop scrolling for, written in your voice and made in your brand colours.",
-    points: ["Planned around what your customers care about this week", "Your logo and colours on every image", "Posted for you, or ready with one tap"],
-    label: "Social posts · this week",
-    scenes: [
-      <Fragment key="s1"><div className="say">Run my social for this week</div><div className="row"><i />Reading your brand: logo, colours, voice</div><div className="row"><i />Checking which posts got the most likes</div></Fragment>,
-      <Fragment key="s2"><div className="mini"><div style={{ background: "#0b3d91", color: "#fff" }}>Saturday visits are back</div><div style={{ background: "#f6d34a", color: "#111" }}>Croissants out at 7</div><div style={{ background: "#e4572e", color: "#fff" }}>Freeze warning tonight</div></div><div className="box"><b>3 posts ready</b> · in your voice, with your logo</div></Fragment>,
-      <Fragment key="s3"><div className="box"><b>Posted to Instagram</b> · Tue 9:00</div><div className="box"><b>Posted to Facebook</b> · Thu 12:00</div><div className="box"><b>Posted to LinkedIn</b> · Fri 8:30</div></Fragment>,
-    ],
-  },
-  {
-    tag: "Ads Management", c: "#d6ecff", title: "Stop paying for clicks that never call.",
-    body: "Your ads reach people already looking for what you sell. Every week I cut what isn’t bringing customers and put the money into what is, so the same budget brings in more.",
-    points: ["Never spends more than your monthly budget", "Your budget goes to Google and Meta. We never take a cut", "See which ads brought calls and bookings"],
-    label: "Ads · weekly tune-up",
-    scenes: [
-      <Fragment key="s4"><div className="say">How are my ads doing?</div><div className="box"><b>Google Search</b> · 14 calls this week</div><div className="box"><b>Meta</b> · 6 form fills</div></Fragment>,
-      <Fragment key="s5"><div className="row"><i />Paused 3 keywords with clicks but no calls</div><div className="row"><i />Moved $40 to “emergency plumber”</div><div className="row"><i />Wrote 2 fresh ad versions</div></Fragment>,
-      <Fragment key="s6"><div className="box">Budget used <b>$412 of $500</b></div><div className="bar"><span style={{ width: "82%" }} /></div><div className="box"><b>Same budget, more calls.</b> I’ll keep tuning.</div></Fragment>,
-    ],
-  },
-  {
-    tag: "Content Writing", c: "#fff0c2", title: "Be the answer when customers search.",
-    body: "Your customers are asking Google and ChatGPT questions right now. I find the ones you’re missing and publish the answer on your website, so the next person who asks finds you, not a competitor.",
-    points: ["Topics picked from what your customers actually search", "Written to be quoted by AI assistants", "Published to WordPress, Webflow, Shopify or Wix"],
-    label: "Blog · new post",
-    scenes: [
-      <Fragment key="s7"><div className="row"><i />Found a question you’re losing: “emergency dentist open weekends”</div><div className="row"><i />Seen 420 times. You’re on page two.</div></Fragment>,
-      <Fragment key="s8"><div className="box"><b>What to do in a dental emergency on a weekend</b><br />Most dental emergencies can wait a few hours. Here’s how to tell…</div><div className="box">5 questions answered · FAQ added</div></Fragment>,
-      <Fragment key="s9"><div className="box"><b>Published to your website</b> · /blog/weekend-dental-emergency</div><div className="row"><i />Sent to Google to index</div></Fragment>,
-    ],
-  },
-  {
-    tag: "SEO & AEO", c: "#dcf7e3", title: "Get recommended by ChatGPT, not your competitor.",
-    body: "People now ask AI who to call. When ChatGPT, Gemini, Claude or Perplexity names someone else, you lose that customer without ever knowing. I fix what keeps you out and check every week.",
-    points: ["Weekly checks across 4 AI assistants", "Fixes what AI can’t read on your website", "Keeps your Google listing busy and fresh"],
-    label: "AI visibility · weekly check",
-    scenes: [
-      <Fragment key="s10"><div className="say">Does ChatGPT recommend me?</div><div className="row"><i />Asking ChatGPT, Gemini, Claude and Perplexity</div></Fragment>,
-      <Fragment key="s11"><div className="box"><b>ChatGPT</b> · names you</div><div className="box"><b>Gemini</b> · names a competitor</div><div className="box"><b>Perplexity</b> · names you</div></Fragment>,
-      <Fragment key="s12"><div className="row"><i />Added the business facts Gemini couldn’t read</div><div className="row"><i />Wrote the page it quotes for this question</div><div className="big">3 of 4</div><div>AIs now name you</div></Fragment>,
-    ],
-  },
-  {
-    tag: "Email Marketing", c: "#eadcff", title: "Turn past customers into repeat customers.",
-    body: "Your easiest sale is someone who already bought from you. I send short, friendly emails at the right moment, reminders, seasonal news and offers, so they come back to you instead of wandering off.",
-    points: ["Written in your voice, sent at the right time", "Unsubscribe link and legal footer handled", "See who came back"],
-    label: "Email · this week",
-    scenes: [
-      <Fragment key="s13"><div className="row"><i />Found 214 customers due for a check-up</div><div className="row"><i />Writing a reminder in your voice</div></Fragment>,
-      <Fragment key="s14"><div className="box"><b>Subject: Time for your check-up?</b><br />Hi Sam, it’s been six months. Saturday mornings are open again…</div></Fragment>,
-      <Fragment key="s15"><div className="box"><b>Sent to 214</b> · Tue 10:00</div><div className="box">58% opened · 17 booked</div></Fragment>,
-    ],
-  },
-]
+// Feature rows come from the service pages' content, in this order.
+const FEATURE_ORDER: ServiceSlug[] = ["social-media-management", "ads-management", "content-writing", "ai-search-optimization", "email-marketing"]
 
 const WHY = [
   { t: "Every week, not once a month", p: "Your marketing never takes a week off, even when you do.", d: "M4 6h16M4 12h16M4 18h10" },
@@ -127,7 +74,7 @@ export function HomeV2() {
             <b>Your AI marketing agent</b>
           </span>
           <ul className="hv-svc" aria-label="What your AI agent does">
-            {SERVICES.map(([s, c]) => <li key={s} style={{ ["--c" as string]: c }}><Tick />{s}</li>)}
+            {PILLS.map(([s, c, href]) => <li key={s} style={{ ["--c" as string]: c }}><Link href={href}><Tick />{s}</Link></li>)}
           </ul>
           <h1>Run your entire marketing <span>using an AI agent</span></h1>
           <div className="hv-proof">
@@ -175,17 +122,22 @@ export function HomeV2() {
             <h2 className="hv-h2" style={{ marginTop: 10 }}>One agent. Your whole marketing.</h2>
             <p style={{ marginTop: 14 }}><span className="hv-example">Example screens and numbers</span></p>
           </div>
-          {FEATURES.map((f, k) => (
-            <div key={f.tag} className={`hv-feat ${k % 2 ? "hv-feat--flip" : ""}`}>
-              <FeatureVideo color={f.c} label={f.label} scenes={f.scenes} />
-              <div className="hv-feat__txt">
-                <span className="hv-tag" style={{ ["--c" as string]: f.c }}>{f.tag}</span>
-                <h3>{f.title}</h3>
-                <p>{f.body}</p>
-                <ul>{f.points.map((p) => <li key={p}><Tick /><span>{p}</span></li>)}</ul>
+          {FEATURE_ORDER.map((slug, k) => {
+            const sv = SERVICE_BY_SLUG[slug]
+            const f = sv.feature
+            return (
+              <div key={slug} className={`hv-feat ${k % 2 ? "hv-feat--flip" : ""}`}>
+                <FeatureVideo color={sv.color} label={f.label} scenes={f.scenes} />
+                <div className="hv-feat__txt">
+                  <span className="hv-tag" style={{ ["--c" as string]: sv.color }}>{sv.kicker}</span>
+                  <h3>{f.title}</h3>
+                  <p>{f.body}</p>
+                  <ul>{f.points.map((p) => <li key={p}><Tick /><span>{p}</span></li>)}</ul>
+                  <Link className="hv-more" href={`/services/${slug}`}>Learn more about {sv.name.toLowerCase().replace("seo & aeo", "SEO & AEO")} ›</Link>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 

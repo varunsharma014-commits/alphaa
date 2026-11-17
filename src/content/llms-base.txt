@@ -1,28 +1,35 @@
 # Alphaa
 
-> Alphaa is an AI agent that gets businesses recommended by AI assistants — ChatGPT, Gemini, Claude and Perplexity. It does the work an SEO agency would, for $99 a month: it reads your site the way AI does, fixes what AI can't find, writes what AI needs to quote, keeps your Google Business Profile active, and asks the AI assistants about you every week. You approve anything public with one tap.
+> Alphaa is an AI marketing agent for small businesses. It runs the marketing every week, in the owner's own voice and brand colours: social media posts with branded images, Google Business Profile updates, blog posts that answer what customers ask, review replies, website fixes so AI assistants (ChatGPT, Gemini, Claude, Perplexity) and Google can recommend the business, and on the Growth plan Google and Meta ads and email campaigns. The owner can say "run my marketing for this week" by typing or out loud, approves anything public with one tap, or lets the agent run on its own. From $99 a month.
 
 ## Key facts
 
-- Price: from $99/month (Starter). Pro is $199/month, Full Service (a human does the setup and publishing) is $299/month.
+- Price: from $99/month (Starter). Pro is $199/month, Full Service (a human does the setup and publishing) is $299/month. Growth ($499/month, early access) adds social media, Google and Meta ads and email campaigns; ad spend is paid to Google and Meta directly and never marked up.
+- Services: social media management, ads management, SEO and AI search (AEO), blog and content writing, email marketing. One agent does all of them.
 - Local prices (charged in local currency; Starter / Pro / Full Service a month): UK £79 / £159 / £239 (alphaa.app/uk); Germany, France and Italy 99 € / 199 € / 299 € (alphaa.app/de, /fr, /it); UAE AED 369 / 739 / 1,099 (alphaa.app/ae). US, Canada and everywhere else: $99 / $199 / $299 USD. Business customers only; Alphaa is not VAT-registered and adds no VAT.
 - 90-day AI Visibility Guarantee: if none of ChatGPT, Gemini, Claude or Perplexity names the business in Alphaa's weekly checks during the first 90 days on a paid plan, the next month is free (credited automatically, once per customer).
 - Month to month. No contract, no exit fees, cancel online in a minute. There is no free trial — the free check below is how you see what you'd get.
 - No technical skills needed: the agent does the work, the owner approves.
 - Built for local businesses (dentists, plumbers, restaurants, lawyers, clinics) in the US, Canada, the UK, Germany, France, Italy and the UAE, and also works for online businesses.
-- SEO agencies often charge $1,000+ a month (for example) and work on Google's ten blue links. Alphaa works on the single answer AI assistants give.
+- Agencies usually quote small businesses $500 to $3,000 a month per service (social media, local SEO, email) and $500 to $2,500 a month for ads management on top of ad spend, according to 2026 pricing guides. Alphaa does all of them from one plan.
 
-## Free check
+## Start
 
-- [See what AI says about you](https://alphaa.app/start) (also on the homepage): enter your website and, in about 60 seconds, the agent asks ChatGPT, Gemini, Claude and Perplexity a real customer question about your business, in your website's language, shows who they named instead, and runs 23 checks on what AI can read on your site. If three or four of the AIs name you, it also asks two broader buyer questions and reports how many of the 12 answers named you. The score is measured from those answers and the checks, never estimated. No card needed.
+- [Get started](https://alphaa.app/start) (also on the homepage): enter your website and, in about 60 seconds, the agent asks ChatGPT, Gemini, Claude and Perplexity a real customer question about your business, in your website's language, shows who they named instead, and runs 23 checks on what AI can read on your site. If three or four of the AIs name you, it also asks two broader buyer questions and reports how many of the 12 answers named you. The score is measured from those answers and the checks, never estimated. With an email address, the agent then writes the business's first week of marketing (a Google update and two social posts with images in the business's own logo and colours, planned around that week's local news), one per email. No card needed.
 
 ## Pages
 
 - [Home](https://alphaa.app/): What the agent does and how it works.
-- [Free check](https://alphaa.app/start): The 60-second check above.
+- [Get started](https://alphaa.app/start): The check and first week above.
+- [Services](https://alphaa.app/services): Everything the agent does, one page per service.
+  - [Social media management](https://alphaa.app/services/social-media-management): Facebook, Instagram and LinkedIn posts every week, in your voice, with branded images (Growth).
+  - [Ads management](https://alphaa.app/services/ads-management): tracking, Google and Meta campaigns and weekly tuning, never above your budget, no cut of ad spend (Growth).
+  - [SEO and AI search](https://alphaa.app/services/ai-search-optimization): get recommended by ChatGPT, Gemini, Claude and Perplexity and show up on Google (from $99).
+  - [Blog and content writing](https://alphaa.app/services/content-writing): posts that answer what customers search for, published to your site (from $99).
+  - [Email marketing](https://alphaa.app/services/email-marketing): emails that bring past customers back, only to people who agreed (Growth).
 - [How it works](https://alphaa.app/how-it-works): Step by step.
 - [About](https://alphaa.app/about): Who Alphaa is, what it does, contact details.
-- [Pricing](https://alphaa.app/pricing): Starter $99/month, Pro $199/month, Full Service $299/month. Month to month.
+- [Pricing](https://alphaa.app/pricing): Starter $99/month, Pro $199/month, Growth $499/month (early access), Full Service $299/month. Month to month.
 - [Blog](https://alphaa.app/blog): Plain-English guides on getting recommended by AI assistants.
 - [Integrations](https://alphaa.app/integrations): WordPress, Shopify and Webflow today; Wix coming soon.
 - [For dentists](https://alphaa.app/for/dentists), [plumbers](https://alphaa.app/for/plumbers), [HVAC](https://alphaa.app/for/hvac), [lawyers](https://alphaa.app/for/lawyers), [med spas](https://alphaa.app/for/med-spas), [restaurants](https://alphaa.app/for/restaurants)
