@@ -14,9 +14,15 @@ import { answersMessages, changeChips, profileMessages, listingsMessages, bingMe
 import { maxExtraLocations } from "@/lib/agent/settings"
 import { imageUrl } from "@/lib/images"
 import { trackingMessages } from "@/lib/agent/tracking-narration"
+import { voiceMessages, voiceRunMessage } from "@/lib/agent/voice-narration"
+import { autopilotMessages } from "@/lib/agent/autopilot"
+import { workMessages } from "@/lib/agent/worklog"
 
-export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking"
+export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
+  { key: "work", label: "What I’ve done", blurb: "Every step I took for you, day by day" },
+  { key: "voice", label: "How I sound", blurb: "Your language, tone and voice, learned from your own words, with options to pick from" },
+  { key: "autopilot", label: "What I do without asking", blurb: "Approve once: posts, review replies, social, email and ads" },
   { key: "reviews", label: "Reviews", blurb: "Your Google reviews and my reply drafts" },
   { key: "site", label: "Site Schema & Code", blurb: "What AI can read on your site, and the fixes I wrote" },
   { key: "answers", label: "AI Answers", blurb: "Every customer question, asked to all four AIs each week — and what they get wrong about you" },
@@ -148,6 +154,17 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
     // ── Tracking & Ads (Growth) ──────────────────────────────────────────
     case "tracking":
       return { autorun: [], messages: await trackingMessages(user) }
+
+    case "work":
+      return { autorun: [], messages: await workMessages(user.id) }
+
+    case "voice": {
+      const v = (await getAgentSettings(user.id)).voice
+      return v ? { autorun: [], messages: voiceMessages(v) } : { autorun: ["voice"], messages: [voiceRunMessage()] }
+    }
+
+    case "autopilot":
+      return { autorun: [], messages: await autopilotMessages(user) }
 
     // ── Maps & Listings ───────────────────────────────────────────────────
     case "listings": {

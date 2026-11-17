@@ -23,6 +23,9 @@ const schema = z.object({
 // Which thread to offer after the answer, so "what are my competitors doing?"
 // ends with the actual competitor cards, not just a paragraph.
 const TOPIC_RES: [string, RegExp][] = [
+  ["voice", /\b(tone|voice|sound like|language|formal|emoji)\b/i],
+  ["autopilot", /\bwithout asking\b|\bauto[- ]?(post|publish|pilot|reply)|\bbudget\b/i],
+  ["work", /\bwhat (have )?you (done|did)\b|\bwhat are you doing\b|\bactivity\b|\bwork log\b/i],
   ["competitors", /\bcompetit|\brivals?\b|\bthey (have|do)\b/i],
   ["reviews", /\breviews?\b|\bstars?\b|\bratings?\b/i],
   ["site", /\bschema\b|\bsite code\b|\bllms\.txt\b|\bstructured\b|\bwebsite fix|\bmy site\b/i],

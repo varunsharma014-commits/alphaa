@@ -24,7 +24,7 @@ export type InboxItem =
   | { kind: "review"; id: string; title: string; quote: string | null; text: string | null }
   | { kind: "gbp"; id: string; title: string; text: string }
   | { kind: "post"; id: string; title: string; text: string; image: string | null }
-  | { kind: "fix"; id: string; title: string; text: string; topic: string }
+  | { kind: "fix"; id: string; title: string; text: string; topic: string; cta?: string }
   | { kind: "connect"; id: string; title: string; text: string; href: string; cta: string }
 
 export type LedgerItem = { text: string; href: string | null; at: string }
@@ -186,6 +186,8 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
       inbox.push({ kind: "post", id: d.id, title: `I wrote a new post for your website: “${m.title ?? "New post"}”`, text: m.markdown, image: m.imageId ? imageUrl(m.imageId) : null })
     }
   }
+  // Once: show the owner how I'll sound, learned from their own words, with options to change it.
+  if (hasPaidPlan(user) && !settings.voice?.pickedAt) inbox.push({ kind: "fix", id: "voice", title: "Here’s how I’ll sound when I write for you", text: "I read your website and the replies you’ve written, and wrote three ways I could sound, in your language. I’m using the closest match. Pick another, or set the tone, emoji and length, in one tap.", topic: "voice", cta: "Show me my voice" })
   if (!user.integration) inbox.push({ kind: "connect", id: "google", title: "Connect your Google listing", text: "Then I can reply to your reviews and post updates to Google for you. It takes about a minute.", href: "/api/integrations/google/connect?go=1", cta: "Connect Google" })
 
   // ── 3. Are you actually working? ──────────────────────────────────────────

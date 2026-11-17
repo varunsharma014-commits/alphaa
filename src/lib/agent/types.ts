@@ -41,9 +41,13 @@ export type ChipAction =
   | { type: "questions-run" } // ask all tracked questions now
   | { type: "tracking-setup"; ga4?: string; pixel?: string } // form: GA4 Measurement ID + Meta Pixel ID (Growth)
   | { type: "tracking-off" } // remove the tracking the agent set up
+  // Generic owner choice: POST body to /api/agent/<endpoint>, which answers with the thread's
+  // updated messages (they replace the old ones with the same id). `form` asks for values first.
+  | { type: "agent-op"; endpoint: AgentOpEndpoint; body: Record<string, string | number | boolean>; form?: { text: string; fields: FormField[]; cta: string; fine?: string } }
 
+export type AgentOpEndpoint = "voice" | "autopilot"
 export type SiteOp = "page" | "schema" | "llms" | "robots" | "post" | "meta" | "sitemap" | "headers"
-export type Task = "site-check" | "schema" | "security" | "profiles" | "listings" | "bing" | "tracking"
+export type Task = "site-check" | "schema" | "security" | "profiles" | "listings" | "bing" | "tracking" | "voice"
 
 export type FormField = {
   name: string
@@ -78,6 +82,7 @@ export type Block =
   | { kind: "chips"; items: Chip[] }
   | { kind: "cta"; chip: Chip; sub?: string } // the one big button a message ends on
   | { kind: "divider"; text: string }
+  | { kind: "log"; title: string; sub?: string; open?: boolean; items: { text: string; at: string; href?: string | null }[] } // what the agent did, Claude-style: one line, opens to every step
   | { kind: "email"; label: string; placeholder: string; cta: string; fine: string; optIn?: string }
   | { kind: "form"; formId: string; fields: FormField[]; cta: string; fine?: string }
   | { kind: "platforms"; items: { platform: import("@/lib/connector/types").Platform; available: boolean }[] } // "connect your website" picker with logos; unavailable = Coming soon

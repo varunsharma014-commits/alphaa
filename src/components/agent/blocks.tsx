@@ -323,6 +323,35 @@ export function DiffBlock(b: Extract<Block, { kind: "diff" }>) {
   )
 }
 
+// ── log: what the agent did, one line that opens to every step ───────────────
+
+const clock = (iso: string) => new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
+
+export function LogBlock(b: Extract<Block, { kind: "log" }>) {
+  const [open, setOpen] = useState(!!b.open)
+  return (
+    <div className="ag-log">
+      <button type="button" className="ag-log__head" onClick={() => setOpen(!open)} aria-expanded={open}>
+        <span className="ag-log__ic" aria-hidden>✓</span>
+        <span className="ag-log__title">{b.title}</span>
+        {b.sub && <span className="ag-log__sub">{b.sub}</span>}
+        <span className="ag-log__chev" aria-hidden>{open ? "−" : "+"}</span>
+      </button>
+      {open && (
+        <ol className="ag-log__list">
+          {b.items.map((it, i) => (
+            <li key={i}>
+              <span className="ag-log__text">{it.text}</span>
+              <time dateTime={it.at}>{clock(it.at)}</time>
+              {it.href && <a href={it.href} target="_blank" rel="noopener noreferrer">See it</a>}
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  )
+}
+
 export function ReceiptBlock(b: Extract<Block, { kind: "receipt" }>) {
   return (
     <div className="ag-receipt">

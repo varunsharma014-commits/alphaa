@@ -5,7 +5,8 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { ASK_EVENT, type AskDetail } from "./AgentShell"
 import { AgentFeed, Composer } from "./AgentFeed"
-import { agent, mid, user as userMsg, type Block, type Chip, type Message, type SiteOp, type Task } from "@/lib/agent/types"
+import { agent, mid, user as userMsg, type AgentOpEndpoint, type Block, type Chip, type Message, type SiteOp, type Task } from "@/lib/agent/types"
+import { voiceRunMessage } from "@/lib/agent/voice-narration"
 import { securityMessages, profileMessages, listingsMessages, bingMessages } from "@/lib/agent/check-narration"
 import type { EngineKey } from "@/lib/agent/types"
 import { siteCheckBlocks, describeSchemas } from "@/lib/agent/site-narration"
@@ -30,6 +31,7 @@ type Pending =
   | { kind: "questions" }
   | { kind: "shopify" }
   | { kind: "tracking" }
+  | { kind: "agent-op"; endpoint: AgentOpEndpoint; body: Record<string, string | number | boolean> }
 
 const OP_NAME: Record<SiteOp, string> = { page: "the page", schema: "your structured facts", llms: "your llms.txt", robots: "the robots.txt fix", post: "the post", meta: "the new title and description", sitemap: "your sitemap", headers: "the security settings" }
 function when(iso: string, future = false): string {
@@ -98,6 +100,30 @@ export function DashboardAgent({
   const inputRef = useRef<HTMLInputElement>(null)
 
   const push = useCallback((...m: Message[]) => setMessages((prev) => [...prev, ...m]), [])
+  // A thread's updated messages replace the old copies (same id before the "~" suffix), so a
+  // choice redraws the panel instead of stacking a second one under it.
+  const base = (id: string) => id.split("~")[0]
+  const swapIn = (msgs: Message[]) => {
+    const ids = new Set(msgs.map((m) => base(m.id)))
+    const n = Date.now().toString(36)
+    setMessages((prev) => [...prev.filter((m) => !ids.has(base(m.id))), ...msgs.map((m) => ({ ...m, id: `${m.id}~${n}` }))])
+  }
+
+  // Live work log: new steps I take in the background drop into the chat as they happen.
+  const since = useRef(new Date().toISOString())
+  useEffect(() => {
+    const tick = async () => {
+      if (document.hidden) return
+      const r = await fetch(`/api/agent/activity?since=${encodeURIComponent(since.current)}`).then((x) => (x.ok ? x.json() : null)).catch(() => null) as { items?: { text: string; at: string; href: string | null }[]; now?: string } | null
+      if (!r?.now) return
+      since.current = r.now
+      const items = r.items ?? []
+      if (!items.length) return
+      push(agent([{ kind: "log", title: items.length === 1 ? items[0].text : `I just did ${items.length} things`, sub: "just now", open: items.length > 1, items }]))
+    }
+    const t = window.setInterval(() => void tick(), 30_000)
+    return () => window.clearInterval(t)
+  }, [push])
 
   async function post<T>(url: string, body?: unknown): Promise<{ ok: boolean; data: T & { error?: string } }> {
     const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined })
@@ -124,6 +150,21 @@ export function DashboardAgent({
       const d = data.data as never
       const msgs = task === "security" ? securityMessages(d, prefs.current.wpConnected) : task === "profiles" ? profileMessages(d) : task === "listings" ? listingsMessages(d) : bingMessages(d)
       push(...msgs.map((m) => ({ ...m, id: mid(m.id) })))
+      return
+    }
+    if (task === "voice") {
+      // Reading the site and writing three voices takes ~30-60s: keep the steps moving.
+      setMessages((prev) => (prev.some((m) => base(m.id) === "voice-run") ? prev : [...prev, voiceRunMessage()]))
+      let n = 0
+      const t = window.setInterval(() => {
+        n = Math.min(n + 1, 3)
+        setMessages((prev) => prev.map((m) => (base(m.id) === "voice-run" ? { ...m, blocks: m.blocks.map((b) => (b.kind === "steps" ? { ...b, done: n } : b)) } : m)))
+      }, 9000)
+      const { ok, data } = await post<{ messages?: Message[] }>("/api/agent/voice", { op: "learn" })
+      window.clearInterval(t)
+      setMessages((prev) => prev.filter((m) => base(m.id) !== "voice-run"))
+      if (!ok) return fail(data.error ?? "I couldn’t read your site just now. I’ll try again shortly.")
+      swapIn(data.messages ?? [])
       return
     }
     if (task === "tracking") {
@@ -504,6 +545,23 @@ export function DashboardAgent({
         ]))
         return
       }
+      case "agent-op": {
+        if (a.form) {
+          const formId = mid("op")
+          pending.current[formId] = { kind: "agent-op", endpoint: a.endpoint, body: a.body }
+          push(userMsg(chip.label.replace(/^✓ /, "")), agent([
+            { kind: "text", text: a.form.text },
+            { kind: "form", formId, fields: a.form.fields, cta: a.form.cta, fine: a.form.fine },
+          ]))
+          return
+        }
+        push(userMsg(chip.label.replace(/^✓ /, "")))
+        if (a.endpoint === "voice" && a.body.op === "learn") return runTask("voice")
+        const { ok, data } = await post<{ messages?: Message[] }>(`/api/agent/${a.endpoint}`, a.body)
+        if (!ok) return fail(data.error ?? "That didn’t save. Try again.")
+        swapIn(data.messages ?? [])
+        return
+      }
       case "tracking-off": {
         push(userMsg(chip.label))
         const { ok, data } = await post<{ messages?: Message[] }>("/api/agent/tracking", { op: "off" })
@@ -619,6 +677,13 @@ export function DashboardAgent({
       if (!ok) return data.error ?? "Bing didn’t accept that."
       push(agent([{ kind: "text", text: `Connected to Bing for ${data.site}. ✓` }]))
       if (data.summary) push(...bingMessages(data.summary as never).map((m) => ({ ...m, id: mid(m.id) })))
+      return null
+    }
+    if (p.kind === "agent-op") {
+      const { ok, data } = await post<{ messages?: Message[] }>(`/api/agent/${p.endpoint}`, { ...p.body, ...values })
+      if (!ok) return data.error ?? "That didn’t save."
+      delete pending.current[formId]
+      swapIn(data.messages ?? [])
       return null
     }
     if (p.kind === "tracking") {

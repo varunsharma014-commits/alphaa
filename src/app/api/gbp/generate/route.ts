@@ -1,3 +1,4 @@
+import { voiceFor } from "@/lib/voice"
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
     const businessType = user.businessType ?? "local business"
     const city = user.city ?? "your city"
 
-    const generated = await generateGbpPost(businessName, businessType, city, postType, topic)
+    const generated = await generateGbpPost(businessName, businessType, city, postType, topic, await voiceFor(user.id).catch(() => null))
 
     const post = await db.gbpPost.create({
       data: {

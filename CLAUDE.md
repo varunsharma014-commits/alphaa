@@ -229,6 +229,12 @@ All must be set in `.env.local`. Variables not in `.env.local` but required at r
 - Left "Details" rail (`components/agent/ToolsRail.tsx`): the under-the-hood pages (sandbox, vault, citations, per-AI, rankings, health, speed, posts, reviews, content, competitors, reports), folded to 5 section icons by default (localStorage `alphaa.tools.v1`); a drawer behind the header menu button under 900px.
 - One-tap approvals live in `lib/approvals.ts` (review reply, Google post, website post), shared by the dashboard, `/api/gbp/reviews/[id]/reply` and the email links. Site publishing logic is `lib/connector/push.ts` (`/api/connect/wp/push` is a thin wrapper).
 
+### Voice, autopilot and the live work log (2026-11-17)
+- **Voice** (`lib/voice.ts`, agent settings `voice`): reads the owner's own words (homepage, about, services, a blog post, review replies they wrote themselves), detects the language, and writes 3 options (first = "Like your website") with a sample each (Opus 5.5, structured output). The owner picks one or writes their own, and sets language / tone / emoji / length / "we" or "I" in the "How I sound" thread (`?ask=voice`, `lib/agent/voice-narration.ts`, `/api/agent/voice`). Every writer adds `voiceFor(userId)` / `voiceText()` to its prompt: blog posts, meta, location pages, drafts, Google posts (manual + cron), review replies. **Never store the voice in `User.voiceDescription`**: that's the business description and it feeds the schema markup and llms.txt.
+- **Autopilot** ("What I do without asking", `lib/agent/autopilot.ts`, `/api/agent/autopilot`, settings `autopilot`): posts = `autoPublishPosts` (Pro+); review replies ask/positive/all are honoured by `/api/cron/review-drafts`; social / email / ads (+ monthly `adBudget`) are Growth-only and saved until those features ship.
+- **Live work log**: `lib/agent/worklog.ts` turns ledger rows into Claude-style `log` blocks. The `work` thread shows 14 days, and DashboardAgent polls `/api/agent/activity?since=` every 30s to drop new steps into the chat.
+- Owner choices use the generic `agent-op` chip (`POST /api/agent/<endpoint>`, optional form first). The returned messages replace the old copies with the same id, so a panel redraws instead of stacking.
+
 ### Webhooks
 - `/api/webhooks/clerk`: Creates `User` row on `user.created`, sends welcome email; deletes on `user.deleted`. Verified with Svix.
 - `/api/webhooks/stripe`: Handles `checkout.session.completed`, `customer.subscription.updated/deleted`, `invoice.payment_succeeded/failed`. Updates `User.subscriptionStatus` and `User.plan`.

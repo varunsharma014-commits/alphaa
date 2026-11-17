@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 180
 
+import { voiceFor } from "@/lib/voice"
 import { NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
 import { auth } from "@/lib/auth"
@@ -40,8 +41,9 @@ export async function POST(req: Request) {
     `Type: ${user.businessType ?? "unknown"}`,
     `Location: ${[user.city, user.state].filter(Boolean).join(", ") || "unknown"}`,
     `Website: ${user.websiteUrl ?? "unknown"}`,
-    user.voiceDescription ? `Voice: ${user.voiceDescription}` : "",
+    user.voiceDescription ? `About them (their words): ${user.voiceDescription}` : "",
     user.topicsToAvoid ? `Avoid: ${user.topicsToAvoid}` : "",
+    (await voiceFor(user.id).catch(() => null)) ?? "",
   ].filter(Boolean).join("\n")
 
   try {

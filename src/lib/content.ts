@@ -4,20 +4,21 @@ import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { getAgentSettings, type Location } from "@/lib/agent/settings"
 import { latestQuestionScan } from "@/lib/questions"
-import { learnVoice } from "@/lib/voice"
+import { ensureVoice, voiceFor, voiceText } from "@/lib/voice"
 
 const SONNET = "claude-sonnet-4-6"
 const text = (r: { content: { type: string; text?: string }[] }) => r.content.find((c) => c.type === "text")?.text?.trim() ?? ""
 
 type U = NonNullable<Awaited<ReturnType<typeof db.user.findUnique>>>
 
-export function factsOf(user: U): string {
+export function factsOf(user: U, voice?: string | null): string {
   return [
     `Business: ${user.businessName ?? "unknown"}`,
     `Type: ${user.businessType ?? "unknown"}`,
     `Location: ${[user.city, user.state].filter(Boolean).join(", ") || "unknown"}`,
     `Website: ${user.websiteUrl ?? "unknown"}`,
-    user.voiceDescription ? `Voice (write like this):\n${user.voiceDescription}` : "",
+    user.voiceDescription ? `About them (their words): ${user.voiceDescription}` : "",
+    voice ?? "",
     user.topicsToAvoid ? `Avoid: ${user.topicsToAvoid}` : "",
   ].filter(Boolean).join("\n")
 }
@@ -44,11 +45,9 @@ Give ONE question a real prospective customer of this specific business would ty
 
 /** A blog post answering a real customer question — markdown with ## question headings. */
 export async function writePost(user: U, topic?: string, opts: { noPlaceholders?: boolean } = {}): Promise<{ title: string; markdown: string; excerpt: string; topic: string }> {
-  // First post for this business: learn how it sounds from its own site.
-  if (!user.voiceDescription?.trim()) {
-    const v = await learnVoice(user.id).catch(() => null)
-    if (v) user = { ...user, voiceDescription: v }
-  }
+  // Write in the owner's chosen voice (learned from their own words the first time).
+  const learned = await ensureVoice(user.id).catch(() => null)
+  const voice = learned ? voiceText(learned) : null
   let t = topic
   if (!t) {
     // Prefer a tracked question the AIs didn't name us for; else a content gap.
@@ -82,10 +81,10 @@ export async function writePost(user: U, topic?: string, opts: { noPlaceholders?
     messages: [{
       role: "user",
       content: `Write a blog post (650–900 words) for this business's website that answers: "${t}". It should be the page an AI assistant quotes when a customer asks this.
-Format: first line "TITLE: <title, under 65 characters>", second line "EXCERPT: <one sentence>", then the body in Markdown: a 2-sentence direct answer paragraph, then 4–6 sections with "## " headings phrased as questions, short paragraphs and "- " bullet lists where useful, ending with a "## Frequently asked questions" section of 3 "### " questions. Mention the business naturally once or twice, with its city. Write in the business's own voice (see Voice below). ${opts.noPlaceholders ? "This will publish automatically: NEVER write [placeholders] — if a fact isn't given, leave it out and write around it." : RULES}
+Format: first line "TITLE: <title, under 65 characters>", second line "EXCERPT: <one sentence>", then the body in Markdown: a 2-sentence direct answer paragraph, then 4–6 sections with "## " headings phrased as questions, short paragraphs and "- " bullet lists where useful, ending with a "## Frequently asked questions" section of 3 "### " questions. Mention the business naturally once or twice, with its city. Write in the business's own voice (see HOW TO WRITE below). ${opts.noPlaceholders ? "This will publish automatically: NEVER write [placeholders] — if a fact isn't given, leave it out and write around it." : RULES}
 
 FACTS
-${factsOf(user)}`,
+${factsOf(user, voice)}`,
     }],
   })
   const out = text(res)
@@ -97,6 +96,7 @@ ${factsOf(user)}`,
 
 /** Homepage title (≤60) + meta description (≤155), as "Title: …\nDescription: …". */
 export async function writeMeta(user: U, page: { url: string; currentTitle?: string | null; currentDescription?: string | null }): Promise<string> {
+  const voice = await voiceFor(user.id).catch(() => null)
   const res = await anthropic.messages.create({
     model: SONNET,
     max_tokens: 300,
@@ -109,7 +109,7 @@ Title: under 60 characters, "<what they do> in <city> | <business name>" style i
 Output exactly two lines: "Title: …" and "Description: …".
 
 FACTS
-${factsOf(user)}`,
+${factsOf(user, voice)}`,
     }],
   })
   return text(res)
@@ -121,6 +121,7 @@ export function parseMeta(s: string): { title: string; description: string } {
 
 /** A page for one location — markdown, answer-first, with the location's facts. */
 export async function writeLocationPage(user: U, loc: Location): Promise<{ title: string; markdown: string }> {
+  const voice = await voiceFor(user.id).catch(() => null)
   const res = await anthropic.messages.create({
     model: SONNET,
     max_tokens: 1600,
@@ -135,7 +136,7 @@ Phone: ${loc.phone || "[phone]"}
 Hours: ${loc.hours || "[hours]"}
 
 BUSINESS FACTS
-${factsOf(user)}`,
+${factsOf(user, voice)}`,
     }],
   })
   const out = text(res)

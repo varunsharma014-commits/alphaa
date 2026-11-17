@@ -8,6 +8,7 @@ import { postReviewReply, resolveAccessToken } from "@/lib/gmb"
 import { postToGmb, containsPlaceholders } from "@/lib/gbp-poster"
 import { logActivity } from "@/lib/activity"
 import { pushChange } from "@/lib/connector/push"
+import { voiceFor } from "@/lib/voice"
 
 export type ApprovalKind = "review" | "gbp" | "post"
 export type ApprovalResult = { ok: true; url?: string | null } | { ok: false; error: string }
@@ -30,6 +31,7 @@ export async function draftReviewReply(userId: string, reviewId: string): Promis
     db.gmbReview.findUnique({ where: { id: reviewId }, select: { userId: true, authorName: true, rating: true, comment: true } }),
   ])
   if (!user || !review || review.userId !== userId) return null
+  const voice = await voiceFor(userId).catch(() => null)
   const businessName = user.businessName ?? "our business"
   const prompt = `You are a professional, warm business owner responding to a Google review for ${businessName} (${user.businessType ?? "business"}).
 
@@ -41,7 +43,7 @@ Write a professional, genuine, and warm reply from the business owner.
 - If it's a neutral review (3 stars): thank them for the feedback, acknowledge any concerns, show commitment to improvement.
 - If it's a negative review (1-2 stars): apologize sincerely, take responsibility, offer to make it right, provide a way to contact you.
 
-Keep it 2-4 sentences. Sound human, not robotic. Do not use markdown. Return only the reply text.`
+Keep it 2-4 sentences. Sound human, not robotic. Do not use markdown. Return only the reply text.${voice ? `\n\n${voice}\nReply in the same language the review is written in if it differs.` : ""}`
   const message = await anthropic.messages.create({ model: "claude-sonnet-4-6", max_tokens: 512, messages: [{ role: "user", content: prompt }] })
   const text = message.content[0]?.type === "text" ? message.content[0].text.trim() : ""
   if (!text) return null

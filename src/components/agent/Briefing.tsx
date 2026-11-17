@@ -226,7 +226,7 @@ function InboxCard({ item, position, onDone, onShow }: { item: InboxItem; positi
       {missing > 0 && <p className="ag-inbox__need">{missing === 1 ? "One detail only you know is marked [like this]. Fill it in and it’s ready." : `${missing} details only you know are marked [like this]. Fill them in and it’s ready.`}</p>}
       <div className="ag-inbox__btns">
         {item.kind === "fix" ? (
-          <button className="ag-btn-primary" onClick={() => onShow(item.topic, "Show me the fix")}>Show me the fix</button>
+          <button className="ag-btn-primary" onClick={() => onShow(item.topic, item.cta ?? "Show me the fix")}>{item.cta ?? "Show me the fix"}</button>
         ) : item.kind === "connect" ? (
           <a className="ag-btn-primary" href={item.href}>{item.cta}</a>
         ) : !text ? (

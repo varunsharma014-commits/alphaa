@@ -219,6 +219,19 @@
 .ag-diff__c mark { background: var(--ag-btn); color: var(--ag-btn-fg); border-radius: 4px; padding: 0 3px; }
 
 /* receipt */
+.ag-log { margin: 6px 0 4px; border: 1px solid var(--ag-line); border-radius: 12px; background: var(--ag-card); font-size: 14px; }
+.ag-log__head { all: unset; box-sizing: border-box; width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; cursor: pointer; color: var(--ag-fg2); }
+.ag-log__head:focus-visible { outline: 2px solid var(--ag-fg); outline-offset: 2px; border-radius: 12px; }
+.ag-log__ic { width: 16px; height: 16px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--ag-good); color: var(--ag-bg); font-size: 10px; }
+.ag-log__title { flex: 1; min-width: 0; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-log__sub { color: var(--ag-muted); font-size: 12px; white-space: nowrap; }
+.ag-log__chev { color: var(--ag-muted); width: 12px; text-align: center; }
+.ag-log__list { list-style: none; margin: 0; padding: 2px 12px 10px 38px; display: flex; flex-direction: column; gap: 6px; }
+.ag-log__list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; color: var(--ag-fg2); line-height: 1.45; position: relative; }
+.ag-log__list li::before { content: ""; position: absolute; left: -17px; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--ag-muted); }
+.ag-log__text { flex: 1 1 220px; min-width: 0; }
+.ag-log__list time { color: var(--ag-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.ag-log__list a { color: var(--ag-fg); font-size: 12px; text-decoration: underline; text-underline-offset: 2px; }
 .ag-receipt { margin: 10px 0 4px; border: 1px solid var(--ag-line); border-radius: 14px; padding: 4px 14px; font-size: 14px; background: var(--ag-card); }
 .ag-receipt summary { list-style: none; cursor: pointer; padding: 8px 0; display: flex; justify-content: space-between; gap: 8px; font-weight: 500; }
 .ag-receipt summary::-webkit-details-marker { display: none; }

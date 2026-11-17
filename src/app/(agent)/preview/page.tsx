@@ -4,6 +4,7 @@ import { DashboardAgent } from "@/components/agent/DashboardAgent"
 import { agent } from "@/lib/agent/types"
 import type { RailData } from "@/lib/agent/feed"
 import { answersMessages, securityMessages } from "@/lib/agent/check-narration"
+import { voiceMessages } from "@/lib/agent/voice-narration"
 
 // Dev-only: renders the app shell with sample messages so the agent UI can be
 // checked in a browser without a Clerk session. 404s in production.
@@ -24,7 +25,25 @@ export default function PreviewPage() {
     { key: "sslExpiry", label: "Security certificate", ok: true, detail: "Renews in 60 days", severity: "high" },
     { key: "https", label: "Secure connection (HTTPS)", ok: true, detail: "Yes", severity: "high" },
   ] }, false)
+  const now = Date.now()
+  const voice = voiceMessages({
+    analyzedAt: new Date().toISOString(), read: ["your homepage", "your about page", "3 replies you wrote to Google reviews"],
+    detected: { language: "French", formality: "relaxed", emoji: "none", person: "we" }, phrases: ["fait maison", "savoir-faire", "pause gourmande"], avoid: ["Corporate jargon"],
+    options: [
+      { id: "v1", name: "Like your website", summary: "Warm, proud of the craft, a little playful.", guide: "", sample: "Croissants, pains au chocolat, chaussons aux pommes : tout est fait maison, avec un véritable savoir-faire." },
+      { id: "v2", name: "Warm and family", summary: "Personal, like the owner talking at the counter.", guide: "", sample: "Chaque matin, on retrouve le même plaisir à sortir les pains du four." },
+      { id: "v3", name: "The baker explains", summary: "Teaches a little about the craft in every post.", guide: "", sample: "Le secret d'un pain bien croustillant ? Une pâte qu'on laisse reposer." },
+    ],
+    chosen: "v1", style: { language: "French", formality: "relaxed", emoji: "none", length: "normal", person: "we" },
+  })
+  const log = agent([{ kind: "log", title: "I just did 3 things", sub: "just now", open: true, items: [
+    { text: "Replied to a Google review", at: new Date(now - 120_000).toISOString(), href: null },
+    { text: "Wrote and published a post: “How long does a sourdough loaf stay fresh?”", at: new Date(now - 60_000).toISOString(), href: "https://example.com" },
+    { text: "Rewrote your page title and description so Google and AI know what you do", at: new Date(now).toISOString(), href: null },
+  ] }])
   const messages = [
+    log,
+    ...voice,
     ...sample,
     ...sec,
     { id: "day", role: "agent" as const, blocks: [{ kind: "divider" as const, text: "Tuesday, 23 September · day 42" }] },

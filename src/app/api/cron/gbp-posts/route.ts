@@ -8,6 +8,7 @@ import { logActivity } from "@/lib/activity"
 import { containsPlaceholders, postToGmb } from "@/lib/gbp-poster"
 import { resolveAccessToken } from "@/lib/gmb"
 import { getAgentSettings } from "@/lib/agent/settings"
+import { voiceFor } from "@/lib/voice"
 
 // Google Business Profile posts on the plan's schedule (UTC day of week):
 // Starter 2 a week (Mon, Thu), Pro / Full Service 4 (Mon, Tue, Thu, Fri).
@@ -34,7 +35,8 @@ type Integration = {
 async function generatePost(
   businessName: string,
   businessType: string | null,
-  city: string | null
+  city: string | null,
+  voice: string | null
 ): Promise<string> {
   const msg = await anthropic.messages.create({
     model: "claude-sonnet-4-6",
@@ -48,14 +50,11 @@ async function generatePost(
 
 Rules:
 - 100-150 words
-- Conversational, friendly tone
-- Focus on a local tip, seasonal service, customer story, or business update
+${voice ? "" : "- Conversational, friendly tone\n"}- Focus on a local tip, seasonal service, customer story, or business update
 - End with a soft call to action (e.g. "Call us", "Visit us", "Book online")
 - No hashtags
-- No emojis
-- Do NOT mention pricing
-- Write in first-person plural ("We", "Our", "Us")
-- Sound like a real small business owner, not marketing copy
+${voice ? "" : "- No emojis\n"}- Do NOT mention pricing
+${voice ? "" : '- Write in first-person plural ("We", "Our", "Us")\n'}- Sound like a real small business owner, not marketing copy
 
 AEO (AI-engine optimization) hard rules — mandatory, applied within the short word count. Do NOT add a multi-question FAQ section (it will not fit a short GBP post):
 - Open with a clear question a customer might ask an AI engine, e.g. "Looking for the best ${businessType ?? "local service"}${city ? ` in ${city}` : ""}?"
@@ -63,6 +62,7 @@ AEO (AI-engine optimization) hard rules — mandatory, applied within the short 
 - Include the business name (${businessName})${city ? ` and city (${city})` : ""} naturally in the first paragraph.
 - End with a single short line stating the business name${city ? ` and city` : ""}. NEVER invent an address or phone number, and NEVER write bracket placeholders like "[address]" or "[phone]" — this post may go straight to Google, so if you don't know a fact, leave it out entirely.${city ? "" : "\n- The city is not known. Do NOT reference any city, neighborhood, or 'your area'."}
 
+${voice ? `\n${voice}\n` : ""}
 Return ONLY the post text, no extra commentary.`,
       },
     ],
@@ -89,7 +89,7 @@ async function processUser(user: CronUser): Promise<{ status: "draft" | "posted"
 
   const businessName = user.businessName ?? "the business"
 
-  const content = await generatePost(businessName, user.businessType, user.city)
+  const content = await generatePost(businessName, user.businessType, user.city, await voiceFor(user.id).catch(() => null))
   if (!content) throw new Error("Claude returned empty post content")
 
   const hasGmb = !!(user.integration?.gmbAccountId && user.integration?.gmbLocationId)

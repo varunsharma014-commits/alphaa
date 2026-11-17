@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { Block, Chip, Message } from "@/lib/agent/types"
 import {
-  AnswerBlock, ChipsBlock, CtaBlock, DiffBlock, DocBlock, EmailBlock, FormBlock, ReceiptBlock,
+  AnswerBlock, ChipsBlock, CtaBlock, DiffBlock, DocBlock, EmailBlock, FormBlock, LogBlock, ReceiptBlock,
   SourcesBlock, StatBlock, StepsBlock, TextBlock, Typing, VerdictsBlock,
   PlatformsBlock,
 } from "./blocks"
@@ -123,6 +123,8 @@ export function AgentFeed({
         return <DiffBlock key={key} {...block} />
       case "receipt":
         return <ReceiptBlock key={key} {...block} />
+      case "log":
+        return <LogBlock key={key} {...block} />
       case "chips":
         return <ChipsBlock key={key} items={block.items} disabled={!!picked[msg.id]} onPick={(c) => pick(c, msg.id)} />
       case "email":

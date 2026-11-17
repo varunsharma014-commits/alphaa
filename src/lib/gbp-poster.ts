@@ -14,7 +14,8 @@ export async function generateGbpPost(
   businessType: string,
   city: string,
   postType: "UPDATE" | "OFFER" | "EVENT",
-  topic?: string
+  topic?: string,
+  voice?: string | null
 ): Promise<{ content: string; callToAction: string }> {
   const topicLine = topic ? `Topic/focus: ${topic}` : "Choose a relevant topic for this business."
 
@@ -45,7 +46,7 @@ AEO (AI-engine optimization) hard rules — these are mandatory and apply even w
 3. Include the business name (${businessName}) naturally in the first paragraph${locality ? `, and the city (${locality}) too if location is relevant` : ""}.
 4. End with a single short line stating the business name${locality ? `, city` : ""} and website or phone IF you know them from the details above. NEVER invent an address or phone number, and NEVER write bracket placeholders like "[address]" or "[phone]" — if you don't know a fact, leave it out entirely.
 
-Return ONLY valid JSON with this exact structure — no markdown, no explanation:
+${voice ? `${voice}\n\n` : ""}Return ONLY valid JSON with this exact structure — no markdown, no explanation:
 {
   "content": "<the full post text, 150-200 words>",
   "callToAction": "<a short CTA phrase like 'Call us today', 'Visit us this weekend', 'Book your appointment now'>"

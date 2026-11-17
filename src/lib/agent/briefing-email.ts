@@ -39,7 +39,7 @@ export async function briefingEmailProps(userId: string, firstName: string | nul
         }
       }
       if (it.kind === "connect") return { title: it.title, text: it.text, openUrl: `${base()}${it.href}`, openLabel: it.cta }
-      return { title: it.title, text: it.text, openUrl: `${dashboardUrl}?ask=${it.topic}`, openLabel: "Show me the fix" }
+      return { title: it.title, text: it.text, openUrl: `${dashboardUrl}?ask=${it.topic}`, openLabel: it.cta ?? "Show me the fix" }
     }),
     ledger: b.ledger.map((l) => ({ day: weekday(l.at), text: l.text })),
     dashboardUrl,
