@@ -158,7 +158,6 @@ async function runDemoWeek(leadId: string, week: DemoWeek): Promise<void> {
   const desc = [typeof og.description === "string" ? og.description : "", typeof og.title === "string" ? og.title : ""].filter(Boolean).join(" · ").slice(0, 400)
 
   // 3: plan
-  const byKey = new Map(facts.map((f) => [f.key, f.text]))
   let items: DemoItem[] = []
   try {
     const msg = await anthropic.messages.parse({
