@@ -15,6 +15,14 @@ export async function trendsFor(userId: string): Promise<Trend[]> {
   if (cached) return ((cached.metadata as { trends?: Trend[] } | null)?.trends ?? [])
   const user = await db.user.findUnique({ where: { id: userId }, select: { businessName: true, businessType: true, city: true, state: true, websiteUrl: true } })
   if (!user) return []
+  const trends = await searchTrends(user)
+  // Only cache a real answer, so a failed search is retried next time.
+  if (trends.length) await db.mockActivity.create({ data: { userId, type: TYPE, title: "Looked up what’s happening this week", metadata: { trends } } })
+  return trends
+}
+
+/** Live web search for what's timely for this business. No caching. */
+export async function searchTrends(user: { businessName: string | null; businessType: string | null; city: string | null; state?: string | null; websiteUrl: string | null }): Promise<Trend[]> {
   const where = [user.city, user.state].filter(Boolean).join(", ")
   const today = new Date().toISOString().slice(0, 10)
   const prompt = `Today is ${today}. Find what is timely in the next 10 days for a ${user.businessType ?? "small business"}${where ? ` in ${where}` : ""} (${user.websiteUrl ?? user.businessName ?? ""}) that its customers would care about: holidays and observances, local events, the season and weather, and news or changes in this industry.
@@ -44,8 +52,5 @@ Search the web. Then reply with ONLY a JSON array of up to 4 items, each {"title
     const json = text.slice(text.indexOf("["), text.lastIndexOf("]") + 1)
     items = (JSON.parse(json) as Trend[]).filter((t) => t && typeof t.title === "string" && typeof t.url === "string" && urls.has(norm(t.url)))
   } catch { items = [] }
-  const trends = items.slice(0, 4).map((t) => ({ title: t.title.trim().slice(0, 140), why: String(t.why ?? "").trim().slice(0, 280), url: t.url, when: t.when ?? null }))
-  // Only cache a real answer, so a failed search is retried next time.
-  if (trends.length) await db.mockActivity.create({ data: { userId, type: TYPE, title: "Looked up what’s happening this week", metadata: { trends } } })
-  return trends
+  return items.slice(0, 4).map((t) => ({ title: t.title.trim().slice(0, 140), why: String(t.why ?? "").trim().slice(0, 280), url: t.url, when: t.when ?? null }))
 }

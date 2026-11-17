@@ -87,7 +87,18 @@ async function logoData(url: string | null): Promise<{ uri: string; w: number; h
 }
 
 /** Draws the card and saves it. Null when the headline uses letters the font can't draw. */
-export async function renderSocialCard(userId: string, input: { headline: string; businessName: string | null; brand: BrandKit | null | undefined }): Promise<{ id: string; url: string } | null> {
+export async function renderSocialCard(userId: string, input: CardInput): Promise<{ id: string; url: string } | null> {
+  const png = await renderCardPng(input)
+  if (!png) return null
+  const headline = input.headline.trim().replace(/\s+/g, " ").slice(0, 80)
+  const row = await db.mockActivity.create({ data: { userId, type: "post_image", title: `Made an image for “${headline}”`, metadata: { b64: png.toString("base64"), mime: "image/png", alt: headline, kind: "social_card" } } })
+  return { id: row.id, url: imageUrl(row.id) }
+}
+
+export type CardInput = { headline: string; businessName: string | null; brand: Pick<BrandKit, "logo" | "primary"> | null | undefined }
+
+/** The card as a PNG, without saving it (the public first-week preview stores it itself). */
+export async function renderCardPng(input: CardInput): Promise<Buffer | null> {
   const f = await loadFonts()
   const headline = input.headline.trim().replace(/\s+/g, " ").slice(0, 80)
   const name = (input.businessName ?? "").trim().slice(0, 40)
@@ -116,7 +127,5 @@ export async function renderSocialCard(userId: string, input: { headline: string
     parts.push(pathFor(f.bold, name, PAD, S - PAD, 40, ink, -0.01))
   }
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">${parts.join("")}</svg>`
-  const png = new Resvg(svg, { fitTo: { mode: "width", value: S } }).render().asPng()
-  const row = await db.mockActivity.create({ data: { userId, type: "post_image", title: `Made an image for “${headline}”`, metadata: { b64: Buffer.from(png).toString("base64"), mime: "image/png", alt: headline, kind: "social_card" } } })
-  return { id: row.id, url: imageUrl(row.id) }
+  return Buffer.from(new Resvg(svg, { fitTo: { mode: "width", value: S } }).render().asPng())
 }

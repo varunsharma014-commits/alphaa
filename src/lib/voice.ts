@@ -87,6 +87,12 @@ const Schema = z.object({
 export async function analyzeVoice(userId: string): Promise<Voice | null> {
   const user = await db.user.findUnique({ where: { id: userId }, select: { websiteUrl: true, businessName: true, businessType: true, voiceDescription: true } })
   if (!user) return null
+  return analyzeVoiceFor({ ...user, userId })
+}
+
+/** The same, for any website (a visitor with no account yet has no userId, so no review replies). */
+export async function analyzeVoiceFor(user: { websiteUrl: string | null; businessName: string | null; businessType: string | null; voiceDescription?: string | null; userId?: string }): Promise<Voice | null> {
+  const userId = user.userId
   const read: string[] = []
   const parts: string[] = []
   let lang = ""
@@ -112,10 +118,10 @@ export async function analyzeVoice(userId: string): Promise<Voice | null> {
     }
   }
   // Replies the owner wrote themselves (not ones I drafted).
-  const [replies, mine] = await Promise.all([
+  const [replies, mine] = userId ? await Promise.all([
     db.gmbReview.findMany({ where: { userId, reply: { not: null } }, orderBy: { publishedAt: "desc" }, take: 12, select: { reply: true } }),
     db.mockActivity.findMany({ where: { userId, type: "review_draft" }, select: { metadata: true }, take: 200 }),
-  ])
+  ]) : [[], []]
   const drafted = new Set(mine.map((m) => ((m.metadata as { text?: string } | null)?.text ?? "").trim()))
   const own = replies.map((r) => (r.reply ?? "").trim()).filter((r) => r.length > 20 && !drafted.has(r)).slice(0, 6)
   if (own.length) {

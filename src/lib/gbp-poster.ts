@@ -41,12 +41,13 @@ ${topicLine}
 Write a compelling Google Business Profile post that is 150-200 words. Make it sound natural and warm. Mention the business naturally${locality ? `, and reference the city/location where it is relevant (e.g. a business that serves a local area) — but don't force a location reference if the business primarily serves customers online, nationally, or B2B` : ""}. Include a clear call to action.
 
 AEO (AI-engine optimization) hard rules — these are mandatory and apply even within the short word count. Do NOT add a multi-question FAQ section (it will not fit a short GBP post):
-1. Open with a clear question that someone might ask an AI engine when looking for what this business offers, e.g. "Looking for the best ${businessType}?" or "What is the best ${businessType}?"${locality ? " — include the city only if the business serves a local area." : ""}
+1. Open with a clear question that someone might ask an AI engine when looking for what this business offers, e.g. "Looking for a ${businessType} you can trust?" or "Where can I find a good ${businessType}?"${locality ? " — include the city only if the business serves a local area." : ""}
 2. Answer that question directly in the first 1-2 sentences — AI engines favor direct, up-front answers. Lead with "${businessName}" as the answer${locality ? ` (add "in ${locality}" if the business is location-based)` : ""}.
 3. Include the business name (${businessName}) naturally in the first paragraph${locality ? `, and the city (${locality}) too if location is relevant` : ""}.
 4. End with a single short line stating the business name${locality ? `, city` : ""} and website or phone IF you know them from the details above. NEVER invent an address or phone number, and NEVER write bracket placeholders like "[address]" or "[phone]" — if you don't know a fact, leave it out entirely.
 
-${voice ? `${voice}\n\n` : ""}Return ONLY valid JSON with this exact structure — no markdown, no explanation:
+${voice ? `${voice}\n\n` : ""}Never call the business "the best", "#1", "top" or "leading", even if the topic uses those words.
+Return ONLY valid JSON with this exact structure — no markdown, no explanation:
 {
   "content": "<the full post text, 150-200 words>",
   "callToAction": "<a short CTA phrase like 'Call us today', 'Visit us this weekend', 'Book your appointment now'>"

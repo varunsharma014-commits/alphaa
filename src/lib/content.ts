@@ -151,17 +151,24 @@ export async function locationsOf(userId: string): Promise<Location[]> {
 /** A social post (Facebook / Instagram / LinkedIn) in the owner's voice, plus a 4-5 word headline for its image. */
 export async function writeSocial(user: U, topic: string, context?: string): Promise<{ text: string; headline: string }> {
   const voice = await voiceFor(user.id).catch(() => null)
+  return writeSocialFrom(factsOf(user, voice), topic, context)
+}
+
+/** The same, from a facts block (a visitor with no account yet). */
+export async function writeSocialFrom(facts: string, topic: string, context?: string): Promise<{ text: string; headline: string }> {
   const res = await anthropic.messages.create({
     model: "claude-sonnet-5-5",
     max_tokens: 800,
     messages: [{ role: "user", content: `Write one social media post (Facebook / Instagram / LinkedIn) for this business about: "${topic}".${context ? `\nWhy now: ${context}` : ""}
 Hook in the first line, then 2-4 short lines that give the reader something useful, then one simple call to action. Under 90 words. At most 3 hashtags at the end, only if they fit. Use only the facts below; never invent prices, numbers, awards or guarantees. Never say "best", "#1" or "leading".
-Then on a last line write "HEADLINE: " and a 4 to 5 word headline for the image, in the same language, readable in two seconds.
+Then on a last line write "HEADLINE: " and a complete 4 to 6 word headline for the image (a full phrase, never cut off), in the same language, readable in two seconds.
 
-${factsOf(user, voice)}` }],
+${facts}` }],
   })
   const out = text(res)
   const m = out.match(/\n?HEADLINE:\s*(.+)\s*$/i)
-  const headline = (m?.[1] ?? topic).replace(/^["“]|["”]$/g, "").split(/\s+/).slice(0, 6).join(" ")
+  // Keep the whole headline (the image shrinks the type to fit); only a runaway one is cut.
+  const words = (m?.[1] ?? topic).replace(/^["“«]\s*|\s*["”»]$/g, "").trim().split(/\s+/)
+  const headline = words.length <= 9 ? words.join(" ") : words.slice(0, 5).join(" ")
   return { text: out.replace(/\n?HEADLINE:[\s\S]*$/i, "").trim(), headline }
 }

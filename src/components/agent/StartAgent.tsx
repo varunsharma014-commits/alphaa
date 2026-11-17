@@ -256,7 +256,7 @@ export function StartAgent({
     if (mode === "public") {
       push(
         agent([
-          { kind: "text", text: "While I work: where should I send your full report? It’s yours to keep either way." },
+          { kind: "text", text: "While I work: where should I send your full report? Once I’m done, I’ll also write your first week of marketing." },
           emailBlock("Send it to me"),
         ], "scan-email")
       )
@@ -321,6 +321,15 @@ export function StartAgent({
       )
     }
 
+    // Public: the first week of marketing, written now, behind the visitor's email.
+    if (mode === "public") {
+      setBusy(false)
+      setPhase("result")
+      if (emailRef.current) await runWeekDemo(scanId, ident.businessName)
+      else push(weekGate(ident.businessName))
+      return
+    }
+
     const plan = buildPlan(result, ident.businessName)
     push(
       agent([
@@ -335,13 +344,94 @@ export function StartAgent({
         { kind: "text", text: `${localPrice(buyPlan)} a month. Month to month.`, big: true },
         { kind: "text", text: `${GUARANTEE} Cancel online in a minute, no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
         { kind: "cta", chip: { label: "Get recommended by AI →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
-        ...(mode === "public" && !emailRef.current
-          ? [{ kind: "chips", items: [{ label: "Email me this report", action: { type: "ask", text: "report" }, primary: false }] } as Block]
-          : []),
       ], "ask")
     )
     setBusy(false)
     setPhase("result")
+  }
+
+  function priceMessage(scanId: string, afterWeek = false): Message {
+    return agent([
+      ...(PLAN_LINE[buyPlan] ? [{ kind: "text", text: PLAN_LINE[buyPlan] } as Block] : []),
+      { kind: "text", text: afterWeek ? "Want me to post these and do this every week?" : `${localPrice(buyPlan)} a month. Month to month.`, big: true },
+      { kind: "text", text: `${afterWeek ? `${localPrice(buyPlan)} a month, month to month. ` : ""}${GUARANTEE} Cancel online in a minute, no contract.` },
+      { kind: "cta", chip: { label: afterWeek ? "Get started →" : "Get recommended by AI →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
+    ], "ask")
+  }
+
+  // The email gate: one first week per address.
+  function weekGate(name: string): Message {
+    return agent([
+      { kind: "text", text: "Now let me show you what I’d actually do.", big: true },
+      { kind: "text", text: `I’ll write ${name}’s first week of marketing right now: a Google update and 2 social posts, in your voice, with your logo and colours, planned around what’s happening this week. Where should I send it?` },
+      emailBlock("Write my first week"),
+    ], "week-gate")
+  }
+
+  async function runWeekDemo(scanId: string, name: string) {
+    setBusy(true)
+    track("week_preview_started")
+    let id = scanId
+    let again = false
+    try {
+      const r = await fetch("/api/scan/week", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scanId }) })
+      const d = await r.json()
+      if (!r.ok || !d.id) {
+        push(agent([{ kind: "text", text: d.error || "I couldn’t start writing just now." }]), priceMessage(scanId))
+        setBusy(false)
+        return
+      }
+      id = d.id
+      again = !!d.again
+    } catch {
+      push(agent([{ kind: "text", text: "I couldn’t reach the server. Try again in a minute." }]), priceMessage(scanId))
+      setBusy(false)
+      return
+    }
+    push(agent([
+      { kind: "text", text: again ? "You already have a first week from me. Here it is." : `Writing ${name}’s first week now. About a minute.` },
+      { kind: "steps", items: ["Reading your logo, colours and how you write", "Looking up what’s happening this week", "Planning your first week", "Writing your Google update", "Writing 2 social posts with your images"], done: 0 },
+    ], "week-steps"))
+    type W = import("@/lib/demo-week").PublicWeek
+    let week: W | null = null
+    const t0 = Date.now()
+    while (Date.now() - t0 < 200_000) {
+      try {
+        const r = await fetch(`/api/scan/week?id=${id}`, { cache: "no-store" })
+        const d = (await r.json()) as { week?: W }
+        if (d.week) {
+          const w = d.week
+          patch("week-steps", (m) => ({ ...m, blocks: m.blocks.map((b) => (b.kind === "steps" ? { ...b, items: w.steps.map((s) => s.text), done: w.steps.filter((s) => s.done).length } : b)) }))
+          if (w.status !== "running") { week = w; break }
+        }
+      } catch {}
+      await new Promise((r) => setTimeout(r, 2500))
+    }
+    setBusy(false)
+    if (!week || week.status === "failed" || !week.items.some((i) => i.text)) {
+      push(agent([{ kind: "text", text: "Writing took longer than it should. I’ll email your first week as soon as it’s done." }]), priceMessage(scanId))
+      return
+    }
+    track("week_preview_shown")
+    const label = { google: "Google update", social: "Social post" } as const
+    const out: Message[] = [agent([
+      { kind: "text", text: "Here’s your first week, ready to go.", big: true },
+      { kind: "text", text: `Written in your voice${week.voiceName ? ` (“${week.voiceName}”)` : ""}, with your own logo and colours.` },
+      { kind: "receipt", title: "Your first week", items: week.items.filter((i) => i.text).map((i) => `${i.day} · ${label[i.kind]} · ${i.title}`) },
+    ])]
+    if (week.trends.length) out.push(agent([
+      { kind: "text", text: "What your customers are paying attention to this week:" },
+      { kind: "sources", items: week.trends.map((t) => ({ name: t.title, detail: t.why, status: t.when ?? "", ok: true, href: t.url })) },
+    ]))
+    for (const it of week.items) {
+      if (!it.text) continue
+      out.push(agent([
+        { kind: "text", text: `${it.day}: ${it.why}` },
+        { kind: "doc", title: it.title, meta: label[it.kind], text: it.text, image: it.image ?? undefined, square: it.kind === "social" },
+      ]))
+    }
+    out.push(priceMessage(scanId, true))
+    push(...out)
   }
 
   function hireHref(scanId: string) {
@@ -484,7 +574,13 @@ export function StartAgent({
       emailRef.current = email
       if (phaseRef.current === "scanning") {
         // Still working: just confirm, the results keep coming in below.
-        push(user(email), agent([{ kind: "text", text: `Got it. The full report goes to ${email} the moment I’m done.` }]))
+        push(user(email), agent([{ kind: "text", text: `Got it. The full report goes to ${email}, and when I’m done I’ll write your first week of marketing.` }]))
+        return null
+      }
+      if (mode === "public") {
+        setPhase("claimed")
+        push(user(email), agent([{ kind: "text", text: `Got it. Your full report is on its way to ${email}.` }]))
+        void runWeekDemo(scan.id, scan.businessName)
         return null
       }
       setPhase("claimed")

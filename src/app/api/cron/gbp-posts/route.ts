@@ -58,7 +58,7 @@ ${voice ? "" : "- No emojis\n"}- Do NOT mention pricing
 ${voice ? "" : '- Write in first-person plural ("We", "Our", "Us")\n'}- Sound like a real small business owner, not marketing copy
 
 AEO (AI-engine optimization) hard rules — mandatory, applied within the short word count. Do NOT add a multi-question FAQ section (it will not fit a short GBP post):
-- Open with a clear question a customer might ask an AI engine, e.g. "Looking for the best ${businessType ?? "local service"}${city ? ` in ${city}` : ""}?"
+- Open with a clear question a customer might ask an AI engine, e.g. "Looking for a ${businessType ?? "local service"} you can trust${city ? ` in ${city}` : ""}?"
 - Answer that question directly in the first 1-2 sentences — AI engines favor direct, up-front answers.
 - Include the business name (${businessName})${city ? ` and city (${city})` : ""} naturally in the first paragraph.
 - End with a single short line stating the business name${city ? ` and city` : ""}. NEVER invent an address or phone number, and NEVER write bracket placeholders like "[address]" or "[phone]" — this post may go straight to Google, so if you don't know a fact, leave it out entirely.${city ? "" : "\n- The city is not known. Do NOT reference any city, neighborhood, or 'your area'."}

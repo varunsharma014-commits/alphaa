@@ -96,7 +96,7 @@ async function plan(userId: string, ctx: { insights: Insights | null; trends: Tr
 
 Create exactly: ${want}. Spread them across the next 7 days.
 Each piece must build on the facts: what's working (do more of it), what isn't (fix it), what competitors or AI answers show customers want, or something timely this week (trends t1, t2…). Prefer the ideas already suggested when they fit. Mix topics; don't repeat recent pieces: ${recent.map((r) => r.title).join("; ") || "none"}.
-Write "why" to the business owner ("your page", "you rank"), never "we" or "our". Keep titles under 70 characters. In "why", use only numbers that appear in the facts you cite. Titles must not promise facts the data doesn't give (prices, hours, offers). Never say "best", "#1" or "leading".
+Write "why" to the business owner ("your page", "you rank"), never "we" or "our", and never mention the fact keys. Keep titles under 70 characters. In "why", use only numbers that appear in the facts you cite. Titles must not promise facts the data doesn't give (prices, hours, offers). Never say "best", "#1" or "leading".
 ${ctx.voice ? `\n${ctx.voice}\n` : ""}
 FACTS (key: text)
 ${facts.map((f) => `${f.key}: ${f.text}`).join("\n") || "none"}

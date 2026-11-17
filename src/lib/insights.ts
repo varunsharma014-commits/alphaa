@@ -189,7 +189,7 @@ From the facts below, suggest 3 to 5 things to create next. Each must build on w
 - blog: a website article that answers a question customers search for or ask AI.
 - google: a short Google listing update (local, timely, a service).
 - social: a Facebook/Instagram/LinkedIn post. Only suggest social if there are social facts or a clear reason.
-Rules: cite the fact keys you used. Titles must not promise facts the data doesn't give (hours, prices, offers, insurance, years): ask the question instead ("What does Invisalign cost in Austin?"). In "why", use only numbers that appear in those facts, and say it plainly (e.g. "“dentist open saturday” is seen 140 times but you're just off page one"). Never say "best", "#1" or "leading". Don't repeat these recent posts: ${recent.map((r) => r.title).join("; ") || "none"}.
+Rules: cite the fact keys you used in "keys", never in the text. Titles must not promise facts the data doesn't give (hours, prices, offers, insurance, years): ask the question instead ("What does Invisalign cost in Austin?"). In "why", use only numbers that appear in those facts, and say it plainly (e.g. "“dentist open saturday” is seen 140 times but you're just off page one"). Never say "best", "#1" or "leading". Don't repeat these recent posts: ${recent.map((r) => r.title).join("; ") || "none"}.
 ${voice ? `Titles should fit this voice:\n${voice}\n` : ""}
 FACTS (key: text)
 ${facts.map((f) => `${f.key}: ${f.text}`).join("\n")}`,
