@@ -3,6 +3,9 @@ export const dynamic = "force-dynamic"
 import { db } from "@/lib/db"
 import { generateBusinessSchema } from "@/lib/business-schema"
 import type { SchemaItem } from "@/lib/schema-generator"
+import { getAgentSettings } from "@/lib/agent/settings"
+import { hasGrowth } from "@/lib/billing"
+import { tagTracking } from "@/lib/tracking"
 
 // Public JSON-LD for a business, fetched by the tag.js snippet from the
 // customer's own domain — so CORS must allow any origin.
@@ -42,7 +45,10 @@ export async function GET(req: Request): Promise<Response> {
     }
   }
 
-  return new Response(JSON.stringify({ v: 2, schemas }), { headers: CORS })
+  // Growth: GA4 / Meta Pixel IDs the tag loads (public IDs, same as in any page source).
+  const tracking = hasGrowth(user) ? tagTracking((await getAgentSettings(user.id)).tracking) : null
+
+  return new Response(JSON.stringify({ v: 2, schemas, ...(tracking ? { tracking } : {}) }), { headers: CORS })
 }
 
 export function OPTIONS(): Response {

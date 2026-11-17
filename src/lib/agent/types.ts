@@ -39,9 +39,11 @@ export type ChipAction =
   | { type: "bing-connect" } // form: Bing Webmaster API key
   | { type: "questions-edit" } // form: the tracked customer questions
   | { type: "questions-run" } // ask all tracked questions now
+  | { type: "tracking-setup"; ga4?: string; pixel?: string } // form: GA4 Measurement ID + Meta Pixel ID (Growth)
+  | { type: "tracking-off" } // remove the tracking the agent set up
 
 export type SiteOp = "page" | "schema" | "llms" | "robots" | "post" | "meta" | "sitemap" | "headers"
-export type Task = "site-check" | "schema" | "security" | "profiles" | "listings" | "bing"
+export type Task = "site-check" | "schema" | "security" | "profiles" | "listings" | "bing" | "tracking"
 
 export type FormField = {
   name: string

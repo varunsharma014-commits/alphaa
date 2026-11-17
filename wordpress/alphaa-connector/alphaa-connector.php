@@ -3,7 +3,7 @@
  * Plugin Name:       Alphaa Connector
  * Plugin URI:        https://alphaa.app
  * Description:       Lets your Alphaa agent publish the pages, structured data and llms.txt you approve — and undo them in one tap. Also tells you when ChatGPT, Perplexity, Claude or Gemini send you a visitor.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Requires at least: 5.6
  * Requires PHP:      7.4
  * Author:            Alphaa
@@ -14,7 +14,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('ALPHAA_VERSION', '1.2.0');
+define('ALPHAA_VERSION', '1.3.0');
 if (!defined('ALPHAA_API')) define('ALPHAA_API', 'https://alphaa.app');
 
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
@@ -64,6 +64,7 @@ add_action('rest_api_init', function () {
     'meta'   => 'alphaa_rest_meta',
     'sitemap' => 'alphaa_rest_sitemap',
     'headers' => 'alphaa_rest_headers',
+    'tracking' => 'alphaa_rest_tracking',
   );
   foreach ($routes as $route => $cb) {
     register_rest_route('alphaa/v1', '/' . $route, array(
@@ -205,6 +206,19 @@ function alphaa_rest_headers() {
   return array('ok' => true, 'id' => $id, 'url' => home_url('/'));
 }
 
+// Google Analytics 4 + Meta Pixel IDs set up through Alphaa (Growth plan). Empty IDs turn it off.
+function alphaa_rest_tracking(WP_REST_Request $req) {
+  $p = $req->get_json_params();
+  $ga4 = isset($p['ga4']) ? strtoupper(trim((string) $p['ga4'])) : '';
+  $pixel = isset($p['pixel']) ? preg_replace('/\s+/', '', (string) $p['pixel']) : '';
+  if ($ga4 !== '' && !preg_match('/^G-[A-Z0-9]{4,15}$/', $ga4)) return new WP_Error('alphaa_bad', 'That Google Analytics ID doesn\'t look right.', array('status' => 400));
+  if ($pixel !== '' && !preg_match('/^\d{10,20}$/', $pixel)) return new WP_Error('alphaa_bad', 'That Meta Pixel ID doesn\'t look right.', array('status' => 400));
+  update_option('alphaa_tracking_prev', get_option('alphaa_tracking', array()), false);
+  update_option('alphaa_tracking', array('ga4' => $ga4, 'pixel' => $pixel, 'events' => !empty($p['events'])), true);
+  $id = alphaa_log_change('tracking', array());
+  return array('ok' => true, 'id' => $id, 'url' => home_url('/'));
+}
+
 function alphaa_rest_schema(WP_REST_Request $req) {
   $p = $req->get_json_params();
   if (empty($p['blocks']) || !is_array($p['blocks'])) return new WP_Error('alphaa_bad', 'No structured data sent.', array('status' => 400));
@@ -244,6 +258,7 @@ function alphaa_rest_undo(WP_REST_Request $req) {
     case 'post':   wp_trash_post(intval($ch['post_id'])); break;
     case 'sitemap': update_option('alphaa_sitemap', 0, false); break;
     case 'headers': update_option('alphaa_headers', 0, false); break;
+    case 'tracking': update_option('alphaa_tracking', get_option('alphaa_tracking_prev', array()), true); break;
     case 'meta':
       $pv = isset($ch['prev']) ? $ch['prev'] : array();
       if (isset($pv['store']) && $pv['store'] === 'postmeta') {
@@ -277,6 +292,29 @@ add_action('wp_head', function () {
     echo "\n<script type=\"application/ld+json\">" . wp_json_encode($block, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
   }
 }, 5);
+
+// Google Analytics 4 / Meta Pixel, when set up through Alphaa.
+// The same ID loaded some other way can't be seen from here, so Alphaa checks the live HTML first.
+// Lead events: phone taps, email taps and form sends. The Pixel is skipped when the visitor's
+// browser sends Global Privacy Control.
+add_action('wp_head', function () {
+  $t = get_option('alphaa_tracking', array());
+  if (!is_array($t)) return;
+  $ga4 = isset($t['ga4']) ? (string) $t['ga4'] : '';
+  $pixel = isset($t['pixel']) ? (string) $t['pixel'] : '';
+  if ($ga4 === '' && $pixel === '') return;
+  $events = !empty($t['events']);
+  if ($ga4 !== '') {
+    echo "\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=" . esc_attr($ga4) . "\" data-alphaa-tracking></script>\n";
+    echo "<script data-alphaa-tracking>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config'," . wp_json_encode($ga4) . ");</script>\n";
+  }
+  if ($pixel !== '') {
+    echo "<script data-alphaa-tracking>if(navigator.globalPrivacyControl!==true){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init'," . wp_json_encode($pixel) . ");fbq('track','PageView');}</script>\n";
+  }
+  if ($events) {
+    echo "<script data-alphaa-tracking>(function(){var send=function(m){try{if(window.gtag)gtag('event','generate_lead',{method:m});}catch(e){}try{if(window.fbq)fbq('track',m==='form'?'Lead':'Contact',{method:m});}catch(e){}};document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!a)return;var h=(a.getAttribute('href')||'').toLowerCase();if(h.indexOf('tel:')===0)send('phone');else if(h.indexOf('mailto:')===0)send('email');},true);document.addEventListener('submit',function(e){var f=e.target;if(f&&f.querySelector&&f.querySelector('input[type=email],input[type=tel],textarea'))send('form');},true);})();</script>\n";
+  }
+}, 2);
 
 // Titles/descriptions set through Alphaa when no SEO plugin handles them.
 function alphaa_current_meta() {

@@ -13,6 +13,10 @@ export const dynamic = "force-dynamic"
 // Perplexity. To be understood by those engines the JSON-LD must be server-
 // rendered into the page's HTML: the copy-paste block on Website Health, or a
 // CMS plugin. Keep the user-facing copy on Website Health honest about this.
+import { TAG_TRACKING_JS } from "@/lib/tracking"
+
+// Growth plan: the same response can carry GA4 / Meta Pixel IDs, which the tag loads in the
+// browser (see lib/tracking.ts). Analytics only needs the browser, so the JS limit above doesn't apply.
 export async function GET(): Promise<Response> {
   const js = `(function () {
   try {
@@ -29,6 +33,7 @@ export async function GET(): Promise<Response> {
       el.text = JSON.stringify(jsonLd);
       document.head.appendChild(el);
     };
+${TAG_TRACKING_JS}
     var norm = function (p) {
       p = (p || '/').split('?')[0].split('#')[0];
       if (p.length > 1) p = p.replace(/\\/+$/, '');
@@ -38,6 +43,7 @@ export async function GET(): Promise<Response> {
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (data) {
         if (!data) return;
+        if (data.tracking) track(data.tracking);
         if (data.v === 2 && data.schemas) {
           // v2: one entry per page. "/" entries apply site-wide; page-specific
           // entries (e.g. an FAQPage for /services) only inject on that page.

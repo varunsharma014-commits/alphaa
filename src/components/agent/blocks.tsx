@@ -465,7 +465,7 @@ export function FormBlock({
   onSubmit: (formId: string, values: Record<string, string | boolean>) => Promise<string | null>
 }) {
   const [values, setValues] = useState<Record<string, string | boolean>>(() =>
-    Object.fromEntries(b.fields.map((f) => [f.name, f.type === "checkbox" ? false : f.value ?? ""]))
+    Object.fromEntries(b.fields.map((f) => [f.name, f.type === "checkbox" ? f.value === "true" : f.value ?? ""]))
   )
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)

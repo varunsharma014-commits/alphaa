@@ -24,6 +24,8 @@ export type AgentSettings = {
   autoPublishPosts?: boolean
   /** What one new customer is worth: my estimate until the owner edits it (lib/customer-value.ts). */
   customerValue?: { amount: number; source: "estimate" | "owner"; basis?: string; at: string }
+  /** Growth: GA4 + Meta Pixel the agent set up on the site (lib/tracking.ts). */
+  tracking?: import("@/lib/tracking").Tracking
   /** The first-visit moment: the AI answer shown once, and when the owner saw it (lib/agent/first-answer.ts). */
   firstAnswer?: import("@/lib/agent/first-answer").FirstAnswer
 }

@@ -29,6 +29,7 @@ type Pending =
   | { kind: "bing" }
   | { kind: "questions" }
   | { kind: "shopify" }
+  | { kind: "tracking" }
 
 const OP_NAME: Record<SiteOp, string> = { page: "the page", schema: "your structured facts", llms: "your llms.txt", robots: "the robots.txt fix", post: "the post", meta: "the new title and description", sitemap: "your sitemap", headers: "the security settings" }
 function when(iso: string, future = false): string {
@@ -123,6 +124,13 @@ export function DashboardAgent({
       const d = data.data as never
       const msgs = task === "security" ? securityMessages(d, prefs.current.wpConnected) : task === "profiles" ? profileMessages(d) : task === "listings" ? listingsMessages(d) : bingMessages(d)
       push(...msgs.map((m) => ({ ...m, id: mid(m.id) })))
+      return
+    }
+    if (task === "tracking") {
+      const { ok, data } = await post<{ messages?: Message[] }>("/api/agent/tracking", { op: "check" })
+      setMessages((prev) => prev.filter((m) => m.id !== "tracking-run"))
+      if (!ok) return fail(data.error ?? "I couldn’t check your site just now. I’ll try again shortly.")
+      push(...(data.messages ?? []).map((m) => ({ ...m, id: mid(m.id) })))
       return
     }
     if (task === "site-check") {
@@ -483,6 +491,26 @@ export function DashboardAgent({
         ]))
         return
       }
+      case "tracking-setup": {
+        const formId = mid("tracking")
+        pending.current[formId] = { kind: "tracking" }
+        push(userMsg(chip.label), agent([
+          { kind: "text", text: "Paste what you have. One is enough to start, and you can add the other later." },
+          { kind: "form", formId, fields: [
+            { name: "ga4", label: "Google Analytics Measurement ID", type: "text", placeholder: "G-AB12CD34EF", value: a.ga4 ?? "" },
+            { name: "pixel", label: "Meta Pixel ID", type: "text", placeholder: "123456789012345", value: a.pixel ?? "" },
+            { name: "events", label: "Count phone taps, email taps and form sends as leads", type: "checkbox", value: "true" },
+          ], cta: "Set it up", fine: "Nothing else on your site changes. You can turn it off here any time." },
+        ]))
+        return
+      }
+      case "tracking-off": {
+        push(userMsg(chip.label))
+        const { ok, data } = await post<{ messages?: Message[] }>("/api/agent/tracking", { op: "off" })
+        if (!ok) return fail(data.error ?? "That didn’t go through. Try again.")
+        push(agent([{ kind: "text", text: "Done. The tracking I set up is off from the next page load." }]))
+        return
+      }
       case "questions-run": {
         push(userMsg(chip.label))
         const { ok, data } = await post("/api/agent/questions")
@@ -591,6 +619,12 @@ export function DashboardAgent({
       if (!ok) return data.error ?? "Bing didn’t accept that."
       push(agent([{ kind: "text", text: `Connected to Bing for ${data.site}. ✓` }]))
       if (data.summary) push(...bingMessages(data.summary as never).map((m) => ({ ...m, id: mid(m.id) })))
+      return null
+    }
+    if (p.kind === "tracking") {
+      const { ok, data } = await post<{ messages?: Message[] }>("/api/agent/tracking", { op: "save", ga4: String(values.ga4 ?? "").trim(), pixel: String(values.pixel ?? "").trim(), events: values.events === true })
+      if (!ok) return data.error ?? "That didn’t save."
+      push(...(data.messages ?? []).map((m) => ({ ...m, id: mid(m.id) })))
       return null
     }
     if (p.kind === "questions") {

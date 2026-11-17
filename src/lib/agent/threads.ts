@@ -13,8 +13,9 @@ import type { SecurityCheck } from "@/lib/checks/security"
 import { answersMessages, changeChips, profileMessages, listingsMessages, bingMessages, securityMessages } from "@/lib/agent/check-narration"
 import { maxExtraLocations } from "@/lib/agent/settings"
 import { imageUrl } from "@/lib/images"
+import { trackingMessages } from "@/lib/agent/tracking-narration"
 
-export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings"
+export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "reviews", label: "Reviews", blurb: "Your Google reviews and my reply drafts" },
   { key: "site", label: "Site Schema & Code", blurb: "What AI can read on your site, and the fixes I wrote" },
@@ -23,6 +24,7 @@ export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "listings", label: "Listings & Profiles", blurb: "Bing, Apple, your social profiles, your details across directories, and your locations" },
   { key: "competitors", label: "Competitors", blurb: "What they have that you don’t — and drafts to close it" },
   { key: "briefings", label: "Weekly Briefings", blurb: "What I did each week, in plain English" },
+  { key: "tracking", label: "Tracking & Ads", blurb: "Google Analytics, the Meta Pixel and the leads your website sends (Growth)" },
 ]
 export const isTopic = (t: string): t is Topic => TOPICS.some((x) => x.key === t)
 
@@ -142,6 +144,10 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
         messages: [agent([{ kind: "text", text: `I’m reading ${site} the way ChatGPT, Claude and Perplexity do.`, big: true }, { kind: "steps", items: ["Opening your homepage as each AI crawler", "Checking what they can read", "Checking the facts AI needs", "Writing the fixes"], done: 0 }], "st-run"), ...tail],
       }
     }
+
+    // ── Tracking & Ads (Growth) ──────────────────────────────────────────
+    case "tracking":
+      return { autorun: [], messages: await trackingMessages(user) }
 
     // ── Maps & Listings ───────────────────────────────────────────────────
     case "listings": {

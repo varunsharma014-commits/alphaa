@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  Bot, BookOpen, Link2, MessagesSquare, Globe, Sparkles, Search, TrendingUp, Activity, Gauge,
+  Bot, BookOpen, LineChart, MessagesSquare, Globe, Sparkles, Search, TrendingUp, Activity, Gauge,
   MapPin, Star, CalendarDays, Lightbulb, Users, BarChart3, PanelLeftOpen, PanelLeftClose, X,
   FileText, Plug,
 } from "lucide-react"
@@ -19,6 +19,7 @@ const GROUPS: { label: string; icon: typeof Bot; items: Item[] }[] = [
     items: [
       { href: "/dashboard?ask=content", ask: "content", label: "Posts & pages", icon: FileText },
       { href: "/dashboard/settings/website", label: "Website connection", icon: Plug },
+      { href: "/dashboard?ask=tracking", ask: "tracking", label: "Tracking & ads", icon: LineChart },
     ],
   },
   {
