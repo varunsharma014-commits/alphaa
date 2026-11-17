@@ -7,7 +7,6 @@ import { cache } from "react"
 import { db } from "@/lib/db"
 import { getEngineEvidence, type EngineKey } from "@/lib/engine-evidence"
 import { accountQuestion } from "@/lib/sandbox"
-import type { CitationReport } from "@/lib/citations"
 import { agent, type Block, type Message, type VerdictState } from "@/lib/agent/types"
 import { latestQuestionScan } from "@/lib/questions"
 
@@ -30,9 +29,6 @@ export type FeedData = { messages: Message[]; rail: RailData; status: AgentStatu
 /** The strip above the work: what the agent did last and what it does next. */
 export type AgentStatus = { last: { title: string; at: string } | null; next: string; firstCheck: string | null }
 
-function isRecord(v: unknown): v is Record<string, unknown> {
-  return typeof v === "object" && v !== null && !Array.isArray(v)
-}
 
 function ago(d: Date): string {
   const days = Math.floor((Date.now() - d.getTime()) / 86_400_000)
@@ -63,9 +59,8 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
   })
   if (!user) return null
 
-  const [evidence, citationRow, weekActivity] = await Promise.all([
+  const [evidence, weekActivity] = await Promise.all([
     getEngineEvidence({ id: user.id, email: user.email }),
-    db.mockActivity.findFirst({ where: { userId: user.id, type: "citation_scan" }, orderBy: { createdAt: "desc" } }),
     db.mockActivity.findMany({
       where: { userId: user.id, createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) }, type: { notIn: ["sandbox_query", "agent_settings", "question_scan_started", "ai_visit", "site_check", "citation_scan", "check_security", "check_profiles", "check_listings", "check_bing", "market_customer"] } },
       orderBy: { createdAt: "desc" },
@@ -182,28 +177,6 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
       { kind: "text", text: `I wrote ${waitingPosts.length === 1 ? "a new post" : `${waitingPosts.length} new posts`} for your website${m.title ? ` — “${m.title}”` : ""}. Want to read ${waitingPosts.length === 1 ? "it" : "them"}?` },
       { kind: "chips", items: [{ label: "Read and approve", action: { type: "thread", topic: "content" }, primary: true }] },
     ], "posts"))
-  }
-
-  // ── 4. Where AI looks you up ──────────────────────────────────────────────
-  const report = isRecord(citationRow?.metadata) && Array.isArray((citationRow!.metadata as Record<string, unknown>).targets)
-    ? (citationRow!.metadata as unknown as CitationReport)
-    : null
-  if (report && report.searchConfigured && report.targets.length > 0) {
-    const targets = [...report.targets].sort((a, b) => (a.status === "missing" ? -1 : 1) - (b.status === "missing" ? -1 : 1) || a.rank - b.rank).slice(0, 6)
-    messages.push(
-      agent([
-        { kind: "text", text: `Where the AIs look before they recommend a ${user.businessType || "business"}${user.city ? ` in ${user.city}` : ""}: ${report.listed} of ${report.targets.length} pages mention you.` },
-        { kind: "sources", items: targets.map((t) => ({ name: t.domain, detail: t.title.slice(0, 80), status: t.status === "listed" ? "You’re on it" : t.status === "missing" ? "Not on it" : "Couldn’t check", ok: t.status === "listed", href: t.url })) },
-        ...(report.missing > 0 ? [{ kind: "text", text: `Getting onto the ${report.missing === 1 ? "missing one" : `${report.missing} missing pages`} is the fastest way to change the answers above. Most are listings only the owner can claim, so I’ve lined them up with the steps for each.` } as Block] : []),
-        ...(report.missing > 0 ? [{ kind: "chips", items: [{ label: "See the list", action: { type: "thread", topic: "sources" } }] } as Block] : []),
-      ], "citations")
-    )
-  } else if (checked > 0) {
-    messages.push(
-      agent([
-        { kind: "text", text: "I’m checking which pages the AIs read before they recommend someone like you. You’ll see what I find here." },
-      ], "citations")
-    )
   }
 
   // ── 5. What a competitor covers that you don’t ────────────────────────────

@@ -3,7 +3,6 @@
 import { db } from "@/lib/db"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { getLocationInfo } from "@/lib/gmb"
-import type { CitationReport } from "@/lib/citations"
 import { checkSecurity, type SecurityCheck } from "./security"
 import { checkProfiles, findProfileUrls, missingNetworks, networkOf, type ProfileFinding, type ProfileNetwork } from "./profiles"
 import { checkNap, napSummary, type NapFinding } from "./nap"
@@ -51,10 +50,7 @@ export async function runCheck(userId: string, kind: CheckKind): Promise<unknown
   }
 
   if (kind === "listings") {
-    const citeRow = await db.mockActivity.findFirst({ where: { userId, type: "citation_scan" }, orderBy: { createdAt: "desc" } })
-    const report = citeRow?.metadata as unknown as CitationReport | undefined
-    const listed = (report?.targets ?? []).filter((t) => t.status === "listed" && (t.kind === "directory" || t.kind === "review")).map((t) => t.url)
-    const urls = Array.from(new Set([...listed, ...(s.profiles ?? []).filter((u) => reviewSites([u]).length)])).slice(0, 12)
+    const urls = Array.from(new Set((s.profiles ?? []).filter((u) => reviewSites([u]).length))).slice(0, 12)
     const loc = user.integration ? await getLocationInfo(user.integration).catch(() => null) : null
     const addr = loc?.address ?? ""
     const facts = {

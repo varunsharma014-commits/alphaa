@@ -4,24 +4,20 @@
 // job itself (the client runs `autorun`) — never a blank page with a button.
 
 import { db } from "@/lib/db"
-import type { CitationReport } from "@/lib/citations"
 import { agent, type Block, type Message, type Task } from "@/lib/agent/types"
-import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { getRoi, roiLines } from "@/lib/roi"
 import { latestQuestionScan } from "@/lib/questions"
 import { cachedCheck, type ProfilesResult, type ListingsResult, type BingResult } from "@/lib/checks/run"
 import type { SecurityCheck } from "@/lib/checks/security"
 import { answersMessages, changeChips, profileMessages, listingsMessages, bingMessages, securityMessages } from "@/lib/agent/check-narration"
-import { outreachMessages } from "@/lib/agent/thread-blocks"
 import { maxExtraLocations } from "@/lib/agent/settings"
 import { imageUrl } from "@/lib/images"
 
-export type Topic = "reviews" | "site" | "sources" | "listings" | "answers" | "content" | "competitors" | "briefings"
+export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "reviews", label: "Reviews", blurb: "Your Google reviews and my reply drafts" },
   { key: "site", label: "Site Schema & Code", blurb: "What AI can read on your site, and the fixes I wrote" },
-  { key: "sources", label: "Source Tracking", blurb: "The pages AI reads before it recommends anyone" },
   { key: "answers", label: "AI Answers", blurb: "Every customer question, asked to all four AIs each week — and what they get wrong about you" },
   { key: "content", label: "Posts & Pages", blurb: "Fresh posts and pages I write for your site, waiting for your yes" },
   { key: "listings", label: "Listings & Profiles", blurb: "Bing, Apple, your social profiles, your details across directories, and your locations" },
@@ -145,20 +141,6 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
         autorun,
         messages: [agent([{ kind: "text", text: `I’m reading ${site} the way ChatGPT, Claude and Perplexity do.`, big: true }, { kind: "steps", items: ["Opening your homepage as each AI crawler", "Checking what they can read", "Checking the facts AI needs", "Writing the fixes"], done: 0 }], "st-run"), ...tail],
       }
-    }
-
-    // ── Source Tracking ───────────────────────────────────────────────────
-    case "sources": {
-      const row = await db.mockActivity.findFirst({ where: { userId, type: "citation_scan" }, orderBy: { createdAt: "desc" } })
-      const report = isRecord(row?.metadata) && Array.isArray((row!.metadata as Record<string, unknown>).targets) ? (row!.metadata as unknown as CitationReport) : null
-      const fresh = row && Date.now() - row.createdAt.getTime() < 7 * 86_400_000
-      if (!report || !report.searchConfigured || report.targets.length === 0 || !fresh) {
-        return {
-          autorun: ["citations"],
-          messages: [agent([{ kind: "text", text: "I’m searching the way your customers do.", big: true }, { kind: "text", text: "Then I open each result the AIs lean on and check whether you’re on it. About two minutes — nothing changes on your site." }, { kind: "steps", items: ["Searching like a customer", "Opening each page AI reads", "Checking if you’re named"], done: 0 }], "src-run")],
-        }
-      }
-      return { autorun: [], messages: [agent(citationBlocks(report, user.businessType, user.city, row!.createdAt), "src-report"), ...outreachMessages(report), ...discussionMessages(report)] }
     }
 
     // ── Maps & Listings ───────────────────────────────────────────────────

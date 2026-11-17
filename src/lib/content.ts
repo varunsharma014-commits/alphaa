@@ -1,4 +1,4 @@
-// Everything the agent writes for a business's own website or outreach, from
+// Everything the agent writes for a business's own website, from
 // the business's facts only — unknown facts become [bracketed] placeholders.
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
@@ -140,25 +140,6 @@ ${factsOf(user)}`,
   })
   const out = text(res)
   return { title: out.match(/^TITLE:\s*(.+)$/m)?.[1]?.trim() ?? `${user.businessName} — ${loc.city}`, markdown: out.replace(/^TITLE:.*$/m, "").trim() }
-}
-
-/** Outreach email to a "best of" list or directory the AIs read, asking to be included. */
-export async function writeOutreach(user: U, target: { url: string; title: string; kind: string }, pageText: string): Promise<string> {
-  const res = await anthropic.messages.create({
-    model: SONNET,
-    max_tokens: 700,
-    messages: [{
-      role: "user",
-      content: `${target.kind === "directory" ? "Write short step-by-step instructions for getting this business listed on this directory page, then a 2-sentence note to the directory's support if a listing can't be self-added." : "Write a short, friendly email the owner sends to the author/editor of this list asking to be considered next time it's updated."}
-Page: "${target.title}" — ${target.url}
-${pageText ? `What the page says (excerpt):\n${pageText.slice(0, 2500)}\n` : ""}
-Rules: under 150 words; specific to this page; one concrete, true reason to consider them from the facts (or a [bracketed] placeholder); no flattery overload, no pushiness; sign off with the owner's name as [Your name]. For an email, first line "Subject: …". ${RULES}
-
-FACTS
-${factsOf(user)}`,
-    }],
-  })
-  return text(res)
 }
 
 export async function locationsOf(userId: string): Promise<Location[]> {

@@ -26,7 +26,6 @@ const GROUPS: { label: string; icon: typeof Bot; items: Item[] }[] = [
     items: [
       { href: "/dashboard/sandbox", label: "Ask the AIs", icon: MessagesSquare },
       { href: "/dashboard/vault", label: "What AI reads about you", icon: BookOpen },
-      { href: "/dashboard/citations", label: "Where AI looks you up", icon: Link2 },
       { href: "/dashboard/visibility/chatgpt", label: "ChatGPT", icon: Bot },
       { href: "/dashboard/visibility/claude", label: "Claude", icon: Globe },
       { href: "/dashboard/visibility/gemini", label: "Gemini", icon: Sparkles },

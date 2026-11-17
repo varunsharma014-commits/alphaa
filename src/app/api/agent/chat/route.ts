@@ -11,7 +11,7 @@ import { accountQuestion } from "@/lib/sandbox"
 import { BRAND } from "@/lib/brand"
 
 // The agent's voice in the dashboard. Answers from the user's REAL data
-// (latest audit, engine verdicts, citations, activity ledger) and is told,
+// (latest audit, engine verdicts, activity ledger) and is told,
 // hard, not to claim work it did not do. When the user wants a live check it
 // returns `liveQuestion` and the client offers the (rate-limited) sandbox.
 
@@ -26,7 +26,6 @@ const TOPIC_RES: [string, RegExp][] = [
   ["competitors", /\bcompetit|\brivals?\b|\bthey (have|do)\b/i],
   ["reviews", /\breviews?\b|\bstars?\b|\bratings?\b/i],
   ["site", /\bschema\b|\bsite code\b|\bllms\.txt\b|\bstructured\b|\bwebsite fix|\bmy site\b/i],
-  ["sources", /\bsources?\b|\bwhere (does )?ai (look|read)|\bcitations?\b/i],
   ["content", /\bposts?\b|\bblog\b|\barticles?\b|\bpages? to approve\b|\bdrafts?\b/i],
   ["listings", /\blistings?\b|\bdirector(y|ies)\b|\bbing\b|\bapple maps\b|\bprofiles?\b/i],
   ["briefings", /\bresults?\b|\broi\b|\bthis week\b|\bhow are we doing\b|\bprogress\b|\breport\b|\btraffic\b|\bvisitors?\b/i],
@@ -59,9 +58,8 @@ export async function POST(req: Request) {
   })
   if (!user) return NextResponse.json({ error: "We couldn’t find your account." }, { status: 404 })
 
-  const [evidence, citation, activity] = await Promise.all([
+  const [evidence, activity] = await Promise.all([
     getEngineEvidence({ id: user.id, email: user.email }),
-    db.mockActivity.findFirst({ where: { userId: user.id, type: "citation_scan" }, orderBy: { createdAt: "desc" } }),
     db.mockActivity.findMany({ where: { userId: user.id, type: { notIn: ["sandbox_query"] } }, orderBy: { createdAt: "desc" }, take: 25 }),
   ])
 
@@ -74,7 +72,6 @@ export async function POST(req: Request) {
     audit
       ? `Latest audit ${audit.createdAt.toDateString()}: score ${audit.visibilityScore}. Issues: ${JSON.stringify(audit.issues).slice(0, 1500)}. Engine answers: ${audit.aiEngineResults.map((r) => `[${r.engine}] Q: ${r.query} — appeared=${r.appeared} — A: ${r.response.slice(0, 500)}`).join("\n")}`
       : "No audit run yet.",
-    citation ? `Where-AI-looks report (${citation.createdAt.toDateString()}): ${citation.title}. ${citation.description ?? ""} ${JSON.stringify(citation.metadata).slice(0, 1800)}` : "No where-AI-looks report yet.",
     `Reviews waiting for a reply: ${user.gmbReviews.length}. Draft Google posts: ${user.gbpPosts.length}.`,
     user.contentGaps[0] ? `Latest content-gap analysis vs ${user.contentGaps[0].competitorUrl}: ${JSON.stringify(user.contentGaps[0].gaps).slice(0, 1200)}` : "No competitor content analysis yet.",
     `Recent things ${BRAND.agentName} actually did (ledger, newest first): ${activity.map((a) => `${a.createdAt.toDateString()}: ${a.title}${a.description ? ` — ${a.description}` : ""}`).join(" | ").slice(0, 2500) || "nothing yet"}`,

@@ -9,7 +9,6 @@ import { agent, mid, user as userMsg, type Block, type Chip, type Message, type 
 import { securityMessages, profileMessages, listingsMessages, bingMessages } from "@/lib/agent/check-narration"
 import type { EngineKey } from "@/lib/agent/types"
 import { siteCheckBlocks, describeSchemas } from "@/lib/agent/site-narration"
-import { citationBlocks, discussionMessages } from "@/lib/agent/thread-blocks"
 import { NONE_AVAILABLE, PLATFORM_NAME, platformPickerBlocks, type Availability } from "@/lib/connector/platforms"
 import type { Platform } from "@/lib/connector/types"
 import type { AgentStatus } from "@/lib/agent/feed"
@@ -189,16 +188,6 @@ export function DashboardAgent({
       ]))
       return
     }
-    if (task === "citations") {
-      const id = "src-run"
-      let n = 0
-      const t = setInterval(() => setSteps(id, Math.min(++n, 2)), 20000)
-      const { ok, data } = await post<{ report?: Parameters<typeof citationBlocks>[0] }>("/api/citations")
-      clearInterval(t)
-      if (!ok || !data.report || !data.report.targets?.length) return replace(id, agent([{ kind: "text", text: data.error ?? "The search didn’t come back this time. I’ll run it again on my next pass." }, { kind: "chips", items: [{ label: "Try again now", action: { type: "run", task: "citations" }, primary: true }] }]))
-      replace(id, agent(citationBlocks(data.report, context?.businessType ?? null, context?.city ?? null, new Date())))
-      push(...discussionMessages(data.report))
-    }
   }
 
   const started = useRef(false)
@@ -261,12 +250,12 @@ export function DashboardAgent({
         }
         return
       case "run":
-        push(agent([{ kind: "text", text: "On it." }, { kind: "steps", items: ["Working"], done: 0 }], a.task === "citations" ? "src-run" : a.task === "site-check" ? "st-run" : a.task === "schema" ? undefined : `${a.task}-run`))
+        push(agent([{ kind: "text", text: "On it." }, { kind: "steps", items: ["Working"], done: 0 }], a.task === "site-check" ? "st-run" : a.task === "schema" ? undefined : `${a.task}-run`))
         return runTask(a.task)
       case "draft": {
         push(userMsg(chip.label))
         setBusy(true)
-        const { ok, data } = await post<{ title?: string; text?: string }>("/api/agent/draft", { topic: a.topic, competitor: a.competitor, mode: a.mode, url: a.url, locationId: a.locationId, kind: a.kind })
+        const { ok, data } = await post<{ title?: string; text?: string }>("/api/agent/draft", { topic: a.topic, competitor: a.competitor, mode: a.mode, url: a.url, locationId: a.locationId })
         setBusy(false)
         if (!ok || !data.text) return fail(data.error ?? "I couldn’t write that just now.")
         const docId = `draft-${Date.now()}`
@@ -293,26 +282,6 @@ export function DashboardAgent({
             { kind: "text", text: "Here’s the page for that location — it tells AI exactly where you are and what you do there." },
             { kind: "doc", title: data.title ?? "Location page", meta: "draft · not published", text: data.text, docId, editable: true, markdown: true },
             { kind: "chips", items: siteChips("page", { title: data.title, text: data.text, docId, locationId: a.locationId }) },
-          ]))
-          return
-        }
-        if (a.mode === "outreach") {
-          push(agent([
-            { kind: "text", text: a.kind === "directory" ? "Here’s how to get on that page:" : "Here’s an email you could send the people behind that list. It comes from you — edit it, then send it from your own inbox." },
-            { kind: "doc", title: a.topic.slice(0, 80), meta: "draft", text: data.text, docId, editable: true },
-            { kind: "chips", items: [{ label: "Copy it", action: { type: "copy", text: data.text!, done: "Copied." }, primary: true }, ...(a.url ? [{ label: "Open the page", action: { type: "link", href: a.url } } as Chip] : [])] },
-          ]))
-          return
-        }
-        if (a.mode === "reply") {
-          const where = a.url ? new URL(a.url).hostname.replace(/^www\./, "") : "the discussion"
-          push(agent([
-            { kind: "text", text: `Here’s a reply you could post on ${where}. It helps first and says who you are — communities (and AI) trust that. Edit anything, then post it from your own account.` },
-            { kind: "doc", title: `Your reply · ${where}`, meta: "draft · you post it", text: data.text, docId, editable: true },
-            { kind: "chips", items: [
-              { label: "Copy it", action: { type: "copy", text: data.text, done: "Copied. Paste it in the thread — and check the community’s rules on business posts first." }, primary: true },
-              ...(a.url ? [{ label: "Open the discussion", action: { type: "link", href: a.url } } as Chip] : []),
-            ] },
           ]))
           return
         }

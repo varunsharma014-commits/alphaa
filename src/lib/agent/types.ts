@@ -25,7 +25,7 @@ export type ChipAction =
   | { type: "post-delete"; postId: string }
   | { type: "dismiss" }
   | { type: "copy"; text: string; done?: string } // copy to clipboard, confirm in-thread
-  | { type: "draft"; topic: string; competitor?: string; mode?: "faq" | "reply" | "post" | "meta" | "location" | "outreach"; url?: string; locationId?: string; kind?: string } // agent writes something: FAQ, discussion reply, blog post, page title, location page, outreach
+  | { type: "draft"; topic: string; competitor?: string; mode?: "faq" | "post" | "meta" | "location"; url?: string; locationId?: string } // agent writes something: FAQ, blog post, page title, location page
   | { type: "run"; task: Task } // agent runs a job right now
   | { type: "wp-connect"; direct?: boolean } // connect a website; direct = skip the platform choice and go to WordPress
   | { type: "wp-push"; op: SiteOp; title?: string; text?: string; docId?: string; url?: string; locationId?: string; draftId?: string } // publish an approved change to the connected site
@@ -41,7 +41,7 @@ export type ChipAction =
   | { type: "questions-run" } // ask all tracked questions now
 
 export type SiteOp = "page" | "schema" | "llms" | "robots" | "post" | "meta" | "sitemap" | "headers"
-export type Task = "site-check" | "citations" | "schema" | "security" | "profiles" | "listings" | "bing"
+export type Task = "site-check" | "schema" | "security" | "profiles" | "listings" | "bing"
 
 export type FormField = {
   name: string

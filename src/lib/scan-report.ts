@@ -147,7 +147,7 @@ export function buildFindings(
       why: rivals.length
         ? `When a customer asked, ${missed.length > 1 ? "they" : "it"} recommended ${list(rivals)} instead.`
         : `When a customer asked, ${missed.length > 1 ? "they" : "it"} gave an answer that left you out.`,
-      plan: "I’ll find the pages those AIs leaned on, get you onto them, and publish clear answers to the exact question your customer asked.",
+      plan: "I’ll fix what those AIs read on your website and publish clear answers to the exact question your customer asked.",
     })
   } else if (answered.length > 0) {
     const rivals = others(answered).slice(0, 3)
@@ -171,7 +171,7 @@ export function buildFindings(
       severity: skipped.length >= 2 ? "critical" : "warning",
       title: `${skipped.length} of ${asked.length} AIs skip you when buyers ask “${q.query}”`,
       why: `${q.kind === "broad" ? "This is the wider question most buyers ask before they know your niche." : "This is how buyers describe their problem before they know what to search for."}${rivals.length ? ` ${list(skipped.map((e) => e.name))} recommended ${list(rivals)} instead.` : ""}`,
-      plan: "I’ll publish a clear page that answers exactly this question and get you onto the sites those AIs quoted.",
+      plan: "I’ll publish a clear page that answers exactly this question, so AI has something of yours to quote.",
     })
   }
 

@@ -42,11 +42,6 @@ export default function PreviewPage() {
       { kind: "chips", items: [{ label: "Draft a reply", action: { type: "review-draft", reviewId: "x" }, primary: true }, { label: "Skip", action: { type: "dismiss" } }] },
     ]),
     agent([
-      { kind: "text", text: "Where the AIs look before they recommend a dentist in Austin: 2 of 6 pages mention you." },
-      { kind: "sources", items: [{ name: "zocdoc.com", detail: "Best Dentists in Austin, TX", status: "Not on it", ok: false }, { name: "yelp.com", detail: "Top 10 Best Dentist near Zilker", status: "You’re on it", ok: true }, { name: "austinchronicle.com", detail: "Best of Austin 2026 — Dentist", status: "Not on it", ok: false }] },
-      { kind: "chips", items: [{ label: "Show me every page", action: { type: "link", href: "/dashboard/citations" }, primary: false }] },
-    ]),
-    agent([
       { kind: "steps", items: ["Reading growthturbine.com", "Working out what customers ask", "Asking ChatGPT, Gemini, Claude and Perplexity", "Checking who they recommended instead"], done: 2, ticker: [["Opening"], ["Thinking"], ["Asking ChatGPT…", "Asking Gemini…", "Asking Claude…", "Asking Perplexity…"], ["Checking"]] },
       { kind: "sources", title: "Can AI get in?  ·  9 of 10", collapseOk: true, items: [{ name: "Set up with Bing (ChatGPT search uses it)", detail: "No sign of Bing Webmaster Tools", status: "No", ok: false }, ...["AI crawlers can open your site", "robots.txt lets AI search in", "Readable without JavaScript", "Sitemap"].map((n) => ({ name: n, detail: "Allowed", status: "Yes", ok: true }))] },
       { kind: "cta", chip: { label: "Start today →", action: { type: "link", href: "/signup" }, primary: true } },

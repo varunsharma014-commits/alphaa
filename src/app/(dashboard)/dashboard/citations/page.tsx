@@ -1,29 +1,7 @@
-export const dynamic = "force-dynamic"
+import { redirect } from "next/navigation"
 
-import { auth } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { CitationsClient } from "./CitationsClient"
-import type { CitationReport } from "@/lib/citations"
-
-export const metadata = { title: "Where AI looks you up" }
-
-function readReport(metadata: unknown): CitationReport | null {
-  if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) return null
-  const m = metadata as Record<string, unknown>
-  if (!Array.isArray(m.targets)) return null
-  return m as unknown as CitationReport
-}
-
-export default async function CitationsPage() {
-  const { userId: clerkId } = await auth()
-  const user = clerkId ? await db.user.findUnique({ where: { clerkId } }) : null
-
-  const row = user
-    ? await db.mockActivity.findFirst({
-        where: { userId: user.id, type: "citation_scan" },
-        orderBy: { createdAt: "desc" },
-      })
-    : null
-
-  return <CitationsClient initial={row ? readReport(row.metadata) : null} />
+// "Where AI looks you up" (the off-site listings work list) was retired 2026-11-17: it handed
+// owners outreach work to do themselves. Old links land on the dashboard.
+export default function CitationsPage() {
+  redirect("/dashboard")
 }

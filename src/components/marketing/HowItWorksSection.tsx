@@ -9,7 +9,7 @@ const steps = [
   {
     num: "02",
     headline: "We build your AI presence",
-    body: "We create your structured data, citations, and AI-optimized content — and start posting to Google weekly. All automatic.",
+    body: "We create your structured data and AI-optimized content — and start posting to Google weekly. All automatic.",
   },
   {
     num: "03",

@@ -13,7 +13,6 @@ import { latestQuestionScan } from "@/lib/questions"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { hasPaidPlan } from "@/lib/billing"
 import { REVIEW_DRAFT } from "@/lib/approvals"
-import type { CitationReport } from "@/lib/citations"
 import { imageUrl } from "@/lib/images"
 
 export const ENGINE_ORDER: EngineKey[] = ["chatgpt", "gemini", "claude", "perplexity"]
@@ -134,11 +133,10 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
   })
   if (!user) return null
   const since = new Date(Date.now() - (opts.ledgerDays ?? 7) * 86_400_000)
-  const [evidence, qs, settings, citationRow, postDrafts, reviewDrafts, work] = await Promise.all([
+  const [evidence, qs, settings, postDrafts, reviewDrafts, work] = await Promise.all([
     getEngineEvidence({ id: user.id, email: user.email }),
     latestQuestionScan(user.id).catch(() => null),
     getAgentSettings(user.id),
-    db.mockActivity.findFirst({ where: { userId, type: "citation_scan" }, orderBy: { createdAt: "desc" } }),
     db.mockActivity.findMany({ where: { userId, type: "post_draft" }, orderBy: { createdAt: "desc" }, take: 10 }),
     db.mockActivity.findMany({ where: { userId, type: REVIEW_DRAFT }, orderBy: { createdAt: "desc" }, take: 30 }),
     db.mockActivity.findMany({ where: { userId, type: { in: LEDGER_TYPES }, createdAt: { gte: since } }, orderBy: { createdAt: "desc" }, take: 80 }),
@@ -157,11 +155,9 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
   const rival = freshScan?.rivals.find((r) => r.name.trim().toLowerCase() !== self)
   const rivalLine = anyNo && rival ? `When they don’t name you, they name ${rival.name} instead.` : null
 
-  const report = citationRow?.metadata && Array.isArray((citationRow.metadata as { targets?: unknown }).targets) ? (citationRow.metadata as unknown as CitationReport) : null
   const plan: string[] = []
   if (anyNo) {
     if (hasPaidPlan(user)) plan.push("I’m writing pages that answer the questions your customers ask them")
-    if (report && report.missing > 0) plan.push(`I’ve lined up the ${report.missing} ${report.missing === 1 ? "site" : "sites"} they read that don’t list you yet`)
   }
   const planLine = plan.length ? `${plan.join(", and ")}.` : null
 
