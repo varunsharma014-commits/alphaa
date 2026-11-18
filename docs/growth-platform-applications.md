@@ -176,3 +176,10 @@ This is a separate Google grant from Search Console / Business Profile (drive.fi
 4. While the app is in development status, Dropbox may limit how many users can link it; apply for production status in the App Console when needed.
 
 **Videos on Facebook / Instagram**: Meta pulls the video from `/api/asset/<id>?e=&s=` (HMAC-signed, 3 hours, streams from Drive/Dropbox with Range support, nothing stored). Instagram posts it as a Reel. TikTok's `PULL_FROM_URL` needs our domain verified in the TikTok developer portal (URL prefix `https://alphaa.app/api/asset/`), so TikTok isn't wired for videos yet.
+
+## Meta App Review status (2026-11-18)
+- Alphaa is a Tech Provider (irreversible, Varun clicked). Business verification: GT verified.
+- First App Review draft (not submitted) requests 11: pages_manage_posts, pages_show_list, pages_manage_ads, instagram_content_publish, business_management, ads_read, pages_read_engagement, public_profile, leads_retrieval, ads_management, instagram_basic.
+- Removed from round 1 (no feature to demo yet): Marketing API Access Tier (needs ~500 calls/15 days <15% errors), pages_read_user_content, pages_manage_engagement, instagram_manage_comments, instagram_manage_insights.
+- BEFORE going live: the login configuration 1474632747934670 still requests the 4 removed permissions. Make a new configuration without them (or wait until round 2 approves them), or non-tester logins may fail.
+- Still needed: one screencast per permission (scripts in docs/meta-app-review.md) + data-handling questions.
