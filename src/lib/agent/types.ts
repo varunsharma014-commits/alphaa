@@ -45,17 +45,21 @@ export type ChipAction =
   // updated messages (they replace the old ones with the same id). `form` asks for values first.
   | { type: "agent-op"; endpoint: AgentOpEndpoint; body: Record<string, string | number | boolean>; form?: { text: string; fields: FormField[]; cta: string; fine?: string } }
 
-export type AgentOpEndpoint = "voice" | "autopilot" | "social"
+export type AgentOpEndpoint = "voice" | "autopilot" | "social" | "niche" | "canva" | "tracking"
 export type SiteOp = "page" | "schema" | "llms" | "robots" | "post" | "meta" | "sitemap" | "headers"
 export type Task = "site-check" | "schema" | "security" | "profiles" | "listings" | "bing" | "tracking" | "voice" | "insights"
 
 export type FormField = {
   name: string
   label: string
-  type: "text" | "email" | "tel" | "url" | "checkbox" | "textarea"
+  type: "text" | "email" | "tel" | "url" | "checkbox" | "textarea" | "file"
   placeholder?: string
   value?: string
   required?: boolean
+  /** "file": the files are POSTed (multipart "file") to `upload` first; the value sent on is the returned ids, comma-joined. */
+  accept?: string
+  multiple?: boolean
+  upload?: string
 }
 
 export type Chip = { label: string; action: ChipAction; primary?: boolean }

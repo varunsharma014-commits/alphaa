@@ -19,16 +19,21 @@ import { autopilotMessages } from "@/lib/agent/autopilot"
 import { workMessages } from "@/lib/agent/worklog"
 import { socialThreadFor } from "@/lib/social/thread"
 import { channelsMessages } from "@/lib/agent/channels"
+import { imagesMessages } from "@/lib/agent/images-panel"
+import { hasGrowth } from "@/lib/billing"
 import { insightsMessages, insightsRunMessage } from "@/lib/agent/insights-narration"
 import { latestInsights, insightsFresh } from "@/lib/insights"
 import { hasPaidPlan, isComped } from "@/lib/billing"
 import { saveAgentSettings } from "@/lib/agent/settings"
+import { nicheMessages } from "@/lib/agent/niche-narration"
+import { nicheView } from "@/lib/niche-posts"
 
-export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights" | "social" | "channels"
+export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights" | "social" | "channels" | "niche"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "channels", label: "Your marketing channels", blurb: "Everything I work on, what’s connected and what to connect next" },
   { key: "social", label: "Social accounts & posts", blurb: "Connect Facebook, Instagram, LinkedIn, TikTok and X; see what’s scheduled and what went out" },
   { key: "insights", label: "What’s working", blurb: "What’s working and what isn’t, from your real numbers, and what to create next" },
+  { key: "niche", label: "What’s working in your niche", blurb: "The posts and ads getting attention from businesses like yours this week, and your own version in one tap" },
   { key: "work", label: "What I’ve done", blurb: "Every step I took for you, day by day" },
   { key: "voice", label: "Your brand & voice", blurb: "Your logo, colours, language, tone and voice, learned from your own site, with options to pick from" },
   { key: "autopilot", label: "What I do without asking", blurb: "Approve once: posts, review replies, social, email and ads" },
@@ -169,7 +174,10 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
 
     case "voice": {
       const s = await getAgentSettings(user.id)
-      return s.voice && s.brand ? { autorun: [], messages: [...brandMessages(s.brand, s.brand.sampleId ? imageUrl(s.brand.sampleId) : null), ...voiceMessages(s.voice)] } : { autorun: ["voice"], messages: [voiceRunMessage()] }
+      if (!(s.voice && s.brand)) return { autorun: ["voice"], messages: [voiceRunMessage()] }
+      // "How your images look" (styles, photo library, Canva) sits between the brand and the voice.
+      const images = await imagesMessages(user.id, { growth: hasGrowth(user) }).catch(() => [])
+      return { autorun: [], messages: [...brandMessages(s.brand, s.brand.sampleId ? imageUrl(s.brand.sampleId) : null), ...images, ...voiceMessages(s.voice)] }
     }
 
     case "insights": {
@@ -183,7 +191,19 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       await saveAgentSettings(user.id, { insightsSeenAt: new Date().toISOString() })
       const i = await latestInsights(user.id)
       if (!insightsFresh(i)) return { autorun: ["insights"], messages: [insightsRunMessage()] }
-      return { autorun: [], messages: insightsMessages(i, { google: !!user.integration }) }
+      return { autorun: [], messages: [...insightsMessages(i, { google: !!user.integration }), ...nicheMessages(await nicheView(user.id, { kick: true }), { compact: true })] }
+    }
+
+    // ── What's working in your niche (lib/niche-posts.ts) ─────────────────
+    case "niche": {
+      if (!hasPaidPlan(user) && !isComped(user.email)) {
+        return { autorun: [], messages: [agent([
+          { kind: "text", text: "See what’s working for businesses like yours.", big: true },
+          { kind: "text", text: "Every week I find the posts and ads getting the most attention in your niche, tell you why they work, and write your own version in one tap. It comes with every paid plan." },
+          { kind: "chips", items: [{ label: "See plans", action: { type: "link", href: "/dashboard/settings/billing" }, primary: true }] },
+        ], "ni-upgrade")] }
+      }
+      return { autorun: [], messages: nicheMessages(await nicheView(user.id, { kick: true })) }
     }
 
     case "channels":

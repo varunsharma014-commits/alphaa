@@ -14,8 +14,10 @@ import { hasGrowth } from "@/lib/billing"
 import { ensureVoice, voiceText } from "@/lib/voice"
 import { ensureBrandKit } from "@/lib/brand-kit"
 import { renderSocialCard } from "@/lib/social-card"
+import { postImageFor } from "@/lib/post-images"
 import { latestInsights, insightsFresh, buildInsights, numbers, type Insights } from "@/lib/insights"
 import { trendsFor, type Trend } from "@/lib/trends"
+import { nicheFacts } from "@/lib/niche-posts"
 import { writePost, writeSocial } from "@/lib/content"
 import { generatePostImage } from "@/lib/images"
 import { generateGbpPost, containsPlaceholders } from "@/lib/gbp-poster"
@@ -88,6 +90,8 @@ async function plan(userId: string, ctx: { insights: Insights | null; trends: Tr
   const facts = [
     ...(ctx.insights ? [...ctx.insights.working, ...ctx.insights.notWorking, ...ctx.insights.niche] : []),
     ...ctx.trends.map((t, i) => ({ key: `t${i + 1}`, text: `${t.title}${t.when ? ` (${t.when})` : ""}: ${t.why}` })),
+    // Optional: posts and ads doing well in the owner's niche this week (lib/niche-posts.ts).
+    ...(ctx.social ? await nicheFacts(userId).catch(() => []) : []),
   ]
   const ideas = ctx.insights?.ideas ?? []
   const want = [`1 blog post`, ctx.google ? `2 Google listing updates (on Monday, Tuesday, Thursday or Friday)` : null, ctx.social ? `3 social posts` : null].filter(Boolean).join(", ")
@@ -104,7 +108,8 @@ async function plan(userId: string, ctx: { insights: Insights | null; trends: Tr
 Create exactly: ${want}. Spread them across the next 7 days.
 Each piece must build on the facts: what's working (do more of it), what isn't (fix it), what competitors or AI answers show customers want, or something timely this week (trends t1, t2…). Prefer the ideas already suggested when they fit. Mix topics; don't repeat recent pieces: ${recent.map((r) => r.title).join("; ") || "none"}.
 Write "why" to the business owner ("your page", "you rank"), never "we" or "our", and never mention the fact keys. Keep titles under 70 characters. In "why", use only numbers that appear in the facts you cite. Titles must not promise facts the data doesn't give (prices, hours, offers). Never say "best", "#1" or "leading".
-${ctx.voice ? `\n${ctx.voice}\n` : ""}
+${ctx.voice ? `\n${ctx.voice}\n` : ""}Facts keyed niche:… are other accounts' posts doing well in this niche: use them only to shape a social post's format or angle, never copy them or name those accounts.
+
 FACTS (key: text)
 ${facts.map((f) => `${f.key}: ${f.text}`).join("\n") || "none"}
 
@@ -210,7 +215,8 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
         Object.assign(it, { text: g.content, postId: post.id, status: ok ? "scheduled" : "ready" })
       } else {
         const sp = await writeSocial(user, it.title, it.why)
-        const card = await renderSocialCard(userId, { headline: sp.headline, businessName: user.businessName, brand }).catch(() => null)
+        // In the owner's image style (text card / their photos / AI picture / Canva), text card as the fallback.
+        const card = await postImageFor(userId, { headline: sp.headline, topic: it.title }).catch(() => renderSocialCard(userId, { headline: sp.headline, businessName: user.businessName, brand }).catch(() => null))
         await db.mockActivity.create({ data: { userId, type: "draft_written", title: `Wrote a social post: “${it.title}”`, metadata: { topic: it.title, text: sp.text, kind: "social", imageId: card?.id ?? null, week: id, day: it.day } } })
         Object.assign(it, { text: sp.text, image: card?.url ?? null, status: "ready" })
         // Queue it on the connected accounts: scheduled if the owner lets me post without asking.

@@ -499,20 +499,39 @@ export function FormBlock({
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
   const [sent, setSent] = useState(false)
+  const [files, setFiles] = useState<Record<string, File[]>>({})
   if (sent) return null
   return (
     <form
       className="ag-ask ag-form"
       onSubmit={async (e) => {
         e.preventDefault()
-        const missing = b.fields.find((f) => f.required && (f.type === "checkbox" ? !values[f.name] : !String(values[f.name] ?? "").trim()))
+        const missing = b.fields.find((f) => f.required && (f.type === "checkbox" ? !values[f.name] : f.type === "file" ? !files[f.name]?.length : !String(values[f.name] ?? "").trim()))
         if (missing) {
-          setErr(missing.type === "checkbox" ? "Tick the box to confirm." : `Add ${missing.label.toLowerCase()}.`)
+          setErr(missing.type === "checkbox" ? "Tick the box to confirm." : missing.type === "file" ? "Choose a file first." : `Add ${missing.label.toLowerCase()}.`)
           return
         }
         setBusy(true)
         setErr(null)
-        const problem = await onSubmit(b.formId, values)
+        // File fields: upload each file first, then send the returned ids on with the form.
+        const sendValues = { ...values }
+        for (const f of b.fields.filter((x) => x.type === "file" && x.upload)) {
+          const ids: string[] = []
+          for (const file of files[f.name] ?? []) {
+            const fd = new FormData()
+            fd.append("file", file)
+            const r = await fetch(f.upload!, { method: "POST", body: fd }).catch(() => null)
+            const data = (await r?.json().catch(() => ({}))) as { id?: string; error?: string } | undefined
+            if (!r?.ok || !data?.id) {
+              setBusy(false)
+              setErr(data?.error ?? `${file.name} didn’t upload. Try again.`)
+              return
+            }
+            ids.push(data.id)
+          }
+          sendValues[f.name] = ids.join(",")
+        }
+        const problem = await onSubmit(b.formId, sendValues)
         setBusy(false)
         if (problem) setErr(problem)
         else setSent(true)
@@ -526,6 +545,14 @@ export function FormBlock({
               <input id={id} type="checkbox" checked={!!values[f.name]} onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.checked }))} disabled={busy} />
               <span>{f.label}</span>
             </label>
+          )
+        }
+        if (f.type === "file") {
+          return (
+            <div key={f.name} className="ag-form__field">
+              <label htmlFor={id}>{f.label}</label>
+              <input id={id} type="file" accept={f.accept} multiple={f.multiple} onChange={(e) => setFiles((v) => ({ ...v, [f.name]: Array.from(e.target.files ?? []) }))} disabled={busy} />
+            </div>
           )
         }
         if (f.type === "textarea") {

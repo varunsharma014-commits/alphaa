@@ -19,6 +19,7 @@ const GROUPS: { label: string; icon: typeof Bot; items: Item[] }[] = [
     items: [
       { href: "/dashboard?ask=channels", ask: "channels", label: "Your marketing channels", icon: Plug },
       { href: "/dashboard?ask=insights", ask: "insights", label: "What’s working", icon: Lightbulb },
+      { href: "/dashboard?ask=niche", ask: "niche", label: "What’s working in your niche", icon: TrendingUp },
       { href: "/dashboard?ask=social", ask: "social", label: "Social accounts & posts", icon: Share2 },
       { href: "/dashboard?ask=work", ask: "work", label: "What I’ve done", icon: ListChecks },
       { href: "/dashboard?ask=voice", ask: "voice", label: "Your brand & voice", icon: Mic },

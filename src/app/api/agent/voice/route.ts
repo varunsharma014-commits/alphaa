@@ -11,6 +11,10 @@ import { ensureBrandKit, saveBrand, HEX_RE, type BrandKit } from "@/lib/brand-ki
 import { imageUrl } from "@/lib/images"
 import type { Voice as V } from "@/lib/voice"
 import { agent } from "@/lib/agent/types"
+import { hasGrowth } from "@/lib/billing"
+import { imagesMessages } from "@/lib/agent/images-panel"
+import { aiImagesAvailable, imageSettings, saveImageSettings, styleSample } from "@/lib/post-images"
+import { listPhotos, refreshPhotos, removePhoto } from "@/lib/brand-photos"
 
 // "Your brand & voice": logo + colours, and the voice. Learn the voice from the owner's own words, pick one of three, or tune it.
 // Every answer is the thread's messages, so the chat just shows them.
@@ -22,6 +26,13 @@ const body = z.discriminatedUnion("op", [
   z.object({ op: z.literal("brand-color"), value: z.string().trim().max(10) }),
   z.object({ op: z.literal("brand-logo"), value: z.string().trim().url().max(600) }),
   z.object({ op: z.literal("style"), key: z.enum(["language", "formality", "emoji", "length", "person"]), value: z.string().trim().min(1).max(30) }),
+  // "How your images look" (lib/agent/images-panel.ts)
+  z.object({ op: z.literal("img-style"), value: z.enum(["card", "photo", "ai", "canva"]) }),
+  z.object({ op: z.literal("img-size"), value: z.enum(["square", "portrait"]) }),
+  z.object({ op: z.literal("img-sample"), value: z.enum(["photo", "ai"]) }),
+  z.object({ op: z.literal("img-photos-sync") }),
+  z.object({ op: z.literal("img-photo-added"), photos: z.string().max(2000).optional() }),
+  z.object({ op: z.literal("img-photo-remove"), id: z.string().min(5).max(40) }),
 ])
 
 const STYLE_VALUES: Record<string, string[] | null> = {
@@ -32,16 +43,17 @@ const STYLE_VALUES: Record<string, string[] | null> = {
   person: ["we", "i"],
 }
 
-/** The whole thread: brand first, then voice. */
-function brandAndVoice(brand: BrandKit | null | undefined, voice: V | null | undefined) {
-  return [...brandMessages(brand, brand?.sampleId ? imageUrl(brand.sampleId) : null), ...voiceMessages(voice)]
+/** The whole thread: brand first, then how images look, then voice. */
+async function brandAndVoice(user: { id: string; plan: string; email: string }, brand: BrandKit | null | undefined, voice: V | null | undefined) {
+  const images = await imagesMessages(user.id, { growth: hasGrowth(user) }).catch((err) => { console.error("[voice] images panel", err instanceof Error ? err.message : err); return [] })
+  return [...brandMessages(brand, brand?.sampleId ? imageUrl(brand.sampleId) : null), ...images, ...voiceMessages(voice)]
 }
 
 export async function GET() {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const s = await getAgentSettings(user.id)
-  return NextResponse.json({ messages: brandAndVoice(s.brand, s.voice) })
+  return NextResponse.json({ messages: await brandAndVoice(user, s.brand, s.voice) })
 }
 
 export async function POST(req: Request) {
@@ -59,7 +71,43 @@ export async function POST(req: Request) {
     // "Read my site again" (both learned) re-reads both; a first visit only fills what's missing.
     const again = !!had.voice && !!had.brand
     const [v, b] = await Promise.all([ensureVoice(user.id, { force: again }).catch(() => null), ensureBrandKit(user.id, { force: again }).catch(() => null)])
-    return NextResponse.json({ messages: brandAndVoice(b, v) })
+    return NextResponse.json({ messages: await brandAndVoice(user, b, v) })
+  }
+  if (input.op === "img-style" || input.op === "img-size" || input.op === "img-sample" || input.op === "img-photos-sync" || input.op === "img-photo-added" || input.op === "img-photo-remove") {
+    const st = await getAgentSettings(user.id)
+    let said = "Done."
+    if (input.op === "img-style") {
+      if (input.value === "ai" && !aiImagesAvailable()) return NextResponse.json({ error: "AI-made pictures are coming soon." }, { status: 409 })
+      if (input.value === "canva" && !(await imageSettings(user.id)).canvaTemplate) return NextResponse.json({ error: "Pick a Canva brand template first." }, { status: 409 })
+      await saveImageSettings(user.id, { style: input.value })
+      if (input.value === "photo") {
+        const r = await refreshPhotos(user.id).catch(() => null)
+        const n = r?.total ?? (await listPhotos(user.id)).length
+        said = n ? `Done. Your posts use your own photos from now on, a different one each time (${n} so far).` : "Done. I didn’t find photos on your Google listing or website yet. Add a few below, and until then I use your text card."
+      } else if (input.value === "ai") {
+        await styleSample(user.id, "ai").catch(() => null)
+        said = "Done. I make an AI picture for each post, never with people, faces, text or logos in it."
+      } else said = input.value === "card" ? "Done. Your posts use your colour, headline and logo." : "Done. Your posts use your Canva template."
+    } else if (input.op === "img-size") {
+      await saveImageSettings(user.id, { size: input.value, samples: { ...(st.images?.samples ?? {}), photo: null, ai: null } })
+      said = input.value === "portrait" ? "Done. Tall pictures from now on." : "Done. Square pictures from now on."
+    } else if (input.op === "img-sample") {
+      const id = await styleSample(user.id, input.value, { force: true }).catch(() => null)
+      said = id ? "Here’s a sample." : input.value === "ai" ? "I couldn’t make an AI sample just now. Try again in a minute." : "Add a photo first and I’ll show you."
+    } else if (input.op === "img-photos-sync") {
+      const r = await refreshPhotos(user.id, { force: true })
+      const found = r.google + r.website
+      said = found ? `I found ${found} new ${found === 1 ? "photo" : "photos"}${r.google && r.website ? ` (${r.google} on your Google listing, ${r.website} on your website)` : r.google ? " on your Google listing" : " on your website"}.` : "No new photos this time. Add some here, or put them on your Google listing."
+      if (found) await saveImageSettings(user.id, { samples: { ...(st.images?.samples ?? {}), photo: null } })
+    } else if (input.op === "img-photo-added") {
+      const n = (input.photos ?? "").split(",").filter(Boolean).length
+      said = n ? `Added ${n === 1 ? "your photo" : `${n} photos`}.${st.images?.style !== "photo" ? " Tap “My photos” to use them on your posts." : ""}` : "Done."
+      await saveImageSettings(user.id, { samples: { ...(st.images?.samples ?? {}), photo: null } })
+    } else if (input.op === "img-photo-remove") {
+      said = (await removePhoto(user.id, input.id)) ? "Removed. I won’t use that one." : "That photo isn’t here any more."
+      await saveImageSettings(user.id, { samples: { ...(st.images?.samples ?? {}), photo: null } })
+    }
+    return NextResponse.json({ messages: [agent([{ kind: "text", text: said }]), ...(await brandAndVoice(user, st.brand, st.voice))] })
   }
   if (input.op === "brand-read" || input.op === "brand-color" || input.op === "brand-logo") {
     let b: BrandKit | null
@@ -77,7 +125,10 @@ export async function POST(req: Request) {
       said = b.sampleId ? "Done. Here’s how it looks." : "Saved. If the logo doesn’t show, try a PNG link."
     }
     const v = (await getAgentSettings(user.id)).voice
-    return NextResponse.json({ messages: [agent([{ kind: "text", text: said }]), ...brandAndVoice(b, v)] })
+    // The photo sample carries the logo and colour: draw it again next time.
+    const im = await imageSettings(user.id)
+    if (im.samples?.photo) await saveImageSettings(user.id, { samples: { ...im.samples, photo: null } })
+    return NextResponse.json({ messages: [agent([{ kind: "text", text: said }]), ...(await brandAndVoice(user, b, v))] })
   }
 
   const s = await getAgentSettings(user.id)

@@ -6,6 +6,9 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { hasGrowth, hasPaidPlan, isComped } from "@/lib/billing"
 import { listAccounts } from "@/lib/social/store"
 import { PLATFORM_NAME } from "@/lib/social/types"
+import { canvaConfigured } from "@/lib/canva/client"
+import { getCanvaAccount } from "@/lib/canva/store"
+import { connectCanvaChip } from "@/lib/canva/narration"
 import type { User } from "@prisma/client"
 
 type Row = { name: string; detail: string; status: string; ok: boolean }
@@ -43,6 +46,14 @@ export async function channelsMessages(user: User): Promise<Message[]> {
     ok: active.length > 0 && !expired.length,
   })
   if (growth) chips.push({ label: active.length ? "Manage social accounts" : "Connect social accounts", action: { type: "thread", topic: "social" } })
+
+  // Canva (lib/canva): only once Alphaa's Canva app keys exist.
+  if (canvaConfigured()) {
+    const canva = await getCanvaAccount(user.id)
+    const on = canva?.status === "active"
+    rows.push({ name: "Canva", detail: on ? "Your designs on your posts, and edits to mine" : "Post your own designs and touch up mine", status: !growth ? "Growth plan" : on ? "Connected" : canva ? "Reconnect needed" : "Not connected", ok: !!on })
+    if (growth) chips.push(on ? { label: "Use my Canva designs", action: { type: "agent-op", endpoint: "canva", body: { op: "designs" } } } : connectCanvaChip("channels"))
+  }
 
   const t = s.tracking
   rows.push({ name: "Lead tracking", detail: t?.on ? [t.ga4 && "Google Analytics", t.pixel && "Meta Pixel"].filter(Boolean).join(" and ") + " counting calls, emails and forms" : "Counts the calls, emails and forms your marketing brings", status: t?.on ? "On" : growth ? "Not set up" : "Growth plan", ok: !!t?.on })

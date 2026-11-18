@@ -3,7 +3,7 @@
  * Plugin Name:       Alphaa Connector
  * Plugin URI:        https://alphaa.app
  * Description:       Lets your Alphaa agent publish the pages, structured data and llms.txt you approve — and undo them in one tap. Also tells you when ChatGPT, Perplexity, Claude or Gemini send you a visitor.
- * Version:           1.3.0
+ * Version:           1.4.0
  * Requires at least: 5.6
  * Requires PHP:      7.4
  * Author:            Alphaa
@@ -14,7 +14,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('ALPHAA_VERSION', '1.3.0');
+define('ALPHAA_VERSION', '1.4.0');
 if (!defined('ALPHAA_API')) define('ALPHAA_API', 'https://alphaa.app');
 
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
@@ -302,8 +302,8 @@ add_action('wp_head', function () {
   if (!is_array($t)) return;
   $ga4 = isset($t['ga4']) ? (string) $t['ga4'] : '';
   $pixel = isset($t['pixel']) ? (string) $t['pixel'] : '';
-  if ($ga4 === '' && $pixel === '') return;
   $events = !empty($t['events']);
+  if ($ga4 === '' && $pixel === '' && !$events) return;
   if ($ga4 !== '') {
     echo "\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=" . esc_attr($ga4) . "\" data-alphaa-tracking></script>\n";
     echo "<script data-alphaa-tracking>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config'," . wp_json_encode($ga4) . ");</script>\n";
@@ -311,9 +311,19 @@ add_action('wp_head', function () {
   if ($pixel !== '') {
     echo "<script data-alphaa-tracking>if(navigator.globalPrivacyControl!==true){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init'," . wp_json_encode($pixel) . ");fbq('track','PageView');}</script>\n";
   }
-  if ($events) {
-    echo "<script data-alphaa-tracking>(function(){var send=function(m){try{if(window.gtag)gtag('event','generate_lead',{method:m});}catch(e){}try{if(window.fbq)fbq('track',m==='form'?'Lead':'Contact',{method:m});}catch(e){}};document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!a)return;var h=(a.getAttribute('href')||'').toLowerCase();if(h.indexOf('tel:')===0)send('phone');else if(h.indexOf('mailto:')===0)send('email');},true);document.addEventListener('submit',function(e){var f=e.target;if(f&&f.querySelector&&f.querySelector('input[type=email],input[type=tel],textarea'))send('form');},true);})();</script>\n";
-  }
+  // Lead events (and the ?alphaa_test= self-test, under its own event names so it never counts as a lead). Each also sends Alphaa a beacon with the kind of
+  // event and an event id, so the agent can see tracking works and Meta can dedupe a server copy.
+  // Events go through whatever Google tag / Pixel the page has, including ones loaded by Tag Manager.
+  $cfg = array('id' => alphaa_site_id(), 'api' => ALPHAA_API . '/api/tag/event', 'events' => $events);
+  echo "<script data-alphaa-tracking>(function(c){var gpc=navigator.globalPrivacyControl===true;window.dataLayer=window.dataLayer||[];if(!window.gtag)window.gtag=function(){window.dataLayer.push(arguments);};"
+    . "var beacon=function(k,eid,tok){if(!c.id)return;try{var b=JSON.stringify({id:c.id,k:k,eid:eid,u:location.origin+location.pathname,gpc:gpc?1:0,t:tok||undefined});if(navigator.sendBeacon)navigator.sendBeacon(c.api,b);else fetch(c.api,{method:'POST',body:b,keepalive:true,mode:'no-cors'});}catch(e){}};"
+    . "var send=function(m){var eid='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);var lead=m==='form'||m==='hubspot'||m==='typeform'||m==='calendly';try{window.gtag('event','generate_lead',{method:m});}catch(e){}try{if(window.fbq&&!gpc)fbq('track',lead?'Lead':'Contact',{method:m},{eventID:eid});}catch(e){}beacon(m,eid);};"
+    . "var tok=(location.search.match(/[?&]alphaa_test=([A-Za-z0-9._-]{8,80})/)||[])[1];if(tok)setTimeout(function(){var eid='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);try{window.gtag('event','alphaa_test',{debug_mode:true});}catch(e){}try{if(window.fbq&&!gpc)fbq('trackCustom','AlphaaTest',{},{eventID:eid});}catch(e){}beacon('test',eid,tok);},2500);"
+    . "if(!c.events)return;"
+    . "document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!a)return;var h=(a.getAttribute('href')||'').toLowerCase();if(h.indexOf('tel:')===0)send('phone');else if(h.indexOf('mailto:')===0)send('email');},true);"
+    . "document.addEventListener('submit',function(e){var f=e.target;if(f&&f.querySelector&&f.querySelector('input[type=email],input[type=tel],textarea'))send('form');},true);"
+    . "window.addEventListener('message',function(e){var o=e.origin||'',d=e.data;try{if(typeof d==='string'&&d.charAt(0)==='{')d=JSON.parse(d);}catch(x){}if(!d)return;if(d.type==='hsFormCallback'&&d.eventName==='onFormSubmitted')send('hubspot');else if(/calendly\.com$/.test(o)&&d.event==='calendly.event_scheduled')send('calendly');else if(/typeform\.com$/.test(o)&&(d.type==='form-submit'||d.event==='form-submit'))send('typeform');});"
+    . "})(" . wp_json_encode($cfg, JSON_UNESCAPED_SLASHES) . ");</script>\n";
 }, 2);
 
 // Titles/descriptions set through Alphaa when no SEO plugin handles them.

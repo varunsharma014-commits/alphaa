@@ -133,3 +133,12 @@ automatically in live mode the first time it's needed.
 Founders see what Alphaa did for each brand and the AI tokens it used at
 `/dashboard/admin/usage`. To show estimated AI cost, set `AI_PRICES_JSON` on Railway, e.g.
 `{"claude-opus-5-5":[in,out],"claude-sonnet-4-6":[in,out]}` in dollars per million tokens.
+
+## Canva (2026-11-18)
+Create a Connect API integration at canva.com/developers → Your integrations → Create. Redirect URL: `https://alphaa.app/api/canva/callback` (local testing needs `http://127.0.0.1:3000/api/canva/callback`, not localhost). Scopes: `design:meta:read design:content:read design:content:write asset:read asset:write brandtemplate:meta:read brandtemplate:content:read profile:read`. Set `CANVA_CLIENT_ID` and `CANVA_CLIENT_SECRET` on Railway. Until Canva reviews and makes the integration public, only the creating account's team can connect. Brand template autofill needs a Canva plan with brand templates.
+
+## What's working in your niche
+Needs `APIFY_TOKEN` (set). Optional `META_AD_LIBRARY_TOKEN` (Meta developer account with identity confirmed, facebook.com/ads/library/api; long-lived user token, rotate ~60 days). Outside the EU/UK the Ad Library API returns only political/issue ads.
+
+## Tracking self-check
+No new keys. The GA4 realtime check needs the `analytics.readonly` scope (founders only until `GA_SCOPE_ENABLED=1` after Google re-verifies the consent screen). Meta Conversions API uses each owner's own token from Events Manager → Settings → Conversions API.

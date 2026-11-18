@@ -38,6 +38,8 @@ export type AgentSettings = {
   insightsSeenAt?: string
   /** The first-visit moment: the AI answer shown once, and when the owner saw it (lib/agent/first-answer.ts). */
   firstAnswer?: import("@/lib/agent/first-answer").FirstAnswer
+  /** How social images look: text card, the owner's photos, an AI-made picture or their Canva template (lib/post-images.ts). */
+  images?: import("@/lib/post-images").ImageSettings
 }
 
 export type Autopilot = {

@@ -46,6 +46,8 @@ export function startCron(): void {
     if (hour === 5) hit("/api/cron/seo-sync")
     // Daily 06:00 UTC — write replies to new Google reviews so approving is one tap (Anthropic)
     if (hour === 6) hit("/api/cron/review-drafts")
+    // Daily 07:00 UTC — recheck Growth sites' tracking, self-fix, note regressions (fetch only, no AI)
+    if (hour === 7) hit("/api/cron/tracking-health")
 
     // Daily 14:00 UTC — lifecycle emails (connect nudges + week-one recap; Resend only)
     if (hour === 14) hit("/api/cron/lifecycle")
@@ -57,6 +59,8 @@ export function startCron(): void {
     if ((dow === 1 || dow === 2 || dow === 4 || dow === 5) && hour === 13) hit("/api/cron/gbp-posts")
     // Sun 06:00 UTC — competitor discovery / refresh (Anthropic)
     if (dow === 0 && hour === 6) hit("/api/cron/competitors")
+    // Sun 08:00 UTC — "What's working in your niche" for Growth brands (Apify, capped per brand)
+    if (dow === 0 && hour === 8) hit("/api/cron/niche-posts")
     // Wed 09:00 UTC — weekly AI visibility re-scan (Anthropic + engine APIs)
     if (dow === 3 && hour === 9) hit("/api/cron/visibility-scan")
     // Wed 11:00 UTC — every tracked customer question × 4 AIs + fact check (engine APIs)

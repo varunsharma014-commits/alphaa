@@ -144,3 +144,6 @@ async function cardSvg(input: CardInput): Promise<string | null> {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">${parts.join("")}</svg>`
   return svg
 }
+
+// Shared with the photo and AI-scene images (lib/photo-render.ts): same font, same logo tile.
+export { loadFonts, pathFor, wrap, width as textWidth, covered, logoData }
