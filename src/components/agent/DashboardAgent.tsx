@@ -78,6 +78,7 @@ export function DashboardAgent({
   status,
   briefing,
   notice,
+  setup = [],
 }: {
   initial: Message[]
   businessName: string
@@ -88,9 +89,12 @@ export function DashboardAgent({
   briefing?: BriefingData
   /** Shown below the briefing on arrival (e.g. "I'm connected to your Wix site"). */
   notice?: Message
+  /** Guided setup card ("3 of 7 done"), pinned above the briefing until finished. */
+  setup?: Message[]
 }) {
   const router = useRouter()
   const [messages, setMessages] = useState<Message[]>(notice ? [...initial, notice] : initial)
+  const [setupMsgs, setSetupMsgs] = useState<Message[]>(setup)
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const [asking, setAsking] = useState(false)
@@ -122,12 +126,26 @@ export function DashboardAgent({
     ]
   }
   const inputRef = useRef<HTMLInputElement>(null)
+  // A step finished inside a thread (voice picked, tracking tested...) ticks the card on its own.
+  const hasSetup = setupMsgs.length > 0
+  useEffect(() => {
+    if (!hasSetup) return
+    const t = window.setTimeout(() => {
+      void fetch("/api/agent/setup").then((r) => (r.ok ? r.json() : null)).then((d: { messages?: Message[] } | null) => { if (d?.messages?.length) setSetupMsgs(d.messages) }).catch(() => null)
+    }, 1500)
+    return () => window.clearTimeout(t)
+  }, [messages.length, hasSetup])
 
   const push = useCallback((...m: Message[]) => setMessages((prev) => [...prev, ...m]), [])
   // A thread's updated messages replace the old copies (same id before the "~" suffix), so a
   // choice redraws the panel instead of stacking a second one under it.
   const base = (id: string) => id.split("~")[0]
   const swapIn = (msgs: Message[]) => {
+    // The setup card lives in its own slot at the top: redraw it there.
+    const setupNew = msgs.filter((m) => base(m.id) === "setup")
+    if (setupNew.length) setSetupMsgs(setupNew)
+    msgs = msgs.filter((m) => base(m.id) !== "setup")
+    if (!msgs.length) return
     const ids = new Set(msgs.map((m) => base(m.id)))
     const n = Date.now().toString(36)
     setMessages((prev) => [...prev.filter((m) => !ids.has(base(m.id))), ...msgs.map((m) => ({ ...m, id: `${m.id}~${n}` }))])
@@ -613,7 +631,7 @@ export function DashboardAgent({
           ]))
           return
         }
-        push(userMsg(chip.label.replace(/^✓ /, "")))
+        if (a.endpoint !== "setup") push(userMsg(chip.label.replace(/^✓ /, "")))
         if (a.endpoint === "voice" && a.body.op === "learn") return runTask("voice")
         const { ok, data } = await post<{ messages?: Message[] }>(`/api/agent/${a.endpoint}`, a.body)
         if (!ok) return fail(data.error ?? "That didn’t save. Try again.")
@@ -801,6 +819,8 @@ export function DashboardAgent({
     const data = res?.ok ? ((await res.json().catch(() => null)) as { messages?: Message[]; autorun?: Task[] } | null) : null
     setBusy(false)
     if (!data?.messages) return fail("I couldn’t pull that up just now. Ask me again in a moment.")
+    // The setup card has its own slot at the top.
+    if (topic === "setup") { setSetupMsgs(data.messages); document.querySelector(".ag-scroll")?.scrollTo({ top: 0, behavior: "smooth" }); return }
     // Thread message ids are stable per topic; suffix them so a second pull doesn't collide.
     const n = Date.now().toString(36)
     push(...data.messages.map((m) => ({ ...m, id: `${m.id}~${n}` })))
@@ -906,6 +926,9 @@ export function DashboardAgent({
   return (
     <>
       <div className="ag-scroll">
+        {setupMsgs.length > 0 && (
+          <AgentFeed messages={setupMsgs} animate="stagger" busy={false} onChip={onChip} onForm={onForm} onDocEdit={() => {}} autoScroll={false} />
+        )}
         {briefing && <Briefing data={briefing} onShow={(topic, label) => void pullThread(topic, label)} />}
         {briefing && initial.length > 0 && (
           <button type="button" className="ag-why" onClick={(e) => { const btn = e.currentTarget; setWhy(!why); if (!why) window.setTimeout(() => btn.scrollIntoView({ block: "start", behavior: "smooth" }), 50) }} aria-expanded={why}>{why ? "Hide the details" : "Show me why"}</button>

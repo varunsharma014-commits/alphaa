@@ -40,6 +40,8 @@ export type AgentSettings = {
   firstAnswer?: import("@/lib/agent/first-answer").FirstAnswer
   /** How social images look: text card, the owner's photos, an AI-made picture or their Canva template (lib/post-images.ts). */
   images?: import("@/lib/post-images").ImageSettings
+  /** Guided first-run setup (lib/agent/setup.ts). */
+  setup?: import("@/lib/agent/setup").SetupState
 }
 
 export type Autopilot = {

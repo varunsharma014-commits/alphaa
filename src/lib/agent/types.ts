@@ -45,7 +45,7 @@ export type ChipAction =
   // updated messages (they replace the old ones with the same id). `form` asks for values first.
   | { type: "agent-op"; endpoint: AgentOpEndpoint; body: Record<string, string | number | boolean>; form?: { text: string; fields: FormField[]; cta: string; fine?: string } }
 
-export type AgentOpEndpoint = "voice" | "autopilot" | "social" | "niche" | "canva" | "tracking"
+export type AgentOpEndpoint = "voice" | "autopilot" | "social" | "niche" | "canva" | "tracking" | "setup"
 export type SiteOp = "page" | "schema" | "llms" | "robots" | "post" | "meta" | "sitemap" | "headers"
 export type Task = "site-check" | "schema" | "security" | "profiles" | "listings" | "bing" | "tracking" | "voice" | "insights"
 

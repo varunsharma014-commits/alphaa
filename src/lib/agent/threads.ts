@@ -19,6 +19,7 @@ import { autopilotMessages } from "@/lib/agent/autopilot"
 import { workMessages } from "@/lib/agent/worklog"
 import { socialThreadFor } from "@/lib/social/thread"
 import { channelsMessages } from "@/lib/agent/channels"
+import { setupMessages } from "@/lib/agent/setup"
 import { imagesMessages } from "@/lib/agent/images-panel"
 import { hasGrowth } from "@/lib/billing"
 import { insightsMessages, insightsRunMessage } from "@/lib/agent/insights-narration"
@@ -28,8 +29,9 @@ import { saveAgentSettings } from "@/lib/agent/settings"
 import { nicheMessages } from "@/lib/agent/niche-narration"
 import { nicheView } from "@/lib/niche-posts"
 
-export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights" | "social" | "channels" | "niche"
+export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights" | "social" | "channels" | "setup" | "niche"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
+  { key: "setup", label: "Finish setting up", blurb: "The few things I need from you, one at a time" },
   { key: "channels", label: "Your marketing channels", blurb: "Everything I work on, what’s connected and what to connect next" },
   { key: "social", label: "Social accounts & posts", blurb: "Connect Facebook, Instagram, LinkedIn, TikTok and X; see what’s scheduled and what went out" },
   { key: "insights", label: "What’s working", blurb: "What’s working and what isn’t, from your real numbers, and what to create next" },
@@ -208,6 +210,9 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
 
     case "channels":
       return { autorun: [], messages: await channelsMessages(user) }
+
+    case "setup":
+      return { autorun: [], messages: await setupMessages(user) }
 
     case "social":
       return { autorun: [], messages: await socialThreadFor(user) }

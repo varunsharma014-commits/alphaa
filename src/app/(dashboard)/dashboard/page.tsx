@@ -6,6 +6,7 @@ import { getFeed } from "@/lib/agent/feed"
 import { buildBriefing } from "@/lib/agent/briefing"
 import { connectMessage } from "@/lib/agent/connect-notice"
 import { DashboardAgent } from "@/components/agent/DashboardAgent"
+import { setupMessages, setupPending } from "@/lib/agent/setup"
 
 export const metadata = { title: "Your briefing — Alphaa" }
 
@@ -15,10 +16,10 @@ export const metadata = { title: "Your briefing — Alphaa" }
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { userId } = await auth()
   if (!userId) redirect("/login")
-  const user = await db.user.findUnique({ where: { clerkId: userId }, select: { id: true, businessName: true } })
+  const user = await db.user.findUnique({ where: { clerkId: userId }, })
   if (!user) redirect("/login")
-  const [feed, briefing] = await Promise.all([getFeed(user.id), buildBriefing(user.id)])
+  const [feed, briefing, setup] = await Promise.all([getFeed(user.id), buildBriefing(user.id), setupPending(user).then((p) => (p ? setupMessages(user) : []))])
   // Back from connecting a website (?connected= / ?connect_error= / ?connect=): say how it went.
   const notice = connectMessage(await searchParams)
-  return <DashboardAgent initial={feed?.messages ?? []} notice={notice ?? undefined} businessName={user.businessName ?? "your business"} status={feed?.status} briefing={briefing ?? undefined} />
+  return <DashboardAgent initial={feed?.messages ?? []} notice={notice ?? undefined} businessName={user.businessName ?? "your business"} status={feed?.status} briefing={briefing ?? undefined} setup={setup} />
 }

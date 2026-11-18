@@ -23,6 +23,7 @@ const schema = z.object({
 // Which thread to offer after the answer, so "what are my competitors doing?"
 // ends with the actual competitor cards, not just a paragraph.
 const TOPIC_RES: [string, RegExp][] = [
+  ["setup", /\b(set ?up|get started|getting started|onboard(ing)?|what (do|should) i do (first|next))\b/i],
   ["channels", /\b(connect(ed|ions?)?|channels?|integrations?|google analytics|search console)\b/i],
   ["social", /\b(instagram|facebook|tiktok|linkedin|twitter|social (media|accounts?|posts?))\b/i],
   ["insights", /\bwhat'?s working\b|\bwhat (should|to) (i )?(post|write|create)\b|\bcontent ideas?\b|\bniche\b|\bnot working\b/i],
