@@ -18,6 +18,8 @@ export async function saveMetaAdsAccess(userId: string, token: string): Promise<
     return adAccounts.length
   } catch (err) {
     console.error("[metaads] connect", err instanceof Error ? err.message : "failed")
+    // Keep the token anyway, so a later fix can list the ad accounts without another login.
+    await saveAccess(userId, { token, adAccounts: [], pixels: {} }).catch(() => null)
     return 0
   }
 }

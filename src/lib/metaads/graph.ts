@@ -35,9 +35,40 @@ export async function graph<T>(path: string, token: string, o: { method?: "GET" 
 export type AdAccount = { id: string; name: string; account_status: number; currency: string; timezone_name: string }
 export type Pixel = { id: string; name: string }
 
+const AD_FIELDS = "id,name,account_status,currency,timezone_name"
+const clean = (a: AdAccount): AdAccount => ({ id: a.id, name: a.name, account_status: a.account_status, currency: a.currency, timezone_name: a.timezone_name })
+
+/**
+ * Ad accounts this token can use. Facebook Login for Business gives a business-integration
+ * system-user token, which lists ad accounts under /me/assigned_ad_accounts (/me/adaccounts
+ * answers "(#200) Missing Permissions" for it, seen 2026-11-18). A plain user token uses
+ * /me/adaccounts. Last resort: the businesses' owned and client ad accounts.
+ */
 export async function listAdAccounts(token: string): Promise<AdAccount[]> {
-  const r = await graph<{ data?: AdAccount[] }>("me/adaccounts", token, { params: { fields: "id,name,account_status,currency,timezone_name", limit: "50" } })
-  return (r.data ?? []).map((a) => ({ id: a.id, name: a.name, account_status: a.account_status, currency: a.currency, timezone_name: a.timezone_name }))
+  const errors: string[] = []
+  for (const edge of ["me/assigned_ad_accounts", "me/adaccounts"]) {
+    try {
+      const r = await graph<{ data?: AdAccount[] }>(edge, token, { params: { fields: AD_FIELDS, limit: "50" } })
+      if (r.data?.length) return r.data.map(clean)
+    } catch (err) {
+      errors.push(`${edge}: ${err instanceof Error ? err.message : err}`)
+    }
+  }
+  try {
+    const biz = await graph<{ data?: { id: string }[] }>("me/businesses", token, { params: { fields: "id", limit: "10" } })
+    const out = new Map<string, AdAccount>()
+    for (const b of biz.data ?? []) {
+      for (const edge of ["owned_ad_accounts", "client_ad_accounts"]) {
+        const r = await graph<{ data?: AdAccount[] }>(`${b.id}/${edge}`, token, { params: { fields: AD_FIELDS, limit: "50" } }).catch(() => ({ data: [] as AdAccount[] }))
+        for (const a of r.data ?? []) out.set(a.id, clean(a))
+      }
+    }
+    if (out.size) return [...out.values()]
+  } catch (err) {
+    errors.push(`me/businesses: ${err instanceof Error ? err.message : err}`)
+  }
+  if (errors.length) console.error("[metaads] ad accounts:", errors.join(" | "))
+  return []
 }
 
 export async function listPixels(token: string, adAccountId: string): Promise<Pixel[]> {
