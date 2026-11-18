@@ -59,12 +59,12 @@ export const market: Market = {
       "Google Business Profile posts, blog posts and review replies, written in your voice",
       "Your website fixed for Google and AI search, with weekly checks of what ChatGPT, Gemini, Claude and Perplexity say",
       "A short weekly briefing, and every change approved with one tap",
-      "Growth plan (early access): social posts, Google and Meta ads, email and lead tracking. Ad spend goes to Google and Meta directly, never marked up.",
+      "Growth plan, {growth} a month (early access): social posts, Google and Meta ads, email and lead tracking. Ad spend goes to Google and Meta directly, never marked up.",
       "Month to month. Cancel online in a minute. 7-day refund on your first charge.",
       "If no AI names you by day 90 with weekly checks active, next month is free.",
     ],
     priceCta: "Get started: {starter}/month",
-    priceNote: "Starter {starter}, Pro {pro} (up to 3 locations), Full Service {full} (a person does the website work). Extra brands 50% off. Monthly, cancel any time. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
+    priceNote: "Starter {starter}, Pro {pro} (up to 3 locations), Full Service {full} (a person does the website work), Growth {growth} (early access). Extra brands 50% off. Monthly, cancel any time. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
     faqTitle: "Questions from UK business owners",
     faq: [
       {
@@ -73,7 +73,7 @@ export const market: Market = {
       },
       {
         q: "How much does it cost?",
-        a: "Starter is {starter} a month, Pro is {pro} (up to 3 locations) and Full Service is {full}, where a person does the website work for you. Growth, with social, ads and email, is in early access. Month to month, cancel online in a minute, and the check on this page is free.",
+        a: "Starter is {starter} a month, Pro is {pro} (up to 3 locations) and Full Service is {full}, where a person does the website work for you. Growth, with social, ads and email, is {growth} a month in early access. Month to month, cancel online in a minute, and the check on this page is free.",
       },
       {
         q: "I'm a sole trader with no time for marketing. Is this for me?",

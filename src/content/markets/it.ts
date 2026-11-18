@@ -59,7 +59,7 @@ export const market: Market = {
       "Se nessuna IA ti nomina entro il giorno 90, con i controlli settimanali attivi, il mese successivo non lo paghi",
     ],
     priceCta: "Inizia ora: {starter}/mese",
-    priceNote: "Starter {starter}, Pro {pro} (fino a 3 sedi), Full Service {full} al mese (una persona si occupa del sito per te). Brand aggiuntivi scontati del 50%. Addebito mensile, disdici quando vuoi. Solo per aziende e professionisti (B2B). Non siamo registrati ai fini IVA: nessuna IVA in fattura; se dovuta, la versi tu con il reverse charge.",
+    priceNote: "Starter {starter}, Pro {pro} (fino a 3 sedi), Full Service {full} al mese (una persona si occupa del sito per te), Growth {growth} al mese (accesso anticipato). Brand aggiuntivi scontati del 50%. Addebito mensile, disdici quando vuoi. Solo per aziende e professionisti (B2B). Non siamo registrati ai fini IVA: nessuna IVA in fattura; se dovuta, la versi tu con il reverse charge.",
     faqTitle: "Le domande che ci fanno le attività italiane",
     faq: [
       {
@@ -68,7 +68,7 @@ export const market: Market = {
       },
       {
         q: "Quanto costa?",
-        a: "Starter costa {starter} al mese, Pro {pro} (fino a 3 sedi), Full Service {full}, con una persona che si occupa del sito per te. Growth, con social, pubblicità ed email, è in accesso anticipato. Mese per mese, disdetta online in un minuto, rimborso entro 7 giorni sul primo addebito. Il controllo in questa pagina è gratuito.",
+        a: "Starter costa {starter} al mese, Pro {pro} (fino a 3 sedi), Full Service {full}, con una persona che si occupa del sito per te. Growth, con social, pubblicità ed email, costa {growth} al mese ed è in accesso anticipato. Mese per mese, disdetta online in un minuto, rimborso entro 7 giorni sul primo addebito. Il controllo in questa pagina è gratuito.",
       },
       {
         q: "Devo capirne di marketing o di siti web?",

@@ -31,11 +31,12 @@ export function isMarketKey(v: string | undefined | null): v is MarketKey {
 /** Cookie set by the middleware when someone visits a market page. */
 export const MARKET_COOKIE = "alphaa_market"
 
-/** Replace {starter} {pro} {full} in market copy with the local prices. */
+/** Replace {starter} {pro} {full} {growth} in market copy with the local prices. */
 export function fillPrices(text: string, market: MarketKey, lang: string): string {
   const c = MARKET_CURRENCY[market]
   return text
     .replace(/\{starter\}/g, formatPrice(c, "starter", lang))
     .replace(/\{pro\}/g, formatPrice(c, "pro", lang))
     .replace(/\{full\}/g, formatPrice(c, "full", lang))
+    .replace(/\{growth\}/g, formatPrice(c, "growth", lang))
 }

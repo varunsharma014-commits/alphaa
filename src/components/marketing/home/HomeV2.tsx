@@ -96,26 +96,8 @@ export function HomeV2() {
         </div>
       </section>
 
-      {/* Agency vs Alphaa */}
-      <section className="hv-band hv-band--grey">
-        <div className="hv-wrap hv-center">
-          <h2 className="hv-h2">An agency’s work.<br />But cheaper and better.</h2>
-          <p className="hv-lede">Paying an agency for each piece adds up fast, and you still end up chasing them for updates. One AI agent does all of it, every week, for a fraction of the price.</p>
-          <CostTable />
-          <div className="hv-why4">
-            {WHY.map((w) => (
-              <div key={w.t}>
-                <div className="hv-why4__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={w.d} /></svg></div>
-                <b>{w.t}</b>
-                <p>{w.p}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* What the agent does */}
-      <section className="hv-band" id="features">
+      <section className="hv-band hv-band--grey" id="features">
         <div className="hv-wrap">
           <div className="hv-center">
             <p className="hv-kicker">What your agent does</p>
@@ -138,6 +120,24 @@ export function HomeV2() {
               </div>
             )
           })}
+        </div>
+      </section>
+
+      {/* Agency vs Alphaa */}
+      <section className="hv-band">
+        <div className="hv-wrap hv-center">
+          <h2 className="hv-h2">An agency’s work.<br />But cheaper and better.</h2>
+          <p className="hv-lede">Paying an agency for each piece adds up fast, and you still end up chasing them for updates. One AI agent does all of it, every week, for a fraction of the price.</p>
+          <CostTable />
+          <div className="hv-why4">
+            {WHY.map((w) => (
+              <div key={w.t}>
+                <div className="hv-why4__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={w.d} /></svg></div>
+                <b>{w.t}</b>
+                <p>{w.p}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

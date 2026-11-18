@@ -59,7 +59,7 @@ export const market: Market = {
       "Beiträge für Ihr Google Unternehmensprofil, Blogartikel und Antworten auf Bewertungen, in Ihrem Ton",
       "Ihre Website fit für Google und KI-Suche, mit Wochenchecks, was ChatGPT, Gemini, Claude und Perplexity über Sie sagen",
       "Ein kurzes Wochenbriefing, jede Änderung mit einem Tipp freigegeben",
-      "Pro für bis zu 3 Standorte: {pro} im Monat. Full Service, bei dem ein Mensch die Arbeit an der Website übernimmt: {full} im Monat.",
+      "Pro für bis zu 3 Standorte: {pro} im Monat. Full Service, bei dem ein Mensch die Arbeit an der Website übernimmt: {full} im Monat. Growth mit Social Media, Anzeigen und E-Mail: {growth} im Monat (Early Access).",
       "Growth-Tarif (Early Access): Social Media, Google- und Meta-Anzeigen, E-Mail und Lead-Tracking. Das Werbebudget zahlen Sie direkt an Google und Meta, ohne Aufschlag.",
       "Monatlich kündbar, online in einer Minute. 7 Tage Geld zurück auf die erste Abbuchung.",
       "Nennt Sie bis Tag 90 bei aktiven Wochenchecks keine KI, ist der nächste Monat kostenlos.",
@@ -74,7 +74,7 @@ export const market: Market = {
       },
       {
         q: "Was kostet das?",
-        a: "Starter kostet {starter} im Monat, Pro {pro} (bis zu 3 Standorte), Full Service {full}, dann übernimmt ein Mensch die Arbeit an Ihrer Website. Growth mit Social Media, Anzeigen und E-Mail ist im Early Access. Monatlich online in einer Minute kündbar, 7 Tage Geld zurück auf die erste Abbuchung. Der Check auf dieser Seite ist kostenlos.",
+        a: "Starter kostet {starter} im Monat, Pro {pro} (bis zu 3 Standorte), Full Service {full}, dann übernimmt ein Mensch die Arbeit an Ihrer Website. Growth mit Social Media, Anzeigen und E-Mail kostet {growth} im Monat (Early Access). Monatlich online in einer Minute kündbar, 7 Tage Geld zurück auf die erste Abbuchung. Der Check auf dieser Seite ist kostenlos.",
       },
       {
         q: "Muss ich mich mit Marketing auskennen?",

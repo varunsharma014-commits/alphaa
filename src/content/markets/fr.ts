@@ -65,7 +65,7 @@ export const market: Market = {
     ],
     priceCta: "Commencer, {starter}/mois",
     priceNote:
-      "Starter {starter}/mois, Pro {pro}/mois (jusqu’à 3 établissements), Accompagnement complet {full}/mois (une personne s’occupe du site pour vous). Marques supplémentaires à -50 %. Facturation mensuelle, sans engagement. Réservé aux professionnels (B2B). Nous ne sommes pas immatriculés à la TVA : aucune TVA n’est facturée ; si elle s’applique, vous l’autoliquidez.",
+      "Starter {starter}/mois, Pro {pro}/mois (jusqu’à 3 établissements), Accompagnement complet {full}/mois (une personne s’occupe du site pour vous), Growth {growth}/mois (accès anticipé). Marques supplémentaires à -50 %. Facturation mensuelle, sans engagement. Réservé aux professionnels (B2B). Nous ne sommes pas immatriculés à la TVA : aucune TVA n’est facturée ; si elle s’applique, vous l’autoliquidez.",
     faqTitle: "Les questions des pros en France",
     faq: [
       {
@@ -74,7 +74,7 @@ export const market: Market = {
       },
       {
         q: "Combien ça coûte ?",
-        a: "Starter : {starter} par mois. Pro : {pro} par mois, jusqu’à 3 établissements. Accompagnement complet : {full} par mois, une personne s’occupe du site pour vous. Growth, avec réseaux sociaux, pubs et e-mails, est en accès anticipé. Sans engagement, résiliable en ligne en une minute, et remboursement sous 7 jours sur le premier prélèvement. La vérification sur cette page est gratuite.",
+        a: "Starter : {starter} par mois. Pro : {pro} par mois, jusqu’à 3 établissements. Accompagnement complet : {full} par mois, une personne s’occupe du site pour vous. Growth, avec réseaux sociaux, pubs et e-mails : {growth} par mois, en accès anticipé. Sans engagement, résiliable en ligne en une minute, et remboursement sous 7 jours sur le premier prélèvement. La vérification sur cette page est gratuite.",
       },
       {
         q: "Je dois vous donner mes mots de passe ?",

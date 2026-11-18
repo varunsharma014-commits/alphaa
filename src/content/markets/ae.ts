@@ -59,7 +59,7 @@ export const market: Market = {
       "Google Business Profile posts, blog posts and review replies, written in your voice",
       "Your website fixed for Google and AI search, with weekly checks of what ChatGPT, Gemini, Claude and Perplexity say",
       "A short weekly briefing, and every change approved with one tap",
-      "Growth plan (early access): social posts, Google and Meta ads, email and lead tracking. Ad spend goes to Google and Meta directly, never marked up.",
+      "Growth plan, {growth} a month (early access): social posts, Google and Meta ads, email and lead tracking. Ad spend goes to Google and Meta directly, never marked up.",
       "Month to month. Cancel online in a minute. 7-day refund on your first charge.",
       "If no AI names you by day 90 with weekly checks active, next month is free.",
     ],
@@ -73,7 +73,7 @@ export const market: Market = {
       },
       {
         q: "How much does it cost?",
-        a: "Starter is {starter} a month, Pro is {pro} a month for up to 3 locations, and Full Service is {full} a month, where a person does the website work for you. Growth, with social, ads and email, is in early access. Month to month, cancel online in a minute. The check on this page is free.",
+        a: "Starter is {starter} a month, Pro is {pro} a month for up to 3 locations, and Full Service is {full} a month, where a person does the website work for you. Growth, with social, ads and email, is {growth} a month in early access. Month to month, cancel online in a minute. The check on this page is free.",
       },
       {
         q: "My customers search in Arabic and English. Do you cover both?",
