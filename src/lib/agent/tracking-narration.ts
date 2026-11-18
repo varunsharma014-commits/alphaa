@@ -16,7 +16,7 @@ export function upgradeMessages(): Message[] {
     agent([
       { kind: "text", text: "Know exactly which ads bring you customers.", big: true },
       { kind: "text", text: "On the Growth plan I count every call, email and form your website gets, then run your Google and Meta ads and keep moving money to the ones that bring people in." },
-      { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade" }, primary: true }] },
+      { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade?plan=growth" }, primary: true }] },
     ], "trk-upgrade"),
   ]
 }

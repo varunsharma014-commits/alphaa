@@ -16,7 +16,7 @@ export function V3Page({ children, className, tone }: { children: ReactNode; cla
   return <div className={cx("v3 v3-page", tone && `v3-c-${tone}`, className)}>{children}</div>
 }
 
-/** The centred column with faint guide lines. `top` clears the fixed nav. */
+/** The centred content column (no side lines). `top` clears the fixed nav. */
 export function Frame({ children, top = false, className }: { children: ReactNode; top?: boolean; className?: string }) {
   return <div className={cx("v3-frame", top && "v3-frame--top", className)}>{children}</div>
 }
@@ -132,14 +132,14 @@ export function ServiceChapter({ slug, growthNote, flip, visual, as }: { slug: S
     <Chapter
       tone={v.key}
       eyebrow={v.pill}
-      eyebrowNote={sv.plan === "growth" ? growthNote : "Every plan, from $99/month"}
+      eyebrowNote={sv.plan === "growth" ? growthNote : sv.plan === "pro" ? "Pro and Growth plans" : "Every plan, from $99/month"}
       a={v.a}
       b={v.b}
       as={as}
       body={sv.feature.body}
       points={sv.feature.points}
       proof={v.proof}
-      note={sv.plan === "growth" ? sv.availability : undefined}
+      note={sv.plan !== "starter" ? sv.availability : undefined}
       href={`/services/${slug}`}
       hrefLabel={`Learn more about ${v.pill.toLowerCase().replace("seo & ai", "SEO & AI")}`}
       visual={visual ?? <CardsVisual cards={v.cards} />}

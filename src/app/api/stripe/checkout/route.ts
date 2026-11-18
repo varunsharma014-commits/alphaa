@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
-import { stripe, STRIPE_PRICE_IDS, STRIPE_SETUP_FEE_PRICE_ID } from "@/lib/stripe"
+import { stripe, STRIPE_PRICE_IDS } from "@/lib/stripe"
 import { db } from "@/lib/db"
 import { isComped, hasStripePlan, isExtraBrand, EXTRA_BRAND_COUPON, EXTRA_BRAND_PERCENT } from "@/lib/billing"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
@@ -9,6 +9,39 @@ import { MARKET_CURRENCY, MARKET_COOKIE, isMarketKey } from "@/content/markets/p
 import type Stripe from "stripe"
 import { realEmail } from "@/lib/sites"
 import { GROWTH_ON_SALE } from "@/lib/growth"
+import { PLAN_PRICES } from "@/lib/constants"
+
+type SellPlan = "starter" | "pro" | "growth"
+const SELL_PLANS: SellPlan[] = ["starter", "pro", "growth"]
+
+// Never charge a price that doesn't match what the site shows (plans changed 2026-11-18; an old
+// $199 Pro price left in env must not be sold as the $399 plan). Checks the USD amount and
+// interval of the price id against PLAN_PRICES once per process.
+const verified = new Map<string, boolean>()
+async function verifiedPrice(plan: SellPlan, annual: boolean): Promise<string | null> {
+  const id = STRIPE_PRICE_IDS[plan][annual ? "annual" : "monthly"]
+  if (!id) return null
+  if (!verified.has(id)) {
+    try {
+      const p = await stripe.prices.retrieve(id)
+      const want = annual ? PLAN_PRICES[plan].annual * 12 * 100 : PLAN_PRICES[plan].monthly * 100
+      const ok = p.active && p.currency === "usd" && p.unit_amount === want && p.recurring?.interval === (annual ? "year" : "month")
+      if (!ok) console.error("[checkout] price does not match the site", plan, annual ? "annual" : "monthly", id, p.unit_amount, p.recurring?.interval)
+      verified.set(id, ok)
+    } catch (e) {
+      console.error("[checkout] price lookup", id, e instanceof Error ? e.message : e)
+      return null
+    }
+  }
+  return verified.get(id) ? id : null
+}
+
+/** "pro_annual" / "growth_monthly" / "starter" (pricing page and agent) → plan + period. */
+function parsePlan(v: unknown): { plan: SellPlan; annual: boolean } | null {
+  if (typeof v !== "string") return null
+  const m = /^(starter|pro|growth)(?:_(monthly|annual))?$/.exec(v)
+  return m ? { plan: m[1] as SellPlan, annual: m[2] === "annual" } : null
+}
 
 // Visitors who came through a market page (/uk, /de…) pay in that market's
 // currency. The monthly prices carry currency options in Stripe; if one is
@@ -77,28 +110,37 @@ export async function POST(req: NextRequest) {
   const { userId } = await auth()
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  // `purchase` is the concierge path — named products resolved server-side so
-  // the client never chooses an arbitrary price for them.
-  const { priceId, purchase } = await req.json()
+  // Plans are named ("starter" | "pro" | "growth", plus `annual`), and resolved to a price id
+  // here, so the client never chooses an arbitrary price. A legacy `priceId` of the form
+  // "pro_annual" is accepted the same way.
+  const body = await req.json().catch(() => ({}))
+  const named = parsePlan(body.purchase) ?? parsePlan(body.priceId)
+  const purchase: SellPlan | string | undefined = named?.plan ?? body.purchase
+  const annual = !!(body.annual || named?.annual)
   const appUrl = process.env.NEXT_PUBLIC_APP_URL!
 
   const user = await db.user.findUnique({ where: { clerkId: userId } })
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
+  // Full Service and the one-time setup were retired from sale on 2026-11-18.
+  if (purchase === "fullservice" || purchase === "setup") {
+    return NextResponse.json({ error: "That service is no longer offered. See the plans at alphaa.app/pricing." }, { status: 410 })
+  }
+  if (!named) return NextResponse.json({ error: "Pick a plan first." }, { status: 400 })
   // Comped accounts (founder, app-store reviewers) never pay: send them on.
-  if ((purchase === "starter" || purchase === "pro" || purchase === "growth") && isComped(user.email)) {
+  if (isComped(user.email)) {
     return NextResponse.json({ url: `${appUrl}/dashboard` })
   }
 
-  // Growth stays early access (no charge) until ads and social posting are approved and live.
+  // Growth stays early access (no charge) until ads are approved and live.
   if (purchase === "growth" && !GROWTH_ON_SALE) {
     return NextResponse.json({ error: "Growth is in early access. Email hi@alphaa.app and we'll set you up first." }, { status: 403 })
   }
 
   // Shopify merchants are billed only through Shopify (App Store rule 1.2.1): the plan opens
-  // Shopify's own plan page, and the Stripe-only human services aren't sold to them at all.
+  // Shopify's own plan page. Growth isn't sold to them yet.
   const shop = await shopifyMerchantShop(user)
   if (shop) {
-    if (purchase === "setup" || purchase === "fullservice" || purchase === "growth") {
+    if (purchase === "growth") {
       return NextResponse.json({ error: "This service isn't available for Shopify stores. Email hi@alphaa.app and we'll help." }, { status: 403 })
     }
     return NextResponse.json({ url: shopifyPricingUrl(shop) })
@@ -121,23 +163,6 @@ export async function POST(req: NextRequest) {
     await db.user.update({ where: { id: user.id }, data: { stripeCustomerId } })
   }
 
-  // One-time white-glove setup fee ($149) — payment mode, no subscription.
-  if (purchase === "setup") {
-    if (!STRIPE_SETUP_FEE_PRICE_ID) {
-      return NextResponse.json({ error: "Setup service is not available right now" }, { status: 500 })
-    }
-    const session = await create({
-      customer: stripeCustomerId,
-      branding_settings,
-      line_items: [{ price: STRIPE_SETUP_FEE_PRICE_ID, quantity: 1 }],
-      mode: "payment",
-      metadata: { purpose: "concierge_setup", userId: user.id },
-      success_url: `${appUrl}/dashboard/concierge?paid=1`,
-      cancel_url: `${appUrl}/dashboard/concierge`,
-    })
-    return NextResponse.json({ url: session.url })
-  }
-
   const currency = marketCurrency(req)
   const market = marketOf(req)
 
@@ -145,28 +170,15 @@ export async function POST(req: NextRequest) {
   const extra = await isExtraBrand(user)
   const discounts = extra && (await ensureExtraBrandCoupon()) ? [{ coupon: EXTRA_BRAND_COUPON() }] : undefined
 
-  // Full Service subscription ($299/mo, human-fulfilled). No trial: a person
-  // starts doing real work immediately.
-  if (purchase === "fullservice") {
-    const session = await createSession({
-      customer: stripeCustomerId,
-      branding_settings,
-      line_items: [{ price: STRIPE_PRICE_IDS.fullservice.monthly, quantity: 1 }],
-      mode: "subscription",
-      ...(discounts ? { discounts, metadata: { extra_brand: "1" } } : {}),
-      payment_method_collection: "always",
-      success_url: `${appUrl}/dashboard/concierge?upgraded=1`,
-      cancel_url: `${appUrl}/dashboard/concierge`,
-    }, currency, market)
-    return NextResponse.json({ url: session.url })
-  }
-
   // Already paying by Stripe and moving up a plan (e.g. Starter → Growth): switch the price on
   // the existing subscription (prorated) instead of opening a second subscription.
   if ((purchase === "pro" || purchase === "growth") && hasStripePlan(user) && user.stripeSubscriptionId) {
-    const target = STRIPE_PRICE_IDS[purchase as "pro" | "growth"].monthly
+    // Keep the billing period they already pay on (a yearly Starter moves to yearly Pro).
+    const sub0 = await stripe.subscriptions.retrieve(user.stripeSubscriptionId)
+    const onYearly = sub0.items.data[0]?.price.recurring?.interval === "year"
+    const target = await verifiedPrice(purchase, onYearly || annual)
     if (!target) return NextResponse.json({ error: "This plan isn't available right now. Email hi@alphaa.app." }, { status: 500 })
-    const sub = await stripe.subscriptions.retrieve(user.stripeSubscriptionId)
+    const sub = sub0
     const item = sub.items.data[0]
     if (item && item.price.id !== target) {
       await stripe.subscriptions.update(sub.id, {
@@ -179,13 +191,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: `${appUrl}/dashboard?upgraded=${purchase}` })
   }
 
-  // `purchase: "starter" | "pro" | "growth"` comes from the agent conversation (/onboarding),
-  // which never handles price ids itself.
-  const fromAgent = purchase === "starter" || purchase === "pro" || purchase === "growth"
-  const price = fromAgent ? STRIPE_PRICE_IDS[purchase as "starter" | "pro" | "growth"].monthly : priceId
+  // The agent conversation (/onboarding) names the plan; it never handles price ids itself.
+  const fromAgent = SELL_PLANS.includes(named.plan)
+  const price = await verifiedPrice(named.plan, annual)
   if (!price) return NextResponse.json({ error: "This plan isn't available right now. Email hi@alphaa.app." }, { status: 500 })
   // Local currencies exist on the monthly prices only; annual stays in USD.
-  const monthly = [STRIPE_PRICE_IDS.starter.monthly, STRIPE_PRICE_IDS.pro.monthly, STRIPE_PRICE_IDS.growth.monthly].includes(price)
+  const monthly = !annual
   const session = await createSession({
     customer: stripeCustomerId,
     branding_settings,

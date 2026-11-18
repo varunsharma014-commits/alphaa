@@ -34,9 +34,9 @@ export type Compare = {
 
 export const COMPARE_CHECKED = "2026-09-25"
 
-const ALPHAA_PRICE = "$99, $199 or $299 a month, or $499 for Growth (early access). Month to month, no contract"
+const ALPHAA_PRICE = "$99 or $399 a month, or $499 for Growth (early access). Month to month, no contract"
 const ALPHAA_DOES =
-  "Runs your marketing for you: SEO and AI search, blog and Google posts, review replies and a weekly briefing on every plan, plus social posts, Google and Meta ads and email on the Growth plan (early access). You approve anything public with one tap"
+  "Runs your marketing for you: SEO and AI search, blog and Google posts, review replies and a weekly briefing on every plan, plus social posts on Pro, and Google and Meta ads and email on the Growth plan (early access). You approve anything public with one tap"
 
 export const COMPARES: Compare[] = [
   // ─── Category 1: the old way of doing things ───────────────────────────
@@ -48,24 +48,24 @@ export const COMPARES: Compare[] = [
     right: "Alphaa",
     metaTitle: "Alphaa vs. an SEO Agency (2026): Cost, Contracts & Scope",
     description:
-      "An honest comparison of a ~$2,000/month local SEO agency and Alphaa, the AI agent that runs a local business’s marketing (SEO, AI search, content, reviews, and social, ads and email on Growth) from $99/month.",
+      "An honest comparison of a ~$2,000/month local SEO agency and Alphaa, the AI agent that runs a local business’s marketing (SEO, AI search, content and reviews, social on Pro, ads and email on Growth) from $99/month.",
     h1: "Alphaa vs. an SEO agency.",
     h1Quiet: "$24,000 a year, or $1,188.",
     tldr:
-      "The main difference between Alphaa and a traditional SEO agency is who does the work and how much of your marketing it covers. An agency sells monthly hours, usually on a contract, mostly aimed at Google rankings. Alphaa is an AI agent that runs your marketing every week: SEO and AI search, content and reviews from $99 a month, plus social, ads and email on the Growth plan (early access).",
+      "The main difference between Alphaa and a traditional SEO agency is who does the work and how much of your marketing it covers. An agency sells monthly hours, usually on a contract, mostly aimed at Google rankings. Alphaa is an AI agent that runs your marketing every week: SEO and AI search, content and reviews from $99 a month, plus social media on Pro and ads and email on the Growth plan (early access).",
     rows: [
-      ["Typical price", "Around $2,000/month ($24,000/year); varies widely", "$99/month ($1,188/year). Pro $199, Full Service $299, Growth $499 (early access)"],
+      ["Typical price", "Around $2,000/month ($24,000/year); varies widely", "$99/month ($1,188/year). Pro $399, Growth $499 (early access)"],
       ["Contract", "Often 6–12 months", "Month to month. Cancel online in a minute"],
       ["Main target", "Google blue-link rankings and Maps", "Your whole marketing: Google, AI answers, content and reviews"],
       ["Who does the work", "Account manager + specialists, a few hours a month", "An AI agent, every week. You approve anything public"],
       ["Checks AI answers", "Rarely, and usually by hand", "Every week, across four AI assistants"],
       ["What you get each month", "A report and a call", "Finished work: blog and Google posts, FAQs, website fixes, review replies, a weekly briefing"],
       ["Speed", "Waits for the next sprint or meeting", "Starts in minutes; weekly cycle"],
-      ["Social media posts", "Sometimes, usually as a separate service", "Growth plan (early access): posts and branded images in your voice"],
+      ["Social media posts", "Sometimes, usually as a separate service", "Pro plan: posts and branded images in your voice"],
       ["Google & Meta ads", "Often offered", "Growth plan (early access): built paused, you approve the budget, ad spend never marked up"],
       ["Email to past customers", "Sometimes, as a separate service", "Growth plan (early access)"],
       ["Link building & PR", "Yes — a real strength", "No"],
-      ["Website redesigns", "Often offered", "No. Full Service includes a person for website work"],
+      ["Website redesigns", "Often offered", "No. Alphaa makes approved website fixes, not redesigns"],
     ],
     leftGood: {
       title: "What a good agency does well",
@@ -107,7 +107,7 @@ export const COMPARES: Compare[] = [
         q: "Why does AI search change the agency model?",
         a: [
           "AI assistants don’t show ten links. They name two or three businesses. What decides that is readable facts on your site, structured data, reviews AI can read, consistent profiles and fresh answers to real questions — repeatable work an agent can do every week.",
-          "That’s why Alphaa can cost $99. The same goes for most of a small business’s marketing: posts, replies, emails and ad tuning repeat every week. Software does the repeatable work; a person only steps in on Full Service, to install things on your site.",
+          "That’s why Alphaa can cost $99. The same goes for most of a small business’s marketing: posts, replies, emails and ad tuning repeat every week. Software does the repeatable work, and you approve anything public.",
         ],
       },
       {
@@ -121,9 +121,9 @@ export const COMPARES: Compare[] = [
       { q: "Is Alphaa cheaper than an SEO agency?", a: "Yes. A typical local SEO agency retainer is around $2,000 a month ($24,000 a year). Alphaa starts at $99 a month ($1,188 a year), which saves up to $22,800 a year." },
       { q: "Does Alphaa require a contract?", a: "No. Alphaa is month to month and you can cancel online in a minute. Many agencies ask for 6 to 12 months." },
       { q: "Do SEO agencies optimize for ChatGPT?", a: "Some are starting to, but most agency work and reporting is still built around Google rankings. Alphaa checks ChatGPT, Gemini, Claude and Perplexity every week and fixes what stops them naming you." },
-      { q: "Can Alphaa replace my SEO agency?", a: "For SEO and AI search, Google Business Profile posts, blog posts, website fixes and review replies, yes. Social posts, Google and Meta ads and email are on the Growth plan, in early access. For link building, PR or website redesigns, keep a specialist." },
-      { q: "Does Alphaa only do AI search?", a: "No. AI search is one strength. Alphaa is an AI agent that runs your marketing: SEO, content and reviews on every plan, and social, ads and email on the Growth plan (early access)." },
-      { q: "Who publishes changes to my website?", a: "You approve everything public. On Starter and Pro you publish with one tap or send it to your web person. On Full Service, a person on our team installs it for you." },
+      { q: "Can Alphaa replace my SEO agency?", a: "For SEO and AI search, Google Business Profile posts, blog posts, website fixes and review replies, yes. Social posts are on Pro; Google and Meta ads and email are on the Growth plan, in early access. For link building, PR or website redesigns, keep a specialist." },
+      { q: "Does Alphaa only do AI search?", a: "No. AI search is one strength. Alphaa is an AI agent that runs your marketing: SEO, content and reviews on every plan, social on Pro, and ads and email on the Growth plan (early access)." },
+      { q: "Who publishes changes to my website?", a: "You approve everything public. Alphaa publishes it to WordPress, Shopify or Webflow with one tap, or emails your web person the exact change for other platforms." },
     ],
     sources: [
       { label: "Ahrefs: SEO pricing survey of 439 providers", url: "https://ahrefs.com/blog/seo-pricing/" },
@@ -143,14 +143,14 @@ export const COMPARES: Compare[] = [
     h1: "Alphaa vs. a freelance SEO.",
     h1Quiet: "One person’s hours, or an agent that runs your marketing.",
     tldr:
-      "The main difference between Alphaa and a freelance SEO is coverage. A freelancer sells a limited number of hours, usually focused on Google, and works when they’re available. Alphaa is an AI agent that runs your marketing every week: SEO and AI search, content and reviews from $99 a month with no contract, plus social, ads and email on the Growth plan (early access).",
+      "The main difference between Alphaa and a freelance SEO is coverage. A freelancer sells a limited number of hours, usually focused on Google, and works when they’re available. Alphaa is an AI agent that runs your marketing every week: SEO and AI search, content and reviews from $99 a month with no contract, plus social media on Pro and ads and email on the Growth plan (early access).",
     rows: [
-      ["Typical price", "Around $1,348/month on average (hourly or retainer)", "$99/month. Pro $199, Full Service $299, Growth $499 (early access)"],
+      ["Typical price", "Around $1,348/month on average (hourly or retainer)", "$99/month. Pro $399, Growth $499 (early access)"],
       ["Availability", "Their working hours, shared with other clients", "Runs every week, whenever you open it"],
       ["Main target", "Usually Google rankings", "Your whole marketing, with Google and AI answers built in"],
       ["AI answer tracking", "Usually manual, if at all", "Weekly, four AI assistants, with sources"],
       ["Output", "Depends on the person", "Blog and Google posts, FAQs, website fixes, review replies, for your approval"],
-      ["Social, ads & email", "Depends on the person", "Growth plan (early access): social posts, Google and Meta ads, emails to past customers"],
+      ["Social, ads & email", "Depends on the person", "Social posts on Pro; Google and Meta ads and emails to past customers on Growth (early access)"],
       ["If they leave", "Knowledge goes with them", "History and fixes stay in your account"],
       ["Custom one-off projects", "Yes — flexible", "No; focused on running your weekly marketing"],
     ],
@@ -198,7 +198,7 @@ export const COMPARES: Compare[] = [
       { q: "Is Alphaa cheaper than a freelance SEO?", a: "Usually. Ahrefs found freelance SEO retainers average around $1,348 a month. Alphaa starts at $99 a month, month to month." },
       { q: "Can a freelancer do AEO?", a: "Some can, but it’s mostly manual: typing questions into ChatGPT and writing up what they see. Alphaa checks four AI assistants every week automatically and drafts the fixes." },
       { q: "Should I fire my freelancer?", a: "Not necessarily. Keep them for one-off projects or links, and let Alphaa handle the weekly marketing, AI search included." },
-      { q: "Do I need technical skills to use Alphaa?", a: "No. Alphaa writes the fixes and you approve them. On Full Service, a person on our team installs them for you." },
+      { q: "Do I need technical skills to use Alphaa?", a: "No. Alphaa writes the fixes and you approve them. It publishes them to WordPress, Shopify or Webflow, or emails your web person the exact change." },
     ],
     sources: [{ label: "Ahrefs: SEO pricing survey of 439 providers", url: "https://ahrefs.com/blog/seo-pricing/" }],
     priceBlock: false,
@@ -332,7 +332,7 @@ export const COMPARES: Compare[] = [
       {
         q: "Where does Alphaa fit?",
         a: [
-          "Alphaa covers both sides as part of running your marketing: it drafts Google Business Profile posts and review replies, and does the GEO work: weekly AI answer checks, 23 site checks, structured data, FAQs and llms.txt. From $99 a month. Social, ads and email are on the Growth plan (early access).",
+          "Alphaa covers both sides as part of running your marketing: it drafts Google Business Profile posts and review replies, and does the GEO work: weekly AI answer checks, 23 site checks, structured data, FAQs and llms.txt. From $99 a month. Social media is on Pro; ads and email are on the Growth plan (early access).",
         ],
       },
     ],
@@ -362,11 +362,11 @@ export const COMPARES: Compare[] = [
     h1: "Alphaa vs. Peec AI.",
     h1Quiet: "Peec tells you why you’re losing on ChatGPT. Alphaa fixes it.",
     tldr:
-      "The main difference between Alphaa and Peec AI is analytics versus action. Peec AI is a well-funded AI-search analytics platform that shows marketing teams their visibility, sentiment and sources across AI assistants, with recommended actions. Alphaa is an AI agent that runs a local business’s marketing and does the work itself: writing and publishing pages, fixing structured data and llms.txt, and drafting review replies, from $99 a month. AI search is one of its strengths; social, ads and email are on the Growth plan (early access).",
+      "The main difference between Alphaa and Peec AI is analytics versus action. Peec AI is a well-funded AI-search analytics platform that shows marketing teams their visibility, sentiment and sources across AI assistants, with recommended actions. Alphaa is an AI agent that runs a local business’s marketing and does the work itself: writing and publishing pages, fixing structured data and llms.txt, and drafting review replies, from $99 a month. AI search is one of its strengths; social media is on Pro; ads and email are on the Growth plan (early access).",
     rows: [
       ["What it is", "AI search analytics platform", "AI agent that runs your marketing, AI search included"],
       ["Built for", "SEO, content and marketing teams; agencies", "Local business owners"],
-      ["Price (Sept 2026)", "Starter ~$95/mo (50 prompts), Pro ~$245/mo (150), Advanced ~$495/mo (350); Enterprise custom", "$99/mo (10 questions), Pro $199 (20 questions, 3 locations), Full Service $299, Growth $499 (early access)"],
+      ["Price (Sept 2026)", "Starter ~$95/mo (50 prompts), Pro ~$245/mo (150), Advanced ~$495/mo (350); Enterprise custom", "$99/mo (10 questions), Pro $399 (20 questions, 3 locations), Growth $499 (early access)"],
       ["AI assistants", "ChatGPT, Perplexity, Gemini included; more models as paid add-ons", "ChatGPT, Gemini, Claude and Perplexity, all included"],
       ["How often it checks", "Daily", "Weekly, plus live checks on request"],
       ["Competitor & sentiment analytics", "Deep — share of voice, sentiment, source analysis", "Who got named instead, question by question"],
@@ -375,7 +375,7 @@ export const COMPARES: Compare[] = [
       ["Fixes structured data, llms.txt, robots.txt, titles", "No", "Yes"],
       ["Google reviews & Business Profile posts", "No", "Drafts replies and posts; you approve"],
       ["Catches AI saying wrong facts about you", "Via sentiment and brand analysis", "Weekly fact check — closed, wrong phone, wrong address"],
-      ["Social posts, ads & email", "Outside its focus (AI search analytics)", "Growth plan (early access): social posts, Google and Meta ads, emails to past customers"],
+      ["Social posts, ads & email", "Outside its focus (AI search analytics)", "Social posts on Pro; Google and Meta ads and emails to past customers on Growth (early access)"],
     ],
     leftGood: {
       title: "What Peec AI is great at",
@@ -422,7 +422,7 @@ export const COMPARES: Compare[] = [
     ],
     faq: [
       { q: "Is Alphaa a Peec AI alternative?", a: "For local businesses that want AI visibility fixed for them as part of their marketing, yes. For marketing teams that want deep daily analytics across many brands and prompts, Peec AI is built for that." },
-      { q: "How much does Peec AI cost?", a: "Reported self-serve prices in 2026 are about $95/month (Starter, 50 prompts), $245 (Pro, 150) and $495 (Advanced, 350), with extra AI models as add-ons. Alphaa is $99, $199 or $299 a month with all four assistants included." },
+      { q: "How much does Peec AI cost?", a: "Reported self-serve prices in 2026 are about $95/month (Starter, 50 prompts), $245 (Pro, 150) and $495 (Advanced, 350), with extra AI models as add-ons. Alphaa is $99 or $399 a month (Growth, $499, is in early access), with all four assistants included." },
       { q: "Does Peec AI publish content to my website?", a: "No. Peec AI tracks visibility and recommends actions; your team makes the changes. Alphaa writes and publishes pages and posts to WordPress, Shopify or Webflow after you approve, or emails them to your web person." },
       { q: "Does Alphaa track Claude?", a: "Yes. Alphaa asks ChatGPT, Gemini, Claude and Perplexity your customers’ questions every week, included in every plan." },
     ],
@@ -445,11 +445,11 @@ export const COMPARES: Compare[] = [
     h1: "Alphaa vs. Otterly.AI.",
     h1Quiet: "Otterly watches the answers. Alphaa changes them.",
     tldr:
-      "The main difference between Alphaa and Otterly.AI is monitoring versus doing. Otterly.AI is an affordable AI-search monitoring tool that tracks brand mentions and cited links across AI assistants and audits pages for GEO. Alphaa is an AI agent that runs a local business’s marketing and makes the fixes itself: pages, posts, structured data, llms.txt, review replies, from $99 a month. Social, ads and email are on the Growth plan (early access).",
+      "The main difference between Alphaa and Otterly.AI is monitoring versus doing. Otterly.AI is an affordable AI-search monitoring tool that tracks brand mentions and cited links across AI assistants and audits pages for GEO. Alphaa is an AI agent that runs a local business’s marketing and makes the fixes itself: pages, posts, structured data, llms.txt, review replies, from $99 a month. Social media is on Pro; ads and email are on the Growth plan (early access).",
     rows: [
       ["What it is", "AI search monitoring & GEO audit tool", "AI agent that runs your marketing, AI search included"],
       ["Built for", "Marketers, SMEs and agencies", "Local business owners"],
-      ["Price (Sept 2026)", "Lite $29/mo (15 prompts), Standard $189 (100), Premium $489 (400); Enterprise custom", "$99/mo (10 questions), Pro $199 (20 questions, 3 locations), Full Service $299, Growth $499 (early access)"],
+      ["Price (Sept 2026)", "Lite $29/mo (15 prompts), Standard $189 (100), Premium $489 (400); Enterprise custom", "$99/mo (10 questions), Pro $399 (20 questions, 3 locations), Growth $499 (early access)"],
       ["AI assistants", "ChatGPT, Google AI Overviews, Perplexity, Copilot; Claude, Gemini and AI Mode as add-ons", "ChatGPT, Gemini, Claude and Perplexity, all included"],
       ["Brand mentions & cited links", "Yes — a core strength", "Yes — who got named, and the pages AI reads"],
       ["Page audits", "GEO URL audits (1,000–10,000/mo by plan)", "23 AI-readiness checks + security checks, weekly"],
@@ -457,7 +457,7 @@ export const COMPARES: Compare[] = [
       ["Fixes structured data, llms.txt, robots.txt, titles", "No — recommends", "Yes"],
       ["Google reviews & Business Profile posts", "No", "Drafts replies and posts; you approve"],
       ["Directory & profile consistency", "No", "Checks your name, phone and address across directories and social profiles"],
-      ["Social posts, ads & email", "Outside its focus (AI search monitoring)", "Growth plan (early access): social posts, Google and Meta ads, emails to past customers"],
+      ["Social posts, ads & email", "Outside its focus (AI search monitoring)", "Social posts on Pro; Google and Meta ads and emails to past customers on Growth (early access)"],
     ],
     leftGood: {
       title: "What Otterly.AI is great at",
@@ -523,10 +523,10 @@ export const COMPARES: Compare[] = [
     h1: "Alphaa vs. BabyLoveGrowth.",
     h1Quiet: "More articles, or the right ones — without the risk.",
     tldr:
-      "The main difference between Alphaa and BabyLoveGrowth is volume versus local focus. BabyLoveGrowth is a content autopilot: it publishes dozens of SEO articles a month and exchanges backlinks through its customer network. Alphaa is an AI agent that runs a local business’s marketing: fewer, targeted posts answering the questions AI isn’t naming you for, plus reviews, listings and fixes, every change approved by you and undoable. Social, ads and email are on the Growth plan (early access).",
+      "The main difference between Alphaa and BabyLoveGrowth is volume versus local focus. BabyLoveGrowth is a content autopilot: it publishes dozens of SEO articles a month and exchanges backlinks through its customer network. Alphaa is an AI agent that runs a local business’s marketing: fewer, targeted posts answering the questions AI isn’t naming you for, plus reviews, listings and fixes, every change approved by you and undoable. Social media is on Pro; ads and email are on the Growth plan (early access).",
     rows: [
       ["What it is", "Automated SEO/AEO content + backlink platform", "AI agent that runs a local business’s marketing"],
-      ["Price (Sept 2026)", "Listed from $49/mo (Grow, 30 articles) and $199/mo (Scale, 120 articles); 3-day trial", "$99/mo (Starter), $199 (Pro, 3 locations), $299 (Full Service), $499 (Growth, early access)"],
+      ["Price (Sept 2026)", "Listed from $49/mo (Grow, 30 articles) and $199/mo (Scale, 120 articles); 3-day trial", "$99/mo (Starter), $399 (Pro, 3 locations), $499 (Growth, early access)"],
       ["Articles", "High volume — 30 to 120 a month, 50+ languages", "2 (Starter) or 4 (Pro) a month, each answering a question the AIs don’t name you for"],
       ["Publishing", "Automatic to WordPress, Shopify, Webflow and more", "WordPress, Shopify and Webflow today (Wix coming soon) — you approve, or turn on auto-publish (Pro); every change has Undo"],
       ["Backlinks", "Automated link exchange between customers’ sites", "None — we don’t trade links (see below)"],
@@ -534,7 +534,7 @@ export const COMPARES: Compare[] = [
       ["AI tracking", "ChatGPT, Claude, Perplexity, Gemini (10–50 prompts)", "ChatGPT, Gemini, Claude, Perplexity — 10–20 customer questions weekly, plus a check for wrong facts"],
       ["Google reviews & Business Profile", "Not listed", "Drafts review replies and posts; asks customers for reviews"],
       ["Listings & directories", "Not listed", "Bing Places, Apple, social profiles, and your details across directories"],
-      ["Social posts, ads & email", "Outside its focus (content and backlinks)", "Growth plan (early access): social posts, Google and Meta ads, emails to past customers"],
+      ["Social posts, ads & email", "Outside its focus (content and backlinks)", "Social posts on Pro; Google and Meta ads and emails to past customers on Growth (early access)"],
       ["Guarantee", "90-day money-back if organic visibility doesn’t improve", "90-day AI Visibility Guarantee: if no AI names you in our weekly checks, your next month is free"],
     ],
     leftGood: {
@@ -610,13 +610,13 @@ export const COMPARES: Compare[] = [
     rows: [
       ["What it is", "SEO and marketing research suite", "AI agent that runs your marketing"],
       ["Built for", "Marketers, SEOs, agencies", "Local business owners"],
-      ["Price (Sept 2026)", "From $139/month billed monthly (SEO plan); higher tiers to $549", "$99/month. Pro $199, Full Service $299, Growth $499 (early access)"],
+      ["Price (Sept 2026)", "From $139/month billed monthly (SEO plan); higher tiers to $549", "$99/month. Pro $399, Growth $499 (early access)"],
       ["AI search tracking", "Yes — Google, ChatGPT, Perplexity, Gemini and more", "Yes — ChatGPT, Gemini, Claude, Perplexity, weekly"],
       ["Keyword & backlink research", "Deep, industry-leading", "No"],
       ["Who does the fixes", "You or your team", "Alphaa drafts them; you approve"],
       ["Learning curve", "Steep — many tools and reports", "None — it talks to you in plain English"],
       ["Local-business checks", "Local SEO tools available", "23 AI-readiness checks on your site, every week"],
-      ["Social & ads", "Tools in the suite for your team to run", "Growth plan (early access): Alphaa writes the posts and builds the ads; you approve"],
+      ["Social & ads", "Tools in the suite for your team to run", "Pro: Alphaa writes the social posts; Growth (early access): it builds the ads. You approve"],
     ],
     leftGood: {
       title: "What Semrush is great at",
@@ -685,12 +685,12 @@ export const COMPARES: Compare[] = [
     rows: [
       ["What it is", "SEO research platform", "AI agent that runs your marketing"],
       ["Built for", "SEO professionals and marketing teams", "Local business owners"],
-      ["Price (Sept 2026)", "Lite $129, Standard $249, Advanced $449/month; Brand Radar AI add-on from $199/month", "$99/month. Pro $199, Full Service $299, Growth $499 (early access)"],
+      ["Price (Sept 2026)", "Lite $129, Standard $249, Advanced $449/month; Brand Radar AI add-on from $199/month", "$99/month. Pro $399, Growth $499 (early access)"],
       ["AI mention tracking", "Yes, via Brand Radar", "Yes — ChatGPT, Gemini, Claude, Perplexity, weekly"],
       ["Backlink index", "One of the largest available", "No"],
       ["Who does the fixes", "You or your team", "Alphaa drafts them; you approve"],
       ["Local-business checks", "Site audit (general)", "23 AI-readiness checks built for local businesses"],
-      ["Social posts, ads & email", "Outside its focus (SEO research)", "Growth plan (early access)"],
+      ["Social posts, ads & email", "Outside its focus (SEO research)", "Social posts on Pro; ads and email on Growth (early access)"],
     ],
     leftGood: {
       title: "What Ahrefs is great at",
@@ -755,7 +755,7 @@ export const COMPARES: Compare[] = [
     rows: [
       ["What it is", "Enterprise listings, reviews and pages platform", "AI agent that runs your marketing"],
       ["Built for", "Multi-location brands with a marketing team", "Local businesses, 1–3 locations"],
-      ["Price", "Custom quote, typically billed annually", "$99/month. Pro $199, Full Service $299, Growth $499 (early access). Month to month"],
+      ["Price", "Custom quote, typically billed annually", "$99/month. Pro $399, Growth $499 (early access). Month to month"],
       ["Directory syncing", "200+ publishers — a real strength", "No; checks your profiles are linked and consistent"],
       ["AI visibility", "Yes, via Scout", "Yes — ChatGPT, Gemini, Claude, Perplexity, weekly"],
       ["Who does the work", "Your team runs the platform", "Alphaa drafts it; you approve"],
@@ -788,7 +788,7 @@ export const COMPARES: Compare[] = [
       },
     ],
     faq: [
-      { q: "Is Alphaa cheaper than Yext?", a: "For most local businesses, yes. Yext uses custom quotes typically billed annually. Alphaa is $99, $199 or $299 a month, month to month." },
+      { q: "Is Alphaa cheaper than Yext?", a: "For most local businesses, yes. Yext uses custom quotes typically billed annually. Alphaa is $99 or $399 a month, with Growth at $499 in early access. Month to month." },
       { q: "Does Yext track ChatGPT?", a: "Yes. Yext’s Scout tracks visibility across Google, AI Overviews, ChatGPT, Gemini, Claude and Perplexity." },
       { q: "Is Alphaa a Yext alternative?", a: "For single-location and small multi-location businesses that want their marketing and AI visibility done for them, yes. For enterprise listings management across hundreds of locations, Yext is built for that." },
     ],
@@ -815,12 +815,12 @@ export const COMPARES: Compare[] = [
     rows: [
       ["What it is", "Local SEO platform", "AI agent that runs your marketing"],
       ["Built for", "Agencies and local marketers", "Local business owners"],
-      ["Price (Sept 2026)", "Track, Manage, Grow plans — price on request; 14-day free trial; Managed SEO $1,299/month", "$99/month. Pro $199, Full Service $299, Growth $499 (early access)"],
+      ["Price (Sept 2026)", "Track, Manage, Grow plans — price on request; 14-day free trial; Managed SEO $1,299/month", "$99/month. Pro $399, Growth $499 (early access)"],
       ["Google rank tracking", "Yes — local grids and rankings", "No; focus is getting you customers from Google and AI answers"],
       ["Citation building", "Yes, from $2 per citation", "No; checks your profiles are linked and consistent"],
       ["AI visibility", "Yes — Local AI Visibility Tracker (ChatGPT and Google AI)", "Yes — ChatGPT, Gemini, Claude, Perplexity, weekly"],
       ["Who does the fixes", "You or your agency", "Alphaa drafts them; you approve"],
-      ["Social posts, ads & email", "Outside its focus (local SEO)", "Growth plan (early access)"],
+      ["Social posts, ads & email", "Outside its focus (local SEO)", "Social posts on Pro; ads and email on Growth (early access)"],
     ],
     leftGood: {
       title: "What BrightLocal is great at",
@@ -867,12 +867,12 @@ export const COMPARES: Compare[] = [
     rows: [
       ["What it is", "Local SEO tools and citation services", "AI agent that runs your marketing"],
       ["Built for", "Local SEOs, agencies and hands-on owners", "Local business owners"],
-      ["Price (Sept 2026)", "Per product: Local Rank Tracker $14–$200/mo, Citation Finder $33–$149/mo, Reputation Builder $79/mo per location; citation packages $20–$999 one-time", "$99/month. Pro $199, Full Service $299, Growth $499 (early access)"],
+      ["Price (Sept 2026)", "Per product: Local Rank Tracker $14–$200/mo, Citation Finder $33–$149/mo, Reputation Builder $79/mo per location; citation packages $20–$999 one-time", "$99/month. Pro $399, Growth $499 (early access)"],
       ["Citation building", "Yes — a core strength", "No"],
       ["Google rank tracking", "Yes, incl. ranking grids", "No; focus is getting you customers from Google and AI answers"],
       ["AI answer tracking", "Not listed on its pricing page", "Yes — ChatGPT, Gemini, Claude, Perplexity, weekly"],
       ["Who does the fixes", "You, or Whitespark’s services for citations", "Alphaa drafts them; you approve"],
-      ["Social posts, ads & email", "Outside its focus (local SEO)", "Growth plan (early access)"],
+      ["Social posts, ads & email", "Outside its focus (local SEO)", "Social posts on Pro; ads and email on Growth (early access)"],
     ],
     leftGood: {
       title: "What Whitespark is great at",

@@ -77,15 +77,22 @@ const GUARANTEE = GUARANTEE_LINE
  *  conversation is still English. */
 export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint: string; startHere?: string; work?: { title: string; steps: string[] }; agentLabel?: string }
 
-/** Plans the agent conversation can sell (/onboarding?plan=…). Full Service goes through /dashboard/concierge. */
+/** Plans the agent conversation can sell (/onboarding?plan=…). */
 export type AgentPlan = "starter" | "pro" | "growth"
 const PLAN_LINE: Record<AgentPlan, string> = {
   starter: "",
-  pro: "Pro plan: up to 3 locations, twice the posts, competitor tracking.",
-  growth: "Growth plan: everything in Pro, plus I write your social posts, set up your tracking, and build and run your Google and Meta ads.",
+  pro: "Pro plan: I run your social media too, with twice the posts, up to 3 locations, and posts that can publish on their own.",
+  growth: "Growth plan: everything in Pro, plus I set up your lead tracking, email your customers, and build and run your Google and Meta ads.",
 }
 
-function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded = false, plan: AgentPlan = "starter"): Message[] {
+/** "$399 a month. Month to month." or, billed yearly (USD only), "$319 a month, billed yearly ($3,828 a year)." */
+function priceText(plan: AgentPlan, annual: boolean): string {
+  if (!annual) return `${localPrice(plan)} a month. Month to month.`
+  const m = PLAN_PRICES[plan].annual
+  return `$${m} a month, billed yearly ($${(m * 12).toLocaleString("en-US")} a year).`
+}
+
+function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded = false, plan: AgentPlan = "starter", annual = false): Message[] {
   if (greet && mode === "public") {
     // Embedded with a work list: the question sits under the list instead (AgentWorkPreview).
     const ask = embedded && greet.work ? [] : [{ kind: "text" as const, text: greet.ask, big: true }]
@@ -97,7 +104,7 @@ function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded =
         [
           { kind: "text", text: name ? `Welcome back. I’ve got ${name} ready to go.` : "Welcome back. You’re all set up." },
           ...(PLAN_LINE[plan] ? [{ kind: "text" as const, text: PLAN_LINE[plan] }] : []),
-          { kind: "text", text: `${localPrice(plan)} a month. Month to month.`, big: true },
+          { kind: "text", text: priceText(plan, annual), big: true },
           { kind: "text", text: `${GUARANTEE} Cancel online in a minute, no contract. I start the day you say go.` },
           { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: CHECKOUT }, primary: true } },
         ],
@@ -134,6 +141,7 @@ export function StartAgent({
   autoCheckout = false,
   handoff,
   plan: buyPlan = "starter",
+  annual = false,
 }: {
   mode?: StartMode
   resumeName?: string
@@ -145,8 +153,10 @@ export function StartAgent({
   handoff?: string
   /** onboarding only: the plan picked on /pricing (default Starter). */
   plan?: AgentPlan
+  /** onboarding only: billed yearly (picked on /pricing). */
+  annual?: boolean
 }) {
-  const [messages, setMessages] = useState<Message[]>(() => greeting(mode, resumeName, greet, embedded, buyPlan))
+  const [messages, setMessages] = useState<Message[]>(() => greeting(mode, resumeName, greet, embedded, buyPlan, annual))
   const [phase, setPhase] = useState<Phase>(mode === "resume" ? "result" : "website")
   // Read inside async handlers (onEmail runs mid-scan), where the state value would be stale.
   const phaseRef = useRef(phase)
@@ -341,7 +351,7 @@ export function StartAgent({
     push(
       agent([
         ...(PLAN_LINE[buyPlan] ? [{ kind: "text", text: PLAN_LINE[buyPlan] } as Block] : []),
-        { kind: "text", text: `${localPrice(buyPlan)} a month. Month to month.`, big: true },
+        { kind: "text", text: priceText(buyPlan, annual), big: true },
         { kind: "text", text: `${GUARANTEE} Cancel online in a minute, no contract. ${draftedRef.current ? "The page I drafted for you today is ready the moment you say go." : "I start the day you say go."}` },
         { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
       ], "ask")
@@ -353,8 +363,8 @@ export function StartAgent({
   function priceMessage(scanId: string, afterWeek = false): Message {
     return agent([
       ...(PLAN_LINE[buyPlan] ? [{ kind: "text", text: PLAN_LINE[buyPlan] } as Block] : []),
-      { kind: "text", text: afterWeek ? "Want me to post these and do this every week?" : `${localPrice(buyPlan)} a month. Month to month.`, big: true },
-      { kind: "text", text: `${afterWeek ? `${localPrice(buyPlan)} a month, month to month. ` : ""}${GUARANTEE} Cancel online in a minute, no contract.` },
+      { kind: "text", text: afterWeek ? "Want me to post these and do this every week?" : priceText(buyPlan, annual), big: true },
+      { kind: "text", text: `${afterWeek ? `${priceText(buyPlan, annual)} ` : ""}${GUARANTEE} Cancel online in a minute, no contract.` },
       { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: hireHref(scanId) }, primary: true } },
     ], "ask")
   }
@@ -539,13 +549,13 @@ export function StartAgent({
         })
         if (!r.ok) throw new Error("onboard")
       }
-      const value = PLAN_PRICES[buyPlan].monthly
+      const value = annual ? PLAN_PRICES[buyPlan].annual * 12 : PLAN_PRICES[buyPlan].monthly
       fbTrack("InitiateCheckout", { value, currency: "USD" })
       track("begin_checkout", { value, currency: "USD", plan: buyPlan })
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ purchase: buyPlan }),
+        body: JSON.stringify({ purchase: buyPlan, annual }),
       })
       const data = await res.json()
       if (!res.ok || !data.url) throw new Error("checkout")

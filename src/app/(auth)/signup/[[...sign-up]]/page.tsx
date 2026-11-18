@@ -13,13 +13,15 @@ import { safeNext } from "@/lib/auth-redirect"
 // portal, whose after-sign-up URL is the homepage — new users landed there
 // signed in but stranded. /onboarding is the agent conversation that ends in checkout.
 // `redirect_url` (a connector flow such as a Webflow install) wins over the default.
-// `plan` comes from /pricing ("pro_monthly", "growth"…): onboarding then sells that plan.
+// `plan` comes from /pricing ("pro_monthly", "growth_annual"…): onboarding then sells that plan,
+// monthly or yearly.
 export default async function SignUpPage({ searchParams }: { searchParams: Promise<{ scan?: string; redirect_url?: string; plan?: string }> }) {
   const { scan, redirect_url, plan } = await searchParams
   const q = new URLSearchParams()
   if (scan && /^[a-z0-9]{10,64}$/i.test(scan)) q.set("scan", scan)
   const picked = /^growth/i.test(plan ?? "") ? "growth" : /^pro/i.test(plan ?? "") ? "pro" : null
   if (picked) q.set("plan", picked)
+  if (/_annual$/i.test(plan ?? "")) q.set("billing", "annual")
   const fallback = q.size ? `/onboarding?${q}` : "/onboarding"
   const next = safeNext(redirect_url, fallback)
   const signInUrl = next === fallback ? "/login" : `/login?redirect_url=${encodeURIComponent(next)}`

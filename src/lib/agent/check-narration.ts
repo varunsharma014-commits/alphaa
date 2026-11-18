@@ -13,7 +13,7 @@ const ENGINE: Record<string, string> = { chatgpt: "ChatGPT", gemini: "Gemini", c
 export function changeChips(op: SiteOp, wpConnected: boolean, extra: Record<string, string | undefined> = {}): Chip[] {
   const handoff: Chip = { label: "Email it to my web person", action: { type: "handoff", what: op, ...extra } }
   if (wpConnected) return [{ label: "Do it on my site", action: { type: "wp-push", op, ...extra }, primary: true }, handoff]
-  return [{ ...handoff, primary: true }, { label: "Have our team do it", action: { type: "link", href: "/dashboard/concierge" } }, { label: "Connect my website", action: { type: "wp-connect" } }]
+  return [{ ...handoff, primary: true }, { label: "Connect my website", action: { type: "wp-connect" } }]
 }
 
 export function securityMessages(c: SecurityCheck, wpConnected: boolean): Message[] {

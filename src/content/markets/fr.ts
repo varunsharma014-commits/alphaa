@@ -9,7 +9,7 @@ export const market: Market = {
     country: "France",
     title: "Un agent IA pour tout votre marketing | Alphaa",
     description:
-      "Alphaa est un agent IA qui gère votre marketing : fiche Google, articles, avis, SEO et recommandations par ChatGPT. Réseaux, pubs et e-mails avec Growth.",
+      "Alphaa est un agent IA qui gère votre marketing : fiche Google, articles, avis, SEO et recommandations par ChatGPT. Réseaux sociaux avec Pro, pubs et e-mails avec Growth.",
     h1a: "Tout votre marketing,",
     h1b: "confié à un agent IA.",
     sub: "Pas de facture d’agence, pas de soirées passées à publier. J’écris vos contenus, je réponds à vos avis, je prépare votre site pour Google et ChatGPT, et je vous envoie une courte liste à valider. Vous gardez votre temps pour votre métier.",
@@ -40,8 +40,8 @@ export const market: Market = {
         body: "Je corrige votre site, vos données structurées et vos informations pour que Google, ChatGPT, Gemini, Claude et Perplexity puissent vous citer. Chaque semaine, je vérifie qui est cité à votre place (« un bon dentiste dans le 15e », « un plombier dispo ce soir à Villeurbanne »).",
       },
       {
-        title: "Réseaux sociaux, pubs et e-mails avec Growth",
-        body: "Avec la formule Growth (accès anticipé), j’écris aussi vos posts pour les réseaux sociaux, je prépare vos pubs Google et Meta en pause jusqu’à votre accord sur le budget, et j’envoie des e-mails qui font revenir vos anciens clients. Ouvert au fur et à mesure des validations des plateformes.",
+        title: "Réseaux sociaux avec Pro. Pubs et e-mails avec Growth",
+        body: "Dès la formule Pro, j’écris aussi vos posts pour les réseaux sociaux, avec des visuels à votre image. Avec la formule Growth (accès anticipé), je prépare en plus vos pubs Google et Meta en pause jusqu’à votre accord sur le budget, et j’envoie des e-mails qui font revenir vos anciens clients. Ouvert au fur et à mesure des validations des plateformes.",
       },
     ],
     whereTitle: "Où vos clients et l’IA se renseignent sur vous en France",
@@ -59,22 +59,22 @@ export const market: Market = {
       "Publications sur votre fiche Google, articles et réponses aux avis, en français et avec votre ton",
       "Votre site prêt pour Google et la recherche IA, avec une vérification hebdo de ce que répondent ChatGPT, Gemini, Claude et Perplexity",
       "Rien n’est publié sans votre accord, et chaque modification peut être annulée",
-      "Formule Growth (accès anticipé) : réseaux sociaux, pubs Google et Meta, e-mails et suivi des demandes. Le budget pub est payé directement à Google et Meta, sans marge.",
+      "Formule Growth (accès anticipé) : tout ce qu’offre Pro, plus les pubs Google et Meta, les e-mails et le suivi des demandes. Le budget pub est payé directement à Google et Meta, sans marge.",
       "Sans engagement, résiliable en ligne en une minute, remboursement possible sous 7 jours après le premier prélèvement",
       "Si aucune IA ne vous cite d’ici le jour 90, vérifications hebdomadaires actives, le mois suivant vous est offert.",
     ],
     priceCta: "Commencer, {starter}/mois",
     priceNote:
-      "Starter {starter}/mois, Pro {pro}/mois (jusqu’à 3 établissements), Accompagnement complet {full}/mois (une personne s’occupe du site pour vous), Growth {growth}/mois (accès anticipé). Marques supplémentaires à -50 %. Facturation mensuelle, sans engagement. Réservé aux professionnels (B2B). Nous ne sommes pas immatriculés à la TVA : aucune TVA n’est facturée ; si elle s’applique, vous l’autoliquidez.",
+      "Starter {starter}/mois, Pro {pro}/mois (réseaux sociaux, jusqu’à 3 établissements), Growth {growth}/mois (pubs et e-mails, accès anticipé). Marques supplémentaires à -50 %. Facturation mensuelle, sans engagement. Réservé aux professionnels (B2B). Nous ne sommes pas immatriculés à la TVA : aucune TVA n’est facturée ; si elle s’applique, vous l’autoliquidez.",
     faqTitle: "Les questions des pros en France",
     faq: [
       {
         q: "Concrètement, que fait Alphaa pour une entreprise française ?",
-        a: "Je gère votre marketing semaine après semaine : publications sur votre fiche Google, articles, réponses aux avis et corrections de votre site. Je vérifie aussi, en français et avec votre ville, ce que ChatGPT, Gemini, Claude et Perplexity disent de vous et ce qu’affichent PagesJaunes et les plateformes d’avis de votre métier. Réseaux sociaux, pubs et e-mails sont inclus dans la formule Growth, en accès anticipé.",
+        a: "Je gère votre marketing semaine après semaine : publications sur votre fiche Google, articles, réponses aux avis et corrections de votre site. Je vérifie aussi, en français et avec votre ville, ce que ChatGPT, Gemini, Claude et Perplexity disent de vous et ce qu’affichent PagesJaunes et les plateformes d’avis de votre métier. Les réseaux sociaux sont inclus dès la formule Pro, pubs et e-mails dans la formule Growth, en accès anticipé.",
       },
       {
         q: "Combien ça coûte ?",
-        a: "Starter : {starter} par mois. Pro : {pro} par mois, jusqu’à 3 établissements. Accompagnement complet : {full} par mois, une personne s’occupe du site pour vous. Growth, avec réseaux sociaux, pubs et e-mails : {growth} par mois, en accès anticipé. Sans engagement, résiliable en ligne en une minute, et remboursement sous 7 jours sur le premier prélèvement. La vérification sur cette page est gratuite.",
+        a: "Starter : {starter} par mois. Pro : {pro} par mois, avec les réseaux sociaux, jusqu’à 3 établissements. Growth, avec pubs et e-mails : {growth} par mois, en accès anticipé. Sans engagement, résiliable en ligne en une minute, et remboursement sous 7 jours sur le premier prélèvement. La vérification sur cette page est gratuite.",
       },
       {
         q: "Je dois vous donner mes mots de passe ?",
@@ -128,7 +128,7 @@ export const market: Market = {
           { name: "Le site du cabinet", why: "Une page par soin (implants, orthodontie, blanchiment) avec des réponses factuelles que l’IA peut citer." },
         ],
         steps: [
-          { title: "Je gère votre communication chaque semaine", body: "Publications sur votre fiche Google, articles informatifs sur vos soins et réponses aux avis, préparés pour votre validation. Réseaux sociaux, pubs et e-mails sont dans la formule Growth, en accès anticipé." },
+          { title: "Je gère votre communication chaque semaine", body: "Publications sur votre fiche Google, articles informatifs sur vos soins et réponses aux avis, préparés pour votre validation. Les réseaux sociaux sont dans la formule Pro, pubs et e-mails dans la formule Growth, en accès anticipé." },
           { title: "J’écris des informations factuelles, dans les règles", body: "Je rédige des pages par soin et des réponses aux questions fréquentes, informatives et sobres, sans promesse de résultat ni ton publicitaire, dans le respect des règles de communication de la profession." },
           { title: "Je garde vos informations justes partout", body: "Horaires, adresse, accès, soins pratiqués : je repère les écarts entre votre site, Google et Doctolib, je corrige votre site et votre fiche Google, et je vous signale ce qu’il faut changer ailleurs." },
         ],
@@ -158,12 +158,12 @@ export const market: Market = {
           { name: "Habitatpresto, Travaux.com et Houzz", why: "Les avis et les réalisations publiés sur ces plateformes servent de preuves que l’IA reprend." },
         ],
         steps: [
-          { title: "Je fais le marketing, vous les chantiers", body: "Publications sur vos chantiers, réponses aux avis et une page par commune desservie, à valider en une minute depuis votre téléphone. Réseaux sociaux, pubs et e-mails sont dans la formule Growth, en accès anticipé." },
+          { title: "Je fais le marketing, vous les chantiers", body: "Publications sur vos chantiers, réponses aux avis et une page par commune desservie, à valider en une minute depuis votre téléphone. Les réseaux sociaux sont dans la formule Pro, pubs et e-mails dans la formule Growth, en accès anticipé." },
           { title: "J’écris une page par intervention et par secteur", body: "Dépannage, entretien de chaudière, installation de pompe à chaleur, communes desservies : des pages claires, avec les réponses que l’IA peut reprendre, et vos qualifications (RGE, Qualibat) bien en vue." },
           { title: "Je fais vivre votre fiche Google", body: "Je prépare des publications sur vos chantiers et des réponses à chaque avis. Vous validez depuis votre téléphone en une seconde." },
         ],
         faq: [
-          { q: "Je n’ai pas le temps de m’en occuper, je suis sur les chantiers.", a: "C’est prévu pour ça. Je fais le travail et je vous envoie juste de quoi valider d’un geste. Avec l’Accompagnement complet, une personne publie tout pour vous." },
+          { q: "Je n’ai pas le temps de m’en occuper, je suis sur les chantiers.", a: "C’est prévu pour ça. Je fais le travail et je vous envoie juste de quoi valider d’un geste. Avec la formule Pro, vos publications peuvent même partir toutes seules." },
           { q: "Je travaille sur plusieurs communes, ça se gère ?", a: "Oui. Je crée des pages pour les secteurs où vous intervenez vraiment, et la formule Pro couvre jusqu’à 3 établissements." },
           { q: "Et si un client laisse un avis négatif ?", a: "Je prépare une réponse calme et professionnelle, sans polémique. Vous la relisez et la validez avant qu’elle soit publiée." },
         ],
@@ -188,7 +188,7 @@ export const market: Market = {
           { name: "Le site du cabinet", why: "Des pages par domaine de droit, avec des réponses claires sur la procédure et le déroulé du premier rendez-vous." },
         ],
         steps: [
-          { title: "Je gère votre communication chaque semaine", body: "Publications sur votre fiche Google, articles sur vos domaines d’intervention et réponses aux avis, préparés pour votre relecture. Réseaux sociaux, pubs et e-mails sont dans la formule Growth, en accès anticipé." },
+          { title: "Je gère votre communication chaque semaine", body: "Publications sur votre fiche Google, articles sur vos domaines d’intervention et réponses aux avis, préparés pour votre relecture. Les réseaux sociaux sont dans la formule Pro, pubs et e-mails dans la formule Growth, en accès anticipé." },
           { title: "J’écris des contenus dignes de la profession", body: "Des pages par domaine et des réponses aux questions fréquentes, informatives, sans promesse de résultat ni comparaison avec des confrères, conformes à l’esprit du RIN. Vous validez chaque mot." },
           { title: "J’harmonise vos informations", body: "Adresse, barreau, domaines, honoraires indicatifs si vous le souhaitez : je fais en sorte que votre site et votre fiche Google disent la même chose que l’annuaire officiel." },
         ],
@@ -218,14 +218,14 @@ export const market: Market = {
           { name: "Votre site et votre Instagram", why: "Des pages par soin, avec durée et déroulé, que l’IA peut citer ; vos photos confirment votre savoir-faire." },
         ],
         steps: [
-          { title: "Je gère votre marketing chaque semaine", body: "Publications sur vos nouveautés, articles sur vos soins et réponses à chaque avis, avec votre ton. Posts pour les réseaux sociaux, pubs et e-mails sont dans la formule Growth, en accès anticipé." },
+          { title: "Je gère votre marketing chaque semaine", body: "Publications sur vos nouveautés, articles sur vos soins et réponses à chaque avis, avec votre ton. Les posts pour les réseaux sociaux sont dans la formule Pro, pubs et e-mails dans la formule Growth, en accès anticipé." },
           { title: "J’écris une page par soin", body: "Déroulé, durée, pour qui, comment préparer sa peau : des réponses claires que l’IA reprend, et des informations cohérentes avec votre page Planity." },
           { title: "Je réponds à vos avis", body: "Je prépare des réponses chaleureuses et personnelles à chaque avis Google, et des publications sur vos nouveautés. Vous validez d’un geste." },
         ],
         faq: [
           { q: "Je suis déjà sur Planity, ça ne suffit pas ?", a: "Planity aide l’IA à savoir ce que vous proposez. Pour qu’elle vous recommande, elle a aussi besoin d’avis, d’une fiche Google à jour et de pages claires sur vos soins. C’est ce que je complète." },
           { q: "J’ai deux instituts, c’est possible ?", a: "Oui. La formule Pro couvre jusqu’à 3 établissements, chacun avec ses propres pages et sa fiche Google." },
-          { q: "Vous publiez à ma place ?", a: "Je prépare tout, vous validez d’un geste. Avec l’Accompagnement complet, une personne publie tout pour vous." },
+          { q: "Vous publiez à ma place ?", a: "Je prépare tout, vous validez d’un geste. Avec la formule Pro, les publications peuvent aussi partir toutes seules, si vous le souhaitez." },
         ],
       },
     ],

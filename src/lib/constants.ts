@@ -1,7 +1,11 @@
+// Three plans on sale (owner decision 2026-11-18): Starter, Pro, Growth (early access).
+// "fullservice" is retired from sale (no subscribers ever); it stays here so any old row keeps
+// working, and every gate treats it as Pro-level (lib/billing.ts hasPro).
 export const PLANS = {
   NONE: "none",
   STARTER: "starter",
   PRO: "pro",
+  GROWTH: "growth",
   FULLSERVICE: "fullservice",
 } as const
 
@@ -9,23 +13,19 @@ export const PLAN_NAMES = {
   none: "No plan",
   starter: "Starter",
   pro: "Pro",
-  fullservice: "Full Service",
+  growth: "Growth",
+  fullservice: "Full Service (retired)",
 } as const
 
+// USD per month; `annual` is the per-month price when billed yearly (20% off).
 export const PLAN_PRICES = {
   starter: { monthly: 99, annual: 79 },
-  pro: { monthly: 199, annual: 159 },
-  // Full Service is human-fulfilled (a real person publishes to the
-  // customer's CMS), so no discounted annual — monthly only.
+  pro: { monthly: 399, annual: 319 },
+  growth: { monthly: 499, annual: 399 },
+  // Retired, not sold: what a legacy row paid (monthly only).
   fullservice: { monthly: 299, annual: 299 },
-  growth: { monthly: 499, annual: 499 },
 } as const
 
-// One-time white-glove setup: a real person installs the Vault code on the
-// customer's site via invite-based access (WP admin invite, Shopify
-// collaborator, Webflow seat — never passwords) and verifies it renders.
-export const SETUP_FEE_USD = 149
-export const CONCIERGE_SLA = "within 2 business days"
 export const SUPPORT_EMAIL = "hi@alphaa.app"
 
 export const ROUTES = {

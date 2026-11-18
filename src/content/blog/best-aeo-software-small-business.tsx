@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "The right AEO software for a small business is the one whose price and workload you can sustain, which usually comes down to who will make the fixes.",
   date: "2026-11-09",
-  updated: "2026-11-09",
+  updated: "2026-11-18",
   readMins: 6,
   tag: "Comparison",
   kind: "listicle",
@@ -167,7 +167,7 @@ export function Body() {
       <p>
         Nothing goes live until you approve it. Approved changes publish through the{" "}
         <Link href="/integrations">WordPress, Shopify and Webflow connections</Link>. It runs month to month at $99,
-        $199 or $299, the last of which adds a person who installs and publishes for you.
+        $399 or $499, the last of which (Growth) is in early access.
       </p>
       <p>
         The limits matter too. Alphaa does not report on Google AI Overviews, AI Mode or Copilot, so a business that

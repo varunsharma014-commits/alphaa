@@ -65,7 +65,7 @@ export default function IntegrationsHub() {
               <h2 className="v3-h3">On something else?</h2>
               <p>
                 Squarespace, GoDaddy, a custom site: Alphaa still writes every fix. Tap “Email it to my web person” and it sends them the exact change,
-                where it goes and how to check it. Their replies come to you. On the Full Service plan, our team makes the changes for you.
+                where it goes and how to check it. Their replies come to you.
               </p>
             </div>
             <div className="v3-card">

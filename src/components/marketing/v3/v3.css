@@ -1,5 +1,5 @@
 /* Marketing v3 (2026-11-18, approved homepage mockup, "do all pages in the same way").
-   A framed column with faint guide lines, coloured service pills, soft drifting shapes,
+   A centred column (no side lines), coloured service pills, soft drifting shapes,
    big rounded colour "chapter" panels per service, a proof mosaic and a black final panel.
    Scoped under .v3. Light by default. Dark follows the OS only on pages that opt in with a
    .v3-page root (blog and legal pages keep their light content, so the nav and footer stay
@@ -47,8 +47,8 @@
 .v3 button { font: inherit; cursor: pointer; }
 .v3 :focus-visible { outline: 2px solid var(--v-blue); outline-offset: 3px; border-radius: 6px; }
 
-/* Frame: the centred column with its faint guide lines */
-.v3-frame { max-width: 1120px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); border-inline: 1px solid var(--v-line); }
+/* Frame: the centred content column (no side guide lines since 2026-11-18: the owner found them "boxed") */
+.v3-frame { max-width: 1120px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
 .v3-frame--top { padding-top: 56px; } /* clears the fixed nav */
 .v3-sec { padding-block: 72px; border-bottom: 1px solid var(--v-line); }
 .v3-sec--tight { padding-block: 48px; }
@@ -266,7 +266,7 @@ a.v3-card:hover { transform: translateY(-2px); box-shadow: var(--v-shadow); }
 
 /* ── Site chrome: nav, footer, floating CTA (all marketing pages) ── */
 .v3-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: color-mix(in srgb, var(--v-bg) 86%, transparent); backdrop-filter: saturate(1.8) blur(14px); -webkit-backdrop-filter: saturate(1.8) blur(14px); border-bottom: 1px solid var(--v-line); padding-top: env(safe-area-inset-top, 0px); }
-.v3-nav__in { max-width: 1120px; margin: 0 auto; height: 56px; display: flex; align-items: center; gap: 22px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); border-inline: 1px solid var(--v-line); }
+.v3-nav__in { max-width: 1120px; margin: 0 auto; height: 56px; display: flex; align-items: center; gap: 22px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
 .v3-logo { display: inline-flex; align-items: center; gap: 7px; font-weight: 800; font-size: 18px; letter-spacing: -0.03em; color: var(--v-fg) !important; text-decoration: none !important; }
 .v3-logo svg { width: 18px; height: 18px; }
 .v3-nav__links { display: flex; gap: 22px; align-items: center; }
@@ -282,7 +282,7 @@ a.v3-card:hover { transform: translateY(-2px); box-shadow: var(--v-shadow); }
 @media (max-width: 820px) { .v3-nav__links, .v3-nav__right { display: none; } .v3-nav__burger { display: inline-flex; } }
 
 .v3-foot { background: var(--v-bg); color: var(--v-muted); font-size: 13px; line-height: 1.5; border-top: 1px solid var(--v-line); }
-.v3-foot__in { max-width: 1120px; margin: 0 auto; padding: 48px max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px)); border-inline: 1px solid var(--v-line); }
+.v3-foot__in { max-width: 1120px; margin: 0 auto; padding: 48px max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px)); }
 .v3-foot__grid { display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); gap: 32px; }
 .v3-foot p { margin: 0; }
 .v3-foot h3 { font-size: 13px; font-weight: 700; color: var(--v-fg); margin: 0 0 10px; letter-spacing: 0; }

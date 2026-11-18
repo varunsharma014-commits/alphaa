@@ -5,7 +5,7 @@
 import { db } from "@/lib/db"
 import { agent, type Chip, type Message } from "@/lib/agent/types"
 import { getAgentSettings, saveAgentSettings, type AgentSettings } from "@/lib/agent/settings"
-import { hasGrowth } from "@/lib/billing"
+import { hasGrowth, hasPro } from "@/lib/billing"
 import { listAccounts } from "@/lib/social/store"
 import { PROVIDERS, providerConfigured } from "@/lib/social/types"
 import type { User } from "@prisma/client"
@@ -29,7 +29,7 @@ const op = (body: Record<string, string>, label: string, primary = false): Chip 
 async function steps(user: User, s: AgentSettings): Promise<Step[]> {
   const [integ, accounts] = await Promise.all([
     db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationId: true, gscSiteUrl: true, gaPropertyId: true } }),
-    hasGrowth(user) ? listAccounts(user.id) : Promise.resolve([]),
+    hasPro(user) ? listAccounts(user.id) : Promise.resolve([]),
   ])
   const st = s.setup ?? {}
   const google = !!(integ?.gmbLocationId || integ?.gscSiteUrl || integ?.gaPropertyId)
@@ -76,7 +76,8 @@ async function steps(user: User, s: AgentSettings): Promise<Step[]> {
       chips: [{ label: "Choose", primary: true, action: { type: "thread", topic: "autopilot" } }, op({ op: "done", step: "autopilot" }, "Ask me before anything goes out")],
     },
   ]
-  if (hasGrowth(user)) {
+  // Social is Pro and up (2026-11-18); lead tracking stays Growth.
+  if (hasPro(user)) {
     const anyApp = PROVIDERS.some(providerConfigured)
     out.push({
       key: "social",
@@ -88,6 +89,8 @@ async function steps(user: User, s: AgentSettings): Promise<Step[]> {
       soon: !anyApp,
       chips: [{ label: "Connect", primary: true, action: { type: "thread", topic: "social" } }],
     })
+  }
+  if (hasGrowth(user)) {
     const t = s.tracking
     const tested = t?.test?.result?.beacon === "yes"
     out.push({

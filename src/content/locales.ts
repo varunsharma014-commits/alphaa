@@ -48,7 +48,7 @@ import { market as ae } from "@/content/markets/ae"
 import { market as ar } from "@/content/markets/ar"
 import { fillPrices, type MarketKey } from "@/content/markets/prices"
 
-/** Replace the {starter} {pro} {full} tokens everywhere with the local prices. */
+/** Replace the {starter} {pro} {growth} tokens everywhere with the local prices. */
 function priced(m: Market): Market {
   const key = m.copy.key as MarketKey
   return JSON.parse(JSON.stringify(m), (_k, v) => (typeof v === "string" ? fillPrices(v, key, m.copy.lang) : v))

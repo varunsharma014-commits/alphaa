@@ -32,7 +32,7 @@ export const faqs = [
   },
   {
     q: "Which marketing does it handle?",
-    a: "On every plan: blog posts, Google Business Profile posts, review replies, website fixes for Google and AI search, and a weekly check of what ChatGPT, Gemini, Claude and Perplexity say about you. On Growth (early access): social media posts with images in your brand, Google and Meta ads, lead tracking and email marketing. Your ad budget is paid to Google and Meta directly; we never take a cut.",
+    a: "On every plan: blog posts, Google Business Profile posts, review replies, website fixes for Google and AI search, and a weekly check of what ChatGPT, Gemini, Claude and Perplexity say about you. On Pro: social media posts with images in your brand. On Growth (early access): Google and Meta ads, lead tracking and email marketing. Your ad budget is paid to Google and Meta directly; we never take a cut.",
   },
   {
     q: "What kinds of businesses is this for?",
@@ -40,7 +40,7 @@ export const faqs = [
   },
   {
     q: "Will it post something without asking me?",
-    a: "No. Nothing goes live until you tap approve, and every change it makes to your website is logged and can be undone. You choose what it can do on its own, for example Google Business Profile posts on Pro, or social posts on Growth. Ads never spend a dollar until you approve the budget.",
+    a: "No. Nothing goes live until you tap approve, and every change it makes to your website is logged and can be undone. You choose what it can do on its own, for example Google Business Profile or social posts on Pro. Ads never spend a dollar until you approve the budget.",
   },
   {
     q: "Do I need to give you my website login or hosting passwords?",
@@ -52,6 +52,6 @@ export const faqs = [
   },
   {
     q: "How much does it cost?",
-    a: "Starter is $99 a month, Pro is $199 a month (up to 3 locations) and Full Service is $299 a month, where a person publishes everything for you. Growth, with social media, ads and email, is $499 a month in early access. Paying yearly brings Starter to $79 and Pro to $159 a month. You can try it free first at alphaa.app/start: give it your website and it shows what AI says about you and plans your first week of marketing.",
+    a: "Starter is $99 a month. Pro is $399 a month and adds social media, more posts and up to 3 locations. Growth, with Google and Meta ads, email and lead tracking, is $499 a month in early access. Paying yearly brings Starter to $79, Pro to $319 and Growth to $399 a month. You can try it free first at alphaa.app/start: give it your website and it shows what AI says about you and plans your first week of marketing.",
   },
 ]

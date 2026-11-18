@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "AthenaHQ gives a marketing team deep tracking across 11 AI models and tools to act on it, while Alphaa checks four assistants weekly for one business and drafts and publishes the fixes for the owner to approve.",
   date: "2026-10-07",
-  updated: "2026-10-07",
+  updated: "2026-11-18",
   readMins: 8,
   tag: "Comparison",
   kind: "comparison",
@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   takeaways: [
     "AthenaHQ lists a free plan with 300 credits and a Starter plan at $295 a month with 3,600 credits, as of October 2026.",
     "One AthenaHQ credit equals one AI response, and Starter covers 11 AI models including Google AI Overviews and AI Mode.",
-    "Alphaa costs $99, $199 or $299 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly.",
+    "Alphaa costs $99, $399 or $499 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly.",
     "Both can publish content to WordPress, Shopify and Webflow; Alphaa also handles review replies and listing consistency for local businesses.",
     "AthenaHQ suits a marketing team with a GEO owner; Alphaa suits a business owner with no marketer.",
   ],
@@ -134,13 +134,13 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$199/mo, month to month</td>
+              <td>$399/mo, month to month</td>
               <td>20 questions, up to 3 locations, competitor comparison, auto-publish for blog posts</td>
             </tr>
             <tr>
-              <td>Alphaa Full Service</td>
-              <td>$299/mo, month to month</td>
-              <td>Everything in Pro, plus a person on Alphaa&apos;s team does the setup and publishing</td>
+              <td>Alphaa Growth</td>
+              <td>$499/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads, email and lead tracking</td>
             </tr>
           </tbody>
         </table>
@@ -233,8 +233,7 @@ export function Body() {
         </li>
         <li>
           <strong>Publishing.</strong> Both push to WordPress, Shopify and Webflow. AthenaHQ adds Wix, Framer and
-          headless CMSs. Alphaa adds an email of the exact change for any other platform, and on Full Service a
-          person does it.
+          headless CMSs. Alphaa adds an email of the exact change for any other platform.
         </li>
         <li>
           <strong>Local signals off the website.</strong> Alphaa drafts Google review replies and Business Profile
@@ -285,8 +284,7 @@ export function Body() {
           recommendation that needs a marketer.
         </li>
         <li>
-          <strong>Budget is under $295 a month.</strong> Alphaa Starter is $99 and Full Service, with a human doing
-          the publishing, is $299.
+          <strong>Budget is under $295 a month.</strong> Alphaa Starter is $99, month to month.
         </li>
         <li>
           <strong>Your customers are local.</strong> Review replies, Business Profile posts and directory consistency

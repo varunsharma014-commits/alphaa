@@ -20,7 +20,7 @@
 .v3 .pg-check span { width: 18px; height: 18px; border-radius: 50%; background: var(--v-good); color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 800; flex: none; }
 
 /* Pricing */
-.v3 .pg-plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 32px; text-align: left; }
+.v3 .pg-plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 32px; text-align: left; }
 .v3 .pg-plan { background: var(--v-card); border: 1px solid var(--v-line); border-radius: 24px; padding: 14px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .v3 .pg-plan--hi { border: 2px solid var(--v-ink); }
 .v3 .pg-plan__body { padding: 4px 8px 10px; display: flex; flex-direction: column; flex: 1; }
@@ -61,5 +61,5 @@
 .v3 .pg-prose ul { padding-left: 20px; margin: 12px 0 0; display: flex; flex-direction: column; gap: 8px; }
 .v3 .pg-prose a { color: var(--v-blue); text-decoration: underline; text-underline-offset: 2px; }
 
-@media (max-width: 1000px) { .v3 .pg-plans { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px) { .v3 .pg-plans { grid-template-columns: minmax(0, 1fr); max-width: 520px; margin-inline: auto; } }
 @media (max-width: 640px) { .v3 .pg-plans, .v3 .pg-vs { grid-template-columns: minmax(0, 1fr); } .v3 .pg-plan__desc, .v3 .pg-plan__note { min-height: 0; } }

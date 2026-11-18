@@ -20,6 +20,9 @@ export const stripe = new Proxy({} as Stripe, {
   },
 })
 
+// Plans set 2026-11-18: Starter $99 ($79/mo yearly), Pro $399 ($319/mo yearly), Growth $499
+// ($399/mo yearly, early access). Checkout checks each price's amount against PLAN_PRICES before
+// using it (api/stripe/checkout verifiedPrice), so an old price id left in env is never charged.
 export const STRIPE_PRICE_IDS = {
   starter: {
     monthly: process.env.STRIPE_STARTER_MONTHLY_PRICE_ID!,
@@ -29,19 +32,15 @@ export const STRIPE_PRICE_IDS = {
     monthly: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
     annual: process.env.STRIPE_PRO_ANNUAL_PRICE_ID!,
   },
-  // Growth ($499/mo, 2026-11-17): everything in Pro plus social posts, Google + Meta ads and
-  // tracking setup. Monthly only.
   growth: {
     monthly: process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID!,
-    annual: process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID!,
+    annual: process.env.STRIPE_GROWTH_ANNUAL_PRICE_ID!,
   },
+  // Retired from sale 2026-11-18 (never had subscribers). Kept so the webhook can still map
+  // an old subscription to a plan; checkout no longer sells it.
   fullservice: {
-    // Human-fulfilled tier — monthly only, both keys point at the same price
-    // so existing {monthly|annual} lookups can't produce undefined.
     monthly: process.env.STRIPE_FULLSERVICE_MONTHLY_PRICE_ID!,
     annual: process.env.STRIPE_FULLSERVICE_MONTHLY_PRICE_ID!,
   },
 }
 
-// One-time "we install it for you" setup fee (checkout mode: "payment").
-export const STRIPE_SETUP_FEE_PRICE_ID = process.env.STRIPE_SETUP_FEE_PRICE_ID ?? ""

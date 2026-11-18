@@ -128,7 +128,7 @@ export const VERTICALS: Vertical[] = [
     faq: [
       {
         q: "My clients come from Instagram. Is this just about AI search?",
-        a: "No. Alphaa is an AI agent that runs your marketing: Google posts, blogs, review replies and SEO and AI search on every plan, with social posts, ads and email on Growth (early access). Instagram builds desire; Google and AI search are often where the booking decision gets made. You want to show up in both.",
+        a: "No. Alphaa is an AI agent that runs your marketing: Google posts, blogs, review replies and SEO and AI search on every plan, social posts on Pro, and ads and email on Growth (early access). Instagram builds desire; Google and AI search are often where the booking decision gets made. You want to show up in both.",
       },
       {
         q: "How is this different from my med spa marketing agency?",
@@ -293,7 +293,7 @@ export const VERTICALS: Vertical[] = [
     faq: [
       {
         q: "Is this compliant with attorney advertising rules?",
-        a: "Alphaa drafts factual content about your firm and practice areas for your own website, Google profile and (on Growth) social accounts, the same channels firms already use. You can review everything before it publishes. As with any marketing, final compliance responsibility with your state bar rests with the firm.",
+        a: "Alphaa drafts factual content about your firm and practice areas for your own website, Google profile and (on Pro) social accounts, the same channels firms already use. You can review everything before it publishes. As with any marketing, final compliance responsibility with your state bar rests with the firm.",
       },
       {
         q: "What does the AI agent actually do for my firm?",
@@ -348,7 +348,7 @@ export const VERTICALS: Vertical[] = [
     faq: [
       {
         q: "We're full on weekends already. Why do we need this?",
-        a: "Weekends fill themselves. Tuesdays don't. Steady Google posts, fresh review replies and (on Growth) social posts and emails to regulars drive the discretionary visits: out-of-towners, groups picking a spot, the “where should we go tonight?” crowd.",
+        a: "Weekends fill themselves. Tuesdays don't. Steady Google posts, fresh review replies, social posts (on Pro) and emails to regulars (on Growth) drive the discretionary visits: out-of-towners, groups picking a spot, the “where should we go tonight?” crowd.",
       },
       {
         q: "What does the AI agent actually do for my restaurant?",
@@ -403,7 +403,7 @@ export const VERTICALS: Vertical[] = [
     faq: [
       {
         q: "We do content marketing already. How is this different?",
-        a: "Alphaa is an AI agent that runs the work end to end: blogs, comparison pages, website fixes, SEO and AI search tracking on every plan, with social posts, ads and email on Growth (early access). It also measures whether you're named in real AI answers, which most content programs don't.",
+        a: "Alphaa is an AI agent that runs the work end to end: blogs, comparison pages, website fixes, SEO and AI search tracking on every plan, social posts on Pro, and ads and email on Growth (early access). It also measures whether you're named in real AI answers, which most content programs don't.",
       },
       {
         q: "Our agency charges $3,000+/month. Does Alphaa replace them?",

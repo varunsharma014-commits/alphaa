@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "SE Ranking is a full SEO platform whose SE Visible add-on tracks prompts across Google AI and ChatGPT, while Alphaa is a $99-a-month agent that checks four AI assistants weekly and drafts the fixes for approval.",
   date: "2026-11-14",
-  updated: "2026-11-14",
+  updated: "2026-11-18",
   readMins: 7,
   tag: "Comparison",
   kind: "comparison",
@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "SE Ranking is an all-in-one SEO platform with rank tracking, site audits, backlinks, content and local tools, plus AI visibility tracking.",
     "SE Ranking's Core and Growth plans include 25 AI prompts tracked daily; SE Visible adds 75 to 1,000 daily prompts from $71 a month billed annually.",
     "SE Visible's plans list ChatGPT, Google AI Overviews, AI Mode, Gemini and Copilot, with Claude via API on Agency; Perplexity is not listed.",
-    "Alphaa costs $99, $199 or $299 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
+    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
     "SE Ranking suits SEO teams and agencies who do their own fixes; Alphaa suits owners who want the fixes drafted and published on approval.",
   ],
   sources: [
@@ -256,8 +256,8 @@ export function Body() {
               <td>1,000 prompts daily, 30 projects, Claude API</td>
             </tr>
             <tr>
-              <td>Alphaa Starter / Pro / Full Service</td>
-              <td>$99 / $199 / $299</td>
+              <td>Alphaa Starter / Pro / Growth (early access)</td>
+              <td>$99 / $399 / $499</td>
               <td>Weekly checks on four assistants, drafted fixes, approval before publishing</td>
             </tr>
           </tbody>

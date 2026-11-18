@@ -9,14 +9,14 @@ export const meta: PostMeta = {
   subtitle:
     "Semrush shows a marketer what AI search says and leaves the fixing to them, while Alphaa checks the same answers for one business and drafts and publishes the fixes itself.",
   date: "2026-10-06",
-  updated: "2026-10-06",
+  updated: "2026-11-18",
   readMins: 7,
   tag: "Comparison",
   kind: "comparison",
   keyphrase: "alphaa vs semrush",
   takeaways: [
     "Semrush bundles AI visibility into its SEO plans from $139 a month billed monthly, and sells a standalone AI Visibility Toolkit at $99 a month per domain billed annually.",
-    "Alphaa is $99 a month for Starter, $199 for Pro and $299 for Full Service, month to month, for one business.",
+    "Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, for one business.",
     "Semrush tracks Google AI Mode and AI Overviews, which Alphaa does not; Alphaa tracks Claude, which Semrush does not list.",
     "Semrush reports and recommends; the publishing is still your team's job. Alphaa drafts the fix and publishes it once you approve.",
     "A marketing team with an SEO on staff gets more from Semrush; an owner with no marketer gets more from Alphaa.",
@@ -86,8 +86,7 @@ export function Body() {
         business every week, records who they recommend instead, runs a 23-point check on what those engines can
         read on your website, and then drafts the fixes. You approve each public change with one tap, and Alphaa
         publishes it: through its WordPress plugin, its Shopify and Webflow apps, or by emailing the exact change
-        to your web person. On the Full Service plan a person on Alphaa&apos;s team does the setup and publishing
-        for you.
+        to your web person.
       </p>
       <p>
         The fixes are the ordinary ones that decide AI recommendations: structured business facts in the HTML,
@@ -146,13 +145,13 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$199/mo, month to month</td>
+              <td>$399/mo, month to month</td>
               <td>Multiple locations, competitor comparison, auto-publish for blog posts</td>
             </tr>
             <tr>
-              <td>Alphaa Full Service</td>
-              <td>$299/mo, month to month</td>
-              <td>Everything in Pro, plus a person does the setup and publishing</td>
+              <td>Alphaa Growth</td>
+              <td>$499/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads, email and lead tracking</td>
             </tr>
           </tbody>
         </table>
@@ -327,10 +326,6 @@ export function Body() {
           <strong>You want month to month.</strong> Semrush&apos;s cheapest AI entry is billed annually; Alphaa
           has no contract.
         </li>
-        <li>
-          <strong>You want a person as the backstop.</strong> Full Service at $299 puts a human on the setup and
-          publishing, which no software plan at Semrush includes.
-        </li>
       </ul>
       <p>
         If you are weighing Alphaa against the agency you currently pay, the sharper comparison is{" "}
@@ -382,8 +377,7 @@ export function Body() {
       <h3>Can Alphaa publish to my website?</h3>
       <p>
         Yes, once you approve the change. It publishes through its WordPress plugin and its Shopify and Webflow
-        apps, and for any other platform it emails your web person the exact change; Full Service customers have
-        Alphaa&apos;s team do it.
+        apps, and for any other platform it emails your web person the exact change.
       </p>
 
       <h3>Will either tool get my business recommended by AI?</h3>

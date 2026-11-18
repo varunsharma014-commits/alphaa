@@ -1,18 +1,18 @@
-// Local prices per market (Varun, 2026-10-30): local round numbers, roughly
-// equal to $99 / $199 / $299 / $499 (Growth added 2026-11-17). Checkout charges these through currency options
-// on the same Stripe prices (see scripts/stripe-local-currencies.ts).
+// Local prices per market (Varun, 2026-10-30; Pro moved to $399 and Full Service retired
+// 2026-11-18): local round numbers, roughly equal to $99 / $399 / $499. Checkout charges these
+// through currency options on the same Stripe monthly prices (see scripts/stripe-local-currencies.ts).
 export type MarketKey = "uk" | "de" | "fr" | "it" | "ae" | "ar"
-export type Plan = "starter" | "pro" | "full" | "growth"
+export type Plan = "starter" | "pro" | "growth"
 export type Currency = "usd" | "eur" | "gbp" | "aed"
 
 export const MARKET_CURRENCY: Record<MarketKey, Currency> = { uk: "gbp", de: "eur", fr: "eur", it: "eur", ae: "aed", ar: "aed" }
 
 /** Monthly amounts in whole units. */
 export const AMOUNTS: Record<Currency, Record<Plan, number>> = {
-  usd: { starter: 99, pro: 199, full: 299, growth: 499 },
-  eur: { starter: 99, pro: 199, full: 299, growth: 499 },
-  gbp: { starter: 79, pro: 159, full: 239, growth: 399 },
-  aed: { starter: 369, pro: 739, full: 1099, growth: 1849 },
+  usd: { starter: 99, pro: 399, growth: 499 },
+  eur: { starter: 99, pro: 399, growth: 499 },
+  gbp: { starter: 79, pro: 319, growth: 399 },
+  aed: { starter: 369, pro: 1469, growth: 1849 },
 }
 
 /** "99 €", "£79", "AED 369", "369 درهم", "$99". */
@@ -31,12 +31,11 @@ export function isMarketKey(v: string | undefined | null): v is MarketKey {
 /** Cookie set by the middleware when someone visits a market page. */
 export const MARKET_COOKIE = "alphaa_market"
 
-/** Replace {starter} {pro} {full} {growth} in market copy with the local prices. */
+/** Replace {starter} {pro} {growth} in market copy with the local prices. */
 export function fillPrices(text: string, market: MarketKey, lang: string): string {
   const c = MARKET_CURRENCY[market]
   return text
     .replace(/\{starter\}/g, formatPrice(c, "starter", lang))
     .replace(/\{pro\}/g, formatPrice(c, "pro", lang))
-    .replace(/\{full\}/g, formatPrice(c, "full", lang))
     .replace(/\{growth\}/g, formatPrice(c, "growth", lang))
 }

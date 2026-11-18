@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { NextRequest, NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { isConnectProvider, providerConfigured } from "@/lib/social/types"
 import { PKCE_COOKIE, pkce, redirectUri, signState } from "@/lib/social/oauth"
 import { meta } from "@/lib/social/providers/meta"
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ prov
   if (!isConnectProvider(provider)) return NextResponse.redirect(back)
   const user = await currentUser()
   if (!user) return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL || req.url))
-  if (!hasGrowth(user) || !providerConfigured(provider)) return NextResponse.redirect(back)
+  if (!hasPro(user) || !providerConfigured(provider)) return NextResponse.redirect(back)
   const state = signState(user.id, provider)
   const p = P[provider]
   if (p.usesPkce) {

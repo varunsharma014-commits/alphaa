@@ -123,14 +123,14 @@ export function DashboardAgent({
   }
 
   // Who makes a website change happen: the agent itself when the site is
-  // connected; otherwise the owner's web person (by email) or our team.
+  // connected; otherwise the owner's web person (by email). (Our team no longer does it: Full
+  // Service was retired 2026-11-18.)
   function siteChips(op: SiteOp, extra: { title?: string; text?: string; docId?: string; url?: string; locationId?: string; draftId?: string } = {}): Chip[] {
     const handoff: Chip = { label: "Email it to my web person", action: { type: "handoff", what: op, ...extra } }
     if (prefs.current.wpConnected || (prefs.current.siteConnected && API_OPS.includes(op))) return [{ label: "Publish it to my site", action: { type: "wp-push", op, ...extra }, primary: true }, handoff]
-    if (prefs.current.siteConnected) return [{ ...handoff, primary: true }, { label: "Have our team do it", action: { type: "link", href: "/dashboard/concierge" } }]
+    if (prefs.current.siteConnected) return [{ ...handoff, primary: true }]
     return [
       { ...handoff, primary: true },
-      { label: "Have our team do it", action: { type: "link", href: "/dashboard/concierge" } },
       { label: "Connect my website", action: { type: "wp-connect" } },
     ]
   }

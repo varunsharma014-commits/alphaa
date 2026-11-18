@@ -27,7 +27,7 @@ const GREET: StartGreet = {
 const price = (name: string) => plans.find((p) => p.name === name)?.monthly
 
 export function HomeV2() {
-  const growthHref = GROWTH_ON_SALE ? "/signup?plan=growth" : GROWTH_EARLY_ACCESS_HREF
+  const growthHref = GROWTH_ON_SALE ? "/signup?plan=growth_monthly" : GROWTH_EARLY_ACCESS_HREF
   const growthNote = GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access"
   const demo = SVC_ORDER.map((slug) => ({ key: SVC[slug].key, ...SVC[slug].demo }))
   return (
@@ -85,7 +85,7 @@ export function HomeV2() {
           { big: "$0", small: "Markup on ad spend. Paid to Google and Meta directly" },
           { big: "Every week", small: "Not once a month. Your marketing never takes a week off" },
           { big: "See it all", small: "Every post, ad and fix, the moment it happens", wide: true },
-          { big: `$${price("Growth")}/mo`, small: "Growth: social, ads and email too", wide: true, ink: true },
+          { big: `$${price("Growth")}/mo`, small: "Growth: ads, email and lead tracking too (early access)", wide: true, ink: true },
         ]} />
       </Section>
 
@@ -128,11 +128,11 @@ export function HomeV2() {
           <div className="hv-plan"><div className="hv-plan__badge" /><h3>Starter</h3><p className="hv-plan__for">Get found on Google and by AI.</p><div className="hv-plan__price">$99<small>/month</small></div>
             <ul><li>Get recommended by ChatGPT, Gemini, Claude and Perplexity</li><li>Your week of marketing in one tap</li><li>2 Google updates a week, in your voice</li><li>Review replies written for you</li><li>What’s working, every week</li></ul>
             <Link className="hv-pill hv-pill--ghost" href="/start">Get started</Link></div>
-          <div className="hv-plan hv-plan--hi"><div className="hv-plan__badge">Recommended</div><h3>Pro</h3><p className="hv-plan__for">Your website and Google, on autopilot.</p><div className="hv-plan__price">$199<small>/month</small></div>
-            <ul><li>Everything in Starter</li><li>4 Google updates a week</li><li>Posts can go live without you lifting a finger</li><li>20 customer questions checked with AI every week</li><li>Up to 3 locations</li></ul>
+          <div className="hv-plan hv-plan--hi"><div className="hv-plan__badge">Recommended</div><h3>Pro</h3><p className="hv-plan__for">Your social media too, on autopilot.</p><div className="hv-plan__price">${price("Pro")}<small>/month</small></div>
+            <ul><li>Everything in Starter</li><li>Social posts that look like your brand</li><li>4 Google updates a week</li><li>Posts can go live without you lifting a finger</li><li>20 customer questions checked with AI every week</li><li>Up to 3 locations</li></ul>
             <Link className="hv-pill hv-pill--blue" href="/signup?plan=pro">Get started</Link></div>
-          <div className="hv-plan"><div className="hv-plan__badge">{GROWTH_ON_SALE ? "New" : "Early access"}</div><h3>Growth</h3><p className="hv-plan__for">Your whole marketing, handled.</p><div className="hv-plan__price">$499<small>/month</small></div>
-            <ul><li>Everything in Pro</li><li>Social posts that look like your brand</li><li>Emails that bring customers back</li><li>Google and Meta ads, tuned every week</li><li>See which calls and forms your marketing brought in</li></ul>
+          <div className="hv-plan"><div className="hv-plan__badge">{GROWTH_ON_SALE ? "New" : "Early access"}</div><h3>Growth</h3><p className="hv-plan__for">Your whole marketing, handled.</p><div className="hv-plan__price">${price("Growth")}<small>/month</small></div>
+            <ul><li>Everything in Pro</li><li>Emails that bring customers back</li><li>Google and Meta ads, tuned every week</li><li>See which calls and forms your marketing brought in</li></ul>
             <a className="hv-pill hv-pill--ghost" href={growthHref}>{GROWTH_ON_SALE ? "Get started" : "Get early access"}</a></div>
         </div>
         <p className="hv-guar">{GUARANTEE_LINE}</p>

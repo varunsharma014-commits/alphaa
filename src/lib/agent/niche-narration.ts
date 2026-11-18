@@ -83,7 +83,7 @@ export function madeMessage(r: { text: string; image: string | null; saved: bool
   ]
   const chips: Chip[] = [{ label: "Copy the caption", action: { type: "copy", text: r.text, done: "Copied." }, primary: !r.saved }]
   if (r.saved) chips.unshift({ label: "See my social posts", action: { type: "thread", topic: "social" }, primary: true })
-  if (!r.growth) chips.push({ label: "Post it for me (Growth)", action: { type: "link", href: "/dashboard/settings/billing" } })
+  if (!r.growth) chips.push({ label: "Post it for me (Pro)", action: { type: "link", href: "/dashboard/upgrade?plan=pro" } })
   blocks.push({ kind: "chips", items: chips })
   return agent(blocks, `ni-made-${r.from.id}`)
 }

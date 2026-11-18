@@ -4,7 +4,7 @@ import { SERVICES, SERVICE_BY_SLUG, type ServiceSlug } from "@/content/services"
 import { pageMeta } from "@/lib/seo"
 
 const SITE = "https://alphaa.app"
-const PRICE = { starter: "99", growth: "499" } as const
+const PRICE = { starter: "99", pro: "399", growth: "499" } as const
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: s.slug }))

@@ -23,7 +23,7 @@ import { adsMessages } from "@/lib/gads/thread"
 import { metaAdsMessages } from "@/lib/metaads/narration"
 import { setupMessages } from "@/lib/agent/setup"
 import { imagesMessages } from "@/lib/agent/images-panel"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { insightsMessages, insightsRunMessage } from "@/lib/agent/insights-narration"
 import { latestInsights, insightsFresh } from "@/lib/insights"
 import { hasPaidPlan, isComped } from "@/lib/billing"
@@ -181,7 +181,7 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       const s = await getAgentSettings(user.id)
       if (!(s.voice && s.brand)) return { autorun: ["voice"], messages: [voiceRunMessage()] }
       // "How your images look" (styles, photo library, Canva) sits between the brand and the voice.
-      const images = await imagesMessages(user.id, { growth: hasGrowth(user) }).catch(() => [])
+      const images = await imagesMessages(user.id, { growth: hasPro(user) }).catch(() => [])
       return { autorun: [], messages: [...brandMessages(s.brand, s.brand.sampleId ? imageUrl(s.brand.sampleId) : null), ...images, ...voiceMessages(s.voice)] }
     }
 

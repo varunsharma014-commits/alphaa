@@ -10,8 +10,8 @@ export const connectCanvaChip = (back: "voice" | "channels" = "voice"): Chip => 
 export function canvaMessages(acc: CanvaAccount | null, o: { growth: boolean; templates: boolean; template: string | null; note?: string | null }): Message[] {
   if (!o.growth) {
     return [agent([
-      { kind: "text", text: "Design in Canva? With the Growth plan I can post your Canva designs for you, and you can touch up any image I make in Canva." },
-      { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade" } }] },
+      { kind: "text", text: "Design in Canva? With the Pro plan I can post your Canva designs for you, and you can touch up any image I make in Canva." },
+      { kind: "chips", items: [{ label: "See the Pro plan", action: { type: "link", href: "/dashboard/upgrade?plan=pro" } }] },
     ], "vc-canva")]
   }
   if (!acc || acc.status === "expired") {

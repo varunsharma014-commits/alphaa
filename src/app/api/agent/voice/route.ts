@@ -11,7 +11,7 @@ import { ensureBrandKit, saveBrand, HEX_RE, type BrandKit } from "@/lib/brand-ki
 import { imageUrl } from "@/lib/images"
 import type { Voice as V } from "@/lib/voice"
 import { agent } from "@/lib/agent/types"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { imagesMessages } from "@/lib/agent/images-panel"
 import { aiImagesAvailable, imageSettings, saveImageSettings, styleSample } from "@/lib/post-images"
 import { listPhotos, refreshPhotos, removePhoto } from "@/lib/brand-photos"
@@ -45,7 +45,7 @@ const STYLE_VALUES: Record<string, string[] | null> = {
 
 /** The whole thread: brand first, then how images look, then voice. */
 async function brandAndVoice(user: { id: string; plan: string; email: string }, brand: BrandKit | null | undefined, voice: V | null | undefined) {
-  const images = await imagesMessages(user.id, { growth: hasGrowth(user) }).catch((err) => { console.error("[voice] images panel", err instanceof Error ? err.message : err); return [] })
+  const images = await imagesMessages(user.id, { growth: hasPro(user) }).catch((err) => { console.error("[voice] images panel", err instanceof Error ? err.message : err); return [] })
   return [...brandMessages(brand, brand?.sampleId ? imageUrl(brand.sampleId) : null), ...images, ...voiceMessages(voice)]
 }
 

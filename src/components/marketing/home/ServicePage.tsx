@@ -7,12 +7,16 @@ import { FeatureVideo } from "./HomeV2Client"
 import { SERVICE_BY_SLUG, type Service } from "@/content/services"
 import { GUARANTEE_LINE } from "@/lib/offer-copy"
 import { GROWTH_ON_SALE } from "@/lib/growth"
+import { PLAN_PRICES } from "@/lib/constants"
 import { V3Page, Frame, Section, Eyebrow, Points, Faq, FinalCta, ProofMosaic, HeroShapes, SVC } from "@/components/marketing/v3"
 
 export function ServicePage({ s }: { s: Service }) {
   const growth = s.plan === "growth"
   const v = SVC[s.slug]
-  const priceLine = growth ? `Part of the Growth plan, $499 a month${GROWTH_ON_SALE ? "" : " (early access)"}.` : `From $${s.plan === "starter" ? 99 : 499} a month.`
+  const pro = s.plan === "pro"
+  const priceLine = growth
+    ? `Part of the Growth plan, $${PLAN_PRICES.growth.monthly} a month${GROWTH_ON_SALE ? "" : " (early access)"}.`
+    : pro ? `Part of the Pro plan, $${PLAN_PRICES.pro.monthly} a month, and Growth.` : `From $${PLAN_PRICES.starter.monthly} a month.`
   return (
     <V3Page tone={v.key}>
       <Frame top>
@@ -20,7 +24,7 @@ export function ServicePage({ s }: { s: Service }) {
           <div className="v3-chapter">
             <div>
               <nav className="v3-crumbs" aria-label="Breadcrumb"><Link href="/">Home</Link> › <Link href="/services">Services</Link> › <span>{s.name}</span></nav>
-              <Eyebrow small={growth ? (GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access") : "Every plan"}>{s.kicker}</Eyebrow>
+              <Eyebrow small={growth ? (GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access") : pro ? "Pro and Growth plans" : "Every plan"}>{s.kicker}</Eyebrow>
               <h1 className="v3-h1 v3-h1--md">{s.h1}</h1>
               <p className="v3-lede">{s.sub}</p>
               <div className="v3-btns"><Link className="v3-btn" href="/start">Get started →</Link><a className="v3-btn v3-btn--ghost" href="#how">How it works</a></div>

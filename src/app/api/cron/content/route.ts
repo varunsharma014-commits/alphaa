@@ -10,7 +10,7 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { publishContent } from "@/lib/connector/publish"
 
 // Fresh content on the plan's schedule: Starter 2 posts a month (1st, 15th),
-// Pro / Full Service 4 (1st, 8th, 15th, 22nd). Each is a draft waiting for the
+// Pro / Growth 4 (1st, 8th, 15th, 22nd). Each is a draft waiting for the
 // owner's approval in "Posts & Pages" — nothing publishes on its own.
 const DAYS: Record<string, number[]> = { starter: [1, 15], pro: [1, 8, 15, 22] }
 

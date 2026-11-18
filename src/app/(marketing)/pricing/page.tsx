@@ -24,20 +24,20 @@ const ART: Record<string, { tone: SvcKey; art: React.ReactNode }> = {
   },
   Pro: {
     tone: "ad",
-    art: <Note title="3 locations this week" body="Downtown named 4 of 4. Northside 3 of 4. Westlake 2 of 4 — Smile Studio got the other two. Here’s what they have that you don’t." />,
+    art: (
+      <>
+        <Note title="This week’s social posts are ready" body="3 posts with images in your brand colours, for Facebook, Instagram and LinkedIn. Tap once to approve." />
+        <Note title="3 locations this week" body="Downtown named 4 of 4. Northside 3 of 4. Westlake 2 of 4. Here’s what to fix next." />
+      </>
+    ),
   },
   Growth: {
     tone: "mk",
     art: (
       <>
-        <Note title="This week’s marketing is ready" body="A blog post, 2 Google updates and 3 social posts, all in your voice. Tap once to approve." />
         <Note title="Your Google ads are built" body="Aimed at people near you searching for what you sell. Paused until you approve the budget." />
       </>
     ),
-  },
-  "Full Service": {
-    tone: "em",
-    art: <Note title="Published to your website" body="Your new FAQ page and structured facts are live. A person on our team did it — you didn’t touch a thing." />,
   },
 }
 
@@ -45,7 +45,7 @@ const ART: Record<string, { tone: SvcKey; art: React.ReactNode }> = {
 const ROWS: [string, string, string][] = [
   ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what I did today, what changed, what I need from you."],
   ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel online in a minute. I only stay if I keep earning it."],
-  ["The scope", "Usually one channel per retainer. Ask about ChatGPT or Claude and many stumble.", "SEO and AI search, content and reviews on every plan. Social, ads and email on Growth (early access)."],
+  ["The scope", "Usually one channel per retainer. Ask about ChatGPT or Claude and many stumble.", "SEO and AI search, content and reviews on every plan. Social media on Pro. Ads and email on Growth (early access)."],
 ]
 
 export default function PricingPage() {
@@ -62,7 +62,7 @@ export default function PricingPage() {
           <h1 className="v3-h1">
             Your whole marketing.<br /><span className="v3-blue">Run by an AI Agent. From $99/month.</span>
           </h1>
-          <p className="v3-lede">SEO and AI search, blog and Google posts, and review replies on every plan. Social, ads and email on Growth (early access). Month to month, no contracts, no technical skills needed.</p>
+          <p className="v3-lede">SEO and AI search, blog and Google posts, and review replies on every plan. Social media on Pro. Ads, email and lead tracking on Growth (early access). Month to month, no contracts, no technical skills needed.</p>
           <p style={{ fontSize: 15, margin: "14px auto 0", maxWidth: "60ch" }}><b>90-day AI Visibility Guarantee:</b> {GUARANTEE_LINE}</p>
 
           <div className="v3-chips" role="tablist" aria-label="Billing period">
@@ -84,7 +84,8 @@ export default function PricingPage() {
                     <p className="pg-plan__desc">{plan.description}</p>
                     <div className="pg-plan__price"><b>${price}</b><span>/month</span></div>
                     <div className="pg-plan__note">
-                      {"monthlyOnly" in plan && plan.monthlyOnly ? (plan.name === "Growth" ? "Monthly only · ad spend paid to Google and Meta" : "Monthly only — human-fulfilled service") : annual ? `Billed annually ($${price * 12}/yr)` : "Month to month · cancel anytime"}
+                      {annual ? `Billed annually ($${(price * 12).toLocaleString("en-US")}/yr)` : "Month to month · cancel anytime"}
+                      {plan.name === "Growth" ? " · ad spend paid to Google and Meta" : ""}
                     </div>
                     {href.startsWith("mailto:") ? <a href={href} className={cn("v3-btn", !plan.highlight && "v3-btn--ghost")}>{plan.cta}</a> : <Link href={href} className={cn("v3-btn", !plan.highlight && "v3-btn--ghost")}>{plan.cta}</Link>}
                     <p className="pg-plan__fine">{GUARANTEE_LINE} {RENEWAL_LINE}</p>

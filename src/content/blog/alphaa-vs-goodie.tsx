@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "Goodie is a full AEO platform for brand and marketing teams starting at $295 a month, while Alphaa is a $99-a-month agent that checks four AI assistants weekly and drafts fixes for one business.",
   date: "2026-11-12",
-  updated: "2026-11-12",
+  updated: "2026-11-18",
   readMins: 8,
   tag: "Comparison",
   kind: "comparison",
@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Goodie's pricing page lists Core at $295 a month, Pro at $999 a month and a quote-based Enterprise plan, as of November 2026.",
     "Goodie's Core plan tracks five answer engines; its pricing table shows Gemini from Pro and Claude only on Enterprise.",
     "Goodie offers a 7-day free trial on Core, unlimited seats and daily data collection on every plan.",
-    "Alphaa costs $99, $199 or $299 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly on every plan.",
+    "Alphaa costs $99, $399 or $499 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly on every plan.",
     "Goodie suits marketing teams that want prompt research, daily tracking and attribution; Alphaa suits one business that wants fixes written and approved.",
   ],
   sources: [
@@ -181,7 +181,7 @@ export function Body() {
       <p>
         That matters if Gemini or Claude is where your customers ask. On the table as published, a Core customer does
         not get Gemini or Claude tracking; confirm this with Goodie for your plan, because feature tables change.
-        Alphaa asks ChatGPT, Gemini, Claude and Perplexity on Starter, Pro and Full Service alike. It does not report on
+        Alphaa asks ChatGPT, Gemini, Claude and Perplexity on Starter, Pro and Growth alike. It does not report on
         Google AI Overviews, AI Mode or Copilot as separate engines, so if those are your priority, Goodie covers them
         from its first plan and Alphaa does not.
       </p>
@@ -199,7 +199,7 @@ export function Body() {
       <h2>How much does Goodie cost compared with Alphaa?</h2>
       <p>
         Goodie publishes Core at $295 a month and Pro at $999 a month, with Enterprise by quote, while Alphaa publishes
-        $99, $199 and $299 a month. Goodie&apos;s page also offers annual billing with &quot;2 months free&quot; and
+        $99, $399 and $499 a month. Goodie&apos;s page also offers annual billing with &quot;2 months free&quot; and
         says plainly that &quot;some AEO platforms start lower than our Core plan&quot;, which is fair: it is priced for
         teams that will use the research and reporting.
       </p>
@@ -235,13 +235,13 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$199</td>
+              <td>$399</td>
               <td>Up to 3 locations, 4 blog posts a month, competitor benchmarking, auto-approval rules</td>
             </tr>
             <tr>
-              <td>Alphaa Full Service</td>
-              <td>$299</td>
-              <td>Everything in Pro, plus a person installs code and publishes content on your site</td>
+              <td>Alphaa Growth</td>
+              <td>$499 (early access)</td>
+              <td>Everything in Pro, plus Google and Meta ads, email and lead tracking</td>
             </tr>
           </tbody>
         </table>
@@ -306,10 +306,6 @@ export function Body() {
         <li>
           <strong>Approval by default.</strong> Nothing is published to your site or profile until you say yes, unless
           you set auto-approval rules for posts on Pro.
-        </li>
-        <li>
-          <strong>Hands-off option.</strong> On Full Service, a person installs the code and publishes the monthly
-          content on your site for you.
         </li>
       </ul>
       <p>

@@ -13,12 +13,12 @@ import { asUser } from "@/lib/usage"
 import { approveGbpPost } from "@/lib/approvals"
 
 // Google Business Profile posts on the plan's schedule (UTC day of week):
-// Starter 2 a week (Mon, Thu), Pro / Full Service 4 (Mon, Tue, Thu, Fri).
+// Starter 2 a week (Mon, Thu), Pro / Growth 4 (Mon, Tue, Thu, Fri).
 // The scheduler pings this route on all four days; the plan filter lives here.
 //
 // Every post is created as a DRAFT the owner approves from the agent feed
 // ("Post it" / "Delete it" → /api/gbp/posts/[id]/publish). It goes live on
-// its own only when the owner is on Pro / Full Service AND turned on the
+// its own only when the owner is on Pro / Growth AND turned on the
 // auto-publish setting (the same `autoPublishPosts` flag the blog cron reads).
 const DAYS: Record<"starter" | "pro", number[]> = { starter: [1, 4], pro: [1, 2, 4, 5] }
 
@@ -97,7 +97,7 @@ async function processUser(user: CronUser): Promise<{ status: "draft" | "posted"
 
   const hasGmb = !!(user.integration?.gmbAccountId && user.integration?.gmbLocationId)
 
-  // Owner-approved by default. Auto-publish only for Pro / Full Service with
+  // Owner-approved by default. Auto-publish only for Pro / Growth with
   // the setting on, a connected listing, and no unfilled "[City]"-style facts
   // (containsPlaceholders also gates the manual publish route).
   const settings = await getAgentSettings(user.id)

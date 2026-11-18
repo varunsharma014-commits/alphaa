@@ -2,11 +2,11 @@
 // renders these and the server stores the same text (and its hash) with the consent record.
 // Changing any line = bump CONSENT_VERSION.
 
-export const CONSENT_VERSION = "2026-11-18"
+export const CONSENT_VERSION = "2026-11-18.2"
 
 export const CONSENT_TITLE = "Let me post without asking?"
 
-/** What turns on, per plan. Ads are never included. */
+/** What turns on, per plan. Ads are never included. `growth` = social posts allowed (Pro and up since 2026-11-18; the name is kept for stored callers). */
 export type ConsentScope = { pro: boolean; growth: boolean; /** One setting only (the owner tapped that chip). */ only?: "posts" | "reviews" | "social" }
 const ONLY: Record<"posts" | "reviews" | "social", string> = { posts: "Google listing posts and website posts", reviews: "replies to your reviews", social: "social posts on your connected accounts" }
 
@@ -18,9 +18,9 @@ export function consentTurnsOn(o: ConsentScope): { on: string[]; later: string |
     "replies to your reviews",
   ]
   const later = !o.pro
-    ? "On your Starter plan this covers replies to your reviews. Posting to your Google listing and website without asking comes with Pro, and social posts with Growth."
+    ? "On your Starter plan this covers replies to your reviews. Posting to your Google listing, website and social media without asking comes with Pro."
     : !o.growth
-      ? "Social posts without asking come with the Growth plan."
+      ? "Social posts without asking come with the Pro plan."
       : null
   return { on, later }
 }

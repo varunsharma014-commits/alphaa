@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "The best AI agent tools for a local business each own one job, so start with the one that fixes where you lose the most customers today.",
   date: "2026-09-25",
-  updated: "2026-10-01",
+  updated: "2026-11-18",
   readMins: 9,
   tag: "Guide",
   kind: "listicle",
@@ -83,7 +83,7 @@ export function Body() {
           Claude and Perplexity the questions your customers ask and reports who got named. It checks 23 things
           AI reads on your site, writes FAQ pages, structured facts and an <code>llms.txt</code> file, and drafts
           Google Business Profile posts and review replies. You approve changes with one tap and get a
-          plain-English weekly note. Plans are Starter $99/mo, Pro $199/mo and Full Service $299/mo, month to
+          plain-English weekly note. Plans are Starter $99/mo, Pro $399/mo and Growth $499/mo (early access), month to
           month, with no free trial — there is a free 60-second check instead. It does not guarantee rankings.
         </li>
         <li>
@@ -265,7 +265,7 @@ export function Body() {
             <td>Alphaa</td>
             <td>Weekly AI checks, site fixes, GBP posts and review replies for approval</td>
             <td>Single-location local businesses</td>
-            <td>$99–$299/mo, month to month</td>
+            <td>$99–$499/mo, month to month</td>
           </tr>
           <tr>
             <td>AI receptionist</td>
@@ -400,7 +400,7 @@ export function Body() {
       <p>
         Published prices for the tools in this guide range from free plans to a few hundred dollars a month, as
         of September 2026. Smith.ai lists $150 and $500 monthly tiers, Goodcall lists $79 to $249 per agent per
-        month, Alphaa is $99 to $299 a month, and Podium and Birdeye quote prices individually.
+        month, Alphaa is $99 to $499 a month, and Podium and Birdeye quote prices individually.
       </p>
 
       <h3>Do I need technical skills to use an AI agent for marketing?</h3>

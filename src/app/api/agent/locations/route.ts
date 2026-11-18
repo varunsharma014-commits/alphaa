@@ -6,7 +6,7 @@ import { randomBytes } from "crypto"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings, maxExtraLocations } from "@/lib/agent/settings"
 
-// Extra locations for multi-location plans. Pro and Full Service cover up to
+// Extra locations for multi-location plans. Pro and Growth cover up to
 // 3 locations in total (the main business + 2).
 const add = z.object({
   name: z.string().trim().min(1).max(120),

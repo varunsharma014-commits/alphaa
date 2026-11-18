@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "Otterly AI is the cheaper way to start and bundles page audits, Peec AI goes deeper on analytics for teams, and neither one writes or publishes the fix.",
   date: "2026-10-05",
-  updated: "2026-10-05",
+  updated: "2026-11-18",
   readMins: 9,
   tag: "Comparison",
   kind: "comparison",
@@ -258,7 +258,7 @@ export function Body() {
         Perplexity 10 or 20 customer questions a week, runs a 23-point check on what those engines can read on
         your site, then drafts the fix: a page, an FAQ block, structured data, an llms.txt file, a review reply.
         You approve each one and it publishes to{" "}
-        <Link href="/integrations">WordPress, Shopify or Webflow</Link>. Plans are $99, $199 and $299 a month,
+        <Link href="/integrations">WordPress, Shopify or Webflow</Link>. Plans are $99, $399 and $499 a month,
         month to month.
       </p>
       <p>

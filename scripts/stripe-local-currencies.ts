@@ -1,7 +1,7 @@
 // Adds EUR / GBP / AED amounts to Alphaa's monthly Stripe prices (one price,
 // several currencies), so checkout can charge each market in its own currency.
 // Run with production env:  railway run --service alphaa -- npx tsx scripts/stripe-local-currencies.ts
-// Add --dry to only print. Touches only the three Alphaa monthly price ids.
+// Add --dry to only print. Touches only the three Alphaa monthly price ids (Starter, Pro, Growth).
 import Stripe from "stripe"
 import { AMOUNTS } from "../src/content/markets/prices"
 
@@ -10,7 +10,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const plans = [
   ["starter", process.env.STRIPE_STARTER_MONTHLY_PRICE_ID],
   ["pro", process.env.STRIPE_PRO_MONTHLY_PRICE_ID],
-  ["full", process.env.STRIPE_FULLSERVICE_MONTHLY_PRICE_ID],
   ["growth", process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID],
 ] as const
 

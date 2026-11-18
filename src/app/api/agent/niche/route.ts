@@ -5,7 +5,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { db } from "@/lib/db"
-import { hasGrowth, hasPaidPlan, isComped } from "@/lib/billing"
+import { hasPaidPlan, hasPro, isComped } from "@/lib/billing"
 import { lastReadyNichePosts, nicheView, startNicheRefresh, type NicheItem } from "@/lib/niche-posts"
 import { madeMessage, nicheMessages } from "@/lib/agent/niche-narration"
 import { writeSocial } from "@/lib/content"
@@ -18,7 +18,7 @@ import { agent } from "@/lib/agent/types"
 const body = z.object({ op: z.enum(["status", "refresh", "make"]), id: z.string().min(4).max(40).optional() })
 
 // "What's working in your niche": status (poll), refresh (background, at most once a day),
-// make (write the owner's own version: caption + brand image; a draft SocialPost on Growth).
+// make (write the owner's own version: caption + brand image; a draft SocialPost on Pro and up).
 export async function POST(req: Request) {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -46,7 +46,8 @@ export async function POST(req: Request) {
   const sp = await writeSocial(user, topic, context)
   const brand = await ensureBrandKit(user.id).catch(() => null)
   const card = await renderSocialCard(user.id, { headline: sp.headline, businessName: user.businessName, brand }).catch(() => null)
-  const growth = hasGrowth(user)
+  // Saving it as a social post is Pro and up (2026-11-18).
+  const growth = hasPro(user)
   let saved = false
   if (growth) {
     const accounts = (await listAccounts(user.id)).filter((a) => a.status === "active" && (card || (a.platform !== "instagram" && a.platform !== "tiktok")))

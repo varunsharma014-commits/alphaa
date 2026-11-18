@@ -1,10 +1,11 @@
 // "What I do without asking": the owner approves once, here, instead of item by item.
 // Blog and Google listing posts use the existing autoPublishPosts flag (Pro and up).
 // Review replies are honoured by the overnight review-drafts cron. Social, email and ads are
-// saved now and take effect as each one goes live on the account (Growth).
+// saved now and take effect as each one goes live on the account (social: Pro and up; email
+// and ads: Growth).
 import { agent, type Chip, type Message } from "@/lib/agent/types"
 import { getAgentSettings, type Autopilot } from "@/lib/agent/settings"
-import { hasGrowth } from "@/lib/billing"
+import { hasGrowth, hasPro } from "@/lib/billing"
 import type { User } from "@prisma/client"
 
 const op = (body: Record<string, string>, label: string, on: boolean): Chip => ({
@@ -20,6 +21,7 @@ export async function autopilotMessages(user: User): Promise<Message[]> {
   const a: Autopilot = s.autopilot ?? {}
   const pro = PRO_RE.test(user.plan)
   const growth = hasGrowth(user)
+  const social = hasPro(user)
   const posts = !!s.autoPublishPosts
   const reviews = a.reviews ?? "ask"
   const out: Message[] = []
@@ -60,21 +62,30 @@ export async function autopilotMessages(user: User): Promise<Message[]> {
     ] },
   ], "ap-reviews"))
 
+  // Social is Pro and up (2026-11-18); email and ads stay Growth.
+  if (social) {
+    out.push(agent([
+      { kind: "text", text: "Social posts" },
+      { kind: "text", text: "Set it once now. It kicks in as each of your social accounts is connected." },
+      { kind: "chips", items: [op({ op: "set", key: "social", value: "ask" }, "Ask me first", (a.social ?? "ask") === "ask"), op({ op: "set", key: "social", value: "auto" }, "Post without asking", a.social === "auto")] },
+    ], "ap-social"))
+  }
+
   if (!growth) {
     out.push(agent([
-      { kind: "text", text: "Social posts, email campaigns and ads" },
-      { kind: "text", text: "These come with the Growth plan: I write and post your social media, send your email campaigns, and build and tune your Google and Meta ads." },
-      { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade" }, primary: true }] },
+      { kind: "text", text: social ? "Email campaigns and ads" : "Social posts, email campaigns and ads" },
+      { kind: "text", text: social
+        ? "These come with the Growth plan, in early access: I send your email campaigns, and build and tune your Google and Meta ads."
+        : "Social posts come with the Pro plan. Email campaigns and Google and Meta ads come with Growth, in early access." },
+      { kind: "chips", items: [{ label: social ? "See the Growth plan" : "See the Pro plan", action: { type: "link", href: social ? "/dashboard/upgrade?plan=growth" : "/dashboard/upgrade?plan=pro" }, primary: true }] },
     ], "ap-growth"))
     return out
   }
 
   const budget = a.adBudget
   out.push(agent([
-    { kind: "text", text: "Social posts, email campaigns and ads" },
+    { kind: "text", text: "Email campaigns and ads" },
     { kind: "text", text: "Set it once now. Each choice kicks in the day that work starts on your account." },
-    { kind: "text", text: "Social posts" },
-    { kind: "chips", items: [op({ op: "set", key: "social", value: "ask" }, "Ask me first", (a.social ?? "ask") === "ask"), op({ op: "set", key: "social", value: "auto" }, "Post without asking", a.social === "auto")] },
     { kind: "text", text: "Email campaigns to your customers" },
     { kind: "chips", items: [op({ op: "set", key: "email", value: "ask" }, "Ask me before each send", (a.email ?? "ask") === "ask"), op({ op: "set", key: "email", value: "auto" }, "Send without asking", a.email === "auto")] },
     { kind: "text", text: `Ads. Monthly budget: ${budget ? `${budget.toLocaleString("en-US")} a month, never more` : "not set yet"}. Ad spend is billed to you by Google and Meta directly. I never mark it up.` },

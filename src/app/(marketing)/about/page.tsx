@@ -51,12 +51,13 @@ export default function AboutPage() {
             <li>Writes blog posts and Google Business Profile posts, and replies to reviews, in the owner&apos;s voice.</li>
             <li>Fixes the website for Google and AI search: it checks 23 things AI reads, from crawler access to structured facts, and writes FAQ answers, structured data and llms.txt.</li>
             <li>Asks ChatGPT, Gemini, Claude and Perplexity the questions customers ask, and reports who got named.</li>
-            <li>On the Growth plan (early access): writes social posts with images in the business&apos;s brand, builds and tunes Google and Meta ads inside an approved budget, tracks leads, and sends emails that bring past customers back.</li>
+            <li>On the Pro plan: writes and posts social media with images in the business&apos;s brand.</li>
+            <li>On the Growth plan (early access): builds and tunes Google and Meta ads inside an approved budget, tracks leads, and sends emails that bring past customers back.</li>
             <li>Sends one short, plain-English note: what it did, what worked, and what needs a yes.</li>
           </ul>
           <h2>How much does Alphaa cost?</h2>
           <p>
-            Alphaa costs $99 a month for Starter, $199 for Pro and $299 for Full Service, month to month with no contract. Growth, which adds social media, ads and email, is $499 a month in early access. There is no free trial; the{" "}
+            Alphaa costs $99 a month for Starter and $399 for Pro, which adds social media, month to month with no contract. Growth, which adds ads, email and lead tracking, is $499 a month in early access. There is no free trial; the{" "}
             <Link href="/start">free check</Link> shows what the AIs say about a business today and plans its first week of marketing. See <Link href="/pricing">pricing</Link>.
           </p>
           <h2>Does Alphaa guarantee rankings?</h2>

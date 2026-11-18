@@ -4,7 +4,7 @@ export const maxDuration = 120
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { deletePost, getPost, removeAccount, savePost } from "@/lib/social/store"
 import { publishPost } from "@/lib/social/publish"
 import { socialThread as thread } from "@/lib/social/thread"
@@ -21,7 +21,7 @@ export async function GET() {
 export async function POST(req: Request) {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  if (!hasGrowth(user)) return NextResponse.json({ error: "Social media comes with the Growth plan." }, { status: 403 })
+  if (!hasPro(user)) return NextResponse.json({ error: "Social media comes with the Pro plan." }, { status: 403 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
   let said = "Done."

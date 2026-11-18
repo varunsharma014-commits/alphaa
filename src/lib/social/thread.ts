@@ -1,12 +1,12 @@
 import type { User } from "@prisma/client"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { listAccounts, listPosts } from "./store"
 import { socialMessages } from "@/lib/agent/social-narration"
 
 export async function socialThread(user: User, note?: string | null) {
   const [accounts, posts] = await Promise.all([listAccounts(user.id), listPosts(user.id)])
-  return socialMessages({ growth: hasGrowth(user), accounts, posts, note })
+  return socialMessages({ growth: hasPro(user), accounts, posts, note })
 }
 
 /** The thread as opened from the menu: shows (and clears) the result of the last connect. */

@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "A $2,000 retainer buys human strategy and slow manual execution, while Alphaa buys continuous monitoring and automated fixes for a fraction of the price.",
   date: "2026-09-25",
-  updated: "2026-10-01",
+  updated: "2026-11-18",
   readMins: 7,
   tag: "Comparison",
   kind: "comparison",
@@ -34,7 +34,7 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> A typical local SEO agency retainer of around $2,000 a month buys human
         time aimed mostly at Google&apos;s blue links: technical fixes, content, links and a monthly report.
-        Alphaa costs $99 to $299 a month and focuses on getting you named by ChatGPT, Gemini, Claude and
+        Alphaa costs $99 to $499 a month and focuses on getting you named by ChatGPT, Gemini, Claude and
         Perplexity. Many owners need one, not both. Which one depends on where your customers now ask.
       </p>
 
@@ -108,7 +108,6 @@ export function Body() {
         <li>Writes FAQ pages, structured facts and an llms.txt file.</li>
         <li>Drafts Google Business Profile posts and review replies for you to approve.</li>
         <li>Sends a short, plain-English note every week instead of a 30-slide report.</li>
-        <li>On Full Service ($299/month), a human does the website work for you.</li>
       </ul>
 
       <h2>How do Alphaa and an SEO agency compare side by side?</h2>
@@ -130,7 +129,7 @@ export function Body() {
             <tr>
               <td>Monthly cost</td>
               <td>Around $2,000 (varies widely)</td>
-              <td>$99 Starter, $199 Pro, $299 Full Service</td>
+              <td>$99 Starter, $399 Pro, $499 Growth (early access)</td>
             </tr>
             <tr>
               <td>Contract</td>
@@ -145,7 +144,7 @@ export function Body() {
             <tr>
               <td>Who does the work</td>
               <td>Account manager and specialists, on their schedule</td>
-              <td>An AI agent; a human on Full Service</td>
+              <td>An AI agent, with you approving each change</td>
             </tr>
             <tr>
               <td>Reporting</td>
@@ -212,8 +211,8 @@ export function Body() {
 
       <h2>Is it cheaper to switch from an SEO agency to Alphaa?</h2>
       <p>
-        Yes, on price alone: at around $2,000 a month, an agency costs roughly seven to twenty times more than
-        Alphaa&apos;s $99 to $299 plans. But cheaper only matters if it does the job you need, so compare the work,
+        Yes, on price alone: at around $2,000 a month, an agency costs roughly four to twenty times more than
+        Alphaa&apos;s $99 to $499 plans. But cheaper only matters if it does the job you need, so compare the work,
         not just the invoice.
       </p>
       <p>

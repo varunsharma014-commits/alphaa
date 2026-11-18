@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { hasGrowth, hasPaidPlan, isComped } from "@/lib/billing"
+import { hasPaidPlan, hasPro, isComped } from "@/lib/billing"
 import { AgentShell } from "@/components/agent/AgentShell"
 import { getFeed } from "@/lib/agent/feed"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
@@ -72,7 +72,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const settings = await getAgentSettings(user.id)
   const v2 = dashV2Enabled(user, settings)
   const setup = v2 ? await setupProgress(user).catch(() => null) : null
-  const auto = { on: !!settings.autoApprove, pro: PRO_RE.test(user.plan), growth: hasGrowth(user) }
+  const auto = { on: !!settings.autoApprove, pro: PRO_RE.test(user.plan), growth: hasPro(user) /* = social, Pro and up */ }
   const trialDaysLeft =
     user.subscriptionStatus === "trialing" && user.trialEndsAt
       ? Math.max(0, Math.ceil((new Date(user.trialEndsAt).getTime() - Date.now()) / 86400000))

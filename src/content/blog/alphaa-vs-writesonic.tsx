@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "Writesonic suits a marketing team that wants AI visibility tracking, an AI article writer and site audits in one platform, while Alphaa suits an owner who wants four assistants checked weekly and approved fixes published for them.",
   date: "2026-10-27",
-  updated: "2026-10-27",
+  updated: "2026-11-18",
   readMins: 6,
   tag: "Comparison",
   kind: "comparison",
@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Writesonic's self-serve plans cost $79, $199 and $399 a month billed annually, as listed on its pricing page in October 2026.",
     "Writesonic's Starter, Basic and Growth plans track ChatGPT, Gemini and Google AI Overviews; Claude and Perplexity are listed on Enterprise.",
     "Every self-serve Writesonic plan includes an AI article writer, site audits and a WordPress integration.",
-    "Alphaa costs $99, $199 or $299 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes fixes the owner approves.",
+    "Alphaa costs $99, $399 or $499 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes fixes the owner approves.",
     "Writesonic fits a marketing team that will run the platform; Alphaa fits a business owner with no marketer.",
   ],
   sources: [
@@ -94,8 +94,8 @@ export function Body() {
 
       <h2>How much do Alphaa and Writesonic cost?</h2>
       <p>
-        Writesonic&apos;s self-serve plans cost $79, $199 and $399 a month billed annually, and Alphaa costs $99, $199
-        or $299 a month, month to month. Writesonic prices by prompts, articles, audits, users and projects; Alphaa
+        Writesonic&apos;s self-serve plans cost $79, $199 and $399 a month billed annually, and Alphaa costs $99, $399
+        or $499 a month, month to month. Writesonic prices by prompts, articles, audits, users and projects; Alphaa
         prices by business. Here is what each publishes, as of 27 October 2026.
       </p>
       <div className="table-wrap">
@@ -137,13 +137,13 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$199/mo, month to month</td>
+              <td>$399/mo, month to month</td>
               <td>Up to 3 locations, 4 blog posts a month, 4 profile posts a week, competitor benchmarking</td>
             </tr>
             <tr>
-              <td>Alphaa Full Service</td>
-              <td>$299/mo, month to month</td>
-              <td>Everything in Pro, plus a person installs code and publishes your posts and FAQs</td>
+              <td>Alphaa Growth</td>
+              <td>$499/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads, email and lead tracking</td>
             </tr>
           </tbody>
         </table>

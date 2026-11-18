@@ -11,8 +11,8 @@ function EarningsCalculator() {
   const [referrals, setReferrals] = useState(5)
   const [plan, setPlan] = useState<"starter" | "pro">("starter")
 
-  const planPrice = plan === "starter" ? 99 : 199
-  const planLabel = plan === "starter" ? "Starter ($99)" : "Pro ($199)"
+  const planPrice = plan === "starter" ? 99 : 399
+  const planLabel = plan === "starter" ? "Starter ($99)" : "Pro ($399)"
   const commission = 0.3
 
   const monthly = referrals * planPrice * commission
@@ -82,7 +82,7 @@ function EarningsCalculator() {
                     : "text-fg/40 hover:text-fg/70"
                 }`}
               >
-                {p === "starter" ? "Starter · $99/mo" : "Pro · $199/mo"}
+                {p === "starter" ? "Starter · $99/mo" : "Pro · $399/mo"}
               </button>
             ))}
           </div>
@@ -326,9 +326,9 @@ export default function ReferPage() {
               <tbody>
                 {[
                   { plan: "Starter Monthly", price: "$99/mo", cut: "$29.70/mo", year: "$356.40/yr" },
-                  { plan: "Starter Annual", price: "$990/yr", cut: "$297 one-time", year: "—" },
-                  { plan: "Pro Monthly", price: "$199/mo", cut: "$59.70/mo", year: "$716.40/yr", highlight: true },
-                  { plan: "Pro Annual", price: "$1,990/yr", cut: "$597 one-time", year: "—" },
+                  { plan: "Starter Annual", price: "$948/yr", cut: "$284.40 one-time", year: "—" },
+                  { plan: "Pro Monthly", price: "$399/mo", cut: "$119.70/mo", year: "$1,436.40/yr", highlight: true },
+                  { plan: "Pro Annual", price: "$3,828/yr", cut: "$1,148.40 one-time", year: "—" },
                 ].map((row, i) => (
                   <tr
                     key={row.plan}

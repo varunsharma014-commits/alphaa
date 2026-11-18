@@ -78,5 +78,5 @@ export async function saveAgentSettings(userId: string, patch: Partial<AgentSett
   return next
 }
 
-/** Pro and Full Service cover 3 locations in total (the main business + 2). */
+/** Pro and Growth cover 3 locations in total (the main business + 2). */
 export const maxExtraLocations = (plan: string) => (/pro|full|growth/i.test(plan) ? 2 : 0)

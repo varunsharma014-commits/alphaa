@@ -37,7 +37,7 @@ export async function generateMetadata({
   // Layout appends " | Alphaa"; keep the whole thing inside Google's ~65 chars.
   const long = `AI Marketing for ${displayPlural(v.plural)}: An AI Agent That Runs It`
   const title = long.length + 9 <= 65 ? long : `AI Marketing for ${displayPlural(v.plural)}`
-  const description = clipDescription(`An AI agent that runs your ${v.noun}'s marketing: Google posts, blogs, review replies, SEO and AI search from $99/mo. Social, ads and email on Growth. No ${v.agencyCostLabel} agency retainer.`)
+  const description = clipDescription(`An AI agent that runs your ${v.noun}'s marketing: Google posts, blogs, review replies, SEO and AI search from $99/mo. Social on Pro, ads and email on Growth. No ${v.agencyCostLabel} agency retainer.`)
   return {
     title,
     description,

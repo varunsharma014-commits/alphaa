@@ -55,7 +55,7 @@ export function startCron(): void {
     // Mon 13:00 UTC — weekly reports (Anthropic)
     if (dow === 1 && hour === 13) hit("/api/cron/weekly")
     // Mon, Tue, Thu, Fri 13:00 UTC — GBP post drafts (Anthropic). The route
-    // picks who is due: Starter Mon/Thu (2 a week), Pro / Full Service all four.
+    // picks who is due: Starter Mon/Thu (2 a week), Pro / Growth all four.
     if ((dow === 1 || dow === 2 || dow === 4 || dow === 5) && hour === 13) hit("/api/cron/gbp-posts")
     // Sun 06:00 UTC — competitor discovery / refresh (Anthropic)
     if (dow === 0 && hour === 6) hit("/api/cron/competitors")

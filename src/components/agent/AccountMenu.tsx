@@ -13,7 +13,6 @@ const ITEMS = [
   { label: "Billing", href: "/dashboard/settings/billing" },
   { label: "Your account", href: "/dashboard/settings/account" },
   { label: "Weekly briefings", href: "/dashboard/reports" },
-  { label: "Have a human do it", href: "/dashboard/concierge" },
 ]
 
 export function AccountMenu() {

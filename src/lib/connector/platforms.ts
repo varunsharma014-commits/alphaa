@@ -15,7 +15,7 @@ export const NONE_AVAILABLE: Availability = { wordpress: true, webflow: false, s
 export function platformPickerBlocks(available: Availability, lead = "Which website builder is your site on?"): Block[] {
   const fallback: Chip = {
     label: "Something else",
-    action: { type: "say", text: "No problem. Tap “Email it to my web person” on any fix and I’ll send them the exact change, where it goes and how to check it. Or our team can do it for you on Full Service." },
+    action: { type: "say", text: "No problem. Tap “Email it to my web person” on any fix and I’ll send them the exact change, where it goes and how to check it." },
   }
   return [
     { kind: "text", text: lead },

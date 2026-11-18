@@ -18,7 +18,7 @@ export const metadata = { title: "Getting started", robots: { index: false, foll
 // asks for the website, scans it, fills the profile from what it found and
 // opens checkout. Arriving with ?scan= (signed up from /start) the business is
 // already known, so it skips straight to the last step.
-export default async function OnboardingPage({ searchParams }: { searchParams: Promise<{ scan?: string; paid?: string; plan?: string }> }) {
+export default async function OnboardingPage({ searchParams }: { searchParams: Promise<{ scan?: string; paid?: string; plan?: string; billing?: string }> }) {
   const { userId: clerkId } = await auth()
   if (!clerkId) redirect("/login")
 
@@ -26,8 +26,9 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
   // it and sends the user back here.
   let user = await db.user.findUnique({ where: { clerkId } })
   if (!user) redirect("/dashboard")
-  const { scan, paid, plan: planParam } = await searchParams
+  const { scan, paid, plan: planParam, billing } = await searchParams
   const plan = planParam === "growth" || planParam === "pro" ? planParam : "starter"
+  const annual = billing === "annual"
 
   // Back from Stripe: the webhook usually lands first, but give it a few
   // seconds so a fresh customer isn't shown the "Start today" step again.
@@ -72,7 +73,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
       ) : null}
       {/* Funnel step: account created from a scan (fires once per session). */}
       {scan ? <ConversionTracker event="sign_up" metaEvent="CompleteRegistration" /> : null}
-      <StartAgent mode={mode} resumeName={user.businessName ?? undefined} autoCheckout={!!scan && mode === "resume" && !comped} plan={plan} />
+      <StartAgent mode={mode} resumeName={user.businessName ?? undefined} autoCheckout={!!scan && mode === "resume" && !comped} plan={plan} annual={annual} />
     </div>
   )
 }

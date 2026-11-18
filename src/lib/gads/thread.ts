@@ -21,7 +21,7 @@ export async function adsMessages(user: User, note?: string | null): Promise<Mes
     return [agent([
       { kind: "text", text: "Google Ads that pay for themselves.", big: true },
       { kind: "text", text: "On the Growth plan I build a Google Ads campaign from what your customers already search for, you approve it, and I tune it every week inside your budget." },
-      { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade" }, primary: true }] },
+      { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade?plan=growth" }, primary: true }] },
     ], "ad-upgrade")]
   }
   if (!gadsAvailable(user)) {

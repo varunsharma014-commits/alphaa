@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "Surfer suits a content team that wants an SEO writing editor and AI visibility tracking in one platform, while Alphaa suits an owner who wants four assistants checked weekly and approved fixes published for them.",
   date: "2026-10-27",
-  updated: "2026-10-27",
+  updated: "2026-11-18",
   readMins: 8,
   tag: "Comparison",
   kind: "comparison",
@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Surfer's plans cost $49, $82, $99, $182 and $299 a month billed yearly, as listed on its pricing page in October 2026.",
     "Surfer's Standard plan tracks 25 prompts weekly in ChatGPT only; its AI Search Analytics, Pro and Peace of Mind plans track five engines daily.",
     "Claude is not listed as a tracked engine on any Surfer plan in its pricing table.",
-    "Alphaa costs $99, $199 or $299 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes fixes the owner approves.",
+    "Alphaa costs $99, $399 or $499 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes fixes the owner approves.",
     "Surfer fits a team that writes and optimizes content itself; Alphaa fits a business owner with no marketer.",
   ],
   sources: [
@@ -92,7 +92,7 @@ export function Body() {
 
       <h2>How much do Alphaa and Surfer cost?</h2>
       <p>
-        Surfer&apos;s plans cost $49 to $299 a month billed yearly, and Alphaa costs $99, $199 or $299 a month, month
+        Surfer&apos;s plans cost $49 to $299 a month billed yearly, and Alphaa costs $99, $399 or $499 a month, month
         to month. Surfer prices by documents, tracked prompts and features; Alphaa prices by business and location.
         Here is what each publishes, as of 27 October 2026.
       </p>
@@ -138,13 +138,13 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$199/mo, month to month</td>
+              <td>$399/mo, month to month</td>
               <td>Up to 3 locations, 4 blog posts a month, 4 profile posts a week, competitor benchmarking</td>
             </tr>
             <tr>
-              <td>Alphaa Full Service</td>
-              <td>$299/mo, month to month</td>
-              <td>Everything in Pro, plus a person installs code and publishes your posts and FAQs</td>
+              <td>Alphaa Growth</td>
+              <td>$499/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads, email and lead tracking</td>
             </tr>
           </tbody>
         </table>

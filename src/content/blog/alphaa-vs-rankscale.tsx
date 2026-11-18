@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "Rankscale is a credit-based AI visibility tracker covering 17+ engines from $99 a month, while Alphaa is a $99-a-month agent that writes and publishes fixes for one business.",
   date: "2026-10-29",
-  updated: "2026-10-29",
+  updated: "2026-11-18",
   readMins: 8,
   tag: "Comparison",
   kind: "comparison",
@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Rankscale Pro costs $99 a month, or $84 a month billed yearly, for 1,200 credits, as of October 2026.",
     "Rankscale charges credits per engine per prompt, typically 0.25 credits, so engine choice and schedule decide what a plan covers.",
     "Rankscale lists 17+ AI engines, page audits on every plan and recommendations that it labels beta.",
-    "Alphaa costs $99, $199 or $299 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
+    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
     "Choose Rankscale to measure many brands or engines; choose Alphaa when nobody has time to act on the data.",
   ],
   sources: [
@@ -98,7 +98,7 @@ export function Body() {
             <tr>
               <td>Higher plans</td>
               <td>Pro+ $229, Growth $385, Enterprise $780 a month; custom plans</td>
-              <td>Pro $199, Full Service $299 a month</td>
+              <td>Pro $399, Growth $499 (early access) a month</td>
             </tr>
             <tr>
               <td>How usage is counted</td>
@@ -154,7 +154,7 @@ export function Body() {
         pricier engines use credits much faster, so model your schedule in the calculator before you buy.
       </p>
       <p>
-        Alphaa costs $99 (Starter), $199 (Pro) or $299 (Full Service) a month, month to month. There is no free trial;
+        Alphaa costs $99 (Starter), $399 (Pro) or $499 (Growth, early access) a month, month to month. There is no free trial;
         the <Link href="/start">free 60-second AI check</Link> shows what the four assistants say about your business
         today, and plan details are on the <Link href="/pricing">pricing page</Link>.
       </p>

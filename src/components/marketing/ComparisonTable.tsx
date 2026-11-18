@@ -1,7 +1,7 @@
 import { Check, X, Minus } from "lucide-react"
 
 const rows = [
-  { feature: "Monthly cost",              alphaa: "$99–$199",   agency: "$2,000",  diy: "Your time" },
+  { feature: "Monthly cost",              alphaa: "$99–$499",   agency: "$2,000",  diy: "Your time" },
   { feature: "Optimizes for ChatGPT",     alphaa: true,         agency: false,          diy: false },
   { feature: "Optimizes for Claude",      alphaa: true,         agency: false,          diy: false },
   { feature: "Optimizes for Gemini",      alphaa: true,         agency: false,          diy: false },

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { currentUser } from "@/lib/connector/user"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { agent, type Message } from "@/lib/agent/types"
 import { CanvaError, canvaConfigured, designFromAsset, disconnectCanva, exportDesignJpeg, getDesign, listBrandTemplates, listDesigns, uploadAsset } from "@/lib/canva/client"
 import { getCanvaAccount, saveCanvaAccount } from "@/lib/canva/store"
@@ -55,14 +55,14 @@ export async function GET() {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   if (!canvaConfigured()) return NextResponse.json({ messages: [] })
-  return NextResponse.json({ messages: canvaMessages(await getCanvaAccount(user.id), { growth: hasGrowth(user), templates: false, template: null }) })
+  return NextResponse.json({ messages: canvaMessages(await getCanvaAccount(user.id), { growth: hasPro(user), templates: false, template: null }) })
 }
 
 export async function POST(req: Request) {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   if (!canvaConfigured()) return NextResponse.json({ error: "Canva is coming soon." }, { status: 404 })
-  if (!hasGrowth(user)) return NextResponse.json({ error: "Canva comes with the Growth plan." }, { status: 403 })
+  if (!hasPro(user)) return NextResponse.json({ error: "Canva comes with the Pro plan." }, { status: 403 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
   const uid = user.id

@@ -24,7 +24,7 @@ export type Service = {
   how: { t: string; p: string }[]
   gets: string[]
   savings: { them: string; themWhat: string; us: string; usWhat: string; sources: { label: string; url: string }[] }
-  plan: "starter" | "growth"
+  plan: "starter" | "pro" | "growth"
   /** Shown when part of it isn't live yet. */
   availability?: string
   faqs: { q: string; a: string }[]
@@ -69,15 +69,15 @@ export const SERVICES: Service[] = [
       "Planned around local events, seasons and news",
       "Every post shown to you before or after it goes out",
     ],
-    savings: { them: "$500–$3,000", themWhat: "a month is what most small businesses are quoted for social media management", us: "$499", usWhat: "a month for Growth, with ads, email, SEO and blogs included too", sources: [{ label: "SocialBu, social media management pricing 2026", url: "https://socialbu.com/blog/social-media-management-pricing" }, { label: "Boomp, pricing benchmarks for local businesses", url: "https://www.boomp.net/research/social-media-management-pricing-benchmarks-local-businesses" }] },
-    plan: "growth",
-    availability: "Social media is part of the Growth plan, in early access. Posts and images are written for you today. Posting straight to Facebook, Instagram and LinkedIn opens as Meta and LinkedIn approve Alphaa; until then you copy each post with one tap.",
+    savings: { them: "$500–$3,000", themWhat: "a month is what most small businesses are quoted for social media management", us: "$399", usWhat: "a month for Pro, with SEO, Google posts and blogs included too", sources: [{ label: "SocialBu, social media management pricing 2026", url: "https://socialbu.com/blog/social-media-management-pricing" }, { label: "Boomp, pricing benchmarks for local businesses", url: "https://www.boomp.net/research/social-media-management-pricing-benchmarks-local-businesses" }] },
+    plan: "pro",
+    availability: "Social media is part of the Pro and Growth plans. Posts and images are written for you today. Posting straight to Facebook, Instagram and LinkedIn opens as Meta and LinkedIn approve Alphaa; until then you copy each post with one tap.",
     faqs: [
       { q: "Can an AI agent really manage my social media?", a: "Yes. Alphaa plans your week, writes each post in your voice and makes an image in your brand colours with your logo. You approve each post with one tap, or let it post on its own once your accounts are connected." },
       { q: "Will the posts sound like me?", a: "Alphaa reads your website and the replies you’ve written to customers, then gives you three voices to choose from, with an example of each. You can also set the tone, emoji, length and language, or describe your voice in your own words." },
       { q: "Which platforms does it cover?", a: "Facebook, Instagram and LinkedIn." },
       { q: "Do I need to design the images?", a: "No. Every post comes with a square image in your brand colours, with your logo and a short headline. Alphaa reads your colours and logo from your website, and you can change them in one tap." },
-      { q: "How much does social media management cost?", a: "Most small businesses are quoted $500 to $3,000 a month by agencies, according to 2026 pricing guides. With Alphaa it’s part of the Growth plan at $499 a month, which also covers ads, email, SEO and blog posts." },
+      { q: "How much does social media management cost?", a: "Most small businesses are quoted $500 to $3,000 a month by agencies, according to 2026 pricing guides. With Alphaa it’s part of the Pro plan at $399 a month, which also covers SEO, Google posts and blog posts." },
       { q: "Does it post automatically?", a: "Only if you want it to. Posting straight to your accounts opens as Meta and LinkedIn approve Alphaa’s access. Until then, each post is ready to copy with one tap." },
     ],
     feature: {
@@ -237,7 +237,7 @@ export const SERVICES: Service[] = [
       "Published to WordPress, Webflow, Shopify or Wix",
       "See which posts bring visitors",
     ],
-    savings: { them: "$250–$400", themWhat: "per 1,500-word post is the most common freelance rate, so four posts a month is $1,000 or more", us: "$99", usWhat: "a month for Starter with 2 posts a month, or $199 for Pro with 4", sources: [{ label: "Peak Freelance, survey of 213 freelance writers", url: "https://peakfreelance.com/blog/freelance-writing-rates/" }] },
+    savings: { them: "$250–$400", themWhat: "per 1,500-word post is the most common freelance rate, so four posts a month is $1,000 or more", us: "$99", usWhat: "a month for Starter with 2 posts a month, or $399 for Pro with 4 and social media too", sources: [{ label: "Peak Freelance, survey of 213 freelance writers", url: "https://peakfreelance.com/blog/freelance-writing-rates/" }] },
     plan: "starter",
     faqs: [
       { q: "Can AI write blog posts that rank?", a: "Posts rank when they answer a real question clearly. Alphaa picks topics from what your customers actually search for and ask AI, answers the question in the first lines, and adds a short FAQ, which is the format Google and AI assistants quote." },

@@ -115,7 +115,7 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
     ]),
     agent([
       { kind: "text", text: "I wrote the structured facts AI reads about you.", big: true },
-      { kind: "chips", items: [{ label: "Email it to my web person", action: { type: "handoff", what: "schema" }, primary: true }, { label: "Have our team do it", action: { type: "link", href: "/dashboard/concierge" } }, { label: "Connect my website", action: { type: "wp-connect" } }] },
+      { kind: "chips", items: [{ label: "Email it to my web person", action: { type: "handoff", what: "schema" }, primary: true }, { label: "Connect my website", action: { type: "wp-connect" } }] },
     ]),
     agent([
       { kind: "text", text: "Reviews are one of the strongest things AI weighs before naming a business." },

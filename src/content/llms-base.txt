@@ -1,12 +1,12 @@
 # Alphaa
 
-> Alphaa is an AI marketing agent for small businesses. It runs the marketing every week, in the owner's own voice and brand colours: social media posts with branded images, Google Business Profile updates, blog posts that answer what customers ask, review replies, website fixes so AI assistants (ChatGPT, Gemini, Claude, Perplexity) and Google can recommend the business, and on the Growth plan Google and Meta ads and email campaigns. The owner can say "run my marketing for this week" by typing or out loud, approves anything public with one tap, or lets the agent run on its own. From $99 a month.
+> Alphaa is an AI marketing agent for small businesses. It runs the marketing every week, in the owner's own voice and brand colours: Google Business Profile updates, blog posts that answer what customers ask, review replies, website fixes so AI assistants (ChatGPT, Gemini, Claude, Perplexity) and Google can recommend the business, social media posts with branded images on the Pro plan, and on the Growth plan Google and Meta ads and email campaigns. The owner can say "run my marketing for this week" by typing or out loud, approves anything public with one tap, or lets the agent run on its own. From $99 a month.
 
 ## Key facts
 
-- Price: from $99/month (Starter). Pro is $199/month, Full Service (a human does the setup and publishing) is $299/month. Growth ($499/month, early access) adds social media, Google and Meta ads and email campaigns; ad spend is paid to Google and Meta directly and never marked up.
+- Price: three plans. Starter $99/month ($79/month billed yearly): SEO and AI search, Google posts, blogs, review replies, website fixes. Pro $399/month ($319/month billed yearly) adds social media management, more posts, up to 3 locations and auto-approve. Growth $499/month ($399/month billed yearly, early access) adds Google and Meta ads, email campaigns and lead tracking; ad spend is paid to Google and Meta directly and never marked up.
 - Services: social media management, ads management, SEO and AI search (AEO), blog and content writing, email marketing. One agent does all of them.
-- Local prices (charged in local currency; Starter / Pro / Full Service a month): UK £79 / £159 / £239 (alphaa.app/uk); Germany, France and Italy 99 € / 199 € / 299 € (alphaa.app/de, /fr, /it); UAE AED 369 / 739 / 1,099 (alphaa.app/ae). US, Canada and everywhere else: $99 / $199 / $299 USD. Business customers only; Alphaa is not VAT-registered and adds no VAT.
+- Local prices (charged in local currency; Starter / Pro / Growth a month): UK £79 / £319 / £399 (alphaa.app/uk); Germany, France and Italy 99 € / 399 € / 499 € (alphaa.app/de, /fr, /it); UAE AED 369 / 1,469 / 1,849 (alphaa.app/ae). US, Canada and everywhere else: $99 / $399 / $499 USD. Business customers only; Alphaa is not VAT-registered and adds no VAT.
 - 90-day AI Visibility Guarantee: if none of ChatGPT, Gemini, Claude or Perplexity names the business in Alphaa's weekly checks during the first 90 days on a paid plan, the next month is free (credited automatically, once per customer).
 - Month to month. No contract, no exit fees, cancel online in a minute. There is no free trial — the free check below is how you see what you'd get.
 - No technical skills needed: the agent does the work, the owner approves.
@@ -22,14 +22,14 @@
 - [Home](https://alphaa.app/): What the agent does and how it works.
 - [Get started](https://alphaa.app/start): The check and first week above.
 - [Services](https://alphaa.app/services): Everything the agent does, one page per service.
-  - [Social media management](https://alphaa.app/services/social-media-management): Facebook, Instagram and LinkedIn posts every week, in your voice, with branded images (Growth).
+  - [Social media management](https://alphaa.app/services/social-media-management): Facebook, Instagram and LinkedIn posts every week, in your voice, with branded images (Pro and Growth).
   - [Ads management](https://alphaa.app/services/ads-management): tracking, Google and Meta campaigns and weekly tuning, never above your budget, no cut of ad spend (Growth).
   - [SEO and AI search](https://alphaa.app/services/ai-search-optimization): get recommended by ChatGPT, Gemini, Claude and Perplexity and show up on Google (from $99).
   - [Blog and content writing](https://alphaa.app/services/content-writing): posts that answer what customers search for, published to your site (from $99).
   - [Email marketing](https://alphaa.app/services/email-marketing): emails that bring past customers back, only to people who agreed (Growth).
 - [How it works](https://alphaa.app/how-it-works): Step by step.
 - [About](https://alphaa.app/about): Who Alphaa is, what it does, contact details.
-- [Pricing](https://alphaa.app/pricing): Starter $99/month, Pro $199/month, Growth $499/month (early access), Full Service $299/month. Month to month.
+- [Pricing](https://alphaa.app/pricing): Starter $99/month, Pro $399/month, Growth $499/month (early access). 20% off billed yearly. Month to month.
 - [Blog](https://alphaa.app/blog): Plain-English marketing guides for small businesses: Google, AI search, social media, ads and email.
 - [Integrations](https://alphaa.app/integrations): WordPress, Shopify and Webflow today; Wix coming soon.
 - [For dentists](https://alphaa.app/for/dentists), [plumbers](https://alphaa.app/for/plumbers), [HVAC](https://alphaa.app/for/hvac), [lawyers](https://alphaa.app/for/lawyers), [med spas](https://alphaa.app/for/med-spas), [restaurants](https://alphaa.app/for/restaurants)
@@ -97,7 +97,7 @@ Connect a website once and the agent publishes the changes you approve (or, on P
 - [Shopify](https://alphaa.app/integrations/shopify): one-click app with read_content and write_content only. Publishes blog posts and pages and updates their search titles and descriptions. It cannot edit theme files or robots.txt, and has no access to orders, customers or products.
 - [Webflow](https://alphaa.app/integrations/webflow): one-click app with CMS read/write, Pages read/write and Sites read. Publishes blog posts to a CMS collection and updates page SEO titles and descriptions (live after the owner's next Webflow publish).
 - [Wix](https://alphaa.app/integrations/wix): coming soon. Today the agent emails the owner's web person the exact change.
-- Any other site: the agent emails the exact code and instructions to the owner's web person, or the Full Service team installs it.
+- Any other site: the agent emails the exact code and instructions to the owner's web person.
 
 ## How it works
 

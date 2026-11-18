@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
-import { hasGrowth } from "@/lib/billing"
+import { hasGrowth, hasPro } from "@/lib/billing"
 import { autopilotMessages, PRO_RE } from "@/lib/agent/autopilot"
 import { agent } from "@/lib/agent/types"
 import { acceptAutoApprove, needsConsent, revokeAutoApprove } from "@/lib/agent/auto-approve"
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
   let said: string
 
   if (input.op === "auto_on") {
-    if (input.key && input.key !== "reviews" && !(input.key === "posts" ? PRO_RE.test(user.plan) : hasGrowth(user))) return NextResponse.json({ error: input.key === "posts" ? "Publishing without asking comes with the Pro plan." : "That comes with the Growth plan." }, { status: 403 })
+    if (input.key && input.key !== "reviews" && !(input.key === "posts" ? PRO_RE.test(user.plan) : hasPro(user))) return NextResponse.json({ error: "Publishing without asking comes with the Pro plan." }, { status: 403 })
     said = (await acceptAutoApprove(user, req, input.key, input.value)).said
     return NextResponse.json({ on: true, messages: [agent([{ kind: "text", text: said }]), ...(await autopilotMessages(user))] })
   }
@@ -85,7 +85,8 @@ export async function POST(req: Request) {
       if (value === "auto" && !PRO_RE.test(user.plan)) return NextResponse.json({ error: "Publishing without asking comes with the Pro plan." }, { status: 403 })
       await saveAgentSettings(user.id, { autoPublishPosts: value === "auto" })
     } else {
-      if ((key === "social" || key === "email" || key === "ads") && !hasGrowth(user)) return NextResponse.json({ error: "That comes with the Growth plan." }, { status: 403 })
+      if (key === "social" && !hasPro(user)) return NextResponse.json({ error: "Social media comes with the Pro plan." }, { status: 403 })
+      if ((key === "email" || key === "ads") && !hasGrowth(user)) return NextResponse.json({ error: "That comes with the Growth plan." }, { status: 403 })
       if (key === "ads" && value === "budget" && !a.adBudget) return NextResponse.json({ error: "Set your monthly budget first, so I know where to stop." }, { status: 400 })
       await saveAgentSettings(user.id, { autopilot: { ...a, [key]: value, at: now } })
     }

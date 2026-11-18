@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "The best AI SEO agent is the one whose way of changing your site matches how much control you want and who on your team will run it.",
   date: "2026-10-29",
-  updated: "2026-10-29",
+  updated: "2026-11-18",
   readMins: 9,
   tag: "Comparison",
   kind: "listicle",
@@ -19,7 +19,7 @@ export const meta: PostMeta = {
     "Search Atlas OTTO deploys changes on autopilot by default through a JavaScript pixel, with an optional approval mode.",
     "Alli AI installs through a WordPress plugin, JavaScript snippet or tag manager and lists a 10-day free trial on all plans.",
     "Profound's documentation says its Agents can publish drafts directly to a CMS and are available on all plans.",
-    "Alphaa costs $99, $199 or $299 a month, checks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes only what the owner approves.",
+    "Alphaa costs $99, $399 or $499 a month, checks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes only what the owner approves.",
   ],
   sources: [
     { title: "Search Atlas Pricing & Subscription Plans | Search Atlas", publisher: "Search Atlas", url: "https://searchatlas.com/pricing/" },
@@ -164,7 +164,7 @@ export function Body() {
         turns gaps into specific pages, FAQ answers and structured data.
       </p>
       <p>
-        Plans cost $99, $199 or $299 a month, month to month, as listed on the{" "}
+        Plans cost $99, $399 or $499 a month, month to month, as listed on the{" "}
         <Link href="/pricing">pricing page</Link>. It publishes to WordPress, Shopify and Webflow through the{" "}
         <Link href="/integrations">integrations</Link>. There is no free trial; instead there is a free 60-second
         check. The limits are real: it checks weekly rather than daily, it covers four AI engines rather than nine,

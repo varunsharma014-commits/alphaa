@@ -10,7 +10,7 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { hasGrowth } from "@/lib/billing"
+import { hasGrowth, hasPro } from "@/lib/billing"
 import { ensureVoice, voiceText } from "@/lib/voice"
 import { ensureBrandKit } from "@/lib/brand-kit"
 import { renderSocialCard } from "@/lib/social-card"
@@ -153,7 +153,8 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   const user = await db.user.findUnique({ where: { id: userId }, include: { integration: true } })
   if (!user) throw new Error("no user")
   const s = await getAgentSettings(userId)
-  const growth = hasGrowth(user)
+  // Social posts are Pro and up (2026-11-18).
+  const growth = hasPro(user)
   const google = !!(user.integration?.gmbAccountId && user.integration?.gmbLocationId)
   const siteConnected = !!(s.wp || s.site)
   const auto = !!s.autoPublishPosts && /pro|full|growth/i.test(user.plan)
@@ -242,7 +243,8 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   const reviews = google ? await db.gmbReview.count({ where: { userId, reply: null, publishedAt: { gte: new Date(Date.now() - 60 * DAY) } } }) : 0
   if (reviews) run.notes.push(s.autopilot?.reviews && s.autopilot.reviews !== "ask" ? `I’m replying to your ${reviews} new ${reviews === 1 ? "review" : "reviews"} overnight, the way you told me to.` : `${reviews} new ${reviews === 1 ? "review is" : "reviews are"} waiting for a reply. I’ve written them; they’re on your home screen.`)
   if (!google) run.notes.push("Connect your Google listing and I’ll add two Google updates every week, so you show up when people nearby search for what you do.")
-  if (!growth) run.notes.push("Want me to post on your social media, email your customers and run your ads too? That’s the Growth plan.")
+  if (!growth) run.notes.push("Want me to post on your social media too? That’s the Pro plan.")
+  else if (!hasGrowth(user)) run.notes.push("Want me to email your customers and run your ads too? That’s the Growth plan, in early access.")
   else run.notes.push("Your ads and email campaigns join the week as soon as Google and Meta approve Alphaa. I’ll tell you here when they do.")
   const live = run.items.filter((i) => i.status === "published" || i.status === "scheduled").length
   const waiting = run.items.filter((i) => i.status === "ready").length

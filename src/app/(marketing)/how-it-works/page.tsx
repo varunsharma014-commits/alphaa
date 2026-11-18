@@ -27,7 +27,7 @@ const STEPS = [
     tone: "ad" as SvcKey,
     eyebrow: "Step 2 · A few clicks",
     title: "Connect what you already have.",
-    body: "Your Google listing, your website and, on Growth, your ad and social accounts. One secure click each. No passwords to hand over, nothing to install.",
+    body: "Your Google listing, your website, your social accounts on Pro, and your ad accounts on Growth. One secure click each. No passwords to hand over, nothing to install.",
     art: <Checks rows={["Brand and voice learned", "Google Business Profile connected", "Website connected", "First week planned"]} />,
   },
   {

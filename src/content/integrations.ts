@@ -88,7 +88,7 @@ export const INTEGRATIONS: Integration[] = [
       ["Undo on everything", "Undo hides a post or page again (it isn’t deleted), and puts a title or description back to what it was."],
     ],
     cant: [
-      "Shopify apps with these permissions can’t edit theme files or robots.txt, so Alphaa can’t add sitewide structured data, AI-crawler rules or an llms.txt at your store’s root. It emails your web person the exact change, or our team does it on Full Service.",
+      "Shopify apps with these permissions can’t edit theme files or robots.txt, so Alphaa can’t add sitewide structured data, AI-crawler rules or an llms.txt at your store’s root. It emails your web person the exact change.",
       "Your homepage title and description live in Online Store → Preferences, which apps can’t change. Alphaa tells you exactly what to paste there.",
       "Your store needs a blog to publish posts to. If it doesn’t have one yet, add one in Shopify under Online Store → Blog posts → Manage blogs.",
     ],
@@ -104,7 +104,7 @@ export const INTEGRATIONS: Integration[] = [
     permsNote: "That’s all. Alphaa has no access to your orders, customers, products, payments or theme code.",
     faq: [
       { q: "What can Alphaa access in my Shopify store?", a: "Only your online store content: blog posts and pages. The app asks for read_content and write_content and nothing else, so it can’t see orders, customers, products or payments." },
-      { q: "Can Alphaa edit my theme or robots.txt on Shopify?", a: "No. Those permissions don’t cover theme files or robots.txt. For changes there, Alphaa emails your web person the exact code and where it goes, or our team does it for you on Full Service." },
+      { q: "Can Alphaa edit my theme or robots.txt on Shopify?", a: "No. Those permissions don’t cover theme files or robots.txt. For changes there, Alphaa emails your web person the exact code and where it goes." },
       { q: "What happens when I click Undo?", a: "The blog post or page is unpublished (hidden), not deleted, so you can still find it in Shopify. Title and description changes go back to what they were before." },
       { q: "Will Alphaa publish without asking?", a: APPROVAL },
       { q: "How do I disconnect?", a: "In Alphaa, go to Settings → Website connection and click Disconnect. To remove access completely, uninstall the Alphaa app in Shopify under Settings → Apps and sales channels; Alphaa drops the connection as soon as Shopify tells us." },
@@ -148,7 +148,7 @@ export const INTEGRATIONS: Integration[] = [
     faq: [
       { q: "What can Alphaa change on my Webflow site?", a: "Items in your blog collection and the SEO title and description of your pages. It asks for CMS read/write, Pages read/write and Sites read. It can’t change your designs, site settings or forms." },
       { q: "Why don’t my title changes show up straight away?", a: "Webflow stages page settings until you publish. Alphaa doesn’t publish your whole site for you, because that would also push any unfinished work in the Designer. Hit Publish in Webflow and they go live." },
-      { q: "Can Alphaa add schema or llms.txt on Webflow?", a: "Not with the permissions it asks for. Alphaa writes the structured data and llms.txt for you and emails your web person exactly where to paste them in Webflow, or our team does it on Full Service." },
+      { q: "Can Alphaa add schema or llms.txt on Webflow?", a: "Not with the permissions it asks for. Alphaa writes the structured data and llms.txt for you and emails your web person exactly where to paste them in Webflow." },
       { q: "What happens when I click Undo?", a: "A published post is unpublished and kept as a draft in your CMS, not deleted. Page title and description changes go back to what they were." },
       { q: "Will Alphaa publish without asking?", a: APPROVAL },
       { q: "How do I disconnect?", a: "In Alphaa, go to Settings → Website connection and click Disconnect. Alphaa forgets the connection and asks Webflow to revoke its access. You can also remove Alphaa in your Webflow workspace’s app settings." },
@@ -160,11 +160,11 @@ export const INTEGRATIONS: Integration[] = [
     status: "soon",
     metaTitle: "Alphaa for Wix — coming soon",
     description:
-      "A one-click Alphaa app for Wix is coming soon. Until then, Alphaa writes every fix for your Wix site and emails your web person exactly what to change, or our team does it for you on Full Service.",
+      "A one-click Alphaa app for Wix is coming soon. Until then, Alphaa writes every fix for your Wix site and emails your web person exactly what to change.",
     h1: "Alphaa for Wix.",
     h1Quiet: "Coming soon.",
     tldr:
-      "A one-click Alphaa app for Wix is coming soon. You can use Alphaa on a Wix site today: it writes every fix and emails your web person the exact change and where it goes, or our team makes the changes for you on the Full Service plan.",
+      "A one-click Alphaa app for Wix is coming soon. You can use Alphaa on a Wix site today: it writes every fix and emails your web person the exact change and where it goes.",
     does: [
       ["Today: every fix, written for you", "FAQ pages, blog posts, page titles and descriptions and structured data, written from your business facts."],
       ["Today: sent to your web person", "Alphaa emails the exact change and where it goes in Wix. Their replies come to you."],
@@ -172,12 +172,12 @@ export const INTEGRATIONS: Integration[] = [
       ["Coming soon: page titles and descriptions", "Updated on your pages and posts, with Undo."],
     ],
     cant: [
-      "Until the Wix app is live, Alphaa can’t publish to Wix by itself. Use “Email it to my web person” on any fix, or the Full Service plan.",
+      "Until the Wix app is live, Alphaa can’t publish to Wix by itself. Use “Email it to my web person” on any fix.",
     ],
     steps: [
       "Start with the free check at alphaa.app/start and see what the AIs say about you.",
       "Approve the fixes Alphaa writes for your site.",
-      "Tap “Email it to my web person”, or let our team do it on Full Service. When the Wix app is live, you connect it with one click.",
+      "Tap “Email it to my web person”. When the Wix app is live, you connect it with one click.",
     ],
     perms: [
       { scope: "None yet", why: "Nothing is installed on your Wix site today. When the app launches, it will ask only for what it needs to publish blog posts and update page titles, and this page will list each permission." },
@@ -185,8 +185,8 @@ export const INTEGRATIONS: Integration[] = [
     faq: [
       { q: "Does Alphaa work with Wix?", a: "Yes, today by email: Alphaa writes each fix and sends your web person the exact change. A one-click Wix app that publishes for you is coming soon." },
       { q: "When is the Wix app coming?", a: "We’re not giving a date until it’s ready. This page will change to show the connection steps and permissions when it is." },
-      { q: "Can your team make the changes on my Wix site for me?", a: "Yes, on the Full Service plan our team makes the approved changes for you." },
-      { q: "Will Alphaa publish without asking?", a: "No. Nothing goes live until you approve it, and on Wix today a person makes each change." },
+      { q: "Can your team make the changes on my Wix site for me?", a: "No. Alphaa writes each approved change and emails your web person exactly what to change and where it goes in Wix." },
+      { q: "Will Alphaa publish without asking?", a: "No. Nothing goes live until you approve it, and on Wix today your web person makes each change." },
     ],
   },
 ]

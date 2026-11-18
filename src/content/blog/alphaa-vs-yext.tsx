@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "Yext keeps your listings accurate across directories, while Alphaa checks what AI assistants actually say about you and fixes the signals behind it.",
   date: "2026-09-25",
-  updated: "2026-10-01",
+  updated: "2026-11-18",
   readMins: 7,
   tag: "Comparison",
   kind: "comparison",
@@ -148,7 +148,7 @@ export function Body() {
             <tr>
               <td><strong>Pricing model</strong></td>
               <td>Custom quote, typically billed annually; <a href="https://www.yext.com/knowledge-center/yext-faq" {...ext}>check Yext&apos;s pricing FAQ</a></td>
-              <td>Flat monthly: $99 Starter, $199 Pro (up to 3 locations), $299 Full Service; month to month</td>
+              <td>Flat monthly: $99 Starter, $399 Pro (up to 3 locations), $499 Growth (early access); month to month</td>
             </tr>
             <tr>
               <td><strong>Best fit</strong></td>
@@ -162,7 +162,7 @@ export function Body() {
       <h2>How much does Yext cost compared with Alphaa?</h2>
       <p>
         Yext does not publish a single price. Its own FAQ says pricing is custom, scales with locations,
-        product and term length, and is typically billed annually. Alphaa is $99, $199 or $299 a month,
+        product and term length, and is typically billed annually. Alphaa is $99, $399 or $499 a month,
         month to month, with no contract.
       </p>
       <p>

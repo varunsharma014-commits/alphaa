@@ -5,7 +5,7 @@ import { createHash } from "crypto"
 import type { User } from "@prisma/client"
 import { db } from "@/lib/db"
 import { realEmail } from "@/lib/sites"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { PRO_RE } from "@/lib/agent/autopilot"
 import { CONSENT_VERSION, consentText, type ConsentScope } from "@/lib/auto-approve-text"
@@ -21,7 +21,7 @@ export const autoApproveOn = (s: { autoApprove?: unknown }) => !!s.autoApprove
 
 /** Settings that publish without asking, as allowed by the plan. */
 export function scopeFor(user: User, only?: ConsentScope["only"]): ConsentScope {
-  return { pro: PRO_RE.test(user.plan), growth: hasGrowth(user), only }
+  return { pro: PRO_RE.test(user.plan), growth: hasPro(user), only }
 }
 
 export async function acceptAutoApprove(user: User, req: Request, only?: ConsentScope["only"], value?: string): Promise<{ said: string }> {

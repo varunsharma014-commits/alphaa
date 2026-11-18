@@ -3,7 +3,7 @@
 import { db } from "@/lib/db"
 import { agent, type Chip, type Message } from "@/lib/agent/types"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { hasGrowth, hasPaidPlan, isComped } from "@/lib/billing"
+import { hasGrowth, hasPaidPlan, hasPro, isComped } from "@/lib/billing"
 import { listAccounts } from "@/lib/social/store"
 import { PLATFORM_NAME } from "@/lib/social/types"
 import { canvaConfigured } from "@/lib/canva/client"
@@ -25,6 +25,8 @@ export async function channelsMessages(user: User): Promise<Message[]> {
     db.mockActivity.count({ where: { userId: user.id, type: { in: ["social_published", "post_draft", "review_reply"] }, createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) } } }),
   ])
   const growth = hasGrowth(user)
+  // Social media and Canva are Pro and up (2026-11-18); ads, email and tracking stay Growth.
+  const pro = hasPro(user)
   const paid = hasPaidPlan(user) || isComped(user.email)
   const rows: Row[] = []
   const chips: Chip[] = []
@@ -45,18 +47,18 @@ export async function channelsMessages(user: User): Promise<Message[]> {
   const expired = accounts.filter((a) => a.status !== "active")
   rows.push({
     name: "Social media",
-    detail: active.length ? Array.from(new Set(active.map((a) => PLATFORM_NAME[a.platform]))).join(", ") : growth ? "Facebook, Instagram, LinkedIn, TikTok" : "Growth plan",
-    status: expired.length ? "Reconnect needed" : active.length ? `${active.length} connected` : growth ? "Not connected" : "Growth plan",
+    detail: active.length ? Array.from(new Set(active.map((a) => PLATFORM_NAME[a.platform]))).join(", ") : pro ? "Facebook, Instagram, LinkedIn, TikTok" : "Pro plan",
+    status: expired.length ? "Reconnect needed" : active.length ? `${active.length} connected` : pro ? "Not connected" : "Pro plan",
     ok: active.length > 0 && !expired.length,
   })
-  if (growth) chips.push({ label: active.length ? "Manage social accounts" : "Connect social accounts", action: { type: "thread", topic: "social" } })
+  if (pro) chips.push({ label: active.length ? "Manage social accounts" : "Connect social accounts", action: { type: "thread", topic: "social" } })
 
   // Canva (lib/canva): only once Alphaa's Canva app keys exist.
   if (canvaConfigured()) {
     const canva = await getCanvaAccount(user.id)
     const on = canva?.status === "active"
-    rows.push({ name: "Canva", detail: on ? "Your designs on your posts, and edits to mine" : "Post your own designs and touch up mine", status: !growth ? "Growth plan" : on ? "Connected" : canva ? "Reconnect needed" : "Not connected", ok: !!on })
-    if (growth) chips.push(on ? { label: "Use my Canva designs", action: { type: "agent-op", endpoint: "canva", body: { op: "designs" } } } : connectCanvaChip("channels"))
+    rows.push({ name: "Canva", detail: on ? "Your designs on your posts, and edits to mine" : "Post your own designs and touch up mine", status: !pro ? "Pro plan" : on ? "Connected" : canva ? "Reconnect needed" : "Not connected", ok: !!on })
+    if (pro) chips.push(on ? { label: "Use my Canva designs", action: { type: "agent-op", endpoint: "canva", body: { op: "designs" } } } : connectCanvaChip("channels"))
   }
 
   const t = s.tracking
@@ -91,9 +93,13 @@ export async function channelsMessages(user: User): Promise<Message[]> {
     { kind: "sources", items: rows },
     ...(chips.length ? [{ kind: "chips" as const, items: chips }] : []),
   ], "ch-all")]
-  if (!growth) out.push(agent([
-    { kind: "text", text: "Want me to run your social media, ads and email too? That’s the Growth plan." },
-    { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade" } }] },
+  if (!pro) out.push(agent([
+    { kind: "text", text: "Want me to run your social media too? That’s the Pro plan." },
+    { kind: "chips", items: [{ label: "See the Pro plan", action: { type: "link", href: "/dashboard/upgrade?plan=pro" } }] },
+  ], "ch-growth"))
+  else if (!growth) out.push(agent([
+    { kind: "text", text: "Want me to run your ads and email too? That’s the Growth plan, in early access." },
+    { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade?plan=growth" } }] },
   ], "ch-growth"))
   return out
 }

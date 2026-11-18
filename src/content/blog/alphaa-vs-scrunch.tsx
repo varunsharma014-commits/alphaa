@@ -9,7 +9,7 @@ export const meta: PostMeta = {
   subtitle:
     "Scrunch gives brand and agency teams prompt-level AI search monitoring, page audits and an agent-ready version of their site, while Alphaa checks four assistants weekly for one business and publishes the fixes the owner approves.",
   date: "2026-10-08",
-  updated: "2026-10-08",
+  updated: "2026-11-18",
   readMins: 8,
   tag: "Comparison",
   kind: "comparison",
@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Scrunch Starter costs $250 a month billed annually or $300 month to month, with a 7-day trial and no card, as of October 2026.",
     "Scrunch tracks ChatGPT, Claude, Gemini, Perplexity, Google AI Mode, AI Overviews and Meta, according to its pricing page.",
     "Sitecore announced it had acquired Scrunch on 3 June 2026 and is combining it with its content management tools.",
-    "Alphaa costs $99, $199 or $299 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes approved fixes.",
+    "Alphaa costs $99, $399 or $499 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes approved fixes.",
     "Scrunch suits a brand or agency team that will run the platform; Alphaa suits an owner with no marketer.",
   ],
   sources: [
@@ -159,13 +159,13 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$199/mo, month to month</td>
+              <td>$399/mo, month to month</td>
               <td>20 questions, up to 3 locations, competitor comparison, auto-publish for blog posts</td>
             </tr>
             <tr>
-              <td>Alphaa Full Service</td>
-              <td>$299/mo, month to month</td>
-              <td>Everything in Pro, plus a person on Alphaa&apos;s team does the setup and publishing</td>
+              <td>Alphaa Growth</td>
+              <td>$499/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads, email and lead tracking</td>
             </tr>
           </tbody>
         </table>
@@ -295,8 +295,7 @@ export function Body() {
           insight that needs a marketer.
         </li>
         <li>
-          <strong>Budget is under $250 a month.</strong> Alphaa Starter is $99, and Full Service, with a person doing
-          the publishing, is $299 month to month.
+          <strong>Budget is under $250 a month.</strong> Alphaa Starter is $99, month to month.
         </li>
         <li>
           <strong>You want month to month without a discount for committing.</strong> Alphaa costs the same monthly

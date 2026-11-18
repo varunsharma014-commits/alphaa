@@ -51,9 +51,18 @@ export function isComped(email: string | null | undefined): boolean {
 }
 
 /**
- * Growth plan ($499/mo, 2026-11-17): social posts, Google + Meta ads, ad tuning and tracking
- * setup, on top of everything in Pro. Comped accounts get it too, so the founder and app
- * reviewers can see every feature.
+ * Pro and up (2026-11-18): social media (connect, branded images, Canva, posting), more posts,
+ * up to 3 locations, auto-approve. "fullservice" is retired from sale (no subscribers) but still
+ * reads as Pro-level so any old row keeps working. Comped accounts get it too.
+ */
+export function hasPro(u: { plan: string; email?: string | null }): boolean {
+  return /pro|full|growth/i.test(u.plan) || isComped(u.email)
+}
+
+/**
+ * Growth plan ($499/mo, early access): Google + Meta ads, ad tuning, email and lead tracking,
+ * on top of everything in Pro. Social moved to Pro on 2026-11-18. Comped accounts get it too,
+ * so the founder and app reviewers can see every feature.
  */
 export function hasGrowth(u: { plan: string; email?: string | null }): boolean {
   return /growth/i.test(u.plan) || isComped(u.email)
