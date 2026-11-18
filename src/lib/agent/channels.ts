@@ -41,7 +41,7 @@ export async function channelsMessages(user: User): Promise<Message[]> {
   const expired = accounts.filter((a) => a.status !== "active")
   rows.push({
     name: "Social media",
-    detail: active.length ? Array.from(new Set(active.map((a) => PLATFORM_NAME[a.platform]))).join(", ") : growth ? "Facebook, Instagram, LinkedIn, TikTok, X" : "Growth plan",
+    detail: active.length ? Array.from(new Set(active.map((a) => PLATFORM_NAME[a.platform]))).join(", ") : growth ? "Facebook, Instagram, LinkedIn, TikTok" : "Growth plan",
     status: expired.length ? "Reconnect needed" : active.length ? `${active.length} connected` : growth ? "Not connected" : "Growth plan",
     ok: active.length > 0 && !expired.length,
   })

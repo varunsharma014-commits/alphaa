@@ -7,7 +7,7 @@ import { agent, type Chip, type Message } from "@/lib/agent/types"
 import { getAgentSettings, saveAgentSettings, type AgentSettings } from "@/lib/agent/settings"
 import { hasGrowth } from "@/lib/billing"
 import { listAccounts } from "@/lib/social/store"
-import { providerConfigured, type ConnectProvider } from "@/lib/social/types"
+import { PROVIDERS, providerConfigured } from "@/lib/social/types"
 import type { User } from "@prisma/client"
 
 export type SetupStepKey = "google" | "site" | "voice" | "brand" | "autopilot" | "social" | "tracking"
@@ -77,13 +77,13 @@ async function steps(user: User, s: AgentSettings): Promise<Step[]> {
     },
   ]
   if (hasGrowth(user)) {
-    const anyApp = (["meta", "linkedin", "tiktok", "x"] as ConnectProvider[]).some(providerConfigured)
+    const anyApp = PROVIDERS.some(providerConfigured)
     out.push({
       key: "social",
       name: "Connect your social accounts",
       why: anyApp
-        ? "Facebook, Instagram, LinkedIn, TikTok or X. Then I post for you on the days that work best."
-        : "Posting straight to Facebook, Instagram, LinkedIn, TikTok and X opens as the platforms approve us. Until then I write each post and you copy it with one tap.",
+        ? "Facebook, Instagram, LinkedIn or TikTok. Then I post for you on the days that work best."
+        : "Posting straight to Facebook, Instagram, LinkedIn and TikTok opens as the platforms approve us. Until then I write each post and you copy it with one tap.",
       ok: accounts.some((a) => a.status === "active"),
       soon: !anyApp,
       chips: [{ label: "Connect", primary: true, action: { type: "thread", topic: "social" } }],

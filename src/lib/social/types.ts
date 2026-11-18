@@ -7,7 +7,8 @@ export type ConnectProvider = "meta" | "linkedin" | "tiktok" | "x"
 
 export const PLATFORM_NAME: Record<SocialPlatform, string> = { facebook: "Facebook", instagram: "Instagram", linkedin: "LinkedIn", tiktok: "TikTok", x: "X" }
 export const PROVIDER_NAME: Record<ConnectProvider, string> = { meta: "Facebook & Instagram", linkedin: "LinkedIn", tiktok: "TikTok", x: "X" }
-export const PROVIDERS: ConnectProvider[] = ["meta", "linkedin", "tiktok", "x"]
+// X is off for now (Varun, 2026-11-18: its API is paid per call). The provider code stays; add "x" back here to offer it.
+export const PROVIDERS: ConnectProvider[] = ["meta", "linkedin", "tiktok"]
 
 export function providerConfigured(p: ConnectProvider): boolean {
   if (p === "meta") return !!(process.env.META_APP_ID && process.env.META_APP_SECRET)

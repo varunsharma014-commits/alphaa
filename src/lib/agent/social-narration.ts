@@ -11,7 +11,7 @@ export function socialMessages(o: { growth: boolean; accounts: SocialAccount[]; 
   if (!o.growth) {
     return [agent([
       { kind: "text", text: "Your social media, handled every week.", big: true },
-      { kind: "text", text: "On the Growth plan I connect to your Facebook, Instagram, LinkedIn, TikTok and X, write posts in your voice with images in your brand colours, and post them on schedule." },
+      { kind: "text", text: "On the Growth plan I connect to your Facebook, Instagram, LinkedIn and TikTok, write posts in your voice with images in your brand colours, and post them on schedule." },
       { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade" }, primary: true }] },
     ], "so-upgrade")]
   }
