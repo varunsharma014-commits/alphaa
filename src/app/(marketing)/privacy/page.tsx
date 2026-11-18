@@ -186,6 +186,18 @@ What we keep: a log of each change Alphaa made to your site (what it was, the pa
 Disconnecting: in Settings → Website connection, click Disconnect. We delete the stored connection and tokens at once and, for Webflow, ask Webflow to revoke the token. For Shopify, you can also uninstall the app in your Shopify admin; Shopify then notifies us and we delete the connection. Content already published stays on your site until you remove it or use Undo.`,
   },
   {
+    title: "6a. Social Media and Ad Accounts (Facebook, Instagram, LinkedIn, TikTok)",
+    body: `On the Growth plan you can connect your business's social media and ad accounts. Alphaa uses each connection only to do the marketing work you approve (or set to run automatically): publishing your posts, reading the comments and results on them, replying to comments, and, where you turn it on, building and adjusting ads inside the budget you approved. Ad spend is billed by the platform to your own ad account; Alphaa never pays for or marks up your ads.
+
+What we store: the IDs, names, handles and profile pictures of the Pages and accounts you choose to connect, an access token for each, the posts and ads Alphaa created for you, and their results. We do not read your personal profile, friends, private messages or personal photos, and we do not sell or share this data.
+
+Facebook and Instagram: Alphaa connects through Facebook Login for Business. You choose which Pages, Instagram business accounts, ad accounts and pixels to share, and you can change that choice at any time.
+
+How tokens are stored: access tokens are encrypted with AES-256-GCM before they are saved, are only decrypted on our servers when Alphaa acts for you, and are never shown in the dashboard or sent to your browser.
+
+Deleting your data: in the dashboard, open "Social accounts & posts" and choose Disconnect for any account; we delete its stored token and connection at once. You can also remove Alphaa from Facebook (Settings → Business Integrations) or from the other platform's connected apps page. To have all data Alphaa received from Facebook, Instagram, LinkedIn or TikTok deleted, email privacy@alphaa.app from your account email; we delete it within 30 days and confirm by email. Posts already published stay on your accounts until you remove them.`,
+  },
+  {
     title: "7. Cookies and Tracking",
     body: `Strictly necessary cookies (always on):
 
@@ -290,14 +302,14 @@ export default function PrivacyPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Privacy Policy</h1>
-        <p className="text-muted text-sm mb-10">Last updated: November 15, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: November 18, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.
         </p>
 
         {sections.map((s) => (
-          <div key={s.title} id={s.title.startsWith("7.") ? "cookies" : undefined} className="mb-10 scroll-mt-24">
+          <div key={s.title} id={s.title.startsWith("7.") ? "cookies" : s.title.startsWith("6a.") ? "meta-data-deletion" : undefined} className="mb-10 scroll-mt-24">
             <h2 className="text-fg font-semibold text-lg mb-3">{s.title}</h2>
             <div className="text-muted text-sm leading-relaxed whitespace-pre-line">{s.body}</div>
           </div>

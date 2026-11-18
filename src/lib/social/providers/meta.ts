@@ -13,15 +13,27 @@ const secret = () => process.env.META_APP_SECRET!
 
 type Page = { id: string; name: string; access_token: string; picture?: { data?: { url?: string } }; instagram_business_account?: { id: string; username?: string; profile_picture_url?: string } }
 
+// Facebook Login for Business configuration (app "Alphaa", 2026-11-18): a system-user token that
+// never expires, with Pages, Instagram accounts, ad accounts and pixels as assets. With it set,
+// the dialog takes config_id instead of scope, and the code gives that token directly.
+const CONFIG = () => process.env.META_LOGIN_CONFIG_ID || ""
+
 export const meta: Provider = {
   authUrl({ state, redirectUri }) {
-    const q = new URLSearchParams({ client_id: id(), redirect_uri: redirectUri, state, scope: SCOPES.join(","), response_type: "code" })
+    const q = new URLSearchParams({ client_id: id(), redirect_uri: redirectUri, state, response_type: "code" })
+    if (CONFIG()) {
+      q.set("config_id", CONFIG())
+      q.set("override_default_response_type", "true")
+    } else q.set("scope", SCOPES.join(","))
     return `https://www.facebook.com/v21.0/dialog/oauth?${q}`
   },
 
   async connect({ code, redirectUri }) {
     const short = await api<{ access_token: string }>(`${G}/oauth/access_token?${new URLSearchParams({ client_id: id(), client_secret: secret(), redirect_uri: redirectUri, code })}`)
-    const long = await api<{ access_token: string }>(`${G}/oauth/access_token?${new URLSearchParams({ grant_type: "fb_exchange_token", client_id: id(), client_secret: secret(), fb_exchange_token: short.access_token })}`)
+    // A business (system-user) token never expires; a plain user token is swapped for a long-lived one.
+    const long = CONFIG()
+      ? short
+      : await api<{ access_token: string }>(`${G}/oauth/access_token?${new URLSearchParams({ grant_type: "fb_exchange_token", client_id: id(), client_secret: secret(), fb_exchange_token: short.access_token })}`)
     const pages = await api<{ data: Page[] }>(`${G}/me/accounts?${new URLSearchParams({ fields: "id,name,access_token,picture{url},instagram_business_account{id,username,profile_picture_url}", limit: "50", access_token: long.access_token })}`)
     const out: Awaited<ReturnType<Provider["connect"]>> = []
     for (const p of pages.data ?? []) {

@@ -142,3 +142,12 @@ Needs `APIFY_TOKEN` (set). Optional `META_AD_LIBRARY_TOKEN` (Meta developer acco
 
 ## Tracking self-check
 No new keys. The GA4 realtime check needs the `analytics.readonly` scope (founders only until `GA_SCOPE_ENABLED=1` after Google re-verifies the consent screen). Meta Conversions API uses each owner's own token from Events Manager → Settings → Conversions API.
+
+## Meta app: created 2026-11-18
+- App "Alphaa", App ID 29091869270477242, business portfolio GT (verified, id 574311160209067), contact hi@alphaa.app, category Business and pages.
+- Use cases: Marketing API (ads), ad leads, Pages API, Instagram API.
+- Domains alphaa.app; privacy https://alphaa.app/privacy; terms https://alphaa.app/terms; data deletion https://alphaa.app/privacy#meta-data-deletion.
+- Facebook Login for Business redirect: https://alphaa.app/api/social/callback/meta
+- Login configuration "Alphaa connect (business)", ID 1474632747934670: system-user token, never expires; assets Pages, ad accounts, pixels, Instagram (none required); 14 permissions: ads_management, ads_read, business_management, leads_retrieval, pages_manage_ads, pages_manage_engagement, pages_manage_posts, pages_read_engagement, pages_read_user_content, pages_show_list, instagram_basic, instagram_content_publish, instagram_manage_comments, instagram_manage_insights.
+- Railway: META_APP_ID, META_LOGIN_CONFIG_ID (set by Claude), META_APP_SECRET (Varun pastes from App settings → Basic).
+- Still to do: app icon (1024x1024), App Review per permission with screencasts, then switch the app to Live. A user-token config (unused) "Alphaa posting and ads" may exist and can be deleted.
