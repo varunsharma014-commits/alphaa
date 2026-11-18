@@ -1,7 +1,12 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import type { CSSProperties } from "react"
 import { arabic } from "@/fonts"
+import { V3Page, Frame, Section, HeroShapes, Faq, type SvcKey } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/local.css"
+
+const TONES: SvcKey[] = ["mk", "ad", "ct", "se", "em"]
 import type { Market } from "@/content/markets/types"
 import { MARKETS } from "@/content/locales"
 import { tradeAlternates } from "@/content/markets/equivalents"
@@ -71,67 +76,66 @@ export function LocalIndustry({ m, slug }: { m: Market; slug: string }) {
       ],
     },
   ]
+  const fontVar = rtl ? ({ ["--v-font" as string]: `${arabic.style.fontFamily}, var(--font-apple)` } as CSSProperties) : undefined
+  const cta = <div className="v3-btns lc3-cta"><Link className="ag-hero__big" href={`${l.path}#check`}>{m.extra.industryCta}</Link></div>
   return (
-    <div lang={l.lang} dir={rtl ? "rtl" : "ltr"} className={rtl ? `lc-rtl ${arabic.className}` : undefined}>
+    <V3Page>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <section className="ag-hero">
-        <div className="ag-hero__in">
-          <p className="lc-crumb"><Link href={l.path}>{m.extra.backToMarket}</Link></p>
-          <h1 className="lc-h1">{ind.h1}</h1>
-          <p className="ag-hero__sub">{ind.sub}</p>
-          <div className="ag-hero__cta ag-hero__cta--big">
-            <Link className="ag-hero__big" href={`${l.path}#check`}>{m.extra.industryCta}</Link>
-            <span className="ag-hero__promise"><span>{l.guarantee[0]} <b>{l.guarantee[1]}</b></span></span>
-          </div>
-        </div>
-      </section>
+      <div lang={l.lang} dir={rtl ? "rtl" : "ltr"} className="v3" style={fontVar}>
+        <Frame top>
+          <Section className="v3-hero">
+            <div>
+              <nav className="v3-crumbs" aria-label="Breadcrumb"><Link href={l.path}>{m.extra.backToMarket}</Link></nav>
+              <h1 className="v3-h1 v3-h1--md">{ind.h1}</h1>
+              <p className="v3-lede">{ind.sub}</p>
+              {cta}
+              <p className="lc3-promise"><span>{l.guarantee[0]} <b>{l.guarantee[1]}</b></span></p>
+            </div>
+            <HeroShapes tones={["se", "mk", "ad", "ct"]} note={null} />
+          </Section>
 
-      <section className="ag-section ag-section--grey">
-        <h2>{m.extra.questionsTitle}</h2>
-        <div className="lc-qs">
-          {ind.questions.map((q) => (
-            <div key={q} className="lc-q"><p>&ldquo;{q}&rdquo;</p></div>
-          ))}
-        </div>
-      </section>
+          <Section center>
+            <h2 className="v3-h2">{m.extra.questionsTitle}</h2>
+            <div className="v3-grid">
+              {ind.questions.map((q) => (
+                <div key={q} className="v3-card"><p className="lc3-q">&ldquo;{q}&rdquo;</p></div>
+              ))}
+            </div>
+          </Section>
 
-      <section className="ag-section">
-        <h2>{l.whereTitle}</h2>
-        <div className="lc-grid lc-grid--4">
-          {ind.where.map((w) => (
-            <div key={w.name} className="lc-card"><h3>{w.name}</h3><p>{w.why}</p></div>
-          ))}
-        </div>
-      </section>
+          <Section center>
+            <h2 className="v3-h2">{l.whereTitle}</h2>
+            <div className="v3-grid">
+              {ind.where.map((w) => (
+                <div key={w.name} className="v3-card"><h3 className="v3-h3">{w.name}</h3><p>{w.why}</p></div>
+              ))}
+            </div>
+          </Section>
 
-      <section className="ag-section ag-section--grey">
-        <h2>{l.pillarsTitle}</h2>
-        <div className="lc-grid">
-          {ind.steps.map((s) => (
-            <div key={s.title} className="lc-card"><h3>{s.title}</h3><p>{s.body}</p></div>
-          ))}
-        </div>
-      </section>
+          <Section center>
+            <h2 className="v3-h2">{l.pillarsTitle}</h2>
+            <div className="v3-grid">
+              {ind.steps.map((st, i) => (
+                <div key={st.title} className={`v3-card v3-card--tint v3-c-${TONES[i % TONES.length]}`}><h3 className="v3-h3">{st.title}</h3><p>{st.body}</p></div>
+              ))}
+            </div>
+          </Section>
 
-      <section className="ag-section">
-        <h2>{l.faqTitle}</h2>
-        <div className="lc-faq">
-          {ind.faq.map((f) => (
-            <details key={f.q}><summary>{f.q}</summary><p>{f.a}</p></details>
-          ))}
-        </div>
-        <div className="ag-hero__cta" style={{ marginTop: 36 }}>
-          <Link className="ag-hero__big" href={`${l.path}#check`}>{m.extra.industryCta}</Link>
-        </div>
-        <div className="lc-guides">
-          <h3>{GUIDES[l.key].label}</h3>
-          {GUIDES[l.key].guides.map((g) => (
-            <Link key={g.slug} href={`${l.path}/${GUIDES[l.key].base}/${g.slug}`}>{g.h1} ›</Link>
-          ))}
-        </div>
-        <p className="lc-en"><Link href={l.path}>{m.extra.backToMarket}</Link></p>
-      </section>
-    </div>
+          <Section center>
+            <h2 className="v3-h2">{l.faqTitle}</h2>
+            <Faq items={ind.faq} />
+            <div style={{ display: "flex", justifyContent: "center", marginTop: 12 }}>{cta}</div>
+            <div className="lc3-links">
+              <h3>{GUIDES[l.key].label}</h3>
+              {GUIDES[l.key].guides.map((g) => (
+                <Link key={g.slug} href={`${l.path}/${GUIDES[l.key].base}/${g.slug}`}>{g.h1} ›</Link>
+              ))}
+            </div>
+            <p className="lc3-foot"><Link href={l.path}>{m.extra.backToMarket}</Link></p>
+          </Section>
+        </Frame>
+      </div>
+    </V3Page>
   )
 }
 

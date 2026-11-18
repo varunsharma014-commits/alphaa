@@ -1,5 +1,7 @@
 import Link from "next/link"
 import { pageMeta } from "@/lib/seo"
+import { V3Page, Frame, Section, ServicePills, FinalCta } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/pages.css"
 
 export const metadata = pageMeta({
   title: "About Alphaa: the AI marketing agent for small businesses",
@@ -22,16 +24,20 @@ const org = {
 
 export default function AboutPage() {
   return (
-    <>
+    <V3Page>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(org) }} />
-      <section className="ap-sec" style={{ paddingTop: 120 }}>
-        <h1 className="ap-h2 ap-center" style={{ fontSize: "clamp(44px, 7.7vw, 88px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}>
+      <Frame top>
+      <Section center>
+        <ServicePills />
+        <h1 className="v3-h1">
           About Alphaa.
         </h1>
-        <p className="ap-lead ap-center">
+        <p className="v3-lede">
           Alphaa (alphaa.app) is an AI agent that runs your entire marketing, so small business owners get customers without hiring an agency.
         </p>
-        <div className="article-prose" style={{ maxWidth: 720, margin: "56px auto 0", padding: "0 22px" }}>
+      </Section>
+      <Section>
+        <div className="pg-prose">
           <h2>What is Alphaa?</h2>
           <p>
             Alphaa is software that does the work a marketing agency would do: social media, ads, SEO and AI search, blog posts, Google posts, review
@@ -74,7 +80,9 @@ export default function AboutPage() {
           </p>
           <p>Alphaa is not affiliated with alphaa.ai or with OpenAI, Anthropic, Google or Perplexity.</p>
         </div>
-      </section>
-    </>
+      </Section>
+      <FinalCta title={<>Run the business.<br /><span>I’ll run the marketing.</span></>} sub="Month to month. Cancel online in a minute." />
+      </Frame>
+    </V3Page>
   )
 }

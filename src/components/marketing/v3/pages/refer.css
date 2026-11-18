@@ -1,0 +1,17 @@
+/* /refer keeps its Tailwind token classes (text-fg/40, border-line/…, brand-orange).
+   On v3 dark, flip those RGB triples so the page follows the OS like the rest of v3. */
+@media (prefers-color-scheme: dark) {
+  .v3-page.pg-refer {
+    --bg-primary-rgb: 13 13 16;
+    --bg-secondary-rgb: 23 23 27;
+    --fg-rgb: 243 243 245;
+    --line-rgb: 243 243 245;
+    --muted-rgb: 163 163 171;
+    --muted-soft-rgb: 140 140 148;
+    --orange-rgb: 255 255 255;
+    --orange-light-rgb: 210 210 215;
+  }
+  .v3-page.pg-refer .btn-orange { background: #fff; color: #000; }
+  .v3-page.pg-refer .btn-orange:hover { background: #d2d2d7; color: #000; }
+  .v3-page.pg-refer input::placeholder { color: rgb(var(--fg-rgb) / .45); }
+}

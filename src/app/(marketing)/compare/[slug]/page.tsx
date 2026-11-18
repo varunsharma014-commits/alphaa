@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { ChevronDown } from "lucide-react"
 import { COMPARES, COMPARE_CHECKED, getCompare } from "@/content/compare"
-import { AgencyToggle } from "@/components/marketing/apple/Sections"
+import { V3Page, Frame, Section, Faq, FinalCta } from "@/components/marketing/v3"
+import { AgencyVs } from "@/components/marketing/v3/pages/AgencyVs"
+import "@/components/marketing/v3/pages/compare.css"
 import { clipDescription, ogImage } from "@/lib/seo"
 
 const BASE = "https://alphaa.app"
@@ -61,138 +62,126 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
   ]
 
   return (
-    <>
+    <V3Page tone="ad">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <Frame top>
+        <Section center>
+          <nav className="v3-crumbs" aria-label="Breadcrumb">
+            <Link href="/compare">Compare</Link> <span aria-hidden="true">›</span> <span>{c.label}</span>
+          </nav>
+          <h1 className="v3-h1 v3-h1--md">
+            {c.h1}<br /><span className="v3-blue">{c.h1Quiet}</span>
+          </h1>
+          <div className="cmp3-answer">
+            <div className="cmp3-answer__k">Short answer</div>
+            <p>{c.tldr}</p>
+          </div>
+          <div className="v3-btns">
+            <Link href="/start" className="v3-btn">Get started →</Link>
+          </div>
+          <p className="v3-fine">Free check first · No credit card required</p>
+        </Section>
 
-      <section className="ap-sec cmp-hero">
-        <nav className="cmp-crumbs" aria-label="Breadcrumb">
-          <Link href="/compare">Compare</Link> <span aria-hidden="true">›</span> <span>{c.label}</span>
-        </nav>
-        <h1 className="ap-h2 ap-center cmp-h1">
-          {c.h1}<br /><span className="ap-quiet">{c.h1Quiet}</span>
-        </h1>
-        <div className="cmp-answer">
-          <div className="cmp-answer__k">Short answer</div>
-          <p>{c.tldr}</p>
-        </div>
-        <div className="cmp-hero__cta">
-          <Link href="/start" className="cmp-btn">Get started</Link>
-          <span>Free check first · No credit card required</span>
-        </div>
-      </section>
-
-      <section className="ap-sec ap-sec--grey">
-        <h2 className="ap-h2 ap-center">{c.left} vs. {c.right}, side by side.</h2>
-        <div className="cmp-table-wrap">
-          <table className="cmp-table">
-            <caption className="sr-only">{c.left} compared with {c.right}</caption>
-            <thead>
-              <tr>
-                <th scope="col"><span className="sr-only">Feature</span></th>
-                <th scope="col">{c.left}</th>
-                <th scope="col" className="is-us">{c.right}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {c.rows.map(([k, l, r]) => (
-                <tr key={k}>
-                  <th scope="row">{k}</th>
-                  <td data-label={c.left}>{l}</td>
-                  <td data-label={c.right} className="is-us">{r}</td>
+        <Section center>
+          <h2 className="v3-h2">{c.left} vs. {c.right}, side by side.</h2>
+          <div className="cmp3-table">
+            <table>
+              <caption className="sr-only">{c.left} compared with {c.right}</caption>
+              <thead>
+                <tr>
+                  <th scope="col"><span className="sr-only">Feature</span></th>
+                  <th scope="col">{c.left}</th>
+                  <th scope="col" className="is-us">{c.right}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="cmp-note">Competitor details from their public websites, checked {CHECKED_LABEL}. Sources below.</p>
-      </section>
-
-      <section className="ap-sec">
-        <h2 className="ap-h2 ap-center">Credit where it’s due.</h2>
-        <div className="cmp-cards">
-          <div className="cmp-card">
-            <h3>{c.leftGood.title}</h3>
-            <ul>{c.leftGood.points.map((p) => <li key={p}>{p}</li>)}</ul>
+              </thead>
+              <tbody>
+                {c.rows.map(([k, l, r]) => (
+                  <tr key={k}>
+                    <th scope="row">{k}</th>
+                    <td data-label={c.left}>{l}</td>
+                    <td data-label={c.right} className="is-us">{r}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <div className="cmp-card is-us">
-            <h3>{c.rightGood.title}</h3>
-            <ul>{c.rightGood.points.map((p) => <li key={p}>{p}</li>)}</ul>
-          </div>
-        </div>
-      </section>
+          <p className="v3-fine">Competitor details from their public websites, checked {CHECKED_LABEL}. Sources below.</p>
+        </Section>
 
-      {c.priceBlock && <AgencyToggle />}
-
-      <section className="ap-sec ap-sec--grey">
-        <h2 className="ap-h2 ap-center">Which should you choose?</h2>
-        <div className="cmp-cards">
-          <div className="cmp-card">
-            <h3>Choose {c.left} if…</h3>
-            <ul>{c.chooseLeft.map((p) => <li key={p}>{p}</li>)}</ul>
-          </div>
-          <div className="cmp-card is-us">
-            <h3>Choose {c.right} if…</h3>
-            <ul>{c.chooseRight.map((p) => <li key={p}>{p}</li>)}</ul>
-          </div>
-        </div>
-      </section>
-
-      <section className="ap-sec">
-        <div className="cmp-prose">
-          {c.sections.map((s) => (
-            <div key={s.q}>
-              <h2>{s.q}</h2>
-              {s.a.map((p) => <p key={p}>{p}</p>)}
+        <Section center>
+          <h2 className="v3-h2">Credit where it’s due.</h2>
+          <div className="v3-grid v3-grid--2">
+            <div className="v3-card cmp3-card">
+              <h3>{c.leftGood.title}</h3>
+              <ul>{c.leftGood.points.map((p) => <li key={p}>{p}</li>)}</ul>
             </div>
-          ))}
-          {c.deepDive && (
-            <p className="cmp-more">
-              Want the long version? <Link href={`/blog/${c.deepDive}`}>Read the full guide →</Link>
-            </p>
-          )}
-        </div>
-      </section>
+            <div className="v3-card v3-card--tint cmp3-card">
+              <h3>{c.rightGood.title}</h3>
+              <ul>{c.rightGood.points.map((p) => <li key={p}>{p}</li>)}</ul>
+            </div>
+          </div>
+        </Section>
 
-      <section className="ap-sec ap-sec--grey">
-        <h2 className="ap-h2 ap-center">Questions, answered.</h2>
-        <div className="ap-faq" style={{ marginTop: 24 }}>
-          {c.faq.map((f) => (
-            <details key={f.q} className="cmp-faq">
-              <summary>
-                <span>{f.q}</span>
-                <ChevronDown className="ap-faq__chev" aria-hidden="true" />
-              </summary>
-              <p>{f.a}</p>
-            </details>
-          ))}
-        </div>
-        <div className="cmp-sources">
-          <h3>Sources</h3>
-          <ul>
-            {c.sources.map((s) => (
-              <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a></li>
+        {c.priceBlock && <AgencyVs />}
+
+        <Section center>
+          <h2 className="v3-h2">Which should you choose?</h2>
+          <div className="v3-grid v3-grid--2">
+            <div className="v3-card cmp3-card">
+              <h3>Choose {c.left} if…</h3>
+              <ul>{c.chooseLeft.map((p) => <li key={p}>{p}</li>)}</ul>
+            </div>
+            <div className="v3-card v3-card--tint cmp3-card">
+              <h3>Choose {c.right} if…</h3>
+              <ul>{c.chooseRight.map((p) => <li key={p}>{p}</li>)}</ul>
+            </div>
+          </div>
+        </Section>
+
+        <Section>
+          <div className="cmp3-prose">
+            {c.sections.map((s) => (
+              <div key={s.q}>
+                <h2>{s.q}</h2>
+                {s.a.map((p) => <p key={p}>{p}</p>)}
+              </div>
             ))}
-          </ul>
-          <p>Checked {CHECKED_LABEL}. Prices and features change — check each vendor’s site for the latest.</p>
-          <p>Peec AI and other names are trademarks of their owners; no affiliation.</p>
-        </div>
-      </section>
+            {c.deepDive && (
+              <p>
+                Want the long version? <Link href={`/blog/${c.deepDive}`}>Read the full guide →</Link>
+              </p>
+            )}
+          </div>
+        </Section>
 
-      <section className="ap-sec ap-cta">
-        <h2 className="ap-h2">Let me run your marketing.</h2>
-        <p className="ap-lead">Start with a free check of your business. About a minute. Just your website.</p>
-        <Link href="/start" className="ap-btn">Get started</Link>
-        <p className="ap-fine">No credit card required.</p>
-      </section>
+        <Section center>
+          <h2 className="v3-h2">Questions, answered.</h2>
+          <Faq items={c.faq} />
+          <div className="cmp3-sources">
+            <h3>Sources</h3>
+            <ul>
+              {c.sources.map((s) => (
+                <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a></li>
+              ))}
+            </ul>
+            <p>Checked {CHECKED_LABEL}. Prices and features change — check each vendor’s site for the latest.</p>
+            <p>Peec AI and other names are trademarks of their owners; no affiliation.</p>
+          </div>
+        </Section>
 
-      <section className="ap-sec ap-sec--grey" style={{ paddingTop: 64, paddingBottom: 64 }}>
-        <h2 className="ap-h2 ap-center" style={{ fontSize: 28 }}>More comparisons.</h2>
-        <div className="cmp-related">
-          {related.map((r) => (
-            <Link key={r.slug} href={`/compare/${r.slug}`}>{r.label}</Link>
-          ))}
-        </div>
-      </section>
-    </>
+        <Section center tight>
+          <h2 className="v3-h2 v3-h2--sm">More comparisons.</h2>
+          <div className="cmp3-related">
+            {related.map((r) => (
+              <Link key={r.slug} href={`/compare/${r.slug}`}>{r.label}</Link>
+            ))}
+          </div>
+        </Section>
+
+        <FinalCta title="Let me run your marketing." sub="Start with a free check of your business. About a minute. Just your website.">
+          <p>No credit card required.</p>
+        </FinalCta>
+      </Frame>
+    </V3Page>
   )
 }

@@ -4,6 +4,7 @@ import { HomeV2, HomeV2Final } from "@/components/marketing/home/HomeV2"
 import { faqs } from "@/components/marketing/faq-data"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
 import { pageMeta } from "@/lib/seo"
+import { V3Page, Frame } from "@/components/marketing/v3"
 import { HREFLANG } from "@/content/locales"
 
 // SoftwareApplication structured data so AI engines / Google can state exactly
@@ -56,7 +57,7 @@ const softwareSchema = {
 
 export default function HomePage() {
   return (
-    <>
+    <V3Page>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
       <script
         type="application/ld+json"
@@ -71,12 +72,12 @@ export default function HomePage() {
       {/* Social proof and FAQ use data-reveal — invisible until this runs. */}
       <ScrollReveal />
 
-      {/* Homepage v2 (2026-11-17): run your entire marketing using an AI agent. */}
+      {/* Homepage v3 (2026-11-18): run your entire marketing using an AI agent. */}
       <HomeV2 />
 
-      <FaqSection />
+      <Frame><FaqSection /></Frame>
 
       <HomeV2Final />
-    </>
+    </V3Page>
   )
 }

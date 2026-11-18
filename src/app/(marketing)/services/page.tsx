@@ -2,6 +2,8 @@ import Link from "next/link"
 import "@/components/marketing/home/home-v2.css"
 import { SERVICES } from "@/content/services"
 import { pageMeta } from "@/lib/seo"
+import { GROWTH_ON_SALE } from "@/lib/growth"
+import { V3Page, Frame, Section, ServicePills, HeroShapes, ServiceChapter, FinalCta, SVC_ORDER } from "@/components/marketing/v3"
 
 export const metadata = pageMeta({
   title: "AI Marketing Services for Small Businesses",
@@ -19,27 +21,29 @@ export default function ServicesIndex() {
     itemListElement: SERVICES.map((s, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE}/services/${s.slug}`, name: s.kicker })),
   }
   return (
-    <div className="hv">
+    <V3Page>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <section className="hv-hero">
-        <div className="hv-wrap">
-          <p className="hv-kicker">Services</p>
-          <h1 style={{ fontSize: "clamp(40px, 6.6vw, 76px)" }}>Your whole marketing. <span>One AI agent.</span></h1>
-          <p className="hv-lede">Stop juggling an agency, a freelancer and five apps. Your AI agent does all of it every week, in your voice, and shows you what’s bringing customers in.</p>
-          <div className="hv-svc-grid">
-            {SERVICES.map((s) => (
-              <Link key={s.slug} href={`/services/${s.slug}`} style={{ ["--c" as string]: s.color }}>
-                <small>{s.name}</small>
-                <b>{s.h1}</b>
-                <p>{s.dream}</p>
-                <span className="hv-related__more">See how it works ›</span>
-              </Link>
+      <Frame top>
+        <Section className="v3-hero">
+          <div>
+            <p className="v3-kicker">Services</p>
+            <ServicePills />
+            <h1 className="v3-h1">Your whole marketing. <span className="v3-blue">One AI agent.</span></h1>
+            <p className="v3-lede">Stop juggling an agency, a freelancer and five apps. Your AI agent does all of it every week, in your voice, and shows you what’s bringing customers in.</p>
+            <div className="v3-btns"><Link className="v3-btn" href="/start">Get started →</Link><Link className="v3-btn v3-btn--ghost" href="/pricing">See pricing</Link></div>
+            <p className="v3-fine">Month to month. Cancel online in a minute.</p>
+          </div>
+          <HeroShapes cards={["3 posts ready for this week", "Ads paused for your OK", "ChatGPT named you"]} tones={["mk", "ad", "se", "em"]} />
+        </Section>
+        <Section>
+          <div className="v3-chapters">
+            {SVC_ORDER.map((slug, i) => (
+              <ServiceChapter key={slug} slug={slug} flip={i % 2 === 1} growthNote={GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access"} />
             ))}
           </div>
-          <Link className="hv-cta" href="/start">Get started</Link>
-          <p className="hv-fine">Month to month. Cancel online in a minute.</p>
-        </div>
-      </section>
-    </div>
+        </Section>
+        <FinalCta title={<>Run the business.<br /><span>I’ll run the marketing.</span></>} sub="Month to month. Cancel online in a minute." />
+      </Frame>
+    </V3Page>
   )
 }

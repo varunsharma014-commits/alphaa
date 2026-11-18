@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
+import type { CSSProperties } from "react"
 import { HeroCta } from "@/components/marketing/hero/HeroCta"
 import { StartAgent } from "@/components/agent/StartAgent"
 import { pageMeta, ogImage } from "@/lib/seo"
@@ -8,6 +8,11 @@ import { HREFLANG, type LocaleCopy } from "@/content/locales"
 import type { Market } from "@/content/markets/types"
 import { MARKET_CURRENCY, AMOUNTS, formatPrice, type MarketKey } from "@/content/markets/prices"
 import { arabic } from "@/fonts"
+import { V3Page, Frame, Section, HeroShapes, Points, Faq, FinalCta, type SvcKey } from "@/components/marketing/v3"
+import { FollowTheme } from "@/components/marketing/v3/FollowTheme"
+import "@/components/marketing/v3/pages/local.css"
+
+const TONES: SvcKey[] = ["mk", "ad", "ct", "se", "em"]
 
 const PER_MONTH: Record<string, string> = { en: "/mo", de: "/Monat", fr: "/mois", it: "/mese", ar: "/شهريًا" }
 
@@ -56,122 +61,122 @@ export function LocalHome({ m }: { m: Market }) {
       mainEntity: l.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
     },
   ]
+  // Arabic: Noto Sans Arabic for every heading and line (v3 reads its font from --v-font).
+  const fontVar = rtl ? ({ ["--v-font" as string]: `${arabic.style.fontFamily}, var(--font-apple)` } as CSSProperties) : undefined
   return (
-    <div lang={l.lang} dir={rtl ? "rtl" : "ltr"} className={rtl ? `lc-rtl ${arabic.className}` : undefined}>
+    <V3Page>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <div className="hx-wrap">
-        <HeroBackdrop />
-        <section className="ag-hero">
-          <div className="ag-hero__in">
-            <h1>
-              <span className="hx-l1">{l.h1a}</span>
-              <br />
-              <span className="ap-quiet">{l.h1b}</span>
-            </h1>
-            <p className="ag-hero__sub">{l.sub}</p>
-            <div className="ag-hero__cta ag-hero__cta--big">
-              <HeroCta label={l.cta} />
-              <span className="ag-hero__promise">
+      <div lang={l.lang} dir={rtl ? "rtl" : "ltr"} className="v3" style={fontVar}>
+        <Frame top>
+          <Section className="v3-hero">
+            <div>
+              <h1 className="v3-h1">
+                {l.h1a}
+                <br />
+                <span className="v3-blue">{l.h1b}</span>
+              </h1>
+              <p className="v3-lede">{l.sub}</p>
+              <div className="v3-btns lc3-cta"><HeroCta label={l.cta} /></div>
+              <p className="lc3-promise">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 9.9C8 19.4 5 15.6 5 11V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg>
                 <span>{l.guarantee[0]} <b>{l.guarantee[1]}</b></span>
-              </span>
+              </p>
+              <p className="v3-fine">{l.fine}</p>
             </div>
-            <div className="ag-fine">{l.fine}</div>
-            <div id="check" className="hx-check">
-              <StartAgent embedded greet={l.greet} />
+            <HeroShapes tones={["mk", "ad", "se", "ct"]} note={null} />
+          </Section>
+
+          <Section center id="check">
+            <div className="v3-prompt" style={{ marginTop: 0 }}><FollowTheme><StartAgent embedded greet={l.greet} /></FollowTheme></div>
+          </Section>
+
+          <Section center>
+            <h2 className="v3-h2">{l.pillarsTitle}</h2>
+            <div className="v3-grid">
+              {l.pillars.map((p, i) => (
+                <div key={p.title} className={`v3-card v3-card--tint v3-c-${TONES[i % TONES.length]}`}>
+                  <h3 className="v3-h3">{p.title}</h3>
+                  <p>{p.body}</p>
+                </div>
+              ))}
             </div>
-          </div>
-        </section>
+          </Section>
+
+          <Section center>
+            <h2 className="v3-h2">{x.questionsTitle}</h2>
+            <p className="v3-lede">{x.questionsIntro}</p>
+            <div className="v3-grid">
+              {x.questions.map((q) => (
+                <div key={q.q} className="v3-card">
+                  <p className="lc3-q">&ldquo;{q.q}&rdquo;</p>
+                  <small className="lc3-who">{q.who}</small>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Section center>
+            <h2 className="v3-h2">{x.industriesTitle}</h2>
+            <p className="v3-lede">{x.industriesIntro}</p>
+            <div className="v3-grid">
+              {x.industries.map((ind, i) => (
+                <Link key={ind.slug} href={`${l.path}/${ind.slug}`} className={`v3-card v3-card--tint v3-c-${TONES[i % TONES.length]}`}>
+                  <h3 className="v3-h3">{ind.name}</h3>
+                  <p>{ind.sub}</p>
+                  <span className="v3-link" style={{ marginTop: "auto", paddingTop: 12 }}>{x.industryLinkPrefix} {ind.name} ›</span>
+                </Link>
+              ))}
+            </div>
+          </Section>
+
+          <Section center>
+            <h2 className="v3-h2">{l.whereTitle}</h2>
+            <p className="v3-lede">{l.whereIntro}</p>
+            <div className="v3-grid">
+              {l.where.map((w) => (
+                <div key={w.name} className="v3-card">
+                  <h3 className="v3-h3">{w.name}</h3>
+                  <p>{w.why}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Section>
+            <div className="v3-chapter v3-c-se">
+              <div>
+                <h2 className="v3-h2">{l.priceTitle}</h2>
+                <p className="v3-chapter__body">{l.priceSub}</p>
+                <p className="lc3-price">{price}<small>{PER_MONTH[lang2] ?? "/mo"}</small></p>
+                <div className="v3-btns"><Link className="v3-btn" href="#check">{l.priceCta}</Link></div>
+                <p className="v3-note">{l.priceNote}</p>
+              </div>
+              <div className="v3-visual v3-visual--fit">
+                <div className="v3-card v3-card--line"><Points items={l.priceItems} /></div>
+              </div>
+            </div>
+          </Section>
+
+          <Section center>
+            <h2 className="v3-h2">{l.faqTitle}</h2>
+            <Faq items={l.faq} />
+            <div className="lc3-links">
+              <h3>{GUIDES[l.key].label}</h3>
+              {GUIDES[l.key].guides.map((g) => (
+                <Link key={g.slug} href={`${l.path}/${GUIDES[l.key].base}/${g.slug}`}>{g.h1} ›</Link>
+              ))}
+            </div>
+            {l.regNote && <p className="v3-fine v3-narrow" style={{ marginInline: "auto", marginTop: 24 }}>{l.regNote}</p>}
+            <p className="lc3-foot">
+              <Link href={l.key === "ar" ? "/ae" : "/"} hrefLang="en">{l.english} ›</Link>
+              {l.key === "ae" && <> · <Link href="/ae/ar" hrefLang="ar">العربية ›</Link></>}
+              {l.key === "de" && <> · <Link href="/impressum">Impressum</Link></>}
+            </p>
+          </Section>
+
+          <FinalCta title={<>{l.h1a}<br /><span>{l.h1b}</span></>} sub={l.fine} href="#check" label={l.cta} arrow={rtl ? "←" : "→"} />
+        </Frame>
       </div>
-
-      <section className="ag-section">
-        <h2>{l.pillarsTitle}</h2>
-        <div className="lc-grid">
-          {l.pillars.map((p) => (
-            <div key={p.title} className="lc-card">
-              <h3>{p.title}</h3>
-              <p>{p.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="ag-section ag-section--grey">
-        <h2>{x.questionsTitle}</h2>
-        <p className="ag-section__sub">{x.questionsIntro}</p>
-        <div className="lc-qs">
-          {x.questions.map((q) => (
-            <div key={q.q} className="lc-q">
-              <p>&ldquo;{q.q}&rdquo;</p>
-              <small>{q.who}</small>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="ag-section">
-        <h2>{x.industriesTitle}</h2>
-        <p className="ag-section__sub">{x.industriesIntro}</p>
-        <div className="lc-grid lc-grid--4">
-          {x.industries.map((ind) => (
-            <Link key={ind.slug} href={`${l.path}/${ind.slug}`} className="lc-card lc-card--link">
-              <h3>{ind.name}</h3>
-              <p>{ind.sub}</p>
-              <span className="lc-more">{x.industryLinkPrefix} {ind.name} ›</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="ag-section ag-section--grey">
-        <h2>{l.whereTitle}</h2>
-        <p className="ag-section__sub">{l.whereIntro}</p>
-        <div className="lc-grid lc-grid--4">
-          {l.where.map((w) => (
-            <div key={w.name} className="lc-card">
-              <h3>{w.name}</h3>
-              <p>{w.why}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="ag-section">
-        <h2>{l.priceTitle}</h2>
-        <p className="ag-section__sub">{l.priceSub}</p>
-        <div className="ag-price">
-          <div className="ag-price__amt">{price}<small>{PER_MONTH[lang2] ?? "/mo"}</small></div>
-          <ul className="ag-price__list">
-            {l.priceItems.map((i) => <li key={i}>{i}</li>)}
-          </ul>
-          <Link className="ag-pill ag-pill--blue" href="#check">{l.priceCta}</Link>
-          <p style={{ marginTop: 14, fontSize: 13 }}>{l.priceNote}</p>
-        </div>
-      </section>
-
-      <section className="ag-section ag-section--grey">
-        <h2>{l.faqTitle}</h2>
-        <div className="lc-faq">
-          {l.faq.map((f) => (
-            <details key={f.q}>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
-            </details>
-          ))}
-        </div>
-        <div className="lc-guides">
-          <h3>{GUIDES[l.key].label}</h3>
-          {GUIDES[l.key].guides.map((g) => (
-            <Link key={g.slug} href={`${l.path}/${GUIDES[l.key].base}/${g.slug}`}>{g.h1} ›</Link>
-          ))}
-        </div>
-        {l.regNote && <p className="lc-en" style={{ fontSize: 13, opacity: 0.85 }}>{l.regNote}</p>}
-        <p className="lc-en">
-          <Link href={l.key === "ar" ? "/ae" : "/"} hrefLang="en">{l.english} ›</Link>
-          {l.key === "ae" && <> · <Link href="/ae/ar" hrefLang="ar">العربية ›</Link></>}
-          {l.key === "de" && <> · <Link href="/impressum">Impressum</Link></>}
-        </p>
-      </section>
-    </div>
+    </V3Page>
   )
 }

@@ -2,119 +2,135 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Panel, AgentNote, EngineChips, Phone } from "@/components/marketing/apple/Mockups"
-import { AgencyToggle } from "@/components/marketing/apple/Sections"
+import { V3Page, Frame, Section, ServicePills, FinalCta, type SvcKey } from "@/components/marketing/v3"
+import { ExBox, Note, Engines } from "@/components/marketing/v3/pages/Examples"
 import { plans, billingFaqs } from "./pricing-data"
 import { GUARANTEE_LINE, RENEWAL_LINE } from "@/lib/offer-copy"
+import { BRAND } from "@/lib/brand"
 
-// Each plan gets its own "product shot" — what that plan looks like in use.
-const ART: Record<string, { tone: "sky" | "lavender" | "sage"; art: React.ReactNode }> = {
+const A = BRAND.agentName
+
+// Each plan gets its own example "product shot": what that plan looks like in use.
+const ART: Record<string, { tone: SvcKey; art: React.ReactNode }> = {
   Starter: {
-    tone: "sky",
+    tone: "se",
     art: (
-      <Phone>
-        <AgentNote title="Posted to Google" body="“Now booking same-week cleanings — call or book online.” Your 2nd post this week." />
-        <EngineChips items={[{ name: "ChatGPT", ok: true }, { name: "Gemini", ok: true }, { name: "Claude", ok: false }, { name: "Perplexity", ok: true }]} />
-      </Phone>
+      <>
+        <Note title="Posted to Google" body="“Now booking same-week cleanings — call or book online.” Your 2nd post this week." />
+        <Engines items={[{ name: "ChatGPT", ok: true }, { name: "Gemini", ok: true }, { name: "Claude", ok: false }, { name: "Perplexity", ok: true }]} />
+      </>
     ),
   },
   Pro: {
-    tone: "lavender",
-    art: (
-      <Phone>
-        <AgentNote title="3 locations this week" body="Downtown named 4 of 4. Northside 3 of 4. Westlake 2 of 4 — Smile Studio got the other two. Here’s what they have that you don’t." />
-      </Phone>
-    ),
+    tone: "ad",
+    art: <Note title="3 locations this week" body="Downtown named 4 of 4. Northside 3 of 4. Westlake 2 of 4 — Smile Studio got the other two. Here’s what they have that you don’t." />,
   },
   Growth: {
-    tone: "sky",
+    tone: "mk",
     art: (
-      <Phone>
-        <AgentNote title="This week’s marketing is ready" body="A blog post, 2 Google updates and 3 social posts, all in your voice. Tap once to approve." />
-        <AgentNote title="Your Google ads are built" body="Aimed at people near you searching for what you sell. Paused until you approve the budget." />
-      </Phone>
+      <>
+        <Note title="This week’s marketing is ready" body="A blog post, 2 Google updates and 3 social posts, all in your voice. Tap once to approve." />
+        <Note title="Your Google ads are built" body="Aimed at people near you searching for what you sell. Paused until you approve the budget." />
+      </>
     ),
   },
   "Full Service": {
-    tone: "sage",
-    art: (
-      <Phone>
-        <AgentNote title="Published to your website" body="Your new FAQ page and structured facts are live. A person on our team did it — you didn’t touch a thing." />
-      </Phone>
-    ),
+    tone: "em",
+    art: <Note title="Published to your website" body="Your new FAQ page and structured facts are live. A person on our team did it — you didn’t touch a thing." />,
   },
 }
 
+// Agency vs agent: same rows and numbers as before (apple/Sections AgencyToggle).
+const ROWS: [string, string, string][] = [
+  ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what I did today, what changed, what I need from you."],
+  ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel online in a minute. I only stay if I keep earning it."],
+  ["The scope", "Usually one channel per retainer. Ask about ChatGPT or Claude and many stumble.", "SEO and AI search, content and reviews on every plan. Social, ads and email on Growth (early access)."],
+]
+
 export default function PricingPage() {
   const [annual, setAnnual] = useState(false)
-  const [open, setOpen] = useState<number | null>(null)
 
   return (
-    <>
-      <section className="ap-sec" style={{ paddingTop: 120 }}>
-        <p className="ap-center" style={{ fontSize: 15, color: "#6e6e73", margin: "0 auto 18px", padding: "0 22px" }}>
-          Search marketing agencies often charge $1,000+ a month. Your marketing agent starts at <b style={{ color: "#1d1d1f" }}>$99</b>.
-        </p>
-        <h1 className="ap-h2 ap-center" style={{ fontSize: "clamp(44px, 7.7vw, 88px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}>
-          Your whole marketing.<br /><span className="ap-quiet">Run by an AI Agent. From $99/month.</span>
-        </h1>
-        <p className="ap-lead ap-center">SEO and AI search, blog and Google posts, and review replies on every plan. Social, ads and email on Growth (early access). Month to month, no contracts, no technical skills needed.</p>
-        <p className="ap-center" style={{ fontSize: 15, color: "#1d1d1f", margin: "14px auto 0", padding: "0 22px" }}><b>90-day AI Visibility Guarantee:</b> {GUARANTEE_LINE}</p>
+    <V3Page>
+      <Frame top>
+        <Section center>
+          <ServicePills />
+          <p className="v3-muted" style={{ fontSize: 15, margin: "0 auto 18px" }}>
+            Search marketing agencies often charge $1,000+ a month. Your marketing agent starts at <b style={{ color: "var(--v-fg)" }}>$99</b>.
+          </p>
+          <h1 className="v3-h1">
+            Your whole marketing.<br /><span className="v3-blue">Run by an AI Agent. From $99/month.</span>
+          </h1>
+          <p className="v3-lede">SEO and AI search, blog and Google posts, and review replies on every plan. Social, ads and email on Growth (early access). Month to month, no contracts, no technical skills needed.</p>
+          <p style={{ fontSize: 15, margin: "14px auto 0", maxWidth: "60ch" }}><b>90-day AI Visibility Guarantee:</b> {GUARANTEE_LINE}</p>
 
-        <div className="ap-seg" role="tablist" aria-label="Billing period">
-          <button role="tab" aria-selected={!annual} className={!annual ? "is-on" : ""} onClick={() => setAnnual(false)}>Monthly</button>
-          <button role="tab" aria-selected={annual} className={annual ? "is-on" : ""} onClick={() => setAnnual(true)}>Annual · save 20%</button>
-          <span className={cn("ap-seg__thumb", annual && "is-right")} aria-hidden="true" />
-        </div>
-
-        <div className="ap-plans">
-          {plans.map((plan) => {
-            const a = ART[plan.name]
-            const price = annual ? plan.annual : plan.monthly
-            const href = "href" in plan && plan.href ? plan.href : `/signup?plan=${plan.priceId[annual ? "annual" : "monthly"]}`
-            return (
-              <article key={plan.name} className={cn("ap-plan", plan.highlight && "ap-plan--hi")}>
-                <Panel tone={a.tone}>{a.art}</Panel>
-                <div className="ap-plan__body">
-                  {"badge" in plan && plan.badge && <div className="ap-plan__badge">{plan.badge}</div>}
-                  <h2>{plan.name}</h2>
-                  <p className="ap-plan__desc">{plan.description}</p>
-                  <div className="ap-plan__price"><b>${price}</b><span>/month</span></div>
-                  <div className="ap-plan__note">
-                    {"monthlyOnly" in plan && plan.monthlyOnly ? (plan.name === "Growth" ? "Monthly only · ad spend paid to Google and Meta" : "Monthly only — human-fulfilled service") : annual ? `Billed annually ($${price * 12}/yr)` : "Month to month · cancel anytime"}
-                  </div>
-                  {href.startsWith("mailto:") ? <a href={href} className="ap-plan__cta">{plan.cta}</a> : <Link href={href} className={cn("ap-plan__cta", plan.highlight && "is-primary")}>{plan.cta}</Link>}
-                  <p style={{ fontSize: 12, lineHeight: 1.4, color: "#6e6e73", margin: "10px 0 0" }}>{GUARANTEE_LINE} {RENEWAL_LINE}</p>
-                  <ul className="ap-plan__list">
-                    {plan.features.map((f) => <li key={f}>{f}</li>)}
-                  </ul>
-                </div>
-              </article>
-            )
-          })}
-        </div>
-      </section>
-
-      <AgencyToggle />
-
-      <section className="ap-sec ap-sec--grey">
-        <h2 className="ap-h2 ap-center">Billing questions.</h2>
-        <div className="ap-faq" style={{ marginTop: 24 }}>
-          <div className="ap-faq__group">
-            {billingFaqs.map((f, i) => (
-              <div key={f.q} className={cn("ap-faq__item", open === i && "is-open")}>
-                <button className="ap-faq__q" onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i}>
-                  <span>{f.q}</span>
-                  <ChevronDown className="ap-faq__chev" aria-hidden="true" />
-                </button>
-                <div className="ap-faq__a"><p>{f.a}</p></div>
-              </div>
-            ))}
+          <div className="v3-chips" role="tablist" aria-label="Billing period">
+            <button type="button" role="tab" className="v3-chip" aria-selected={!annual} onClick={() => setAnnual(false)}>Monthly</button>
+            <button type="button" role="tab" className="v3-chip" aria-selected={annual} onClick={() => setAnnual(true)}>Annual · save 20%</button>
           </div>
-        </div>
-      </section>
-    </>
+
+          <div className="pg-plans">
+            {plans.map((plan) => {
+              const a = ART[plan.name]
+              const price = annual ? plan.annual : plan.monthly
+              const href = "href" in plan && plan.href ? plan.href : `/signup?plan=${plan.priceId[annual ? "annual" : "monthly"]}`
+              return (
+                <article key={plan.name} className={cn("pg-plan", `v3-c-${a.tone}`, plan.highlight && "pg-plan--hi")}>
+                  <ExBox tone={a.tone}>{a.art}</ExBox>
+                  <div className="pg-plan__body">
+                    {"badge" in plan && plan.badge && <div className="pg-plan__badge">{plan.badge}</div>}
+                    <h2>{plan.name}</h2>
+                    <p className="pg-plan__desc">{plan.description}</p>
+                    <div className="pg-plan__price"><b>${price}</b><span>/month</span></div>
+                    <div className="pg-plan__note">
+                      {"monthlyOnly" in plan && plan.monthlyOnly ? (plan.name === "Growth" ? "Monthly only · ad spend paid to Google and Meta" : "Monthly only — human-fulfilled service") : annual ? `Billed annually ($${price * 12}/yr)` : "Month to month · cancel anytime"}
+                    </div>
+                    {href.startsWith("mailto:") ? <a href={href} className={cn("v3-btn", !plan.highlight && "v3-btn--ghost")}>{plan.cta}</a> : <Link href={href} className={cn("v3-btn", !plan.highlight && "v3-btn--ghost")}>{plan.cta}</Link>}
+                    <p className="pg-plan__fine">{GUARANTEE_LINE} {RENEWAL_LINE}</p>
+                    <ul>
+                      {plan.features.map((f) => <li key={f}>{f}</li>)}
+                    </ul>
+                  </div>
+                </article>
+              )
+            })}
+          </div>
+        </Section>
+
+        <Section center>
+          <h2 className="v3-h2">Agencies often charge $1,000+ a month<br /><span className="v3-blue">for marketing an AI Agent now runs for you.</span></h2>
+          <p className="v3-lede">Keep the money, get your time back, and show up where customers search and ask today.</p>
+          <div className="pg-vs">
+            <div className="pg-vs__col">
+              <div className="pg-vs__name">Marketing agency (example)</div>
+              <div className="pg-vs__price"><b>$1,000+</b><span>/mo</span></div>
+              <div className="pg-vs__year">for example, $12,000+ a year</div>
+              {ROWS.map(([k, them]) => <div key={k}><h3>{k}</h3><p>{them}</p></div>)}
+            </div>
+            <div className="pg-vs__col pg-vs__col--us">
+              <div className="pg-vs__name">{A}</div>
+              <div className="pg-vs__price"><b>$99</b><span>/mo</span></div>
+              <div className="pg-vs__year">$1,188 a year</div>
+              {ROWS.map(([k, , us]) => <div key={k}><h3>{k}</h3><p>{us}</p></div>)}
+            </div>
+            <div className="pg-vs__save">
+              <span>For example, against a $1,000 a month agency, save</span>
+              <b>$10,812 a year</b>
+              <em>…and your marketing still gets done every week.</em>
+            </div>
+          </div>
+        </Section>
+
+        <Section center>
+          <h2 className="v3-h2">Billing questions.</h2>
+          <div className="v3-faq">
+            {billingFaqs.map((f) => <details key={f.q}><summary>{f.q}</summary><p>{f.a}</p></details>)}
+          </div>
+        </Section>
+
+        <FinalCta title={<>Run the business.<br /><span>I’ll run the marketing.</span></>} sub="Month to month. Cancel online in a minute." />
+      </Frame>
+    </V3Page>
   )
 }

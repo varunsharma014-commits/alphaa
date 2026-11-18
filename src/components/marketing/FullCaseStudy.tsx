@@ -1,119 +1,73 @@
-import { MapPin } from "lucide-react"
-import { OrangePillButton } from "@/components/common/OrangePillButton"
+// One illustrative example (/case-studies/[slug]) in the v3 design. Words and figures come
+// straight from case-studies/data.tsx; nothing here adds a claim.
+import Link from "next/link"
 import type { CaseStudy } from "@/app/(marketing)/case-studies/data"
+import { Eyebrow } from "@/components/marketing/v3"
+import { INDUSTRY_TONE } from "@/components/marketing/v3/pages/case-tone"
 
 export function FullCaseStudy({ cs }: { cs: CaseStudy }) {
+  const tone = INDUSTRY_TONE[cs.industry] ?? "ad"
   return (
-    <article id={cs.id} className="scroll-mt-24">
+    <article id={cs.id} className={`v3-c-${tone}`} style={{ scrollMarginTop: 96 }}>
       {/* Hero */}
-      <div className={`rounded-3xl border border-line/[0.08] bg-white overflow-hidden mb-6`}>
-        <div className="p-8 sm:p-12">
-          <div className="flex flex-wrap items-center gap-3 mb-6">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${cs.badge}`}>
-              {cs.industry}
-            </span>
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border border-line/[0.08] text-muted">
-              Illustrative example
-            </span>
-            <div className="flex items-center gap-1 text-fg/40 text-sm">
-              <MapPin className="w-3.5 h-3.5" />
-              {cs.location}
-            </div>
+      <div className="v3-chapter v3-chapter--solo">
+        <div>
+          <Eyebrow small={<>Illustrative example · {cs.location}</>}>{cs.industry}</Eyebrow>
+          <h2 className="v3-h2">{cs.business}</h2>
+          <p className="v3-chapter__body" style={{ maxWidth: "60ch" }}>{cs.headline}</p>
+          <div className="v3-proof"><span className="n" style={{ fontSize: "clamp(26px, 4vw, 40px)" }}>{cs.keyResult}</span><span>{cs.keyResultSub}</span></div>
+          <div className="v3-mosaic" style={{ marginTop: 24 }}>
+            {cs.metrics.map((m) => (
+              <div key={m.label} className="v3-tile" style={{ background: "var(--v-card)" }}>
+                <m.icon aria-hidden="true" style={{ width: 16, height: 16, color: "var(--cc)" }} />
+                <span className="big" style={{ fontSize: 26 }}>{m.value}</span>
+                <small style={{ color: "var(--v-fg)", fontWeight: 600 }}>{m.label}</small>
+                <small>{m.sub}</small>
+              </div>
+            ))}
           </div>
-
-          <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
-            {cs.business}
-          </h2>
-          <p className="text-muted text-lg sm:text-xl mb-8 max-w-2xl">{cs.headline}</p>
-
-          {/* Hero metric */}
-          <div className="inline-block rounded-2xl bg-brand-orange/10 border border-brand-orange/20 px-6 py-4">
-            <p className="text-brand-orange text-4xl sm:text-5xl font-bold leading-none mb-1">{cs.keyResult}</p>
-            <p className="text-fg/50 text-sm">{cs.keyResultSub}</p>
-          </div>
-        </div>
-
-        {/* Metric cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-line/[0.06] border-t border-line/[0.06]">
-          {cs.metrics.map((m) => (
-            <div key={m.label} className="bg-bg-primary p-5 sm:p-6">
-              <m.icon className="w-4 h-4 text-brand-orange mb-3" />
-              <p className="text-fg text-2xl font-bold leading-none mb-1">{m.value}</p>
-              <p className="text-fg/70 text-sm font-medium">{m.label}</p>
-              <p className="text-fg/35 text-xs mt-0.5">{m.sub}</p>
-            </div>
-          ))}
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6 mb-6">
+      <div className="v3-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))" }}>
         {/* Problem */}
-        <div className="lg:col-span-1 rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 sm:p-7">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-fg/30" />
-            <p className="text-muted text-xs font-semibold tracking-[-0.01em]">The Problem</p>
-          </div>
-          <h3 className="text-fg font-semibold text-lg mb-3 leading-snug">{cs.problem.title}</h3>
-          <p className="text-muted text-sm leading-relaxed mb-5">{cs.problem.body}</p>
-          <div className="space-y-2">
-            {cs.problem.tried.map((t, i) => (
-              <div key={i} className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-fg/25 mt-1.5 flex-shrink-0" />
-                <p className="text-muted text-sm leading-relaxed">{t}</p>
-              </div>
-            ))}
-          </div>
+        <div className="v3-card">
+          <p className="v3-kicker">The Problem</p>
+          <h3 className="v3-h3">{cs.problem.title}</h3>
+          <p>{cs.problem.body}</p>
+          <ul>{cs.problem.tried.map((t, i) => <li key={i}>{t}</li>)}</ul>
         </div>
 
         {/* Solution + timeline */}
-        <div className="lg:col-span-2 rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 sm:p-7">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-brand-orange" />
-            <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em]">The Solution</p>
-          </div>
-          <h3 className="text-fg font-semibold text-lg mb-3 leading-snug">{cs.solution.title}</h3>
-          <p className="text-muted text-sm leading-relaxed mb-6">{cs.solution.body}</p>
-
-          {/* Timeline */}
-          <div className="space-y-4">
+        <div className="v3-card v3-card--tint">
+          <p className="v3-kicker" style={{ color: "var(--cc)" }}>The Solution</p>
+          <h3 className="v3-h3">{cs.solution.title}</h3>
+          <p>{cs.solution.body}</p>
+          <ol className="v3-steps" style={{ gridTemplateColumns: "minmax(0, 1fr)", marginTop: 18, gap: 10 }}>
             {cs.solution.timeline.map((t, i) => (
-              <div key={i} className="flex gap-4">
-                <div className="flex flex-col items-center">
-                  <div className="w-7 h-7 rounded-full bg-brand-orange/10 border border-brand-orange/30 flex items-center justify-center flex-shrink-0">
-                    <span className="text-brand-orange text-[10px] font-bold">{i + 1}</span>
-                  </div>
-                  {i < cs.solution.timeline.length - 1 && (
-                    <div className="w-px flex-1 bg-line/[0.06] mt-2 mb-0" />
-                  )}
-                </div>
-                <div className="pb-4">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-brand-orange text-xs font-semibold">{t.week}</span>
-                    <span className="text-fg text-sm font-semibold">{t.title}</span>
-                  </div>
-                  <p className="text-muted text-sm leading-relaxed">{t.detail}</p>
-                </div>
-              </div>
+              <li key={i} style={{ background: "var(--v-card)", padding: 18 }}>
+                <p className="v3-kicker" style={{ color: "var(--cc)", margin: "0 0 4px" }}>{t.week}</p>
+                <h3>{t.title}</h3>
+                <p>{t.detail}</p>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </div>
 
       {/* Example disclosure (replaces the old pull quote: these are examples, not customers) */}
-      <div className="rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 sm:p-7 mb-6">
-        <p className="text-muted text-xs font-semibold tracking-[-0.01em] mb-2">About this example</p>
-        <p className="text-muted text-sm leading-relaxed">{cs.note}</p>
+      <div className="v3-card" style={{ marginTop: 14 }}>
+        <p className="v3-kicker">About this example</p>
+        <p style={{ marginTop: 0 }}>{cs.note}</p>
       </div>
 
       {/* CTA */}
-      <div className="rounded-2xl border border-line/[0.08] bg-fg/[0.02] p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <p className="text-fg font-semibold mb-1">See what AI says about your business</p>
-          <p className="text-muted text-sm">Free check: what ChatGPT, Gemini, Claude and Perplexity say about you, in about 60 seconds.</p>
+      <div className="v3-card v3-card--line" style={{ marginTop: 14, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+        <div style={{ minWidth: 0, flex: "1 1 280px" }}>
+          <p style={{ margin: 0, color: "var(--v-fg)", fontWeight: 700 }}>See what AI says about your business</p>
+          <p style={{ marginTop: 4 }}>Free check: what ChatGPT, Gemini, Claude and Perplexity say about you, in about 60 seconds.</p>
         </div>
-        <OrangePillButton href="/start" size="md" className="flex-shrink-0">
-          Run the free check →
-        </OrangePillButton>
+        <Link href="/start" className="v3-btn">Run the free check →</Link>
       </div>
     </article>
   )

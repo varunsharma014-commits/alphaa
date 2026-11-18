@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Sparkles } from "lucide-react"
 import { MarketSwitcher } from "@/components/layout/MarketSwitcher"
 import { CookieSettingsLink } from "@/components/common/CookieSettingsLink"
+import "@/components/marketing/v3/v3.css"
 
 const footerLinks = {
   Services: [
@@ -58,77 +59,47 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#f5f5f7] text-[12px] leading-[1.33] tracking-[-0.01em] text-[#515154]">
-      <div className="max-w-[980px] mx-auto px-4 sm:px-6 pt-10 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <Sparkles className="w-4 h-4 text-[#1d1d1f]" />
-              <span className="text-[#1d1d1f] font-semibold text-[14px]">alphaa</span>
+    <footer className="v3 v3-foot">
+      <div className="v3-foot__in">
+        <div className="v3-foot__grid">
+          <div className="v3-foot__brand">
+            <Link href="/" className="v3-logo" style={{ marginBottom: 12 }}>
+              <Sparkles aria-hidden="true" />
+              alphaa
             </Link>
-            <p className="text-[#515154] text-[12px] leading-[1.5] max-w-xs mb-3">
+            <p style={{ maxWidth: 340 }}>
               Your AI marketing agent. I run your social media, ads, SEO, blogs and email every week, and work to get you recommended by ChatGPT, Claude, Gemini and Perplexity. From $99/month.
             </p>
-            <div className="flex flex-wrap gap-x-3 gap-y-1">
-              {engines.map((e) => (
-                <span key={e} className="text-[12px] text-[#515154]">
-                  {e}
-                </span>
-              ))}
-            </div>
-            <div className="flex gap-2 mt-4">
+            <p style={{ marginTop: 8 }}>{engines.join(" · ")}</p>
+            <div className="v3-foot__social">
               {socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener"
-                  aria-label={`Alphaa on ${s.label}`}
-                  className="w-8 h-8 rounded-full bg-white border border-[#d2d2d7] flex items-center justify-center text-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-white transition-colors"
-                >
-                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="currentColor" aria-hidden="true"><path d={s.path} /></svg>
+                <a key={s.label} href={s.href} target="_blank" rel="noopener" aria-label={`Alphaa on ${s.label}`}>
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={s.path} /></svg>
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Links */}
           {Object.entries(footerLinks).map(([section, links]) => (
             <div key={section}>
-              <p className="text-[#1d1d1f] font-semibold text-[12px] mb-2.5">{section}</p>
-              <ul className="space-y-2">
+              <h3>{section}</h3>
+              <ul>
                 {links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-[#424245] text-[12px] hover:underline"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
+                  <li key={link.href}><Link href={link.href}>{link.label}</Link></li>
                 ))}
                 {section === "Company" && (
-                  <li>
-                    <CookieSettingsLink className="text-[#424245] text-[12px] hover:underline" />
-                  </li>
+                  <li><CookieSettingsLink /></li>
                 )}
               </ul>
             </div>
           ))}
         </div>
 
-        <div className="border-t border-[#d2d2d7] pt-4 space-y-3">
-          <div className="flex flex-col gap-2">
-            <p className="text-[#515154] text-[12px]">
-              AI visibility results vary by business, location, and industry. No specific rankings or revenue outcomes are guaranteed.
-            </p>
-            <p className="text-[#515154] text-[12px]">
-              Alphaa is not affiliated with, endorsed by, or sponsored by OpenAI, Anthropic, Google LLC, Microsoft Corporation, or Perplexity AI.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-[#515154] text-[12px]">Copyright © {new Date().getFullYear()} Alphaa. All rights reserved.</p>
+        <div className="v3-foot__legal">
+          <p>AI visibility results vary by business, location, and industry. No specific rankings or revenue outcomes are guaranteed.</p>
+          <p>Alphaa is not affiliated with, endorsed by, or sponsored by OpenAI, Anthropic, Google LLC, Microsoft Corporation, or Perplexity AI.</p>
+          <div className="v3-foot__bottom">
+            <p>Copyright © {new Date().getFullYear()} Alphaa. All rights reserved.</p>
             <MarketSwitcher />
           </div>
         </div>

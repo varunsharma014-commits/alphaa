@@ -3,6 +3,8 @@
 import { useState } from "react"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { ChevronDown, ChevronUp } from "lucide-react"
+import { V3Page, Frame } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/refer.css"
 
 // ─── Earnings Calculator ───────────────────────────────────────────────────────
 function EarningsCalculator() {
@@ -27,7 +29,7 @@ function EarningsCalculator() {
   ]
 
   return (
-    <div className="bg-fg/[0.03] border border-line/[0.08] rounded-2xl p-8">
+    <div className="bg-fg/[0.03] border border-line/[0.08] rounded-2xl p-5 sm:p-8">
       {/* Presets */}
       <div className="flex flex-wrap gap-2 mb-8">
         {presets.map((p) => (
@@ -96,7 +98,7 @@ function EarningsCalculator() {
       </div>
 
       {/* Earnings grid */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: "Monthly earnings", value: fmt(monthly) },
           { label: "Annual earnings", value: fmt(annual) },
@@ -188,27 +190,20 @@ function ApplyForm() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function ReferPage() {
   return (
-    <main className="bg-bg-primary min-h-screen text-fg">
+    <V3Page className="pg-refer">
+      <Frame top>
 
       {/* ── 1. Hero ─────────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-24 px-4 sm:px-6 overflow-hidden text-center">
-        <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] pointer-events-none"
-          style={{
-            background:
-              "transparent",
-          }}
-          aria-hidden="true"
-        />
+      <section className="v3-sec v3-center relative overflow-hidden">
         <div className="relative max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange text-xs font-medium mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
             Partner Program · Open now
           </div>
 
-          <h1 className="text-[41.8px] sm:text-[61.6px] lg:text-[70.4px] font-semibold leading-[1.05] tracking-[-0.02em] text-fg mb-6 text-balance">
+          <h1 className="v3-h1 mb-6">
             Get paid every month.{" "}
-            <span className="text-[#0071e3]">
+            <span className="v3-blue">
               Forever.
             </span>
           </h1>
@@ -248,10 +243,10 @@ export default function ReferPage() {
       </section>
 
       {/* ── 2. Earnings Calculator ──────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6">
+      <section className="v3-sec">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+            <h2 className="v3-h2 mb-3">
               How much will you earn?
             </h2>
             <p className="text-muted">Drag the slider and see your numbers in real time.</p>
@@ -261,10 +256,10 @@ export default function ReferPage() {
       </section>
 
       {/* ── 3. How It Works ─────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
+      <section className="v3-sec">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+            <h2 className="v3-h2 mb-3">
               Three steps. That's it.
             </h2>
           </div>
@@ -308,17 +303,17 @@ export default function ReferPage() {
       </section>
 
       {/* ── 4. What You Earn ────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
+      <section className="v3-sec">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+            <h2 className="v3-h2 mb-3">
               Exact numbers, no guessing
             </h2>
             <p className="text-muted">30% on everything. Every month.</p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-line/[0.08]">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto rounded-2xl border border-line/[0.08]">
+            <table className="w-full text-sm min-w-[480px]">
               <thead>
                 <tr className="bg-fg/[0.04] border-b border-line/[0.08]">
                   {["Plan", "Price", "Your cut/mo", "Your cut/year"].map((h) => (
@@ -358,10 +353,10 @@ export default function ReferPage() {
       </section>
 
       {/* ── 5. Who This Is For ──────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
+      <section className="v3-sec">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+            <h2 className="v3-h2 mb-3">
               Built for people with the right audience
             </h2>
           </div>
@@ -397,7 +392,7 @@ export default function ReferPage() {
       </section>
 
       {/* ── 6. Requirements ─────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
+      <section className="v3-sec">
         <div className="max-w-3xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
@@ -436,9 +431,9 @@ export default function ReferPage() {
       </section>
 
       {/* ── 8. FAQ ──────────────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 border-t border-line/[0.06]">
+      <section className="v3-sec">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-semibold tracking-tight mb-10 text-center">
+          <h2 className="v3-h2 mb-10 text-center">
             Common questions
           </h2>
           <div>
@@ -473,18 +468,10 @@ export default function ReferPage() {
       {/* ── 9. Bottom CTA ───────────────────────────────────────── */}
       <section
         id="apply"
-        className="py-24 px-4 sm:px-6 border-t border-line/[0.06] relative overflow-hidden"
+        className="v3-sec v3-sec--flush relative overflow-hidden"
       >
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
-          style={{
-            background:
-              "transparent",
-          }}
-          aria-hidden="true"
-        />
         <div className="relative max-w-xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+          <h2 className="v3-h2 mb-3">
             Start earning today
           </h2>
           <p className="text-muted mb-8">
@@ -498,6 +485,7 @@ export default function ReferPage() {
           </p>
         </div>
       </section>
-    </main>
+      </Frame>
+    </V3Page>
   )
 }

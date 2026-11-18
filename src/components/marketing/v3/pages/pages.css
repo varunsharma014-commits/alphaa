@@ -1,0 +1,65 @@
+/* v3 extras for pricing, how-it-works, about, integrations and refer. Scoped under .v3. */
+
+/* Example boxes (replace the old apple phone mockups): a tinted panel with stacked note cards */
+.v3 .pg-ex { border-radius: 22px; background: var(--c2, var(--v-soft)); padding: 18px; display: flex; flex-direction: column; gap: 10px; position: relative; min-width: 0; }
+.v3 .pg-ex__note { position: absolute; right: 12px; top: 10px; }
+.v3 .pg-ex__note .v3-example { background: var(--v-card); }
+.v3 .pg-note { background: var(--v-card); border-radius: 14px; padding: 12px 14px; box-shadow: 0 8px 24px rgba(0,0,0,.08); font-size: 13.5px; color: var(--v-fg2); min-width: 0; }
+.v3 .pg-note b { display: block; color: var(--v-fg); font-size: 14px; margin-bottom: 3px; }
+.v3 .pg-note__head { display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--v-muted); margin-bottom: 6px; }
+.v3 .pg-note__head i { font-style: normal; width: 18px; height: 18px; border-radius: 50%; background: var(--v-ink); color: var(--v-inkfg); display: grid; place-items: center; font-size: 10px; }
+.v3 .pg-note__acts { display: flex; gap: 6px; margin-top: 10px; }
+.v3 .pg-note__acts span { font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 999px; background: var(--v-soft); color: var(--v-fg); }
+.v3 .pg-note__acts span:first-child { background: var(--v-ink); color: var(--v-inkfg); }
+.v3 .pg-note mark { background: color-mix(in srgb, var(--v-blue) 18%, transparent); color: var(--v-fg); border-radius: 4px; padding: 0 3px; font-weight: 600; }
+.v3 .pg-engines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.v3 .pg-engines span { background: var(--v-card); border-radius: 10px; padding: 8px 10px; font-size: 12.5px; color: var(--v-fg); display: flex; justify-content: space-between; gap: 6px; min-width: 0; }
+.v3 .pg-engines em { font-style: normal; color: var(--v-muted); }
+.v3 .pg-engines .ok em { color: var(--v-good); font-weight: 700; }
+.v3 .pg-check { display: flex; gap: 8px; align-items: center; }
+.v3 .pg-check span { width: 18px; height: 18px; border-radius: 50%; background: var(--v-good); color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 800; flex: none; }
+
+/* Pricing */
+.v3 .pg-plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 32px; text-align: left; }
+.v3 .pg-plan { background: var(--v-card); border: 1px solid var(--v-line); border-radius: 24px; padding: 14px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.v3 .pg-plan--hi { border: 2px solid var(--v-ink); }
+.v3 .pg-plan__body { padding: 4px 8px 10px; display: flex; flex-direction: column; flex: 1; }
+.v3 .pg-plan__badge { align-self: flex-start; font-size: 12px; font-weight: 700; color: #fff; background: var(--ci); border-radius: 999px; padding: 3px 10px; margin-bottom: 8px; }
+.v3 .pg-plan h2 { font-size: 26px; font-weight: 700; }
+.v3 .pg-plan__desc { color: var(--v-muted); font-size: 14.5px; margin-top: 6px; min-height: 64px; }
+.v3 .pg-plan__price { margin-top: 12px; display: flex; align-items: baseline; gap: 4px; }
+.v3 .pg-plan__price b { font-size: 44px; font-weight: 800; letter-spacing: -0.03em; color: var(--v-fg); }
+.v3 .pg-plan__price span { color: var(--v-muted); }
+.v3 .pg-plan__note { font-size: 13px; color: var(--v-muted); min-height: 36px; }
+.v3 .pg-plan .v3-btn { margin-top: 12px; width: 100%; }
+.v3 .pg-plan__fine { font-size: 12px; line-height: 1.4; color: var(--v-muted); margin-top: 10px; }
+.v3 .pg-plan ul { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; color: var(--v-fg2); }
+.v3 .pg-plan li { padding-left: 22px; position: relative; }
+.v3 .pg-plan li::before { content: "✓"; position: absolute; left: 0; color: var(--v-good); font-weight: 800; }
+
+.v3 .pg-vs { max-width: 860px; margin: 32px auto 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; text-align: left; }
+.v3 .pg-vs__col { border-radius: 22px; padding: 22px; background: var(--v-soft); min-width: 0; }
+.v3 .pg-vs__col--us { background: var(--v-ink); color: var(--v-inkfg); }
+.v3 .pg-vs__name { font-size: 13px; font-weight: 700; opacity: .8; }
+.v3 .pg-vs__price { margin-top: 8px; }
+.v3 .pg-vs__price b { font-size: clamp(34px, 5vw, 46px); font-weight: 800; letter-spacing: -0.03em; }
+.v3 .pg-vs__year { font-size: 14px; opacity: .75; }
+.v3 .pg-vs__col h3 { font-size: 14px; font-weight: 700; margin-top: 18px; color: inherit; letter-spacing: 0; }
+.v3 .pg-vs__col p { font-size: 14.5px; margin-top: 4px; opacity: .85; }
+.v3 .pg-vs__save { grid-column: 1 / -1; border-radius: 22px; padding: 22px; background: var(--se-bg); display: flex; flex-direction: column; gap: 4px; text-align: center; }
+.v3 .pg-vs__save b { font-size: clamp(30px, 4.6vw, 44px); letter-spacing: -0.03em; color: var(--se); }
+.v3 .pg-vs__save em { font-style: normal; color: var(--v-muted); font-size: 14px; }
+
+/* How it works rows */
+.v3 .pg-rows { display: flex; flex-direction: column; gap: 18px; }
+
+/* About prose */
+.v3 .pg-prose { max-width: 720px; margin: 0 auto; color: var(--v-fg2); font-size: 17px; line-height: 1.65; text-align: left; }
+.v3 .pg-prose h2 { font-size: clamp(22px, 3vw, 28px); font-weight: 700; margin: 36px 0 10px; }
+.v3 .pg-prose h2:first-child { margin-top: 0; }
+.v3 .pg-prose p + p { margin-top: 12px; }
+.v3 .pg-prose ul { padding-left: 20px; margin: 12px 0 0; display: flex; flex-direction: column; gap: 8px; }
+.v3 .pg-prose a { color: var(--v-blue); text-decoration: underline; text-underline-offset: 2px; }
+
+@media (max-width: 1000px) { .v3 .pg-plans { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .v3 .pg-plans, .v3 .pg-vs { grid-template-columns: minmax(0, 1fr); } .v3 .pg-plan__desc, .v3 .pg-plan__note { min-height: 0; } }

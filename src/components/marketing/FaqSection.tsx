@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { faqs } from "./faq-data"
 
@@ -22,26 +21,25 @@ export function FaqSection() {
   const shown = filter === "All" ? GROUPS : GROUPS.filter((g) => g.name === filter)
 
   return (
-    <section className="ap-sec">
-      <h2 className="ap-h2 ap-center">More questions? More answers.</h2>
-      <div className="ap-pills" role="tablist">
+    <section className="v3-sec v3-center" id="faq">
+      <h2 className="v3-h2">More questions? More answers.</h2>
+      <div className="v3-chips" role="tablist" aria-label="Question topics">
         {["All", ...GROUPS.map((g) => g.name)].map((name) => (
-          <button key={name} role="tab" aria-selected={filter === name} className={filter === name ? "is-on" : ""} onClick={() => setFilter(name)}>
+          <button key={name} type="button" role="tab" aria-selected={filter === name} className="v3-chip" onClick={() => setFilter(name)}>
             {name}
           </button>
         ))}
       </div>
-      <div className="ap-faq">
+      <div className="v3-faq">
         {shown.map((g) => (
-          <div key={g.name} className="ap-faq__group">
+          <div key={g.name}>
             <h3>{g.name}</h3>
             {g.items.map((i) => (
-              <div key={i} className={cn("ap-faq__item", open === i && "is-open")}>
-                <button className="ap-faq__q" onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i}>
+              <div key={i} className={cn("v3-faq__item", open === i && "is-open")}>
+                <button type="button" className="v3-faq__q" onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i} aria-controls={`faq-a-${i}`}>
                   <span>{faqs[i].q}</span>
-                  <ChevronDown className="ap-faq__chev" aria-hidden="true" />
                 </button>
-                <div className="ap-faq__a"><p>{faqs[i].a}</p></div>
+                <div className="v3-faq__a" id={`faq-a-${i}`} hidden={open !== i}><p>{faqs[i].a}</p></div>
               </div>
             ))}
           </div>

@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowLeft } from "lucide-react"
 import { caseStudies, getCaseStudy } from "../data"
 import { pageMeta } from "@/lib/seo"
 import { FullCaseStudy } from "@/components/marketing/FullCaseStudy"
+import { V3Page, Frame, Section } from "@/components/marketing/v3"
+import { INDUSTRY_TONE } from "@/components/marketing/v3/pages/case-tone"
 
 // The listing page has always linked to /case-studies/<slug>, but this route
 // didn't exist, so every "Read full case study" link 404'd. Each case study now
@@ -33,43 +34,31 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const others = caseStudies.filter((c) => c.slug !== cs.slug)
 
   return (
-    <div className="pt-24 pb-20 px-4 sm:px-6">
-      <div className="max-w-5xl mx-auto">
-        <Link
-          href="/case-studies"
-          className="inline-flex items-center gap-2 text-muted hover:text-fg text-sm font-medium mb-8 transition-colors duration-200"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          All examples
-        </Link>
+    <V3Page>
+      <Frame top>
+        <Section>
+          <nav className="v3-crumbs" aria-label="Breadcrumb">
+            <Link href="/case-studies">‹ All examples</Link>
+          </nav>
 
-        <FullCaseStudy cs={cs} />
+          <FullCaseStudy cs={cs} />
+        </Section>
 
         {others.length > 0 && (
-          <div className="mt-16 pt-10 border-t border-line/[0.08]">
-            <p className="text-muted text-xs font-semibold tracking-[-0.01em] mb-6">
-              More examples
-            </p>
-            <div className="grid sm:grid-cols-2 gap-4">
+          <Section>
+            <p className="v3-kicker">More examples</p>
+            <div className="v3-grid v3-grid--2" style={{ marginTop: 0 }}>
               {others.map((o) => (
-                <Link
-                  key={o.slug}
-                  href={`/case-studies/${o.slug}`}
-                  className="rounded-2xl border border-line/[0.08] bg-white p-6 hover:border-brand-orange/30 transition-colors duration-200"
-                >
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border mb-3 ${o.badge}`}
-                  >
-                    {o.industry}
-                  </span>
-                  <p className="text-fg font-semibold mb-1">{o.business}</p>
-                  <p className="text-muted text-sm leading-relaxed">{o.headline}</p>
+                <Link key={o.slug} href={`/case-studies/${o.slug}`} className={`v3-card v3-card--tint v3-c-${INDUSTRY_TONE[o.industry] ?? "ad"}`}>
+                  <span className="v3-pill" style={{ alignSelf: "flex-start" }}>{o.industry}</span>
+                  <b className="v3-h3" style={{ marginTop: 12 }}>{o.business}</b>
+                  <p>{o.headline}</p>
                 </Link>
               ))}
             </div>
-          </div>
+          </Section>
         )}
-      </div>
-    </div>
+      </Frame>
+    </V3Page>
   )
 }
