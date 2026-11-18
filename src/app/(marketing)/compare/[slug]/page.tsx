@@ -76,8 +76,8 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
           <p>{c.tldr}</p>
         </div>
         <div className="cmp-hero__cta">
-          <Link href="/start" className="cmp-btn">Let me check your business</Link>
-          <span>Free scan · No credit card required</span>
+          <Link href="/start" className="cmp-btn">Get started</Link>
+          <span>Free check first · No credit card required</span>
         </div>
       </section>
 
@@ -179,9 +179,9 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
       </section>
 
       <section className="ap-sec ap-cta">
-        <h2 className="ap-h2">Let me check what AI says about you.</h2>
-        <p className="ap-lead">Free. About a minute. Just your website.</p>
-        <Link href="/start" className="ap-btn">Check my business — free</Link>
+        <h2 className="ap-h2">Let me run your marketing.</h2>
+        <p className="ap-lead">Start with a free check of your business. About a minute. Just your website.</p>
+        <Link href="/start" className="ap-btn">Get started</Link>
         <p className="ap-fine">No credit card required.</p>
       </section>
 

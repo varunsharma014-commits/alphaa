@@ -135,11 +135,11 @@ export default function AuditResultsEmail({
                 <Text style={ctaHeading}>Let me fix it.</Text>
                 <Text style={paragraph}>
                   {variant === "requested"
-                    ? "I am an AI agent that does the work to get you recommended. I write the answers, update your profile, and check your visibility weekly."
-                    : "I am an AI agent. I write the facts AI needs to read, update your Google profile, and check your visibility every week. You just tap approve."}
+                    ? "I am an AI agent that runs your marketing. I write your Google posts and blogs, reply to reviews, fix the facts AI reads, and check your visibility weekly."
+                    : "I am an AI agent that runs your marketing. I write your Google posts and blogs, reply to reviews, fix the facts AI reads, and check your visibility every week. You just tap approve."}
                 </Text>
                 <Button style={button} href={hire}>
-                  Get recommended by AI →
+                  Get started →
                 </Button>
                 {variant === "ready" && <Text style={trialNote}>Month to month. Cancel online in a minute.</Text>}
               </>

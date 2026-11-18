@@ -15,25 +15,25 @@ const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
 export const metadata: Metadata = {
   title: {
-    default: "Alphaa — Get Recommended by ChatGPT, Gemini & Claude",
+    default: "Alphaa: AI Marketing Agent for Small Businesses",
     template: "%s | Alphaa",
   },
   description:
-    "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. It does the work; you approve. $99/month, month to month.",
+    "Alphaa is an AI agent that runs your marketing: social media, ads, SEO and AI search, blog posts, Google posts, reviews and email. It does the work; you approve. From $99/month, month to month.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"),
   // Defaults for pages that don't declare their own card. No og:url here: a
   // root og:url made every inheriting page claim to be the homepage.
   openGraph: {
-    title: "Alphaa AI Agent — Get Recommended by ChatGPT, Gemini, Claude and Perplexity",
-    description: "Get customers from ChatGPT. Your AI Agent does the work. $99/month, month to month.",
+    title: "Alphaa: Run your entire marketing using an AI agent",
+    description: "Social, ads, SEO, AI search, content and email, done for you every week. You approve. From $99/month.",
     siteName: "Alphaa",
     type: "website",
-    images: [{ url: "/og", width: 1200, height: 630, alt: "Alphaa: get customers from ChatGPT. Your AI Agent does the work." }],
+    images: [{ url: "/og", width: 1200, height: 630, alt: "Alphaa: run your entire marketing using an AI agent." }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alphaa AI Agent — Get Recommended by ChatGPT, Gemini, Claude and Perplexity",
-    description: "Get customers from ChatGPT. Your AI Agent does the work. $99/month, month to month.",
+    title: "Alphaa: Run your entire marketing using an AI agent",
+    description: "Social, ads, SEO, AI search, content and email, done for you every week. You approve. From $99/month.",
     images: ["/og"],
   },
   // No site-wide canonical: a root default made every page point at the homepage,
@@ -52,7 +52,7 @@ const orgSchema = {
   url: "https://alphaa.app",
   email: "hi@alphaa.app",
   description:
-    "Alphaa is an AI search optimization (AEO) agent that checks what ChatGPT, Gemini, Claude and Perplexity say about a business every week and works to get it found, cited and recommended by those 4 AIs.",
+    "Alphaa is an AI marketing agent for small businesses. It runs social media, Google and Meta ads, SEO and AI search optimization (AEO), blog and Google Business Profile posts, review replies and email marketing, and checks what ChatGPT, Gemini, Claude and Perplexity say about the business every week.",
   logo: "https://alphaa.app/logo.png",
   sameAs: ["https://www.linkedin.com/company/135966599/", "https://www.facebook.com/61592044887737", "https://www.instagram.com/alphaa.ai.agent/", "https://medium.com/@alphaaaiagent"],
 }

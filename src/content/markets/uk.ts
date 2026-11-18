@@ -7,76 +7,77 @@ export const market: Market = {
     lang: "en-GB",
     hreflang: "en-GB",
     country: "United Kingdom",
-    title: "Get Recommended by ChatGPT in the UK | Alphaa",
+    title: "AI Marketing Agent for UK Small Businesses | Alphaa",
     description:
-      "Alphaa is an AI Agent that gets UK businesses recommended by ChatGPT, Gemini, Claude and Perplexity. I do the work; you tap approve. Free 60-second check.",
-    h1a: "Get customers from",
-    h1b: "Your AI Agent does the work.",
-    sub: "Your customers in Manchester, Leeds or Bristol ask ChatGPT who to ring. It names someone. If it isn’t you, I find out why, fix it, and tell you exactly what I did.",
-    cta: "Check my business — free",
+      "Alphaa is an AI agent that runs your marketing: Google posts, blogs, review replies, SEO and getting recommended by ChatGPT. Social, ads and email on Growth.",
+    h1a: "Run your entire marketing",
+    h1b: "using an AI agent.",
+    sub: "No agency retainer, no evenings lost to posting. I write your content, answer your reviews, fix your website for Google and ChatGPT, and send you one short list to approve. You get your time back for the work that pays.",
+    cta: "Get started",
     guarantee: ["If no AI names you by day 90 with weekly checks active,", "next month is on us."],
-    fine: "No card needed. I check ChatGPT, Gemini, Claude and Perplexity.",
+    fine: "Your first check is free. No card needed. Month to month.",
     arrows: ["it's live, have a go", "your real answers, in 60s"],
     greet: {
-      work: { title: "What I do for you, every week", steps: ["Ask ChatGPT, Gemini, Claude and Perplexity what your customers ask", "Read your website the way AI reads it", "Fix what’s missing: your facts, FAQs and structured data", "Write posts and pages for you to approve", "Check again every week and tell you what changed"] },
+      work: { title: "What I do for you, every week", steps: ["Write your Google Business Profile posts and blog posts, in your voice", "Draft replies to your reviews", "Fix your website so Google and AI can read it", "Check what ChatGPT, Gemini, Claude and Perplexity say about you", "Send you a short weekly briefing: what I did, what's waiting for your yes"] },
       startHere: "Start here",
       lines: [
         "Hello. I'm Alphaa, an AI Agent.",
-        "I get UK businesses recommended by ChatGPT, Gemini, Claude and Perplexity.",
+        "I run marketing for UK small businesses, so you don't have to.",
       ],
       ask: "What's your website?",
       hint: "Nothing to install. No card. Just your website.",
       idleHint:
-        "Type your website and press Enter. I'll ask ChatGPT, Gemini, Claude and Perplexity about you, live, in about 60 seconds.",
+        "Type your website and press Enter. I'll start with a live check of what Google and AI say about you, in about 60 seconds.",
     },
-    pillarsTitle: "What I do for UK businesses",
+    pillarsTitle: "Your marketing, done for you",
     pillars: [
       {
-        title: "I find out why AI names someone else",
-        body: "Every week I ask the four AIs the questions your customers ask, the way people in your area ask them, and show you which practice, firm or engineer gets named instead, and what they have that you don't.",
+        title: "I keep you visible every week",
+        body: "Google Business Profile posts, blog posts and review replies, written in your voice. Your profile stays fresh and customers see a business that's open and busy.",
       },
       {
-        title: "I do the work to fix it",
-        body: "I write the pages and answers AI quotes, correct the details it has wrong (phone, address, opening hours), and draft your Google Business Profile posts and review replies. You approve each change with one tap.",
+        title: "I get you found on Google and AI",
+        body: "I fix your website, structured data and details so Google, ChatGPT, Gemini, Claude and Perplexity can name you, and I check every week who they name instead.",
       },
       {
-        title: "I tell you what changed",
-        body: "A short weekly briefing in plain English: what I did, what the AIs now say about you, and what's waiting for your yes. No reports to wade through.",
+        title: "Social, ads and email on Growth",
+        body: "On the Growth plan (early access) I also write your social posts, build Google and Meta ads paused for your budget approval, and send emails that bring past customers back. Opening as the platforms approve us.",
       },
     ],
-    whereTitle: "Where AI looks you up in the UK",
+    whereTitle: "Where customers and AI look you up in the UK",
     whereIntro:
-      "Before AI recommends a business, it reads what other sites say about it. For UK firms, these carry the most weight:",
+      "Before anyone rings you, they check what other sites say about you. So does AI. For UK firms, these carry the most weight, and I keep them right:",
     where: [
       { name: "Google Business Profile", why: "Your opening hours, category and reviews: usually the first thing AI checks." },
       { name: "Trustpilot and Google reviews", why: "Recent, answered reviews tell AI you're active and trusted." },
       { name: "Yell, Checkatrade and Bark", why: "UK directories AI often reads for local trades and services." },
       { name: "Your own website", why: "Clear service pages and plain-English answers AI can quote word for word." },
     ],
-    priceTitle: "One AI Agent. A fraction of an agency retainer.",
-    priceSub: "Everything it takes to get named by AI, done for you.",
+    priceTitle: "One AI agent. A fraction of an agency retainer.",
+    priceSub: "Your weekly marketing done for you, with nothing going live until you say yes.",
     priceItems: [
-      "Weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about you",
-      "Your Google Business Profile kept fresh: posts and review replies drafted for you",
-      "Nothing goes live until you tap approve",
+      "Google Business Profile posts, blog posts and review replies, written in your voice",
+      "Your website fixed for Google and AI search, with weekly checks of what ChatGPT, Gemini, Claude and Perplexity say",
+      "A short weekly briefing, and every change approved with one tap",
+      "Growth plan (early access): social posts, Google and Meta ads, email and lead tracking. Ad spend goes to Google and Meta directly, never marked up.",
       "Month to month. Cancel online in a minute. 7-day refund on your first charge.",
       "If no AI names you by day 90 with weekly checks active, next month is free.",
     ],
-    priceCta: "Get recommended by AI — {starter}/month",
-    priceNote: "Starter {starter}, Pro {pro} (up to 3 locations), Full Service {full}. Monthly, cancel any time. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
+    priceCta: "Get started: {starter}/month",
+    priceNote: "Starter {starter}, Pro {pro} (up to 3 locations), Full Service {full} (a person does the website work). Extra brands 50% off. Monthly, cancel any time. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
     faqTitle: "Questions from UK business owners",
     faq: [
       {
-        q: "Does Alphaa work for UK businesses?",
-        a: "Yes. I ask ChatGPT, Gemini, Claude and Perplexity the questions customers in your area ask, check the UK sites AI reads (Google, Trustpilot, Yell, Checkatrade and the rest), and fix what's missing.",
+        q: "What does Alphaa actually do for a UK business?",
+        a: "I run your marketing week to week: Google Business Profile posts, blog posts, review replies and website fixes, plus checks of what ChatGPT, Gemini, Claude and Perplexity say about you and the UK sites they read (Google, Trustpilot, Yell, Checkatrade). Social, ads and email are on the Growth plan, in early access.",
       },
       {
         q: "How much does it cost?",
-        a: "Starter is {starter} a month, Pro is {pro} (up to 3 locations) and Full Service is {full}, where a person publishes everything for you. Month to month, cancel online in a minute, and the check on this page is free.",
+        a: "Starter is {starter} a month, Pro is {pro} (up to 3 locations) and Full Service is {full}, where a person does the website work for you. Growth, with social, ads and email, is in early access. Month to month, cancel online in a minute, and the check on this page is free.",
       },
       {
         q: "I'm a sole trader with no time for marketing. Is this for me?",
-        a: "Yes. I do the work and tell you what I did in plain English. If you can tap Approve on your phone between jobs, you can use Alphaa.",
+        a: "That's who I'm built for. I do the marketing and tell you what I did in plain English. If you can tap Approve on your phone between jobs, you can use Alphaa.",
       },
       {
         q: "Will it post anything without asking me?",
@@ -92,7 +93,7 @@ export const market: Market = {
   extra: {
     questionsTitle: "What people in the UK really ask AI",
     questionsIntro:
-      "These are the kinds of questions your customers type into ChatGPT instead of searching Google. Every week I ask them for you and see who gets named.",
+      "More customers now type questions like these into ChatGPT instead of Google. Getting named in the answer is one part of the marketing I run for you. Every week I ask them and see who gets named.",
     questions: [
       { q: "Which dentist in Clapham is taking on new patients for Invisalign?", who: "Dental practices" },
       { q: "Can you recommend a good conveyancing solicitor in Leeds?", who: "Solicitors" },
@@ -102,17 +103,17 @@ export const market: Market = {
     ],
     industriesTitle: "Built for the trades where one customer is worth a lot",
     industriesIntro:
-      "One new patient, client or boiler install can be worth more than a year of Alphaa. Here's how I work for each.",
+      "One new patient, client or boiler install can be worth more than a year of Alphaa. Here's how I run the marketing for each.",
     industryLinkPrefix: "More for",
     industries: [
       {
         slug: "dental-practices",
         name: "Dental practices",
-        title: "Get Your Dental Practice Recommended by ChatGPT",
+        title: "AI Marketing for Dental Practices: Google and ChatGPT",
         description:
-          "When patients ask ChatGPT for a dentist in their area, your practice should be in the answer. I find out why it isn't, fix it, and you approve each change.",
-        h1: "Get your dental practice recommended by AI",
-        sub: "Patients now ask ChatGPT which practice to book with, private or NHS. I work to get yours named, and I show you who it names today.",
+          "An AI agent that runs your practice's marketing: Google posts, review replies, treatment pages, and getting named by ChatGPT. You approve each change.",
+        h1: "Run your dental practice's marketing with an AI agent",
+        sub: "Patients find a dentist on Google, in reviews and now in ChatGPT. I keep all of it working for your practice, private or NHS, so you can get on with treating patients.",
         questions: [
           "Which dentist in Clapham is taking on new private patients?",
           "Who does affordable Invisalign in Manchester city centre?",
@@ -125,7 +126,7 @@ export const market: Market = {
           { name: "Your practice website", why: "Clear pages on each treatment, fees and how to register as a new patient give AI something to quote." },
         ],
         steps: [
-          { title: "I ask what your patients ask", body: "Every week I put questions like 'Invisalign near me' and 'emergency dentist open now' to all four AIs, and show you which practices get named instead of yours." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, blog posts on the treatments you want more of, and replies to patient reviews, all drafted for you to approve. Social, ads and email are on Growth, in early access." },
           { title: "I write the pages AI quotes", body: "Treatment pages, fees and FAQs in plain English (implants, whitening, hygienist appointments, registering as a new patient), ready for you to approve." },
           { title: "I keep your listings consistent", body: "I check your phone number, address and opening hours match across Google and the sites AI reads, and draft replies to your patient reviews." },
         ],
@@ -138,11 +139,11 @@ export const market: Market = {
       {
         slug: "solicitors",
         name: "Solicitors",
-        title: "Get Your Law Firm Recommended by ChatGPT",
+        title: "AI Marketing for Solicitors: Google and ChatGPT",
         description:
-          "Clients now ask ChatGPT which solicitor to instruct. I find out why AI names another firm, write the answers it quotes, and you approve every change.",
-        h1: "Get your firm recommended by AI",
-        sub: "When someone asks ChatGPT for a family, conveyancing or employment solicitor in their town, it names a few firms. I work to make yours one of them.",
+          "An AI agent that runs your firm's marketing: practice-area pages, Google posts, review replies, and getting named by ChatGPT. You approve every change.",
+        h1: "Run your law firm's marketing with an AI agent",
+        sub: "Clients look for a solicitor on Google, in reviews and now in ChatGPT. I do the marketing across all of it, so your fee-earners stay on client work.",
         questions: [
           "Can you recommend a conveyancing solicitor in Leeds with fixed fees?",
           "Who's a good family law solicitor in Bristol for a divorce?",
@@ -155,7 +156,7 @@ export const market: Market = {
           { name: "Your firm's website", why: "Practice-area pages, fee information and plain answers to client questions AI can quote." },
         ],
         steps: [
-          { title: "I ask what clients ask", body: "Each week I ask the four AIs questions about your practice areas in your towns, and show you which firms get named and why." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, articles on your practice areas and draft replies to client reviews, every week, for you to check. Social, ads and email are on Growth, in early access." },
           { title: "I write answers AI can quote", body: "Practice-area pages and FAQs in plain English (how conveyancing works, what a divorce costs, what to do after a dismissal), for you to check and approve." },
           { title: "I keep your firm's details right", body: "I make sure your offices, phone numbers and areas of law match across Google, the Law Society and the sites AI reads, and draft replies to client reviews." },
         ],
@@ -168,11 +169,11 @@ export const market: Market = {
       {
         slug: "plumbers-heating-engineers",
         name: "Plumbers & heating engineers",
-        title: "Get Plumbers & Heating Engineers Named by ChatGPT",
+        title: "AI Marketing for Plumbers & Heating Engineers",
         description:
-          "Homeowners ask ChatGPT who to call for a boiler or a leak. I find out why AI names another engineer, fix it, and you approve each change from your phone.",
-        h1: "Get your plumbing and heating business recommended by AI",
-        sub: "When a boiler packs up, more people ask ChatGPT who to ring. I work to get you named, and I do the work while you're out on jobs.",
+          "An AI agent that runs your marketing while you're on jobs: Google posts, review replies, service pages, and getting named by ChatGPT. Approve from your phone.",
+        h1: "Run your plumbing and heating marketing with an AI agent",
+        sub: "When a boiler packs up, people check Google, Checkatrade and now ChatGPT. I keep you showing up in all of them, and I do the work while you're out on jobs.",
         questions: [
           "Who's a reliable Gas Safe engineer for a boiler service in south Manchester?",
           "Can you recommend an emergency plumber in Liverpool who'll come out tonight?",
@@ -185,7 +186,7 @@ export const market: Market = {
           { name: "Your website", why: "Clear pages for boiler installs, servicing, repairs and the areas you cover give AI something to quote." },
         ],
         steps: [
-          { title: "I ask what homeowners ask", body: "Every week I ask the four AIs questions like 'boiler repair near me' for the towns you cover, and show you which engineers get named instead." },
+          { title: "I run the marketing while you work", body: "Google Business Profile posts about recent jobs, replies to your reviews and pages for each area you cover, drafted for you to approve in a minute. Social, ads and email are on Growth, in early access." },
           { title: "I write the pages AI quotes", body: "Service pages for boiler installs, servicing, power flushes and leaks, plus a page for each area you cover, ready for you to approve." },
           { title: "I keep your profile busy", body: "I draft Google Business Profile posts and replies to your reviews, and check your details match across Checkatrade, Yell and the rest." },
         ],
@@ -198,11 +199,11 @@ export const market: Market = {
       {
         slug: "aesthetics-clinics",
         name: "Aesthetics clinics",
-        title: "Get Your Aesthetics Clinic Recommended by ChatGPT",
+        title: "AI Marketing for Aesthetics Clinics: Google and ChatGPT",
         description:
-          "Clients ask ChatGPT where to go for Botox or filler safely. I find out why AI names another clinic, fix it, and you approve every change first.",
-        h1: "Get your aesthetics clinic recommended by AI",
-        sub: "People ask ChatGPT where's safe for Botox, filler or skin treatments. AI looks for qualified, well-reviewed clinics. I work to get your clinic named.",
+          "An AI agent that runs your clinic's marketing: treatment pages, Google posts, review replies, and getting named by ChatGPT. You approve every word first.",
+        h1: "Run your aesthetics clinic's marketing with an AI agent",
+        sub: "Clients research Botox, filler and skin treatments on Google, Instagram and now ChatGPT. I keep your clinic visible and trusted across them, written to the rules for your sector.",
         questions: [
           "Where's a safe, qualified clinic for lip filler in Birmingham?",
           "Who's a medically trained Botox practitioner in Chelsea?",
@@ -215,7 +216,7 @@ export const market: Market = {
           { name: "Your clinic website", why: "Clear treatment pages, practitioner qualifications and aftercare answers AI can quote." },
         ],
         steps: [
-          { title: "I ask what clients ask", body: "Every week I ask the four AIs questions like 'safe lip filler near me', and show you which clinics get named instead of yours." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, aftercare and treatment articles, and replies to your reviews, drafted for you to approve. Social posts, ads and email are on Growth, in early access." },
           { title: "I write the pages AI quotes", body: "Treatment pages, practitioner profiles and aftercare FAQs in plain English, written to the advertising rules for your sector and ready for you to approve." },
           { title: "I keep your reputation visible", body: "I draft replies to your reviews and Google Business Profile posts, and check your details match on the sites AI reads." },
         ],
@@ -227,6 +228,6 @@ export const market: Market = {
       },
     ],
     backToMarket: "Back to Alphaa UK",
-    industryCta: "Check my business — free",
+    industryCta: "Get started",
   },
 }

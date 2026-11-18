@@ -9,7 +9,7 @@ export const metadata = pageMeta({
   title: "Integrations — Alphaa for WordPress, Shopify, Webflow and Wix",
   absolute: true,
   description:
-    "Alphaa publishes the AI-visibility fixes you approve straight to your website: WordPress (free plugin), Shopify and Webflow (one-click apps). Wix is coming soon. Any other site: Alphaa emails your web person the exact change.",
+    "Alphaa publishes the blog posts and website fixes you approve straight to your website: WordPress (free plugin), Shopify and Webflow (one-click apps). Wix is coming soon. Any other site: Alphaa emails your web person the exact change.",
   path: "/integrations",
 })
 

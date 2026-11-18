@@ -5,9 +5,9 @@ import { pageMeta } from "@/lib/seo"
 
 export const metadata = {
   ...pageMeta({
-    title: "Blog — AI Search Optimization (AEO) guides",
+    title: "Blog: Small Business Marketing, SEO & AI Search (AEO) Guides",
     description:
-      "Practical guides on getting your business found, cited, and recommended by AI assistants like ChatGPT, Claude, Gemini, and Perplexity.",
+      "Practical marketing guides for small businesses: getting more customers from Google, AI assistants like ChatGPT, social media, ads and email.",
     path: "/blog",
   }),
   alternates: { canonical: "/blog", types: { "application/rss+xml": "https://alphaa.app/blog/rss.xml" } },
@@ -33,12 +33,12 @@ export default function BlogIndexPage() {
             The alphaa blog
           </p>
           <h1 className="text-fg text-[41.8px] sm:text-[61.6px] lg:text-[70.4px] font-semibold leading-[1.05] tracking-[-0.02em] text-balance">
-            Getting found in the age of{" "}
-            <span className="text-[#0071e3]">AI search</span>
+            More customers, less{" "}
+            <span className="text-[#0071e3]">marketing work</span>
           </h1>
           <p className="text-muted text-base mt-4 max-w-xl mx-auto">
-            Practical, no-fluff guides on AI Search Optimization — how AI assistants decide what to
-            recommend, and how to make sure it&apos;s you.
+            Practical, no-fluff marketing guides for small business owners: Google, AI search,
+            social media, ads and email, and how to win customers from each.
           </p>
         </div>
 

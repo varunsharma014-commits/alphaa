@@ -30,7 +30,7 @@
 - [How it works](https://alphaa.app/how-it-works): Step by step.
 - [About](https://alphaa.app/about): Who Alphaa is, what it does, contact details.
 - [Pricing](https://alphaa.app/pricing): Starter $99/month, Pro $199/month, Growth $499/month (early access), Full Service $299/month. Month to month.
-- [Blog](https://alphaa.app/blog): Plain-English guides on getting recommended by AI assistants.
+- [Blog](https://alphaa.app/blog): Plain-English marketing guides for small businesses: Google, AI search, social media, ads and email.
 - [Integrations](https://alphaa.app/integrations): WordPress, Shopify and Webflow today; Wix coming soon.
 - [For dentists](https://alphaa.app/for/dentists), [plumbers](https://alphaa.app/for/plumbers), [HVAC](https://alphaa.app/for/hvac), [lawyers](https://alphaa.app/for/lawyers), [med spas](https://alphaa.app/for/med-spas), [restaurants](https://alphaa.app/for/restaurants)
 - [Referral program](https://alphaa.app/refer)

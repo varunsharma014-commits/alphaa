@@ -47,7 +47,7 @@ it once the ads screens exist.
 
 ## 2. Meta: App Review (ads + Facebook/Instagram posting)
 
-Where: developers.facebook.com → the Alphaa Meta app → App Review → Permissions and features.
+Where: developers.facebook.com → create the Alphaa Meta app first (none exists yet as of 2026-11-17; only the Pixel is set up) → App Review → Permissions and features.
 Needs first: **Business Verification** for 18355355 Canada Inc. in Meta Business Manager,
 the app in Live mode, privacy policy URL and data deletion instructions URL set.
 

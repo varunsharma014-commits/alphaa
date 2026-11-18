@@ -42,7 +42,7 @@ export default function PaymentFailureEmail({
               I am still working, but I will try the charge again {retry ? <>on <strong>{retry}</strong></> : "soon"}.
             </Text>
             <Text style={paragraph}>
-              If the next attempt fails, your account will be paused. Please update your payment method to keep your AI visibility tracking active.
+              If the next attempt fails, your account will be paused. Please update your payment method so I can keep running your marketing.
             </Text>
 
             <Button style={button} href={updateUrl}>

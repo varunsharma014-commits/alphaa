@@ -2,9 +2,9 @@ import Link from "next/link"
 import { pageMeta } from "@/lib/seo"
 
 export const metadata = pageMeta({
-  title: "About Alphaa — the AI Agent for AI search",
+  title: "About Alphaa: the AI marketing agent for small businesses",
   description:
-    "Alphaa (alphaa.app) is an AI Agent that gets local businesses recommended by ChatGPT, Gemini, Claude and Perplexity. What it does, pricing, guides and contact.",
+    "Alphaa (alphaa.app) is an AI agent that runs a small business's marketing: social media, ads, SEO and AI search, content and email. What it does, pricing, guides and contact.",
   path: "/about",
 })
 
@@ -15,7 +15,7 @@ const org = {
   url: "https://alphaa.app",
   logo: "https://alphaa.app/logo.png",
   email: "hi@alphaa.app",
-  description: "Alphaa is an AI agent that works to get local businesses recommended by ChatGPT, Gemini, Claude and Perplexity.",
+  description: "Alphaa is an AI agent that runs marketing for small businesses: social media, Google and Meta ads, SEO and AI search, blog and Google posts, review replies and email.",
   address: { "@type": "PostalAddress", streetAddress: "1000 Innovation Dr", addressLocality: "Kanata", addressRegion: "ON", postalCode: "K2K 3E7", addressCountry: "CA" },
   contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: "hi@alphaa.app" },
 }
@@ -29,27 +29,29 @@ export default function AboutPage() {
           About Alphaa.
         </h1>
         <p className="ap-lead ap-center">
-          Alphaa (alphaa.app) is an AI agent that works to get local businesses recommended by ChatGPT, Gemini, Claude and Perplexity.
+          Alphaa (alphaa.app) is an AI agent that runs your entire marketing, so small business owners get customers without hiring an agency.
         </p>
         <div className="article-prose" style={{ maxWidth: 720, margin: "56px auto 0", padding: "0 22px" }}>
           <h2>What is Alphaa?</h2>
           <p>
-            Alphaa is software that does the work an SEO agency would do, aimed at the answers AI assistants give instead of Google&apos;s list of links.
-            It is built for local businesses — dentists, plumbers and HVAC companies, law firms, veterinarians, restaurants and clinics — whose customers
-            now ask AI who to call.
+            Alphaa is software that does the work a marketing agency would do: social media, ads, SEO and AI search, blog posts, Google posts, review
+            replies and email. It writes in the owner&apos;s own voice and brand, and the owner approves with one tap. It is built for small, owner-run
+            businesses (dentists, plumbers and HVAC companies, law firms, veterinarians, restaurants and clinics) that want customers, not another
+            agency bill.
           </p>
           <h2>What does Alphaa do each week?</h2>
-          <p>Alphaa works in four steps, and the business owner approves anything public with one tap:</p>
+          <p>Alphaa plans the week from the business&apos;s own data and current trends, does the work, and the owner approves anything public with one tap:</p>
           <ul>
+            <li>Writes blog posts and Google Business Profile posts, and replies to reviews, in the owner&apos;s voice.</li>
+            <li>Fixes the website for Google and AI search: it checks 23 things AI reads, from crawler access to structured facts, and writes FAQ answers, structured data and llms.txt.</li>
             <li>Asks ChatGPT, Gemini, Claude and Perplexity the questions customers ask, and reports who got named.</li>
-            <li>Checks 23 things AI reads on the business&apos;s website, from crawler access to structured facts and reviews.</li>
-            <li>Writes the pages and facts AI needs — FAQ answers, structured data, llms.txt — and drafts Google Business Profile posts and review replies.</li>
-            <li>Sends one short, plain-English note: what it did, what changed, and what needs a yes.</li>
+            <li>On the Growth plan (early access): writes social posts with images in the business&apos;s brand, builds and tunes Google and Meta ads inside an approved budget, tracks leads, and sends emails that bring past customers back.</li>
+            <li>Sends one short, plain-English note: what it did, what worked, and what needs a yes.</li>
           </ul>
           <h2>How much does Alphaa cost?</h2>
           <p>
-            Alphaa costs $99 a month for Starter, $199 for Pro and $299 for Full Service, month to month with no contract. There is no free trial; the{" "}
-            <Link href="/start">free 60-second check</Link> shows what the AIs say about a business today. See <Link href="/pricing">pricing</Link>.
+            Alphaa costs $99 a month for Starter, $199 for Pro and $299 for Full Service, month to month with no contract. Growth, which adds social media, ads and email, is $499 a month in early access. There is no free trial; the{" "}
+            <Link href="/start">free check</Link> shows what the AIs say about a business today and plans its first week of marketing. See <Link href="/pricing">pricing</Link>.
           </p>
           <h2>Does Alphaa guarantee rankings?</h2>
           <p>
@@ -59,7 +61,7 @@ export default function AboutPage() {
           </p>
           <h2>What guides has Alphaa published?</h2>
           <p>
-            Alphaa publishes practical guides on getting a local business named by AI assistants, such as{" "}
+            Alphaa publishes practical marketing guides for small businesses, including how to get named by AI assistants, such as{" "}
             <Link href="/blog/local-business-ai-readiness-study-2026">what local business sites most often miss</Link>. Browse the <Link href="/blog">guides</Link>.
           </p>
           <h2>Who founded Alphaa?</h2>

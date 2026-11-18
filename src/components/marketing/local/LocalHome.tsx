@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { EngineRotator } from "@/components/marketing/hero/EngineRotator"
 import { HeroBackdrop } from "@/components/marketing/hero/HeroBackdrop"
 import { HeroCta } from "@/components/marketing/hero/HeroCta"
 import { StartAgent } from "@/components/agent/StartAgent"
@@ -18,7 +17,7 @@ export function localMeta(l: LocaleCopy) {
   const base = pageMeta({ title: l.title, absolute: true, description: l.description, path: l.path, eyebrow: l.country })
   // The preview-card renderer has no Arabic font: Arabic pages share the English card.
   if (l.lang.startsWith("ar")) {
-    const card = ogImage("Get Recommended by ChatGPT in the UAE", "United Arab Emirates")
+    const card = ogImage("AI Marketing Agent for UAE Businesses", "United Arab Emirates")
     base.openGraph = { ...base.openGraph, images: card }
     base.twitter = { ...base.twitter, images: card.map((c) => c.url) } as typeof base.twitter
   }
@@ -29,8 +28,9 @@ export function localMeta(l: LocaleCopy) {
   }
 }
 
-// One market page (alphaa.app/uk, /de, /fr, /it, /ae): the homepage hero with
-// the live check, in the market's language, plus where AI looks you up there.
+// One market page (alphaa.app/uk, /de, /fr, /it, /ae): the homepage hero
+// ("run your entire marketing using an AI agent", localised) with the live
+// check, in the market's language, plus where customers and AI look you up there.
 export function LocalHome({ m }: { m: Market }) {
   const l = m.copy
   const x = m.extra
@@ -64,7 +64,7 @@ export function LocalHome({ m }: { m: Market }) {
         <section className="ag-hero">
           <div className="ag-hero__in">
             <h1>
-              <span className="hx-l1">{l.h1a} <EngineRotator /></span>
+              <span className="hx-l1">{l.h1a}</span>
               <br />
               <span className="ap-quiet">{l.h1b}</span>
             </h1>

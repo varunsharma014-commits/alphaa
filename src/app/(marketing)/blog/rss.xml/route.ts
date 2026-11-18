@@ -33,7 +33,7 @@ export function GET() {
   <channel>
     <title>Alphaa blog</title>
     <link>${SITE}/blog</link>
-    <description>Plain-English guides on getting your business recommended by ChatGPT, Gemini, Claude and Perplexity.</description>
+    <description>Plain-English marketing guides for small businesses: Google, AI search, social media, ads and email.</description>
     <language>en</language>
     <lastBuildDate>${posts[0] ? rfc822(posts[0].meta.updated && posts[0].meta.updated > posts[0].meta.date ? posts[0].meta.updated : posts[0].meta.date) : new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${SITE}/blog/rss.xml" rel="self" type="application/rss+xml" />

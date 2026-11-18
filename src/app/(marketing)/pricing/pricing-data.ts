@@ -6,25 +6,26 @@ export const plans = [
     name: "Starter",
     monthly: 99,
     annual: 79,
-    description: "For a single business ready to stop being invisible.",
+    description: "Your marketing basics, done every week: Google, blog, reviews and AI search.",
     highlight: false,
     features: [
       "1 business location",
       "2 Google Business Profile posts per week",
       "2 AI-optimized blog posts per month",
-      "Weekly AI visibility checks (ChatGPT, Gemini, Claude, Perplexity)",
+      "Weekly AI checks: ChatGPT, Gemini, Claude, Perplexity",
+      "Website fixes for Google and AI search",
+      "Review replies in your voice",
       "Weekly performance email",
-      "Review monitoring",
       "Email support",
     ],
-    cta: "Get recommended by AI",
+    cta: "Get started",
     priceId: { monthly: "starter_monthly", annual: "starter_annual" },
   },
   {
     name: "Pro",
     monthly: 199,
     annual: 159,
-    description: "For businesses serious about dominating Google and AI search.",
+    description: "More posts, more locations, and posts that publish on their own.",
     highlight: true,
     badge: "Most popular",
     features: [
@@ -38,7 +39,7 @@ export const plans = [
       "Priority chat support",
       "$149 one-time setup by a person (optional)",
     ],
-    cta: "Get recommended by AI",
+    cta: "Get started",
     priceId: { monthly: "pro_monthly", annual: "pro_annual" },
   },
   {
@@ -77,7 +78,7 @@ export const plans = [
 ]
 
 export const billingFaqs = [
-  { q: "Is there a free trial?", a: "No — the free check at /start shows you exactly what the AIs say about you today, and that's the trial. Plans are month to month from day one." },
+  { q: "Is there a free trial?", a: "No. The free check at /start shows what the AIs say about you today and plans your first week of marketing, and that's the trial. Plans are month to month from day one." },
   { q: "What is the AI Visibility Guarantee?", a: "If, in your first 90 days on a paid plan, none of ChatGPT, Gemini, Claude or Perplexity names your business in any of our weekly checks, your next month is free. Your plan must be active at day 90. We apply the credit automatically (through Shopify billing if Shopify bills you) — you don't have to ask. Once per customer." },
   { q: "Can I cancel anytime?", a: "Yes. Online in a minute, in Billing. No phone calls, no contracts, no exit fees." },
   { q: "Do I need technical skills?", a: "No. Your agent writes, fixes and publishes; you approve with one tap. If you'd rather not touch your website at all, Full Service has a human do it." },

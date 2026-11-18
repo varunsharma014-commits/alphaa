@@ -81,7 +81,7 @@ export function AdVsAi({ only }: { only?: "ad" | "ai" } = {}) {
       <div className="ap-ad ap-ad--solo">
         <div className="ap-ad__tag">Sponsored</div>
         <div className="ap-ad__price"><s>$15.40</s> per click</div>
-        <div className="ap-ad__meta">Bidding against 12 competitors. Gone the day you stop paying.</div>
+        <div className="ap-ad__meta">Bidding against 12 competitors for every click.</div>
       </div>
     )
   if (only === "ai")

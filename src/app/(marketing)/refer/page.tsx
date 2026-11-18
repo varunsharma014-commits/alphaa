@@ -214,7 +214,7 @@ export default function ReferPage() {
           </h1>
 
           <p className="text-muted text-xl leading-relaxed max-w-2xl mx-auto mb-10">
-            Refer a business to Alphaa and earn{" "}
+            Refer a business to Alphaa, the AI agent that runs their marketing, and earn{" "}
             <span className="text-fg font-semibold">30% recurring commission</span> for as long as
             they're a customer.
           </p>
@@ -370,12 +370,12 @@ export default function ReferPage() {
               {
                 icon: "💻",
                 title: "Web designers & freelancers",
-                desc: "You build the site, we make it visible on AI. Perfect upsell — add Alphaa to every project and earn recurring revenue on work you've already done.",
+                desc: "You build the site, Alphaa keeps it working: Google posts, blogs, reviews, SEO and AI search. Add it to every project and earn recurring revenue on work you've already done.",
               },
               {
                 icon: "📊",
                 title: "Marketing consultants",
-                desc: "Add AI visibility to your service stack. White-label available. Offer it as a premium add-on to every client — local shop or online brand.",
+                desc: "Add an AI marketing agent to your service stack. White-label available. Offer it as a premium add-on to every client, local shop or online brand.",
               },
               {
                 icon: "🎙️",

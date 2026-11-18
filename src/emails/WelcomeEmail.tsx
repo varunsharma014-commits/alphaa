@@ -15,9 +15,9 @@ interface WelcomeEmailProps {
 export default function WelcomeEmail({ firstName, businessName }: WelcomeEmailProps) {
   const base = appUrl()
   const steps: [string, string][] = [
-    ["Checking your baseline:", "Asking all 4 AIs what they say about you now."],
-    ["Fixing your facts:", "Writing the verified details AI engines look for before they recommend you."],
-    ["Connecting to Google:", "Preparing your Google Business Profile for weekly updates."],
+    ["Checking your baseline:", "Asking all 4 AIs what they say about you now, and seeing where you show up on Google."],
+    ["Fixing your facts:", "Writing the verified details Google and AI look for before they recommend you."],
+    ["Connecting to Google:", "Preparing your Google Business Profile for weekly posts and review replies."],
   ]
   return (
     <Html>
@@ -33,7 +33,7 @@ export default function WelcomeEmail({ firstName, businessName }: WelcomeEmailPr
             <Text style={paragraph}>{hi(firstName)}</Text>
             <Text style={paragraph}>Your agent is live.</Text>
             <Text style={paragraph}>
-              My only job is to get {orYourBusiness(businessName)} recommended when your customers ask ChatGPT, Gemini, Claude, and Perplexity who to hire.
+              I run the marketing for {orYourBusiness(businessName)}: Google posts, blogs, review replies, website fixes, and getting you recommended when customers ask Google, ChatGPT, Gemini, Claude, and Perplexity who to hire. You get your time back.
             </Text>
             <Text style={paragraph}>Here is what I am starting on today:</Text>
 
@@ -47,7 +47,7 @@ export default function WelcomeEmail({ firstName, businessName }: WelcomeEmailPr
               There&apos;s no software for you to learn. When I draft an update or finish a report, I send it straight to you. You just tap approve.
             </Text>
             <Text style={paragraph}>
-              I&apos;ll reach out when your first visibility report is ready.
+              I&apos;ll reach out when your first report is ready.
             </Text>
             <Text style={paragraph}>— Your AI Agent</Text>
 
@@ -57,7 +57,7 @@ export default function WelcomeEmail({ firstName, businessName }: WelcomeEmailPr
           </Section>
 
           <Section style={footer}>
-            <Text style={footerText}>Alphaa · AI Search Visibility for Local Businesses</Text>
+            <Text style={footerText}>Alphaa · The AI agent that runs your marketing</Text>
             <Text style={footerText}>
               <Link href={`${base}/privacy`} style={footerLink}>Privacy</Link>
               {" · "}

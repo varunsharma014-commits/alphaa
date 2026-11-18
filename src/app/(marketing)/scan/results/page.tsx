@@ -246,7 +246,7 @@ const ENGINES = [
 const ENGINE_SUBS: Record<string, string> = {
   "ChatGPT":    "the world's most-used AI assistant",
   "Claude":     "Anthropic's AI assistant",
-  "Perplexity": "the leading AI search engine",
+  "Perplexity": "an AI search engine",
   "Gemini":     "Google's AI assistant",
 }
 
@@ -515,7 +515,7 @@ function FindingsBlock({ findings }: { findings: Finding[] }) {
 
 const STEPS = [
   { when: "Week 1", title: "I fix what this check found", body: "I start with the problems above and draft each fix. Nothing goes live until you tap approve." },
-  { when: "Weeks 2–3", title: "I build what AI reads", body: "Fresh posts on your Google listing and pages that answer the questions your customers ask." },
+  { when: "Weeks 2–3", title: "I run your marketing", body: "Google posts, blogs and review replies in your voice, plus pages that answer the questions your customers ask." },
   { when: "Every week", title: "I ask all four AIs again", body: "Then I send you a short briefing: what changed, what I did, and what needs your yes." },
 ]
 
@@ -1194,7 +1194,7 @@ function ScanResultsContent() {
         {/* 5. The ask */}
         <div className="rp-card rp-ask">
           <h2>I can start on this today.</h2>
-          <p>{localPrice()} a month instead of an agency retainer. I do the work, you tap approve.</p>
+          <p>{localPrice()} a month instead of an agency retainer. I run your marketing: Google posts, blogs, review replies, SEO and AI search. I do the work, you tap approve.</p>
           <HireButton placement="bottom" label={ctaLabel} scanId={result.scanId} />
           <p className="rp-fine">{localPrice()}/mo · month to month · cancel online in a minute · payments secured by Stripe</p>
           <p className="rp-fine"><b>{GUARANTEE_LINE}</b> {RENEWAL_LINE}</p>

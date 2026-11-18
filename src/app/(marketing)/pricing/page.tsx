@@ -32,8 +32,8 @@ const ART: Record<string, { tone: "sky" | "lavender" | "sage"; art: React.ReactN
     tone: "sky",
     art: (
       <Phone>
-        <AgentNote title="This week’s marketing is done" body="A blog post, 2 Google updates and 3 social posts, all in your voice. 4 are already live." />
-        <AgentNote title="Your Google ads are ready" body="Aimed at people near you searching for what you sell. Say yes and they start today." />
+        <AgentNote title="This week’s marketing is ready" body="A blog post, 2 Google updates and 3 social posts, all in your voice. Tap once to approve." />
+        <AgentNote title="Your Google ads are built" body="Aimed at people near you searching for what you sell. Paused until you approve the budget." />
       </Phone>
     ),
   },
@@ -55,12 +55,12 @@ export default function PricingPage() {
     <>
       <section className="ap-sec" style={{ paddingTop: 120 }}>
         <p className="ap-center" style={{ fontSize: 15, color: "#6e6e73", margin: "0 auto 18px", padding: "0 22px" }}>
-          Agencies often charge $1,000+ a month for Google alone. Your agent starts at <b style={{ color: "#1d1d1f" }}>$99</b>.
+          Search marketing agencies often charge $1,000+ a month. Your marketing agent starts at <b style={{ color: "#1d1d1f" }}>$99</b>.
         </p>
         <h1 className="ap-h2 ap-center" style={{ fontSize: "clamp(44px, 7.7vw, 88px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}>
-          From $99/month.<br /><span className="ap-quiet">An AI Agent working for you. No contracts.</span>
+          Your whole marketing.<br /><span className="ap-quiet">Run by an AI Agent. From $99/month.</span>
         </h1>
-        <p className="ap-lead ap-center">Month to month. Cancel online in a minute. No technical skills needed — your agent does the work.</p>
+        <p className="ap-lead ap-center">SEO and AI search, blog and Google posts, and review replies on every plan. Social, ads and email on Growth (early access). Month to month, no contracts, no technical skills needed.</p>
         <p className="ap-center" style={{ fontSize: 15, color: "#1d1d1f", margin: "14px auto 0", padding: "0 22px" }}><b>90-day AI Visibility Guarantee:</b> {GUARANTEE_LINE}</p>
 
         <div className="ap-seg" role="tablist" aria-label="Billing period">

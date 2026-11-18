@@ -111,11 +111,11 @@ export default async function PublicWinPage({
         {/* Subtle viral hook */}
         <div className="glass-card rounded-2xl p-6 sm:p-8 text-center mt-8">
           <p className="text-muted text-sm sm:text-base mb-4">
-            Get found on AI too &mdash; see whether ChatGPT, Claude, Gemini and Perplexity
-            recommend your business.
+            Want an AI agent running your marketing too? Start with a free check of whether
+            ChatGPT, Claude, Gemini and Perplexity recommend your business.
           </p>
-          <OrangePillButton href="/scan" size="md">
-            Run your free scan
+          <OrangePillButton href="/start" size="md">
+            Get started
           </OrangePillButton>
         </div>
 

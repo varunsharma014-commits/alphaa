@@ -7,46 +7,46 @@ export const market: Market = {
     lang: "fr-FR",
     hreflang: "fr-FR",
     country: "France",
-    title: "Être recommandé par ChatGPT en France | Alphaa",
+    title: "Un agent IA pour tout votre marketing | Alphaa",
     description:
-      "Alphaa est un agent IA qui fait recommander votre entreprise par ChatGPT, Gemini, Claude et Perplexity. Il agit, vous validez. Vérification gratuite.",
-    h1a: "Des clients grâce à",
-    h1b: "Votre agent IA fait le travail.",
-    sub: "Vos clients demandent à ChatGPT qui appeler à Paris, Lyon ou Bordeaux. Il cite un nom. Ce n’est pas le vôtre. Je découvre pourquoi, je corrige, et je vous dis exactement ce que j’ai fait.",
-    cta: "Vérifier mon entreprise, c’est gratuit",
+      "Alphaa est un agent IA qui gère votre marketing : fiche Google, articles, avis, SEO et recommandations par ChatGPT. Réseaux, pubs et e-mails avec Growth.",
+    h1a: "Tout votre marketing,",
+    h1b: "confié à un agent IA.",
+    sub: "Pas de facture d’agence, pas de soirées passées à publier. J’écris vos contenus, je réponds à vos avis, je prépare votre site pour Google et ChatGPT, et je vous envoie une courte liste à valider. Vous gardez votre temps pour votre métier.",
+    cta: "Commencer",
     guarantee: ["Si aucune IA ne vous cite d’ici le jour 90, vérifications hebdo actives,", "le mois suivant est pour nous."],
-    fine: "Sans carte bancaire. ChatGPT, Gemini, Claude et Perplexity vérifiés en direct.",
+    fine: "La première vérification est gratuite. Sans carte bancaire. Sans engagement.",
     arrows: ["c’est en direct, essayez", "les vraies réponses en 60 s"],
     greet: {
-      work: { title: "Ce que je fais pour vous, chaque semaine", steps: ["Demander à ChatGPT, Gemini, Claude et Perplexity ce que vos clients demandent", "Lire votre site comme l’IA le lit", "Corriger ce qui manque : vos informations, vos FAQ et vos données structurées", "Rédiger des articles et des pages que vous validez", "Revérifier chaque semaine et vous dire ce qui a changé"] },
+      work: { title: "Ce que je fais pour vous, chaque semaine", steps: ["Rédiger les publications de votre fiche Google et vos articles, avec votre ton", "Préparer les réponses à vos avis", "Améliorer votre site pour que Google et l’IA le comprennent", "Vérifier ce que ChatGPT, Gemini, Claude et Perplexity disent de vous", "Vous envoyer un court point hebdo : ce qui est fait, ce qui attend votre accord"] },
       startHere: "Commencez ici",
       lines: [
         "Bonjour, je suis Alphaa, un agent IA.",
-        "Je fais en sorte que ChatGPT, Gemini, Claude et Perplexity recommandent votre entreprise.",
+        "Je gère le marketing des petites entreprises, pour que vous n’ayez plus à le faire.",
       ],
       ask: "Quelle est l’adresse de votre site ?",
       hint: "Rien à installer, pas de carte bancaire. Juste votre site. J’interroge les IA en français ; le rapport est en anglais pour l’instant.",
       idleHint:
-        "Tapez l’adresse de votre site et appuyez sur Entrée. Je pose la question à ChatGPT, Gemini, Claude et Perplexity en direct, en français, en 60 secondes environ. Le rapport est rédigé en anglais pour l’instant.",
+        "Tapez l’adresse de votre site et appuyez sur Entrée. Je commence par vérifier en direct, en français, ce que Google et les IA disent de vous, en 60 secondes environ. Le rapport est rédigé en anglais pour l’instant.",
     },
-    pillarsTitle: "Ce que je fais pour les entreprises en France",
+    pillarsTitle: "Votre marketing, fait pour vous",
     pillars: [
       {
-        title: "Je découvre pourquoi l’IA cite un concurrent",
-        body: "Chaque semaine, je pose aux quatre IA les questions que posent vos clients, en français et comme on les pose chez vous (« un bon dentiste dans le 15e », « un plombier dispo ce soir à Villeurbanne »), et je vous montre qui est cité à votre place, et pourquoi.",
+        title: "Je vous rends visible chaque semaine",
+        body: "Publications sur votre fiche Google, articles de blog et réponses aux avis, écrits avec votre ton. Vos clients voient une entreprise active, qui travaille.",
       },
       {
-        title: "Je fais le travail, pas une liste de tâches",
-        body: "J’écris les pages et les réponses que l’IA reprend, je corrige les informations fausses (téléphone, adresse, horaires, activité), j’ajoute le code en arrière-plan que l’IA lit, et je fais vivre votre fiche Google : publications et réponses aux avis. Vous validez chaque changement d’un simple geste.",
+        title: "Je vous fais trouver sur Google et par l’IA",
+        body: "Je corrige votre site, vos données structurées et vos informations pour que Google, ChatGPT, Gemini, Claude et Perplexity puissent vous citer. Chaque semaine, je vérifie qui est cité à votre place (« un bon dentiste dans le 15e », « un plombier dispo ce soir à Villeurbanne »).",
       },
       {
-        title: "Je vous rends compte, simplement",
-        body: "Un court point chaque semaine, sans jargon : ce que j’ai fait, ce qui a bougé dans les réponses des IA, et ce qui attend votre accord. Et une alerte le jour où une IA vous cite pour la première fois.",
+        title: "Réseaux sociaux, pubs et e-mails avec Growth",
+        body: "Avec la formule Growth (accès anticipé), j’écris aussi vos posts pour les réseaux sociaux, je prépare vos pubs Google et Meta en pause jusqu’à votre accord sur le budget, et j’envoie des e-mails qui font revenir vos anciens clients. Ouvert au fur et à mesure des validations des plateformes.",
       },
     ],
-    whereTitle: "Où l’IA se renseigne sur vous en France",
+    whereTitle: "Où vos clients et l’IA se renseignent sur vous en France",
     whereIntro:
-      "Avant de recommander une entreprise, l’IA vérifie ce que d’autres sites disent d’elle. En France, voici ce qui pèse le plus :",
+      "Avant d’appeler, on regarde ce que d’autres sites disent de vous. L’IA fait pareil. En France, voici ce qui pèse le plus, et je le tiens à jour :",
     where: [
       { name: "Fiche d’établissement Google", why: "Activité, horaires, photos et avis : c’est souvent la première source que l’IA recoupe." },
       { name: "PagesJaunes", why: "L’annuaire de référence des pros en France, que l’IA consulte pour vérifier vos coordonnées." },
@@ -54,27 +54,27 @@ export const market: Market = {
       { name: "Votre propre site", why: "Des pages claires par prestation et par ville, et des réponses en français que l’IA peut citer telles quelles." },
     ],
     priceTitle: "Un agent IA. Au lieu d’une agence.",
-    priceSub: "Tout ce qu’il faut pour que l’IA vous recommande, fait pour vous, sur votre feu vert.",
+    priceSub: "Votre marketing de la semaine, fait pour vous, sur votre feu vert.",
     priceItems: [
-      "Chaque semaine, je vérifie ce que répondent ChatGPT, Gemini, Claude et Perplexity",
-      "Pages, FAQ et articles rédigés pour vous, en français",
-      "Votre fiche Google tenue à jour : publications et réponses aux avis",
+      "Publications sur votre fiche Google, articles et réponses aux avis, en français et avec votre ton",
+      "Votre site prêt pour Google et la recherche IA, avec une vérification hebdo de ce que répondent ChatGPT, Gemini, Claude et Perplexity",
       "Rien n’est publié sans votre accord, et chaque modification peut être annulée",
+      "Formule Growth (accès anticipé) : réseaux sociaux, pubs Google et Meta, e-mails et suivi des demandes. Le budget pub est payé directement à Google et Meta, sans marge.",
       "Sans engagement, résiliable en ligne en une minute, remboursement possible sous 7 jours après le premier prélèvement",
       "Si aucune IA ne vous cite d’ici le jour 90, vérifications hebdomadaires actives, le mois suivant vous est offert.",
     ],
-    priceCta: "Être recommandé par l’IA, {starter}/mois",
+    priceCta: "Commencer, {starter}/mois",
     priceNote:
-      "Starter {starter}/mois, Pro {pro}/mois (jusqu’à 3 établissements), Accompagnement complet {full}/mois (une personne publie tout pour vous). Facturation mensuelle, sans engagement. Réservé aux professionnels (B2B). Nous ne sommes pas immatriculés à la TVA : aucune TVA n’est facturée ; si elle s’applique, vous l’autoliquidez.",
+      "Starter {starter}/mois, Pro {pro}/mois (jusqu’à 3 établissements), Accompagnement complet {full}/mois (une personne s’occupe du site pour vous). Marques supplémentaires à -50 %. Facturation mensuelle, sans engagement. Réservé aux professionnels (B2B). Nous ne sommes pas immatriculés à la TVA : aucune TVA n’est facturée ; si elle s’applique, vous l’autoliquidez.",
     faqTitle: "Les questions des pros en France",
     faq: [
       {
-        q: "Est-ce que ça marche pour une entreprise française ?",
-        a: "Oui. Je pose à ChatGPT, Gemini, Claude et Perplexity les questions de vos clients, en français et avec votre ville, je vérifie les sites que l’IA lit (votre fiche Google, PagesJaunes, les plateformes d’avis de votre métier) et je corrige ce qui manque ou ce qui est faux.",
+        q: "Concrètement, que fait Alphaa pour une entreprise française ?",
+        a: "Je gère votre marketing semaine après semaine : publications sur votre fiche Google, articles, réponses aux avis et corrections de votre site. Je vérifie aussi, en français et avec votre ville, ce que ChatGPT, Gemini, Claude et Perplexity disent de vous et ce qu’affichent PagesJaunes et les plateformes d’avis de votre métier. Réseaux sociaux, pubs et e-mails sont inclus dans la formule Growth, en accès anticipé.",
       },
       {
         q: "Combien ça coûte ?",
-        a: "Starter : {starter} par mois. Pro : {pro} par mois, jusqu’à 3 établissements. Accompagnement complet : {full} par mois, une personne publie tout pour vous. Sans engagement, résiliable en ligne en une minute, et remboursement sous 7 jours sur le premier prélèvement. La vérification sur cette page est gratuite.",
+        a: "Starter : {starter} par mois. Pro : {pro} par mois, jusqu’à 3 établissements. Accompagnement complet : {full} par mois, une personne s’occupe du site pour vous. Growth, avec réseaux sociaux, pubs et e-mails, est en accès anticipé. Sans engagement, résiliable en ligne en une minute, et remboursement sous 7 jours sur le premier prélèvement. La vérification sur cette page est gratuite.",
       },
       {
         q: "Je dois vous donner mes mots de passe ?",
@@ -95,7 +95,7 @@ export const market: Market = {
   extra: {
     questionsTitle: "Ce que vos clients demandent vraiment à l’IA",
     questionsIntro:
-      "Ils ne tapent plus trois mots-clés dans Google. Ils posent une vraie question à ChatGPT, comme à un ami, et l’IA répond avec deux ou trois noms. Quelques exemples :",
+      "Ils ne tapent plus trois mots-clés dans Google. Ils posent une vraie question à ChatGPT, comme à un ami, et l’IA répond avec deux ou trois noms. Y figurer fait partie du marketing que je gère pour vous. Quelques exemples :",
     questions: [
       { q: "Tu peux me conseiller un dentiste à Lyon qui prend encore de nouveaux patients ?", who: "Un patient qui vient d’emménager" },
       { q: "Ma chaudière est en panne, quel chauffagiste sérieux peut passer demain à Toulouse ?", who: "Un propriétaire, un dimanche soir" },
@@ -105,17 +105,17 @@ export const market: Market = {
     ],
     industriesTitle: "Les métiers que j’accompagne en France",
     industriesIntro:
-      "Pour ces métiers, un seul nouveau client rapporte souvent plus qu’une année d’Alphaa. Je connais les sites que l’IA y consulte et les questions que posent vos clients.",
+      "Pour ces métiers, un seul nouveau client rapporte souvent plus qu’une année d’Alphaa. Je connais les sites que vos clients et l’IA y consultent, et je fais le marketing qui va avec.",
     industryLinkPrefix: "En savoir plus pour les",
     industries: [
       {
         slug: "dentiste",
         name: "dentistes",
-        title: "Dentistes : être recommandé par ChatGPT",
+        title: "Marketing IA pour dentistes : Google et ChatGPT",
         description:
-          "Quand un patient demande à ChatGPT un dentiste à Paris ou à Lyon, l’IA cite deux ou trois cabinets. Alphaa fait en sorte que le vôtre en fasse partie.",
-        h1: "Quand un patient demande un dentiste à l’IA, votre cabinet doit être dans la réponse",
-        sub: "De plus en plus de patients demandent à ChatGPT où trouver un dentiste près de chez eux, ou un spécialiste des implants. Je découvre quels cabinets l’IA cite à votre place, je corrige ce qui vous manque, et vous validez chaque changement.",
+          "Un agent IA gère la communication de votre cabinet : fiche Google, réponses aux avis, pages par soin et recommandations par ChatGPT. Vous validez tout.",
+        h1: "La communication de votre cabinet dentaire, confiée à un agent IA",
+        sub: "Les patients cherchent leur dentiste sur Google, Doctolib et maintenant ChatGPT. Je tiens tout cela à jour pour votre cabinet, dans les règles de la profession, et vous gardez votre temps pour vos patients.",
         questions: [
           "Quel dentiste à Paris 15e accepte de nouveaux patients et a des rendez-vous rapides ?",
           "Un bon cabinet dentaire à Marseille pour des implants, avec un devis clair ?",
@@ -128,7 +128,7 @@ export const market: Market = {
           { name: "Le site du cabinet", why: "Une page par soin (implants, orthodontie, blanchiment) avec des réponses factuelles que l’IA peut citer." },
         ],
         steps: [
-          { title: "Je pose les questions de vos patients", body: "Chaque semaine, je demande aux quatre IA qui consulter pour un implant, une urgence ou un premier rendez-vous dans votre quartier, et je vous montre quels cabinets sont cités." },
+          { title: "Je gère votre communication chaque semaine", body: "Publications sur votre fiche Google, articles informatifs sur vos soins et réponses aux avis, préparés pour votre validation. Réseaux sociaux, pubs et e-mails sont dans la formule Growth, en accès anticipé." },
           { title: "J’écris des informations factuelles, dans les règles", body: "Je rédige des pages par soin et des réponses aux questions fréquentes, informatives et sobres, sans promesse de résultat ni ton publicitaire, dans le respect des règles de communication de la profession." },
           { title: "Je garde vos informations justes partout", body: "Horaires, adresse, accès, soins pratiqués : je repère les écarts entre votre site, Google et Doctolib, je corrige votre site et votre fiche Google, et je vous signale ce qu’il faut changer ailleurs." },
         ],
@@ -141,11 +141,11 @@ export const market: Market = {
       {
         slug: "plombier-chauffagiste",
         name: "plombiers-chauffagistes",
-        title: "Plombier-chauffagiste : être cité par ChatGPT",
+        title: "Marketing IA pour plombiers-chauffagistes et ChatGPT",
         description:
-          "Fuite, chaudière en panne, pompe à chaleur : vos clients demandent à ChatGPT qui appeler. Alphaa fait en sorte que l’IA donne le nom de votre entreprise.",
-        h1: "Fuite, chaudière en panne : quand le client demande à l’IA, c’est votre numéro qu’elle doit donner",
-        sub: "Avant d’appeler un artisan, beaucoup demandent maintenant à ChatGPT qui est sérieux dans le coin. Je découvre quels artisans l’IA cite à votre place, je fais le travail pour que vous y soyez, et vous validez d’un geste, même depuis le chantier.",
+          "Un agent IA gère votre marketing pendant vos chantiers : fiche Google, avis, pages par intervention et recommandations par ChatGPT. Validation sur mobile.",
+        h1: "Le marketing de votre entreprise de plomberie-chauffage, confié à un agent IA",
+        sub: "Fuite, chaudière en panne, pompe à chaleur : vos clients cherchent sur Google, PagesJaunes et maintenant ChatGPT. Je fais en sorte qu’ils vous trouvent partout, pendant que vous êtes sur le chantier.",
         questions: [
           "Un plombier fiable à Toulouse pour une fuite ce soir, sans tarif abusif ?",
           "Quel chauffagiste RGE à Lyon pour remplacer ma chaudière fioul par une pompe à chaleur ?",
@@ -158,7 +158,7 @@ export const market: Market = {
           { name: "Habitatpresto, Travaux.com et Houzz", why: "Les avis et les réalisations publiés sur ces plateformes servent de preuves que l’IA reprend." },
         ],
         steps: [
-          { title: "Je vois quels artisans l’IA cite", body: "Chaque semaine, je pose aux quatre IA les questions de vos clients (fuite, débouchage, chaudière, pompe à chaleur) ville par ville, et je vous montre qui passe devant vous." },
+          { title: "Je fais le marketing, vous les chantiers", body: "Publications sur vos chantiers, réponses aux avis et une page par commune desservie, à valider en une minute depuis votre téléphone. Réseaux sociaux, pubs et e-mails sont dans la formule Growth, en accès anticipé." },
           { title: "J’écris une page par intervention et par secteur", body: "Dépannage, entretien de chaudière, installation de pompe à chaleur, communes desservies : des pages claires, avec les réponses que l’IA peut reprendre, et vos qualifications (RGE, Qualibat) bien en vue." },
           { title: "Je fais vivre votre fiche Google", body: "Je prépare des publications sur vos chantiers et des réponses à chaque avis. Vous validez depuis votre téléphone en une seconde." },
         ],
@@ -171,11 +171,11 @@ export const market: Market = {
       {
         slug: "avocat",
         name: "avocats",
-        title: "Avocats : être recommandé par ChatGPT et l’IA",
+        title: "Marketing IA pour avocats : Google et ChatGPT",
         description:
-          "Divorce, licenciement, création de société : vos futurs clients demandent un avocat à ChatGPT. Alphaa aide votre cabinet à faire partie de la réponse.",
-        h1: "Quand un justiciable demande un avocat à l’IA, votre cabinet doit être cité",
-        sub: "Avant de prendre rendez-vous, beaucoup demandent à ChatGPT quel avocat consulter pour leur problème, dans leur ville. Je découvre quels cabinets l’IA cite à votre place et je rédige des contenus sobres et exacts, que vous validez avant toute publication.",
+          "Un agent IA gère la communication de votre cabinet : pages par domaine, fiche Google, réponses aux avis et recommandations par ChatGPT. Vous validez chaque mot.",
+        h1: "La communication de votre cabinet d’avocats, confiée à un agent IA",
+        sub: "Vos futurs clients cherchent un avocat sur Google, dans les annuaires et maintenant sur ChatGPT. Je gère votre communication sur tous ces canaux, dans l’esprit du RIN, pour que vous restiez sur vos dossiers.",
         questions: [
           "Quel avocat en droit de la famille à Bordeaux pour un divorce par consentement mutuel ?",
           "Un avocat en droit du travail à Paris pour une rupture conventionnelle, et combien ça coûte ?",
@@ -188,7 +188,7 @@ export const market: Market = {
           { name: "Le site du cabinet", why: "Des pages par domaine de droit, avec des réponses claires sur la procédure et le déroulé du premier rendez-vous." },
         ],
         steps: [
-          { title: "Je pose les questions de vos futurs clients", body: "Chaque semaine, je demande aux quatre IA quel avocat consulter pour un divorce, un licenciement ou un litige commercial dans votre ville, et je vous montre quels confrères sont cités." },
+          { title: "Je gère votre communication chaque semaine", body: "Publications sur votre fiche Google, articles sur vos domaines d’intervention et réponses aux avis, préparés pour votre relecture. Réseaux sociaux, pubs et e-mails sont dans la formule Growth, en accès anticipé." },
           { title: "J’écris des contenus dignes de la profession", body: "Des pages par domaine et des réponses aux questions fréquentes, informatives, sans promesse de résultat ni comparaison avec des confrères, conformes à l’esprit du RIN. Vous validez chaque mot." },
           { title: "J’harmonise vos informations", body: "Adresse, barreau, domaines, honoraires indicatifs si vous le souhaitez : je fais en sorte que votre site et votre fiche Google disent la même chose que l’annuaire officiel." },
         ],
@@ -201,11 +201,11 @@ export const market: Market = {
       {
         slug: "institut-de-beaute",
         name: "instituts de beauté",
-        title: "Institut de beauté : être recommandé par l’IA",
+        title: "Marketing IA pour instituts de beauté et ChatGPT",
         description:
-          "Soin du visage, cils, ongles : vos clientes demandent à ChatGPT un bon institut près de chez elles. Alphaa fait en sorte que le vôtre soit dans la réponse.",
-        h1: "Quand une cliente demande un bon institut à l’IA, c’est le vôtre qu’elle doit entendre",
-        sub: "Vos clientes demandent à ChatGPT où se faire un soin du visage ou un rehaussement de cils près de chez elles. Je découvre quels instituts l’IA cite à votre place, je fais le travail, et vous validez entre deux rendez-vous.",
+          "Un agent IA gère le marketing de votre institut : fiche Google, réponses aux avis, pages par soin et recommandations par ChatGPT. Vous validez d’un geste.",
+        h1: "Le marketing de votre institut de beauté, confié à un agent IA",
+        sub: "Vos clientes choisissent leur institut sur Google, Planity, Instagram et maintenant ChatGPT. Je fais vivre votre institut sur tous ces canaux, pour que votre planning se remplisse sans y passer vos soirées.",
         questions: [
           "Un bon institut à Nice pour un soin du visage anti-âge, avec des avis sérieux ?",
           "Où faire un rehaussement de cils à Lyon 6e, avec de la disponibilité ce samedi ?",
@@ -218,7 +218,7 @@ export const market: Market = {
           { name: "Votre site et votre Instagram", why: "Des pages par soin, avec durée et déroulé, que l’IA peut citer ; vos photos confirment votre savoir-faire." },
         ],
         steps: [
-          { title: "Je vois quels instituts l’IA recommande", body: "Chaque semaine, je pose aux quatre IA les questions de vos clientes (soin du visage, cils, ongles, épilation) dans votre ville et votre quartier, et je vous montre qui est cité." },
+          { title: "Je gère votre marketing chaque semaine", body: "Publications sur vos nouveautés, articles sur vos soins et réponses à chaque avis, avec votre ton. Posts pour les réseaux sociaux, pubs et e-mails sont dans la formule Growth, en accès anticipé." },
           { title: "J’écris une page par soin", body: "Déroulé, durée, pour qui, comment préparer sa peau : des réponses claires que l’IA reprend, et des informations cohérentes avec votre page Planity." },
           { title: "Je réponds à vos avis", body: "Je prépare des réponses chaleureuses et personnelles à chaque avis Google, et des publications sur vos nouveautés. Vous validez d’un geste." },
         ],
@@ -230,6 +230,6 @@ export const market: Market = {
       },
     ],
     backToMarket: "Retour à Alphaa France",
-    industryCta: "Vérifier mon entreprise, c’est gratuit",
+    industryCta: "Commencer",
   },
 }

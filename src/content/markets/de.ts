@@ -7,46 +7,46 @@ export const market: Market = {
     lang: "de-DE",
     hreflang: "de-DE",
     country: "Deutschland",
-    title: "Von ChatGPT und KI empfohlen werden | Alphaa",
+    title: "KI-Agent für Ihr gesamtes Marketing | Alphaa",
     description:
-      "Alphaa ist ein KI-Agent, der dafür sorgt, dass ChatGPT, Gemini, Claude und Perplexity Ihren Betrieb empfehlen. Er macht die Arbeit, Sie geben frei.",
-    h1a: "Neue Kunden über",
-    h1b: "Ihr KI-Agent erledigt die Arbeit.",
-    sub: "Ihre Kunden in Berlin, München oder Köln fragen ChatGPT, wen sie anrufen sollen. Die KI nennt einen Namen. Wenn es nicht Ihrer ist, finde ich heraus, warum, behebe es und sage Ihnen genau, was ich getan habe.",
-    cta: "Meinen Betrieb kostenlos prüfen",
+      "Alphaa ist ein KI-Agent, der Ihr Marketing übernimmt: Google-Beiträge, Blog, Bewertungen, SEO und Empfehlungen durch ChatGPT. Social, Ads und E-Mail mit Growth.",
+    h1a: "Ihr gesamtes Marketing,",
+    h1b: "erledigt von einem KI-Agenten.",
+    sub: "Keine Agenturrechnung, keine Abende mit Beiträgen. Ich schreibe Ihre Inhalte, beantworte Bewertungen, mache Ihre Website fit für Google und ChatGPT und schicke Ihnen eine kurze Liste zur Freigabe. Sie gewinnen Zeit für die Arbeit, die Geld bringt.",
+    cta: "Jetzt starten",
     guarantee: ["Nennt Sie bis Tag 90 bei aktiven Wochenchecks keine KI,", "geht der nächste Monat auf uns."],
-    fine: "Keine Kreditkarte nötig. Ich prüfe ChatGPT, Gemini, Claude und Perplexity.",
+    fine: "Der erste Check ist kostenlos. Keine Kreditkarte nötig. Monatlich kündbar.",
     arrows: ["läuft live, probieren Sie es", "Ihre echten Antworten in 60 Sekunden"],
     greet: {
-      work: { title: "Was ich jede Woche für Sie erledige", steps: ["ChatGPT, Gemini, Claude und Perplexity fragen, was Ihre Kunden fragen", "Ihre Website so lesen, wie KI sie liest", "Ergänzen, was fehlt: Ihre Fakten, FAQs und strukturierten Daten", "Beiträge und Seiten schreiben, die Sie freigeben", "Jede Woche neu prüfen und Ihnen sagen, was sich geändert hat"] },
+      work: { title: "Was ich jede Woche für Sie erledige", steps: ["Beiträge für Ihr Google Unternehmensprofil und Blogartikel schreiben, in Ihrem Ton", "Antworten auf Ihre Bewertungen entwerfen", "Ihre Website so verbessern, dass Google und KI sie verstehen", "Prüfen, was ChatGPT, Gemini, Claude und Perplexity über Sie sagen", "Ihnen ein kurzes Wochenbriefing schicken: was erledigt ist, was auf Ihr OK wartet"] },
       startHere: "Hier starten",
       lines: [
         "Guten Tag. Ich bin Alphaa, ein KI-Agent.",
-        "Ich arbeite daran, dass ChatGPT, Gemini, Claude und Perplexity Ihren Betrieb empfehlen.",
+        "Ich übernehme das Marketing für kleine Betriebe, damit Sie es nicht müssen.",
       ],
       ask: "Wie lautet Ihre Website?",
       hint: "Nichts installieren, keine Karte, nur Ihre Website. Ich frage die KIs auf Deutsch; den Bericht schreibe ich vorerst auf Englisch.",
       idleHint:
-        "Website eingeben und Enter drücken. Ich frage ChatGPT, Gemini, Claude und Perplexity live auf Deutsch nach Ihnen, in etwa 60 Sekunden. Den Bericht schreibe ich vorerst auf Englisch.",
+        "Website eingeben und Enter drücken. Ich starte mit einem Live-Check, was Google und KI auf Deutsch über Sie sagen, in etwa 60 Sekunden. Den Bericht schreibe ich vorerst auf Englisch.",
     },
-    pillarsTitle: "Was ich für Betriebe in Deutschland tue",
+    pillarsTitle: "Ihr Marketing, für Sie erledigt",
     pillars: [
       {
-        title: "Ich finde heraus, warum die KI die Konkurrenz nennt",
-        body: "Jede Woche stelle ich den vier KIs die Fragen, die Ihre Kunden stellen: auf Deutsch, mit Ihrer Stadt und Ihrem Viertel, so wie man es eben fragt. Dann zeige ich Ihnen, wer statt Ihnen genannt wird und warum.",
+        title: "Ich halte Sie jede Woche sichtbar",
+        body: "Beiträge für Ihr Google Unternehmensprofil, Blogartikel und Antworten auf Bewertungen, in Ihrem Ton geschrieben. Kunden sehen einen Betrieb, der aktiv ist und gut zu tun hat.",
       },
       {
-        title: "Ich mache die Arbeit, nicht Sie",
-        body: "Ich schreibe die Seiten und Antworten, die KI zitiert, korrigiere falsche Angaben wie Telefonnummer oder Öffnungszeiten, entwerfe Beiträge für Ihr Google Unternehmensprofil und Antworten auf Bewertungen. Jede Änderung geben Sie mit einem Tipp frei.",
+        title: "Ich sorge dafür, dass man Sie findet",
+        body: "Ich bringe Website, strukturierte Daten und Angaben in Ordnung, damit Google, ChatGPT, Gemini, Claude und Perplexity Sie nennen können. Jede Woche prüfe ich, wen sie statt Ihnen nennen.",
       },
       {
-        title: "Ich zeige Ihnen, was sich bewegt hat",
-        body: "Einmal pro Woche ein kurzes Briefing ohne Fachchinesisch: was ich erledigt habe, was sich in den Antworten geändert hat und wo ich Ihr OK brauche.",
+        title: "Social Media, Anzeigen und E-Mail mit Growth",
+        body: "Im Growth-Tarif (Early Access) schreibe ich auch Ihre Social-Media-Beiträge, baue Google- und Meta-Anzeigen pausiert zur Budgetfreigabe auf und schicke E-Mails, die frühere Kunden zurückholen. Freigeschaltet, sobald die Plattformen zustimmen.",
       },
     ],
-    whereTitle: "Wo die KI Sie in Deutschland nachschlägt",
+    whereTitle: "Wo Kunden und KI Sie in Deutschland nachschlagen",
     whereIntro:
-      "Bevor eine KI einen Betrieb empfiehlt, liest sie, was im Netz über ihn steht. In Deutschland zählen vor allem diese Quellen:",
+      "Bevor jemand anruft, schaut er nach, was im Netz über Sie steht. Die KI macht es genauso. In Deutschland zählen vor allem diese Quellen, und ich halte sie aktuell:",
     where: [
       { name: "Google Unternehmensprofil", why: "Adresse, Öffnungszeiten, Kategorie und Bewertungen: das Erste, was die KI abgleicht." },
       { name: "Gelbe Seiten, Das Örtliche und 11880", why: "Die klassischen Branchenverzeichnisse. Stimmen dort Nummer oder Adresse nicht, zweifelt die KI." },
@@ -54,30 +54,31 @@ export const market: Market = {
       { name: "Ihre eigene Website", why: "Klare Leistungsseiten und Antworten auf Deutsch, die die KI wörtlich übernehmen kann." },
     ],
     priceTitle: "Ein KI-Agent statt einer Agentur.",
-    priceSub: "Alles, was nötig ist, damit die KI Sie nennt. Erledigt, nicht nur empfohlen.",
+    priceSub: "Ihr wöchentliches Marketing, erledigt. Online geht nur, was Sie freigeben.",
     priceItems: [
-      "Jede Woche geprüft: was ChatGPT, Gemini, Claude und Perplexity über Sie sagen",
-      "Ihr Google Unternehmensprofil bleibt aktiv: Beiträge und Antworten auf Bewertungen schreibe ich für Sie",
-      "Nichts geht online, bevor Sie freigeben",
-      "Pro für bis zu 3 Standorte: {pro} im Monat. Full Service, bei dem ein Mensch alles für Sie veröffentlicht: {full} im Monat.",
+      "Beiträge für Ihr Google Unternehmensprofil, Blogartikel und Antworten auf Bewertungen, in Ihrem Ton",
+      "Ihre Website fit für Google und KI-Suche, mit Wochenchecks, was ChatGPT, Gemini, Claude und Perplexity über Sie sagen",
+      "Ein kurzes Wochenbriefing, jede Änderung mit einem Tipp freigegeben",
+      "Pro für bis zu 3 Standorte: {pro} im Monat. Full Service, bei dem ein Mensch die Arbeit an der Website übernimmt: {full} im Monat.",
+      "Growth-Tarif (Early Access): Social Media, Google- und Meta-Anzeigen, E-Mail und Lead-Tracking. Das Werbebudget zahlen Sie direkt an Google und Meta, ohne Aufschlag.",
       "Monatlich kündbar, online in einer Minute. 7 Tage Geld zurück auf die erste Abbuchung.",
       "Nennt Sie bis Tag 90 bei aktiven Wochenchecks keine KI, ist der nächste Monat kostenlos.",
     ],
-    priceCta: "Von der KI empfohlen werden: {starter}/Monat",
-    priceNote: "Monatliche Abrechnung, jederzeit zum Monatsende kündbar. Nur für Unternehmen (B2B). Wir sind nicht umsatzsteuerlich registriert und berechnen keine USt.; fällt USt. an, schulden Sie sie im Reverse-Charge-Verfahren.",
+    priceCta: "Jetzt starten: {starter}/Monat",
+    priceNote: "Monatliche Abrechnung, jederzeit zum Monatsende kündbar. Weitere Marken 50 % günstiger. Nur für Unternehmen (B2B). Wir sind nicht umsatzsteuerlich registriert und berechnen keine USt.; fällt USt. an, schulden Sie sie im Reverse-Charge-Verfahren.",
     faqTitle: "Fragen von Betrieben in Deutschland",
     faq: [
       {
-        q: "Funktioniert Alphaa für Betriebe in Deutschland?",
-        a: "Ja. Ich stelle ChatGPT, Gemini, Claude und Perplexity die Fragen, die Kunden in Ihrer Region stellen, auf Deutsch. Dann prüfe ich die Seiten, die die KI hier liest, etwa Ihr Google Unternehmensprofil, Gelbe Seiten oder Jameda, und behebe, was fehlt oder falsch ist.",
+        q: "Was genau macht Alphaa für einen Betrieb in Deutschland?",
+        a: "Ich übernehme Ihr Marketing Woche für Woche: Beiträge für Ihr Google Unternehmensprofil, Blogartikel, Antworten auf Bewertungen und Verbesserungen an Ihrer Website. Dazu prüfe ich auf Deutsch, was ChatGPT, Gemini, Claude und Perplexity über Sie sagen und was auf Gelbe Seiten oder Jameda steht. Social Media, Anzeigen und E-Mail gibt es im Growth-Tarif, derzeit im Early Access.",
       },
       {
         q: "Was kostet das?",
-        a: "Starter kostet {starter} im Monat, Pro {pro} (bis zu 3 Standorte), Full Service {full}, dann veröffentlicht ein Mensch alles für Sie. Monatlich online in einer Minute kündbar, 7 Tage Geld zurück auf die erste Abbuchung. Der Check auf dieser Seite ist kostenlos.",
+        a: "Starter kostet {starter} im Monat, Pro {pro} (bis zu 3 Standorte), Full Service {full}, dann übernimmt ein Mensch die Arbeit an Ihrer Website. Growth mit Social Media, Anzeigen und E-Mail ist im Early Access. Monatlich online in einer Minute kündbar, 7 Tage Geld zurück auf die erste Abbuchung. Der Check auf dieser Seite ist kostenlos.",
       },
       {
         q: "Muss ich mich mit Marketing auskennen?",
-        a: "Nein. Ich mache die Arbeit und erkläre Ihnen in klaren Worten, was ich getan habe. Wenn Sie auf „Freigeben“ tippen können, können Sie Alphaa nutzen.",
+        a: "Nein. Genau dafür gibt es mich. Ich mache das Marketing und erkläre Ihnen in klaren Worten, was ich getan habe. Wenn Sie auf „Freigeben“ tippen können, können Sie Alphaa nutzen.",
       },
       {
         q: "Ist Alphaa DSGVO-konform?",
@@ -93,7 +94,7 @@ export const market: Market = {
   extra: {
     questionsTitle: "Das fragen Menschen in Deutschland heute die KI",
     questionsIntro:
-      "Statt zu googeln, tippen immer mehr Leute ihre Frage direkt in ChatGPT, und zwar ganz konkret, mit Stadtteil und Wunschtermin. Die KI nennt dann ein, zwei, drei Namen. Die Frage ist, ob Ihrer dabei ist.",
+      "Statt zu googeln, tippen immer mehr Leute ihre Frage direkt in ChatGPT, ganz konkret, mit Stadtteil und Wunschtermin. Die KI nennt dann ein, zwei, drei Namen. Dass Ihrer dabei ist, gehört zu dem Marketing, das ich für Sie mache.",
     questions: [
       { q: "Welcher Zahnarzt in München-Schwabing nimmt noch neue Patienten auf und ist gut bei Angstpatienten?", who: "Patientin, München" },
       { q: "Unsere Gastherme in Köln-Ehrenfeld ist ausgefallen. Welcher Heizungsbauer kommt noch diese Woche?", who: "Hausbesitzer, Köln" },
@@ -109,11 +110,11 @@ export const market: Market = {
       {
         slug: "zahnarzt",
         name: "Zahnärzte",
-        title: "Zahnarztpraxis: von ChatGPT empfohlen werden",
+        title: "KI-Marketing für Zahnarztpraxen: Google und ChatGPT",
         description:
-          "Wenn Patienten ChatGPT nach einem Zahnarzt in ihrer Nähe fragen, sorgt Alphaa dafür, dass Ihre Praxis genannt wird. Sie geben jede Änderung frei.",
-        h1: "Neue Patienten, die ChatGPT zu Ihnen schickt",
-        sub: "Patienten fragen die KI inzwischen direkt, welcher Zahnarzt in ihrem Viertel gut ist und noch Termine hat. Ich arbeite daran, dass Ihre Praxis in der Antwort steht.",
+          "Ein KI-Agent übernimmt das Marketing Ihrer Praxis: Google-Beiträge, Bewertungen, Leistungsseiten und Empfehlungen durch ChatGPT. Sie geben alles frei.",
+        h1: "Das Marketing Ihrer Zahnarztpraxis, erledigt von einem KI-Agenten",
+        sub: "Patienten suchen ihren Zahnarzt bei Google, auf Jameda und inzwischen bei ChatGPT. Ich halte all das für Ihre Praxis in Schuss, damit Sie sich um Ihre Patienten kümmern können.",
         questions: [
           "Welcher Zahnarzt in Berlin-Prenzlauer Berg nimmt noch neue Kassenpatienten auf?",
           "Guter Zahnarzt für Angstpatienten in Hamburg-Eimsbüttel, am liebsten mit Behandlung unter Sedierung?",
@@ -126,10 +127,7 @@ export const market: Market = {
           { name: "Ihre Praxis-Website", why: "Seiten zu Leistungen wie Implantaten, Prophylaxe oder Angstpatienten, die die KI zitieren kann." },
         ],
         steps: [
-          {
-            title: "Ich frage, was Ihre Patienten fragen",
-            body: "Jede Woche stelle ich den vier KIs echte Patientenfragen aus Ihrem Stadtteil und zeige Ihnen, welche Praxen statt Ihrer genannt werden.",
-          },
+          { title: "Ich übernehme das wöchentliche Marketing", body: "Beiträge für Ihr Google Unternehmensprofil, Blogartikel zu den Leistungen, die Sie stärken wollen, und Antwortentwürfe auf Bewertungen, alles zur Freigabe. Social Media, Anzeigen und E-Mail gibt es mit Growth im Early Access." },
           {
             title: "Ich schreibe die Antworten, die die KI zitiert",
             body: "Ich entwerfe sachliche Seiten und FAQ-Antworten zu Ihren Leistungen, etwa zu Kosten, Ablauf oder Behandlung von Angstpatienten. Sie prüfen jeden Satz, bevor er online geht.",
@@ -157,11 +155,11 @@ export const market: Market = {
       {
         slug: "heizung-sanitaer",
         name: "SHK-Betriebe",
-        title: "Heizung und Sanitär: von ChatGPT empfohlen werden",
+        title: "KI-Marketing für Heizung & Sanitär: Google und ChatGPT",
         description:
-          "Fragen Hausbesitzer ChatGPT nach einem Heizungsbauer oder Installateur in ihrer Stadt, sorgt Alphaa dafür, dass Ihr SHK-Betrieb genannt wird.",
-        h1: "Neue Aufträge, wenn Kunden die KI nach einem Heizungsbauer fragen",
-        sub: "Ob Wärmepumpe, Badsanierung oder Rohrbruch: Hausbesitzer fragen zuerst die KI, wer in ihrer Gegend zuverlässig ist. Ich arbeite daran, dass Ihr Betrieb dabei ist.",
+          "Ein KI-Agent übernimmt das Marketing Ihres SHK-Betriebs: Google-Beiträge, Bewertungen, Leistungsseiten und Empfehlungen durch ChatGPT. Freigabe per Handy.",
+        h1: "Das Marketing Ihres SHK-Betriebs, erledigt von einem KI-Agenten",
+        sub: "Ob Wärmepumpe, Badsanierung oder Rohrbruch: Hausbesitzer suchen bei Google, auf MyHammer und inzwischen bei ChatGPT. Ich sorge dafür, dass Ihr Betrieb überall auftaucht, während Sie auf der Baustelle sind.",
         questions: [
           "Welcher Heizungsbauer in München baut Wärmepumpen ein und hilft beim Förderantrag?",
           "Notdienst Sanitär in Hamburg-Wandsbek, wer kommt auch am Wochenende bei einem Rohrbruch?",
@@ -174,10 +172,7 @@ export const market: Market = {
           { name: "ProvenExpert", why: "Gesammelte Kundenbewertungen, die viele SHK-Betriebe auf der Website zeigen und die KI mitliest." },
         ],
         steps: [
-          {
-            title: "Ich prüfe Ihr Einsatzgebiet",
-            body: "Ich frage die KIs nach Heizungsbauern und Installateuren in jedem Ort, den Sie anfahren, und zeige Ihnen, wo die Konkurrenz genannt wird und Sie nicht.",
-          },
+          { title: "Ich mache das Marketing, Sie die Aufträge", body: "Google-Beiträge zu aktuellen Projekten, Antworten auf Bewertungen und eine Seite für jeden Ort, den Sie anfahren, zur Freigabe in einer Minute. Social Media, Anzeigen und E-Mail gibt es mit Growth im Early Access." },
           {
             title: "Ich schreibe Seiten für Ihre Leistungen",
             body: "Wärmepumpe, Gasheizung tauschen, Badsanierung, Notdienst: Ich entwerfe für jede Leistung eine klare Seite mit den Fragen, die Kunden wirklich stellen. Sie geben frei.",
@@ -205,11 +200,11 @@ export const market: Market = {
       {
         slug: "rechtsanwalt",
         name: "Rechtsanwälte",
-        title: "Kanzlei: von ChatGPT empfohlen werden",
+        title: "KI-Marketing für Kanzleien: Google und ChatGPT",
         description:
-          "Wenn Mandanten ChatGPT nach einem Anwalt oder Fachanwalt in ihrer Stadt fragen, sorgt Alphaa dafür, dass Ihre Kanzlei in der Antwort steht.",
-        h1: "Neue Mandate, wenn die KI nach einem Anwalt gefragt wird",
-        sub: "Wer eine Kündigung, eine Scheidung oder Ärger mit dem Vermieter hat, fragt heute oft zuerst ChatGPT. Ich arbeite daran, dass Ihre Kanzlei genannt wird.",
+          "Ein KI-Agent übernimmt das Marketing Ihrer Kanzlei: Seiten zu Rechtsgebieten, Google-Beiträge, Bewertungen und Empfehlungen durch ChatGPT. Sie geben alles frei.",
+        h1: "Das Marketing Ihrer Kanzlei, erledigt von einem KI-Agenten",
+        sub: "Mandanten suchen ihren Anwalt bei Google, auf anwalt.de und inzwischen bei ChatGPT. Ich übernehme das Marketing über all diese Kanäle, damit Sie Zeit für Ihre Mandate haben.",
         questions: [
           "Ich habe eine Kündigung bekommen. Welcher Fachanwalt für Arbeitsrecht in Düsseldorf ist gut?",
           "Anwalt für Familienrecht in Berlin-Charlottenburg, der sich mit Scheidung und Unterhalt auskennt?",
@@ -222,10 +217,7 @@ export const market: Market = {
           { name: "Ihre Kanzlei-Website", why: "Seiten zu Ihren Rechtsgebieten mit verständlichen Antworten auf typische Mandantenfragen." },
         ],
         steps: [
-          {
-            title: "Ich prüfe jedes Rechtsgebiet einzeln",
-            body: "Ich frage die KIs nach Anwälten für Ihre Rechtsgebiete in Ihrer Stadt und zeige Ihnen, welche Kanzleien statt Ihrer genannt werden.",
-          },
+          { title: "Ich übernehme das wöchentliche Marketing", body: "Beiträge für Ihr Google-Profil, sachliche Artikel zu Ihren Rechtsgebieten und Antwortentwürfe auf Bewertungen, jede Woche zur Prüfung. Social Media, Anzeigen und E-Mail gibt es mit Growth im Early Access." },
           {
             title: "Ich schreibe verständliche Antworten",
             body: "Ich entwerfe sachliche Seiten zu den Fragen, die Mandanten stellen, etwa zu Fristen nach einer Kündigung oder zum Ablauf einer Scheidung. Sie prüfen jede Formulierung.",
@@ -253,11 +245,11 @@ export const market: Market = {
       {
         slug: "physiotherapie",
         name: "Physiotherapiepraxen",
-        title: "Physiotherapie: von ChatGPT empfohlen werden",
+        title: "KI-Marketing für Physiotherapie: Google und ChatGPT",
         description:
-          "Fragen Patienten ChatGPT nach einer Physiotherapiepraxis mit freien Terminen in ihrer Nähe, sorgt Alphaa dafür, dass Ihre Praxis genannt wird.",
-        h1: "Neue Patienten, wenn die KI nach Physiotherapie gefragt wird",
-        sub: "Mit dem Rezept in der Hand fragen Patienten die KI, welche Praxis in der Nähe freie Termine hat. Ich arbeite daran, dass Ihre Praxis in der Antwort auftaucht.",
+          "Ein KI-Agent übernimmt das Marketing Ihrer Physiotherapiepraxis: Google-Beiträge, Bewertungen, Leistungsseiten und Empfehlungen durch ChatGPT.",
+        h1: "Das Marketing Ihrer Physiotherapiepraxis, erledigt von einem KI-Agenten",
+        sub: "Mit dem Rezept in der Hand suchen Patienten bei Google und inzwischen bei ChatGPT nach einer Praxis in der Nähe. Ich halte Ihre Praxis dort sichtbar und mache die Arbeit für Sie.",
         questions: [
           "Physiotherapie in Leipzig-Gohlis mit freien Terminen diese Woche, ich habe ein Rezept für Krankengymnastik.",
           "Welche Praxis in Stuttgart macht Manuelle Therapie und Lymphdrainage und hat gute Bewertungen?",
@@ -270,10 +262,7 @@ export const market: Market = {
           { name: "Ihre Praxis-Website", why: "Seiten zu Ihren Therapien und Hinweise zu Rezept, Hausbesuch und Selbstzahlern, die die KI zitieren kann." },
         ],
         steps: [
-          {
-            title: "Ich frage wie Ihre Patienten",
-            body: "Jede Woche frage ich die KIs nach Physiotherapie in Ihrem Stadtteil, mit Rezept, mit Hausbesuch, für bestimmte Beschwerden, und zeige Ihnen, wer genannt wird.",
-          },
+          { title: "Ich übernehme das wöchentliche Marketing", body: "Beiträge für Ihr Google-Profil, Artikel zu Ihren Therapien und Kursen und Antwortentwürfe auf Bewertungen, alles zur Freigabe. Social Media, Anzeigen und E-Mail gibt es mit Growth im Early Access." },
           {
             title: "Ich mache Ihre Leistungen sichtbar",
             body: "Ich schreibe Seiten zu Krankengymnastik, Manueller Therapie, Lymphdrainage oder Ihren Kursen, damit die KI weiß, was Sie anbieten. Sie geben jede Seite frei.",
@@ -300,6 +289,6 @@ export const market: Market = {
       },
     ],
     backToMarket: "Zurück zur Übersicht für Deutschland",
-    industryCta: "Meine Praxis oder meinen Betrieb kostenlos prüfen",
+    industryCta: "Jetzt starten",
   },
 }

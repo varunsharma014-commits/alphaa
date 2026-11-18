@@ -16,23 +16,23 @@ export function RevenueSection() {
   const cards = [
     {
       tone: "lavender" as const,
-      step: "Save on ads",
-      title: "Skip the Google Ads bidding war.",
-      body: "Stop paying for every click to fight for attention on Google. When an AI names you as a good local option, that recommendation isn’t for sale. It has to be earned, and I do the earning.",
-      art: <div className="ap-price-chip"><b>$0</b><span>per click</span><em>AI recommendations aren’t auctioned</em></div>,
+      step: "No agency bills",
+      title: "One agent instead of three retainers.",
+      body: "Agencies often charge $1,000+ a month for one channel. I handle your SEO and AI search, content and reviews from $99 a month. On Growth I also run social, ads and email (early access).",
+      art: <div className="ap-price-chip"><b>$99</b><span>/month</span><em>No contract</em></div>,
     },
     {
       tone: "sky" as const,
       step: "Ready to hire",
       title: "Reach people ready to book today.",
-      body: `People asking Perplexity or Gemini for “the best HVAC contractor near me” are looking to hire someone today. I work to put you in that answer.`,
+      body: `People searching Google or asking Perplexity for “the best HVAC contractor near me” want to hire someone today. I work to put you in front of them.`,
       art: <ChatAnswer engine="Perplexity" q="Best HVAC contractor near me?" name="Example HVAC Co." rest=" — same-day service, well reviewed. (Fictional business.)" />,
     },
     {
       tone: "sage" as const,
       step: "The end goal",
       title: "The goal is a ringing phone.",
-      body: `Not better metrics: a customer who calls because ChatGPT gave them your name. When you connect Google Analytics, I count the visitors AI sends you, so you can see it for yourself.`,
+      body: `Not better metrics: a customer who calls because a post, a search or ChatGPT gave them your name. When you connect Google Analytics, I count the visitors I send you, so you can see it for yourself.`,
       art: (
         <Phone>
           <IncomingCall from="New customer" sub="“ChatGPT said you’re the best in town.”" />
@@ -42,19 +42,19 @@ export function RevenueSection() {
   ]
   return (
     <section className="ap-sec ap-sec--grey">
-      <h2 className="ap-h2 ap-center">Turn AI recommendations<br />into real revenue.</h2>
-      <p className="ap-lead ap-center">When ChatGPT or Claude names your business, it’s not a vanity metric — it’s a direct referral. People asking AI aren’t browsing. They’re ready to book, buy or visit.</p>
-      {/* The strongest angle, front and centre: pay per click vs. recommended for free. */}
+      <h2 className="ap-h2 ap-center">Turn your marketing<br />into real revenue.</h2>
+      <p className="ap-lead ap-center">Every post, review reply and AI recommendation should bring you customers, not vanity metrics. When ChatGPT names your business, that’s a direct referral to someone ready to book, buy or visit.</p>
+      {/* Paid clicks vs. an earned AI recommendation: one of the strengths, shown side by side. */}
       <div className="ap-hero-panel">
         <Panel tone="lavender" tall>
           <div className="ap-versus">
             <div className="ap-versus__side">
-              <div className="ap-versus__label">Google Ads</div>
+              <div className="ap-versus__label">Paid click</div>
               <AdVsAi only="ad" />
             </div>
             <div className="ap-versus__vs" aria-hidden="true">vs</div>
             <div className="ap-versus__side">
-              <div className="ap-versus__label">AI recommendation</div>
+              <div className="ap-versus__label">Earned AI answer</div>
               <AdVsAi only="ai" />
             </div>
           </div>
@@ -79,8 +79,8 @@ export function RevenueSection() {
 // ── 2. "Does the to-dos": accordion that swaps the phone shot ────────────────
 const TODOS = [
   {
-    title: "I check what AI says about you.",
-    body: `Every week I ask ChatGPT, Gemini, Claude and Perplexity the exact questions your customers ask, then tell you who got recommended: you, or the shop down the street.`,
+    title: "I see where customers find you.",
+    body: `Every week I check Google and ask ChatGPT, Gemini, Claude and Perplexity the questions your customers ask. Then I tell you who got recommended: you, or the shop down the street.`,
     art: (
       <Phone>
         <AgentNote title="Good morning." body="I asked ChatGPT for the “best dentist near Zilker.” It named 3 clinics. You weren’t one. Here’s why — and what I’m doing to fix it." />
@@ -89,8 +89,8 @@ const TODOS = [
     ),
   },
   {
-    title: "I write what AI needs to read.",
-    body: `I build the answers, facts and pages AI checks before it recommends anyone. I write them, place them and keep them current.`,
+    title: "I write and post the work.",
+    body: `Blog posts, Google posts, website fixes and review replies, all in your voice. On the Growth plan I also write social posts, build ads and email past customers (early access).`,
     art: (
       <Phone>
         <AgentNote title="New page ready" body="I wrote a page answering “Do you take Delta Dental?” — the #2 question in your area." actions={["Publish", "Edit"]} />
@@ -114,7 +114,7 @@ export function TodoAccordion() {
   return (
     <section className="ap-sec">
       <h2 className="ap-h2 ap-center">Most tools give you a to-do list.<br /><span className="ap-quiet">{A}’s AI Agent does them for you.</span></h2>
-      <p className="ap-lead ap-center">Marketing tools hand you a dashboard and leave you to figure it out. I read, write, fix and publish, then tell you exactly what I did, in plain English.</p>
+      <p className="ap-lead ap-center">Marketing tools hand you a dashboard and leave you to figure it out. I run your marketing: I write, fix and publish, then tell you exactly what I did, in plain English.</p>
       <div className="ap-feature">
         <div className="ap-acc">
           {TODOS.map((t, i) => (
@@ -166,7 +166,7 @@ const EASY: { eyebrow: string; title: string; body: string; more: string; art: R
   {
     eyebrow: "Month to month",
     title: "No contract. Cancel online in a minute.",
-    body: "I keep my job only if the AIs keep saying your name.",
+    body: "I keep my job only if I keep earning it.",
     more: "No minimum term and no exit fees. From $99 a month.",
     tone: "sage",
     art: <div className="ap-price-chip"><b>$99</b><span>/month</span><em>Cancel anytime</em></div>,
@@ -210,15 +210,15 @@ export function EasyRail() {
 // ── 4. Agency vs agent: side-by-side, prices on one line, savings right under ──
 const ROWS: [string, string, string][] = [
   ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what I did today, what changed, what I need from you."],
-  ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel online in a minute. I only stay if the AIs keep saying your name."],
-  ["The focus", "Google’s ten blue links. Ask about ChatGPT or Claude and watch them stumble.", "Getting you recommended by AI assistants is the only thing I do."],
+  ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel online in a minute. I only stay if I keep earning it."],
+  ["The scope", "Usually one channel per retainer. Ask about ChatGPT or Claude and many stumble.", "SEO and AI search, content and reviews on every plan. Social, ads and email on Growth (early access)."],
 ]
 
 export function AgencyToggle() {
   return (
     <section className="ap-sec">
-      <h2 className="ap-h2 ap-center">Agencies often charge $1,000+ a month<br /><span className="ap-quiet">for work an AI Agent now does for you.</span></h2>
-      <p className="ap-lead ap-center">Even a “good” agency leaves you invisible where customers are actually asking questions today.</p>
+      <h2 className="ap-h2 ap-center">Agencies often charge $1,000+ a month<br /><span className="ap-quiet">for marketing an AI Agent now runs for you.</span></h2>
+      <p className="ap-lead ap-center">Keep the money, get your time back, and show up where customers search and ask today.</p>
       <div className="ap-vs">
         <div className="ap-vs__col ap-vs__col--them">
           <div className="ap-vs__name">Marketing agency (example)</div>
@@ -240,7 +240,7 @@ export function AgencyToggle() {
         <div className="ap-vs__save">
           <span>For example, against a $1,000 a month agency, save</span>
           <b>$10,812 a year</b>
-          <em>…and actually show up where your customers now ask.</em>
+          <em>…and your marketing still gets done every week.</em>
         </div>
       </div>
     </section>

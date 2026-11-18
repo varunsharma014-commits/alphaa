@@ -4,8 +4,8 @@ import { Bot } from "lucide-react"
 import { pageMeta } from "@/lib/seo"
 
 export const metadata = pageMeta({
-  title: "Free AI Visibility Scan",
-  description: "See what ChatGPT, Gemini, Claude and Perplexity say about your business, and who they name instead of you. Free, in about 60 seconds.",
+  title: "Free AI Visibility Scan | Alphaa AI marketing agent",
+  description: "See what ChatGPT, Gemini, Claude and Perplexity say about your business, and who they name instead of you. Free, in about 60 seconds. Then let Alphaa's AI agent run your marketing.",
   path: "/scan",
 })
 
@@ -20,7 +20,7 @@ export default function ScanPage() {
             <span className="text-[#86868b]">visibility score</span>
           </h1>
           <p className="text-muted text-base">
-            We check Google, ChatGPT, Maps, and your website — and show you exactly what's stopping customers from finding you. Takes 2 minutes.
+            We check Google, ChatGPT, Maps, and your website, and show you exactly what's stopping customers from finding you. Takes 2 minutes. Then your AI agent can run your marketing and fix it.
           </p>
         </div>
 

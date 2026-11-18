@@ -138,7 +138,7 @@ export default function WeeklyReportEmail({
               You&apos;re receiving this because you have an active Alphaa subscription.
             </Text>
             <Text style={footerText}>
-              Alphaa{foot?.address ? ` · ${foot.address}` : " · AI Search Visibility for Local Businesses"}
+              Alphaa{foot?.address ? ` · ${foot.address}` : " · The AI agent that runs your marketing"}
             </Text>
             {foot?.unsubscribeUrl && (
               <Text style={footerText}>

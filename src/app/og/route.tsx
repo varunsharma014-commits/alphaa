@@ -6,7 +6,7 @@ export const runtime = "edge"
 
 export function GET(req: Request) {
   const { searchParams } = new URL(req.url)
-  const title = (searchParams.get("title") || "Get customers from ChatGPT. Your AI Agent does the work.").slice(0, 140)
+  const title = (searchParams.get("title") || "Run your entire marketing using an AI agent.").slice(0, 140)
   const eyebrow = (searchParams.get("eyebrow") || "").slice(0, 40)
   const size = title.length > 90 ? 58 : title.length > 60 ? 66 : 76
   return new ImageResponse(

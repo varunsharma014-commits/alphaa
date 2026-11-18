@@ -4,11 +4,11 @@
 export const faqs = [
   {
     q: "What does Alphaa actually do?",
-    a: "Alphaa is an AI Agent that gets your business recommended by ChatGPT, Gemini, Claude and Perplexity. Every week it asks those four AIs the questions your customers ask, shows you who they name instead of you, then does the work to fix it: service pages, FAQs and blog posts, the facts AI reads about you, Google Business Profile posts and review replies. You approve with one tap.",
+    a: "Alphaa is an AI agent that runs your marketing, so you can run your business. Every week it writes your blog and Google Business Profile posts, replies to reviews, fixes your website for Google and AI search, and checks who ChatGPT, Gemini, Claude and Perplexity recommend. On the Growth plan (early access) it also writes your social posts with branded images, builds and tunes Google and Meta ads, and sends emails that bring customers back. Everything is in your voice, and you approve with one tap.",
   },
   {
     q: "How is this different from a marketing agency?",
-    a: "Search marketing agencies often charge $1,000+ a month, for example $12,000+ a year, and mostly works on Google's links. Alphaa is $99 a month ($1,188 a year), works on the answers AI gives, does the work itself, and tells you in plain English what it did. Month to month, no contract.",
+    a: "Search marketing agencies often charge $1,000+ a month, for example $12,000+ a year, and you still wait on them for every post. Alphaa starts at $99 a month ($1,188 a year), does the work itself every week, covers Google and the answers AI gives, and tells you in plain English what it did. Month to month, no contract.",
   },
   {
     q: "Do I need to know anything about marketing or websites?",
@@ -31,12 +31,16 @@ export const faqs = [
     a: "Yes. It's month to month and you can cancel online in a minute. No contract, no phone call.",
   },
   {
+    q: "Which marketing does it handle?",
+    a: "On every plan: blog posts, Google Business Profile posts, review replies, website fixes for Google and AI search, and a weekly check of what ChatGPT, Gemini, Claude and Perplexity say about you. On Growth (early access): social media posts with images in your brand, Google and Meta ads, lead tracking and email marketing. Your ad budget is paid to Google and Meta directly; we never take a cut.",
+  },
+  {
     q: "What kinds of businesses is this for?",
     a: "Mainly local, owner-run businesses in the US and Canada: dentists, med spas, lawyers, HVAC, plumbers and other home services, and restaurants. It also works for small SaaS and online businesses.",
   },
   {
     q: "Will it post something without asking me?",
-    a: "No. Nothing goes live until you tap approve, and every change it makes to your website is logged and can be undone. On Pro you can choose to let Google Business Profile posts publish on their own.",
+    a: "No. Nothing goes live until you tap approve, and every change it makes to your website is logged and can be undone. You choose what it can do on its own, for example Google Business Profile posts on Pro, or social posts on Growth. Ads never spend a dollar until you approve the budget.",
   },
   {
     q: "Do I need to give you my website login or hosting passwords?",
@@ -48,6 +52,6 @@ export const faqs = [
   },
   {
     q: "How much does it cost?",
-    a: "Starter is $99 a month, Pro is $199 a month (up to 3 locations) and Full Service is $299 a month, where a person publishes everything for you. Paying yearly brings Starter to $79 and Pro to $159 a month. You can see what AI says about your business for free first, in about 60 seconds, at alphaa.app/start.",
+    a: "Starter is $99 a month, Pro is $199 a month (up to 3 locations) and Full Service is $299 a month, where a person publishes everything for you. Growth, with social media, ads and email, is $499 a month in early access. Paying yearly brings Starter to $79 and Pro to $159 a month. You can try it free first at alphaa.app/start: give it your website and it shows what AI says about you and plans your first week of marketing.",
   },
 ]

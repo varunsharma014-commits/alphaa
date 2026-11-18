@@ -6,14 +6,14 @@ import { track } from "@/lib/gtag"
 import { cn } from "@/lib/utils"
 
 // Embeds the start of the scan in the hero (CRO: reduce friction). Submitting
-// jumps to /scan with the URL prefilled into the form.
+// opens the agent at /start, which starts working on that website straight away.
 // `compact` renders a slimmer variant for embedding inside vertical-page heroes.
 // `source` is attached to the GA4 intent event so we can attribute which page
-// started the funnel (the canonical scan_started fires on the actual /scan submit).
+// started the funnel (the canonical scan_started fires when /start runs the check).
 export function HeroScanInput({
   compact = false,
   source = "home_hero",
-  ctaLabel = "See where my business ranks on AI →",
+  ctaLabel = "Get started →",
 }: {
   compact?: boolean
   source?: string
@@ -26,7 +26,7 @@ export function HeroScanInput({
     e.preventDefault()
     const v = url.trim()
     track("scan_input_submit", { source })
-    router.push(v ? `/scan?url=${encodeURIComponent(v)}` : "/scan")
+    router.push(v ? `/start?site=${encodeURIComponent(v)}` : "/start")
   }
 
   return (

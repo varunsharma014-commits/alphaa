@@ -87,7 +87,7 @@ export default function CaseStudiesPage() {
             <span className="text-[#0071e3]">Industry by industry.</span>
           </h1>
           <p className="text-muted text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
-            Illustrative examples, not customer stories: what Alphaa's AI Agent does, week by week, when ChatGPT, Gemini, Claude and Perplexity name a competitor instead of you.
+            Illustrative examples, not customer stories: what Alphaa's AI Agent does, week by week, to run a local business's marketing. Google posts, blogs, review replies, and getting named when ChatGPT, Gemini, Claude and Perplexity pick a competitor instead of you.
           </p>
 
           {/* Aggregate stats */}
@@ -145,14 +145,14 @@ export default function CaseStudiesPage() {
           <div className="rounded-3xl border border-line/[0.08] bg-fg/[0.02] overflow-hidden p-10 sm:p-14 text-center">
             <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-4">Ready to be next?</p>
             <h2 className="text-[32px] sm:text-[44px] font-semibold text-fg leading-[1.1] tracking-tight mb-4 text-balance">
-              Find out if AI search
-              <br />knows your business.
+              Let an AI agent
+              <br />run your marketing.
             </h2>
             <p className="text-muted text-base sm:text-lg mb-8 max-w-xl mx-auto">
-              See what ChatGPT, Gemini, Claude and Perplexity say about your business, and who they name instead. Free, in about 60 seconds.
+              Get your time back. Start with a free check of what Google and the AIs say about you, then I take it from there.
             </p>
             <OrangePillButton href="/start" size="lg">
-              Run the free check →
+              Get started →
             </OrangePillButton>
             <p className="text-muted text-xs mt-4">$99/mo · Month to month · Cancel online in a minute. If no AI names you by day 90 with weekly checks active, next month is free.</p>
           </div>

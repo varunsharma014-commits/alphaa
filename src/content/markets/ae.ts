@@ -7,72 +7,73 @@ export const market: Market = {
     lang: "en-AE",
     hreflang: "en-AE",
     country: "United Arab Emirates",
-    title: "Get Recommended by ChatGPT in Dubai & the UAE | Alphaa",
+    title: "AI Marketing Agent for Dubai & UAE Businesses | Alphaa",
     description:
-      "Alphaa is an AI Agent that gets UAE businesses recommended by ChatGPT, Gemini, Claude and Perplexity. You approve each change. Free check in 60 seconds.",
-    h1a: "Get customers from",
-    h1b: "Your AI Agent does the work.",
-    sub: "Your customers in Dubai Marina, Al Barsha or Abu Dhabi ask ChatGPT for a dentist, a salon or a broker. It names someone. If it isn’t you, I find out why, fix it, and tell you exactly what I did.",
-    cta: "Check my business free",
+      "Alphaa is an AI agent that runs your UAE marketing: Google posts, blogs, review replies, SEO and getting named by ChatGPT. Social, ads and email on Growth.",
+    h1a: "Run your entire marketing",
+    h1b: "using an AI agent.",
+    sub: "No agency retainer, no late nights posting. I write your content, answer your reviews, fix your website for Google and ChatGPT, and send you one short list to approve. From Dubai Marina to Abu Dhabi, you get your time back to run the business.",
+    cta: "Get started",
     guarantee: ["If no AI names you by day 90 with weekly checks active,", "next month is on us."],
-    fine: "No card needed. Checks ChatGPT, Gemini, Claude and Perplexity.",
+    fine: "Your first check is free. No card needed. Month to month.",
     arrows: ["it's live, try it", "your real answers, in 60s"],
     greet: {
-      work: { title: "What I do for you, every week", steps: ["Ask ChatGPT, Gemini, Claude and Perplexity what your customers ask", "Read your website the way AI reads it", "Fix what’s missing: your facts, FAQs and structured data", "Write posts and pages for you to approve", "Check again every week and tell you what changed"] },
+      work: { title: "What I do for you, every week", steps: ["Write your Google Business Profile posts and blog posts, in your voice", "Draft replies to your reviews", "Fix your website so Google and AI can read it", "Check what ChatGPT, Gemini, Claude and Perplexity say about you", "Send you a short weekly briefing: what I did, what's waiting for your yes"] },
       startHere: "Start here",
       lines: [
         "Hi. I'm Alphaa, an AI Agent.",
-        "I get businesses across the Emirates recommended by ChatGPT, Gemini, Claude and Perplexity.",
+        "I run marketing for small businesses across the Emirates, so you don't have to.",
       ],
       ask: "What's your website?",
       hint: "Nothing to install. No card. Just your website.",
       idleHint:
-        "Type your website and press Enter. I'll ask ChatGPT, Gemini, Claude and Perplexity about you live, in about 60 seconds. If your site is in Arabic, I ask them in Arabic.",
+        "Type your website and press Enter. I'll start with a live check of what Google and AI say about you, in about 60 seconds. If your site is in Arabic, I ask them in Arabic.",
     },
-    pillarsTitle: "What I do for businesses in the UAE",
+    pillarsTitle: "Your marketing, done for you",
     pillars: [
       {
-        title: "I find out why AI names someone else",
-        body: "Every week I ask the four AIs what your customers ask, from JLT to Jumeirah to Sharjah, and show you which business gets named instead of you and what it has that you don't.",
+        title: "I keep you visible every week",
+        body: "Google Business Profile posts, blog posts and review replies, written in your voice. Customers see a business that's open, active and trusted.",
       },
       {
-        title: "I do the work to fix it",
-        body: "I write the pages and answers AI quotes, correct the wrong phone, area or hours it has for you, and keep your Google listing and review replies going. You approve each change with one tap.",
+        title: "I get you found on Google and AI",
+        body: "I fix your website, structured data and details so Google, ChatGPT, Gemini, Claude and Perplexity can name you, and I check every week who they name instead, from JLT to Jumeirah to Sharjah.",
       },
       {
-        title: "I show you what changed",
-        body: "A short weekly briefing in plain English: what I did, what changed in the answers, and what needs your yes.",
+        title: "Social, ads and email on Growth",
+        body: "On the Growth plan (early access) I also write your social posts, build Google and Meta ads paused for your budget approval, and send emails that bring past customers back. Opening as the platforms approve us.",
       },
     ],
-    whereTitle: "Where AI looks you up in the UAE",
+    whereTitle: "Where customers and AI look you up in the UAE",
     whereIntro:
-      "Before AI recommends a business, it reads what other sites say about it. In the Emirates, these carry the most weight:",
+      "Before anyone calls you, they check what other sites say about you. So does AI. In the Emirates, these carry the most weight, and I keep them right:",
     where: [
       { name: "Google Business Profile", why: "Your exact area, opening hours, category and photos: the first thing AI checks." },
       { name: "Google Maps reviews and TripAdvisor", why: "Recent, answered reviews tell AI you're active and trusted." },
       { name: "Bayut, Property Finder, Fresha and Okadoc", why: "The listing and booking platforms AI reads for property, beauty and clinics." },
       { name: "Your own website", why: "Clear service pages that name your area, your services and real answers AI can quote." },
     ],
-    priceTitle: "One AI Agent. Instead of an agency retainer.",
-    priceSub: "Everything it takes to get named by AI, done for you.",
+    priceTitle: "One AI agent. Instead of an agency retainer.",
+    priceSub: "Your weekly marketing done for you, with nothing going live until you say yes.",
     priceItems: [
-      "Weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about you",
-      "Your Google listing kept fresh: posts and review replies drafted for you",
-      "Nothing goes live until you tap approve",
+      "Google Business Profile posts, blog posts and review replies, written in your voice",
+      "Your website fixed for Google and AI search, with weekly checks of what ChatGPT, Gemini, Claude and Perplexity say",
+      "A short weekly briefing, and every change approved with one tap",
+      "Growth plan (early access): social posts, Google and Meta ads, email and lead tracking. Ad spend goes to Google and Meta directly, never marked up.",
       "Month to month. Cancel online in a minute. 7-day refund on your first charge.",
       "If no AI names you by day 90 with weekly checks active, next month is free.",
     ],
-    priceCta: "Get recommended by AI — {starter}/month",
-    priceNote: "Monthly, cancel any time. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
+    priceCta: "Get started: {starter}/month",
+    priceNote: "Monthly, cancel any time. Extra brands 50% off. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
     faqTitle: "Questions from UAE business owners",
     faq: [
       {
         q: "Does Alphaa work for businesses in Dubai, Abu Dhabi and the northern emirates?",
-        a: "Yes. I ask ChatGPT, Gemini, Claude and Perplexity the questions customers in your emirate and your area ask, check the UAE sites AI reads about you, and fix what's missing.",
+        a: "Yes. I run your marketing week to week: Google Business Profile posts, blog posts, review replies and website fixes. I also check what ChatGPT, Gemini, Claude and Perplexity tell customers in your emirate and area, and fix what's missing. Social, ads and email are on the Growth plan, in early access.",
       },
       {
         q: "How much does it cost?",
-        a: "Starter is {starter} a month, Pro is {pro} a month for up to 3 locations, and Full Service is {full} a month, where a person publishes everything for you. Month to month, cancel online in a minute. The check on this page is free.",
+        a: "Starter is {starter} a month, Pro is {pro} a month for up to 3 locations, and Full Service is {full} a month, where a person does the website work for you. Growth, with social, ads and email, is in early access. Month to month, cancel online in a minute. The check on this page is free.",
       },
       {
         q: "My customers search in Arabic and English. Do you cover both?",
@@ -89,7 +90,7 @@ export const market: Market = {
   extra: {
     questionsTitle: "What people in the UAE really ask AI",
     questionsIntro:
-      "These are the kinds of questions residents and visitors type into ChatGPT every day. If AI names a competitor, that customer never reaches you.",
+      "Residents and visitors type questions like these into ChatGPT every day. If AI names a competitor, that customer never reaches you. Getting you named is one part of the marketing I run.",
     questions: [
       { q: "Which dental clinic in Dubai Marina is good for Invisalign and open on Friday evening?", who: "A resident in Dubai Marina" },
       { q: "Who is a reliable broker for a 2-bedroom rental in JLT or Business Bay?", who: "A new arrival relocating to Dubai" },
@@ -99,17 +100,17 @@ export const market: Market = {
     ],
     industriesTitle: "Built for the trades the UAE runs on",
     industriesIntro:
-      "One new patient, tenant or regular client can be worth more than a year of Alphaa. Here's how I work for each:",
+      "One new patient, tenant or regular client can be worth more than a year of Alphaa. Here's how I run the marketing for each:",
     industryLinkPrefix: "More for",
     industries: [
       {
         slug: "dental-clinics",
         name: "Dental & aesthetic clinics",
-        title: "Get Your Dubai Clinic Recommended by ChatGPT",
+        title: "AI Marketing for Dubai Clinics: Google and ChatGPT",
         description:
-          "Patients in Dubai and Abu Dhabi ask ChatGPT which clinic to trust. Alphaa's AI Agent works to get your dental or aesthetic clinic named. Free check.",
-        h1: "Get patients who ask AI which clinic to trust",
-        sub: "People in Jumeirah, Downtown Dubai and Khalifa City ask ChatGPT for a dentist or an aesthetic doctor before they ever open Google. I work to get your clinic named in that answer.",
+          "An AI agent that runs your clinic's marketing in the UAE: Google posts, review replies, treatment pages, and getting named by ChatGPT. You approve each change.",
+        h1: "Run your clinic's marketing with an AI agent",
+        sub: "Patients in Jumeirah, Downtown Dubai and Khalifa City pick a dentist or aesthetic doctor on Google, in reviews and now in ChatGPT. I keep your clinic visible across all of them, and you approve every word.",
         questions: [
           "Which dental clinic in Jumeirah is good for veneers and accepts insurance?",
           "Best place for Botox in Downtown Dubai with a licensed doctor, not a salon?",
@@ -122,7 +123,7 @@ export const market: Market = {
           { name: "Your clinic website", why: "Treatment pages, your doctors' names and licences, insurance you accept and real answers AI can quote." },
         ],
         steps: [
-          { title: "I ask what patients ask", body: "Every week I ask the four AIs about your treatments in your area, like implants in Al Barsha or fillers in JBR, and show you who they name instead." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, treatment articles and replies to patient reviews, drafted for you to approve. Social, ads and email are on Growth, in early access." },
           { title: "I write the answers AI quotes", body: "I draft treatment pages and FAQs in plain language: what it involves, who it suits, which insurance you accept. You approve before anything goes live." },
           { title: "I keep your listing and reviews alive", body: "I draft Google posts and polite, careful replies to patient reviews, and correct any wrong phone number, area or hours AI has for you." },
         ],
@@ -135,11 +136,11 @@ export const market: Market = {
       {
         slug: "real-estate-brokers",
         name: "Real estate brokers",
-        title: "Get Your UAE Brokerage Recommended by ChatGPT",
+        title: "AI Marketing for UAE Brokerages: Google and ChatGPT",
         description:
-          "Buyers and tenants ask ChatGPT which Dubai broker to call. Alphaa's AI Agent works to get your agency named for your communities. Check it free.",
-        h1: "Be the brokerage AI names for your communities",
-        sub: "Investors abroad and new arrivals ask ChatGPT who knows Dubai Hills, JVC or Al Reem Island. I work to get your agency and your area expertise into that answer.",
+          "An AI agent that runs your brokerage's marketing: community pages, Google posts, review replies, and getting named by ChatGPT. You approve every change.",
+        h1: "Run your brokerage's marketing with an AI agent",
+        sub: "Investors abroad and new arrivals look for a broker who knows Dubai Hills, JVC or Al Reem Island on Google, on the portals and now in ChatGPT. I keep your agency and your area expertise in front of them.",
         questions: [
           "Which real estate agency is good for off-plan in Dubai Creek Harbour?",
           "Who is a trustworthy broker for renting a villa in Arabian Ranches?",
@@ -152,7 +153,7 @@ export const market: Market = {
           { name: "Google Business Profile and reviews", why: "Client reviews that mention a community and an agent by name carry real weight." },
         ],
         steps: [
-          { title: "I ask what buyers and tenants ask", body: "Every week I ask the four AIs about your communities and your type of deal, and show you which agencies they name and why." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, community guides and replies to client reviews, drafted for you to approve. Social, ads and email are on Growth, in early access." },
           { title: "I build your area pages", body: "I draft community guides and answers AI can quote, such as service charges, commute times and what to know before renting, all approved by you first." },
           { title: "I keep your facts straight", body: "I correct a wrong office address, phone or licence details where AI has them wrong, and draft replies to client reviews." },
         ],
@@ -165,11 +166,11 @@ export const market: Market = {
       {
         slug: "salons-spas",
         name: "Salons & spas",
-        title: "Get Your UAE Salon or Spa Recommended by ChatGPT",
+        title: "AI Marketing for UAE Salons & Spas, incl. ChatGPT",
         description:
-          "Clients ask ChatGPT for a salon or spa near them in Dubai, Abu Dhabi and Sharjah. Alphaa's AI Agent works to get your business named. Free check.",
-        h1: "Be the salon AI sends clients to",
-        sub: "When someone in JLT, Al Barsha or Al Majaz asks ChatGPT for a good salon, a Moroccan bath or a ladies' spa, I work to get your name in the answer, with the right area and hours.",
+          "An AI agent that runs your salon or spa's marketing: Google posts, review replies, treatment pages, and getting named by ChatGPT. Approve with one tap.",
+        h1: "Run your salon or spa's marketing with an AI agent",
+        sub: "Clients in JLT, Al Barsha or Al Majaz choose a salon, a Moroccan bath or a ladies' spa on Google, Instagram, Fresha and now ChatGPT. I keep you showing up, with the right area and hours, so your diary fills.",
         questions: [
           "Good ladies' salon in Al Barsha for keratin and nails, open late?",
           "Where can I get a proper Moroccan bath in Jumeirah?",
@@ -182,7 +183,7 @@ export const market: Market = {
           { name: "Your own website", why: "A clear menu of services with your area and booking details that AI can quote." },
         ],
         steps: [
-          { title: "I ask what clients ask", body: "Every week I ask the four AIs for salons and spas near you by treatment and area, and show you who they name instead." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts on your offers, treatment pages and replies to every review, in your voice. Social posts, ads and email are on Growth, in early access." },
           { title: "I write your service pages", body: "I draft simple pages for your signature treatments, with your area, hours and booking link, so AI has something clear to quote." },
           { title: "I keep your Google listing busy", body: "I draft Google posts for new treatments and offers, and warm replies to every review. You approve with one tap." },
         ],
@@ -195,11 +196,11 @@ export const market: Market = {
       {
         slug: "car-service",
         name: "Car service & detailing garages",
-        title: "Get Your UAE Garage Recommended by ChatGPT",
+        title: "AI Marketing for UAE Garages: Google and ChatGPT",
         description:
-          "Drivers ask ChatGPT which garage to trust in Al Quoz, Mussafah or Sharjah. Alphaa's AI Agent works to get your workshop or detailing studio named.",
-        h1: "Be the garage AI tells drivers to trust",
-        sub: "When someone asks ChatGPT for an honest garage in Al Quoz, a ceramic coating in Mussafah or a quick AC repair in Sharjah, I work to get your workshop named in the answer.",
+          "An AI agent that runs your garage's marketing: Google posts, review replies, service pages, and getting named by ChatGPT. Approve from your phone.",
+        h1: "Run your garage's marketing with an AI agent",
+        sub: "Drivers looking for an honest garage in Al Quoz, a ceramic coating in Mussafah or a quick AC repair in Sharjah check Google, reviews and now ChatGPT. I keep your workshop in front of them while you work.",
         questions: [
           "Which garage in Al Quoz is good for Range Rover service, cheaper than the dealer?",
           "Where can I get PPF and ceramic coating done properly in Dubai?",
@@ -212,7 +213,7 @@ export const market: Market = {
           { name: "Yellow Pages UAE", why: "A long-standing UAE directory that helps confirm your name, phone and address." },
         ],
         steps: [
-          { title: "I ask what drivers ask", body: "Every week I ask the four AIs about your services, makes and area, and show you which garages they name instead." },
+          { title: "I run the marketing while you work", body: "Google Business Profile posts on recent jobs, service pages and replies to your reviews, drafted for you to approve in a minute. Social, ads and email are on Growth, in early access." },
           { title: "I write pages AI can quote", body: "I draft clear pages for each service and the makes you specialise in, with what's included and how to book." },
           { title: "I fix your facts and reviews", body: "Garages are hard to find in Al Quoz and Mussafah. I correct wrong locations and phone numbers AI has, and draft replies to reviews." },
         ],
@@ -224,6 +225,6 @@ export const market: Market = {
       },
     ],
     backToMarket: "Back to Alphaa UAE",
-    industryCta: "Check my business free",
+    industryCta: "Get started",
   },
 }

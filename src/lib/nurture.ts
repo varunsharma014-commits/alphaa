@@ -214,7 +214,7 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
             { kind: "p", text: "It answers a question your customers ask, written so AI can quote it easily:" },
             { kind: "quote", text: `"${f.draft.question} ${f.draft.answer}"` },
             { kind: "p", text: "Anything in brackets is a fact only you know, so I left it for you. I never guess." },
-            { kind: "p", text: "Once you start, I keep writing these. I add the code AI reads, and you approve each one before it goes live." },
+            { kind: "p", text: "Once you start, I keep writing these, plus your Google posts, blogs and review replies. You approve each one before it goes live." },
           ],
           cta: start,
         }
@@ -227,7 +227,7 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
           { kind: "p", text: `Here is what I'd draft first for ${site}.` },
           { kind: "p", text: `An FAQ that answers the questions your customers ask AI${where}. The answer comes in the first sentence, in plain words.` },
           { kind: "p", text: "Then the code AI reads, stating your hours, address and services." },
-          { kind: "p", text: "I never guess facts. Anything only you know, I ask you for. You approve each piece before it goes live." },
+          { kind: "p", text: "That is one piece of the job. I also write your Google posts and blogs and reply to your reviews. I never guess facts, and you approve each piece before it goes live." },
         ],
         cta: start,
       }
@@ -249,20 +249,20 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
     case 4:
       return {
         subject: `What $99 a month does for ${you}.`,
-        preview: "Here is what I do every week so you are in the answer.",
+        preview: "I run your marketing every week, so you can run the business.",
         blocks: [
-          { kind: "p", text: "Customers ask AI who to hire. Here is what I do every week so you are in the answer:" },
+          { kind: "p", text: "You did not start a business to write posts and chase reviews. Here is what I do every week, so you don't have to:" },
           {
             kind: "bullets",
             items: [
-              "Ask ChatGPT, Gemini, Claude, and Perplexity about you.",
-              "Tell you exactly what changed.",
-              "Draft the answers AI needs to read.",
-              "Keep your Google profile active.",
+              "Write your Google posts and blogs in your voice.",
+              "Reply to your reviews.",
+              "Fix your website so Google and AI can read it.",
+              "Ask ChatGPT, Gemini, Claude, and Perplexity about you, and tell you what changed.",
             ],
           },
           { kind: "p", text: "That is $99 a month. Month to month. Cancel online in a minute." },
-          { kind: "p", text: "Agencies often charge $1,000+ a month, and most still focus on Google links. I focus entirely on AI answers." },
+          { kind: "p", text: "Agencies often charge $1,000+ a month. You approve everything I do with one tap." },
         ],
         cta: start,
       }
@@ -297,7 +297,7 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
             ],
           },
           { kind: "p", text: `If ${you} ${f.nameIsGeneric ? "are" : "is"} missing one, that is where I start.` },
-          { kind: "p", text: "Once you hire me, I work on this every week. You approve each change before it goes live." },
+          { kind: "p", text: "Once you hire me, I work on this every week along with the rest of your marketing. You approve each change before it goes live." },
         ],
         cta: start,
       }
@@ -382,7 +382,7 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
         blocks: [
           { kind: "p", text: "I have written a few times since I first checked your AI visibility. I do not want to be noise." },
           { kind: "p", text: "This is my last email." },
-          { kind: "p", text: "If you want me working on getting you recommended by AI, start today. I saved your scan, so we can pick up right where we left off." },
+          { kind: "p", text: "If you want me running your marketing, from Google posts and reviews to getting you recommended by AI, start today. I saved your scan, so we can pick up right where we left off." },
           { kind: "p", text: "If the timing is wrong, just reply \"later.\" A real person reads every reply." },
         ],
         cta: start,
