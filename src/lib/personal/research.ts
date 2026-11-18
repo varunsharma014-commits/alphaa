@@ -11,6 +11,7 @@
 //     lead in ogData.dossier for 6 days (social: 14 days).
 // Nothing here throws: every network step degrades to "no fact".
 
+import { ownScanWhere } from "@/lib/scan-match"
 import type { Prisma } from "@prisma/client"
 import { db } from "@/lib/db"
 import { safeFetch } from "@/lib/safe-fetch"
@@ -722,7 +723,7 @@ export async function buildAccountDossier(userId: string, opts: ResearchOptions 
   })
   if (!user) return null
   const lead = await db.scanLead.findFirst({
-    where: { visibilityScore: { not: null }, OR: [{ userId: user.id }, { email: { equals: user.email, mode: "insensitive" } }] },
+    where: { visibilityScore: { not: null }, ...(await ownScanWhere(user)) },
     orderBy: { createdAt: "desc" },
     select: LEAD_SELECT,
   })

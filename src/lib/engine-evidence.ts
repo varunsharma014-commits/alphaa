@@ -15,6 +15,7 @@
 //
 // No schema changes: sandbox evidence lives in MockActivity.metadata.
 
+import { ownScanWhere } from "@/lib/scan-match"
 import { db } from "@/lib/db"
 
 export type EngineKey = "chatgpt" | "claude" | "gemini" | "perplexity"
@@ -57,7 +58,7 @@ export async function getEngineEvidence(user: {
     }),
     db.scanLead.findFirst({
       // A /start scan is linked by userId at signup and usually has no email of its own.
-      where: { OR: [{ userId: user.id }, ...(user.email ? [{ email: user.email }] : [])], visibilityScore: { not: null } },
+      where: { ...(await ownScanWhere(user)), visibilityScore: { not: null } },
       orderBy: { createdAt: "desc" },
       select: { createdAt: true, aiSearchStatus: true, engineResponses: true },
     }),

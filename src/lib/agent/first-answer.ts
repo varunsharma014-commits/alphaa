@@ -2,6 +2,7 @@
 // owner's name (or the rival named instead) highlighted. Shown once; the
 // answer is saved in agent settings the first time so it never shifts under them.
 
+import { ownScanWhere } from "@/lib/scan-match"
 import { db } from "@/lib/db"
 import { extractMentionedBusinesses } from "@/lib/scan-insights"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
@@ -25,7 +26,7 @@ async function storedAnswers(user: { id: string; email: string }): Promise<Found
   const [audit, lead, sandbox] = await Promise.all([
     db.audit.findFirst({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, include: { aiEngineResults: true } }),
     db.scanLead.findFirst({
-      where: { OR: [{ userId: user.id }, ...(user.email ? [{ email: user.email }] : [])], visibilityScore: { not: null } },
+      where: { ...(await ownScanWhere(user)), visibilityScore: { not: null } },
       orderBy: { createdAt: "desc" },
       select: { createdAt: true, engineResponses: true },
     }),

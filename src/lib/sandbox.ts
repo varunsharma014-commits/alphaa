@@ -30,8 +30,9 @@ export function suggestedQuestion(businessType?: string | null, city?: string | 
  */
 export async function accountQuestion(user: { id: string; email: string; businessType: string | null; city: string | null }): Promise<string> {
   const { db } = await import("@/lib/db")
+  const { ownScanWhere } = await import("@/lib/scan-match")
   const lead = await db.scanLead.findFirst({
-    where: { OR: [{ userId: user.id }, ...(user.email ? [{ email: user.email }] : [])] },
+    where: await ownScanWhere(user),
     orderBy: { createdAt: "desc" },
     select: { ogData: true },
   })

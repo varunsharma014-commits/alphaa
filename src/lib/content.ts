@@ -1,5 +1,6 @@
 // Everything the agent writes for a business's own website, from
 // the business's facts only — unknown facts become [bracketed] placeholders.
+import { ownScanWhere } from "@/lib/scan-match"
 import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { getAgentSettings, type Location } from "@/lib/agent/settings"
@@ -63,7 +64,7 @@ export async function writePost(user: U, topic?: string, opts: { noPlaceholders?
     // New accounts have no tracked questions yet: the question their /start scan asked comes next.
     if (!t) {
       const lead = await db.scanLead.findFirst({
-        where: { OR: [{ userId: user.id }, ...(user.email ? [{ email: user.email }] : [])] },
+        where: await ownScanWhere(user),
         orderBy: { createdAt: "desc" },
         select: { ogData: true },
       })
