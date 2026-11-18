@@ -7,6 +7,7 @@ import {
   MapPin, Star, CalendarDays, Lightbulb, Users, BarChart3, PanelLeftOpen, PanelLeftClose, X,
   FileText, Plug, ListChecks, Mic, ToggleRight, Share2, Megaphone, Bot as AgentIcon,
 } from "lucide-react"
+import { ToolsRailV2 } from "./ToolsRailV2"
 
 // The left menu: the owner's website first (posts and pages I write, and the
 // site connection), then the detail pages for owners who want to see under the
@@ -78,7 +79,12 @@ const GROUPS: { label: string; icon: typeof Bot; items: Item[] }[] = [
   },
 ]
 
-export function ToolsRail({ open, onToggle, onAsk }: { open: boolean; onToggle: (next: boolean) => void; onAsk: (topic: string, label: string) => void }) {
+export function ToolsRail({ open, onToggle, onAsk, v2 = false, setup = null }: { open: boolean; onToggle: (next: boolean) => void; onAsk: (topic: string, label: string) => void; v2?: boolean; setup?: { done: number; total: number } | null }) {
+  if (v2) return <ToolsRailV2 open={open} onToggle={onToggle} onAsk={onAsk} setup={setup} />
+  return <ToolsRailV1 open={open} onToggle={onToggle} onAsk={onAsk} />
+}
+
+function ToolsRailV1({ open, onToggle, onAsk }: { open: boolean; onToggle: (next: boolean) => void; onAsk: (topic: string, label: string) => void }) {
   const pathname = usePathname()
   const active = (href: string) => !href.includes("?") && (pathname === href || pathname.startsWith(`${href}/`))
   const narrow = () => typeof window !== "undefined" && window.innerWidth < 900

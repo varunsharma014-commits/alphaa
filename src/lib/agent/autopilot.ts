@@ -29,6 +29,19 @@ export async function autopilotMessages(user: User): Promise<Message[]> {
     { kind: "text", text: "Tell me once what I can handle on my own, and you won’t have to approve every post. You’ll still see everything I do here, and anything I change on your website can be undone." },
   ], "ap-intro"))
 
+  // One switch for all of it, behind a warning the owner accepts (components/agent/AutoApproveModal).
+  // "auto_open" never reaches the server: the page opens the warning instead.
+  const autoOn = !!s.autoApprove
+  out.push(agent([
+    { kind: "text", text: "Auto-approve and post" },
+    { kind: "text", text: autoOn
+      ? `On since ${new Date(s.autoApprove!.acceptedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}. I publish what your plan allows without asking, and show every post in “What I’ve done”. I’ll still ask before anything that spends money.`
+      : "Let me publish posts and review replies without asking. You check what went out once a week instead of approving each one. I’ll still ask before anything that spends money." },
+    { kind: "chips", items: autoOn
+      ? [{ label: "Turn off auto-approve", action: { type: "agent-op", endpoint: "autopilot", body: { op: "auto_off" } } }]
+      : [{ label: "Turn on auto-approve", primary: true, action: { type: "agent-op", endpoint: "autopilot", body: { op: "auto_open" } } }] },
+  ], "ap-auto"))
+
   out.push(agent([
     { kind: "text", text: "Blog posts and Google listing updates" },
     { kind: "text", text: pro ? "With “without asking”, I only publish posts that have every fact filled in. Anything I’m unsure of still waits for you." : "Publishing without asking comes with the Pro plan. Until then I write them and you approve each one with a tap." },

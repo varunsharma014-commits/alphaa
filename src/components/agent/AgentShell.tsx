@@ -11,6 +11,8 @@ import { AgentMemory } from "./AgentMemory"
 import { AccountMenu } from "./AccountMenu"
 import { ToolsRail } from "./ToolsRail"
 import { SiteSwitcher } from "./SiteSwitcher"
+import { AutoApproveModal, turnOffAutoApprove } from "./AutoApproveModal"
+import { AUTO_APPROVE_CHANGED, type AutoApproveChangedDetail } from "@/lib/auto-approve-text"
 
 // No menu to hunt through: one conversation with the agent, chips to ask it
 // things, and a Memory panel on the right with the score, results,
@@ -30,8 +32,15 @@ export function AgentShell({
   theme,
   trialDaysLeft,
   showUser = true,
+  v2 = false,
+  setup = null,
+  auto = { on: false, pro: false, growth: false },
   children,
 }: {
+  /** Dashboard v2 (lib/dash-v2.ts): grouped rail, setup pill and auto-approve indicator in the header. */
+  v2?: boolean
+  setup?: { done: number; total: number } | null
+  auto?: { on: boolean; pro: boolean; growth: boolean }
   rail: RailData
   theme: DashboardTheme
   trialDaysLeft: number | null
@@ -73,9 +82,18 @@ export function AgentShell({
 
   const waiting = rail.waiting.reviews + rail.waiting.posts
 
+  // "Auto-approve and post": the modal can open from any page; the header shows when it's on (v2).
+  const [autoOn, setAutoOn] = useState(auto.on)
+  useEffect(() => setAutoOn(auto.on), [auto.on])
+  useEffect(() => {
+    const on = (e: Event) => setAutoOn(!!(e as CustomEvent<AutoApproveChangedDetail>).detail?.on)
+    window.addEventListener(AUTO_APPROVE_CHANGED, on)
+    return () => window.removeEventListener(AUTO_APPROVE_CHANGED, on)
+  }, [])
+
   return (
     <div className={`ag-app ${memOpen ? "ag-app--mem" : ""}`}>
-      <ToolsRail open={toolsOpen} onToggle={toggleTools} onAsk={ask} />
+      <ToolsRail open={toolsOpen} onToggle={toggleTools} onAsk={ask} v2={v2} setup={setup} />
       {toolsOpen && <div className="ag-tools__scrim" onClick={() => toggleTools(false)} aria-hidden="true" />}
       <div className="ag-main">
         <header className="ag-head">
@@ -98,6 +116,19 @@ export function AgentShell({
             )}
           </div>
           <div className="ag-head__right">
+            {v2 && autoOn && (
+              <span className="v2-autoon">
+                <span className="ag-dot ag-dot--live" style={{ width: 6, height: 6 }} aria-hidden="true" /> Auto-approve is on ·{" "}
+                <button type="button" onClick={() => void turnOffAutoApprove()}>Turn off</button>
+              </span>
+            )}
+            {v2 && setup && (
+              <button type="button" className="v2-setup-pill" onClick={() => ask("setup", "")} title="Connect the rest so I can do more for you">
+                Finish setup
+                <span className="v2-setup-pill__bar" aria-hidden="true"><b style={{ width: `${Math.round((setup.done / setup.total) * 100)}%` }} /></span>
+                {setup.done} of {setup.total}
+              </button>
+            )}
             {trialDaysLeft !== null && trialDaysLeft <= 7 && (
               <a href="/dashboard/settings/billing" style={{ fontSize: 13 }}>
                 {trialDaysLeft === 0 ? "Trial ends today" : `${trialDaysLeft}d left in trial`} →
@@ -121,6 +152,7 @@ export function AgentShell({
       </div>
       <AgentMemory rail={rail} open={memOpen} onClose={() => toggle(false)} onAsk={ask} />
       {memOpen && <div className="ag-mem__scrim" onClick={() => toggle(false)} aria-hidden="true" />}
+      <AutoApproveModal pro={auto.pro} growth={auto.growth} />
     </div>
   )
 }

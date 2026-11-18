@@ -164,3 +164,19 @@ function libraryHint(): string {
   const where = [process.env.GOOGLE_PICKER_API_KEY && "Google Drive", process.env.NEXT_PUBLIC_DROPBOX_APP_KEY && "Dropbox"].filter(Boolean)
   return where.length ? ` You can also link your brand book, photos and videos from ${where.join(" or ")}.` : ""
 }
+
+/** Dashboard v2: "Finish setup 2 of 7" in the top bar, and the next step as the last item in today's list. */
+export type SetupProgress = { done: number; total: number; next: { key: SetupStepKey; name: string; why: string; n: number; chip: Chip | null } | null }
+export async function setupProgress(user: User): Promise<SetupProgress | null> {
+  const s = await getAgentSettings(user.id)
+  const st = s.setup ?? {}
+  if (st.dismissedAt) return null
+  const counted = (await steps(user, s)).filter((x) => !x.soon)
+  const skipped = new Set(st.skipped ?? [])
+  const next = counted.find((x) => !x.ok && !skipped.has(x.key)) ?? counted.find((x) => !x.ok)
+  return {
+    done: counted.filter((x) => x.ok).length,
+    total: counted.length,
+    next: next ? { key: next.key, name: next.name, why: next.why, n: counted.indexOf(next) + 1, chip: next.chips[0] ?? null } : null,
+  }
+}

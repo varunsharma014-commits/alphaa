@@ -39,6 +39,9 @@ import type { Platform } from "@/lib/connector/types"
 import type { AgentStatus } from "@/lib/agent/feed"
 import type { Briefing as BriefingData } from "@/lib/agent/briefing"
 import { Briefing } from "./Briefing"
+import { BriefingV2 } from "./BriefingV2"
+import { openAutoApprove } from "./AutoApproveModal"
+import { AUTO_APPROVE_CHANGED, type AutoApproveChangedDetail } from "@/lib/auto-approve-text"
 import { NeedsConnect, pickFromDrive, pickFromDropbox, preloadPicker } from "./library-pickers"
 
 type LiveResult = { engine: EngineKey; answer: string; appeared: boolean; mentioned: string[]; status: string }
@@ -80,7 +83,10 @@ export function DashboardAgent({
   briefing,
   notice,
   setup = [],
+  v2 = false,
 }: {
+  /** Dashboard v2 (lib/dash-v2.ts): focus card home, setup opens from the header pill instead of being pinned. */
+  v2?: boolean
   initial: Message[]
   businessName: string
   autorun?: Task[]
@@ -96,6 +102,8 @@ export function DashboardAgent({
   const router = useRouter()
   const [messages, setMessages] = useState<Message[]>(notice ? [...initial, notice] : initial)
   const [setupMsgs, setSetupMsgs] = useState<Message[]>(setup)
+  // v2: the setup card shows only once the owner opens it (header pill, rail, or the last item of today).
+  const [setupOpen, setSetupOpen] = useState(!v2)
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const [asking, setAsking] = useState(false)
@@ -660,10 +668,17 @@ export function DashboardAgent({
           swapIn(data.messages ?? [])
           return
         }
+        // "Auto-approve and post": the warning opens in the page first (components/agent/AutoApproveModal).
+        if (a.endpoint === "autopilot" && a.body.op === "auto_open") return openAutoApprove()
         if (a.endpoint !== "setup") push(userMsg(chip.label.replace(/^✓ /, "")))
         if (a.endpoint === "voice" && a.body.op === "learn") return runTask("voice")
-        const { ok, data } = await post<{ messages?: Message[] }>(`/api/agent/${a.endpoint}`, a.body)
+        const { ok, data } = await post<{ messages?: Message[]; needsConsent?: boolean; key?: "posts" | "reviews" | "social"; value?: string; on?: boolean }>(`/api/agent/${a.endpoint}`, a.body)
+        if (!ok && data.needsConsent) {
+          setMessages((prev) => prev.slice(0, -1)) // the owner's choice isn't saved until they accept
+          return openAutoApprove({ key: data.key, value: data.value })
+        }
         if (!ok) return fail(data.error ?? "That didn’t save. Try again.")
+        if (typeof data.on === "boolean") window.dispatchEvent(new CustomEvent<AutoApproveChangedDetail>(AUTO_APPROVE_CHANGED, { detail: { on: data.on } }))
         swapIn(data.messages ?? [])
         return
       }
@@ -682,7 +697,8 @@ export function DashboardAgent({
         return
       }
       case "setting": {
-        const { ok, data } = await post("/api/agent/settings", { [a.key]: a.value })
+        const { ok, data } = await post<{ needsConsent?: boolean }>("/api/agent/settings", { [a.key]: a.value })
+        if (!ok && data.needsConsent) return openAutoApprove({ key: "posts", value: "auto" })
         if (!ok) return fail(data.error ?? "That didn’t save. Try again.")
         push(userMsg(chip.label), agent([{ kind: "text", text: a.done }]))
         return
@@ -849,12 +865,31 @@ export function DashboardAgent({
     setBusy(false)
     if (!data?.messages) return fail("I couldn’t pull that up just now. Ask me again in a moment.")
     // The setup card has its own slot at the top.
-    if (topic === "setup") { setSetupMsgs(data.messages); document.querySelector(".ag-scroll")?.scrollTo({ top: 0, behavior: "smooth" }); return }
+    if (topic === "setup") { setSetupMsgs(data.messages); setSetupOpen(true); document.querySelector(".ag-scroll")?.scrollTo({ top: 0, behavior: "smooth" }); return }
     // Thread message ids are stable per topic; suffix them so a second pull doesn't collide.
     const n = Date.now().toString(36)
     push(...data.messages.map((m) => ({ ...m, id: `${m.id}~${n}` })))
     for (const t of data.autorun ?? []) await runTask(t)
   }
+
+  // Auto-approve turned on/off in the modal or header: redraw the "What I do without asking" thread
+  // if it's open, else just say what changed.
+  useEffect(() => {
+    const on = (e: Event) => {
+      const msgs = (e as CustomEvent<AutoApproveChangedDetail>).detail?.messages
+      if (!msgs?.length) return
+      setFollowNew(true)
+      setMessages((prev) => {
+        const open = prev.some((m) => m.id.split("~")[0] === "ap-intro")
+        if (!open) return [...prev, msgs[0]]
+        const ids = new Set(msgs.map((m) => m.id))
+        const n = Date.now().toString(36)
+        return [...prev.filter((m) => !ids.has(m.id.split("~")[0])), ...msgs.map((m) => ({ ...m, id: `${m.id}~${n}` }))]
+      })
+    }
+    window.addEventListener(AUTO_APPROVE_CHANGED, on)
+    return () => window.removeEventListener(AUTO_APPROVE_CHANGED, on)
+  }, [])
 
   // Asks from the Memory panel, and ?ask=<topic> when arriving from another page.
   useEffect(() => {
@@ -955,10 +990,12 @@ export function DashboardAgent({
   return (
     <>
       <div className="ag-scroll">
-        {setupMsgs.length > 0 && (
+        {setupOpen && setupMsgs.length > 0 && (
           <AgentFeed messages={setupMsgs} animate="stagger" busy={false} onChip={onChip} onForm={onForm} onDocEdit={() => {}} autoScroll={false} />
         )}
-        {briefing && <Briefing data={briefing} onShow={(topic, label) => void pullThread(topic, label)} />}
+        {briefing && (v2
+          ? <BriefingV2 data={briefing} onShow={(topic, label) => void pullThread(topic, label)} onChip={(c) => void onChip(c, "")} />
+          : <Briefing data={briefing} onShow={(topic, label) => void pullThread(topic, label)} />)}
         {briefing && initial.length > 0 && (
           <button type="button" className="ag-why" onClick={(e) => { const btn = e.currentTarget; setWhy(!why); if (!why) window.setTimeout(() => btn.scrollIntoView({ block: "start", behavior: "smooth" }), 50) }} aria-expanded={why}>{why ? "Hide the details" : "Show me why"}</button>
         )}

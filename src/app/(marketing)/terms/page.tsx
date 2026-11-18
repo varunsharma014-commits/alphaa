@@ -104,7 +104,9 @@ Ownership: Generated Content produced through your use of the Service is owned b
 
 No Accuracy Guarantee: AI-generated content may contain errors, inaccuracies, outdated information, or content that is not suitable for your specific business context. Alphaa does not warrant the accuracy, completeness, or fitness for purpose of any Generated Content.
 
-User Responsibility: You are solely responsible for reviewing all Generated Content before it is published, distributed, or otherwise used. Before publishing any Generated Content to your Google Business Profile or any other platform, you must verify that it accurately represents your business, complies with applicable platform policies, and does not contain false or misleading statements. Alphaa is not liable for any consequences arising from the publication of AI-generated content that you have not reviewed.
+User Responsibility: You are solely responsible for reviewing all Generated Content before it is published, distributed, or otherwise used, unless you turn on Automatic Publishing (below), in which case you review it after publication as described there. Before publishing any Generated Content to your Google Business Profile or any other platform, you must verify that it accurately represents your business, complies with applicable platform policies, and does not contain false or misleading statements. Alphaa is not liable for any consequences arising from the publication of AI-generated content that you have not reviewed, including content published automatically at your choice.
+
+Automatic Publishing: You can choose to let Alphaa publish Generated Content without your approval of each item (for example Google Business Profile posts, website posts, social media posts on accounts you connect, and replies to reviews), by turning on auto-approve and accepting the warning shown in the Service. Paid advertising is never published automatically without your approval of the budget. When automatic publishing is on: (a) you remain solely responsible for all content published on your accounts, including content Alphaa publishes for you; (b) you agree to review published content regularly, at least once a week, and to edit or remove anything inaccurate; (c) to the maximum extent permitted by law, and as further limited by Section 12, Alphaa is not liable for any loss, damage or claim arising from automatically published content; and (d) you can turn automatic publishing off at any time in the Service, which stops further automatic publishing but does not remove content already published. Alphaa keeps a record of when you turned automatic publishing on or off.
 
 No Training on Your Data: Alphaa does not use your business data or Generated Content to train AI models. Data submitted to the Anthropic API is governed by Anthropic's usage policies.`,
   },
@@ -208,7 +210,7 @@ export default function TermsPage() {
     <div className="pt-24 pb-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Terms of Service</h1>
-        <p className="text-muted text-sm mb-10">Last updated: November 15, 2026</p>
+        <p className="text-muted text-sm mb-10">Last updated: November 18, 2026</p>
 
         <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
           These Terms of Service govern your access to and use of the Alphaa platform. By creating an account or using the Service, you agree to be bound by these Terms. Please read them carefully.

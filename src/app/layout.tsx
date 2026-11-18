@@ -6,6 +6,7 @@ import { PATH_LANG_JS } from "@/lib/path-lang"
 import { Toaster } from "sonner"
 import "./globals.css"
 import "./agent.css"
+import "./agent-v2.css"
 import "./apple.css"
 
 // Apple's own type: the system font stack (SF Pro on Apple devices), defined

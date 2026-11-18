@@ -4,13 +4,17 @@ import { auth } from "@/lib/auth"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { hasPaidPlan, isComped } from "@/lib/billing"
+import { hasGrowth, hasPaidPlan, isComped } from "@/lib/billing"
 import { AgentShell } from "@/components/agent/AgentShell"
 import { getFeed } from "@/lib/agent/feed"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
 import { THEME_COOKIE, type DashboardTheme } from "@/lib/theme"
 import { ClerkProvider } from "@clerk/nextjs"
 import { clerkAppearance } from "@/lib/clerk-appearance"
+import { getAgentSettings } from "@/lib/agent/settings"
+import { dashV2Enabled } from "@/lib/dash-v2"
+import { setupProgress } from "@/lib/agent/setup"
+import { PRO_RE } from "@/lib/agent/autopilot"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { userId } = await auth()
@@ -64,6 +68,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
     waiting: { reviews: 0, posts: 0 },
     googleConnected: false,
   }
+  // Dashboard v2 (flag) + "Auto-approve and post" (everyone): what the header and rail need.
+  const settings = await getAgentSettings(user.id)
+  const v2 = dashV2Enabled(user, settings)
+  const setup = v2 ? await setupProgress(user).catch(() => null) : null
+  const auto = { on: !!settings.autoApprove, pro: PRO_RE.test(user.plan), growth: hasGrowth(user) }
   const trialDaysLeft =
     user.subscriptionStatus === "trialing" && user.trialEndsAt
       ? Math.max(0, Math.ceil((new Date(user.trialEndsAt).getTime() - Date.now()) / 86400000))
@@ -78,7 +87,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             GA4 gets a real `purchase` (no trial since Oct 2026). Meta keeps StartTrial so any ad set
             already optimizing on it doesn't lose its signal. */}
         <ConversionTracker event="purchase" metaEvent="StartTrial" whenQueryParam="upgraded" params={{ value: 99, currency: "USD" }} />
-        <AgentShell rail={rail} theme={theme} trialDaysLeft={trialDaysLeft}>
+        <AgentShell rail={rail} theme={theme} trialDaysLeft={trialDaysLeft} v2={v2} setup={setup && setup.total > 0 && setup.done < setup.total ? { done: setup.done, total: setup.total } : null} auto={auto}>
           {children}
         </AgentShell>
       </div>

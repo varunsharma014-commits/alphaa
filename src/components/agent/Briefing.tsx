@@ -5,6 +5,8 @@ import { useUser } from "@clerk/nextjs"
 import type { Briefing as BriefingData, InboxItem, LedgerItem } from "@/lib/agent/briefing"
 import { BriefingHero } from "./BriefingHero"
 import { FirstAnswer } from "./FirstAnswer"
+import { openAutoApprove } from "./AutoApproveModal"
+import { AUTO_APPROVE_CHANGED, type AutoApproveChangedDetail } from "@/lib/auto-approve-text"
 
 // The morning briefing: am I winning, what's waiting for me, what did you do.
 // Built for a time-poor owner on a phone: read it top to bottom in seconds,
@@ -56,6 +58,14 @@ export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic:
   useEffect(() => {
     setHello(greeting(name))
   }, [name])
+
+  // "Auto-approve and post from now on" under the approval card, until it's on.
+  const [autoOn, setAutoOn] = useState(!!data.autoApprove)
+  useEffect(() => {
+    const on = (e: Event) => setAutoOn(!!(e as CustomEvent<AutoApproveChangedDetail>).detail?.on)
+    window.addEventListener(AUTO_APPROVE_CHANGED, on)
+    return () => window.removeEventListener(AUTO_APPROVE_CHANGED, on)
+  }, [])
 
   // "I'm on ChatGPT": a public, verified card the owner can post or text.
   async function share(engine: string) {
@@ -143,6 +153,9 @@ export function Briefing({ data, onShow }: { data: BriefingData; onShow: (topic:
               {inbox.length === 1 ? "I have one thing waiting for your OK:" : `I have ${inbox.length} things waiting for your OK:`}
             </p>
             <InboxCard key={`${inbox[0].kind}-${inbox[0].id}`} item={inbox[0]} position={inbox.length > 1 ? `1 of ${inbox.length}` : null} onDone={finished} onShow={onShow} />
+            {!autoOn && (inbox[0].kind === "review" || inbox[0].kind === "gbp" || inbox[0].kind === "post") && (
+              <button type="button" className="v2-autolink" onClick={() => openAutoApprove()}>Auto-approve and post from now on</button>
+            )}
           </>
         )}
       </section>

@@ -7,11 +7,15 @@ import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { hasGrowth } from "@/lib/billing"
 import { autopilotMessages, PRO_RE } from "@/lib/agent/autopilot"
 import { agent } from "@/lib/agent/types"
+import { acceptAutoApprove, needsConsent, revokeAutoApprove } from "@/lib/agent/auto-approve"
 
 // "What I do without asking": one-tap standing approvals. Answers with the thread's messages.
 const body = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set"), key: z.enum(["posts", "reviews", "social", "email", "ads"]), value: z.string().max(20) }),
   z.object({ op: z.literal("budget"), amount: z.string().max(20) }),
+  // "Auto-approve and post": accepted in the warning modal (accept must be true), or turned off.
+  z.object({ op: z.literal("auto_on"), accept: z.literal(true), key: z.enum(["posts", "reviews", "social"]).optional(), value: z.string().max(20).optional() }),
+  z.object({ op: z.literal("auto_off") }),
 ])
 
 const VALUES: Record<string, string[]> = {
@@ -55,6 +59,16 @@ export async function POST(req: Request) {
   const now = new Date().toISOString()
   let said: string
 
+  if (input.op === "auto_on") {
+    if (input.key && input.key !== "reviews" && !(input.key === "posts" ? PRO_RE.test(user.plan) : hasGrowth(user))) return NextResponse.json({ error: input.key === "posts" ? "Publishing without asking comes with the Pro plan." : "That comes with the Growth plan." }, { status: 403 })
+    said = (await acceptAutoApprove(user, req, input.key, input.value)).said
+    return NextResponse.json({ on: true, messages: [agent([{ kind: "text", text: said }]), ...(await autopilotMessages(user))] })
+  }
+  if (input.op === "auto_off") {
+    said = (await revokeAutoApprove(user, req)).said
+    return NextResponse.json({ on: false, messages: [agent([{ kind: "text", text: said }]), ...(await autopilotMessages(user))] })
+  }
+
   if (input.op === "budget") {
     if (!hasGrowth(user)) return NextResponse.json({ error: "Ads come with the Growth plan." }, { status: 403 })
     const amount = Math.round(Number(input.amount.replace(/[^\d.]/g, "")))
@@ -64,6 +78,9 @@ export async function POST(req: Request) {
   } else {
     const { key, value } = input
     if (!VALUES[key].includes(value)) return NextResponse.json({ error: "That one isn’t an option." }, { status: 400 })
+    // Publishing without asking needs the accepted warning first (the page opens it).
+    const only = needsConsent(key, value)
+    if (only && !s.autoApprove) return NextResponse.json({ needsConsent: true, key: only, value, error: "Accept the auto-approve terms first." }, { status: 409 })
     if (key === "posts") {
       if (value === "auto" && !PRO_RE.test(user.plan)) return NextResponse.json({ error: "Publishing without asking comes with the Pro plan." }, { status: 403 })
       await saveAgentSettings(user.id, { autoPublishPosts: value === "auto" })

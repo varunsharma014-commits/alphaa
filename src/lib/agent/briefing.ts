@@ -14,6 +14,9 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { hasPaidPlan } from "@/lib/billing"
 import { REVIEW_DRAFT } from "@/lib/approvals"
 import { imageUrl } from "@/lib/images"
+import { listAccounts, listPosts } from "@/lib/social/store"
+import { PLATFORM_NAME } from "@/lib/social/types"
+import { setupProgress } from "@/lib/agent/setup"
 
 export const ENGINE_ORDER: EngineKey[] = ["chatgpt", "gemini", "claude", "perplexity"]
 export const ENGINE_NAME: Record<EngineKey, string> = { chatgpt: "ChatGPT", gemini: "Gemini", claude: "Claude", perplexity: "Perplexity" }
@@ -21,11 +24,14 @@ export const ENGINE_NAME: Record<EngineKey, string> = { chatgpt: "ChatGPT", gemi
 export type Light = "yes" | "no" | "unknown"
 
 export type InboxItem =
-  | { kind: "review"; id: string; title: string; quote: string | null; text: string | null }
+  | { kind: "review"; id: string; title: string; quote: string | null; text: string | null; author?: string; rating?: number }
   | { kind: "gbp"; id: string; title: string; text: string }
   | { kind: "post"; id: string; title: string; text: string; image: string | null }
   | { kind: "fix"; id: string; title: string; text: string; topic: string; cta?: string }
   | { kind: "connect"; id: string; title: string; text: string; href: string; cta: string }
+  // Dashboard v2 only (buildBriefing opts.v2): this week's social drafts as one item, and the next setup step.
+  | { kind: "social"; id: string; title: string; text: string; topic: "social"; cta?: string; posts: { id: string; image: string | null; when: string | null; where: string[]; text: string }[] }
+  | { kind: "setup"; id: string; title: string; text: string; topic: "setup"; cta?: string; step: number; total: number; chip: import("@/lib/agent/types").Chip | null }
 
 export type LedgerItem = { text: string; href: string | null; at: string }
 
@@ -43,6 +49,8 @@ export type Briefing = {
   nextUp: { text: string; at: string }
   /** Firsts worth remembering, oldest first. */
   milestones: { text: string; at: string }[]
+  /** "Auto-approve and post" is on (lib/agent/auto-approve.ts). */
+  autoApprove?: boolean
 }
 
 /** Next time a scheduler slot fires (UTC): `dows` = days of week (0 = Sun), or every day. */
@@ -126,7 +134,7 @@ export function nextCheck(now = new Date()): string {
 
 const short = (s: string, n: number) => (s.length > n ? `${s.slice(0, n).trimEnd()}…` : s)
 
-export async function buildBriefing(userId: string, opts: { ledgerDays?: number } = {}): Promise<Briefing | null> {
+export async function buildBriefing(userId: string, opts: { ledgerDays?: number; /** Dashboard v2: add social drafts + the next setup step to the inbox. */ v2?: boolean } = {}): Promise<Briefing | null> {
   const user = await db.user.findUnique({
     where: { id: userId },
     include: {
@@ -176,6 +184,8 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
       inbox.push({
         kind: "review",
         id: r.id,
+        author: r.authorName,
+        rating: r.rating,
         title: `${r.authorName} left you a ${r.rating}-star review. Here’s my reply:`,
         quote: r.comment ? short(r.comment, 280) : null,
         text: (draft?.metadata as { text?: string } | null)?.text ?? null,
@@ -195,6 +205,37 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
   // Once: show the owner how I'll sound, learned from their own words, with options to change it.
   if (hasPaidPlan(user) && !settings.voice?.pickedAt) inbox.push({ kind: "fix", id: "voice", title: "Everything I post will sound like you", text: "I read your website and the replies you’ve written to customers, and found your logo and colours. Your customers won’t be able to tell it wasn’t you. Want to fine-tune it?", topic: "voice", cta: "See how I’ll sound" })
   if (!user.integration) inbox.push({ kind: "connect", id: "google", title: "Connect your Google listing", text: "Then I can reply to your reviews and post updates to Google for you. It takes about a minute.", href: "/api/integrations/google/connect?go=1", cta: "Connect Google" })
+
+  if (opts.v2) {
+    // This week's social drafts, approved together. Newest first in the queue; shown in posting order.
+    const [posts, accounts, setup] = await Promise.all([
+      listPosts(userId, 20).catch(() => []),
+      listAccounts(userId).catch(() => []),
+      setupProgress(user).catch(() => null),
+    ])
+    const drafts = posts.filter((p) => p.status === "draft").sort((a, b) => Date.parse(a.scheduledFor ?? "") - Date.parse(b.scheduledFor ?? ""))
+    if (drafts.length) {
+      const byId = new Map(accounts.map((a) => [a.id, a]))
+      inbox.unshift({
+        kind: "social",
+        id: drafts.map((p) => p.id).join(","),
+        title: drafts.length === 1 ? "Approve this week’s post" : `Approve this week’s ${drafts.length} posts`,
+        text: drafts.length === 1 ? "I wrote it in your voice. It goes out on the day below." : "I wrote them in your voice. They go out on the days below.",
+        topic: "social",
+        posts: drafts.map((p) => ({
+          id: p.id,
+          image: p.imageId ? imageUrl(p.imageId) : null,
+          when: p.scheduledFor ?? null,
+          where: Array.from(new Set(p.accountIds.map((id) => byId.get(id)).filter((a): a is NonNullable<typeof a> => !!a).map((a) => PLATFORM_NAME[a.platform]))),
+          text: short(p.text, 160),
+        })),
+      })
+    }
+    // The next setup step goes last (not if the same ask is already in the list).
+    const n = setup?.next
+    const dup = n && ((n.key === "google" && inbox.some((i) => i.kind === "connect" && i.id === "google")) || (n.key === "voice" && inbox.some((i) => i.id === "voice")))
+    if (setup && n && !dup) inbox.push({ kind: "setup", id: n.key, title: n.name, text: n.why, topic: "setup", step: n.n, total: setup.total, chip: n.chip })
+  }
 
   // ── 3. Are you actually working? ──────────────────────────────────────────
   const seen = new Set<string>()
@@ -237,5 +278,5 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number 
     milestones.push({ text: `${ENGINE_NAME[e as EngineKey] ?? e} recommended you for the first time`, at: f.createdAt.toISOString() })
   }
 
-  return { nextUp: { text: soonest.text, at: soonest.at.toISOString() }, milestones, firstName: user.fullName?.trim().split(/\s+/)[0] || null, lights, headline: headlineFor(lights), asOf, rivalLine, planLine, inbox, ledger, nextCheck: nextCheck() }
+  return { autoApprove: !!settings.autoApprove, nextUp: { text: soonest.text, at: soonest.at.toISOString() }, milestones, firstName: user.fullName?.trim().split(/\s+/)[0] || null, lights, headline: headlineFor(lights), asOf, rivalLine, planLine, inbox, ledger, nextCheck: nextCheck() }
 }

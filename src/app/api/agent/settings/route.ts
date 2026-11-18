@@ -46,6 +46,8 @@ export async function POST(req: Request) {
   const now = new Date().toISOString()
   if (input.autoPublishPosts !== undefined) {
     if (input.autoPublishPosts && !/pro|full|growth/i.test(user.plan)) return NextResponse.json({ error: "Auto-publish comes with the Pro plan.", upgrade: true }, { status: 403 })
+    // Publishing without asking needs the accepted auto-approve warning first (the page opens it).
+    if (input.autoPublishPosts && !(await getAgentSettings(user.id)).autoApprove) return NextResponse.json({ needsConsent: true, key: "posts", value: "auto", error: "Accept the auto-approve terms first." }, { status: 409 })
     await saveAgentSettings(user.id, { autoPublishPosts: input.autoPublishPosts })
   }
   if (input.customerValue !== undefined) {
