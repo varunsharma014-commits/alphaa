@@ -40,3 +40,4 @@ next-env.d.ts
 # Never commit .env — the rule above only covers .env*.local, and this repo is public.
 .env
 .claude/worktrees/
+recordings/
