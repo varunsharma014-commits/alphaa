@@ -151,3 +151,9 @@ No new keys. The GA4 realtime check needs the `analytics.readonly` scope (founde
 - Login configuration "Alphaa connect (business)", ID 1474632747934670: system-user token, never expires; assets Pages, ad accounts, pixels, Instagram (none required); 14 permissions: ads_management, ads_read, business_management, leads_retrieval, pages_manage_ads, pages_manage_engagement, pages_manage_posts, pages_read_engagement, pages_read_user_content, pages_show_list, instagram_basic, instagram_content_publish, instagram_manage_comments, instagram_manage_insights.
 - Railway: META_APP_ID, META_LOGIN_CONFIG_ID (set by Claude), META_APP_SECRET (Varun pastes from App settings → Basic).
 - Still to do: app icon (1024x1024), App Review per permission with screencasts, then switch the app to Live. A user-token config (unused) "Alphaa posting and ads" may exist and can be deleted.
+
+## Google Ads API: access granted 2026-11-18
+- Google dropped developer tokens: API access is now per Cloud project (Cloud Console → Google Ads API → Access levels).
+- Project alphaa-497512: Google Ads API enabled; Explorer, then **Basic** granted the same minute (15,000 production ops/day, full API incl. campaign management). Standard (unlimited) = separate application, ~10-15 business days.
+- Manager account JGJ (664-083-6362, varunsharma014@gmail.com) exists; its old API Center token (test level, company 9629033 Canada Inc / growthturbine.com) is no longer needed.
+- Still to do when building: add scope https://www.googleapis.com/auth/adwords to the OAuth consent screen (sensitive scope → Google verification of the consent screen).
