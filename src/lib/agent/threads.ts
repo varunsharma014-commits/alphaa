@@ -19,6 +19,8 @@ import { autopilotMessages } from "@/lib/agent/autopilot"
 import { workMessages } from "@/lib/agent/worklog"
 import { socialThreadFor } from "@/lib/social/thread"
 import { channelsMessages } from "@/lib/agent/channels"
+import { adsMessages } from "@/lib/gads/thread"
+import { metaAdsMessages } from "@/lib/metaads/narration"
 import { setupMessages } from "@/lib/agent/setup"
 import { imagesMessages } from "@/lib/agent/images-panel"
 import { hasGrowth } from "@/lib/billing"
@@ -29,7 +31,7 @@ import { saveAgentSettings } from "@/lib/agent/settings"
 import { nicheMessages } from "@/lib/agent/niche-narration"
 import { nicheView } from "@/lib/niche-posts"
 
-export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights" | "social" | "channels" | "setup" | "niche"
+export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights" | "social" | "channels" | "setup" | "niche" | "ads"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "setup", label: "Finish setting up", blurb: "The few things I need from you, one at a time" },
   { key: "channels", label: "Your marketing channels", blurb: "Everything I work on, what’s connected and what to connect next" },
@@ -47,6 +49,7 @@ export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "competitors", label: "Competitors", blurb: "What they have that you don’t — and drafts to close it" },
   { key: "briefings", label: "Weekly Briefings", blurb: "What I did each week, in plain English" },
   { key: "tracking", label: "Tracking & Ads", blurb: "Google Analytics, the Meta Pixel and the leads your website sends (Growth)" },
+  { key: "ads", label: "Ads", blurb: "Your Google, Facebook and Instagram ads: the campaigns I built, what they cost, the leads they brought and what I tuned (Growth)" },
 ]
 export const isTopic = (t: string): t is Topic => TOPICS.some((x) => x.key === t)
 
@@ -216,6 +219,9 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
 
     case "social":
       return { autorun: [], messages: await socialThreadFor(user) }
+
+    case "ads":
+      return { autorun: [], messages: [...(await adsMessages(user)), ...(await metaAdsMessages(user))] }
 
     case "autopilot":
       return { autorun: [], messages: await autopilotMessages(user) }

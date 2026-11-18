@@ -9,6 +9,10 @@ import { PLATFORM_NAME } from "@/lib/social/types"
 import { canvaConfigured } from "@/lib/canva/client"
 import { getCanvaAccount } from "@/lib/canva/store"
 import { connectCanvaChip } from "@/lib/canva/narration"
+import { gadsAvailable } from "@/lib/gads/oauth"
+import { getGadsAccount } from "@/lib/gads/store"
+import { connectAdsChip } from "@/lib/gads/thread"
+import { metaAdsChannel } from "@/lib/metaads/channel"
 import type { User } from "@prisma/client"
 
 type Row = { name: string; detail: string; status: string; ok: boolean }
@@ -59,7 +63,25 @@ export async function channelsMessages(user: User): Promise<Message[]> {
   rows.push({ name: "Lead tracking", detail: t?.on ? [t.ga4 && "Google Analytics", t.pixel && "Meta Pixel"].filter(Boolean).join(" and ") + " counting calls, emails and forms" : "Counts the calls, emails and forms your marketing brings", status: t?.on ? "On" : growth ? "Not set up" : "Growth plan", ok: !!t?.on })
   if (growth && !t?.on) chips.push({ label: "Set up tracking", action: { type: "thread", topic: "tracking" } })
 
-  rows.push({ name: "Google Ads and Meta Ads", detail: "Campaigns built and tuned every week, inside your budget", status: growth ? "Opens soon" : "Growth plan", ok: false })
+  // Google Ads (lib/gads): real status once it's open to this brand (GOOGLE_ADS_ENABLED=1 or a founder).
+  const gads = growth && gadsAvailable(user) ? await getGadsAccount(user.id) : null
+  if (growth && gadsAvailable(user)) {
+    const live = gads?.status === "active"
+    const c = gads?.campaign
+    rows.push({
+      name: "Google Ads",
+      detail: live && gads?.customerName ? `${gads.customerName}${c ? `: “${c.name}”` : ""}` : "Campaigns built and tuned every week, inside your budget",
+      status: !gads ? "Not connected" : !live ? "Reconnect needed" : !gads.customerId ? "Pick your ad account" : c?.status === "ENABLED" ? "Running" : c ? "Ready, paused" : "Connected",
+      ok: live && !!gads?.customerId,
+    })
+    chips.push(!gads || !live ? connectAdsChip(gads ? "Reconnect Google Ads" : "Connect Google Ads") : { label: c ? "See my ads" : "Plan my Google Ads", action: { type: "thread", topic: "ads" } })
+  } else {
+    rows.push({ name: "Google Ads", detail: "Campaigns built and tuned every week, inside your budget", status: growth ? "Opens soon" : "Growth plan", ok: false })
+  }
+  // Meta Ads (lib/metaads): Facebook + Instagram campaigns on the same Meta login as posting.
+  const meta = await metaAdsChannel(user, accounts)
+  rows.push(meta.row)
+  if (meta.chip && !chips.some((c) => c.label === meta.chip!.label)) chips.push(meta.chip)
   rows.push({ name: "Email marketing", detail: "Emails that bring past customers back", status: growth ? "Opens soon" : "Growth plan", ok: false })
 
   const connected = rows.filter((r) => r.ok).length

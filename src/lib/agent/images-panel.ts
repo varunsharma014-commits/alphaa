@@ -8,6 +8,8 @@ import { listPhotos, MAX_PHOTOS, type BrandPhoto } from "@/lib/brand-photos"
 import { canvaConfigured } from "@/lib/canva/client"
 import { getCanvaAccount } from "@/lib/canva/store"
 import { canvaMessages } from "@/lib/canva/narration"
+import { listAssets } from "@/lib/library/store"
+import { libraryMessages } from "@/lib/library/narration"
 
 /** Owner-only (signed-in) view of a library photo. */
 const photoUrl = (id: string) => `/api/agent/photos/${id}`
@@ -26,11 +28,12 @@ export function addPhotosChip(label = "Add my photos"): Chip {
 const NAME: Record<ImageStyle, string> = { card: "Text card", photo: "My photos", ai: "AI-made picture", canva: "My Canva template" }
 
 export async function imagesMessages(userId: string, opts: { growth?: boolean } = {}): Promise<Message[]> {
-  const [s, photos, canva] = await Promise.all([imageSettings(userId), listPhotos(userId), canvaConfigured() ? getCanvaAccount(userId) : Promise.resolve(null)])
+  const [s, photos, canva, lib] = await Promise.all([imageSettings(userId), listPhotos(userId), canvaConfigured() ? getCanvaAccount(userId) : Promise.resolve(null), listAssets(userId).catch(() => [])])
+  const libPhotos = lib.filter((a) => a.kind === "photo" && a.status === "ok").length
   const style = s.style
   const canvaReady = !!(canva && s.canvaTemplate)
   // Samples: the card always; a photo one when there are photos; AI and Canva once made.
-  const [card, photo] = await Promise.all([styleSample(userId, "card"), photos.length ? styleSample(userId, "photo").catch(() => null) : Promise.resolve(null)])
+  const [card, photo] = await Promise.all([styleSample(userId, "card"), photos.length || libPhotos ? styleSample(userId, "photo").catch(() => null) : Promise.resolve(null)])
   const ai = s.samples?.ai ?? null
   const canvaSample = canvaReady ? s.samples?.canva ?? null : null
   const tall = (s.size ?? "square") === "portrait"
@@ -41,7 +44,7 @@ export async function imagesMessages(userId: string, opts: { growth?: boolean } 
   ]
   const sample = (st: ImageStyle, id: string | null, meta: string, text: string) => blocks.push({ kind: "doc", title: NAME[st], meta: style === st ? `using this · ${meta}` : meta, text, ...(id ? { image: imageUrl(id), square: st === "card" || !tall } : {}) })
   sample("card", card, "your colour and logo", "Clean and quick to read. Always works.")
-  sample("photo", photo, photos.length ? `${photos.length} of your photos` : "no photos yet", photos.length ? "Your real work, your real place. People stop for real photos." : "Add a few photos, or connect your Google listing, and I’ll use them.")
+  sample("photo", photo, photos.length + libPhotos ? `${photos.length + libPhotos} of your photos` : "no photos yet", photos.length + libPhotos ? "Your real work, your real place. People stop for real photos." : "Add a few photos, or connect your Google listing, and I’ll use them.")
   if (aiImagesAvailable()) sample("ai", ai, "AI-made picture", "A picture made by AI for each topic. It never shows people, faces, text or logos. Use it when you don’t have photos.")
   if (canvaReady) sample("canva", canvaSample, s.canvaTemplate!.title, "Your own Canva brand template, filled with each post’s headline.")
 
@@ -56,6 +59,7 @@ export async function imagesMessages(userId: string, opts: { growth?: boolean } 
   if (aiImagesAvailable() && !ai) blocks.push({ kind: "chips", items: [op({ op: "img-sample", value: "ai" }, "Show me an AI-made sample")] })
   const out: Message[] = [agent(blocks, "vc-images")]
   out.push(photosMessage(photos))
+  out.push(...(await libraryMessages(userId).catch((err) => { console.error("[images] library", err instanceof Error ? err.message : err); return [] as Message[] })))
   if (canvaConfigured()) {
     if (s.canvaNote) await saveImageSettings(userId, { canvaNote: null })
     out.push(...canvaMessages(canva, { growth: opts.growth ?? true, templates: !!canva?.templates, template: s.canvaTemplate?.title ?? null, note: s.canvaNote ?? null }))

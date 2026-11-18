@@ -157,3 +157,22 @@ No new keys. The GA4 realtime check needs the `analytics.readonly` scope (founde
 - Project alphaa-497512: Google Ads API enabled; Explorer, then **Basic** granted the same minute (15,000 production ops/day, full API incl. campaign management). Standard (unlimited) = separate application, ~10-15 business days.
 - Manager account JGJ (664-083-6362, varunsharma014@gmail.com) exists; its old API Center token (test level, company 9629033 Canada Inc / growthturbine.com) is no longer needed.
 - Still to do when building: add scope https://www.googleapis.com/auth/adwords to the OAuth consent screen (sensitive scope → Google verification of the consent screen).
+
+## Brand library: Google Drive + Dropbox (built 2026-11-18)
+Owners link a brand book (PDF), photos and videos from Google Drive or Dropbox ("Your brand & voice" → "Your brand library"). We store links, a ≤400px preview, tags and a one-line description, never the files. Both buttons stay hidden until their keys exist.
+
+**Google Drive (Google Picker + `drive.file`)**
+1. Cloud Console, in the project that owns `GOOGLE_CLIENT_ID` (its project number must be `GOOGLE_CLOUD_PROJECT_NUMBER`, default 501685903093, or picked files won't be readable): APIs & Services → Library → enable **Google Picker API** and **Google Drive API**.
+2. Credentials → Create credentials → API key. Restrict it: Application restrictions = Websites, add `https://alphaa.app/*` and `https://docs.google.com/*` (without the second one, Google's docs say the Picker shows "API developer key is invalid"; add `http://localhost:3000/*` for local testing). API restrictions = Google Picker API only. Put it on Railway as `GOOGLE_PICKER_API_KEY` (it's a browser key, sent to the owner's browser).
+3. OAuth consent screen → Data access: add `https://www.googleapis.com/auth/drive.file` (non-sensitive, so no verification or security review).
+4. OAuth client (the existing web client) → Authorized redirect URIs: add `https://alphaa.app/api/library/drive/callback` (and `http://localhost:3000/api/library/drive/callback` for dev).
+5. Optional: `GOOGLE_CLOUD_PROJECT_NUMBER` (the Picker's appId). The default is 501685903093.
+This is a separate Google grant from Search Console / Business Profile (drive.file only, `include_granted_scopes=false`). The refresh token is stored encrypted (MockActivity `drive_account`).
+
+**Dropbox (Chooser)**
+1. dropbox.com/developers/apps → Create app → Scoped access → App folder or Full Dropbox (the Chooser works with either and asks for no scopes). Name it "Alphaa".
+2. Settings → **Chooser / Saver / Embedder domains**: add `alphaa.app` (and `localhost` for dev).
+3. Copy the App key to Railway as `NEXT_PUBLIC_DROPBOX_APP_KEY`. No secret is needed: the Chooser gives us shared preview links, and we read them with `dl=1` only when we need the file.
+4. While the app is in development status, Dropbox may limit how many users can link it; apply for production status in the App Console when needed.
+
+**Videos on Facebook / Instagram**: Meta pulls the video from `/api/asset/<id>?e=&s=` (HMAC-signed, 3 hours, streams from Drive/Dropbox with Range support, nothing stored). Instagram posts it as a Reel. TikTok's `PULL_FROM_URL` needs our domain verified in the TikTok developer portal (URL prefix `https://alphaa.app/api/asset/`), so TikTok isn't wired for videos yet.

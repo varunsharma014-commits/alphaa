@@ -99,7 +99,7 @@ export async function postImageFor(userId: string, input: For): Promise<PostImag
     }
     if (s.style === "photo") {
       await refreshPhotos(userId).catch(() => null)
-      const p = await nextPhoto(userId)
+      const p = await nextPhoto(userId, input.topic)
       const img = p ? await renderPhotoCard({ photo: p.bytes, headline, businessName: user?.businessName ?? null, brand, size }) : null
       if (img) return { ...(await storePostImage(userId, img, headline, "photo_card")), kind: "photo" }
     }
@@ -128,7 +128,8 @@ export async function styleSample(userId: string, style: ImageStyle, opts: { for
   let id: string | null = null
   if (style === "photo") {
     const first = (await listPhotos(userId))[0]
-    const bytes = first ? await photoBytes(userId, first.id) : null
+    // No stored photos: a brand library one (Drive / Dropbox), without counting it as used.
+    const bytes = first ? await photoBytes(userId, first.id) : (await import("@/lib/library/pick").then((m) => m.nextLibraryPhoto(userId, "", { peek: true })).catch(() => null))?.bytes ?? null
     const img = bytes ? await renderPhotoCard({ photo: bytes, headline: SAMPLE_HEADLINE, businessName: user?.businessName ?? null, brand, size }) : null
     if (img) id = (await storePostImage(userId, img, SAMPLE_HEADLINE, "photo_card")).id
   } else if (style === "ai") {

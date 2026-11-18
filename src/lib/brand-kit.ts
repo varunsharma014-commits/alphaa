@@ -131,7 +131,7 @@ export async function ensureBrandKit(userId: string, opts: { force?: boolean } =
   return kit
 }
 
-export async function saveBrand(userId: string, patch: Partial<Pick<BrandKit, "logo" | "primary">>): Promise<BrandKit> {
+export async function saveBrand(userId: string, patch: Partial<Pick<BrandKit, "logo" | "primary" | "colors" | "font">>): Promise<BrandKit> {
   const s = await getAgentSettings(userId)
   const user = await db.user.findUnique({ where: { id: userId }, select: { businessName: true } })
   const kit: BrandKit = { logo: null, colors: [], primary: null, font: null, ...(s.brand ?? {}), ...patch, source: "owner", at: new Date().toISOString() }

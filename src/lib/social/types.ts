@@ -50,14 +50,16 @@ export type SocialPost = {
   results?: PostResult[]
   source?: "week" | "manual" | "autopilot"
   title?: string | null
+  /** A brand library video (lib/library): Facebook posts it as a video, Instagram as a Reel. Other platforms use the image. */
+  videoAssetId?: string | null
 }
 
 /** What every provider implements. */
-export type PublishInput = { text: string; imageUrl: string | null; imageBytes: Buffer | null; title?: string | null }
+export type PublishInput = { text: string; imageUrl: string | null; imageBytes: Buffer | null; title?: string | null; /** Signed, short-lived URL of a brand library video (Meta pulls it). */ videoUrl?: string | null }
 export type Provider = {
   authUrl(o: { state: string; redirectUri: string; challenge?: string }): string
   /** Exchange the code and return every account this login can post to. */
-  connect(o: { code: string; redirectUri: string; verifier?: string }): Promise<Omit<SocialAccount, "id" | "connectedAt" | "status">[]>
+  connect(o: { code: string; redirectUri: string; verifier?: string; /** the brand connecting (Meta also saves ads access for it) */ userId?: string }): Promise<Omit<SocialAccount, "id" | "connectedAt" | "status">[]>
   publish(account: SocialAccount, post: PublishInput, save: (patch: Partial<SocialAccount>) => Promise<void>): Promise<{ url: string | null; externalId: string | null }>
   usesPkce?: boolean
 }

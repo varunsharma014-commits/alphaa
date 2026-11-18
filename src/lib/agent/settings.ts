@@ -42,6 +42,8 @@ export type AgentSettings = {
   images?: import("@/lib/post-images").ImageSettings
   /** Guided first-run setup (lib/agent/setup.ts). */
   setup?: import("@/lib/agent/setup").SetupState
+  /** Brand library (Drive / Dropbox links): the video picked for the next post, a one-time note (lib/library). */
+  library?: import("@/lib/library/types").LibrarySettings
 }
 
 export type Autopilot = {

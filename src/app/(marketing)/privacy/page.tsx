@@ -191,11 +191,17 @@ Disconnecting: in Settings → Website connection, click Disconnect. We delete t
 
 What we store: the IDs, names, handles and profile pictures of the Pages and accounts you choose to connect, an access token for each, the posts and ads Alphaa created for you, and their results. We do not read your personal profile, friends, private messages or personal photos, and we do not sell or share this data.
 
+Lead ads: if you run a Facebook or Instagram lead form campaign through Alphaa, we read the leads it collects for you and store only the name, email address and phone number the form asked for, encrypted, so you can see and contact them in your dashboard. We act for you as your processor for these leads: we do not use them for anything else, never add them to our own marketing, and delete them when you ask (email privacy@alphaa.app) or when you close your account.
+
 Facebook and Instagram: Alphaa connects through Facebook Login for Business. You choose which Pages, Instagram business accounts, ad accounts and pixels to share, and you can change that choice at any time.
 
 How tokens are stored: access tokens are encrypted with AES-256-GCM before they are saved, are only decrypted on our servers when Alphaa acts for you, and are never shown in the dashboard or sent to your browser.
 
 Deleting your data: in the dashboard, open "Social accounts & posts" and choose Disconnect for any account; we delete its stored token and connection at once. You can also remove Alphaa from Facebook (Settings → Business Integrations) or from the other platform's connected apps page. To have all data Alphaa received from Facebook, Instagram, LinkedIn or TikTok deleted, email privacy@alphaa.app from your account email; we delete it within 30 days and confirm by email. Posts already published stay on your accounts until you remove them.`,
+  },
+  {
+    title: "6b. Google Drive and Dropbox (your brand library)",
+    body: `If you add files to your brand library from Google Drive or Dropbox, Alphaa can open only the files you pick in Google's or Dropbox's own file picker (for Google Drive we ask for the drive.file permission, which covers only those files). We store a link to each file, a small preview picture and the tags and short description we write for it, never a copy of the file: when a post uses one of your photos or videos, or when we read your brand book, we fetch the file at that moment and discard it once the work is done. Your Google Drive key is encrypted with AES-256-GCM. Google Drive data is used only to make your own marketing and is never used to train AI models or shown to anyone else. Remove a file from your library at any time; remove Alphaa's access in your Google Account (Security → Third-party apps with account access, myaccount.google.com/permissions) or in Dropbox (turn off the shared link for the file, or Settings → Connected apps), or choose "Disconnect Google Drive" in the dashboard. Our use of information received from Google APIs follows the Google API Services User Data Policy, including the Limited Use requirements.`,
   },
   {
     title: "7. Cookies and Tracking",

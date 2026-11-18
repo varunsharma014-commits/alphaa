@@ -80,5 +80,11 @@ export function startCron(): void {
     if (hour === 17) hit("/api/cron/convert")
     // 1st of the month 18:00 UTC — "Your month with Alphaa" recap email (Resend + GA)
     if (now.getUTCDate() === 1 && hour === 18) hit("/api/cron/monthly-recap")
+    // Mon 12:00 UTC — Google Ads weekly tune-up for Growth brands with a campaign (Google Ads API only)
+    if (dow === 1 && hour === 12) hit("/api/cron/ads-tune")
+    // Hourly — new leads from Facebook & Instagram lead forms (Meta API only, lib/metaads)
+    hit("/api/cron/meta-ads?job=leads")
+    // Mon 11:00 UTC — Facebook & Instagram weekly tune-up (Meta API only)
+    if (dow === 1 && hour === 11) hit("/api/cron/meta-ads?job=tune")
   }, 60_000)
 }

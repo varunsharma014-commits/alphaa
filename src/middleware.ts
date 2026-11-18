@@ -41,6 +41,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/connect/wp/hello",
   "/api/connect/visit",
   "/api/img/(.*)",
+  "/api/asset/(.*)", // brand library videos for Meta to pull: HMAC-signed, short expiry (lib/library/open.ts)
   "/api/connect/shopify/callback",
   "/api/connect/webflow/callback",
   // start/finish check the session themselves and send signed-out owners to our /login or

@@ -60,8 +60,8 @@ async function steps(user: User, s: AgentSettings): Promise<Step[]> {
       key: "brand",
       name: "Check your logo, colours and images",
       why: s.brand?.logo || s.brand?.primary
-        ? "I took your logo and colours from your website for your posts. Take a look, and choose how your post pictures look."
-        : "Give me your logo and colours, and choose how your post pictures look.",
+        ? `I took your logo and colours from your website for your posts. Take a look, and choose how your post pictures look.${libraryHint()}`
+        : `Give me your logo and colours, and choose how your post pictures look.${libraryHint()}`,
       ok: s.brand?.source === "owner" || !!st.done?.brand,
       chips: [
         { label: "Show me", primary: true, action: { type: "thread", topic: "voice" } },
@@ -157,4 +157,10 @@ export async function setupOp(user: User, body: { op?: string; step?: string }):
   await saveAgentSettings(user.id, { setup: st })
   if (body.op === "dismiss") return [agent([{ kind: "text", text: "Done. Say “run my marketing for this week” whenever you’re ready." }], "setup")]
   return setupMessages(user)
+}
+
+/** The brand step mentions the brand library once Drive or Dropbox is on (lib/library). */
+function libraryHint(): string {
+  const where = [process.env.GOOGLE_PICKER_API_KEY && "Google Drive", process.env.NEXT_PUBLIC_DROPBOX_APP_KEY && "Dropbox"].filter(Boolean)
+  return where.length ? ` You can also link your brand book, photos and videos from ${where.join(" or ")}.` : ""
 }

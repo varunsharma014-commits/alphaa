@@ -82,7 +82,8 @@ export async function POST(req: Request) {
       await saveImageSettings(user.id, { style: input.value })
       if (input.value === "photo") {
         const r = await refreshPhotos(user.id).catch(() => null)
-        const n = r?.total ?? (await listPhotos(user.id)).length
+        const { listAssets } = await import("@/lib/library/store")
+        const n = (r?.total ?? (await listPhotos(user.id)).length) + (await listAssets(user.id).catch(() => [])).filter((a) => a.kind === "photo" && a.status === "ok").length
         said = n ? `Done. Your posts use your own photos from now on, a different one each time (${n} so far).` : "Done. I didn’t find photos on your Google listing or website yet. Add a few below, and until then I use your text card."
       } else if (input.value === "ai") {
         await styleSample(user.id, "ai").catch(() => null)

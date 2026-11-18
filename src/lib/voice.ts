@@ -35,6 +35,8 @@ export type Voice = {
   style: VoiceStyle
   /** Set once the owner picks anything; until then I use my closest match. */
   pickedAt?: string
+  /** Writing rules the owner applied from their brand book (lib/library), followed in every prompt. */
+  rules?: string[]
 }
 
 const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
@@ -189,6 +191,7 @@ export function voiceText(v: Voice): string {
     s.person === "we" ? "Speak as the business (\"we\")." : "Speak as the owner (\"I\").",
     v.phrases.length ? `Words they use: ${v.phrases.map((p) => `"${p}"`).join(", ")}.` : "",
     v.avoid.length ? `Avoid: ${v.avoid.join("; ")}.` : "",
+    v.rules?.length ? `From the owner's brand book (follow these):\n${v.rules.map((r) => `- ${r}`).join("\n")}` : "",
   ].filter(Boolean).join("\n")
 }
 
@@ -206,7 +209,8 @@ export async function ensureVoice(userId: string, opts: { force?: boolean } = {}
   if (!v) return s.voice ?? null
   // Re-reading the site keeps what the owner already chose.
   const keep = opts.force && s.voice?.pickedAt ? { style: s.voice.style, custom: s.voice.custom, chosen: s.voice.chosen === "custom" ? "custom" : v.chosen, pickedAt: s.voice.pickedAt } : {}
-  const next = { ...v, ...keep }
+  // Brand book rules the owner applied stay too.
+  const next = { ...v, ...keep, ...(s.voice?.rules?.length ? { rules: s.voice.rules } : {}) }
   await saveAgentSettings(userId, { voice: next })
   await db.mockActivity.create({ data: { userId, type: "voice_learned", title: "Learned how your business sounds from your website", metadata: { read: v.read, options: v.options.map((o) => o.name) } } })
   return next

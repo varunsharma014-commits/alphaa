@@ -73,8 +73,15 @@ export async function addPhoto(userId: string, raw: Buffer, o: { source: PhotoSo
   return { ...rest, id: row.id }
 }
 
-/** The next photo to use: least used, then longest ago. Marks it used. */
-export async function nextPhoto(userId: string): Promise<{ id: string; bytes: Buffer } | null> {
+/**
+ * The next photo to use. Brand library photos (linked from Drive / Dropbox, lib/library) come
+ * first: the one marked "Use this next", else the best tag match for the topic, least used first,
+ * read fresh each time. Then these stored photos: least used, then longest ago. Marks it used.
+ */
+export async function nextPhoto(userId: string, topic = ""): Promise<{ id: string; bytes: Buffer } | null> {
+  const { nextLibraryPhoto } = await import("@/lib/library/pick")
+  const lib = await nextLibraryPhoto(userId, topic).catch(() => null)
+  if (lib) return lib
   const list = await listPhotos(userId)
   if (!list.length) return null
   const pick = [...list].sort((a, b) => a.usedCount - b.usedCount || (Date.parse(a.lastUsedAt ?? "1970") - Date.parse(b.lastUsedAt ?? "1970")) || Date.parse(a.addedAt) - Date.parse(b.addedAt))[0]

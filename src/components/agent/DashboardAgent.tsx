@@ -39,6 +39,7 @@ import type { Platform } from "@/lib/connector/types"
 import type { AgentStatus } from "@/lib/agent/feed"
 import type { Briefing as BriefingData } from "@/lib/agent/briefing"
 import { Briefing } from "./Briefing"
+import { NeedsConnect, pickFromDrive, pickFromDropbox, preloadPicker } from "./library-pickers"
 
 type LiveResult = { engine: EngineKey; answer: string; appeared: boolean; mentioned: string[]; status: string }
 
@@ -150,6 +151,13 @@ export function DashboardAgent({
     const n = Date.now().toString(36)
     setMessages((prev) => [...prev.filter((m) => !ids.has(base(m.id))), ...msgs.map((m) => ({ ...m, id: `${m.id}~${n}` }))])
   }
+
+  // Brand library: load the Drive / Dropbox picker scripts once their buttons show, so the
+  // Dropbox pop-up opens right on the tap (browsers block pop-ups opened later).
+  useEffect(() => {
+    for (const m of messages) for (const b of m.blocks) if (b.kind === "chips") for (const c of b.items)
+      if (c.action.type === "agent-op" && c.action.endpoint === "library" && typeof c.action.body.pick === "string") preloadPicker(c.action.body.pick === "drive" ? "drive" : "dropbox", String(c.action.body.key ?? ""))
+  }, [messages])
 
   // Live work log: new steps I take in the background drop into the chat as they happen.
   const since = useRef(new Date().toISOString())
@@ -629,6 +637,27 @@ export function DashboardAgent({
             { kind: "text", text: a.form.text },
             { kind: "form", formId, fields: a.form.fields, cta: a.form.cta, fine: a.form.fine },
           ]))
+          return
+        }
+        if (a.endpoint === "library" && typeof a.body.pick === "string") {
+          // Brand library: the owner picks files in Google Drive / Dropbox, then I link them.
+          const source = a.body.pick === "drive" ? "drive" : "dropbox"
+          // Closing the picker leaves the panel's buttons usable (a fresh copy of the panel).
+          const redraw = () => fetch("/api/agent/library").then((r) => (r.ok ? r.json() : null)).then((d: { messages?: Message[] } | null) => { if (d?.messages) swapIn(d.messages) }).catch(() => null)
+          let files
+          try {
+            files = source === "drive" ? await pickFromDrive() : await pickFromDropbox(String(a.body.key ?? ""))
+          } catch (err) {
+            if (err instanceof NeedsConnect) { window.location.href = err.href; return }
+            void redraw()
+            return fail(err instanceof Error ? err.message : "The picker didn’t open. Try again.")
+          }
+          if (!files.length) return void redraw()
+          push(userMsg(`Add ${files.length === 1 ? files[0].name : `${files.length} files`} from ${source === "drive" ? "Google Drive" : "Dropbox"}`), agent([{ kind: "text", text: "Reading them now." }, { kind: "steps", items: ["Making previews and tagging your photos"], done: 0 }], "lib-reading"))
+          const { ok, data } = await post<{ messages?: Message[] }>("/api/agent/library", { op: "add", source, files: JSON.stringify(files) })
+          setMessages((prev) => prev.filter((m) => base(m.id) !== "lib-reading"))
+          if (!ok) return fail(data.error ?? "That didn’t go through. Try again.")
+          swapIn(data.messages ?? [])
           return
         }
         if (a.endpoint !== "setup") push(userMsg(chip.label.replace(/^✓ /, "")))

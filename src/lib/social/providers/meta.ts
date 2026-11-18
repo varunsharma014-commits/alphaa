@@ -28,7 +28,7 @@ export const meta: Provider = {
     return `https://www.facebook.com/v21.0/dialog/oauth?${q}`
   },
 
-  async connect({ code, redirectUri }) {
+  async connect({ code, redirectUri, userId }) {
     const short = await api<{ access_token: string }>(`${G}/oauth/access_token?${new URLSearchParams({ client_id: id(), client_secret: secret(), redirect_uri: redirectUri, code })}`)
     // A business (system-user) token never expires; a plain user token is swapped for a long-lived one.
     const long = CONFIG()
@@ -42,11 +42,19 @@ export const meta: Provider = {
       if (ig) out.push({ platform: "instagram", externalId: ig.id, name: ig.username ? `@${ig.username}` : p.name, handle: ig.username ?? null, avatar: ig.profile_picture_url ?? null, tokenEnc: enc(p.access_token), extra: { pageId: p.id } })
     }
     if (!out.length) throw new Error("No Facebook Pages came back. Make sure you picked your business Page when Facebook asked.")
+    // Ads (lib/metaads): with the business login, also keep the token (encrypted) + the ad accounts
+    // and pixels the owner shared. It never throws, so posting connects even if this part fails.
+    if (CONFIG() && userId) {
+      const { saveMetaAdsAccess } = await import("@/lib/metaads/connect")
+      await saveMetaAdsAccess(userId, long.access_token)
+    }
     return out
   },
 
   async publish(account, post) {
     const token = dec(account.tokenEnc)
+    // A brand library video (lib/library): Facebook pulls it from our signed URL; Instagram as a Reel.
+    if (post.videoUrl) return publishVideo(account.platform, account.externalId, token, post.text, post.videoUrl)
     if (account.platform === "facebook") {
       if (post.imageUrl) {
         const r = await api<{ id: string; post_id?: string }>(`${G}/${account.externalId}/photos`, { method: "POST", body: new URLSearchParams({ url: post.imageUrl, message: post.text, access_token: token }) })
@@ -69,4 +77,23 @@ export const meta: Provider = {
     const link = await api<{ permalink?: string }>(`${G}/${m.id}?fields=permalink&access_token=${encodeURIComponent(token)}`).catch(() => ({ permalink: undefined }))
     return { externalId: m.id, url: link.permalink ?? null }
   },
+}
+
+async function publishVideo(platform: string, accountId: string, token: string, text: string, videoUrl: string): Promise<{ url: string | null; externalId: string | null }> {
+  if (platform === "facebook") {
+    const r = await api<{ id: string }>(`${G}/${accountId}/videos`, { method: "POST", body: new URLSearchParams({ file_url: videoUrl, description: text, access_token: token }), signal: AbortSignal.timeout(120_000) })
+    return { externalId: r.id, url: `https://www.facebook.com/${accountId}/videos/${r.id}` }
+  }
+  const c = await api<{ id: string }>(`${G}/${accountId}/media`, { method: "POST", body: new URLSearchParams({ media_type: "REELS", video_url: videoUrl, caption: text.slice(0, 2200), share_to_feed: "true", access_token: token }) })
+  // Video takes a while to process: up to ~4 minutes.
+  for (let i = 0; i < 48; i++) {
+    const s = await api<{ status_code?: string }>(`${G}/${c.id}?fields=status_code&access_token=${encodeURIComponent(token)}`)
+    if (s.status_code === "FINISHED") break
+    if (s.status_code === "ERROR" || s.status_code === "EXPIRED") throw new Error("Instagram couldn’t process the video. Reels need MP4 or MOV, 3 seconds to 15 minutes.")
+    if (i === 47) throw new Error("Instagram is still processing the video. I’ll try again.")
+    await new Promise((r) => setTimeout(r, 5000))
+  }
+  const m = await api<{ id: string }>(`${G}/${accountId}/media_publish`, { method: "POST", body: new URLSearchParams({ creation_id: c.id, access_token: token }) })
+  const link = await api<{ permalink?: string }>(`${G}/${m.id}?fields=permalink&access_token=${encodeURIComponent(token)}`).catch(() => ({ permalink: undefined }))
+  return { externalId: m.id, url: link.permalink ?? null }
 }

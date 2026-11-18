@@ -23,7 +23,14 @@ export async function publishPost(userId: string, postId: string): Promise<Socia
     const b64 = (img?.metadata as { b64?: string } | null)?.b64
     bytes = b64 ? Buffer.from(b64, "base64") : null
   }
-  const input = { text: post.text, imageUrl: bytes && post.imageId ? imageUrl(post.imageId) : null, imageBytes: bytes, title: post.title ?? null }
+  let videoUrl: string | null = null
+  if (post.videoAssetId) {
+    const { getAsset } = await import("@/lib/library/store")
+    const { signedAssetUrl } = await import("@/lib/library/open")
+    const v = await getAsset(userId, post.videoAssetId)
+    if (v && v.kind === "video" && v.status === "ok") videoUrl = signedAssetUrl(v)
+  }
+  const input = { text: post.text, imageUrl: bytes && post.imageId ? imageUrl(post.imageId) : null, imageBytes: bytes, title: post.title ?? null, videoUrl }
   const accounts = await listAccounts(userId)
   const done = new Map((post.results ?? []).filter((r) => r.ok).map((r) => [r.accountId, r]))
   const results: PostResult[] = []

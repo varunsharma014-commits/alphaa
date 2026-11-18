@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ prov
   const code = u.get("code")
   if (!code) return note(`${PROVIDER_NAME[provider]} didn’t send a code back. Try again.`)
   try {
-    const accounts = await P[provider].connect({ code, redirectUri: redirectUri(provider), verifier: req.cookies.get(PKCE_COOKIE)?.value })
+    const accounts = await P[provider].connect({ code, redirectUri: redirectUri(provider), verifier: req.cookies.get(PKCE_COOKIE)?.value, userId: user.id })
     for (const a of accounts) await upsertAccount(user.id, a)
     return note(`Connected ${accounts.map((a) => a.name).join(", ")}.`)
   } catch (err) {

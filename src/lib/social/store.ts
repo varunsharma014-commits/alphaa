@@ -57,6 +57,15 @@ export async function getPost(userId: string, id: string): Promise<SocialPost | 
 }
 
 export async function createPost(userId: string, p: Omit<SocialPost, "id">): Promise<SocialPost> {
+  // "Use this next" on a brand library video: the next post to Facebook / Instagram carries it.
+  if (p.videoAssetId === undefined && p.accountIds.length) {
+    const accs = await listAccounts(userId)
+    if (accs.some((a) => p.accountIds.includes(a.id) && (a.platform === "facebook" || a.platform === "instagram"))) {
+      const { takeNextVideo } = await import("@/lib/library/pick")
+      const v = await takeNextVideo(userId).catch(() => null)
+      if (v) p = { ...p, videoAssetId: v }
+    }
+  }
   const row = await db.mockActivity.create({ data: { userId, type: POST, title: p.title ? `Social post: “${p.title}”` : "Social post", metadata: p as object } })
   return { ...p, id: row.id }
 }
