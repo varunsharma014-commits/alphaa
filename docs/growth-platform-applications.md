@@ -183,3 +183,7 @@ This is a separate Google grant from Search Console / Business Profile (drive.fi
 - Removed from round 1 (no feature to demo yet): Marketing API Access Tier (needs ~500 calls/15 days <15% errors), pages_read_user_content, pages_manage_engagement, instagram_manage_comments, instagram_manage_insights.
 - DONE 2026-11-18: new login configuration "Alphaa connect v2" ID 1852075075984045 (system-user token, never expires; Pages/ad accounts/pixels/Instagram, none required; 10 permissions = round 1 minus public_profile which is automatic). META_LOGIN_CONFIG_ID on Railway now points to it. Old config 1474632747934670 (14 permissions) kept for reference; use it again or a v3 when round 2 (comments/insights) is approved.
 - Still needed: one screencast per permission (scripts in docs/meta-app-review.md) + data-handling questions.
+
+## Google OAuth verification submitted (2026-11-18)
+- Scopes under review: adwords + analytics.readonly (sensitive; business.manage + webmasters.readonly already OK). Video https://youtu.be/1FGHQDpLSTE (Part 1 Ads, Part 2 Analytics; Part 2 shows "already has some access" because the test account had granted before — re-record with a fresh grant if Google asks).
+- After approval: set GOOGLE_ADS_ENABLED=1 and GA_SCOPE_ENABLED=1 on Railway.
