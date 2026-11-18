@@ -129,6 +129,9 @@ import { meta as aiVisAuditMeta, Body as AiVisAuditBody } from "./ai-visibility-
 import { meta as vsYoastMeta, Body as VsYoastBody } from "./alphaa-vs-yoast-ai-brand-insights"
 import { meta as internalLinkingMeta, Body as InternalLinkingBody } from "./internal-linking-for-ai-search"
 import { meta as whatIsAiVisMeta, Body as WhatIsAiVisBody } from "./what-is-ai-visibility"
+import { meta as vsGaugeMeta, Body as VsGaugeBody } from "./alphaa-vs-gauge"
+import { meta as cloudflareAiMeta, Body as CloudflareAiBody } from "./cloudflare-blocking-ai-crawlers"
+import { meta as junkRemovalMeta, Body as JunkRemovalBody } from "./how-junk-removal-companies-get-recommended-by-ai"
 import { meta as groundingMeta, Body as GroundingBody } from "./what-is-grounding-in-ai-search"
 import { meta as vsLlmrefsMeta, Body as VsLlmrefsBody } from "./alphaa-vs-llmrefs"
 import { meta as aboutPageMeta, Body as AboutPageBody } from "./about-page-for-ai-search"
@@ -343,6 +346,9 @@ export const POSTS: Post[] = [
   { meta: vsYoastMeta, Body: VsYoastBody },
   { meta: internalLinkingMeta, Body: InternalLinkingBody },
   { meta: whatIsAiVisMeta, Body: WhatIsAiVisBody },
+  { meta: vsGaugeMeta, Body: VsGaugeBody },
+  { meta: cloudflareAiMeta, Body: CloudflareAiBody },
+  { meta: junkRemovalMeta, Body: JunkRemovalBody },
 ]
 
 // Every post's hero / og:image is its generated black & white title cover
