@@ -50,11 +50,16 @@ export async function gadsCall<T>(path: string, init: { method: "GET" | "POST"; 
   const headers: Record<string, string> = { Authorization: `Bearer ${o.token}` }
   if (init.body !== undefined) headers["Content-Type"] = "application/json"
   if (o.loginCustomerId) headers["login-customer-id"] = digits(o.loginCustomerId)
-  const r = await (o.fetchImpl ?? fetch)(`${GADS_BASE}${path}`, {
+  const go = () => (o.fetchImpl ?? fetch)(`${GADS_BASE}${path}`, {
     method: init.method,
     headers,
     body: init.body === undefined ? undefined : JSON.stringify(init.body),
     signal: AbortSignal.timeout(60_000),
+  })
+  // Node's fetch says only "fetch failed" on a network error: retry once, then say where.
+  const r = await go().catch(() => go()).catch((err: unknown) => {
+    const cause = err instanceof Error && err.cause instanceof Error ? `: ${err.cause.message}` : ""
+    throw new Error(`Couldn’t reach Google Ads (${path.split("?")[0]})${cause}`)
   })
   const text = await r.text()
   let data: unknown = null

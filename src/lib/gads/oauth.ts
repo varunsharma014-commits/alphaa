@@ -57,11 +57,15 @@ export function gadsAuthUrl(state: string): string {
 type TokenResponse = { access_token?: string; refresh_token?: string; expires_in?: number; scope?: string; error?: string; error_description?: string }
 
 async function token(params: Record<string, string>): Promise<TokenResponse> {
-  const r = await fetch("https://oauth2.googleapis.com/token", {
+  const go = () => fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ client_id: process.env.GOOGLE_CLIENT_ID ?? "", client_secret: process.env.GOOGLE_CLIENT_SECRET ?? "", ...params }),
     signal: AbortSignal.timeout(20_000),
+  })
+  const r = await go().catch(() => go()).catch((err: unknown) => {
+    const cause = err instanceof Error && err.cause instanceof Error ? `: ${err.cause.message}` : ""
+    throw new Error(`Couldn’t reach Google sign-in${cause}`)
   })
   const data = (await r.json().catch(() => ({}))) as TokenResponse
   if (!r.ok || !data.access_token) {
