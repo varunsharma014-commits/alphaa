@@ -15,17 +15,17 @@ const P = { meta, linkedin, tiktok, x }
 // Sends the owner to the platform's own login to connect their account.
 export async function GET(req: NextRequest, { params }: { params: Promise<{ provider: string }> }) {
   const provider = (await params).provider
-  const back = new URL("/dashboard?ask=social", req.url)
+  const back = new URL("/dashboard?ask=social", process.env.NEXT_PUBLIC_APP_URL || req.url)
   if (!isConnectProvider(provider)) return NextResponse.redirect(back)
   const user = await currentUser()
-  if (!user) return NextResponse.redirect(new URL("/login", req.url))
+  if (!user) return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL || req.url))
   if (!hasGrowth(user) || !providerConfigured(provider)) return NextResponse.redirect(back)
   const state = signState(user.id, provider)
   const p = P[provider]
   if (p.usesPkce) {
     const { verifier, challenge } = pkce()
     const res = NextResponse.redirect(p.authUrl({ state, redirectUri: redirectUri(provider), challenge }))
-    res.cookies.set(PKCE_COOKIE, verifier, { httpOnly: true, secure: true, sameSite: "lax", maxAge: 1200, path: "/api/social" })
+    res.cookies.set(PKCE_COOKIE, verifier, { httpOnly: true, secure: true, sameSite: "lax", maxAge: 3600, path: "/api/social" })
     return res
   }
   return NextResponse.redirect(p.authUrl({ state, redirectUri: redirectUri(provider) }))

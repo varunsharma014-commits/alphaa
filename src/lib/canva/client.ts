@@ -36,7 +36,7 @@ export function readCanvaState(raw: string | null): State | null {
   if (want.length !== sig.length || !timingSafeEqual(Buffer.from(want), Buffer.from(sig))) return null
   try {
     const s = JSON.parse(Buffer.from(body, "base64url").toString()) as State
-    return Date.now() - s.t > 20 * 60_000 ? null : s
+    return Date.now() - s.t > 60 * 60_000 ? null : s
   } catch {
     return null
   }

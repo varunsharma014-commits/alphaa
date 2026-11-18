@@ -17,10 +17,10 @@ const P = { meta, linkedin, tiktok, x }
 // The platform sends the owner back here with a code: exchange it, save the accounts.
 export async function GET(req: NextRequest, { params }: { params: Promise<{ provider: string }> }) {
   const provider = (await params).provider
-  const back = new URL("/dashboard?ask=social", req.url)
+  const back = new URL("/dashboard?ask=social", process.env.NEXT_PUBLIC_APP_URL || req.url)
   if (!isConnectProvider(provider)) return NextResponse.redirect(back)
   const user = await currentUser()
-  if (!user) return NextResponse.redirect(new URL("/login", req.url))
+  if (!user) return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL || req.url))
   const u = req.nextUrl.searchParams
   const state = readState(u.get("state"), provider)
   const note = async (text: string) => { await saveAgentSettings(user.id, { socialNote: text }); const r = NextResponse.redirect(back); r.cookies.delete(PKCE_COOKIE); return r }

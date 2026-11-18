@@ -23,7 +23,7 @@ export function readState(raw: string | null, p: ConnectProvider): State | null 
   if (want.length !== sig.length || !timingSafeEqual(Buffer.from(want), Buffer.from(sig))) return null
   try {
     const s = JSON.parse(Buffer.from(body, "base64url").toString()) as State
-    if (s.p !== p || Date.now() - s.t > 20 * 60_000) return null
+    if (s.p !== p || Date.now() - s.t > 60 * 60_000) return null
     return s
   } catch {
     return null

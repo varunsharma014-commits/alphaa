@@ -9,10 +9,10 @@ import { CANVA_PKCE_COOKIE, connectCanva, readCanvaState } from "@/lib/canva/cli
 // Canva sends the owner back here with a code: exchange it (with the PKCE verifier), save the tokens encrypted.
 export async function GET(req: NextRequest) {
   const user = await currentUser()
-  if (!user) return NextResponse.redirect(new URL("/login", req.url))
+  if (!user) return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL || req.url))
   const u = req.nextUrl.searchParams
   const state = readCanvaState(u.get("state"))
-  const back = new URL(`/dashboard?ask=${state?.b ?? "voice"}`, req.url)
+  const back = new URL(`/dashboard?ask=${state?.b ?? "voice"}`, process.env.NEXT_PUBLIC_APP_URL || req.url)
   const note = async (text: string) => {
     await saveImageSettings(user.id, { canvaNote: text })
     const r = NextResponse.redirect(back)
