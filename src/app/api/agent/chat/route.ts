@@ -106,7 +106,11 @@ ${facts}`
     const res = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
       max_tokens: 500,
-      system,
+      // Prompt caching: the system prompt (rules + this account's FACTS) is the same on every turn
+      // of a conversation, so it gets its own breakpoint; the top-level marker caches the growing
+      // history up to the newest message, so the next turn reads it instead of paying again.
+      cache_control: { type: "ephemeral" },
+      system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
       messages: [...history, { role: "user", content: body.message }],
     })
     const text = res.content[0]?.type === "text" ? res.content[0].text.trim() : ""
