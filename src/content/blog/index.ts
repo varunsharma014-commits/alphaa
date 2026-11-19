@@ -132,6 +132,9 @@ import { meta as whatIsAiVisMeta, Body as WhatIsAiVisBody } from "./what-is-ai-v
 import { meta as vsGaugeMeta, Body as VsGaugeBody } from "./alphaa-vs-gauge"
 import { meta as cloudflareAiMeta, Body as CloudflareAiBody } from "./cloudflare-blocking-ai-crawlers"
 import { meta as junkRemovalMeta, Body as JunkRemovalBody } from "./how-junk-removal-companies-get-recommended-by-ai"
+import { meta as yelpChatgptMeta, Body as YelpChatgptBody } from "./does-yelp-affect-chatgpt-recommendations"
+import { meta as alphaaVsMozMeta, Body as AlphaaVsMozBody } from "./alphaa-vs-moz"
+import { meta as towingMeta, Body as TowingBody } from "./how-towing-companies-get-recommended-by-ai"
 import { meta as groundingMeta, Body as GroundingBody } from "./what-is-grounding-in-ai-search"
 import { meta as vsLlmrefsMeta, Body as VsLlmrefsBody } from "./alphaa-vs-llmrefs"
 import { meta as aboutPageMeta, Body as AboutPageBody } from "./about-page-for-ai-search"
@@ -349,6 +352,9 @@ export const POSTS: Post[] = [
   { meta: vsGaugeMeta, Body: VsGaugeBody },
   { meta: cloudflareAiMeta, Body: CloudflareAiBody },
   { meta: junkRemovalMeta, Body: JunkRemovalBody },
+  { meta: yelpChatgptMeta, Body: YelpChatgptBody },
+  { meta: alphaaVsMozMeta, Body: AlphaaVsMozBody },
+  { meta: towingMeta, Body: TowingBody },
 ]
 
 // Every post's hero / og:image is its generated black & white title cover
