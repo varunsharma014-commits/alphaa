@@ -3113,9 +3113,9 @@
     "image": "brand/social/posts/w7_medspa.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/photo/?fbid=122126676435401496&set=a.122100086715401496",
+    "posted_at": "2026-11-19T09:42:00-05:00"
   },
   {
     "id": "w7-fri-x",
@@ -3433,9 +3433,9 @@
     "image": "brand/social/posts/m_ae_w1.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:share:7529189830011060225/",
+    "posted_at": "2026-11-19T09:35:00-05:00"
   },
   {
     "id": "m-ar-w1-linkedin",
