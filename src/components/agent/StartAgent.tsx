@@ -536,6 +536,16 @@ export function StartAgent({
     }
   }
 
+  // This page runs without Clerk's browser SDK, so nothing refreshes the 60-second session
+  // token while the scan narrates (over a minute). A signed-out API call answers 401, or 404
+  // from auth.protect(). A full page load refreshes the session (Clerk handshake), and
+  // /onboarding?scan= finishes setup server-side and opens checkout by itself (autoCheckout).
+  const stale = (r: Response) => r.status === 401 || (r.status === 404 && !(r.headers.get("content-type") ?? "").includes("json"))
+  function reloadForCheckout(scanId?: string) {
+    const q = new URLSearchParams({ retry: "1", plan: buyPlan, ...(annual ? { billing: "annual" } : {}), ...(scanId ? { scan: scanId } : {}) })
+    window.location.href = `/onboarding?${q}`
+  }
+
   // setup/resume: the scan is the onboarding — save it, then straight to Stripe.
   async function checkout() {
     if (busy) return
@@ -548,6 +558,7 @@ export function StartAgent({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ scanId: scan.id, businessType: identRef.current.businessType ?? "" }),
         })
+        if (stale(r)) return reloadForCheckout(scan.id)
         if (!r.ok) throw new Error("onboard")
       }
       const value = annual ? PLAN_PRICES[buyPlan].annual * 12 : PLAN_PRICES[buyPlan].monthly
@@ -558,6 +569,7 @@ export function StartAgent({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ purchase: buyPlan, annual }),
       })
+      if (stale(res)) return reloadForCheckout(scan?.id)
       const data = await res.json()
       if (!res.ok || !data.url) throw new Error("checkout")
       push(agent([{ kind: "text", text: "I’m opening secure checkout…" }]))
