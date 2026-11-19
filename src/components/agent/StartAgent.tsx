@@ -59,7 +59,8 @@ const CANNED: Record<string, string> = {
   "Is this real?":
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
-    "$99 a month, month to month. Cancel online in a minute, no contract. If no AI names you by day 90 with weekly checks active, next month is free. Agencies often charge $1,000+ a month for Google alone — and do little for AI.",
+    // {starter} / {pro} / {growth} become local prices when answered (localPrice).
+    `{starter} a month for Starter, month to month: your Google listing, blog, reviews and website. Pro ({pro}) adds your social media; Growth ({growth}) adds ads and email. Cancel online in a minute, no contract. ${GUARANTEE_LINE}`,
 }
 
 // Where the conversation runs:
@@ -80,7 +81,7 @@ export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint:
 /** Plans the agent conversation can sell (/onboarding?plan=…). */
 export type AgentPlan = "starter" | "pro" | "growth"
 const PLAN_LINE: Record<AgentPlan, string> = {
-  starter: "",
+  starter: "Starter plan: I post to your Google listing, write your blog, reply to your reviews and fix your website, so more customers find you and you get your time back.",
   pro: "Pro plan: I run your social media too, with twice the posts, up to 3 locations, and posts that can publish on their own.",
   growth: "Growth plan: everything in Pro, plus I set up your lead tracking, email your customers, and build and run your Google and Meta ads.",
 }
@@ -116,7 +117,7 @@ function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded =
     agent(
       mode === "setup"
         ? [
-            { kind: "text", text: "You’re in. I’m Alphaa, your AI agent." },
+            { kind: "text", text: "You’re in. I’m Alphaa, your AI marketing agent." },
             { kind: "text", text: "No forms. Give me your website and I’ll work out the rest." },
             { kind: "text", text: "What’s your website?", big: true },
           ]
@@ -345,7 +346,7 @@ export function StartAgent({
       agent([
         { kind: "text", text: "Here’s what I’d do for you this week.", big: true },
         { kind: "receipt", title: "Your first week", sub: `${plan.length} things`, items: plan },
-        { kind: "text", text: "Your marketing agency is working on Google’s list of ten links. Your customers are getting one answer now — from AI. Nobody on your side has to learn anything: I do the work, you tap approve." },
+        { kind: "text", text: "I run your marketing every week: your Google listing, blog, reviews and website, plus social media and ads on the bigger plans. Nobody on your side has to learn anything. I do the work, you tap approve, and you get your time back." },
       ])
     )
     push(
@@ -476,10 +477,10 @@ export function StartAgent({
       const t = text.toLowerCase()
       const canned =
         /real|legit|trust|fake|true/.test(t) ? CANNED["Is this real?"]
-        : /how much|price|cost|\$|pay|expensive/.test(t) ? CANNED["How much?"].replace("$99", localPrice())
+        : /how much|price|cost|\$|pay|expensive/.test(t) ? CANNED["How much?"].replace("{starter}", localPrice()).replace("{pro}", localPrice("pro")).replace("{growth}", localPrice("growth"))
         : /what (exactly )?(will|do|would) you|what.*do for me|how does it work/.test(t) ? CANNED["What exactly will you do?"]
         : null
-      push(agent([{ kind: "text", text: canned ?? (mode === "public" ? "Once you start I answer anything you ask here. For now, tap “Get started”, or email yourself the report and I’ll take it from there." : "Once you start I answer anything you ask here. Tap “Get recommended by AI” and I begin this week.") }]))
+      push(agent([{ kind: "text", text: canned ?? (mode === "public" ? "Once you start I answer anything you ask here. For now, tap “Get started”, or email yourself the report and I’ll take it from there." : "Once you start I answer anything you ask here. Tap “Get started” and I begin this week.") }]))
       return
     }
 
@@ -598,7 +599,7 @@ export function StartAgent({
         user(email),
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
-          { kind: "text", text: `If you want me to actually fix this — not just report it — start today and I begin this week. ${localPrice()} a month, cancel any time. ${GUARANTEE}` },
+          { kind: "text", text: `If you want me to fix this and run your marketing from here (your Google listing, blog, reviews and website), start today and I begin this week. ${localPrice()} a month, cancel any time. ${GUARANTEE}` },
           { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
           {
             kind: "chips",
