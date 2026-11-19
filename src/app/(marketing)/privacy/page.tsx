@@ -189,7 +189,7 @@ Disconnecting: in Settings → Website connection, click Disconnect. We delete t
   },
   {
     title: "6a. Social Media and Ad Accounts (Facebook, Instagram, LinkedIn, TikTok)",
-    body: `On the Growth plan you can connect your business's social media and ad accounts. Alphaa uses each connection only to do the marketing work you approve (or set to run automatically): publishing your posts, reading the comments and results on them, replying to comments, and, where you turn it on, building and adjusting ads inside the budget you approved. Ad spend is billed by the platform to your own ad account; Alphaa never pays for or marks up your ads.
+    body: `On the Pro and Growth plans you can connect your business's social media accounts, and on the Growth plan your ad accounts. Alphaa uses each connection only to do the marketing work you approve (or set to run automatically): publishing your posts and, where you turn it on, building and adjusting ads inside the budget you approved. Ad spend is billed by the platform to your own ad account; Alphaa never pays for or marks up your ads.
 
 What we store: the IDs, names, handles and profile pictures of the Pages and accounts you choose to connect, an access token for each, the posts and ads Alphaa created for you, and their results. We do not read your personal profile, friends, private messages or personal photos, and we do not sell or share this data.
 
