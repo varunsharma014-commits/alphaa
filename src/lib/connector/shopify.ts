@@ -233,14 +233,21 @@ export async function shopifyProfile(shop: string, accessToken: string): Promise
 
 // ---------- billing (Shopify Managed Pricing) ----------
 
-export type ShopifyAppSubscription = { name: string; status: string; test: boolean }
+export type ShopifyRecurringPrice = { amount: string | number; currencyCode?: string }
+export type ShopifyAppSubscription = {
+  name: string
+  status: string
+  test: boolean
+  /** Recurring line item price + interval (EVERY_30_DAYS | ANNUAL). Absent on older reads. */
+  lineItems?: { plan?: { pricingDetails?: { __typename?: string; price?: ShopifyRecurringPrice; interval?: string } | null } | null }[]
+}
 
 /** The app's active subscriptions on this shop (Managed Pricing plans show up here once approved). */
 export async function shopifyActiveSubscriptions(shop: string, token: string): Promise<ShopifyAppSubscription[]> {
   const d = await gql<{ currentAppInstallation: { activeSubscriptions: ShopifyAppSubscription[] } | null }>(
     shop,
     token,
-    `{ currentAppInstallation { activeSubscriptions { name status test } } }`,
+    `{ currentAppInstallation { activeSubscriptions { name status test lineItems { plan { pricingDetails { __typename ... on AppRecurringPricing { price { amount currencyCode } interval } } } } } } }`,
   )
   return d.currentAppInstallation?.activeSubscriptions ?? []
 }

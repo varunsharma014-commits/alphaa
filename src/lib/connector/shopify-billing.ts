@@ -1,13 +1,15 @@
-// Shopify Managed Pricing: merchants who install from the Shopify App Store pay Alphaa's
-// $99/mo plan through Shopify, not Stripe. The plan lives in the Partner Dashboard and Shopify
+// Shopify Managed Pricing: merchants who install from the Shopify App Store pay for Alphaa's
+// plans (Starter / Pro / Growth) through Shopify, not Stripe. The plan lives in the Partner Dashboard and Shopify
 // hosts the plan-selection page; we only read the result (currentAppInstallation.activeSubscriptions)
 // and the app_subscriptions/update webhook.
 //
 // Paid state is stored without a schema change: User.stripeSubscriptionId = "shopify:<shop>",
-// subscriptionStatus "active", plan "starter" (see lib/billing.ts for why that can't clash with Stripe).
+// subscriptionStatus "active", plan starter|pro|growth from the Shopify plan's name or price
+// (shopifyPlanFor; see lib/billing.ts for why the marker can't clash with Stripe).
 //
 // Test charges (`test: true`) count as paid: Shopify only issues them on development stores.
 import { db } from "@/lib/db"
+import { PLAN_PRICES } from "@/lib/constants"
 import { getAgentSettings, type AgentSettings } from "@/lib/agent/settings"
 import { hasStripePlan, shopifyBilledShop, shopifySubMarker } from "@/lib/billing"
 import { isShopDomain, shopifyActiveSubscriptionsFor, type ShopifyAppSubscription } from "@/lib/connector/shopify"
@@ -45,7 +47,36 @@ export function subscriptionCountsAsPaid(sub: ShopifyAppSubscription, _email?: s
   return sub.status === "ACTIVE"
 }
 
-type BillingUser = { id: string; email: string; stripeSubscriptionId: string | null; subscriptionStatus: string }
+export type ShopifyPlan = "starter" | "pro" | "growth"
+
+/**
+ * Which Alphaa plan a Shopify subscription pays for. The plan name (set in the Partner Dashboard)
+ * wins: "growth" before "pro" ("Alphaa Growth", "Pro", "Pro (yearly)"). Otherwise the recurring
+ * price is matched to PLAN_PRICES (EVERY_30_DAYS vs monthly; ANNUAL vs the yearly total or per-month rate). Default starter, so
+ * an unrecognised plan never grants more than the cheapest one.
+ */
+export function shopifyPlanFor(sub: Pick<ShopifyAppSubscription, "name" | "lineItems">): ShopifyPlan {
+  const name = (sub.name ?? "").toLowerCase()
+  if (/\bgrowth\b/.test(name)) return "growth"
+  if (/\bpro\b/.test(name)) return "pro"
+  if (/\bstarter\b/.test(name)) return "starter"
+  for (const li of sub.lineItems ?? []) {
+    const d = li.plan?.pricingDetails
+    const amount = Number(d?.price?.amount)
+    if (!d?.price || !Number.isFinite(amount) || amount <= 0) continue
+    const annual = d.interval === "ANNUAL"
+    const order: ShopifyPlan[] = ["growth", "pro", "starter"]
+    for (const plan of order) {
+      const p = PLAN_PRICES[plan]
+      // Exact interval only: Pro monthly ($399) equals Growth's annual-per-month rate.
+      const candidates = annual ? [p.annual * 12, p.annual] : [p.monthly]
+      if (candidates.some((c) => Math.abs(c - amount) < 0.5)) return plan
+    }
+  }
+  return "starter"
+}
+
+type BillingUser = { id: string; email: string; stripeSubscriptionId: string | null; subscriptionStatus: string; plan?: string | null }
 
 /**
  * Apply what Shopify says about this shop's subscriptions to one user.
@@ -57,14 +88,20 @@ export async function applyShopifySubscriptions(user: BillingUser, shop: string,
   const markedHere = shopifyBilledShop(user) === shop
   if (paid) {
     if (hasStripePlan(user)) return false
-    if (markedHere && user.subscriptionStatus === "active") return true
-    const name = subs.find((s) => subscriptionCountsAsPaid(s, user.email))?.name ?? "Shopify plan"
+    // Several active subs can overlap during a plan change: the highest plan wins.
+    const rank: Record<ShopifyPlan, number> = { starter: 0, pro: 1, growth: 2 }
+    const active = subs.filter((s) => subscriptionCountsAsPaid(s, user.email))
+    const best = active.map((s) => ({ s, plan: shopifyPlanFor(s) })).sort((a, b) => rank[b.plan] - rank[a.plan])[0]
+    const plan = best?.plan ?? "starter"
+    // `plan` undefined = caller didn't load it; keep the old "already marked" short-circuit then.
+    if (markedHere && user.subscriptionStatus === "active" && (user.plan === undefined || user.plan === plan)) return true
+    const name = best?.s.name ?? "Shopify plan"
     await db.user.update({
       where: { id: user.id },
-      data: { stripeSubscriptionId: shopifySubMarker(shop), subscriptionStatus: "active", plan: "starter", trialEndsAt: null },
+      data: { stripeSubscriptionId: shopifySubMarker(shop), subscriptionStatus: "active", plan, trialEndsAt: null },
     })
     await db.mockActivity.create({
-      data: { userId: user.id, type: "shopify_billing", title: `Plan active through Shopify (${shop})`, metadata: { shop, status: "ACTIVE", plan: name } },
+      data: { userId: user.id, type: "shopify_billing", title: `Plan active through Shopify (${shop})`, metadata: { shop, status: "ACTIVE", plan: name, alphaaPlan: plan } },
     })
     return true
   }
@@ -112,7 +149,7 @@ export async function reconcileShopifyBilling(shop: string, payloadStatus: strin
     seen.add(row.userId)
     const user = await db.user.findUnique({
       where: { id: row.userId },
-      select: { id: true, email: true, stripeSubscriptionId: true, subscriptionStatus: true },
+      select: { id: true, email: true, stripeSubscriptionId: true, subscriptionStatus: true, plan: true },
     })
     if (!user) continue
     try {
