@@ -13,7 +13,7 @@ permission". Round 2 needs either Advanced Access first or a user-token login co
 all 5; Varun still ticks each "I agree" box, the Data Handling answers and Reviewer instructions
 (test login), then submits.
 Scripts and background: `docs/meta-app-review.md`. Status: `docs/growth-platform-applications.md`.
-Prepared 2026-11-18. Nothing here has been submitted.
+Prepared 2026-11-18. **Round 1 SUBMITTED 2026-11-19** (submission 29094602640203905, "Review in progress", Meta says up to 20 days). Reviewer login: meta-review@alphaa.app (comped via COMP_ACCESS_EMAILS; password held by Varun, rotate after review). Processors listed: Railway, Anthropic, Resend (US, IT services); responsible entity 18355355 Canada Inc. (Canada).
 
 ## Videos
 
