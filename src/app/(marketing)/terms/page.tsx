@@ -1,4 +1,6 @@
 import { pageMeta } from "@/lib/seo"
+import { V3Page, Frame, Section } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/article.css"
 export const metadata = pageMeta({
   title: "Terms of Service",
   description: "The terms that apply when you use Alphaa, the AI Agent that gets businesses recommended by ChatGPT, Gemini, Claude and Perplexity.",
@@ -207,22 +209,26 @@ Canada`,
 
 export default function TermsPage() {
   return (
-    <div className="pt-24 pb-20 px-4 sm:px-6">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-fg text-[35.2px] sm:text-[46.2px] font-semibold tracking-[-0.02em] mb-2">Terms of Service</h1>
-        <p className="text-muted text-sm mb-10">Last updated: November 18, 2026</p>
+    <V3Page>
+      <Frame top>
+      <Section flush>
+      <div className="rd3">
+        <h1 className="v3-h1 v3-h1--md">Terms of Service</h1>
+        <p className="lgl3-updated" style={{ marginBottom: 32 }}>Last updated: November 18, 2026</p>
 
-        <p className="text-muted text-sm leading-relaxed mb-10 p-4 border border-line/[0.08] rounded-lg bg-fg/[0.02]">
+        <p className="lgl3-note">
           These Terms of Service govern your access to and use of the Alphaa platform. By creating an account or using the Service, you agree to be bound by these Terms. Please read them carefully.
         </p>
 
         {sections.map((s) => (
-          <div key={s.title} className="mb-10">
-            <h2 className="text-fg font-semibold text-lg mb-3">{s.title}</h2>
-            <div className="text-muted text-sm leading-relaxed whitespace-pre-line">{s.body}</div>
+          <div key={s.title} className="lgl3-sec">
+            <h2>{s.title}</h2>
+            <div className="lgl3-body">{s.body}</div>
           </div>
         ))}
       </div>
-    </div>
+      </Section>
+      </Frame>
+    </V3Page>
   )
 }

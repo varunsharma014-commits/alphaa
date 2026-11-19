@@ -1,5 +1,6 @@
 import { ScanForm } from "@/components/scan/ScanForm"
-import { SectionLabel } from "@/components/common/SectionLabel"
+import { V3Page, Frame, Section } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/scan.css"
 import { Bot } from "lucide-react"
 import { pageMeta } from "@/lib/seo"
 
@@ -11,32 +12,36 @@ export const metadata = pageMeta({
 
 export default function ScanPage() {
   return (
-    <div className="pt-24 pb-20 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <SectionLabel className="mb-3 block">Free scan</SectionLabel>
-          <h1 className="text-[37.4px] sm:text-[52.8px] font-semibold text-fg leading-[1.08] tracking-[-0.02em] mb-4 text-balance">
-            See your free{" "}
-            <span className="text-[#86868b]">visibility score</span>
-          </h1>
-          <p className="text-muted text-base">
-            We check Google, ChatGPT, Maps, and your website, and show you exactly what's stopping customers from finding you. Takes 2 minutes. Then your AI agent can run your marketing and fix it.
-          </p>
-        </div>
+    <V3Page>
+      <Frame top>
+        <Section flush>
+          <div className="sc3">
+            <div className="v3-center">
+              <p className="v3-kicker">Free scan</p>
+              <h1 className="v3-h1 v3-h1--md">
+                See your free{" "}
+                <span className="v3-blue">visibility score</span>
+              </h1>
+              <p className="v3-lede">
+                We check Google, ChatGPT, Maps, and your website, and show you exactly what's stopping customers from finding you. Takes 2 minutes. Then your AI agent can run your marketing and fix it.
+              </p>
+            </div>
 
-        {/* What the scan checks — honest, no invented numbers */}
-        <div className="flex items-center justify-center gap-2 mb-6">
-          <Bot className="w-4 h-4 text-brand-orange" />
-          <p className="text-muted/70 text-xs">
-            Live check across <span className="text-fg font-medium">ChatGPT, Claude, Gemini &amp; Perplexity</span> plus your website
-          </p>
-        </div>
+            {/* What the scan checks — honest, no invented numbers */}
+            <div className="sc3-checks">
+              <Bot />
+              <p>
+                Live check across <b>ChatGPT, Claude, Gemini &amp; Perplexity</b> plus your website
+              </p>
+            </div>
 
-        <ScanForm />
-        <p className="text-center text-muted/50 text-xs mt-6">
-          No credit card · Results emailed to you
-        </p>
-      </div>
-    </div>
+            <ScanForm />
+            <p className="sc3-fine">
+              No credit card · Results emailed to you
+            </p>
+          </div>
+        </Section>
+      </Frame>
+    </V3Page>
   )
 }

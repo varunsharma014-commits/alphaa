@@ -6,7 +6,13 @@ import { MARKETS, type LocaleKey } from "@/content/locales"
 import { GUIDES } from "@/content/markets/guides"
 import { AUTHOR, AUTHOR_SCHEMA } from "@/lib/author"
 import { clipDescription } from "@/lib/seo"
+import type { CSSProperties } from "react"
+import { V3Page, Frame, Section } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/local.css"
+import "@/components/marketing/v3/pages/article.css"
 const SITE = "https://alphaa.app"
+
+const TONES = ["se", "ad", "ct", "mk", "em"] as const
 
 const BY: Record<string, string> = { en: "By", de: "Von", fr: "Par", it: "Di", ar: "بقلم" }
 
@@ -46,10 +52,14 @@ export function guideIndexMeta(key: LocaleKey): Metadata {
 
 function Shell({ lang, children }: { lang: string; children: React.ReactNode }) {
   const rtl = lang.startsWith("ar")
+  // Arabic: Noto Sans Arabic for every heading and line (v3 reads its font from --v-font), as on LocalHome.
+  const fontVar = rtl ? ({ ["--v-font" as string]: `${arabic.style.fontFamily}, var(--font-apple)` } as CSSProperties) : undefined
   return (
-    <div lang={lang} dir={rtl ? "rtl" : "ltr"} className={rtl ? `lc-rtl ${arabic.className}` : undefined}>
-      {children}
-    </div>
+    <V3Page>
+      <div lang={lang} dir={rtl ? "rtl" : "ltr"} className={rtl ? `v3 lc-rtl ${arabic.className}` : "v3"} style={fontVar}>
+        <Frame top>{children}</Frame>
+      </div>
+    </V3Page>
   )
 }
 
@@ -59,18 +69,18 @@ export function LocalGuideIndex({ k }: { k: LocaleKey }) {
   const G = GUIDES[k]
   return (
     <Shell lang={m.copy.lang}>
-      <section className="ag-section">
-        <p className="lc-crumb"><Link href={m.copy.path}>{m.extra.backToMarket}</Link></p>
-        <h1 className="lc-h1">{G.label}</h1>
-        <div className="lc-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
-          {G.guides.map((g) => (
-            <Link key={g.slug} href={guidePath(k, g.slug)} className="lc-card lc-card--link">
+      <Section flush>
+        <p className="lc3-crumb"><Link href={m.copy.path}>{m.extra.backToMarket}</Link></p>
+        <h1 className="v3-h1 v3-h1--md">{G.label}</h1>
+        <div className="lc3-guides">
+          {G.guides.map((g, i) => (
+            <Link key={g.slug} href={guidePath(k, g.slug)} className={`v3-card v3-card--tint v3-c-${TONES[i % TONES.length]}`}>
               <h3>{g.h1}</h3>
               <p>{g.description}</p>
             </Link>
           ))}
         </div>
-      </section>
+      </Section>
     </Shell>
   )
 }
@@ -131,7 +141,7 @@ export function LocalGuide({ k, slug }: { k: LocaleKey; slug: string }) {
             <div key={f.q} className="lg__faq"><h3>{f.q}</h3><p>{f.a}</p></div>
           ))}
         </section>
-        <div className="lg__cta">
+        <div className="lg__cta lc3-cta">
           <Link className="ag-hero__big" href={`${l.path}#check`}>{l.cta}</Link>
         </div>
       </article>

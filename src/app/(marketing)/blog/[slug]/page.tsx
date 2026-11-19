@@ -8,6 +8,8 @@ import { extractFaq } from "@/content/blog/faq"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
 import { clipDescription, ogImage as ogCard } from "@/lib/seo"
 import { AUTHOR, AUTHOR_SCHEMA } from "@/lib/author"
+import { V3Page, Frame } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/article.css"
 
 const SITE = "https://alphaa.app"
 const abs = (src: string) => (src.startsWith("http") ? src : `${SITE}${src.startsWith("/") ? "" : "/"}${src}`)
@@ -141,39 +143,38 @@ export default async function BlogPostPage({
   }
 
   return (
-    <article className="pt-28 pb-24 px-4 sm:px-6">
+    <V3Page>
+    <Frame top>
+    <article className="rd3">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
-      <div className="max-w-2xl mx-auto">
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-1.5 text-muted hover:text-fg text-sm transition-colors mb-8"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" /> All guides
+      <div>
+        <Link href="/blog" className="rd3-back">
+          <ArrowLeft /> All guides
         </Link>
 
-        <div className="flex items-center gap-3 mb-4">
+        <div className="rd3-meta">
           {meta.tag && (
-            <span className="text-[10px] font-semibold tracking-[-0.01em] px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
+            <span className="rd3-tag">
               {meta.tag}
             </span>
           )}
-          <span className="text-fg/30 text-xs">
+          <span>
             By{" "}
-            <Link href={AUTHOR.path} rel="author" className="hover:text-fg transition-colors">
+            <Link href={AUTHOR.path} rel="author">
               {AUTHOR.name}
             </Link>{" "}
             · {formatDate(meta.date)} · {meta.readMins} min read
           </span>
         </div>
-        <p className="text-muted text-xs mb-4">Written with AI assistance and reviewed by {AUTHOR.name}.</p>
+        <p className="rd3-ai">Written with AI assistance and reviewed by {AUTHOR.name}.</p>
 
         <h1
-          className={`text-fg text-[37.4px] sm:text-[52.8px] lg:text-[57.2px] font-semibold leading-[1.1] tracking-[-0.02em] text-balance ${meta.subtitle || meta.updated ? "mb-4" : "mb-8"}`}
+          className={`rd3-h1 ${meta.subtitle || meta.updated ? "" : "rd3-h1--gap"}`}
         >
           {meta.title}
         </h1>
@@ -245,5 +246,7 @@ export default async function BlogPostPage({
         </aside>
       </div>
     </article>
+    </Frame>
+    </V3Page>
   )
 }

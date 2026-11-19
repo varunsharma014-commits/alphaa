@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { SCAN_MESSAGES } from "@/lib/constants"
+import "@/components/marketing/v3/v3.css"
+import "@/components/marketing/v3/pages/scan.css"
 
 export function ScanLoader() {
   const [msgIdx, setMsgIdx] = useState(0)
@@ -18,31 +20,25 @@ export function ScanLoader() {
   }, [])
 
   return (
-    <div className="pt-32 pb-20 px-4 flex flex-col items-center justify-center min-h-[60vh]">
-      {/* Animated ring */}
-      <div className="relative w-24 h-24 mb-8">
-        <div className="absolute inset-0 rounded-full border-2 border-brand-orange/20" />
-        <div
-          className="absolute inset-0 rounded-full border-2 border-transparent border-t-brand-orange animate-spin"
-          style={{ animationDuration: "1.2s" }}
-        />
-        <div className="absolute inset-3 rounded-full bg-brand-orange/10 flex items-center justify-center">
-          <span className="mono text-brand-orange text-lg font-medium">{Math.round(progress)}%</span>
+    <div className="v3 v3-page">
+      <div className="v3-frame v3-frame--top">
+        <div className="sc3-load">
+          {/* Animated ring */}
+          <div className="sc3-ring">
+            <span>{Math.round(progress)}%</span>
+          </div>
+
+          {/* Status message */}
+          <p className="sc3-load__msg">
+            {SCAN_MESSAGES[msgIdx]}
+          </p>
+          <p className="sc3-load__sub">I’m checking what AI says about you…</p>
+
+          {/* Progress bar */}
+          <div className="sc3-bar">
+            <i style={{ width: `${progress}%` }} />
+          </div>
         </div>
-      </div>
-
-      {/* Status message */}
-      <p className="text-fg font-medium text-lg mb-2 text-center h-7 transition-all">
-        {SCAN_MESSAGES[msgIdx]}
-      </p>
-      <p className="text-muted text-sm mb-8">I’m checking what AI says about you…</p>
-
-      {/* Progress bar */}
-      <div className="w-full max-w-xs h-1 bg-fg/5 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-brand-orange rounded-full transition-all duration-500"
-          style={{ width: `${progress}%` }}
-        />
       </div>
     </div>
   )

@@ -1,9 +1,51 @@
-/* Scan report: light, Apple-style. Scoped to .rp so nothing else changes. */
+/* Scan report, Marketing v3 look: the --rp-* tokens read the v3 tokens, so the report is black & white
+   with the v3 type and follows the OS dark mode like the other v3 pages. Scoped to .rp. */
 .rp {
   --rp-bg: #f5f5f7; --rp-card: #ffffff; --rp-fg: #1d1d1f; --rp-mute: #6e6e73; --rp-faint: #a1a1a6;
   --rp-line: #e5e5ea; --rp-blue: #0071e3; --rp-green: #1e8e3e; --rp-red: #d70015;
   background: var(--rp-bg); color: var(--rp-fg); padding: 64px 0 140px; min-height: 100vh;
 }
+.v3.rp {
+  --rp-bg: var(--v-soft); --rp-card: var(--v-card); --rp-fg: var(--v-fg); --rp-mute: var(--v-muted); --rp-faint: color-mix(in srgb, var(--v-muted) 78%, var(--v-bg));
+  --rp-line: var(--v-line); --rp-blue: var(--v-blue); --rp-green: var(--v-good); --rp-red: var(--v-bad);
+  --rp-glass: color-mix(in srgb, var(--v-bg) 86%, transparent);
+  --rp-ok-bg: var(--se-bg); --rp-ok-fg: var(--v-good); --rp-no-bg: color-mix(in srgb, var(--v-bad) 12%, var(--v-card));
+  --rp-warn-bg: var(--ct-bg); --rp-warn-fg: var(--ct); --rp-tint: var(--ad-bg); --rp-tint-line: var(--ad-2);
+  background: var(--v-bg);
+}
+@media (prefers-color-scheme: dark) {
+  /* Leftover Tailwind fg/line/muted utilities inside the report follow the dark tokens too. */
+  :root:has(.v3-page) .v3.rp { --fg-rgb: 243 243 245; --line-rgb: 243 243 245; --muted-rgb: 163 163 171; }
+}
+.v3.rp h1, .v3.rp h2, .v3.rp h3 { color: var(--rp-fg); }
+.v3.rp .rp-card { border-radius: 22px; box-shadow: none; }
+.v3.rp .rp-hero { border-radius: 32px; }
+.v3.rp .rp-h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 700; letter-spacing: -0.03em; }
+.v3.rp .rp-top { background: var(--rp-glass); }
+.v3.rp .rp-top__biz i { background: var(--v-ink); color: var(--v-inkfg); }
+.v3.rp .rp-badge { background: var(--v-ink); color: var(--v-inkfg); border-radius: 999px; }
+.v3.rp .rp-hire { background: var(--v-ink); color: var(--v-inkfg) !important; box-shadow: none; }
+.v3.rp .rp-hire:hover { background: var(--v-ink); opacity: .92; }
+.v3.rp .rp-status--ok, .v3.rp .rp-grid__cell--yes { background: var(--rp-ok-bg); color: var(--rp-ok-fg); }
+.v3.rp .rp-status--no, .v3.rp .rp-warn--improvement { background: var(--v-soft); color: var(--rp-mute); }
+.v3.rp .rp-grid__cell--no, .v3.rp .rp-warn--critical { background: var(--rp-no-bg); color: var(--rp-red); }
+.v3.rp .rp-warn--warning { background: var(--rp-warn-bg); color: var(--rp-warn-fg); }
+.v3.rp .rp-table__you { background: var(--rp-ok-bg); }
+.v3.rp .rp-table__biz em { border-color: color-mix(in srgb, var(--v-good) 45%, transparent); }
+.v3.rp .rp-plan { background: var(--rp-tint); border-color: var(--rp-tint-line); }
+.v3.rp .rp-plan__a { background: var(--v-ink); color: var(--v-inkfg); }
+.v3.rp .rp-step__dot { border-color: var(--rp-card); }
+.v3.rp .rp-fix__note { background: var(--rp-warn-bg); color: var(--rp-warn-fg); }
+.v3.rp .rp-btn { background: var(--rp-card); }
+.v3.rp .rp-btn--blue { background: var(--v-ink); border-color: var(--v-ink); color: var(--v-inkfg) !important; }
+.v3.rp .rp-bar-fixed__in { background: color-mix(in srgb, var(--v-card) 96%, transparent); }
+.v3.rp .rp-ask { background: var(--v-ink); color: var(--v-inkfg); border: 0; border-radius: 32px; }
+.v3.rp .rp-ask h2 { color: var(--v-inkfg); }
+.v3.rp .rp-ask > p:first-of-type { color: color-mix(in srgb, var(--v-inkfg) 72%, transparent); }
+.v3.rp .rp-ask .rp-fine { color: color-mix(in srgb, var(--v-inkfg) 62%, transparent); }
+.v3.rp .rp-ask .rp-hire { background: var(--v-inkfg); color: var(--v-ink) !important; }
+.v3.rp .rp-ask__email button { color: var(--v-inkfg) !important; background: transparent !important; border-color: color-mix(in srgb, var(--v-inkfg) 40%, transparent) !important; }
+.v3.rp .text-brand-orange { color: var(--v-fg); background: color-mix(in srgb, var(--v-blue) 16%, transparent); border-radius: 4px; padding: 0 2px; }
 .rp-wrap { max-width: 800px; margin: 0 auto; padding: 0 16px; }
 .rp-top { position: sticky; top: 56px; z-index: 20; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 20px; margin-bottom: 28px; background: rgb(255 255 255 / 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--rp-line); }
 .rp-top__biz { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; min-width: 0; }
@@ -146,3 +188,21 @@
   .rp-engine__head { flex-wrap: wrap; }
   .rp-top { top: 56px; }
 }
+
+/* Inside .v3 the base reset (.v3 p / h2 margin 0, .v3 button font inherit, .v3 a colour inherit)
+   outranks single-class rules, so restore the report's own spacing and sizes at .v3.rp strength. */
+.v3.rp .rp-h2 { margin: 48px 0 8px; }
+.v3.rp .rp-lead { margin: 0 0 18px; }
+.v3.rp .rp-fine { margin: 10px 0 0; }
+.v3.rp .rp-eyebrow { margin: 0 0 10px; }
+.v3.rp .rp-hero__sub { margin: 14px 0 0; }
+.v3.rp .rp-dial__label { margin: 10px 0 0; }
+.v3.rp .rp-dial__cap { margin: 2px 0 0; }
+.v3.rp .rp-fix__note { margin: 16px 0 0; }
+.v3.rp .rp-link, .v3.rp .rp-more, .v3.rp .rp-btn { font-size: 14px; font-weight: 500; }
+.v3.rp .rp-link { color: var(--rp-blue); }
+.v3.rp .rp-table__biz a { color: var(--rp-faint); }
+.v3.rp button.text-sm { font-size: 14px; line-height: 20px; }
+.v3.rp button.text-\[11px\] { font-size: 11px; }
+.v3.rp button.text-\[12px\] { font-size: 12px; }
+.v3.rp .mt-2 { margin-top: .5rem; }

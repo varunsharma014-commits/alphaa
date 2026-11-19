@@ -7,7 +7,9 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { db } from "@/lib/db"
 import { ShareWinButton } from "@/components/dashboard/ShareWinButton"
-import { OrangePillButton } from "@/components/common/OrangePillButton"
+import Link from "next/link"
+import { V3Page, Frame } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/scan.css"
 import {
   Bot, Globe, Sparkles, Search, TrendingUp, PartyPopper, CheckCircle2,
   type LucideIcon,
@@ -82,44 +84,48 @@ export default async function PublicWinPage({
   })
 
   return (
-    <div className="pt-32 pb-24 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto">
+    <V3Page>
+      <Frame top>
+        <div className="wn3">
 
-        {/* Celebratory win card */}
-        <div className="glass-card rounded-3xl p-8 sm:p-12 text-center shadow-glow-sm">
-          <div className="w-16 h-16 rounded-2xl bg-brand-orange/15 border border-brand-orange/30 flex items-center justify-center mx-auto mb-6">
-            <Icon size={30} className="text-brand-orange" />
+          {/* Celebratory win card */}
+          <div className="wn3-card">
+            <div className="wn3-icon">
+              <Icon size={30} />
+            </div>
+
+            <p className="wn3-eyebrow">
+              Verified AI-visibility win
+            </p>
+
+            <p className="wn3-biz">{businessName}</p>
+            <h1>
+              {headline}
+            </h1>
+
+            <div className="wn3-verified">
+              <CheckCircle2 size={15} />
+              <span>Verified by alphaa on {verifiedDate}</span>
+            </div>
+
+            <div className="wn3-share"><ShareWinButton winId={win.id} headline={headline} align="center" /></div>
           </div>
 
-          <p className="text-xs tracking-[-0.01em] text-brand-orange mb-4">
-            Verified AI-visibility win
-          </p>
-
-          <p className="text-fg/80 text-lg font-medium mb-2">{businessName}</p>
-          <h1 className="text-[35.2px] sm:text-[50.6px] font-semibold text-fg leading-[1.1] tracking-[-0.02em] mb-6 text-balance">
-            {headline}
-          </h1>
-
-          <div className="flex items-center justify-center gap-1.5 text-fg/40 text-sm mb-8">
-            <CheckCircle2 size={15} className="text-green-500" />
-            <span>Verified by alphaa on {verifiedDate}</span>
+          {/* Subtle viral hook */}
+          <div className="wn3-hook">
+            <p>
+              Want an AI agent running your marketing too? Start with a free check of whether
+              ChatGPT, Claude, Gemini and Perplexity recommend your business.
+            </p>
+            <div className="v3-btns">
+              <Link className="v3-btn" href="/start">
+                Get started
+              </Link>
+            </div>
           </div>
 
-          <ShareWinButton winId={win.id} headline={headline} align="center" />
         </div>
-
-        {/* Subtle viral hook */}
-        <div className="glass-card rounded-2xl p-6 sm:p-8 text-center mt-8">
-          <p className="text-muted text-sm sm:text-base mb-4">
-            Want an AI agent running your marketing too? Start with a free check of whether
-            ChatGPT, Claude, Gemini and Perplexity recommend your business.
-          </p>
-          <OrangePillButton href="/start" size="md">
-            Get started
-          </OrangePillButton>
-        </div>
-
-      </div>
-    </div>
+      </Frame>
+    </V3Page>
   )
 }

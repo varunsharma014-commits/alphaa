@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { GlassCard } from "@/components/common/GlassCard"
-import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { cn } from "@/lib/utils"
 import { track } from "@/lib/gtag"
 import { fbTrack } from "@/lib/pixel"
@@ -72,51 +70,53 @@ export function ScanForm() {
     hint?: string
   ) {
     return (
-      <div>
-        <div className="flex items-center justify-between mb-1.5">
-          <label className="block text-fg text-sm font-medium">{label}</label>
-          {hint && <span className="text-muted/50 text-xs">{hint}</span>}
+      <div className="sc3-field">
+        <div className="sc3-field__top">
+          <label>{label}</label>
+          {hint && <span className="sc3-field__hint">{hint}</span>}
         </div>
         <input
           type={type}
           value={form[key]}
           onChange={(e) => { setForm((f) => ({ ...f, [key]: e.target.value })); setErrors((er) => ({ ...er, [key]: undefined })) }}
           placeholder={placeholder}
-          className={cn(
-            "w-full bg-bg-tertiary border rounded-xl px-4 py-3 text-fg placeholder:text-muted text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors",
-            errors[key] ? "border-red-500" : "border-line/10 focus:border-brand-orange"
-          )}
+          className={cn("sc3-input", errors[key] && "sc3-input--bad")}
         />
-        {errors[key] && <p className="text-red-400 text-xs mt-1">{errors[key]}</p>}
+        {errors[key] && <p className="sc3-err">{errors[key]}</p>}
       </div>
     )
   }
 
   return (
-    <GlassCard>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div>
+      <form onSubmit={handleSubmit} className="sc3-form">
         {field("Business name", "businessName", "Downtown Dental, ABC Plumbing…")}
         {field("City", "city", "Austin, TX")}
         {field("Your email", "email", "you@yourbusiness.com", "email")}
         {field("Website URL", "websiteUrl", "yoursite.com", "text", "optional")}
-        <OrangePillButton
-          type="submit"
-          loading={loading}
-          className="w-full justify-center mt-2"
-          size="lg"
-        >
-          {loading ? "I’m asking the AIs about your business…" : "Get my free visibility score →"}
-        </OrangePillButton>
+        <button type="submit" disabled={loading} className="v3-btn">
+          {loading ? <Spinner /> : "Get my free visibility score →"}
+        </button>
         {region.eu && !region.de && (
-          <label className="flex items-start gap-2 text-fg text-xs leading-snug cursor-pointer">
-            <input type="checkbox" checked={optIn} onChange={(e) => setOptIn(e.target.checked)} className="mt-0.5" />
+          <label className="sc3-optin">
+            <input type="checkbox" checked={optIn} onChange={(e) => setOptIn(e.target.checked)} />
             <span>{NURTURE_OPTIN_LABEL}</span>
           </label>
         )}
-        <p className="text-center text-muted text-xs">
+        <p className="sc3-notice">
           {region.de ? "We’ll email your report. Unsubscribe anytime." : region.eu ? NURTURE_EU_FINE : NURTURE_NOTICE}
         </p>
       </form>
-    </GlassCard>
+    </div>
+  )
+}
+
+// Same spinner the old pill button showed while loading.
+function Spinner() {
+  return (
+    <svg className="sc3-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+      <circle opacity="0.25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path opacity="0.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+    </svg>
   )
 }

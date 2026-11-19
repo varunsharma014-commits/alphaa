@@ -4,12 +4,13 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { ScanLoader } from "@/components/scan/ScanLoader"
-import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { track } from "@/lib/gtag"
 import { fbTrack } from "@/lib/pixel"
 import type { ScanResult, EngineEvidence, ScanInsights, ScanQuestion } from "@/types/scan"
 import type { SiteChecks } from "@/lib/site-check"
 import { computeScore, buildFindings, scoreLabel, type Finding, type ReportEngine, type ReportQuestion } from "@/lib/scan-report"
+import "@/components/marketing/v3/v3.css"
+import "@/components/marketing/v3/pages/scan.css"
 import "./report.css"
 import { localPrice } from "@/lib/local-price"
 import { GUARANTEE_LINE, RENEWAL_LINE } from "@/lib/offer-copy"
@@ -890,22 +891,24 @@ function ScanResultsContent() {
   // address never reaches the score or the AI answers.
   if (gated) {
     return (
-      <div className="pt-28 pb-24 px-4">
-        <div className="max-w-[520px] mx-auto text-center">
-          <div className="w-14 h-14 rounded-2xl bg-brand-orange/10 flex items-center justify-center mx-auto mb-7">
-            <Mail className="w-6 h-6 text-brand-orange" />
+      <div className="v3 v3-page">
+        <div className="v3-frame v3-frame--top">
+          <div className="sc3-state">
+            <div className="sc3-state__icon">
+              <Mail />
+            </div>
+            <h1 className="v3-h1 v3-h1--md">
+              Check your email.
+            </h1>
+            <p>
+              {gateInfo?.businessName ? <>Your report for <span className="sc3-strong">{gateInfo.businessName}</span> is ready. </> : "Your report is ready. "}
+              We sent the link to {gateInfo?.maskedEmail ? <span className="sc3-strong">{gateInfo.maskedEmail}</span> : "your inbox"}.
+            </p>
+            <p style={{ fontSize: 14 }}>
+              Opening it from the email confirms the address is yours — that&rsquo;s
+              the only reason we ask.
+            </p>
           </div>
-          <h1 className="text-fg text-[35.2px] sm:text-[44px] font-bold leading-[1.15] tracking-[-0.02em] mb-4">
-            Check your email.
-          </h1>
-          <p className="text-muted text-[17px] leading-relaxed mb-8">
-            {gateInfo?.businessName ? <>Your report for <span className="text-fg font-medium">{gateInfo.businessName}</span> is ready. </> : "Your report is ready. "}
-            We sent the link to {gateInfo?.maskedEmail ? <span className="text-fg font-medium">{gateInfo.maskedEmail}</span> : "your inbox"}.
-          </p>
-          <p className="text-muted-soft text-[14px] leading-relaxed">
-            Opening it from the email confirms the address is yours — that&rsquo;s
-            the only reason we ask.
-          </p>
         </div>
       </div>
     )
@@ -913,24 +916,28 @@ function ScanResultsContent() {
 
   if (error || !result) {
     return (
-      <div className="pt-24 pb-20 px-4 text-center max-w-md mx-auto">
-        <AlertTriangle className="w-8 h-8 text-brand-orange mx-auto mb-4" />
-        <p className="text-fg text-lg font-medium mb-2">
+      <div className="v3 v3-page">
+      <div className="v3-frame v3-frame--top">
+      <div className="sc3-state">
+        <div className="sc3-state__icon"><AlertTriangle /></div>
+        <p className="sc3-state__title">
           Your scan is taking longer than usual.
         </p>
-        <p className="text-muted text-sm mb-6">
+        <p style={{ fontSize: 15, marginBottom: 4 }}>
           {scanId
             ? "AI engines can be slow at peak times — your results may still be on the way. Check again, or start a fresh scan."
             : "We couldn't find that scan. Start a fresh one — it only takes 2 minutes."}
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <div className="v3-btns">
           {scanId && (
-            <OrangePillButton onClick={retry}>Check again →</OrangePillButton>
+            <button type="button" className="v3-btn" onClick={retry}>Check again →</button>
           )}
-          <OrangePillButton href="/scan" variant={scanId ? "ghost" : "primary"}>
+          <Link href="/scan" className={scanId ? "v3-btn v3-btn--ghost" : "v3-btn"}>
             Run a new scan
-          </OrangePillButton>
+          </Link>
         </div>
+      </div>
+      </div>
       </div>
     )
   }
@@ -1102,7 +1109,7 @@ function ScanResultsContent() {
       : aiMentions === totalEngines ? "AI names you today. I’ll keep it that way." : `${missedNames.length} of ${totalEngines} AIs skip you. I can fix that.`
 
   return (
-    <div className="rp">
+    <div className="v3 v3-page rp">
       <div className="rp-top">
         <span className="rp-top__biz">
           {result.ogData?.favicon ? (

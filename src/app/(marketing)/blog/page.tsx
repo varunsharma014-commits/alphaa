@@ -2,6 +2,8 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { getAllPosts } from "@/content/blog"
 import { pageMeta } from "@/lib/seo"
+import { V3Page, Frame, Section } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/article.css"
 
 export const metadata = {
   ...pageMeta({
@@ -26,50 +28,42 @@ export default function BlogIndexPage() {
   const posts = getAllPosts()
 
   return (
-    <div className="pt-28 pb-24 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-12 text-center">
-          <p className="text-brand-orange text-xs font-semibold tracking-[-0.01em] mb-3">
+    <V3Page>
+      <Frame top>
+        <Section center>
+          <p className="v3-kicker">
             The alphaa blog
           </p>
-          <h1 className="text-fg text-[41.8px] sm:text-[61.6px] lg:text-[70.4px] font-semibold leading-[1.05] tracking-[-0.02em] text-balance">
+          <h1 className="v3-h1 v3-h1--md">
             More customers, less{" "}
-            <span className="text-[#0071e3]">marketing work</span>
+            <span className="v3-blue">marketing work</span>
           </h1>
-          <p className="text-muted text-base mt-4 max-w-xl mx-auto">
+          <p className="v3-lede">
             Practical, no-fluff marketing guides for small business owners: Google, AI search,
             social media, ads and email, and how to win customers from each.
           </p>
-        </div>
+        </Section>
 
-        <div className="space-y-4">
-          {posts.map(({ meta }) => (
-            <Link
-              key={meta.slug}
-              href={`/blog/${meta.slug}`}
-              className="block rounded-2xl border border-line/10 bg-fg/[0.02] hover:bg-fg/[0.04] hover:border-line/20 transition-colors p-6 group"
-            >
-              <div className="flex items-center gap-3 mb-2">
-                {meta.tag && (
-                  <span className="text-[10px] font-semibold tracking-[-0.01em] px-2 py-0.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange">
-                    {meta.tag}
+        <Section flush>
+          <div className="bl3-list">
+            {posts.map(({ meta }) => (
+              <Link key={meta.slug} href={`/blog/${meta.slug}`} className="bl3-post">
+                <div className="bl3-post__meta">
+                  {meta.tag && <span className="rd3-tag">{meta.tag}</span>}
+                  <span>
+                    {formatDate(meta.date)} · {meta.readMins} min read
                   </span>
-                )}
-                <span className="text-fg/30 text-xs">
-                  {formatDate(meta.date)} · {meta.readMins} min read
+                </div>
+                <h2>{meta.title}</h2>
+                <p>{meta.description}</p>
+                <span className="bl3-post__more">
+                  Read guide <ArrowRight />
                 </span>
-              </div>
-              <h2 className="text-fg text-xl font-semibold leading-snug mb-2 group-hover:text-brand-orange transition-colors">
-                {meta.title}
-              </h2>
-              <p className="text-muted text-sm leading-relaxed mb-3">{meta.description}</p>
-              <span className="inline-flex items-center gap-1.5 text-brand-orange text-sm font-medium">
-                Read guide <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
+              </Link>
+            ))}
+          </div>
+        </Section>
+      </Frame>
+    </V3Page>
   )
 }

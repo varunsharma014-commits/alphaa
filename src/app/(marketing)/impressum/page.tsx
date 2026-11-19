@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { V3Page, Frame, Section } from "@/components/marketing/v3"
+import "@/components/marketing/v3/pages/article.css"
 
 export const metadata: Metadata = {
   title: "Impressum",
@@ -10,43 +12,47 @@ export const metadata: Metadata = {
 // Anbieterkennzeichnung nach § 5 DDG (Germany) and § 18 Abs. 2 MStV.
 export default function ImpressumPage() {
   return (
-    <div lang="de" className="pt-28 pb-24 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto text-fg">
-        <h1 className="text-[34px] font-semibold tracking-[-0.02em] mb-8">Impressum</h1>
+    <V3Page>
+      <Frame top>
+      <Section flush>
+      <div lang="de" className="rd3 lgl3-prose">
+        <h1 className="v3-h1 v3-h1--md" style={{ marginBottom: 8 }}>Impressum</h1>
 
-        <h2 className="text-lg font-semibold mt-8 mb-2">Angaben gemäß § 5 DDG</h2>
-        <p className="leading-relaxed">
+        <h2>Angaben gemäß § 5 DDG</h2>
+        <p>
           18355355 Canada INC. (handelnd als „Alphaa“)
           <br />1000 Innovation Drive, Suite 500
           <br />Kanata, ON K2K 3E7
           <br />Kanada
         </p>
 
-        <h2 className="text-lg font-semibold mt-8 mb-2">Vertreten durch</h2>
+        <h2>Vertreten durch</h2>
         <p>Varun Sharma, Director</p>
 
-        <h2 className="text-lg font-semibold mt-8 mb-2">Kontakt</h2>
-        <p>E-Mail: <a className="underline" href="mailto:hi@alphaa.app">hi@alphaa.app</a></p>
+        <h2>Kontakt</h2>
+        <p>E-Mail: <a href="mailto:hi@alphaa.app">hi@alphaa.app</a></p>
 
-        <h2 className="text-lg font-semibold mt-8 mb-2">Registereintrag</h2>
+        <h2>Registereintrag</h2>
         <p>Kanadische Bundeskapitalgesellschaft, eingetragen bei Corporations Canada (Innovation, Science and Economic Development Canada), Unternehmensnummer 1835535-5.</p>
 
-        <h2 className="text-lg font-semibold mt-8 mb-2">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+        <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
         <p>Varun Sharma, Anschrift wie oben.</p>
 
-        <h2 className="text-lg font-semibold mt-8 mb-2">Verbraucherstreitbeilegung</h2>
-        <p className="leading-relaxed">Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+        <h2>Verbraucherstreitbeilegung</h2>
+        <p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
 
-        <hr className="my-10 border-line/[0.12]" />
+        <hr />
 
-        <h2 lang="en" className="text-lg font-semibold mb-2">Legal notice (English)</h2>
-        <p lang="en" className="leading-relaxed">
+        <h2 lang="en" style={{ marginTop: 0 }}>Legal notice (English)</h2>
+        <p lang="en">
           Alphaa is operated by 18355355 Canada INC, 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada, a federal
           corporation registered with Corporations Canada (corporation number 1835535-5), represented by Varun Sharma, Director.
-          Contact: hi@alphaa.app. See also our <Link className="underline" href="/privacy">privacy policy</Link> and{" "}
-          <Link className="underline" href="/terms">terms</Link>.
+          Contact: hi@alphaa.app. See also our <Link href="/privacy">privacy policy</Link> and{" "}
+          <Link href="/terms">terms</Link>.
         </p>
       </div>
-    </div>
+      </Section>
+      </Frame>
+    </V3Page>
   )
 }
