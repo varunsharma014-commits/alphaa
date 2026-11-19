@@ -3,6 +3,7 @@
 import { db } from "@/lib/db"
 import { safeFetch } from "@/lib/safe-fetch"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
+import { pickLogo } from "@/lib/brand-logo"
 
 export type BrandKit = {
   logo: string | null
@@ -26,6 +27,8 @@ async function get(url: string, max = 600_000): Promise<string> {
     return ""
   }
 }
+
+export { pickLogo, logoCandidates, brandTokens } from "@/lib/brand-logo"
 
 export const HEX_RE = /^#[0-9a-f]{6}$/i
 
@@ -54,7 +57,7 @@ export function luminance(hex: string): number {
 }
 
 /** Read logo, colours and font from the site. Null if it can't be opened. */
-export async function readBrandKit(siteUrl: string): Promise<Omit<BrandKit, "source" | "at"> | null> {
+export async function readBrandKit(siteUrl: string, opts: { name?: string | null } = {}): Promise<Omit<BrandKit, "source" | "at"> | null> {
   const base = siteUrl.startsWith("http") ? siteUrl : `https://${siteUrl}`
   const html = await get(base)
   if (!html) return null
@@ -83,23 +86,7 @@ export async function readBrandKit(siteUrl: string): Promise<Omit<BrandKit, "sou
     if (colors.length >= 4) break
   }
 
-  // Logo: an <img> that says "logo", else the apple-touch icon, else the biggest favicon.
-  let logo: string | null = null
-  for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
-    const tag = m[0]
-    if (!/logo/i.test(tag)) continue
-    const src = tag.match(/\b(?:src|data-src)=["']([^"']+)/i)?.[1]
-    if (src && !src.startsWith("data:")) { logo = abs(src); break }
-  }
-  if (!logo) {
-    const touch = html.match(/<link[^>]+rel=["']apple-touch-icon[^"']*["'][^>]*href=["']([^"']+)/i)?.[1]
-    if (touch) logo = abs(touch)
-  }
-  if (!logo) {
-    const icons = [...html.matchAll(/<link[^>]+rel=["'](?:shortcut )?icon["'][^>]*>/gi)].map((m) => ({ href: m[0].match(/href=["']([^"']+)/i)?.[1], size: Number(m[0].match(/sizes=["'](\d+)/i)?.[1] ?? 0) })).filter((i) => i.href)
-    const best = icons.sort((a, b) => b.size - a.size)[0]
-    if (best?.href && !best.href.endsWith(".ico")) logo = abs(best.href)
-  }
+  const logo = pickLogo(html, base, opts.name)
 
   const gf = html.match(/fonts\.googleapis\.com\/css2?\?family=([^&:"'@]+)/i)?.[1]
   const fam = css.match(/font-family\s*:\s*["']?([^"',;}{]+)/i)?.[1]?.trim()
@@ -114,7 +101,7 @@ export async function ensureBrandKit(userId: string, opts: { force?: boolean } =
   if (s.brand && !opts.force) return s.brand
   const user = await db.user.findUnique({ where: { id: userId }, select: { websiteUrl: true, businessName: true } })
   const site = s.wp?.siteUrl ?? s.site?.siteUrl ?? user?.websiteUrl
-  const read = site ? await readBrandKit(site).catch(() => null) : null
+  const read = site ? await readBrandKit(site, { name: user?.businessName }).catch(() => null) : null
   if (!read && s.brand) return s.brand
   // Re-reading keeps what the owner set by hand.
   const owner = s.brand?.source === "owner" ? s.brand : null

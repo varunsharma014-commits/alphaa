@@ -132,7 +132,7 @@ async function runDemoWeek(leadId: string, week: DemoWeek): Promise<void> {
 
   // 1 + 2: brand, voice and this week's news, in parallel.
   const [brand, voice, trends] = await Promise.all([
-    site ? readBrandKit(site).catch(() => null) : null,
+    site ? readBrandKit(site, { name: lead.businessName }).catch(() => null) : null,
     site ? voiceWithRetry(site, name, industry) : null,
     searchTrends({ businessName: name, businessType: industry, city, websiteUrl: site }).catch(() => [] as Trend[]),
   ])
