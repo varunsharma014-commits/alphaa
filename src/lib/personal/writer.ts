@@ -199,7 +199,9 @@ export async function writePersonalEmail(opts: {
       const msg = await anthropic.messages.parse({
         model: MODEL,
         max_tokens: 8000,
-        system: SYSTEM,
+        // SYSTEM is identical for every email (a nurture batch writes many in a row, plus retries),
+        // so cache it; the per-lead prompt stays in the user turn after the breakpoint.
+        system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
         output_config: { effort: "medium", format: zodOutputFormat(Schema) },
         messages: [{ role: "user", content }],
       })
