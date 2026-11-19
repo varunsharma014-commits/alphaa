@@ -10,8 +10,9 @@ import { db } from "@/lib/db"
 import { anthropic } from "@/lib/claude"
 import { writePost, writeMeta, writeLocationPage, writeSocial } from "@/lib/content"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { generatePostImage } from "@/lib/images"
+import { generatePostImage, imageUrl } from "@/lib/images"
 import { generateGbpPost } from "@/lib/gbp-poster"
+import { once } from "@/lib/draft-dedupe"
 
 // Writes a short, publish-ready FAQ section that closes a competitor gap —
 // from the business's own facts only. Unknown facts become [bracketed]
@@ -47,28 +48,16 @@ export async function POST(req: Request) {
     (await voiceFor(user.id).catch(() => null)) ?? "",
   ].filter(Boolean).join("\n")
 
+  // "Write it" tapped twice (or retried while the first is still writing) answers with the same
+  // draft instead of writing a second copy: one in-flight write per brand + mode + topic, and a
+  // finished one from the last 15 minutes is returned as is.
+  const mode = input.mode
+  if (mode === "post" || mode === "gbp" || mode === "social") {
+    const r = await once(`draft:${user.id}:${mode}:${input.topic.trim().toLowerCase()}`, () => writeDraft(user, mode, input.topic))
+    return r.ok ? NextResponse.json(r.body) : NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
+  }
+
   try {
-    if (input.mode === "post") {
-      const p = await writePost(user, input.topic === "auto" ? undefined : input.topic)
-      const img = await generatePostImage(user.id, { title: p.title, businessType: user.businessType, city: user.city })
-      const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null } } })
-      return NextResponse.json({ title: p.title, text: p.markdown, draftId: row.id, image: img?.url ?? null })
-    }
-    if (input.mode === "gbp") {
-      const integ = await db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationName: true } })
-      const g = await generateGbpPost(integ?.gmbLocationName ?? user.businessName ?? "Our Business", user.businessType ?? "local business", user.city ?? "", "UPDATE", input.topic, await voiceFor(user.id).catch(() => null))
-      const post = await db.gbpPost.create({ data: { userId: user.id, content: g.content, postType: "UPDATE", status: "draft" } })
-      return NextResponse.json({ title: "Google listing update", text: g.content, postId: post.id })
-    }
-    if (input.mode === "social") {
-      const sp = await writeSocial(user, input.topic)
-      const { ensureBrandKit } = await import("@/lib/brand-kit")
-      const { renderSocialCard } = await import("@/lib/social-card")
-      const brand = await ensureBrandKit(user.id).catch(() => null)
-      const card = await renderSocialCard(user.id, { headline: sp.headline, businessName: user.businessName, brand }).catch(() => null)
-      await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Wrote a social post: “${input.topic}”`, metadata: { topic: input.topic, text: sp.text, kind: "social", imageId: card?.id ?? null } } })
-      return NextResponse.json({ title: "Social post", text: sp.text, image: card?.url ?? null })
-    }
     if (input.mode === "meta") {
       const url = input.url ?? user.websiteUrl ?? ""
       const page = await safeFetch(url, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) }).then((r) => r.text()).catch(() => "")
@@ -110,5 +99,51 @@ ${facts}`,
   } catch (err) {
     console.error("[agent/draft]", err instanceof Error ? err.message : err)
     return NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
+  }
+}
+
+const RECENT_MS = 15 * 60_000
+type DraftUser = NonNullable<Awaited<ReturnType<typeof db.user.findUnique>>>
+
+async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topic: string): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false }> {
+  const since = new Date(Date.now() - RECENT_MS)
+  try {
+    if (mode === "post") {
+      const prev = await db.mockActivity.findFirst({ where: { userId: user.id, type: "post_draft", createdAt: { gte: since }, metadata: { path: ["requestTopic"], equals: topic } }, orderBy: { createdAt: "desc" } })
+      if (prev) {
+        const m = prev.metadata as { title?: string; markdown?: string; imageId?: string | null }
+        return { ok: true, body: { title: m.title, text: m.markdown, draftId: prev.id, image: m.imageId ? imageUrl(m.imageId) : null } }
+      }
+      const p = await writePost(user, topic === "auto" ? undefined : topic)
+      const img = await generatePostImage(user.id, { title: p.title, businessType: user.businessType, city: user.city })
+      const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null, requestTopic: topic } } })
+      return { ok: true, body: { title: p.title, text: p.markdown, draftId: row.id, image: img?.url ?? null } }
+    }
+    if (mode === "gbp") {
+      const prev = await db.mockActivity.findFirst({ where: { userId: user.id, type: "gbp_post_draft", createdAt: { gte: since }, metadata: { path: ["topic"], equals: topic } }, orderBy: { createdAt: "desc" } })
+      const prevId = (prev?.metadata as { postId?: string } | null)?.postId
+      const prevPost = prevId ? await db.gbpPost.findFirst({ where: { id: prevId, userId: user.id, status: "draft" } }) : null
+      if (prevPost) return { ok: true, body: { title: "Google listing update", text: prevPost.content, postId: prevPost.id } }
+      const integ = await db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationName: true } })
+      const g = await generateGbpPost(integ?.gmbLocationName ?? user.businessName ?? "Our Business", user.businessType ?? "local business", user.city ?? "", "UPDATE", topic, await voiceFor(user.id).catch(() => null))
+      const post = await db.gbpPost.create({ data: { userId: user.id, content: g.content, postType: "UPDATE", status: "draft" } })
+      await db.mockActivity.create({ data: { userId: user.id, type: "gbp_post_draft", title: "Wrote an update for your Google listing", metadata: { topic, postId: post.id } } })
+      return { ok: true, body: { title: "Google listing update", text: g.content, postId: post.id } }
+    }
+    const prev = await db.mockActivity.findFirst({ where: { userId: user.id, type: "draft_written", createdAt: { gte: since }, metadata: { path: ["topic"], equals: topic } }, orderBy: { createdAt: "desc" } })
+    const pm = prev?.metadata as { text?: string; kind?: string; imageId?: string | null } | null
+    if (pm?.kind === "social" && pm.text) {
+      return { ok: true, body: { title: "Social post", text: pm.text, image: pm.imageId ? imageUrl(pm.imageId) : null } }
+    }
+    const sp = await writeSocial(user, topic)
+    const { ensureBrandKit } = await import("@/lib/brand-kit")
+    const { renderSocialCard } = await import("@/lib/social-card")
+    const brand = await ensureBrandKit(user.id).catch(() => null)
+    const card = await renderSocialCard(user.id, { headline: sp.headline, businessName: user.businessName, brand }).catch(() => null)
+    await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Wrote a social post: “${topic}”`, metadata: { topic, text: sp.text, kind: "social", imageId: card?.id ?? null } } })
+    return { ok: true, body: { title: "Social post", text: sp.text, image: card?.url ?? null } }
+  } catch (err) {
+    console.error("[agent/draft]", mode, err instanceof Error ? err.message : err)
+    return { ok: false }
   }
 }

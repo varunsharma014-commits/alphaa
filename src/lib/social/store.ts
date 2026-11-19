@@ -1,6 +1,7 @@
 // Storage for connected accounts and the post queue. Same pattern as the rest of the agent:
 // MockActivity rows (type "social_account" / "social_post"), no schema change. Tokens are
 // encrypted with the connector key (AES-256-GCM, lib/checks/bing-webmaster encryptSecret).
+import { draftKey } from "@/lib/draft-dedupe"
 import { db } from "@/lib/db"
 import { decryptSecret, encryptSecret } from "@/lib/checks/bing-webmaster"
 import type { SocialAccount, SocialPost } from "./types"
@@ -65,6 +66,13 @@ export async function createPost(userId: string, p: Omit<SocialPost, "id">): Pro
       const v = await takeNextVideo(userId).catch(() => null)
       if (v) p = { ...p, videoAssetId: v }
     }
+  }
+  // Idempotent: the same text already waiting in the queue (a double tap, a retried run) is that post.
+  const key = draftKey(p.text)
+  if (key) {
+    const recent = await db.mockActivity.findMany({ where: { userId, type: POST, createdAt: { gte: new Date(Date.now() - 86_400_000) } }, orderBy: { createdAt: "desc" }, take: 30 })
+    const same = recent.find((r) => { const m = r.metadata as Omit<SocialPost, "id"> | null; return !!m && (m.status === "draft" || m.status === "scheduled") && draftKey(m.text) === key })
+    if (same) return { ...(same.metadata as Omit<SocialPost, "id">), id: same.id }
   }
   const row = await db.mockActivity.create({ data: { userId, type: POST, title: p.title ? `Social post: “${p.title}”` : "Social post", metadata: p as object } })
   return { ...p, id: row.id }

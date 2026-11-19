@@ -7,6 +7,7 @@
 // Shared by the dashboard (components/agent/Briefing.tsx) and the weekly
 // briefing email. Every line comes from a database row; nothing is invented.
 
+import { draftKey, uniqueBy } from "@/lib/draft-dedupe"
 import { db } from "@/lib/db"
 import { getEngineEvidence, type EngineKey } from "@/lib/engine-evidence"
 import { latestQuestionScan } from "@/lib/questions"
@@ -191,10 +192,11 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number;
         text: (draft?.metadata as { text?: string } | null)?.text ?? null,
       })
     }
-    for (const p of user.gbpPosts) inbox.push({ kind: "gbp", id: p.id, title: "I wrote an update for your Google listing:", text: p.content })
+    // Newest first; a near-identical older draft is the same piece, so it's shown once.
+    for (const p of uniqueBy(user.gbpPosts, (x) => draftKey(x.content))) inbox.push({ kind: "gbp", id: p.id, title: "I wrote an update for your Google listing:", text: p.content })
   }
   if (settings.wp || settings.site) {
-    for (const d of postDrafts) {
+    for (const d of uniqueBy(postDrafts, (x) => { const m = (x.metadata ?? {}) as { title?: string; status?: string }; return m.status === "ready" ? draftKey(m.title) : "" })) {
       const m = (d.metadata ?? {}) as { title?: string; markdown?: string; status?: string; imageId?: string | null }
       if (m.status !== "ready" || !m.markdown) continue
       inbox.push({ kind: "post", id: d.id, title: `I wrote a new post for your website: “${m.title ?? "New post"}”`, text: m.markdown, image: m.imageId ? imageUrl(m.imageId) : null })
@@ -213,7 +215,7 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number;
       listAccounts(userId).catch(() => []),
       setupProgress(user).catch(() => null),
     ])
-    const drafts = posts.filter((p) => p.status === "draft").sort((a, b) => Date.parse(a.scheduledFor ?? "") - Date.parse(b.scheduledFor ?? ""))
+    const drafts = uniqueBy(posts.filter((p) => p.status === "draft"), (p) => draftKey(p.text)).sort((a, b) => Date.parse(a.scheduledFor ?? "") - Date.parse(b.scheduledFor ?? ""))
     if (drafts.length) {
       const byId = new Map(accounts.map((a) => [a.id, a]))
       inbox.unshift({

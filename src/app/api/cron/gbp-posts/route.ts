@@ -11,6 +11,7 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { voiceFor } from "@/lib/voice"
 import { asUser } from "@/lib/usage"
 import { approveGbpPost } from "@/lib/approvals"
+import { draftKey } from "@/lib/draft-dedupe"
 
 // Google Business Profile posts on the plan's schedule (UTC day of week):
 // Starter 2 a week (Mon, Thu), Pro / Growth 4 (Mon, Tue, Thu, Fri).
@@ -25,6 +26,8 @@ const DAYS: Record<"starter" | "pro", number[]> = { starter: [1, 4], pro: [1, 2,
 // Don't stack a second draft on the same listing within a day (guards a
 // double tick and the Mon→Tue / Thu→Fri back-to-back Pro days).
 const DEDUPE_MS = 20 * 60 * 60 * 1000
+// An unapproved draft newer than this blocks the next one.
+const OPEN_DRAFT_MS = 14 * 86_400_000
 
 type Integration = {
   accessToken: string
@@ -38,7 +41,8 @@ async function generatePost(
   businessName: string,
   businessType: string | null,
   city: string | null,
-  voice: string | null
+  voice: string | null,
+  previous: string[] = []
 ): Promise<string> {
   const msg = await anthropic.messages.create({
     model: "claude-sonnet-4-6",
@@ -64,7 +68,7 @@ AEO (AI-engine optimization) hard rules — mandatory, applied within the short 
 - Include the business name (${businessName})${city ? ` and city (${city})` : ""} naturally in the first paragraph.
 - End with a single short line stating the business name${city ? ` and city` : ""}. NEVER invent an address or phone number, and NEVER write bracket placeholders like "[address]" or "[phone]" — this post may go straight to Google, so if you don't know a fact, leave it out entirely.${city ? "" : "\n- The city is not known. Do NOT reference any city, neighborhood, or 'your area'."}
 
-${voice ? `\n${voice}\n` : ""}
+${voice ? `\n${voice}\n` : ""}${previous.length ? `\nRecent posts on this listing. Pick a different topic and a different opening question; never reuse their first sentence:\n${previous.map((p) => `- ${p.slice(0, 200).replace(/\s+/g, " ")}`).join("\n")}\n` : ""}
 Return ONLY the post text, no extra commentary.`,
       },
     ],
@@ -89,11 +93,27 @@ async function processUser(user: CronUser): Promise<{ status: "draft" | "posted"
     select: { id: true },
   })
   if (recent) return { status: "skipped" }
+  // Don't stack drafts the owner hasn't looked at yet: an unapproved draft from the last two weeks
+  // (or a post the weekly plan already scheduled) means the next one waits. Without this the
+  // briefing filled with near-identical "Looking for a … in Ottawa?" drafts (Nov 2026).
+  const waiting = await db.gbpPost.findFirst({
+    where: {
+      userId: user.id,
+      OR: [
+        { status: "draft", createdAt: { gte: new Date(Date.now() - OPEN_DRAFT_MS) } },
+        { status: "scheduled", scheduledFor: { gte: new Date() } },
+      ],
+    },
+    select: { id: true },
+  })
+  if (waiting) return { status: "skipped" }
+  const previous = (await db.gbpPost.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 5, select: { content: true } })).map((p) => p.content)
 
   const businessName = user.businessName ?? "the business"
 
-  const content = await generatePost(businessName, user.businessType, user.city, await voiceFor(user.id).catch(() => null))
+  const content = await generatePost(businessName, user.businessType, user.city, await voiceFor(user.id).catch(() => null), previous)
   if (!content) throw new Error("Claude returned empty post content")
+  if (previous.some((p) => draftKey(p) === draftKey(content))) return { status: "skipped" }
 
   const hasGmb = !!(user.integration?.gmbAccountId && user.integration?.gmbLocationId)
 
