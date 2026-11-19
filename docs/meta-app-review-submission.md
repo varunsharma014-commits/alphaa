@@ -1,6 +1,17 @@
 # Meta App Review submission pack: Alphaa (App ID 29091869270477242)
 
-Round 1, login configuration "Alphaa connect v2" (ID 1852075075984045), 10 permissions.
+Round 1 (decided 2026-11-19): **5 permissions, Page + Instagram posting only**: pages_show_list,
+pages_read_engagement, pages_manage_posts, instagram_basic, instagram_content_publish (+ default
+public_profile). ads_management, ads_read, business_management, pages_manage_ads and
+leads_retrieval were removed from the App Review draft and move to round 2.
+
+Why: on 2026-11-19 the "Alphaa connect v2" login (system-user token) never granted the three ads
+permissions, even to the app admin with the ad account ticked and after removing/re-adding the
+connected app; Graph answered "Ad account owner has NOT grant ads_management or ads_read
+permission". Round 2 needs either Advanced Access first or a user-token login configuration for
+"turn on ads". Draft submission id 29094602640203905: descriptions and videos are filled in for
+all 5; Varun still ticks each "I agree" box, the Data Handling answers and Reviewer instructions
+(test login), then submits.
 Scripts and background: `docs/meta-app-review.md`. Status: `docs/growth-platform-applications.md`.
 Prepared 2026-11-18. Nothing here has been submitted.
 
@@ -12,20 +23,18 @@ desktop cropped out, the Facebook feed behind the post blurred.
 
 | File | Length | Shows |
 |---|---|---|
-| `a-connect-pages_show_list-business_management.mp4` | 0:46 | Facebook Login for Business: portfolio GT, Page Alphaa AI Agent, Instagram alphaa.ai.agent, ad account Alphaa.app; the review screen with every permission (held 6 s); Confirm; "GT has been connected to Alphaa"; Alphaa listing the connected Page and Instagram account |
+| `a-connect-pages_show_list.mp4` | 0:46 | Facebook Login for Business: portfolio GT, Page Alphaa AI Agent, Instagram alphaa.ai.agent, ad account Alphaa.app; the review screen with every permission (held 6 s); Confirm; "GT has been connected to Alphaa"; Alphaa listing the connected Page and Instagram account |
 | `b-page-posting-pages_manage_posts-pages_read_engagement.mp4` | 0:49 | Recap of granted permissions; Page shown as Connected in Alphaa; post drafted ("Busy Season? Approve With One Tap"); owner taps Post now; "Posted to Facebook, Instagram"; See it on Facebook; the live post on the Alphaa AI Agent Page |
-| `c-instagram-basic-content_publish-PARTIAL.mp4` | 0:51 | Instagram account picked in the dialog; Instagram permissions on the review screen; @alphaa.ai.agent shown as Connected; Post now; "Posted to Facebook, Instagram". **Missing: the post on the Instagram profile itself** |
-| ads video | pending new take | `meta-review-ads.mov` is 10 min of an idle GIGABOOST staging dashboard, unusable. Being re-recorded as `meta-review-ads2.mov` |
+| `c-instagram-basic-content_publish.mp4` | 1:10 | Instagram account picked in the dialog; Instagram permissions on the review screen; @alphaa.ai.agent shown as Connected; Post now; "Posted to Facebook, Instagram"; the post first in the @alphaa.ai.agent grid; the post opened with its caption (from `meta-review-ig2.mov`) |
+| ads video | round 2 | not recorded: the ads permissions were never granted (see top) |
 
 ### Still to record before submitting
 
-1. **Instagram result (blocks instagram_content_publish):** 10-15 s opening
-   instagram.com/alphaa.ai.agent (or the post's permalink) showing the "Busy Season? Approve
-   With One Tap" post, then append it to video c and drop "-PARTIAL".
+1. ~~Instagram result~~ done 2026-11-19.
 2. **The in-app button that opens the dialog:** the take starts with the Facebook dialog already
    open; "Social accounts & posts" → "Connect Facebook & Instagram" in Alphaa is not on screen.
    Nice to have for video a.
-3. **Ads (pending new take):** script B in `docs/meta-app-review.md` end to end: ad account / Page /
+3. **Ads (round 2):** script B in `docs/meta-app-review.md` end to end: ad account / Page /
    Instagram / Pixel card in Alphaa (also the business_management and pages_show_list proof
    inside Alphaa), plan, "Build it, paused", Ads Manager showing it Off, Instant Form under the
    Page, Turn it on, test lead via the Lead Ads Testing Tool appearing in Alphaa, results card,
