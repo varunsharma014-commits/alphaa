@@ -10,6 +10,7 @@ import { metaAdsConfigured } from "@/lib/metaads/connect"
 import { metaAdsMessages } from "@/lib/metaads/narration"
 import { getAccess, listCampaigns, patchAccess, removeAccess } from "@/lib/metaads/store"
 import { proposePlan } from "@/lib/metaads/plan"
+import { askCityMessages } from "@/lib/agent/city"
 import { approveAndBuild, dismissPlan, setLive } from "@/lib/metaads/ops"
 import { applyTune, dismissTune } from "@/lib/metaads/tune"
 import { forget } from "@/lib/metaads/report"
@@ -63,6 +64,8 @@ export async function POST(req: Request) {
       break
     }
     case "plan": {
+      // No city yet: ask for it in the chat (small form) instead of failing.
+      if (!user.city?.trim()) return NextResponse.json({ messages: askCityMessages("metaads", user.state) })
       const r = await proposePlan(user.id)
       if (!r.ok) return fail(r.reason, 409)
       said = "Here’s my plan. Nothing is built until you approve it."

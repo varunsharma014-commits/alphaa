@@ -16,6 +16,7 @@ import { applyTune } from "@/lib/gads/tune"
 import { getPlan, getTune, removeGadsAccount, savePlan, saveTune } from "@/lib/gads/store"
 import { adsMessages, planMessages } from "@/lib/gads/thread"
 import { checkDaily } from "@/lib/gads/rules"
+import { askCityMessages } from "@/lib/agent/city"
 
 const id = z.string().min(5).max(40)
 const body = z.discriminatedUnion("op", [
@@ -54,6 +55,8 @@ export async function POST(req: Request) {
         return a ? reply(`I’ll use ${a.customerName}.`) : NextResponse.json({ error: "That account isn’t on your Google login." }, { status: 404 })
       }
       case "plan": {
+        // No city yet: ask for it in the chat (small form) instead of failing.
+        if (!user.city?.trim()) return NextResponse.json({ messages: askCityMessages("ads", user.state) })
         const p = await proposePlan(user.id)
         // The plan messages come back inside the thread (same ids replace older copies).
         return NextResponse.json({ messages: [agent([{ kind: "text", text: "I looked at the searches that already find you and checked each keyword with Google’s Keyword Planner." }]), ...planMessages(p)] })
