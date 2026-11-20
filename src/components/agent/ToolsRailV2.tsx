@@ -35,7 +35,7 @@ const GROUPS: Group[] = [
     { label: "Ad campaigns", ask: "ads", tag: "Google · Meta" },
     { label: "Website content", ask: "content" },
     { label: "Google Profile updates", href: "/dashboard/posts" },
-    { label: "Email outreach", soon: true, tag: "Soon" },
+    { label: "Email outreach", ask: "email" },
   ] },
   { key: "rs", label: "Results", icon: TrendingUp, items: [
     { label: "What’s working", ask: "insights" },

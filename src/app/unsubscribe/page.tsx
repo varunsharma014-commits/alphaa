@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { unsubscribeBySignedLink } from "@/lib/unsubscribe"
+import { campaignUnsubBusiness, unsubscribeBySignedLink } from "@/lib/unsubscribe"
 
 // The footer link in every marketing email. Opening it unsubscribes the
 // address straight away (no extra click) and says so in plain words.
@@ -19,16 +19,24 @@ export default async function UnsubscribePage({
     return false
   })
 
+  const business = ok ? await campaignUnsubBusiness(s).catch(() => null) : null
+
   return (
     <main className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md text-center">
         {ok ? (
           <>
             <h1 className="text-2xl font-semibold text-fg mb-3">You’re unsubscribed.</h1>
+            {business ? (
+              <p className="text-muted text-base">
+                You won’t get any more marketing email from {business} through Alphaa. To reach them, reply to any email they sent you.
+              </p>
+            ) : (
             <p className="text-muted text-base">
               You won’t get any more marketing email or weekly report emails from Alphaa. If you have an
               account, billing and account email still arrives, and your weekly reports stay in your dashboard.
             </p>
+            )}
           </>
         ) : (
           <>

@@ -13,6 +13,7 @@ import { gadsAvailable } from "@/lib/gads/oauth"
 import { getGadsAccount } from "@/lib/gads/store"
 import { connectAdsChip } from "@/lib/gads/thread"
 import { metaAdsChannel } from "@/lib/metaads/channel"
+import { getContacts } from "@/lib/email-campaigns/store"
 import type { User } from "@prisma/client"
 
 type Row = { name: string; detail: string; status: string; ok: boolean }
@@ -84,7 +85,14 @@ export async function channelsMessages(user: User): Promise<Message[]> {
   const meta = await metaAdsChannel(user, accounts)
   rows.push(meta.row)
   if (meta.chip && !chips.some((c) => c.label === meta.chip!.label)) chips.push(meta.chip)
-  rows.push({ name: "Email marketing", detail: "Emails that bring past customers back", status: growth ? "Opens soon" : "Growth plan", ok: false })
+  if (growth) {
+    const [contacts, s2] = await Promise.all([getContacts(user.id), getAgentSettings(user.id)])
+    const ready = contacts.length > 0 && !!s2.emailOutreach?.address
+    rows.push({ name: "Email marketing", detail: contacts.length ? `${contacts.length.toLocaleString("en-US")} past customers on your list` : "Emails that bring past customers back", status: ready ? "Ready" : contacts.length ? "Add your address" : "Add your customers", ok: ready })
+    if (!ready) chips.push({ label: "Set up customer emails", action: { type: "thread", topic: "email" } })
+  } else {
+    rows.push({ name: "Email marketing", detail: "Emails that bring past customers back", status: "Growth plan", ok: false })
+  }
 
   const connected = rows.filter((r) => r.ok).length
   const out: Message[] = [agent([

@@ -63,6 +63,23 @@ export async function reviewRequestOptedOut(fingerprint: string): Promise<boolea
   return Boolean(hit)
 }
 
+/**
+ * Email outreach recipients (a business's own customers, lib/email-campaigns): subject
+ * "c_<userId>.<fingerprint>", signed over a fixed marker. Opting out is per business.
+ */
+const CAMPAIGN_MARK = "email-campaign"
+export function campaignUnsubLinks(userId: string, fingerprint: string): UnsubLinks | null {
+  return unsubscribeLinks(`c_${userId}.${fingerprint}`, CAMPAIGN_MARK)
+}
+
+/** The business name behind a campaign unsubscribe link, for the confirmation page. Null if it isn't one. */
+export async function campaignUnsubBusiness(subject: string): Promise<string | null> {
+  const c = /^c_([a-z0-9]{10,64})\.[a-f0-9]{64}$/i.exec(subject)
+  if (!c) return null
+  const u = await db.user.findUnique({ where: { id: c[1] }, select: { businessName: true } })
+  return u?.businessName?.trim() || "this business"
+}
+
 export function unsubscribeLinks(subject: string, email: string): UnsubLinks | null {
   const t = makeUnsubToken(subject, email)
   if (!t) return null
@@ -103,6 +120,15 @@ async function resolve(subject: string, token: string): Promise<string | null> {
  * any account with that address. Idempotent. Returns false for a bad link.
  */
 export async function unsubscribeBySignedLink(subject: string, token: string): Promise<boolean> {
+  const c = /^c_([a-z0-9]{10,64})\.([a-f0-9]{64})$/i.exec(subject)
+  if (c) {
+    if (!/^[a-f0-9]{32}$/.test(token) || !verify(subject, CAMPAIGN_MARK, token)) return false
+    const owner = await db.user.findUnique({ where: { id: c[1] }, select: { id: true } })
+    if (!owner) return false
+    const { optOut } = await import("@/lib/email-campaigns/store")
+    await optOut(owner.id, c[2])
+    return true
+  }
   const r = /^r_([a-z0-9]{10,64})\.([a-f0-9]{64})$/i.exec(subject)
   if (r) {
     if (!/^[a-f0-9]{32}$/.test(token) || !verify(subject, REVIEW_MARK, token)) return false

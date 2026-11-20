@@ -86,7 +86,7 @@ export async function autopilotMessages(user: User): Promise<Message[]> {
   out.push(agent([
     { kind: "text", text: "Email campaigns and ads" },
     { kind: "text", text: "Set it once now. Each choice kicks in the day that work starts on your account." },
-    { kind: "text", text: "Email campaigns to your customers" },
+    { kind: "text", text: "Email to your past customers (one a month at most)" },
     { kind: "chips", items: [op({ op: "set", key: "email", value: "ask" }, "Ask me before each send", (a.email ?? "ask") === "ask"), op({ op: "set", key: "email", value: "auto" }, "Send without asking", a.email === "auto")] },
     { kind: "text", text: `Ads. Monthly budget: ${budget ? `${budget.toLocaleString("en-US")} a month, never more` : "not set yet"}. Ad spend is billed to you by Google and Meta directly. I never mark it up.` },
     { kind: "chips", items: [

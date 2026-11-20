@@ -48,6 +48,8 @@ export type AgentSettings = {
   dashV2?: boolean
   /** "Auto-approve and post": the owner accepted the warning (lib/agent/auto-approve.ts). Unset = off. */
   autoApprove?: { acceptedAt: string; version: string; consentId: string }
+  /** Email outreach (Growth, lib/email-campaigns): the business mailing address every email must carry. */
+  emailOutreach?: { address?: string; at?: string }
 }
 
 export type Autopilot = {
