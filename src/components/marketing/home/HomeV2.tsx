@@ -12,7 +12,7 @@ import { GUARANTEE_LINE } from "@/lib/offer-copy"
 import { GROWTH_EARLY_ACCESS_HREF, GROWTH_ON_SALE } from "@/lib/growth"
 import { AUTHOR } from "@/lib/author"
 import { plans } from "@/app/(marketing)/pricing/pricing-data"
-import { Frame, Section, ServicePills, HeroShapes, ServiceChapter, ProofMosaic, FinalCta, Head, SVC, SVC_ORDER } from "@/components/marketing/v3"
+import { Frame, Section, ServicePills, HeroShapes, ServiceChapter, FinalCta, Head, SVC, SVC_ORDER } from "@/components/marketing/v3"
 import { TabDemo } from "@/components/marketing/v3/TabDemo"
 import { FollowTheme } from "@/components/marketing/v3/FollowTheme"
 
@@ -76,17 +76,6 @@ export function HomeV2() {
         <h2 className="v3-h2">An agency’s work.<br /><span className="v3-blue">For a fraction of the price.</span></h2>
         <p className="v3-lede">Paying an agency for each piece adds up fast, and you still end up chasing them for updates. One AI agent does all of it, every week, for a fraction of the price.</p>
         <CostTable />
-        <ProofMosaic tiles={[
-          { big: `$${price("Starter")}/mo`, small: "Alphaa Starter, month to month", wide: true },
-          { big: "$1,000+", small: "What search marketing agencies often charge a month" },
-          { big: "90 days", small: GUARANTEE_LINE },
-          { big: "Cancel online", small: "No contract. Cancel in a minute, no phone call", wide: true },
-          { big: "Your voice", small: "Learned from your own website and replies" },
-          { big: "$0", small: "Markup on ad spend. Paid to Google and Meta directly" },
-          { big: "Every week", small: "Not once a month. Your marketing never takes a week off" },
-          { big: "See it all", small: "Every post, ad and fix, the moment it happens", wide: true },
-          { big: `$${price("Growth")}/mo`, small: "Growth: ads, email and lead tracking too (early access)", wide: true, ink: true },
-        ]} />
       </Section>
 
       {/* Insights: the pain is guessing */}
