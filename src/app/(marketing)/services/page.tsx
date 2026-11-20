@@ -37,8 +37,8 @@ export default function ServicesIndex() {
         </Section>
         <Section>
           <div className="v3-chapters">
-            {SVC_ORDER.map((slug, i) => (
-              <ServiceChapter key={slug} slug={slug} flip={i % 2 === 1} growthNote={GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access"} />
+            {SVC_ORDER.map((slug) => (
+              <ServiceChapter key={slug} slug={slug} growthNote={GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access"} />
             ))}
           </div>
         </Section>
