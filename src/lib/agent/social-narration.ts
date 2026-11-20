@@ -28,7 +28,7 @@ export function socialMessages(o: { growth: boolean; accounts: SocialAccount[]; 
   } else {
     blocks.push({ kind: "text", text: "One secure click each. You log in on the platform itself; I never see your password, and you can disconnect any time." })
   }
-  if (ready.length) blocks.push({ kind: "chips", items: ready.map((p, i) => ({ label: o.accounts.some((a) => (p === "meta" ? a.platform === "facebook" || a.platform === "instagram" : a.platform === p)) ? `Reconnect ${PROVIDER_NAME[p]}` : `Connect ${PROVIDER_NAME[p]}`, primary: i === 0 && !o.accounts.length, action: { type: "link", href: `/api/social/connect/${p}` } })) })
+  if (ready.length) blocks.push({ kind: "chips", items: ready.map((p, i) => ({ label: o.accounts.some((a) => (p === "meta" ? a.platform === "facebook" || a.platform === "instagram" : p === "linkedin_pages" ? a.platform === "linkedin" && a.extra?.kind === "organization" : p === "linkedin" ? a.platform === "linkedin" && a.extra?.kind !== "organization" : a.platform === p)) ? `Reconnect ${PROVIDER_NAME[p]}` : `Connect ${PROVIDER_NAME[p]}`, primary: i === 0 && !o.accounts.length, action: { type: "link", href: `/api/social/connect/${p}` } })) })
   if (soon.length) blocks.push({ kind: "text", text: `${soon.map((p) => PROVIDER_NAME[p]).join(", ")}: coming soon. Until then, I write the posts and you copy them with one tap.` })
   out.push(agent(blocks, "so-accounts"))
 

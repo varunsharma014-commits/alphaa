@@ -75,3 +75,36 @@ export const linkedin: Provider = {
     return { externalId: urn, url: urn ? `https://www.linkedin.com/feed/update/${urn}` : null }
   },
 }
+
+/**
+ * LinkedIn company Pages, through Alphaa's second LinkedIn app (Community Management API only;
+ * LinkedIn doesn't allow other products next to it). Lists the Pages the owner administers and
+ * saves each one; posting is the same REST call as a profile post, with the Page as author.
+ */
+const PAGE_SCOPES = "w_organization_social r_organization_social rw_organization_admin"
+export const linkedinPages: Provider = {
+  authUrl({ state, redirectUri }) {
+    const q = new URLSearchParams({ response_type: "code", client_id: process.env.LINKEDIN_PAGES_CLIENT_ID!, redirect_uri: redirectUri, state, scope: PAGE_SCOPES })
+    return `https://www.linkedin.com/oauth/v2/authorization?${q}`
+  },
+
+  async connect({ code, redirectUri }) {
+    const t = await api<{ access_token: string; expires_in: number }>("https://www.linkedin.com/oauth/v2/accessToken", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ grant_type: "authorization_code", code, redirect_uri: redirectUri, client_id: process.env.LINKEDIN_PAGES_CLIENT_ID!, client_secret: process.env.LINKEDIN_PAGES_CLIENT_SECRET! }),
+    })
+    const expiresAt = new Date(Date.now() + t.expires_in * 1000).toISOString()
+    const acl = await api<{ elements?: { organization: string }[] }>("https://api.linkedin.com/rest/organizationAcls?q=roleAssignee&role=ADMINISTRATOR&state=APPROVED", { headers: rest(t.access_token) })
+    const out: Awaited<ReturnType<Provider["connect"]>> = []
+    for (const e of acl.elements ?? []) {
+      const orgId = e.organization.split(":").pop()
+      const org = await api<{ localizedName?: string; vanityName?: string }>(`https://api.linkedin.com/rest/organizations/${orgId}`, { headers: rest(t.access_token) }).catch(() => ({ localizedName: undefined, vanityName: undefined }))
+      out.push({ platform: "linkedin", externalId: e.organization, name: org.localizedName ?? "Company page", handle: org.vanityName ?? null, tokenEnc: enc(t.access_token), expiresAt, extra: { author: e.organization, kind: "organization" } })
+    }
+    if (!out.length) throw new Error("you’re not an admin of any LinkedIn company page. Ask a Page admin to add you, then connect again")
+    return out
+  },
+
+  publish: (account, post, save) => linkedin.publish(account, post, save),
+}

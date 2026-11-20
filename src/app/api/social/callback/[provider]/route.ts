@@ -8,11 +8,11 @@ import { isConnectProvider, PROVIDER_NAME } from "@/lib/social/types"
 import { PKCE_COOKIE, readState, redirectUri } from "@/lib/social/oauth"
 import { upsertAccount } from "@/lib/social/store"
 import { meta } from "@/lib/social/providers/meta"
-import { linkedin } from "@/lib/social/providers/linkedin"
+import { linkedin, linkedinPages } from "@/lib/social/providers/linkedin"
 import { tiktok } from "@/lib/social/providers/tiktok"
 import { x } from "@/lib/social/providers/x"
 
-const P = { meta, linkedin, tiktok, x }
+const P = { meta, linkedin, linkedin_pages: linkedinPages, tiktok, x }
 
 // The platform sends the owner back here with a code: exchange it, save the accounts.
 export async function GET(req: NextRequest, { params }: { params: Promise<{ provider: string }> }) {

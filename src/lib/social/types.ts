@@ -3,16 +3,18 @@
 // "coming soon". Meta (Facebook Pages + Instagram), LinkedIn, TikTok and X.
 export type SocialPlatform = "facebook" | "instagram" | "linkedin" | "tiktok" | "x"
 /** What the owner connects (one Meta login brings both Facebook Pages and Instagram). */
-export type ConnectProvider = "meta" | "linkedin" | "tiktok" | "x"
+export type ConnectProvider = "meta" | "linkedin" | "linkedin_pages" | "tiktok" | "x"
 
 export const PLATFORM_NAME: Record<SocialPlatform, string> = { facebook: "Facebook", instagram: "Instagram", linkedin: "LinkedIn", tiktok: "TikTok", x: "X" }
-export const PROVIDER_NAME: Record<ConnectProvider, string> = { meta: "Facebook & Instagram", linkedin: "LinkedIn", tiktok: "TikTok", x: "X" }
+export const PROVIDER_NAME: Record<ConnectProvider, string> = { meta: "Facebook & Instagram", linkedin: "LinkedIn profile", linkedin_pages: "LinkedIn company page", tiktok: "TikTok", x: "X" }
 // X is off for now (Varun, 2026-11-18: its API is paid per call). The provider code stays; add "x" back here to offer it.
-export const PROVIDERS: ConnectProvider[] = ["meta", "linkedin", "tiktok"]
+// LinkedIn company Pages need their own app: LinkedIn requires the Community Management API to be the only product on it.
+export const PROVIDERS: ConnectProvider[] = ["meta", "linkedin", "linkedin_pages", "tiktok"]
 
 export function providerConfigured(p: ConnectProvider): boolean {
   if (p === "meta") return !!(process.env.META_APP_ID && process.env.META_APP_SECRET)
   if (p === "linkedin") return !!(process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET)
+  if (p === "linkedin_pages") return !!(process.env.LINKEDIN_PAGES_CLIENT_ID && process.env.LINKEDIN_PAGES_CLIENT_SECRET)
   if (p === "tiktok") return !!(process.env.TIKTOK_CLIENT_KEY && process.env.TIKTOK_CLIENT_SECRET)
   return !!(process.env.X_CLIENT_ID && process.env.X_CLIENT_SECRET)
 }

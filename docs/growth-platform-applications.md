@@ -187,3 +187,9 @@ This is a separate Google grant from Search Console / Business Profile (drive.fi
 ## Google OAuth verification submitted (2026-11-18)
 - Scopes under review: adwords + analytics.readonly (sensitive; business.manage + webmasters.readonly already OK). Video https://youtu.be/1FGHQDpLSTE (Part 1 Ads, Part 2 Analytics; Part 2 shows "already has some access" because the test account had granted before — re-record with a fresh grant if Google asks).
 - After approval: set GOOGLE_ADS_ENABLED=1 and GA_SCOPE_ENABLED=1 on Railway.
+
+
+## LinkedIn apps (created 2026-11-20)
+- **App 1 "Alphaa"** (id 264295075, client ID 86xpmyxap73oxg, Page "Alphaa AI Agent"): Share on LinkedIn + Sign In with LinkedIn (OpenID Connect), self-serve. Redirect `https://alphaa.app/api/social/callback/linkedin`. Railway: `LINKEDIN_CLIENT_ID` (set), `LINKEDIN_CLIENT_SECRET` (Varun pastes). Posts to the owner's personal profile.
+- **App 2 "Alphaa Pages"** (company Pages): LinkedIn requires the Community Management API to be the ONLY product on its app, so Pages use a second app → provider `linkedin_pages`, redirect `https://alphaa.app/api/social/callback/linkedin_pages`, Railway `LINKEDIN_PAGES_CLIENT_ID` / `LINKEDIN_PAGES_CLIENT_SECRET`. Development tier first (works for Page admins added to the app), then the Standard tier review (screencast of connect → approve → post on a Page).
+- `LINKEDIN_ORG_SCOPES` (old single-app path) is not used.

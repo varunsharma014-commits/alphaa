@@ -6,11 +6,11 @@ import { hasPro } from "@/lib/billing"
 import { isConnectProvider, providerConfigured } from "@/lib/social/types"
 import { PKCE_COOKIE, pkce, redirectUri, signState } from "@/lib/social/oauth"
 import { meta } from "@/lib/social/providers/meta"
-import { linkedin } from "@/lib/social/providers/linkedin"
+import { linkedin, linkedinPages } from "@/lib/social/providers/linkedin"
 import { tiktok } from "@/lib/social/providers/tiktok"
 import { x } from "@/lib/social/providers/x"
 
-const P = { meta, linkedin, tiktok, x }
+const P = { meta, linkedin, linkedin_pages: linkedinPages, tiktok, x }
 
 // Sends the owner to the platform's own login to connect their account.
 export async function GET(req: NextRequest, { params }: { params: Promise<{ provider: string }> }) {
