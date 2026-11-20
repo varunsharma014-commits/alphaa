@@ -155,3 +155,8 @@
 .v2-rail .v2-ai a:hover, .v2-rail .v2-ai a.on { color: var(--ag-fg); border-color: var(--ag-fg); }
 .v2-rail .v2-icon-grp .v2-tile { background: none; color: var(--ag-muted); border: 1px solid var(--ag-line); }
 .v2-rail .v2-icon-grp:hover .v2-tile { color: var(--ag-fg); border-color: var(--ag-fg); }
+/* Briefing tags follow the rail: no per-group colours. */
+[data-agent], [data-agent][data-theme="dark"] {
+  --v2-mk: var(--ag-muted); --v2-rs: var(--ag-muted); --v2-rp: var(--ag-muted); --v2-rc: var(--ag-muted); --v2-ws: var(--ag-muted); --v2-st: var(--ag-muted);
+  --v2-mk-bg: color-mix(in srgb, var(--ag-fg) 6%, transparent); --v2-rs-bg: var(--v2-mk-bg); --v2-rp-bg: var(--v2-mk-bg); --v2-rc-bg: var(--v2-mk-bg); --v2-ws-bg: var(--v2-mk-bg); --v2-st-bg: var(--v2-mk-bg);
+}
