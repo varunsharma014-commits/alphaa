@@ -6,7 +6,7 @@
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { countUsage, runAsUser } from "@/lib/usage"
 import { imageInfo, normalizePhoto } from "@/lib/photo-render"
 import { HEX_RE } from "@/lib/brand-kit"
@@ -15,6 +15,8 @@ import { fetchThumb, isDropboxLink } from "./dropbox"
 import { assetBytes, TooBig } from "./open"
 import { createAsset, getAsset, listAssets, patchAsset, storeThumb } from "./store"
 import { CAP, kindOf, MAX_ASSETS, MAX_PICK, mimeFromName, type AssetSource, type BrandAsset, type BrandBook, type PickedFile } from "./types"
+
+const anthropic = claudeFor("library")
 
 const VISION_MODEL = "claude-haiku-4-5"
 const BOOK_MODEL = "claude-sonnet-5-5"

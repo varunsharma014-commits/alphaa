@@ -3,12 +3,14 @@
 // takes our internal user id and checks the item belongs to that user.
 
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { postReviewReply, resolveAccessToken } from "@/lib/gmb"
 import { postToGmb, containsPlaceholders } from "@/lib/gbp-poster"
 import { logActivity } from "@/lib/activity"
 import { pushChange } from "@/lib/connector/push"
 import { voiceFor } from "@/lib/voice"
+
+const anthropic = claudeFor("approvals")
 
 export type ApprovalKind = "review" | "gbp" | "post"
 export type ApprovalResult = { ok: true; url?: string | null } | { ok: false; error: string }

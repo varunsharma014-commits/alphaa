@@ -7,12 +7,14 @@ import { safeFetch } from "@/lib/safe-fetch"
 import { auth } from "@/lib/auth"
 import { z } from "zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { writePost, writeMeta, writeLocationPage, writeSocial } from "@/lib/content"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { generatePostImage, imageUrl } from "@/lib/images"
 import { generateGbpPost } from "@/lib/gbp-poster"
 import { once } from "@/lib/draft-dedupe"
+
+const anthropic = claudeFor("draft")
 
 // Writes a short, publish-ready FAQ section that closes a competitor gap —
 // from the business's own facts only. Unknown facts become [bracketed]

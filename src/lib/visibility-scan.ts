@@ -4,10 +4,12 @@
 // AiEngineResult rows, and returns the exact payload the route responds with.
 
 import { db } from "@/lib/db"
-import { anthropic, buildAuditPrompt } from "@/lib/claude"
+import { claudeFor, buildAuditPrompt } from "@/lib/claude"
 import { scanAllEngines } from "@/lib/ai-engines"
 import { processWinsForAudit } from "@/lib/wins"
 import type { AiSearchStatus } from "@/types/audit"
+
+const anthropic = claudeFor("ai-visibility")
 
 // `userId` is the internal User.id (NOT the clerkId).
 export async function runVisibilityScan(userId: string) {

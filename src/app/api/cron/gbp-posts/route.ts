@@ -3,7 +3,7 @@ export const maxDuration = 300
 
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { logActivity } from "@/lib/activity"
 import { containsPlaceholders, postToGmb } from "@/lib/gbp-poster"
 import { resolveAccessToken } from "@/lib/gmb"
@@ -12,6 +12,8 @@ import { voiceFor } from "@/lib/voice"
 import { asUser } from "@/lib/usage"
 import { approveGbpPost } from "@/lib/approvals"
 import { draftKey } from "@/lib/draft-dedupe"
+
+const anthropic = claudeFor("google-posts")
 
 // Google Business Profile posts on the plan's schedule (UTC day of week):
 // Starter 2 a week (Mon, Thu), Pro / Growth 4 (Mon, Tue, Thu, Fri).

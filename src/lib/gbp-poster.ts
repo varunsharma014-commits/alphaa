@@ -1,4 +1,6 @@
-import { anthropic } from "./claude"
+import { claudeFor } from "./claude"
+
+const anthropic = claudeFor("google-posts")
 
 // True when generated content still contains bracket placeholders like
 // "[City]", "[address]" or "[phone]". The old prompt *asked* the model to emit

@@ -8,10 +8,12 @@
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { latestQuestionScan } from "@/lib/questions"
 import { buildAccountDossier } from "@/lib/personal/research"
 import { voiceFor } from "@/lib/voice"
+
+const anthropic = claudeFor("insights")
 
 export type InsightLine = { key: string; text: string }
 export type IdeaFormat = "blog" | "google" | "social"

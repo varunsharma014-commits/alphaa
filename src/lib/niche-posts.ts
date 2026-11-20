@@ -19,12 +19,14 @@ import { createHash } from "crypto"
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { apifyEnabled } from "@/lib/checks/apify"
 import { buildAccountDossier, socialLinks } from "@/lib/personal/research"
 import { safeFetch } from "@/lib/safe-fetch"
 import { runAsUser } from "@/lib/usage"
 import { numbers } from "@/lib/insights"
+
+const anthropic = claudeFor("niche")
 
 export const NICHE = "niche_posts"
 const DAY = 86_400_000

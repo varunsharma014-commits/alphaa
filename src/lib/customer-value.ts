@@ -3,9 +3,11 @@
 // nothing asked of the owner; they can replace it with their own number.
 // Always shown as an estimate until they do.
 
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { db } from "@/lib/db"
 import { getAgentSettings, saveAgentSettings, type AgentSettings } from "@/lib/agent/settings"
+
+const anthropic = claudeFor("customer-value")
 
 export type CustomerValue = NonNullable<AgentSettings["customerValue"]>
 

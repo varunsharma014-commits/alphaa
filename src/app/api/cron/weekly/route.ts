@@ -7,7 +7,7 @@ export const maxDuration = 300
 import { asUser } from "@/lib/usage"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { sendEmail } from "@/lib/resend"
 import { mailingAddress, sendMarketingEmail } from "@/lib/marketing-email"
 import { isEmailSuppressed, unsubscribeLinks } from "@/lib/unsubscribe"
@@ -15,6 +15,8 @@ import { logActivity } from "@/lib/activity"
 import BriefingEmail from "@/emails/BriefingEmail"
 import { briefingEmailProps } from "@/lib/agent/briefing-email"
 import React from "react"
+
+const anthropic = claudeFor("weekly-briefing")
 
 type AiSearchStatus = {
   chatgpt?: string

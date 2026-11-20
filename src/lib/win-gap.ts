@@ -1,4 +1,6 @@
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
+
+const anthropic = claudeFor("win-gap")
 
 export type WinGapFormat = "FAQ" | "Blog post" | "Service page"
 

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
 import { z } from "zod"
 import { db } from "@/lib/db"
-import { anthropic, buildAuditPrompt } from "@/lib/claude"
+import { claudeFor, buildAuditPrompt } from "@/lib/claude"
 import { scanAllEngines, type EngineResult } from "@/lib/ai-engines"
 import {
   inferBusinessProfile,
@@ -23,6 +23,8 @@ import { checkSites, findCompetitorDomain, type SiteChecks } from "@/lib/site-ch
 import type { AiSearchStatus } from "@/types/audit"
 import type { EngineEvidence, ScanInsights, ScanSerp, CompetitorDetail, ScanQuestion } from "@/types/scan"
 import { parseNurtureConsent } from "@/lib/nurture-consent"
+
+const anthropic = claudeFor("public-scan")
 
 type SiteOg = {
   title: string

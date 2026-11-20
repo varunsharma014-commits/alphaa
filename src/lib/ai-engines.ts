@@ -2,6 +2,8 @@ import Anthropic from "@anthropic-ai/sdk"
 import { installPauseGuard } from "./ai-paused"
 import OpenAI from "openai"
 import { GoogleGenerativeAI, type GenerationConfig, type Tool } from "@google/generative-ai"
+import { installUsageMeter } from "@/lib/usage"
+import { tagClient } from "@/lib/claude"
 
 // Search-backed answers take longer than training-weight ones.
 const SEARCH_TIMEOUT_MS = 35000
@@ -161,8 +163,10 @@ export async function scanClaude(
 ): Promise<EngineResult> {
   const query = queries[0]
   try {
-    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-    installPauseGuard(client)
+    const raw = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+    installPauseGuard(raw)
+    installUsageMeter(raw)
+    const client = tagClient(raw, "ai-visibility")
     // Live web search (Sept 2026): without it the model answers from training
     // weights and almost never knows a local business, so "not named" said
     // nothing about the business and could never move. Falls back to a plain

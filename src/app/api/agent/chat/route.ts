@@ -5,10 +5,12 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { z } from "zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { getEngineEvidence, ENGINE_KEYS } from "@/lib/engine-evidence"
 import { accountQuestion } from "@/lib/sandbox"
 import { BRAND } from "@/lib/brand"
+
+const anthropic = claudeFor("chat")
 
 // The agent's voice in the dashboard. Answers from the user's REAL data
 // (latest audit, engine verdicts, activity ledger) and is told,

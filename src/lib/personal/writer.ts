@@ -5,10 +5,12 @@
 
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import type { NurtureCopy } from "@/lib/nurture"
 import type { NurtureBlock } from "@/emails/NurtureEmail"
 import { dossierNames, type Dossier } from "./research"
+
+const anthropic = claudeFor("personal-email")
 
 const MODEL = "claude-opus-5-5"
 // $ per million tokens (Claude Opus 5.5), for the cost log.

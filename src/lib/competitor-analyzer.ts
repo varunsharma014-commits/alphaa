@@ -1,5 +1,7 @@
 import { crawlWebsite } from "@/lib/crawler"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
+
+const anthropic = claudeFor("competitors")
 
 export type CompetitorAnalysis = {
   name: string

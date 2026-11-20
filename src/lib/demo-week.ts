@@ -11,7 +11,7 @@ import { createHmac } from "crypto"
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { readBrandKit } from "@/lib/brand-kit"
 import { analyzeVoiceFor, voiceText } from "@/lib/voice"
 import { searchTrends, type Trend } from "@/lib/trends"
@@ -19,6 +19,8 @@ import { renderCardPng } from "@/lib/social-card"
 import { writeSocialFrom } from "@/lib/content"
 import { generateGbpPost } from "@/lib/gbp-poster"
 import { numbers } from "@/lib/insights"
+
+const anthropic = claudeFor("demo-week")
 
 export type DemoItem = { kind: "google" | "social"; day: string; title: string; why: string; text?: string; image?: number | null; failed?: boolean }
 export type DemoWeek = {

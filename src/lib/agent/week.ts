@@ -8,7 +8,7 @@
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { hasGrowth, hasPro } from "@/lib/billing"
 import { ensureVoice, voiceText } from "@/lib/voice"
@@ -25,6 +25,8 @@ import { approveSitePost } from "@/lib/approvals"
 import { countUsage } from "@/lib/usage"
 import { listAccounts, createPost } from "@/lib/social/store"
 import { PLATFORM_NAME } from "@/lib/social/types"
+
+const anthropic = claudeFor("week-run")
 
 export const WEEK_RUN = "week_run"
 const MODEL = "claude-opus-5-5"

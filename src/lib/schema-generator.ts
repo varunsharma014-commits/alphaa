@@ -1,4 +1,6 @@
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
+
+const anthropic = claudeFor("schema")
 
 export type SchemaItem = {
   type: string   // "LocalBusiness", "FAQPage", etc.

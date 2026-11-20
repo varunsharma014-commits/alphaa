@@ -4,11 +4,13 @@
 // wrong hours, phone numbers or "permanently closed" get caught.
 import { db } from "@/lib/db"
 import { safeFetch } from "@/lib/safe-fetch"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { scanAllEngines, type EngineResult } from "@/lib/ai-engines"
 import { extractMentionedBusinesses } from "@/lib/scan-insights"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { getLocationInfo } from "@/lib/gmb"
+
+const anthropic = claudeFor("ai-questions")
 
 type Engine = EngineResult["engine"]
 export type QuestionResult = { q: string; engines: Partial<Record<Engine, { appeared: boolean; status: EngineResult["status"]; named: string[] }>> }

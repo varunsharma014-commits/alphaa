@@ -1,4 +1,6 @@
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
+
+const anthropic = claudeFor("content-gaps")
 
 export type GapItem = {
   topic: string

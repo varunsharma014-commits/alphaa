@@ -6,8 +6,10 @@ import { db } from "@/lib/db"
 import { googleSearch } from "@/lib/apify-search"
 import { analyzeCompetitor } from "@/lib/competitor-analyzer"
 import { analyzeContentGaps } from "@/lib/content-gaps"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { logActivity } from "@/lib/activity"
+
+const anthropic = claudeFor("competitors")
 
 // Hosts that are directories / aggregators / social / wikis — not real competitors.
 const DIRECTORY_HOSTS = [

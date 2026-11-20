@@ -2,10 +2,12 @@
 // the business's facts only — unknown facts become [bracketed] placeholders.
 import { ownScanWhere } from "@/lib/scan-match"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { getAgentSettings, type Location } from "@/lib/agent/settings"
 import { latestQuestionScan } from "@/lib/questions"
 import { ensureVoice, voiceFor, voiceText } from "@/lib/voice"
+
+const anthropic = claudeFor("blog")
 
 const SONNET = "claude-sonnet-4-6"
 const text = (r: { content: { type: string; text?: string }[] }) => r.content.find((c) => c.type === "text")?.text?.trim() ?? ""

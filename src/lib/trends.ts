@@ -2,7 +2,9 @@
 // seasonal needs, industry news. Found with live web search; a trend is kept only if its source
 // link came back from the search itself. Cached for 3 days (MockActivity "trends").
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
+
+const anthropic = claudeFor("trends")
 
 export type Trend = { title: string; why: string; url: string; when?: string | null }
 const TYPE = "trends"

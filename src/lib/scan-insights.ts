@@ -22,10 +22,12 @@
 // and degrades to null/{} on any failure — nothing here ever throws into the
 // scan route.
 
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { googleSearch, isSearchConfigured } from "@/lib/apify-search"
 import type { EngineResult } from "@/lib/ai-engines"
 import type { ScanSerp, SerpEntry, CompetitorDetail } from "@/types/scan"
+
+const anthropic = claudeFor("public-scan")
 
 export type BusinessProfile = {
   industry: string

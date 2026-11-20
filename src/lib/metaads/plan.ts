@@ -4,7 +4,7 @@
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { factsOf } from "@/lib/content"
 import { voiceFor } from "@/lib/voice"
 import { latestInsights } from "@/lib/insights"
@@ -15,6 +15,8 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { postImageFor } from "@/lib/post-images"
 import { findCity, type Goal, type SpecialCategory } from "./graph"
 import { createCampaign, saveCampaign, decToken, getAccess, listCampaigns, liveCampaigns, type MetaCampaign, type MetaPlan, type PlannedAd } from "./store"
+
+const anthropic = claudeFor("meta-ads")
 
 const MODEL = "claude-opus-5-5"
 const DAYS_PER_MONTH = 30.4

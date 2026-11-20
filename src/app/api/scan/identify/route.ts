@@ -4,7 +4,9 @@ export const maxDuration = 30
 import { NextRequest, NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
 import { z } from "zod"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
+
+const anthropic = claudeFor("public-scan")
 
 // Public (under /api/scan/** in the middleware allowlist). The /start
 // conversation asks for ONE thing — the website — and this works out the

@@ -6,9 +6,11 @@
 
 // Server-only (fetches + Anthropic). Client code imports the labels from
 // lib/site-check-labels.ts so the SDK never lands in a browser bundle.
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { safeFetch } from "@/lib/safe-fetch"
 import type { CheckKey } from "@/lib/site-check-labels"
+
+const anthropic = claudeFor("site-check")
 export type { CheckKey } from "@/lib/site-check-labels"
 
 export interface SiteCheckItem {

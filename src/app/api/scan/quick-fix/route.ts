@@ -4,8 +4,10 @@ export const maxDuration = 60
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import type { Prisma } from "@prisma/client"
+
+const anthropic = claudeFor("public-scan")
 
 // Public endpoint (under /api/scan/** in the middleware allowlist — same as
 // /api/scan/result and /api/scan/email-report).

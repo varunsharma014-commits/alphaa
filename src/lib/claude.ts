@@ -1,12 +1,32 @@
 import Anthropic from "@anthropic-ai/sdk"
 import { installPauseGuard } from "./ai-paused"
-import { installUsageMeter } from "./usage"
+import { installUsageMeter, withFeature } from "./usage"
 
 export const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 installPauseGuard(anthropic)
 installUsageMeter(anthropic)
+
+/** Tags every call a client makes with a feature, for the usage meter (lib/usage.ts). */
+export function tagClient(client: Anthropic, feature: string): Anthropic {
+  const messages = new Proxy(client.messages, {
+    get(target, prop, receiver) {
+      const v = Reflect.get(target, prop, receiver)
+      return typeof v === "function" ? (...args: unknown[]) => withFeature(feature, () => v.apply(target, args)) : v
+    },
+  })
+  return new Proxy(client, {
+    get(target, prop, receiver) {
+      return prop === "messages" ? messages : Reflect.get(target, prop, receiver)
+    },
+  })
+}
+
+/** The shared client, tagged by feature: `const anthropic = claudeFor("scan")`. */
+export function claudeFor(feature: string): Anthropic {
+  return tagClient(anthropic, feature)
+}
 
 export function buildAuditPrompt(businessName: string, city: string, websiteUrl: string) {
   return `You are Alphaa's visibility audit engine. Analyze this business and generate a realistic visibility audit.

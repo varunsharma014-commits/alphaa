@@ -9,8 +9,10 @@ import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
 import { safeFetch } from "@/lib/safe-fetch"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
+
+const anthropic = claudeFor("voice")
 
 export type Formality = "relaxed" | "balanced" | "formal"
 export type VoiceStyle = {

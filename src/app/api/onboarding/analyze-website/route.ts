@@ -3,7 +3,9 @@ export const maxDuration = 45
 
 import { NextRequest, NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
+
+const anthropic = claudeFor("onboarding")
 
 interface WebsiteAnalysis {
   businessName: string

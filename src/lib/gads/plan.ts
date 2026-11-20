@@ -8,7 +8,7 @@ import { metaMonthlyCommitment } from "@/lib/metaads/plan"
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
-import { anthropic } from "@/lib/claude"
+import { claudeFor } from "@/lib/claude"
 import { factsOf } from "@/lib/content"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { voiceText } from "@/lib/voice"
@@ -18,6 +18,8 @@ import { gadsFor, type Gads } from "./client"
 import { createPlan } from "./store"
 import type { AdPlan, PlanAdGroup, PlanKeyword } from "./plan-types"
 import { cleanKeyword, cleanLines, cleanPath, countryOf, dailyFromMonthly, DESCRIPTION_MAX, HEADLINE_MAX, numbersIn, suggestDaily } from "./rules"
+
+const anthropic = claudeFor("google-ads")
 
 const MODEL = "claude-opus-5-5"
 
