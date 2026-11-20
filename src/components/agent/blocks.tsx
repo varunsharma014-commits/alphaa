@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { Block, Chip } from "@/lib/agent/types"
 import { mdToHtml } from "@/lib/markdown"
@@ -85,7 +86,15 @@ export function TextBlock({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, typing])
   const live = typing && shown.length < text.length
-  return <p className={`${big ? "ag-big" : ""} ${live ? "ag-caret" : ""}`.trim()}>{shown}</p>
+  // Model-written replies can carry Markdown **bold**: show it bold, never the asterisks
+  // (while typing, a half-written pair is just hidden).
+  return <p className={`${big ? "ag-big" : ""} ${live ? "ag-caret" : ""}`.trim()}>{live ? shown.replace(/\*\*/g, "") : boldMarkdown(text)}</p>
+}
+
+function boldMarkdown(text: string): ReactNode {
+  if (!text.includes("**")) return text
+  const parts = text.split(/\*\*([^*\n]+?)\*\*/g)
+  return parts.map((part, i) => (i % 2 ? <strong key={i}>{part}</strong> : part.replace(/\*\*/g, "")))
 }
 
 // ── steps ──────────────────────────────────────────────────────────────────

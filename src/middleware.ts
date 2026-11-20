@@ -85,6 +85,26 @@ export default clerkMiddleware(async (auth, req) => {
     res.cookies.set("alphaa_market", market, { path: "/", maxAge: 60 * 60 * 24 * 180, sameSite: "lax" })
     return res
   }
+
+  // The market is set by how someone arrives. A fresh visit (typed URL, search, ad, email) to
+  // an English page resets it, so a /ae visit months ago doesn't price today's US visit in AED.
+  // Clicks inside the site keep it (/ae → /start must still charge AED), and app, auth and
+  // API paths never touch it (Stripe/OAuth returns land there from other hosts).
+  if (req.cookies.get("alphaa_market") && req.method === "GET" && req.headers.get("sec-fetch-dest") === "document") {
+    const p = req.nextUrl.pathname
+    const appPath = /^\/(api|dashboard|onboarding|login|signup|approve|unsubscribe|start-trial)(\/|$)/.test(p)
+    let internal = false
+    try {
+      internal = new URL(req.headers.get("referer") ?? "").host.replace(/^www\./, "") === host.replace(/^www\./, "")
+    } catch {
+      internal = false
+    }
+    if (!appPath && !internal) {
+      const res = NextResponse.next()
+      res.cookies.set("alphaa_market", "", { path: "/", maxAge: 0, sameSite: "lax" })
+      return res
+    }
+  }
 })
 
 export const config = {
