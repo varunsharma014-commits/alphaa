@@ -8,7 +8,9 @@
 // Each call also records its feature (claudeFor("scan") in lib/claude.ts) and web searches.
 import { AsyncLocalStorage } from "async_hooks"
 
-type Ctx = { userId: string }
+// userId = the brand's User row id (exact). clerkId = set by auth() for any signed-in request,
+// resolved to the brand at flush time, so routes that never call currentUser() still count.
+type Ctx = { userId?: string; clerkId?: string }
 const als = new AsyncLocalStorage<Ctx>()
 /** Which feature is calling Claude ("scan", "gbp-post", "week"…), set by claudeFor(). */
 const featureAls = new AsyncLocalStorage<string>()
@@ -24,6 +26,11 @@ export function asUser(userId: string): void {
 }
 export function runAsUser<T>(userId: string, fn: () => Promise<T>): Promise<T> {
   return als.run({ userId }, fn)
+}
+/** Called by auth(): the signed-in brand's Clerk id, unless a brand is already set. */
+export function asClerk(clerkId: string): void {
+  if (als.getStore()?.userId) return
+  als.enterWith({ clerkId })
 }
 
 type Tok = { in: number; out: number; cacheRead: number; cacheWrite: number }
@@ -60,7 +67,8 @@ const addTok = (t: Tok, u: U) => {
 const emptyTok = (): Tok => ({ in: 0, out: 0, cacheRead: 0, cacheWrite: 0 })
 function recordTokens(model: string, u: U | undefined, feature: string) {
   if (!u) return
-  const d = slot(als.getStore()?.userId ?? HOUSE)
+  const ctx = als.getStore()
+  const d = slot(ctx?.userId ?? (ctx?.clerkId ? `clerk:${ctx.clerkId}` : HOUSE))
   const searches = u.server_tool_use?.web_search_requests ?? 0
   d.calls++
   addTok((d.tokens[model] ??= emptyTok()), u)
@@ -77,6 +85,14 @@ const merge = (into: Record<string, Tok>, add: Record<string, Tok>) => {
     const c = (into[m] ??= emptyTok())
     c.in += t.in; c.out += t.out; c.cacheRead += t.cacheRead; c.cacheWrite += t.cacheWrite
   }
+}
+const clerkToUser = new Map<string, string | null>()
+async function userForClerk(clerkId: string): Promise<string | null> {
+  if (clerkToUser.has(clerkId)) return clerkToUser.get(clerkId) ?? null
+  const { db } = await import("@/lib/db")
+  const u = await db.user.findUnique({ where: { clerkId }, select: { id: true } })
+  clerkToUser.set(clerkId, u?.id ?? null)
+  return u?.id ?? null
 }
 let houseUserId: string | null | undefined
 async function houseOwner(): Promise<string | null> {
@@ -101,7 +117,7 @@ export async function flush(): Promise<void> {
     const [rawUser, date] = key.split("|")
     try {
       const house = rawUser === HOUSE
-      const userId = house ? await houseOwner() : rawUser
+      const userId = house ? await houseOwner() : rawUser.startsWith("clerk:") ? await userForClerk(rawUser.slice(6)) : rawUser
       if (!userId) continue
       const type = house ? "usage_house" : "usage_day"
       const row = await db.mockActivity.findFirst({ where: { userId, type, metadata: { path: ["date"], equals: date } } })
