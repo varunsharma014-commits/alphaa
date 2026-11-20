@@ -137,3 +137,21 @@
 .ag-modal__btns .ag-btn-primary { flex: 1; background: var(--ag-btn); color: var(--ag-btn-fg); border: 0; }
 .ag-modal__btns .ag-btn-ghost { background: none; color: var(--ag-fg); border: 1px solid var(--ag-line); }
 .ag-modal__btns button:disabled { opacity: .5; cursor: default; }
+
+/* ── Monochrome agent rail (2026-11-19): no group colours, one accent (Today's briefing) ── */
+.v2-rail .v2-grp__head { background: none; padding: 10px 10px 6px; border-radius: 8px; color: var(--ag-muted); }
+.v2-rail .v2-grp__head:hover { color: var(--ag-fg); }
+.v2-rail .v2-grp__head:focus-visible { outline-color: var(--ag-fg); }
+.v2-rail .v2-list .v2-tile { display: none; }
+.v2-rail .v2-grp__label { font-size: 11px; font-weight: 600; letter-spacing: .07em; }
+.v2-rail .v2-grp__count { color: var(--ag-muted); font-weight: 600; }
+.v2-rail .v2-items { margin: 0 0 4px; padding-left: 0; border-left: 0; }
+.v2-rail .v2-it { padding: 7px 10px; color: var(--ag-muted); font-weight: 500; }
+.v2-rail .v2-it:hover { background: color-mix(in srgb, var(--ag-fg) 6%, transparent); color: var(--ag-fg); }
+.v2-rail .v2-it.on { background: var(--ag-bg); color: var(--ag-fg); font-weight: 600; box-shadow: 0 0 0 1px var(--ag-line), 0 2px 4px rgba(0,0,0,.03); }
+.v2-rail .v2-it--soon, .v2-rail .v2-it--soon:hover { color: var(--ag-muted); opacity: .7; background: none; }
+.v2-rail .v2-it__dot { background: var(--ag-fg); }
+.v2-rail .v2-ai { padding: 2px 10px 6px; }
+.v2-rail .v2-ai a:hover, .v2-rail .v2-ai a.on { color: var(--ag-fg); border-color: var(--ag-fg); }
+.v2-rail .v2-icon-grp .v2-tile { background: none; color: var(--ag-muted); border: 1px solid var(--ag-line); }
+.v2-rail .v2-icon-grp:hover .v2-tile { color: var(--ag-fg); border-color: var(--ag-fg); }

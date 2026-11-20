@@ -17,7 +17,7 @@ export type TodayDetail = { total: number; groups: Partial<Record<RailGroup, num
 /** Rail → briefing: "Today" was tapped on the home page. */
 export const TODAY_FOCUS = "alphaa:today-focus"
 
-type Item = { label: string; href?: string; ask?: string; tag?: string; soon?: boolean; dot?: "social" | "reviews"; ai?: boolean }
+type Item = { label: string; href?: string; ask?: string; tag?: string; soon?: boolean; dot?: "social" | "reviews"; ai?: boolean; setup?: boolean }
 type Group = { key: RailGroup; label: string; icon: typeof Star; items: Item[] }
 
 const AI_CHIPS = [
@@ -27,47 +27,47 @@ const AI_CHIPS = [
   { label: "Perplexity", href: "/dashboard/visibility/perplexity" },
 ]
 
+// Agent-style rail (Varun, 2026-11-19): monochrome, every group collapsed by default (the group
+// holding the current page opens itself), labels say what the agent produces.
 const GROUPS: Group[] = [
   { key: "mk", label: "Marketing", icon: Megaphone, items: [
-    { label: "Social accounts & posts", ask: "social", dot: "social" },
-    { label: "Ads", ask: "ads", tag: "Google · Meta" },
-    { label: "Posts & pages", ask: "content" },
-    { label: "Google listing posts", href: "/dashboard/posts" },
-    { label: "Email", soon: true, tag: "Soon" },
+    { label: "Social posts", ask: "social", dot: "social" },
+    { label: "Ad campaigns", ask: "ads", tag: "Google · Meta" },
+    { label: "Website content", ask: "content" },
+    { label: "Google Profile updates", href: "/dashboard/posts" },
+    { label: "Email outreach", soon: true, tag: "Soon" },
   ] },
   { key: "rs", label: "Results", icon: TrendingUp, items: [
     { label: "What’s working", ask: "insights" },
-    { label: "What’s working in your niche", ask: "niche" },
-    { label: "Where you show up on Google", href: "/dashboard/keywords" },
-    { label: "What AI says about you", href: "/dashboard/sandbox", ai: true },
+    { label: "Niche performance", ask: "niche" },
+    { label: "Google rankings", href: "/dashboard/keywords" },
+    { label: "AI search status", href: "/dashboard/sandbox", ai: true },
     { label: "Weekly briefings", href: "/dashboard/reports" },
-    { label: "What I’ve done", ask: "work" },
+    { label: "My work log", ask: "work" },
   ] },
-  { key: "rp", label: "Reputation", icon: Star, items: [
-    { label: "Reviews", href: "/dashboard/reviews", dot: "reviews" },
-  ] },
-  { key: "rc", label: "Research", icon: Search, items: [
-    { label: "Competitors", href: "/dashboard/competitors" },
+  { key: "rc", label: "Research & reputation", icon: Search, items: [
+    { label: "Customer reviews", href: "/dashboard/reviews", dot: "reviews" },
+    { label: "Competitor tracking", href: "/dashboard/competitors" },
     { label: "Content ideas", href: "/dashboard/content-gaps" },
     { label: "Content calendar", href: "/dashboard/content-plan" },
   ] },
   { key: "ws", label: "Website", icon: Globe, items: [
-    { label: "Website health", href: "/dashboard/audit" },
-    { label: "Site speed", href: "/dashboard/speed" },
-    { label: "What AI reads about you", href: "/dashboard/vault" },
+    { label: "Health", href: "/dashboard/audit" },
+    { label: "Speed", href: "/dashboard/speed" },
+    { label: "What AI reads (schema)", href: "/dashboard/vault" },
     { label: "Lead tracking", ask: "tracking" },
   ] },
-  { key: "st", label: "Setup", icon: Settings, items: [
-    { label: "Finish setting up", ask: "setup" },
-    { label: "Your marketing channels", ask: "channels" },
-    { label: "Brand, voice & library", ask: "voice" },
-    { label: "What I do without asking", ask: "autopilot" },
+  { key: "st", label: "System", icon: Settings, items: [
+    { label: "Connected channels", ask: "channels" },
+    { label: "Brand & voice", ask: "voice" },
+    { label: "My permissions", ask: "autopilot" },
     { label: "Website connection", href: "/dashboard/settings/website" },
+    { label: "Setup progress", ask: "setup", setup: true },
   ] },
 ]
 
-const CLOSED_KEY = "alphaa.rail.groups.v1"
-const DEFAULT_CLOSED: RailGroup[] = ["rc", "ws", "st"]
+const CLOSED_KEY = "alphaa.rail.groups.v2"
+const DEFAULT_CLOSED: RailGroup[] = ["mk", "rs", "rp", "rc", "ws", "st"]
 const TODAY_KEY = "alphaa.today.v1"
 
 export function ToolsRailV2({ open, onToggle, onAsk, setup }: { open: boolean; onToggle: (next: boolean) => void; onAsk: (topic: string, label: string) => void; setup: { done: number; total: number } | null }) {
@@ -84,6 +84,8 @@ export function ToolsRailV2({ open, onToggle, onAsk, setup }: { open: boolean; o
       if (Array.isArray(v)) setClosed(v.filter((x): x is RailGroup => typeof x === "string"))
     } catch {}
   }, [])
+  // The group holding the page you're on opens itself (without changing what you saved).
+  const activeGroup = GROUPS.find((g) => g.items.some((it) => it.href && (pathname === it.href || pathname.startsWith(`${it.href}/`)) || (it.ai && pathname.startsWith("/dashboard/visibility/"))))?.key
   const setGroup = (k: RailGroup, isOpen: boolean) => setClosed((prev) => {
     const next = isOpen ? prev.filter((x) => x !== k) : Array.from(new Set([...prev, k]))
     try { localStorage.setItem(CLOSED_KEY, JSON.stringify(next)) } catch {}
@@ -112,7 +114,8 @@ export function ToolsRailV2({ open, onToggle, onAsk, setup }: { open: boolean; o
 
   const count = (g: Group): string | null => {
     if (g.key === "st") return setup && setup.done < setup.total ? `${setup.done} of ${setup.total}` : null
-    const n = today?.groups[g.key] ?? 0
+    // Reviews live under Research & reputation now; the briefing still counts them as "rp".
+    const n = (today?.groups[g.key] ?? 0) + (g.key === "rc" ? today?.groups.rp ?? 0 : 0)
     if (!n) return null
     return g.key === "mk" ? `${n} waiting` : String(n)
   }
@@ -148,11 +151,11 @@ export function ToolsRailV2({ open, onToggle, onAsk, setup }: { open: boolean; o
       {toggleBtn}
       <div className="ag-tools__list v2-list">
         <button type="button" className={`v2-today ${isHome ? "on" : ""}`} onClick={goToday}>
-          <Sun size={17} aria-hidden="true" /> Today
+          <Sun size={17} aria-hidden="true" /> Today’s briefing
           {!!today?.total && <span className="v2-today__badge">{today.total}</span>}
         </button>
         {GROUPS.map((g) => {
-          const isOpen = !closed.includes(g.key)
+          const isOpen = !closed.includes(g.key) || g.key === activeGroup
           const c = count(g)
           return (
             <div key={g.key} className={`v2-grp v2-g-${g.key} ${isOpen ? "" : "v2-grp--closed"}`}>
@@ -166,7 +169,8 @@ export function ToolsRailV2({ open, onToggle, onAsk, setup }: { open: boolean; o
                 <div className="v2-items">
                   {g.items.map((it) => {
                     const dot = it.dot && (today?.[it.dot] ?? 0) > 0
-                    const inner = <>{it.label}{it.tag ? <span className="v2-it__tag">{it.tag}</span> : dot ? <span className="v2-it__dot" aria-label="waiting" /> : null}</>
+                    const tag = it.setup ? (setup && setup.done < setup.total ? `${setup.done} of ${setup.total}` : null) : it.tag
+                    const inner = <>{it.label}{tag ? <span className="v2-it__tag">{tag}</span> : dot ? <span className="v2-it__dot" aria-label="waiting" /> : null}</>
                     return (
                       <div key={it.label}>
                         {it.soon ? (
@@ -182,7 +186,7 @@ export function ToolsRailV2({ open, onToggle, onAsk, setup }: { open: boolean; o
                             }}
                           >{inner}</Link>
                         )}
-                        {it.ai && (
+                        {it.ai && (active(it.href) || pathname.startsWith("/dashboard/visibility/")) && (
                           <div className="v2-ai">
                             {AI_CHIPS.map((a) => (
                               <Link key={a.href} href={a.href} className={active(a.href) ? "on" : ""} onClick={() => { if (narrow()) onToggle(false) }}>{a.label}</Link>
