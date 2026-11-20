@@ -3,10 +3,10 @@ export const dynamic = "force-dynamic"
 import { notFound } from "next/navigation"
 import { realAuth } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { FOUNDER_EMAILS } from "@/lib/billing"
+import { isAdmin } from "@/lib/billing"
 import { ownerClerkId, realEmail } from "@/lib/sites"
 
-// Founders only: what Alphaa did for each brand in the last 30 days, the AI it used, and what
+// Admins only (isAdmin, not the comp list): what Alphaa did for each brand in the last 30 days, the AI it used, and what
 // that cost by feature. Cost is an estimate from list prices (PRICES below, $/MTok), which
 // AI_PRICES_JSON ({"model": [inputPerMTok, outputPerMTok]}) overrides without a deploy. Cache
 // writes bill 1.25x input, cache reads 0.1x (0.05x on Opus/Sonnet 5.5), web searches $0.01 each.
@@ -46,7 +46,7 @@ export default async function UsagePage() {
   const { userId } = await realAuth()
   if (!userId) notFound()
   const me = await db.user.findUnique({ where: { clerkId: userId }, select: { email: true } })
-  if (!me || !FOUNDER_EMAILS.includes(realEmail(me.email))) notFound()
+  if (!me || !isAdmin(me.email)) notFound() // never the comp/reviewer logins
 
   const since = new Date(Date.now() - 30 * 86_400_000)
   const [users, acts, usage, gbp] = await Promise.all([
