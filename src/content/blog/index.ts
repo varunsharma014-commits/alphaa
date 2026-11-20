@@ -135,6 +135,9 @@ import { meta as junkRemovalMeta, Body as JunkRemovalBody } from "./how-junk-rem
 import { meta as yelpChatgptMeta, Body as YelpChatgptBody } from "./does-yelp-affect-chatgpt-recommendations"
 import { meta as alphaaVsMozMeta, Body as AlphaaVsMozBody } from "./alphaa-vs-moz"
 import { meta as towingMeta, Body as TowingBody } from "./how-towing-companies-get-recommended-by-ai"
+import { meta as alphaaVsKnowatoaMeta, Body as AlphaaVsKnowatoaBody } from "./alphaa-vs-knowatoa"
+import { meta as xmlSitemapMeta, Body as XmlSitemapBody } from "./xml-sitemap-for-ai-search"
+import { meta as applianceRepairMeta, Body as ApplianceRepairBody } from "./how-appliance-repair-companies-get-recommended-by-ai"
 import { meta as groundingMeta, Body as GroundingBody } from "./what-is-grounding-in-ai-search"
 import { meta as vsLlmrefsMeta, Body as VsLlmrefsBody } from "./alphaa-vs-llmrefs"
 import { meta as aboutPageMeta, Body as AboutPageBody } from "./about-page-for-ai-search"
@@ -355,6 +358,9 @@ export const POSTS: Post[] = [
   { meta: yelpChatgptMeta, Body: YelpChatgptBody },
   { meta: alphaaVsMozMeta, Body: AlphaaVsMozBody },
   { meta: towingMeta, Body: TowingBody },
+  { meta: alphaaVsKnowatoaMeta, Body: AlphaaVsKnowatoaBody },
+  { meta: xmlSitemapMeta, Body: XmlSitemapBody },
+  { meta: applianceRepairMeta, Body: ApplianceRepairBody },
 ]
 
 // Every post's hero / og:image is its generated black & white title cover
