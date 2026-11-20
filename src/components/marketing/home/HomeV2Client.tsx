@@ -36,7 +36,7 @@ export function CostTable() {
     <div className="hv-cost">
       <div className="hv-cost__wrap">
         <table>
-          <thead><tr><th>Service</th><th>Agency, per month</th><th>Alphaa</th></tr></thead>
+          <thead><tr><th>Service</th><th>Marketing agency, per month</th><th>Your AI agent</th></tr></thead>
           <tbody>
             {COSTS.map(([name], i) => (
               <tr key={name}>

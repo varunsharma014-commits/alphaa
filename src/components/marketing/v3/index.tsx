@@ -125,7 +125,7 @@ export function Chapter({ tone, eyebrow, eyebrowNote, a, b, as = "h2", body, poi
 }
 
 /** One chapter per service, built from content/services.tsx. */
-export function ServiceChapter({ slug, growthNote, flip, visual, as }: { slug: ServiceSlug; growthNote?: string; flip?: boolean; visual?: ReactNode; as?: "h2" | "h3" }) {
+export function ServiceChapter({ slug, growthNote, flip, visual, as, home }: { slug: ServiceSlug; growthNote?: string; flip?: boolean; visual?: ReactNode; as?: "h2" | "h3"; home?: boolean }) {
   const sv = SERVICE_BY_SLUG[slug]
   const v = SVC[slug]
   return (
@@ -133,10 +133,10 @@ export function ServiceChapter({ slug, growthNote, flip, visual, as }: { slug: S
       tone={v.key}
       eyebrow={v.pill}
       eyebrowNote={sv.plan === "growth" ? growthNote : sv.plan === "pro" ? "Pro and Growth plans" : "Every plan, from $99/month"}
-      a={v.a}
-      b={v.b}
+      a={home ? v.home.a : v.a}
+      b={home ? v.home.b : v.b}
       as={as}
-      body={sv.feature.body}
+      body={home ? v.home.body : sv.feature.body}
       points={sv.feature.points}
       proof={v.proof}
       note={sv.plan !== "starter" ? sv.availability : undefined}

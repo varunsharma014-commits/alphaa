@@ -36,11 +36,11 @@ export function HomeV2() {
       <Section className="v3-hero" label="Introduction">
         <div>
           <ServicePills />
-          <h1 className="v3-h1">Run your entire marketing <span className="v3-blue">using an AI agent</span></h1>
-          <p className="v3-lede">Your posts, Google profile, reviews and blog, done every week in your voice. You approve with one tap and get back to running your business.</p>
+          <h1 className="v3-h1">Hire the AI agent <span className="v3-blue">that runs your marketing for you.</span></h1>
+          <p className="v3-lede">I handle your ads, social posts, Google profile, and AI search visibility while you run your business. You just tap “Approve.”</p>
           <div className="v3-btns">
-            <Link className="v3-btn" href="/start">Get started →</Link>
-            <a className="v3-btn v3-btn--ghost" href="#demo">See it work</a>
+            <Link className="v3-btn" href="/start">Hire your agent →</Link>
+            <a className="v3-btn v3-btn--ghost" href="#demo">See how I work</a>
           </div>
           <p className="v3-fine">{GUARANTEE_LINE} Month to month. Cancel online in a minute.</p>
         </div>
@@ -61,6 +61,7 @@ export function HomeV2() {
         <div className="v3-chapters">
           {SVC_ORDER.map((slug, i) => (
             <ServiceChapter
+              home
               key={slug}
               slug={slug}
               growthNote={growthNote}
@@ -73,14 +74,14 @@ export function HomeV2() {
 
       {/* Agency vs Alphaa */}
       <Section center>
-        <h2 className="v3-h2">An agency’s work.<br /><span className="v3-blue">For a fraction of the price.</span></h2>
+        <h2 className="v3-h2">Fire your expensive<br /><span className="v3-blue">marketing agency.</span></h2>
         <p className="v3-lede">Paying an agency for each piece adds up fast, and you still end up chasing them for updates. One AI agent does all of it, every week, for a fraction of the price.</p>
         <CostTable />
       </Section>
 
       {/* Insights: the pain is guessing */}
       <Section center>
-        <Head kicker="No more guessing" title={<>Stop paying for marketing<br />that doesn’t work.</>} lede="Most owners spend money on marketing and just hope. Every week I tell you, in plain English, what brought you customers, what’s quietly losing them, and what your competitors are doing. Then I fix it." />
+        <Head kicker="No more guessing" title={<>Marketing shouldn’t be your<br />second full-time job.</>} lede="Most owners spend money on marketing and just hope. Every week I tell you, in plain English, what brought you customers, what’s quietly losing them, and what your competitors are doing. Then I fix it." />
         <div className="hv-ins">
           <div className="up"><h3>Bringing you customers</h3><ul>
             <li>“dentist near me” brought <span className="hv-num">41</span> clicks this month, up <span className="hv-num">11</span>.</li>
@@ -106,7 +107,7 @@ export function HomeV2() {
 
       {/* Autopilot: the dream is time */}
       <Section center tone="se">
-        <Head kicker="Your time back" title={<>Close the laptop.<br /><span className="v3-em">Your marketing keeps going.</span></>} lede="No more chasing an agency or approving every little thing. Your posts go out, your customers hear back and your ads keep improving while you’re with customers, or home for dinner. Check in whenever you like." />
+        <Head kicker="Your time back" title={<>Close your laptop.<br /><span className="v3-em">I have the marketing handled.</span></>} lede="No more chasing an agency or approving every little thing. Your posts go out, your customers hear back and your ads keep improving while you’re with customers, or home for dinner. Check in whenever you like." />
         <Autopilot />
       </Section>
 
