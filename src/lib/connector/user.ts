@@ -1,13 +1,14 @@
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { asUser } from "@/lib/usage"
+import { usageCtx } from "@/lib/usage"
 
 /** Signed-in Alphaa user for an API route, or null. */
 export async function currentUser() {
+  const usage = usageCtx() // before any await, so the caller sees it (lib/usage.ts)
   const { userId: clerkId } = await auth()
   if (!clerkId) return null
   const user = await db.user.findUnique({ where: { clerkId } })
-  if (user) asUser(user.id) // AI usage in this request is counted for this brand
+  if (user) usage.userId = user.id // AI usage in this request is counted for this brand
   return user
 }
 

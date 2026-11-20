@@ -2,7 +2,7 @@ import { auth as clerkAuth } from "@clerk/nextjs/server"
 import { cookies } from "next/headers"
 import { cache } from "react"
 import { SITE_COOKIE, activeClerkId } from "@/lib/sites"
-import { asClerk } from "@/lib/usage"
+import { usageCtx } from "@/lib/usage"
 
 /** Clerk's own session: `userId` is always the real Clerk user id. */
 export const realAuth = clerkAuth
@@ -15,10 +15,11 @@ const resolve = cache(async (clerkId: string, siteId: string | undefined) => act
  * active website's row. Use `realAuth()` where the real Clerk id is needed.
  */
 export async function auth(): Promise<Awaited<ReturnType<typeof clerkAuth>>> {
+  const usage = usageCtx() // before any await, so the caller sees it (lib/usage.ts)
   const a = await clerkAuth()
   if (!a.userId) return a
   const res = await siteAuth(a)
-  if (res.userId) asClerk(res.userId) // AI usage in this request counts for this brand (lib/usage.ts)
+  if (res.userId && !usage.userId) usage.clerkId = res.userId // AI usage in this request counts for this brand
   return res
 }
 

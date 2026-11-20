@@ -27,10 +27,18 @@ export function asUser(userId: string): void {
 export function runAsUser<T>(userId: string, fn: () => Promise<T>): Promise<T> {
   return als.run({ userId }, fn)
 }
-/** Called by auth(): the signed-in brand's Clerk id, unless a brand is already set. */
-export function asClerk(clerkId: string): void {
-  if (als.getStore()?.userId) return
-  als.enterWith({ clerkId })
+/**
+ * The usage context of this request, created if missing. Call it SYNCHRONOUSLY at the start of a
+ * helper (before its first await) and fill in the brand later: a store entered after an await
+ * inside a helper never reaches the caller, which is why auth()/currentUser() went uncounted.
+ */
+export function usageCtx(): Ctx {
+  let s = als.getStore()
+  if (!s) {
+    s = {}
+    als.enterWith(s)
+  }
+  return s
 }
 
 type Tok = { in: number; out: number; cacheRead: number; cacheWrite: number }
