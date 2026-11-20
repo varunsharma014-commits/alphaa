@@ -59,13 +59,12 @@ export function HomeV2() {
           <Head kicker="What your agent does" title="One agent. Your whole marketing." />
         </div>
         <div className="v3-chapters">
-          {SVC_ORDER.map((slug, i) => (
+          {SVC_ORDER.map((slug) => (
             <ServiceChapter
               home
               key={slug}
               slug={slug}
               growthNote={growthNote}
-              flip={i % 2 === 1}
               visual={slug === "ai-search-optimization" ? <div className="v3-visual v3-visual--fit"><AiAnswers /></div> : undefined}
             />
           ))}
