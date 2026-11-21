@@ -24,3 +24,7 @@ None (no Mac report, 24th day).
 - Digital Main Street is `skipped`; Ottawa Board of Trade is paid (from $750/yr): do not pursue.
 - Kanata North BA (kanatanorthba.com): use the general contact form to confirm Alphaa's listing and ask about cost.
 - Cloud research 2026-11-21: no new targets worth adding (search roundups only repeat rows already in the tracker); no new pitch (every US/Canada press row already has a draft, no journalist requests passed). The cloud sandbox can't fetch futuretools.io, peerlist.io or bestaibrands.com (network allowlist), so those rows stay unverified from here.
+
+## Notes from cloud-pm (2026-11-21)
+- No Mac report again (24th day): nothing is `submitted`, so nothing to verify, no sameAs change, no IndexNow ping.
+- Tomorrow's morning run: same 5 prefilled forms first; no new targets or pitches unless a journalist request arrives.
