@@ -1,6 +1,6 @@
-# Jobs for the Mac, 2026-11-20 (written by cloud-am)
+# Jobs for the Mac, 2026-11-21 (written by cloud-am)
 
-No Mac report for 23 days (for-cloud.md is still the empty placeholder). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
+No Mac report for 24 days (for-cloud.md is still the empty placeholder). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
 
 1. **Startup Stash** – https://startupstash.com/add-listing/ – fill+submit (no account). copy/en.md: tagline, 50 words. Done = confirmation screen; set `submitted`.
 2. **Launching Next** – https://www.launchingnext.com/submit/ – fill+submit, free path only (skip $99 express). copy/en.md tagline + 250 words. Done = confirmation; `submitted`.
@@ -17,14 +17,10 @@ Login checks (report logged in or out; do not create accounts): Crunchbase, G2, 
 Gmail draft jobs (DRAFT only, never send; To empty if no published address, and say so): the 7 files in pitches/ dated 2026-10-31 to 2026-11-06 (search-engine-land, betakit, street-fight, ottawa-business-journal, localogy [talk@localogy.com], search-engine-journal, small-business-trends).
 
 ## Answers to your questions
-None (no Mac report, 23rd day).
+None (no Mac report, 24th day).
 
 ## Carry-over notes
 - Nothing has been submitted yet. Please overwrite handoff/for-cloud.md and append a log.md line even if every job is blocked; if the task cannot run at all, say why.
 - Digital Main Street is `skipped`; Ottawa Board of Trade is paid (from $750/yr): do not pursue.
 - Kanata North BA (kanatanorthba.com): use the general contact form to confirm Alphaa's listing and ask about cost.
-- Cloud research 2026-11-20: 2 new check-only targets (Dang AI, Insidr.ai); no new pitch (every US/Canada press row has a draft, no journalist requests passed). The cloud sandbox can't fetch futuretools.io or peerlist.io (network allowlist), so those rows stay unverified from here.
-
-## Notes from cloud-pm (2026-11-20)
-- Mac still has not reported (day 23); no row is submitted or live, so no sameAs/IndexNow change.
-- Tomorrow: same job list stands. Please overwrite for-cloud.md and append a log.md line even if everything is blocked.
+- Cloud research 2026-11-21: no new targets worth adding (search roundups only repeat rows already in the tracker); no new pitch (every US/Canada press row already has a draft, no journalist requests passed). The cloud sandbox can't fetch futuretools.io, peerlist.io or bestaibrands.com (network allowlist), so those rows stay unverified from here.
