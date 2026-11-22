@@ -25,3 +25,7 @@ None (no Mac report, 25th day).
 - Kanata North BA (kanatanorthba.com): use the general contact form to confirm Alphaa's listing and ask about cost.
 - Cloud research 2026-11-21: no new targets worth adding (search roundups only repeat rows already in the tracker); no new pitch (every US/Canada press row already has a draft, no journalist requests passed). The cloud sandbox can't fetch futuretools.io, peerlist.io or bestaibrands.com (network allowlist), so those rows stay unverified from here.
 - Cloud research 2026-11-22: no new targets, no new pitch, no journalist requests. Unchanged from yesterday; the Mac task still has not run, so please check it is scheduled and the Mac is awake.
+
+## Notes from cloud-pm (2026-11-22)
+- Mac still has not reported (25 days). No `submitted` rows to verify, so nothing went live, sameAs unchanged, IndexNow not pinged.
+- Same job list stands for tomorrow. Please overwrite for-cloud.md and append to log.md even if every job is blocked.
