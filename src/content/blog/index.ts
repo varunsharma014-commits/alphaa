@@ -181,6 +181,9 @@ import { meta as poolServiceMeta, Body as PoolServiceBody } from "./how-pool-ser
 import { meta as vsPromptmonitorMeta, Body as VsPromptmonitorBody } from "./alphaa-vs-promptmonitor"
 import { meta as homepageAiMeta, Body as HomepageAiBody } from "./homepage-for-ai-search"
 import { meta as selfStorageMeta, Body as SelfStorageBody } from "./how-self-storage-facilities-get-recommended-by-ai"
+import { meta as vsTrakkrMeta, Body as VsTrakkrBody } from "./alphaa-vs-trakkr"
+import { meta as claudeBraveMeta, Body as ClaudeBraveBody } from "./does-claude-use-brave-search"
+import { meta as interiorDesignersMeta, Body as InteriorDesignersBody } from "./how-interior-designers-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -367,6 +370,9 @@ export const POSTS: Post[] = [
   { meta: vsPromptmonitorMeta, Body: VsPromptmonitorBody },
   { meta: homepageAiMeta, Body: HomepageAiBody },
   { meta: selfStorageMeta, Body: SelfStorageBody },
+  { meta: vsTrakkrMeta, Body: VsTrakkrBody },
+  { meta: claudeBraveMeta, Body: ClaudeBraveBody },
+  { meta: interiorDesignersMeta, Body: InteriorDesignersBody },
 ]
 
 // Every post's hero / og:image is its generated black & white title cover
