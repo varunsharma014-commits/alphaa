@@ -29,3 +29,6 @@ None (no Mac report, 26th day).
 - Cloud research 2026-11-23 (Monday): no new targets, no new pitch, no journalist requests. Same list stands.
 
 **Monday sign-up list (US/Canada, for the Mac's sign-up list, accounts Varun creates):** Crunchbase, G2, Capterra/GetApp/Software Advice, AlternativeTo, TrustRadius, SourceForge, Wellfound, F6S, Trustpilot, Source of Sources, Qwoted, Featured.com, Indie Hackers, SaaSHub (all already `needs_account`; see tracker.csv for URLs). Report which are logged in.
+
+## Notes from cloud-pm (2026-11-23)
+- Mac did not report again (day 26). Nothing submitted, nothing live, sameAs unchanged. Same job list stands for tomorrow; please run, overwrite for-cloud.md and append to log.md even if blocked.
