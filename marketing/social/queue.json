@@ -2924,9 +2924,9 @@
     "image": "brand/social/posts/w6_twelve.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7530639491867455488/",
+    "posted_at": "2026-11-23T09:30:00-05:00"
   },
   {
     "id": "w6-wed-facebook",
@@ -3197,9 +3197,9 @@
     "image": "brand/social/posts/w8_plumber.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02zUrjK7h245KW9BjrXiM43v3idDWhd9rVSzYF2LrKmLHeQbuwnEKXLBFec5ABU2zCl&id=61592044887737",
+    "posted_at": "2026-11-23T09:37:00-05:00"
   },
   {
     "id": "w8-tue-x",
