@@ -184,6 +184,9 @@ import { meta as selfStorageMeta, Body as SelfStorageBody } from "./how-self-sto
 import { meta as vsTrakkrMeta, Body as VsTrakkrBody } from "./alphaa-vs-trakkr"
 import { meta as claudeBraveMeta, Body as ClaudeBraveBody } from "./does-claude-use-brave-search"
 import { meta as interiorDesignersMeta, Body as InteriorDesignersBody } from "./how-interior-designers-get-recommended-by-ai"
+import { meta as vsAiclicksMeta, Body as VsAiclicksBody } from "./alphaa-vs-aiclicks"
+import { meta as titleMetaMeta, Body as TitleMetaBody } from "./title-tags-meta-descriptions-ai-search"
+import { meta as photographersMeta, Body as PhotographersBody } from "./how-photographers-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -373,6 +376,9 @@ export const POSTS: Post[] = [
   { meta: vsTrakkrMeta, Body: VsTrakkrBody },
   { meta: claudeBraveMeta, Body: ClaudeBraveBody },
   { meta: interiorDesignersMeta, Body: InteriorDesignersBody },
+  { meta: vsAiclicksMeta, Body: VsAiclicksBody },
+  { meta: titleMetaMeta, Body: TitleMetaBody },
+  { meta: photographersMeta, Body: PhotographersBody },
 ]
 
 // Every post's hero / og:image is its generated black & white title cover
