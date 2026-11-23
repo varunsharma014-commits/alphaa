@@ -2,6 +2,7 @@
 // (drafts to approve, what's scheduled, what went out).
 import { agent, type Block, type Chip, type Message } from "@/lib/agent/types"
 import { imageUrl } from "@/lib/images"
+import { statsLine } from "@/lib/social/stats"
 import { PLATFORM_NAME, PROVIDER_NAME, PROVIDERS, providerConfigured, type SocialAccount, type SocialPost } from "@/lib/social/types"
 
 const op = (body: Record<string, string>, label: string, primary = false): Chip => ({ label, primary, action: { type: "agent-op", endpoint: "social", body } })
@@ -57,7 +58,10 @@ export function socialMessages(o: { growth: boolean; accounts: SocialAccount[]; 
   }
 
   if (sent.length) {
-    out.push(agent([{ kind: "receipt", title: "Recently posted", items: sent.map((p) => `${when(p.publishedAt)} · ${where(p)} · ${(p.title ?? p.text).slice(0, 70)}`) }, { kind: "chips", items: sent.flatMap((p) => (p.results ?? []).filter((r) => r.ok && r.url).slice(0, 1).map((r) => ({ label: `See it on ${PLATFORM_NAME[r.platform]}`, action: { type: "link" as const, href: r.url! } }))).slice(0, 4) }], "so-sent"))
+    const numbers = (p: SocialPost) => (p.results ?? []).map((r) => (r.ok && r.stats ? `${PLATFORM_NAME[r.platform]}: ${statsLine(r.stats)}` : null)).filter(Boolean).join(" · ")
+    const profileOnly = sent.some((p) => (p.results ?? []).some((r) => r.ok && r.platform === "linkedin" && byId.get(r.accountId)?.extra?.kind !== "organization"))
+    out.push(agent([{ kind: "receipt", title: "Recently posted", items: sent.map((p) => { const n = numbers(p); return `${when(p.publishedAt)} · ${where(p)} · ${(p.title ?? p.text).slice(0, 70)}${n ? ` · ${n}` : ""}` }) },
+      ...(profileOnly ? [{ kind: "text" as const, text: "LinkedIn doesn’t share numbers for posts on a personal profile. Connect your company page and I’ll show views, likes and comments for each post." }] : []), { kind: "chips", items: sent.flatMap((p) => (p.results ?? []).filter((r) => r.ok && r.url).slice(0, 1).map((r) => ({ label: `See it on ${PLATFORM_NAME[r.platform]}`, action: { type: "link" as const, href: r.url! } }))).slice(0, 4) }], "so-sent"))
   }
 
   if (o.accounts.length) out.push(agent([{ kind: "chips", items: o.accounts.map((a) => op({ op: "disconnect", id: a.id }, `Disconnect ${a.name}`)) }], "so-manage"))

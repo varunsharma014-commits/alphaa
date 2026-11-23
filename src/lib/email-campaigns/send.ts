@@ -15,6 +15,8 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { fingerprint, getCampaign, getContacts, lastSentAt, nextAllowedSend, optedOutSet, updateCampaign, type Campaign } from "./store"
 
 const CHUNK = 50
+export const CAMPAIGN_TAG_BRAND = "alphaa_brand"
+export const CAMPAIGN_TAG_ID = "alphaa_campaign"
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
 
@@ -100,6 +102,8 @@ export function runSend(userId: string, id: string): Promise<void> {
           html,
           text,
           headers: { "List-Unsubscribe": `<${links.oneClickUrl}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
+          // The Resend webhook (api/webhooks/resend) reads these to take bounces and spam complaints off THIS brand's list.
+          tags: [{ name: CAMPAIGN_TAG_BRAND, value: userId }, { name: CAMPAIGN_TAG_ID, value: id }],
         })
       }
       if (batch.length) {

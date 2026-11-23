@@ -32,6 +32,8 @@ export type Campaign = {
   startedAt?: string
   sentAt?: string
   error?: string
+  bounced?: number // addresses that hard-bounced (taken off the list by the Resend webhook)
+  complained?: number // people who marked it as spam (taken off the list)
   tests?: string[] // ISO times test copies went to the owner
   touchedAt?: string // last write (MockActivity has no updatedAt)
 }
@@ -103,12 +105,14 @@ export async function optedOutSet(userId: string): Promise<Set<string>> {
 }
 
 /** Records an opt-out for this business and drops the address from its list. Idempotent. */
-export async function optOut(userId: string, fp: string): Promise<void> {
+export async function optOut(userId: string, fp: string, reason: "unsubscribed" | "bounced" | "complained" = "unsubscribed"): Promise<boolean> {
   const already = await db.mockActivity.findFirst({ where: { userId, type: "email_optout", metadata: { path: ["to"], equals: fp } }, select: { id: true } })
-  if (!already) await db.mockActivity.create({ data: { userId, type: "email_optout", title: "A customer unsubscribed from your emails", metadata: { to: fp } } })
+  const title = reason === "bounced" ? "An address on your list doesn’t exist any more" : reason === "complained" ? "A customer marked your email as spam" : "A customer unsubscribed from your emails"
+  if (!already) await db.mockActivity.create({ data: { userId, type: "email_optout", title, metadata: { to: fp, reason } } })
   const contacts = await getContacts(userId)
   const left = contacts.filter((c) => fingerprint(c.e) !== fp)
   if (left.length !== contacts.length) await saveContacts(userId, left)
+  return !already
 }
 
 export type CampaignRow = { id: string; createdAt: Date; updatedAt: Date; c: Campaign }

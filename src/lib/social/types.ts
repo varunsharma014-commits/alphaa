@@ -38,7 +38,9 @@ export type SocialAccount = {
   connectedAt: string
 }
 
-export type PostResult = { accountId: string; platform: SocialPlatform; ok: boolean; url?: string | null; externalId?: string | null; error?: string }
+/** What the platform reports for a published post (LinkedIn company Pages today; profile posts aren't readable by apps). */
+export type PostStats = { impressions?: number; likes: number; comments: number; shares?: number; clicks?: number; at: string }
+export type PostResult = { accountId: string; platform: SocialPlatform; ok: boolean; url?: string | null; externalId?: string | null; error?: string; stats?: PostStats }
 export type SocialPostStatus = "draft" | "scheduled" | "publishing" | "published" | "partial" | "failed"
 export type SocialPost = {
   id: string

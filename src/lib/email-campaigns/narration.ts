@@ -149,11 +149,11 @@ export async function emailMessages(user: User, note?: string | null): Promise<M
     out.push(agent([
       { kind: "sources", title: "Emails sent", items: past.map((r) => ({
         name: r.c.subject,
-        detail: r.c.status === "sent" ? `${day(r.c.sentAt ?? r.updatedAt)} · ${(r.c.sent ?? 0).toLocaleString("en-US")} sent${r.c.failed ? `, ${r.c.failed} didn’t go` : ""}` : `${day(r.updatedAt)} · didn’t send`,
+        detail: r.c.status === "sent" ? `${day(r.c.sentAt ?? r.updatedAt)} · ${(r.c.sent ?? 0).toLocaleString("en-US")} sent${r.c.failed ? `, ${r.c.failed} didn’t go` : ""}${r.c.bounced ? `, ${r.c.bounced} bounced` : ""}${r.c.complained ? `, ${r.c.complained} marked as spam` : ""}` : `${day(r.updatedAt)} · didn’t send`,
         status: r.c.status === "sent" ? "Sent" : "Failed",
         ok: r.c.status === "sent",
       })) },
-      { kind: "text", text: "Replies land in your own inbox. Anyone who unsubscribes is taken off your list for good." },
+      { kind: "text", text: "Replies land in your own inbox. Anyone who unsubscribes, whose address bounces, or who marks it as spam is taken off your list for good." },
     ], "em-past"))
   }
   return out

@@ -7,7 +7,7 @@ import { dec, enc } from "../store"
 
 const V = () => process.env.LINKEDIN_VERSION || "202509"
 const orgScopes = () => process.env.LINKEDIN_ORG_SCOPES === "1"
-const rest = (token: string, extra: Record<string, string> = {}) => ({ Authorization: `Bearer ${token}`, "LinkedIn-Version": V(), "X-Restli-Protocol-Version": "2.0.0", ...extra })
+export const rest = (token: string, extra: Record<string, string> = {}) => ({ Authorization: `Bearer ${token}`, "LinkedIn-Version": V(), "X-Restli-Protocol-Version": "2.0.0", ...extra })
 
 /** LinkedIn's "little" text format reserves these characters. */
 const escapeCommentary = (s: string) => s.replace(/[\\|{}@[\]()<>#*_~]/g, (c) => `\\${c}`)

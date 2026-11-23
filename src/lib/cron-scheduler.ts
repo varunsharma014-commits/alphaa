@@ -43,6 +43,8 @@ export function startCron(): void {
 
     // Daily 05:00 UTC — pull GSC keywords + GA snapshot for every connected account.
     // (Google APIs only — no Anthropic spend — so left running.)
+    // Daily 04:00 UTC: LinkedIn company Page post stats.
+    if (hour === 4) hit("/api/cron/social-stats")
     if (hour === 5) hit("/api/cron/seo-sync")
     // Daily 06:00 UTC — write replies to new Google reviews so approving is one tap (Anthropic)
     if (hour === 6) hit("/api/cron/review-drafts")
