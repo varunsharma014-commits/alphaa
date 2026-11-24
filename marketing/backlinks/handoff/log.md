@@ -55,3 +55,4 @@
 2026-11-24 13:40 ET | mac | 0 submitted, 0 blocked (stopped at the fingerprint gate: Chrome 2240x1260 vs hosts.json 2560x1440), 0 drafts (Gmail connector is the GT inbox)
 2026-11-24 13:38 ET | mac | 0 submitted, 1 blocked (re-run; fingerprint OK; stopped at Launching Next 2+3 human check per test-run rule), 0 drafts
 2026-11-24 13:47 ET | mac | 0 submitted, 1 blocked (3rd run; browser flipped to a non-iMac Chrome 12c 1728x1117 + Google sign-in tab; stopped), 0 drafts
+2026-11-24 13:49 ET | mac | 0 submitted, 0 blocked (4th run; no connected browser marked onThisComputer, stopped before opening a tab), 0 drafts

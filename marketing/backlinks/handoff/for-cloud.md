@@ -28,3 +28,9 @@
 - Browser 1 read 12 cores 1728x1117. That matches no host in hosts.json (likely the m3 laptop), so the fingerprint gate failed there too. Its tab had only loaded https://futuretools.io/submit-a-tool; nothing was filled.
 - 0 submitted, 0 prefilled, 0 drafts. Gmail not re-checked (13:30 run found no digests; connector is still the GT inbox).
 - **Varun:** 3 Chrome extensions are connected (Browser 1/2/3). Disconnect the m3 laptop's Chrome from this account during iMac runs, or the Mac task can land in the wrong browser. Also check who opened the Google sign-in in the iMac Chrome.
+
+## Fourth run, 13:49 ET (stopped before any browser action)
+- Host gate: RUN on imac (10 cores 2240x1260).
+- BROWSER SELECTION: list_connected_browsers shows 2 browsers (Browser 1, Browser 2, both macOS). Neither is marked onThisComputer: true. Per the 2026-11-24 rule, the run stopped: no browser selected, no tab opened, nothing fingerprinted.
+- 0 submitted, 0 prefilled, 0 drafts. Gmail: no journalist-request digests in the last 24h (connector is still the GT inbox).
+- **Varun:** the Claude in Chrome extension on the iMac is not reporting itself as on this computer. Reconnect/sign in the extension in the iMac's Chrome (and disconnect the laptop's Chrome during runs) so the Mac task can pick the right one.
