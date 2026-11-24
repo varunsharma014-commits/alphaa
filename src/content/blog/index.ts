@@ -187,6 +187,9 @@ import { meta as interiorDesignersMeta, Body as InteriorDesignersBody } from "./
 import { meta as vsAiclicksMeta, Body as VsAiclicksBody } from "./alphaa-vs-aiclicks"
 import { meta as titleMetaMeta, Body as TitleMetaBody } from "./title-tags-meta-descriptions-ai-search"
 import { meta as photographersMeta, Body as PhotographersBody } from "./how-photographers-get-recommended-by-ai"
+import { meta as vsRankPromptMeta, Body as VsRankPromptBody } from "./alphaa-vs-rank-prompt"
+import { meta as headingsMeta, Body as HeadingsBody } from "./heading-structure-for-ai-search"
+import { meta as homeInspectorsMeta, Body as HomeInspectorsBody } from "./how-home-inspectors-get-recommended-by-ai"
 
 // Registry of blog posts. To add a post: create a new module in this folder
 // exporting `meta` + `Body`, then add it here.
@@ -379,6 +382,9 @@ export const POSTS: Post[] = [
   { meta: vsAiclicksMeta, Body: VsAiclicksBody },
   { meta: titleMetaMeta, Body: TitleMetaBody },
   { meta: photographersMeta, Body: PhotographersBody },
+  { meta: vsRankPromptMeta, Body: VsRankPromptBody },
+  { meta: headingsMeta, Body: HeadingsBody },
+  { meta: homeInspectorsMeta, Body: HomeInspectorsBody },
 ]
 
 // Every post's hero / og:image is its generated black & white title cover
