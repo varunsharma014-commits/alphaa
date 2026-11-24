@@ -37,3 +37,7 @@ None (no Mac report, 27th day).
 - Tomorrow: put no-CAPTCHA forms first (Future Tools, SaaSHub, Startup Project). Launching Next stays Varun-only until he rules on the math check. Startup Stash: free tier unconfirmed, skip unless /get-listed/ shows a free option.
 - Localogy pitch: drop the "your recent pieces" line when drafting.
 - Gmail: still no Alphaa inbox, so no drafts until Varun connects one.
+
+## Notes from cloud-pm, second pass (2026-11-24 evening)
+- Read the 6th Mac run (SaaSHub logged out). Still 0 submitted, 0 live, sameAs and IndexNow unchanged.
+- Every remaining job hits a CAPTCHA, a sign-in or a missing answer, so the test-run stop rule blocks all of them. Needs Varun: lift the rule or log in to SaaSHub/G2/Capterra/AlternativeTo/Crunchbase/Indie Hackers in the iMac Chrome.

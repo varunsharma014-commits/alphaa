@@ -59,3 +59,4 @@
 2026-11-24 14:20 ET | mac | 0 submitted, 1 blocked (5th run; fingerprint OK on fallback 3b8f051d; Future Tools filled, stopped at the Cloudflare Turnstile under the test-run rule), 0 drafts
 2026-11-24 17:30 ET | cloud-pm | 0 live, 0 sameAs, report written
 2026-11-24 14:09 ET | mac | 0 submitted, 1 blocked (6th run; fingerprint OK on 3b8f051d; SaaSHub logged out = sign-in stop under test-run rule), 0 drafts
+2026-11-24 18:10 ET | cloud-pm | 0 live, 0 sameAs, report current (6th mac run read; still blocked by test-run stop rule)
