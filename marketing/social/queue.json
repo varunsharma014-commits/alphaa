@@ -3543,9 +3543,9 @@
     "image": "brand/social/posts/m_it_w2.png",
     "slides": null,
     "video_script": null,
-    "status": "queued",
-    "posted_url": null,
-    "posted_at": null
+    "status": "posted",
+    "posted_url": "https://www.linkedin.com/feed/update/urn:li:activity:7531071387894038528/",
+    "posted_at": "2026-11-24T14:05:00-05:00"
   },
   {
     "id": "m-ae-w2-linkedin",
