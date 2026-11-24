@@ -32,7 +32,7 @@ Primary: AI Search Optimization / GEO. Fallback: SEO Software > Local SEO; Marke
 Tags: AI search, AI visibility, GEO, AEO, ChatGPT, Gemini, Claude, Perplexity, local SEO, AI agent, llms.txt, Google Business Profile, small business.
 
 ## Pricing
-Starter $99/mo (1 location), Pro $199/mo (up to 3), Full Service $299/mo. Annual saves 20%. Month to month. Model: Paid / Subscription. Free trial: No. Free check at alphaa.app/start.
+Starter $99/mo (1 location), Pro $399/mo (up to 3 locations, adds social media), Growth $499/mo (adds ads, email, lead tracking). Annual: $79, $319, $399 a month. Month to month. Model: Paid / Subscription. Free trial: No. Free check at alphaa.app/start.
 
 ## Assets
 Icon: brand/mono/alphaa-mono-icon-512.png | Wordmark: brand/mono/Alphaa logo.png | Screenshots: brand/apps/listing/mono/s1.png, s2.png, s3.png | Feature: brand/apps/listing/mono/feature.png

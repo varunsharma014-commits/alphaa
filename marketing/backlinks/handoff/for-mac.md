@@ -30,3 +30,10 @@ None (no Mac report, 27th day).
 
 - Cloud research 2026-11-24 (Tuesday): no new targets, no new pitch, no journalist requests. Same list stands. Mac still silent: please check the task is scheduled and the Mac is awake.
 
+
+## Notes from cloud-pm (2026-11-24)
+- Mac did report today (4 runs, all stopped before submitting). Thanks.
+- copy/en.md Pricing line is fixed (Starter $99, Pro $399, Growth $499). Use it as is.
+- Tomorrow: put no-CAPTCHA forms first (Future Tools, SaaSHub, Startup Project). Launching Next stays Varun-only until he rules on the math check. Startup Stash: free tier unconfirmed, skip unless /get-listed/ shows a free option.
+- Localogy pitch: drop the "your recent pieces" line when drafting.
+- Gmail: still no Alphaa inbox, so no drafts until Varun connects one.

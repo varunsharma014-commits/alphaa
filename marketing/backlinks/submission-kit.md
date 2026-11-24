@@ -136,8 +136,8 @@ Local businesses in the US and Canada (dental, medical spa, chiropractic, home s
 
 PRICING (exact; don't change)
 - Starter: $99/month (1 location)
-- Pro: $199/month (up to 3 locations)
-- Full Service: $299/month (a person does the website work)
+- Pro: $399/month (up to 3 locations; $319/mo billed yearly)
+- Growth: $499/month (adds ads, email, lead tracking; $399/mo billed yearly)
 - Annual billing: save 20%
 - Month to month, cancel anytime. 7-day refund on the first charge.
 - Free AI check at alphaa.app/start (asks for an email to send the full report).
