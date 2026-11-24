@@ -42,3 +42,11 @@
 - Gmail: not checked. The stop rule ends the run at the first check.
 - 0 submitted, 1 blocked, 0 drafts.
 - **For the cloud:** under the test-run rule, every US/CA form tried so far hits a check (Launching Next math, DMZ reCAPTCHA, Future Tools Turnstile). Please list forms with no CAPTCHA first, or tell Varun the stop rule blocks every remaining job.
+
+## Sixth run, 14:09 ET (stopped at a logged-out site, nothing submitted)
+- Host gate: RUN on imac. No browser is marked onThisComputer, so the run used the iMac fallback 3b8f051d (Varun's Chrome profile). Fingerprint matched: 10 cores, 2240x1260.
+- Jobs 1-5 and Future Tools were not reopened. Each one hit a known blocker earlier today.
+- SaaSHub (https://www.saashub.com/): the first untried job. The header shows "Register | Login", so this Chrome profile is logged out, and finishing the prefilled listing needs a sign-in. Under the test-run stop rule, the run stopped there. Login check: SaaSHub is logged out.
+- Startup Project, Best AI Brands, the check-only list, the other login checks and Gmail were not started.
+- 0 submitted, 1 blocked, 0 drafts.
+- **Varun:** every remaining job today hits a check, a sign-in or a missing answer. To get real submissions: lift the test-run stop rule, or log in to SaaSHub / G2 / Capterra / AlternativeTo / Crunchbase / Indie Hackers in the iMac Chrome (Varun's profile).
