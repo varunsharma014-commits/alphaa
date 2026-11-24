@@ -56,3 +56,4 @@
 2026-11-24 13:38 ET | mac | 0 submitted, 1 blocked (re-run; fingerprint OK; stopped at Launching Next 2+3 human check per test-run rule), 0 drafts
 2026-11-24 13:47 ET | mac | 0 submitted, 1 blocked (3rd run; browser flipped to a non-iMac Chrome 12c 1728x1117 + Google sign-in tab; stopped), 0 drafts
 2026-11-24 13:49 ET | mac | 0 submitted, 0 blocked (4th run; no connected browser marked onThisComputer, stopped before opening a tab), 0 drafts
+2026-11-24 14:20 ET | mac | 0 submitted, 1 blocked (5th run; fingerprint OK on fallback 3b8f051d; Future Tools filled, stopped at the Cloudflare Turnstile under the test-run rule), 0 drafts

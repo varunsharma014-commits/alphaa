@@ -34,3 +34,11 @@
 - BROWSER SELECTION: list_connected_browsers shows 2 browsers (Browser 1, Browser 2, both macOS). Neither is marked onThisComputer: true. Per the 2026-11-24 rule, the run stopped: no browser selected, no tab opened, nothing fingerprinted.
 - 0 submitted, 0 prefilled, 0 drafts. Gmail: no journalist-request digests in the last 24h (connector is still the GT inbox).
 - **Varun:** the Claude in Chrome extension on the iMac is not reporting itself as on this computer. Reconnect/sign in the extension in the iMac's Chrome (and disconnect the laptop's Chrome during runs) so the Mac task can pick the right one.
+
+## Fifth run, ~14:20 ET (stopped at a Cloudflare check, nothing submitted)
+- Host gate: RUN on imac. No browser is marked onThisComputer, so the run used the iMac fallback from the prompt: 3b8f051d (Varun's Chrome profile). Fingerprint matched: 10 cores, 2240x1260.
+- Jobs 1-5 were not reopened. Each has a blocker found earlier today or in October: Startup Stash shows a plan page, Launching Next has a 2+3 check, DMZ has a reCAPTCHA, Founded in Canada needs Varun's answers, and SaaSworthy needs his phone number. Opening any of them would stop the run right away.
+- Future Tools (https://www.futuretools.io/submit-a-tool): every field was filled from copy/en.md (Alphaa Team, Alphaa, https://alphaa.app, the 50-word text, Marketing, Paid, hi@alphaa.app, newsletter left unticked). A Cloudflare "verify you are human" widget sits above Submit Tool. Under the test-run stop rule, the run stopped there without submitting. The tab was closed and the filled fields were lost. **Varun:** that form takes about 1 minute by hand.
+- Gmail: not checked. The stop rule ends the run at the first check.
+- 0 submitted, 1 blocked, 0 drafts.
+- **For the cloud:** under the test-run rule, every US/CA form tried so far hits a check (Launching Next math, DMZ reCAPTCHA, Future Tools Turnstile). Please list forms with no CAPTCHA first, or tell Varun the stop rule blocks every remaining job.
