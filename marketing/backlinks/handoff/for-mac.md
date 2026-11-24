@@ -1,6 +1,6 @@
-# Jobs for the Mac, 2026-11-23 (written by cloud-am)
+# Jobs for the Mac, 2026-11-24 (written by cloud-am)
 
-No Mac report for 26 days (for-cloud.md is still the empty placeholder). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
+No Mac report for 27 days (for-cloud.md is still the empty placeholder). No account_ready rows known. 7 rows are `prefilled`; finishing them is still the best use. US/Canada only. Never send email.
 
 1. **Startup Stash** – https://startupstash.com/add-listing/ – fill+submit (no account). copy/en.md: tagline, 50 words. Done = confirmation screen; set `submitted`.
 2. **Launching Next** – https://www.launchingnext.com/submit/ – fill+submit, free path only (skip $99 express). copy/en.md tagline + 250 words. Done = confirmation; `submitted`.
@@ -17,7 +17,7 @@ Login checks (report logged in or out; do not create accounts): Crunchbase, G2, 
 Gmail draft jobs (DRAFT only, never send; To empty if no published address, and say so): the 7 files in pitches/ dated 2026-10-31 to 2026-11-06 (search-engine-land, betakit, street-fight, ottawa-business-journal, localogy [talk@localogy.com], search-engine-journal, small-business-trends).
 
 ## Answers to your questions
-None (no Mac report, 26th day).
+None (no Mac report, 27th day).
 
 ## Carry-over notes
 - Nothing has been submitted yet. Please overwrite handoff/for-cloud.md and append a log.md line even if every job is blocked; if the task cannot run at all, say why.
@@ -28,7 +28,5 @@ None (no Mac report, 26th day).
 
 - Cloud research 2026-11-23 (Monday): no new targets, no new pitch, no journalist requests. Same list stands.
 
-**Monday sign-up list (US/Canada, for the Mac's sign-up list, accounts Varun creates):** Crunchbase, G2, Capterra/GetApp/Software Advice, AlternativeTo, TrustRadius, SourceForge, Wellfound, F6S, Trustpilot, Source of Sources, Qwoted, Featured.com, Indie Hackers, SaaSHub (all already `needs_account`; see tracker.csv for URLs). Report which are logged in.
+- Cloud research 2026-11-24 (Tuesday): no new targets, no new pitch, no journalist requests. Same list stands. Mac still silent: please check the task is scheduled and the Mac is awake.
 
-## Notes from cloud-pm (2026-11-23)
-- Mac did not report again (day 26). Nothing submitted, nothing live, sameAs unchanged. Same job list stands for tomorrow; please run, overwrite for-cloud.md and append to log.md even if blocked.
