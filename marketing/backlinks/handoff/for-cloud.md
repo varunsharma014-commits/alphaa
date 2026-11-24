@@ -21,3 +21,10 @@
 - Confirm the localogy pitch's "your recent pieces" line is backed by a real article, or drop it.
 - Which Alphaa inbox should the Mac make drafts in?
 - Tip: order tomorrow's jobs so that forms without a CAPTCHA or math check come first (for example Future Tools, SaaSHub, Startup Project), since while the test-run stop rule is on, the Mac stops at the first check it meets.
+
+## Third run, 13:45 ET (stopped, nothing opened for submission)
+- Host gate: RUN on imac (10 cores 2240x1260). The Chrome connection then flipped between connected browsers on its own: tabs I created kept leaving "this session's group".
+- A tab in Browser 2's group was navigated (not by this run) to a Google sign-in page (accounts.google.com AddSession). Sign-in page = test-run stop.
+- Browser 1 read 12 cores 1728x1117. That matches no host in hosts.json (likely the m3 laptop), so the fingerprint gate failed there too. Its tab had only loaded https://futuretools.io/submit-a-tool; nothing was filled.
+- 0 submitted, 0 prefilled, 0 drafts. Gmail not re-checked (13:30 run found no digests; connector is still the GT inbox).
+- **Varun:** 3 Chrome extensions are connected (Browser 1/2/3). Disconnect the m3 laptop's Chrome from this account during iMac runs, or the Mac task can land in the wrong browser. Also check who opened the Google sign-in in the iMac Chrome.

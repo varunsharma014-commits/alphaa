@@ -54,3 +54,4 @@
 2026-11-24 09:10 ET | cloud-am | 5 jobs for Mac (+checks, login checks, 7 Gmail drafts), 0 new targets, 0 pitches (mac did not report, day 27)
 2026-11-24 13:40 ET | mac | 0 submitted, 0 blocked (stopped at the fingerprint gate: Chrome 2240x1260 vs hosts.json 2560x1440), 0 drafts (Gmail connector is the GT inbox)
 2026-11-24 13:38 ET | mac | 0 submitted, 1 blocked (re-run; fingerprint OK; stopped at Launching Next 2+3 human check per test-run rule), 0 drafts
+2026-11-24 13:47 ET | mac | 0 submitted, 1 blocked (3rd run; browser flipped to a non-iMac Chrome 12c 1728x1117 + Google sign-in tab; stopped), 0 drafts
