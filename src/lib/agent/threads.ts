@@ -20,6 +20,7 @@ import { workMessages } from "@/lib/agent/worklog"
 import { socialThreadFor } from "@/lib/social/thread"
 import { channelsMessages } from "@/lib/agent/channels"
 import { adsMessages } from "@/lib/gads/thread"
+import { adPlanMessages } from "@/lib/ad-strategy/thread"
 import { metaAdsMessages } from "@/lib/metaads/narration"
 import { emailMessages } from "@/lib/email-campaigns/narration"
 import { setupMessages } from "@/lib/agent/setup"
@@ -32,7 +33,7 @@ import { saveAgentSettings } from "@/lib/agent/settings"
 import { nicheMessages } from "@/lib/agent/niche-narration"
 import { nicheView } from "@/lib/niche-posts"
 
-export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights" | "social" | "channels" | "setup" | "niche" | "ads" | "email"
+export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "competitors" | "briefings" | "tracking" | "work" | "voice" | "autopilot" | "insights" | "social" | "channels" | "setup" | "niche" | "ads" | "email" | "adplan"
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "setup", label: "Finish setting up", blurb: "The few things I need from you, one at a time" },
   { key: "channels", label: "Your marketing channels", blurb: "Everything I work on, what’s connected and what to connect next" },
@@ -51,6 +52,7 @@ export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "briefings", label: "Weekly Briefings", blurb: "What I did each week, in plain English" },
   { key: "tracking", label: "Tracking & Ads", blurb: "Google Analytics, the Meta Pixel and the leads your website sends (Growth)" },
   { key: "email", label: "Email your past customers", blurb: "Your customer list and the emails I write to bring people back, sent only when you say so (Growth)" },
+  { key: "adplan", label: "Your ad plan", blurb: "Your two strongest angles, opening lines, video scripts, static ads and budget plan, written from your business and your competitors’ ads (Pro)" },
   { key: "ads", label: "Ads", blurb: "Your Google, Facebook and Instagram ads: the campaigns I built, what they cost, the leads they brought and what I tuned (Growth)" },
 ]
 export const isTopic = (t: string): t is Topic => TOPICS.some((x) => x.key === t)
@@ -224,6 +226,9 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
 
     case "email":
       return { autorun: [], messages: await emailMessages(user) }
+
+    case "adplan":
+      return { autorun: [], messages: await adPlanMessages(user) }
 
     case "ads":
       return { autorun: [], messages: [...(await adsMessages(user)), ...(await metaAdsMessages(user))] }

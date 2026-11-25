@@ -42,7 +42,7 @@ export async function proxyGet(url: string, headers: Record<string, string>, ms 
   }
 }
 
-async function runActor<T>(actor: string, input: unknown, timeoutSecs = 90): Promise<T[] | null> {
+export async function runActor<T>(actor: string, input: unknown, timeoutSecs = 90): Promise<T[] | null> {
   if (!apifyEnabled()) return null
   try {
     const r = await fetch(`https://api.apify.com/v2/acts/${actor}/run-sync-get-dataset-items?token=${encodeURIComponent(TOKEN())}&timeout=${timeoutSecs}`, {

@@ -33,6 +33,7 @@ const GROUPS: Group[] = [
   { key: "mk", label: "Marketing", icon: Megaphone, items: [
     { label: "Social posts", ask: "social", dot: "social" },
     { label: "Ad campaigns", ask: "ads", tag: "Google · Meta" },
+    { label: "Your ad plan", ask: "adplan", tag: "Scripts · hooks" },
     { label: "Website content", ask: "content" },
     { label: "Google Profile updates", href: "/dashboard/posts" },
     { label: "Email outreach", ask: "email" },
