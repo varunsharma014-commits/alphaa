@@ -81,6 +81,7 @@ async function factLines(user: U): Promise<string> {
 
 const RULES = `HARD RULES
 - Use only facts given below. Never invent prices, discounts, results, counts, ratings, years, awards, guarantees or customer names. Any number you write must appear in the facts. Don't write years.
+- Never promise an outcome ("get recommended", "rank higher", "more customers", "grow your business"). Say what the business does and what the customer controls.
 - Never say best, #1, leading, top-rated, cheapest, fastest, perfect, guaranteed, world-class or award-winning.
 - No fake testimonials, no AI people, no "customers say". Real customers only if the facts name them. A recreated chat or comment is tagged "Example".
 - No claims about the viewer's personal traits (health, weight, age, money, religion): don't say "Struggling with…?" about a condition.
@@ -95,11 +96,12 @@ async function build(user: U, rowId: string): Promise<AdStrategy> {
   const [facts, comp, settings] = await Promise.all([factLines(user), competitorAds(user.id, country), getAgentSettings(user.id)])
   const allowed = allowedNumbers(facts)
   const brand = user.businessName?.trim() || null
+  const display = brand || (user.websiteUrl ? user.websiteUrl.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/.*$/, "") : null)
   const compText = comp.ads.length
     ? comp.ads.map((a) => `- ${a.page} (${a.format}${a.daysRunning !== null ? `, running ${a.daysRunning} days` : ""}): ${a.title ? `${a.title}. ` : ""}${a.text}`).join("\n")
     : "No competitor ads found."
 
-  const who = `${brand ?? "this business"}${user.businessType ? `, a ${user.businessType}` : ""}${user.city ? ` in ${user.city}${user.state ? `, ${user.state}` : ""}` : ""}`
+  const who = `${display ?? "this business"}${user.businessType ? `, a ${user.businessType}` : ""}${user.city ? ` in ${user.city}${user.state ? `, ${user.state}` : ""}` : ""}`
   const planPrompt = `You are writing a personal ad plan for ${who}.
 
 ${playbookBrief()}
@@ -157,7 +159,7 @@ ${facts}`
   const monthly = settings.autopilot?.adBudget && settings.autopilot.adBudget > 0 ? settings.autopilot.adBudget : null
   return {
     v: 1, status: "ready", at: new Date().toISOString(), playbook: PLAYBOOK_VERSION,
-    business: { name: brand ?? "Your business", vertical: plan.vertical, b2b: plan.b2b, local, markets: [user.city, user.state].filter(Boolean).join(", ") || (country === "CA" ? "Canada" : "United States") },
+    business: { name: display ?? "Your business", vertical: plan.vertical, b2b: plan.b2b, local, markets: [user.city, user.state].filter(Boolean).join(", ") || (country === "CA" ? "Canada" : "United States") },
     angles: plan.angles.slice(0, 2),
     competitors: { looked: comp.looked, ads: comp.ads.slice(0, 6), cliches: comp.ads.length ? plan.cliches.slice(0, 5) : [], gaps: comp.ads.length ? plan.gaps.slice(0, 4) : [] },
     hooks: hooks.ok.slice(0, 30),
