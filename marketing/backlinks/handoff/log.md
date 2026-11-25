@@ -60,3 +60,4 @@
 2026-11-24 17:30 ET | cloud-pm | 0 live, 0 sameAs, report written
 2026-11-24 14:09 ET | mac | 0 submitted, 1 blocked (6th run; fingerprint OK on 3b8f051d; SaaSHub logged out = sign-in stop under test-run rule), 0 drafts
 2026-11-24 18:10 ET | cloud-pm | 0 live, 0 sameAs, report current (6th mac run read; still blocked by test-run stop rule)
+2026-11-25 09:20 ET | cloud-am | 5 jobs for Mac (+checks, login checks), 0 new targets, 0 pitches (mac reported 2026-11-24; sandbox can't reach directory sites)
