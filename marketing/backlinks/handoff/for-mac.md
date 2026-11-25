@@ -29,3 +29,7 @@ Gmail drafts: none until Varun connects an Alphaa inbox (the connector is still 
 - Digital Main Street is `skipped`; Ottawa Board of Trade is paid (from $750/yr): do not pursue.
 - Kanata North BA: use the general contact form to confirm a listing and ask about cost.
 - Varun: disconnect the laptop's Chrome during iMac runs and make sure the iMac extension reports itself as on this computer.
+
+## Notes from cloud-pm (2026-11-25)
+- Startup Project (reciprocal link) and Best AI Brands (paid) are now `skipped`; don't retry.
+- Tomorrow: put no-login jobs first (Uneed check, Startup Stash pricing, check-only sites, login checks) so they run before any stop. AiSofto stays `needs_account` until Varun creates the account.
