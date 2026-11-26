@@ -15,8 +15,8 @@ import { SiteSwitcher } from "@/components/agent/SiteSwitcher"
 import { AutoApproveModal, openAutoApprove, turnOffAutoApprove } from "@/components/agent/AutoApproveModal"
 import { AUTO_APPROVE_CHANGED, type AutoApproveChangedDetail } from "@/lib/auto-approve-text"
 import { agent, type Message } from "@/lib/agent/types"
-import { THEME_COOKIE, type DashboardTheme } from "@/lib/theme"
-import { AGENT_EVENT, TOAST_EVENT, WS_EVENT, type AgentEventDetail, type WsDetail } from "@/lib/workspace/events"
+import type { DashboardTheme } from "@/lib/theme"
+import { AGENT_EVENT, AI_NOTE, TOAST_EVENT, WS_EVENT, type AgentEventDetail, type WsDetail } from "@/lib/workspace/events"
 import type { ShellData } from "@/lib/workspace/shell"
 import { Check, Icon, SendArrow, type IconName } from "./icons"
 
@@ -67,7 +67,8 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
 }) {
   const realPath = usePathname() ?? "/dashboard"
   const pathname = path ?? realPath
-  const [theme, setTheme] = useState<DashboardTheme>(initialTheme)
+  // Light only (owner, 2026-11-26): dark mode is off; the prop stays for the dev preview.
+  const theme: DashboardTheme = initialTheme
   const [ap, setAp] = useState(data.autopilot)
   const [drawer, setDrawer] = useState(false)
   const [more, setMore] = useState(() => MORE.some((m) => pathname.startsWith(m.href)) || pathname.startsWith("/dashboard/settings"))
@@ -84,11 +85,6 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
     toastT.current = setTimeout(() => setToastText(null), 2400)
   }, [])
 
-  // Theme: the cookie keeps it for the next server paint; the attribute switches it now.
-  const pickTheme = (t: DashboardTheme) => {
-    setTheme(t)
-    document.cookie = `${THEME_COOKIE}=${t}; path=/; max-age=31536000; samesite=lax`
-  }
 
   // Autopilot = the existing "Auto-approve and post" consent (lib/agent/auto-approve.ts).
   useEffect(() => setAp(data.autopilot), [data.autopilot])
@@ -101,6 +97,13 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
     window.addEventListener(AUTO_APPROVE_CHANGED, on)
     return () => window.removeEventListener(AUTO_APPROVE_CHANGED, on)
   }, [flash])
+  // Autopilot accepted under an older declaration: ask again once per visit.
+  useEffect(() => {
+    if (!data.consentStale) return
+    try { if (sessionStorage.getItem("alphaa.ws.renew") === "1") return; sessionStorage.setItem("alphaa.ws.renew", "1") } catch {}
+    const t = window.setTimeout(() => openAutoApprove({ renew: true }), 600)
+    return () => window.clearTimeout(t)
+  }, [data.consentStale])
   const toggleAp = async () => {
     if (ap) { if (!(await turnOffAutoApprove())) flash("That didn’t save. Try again.") }
     else openAutoApprove()
@@ -166,7 +169,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
         <div className="ax-top">
           <button type="button" className="ic" onClick={() => setDrawer(true)} aria-label="Open menu"><Icon name="more" size={22} /></button>
           <Link href="/dashboard" className="mid"><span className="ax-orb" style={{ width: 16, height: 16 }} />Alphaa</Link>
-          <button type="button" className="mode" onClick={() => pickTheme(theme === "dark" ? "light" : "dark")}>{theme === "dark" ? "☀︎ Light" : "☾ Spatial"}</button>
+          <span style={{ width: 38 }} aria-hidden="true" />
         </div>
         <div className={`ax-scrim${drawer ? " open" : ""}`} onClick={() => setDrawer(false)} aria-hidden="true" />
         <aside className={`ax-sb${drawer ? " open" : ""}`} aria-label="Workspaces">
@@ -203,10 +206,6 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
             <div className="ax-row">
               <div><div className="ax-t13">Autopilot</div><div className="ax-t11">{ap ? "On · stop anything before it goes out" : "Off · I ask before anything goes out"}</div></div>
               <button type="button" role="switch" aria-checked={ap} aria-label="Autopilot" onClick={() => void toggleAp()} className={`ax-sw${ap ? " on" : ""}`}><i /></button>
-            </div>
-            <div className="ax-seg" role="group" aria-label="Appearance">
-              <button type="button" className={theme === "dark" ? "" : "on"} onClick={() => pickTheme("light")} aria-pressed={theme !== "dark"}>☀︎ Light</button>
-              <button type="button" className={theme === "dark" ? "on" : ""} onClick={() => pickTheme("dark")} aria-pressed={theme === "dark"}>☾ Spatial</button>
             </div>
             {showUser && <div className="ax-acct"><span className="ax-t11">Account & billing</span><AccountMenu /></div>}
           </div>
@@ -252,6 +251,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
               <div className="ag-main">
                 <DashboardAgent initial={hello.current} businessName={data.businessName} current={pathname} composerOpen />
               </div>
+              <p className="ax-ainote">{AI_NOTE}</p>
             </section>
           )}
         </div>

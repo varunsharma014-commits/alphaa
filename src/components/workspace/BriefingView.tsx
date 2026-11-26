@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react"
 import type { BriefingData, GoingItem } from "@/lib/workspace/briefing"
-import { askAlphaa, toast } from "@/lib/workspace/events"
+import type { AiCard } from "@/lib/workspace/ai-cards"
+import { AI_NOTE, askAlphaa, toast } from "@/lib/workspace/events"
 import type { Message } from "@/lib/agent/types"
-import { FirstAnswer } from "@/components/agent/FirstAnswer"
-import { ActButton, Empty, When, useInspector } from "./ui"
+import { ActButton, Empty, When, useInspector, type Insp } from "./ui"
 
 type Slide = { eb: string; big: string; small: string; bg: string }
 
@@ -53,7 +53,7 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
 
   return (
     <>
-      <FirstAnswer />
+      <AiRow cards={data.ai} open={open} />
       <section className="ax-card ax-hero">
         <div style={{ display: "flex", justifyContent: "space-between", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
           <div style={{ minWidth: 0 }}>
@@ -154,6 +154,8 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
         </div>
       )}
 
+      <p className="ax-note" role="note">{AI_NOTE}</p>
+
       <div className="ax-h2"><div><h2>Done on my own</h2><p>Last 7 days</p></div></div>
       {data.done.length ? (
         <section className="ax-card ax-list" style={{ padding: "2px 22px" }}>
@@ -190,5 +192,54 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
       )}
       {node}
     </>
+  )
+}
+
+const MARK_BG: Record<string, string> = { chatgpt: "linear-gradient(135deg,#10a37f,#0d8a6b)", claude: "linear-gradient(135deg,#d97757,#b85c3c)", perplexity: "linear-gradient(135deg,#1f6f7a,#20808d)", gemini: "linear-gradient(135deg,#4f6bed,#9b72cb)" }
+
+/** What the four AI assistants tell customers: one card each, from the stored checks. */
+function AiRow({ cards, open }: { cards: AiCard[]; open: (i: Insp | null) => void }) {
+  if (!cards.length) return null
+  const checked = cards.filter((c) => c.state !== "unknown")
+  const missing = cards.filter((c) => c.state === "no").map((c) => c.name)
+  const line = !checked.length
+    ? "I haven’t asked them yet. My first check runs this week."
+    : missing.length
+      ? `${missing.join(", ").replace(/, ([^,]*)$/, " and $1")} ${missing.length === 1 ? "doesn’t" : "don’t"} name you yet. I’m working on it: pages that answer these questions.`
+      : checked.length === cards.length ? "All four name you. I check again every week." : "I check them again every week."
+  return (
+    <section style={{ marginBottom: 22 }}>
+      <div className="ax-h2" style={{ marginTop: 0 }}><div><h2>What AI tells your customers</h2><p>The same question, asked of each assistant.</p></div></div>
+      <div className="ax-ai">
+        {cards.map((c) => (
+          <article key={c.engine} className="ax-card ax-aicard">
+            <div style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "space-between", flexWrap: "wrap" }}>
+              <span style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                <span className="ax-mark" style={{ background: MARK_BG[c.engine] }} aria-hidden="true">{c.mark}</span>
+                <b style={{ fontSize: 14.5 }}>{c.name}</b>
+              </span>
+              {c.state !== "unknown" && <span className={`ax-pill ${c.state === "yes" ? "g" : "n"}`}>{c.state === "yes" ? "Names you" : "Not yet"}</span>}
+            </div>
+            {c.state === "unknown" ? (
+              <p className="ax-p" style={{ marginTop: 4 }}>Not checked yet · I’ll check this week.</p>
+            ) : (
+              <>
+                {c.question && <p className="ax-p" style={{ color: "var(--x-ink)" }}>“{c.question}”</p>}
+                {c.names.length > 0 && <p className="ax-p"><span style={{ color: "var(--x-ter)" }}>{c.state === "yes" ? "Also names" : "Names instead"}{c.namesFrom === "weekly" ? " (my weekly questions)" : ""}: </span>{c.names.join(", ")}</p>}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 4, marginTop: "auto", paddingTop: 6, flexWrap: "wrap" }}>
+                  <span className="ax-t11" style={{ whiteSpace: "nowrap" }}>{c.at ? <When at={c.at} mode="ago" prefix="asked " fallback="" /> : ""}</span>
+                  {c.answer && <button className="ax-lnk" type="button" style={{ fontSize: 12.5, whiteSpace: "nowrap" }} onClick={() => open({ eb: `${c.name} · ${c.state === "yes" ? "names you" : "doesn’t name you yet"}`, title: c.questionFull ?? "The answer", rows: [{ k: "What it answered", v: c.answer ?? "", box: true }, ...(c.names.length ? [{ k: c.state === "yes" ? "Also named" : "Named instead", v: c.names.join(", ") }] : [])], cta: { label: "See every question", topic: "answers" } })}>See the answer</button>}
+                </div>
+              </>
+            )}
+          </article>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 12, flexWrap: "wrap" }}>
+        <span className="ax-dot" />
+        <span style={{ fontSize: 13.5, color: "var(--x-mut)", flex: 1, minWidth: 220 }}>{line}</span>
+        <button className="ax-lnk" type="button" onClick={() => askAlphaa({ topic: "answers", label: "What do the AIs say about me?" })}>{missing.length ? "See what I’m doing" : "See every question"}</button>
+      </div>
+    </section>
   )
 }

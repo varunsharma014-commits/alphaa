@@ -10,8 +10,11 @@ import { AdsView } from "@/components/workspace/AdsView"
 import { TrackingView } from "@/components/workspace/TrackingView"
 import type { ShellData } from "@/lib/workspace/shell"
 import { ART } from "@/lib/workspace/common"
+import type { AiCard } from "@/lib/workspace/ai-cards"
 
-const shell: ShellData = { businessName: "Sample Dental (preview)", firstName: "Sam", pro: true, planPro: true, growth: true, autopilot: true, goingOut: 3, socialScheduled: 2, channels: 5, signals: { ok: 4, total: 5 }, doneThisWeek: 6 }
+const shell: ShellData = { businessName: "Sample Dental (preview)", firstName: "Sam", pro: true, planPro: true, growth: true, autopilot: true, consentStale: false, goingOut: 3, socialScheduled: 2, channels: 5, signals: { ok: 4, total: 5 }, doneThisWeek: 6 }
+const AI_EMPTY: AiCard[] = (["chatgpt", "claude", "perplexity", "gemini"] as const).map((e, i) => ({ engine: e, name: ["ChatGPT", "Claude", "Perplexity", "Gemini"][i], mark: ["Ch", "Cl", "Pe", "Ge"][i], state: "unknown", question: null, questionFull: null, names: [], namesFrom: "answer", at: null, answer: null }))
+const AI_SAMPLE: AiCard[] = AI_EMPTY.map((c, i) => (i === 3 ? c : { ...c, state: i === 1 ? "yes" : "no", question: "Sample question about a dentist near me?", questionFull: "Sample question about a dentist near me?", names: i === 1 ? [] : ["Sample Rival A", "Sample Rival B"], at: new Date(Date.now() - 2 * 86_400_000).toISOString(), answer: "Sample answer text (preview only)." }))
 const soon = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString()
 
 export function WsPreview({ page, empty, dark }: { page: string; empty: boolean; dark: boolean }) {
@@ -36,8 +39,8 @@ export function WsPreview({ page, empty, dark }: { page: string; empty: boolean;
       { key: "gbp", name: "Google Business Profile", ok: true, sum: "Sample: connected.", detail: "Sample." },
       { key: "site", name: "Your website", ok: false, sum: "Not connected.", act: { label: "Connect my website", topic: "setup" }, detail: "Sample." },
     ] }} />
-    return <BriefingView data={empty ? { firstName: "Sam", headline: { total: null, missing: ["Connect your Google listing to count calls from Google."] }, tiles: [{ key: "ai", label: "AI answers naming you", value: null, delta: null, empty: "My first check runs this week." }, { key: "visits", label: "Website visits", value: null, delta: null, empty: "Connect Google Analytics to see visits.", href: "#" }, { key: "rating", label: "Google rating", value: null, delta: null, empty: "Connect your Google listing to see reviews.", href: "#" }], question: { id: "q", eyebrow: "Setup · step 1 of 7", title: "Connect Google", text: "Sample why.", fallback: "Until then, I keep working with what I have.", acts: [{ label: "Connect Google", href: "#", primary: true }, { label: "See all steps", topic: "setup" }] }, going: [], waiting: 0, waitingTopic: "social", autopilot: false, done: [] } : {
-      firstName: "Sam",
+    return <BriefingView data={empty ? { firstName: "Sam", ai: AI_EMPTY, headline: { total: null, missing: ["Connect your Google listing to count calls from Google."] }, tiles: [{ key: "ai", label: "AI answers naming you", value: null, delta: null, empty: "My first check runs this week." }, { key: "visits", label: "Website visits", value: null, delta: null, empty: "Connect Google Analytics to see visits.", href: "#" }, { key: "rating", label: "Google rating", value: null, delta: null, empty: "Connect your Google listing to see reviews.", href: "#" }], question: { id: "q", eyebrow: "Setup · step 1 of 7", title: "Connect Google", text: "Sample why.", fallback: "Until then, I keep working with what I have.", acts: [{ label: "Connect Google", href: "#", primary: true }, { label: "See all steps", topic: "setup" }] }, going: [], waiting: 0, waitingTopic: "social", autopilot: false, done: [] } : {
+      firstName: "Sam", ai: AI_SAMPLE,
       headline: { total: 27, prev: 21, days: 30, missing: [], parts: [{ label: "Calls from Google", value: 15, prev: 12 }, { label: "Calls from your website", value: 8, prev: 6 }, { label: "Messages and forms", value: 4, prev: 3 }] },
       tiles: [{ key: "ai", label: "AI answers naming you", value: "9 of 40", delta: null, empty: "" }, { key: "visits", label: "Website visits · 28 days", value: "1,020", delta: "+8%", empty: "" }, { key: "rating", label: "Google rating", value: "4.7 ★", delta: "3 new reviews", empty: "" }],
       question: null,

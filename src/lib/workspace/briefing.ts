@@ -16,6 +16,7 @@ import { imageUrl } from "@/lib/images"
 import { LEDGER_TYPES, ledgerText, ENGINE_NAME, ENGINE_ORDER } from "@/lib/agent/briefing"
 import { REVIEW_DRAFT } from "@/lib/approvals"
 import type { Chip } from "@/lib/agent/types"
+import { getAiCards, type AiCard } from "./ai-cards"
 import { ART, ago, cached, channelOf, headlineOf, n, pctChange, short, whenAhead, within } from "./common"
 
 const DAY = 86_400_000
@@ -43,6 +44,7 @@ export type DoneItem = { ch: string; text: string; when: string; at: string; hre
 
 export type BriefingData = {
   firstName: string | null
+  ai: AiCard[]
   headline: Headline
   tiles: Tile[]
   question: Question | null
@@ -273,7 +275,8 @@ export async function getDone(userId: string, days = 7): Promise<DoneItem[]> {
 export async function getBriefingData(user: User): Promise<BriefingData> {
   const settings = await getAgentSettings(user.id)
   const autopilot = !!settings.autoApprove
-  const [headline, tiles, going, waiting, done] = await Promise.all([
+  const [ai, headline, tiles, going, waiting, done] = await Promise.all([
+    getAiCards(user).catch(() => []),
     getHeadline(user).catch((): Headline => ({ total: null, missing: [] })),
     getTiles(user).catch(() => []),
     getGoing(user).catch(() => []),
@@ -281,5 +284,5 @@ export async function getBriefingData(user: User): Promise<BriefingData> {
     getDone(user.id).catch(() => []),
   ])
   const question = await getQuestion(user, waiting, autopilot).catch(() => null)
-  return { firstName: user.fullName?.trim().split(/\s+/)[0] || null, headline, tiles, question, going, waiting: waiting.total, waitingTopic: waiting.topic, autopilot, done }
+  return { firstName: user.fullName?.trim().split(/\s+/)[0] || null, ai, headline, tiles, question, going, waiting: waiting.total, waitingTopic: waiting.topic, autopilot, done }
 }

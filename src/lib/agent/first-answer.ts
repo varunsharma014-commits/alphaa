@@ -17,12 +17,12 @@ export type FirstAnswer = {
   seenAt?: string
 }
 
-type Found = Omit<FirstAnswer, "mentioned" | "seenAt"> & { mentioned?: string[] }
+export type Found = Omit<FirstAnswer, "mentioned" | "seenAt"> & { mentioned?: string[] }
 const ORDER: FirstAnswer["engine"][] = ["chatgpt", "perplexity", "gemini", "claude"]
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v)
 
 /** Every stored answer we have, freshest first, ChatGPT preferred. */
-async function storedAnswers(user: { id: string; email: string }): Promise<Found[]> {
+export async function storedAnswers(user: { id: string; email: string }): Promise<Found[]> {
   const [audit, lead, sandbox] = await Promise.all([
     db.audit.findFirst({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, include: { aiEngineResults: true } }),
     db.scanLead.findFirst({

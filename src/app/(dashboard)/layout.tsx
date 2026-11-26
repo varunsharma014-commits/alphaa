@@ -1,12 +1,11 @@
 export const dynamic = "force-dynamic"
 import { clerkClient } from "@clerk/nextjs/server"
 import { auth } from "@/lib/auth"
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { hasPaidPlan, isAdmin, isComped } from "@/lib/billing"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
-import { THEME_COOKIE, type DashboardTheme } from "@/lib/theme"
+import type { DashboardTheme } from "@/lib/theme"
 import { ClerkProvider } from "@clerk/nextjs"
 import { clerkAppearance } from "@/lib/clerk-appearance"
 import { WorkspaceShell } from "@/components/workspace/WorkspaceShell"
@@ -44,10 +43,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
     redirect("/onboarding")
   }
 
-  // App theme is a cookie so the server paints the right one immediately (no flash) and it stays
-  // scoped to the dashboard. Light is the default; "Spatial" (dark) once the owner picks it.
-  const themeCookie = (await cookies()).get(THEME_COOKIE)?.value
-  const theme: DashboardTheme = themeCookie === "dark" ? "dark" : "light"
+  // Light only (owner decision 2026-11-26). The old theme cookie is ignored.
+  const theme: DashboardTheme = "light"
 
   // Sidebar badges, the status island and the chat greeting (cheap DB reads only).
   const shell = await getShellData(user)
