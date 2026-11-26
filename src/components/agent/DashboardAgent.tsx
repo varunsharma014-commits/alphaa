@@ -4,6 +4,7 @@ import { hasPlaceholders, withoutPlaceholders } from "@/lib/brackets"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { ASK_EVENT, type AskDetail } from "./AgentShell"
+import { AGENT_EVENT, type AgentEventDetail } from "@/lib/workspace/events"
 import { AgentFeed, Composer } from "./AgentFeed"
 import { agent, mid, user as userMsg, type AgentOpEndpoint, type Block, type Chip, type Message, type SiteOp, type Task } from "@/lib/agent/types"
 import { voiceRunMessage } from "@/lib/agent/voice-narration"
@@ -84,7 +85,10 @@ export function DashboardAgent({
   notice,
   setup = [],
   v2 = false,
+  composerOpen = false,
 }: {
+  /** Workspace chat panel: start with the text box open instead of the two buttons. */
+  composerOpen?: boolean
   /** Dashboard v2 (lib/dash-v2.ts): focus card home, setup opens from the header pill instead of being pinned. */
   v2?: boolean
   initial: Message[]
@@ -106,7 +110,7 @@ export function DashboardAgent({
   const [setupOpen, setSetupOpen] = useState(!v2)
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
-  const [asking, setAsking] = useState(false)
+  const [asking, setAsking] = useState(composerOpen)
   // With a briefing on top, the detail behind it stays folded until asked for.
   const [why, setWhy] = useState(!briefing)
   const detailIds = useRef(new Set(initial.map((m) => m.id)))
@@ -902,6 +906,22 @@ export function DashboardAgent({
     }
     return () => window.removeEventListener(ASK_EVENT, onAsk)
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Workspace pages drive this chat (lib/workspace/events.ts): run one of my own chips, send a
+  // message as the owner, or drop messages in (e.g. the result of a website connect).
+  const actions = useRef({ onChip, send, push })
+  actions.current = { onChip, send, push }
+  useEffect(() => {
+    const on = (e: Event) => {
+      const d = (e as CustomEvent<AgentEventDetail>).detail
+      if (!d) return
+      if (d.push?.length) { setFollowNew(true); actions.current.push(...d.push) }
+      if (d.chip) void actions.current.onChip(d.chip, "")
+      if (d.say) void actions.current.send(d.say)
+    }
+    window.addEventListener(AGENT_EVENT, on)
+    return () => window.removeEventListener(AGENT_EVENT, on)
   }, [])
 
   // ── Run my week ─────────────────────────────────────────────────────────
