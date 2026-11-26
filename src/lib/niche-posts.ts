@@ -53,6 +53,19 @@ export type NicheItem = {
   about: string
   why: string
   angle: string
+  /** Cover image URL from the platform (private reference view only, never reused). Expires. */
+  thumb?: string | null
+  /** Video length in seconds, when the platform says. */
+  duration?: number | null
+  /** The post's own opening line (≤140 chars, hashtags/links removed), shown in quotes with the source. */
+  hook?: string | null
+  /** 1-2 word format tag read from the post itself (Reel, Carousel, POV, Tutorial…). */
+  format?: string | null
+  /** Interactions per view (or per follower), and how many times the scrape's median that is. */
+  rate?: number | null
+  lift?: number | null
+  /** The writer's verdict: does this post really belong to the owner's niche? */
+  fit?: boolean
 }
 export type NichePosts = {
   v: 1
@@ -122,7 +135,47 @@ async function actor(id: string, input: object, maxItems: number): Promise<Recor
   }
 }
 
-type Raw = Omit<NicheItem, "id" | "about" | "why" | "angle"> & { caption: string }
+type Raw = Omit<NicheItem, "id" | "about" | "why" | "angle"> & { caption: string; kind?: string | null }
+
+/** The post's own opening line: first line, no hashtags, mentions or links, at most 140 characters. */
+export function hookOf(caption: string): string | null {
+  const line = caption.split(/\n+/).map((l) => l.replace(/https?:\/\/\S+/g, "").replace(/[#@][\p{L}\p{N}_.]+/gu, "").replace(/\s+/g, " ").trim()).find((l) => l.length >= 12)
+  if (!line) return null
+  if (line.length <= 140) return line
+  const cut = line.slice(0, 140)
+  return `${cut.slice(0, Math.max(cut.lastIndexOf(" "), 60)).trim()}…`
+}
+
+/** A 1-2 word format tag, read from the post type and its own words. */
+export function formatOf(caption: string, kind: string | null | undefined, platform: NichePlatform): string | null {
+  const c = caption.toLowerCase()
+  if (platform === "meta_ad") return "Long-running ad"
+  if (/\bpov\b/.test(c)) return "POV"
+  if (/\b(how to|tutorial|step[- ]by[- ]step|here'?s how|tips?)\b/.test(c)) return "Tutorial"
+  if (/\b(before (and|&) after|transformation)\b/.test(c)) return "Before & after"
+  if (/\b(behind the scenes|bts|day in the life)\b/.test(c)) return "Behind the scenes"
+  if (/^\s*\d+\s+(ways|tips|things|mistakes|reasons)\b/.test(c)) return "List"
+  if (/\b(founder|ceo|i started|i built|my business)\b/.test(c)) return "Founder story"
+  if (/\b(review|testimonial|customer said)\b/.test(c)) return "Testimonial"
+  if (/\?\s*$/.test(c.split("\n")[0] ?? "")) return "Question hook"
+  if (kind === "Sidecar") return "Carousel"
+  if (kind === "Video" || kind === "clips" || platform === "tiktok") return platform === "tiktok" ? "Short video" : "Reel"
+  if (kind === "Image") return "Photo"
+  return null
+}
+
+/** Interactions per view, or per follower when views aren't reported. Null when there's no base. */
+export function engagementRate(m: NicheMetrics): number | null {
+  const inter = (m.likes ?? 0) + (m.comments ?? 0) + (m.shares ?? 0)
+  const base = m.views && m.views > 0 ? m.views : m.followers && m.followers > 0 ? m.followers : null
+  return base ? inter / base : null
+}
+export function median(xs: number[]): number | null {
+  if (!xs.length) return null
+  const a = [...xs].sort((x, y) => x - y)
+  const k = Math.floor(a.length / 2)
+  return a.length % 2 ? a[k] : (a[k - 1] + a[k]) / 2
+}
 
 // apify/instagram-hashtag-scraper: { hashtags, resultsType: "posts", resultsLimit }
 //   → { url, caption, likesCount, commentsCount, videoViewCount, videoPlayCount, timestamp, ownerUsername }
@@ -137,6 +190,9 @@ function fromInstagram(p: Record<string, unknown>, source: NicheSource, via: str
     metrics: { likes, comments: num(p.commentsCount), views: num(p.videoPlayCount) ?? num(p.videoViewCount) },
     postedAt: dateOnly(p.timestamp),
     caption: str(p.caption) ?? "",
+    thumb: str(p.displayUrl),
+    duration: num(p.videoDuration) ?? null,
+    kind: str(p.productType) === "clips" ? "clips" : str(p.type),
   }
 }
 
@@ -152,6 +208,9 @@ function fromTikTok(p: Record<string, unknown>, source: NicheSource, via: string
     metrics: { likes: num(p.diggCount), comments: num(p.commentCount), shares: num(p.shareCount), views: num(p.playCount), followers: num(author.fans) ?? num(p["authorMeta.fans"]) },
     postedAt: dateOnly(p.createTimeISO) ?? dateOnly(p.createTime),
     caption: str(p.text) ?? "",
+    thumb: isRecord(p.videoMeta) ? str(p.videoMeta.coverUrl) : null,
+    duration: isRecord(p.videoMeta) ? num(p.videoMeta.duration) ?? null : null,
+    kind: "Video",
   }
 }
 
@@ -239,7 +298,8 @@ async function pickTerms(u: Biz): Promise<{ hashtags: string[]; keywords: string
       max_tokens: 400,
       output_config: { format: zodOutputFormat(TermSchema) },
       messages: [{ role: "user", content: `A ${type}${city ? ` in ${city}${u.state ? `, ${u.state}` : ""}` : ""} wants to see the social posts doing well in its niche.
-Give hashtags and search phrases that real posts in this niche use. Mix one or two local ones (city + service) with broader niche ones. Don't use the business's own name${u.businessName ? ` (${u.businessName})` : ""}. No generic tags like fyp, love, instagood.` }],
+Give hashtags and search phrases that real posts in this niche use. Mix one or two local ones (city + service) with broader niche ones. Don't use the business's own name${u.businessName ? ` (${u.businessName})` : ""}. No generic tags like fyp, love, instagood.
+Never use a tag whose main word also means something else in another language or community (for example #saaslife: "saas" means mother-in-law in Hindi and Urdu, so it is mostly family comedy). Prefer specific two-word tags that only this niche uses (e.g. #saasmarketing, #localseo).` }],
     })
     const out = msg.parsed_output
     const hashtags = Array.from(new Set((out?.hashtags ?? []).map((h) => slug(h.replace(/^#/, ""))).filter((h) => h.length >= 3 && h.length <= 40 && !/^(fyp|foryou|love|instagood|viral)$/.test(h)))).slice(0, 4)
@@ -299,7 +359,14 @@ function rank(raw: Raw[], ownHandles: Set<string>): Raw[] {
     if (r.postedAt && Date.parse(r.postedAt) < cutoff) return false
     return engagement(r.metrics) >= 10
   })
-  const score = (r: Raw) => (r.platform === "meta_ad" ? r.metrics.daysRunning ?? 0 : r.metrics.followers ? engagement(r.metrics) / Math.max(r.metrics.followers, 200) : engagement(r.metrics) / 1000)
+  // Engagement gate: only posts that beat the median rate of this same scrape (ads are judged by how
+  // long they've run instead). A post with no views or followers to divide by can't be judged and is left out.
+  const rated = ok.filter((r) => r.platform !== "meta_ad").map((r) => ({ r, rate: engagementRate(r.metrics) }))
+  const mid = median(rated.map((x) => x.rate).filter((x): x is number => x != null))
+  for (const x of rated) { x.r.rate = x.rate; x.r.lift = x.rate != null && mid ? x.rate / mid : null }
+  const passes = new Set(rated.filter((x) => x.rate != null && mid != null && x.rate > mid).map((x) => x.r))
+  for (let i = ok.length - 1; i >= 0; i--) if (ok[i].platform !== "meta_ad" && !passes.has(ok[i])) ok.splice(i, 1)
+  const score = (r: Raw) => (r.platform === "meta_ad" ? r.metrics.daysRunning ?? 0 : r.lift ?? 0)
   const groups = new Map<string, Raw[]>()
   for (const r of ok) {
     const k = r.platform === "meta_ad" ? "ad" : r.source === "rival" ? `rival:${r.platform}` : r.platform
@@ -324,7 +391,8 @@ const WriteSchema = z.object({
     id: z.string(),
     about: z.string().describe("One sentence in your own words: what the post or ad is (format and subject). Never quote it."),
     why: z.string().describe("One sentence: why it gets attention, from the format, hook, subject and the real metrics"),
-    angle: z.string().describe("One sentence to the owner: the post they could make in the same spirit, about their own business"),
+    angle: z.string().describe("One complete sentence to the owner: the post they could make in the same spirit, about their own business"),
+    fits: z.boolean().describe("true only if this post is really about this business's niche; false if it is about something else (for example a hashtag word that means something different in another language or community)"),
   })),
 })
 
@@ -342,6 +410,8 @@ function copies(text: string, caption: string, k = 8): boolean {
 async function describe(items: (Raw & { id: string })[], u: Biz): Promise<NicheItem[]> {
   const fallback = (r: Raw & { id: string }): NicheItem => ({
     ...strip(r),
+    hook: hookOf(r.caption),
+    format: formatOf(r.caption, r.kind, r.platform),
     about: r.platform === "meta_ad" ? `An ad from ${r.handle ?? "a business in your niche"} that is still running.` : `A ${PLATFORM_LABEL[r.platform]} post from ${r.handle ? `@${r.handle.replace(/^@/, "")}` : "an account in your niche"}${r.via && r.source !== "rival" ? ` found under ${r.source === "hashtag" ? `#${r.via}` : `“${r.via}”`}` : ""}.`,
     why: "",
     angle: "",
@@ -373,7 +443,7 @@ CAPTION (for your understanding only, do not quote): ${r.caption.replace(/\s+/g,
         return t
       }
       const fb = fallback(r)
-      return { ...fb, about: clean(w.about) || fb.about, why: clean(w.why), angle: clean(w.angle) }
+      return { ...fb, about: clean(w.about) || fb.about, why: clean(w.why), angle: clean(w.angle), fit: w.fits }
     })
   } catch (err) {
     console.error("[niche] describe", err instanceof Error ? err.message : err)
@@ -382,8 +452,9 @@ CAPTION (for your understanding only, do not quote): ${r.caption.replace(/\s+/g,
 }
 
 function strip(r: Raw & { id: string }): Omit<NicheItem, "about" | "why" | "angle"> {
-  const { caption: _c, ...rest } = r
+  const { caption: _c, kind: _k, ...rest } = r
   void _c
+  void _k
   return rest
 }
 
@@ -444,7 +515,8 @@ async function build(userId: string): Promise<Omit<NichePosts, "v" | "status" | 
     } catch { /* fine */ }
   }
   const top = rank(raw, own).map((r) => ({ ...r, id: hash(r.url) }))
-  const items = await describe(top, user)
+  // Off-niche posts (the writer says they're about something else) never get stored.
+  const items = (await describe(top, user)).filter((i) => i.fit !== false)
   return { terms: [...terms.hashtags.map((h) => `#${h}`), ...terms.keywords], sources: [...sources], items }
 }
 

@@ -7,6 +7,7 @@ import type { AttackCard, MoveCard } from "@/lib/workspace/rivals"
 import { askAlphaa, ISLAND_EVENT, toast } from "@/lib/workspace/events"
 import { CopyButton, Empty, Tabs, When, useInspector } from "./ui"
 import { DraftSheet } from "./DraftSheet"
+import { ReadySheet, type ReadySource } from "./ReadySheet"
 
 type Tab = "w" | "i" | "g" | "c"
 
@@ -15,6 +16,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
   const [tab, setTab] = useState<Tab>("w")
   const [all, setAll] = useState(false)
   const [sheet, setSheet] = useState<MoveCard | null>(null)
+  const [ready, setReady] = useState<{ source: ReadySource; make: boolean } | null>(null)
   const [gone, setGone] = useState<Set<string>>(new Set())
   const [adding, setAdding] = useState<false | "open" | "busy">(false)
   const [url, setUrl] = useState("")
@@ -51,15 +53,15 @@ export function ResearchView({ data }: { data: ResearchData }) {
     router.refresh()
   }
 
-  const sub = tab === "w" ? data.summary
-    : tab === "i" ? "Ideas from your own numbers, and the opening lines from your ad plan."
+  const sub = tab === "w" ? `${data.summary}${data.droppedPosts ? ` I left out ${data.droppedPosts} that were off-topic or below typical engagement.` : ""}`
+    : tab === "i" ? null
       : tab === "g" ? (data.compared ? `I compared your site with ${data.compared} competitor site${data.compared === 1 ? "" : "s"}. These are the pages they have that you don’t.` : "I compare your site with your competitors’ and list the pages they have that you don’t.")
         : null
 
   return (
     <>
       <h1 className="ax-h1">Research & Ideas</h1>
-      {tab !== "c" ? <p className="ax-sub">{sub}</p> : (
+      {tab === "i" ? <p className="ax-sub">From your analytics and AI checks{data.ideasAt ? <> · updated <When at={data.ideasAt} mode="ago" fallback="recently" /></> : null}</p> : tab !== "c" ? <p className="ax-sub">{sub}</p> : (
         <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 8 }}>
           <p className="ax-sub" style={{ margin: 0, flex: 1, minWidth: 220 }}>
             Tracking {comps.length} competitor{comps.length === 1 ? "" : "s"}{data.lastChecked ? <> · last checked <When at={data.lastChecked} mode="ago" fallback="recently" /></> : null}
@@ -103,22 +105,25 @@ export function ResearchView({ data }: { data: ResearchData }) {
             <div className="ax-g2">
               {working.map((w) => (
                 <article key={w.id} className="ax-card hv" style={{ display: "flex", flexDirection: "column" }}>
-                  <div className="ax-art" style={{ height: 160, background: w.art }}>
-                    <span className="ax-pill w" style={{ alignSelf: "flex-start" }}>{w.where}</span>
-                    <b style={{ fontSize: 18, lineHeight: 1.3 }}>{w.title}</b>
+                  <div className={`ax-art${w.thumb ? " img" : ""}`} style={{ height: 170, background: w.thumb ? `#111 url("${w.thumb}") center/cover` : w.art }}>
+                    <span style={{ display: "flex", gap: 6, alignItems: "center", justifyContent: "space-between" }}>
+                      <span className="ax-pill w">{w.where}{w.duration ? ` · ${w.duration}` : ""}</span>
+                      {w.format && <span className="ax-pill w">{w.format}</span>}
+                    </span>
+                    {!w.thumb && <b style={{ fontSize: w.hook ? 17 : 18, lineHeight: 1.3, fontWeight: w.hook ? 600 : 700 }}>{w.hook ? `“${w.hook}”` : w.title}</b>}
                   </div>
                   <div className="ax-cb">
-                    {w.stats.length > 0 && (
-                      <div className="ax-stats" style={{ gridTemplateColumns: `repeat(${w.stats.length}, minmax(0,1fr))` }}>
-                        {w.stats.map((s) => <div key={s.k}><div className="ax-t11">{s.k}</div><b>{s.v}</b></div>)}
-                      </div>
-                    )}
-                    <p className="ax-p"><b style={{ color: "var(--x-ink)", fontWeight: 600 }}>My version: </b>{w.use}</p>
+                    {w.thumb && w.hook && <p style={{ margin: 0, fontSize: 15, fontWeight: 600, lineHeight: 1.35 }}>“{w.hook}”</p>}
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                      {w.badge && <span className="ax-proof">{w.badge}</span>}
+                      {w.stats.length > 0 && <span className="ax-t11" style={{ fontSize: 12 }}>{w.stats.map((x) => `${x.v} ${x.k.toLowerCase()}`).join(" · ")}</span>}
+                    </div>
+                    {w.use && <p className="ax-p"><b style={{ color: "var(--x-ink)", fontWeight: 600 }}>My version: </b>{w.use}</p>}
                     <div className="ax-ft">
                       <a className="ax-src" href={w.url} target="_blank" rel="noopener noreferrer">Source ↗</a>
                       <span style={{ display: "flex", gap: 8 }}>
-                        <button className="ax-btn s sm" type="button" onClick={() => open({ eb: `X-Ray · ${w.where}`, title: w.title, rows: w.rows.map(([k, v]) => (k === "Source" ? { k, v, href: v } : { k, v, box: k === "Why it works" || k === "My version" })), cta: { label: "Make my version", chip: w.makeChip } })}>X-Ray</button>
-                        <button className="ax-btn p sm" type="button" onClick={() => askAlphaa({ chip: w.makeChip })}>Make my version</button>
+                        <button className="ax-btn s sm" type="button" onClick={() => setReady({ source: { kind: "niche", card: w }, make: false })}>X-Ray</button>
+                        <button className="ax-btn p sm" type="button" onClick={() => setReady({ source: { kind: "niche", card: w }, make: true })}>Make my version</button>
                       </span>
                     </div>
                   </div>
@@ -134,6 +139,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
               />
             </div>
           )}
+          {data.working.length > 0 && data.working.length < 3 && <p className="ax-note">Only {data.working.length} post{data.working.length === 1 ? "" : "s"} beat the typical engagement in your niche in my last look. I don’t pad this list.</p>}
           {data.working.length > 4 && <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}><button className="ax-btn s" type="button" onClick={() => setAll(!all)}>{all ? "Show fewer" : `Show all ${data.working.length}`}</button></div>}
           {data.trends.length > 0 && (
             <>
@@ -154,16 +160,26 @@ export function ResearchView({ data }: { data: ResearchData }) {
 
       {tab === "i" && (
         <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 22 }}>
+          {data.topIdea && (
+            <section className="ax-card ax-move" style={{ marginTop: 0 }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}><span className="ax-eb" style={{ color: "var(--x-blue)" }}>My top pick this week</span>{data.topIdea.proof && <span className="ax-proof">{data.topIdea.proof}</span>}</div>
+                <p className="t">{data.topIdea.hook ? `“${data.topIdea.hook}”` : data.topIdea.text}</p>
+                <p className="s">{data.topIdea.why}</p>
+              </div>
+              <button className="ax-btn p" type="button" onClick={() => setReady({ source: { kind: "idea", idea: data.topIdea! }, make: true })}>Write it</button>
+            </section>
+          )}
           {data.ideas.length ? (
             <section className="ax-card ax-list" style={{ padding: "2px 22px" }}>
-              {data.ideas.map((h, i) => (
+              {data.ideas.filter((h) => h !== data.topIdea).map((h, i) => (
                 <div key={i} style={{ display: "flex", gap: 16, alignItems: "center", padding: "16px 0", flexWrap: "wrap" }}>
                   <div style={{ flex: 1, minWidth: 220 }}>
-                    <div style={{ display: "flex", gap: 6, marginBottom: 6 }}><span className="ax-pill n">{h.kind}</span>{h.src && <span className="ax-t11" style={{ alignSelf: "center" }}>{h.src}</span>}</div>
-                    <div style={{ fontSize: 16, fontWeight: 600 }}>{h.text}</div>
+                    <div style={{ display: "flex", gap: 6, marginBottom: 6, flexWrap: "wrap", alignItems: "center" }}><span className="ax-pill n">{h.kind}</span>{h.proof && <span className="ax-proof">{h.proof}</span>}</div>
+                    {h.hook ? <><div style={{ fontSize: 16, fontWeight: 700 }}>“{h.hook}”</div><div className="ax-p" style={{ marginTop: 2 }}>{h.text}</div></> : <div style={{ fontSize: 16, fontWeight: 600 }}>{h.text}</div>}
                     {h.why && <div className="ax-p" style={{ marginTop: 4 }}>{h.why}</div>}
                   </div>
-                  {h.chip && <button className="ax-btn p sm" type="button" onClick={() => askAlphaa({ chip: h.chip })}>Write it</button>}
+                  <button className="ax-btn p sm" type="button" onClick={() => setReady({ source: { kind: "idea", idea: h }, make: true })}>Write it</button>
                 </div>
               ))}
             </section>
@@ -245,6 +261,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
       )}
       {tab === "c" && data.hiddenComps > 0 && comps.length > 0 && <p className="ax-note">I left out {data.hiddenComps} site{data.hiddenComps === 1 ? "" : "s"} that aren’t competitors (wikis, directories, platforms or other industries).</p>}
       {node}
+      {ready && <ReadySheet source={ready.source} make={ready.make} flags={{ autopilot: data.autopilot, siteConnected: data.siteConnected, hasSocialAccounts: data.hasSocialAccounts, gmbConnected: data.gmbConnected }} onClose={() => setReady(null)} />}
       {sheet && <DraftSheet move={sheet} autopilot={data.autopilot} siteConnected={data.siteConnected} onClose={() => setSheet(null)} />}
     </>
   )

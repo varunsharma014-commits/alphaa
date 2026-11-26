@@ -52,6 +52,10 @@ export type AgentSettings = {
   emailOutreach?: { address?: string; at?: string }
   /** Niche check per competitor host (lib/competitor-relevance.ts). */
   competitorRelevance?: Record<string, { ok: boolean; why?: string; at: string }>
+  /** Does a niche post fit the business (lib/niche-fit.ts), per NicheItem id. */
+  nicheFit?: Record<string, { ok: boolean; at: string }>
+  /** Hook lines written for social ideas, per idea title (lib/workspace/research.ts). */
+  ideaHooks?: Record<string, { hook: string; at: string }>
   /** Hosts the owner marked "Not a competitor". */
   competitorsDismissed?: string[]
 }
