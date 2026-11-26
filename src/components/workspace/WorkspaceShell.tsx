@@ -16,7 +16,7 @@ import { AutoApproveModal, openAutoApprove, turnOffAutoApprove } from "@/compone
 import { AUTO_APPROVE_CHANGED, type AutoApproveChangedDetail } from "@/lib/auto-approve-text"
 import { agent, type Message } from "@/lib/agent/types"
 import type { DashboardTheme } from "@/lib/theme"
-import { AGENT_EVENT, AI_NOTE, TOAST_EVENT, WS_EVENT, type AgentEventDetail, type WsDetail } from "@/lib/workspace/events"
+import { AGENT_EVENT, AI_NOTE, ISLAND_EVENT, TOAST_EVENT, WS_EVENT, type AgentEventDetail, type WsDetail } from "@/lib/workspace/events"
 import type { ShellData } from "@/lib/workspace/shell"
 import { Check, Icon, SendArrow, type IconName } from "./icons"
 
@@ -76,6 +76,12 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
   const [mounted, setMounted] = useState(false)
   const [queue, setQueue] = useState<WsDetail[]>([])
   const [toastText, setToastText] = useState<string | null>(null)
+  const [pageIsland, setPageIsland] = useState<string | null>(null)
+  useEffect(() => {
+    const on = (e: Event) => setPageIsland((e as CustomEvent<string | null>).detail ?? null)
+    window.addEventListener(ISLAND_EVENT, on)
+    return () => window.removeEventListener(ISLAND_EVENT, on)
+  }, [])
   const toastT = useRef<ReturnType<typeof setTimeout> | null>(null)
   const hello = useRef<Message[]>([greeting(data)])
 
@@ -214,7 +220,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
         <main className="ax-main">
           <div className="ax-island" role="status">
             <span className="ax-orb" style={{ width: 14, height: 14 }} />
-            <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{island}</span>
+            <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{pageIsland ?? island}</span>
             {data.signals && <span className={`chip${failing ? "" : " ok"}`}>{data.signals.ok}/{data.signals.total} signals</span>}
           </div>
           {isWs ? (

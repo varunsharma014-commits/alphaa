@@ -1,9 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import type { ResearchData } from "@/lib/workspace/research"
-import { askAlphaa } from "@/lib/workspace/events"
-import { CopyButton, Empty, Tabs, useInspector } from "./ui"
+import type { AttackCard, MoveCard } from "@/lib/workspace/rivals"
+import { askAlphaa, ISLAND_EVENT, toast } from "@/lib/workspace/events"
+import { CopyButton, Empty, Tabs, When, useInspector } from "./ui"
+import { DraftSheet } from "./DraftSheet"
 
 type Tab = "w" | "i" | "g" | "c"
 
@@ -11,12 +14,87 @@ export function ResearchView({ data }: { data: ResearchData }) {
   const { node, open } = useInspector()
   const [tab, setTab] = useState<Tab>("w")
   const [all, setAll] = useState(false)
+  const [sheet, setSheet] = useState<MoveCard | null>(null)
+  const [gone, setGone] = useState<Set<string>>(new Set())
+  const [adding, setAdding] = useState<false | "open" | "busy">(false)
+  const [url, setUrl] = useState("")
+  const router = useRouter()
   const working = all ? data.working : data.working.slice(0, 4)
+  const comps = data.comps.filter((c) => !gone.has(c.host))
+  const moves = data.moves.filter((m) => !gone.has(m.rivalHost))
+
+  // The status island says what I found here, from the real counts.
+  useEffect(() => {
+    if (!data.island) return
+    // After the shell's own effects (a parent's run after its children's), so it's listening.
+    const t = window.setTimeout(() => window.dispatchEvent(new CustomEvent<string | null>(ISLAND_EVENT, { detail: data.island })), 0)
+    return () => { window.clearTimeout(t); window.dispatchEvent(new CustomEvent<string | null>(ISLAND_EVENT, { detail: null })) }
+  }, [data.island])
+
+  async function dismiss(c: AttackCard) {
+    setGone((g) => new Set(g).add(c.host))
+    const res = await fetch("/api/workspace/competitor", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ op: "dismiss", host: c.host }) }).catch(() => null)
+    const d = (await res?.json().catch(() => null)) as { looking?: boolean } | null
+    if (!res?.ok) { setGone((g) => { const n = new Set(g); n.delete(c.host); return n }); return toast("That didn’t save. Try again.") }
+    toast(d?.looking ? `Removed ${c.name}. I’m looking for a better match.` : `Removed ${c.name}.`)
+  }
+  async function add() {
+    const u = url.trim()
+    if (!u) return
+    setAdding("busy")
+    const res = await fetch("/api/competitors", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: /^https?:\/\//i.test(u) ? u : `https://${u}` }) }).catch(() => null)
+    const d = (await res?.json().catch(() => null)) as { error?: string } | null
+    if (!res?.ok) { setAdding("open"); return toast(d?.error ?? "I couldn’t read that site. Check the address.") }
+    setAdding(false)
+    setUrl("")
+    toast("Added. I read their site and I’m watching them now.")
+    router.refresh()
+  }
+
+  const sub = tab === "w" ? data.summary
+    : tab === "i" ? "Ideas from your own numbers, and the opening lines from your ad plan."
+      : tab === "g" ? (data.compared ? `I compared your site with ${data.compared} competitor site${data.compared === 1 ? "" : "s"}. These are the pages they have that you don’t.` : "I compare your site with your competitors’ and list the pages they have that you don’t.")
+        : null
 
   return (
     <>
       <h1 className="ax-h1">Research & Ideas</h1>
-      <p className="ax-sub">{data.summary}</p>
+      {tab !== "c" ? <p className="ax-sub">{sub}</p> : (
+        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 8 }}>
+          <p className="ax-sub" style={{ margin: 0, flex: 1, minWidth: 220 }}>
+            Tracking {comps.length} competitor{comps.length === 1 ? "" : "s"}{data.lastChecked ? <> · last checked <When at={data.lastChecked} mode="ago" fallback="recently" /></> : null}
+          </p>
+          {adding ? (
+            <form onSubmit={(e) => { e.preventDefault(); void add() }} style={{ display: "flex", gap: 6 }}>
+              <input className="ax-input" autoFocus placeholder="theirsite.com" value={url} onChange={(e) => setUrl(e.target.value)} aria-label="Competitor website" disabled={adding === "busy"} />
+              <button className="ax-btn p sm" type="submit" disabled={adding === "busy"}>{adding === "busy" ? "Reading…" : "Add"}</button>
+              <button className="ax-btn s sm" type="button" onClick={() => setAdding(false)} disabled={adding === "busy"}>Cancel</button>
+            </form>
+          ) : <button className="ax-btn s sm" type="button" onClick={() => setAdding("open")}>+ Add competitor</button>}
+        </div>
+      )}
+
+      {data.top && (
+        <section className="ax-card ax-move">
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="ax-eb" style={{ color: "var(--x-blue)", display: "flex", gap: 6, alignItems: "center" }}><span className="ax-orb" style={{ width: 12, height: 12 }} />My #1 move this week</div>
+            {data.top.kind === "move" ? (
+              <>
+                <p className="t">Publish “{data.top.move.title}”</p>
+                <p className="s">{data.top.move.why ? `Because ${data.top.move.why}.` : `${data.top.move.rival} has this page and you don’t, so they get the searches.`}</p>
+              </>
+            ) : (
+              <>
+                <p className="t">Make your version of: {data.top.card.title}</p>
+                <p className="s">{data.top.why}</p>
+              </>
+            )}
+          </div>
+          {(() => { const t = data.top; return t.kind === "move"
+            ? <button className="ax-btn p" type="button" onClick={() => setSheet(t.move)}>Draft it</button>
+            : <button className="ax-btn p" type="button" onClick={() => askAlphaa({ chip: t.card.makeChip })}>Make my version</button> })()}
+        </section>
+      )}
       <Tabs<Tab> value={tab} onChange={setTab} tabs={[{ key: "w", label: "What’s working nearby" }, { key: "i", label: "Ideas & hooks" }, { key: "g", label: "Blog & page gaps" }, { key: "c", label: "Competitors" }]} />
 
       {tab === "w" && (
@@ -112,20 +190,20 @@ export function ResearchView({ data }: { data: ResearchData }) {
 
       {tab === "g" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 14, marginTop: 22 }}>
-          {data.gaps.length ? data.gaps.map((g, i) => (
-            <article key={i} className="ax-card hv" style={{ padding: "20px 22px", display: "flex", gap: 18, alignItems: "center", flexWrap: "wrap" }}>
+          {moves.length ? moves.map((m) => (
+            <article key={m.id} className="ax-card hv" style={{ padding: "20px 22px", display: "flex", gap: 18, alignItems: "center", flexWrap: "wrap" }}>
               <div style={{ flex: 1, minWidth: 240 }}>
-                <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}><span className={`ax-pill ${g.priority.startsWith("High") ? "b" : "n"}`}>{g.priority}</span><span className="ax-pill n">{g.where}</span></div>
-                <div style={{ fontSize: 17, fontWeight: 650, letterSpacing: "-.015em" }}>{g.title}</div>
-                <div style={{ display: "flex", gap: 12, marginTop: 6 }}>{g.links.map((k) => <a key={k.url} className="ax-src" href={k.url} target="_blank" rel="noopener noreferrer">{k.label} ↗</a>)}</div>
+                {m.signals.length > 0 && <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>{m.signals.map((g) => <span key={g.label} className={`ax-pill ${g.tone}`}>{g.label}</span>)}</div>}
+                <div style={{ fontSize: 17, fontWeight: 650, letterSpacing: "-.015em" }}>{m.title}</div>
+                <div className="ax-p" style={{ marginTop: 4 }}>Covers what {m.rival} covers, better · <a className="ax-src mut" href={`https://${m.rivalHost}`} target="_blank" rel="noopener noreferrer">{m.rivalHost} ↗</a></div>
               </div>
               <span style={{ display: "flex", gap: 8 }}>
-                {g.outline.length > 0 && <button className="ax-btn s sm" type="button" onClick={() => open({ eb: "Page outline", title: g.title, rows: [...g.outline.map((x, n) => ({ k: `Section ${n + 1}`, v: x, box: true })), { k: "Why", v: `${g.where}. You don’t have a page on it yet.` }], cta: { label: "Draft it for me", chip: g.chip } })}>Outline</button>}
-                <button className="ax-btn p sm" type="button" onClick={() => askAlphaa({ chip: g.chip })}>Draft it</button>
+                {m.outline.length > 0 && <button className="ax-btn s sm" type="button" onClick={() => open({ eb: "The page I’d write", title: m.title, rows: [...m.outline.map((x, n) => ({ k: `Section ${n + 1}`, v: x, box: true })), { k: "Why", v: m.why ? `Because ${m.why}.` : `${m.rival} has a page on this and you don’t.` }] })}>Outline</button>}
+                <button className="ax-btn p sm" type="button" onClick={() => setSheet(m)}>Draft it</button>
               </span>
             </article>
           )) : (
-            <Empty title="No page gaps found yet" text="I compare your site with a competitor’s and list the topics they answer that you don’t." act={{ label: "Find them", href: "/dashboard/content-gaps", primary: true }} />
+            <Empty title="No page gaps found yet" text={data.hiddenGaps ? "The gaps I had came from sites that aren’t your competitors, so I left them out. Add a real competitor and I’ll compare again." : "I compare your site with a competitor’s and list the pages they have that you don’t."} act={{ label: "Find them", href: "/dashboard/content-gaps", primary: true }} />
           )}
         </div>
       )}
@@ -137,25 +215,37 @@ export function ResearchView({ data }: { data: ResearchData }) {
         </section>
       )}
       {tab === "c" && (
-        data.comps.length ? (
+        comps.length ? (
           <div className="ax-g3" style={{ marginTop: 22 }}>
-            {data.comps.map((c, i) => (
-              <article key={i} className="ax-card" style={{ padding: 20, display: "flex", flexDirection: "column", gap: 12 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}><b style={{ fontSize: 16, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis" }}>{c.name}</b>{c.ads > 0 && <span className="ax-pill n">{c.ads} ad{c.ads === 1 ? "" : "s"} seen</span>}</div>
-                {c.topAd && <div><div className="ax-eb" style={{ marginBottom: 4 }}>One of their ads</div><div style={{ fontSize: 14 }}>{c.topAd}</div></div>}
-                {c.summary && <div className="ax-p">{c.summary}</div>}
-                <div style={{ display: "flex", gap: 12, marginTop: "auto" }}>
-                  {c.adUrl && <a className="ax-src" href={c.adUrl} target="_blank" rel="noopener noreferrer">Their ad ↗</a>}
-                  {c.site && <a className="ax-src" href={c.site} target="_blank" rel="noopener noreferrer">Their site ↗</a>}
+            {comps.map((c) => (
+              <article key={c.id} className="ax-card hv ax-rival" onClick={() => open({ eb: [c.tag, c.manual ? "Added by you" : null].filter(Boolean).join(" · ") || "Competitor", title: c.name, rows: [...c.detail.map((d) => (d.href ? { k: d.k, v: d.v, href: d.href } : { k: d.k, v: d.v, box: d.k === "Winning at" || d.k === "Weak spots" })), { k: "Their site", v: c.host, href: c.site }], cta: c.primary?.move ? null : c.primary?.topic ? { label: c.primary.label, topic: c.primary.topic } : c.primary?.chip ? { label: c.primary.label, chip: c.primary.chip } : null })} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") (e.currentTarget as HTMLElement).click() }}>
+                <button className="ax-dismiss" type="button" title="Not a competitor" aria-label={`${c.name} is not a competitor`} onClick={(e) => { e.stopPropagation(); void dismiss(c) }}>× Not a competitor</button>
+                <div style={{ display: "flex", gap: 10, alignItems: "center", minWidth: 0 }}>
+                  <img src={c.favicon} alt="" width={28} height={28} className="ax-fav" loading="lazy" />
+                  <b style={{ fontSize: 16, minWidth: 0, overflowWrap: "anywhere", lineHeight: 1.25 }}>{c.name}</b>
+                  {c.tag && <span className={`ax-pill ${c.tag === "Ad spender" ? "a" : c.tag === "Content machine" ? "b" : "n"}`} style={{ marginLeft: "auto" }}>{c.tag}</span>}
+                </div>
+                <div className="ax-lines">
+                  {c.winning && <div><span>Winning at</span>{c.winning}</div>}
+                  {c.weak && <div><span>Weak spot</span>{c.weak}</div>}
+                  {c.counter && <div><span>My counter-move</span>{c.counter}</div>}
+                  {!c.winning && !c.weak && !c.counter && <div className="ax-t11" style={{ fontSize: 13 }}>I couldn’t read enough of their site yet. I’ll try again on my next weekly pass.</div>}
+                </div>
+                <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: "auto", flexWrap: "wrap" }} onClick={(e) => e.stopPropagation()}>
+                  {c.primary && <button className="ax-btn p sm" type="button" onClick={() => { const p = c.primary!; if (p.move) setSheet(p.move); else askAlphaa({ topic: p.topic, chip: p.chip, label: p.topic ? p.label : undefined }) }}>{c.primary.label}</button>}
+                  <a className="ax-src" href={c.site} target="_blank" rel="noopener noreferrer">Their site ↗</a>
+                  {c.adUrl && <a className="ax-src" href={c.adUrl} target="_blank" rel="noopener noreferrer">Their ads ↗</a>}
                 </div>
               </article>
             ))}
           </div>
         ) : (
-          <div style={{ marginTop: 22 }}><Empty title="I’m not watching any competitors yet" text="I pick them up from the businesses the AIs name instead of you, or you can add them." act={{ label: "Add competitors", href: "/dashboard/competitors", primary: true }} /></div>
+          <div style={{ marginTop: 22 }}><Empty title="I’m not watching any competitors yet" text={data.hiddenComps ? "The sites I had found weren’t real competitors (wikis, directories or other industries), so I left them out. Add one you know, and I’ll keep looking." : "I find them from Google and from the businesses the AIs name instead of you, or you can add them."} /></div>
         )
       )}
+      {tab === "c" && data.hiddenComps > 0 && comps.length > 0 && <p className="ax-note">I left out {data.hiddenComps} site{data.hiddenComps === 1 ? "" : "s"} that aren’t competitors (wikis, directories, platforms or other industries).</p>}
       {node}
+      {sheet && <DraftSheet move={sheet} autopilot={data.autopilot} siteConnected={data.siteConnected} onClose={() => setSheet(null)} />}
     </>
   )
 }

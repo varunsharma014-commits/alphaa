@@ -8,7 +8,10 @@ import { latestInsights } from "@/lib/insights"
 import { lastReadyNichePosts, metricLine, nicheEnabled, PLATFORM_LABEL, type NicheItem } from "@/lib/niche-posts"
 import { lastReadyStrategy } from "@/lib/ad-strategy/generate"
 import type { Trend } from "@/lib/trends"
-import type { GapItem } from "@/lib/content-gaps"
+import { latestQuestionScan } from "@/lib/questions"
+import { getAgentSettings } from "@/lib/agent/settings"
+import { consentCurrent } from "@/lib/auto-approve-text"
+import { getRivals, type AttackCard, type MoveCard } from "./rivals"
 import type { Chip } from "@/lib/agent/types"
 import { ART_CYCLE, ago, n, short } from "./common"
 
@@ -24,9 +27,6 @@ export type WorkingCard = {
   makeChip: Chip
 }
 export type IdeaRow = { kind: string; text: string; why: string; src: string | null; url: string | null; chip?: Chip }
-export type GapCard = { title: string; priority: string; where: string; outline: string[]; links: { label: string; url: string }[]; chip: Chip }
-export type CompCard = { name: string; site: string | null; summary: string | null; ads: number; topAd: string | null; adUrl: string | null }
-
 export type ResearchData = {
   summary: string
   nicheOn: boolean
@@ -34,16 +34,23 @@ export type ResearchData = {
   trends: Trend[]
   ideas: IdeaRow[]
   hooks: IdeaRow[]
-  gaps: GapCard[]
-  comps: CompCard[]
+  moves: MoveCard[]
+  comps: AttackCard[]
   /** Gaps across what competitors advertise (from the ad plan), not tied to one competitor. */
   compGaps: string[]
   strategyAt: string | null
+  /** Sites I left out because they aren't competitors (wikis, directories, other industries, dismissed). */
+  hiddenComps: number
+  hiddenGaps: number
+  lastChecked: string | null
+  /** Competitor sites I compared the owner's site with. */
+  compared: number
+  autopilot: boolean
+  siteConnected: boolean
+  top: { kind: "move"; move: MoveCard } | { kind: "post"; card: WorkingCard; why: string } | null
+  island: string
 }
 
-const host = (u: string) => { try { return new URL(/^https?:/.test(u) ? u : `https://${u}`).hostname.replace(/^www\./, "") } catch { return u } }
-const href = (u: string) => (/^https?:\/\//.test(u) ? u : `https://${u}`)
-const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v)
 
 function stats(i: NicheItem): { k: string; v: string }[] {
   const m = i.metrics
@@ -60,12 +67,12 @@ const FORMAT_MODE = { blog: "post", google: "gbp", social: "social" } as const
 const FORMAT_NAME = { blog: "Blog post", google: "Google update", social: "Social post" } as const
 
 export async function getResearchData(user: User): Promise<ResearchData> {
-  const [niche, insights, strategy, gapRows, comps, trendRow] = await Promise.all([
+  const [niche, insights, strategy, qs, settings, trendRow] = await Promise.all([
     lastReadyNichePosts(user.id).catch(() => null),
     latestInsights(user.id).catch(() => null),
     lastReadyStrategy(user.id).catch(() => null),
-    db.contentGap.findMany({ where: { userId: user.id }, orderBy: { analyzedAt: "desc" }, take: 3 }),
-    db.competitor.findMany({ where: { userId: user.id }, orderBy: { analyzedAt: "desc" }, take: 6 }),
+    latestQuestionScan(user.id).catch(() => null),
+    getAgentSettings(user.id),
     // Cached web-search trends only (lib/trends.ts); a fresh search runs from the week plan.
     db.mockActivity.findFirst({ where: { userId: user.id, type: "trends" }, orderBy: { createdAt: "desc" }, select: { metadata: true, createdAt: true } }),
   ])
@@ -102,44 +109,8 @@ export async function getResearchData(user: User): Promise<ResearchData> {
   }))
   const hooks: IdeaRow[] = (strategy?.hooks ?? []).slice(0, 12).map((h) => ({ kind: h.type, text: h.line, why: "", src: "Your ad plan", url: "/dashboard/ad-strategy" }))
 
-  const gaps: GapCard[] = []
-  for (const row of gapRows) {
-    const list = Array.isArray(row.gaps) ? (row.gaps as unknown as GapItem[]) : []
-    for (const g of list.filter((x) => x && x.topic).sort((a, b) => (a.priority === "high" ? -1 : 0) - (b.priority === "high" ? -1 : 0))) {
-      gaps.push({
-        title: g.suggestedTitle || g.topic,
-        priority: g.priority === "high" ? "High priority" : g.priority === "medium" ? "Medium priority" : "Low priority",
-        where: `${host(row.competitorUrl)} covers it`,
-        outline: Array.isArray(g.suggestedOutline) ? g.suggestedOutline.filter((x) => typeof x === "string").slice(0, 6) : [],
-        links: [{ label: `${host(row.competitorUrl)}`, url: href(row.competitorUrl) }],
-        chip: { label: "Draft it for me", action: { type: "draft", topic: g.suggestedTitle || g.topic, competitor: host(row.competitorUrl) } },
-      })
-    }
-    if (gaps.length >= 9) break
-  }
-
-  // Competitors: the ones I watch, plus their live Meta ads from the ad plan (Ad Library links).
+  const rivals = await getRivals(user, { strategy, niche, qs })
   const ads = strategy?.competitors?.ads ?? []
-  const byPage = new Map<string, typeof ads>()
-  for (const a of ads) byPage.set(a.page, [...(byPage.get(a.page) ?? []), a])
-  const compCards: CompCard[] = comps.map((c) => {
-    const d = isRecord(c.crawlData) ? c.crawlData : {}
-    const name = c.name || host(c.url)
-    const key = name.toLowerCase().trim()
-    const mine = [...byPage.entries()].find(([p]) => { const q = p.toLowerCase().trim(); return q === key || (key.length > 3 && (q.includes(key) || key.includes(q))) })?.[1] ?? []
-    return {
-      name,
-      site: href(c.url),
-      summary: typeof d.aiSummary === "string" ? short(d.aiSummary, 260) : null,
-      ads: mine.length,
-      topAd: mine[0] ? short(mine[0].title || mine[0].text, 160) : null,
-      adUrl: mine[0]?.url ?? null,
-    }
-  })
-  for (const [page, list] of byPage) {
-    if (compCards.some((c) => c.ads && c.adUrl === list[0]?.url)) continue
-    compCards.push({ name: page, site: null, summary: null, ads: list.length, topAd: short(list[0].title || list[0].text, 160), adUrl: list[0].url })
-  }
 
   const sources = niche?.sources?.length ? niche.sources.join(", ") : null
   const summary = items.length
@@ -148,5 +119,25 @@ export async function getResearchData(user: User): Promise<ResearchData> {
       ? `I looked at ${n(ads.length)} competitor ads. Here’s what I found, with a link to every source.`
       : "Here’s what I’ve found about your market so far. Every finding links to where it came from."
 
-  return { summary, nicheOn: nicheEnabled(), working, trends, ideas, hooks, gaps, comps: compCards.slice(0, 6), compGaps: (strategy?.competitors?.gaps ?? []).slice(0, 4), strategyAt: strategy?.at ?? null }
+  // My #1 move: the best gap by real signals, else the strongest niche post to make my version of.
+  const bestMove = rivals.moves[0]
+  const bestPost = working.find((w) => w.stats.length)
+  const top: ResearchData["top"] = bestMove
+    ? { kind: "move", move: bestMove }
+    : bestPost
+      ? { kind: "post", card: bestPost, why: `It’s doing well right now (${bestPost.stats.map((x) => `${x.v} ${x.k.toLowerCase()}`).join(", ")}), and nobody near you has made one like it yet.` }
+      : null
+  const worth = rivals.moves.filter((m) => m.signals.length).length
+  const island = rivals.moves.length
+    ? `Found ${worth || rivals.moves.length} gap${(worth || rivals.moves.length) === 1 ? "" : "s"} worth taking · the best one is ready to draft`
+    : rivals.comps.length
+      ? `Watching ${rivals.comps.length} competitor${rivals.comps.length === 1 ? "" : "s"} for you`
+      : working.length ? `Found ${working.length} posts working in your niche` : ""
+
+  return {
+    summary, nicheOn: nicheEnabled(), working, trends, ideas, hooks,
+    moves: rivals.moves, comps: rivals.comps, compGaps: (strategy?.competitors?.gaps ?? []).slice(0, 4),
+    strategyAt: strategy?.at ?? null, hiddenComps: rivals.hidden, hiddenGaps: rivals.hiddenGaps, lastChecked: rivals.lastChecked, compared: rivals.compared,
+    autopilot: !!settings.autoApprove && consentCurrent(settings), siteConnected: !!(settings.wp || settings.site), top, island,
+  }
 }
