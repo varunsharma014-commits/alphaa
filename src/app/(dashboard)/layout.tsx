@@ -4,17 +4,14 @@ import { auth } from "@/lib/auth"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
-import { hasPaidPlan, hasPro, isComped } from "@/lib/billing"
-import { AgentShell } from "@/components/agent/AgentShell"
-import { getFeed } from "@/lib/agent/feed"
+import { hasPaidPlan, isAdmin, isComped } from "@/lib/billing"
 import { ConversionTracker } from "@/components/common/ConversionTracker"
 import { THEME_COOKIE, type DashboardTheme } from "@/lib/theme"
 import { ClerkProvider } from "@clerk/nextjs"
 import { clerkAppearance } from "@/lib/clerk-appearance"
-import { getAgentSettings } from "@/lib/agent/settings"
-import { dashV2Enabled } from "@/lib/dash-v2"
-import { setupProgress } from "@/lib/agent/setup"
-import { PRO_RE } from "@/lib/agent/autopilot"
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell"
+import { getShellData } from "@/lib/workspace/shell"
+import "./workspace.css"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { userId } = await auth()
@@ -47,50 +44,25 @@ export default async function DashboardLayout({ children }: { children: React.Re
     redirect("/onboarding")
   }
 
-  // App theme is a cookie so the server paints the right one immediately (no
-  // flash) and it stays scoped to the dashboard. Light is now the default;
-  // the cookie only matters once a user explicitly picks dark.
+  // App theme is a cookie so the server paints the right one immediately (no flash) and it stays
+  // scoped to the dashboard. Light is the default; "Spatial" (dark) once the owner picks it.
   const themeCookie = (await cookies()).get(THEME_COOKIE)?.value
-  // Light only, like apple.com. The old dark-mode cookie is ignored.
-  void themeCookie
-  const theme: DashboardTheme = "light"
+  const theme: DashboardTheme = themeCookie === "dark" ? "dark" : "light"
 
-  // Rail data (verdict count, waiting items) comes from the same feed build
-  // the /dashboard page uses — React's cache() makes that one query set.
-  const feed = await getFeed(user.id)
-  const rail = feed?.rail ?? {
-    businessName: user.businessName?.trim() || user.websiteUrl || "your business",
-    location: [user.city, user.state].filter(Boolean).join(", "),
-    dayNumber: 1,
-    named: 0,
-    checked: 0,
-    states: ["unknown", "unknown", "unknown", "unknown"],
-    waiting: { reviews: 0, posts: 0 },
-    googleConnected: false,
-  }
-  // Dashboard v2 (flag) + "Auto-approve and post" (everyone): what the header and rail need.
-  const settings = await getAgentSettings(user.id)
-  const v2 = dashV2Enabled(user, settings)
-  const setup = v2 ? await setupProgress(user).catch(() => null) : null
-  const auto = { on: !!settings.autoApprove, pro: PRO_RE.test(user.plan), growth: hasPro(user) /* = social, Pro and up */ }
-  const trialDaysLeft =
-    user.subscriptionStatus === "trialing" && user.trialEndsAt
-      ? Math.max(0, Math.ceil((new Date(user.trialEndsAt).getTime() - Date.now()) / 86400000))
-      : null
+  // Sidebar badges, the status island and the chat greeting (cheap DB reads only).
+  const shell = await getShellData(user)
 
   return (
     // Provider lives here, not at the app root, so marketing pages never ship
     // Clerk's ~300 KiB browser SDK. <UserButton>/<UserProfile> need it.
     <ClerkProvider appearance={clerkAppearance} signInUrl="/login" signUpUrl="/signup">
-      <div data-dashboard-root="" data-agent="" data-theme={theme} data-brand="blue">
-        {/* Funnel's last step: fires once when Stripe's success redirect lands (?upgraded=true).
-            GA4 gets a real `purchase` (no trial since Oct 2026). Meta keeps StartTrial so any ad set
-            already optimizing on it doesn't lose its signal. */}
-        <ConversionTracker event="purchase" metaEvent="StartTrial" whenQueryParam="upgraded" params={{ value: 99, currency: "USD" }} />
-        <AgentShell rail={rail} theme={theme} trialDaysLeft={trialDaysLeft} v2={v2} setup={setup && setup.total > 0 && setup.done < setup.total ? { done: setup.done, total: setup.total } : null} auto={auto}>
-          {children}
-        </AgentShell>
-      </div>
+      {/* Funnel's last step: fires once when Stripe's success redirect lands (?upgraded=true).
+          GA4 gets a real `purchase` (no trial since Oct 2026). Meta keeps StartTrial so any ad set
+          already optimizing on it doesn't lose its signal. */}
+      <ConversionTracker event="purchase" metaEvent="StartTrial" whenQueryParam="upgraded" params={{ value: 99, currency: "USD" }} />
+      <WorkspaceShell data={shell} theme={theme} admin={isAdmin(user.email)}>
+        {children}
+      </WorkspaceShell>
     </ClerkProvider>
   )
 }
