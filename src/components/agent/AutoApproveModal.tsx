@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import {
-  AUTO_APPROVE_CHANGED, AUTO_APPROVE_OPEN, CONSENT_AI, CONSENT_BULLETS, CONSENT_CHECKBOX, CONSENT_CTA, CONSENT_MONEY, CONSENT_TITLE,
+  AUTO_APPROVE_CHANGED, AUTO_APPROVE_OPEN, CONSENT_AI, CONSENT_DECLARATION, CONSENT_CHECKBOX, CONSENT_CTA, CONSENT_MONEY, CONSENT_TITLE, CONSENT_VERSION,
   consentIntro, consentTurnsOn, type AutoApproveChangedDetail, type AutoApproveOpenDetail,
 } from "@/lib/auto-approve-text"
 
@@ -54,7 +54,7 @@ export function AutoApproveModal({ pro, growth }: { pro: boolean; growth: boolea
     const res = await fetch("/api/agent/autopilot", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ op: "auto_on", accept: true, ...(open.key ? { key: open.key, value: open.value } : {}) }),
+      body: JSON.stringify(open.renew ? { op: "auto_renew", accept: true } : { op: "auto_on", accept: true, ...(open.key ? { key: open.key, value: open.value } : {}) }),
     }).catch(() => null)
     const data = (await res?.json().catch(() => null)) as { error?: string; messages?: AutoApproveChangedDetail["messages"] } | null
     setBusy(false)
@@ -66,24 +66,29 @@ export function AutoApproveModal({ pro, growth }: { pro: boolean; growth: boolea
   return (
     <div className="ag-modal" role="presentation" onClick={(e) => { if (e.target === e.currentTarget && !busy) setOpen(null) }}>
       <div className="ag-modal__box" role="dialog" aria-modal="true" aria-labelledby="aa-title" tabIndex={-1} ref={box}>
-        <h2 id="aa-title">{CONSENT_TITLE}</h2>
+        <h2 id="aa-title">{open.renew ? "Please confirm the updated Autopilot declaration" : CONSENT_TITLE}</h2>
+        {open.renew && <p className="ag-modal__muted">We updated the declaration. Autopilot keeps your current settings once you confirm, or you can turn it off.</p>}
         <p>{consentIntro(scope)}</p>
         {later && <p className="ag-modal__muted">{later}</p>}
-        <p>{CONSENT_AI}</p>
-        <ul>
-          {CONSENT_BULLETS.map((b) => (
-            <li key={b}>{b.includes("our Terms") ? <>{b.split("our Terms")[0]}our <a href="/terms" target="_blank" rel="noopener">Terms</a>{b.split("our Terms")[1]}</> : b}</li>
+        <p><b>{CONSENT_AI}</b></p>
+        <p style={{ marginBottom: 4 }}>By turning on Autopilot, I declare that:</p>
+        <ol type="i" style={{ maxHeight: "38vh", overflowY: "auto", paddingLeft: 30, listStyleType: "lower-roman", marginBottom: 12 }}>
+          {CONSENT_DECLARATION.map((b) => (
+            <li key={b} style={{ marginBottom: 6 }}>{b.includes("Terms of Service") ? <>{b.split("Terms of Service")[0]}<a href="/terms#ai-autopilot" target="_blank" rel="noopener">Terms of Service</a>{b.split("Terms of Service")[1]}</> : b}</li>
           ))}
-        </ul>
+        </ol>
         <p className="ag-modal__money">{CONSENT_MONEY}</p>
         <label className="ag-modal__check">
           <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
           <span>{CONSENT_CHECKBOX}</span>
         </label>
         {error && <p className="ag-modal__err">{error}</p>}
+        <p className="ag-modal__muted" style={{ fontSize: 12 }}>Declaration version {CONSENT_VERSION}. Your acceptance is recorded with the time and your browser details.</p>
         <div className="ag-modal__btns">
-          <button type="button" className="ag-btn-primary" disabled={!agreed || busy} onClick={accept}>{busy ? "Turning it on…" : CONSENT_CTA}</button>
-          <button type="button" className="ag-btn-ghost" disabled={busy} onClick={() => setOpen(null)}>Cancel</button>
+          <button type="button" className="ag-btn-primary" disabled={!agreed || busy} onClick={accept}>{busy ? "Saving…" : open.renew ? "I agree, keep Autopilot on" : CONSENT_CTA}</button>
+          {open.renew
+            ? <button type="button" className="ag-btn-ghost" disabled={busy} onClick={async () => { setBusy(true); const ok = await turnOffAutoApprove(); setBusy(false); if (ok) setOpen(null); else setError("That didn’t save. Try again.") }}>Turn Autopilot off</button>
+            : <button type="button" className="ag-btn-ghost" disabled={busy} onClick={() => setOpen(null)}>Cancel</button>}
         </div>
       </div>
     </div>

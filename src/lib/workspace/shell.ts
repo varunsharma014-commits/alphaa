@@ -12,6 +12,7 @@ import { healthItems } from "@/lib/tracking-health"
 import { eventDays } from "@/lib/tracking-events"
 import { getDone } from "./briefing"
 import { PRO_RE } from "@/lib/agent/autopilot"
+import { consentCurrent } from "@/lib/auto-approve-text"
 
 export type ShellData = {
   businessName: string
@@ -21,6 +22,8 @@ export type ShellData = {
   planPro: boolean
   growth: boolean
   autopilot: boolean
+  /** Autopilot is on under an older declaration wording: ask again (lib/auto-approve-text.ts). */
+  consentStale: boolean
   /** Scheduled posts in the next 7 days. */
   goingOut: number
   socialScheduled: number
@@ -67,6 +70,7 @@ export async function getShellData(user: User): Promise<ShellData> {
     planPro: PRO_RE.test(user.plan),
     growth,
     autopilot: !!s.autoApprove,
+    consentStale: !!s.autoApprove && !consentCurrent(s),
     goingOut: socialScheduled + gbpSoon,
     socialScheduled,
     channels,

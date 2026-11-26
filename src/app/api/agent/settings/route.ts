@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { NextResponse } from "next/server"
+import { consentCurrent } from "@/lib/auto-approve-text"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
@@ -47,7 +48,7 @@ export async function POST(req: Request) {
   if (input.autoPublishPosts !== undefined) {
     if (input.autoPublishPosts && !/pro|full|growth/i.test(user.plan)) return NextResponse.json({ error: "Auto-publish comes with the Pro plan.", upgrade: true }, { status: 403 })
     // Publishing without asking needs the accepted auto-approve warning first (the page opens it).
-    if (input.autoPublishPosts && !(await getAgentSettings(user.id)).autoApprove) return NextResponse.json({ needsConsent: true, key: "posts", value: "auto", error: "Accept the auto-approve terms first." }, { status: 409 })
+    if (input.autoPublishPosts && !consentCurrent(await getAgentSettings(user.id))) return NextResponse.json({ needsConsent: true, key: "posts", value: "auto", error: "Accept the auto-approve terms first." }, { status: 409 })
     await saveAgentSettings(user.id, { autoPublishPosts: input.autoPublishPosts })
   }
   if (input.customerValue !== undefined) {

@@ -7,15 +7,18 @@ import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { hasGrowth, hasPro } from "@/lib/billing"
 import { autopilotMessages, PRO_RE } from "@/lib/agent/autopilot"
 import { agent } from "@/lib/agent/types"
-import { acceptAutoApprove, needsConsent, revokeAutoApprove } from "@/lib/agent/auto-approve"
+import { acceptAutoApprove, needsConsent, renewAutoApprove, revokeAutoApprove } from "@/lib/agent/auto-approve"
+import { consentCurrent } from "@/lib/auto-approve-text"
 
 // "What I do without asking": one-tap standing approvals. Answers with the thread's messages.
 const body = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set"), key: z.enum(["posts", "reviews", "social", "email", "ads"]), value: z.string().max(20) }),
   z.object({ op: z.literal("budget"), amount: z.string().max(20) }),
   // "Auto-approve and post": accepted in the warning modal (accept must be true), or turned off.
-  z.object({ op: z.literal("auto_on"), accept: z.literal(true), key: z.enum(["posts", "reviews", "social"]).optional(), value: z.string().max(20).optional() }),
+  z.object({ op: z.literal("auto_on"), accept: z.literal(true), key: z.enum(["posts", "reviews", "social", "email", "ads"]).optional(), value: z.string().max(20).optional() }),
   z.object({ op: z.literal("auto_off") }),
+  // The declaration wording changed: record the new acceptance, keep every setting.
+  z.object({ op: z.literal("auto_renew"), accept: z.literal(true) }),
 ])
 
 const VALUES: Record<string, string[]> = {
@@ -61,7 +64,13 @@ export async function POST(req: Request) {
 
   if (input.op === "auto_on") {
     if (input.key && input.key !== "reviews" && !(input.key === "posts" ? PRO_RE.test(user.plan) : hasPro(user))) return NextResponse.json({ error: "Publishing without asking comes with the Pro plan." }, { status: 403 })
+    if ((input.key === "email" || input.key === "ads") && !hasGrowth(user)) return NextResponse.json({ error: "That comes with the Growth plan." }, { status: 403 })
+    if (input.key === "ads" && !a.adBudget) return NextResponse.json({ error: "Set your monthly budget first, so I know where to stop." }, { status: 400 })
     said = (await acceptAutoApprove(user, req, input.key, input.value)).said
+    return NextResponse.json({ on: true, messages: [agent([{ kind: "text", text: said }]), ...(await autopilotMessages(user))] })
+  }
+  if (input.op === "auto_renew") {
+    said = (await renewAutoApprove(user, req)).said
     return NextResponse.json({ on: true, messages: [agent([{ kind: "text", text: said }]), ...(await autopilotMessages(user))] })
   }
   if (input.op === "auto_off") {
@@ -80,7 +89,7 @@ export async function POST(req: Request) {
     if (!VALUES[key].includes(value)) return NextResponse.json({ error: "That one isn’t an option." }, { status: 400 })
     // Publishing without asking needs the accepted warning first (the page opens it).
     const only = needsConsent(key, value)
-    if (only && !s.autoApprove) return NextResponse.json({ needsConsent: true, key: only, value, error: "Accept the auto-approve terms first." }, { status: 409 })
+    if (only && !consentCurrent(s)) return NextResponse.json({ needsConsent: true, key: only, value, error: "Accept the auto-approve terms first." }, { status: 409 })
     if (key === "posts") {
       if (value === "auto" && !PRO_RE.test(user.plan)) return NextResponse.json({ error: "Publishing without asking comes with the Pro plan." }, { status: 403 })
       await saveAgentSettings(user.id, { autoPublishPosts: value === "auto" })

@@ -20,3 +20,6 @@ export function askAlphaa(detail: WsDetail = {}) {
 export function toast(text: string) {
   window.dispatchEvent(new CustomEvent<string>(TOAST_EVENT, { detail: text }))
 }
+
+/** Shown in the chat panel and under "Going out soon". */
+export const AI_NOTE = "Alphaa is AI and can make mistakes. Check anything important before it goes out."

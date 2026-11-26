@@ -113,6 +113,23 @@ Automatic Publishing: You can choose to let Alphaa publish Generated Content wit
 No Training on Your Data: Alphaa does not use your business data or Generated Content to train AI models. Data submitted to the Anthropic API is governed by Anthropic's usage policies.`,
   },
   {
+    id: "ai-autopilot",
+    title: "8A. AI-Generated Content and Autopilot",
+    body: `AI Output: Alphaa uses artificial intelligence to research, write, design, schedule and publish content and to suggest or make changes on your behalf. AI output can be inaccurate, incomplete, out of date, inappropriate or not suited to your business, your industry or your audience. Alphaa does not warrant the accuracy, completeness, legality or fitness for purpose of any AI output.
+
+Not Professional Advice: Nothing produced by the Service, including Generated Content, answers in the chat, research, ideas, ad plans and suggested claims, is legal, medical, financial, tax, investment or other professional advice. You should obtain your own professional advice before relying on it.
+
+Autopilot: When you turn on Autopilot (also called auto-approve), you instruct Alphaa to publish content on your behalf without your review of each item, within the rules you set in the Service. This may include social media posts, website posts and pages, Google Business Profile posts and listing changes, replies to reviews, emails to your customer list and, where you have enabled it and set a monthly budget, starting and adjusting ad campaigns within that budget. Scheduled items are shown in the Service before they go out, and you can stop any of them during the stop window of up to 3 days, or turn Autopilot off at any time. Turning Autopilot off stops further automatic publishing but does not remove content already published.
+
+Your Declaration: Before Autopilot turns on, you must accept a declaration in the Service confirming that you understand that Alphaa uses AI and that its output can be inaccurate, incomplete or inappropriate; that content will be published on your behalf without per-item review; that you are solely responsible for all content published from your accounts and for its compliance with applicable law, platform rules, the professional and advertising rules of your industry, and the rights of third parties; that you will review the facts and claims Alphaa uses about your business and keep them accurate; and that you can turn Autopilot off or stop any item at any time. Alphaa records your acceptance, including the time, the version of the declaration, your account and, where available, your IP address and browser. If the declaration changes, you will be asked to accept the new version.
+
+Your Responsibility: You are solely responsible for all content published from your accounts, whether you published it yourself, approved it, or Alphaa published it on your behalf with Autopilot on, including its accuracy and its compliance with applicable law (including consumer protection, advertising, privacy and anti-spam law), the rules of each platform, the professional and advertising rules that apply to your industry, and the intellectual property and other rights of third parties.
+
+Indemnity for Published Content: In addition to Section 13, you agree to defend, indemnify and hold harmless Alphaa and 9629033 Canada INC, and their officers, directors, employees and agents, from and against any claims, liabilities, damages, losses, fines, penalties, costs and expenses (including reasonable legal fees) arising out of or relating to content published from your accounts through the Service, including content published automatically with Autopilot on.
+
+Limitation of Liability: To the maximum extent permitted by law, Alphaa's liability in connection with AI output and Autopilot is limited as set out in Section 12.`,
+  },
+  {
     title: "9. Referral Program",
     body: `Alphaa offers a referral partner program ("Program") that allows eligible participants to earn commissions by referring new paying customers.
 
@@ -214,14 +231,14 @@ export default function TermsPage() {
       <Section flush>
       <div className="rd3">
         <h1 className="v3-h1 v3-h1--md">Terms of Service</h1>
-        <p className="lgl3-updated" style={{ marginBottom: 32 }}>Last updated: November 18, 2026</p>
+        <p className="lgl3-updated" style={{ marginBottom: 32 }}>Last updated: November 26, 2026</p>
 
         <p className="lgl3-note">
           These Terms of Service govern your access to and use of the Alphaa platform. By creating an account or using the Service, you agree to be bound by these Terms. Please read them carefully.
         </p>
 
         {sections.map((s) => (
-          <div key={s.title} className="lgl3-sec">
+          <div key={s.title} className="lgl3-sec" id={"id" in s ? s.id : undefined}>
             <h2>{s.title}</h2>
             <div className="lgl3-body">{s.body}</div>
           </div>

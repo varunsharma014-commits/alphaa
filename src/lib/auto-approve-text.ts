@@ -2,13 +2,17 @@
 // renders these and the server stores the same text (and its hash) with the consent record.
 // Changing any line = bump CONSENT_VERSION.
 
-export const CONSENT_VERSION = "2026-11-18.2"
+export const CONSENT_VERSION = "2026-11-26.1"
 
-export const CONSENT_TITLE = "Let me post without asking?"
+/** True when the owner accepted the current wording (an older acceptance re-prompts; nothing else changes). */
+export const consentCurrent = (s: { autoApprove?: { version?: string } | null }) => s.autoApprove?.version === CONSENT_VERSION
+
+export const CONSENT_TITLE = "Turn on Autopilot?"
 
 /** What turns on, per plan. Ads are never included. `growth` = social posts allowed (Pro and up since 2026-11-18; the name is kept for stored callers). */
-export type ConsentScope = { pro: boolean; growth: boolean; /** One setting only (the owner tapped that chip). */ only?: "posts" | "reviews" | "social" }
-const ONLY: Record<"posts" | "reviews" | "social", string> = { posts: "Google listing posts and website posts", reviews: "replies to your reviews", social: "social posts on your connected accounts" }
+export type ConsentOnly = "posts" | "reviews" | "social" | "email" | "ads"
+export type ConsentScope = { pro: boolean; growth: boolean; /** One setting only (the owner tapped that chip). */ only?: ConsentOnly }
+const ONLY: Record<ConsentOnly, string> = { posts: "Google listing posts and website posts", reviews: "replies to your reviews", social: "social posts on your connected accounts", email: "email campaigns to your customer list", ads: "starting and tuning ad campaigns inside your monthly budget" }
 
 export function consentTurnsOn(o: ConsentScope): { on: string[]; later: string | null } {
   if (o.only) return { on: [ONLY[o.only]], later: null }
@@ -30,28 +34,36 @@ const list = (a: string[]) => (a.length <= 1 ? a.join("") : `${a.slice(0, -1).jo
 export function consentIntro(o: ConsentScope): string {
   const { on } = consentTurnsOn(o)
   const s = list(on)
-  return `When this is on, I publish ${s} without asking you first. Ads are not included: ads always need your approval of the budget.`
+  if (o.only === "ads") return "When this is on, I start and tune ad campaigns without asking you first, never above the monthly budget you set."
+  if (o.only === "email") return `When this is on, I send ${s} without asking you first (at most one a week).`
+  return `When this is on, I publish ${s} without asking you first. Ads are not included unless you turn them on separately, and never above your budget.`
 }
 
-export const CONSENT_AI = "I write with AI. AI can get things wrong: a fact, a price, a date, the tone. When this is on, I publish without you checking first."
+export const CONSENT_AI = "Alphaa is AI and can make mistakes. With Autopilot on, what I write is published without you checking each item first."
 
-export const CONSENT_BULLETS = [
-  "You’re responsible for everything published on your accounts, including what I post for you.",
-  "Check what I post at least once a week in “What I’ve done”. You can edit or delete any post there or on the platform.",
-  "Turn this off any time in “What I do without asking”.",
-  "Alphaa isn’t liable for losses or claims from automatically published content, as set out in our Terms (Section 8, “Automatic Publishing”, and Section 12, “Limitation of Liability”).",
+/** The declaration the owner ticks (counsel should review the wording). */
+export const CONSENT_DECLARATION = [
+  "Alphaa uses artificial intelligence. Its output can be inaccurate, incomplete, out of date or inappropriate.",
+  "With Autopilot on, content (posts, pages, emails, review replies, listing changes, and ads where enabled) is published on my behalf without my review of each item, within my rules and the stop window of up to 3 days.",
+  "I am solely responsible for all content published from my accounts, including its compliance with the law, platform rules, the professional and advertising rules of my industry, and the rights of others.",
+  "I will review the facts and claims Alphaa uses about my business and keep them accurate.",
+  "I can turn Autopilot off, or stop any item before it goes out, at any time.",
+  "This is subject to the Terms of Service, including the limitation of liability and my indemnity.",
 ]
 
-export const CONSENT_CHECKBOX = "I’ve read this and I accept responsibility for automatically published content."
+/** @deprecated kept for older imports; the declaration replaces the bullets. */
+export const CONSENT_BULLETS = CONSENT_DECLARATION
 
-export const CONSENT_MONEY = "I’ll still ask before anything that spends money."
+export const CONSENT_CHECKBOX = "I have read and agree to this declaration and the Terms of Service."
 
-export const CONSENT_CTA = "Turn on auto-approve"
+export const CONSENT_MONEY = "I’ll still ask before spending more than the budget you set."
+
+export const CONSENT_CTA = "Turn on Autopilot"
 
 /** The full text as shown, for the consent record. */
 export function consentText(o: ConsentScope): string {
   const { later } = consentTurnsOn(o)
-  return [CONSENT_TITLE, consentIntro(o), later, CONSENT_AI, ...CONSENT_BULLETS.map((b) => `• ${b}`), CONSENT_MONEY, `[ ] ${CONSENT_CHECKBOX}`, CONSENT_CTA]
+  return [`Declaration version ${CONSENT_VERSION}`, CONSENT_TITLE, consentIntro(o), later, CONSENT_AI, ...CONSENT_DECLARATION.map((b, i) => `(${"i ii iii iv v vi".split(" ")[i] ?? i + 1}) ${b}`), CONSENT_MONEY, `[ ] ${CONSENT_CHECKBOX}`, CONSENT_CTA]
     .filter(Boolean)
     .join("\n")
 }
@@ -59,5 +71,5 @@ export function consentText(o: ConsentScope): string {
 /** Browser events: open the modal / tell the page auto-approve changed. */
 export const AUTO_APPROVE_OPEN = "alphaa:auto-approve"
 export const AUTO_APPROVE_CHANGED = "alphaa:auto-approve-changed"
-export type AutoApproveOpenDetail = { key?: "posts" | "reviews" | "social"; value?: string }
+export type AutoApproveOpenDetail = { key?: ConsentOnly; value?: string; /** The owner accepted an older wording: ask again, offer to turn it off. */ renew?: boolean }
 export type AutoApproveChangedDetail = { on: boolean; messages?: import("@/lib/agent/types").Message[] }
