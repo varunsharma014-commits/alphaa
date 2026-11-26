@@ -13,8 +13,8 @@ import type { AdStrategy } from "@/lib/ad-strategy/types"
 import type { NichePosts } from "@/lib/niche-posts"
 import type { QuestionScan } from "@/lib/questions"
 import type { Chip } from "@/lib/agent/types"
-import { blockedHost, dismissedHosts, hostOf, nicheVerdicts } from "@/lib/competitor-relevance"
-import { n, short, within } from "./common"
+import { competitorGate, hostOf, isManualRow } from "@/lib/competitor-relevance"
+import { n, short } from "./common"
 
 export type Signal = { label: string; tone: "g" | "b" | "n" }
 export type MoveCard = {
@@ -108,25 +108,21 @@ function signalsFor(title: string, topic: string, ranks: Rank[]): { signals: Sig
 }
 
 export async function getRivals(user: User, ctx: { strategy: AdStrategy | null; niche: NichePosts | null; qs: { scan: QuestionScan; at: Date } | null }): Promise<RivalsData> {
-  const [rows, gapRows, dismissed, latestRanks] = await Promise.all([
+  const [rows, gapRows, latestRanks] = await Promise.all([
     db.competitor.findMany({ where: { userId: user.id }, orderBy: { analyzedAt: "desc" }, take: 30 }),
     db.contentGap.findMany({ where: { userId: user.id }, orderBy: { analyzedAt: "desc" }, take: 8 }),
-    dismissedHosts(user.id).catch(() => new Set<string>()),
     db.keywordRanking.findFirst({ where: { userId: user.id }, orderBy: { date: "desc" }, select: { date: true } }),
   ])
   const ranks: Rank[] = latestRanks
     ? (await db.keywordRanking.findMany({ where: { userId: user.id, date: latestRanks.date }, select: { query: true, impressions: true, position: true }, take: 2000 }))
     : []
-  const own = hostOf(user.websiteUrl ?? "")
 
   // ── Relevance gate ──────────────────────────────────────────────────────────────────────────
-  const isManual = (c: Competitor) => isRecord(c.crawlData) && c.crawlData.source === "manual"
-  const firstPass = rows.filter((c) => { const h = hostOf(c.url); return !!h && h !== own && !blockedHost(h) && !dismissed.has(h) })
-  const toCheck = firstPass.filter((c) => !isManual(c)).map((c) => ({ host: hostOf(c.url)!, name: c.name, about: isRecord(c.crawlData) && typeof c.crawlData.aiSummary === "string" ? c.crawlData.aiSummary : null }))
-  // Gap rows can point at sites that aren't Competitor rows: judge those hosts too.
-  for (const g of gapRows) { const h = hostOf(g.competitorUrl); if (h && !blockedHost(h) && !dismissed.has(h) && !toCheck.some((t) => t.host === h) && !firstPass.some((c) => hostOf(c.url) === h && isManual(c))) toCheck.push({ host: h, name: null, about: g.summary }) }
-  const verdicts = await within(nicheVerdicts(user, toCheck), 8000, {})
-  const visibleHost = (h: string | null, manual = false) => !!h && h !== own && !blockedHost(h) && !dismissed.has(h) && (manual || verdicts[h]?.ok !== false)
+  // The shared gate (lib/competitor-relevance.ts): domain rules, dismissals, cached niche verdicts.
+  const isManual = (c: Competitor) => isManualRow(c)
+  const gate = await competitorGate(user, { rows, urls: gapRows.map((g) => g.competitorUrl) })
+  const visibleHost = (h: string | null, manual = false) => !!h && gate.keep(h, manual)
+  const firstPass = rows.filter((c) => !!hostOf(c.url))
   const seen = new Set<string>()
   const visible = firstPass.filter((c) => { const h = hostOf(c.url)!; if (seen.has(h) || !visibleHost(h, isManual(c))) return false; seen.add(h); return true })
   const brands = [user.businessName ?? "", ...rows.map((c) => c.name ?? ""), ...rows.map((c) => (hostOf(c.url) ?? "").split(".")[0])].filter(Boolean)

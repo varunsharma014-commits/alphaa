@@ -3,6 +3,7 @@
 // rows; when there is nothing yet, the thread says so and the agent starts the
 // job itself (the client runs `autorun`) — never a blank page with a button.
 
+import { relevantCompetitors, relevantGaps } from "@/lib/competitor-relevance"
 import { db } from "@/lib/db"
 import { agent, type Block, type Message, type Task } from "@/lib/agent/types"
 import { getAgentSettings } from "@/lib/agent/settings"
@@ -349,10 +350,13 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
 
     // ── Competitors ───────────────────────────────────────────────────────
     case "competitors": {
-      const [comps, gapRow] = await Promise.all([
-        db.competitor.findMany({ where: { userId }, orderBy: { analyzedAt: "desc" }, take: 6 }),
-        db.contentGap.findFirst({ where: { userId }, orderBy: { analyzedAt: "desc" } }),
+      // Only real competitors and their gaps (shared gate: lib/competitor-relevance.ts).
+      const [allComps, gapRows] = await Promise.all([
+        db.competitor.findMany({ where: { userId }, orderBy: { analyzedAt: "desc" }, take: 30 }),
+        db.contentGap.findMany({ where: { userId }, orderBy: { analyzedAt: "desc" }, take: 5 }),
       ])
+      const comps = (await relevantCompetitors(userId, allComps)).slice(0, 6)
+      const gapRow = (await relevantGaps(userId, gapRows))[0] ?? null
       if (comps.length === 0) {
         return { autorun: [], messages: [agent([{ kind: "text", text: "I haven’t found your competitors yet.", big: true }, { kind: "text", text: "I pick them up from the businesses the AIs name instead of you. Ask the AIs once and I’ll start watching the top ones." }, { kind: "chips", items: [{ label: "Ask the AIs now", action: { type: "link", href: "/dashboard" }, primary: true }] }], "cp-none")] }
       }

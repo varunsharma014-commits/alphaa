@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic"
 
+import { relevantCompetitors } from "@/lib/competitor-relevance"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { Globe, Users, Zap, AlertCircle, CheckCircle2, TrendingUp, Search } from "lucide-react"
@@ -236,7 +237,10 @@ export default async function CompetitorsPage() {
     include: { competitors: { orderBy: { createdAt: "desc" } } },
   })
 
-  const competitors = (user?.competitors ?? []) as unknown as CompetitorRow[]
+  // Only real competitors (shared gate: domain rules, dismissals, cached niche check). Nothing is deleted.
+  const all = user?.competitors ?? []
+  const competitors = (user ? await relevantCompetitors(user, all) : []) as unknown as CompetitorRow[]
+  const hiddenCount = all.length - competitors.length
   const city = user?.city ?? null
 
   return (
@@ -281,6 +285,11 @@ export default async function CompetitorsPage() {
           {competitors.map((c) => (
             <CompetitorCard key={c.id} competitor={c} />
           ))}
+          {hiddenCount > 0 && (
+            <p style={{ color: "var(--ds-text-faint)", fontSize: 12 }}>
+              I left out {hiddenCount} site{hiddenCount === 1 ? "" : "s"} that aren’t competitors (wikis, directories, platforms or other industries).
+            </p>
+          )}
         </div>
       )}
 

@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { relevantCompetitors } from "@/lib/competitor-relevance"
 import { asUser } from "@/lib/usage"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
@@ -29,7 +30,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   let discovered = 0
   for (const u of users) {
       asUser(u.id)
-    const existing = await db.competitor.count({ where: { userId: u.id } })
+    // Only real competitors count (shared gate): an account left with only wikis/directories gets a new search.
+    const rows = await db.competitor.findMany({ where: { userId: u.id }, select: { url: true, name: true, crawlData: true }, take: 30 })
+    const existing = rows.length ? (await relevantCompetitors(u, rows)).length : 0
     if (existing > 0) continue // already has competitors — skip to save SERP spend
     try {
       const r = await runAutoDiscovery(u)

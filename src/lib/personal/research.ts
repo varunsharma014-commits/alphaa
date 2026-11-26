@@ -11,6 +11,7 @@
 //     lead in ogData.dossier for 6 days (social: 14 days).
 // Nothing here throws: every network step degrades to "no fact".
 
+import { relevantCompetitors, relevantGaps } from "@/lib/competitor-relevance"
 import { ownScanWhere } from "@/lib/scan-match"
 import type { Prisma } from "@prisma/client"
 import { db } from "@/lib/db"
@@ -485,13 +486,16 @@ async function accountFacts(userId: string, d: Dossier, websiteUrl: string | nul
   let question: string | null = null
   const name = d.business.name
   const since = new Date(Date.now() - 28 * DAY)
-  const [audit, competitors, gap, rankings] = await Promise.all([
+  const [audit, allCompetitors, gapRows, rankings] = await Promise.all([
     db.audit.findFirst({ where: { userId }, orderBy: { createdAt: "desc" }, include: { aiEngineResults: true } }),
-    db.competitor.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 5 }),
-    db.contentGap.findFirst({ where: { userId }, orderBy: { analyzedAt: "desc" } }),
+    db.competitor.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 30 }),
+    db.contentGap.findMany({ where: { userId }, orderBy: { analyzedAt: "desc" }, take: 5 }),
     db.keywordRanking.findMany({ where: { userId, date: { gte: since } }, select: { query: true, clicks: true, impressions: true, position: true } }),
   ])
 
+  // Only real competitors and their gaps (shared gate: lib/competitor-relevance.ts).
+  const competitors = (await relevantCompetitors(userId, allCompetitors)).slice(0, 5)
+  const gap = (await relevantGaps(userId, gapRows))[0] ?? null
   for (const c of competitors) {
     const domain = hostOf(c.url)
     const cname = c.name?.trim() || domain || c.url

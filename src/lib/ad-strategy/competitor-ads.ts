@@ -2,6 +2,7 @@
 // Library via Apify's official scraper (apify/facebook-ads-scraper, pay per ad: about half a cent).
 // Meta's own Ad Library API only returns political ads outside the EU, so it can't do this.
 // Capped at 3 competitors x 8 ads, so one plan costs under $0.15.
+import { relevantCompetitors } from "@/lib/competitor-relevance"
 import { db } from "@/lib/db"
 import { runActor, apifyEnabled } from "@/lib/checks/apify"
 
@@ -70,7 +71,9 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "")
 
 /** Active Meta ads for the owner's tracked competitors. Empty when Apify is off or nothing runs. */
 export async function competitorAds(userId: string, country: string | null): Promise<{ looked: string[]; ads: CompetitorAd[] }> {
-  const rows = await db.competitor.findMany({ where: { userId }, orderBy: { createdAt: "asc" }, take: MAX_COMPETITORS, select: { name: true, url: true } })
+  // Only real competitors (shared gate): never scrape ads for a wiki, a directory or another industry.
+  const all = await db.competitor.findMany({ where: { userId }, orderBy: { createdAt: "asc" }, take: 30, select: { name: true, url: true, crawlData: true } })
+  const rows = (await relevantCompetitors(userId, all)).slice(0, MAX_COMPETITORS)
   const looked = rows.map(nameOf).filter(Boolean)
   if (!apifyEnabled() || !looked.length) return { looked, ads: [] }
   const urls = looked.map((n) => ({ url: libraryUrl(n, country ?? "US") }))

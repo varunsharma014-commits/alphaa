@@ -5,6 +5,7 @@
 // No model writes those. The model only proposes content ideas, and every idea must cite the
 // facts it rests on. Any number it writes must appear in those facts, or the idea is dropped.
 // Saved weekly as a MockActivity row (type "insights").
+import { relevantGaps } from "@/lib/competitor-relevance"
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
@@ -132,7 +133,8 @@ export async function gatherInsights(userId: string): Promise<{ lines: Omit<Insi
   }
 
   // ── Competitors and the owner's social posts ──────────────────────────────
-  const gap = await db.contentGap.findFirst({ where: { userId }, orderBy: { analyzedAt: "desc" }, select: { competitorUrl: true, gaps: true } })
+  // Only gaps from real competitors (shared gate: lib/competitor-relevance.ts).
+  const gap = (await relevantGaps(userId, await db.contentGap.findMany({ where: { userId }, orderBy: { analyzedAt: "desc" }, take: 5, select: { competitorUrl: true, gaps: true } })))[0] ?? null
   const gaps = (Array.isArray(gap?.gaps) ? gap!.gaps : []) as { topic?: string; suggestedTitle?: string }[]
   const host = gap?.competitorUrl.replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0]
   for (const g of gaps.slice(0, 2)) if (g.topic) niche.push({ key: `gap:${g.topic}`, text: `${host ?? "A competitor"} has a page about “${g.topic}”. You don’t.` })

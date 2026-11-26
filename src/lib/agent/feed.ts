@@ -3,6 +3,7 @@
 // checked yet" is always said out loud instead of being dressed up as a
 // result. Rendered by <DashboardAgent> with the same components as /start.
 
+import { relevantGaps } from "@/lib/competitor-relevance"
 import { cache } from "react"
 import { db } from "@/lib/db"
 import { getEngineEvidence, type EngineKey } from "@/lib/engine-evidence"
@@ -53,8 +54,8 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
       audits: { orderBy: { createdAt: "desc" }, take: 2, include: { aiEngineResults: true } },
       gmbReviews: { where: { reply: null }, orderBy: { publishedAt: "desc" }, take: 2 },
       gbpPosts: { where: { status: "draft" }, orderBy: { createdAt: "desc" }, take: 1 },
-      contentGaps: { orderBy: { analyzedAt: "desc" }, take: 1 },
-      competitors: { take: 5 },
+      contentGaps: { orderBy: { analyzedAt: "desc" }, take: 5 },
+      competitors: { take: 30 },
     },
   })
   if (!user) return null
@@ -180,7 +181,8 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
   }
 
   // ── 5. What a competitor covers that you don’t ────────────────────────────
-  const gap = user.contentGaps[0]
+  // Only gaps from real competitors (shared gate: lib/competitor-relevance.ts).
+  const gap = (await relevantGaps(user.id, user.contentGaps, { ms: 3000 }))[0]
   const gaps = Array.isArray(gap?.gaps) ? (gap!.gaps as { topic?: string; priority?: string; suggestedTitle?: string }[]) : []
   const top = gaps.find((g) => g.priority === "high") ?? gaps[0]
   if (gap && top?.topic) {

@@ -1,5 +1,6 @@
 // Everything the agent writes for a business's own website, from
 // the business's facts only — unknown facts become [bracketed] placeholders.
+import { relevantGaps } from "@/lib/competitor-relevance"
 import { ownScanWhere } from "@/lib/scan-match"
 import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
@@ -59,7 +60,8 @@ export async function writePost(user: U, topic?: string, opts: { noPlaceholders?
     const posted = (await db.mockActivity.findMany({ where: { userId: user.id, type: "post_draft" }, select: { metadata: true }, take: 50, orderBy: { createdAt: "desc" } })).map((r) => (r.metadata as { topic?: string } | null)?.topic)
     t = missed.find((q) => !posted.includes(q))
     if (!t) {
-      const gap = await db.contentGap.findFirst({ where: { userId: user.id }, orderBy: { analyzedAt: "desc" } })
+      // Only gaps from real competitors (shared gate: lib/competitor-relevance.ts).
+      const gap = (await relevantGaps(user.id, await db.contentGap.findMany({ where: { userId: user.id }, orderBy: { analyzedAt: "desc" }, take: 5 })))[0] ?? null
       const gaps = (Array.isArray(gap?.gaps) ? gap!.gaps : []) as { topic?: string; suggestedTitle?: string }[]
       t = gaps.map((g) => g.suggestedTitle || g.topic).find((x): x is string => !!x && !posted.includes(x))
     }

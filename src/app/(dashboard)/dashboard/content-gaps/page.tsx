@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic"
 
+import { relevantGaps } from "@/lib/competitor-relevance"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
@@ -79,10 +80,11 @@ export default async function ContentGapsPage() {
   const user = await db.user.findUnique({ where: { clerkId } })
   if (!user) redirect("/login")
 
-  const records = await db.contentGap.findMany({
+  // Only gaps from real competitors (shared gate in lib/competitor-relevance.ts).
+  const records = await relevantGaps(user, await db.contentGap.findMany({
     where: { userId: user.id },
     orderBy: { analyzedAt: "desc" },
-  })
+  }))
 
   const latestGap = records[0]
 

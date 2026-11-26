@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
 
+import { relevantGaps } from "@/lib/competitor-relevance"
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { z } from "zod"
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
       audits: { orderBy: { createdAt: "desc" }, take: 1, include: { aiEngineResults: true } },
       gmbReviews: { where: { reply: null }, take: 3 },
       gbpPosts: { where: { status: "draft" }, take: 3 },
-      contentGaps: { orderBy: { analyzedAt: "desc" }, take: 1 },
+      contentGaps: { orderBy: { analyzedAt: "desc" }, take: 5 },
     },
   })
   if (!user) return NextResponse.json({ error: "We couldn’t find your account." }, { status: 404 })
@@ -72,6 +73,8 @@ export async function POST(req: Request) {
     db.mockActivity.findMany({ where: { userId: user.id, type: { notIn: ["sandbox_query"] } }, orderBy: { createdAt: "desc" }, take: 25 }),
   ])
 
+  // Only gaps from real competitors (shared gate: lib/competitor-relevance.ts).
+  const gap = (await relevantGaps(user.id, user.contentGaps, { ms: 3000 }))[0]
   const audit = user.audits[0]
   const facts = [
     `Business: ${user.businessName ?? "unknown"} — ${user.businessType ?? "type unknown"} in ${[user.city, user.state].filter(Boolean).join(", ") || "location unknown"}. Website: ${user.websiteUrl ?? "none on file"}.`,
@@ -82,7 +85,7 @@ export async function POST(req: Request) {
       ? `Latest audit ${audit.createdAt.toDateString()}: score ${audit.visibilityScore}. Issues: ${JSON.stringify(audit.issues).slice(0, 1500)}. Engine answers: ${audit.aiEngineResults.map((r) => `[${r.engine}] Q: ${r.query} — appeared=${r.appeared} — A: ${r.response.slice(0, 500)}`).join("\n")}`
       : "No audit run yet.",
     `Reviews waiting for a reply: ${user.gmbReviews.length}. Draft Google posts: ${user.gbpPosts.length}.`,
-    user.contentGaps[0] ? `Latest content-gap analysis vs ${user.contentGaps[0].competitorUrl}: ${JSON.stringify(user.contentGaps[0].gaps).slice(0, 1200)}` : "No competitor content analysis yet.",
+    gap ? `Latest content-gap analysis vs ${gap.competitorUrl}: ${JSON.stringify(gap.gaps).slice(0, 1200)}` : "No competitor content analysis yet.",
     `Recent things ${BRAND.agentName} actually did (ledger, newest first): ${activity.map((a) => `${a.createdAt.toDateString()}: ${a.title}${a.description ? ` — ${a.description}` : ""}`).join(" | ").slice(0, 2500) || "nothing yet"}`,
   ].join("\n")
 

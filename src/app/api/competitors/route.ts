@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { analyzeCompetitor } from "@/lib/competitor-analyzer"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
-import { hostOf } from "@/lib/competitor-relevance"
+import { hostOf, relevantCompetitors } from "@/lib/competitor-relevance"
 
 export const dynamic = "force-dynamic"
 
@@ -19,10 +19,11 @@ export async function GET() {
     return NextResponse.json({ error: "User not found" }, { status: 404 })
   }
 
-  const competitors = await db.competitor.findMany({
+  // Only real competitors (shared gate: lib/competitor-relevance.ts). Nothing is deleted.
+  const competitors = await relevantCompetitors(user, await db.competitor.findMany({
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
-  })
+  }))
 
   return NextResponse.json({ competitors })
 }

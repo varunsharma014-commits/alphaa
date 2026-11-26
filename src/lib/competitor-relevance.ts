@@ -8,6 +8,7 @@
 // The owner can also dismiss one ("Not a competitor"): agent settings `competitorsDismissed`.
 import { claudeFor } from "@/lib/claude"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
+import { db } from "@/lib/db"
 
 const anthropic = claudeFor("competitor-relevance")
 
@@ -107,4 +108,74 @@ export async function nicheVerdicts(user: Biz, items: Candidate[], opts: { save?
 export async function dismissedHosts(userId: string): Promise<Set<string>> {
   const s = await getAgentSettings(userId)
   return new Set((s.competitorsDismissed ?? []).map((h) => h.toLowerCase()))
+}
+
+// ── The single gate every surface uses (pages, chat threads, generation, emails) ─────────────
+
+type Row = { url: string; name?: string | null; crawlData?: unknown }
+const isObj = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v)
+/** The owner added this one by hand (POST /api/competitors): the niche check never hides it. */
+export const isManualRow = (r: Pick<Row, "crawlData">) => isObj(r.crawlData) && r.crawlData.source === "manual"
+
+export type CompetitorGate = {
+  /** True when this site may be shown to the owner or used for generation. */
+  keep: (url: string, manual?: boolean) => boolean
+  dismissed: Set<string>
+  verdicts: Record<string, Verdict>
+}
+
+async function bizOf(user: string | Biz): Promise<Biz | null> {
+  if (typeof user !== "string") return user
+  return db.user.findUnique({ where: { id: user }, select: { id: true, businessName: true, businessType: true, city: true, websiteUrl: true, voiceDescription: true } })
+}
+
+/**
+ * Domain rules + the owner's dismissals + the cached niche verdict. With `judge` (default) hosts
+ * not judged yet are checked once (Haiku, cached), waiting at most `ms`; a host without a verdict
+ * is kept. `rows` / `urls` are the sites the caller is about to show or use.
+ */
+export async function competitorGate(user: string | Biz, opts: { rows?: Row[]; urls?: string[]; judge?: boolean; ms?: number } = {}): Promise<CompetitorGate> {
+  const biz = await bizOf(user)
+  const userId = typeof user === "string" ? user : user.id
+  const [s, dismissed] = await Promise.all([getAgentSettings(userId), dismissedHosts(userId)])
+  const own = hostOf(biz?.websiteUrl ?? "")
+  let verdicts: Record<string, Verdict> = { ...(s.competitorRelevance ?? {}) }
+  if (biz && opts.judge !== false) {
+    const items: Candidate[] = []
+    const add = (url: string, name?: string | null, about?: string | null) => {
+      const h = hostOf(url)
+      if (h && h !== own && !blockedHost(h) && !dismissed.has(h) && !verdicts[h] && !items.some((i) => i.host === h)) items.push({ host: h, name, about })
+    }
+    for (const r of opts.rows ?? []) if (!isManualRow(r)) add(r.url, r.name, isObj(r.crawlData) && typeof r.crawlData.aiSummary === "string" ? r.crawlData.aiSummary : null)
+    for (const u of opts.urls ?? []) add(u)
+    if (items.length) {
+      const fresh = await Promise.race([
+        nicheVerdicts(biz, items).catch(() => ({} as Record<string, Verdict>)),
+        new Promise<Record<string, Verdict>>((res) => setTimeout(() => res({}), opts.ms ?? 8000)),
+      ])
+      verdicts = { ...verdicts, ...fresh }
+    }
+  }
+  const keep = (url: string, manual = false) => {
+    const h = hostOf(url)
+    return !!h && h !== own && !blockedHost(h) && !dismissed.has(h) && (manual || verdicts[h]?.ok !== false)
+  }
+  return { keep, dismissed, verdicts }
+}
+
+/** Competitor rows the owner should see / generation may use, in the same order. */
+export async function relevantCompetitors<T extends Row>(user: string | Biz, rows: T[], opts: { judge?: boolean; ms?: number } = {}): Promise<T[]> {
+  if (!rows.length) return rows
+  const gate = await competitorGate(user, { rows, ...opts })
+  return rows.filter((r) => gate.keep(r.url, isManualRow(r)))
+}
+
+/** ContentGap rows whose competitor passes the gate (a gap from a hand-added competitor always does). */
+export async function relevantGaps<T extends { competitorUrl: string }>(user: string | Biz, gaps: T[], opts: { judge?: boolean; ms?: number } = {}): Promise<T[]> {
+  if (!gaps.length) return gaps
+  const userId = typeof user === "string" ? user : user.id
+  const comps = await db.competitor.findMany({ where: { userId }, select: { url: true, crawlData: true } })
+  const manual = new Set(comps.filter(isManualRow).map((c) => hostOf(c.url)).filter(Boolean) as string[])
+  const gate = await competitorGate(user, { urls: gaps.map((g) => g.competitorUrl), ...opts })
+  return gaps.filter((g) => gate.keep(g.competitorUrl, manual.has(hostOf(g.competitorUrl) ?? "")))
 }

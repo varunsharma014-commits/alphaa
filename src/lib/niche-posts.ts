@@ -15,6 +15,7 @@
 //      fields only. Captions are never stored; any text sharing 8+ words with a caption is dropped.
 // Saved weekly per brand as MockActivity "niche_posts". Field names verified on the actor pages
 // (apify.com/<actor>) and the Graph API ArchivedAd reference on 2026-11-18.
+import { relevantCompetitors } from "@/lib/competitor-relevance"
 import { createHash } from "crypto"
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
@@ -253,7 +254,8 @@ Give hashtags and search phrases that real posts in this niche use. Mix one or t
 /** Rivals with a website, and the Instagram / Facebook pages their homepage links to. */
 async function rivalSocials(userId: string): Promise<{ name: string; instagram?: string; facebook?: string }[]> {
   const dossier = await buildAccountDossier(userId, { offline: true }).catch(() => null)
-  const comps = await db.competitor.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 5, select: { url: true, name: true } })
+  // Only real competitors (shared gate: lib/competitor-relevance.ts).
+  const comps = (await relevantCompetitors(userId, await db.competitor.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 30, select: { url: true, name: true, crawlData: true } }))).slice(0, 5)
   const seen = new Set<string>()
   const list: { name: string; domain: string }[] = []
   const add = (name: string, raw: string | null) => {
