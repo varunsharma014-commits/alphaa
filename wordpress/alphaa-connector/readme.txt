@@ -29,7 +29,7 @@ Requests from Alphaa are signed with your connection key; nothing else can use t
 
 == External services ==
 
-This plugin connects to the Alphaa service at https://alphaa.app, run by 18355355 Canada INC. It is needed for the plugin to work; nothing is sent until you paste a connection key and click Connect.
+This plugin connects to the Alphaa service at https://alphaa.app, run by 9629033 Canada INC. It is needed for the plugin to work; nothing is sent until you paste a connection key and click Connect.
 
 * Connecting (https://alphaa.app/api/connect/wp/hello): when you click Connect, the plugin sends your connection key, your site address, your site's REST API address and the plugin version, so Alphaa can link the site to your account.
 * Changes you approve: Alphaa's servers call this plugin's own REST API on your site (signed with your connection key) to publish, update or undo pages, structured data, llms.txt, robots.txt rules, titles and meta descriptions. The plugin does not send your content anywhere else.

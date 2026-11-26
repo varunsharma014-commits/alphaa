@@ -6,7 +6,7 @@ ownership memory). Nothing here has been submitted.
 
 Shared facts used in every form:
 - App / product: Alphaa (https://alphaa.app), an AI marketing agent for small businesses
-- Company: 18355355 Canada Inc.
+- Company: 9629033 Canada Inc.
 - Contact: hi@alphaa.app
 - Privacy policy: https://alphaa.app/privacy · Terms: https://alphaa.app/terms
 - Core rule, stated everywhere: **the business owner approves every post, campaign and budget
@@ -48,7 +48,7 @@ it once the ads screens exist.
 ## 2. Meta: App Review (ads + Facebook/Instagram posting)
 
 Where: developers.facebook.com → create the Alphaa Meta app first (none exists yet as of 2026-11-17; only the Pixel is set up) → App Review → Permissions and features.
-Needs first: **Business Verification** for 18355355 Canada Inc. in Meta Business Manager,
+Needs first: **Business Verification** for 9629033 Canada Inc. in Meta Business Manager,
 the app in Live mode, privacy policy URL and data deletion instructions URL set.
 
 **Permissions to request, and the use for each (paste per permission):**

@@ -32,7 +32,7 @@ const sections = [
     body: `If something on alphaa.app is hard to use, email hi@alphaa.app with the page address and what happened. We reply within 5 business days and, where we can, provide the information in another format.
 
 Mailing address:
-18355355 Canada INC (Alphaa)
+9629033 Canada INC (Alphaa)
 1000 Innovation Drive, Suite 500
 Kanata, ON K2K 3E7
 Canada`,

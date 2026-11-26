@@ -267,7 +267,7 @@ If we become aware that we have inadvertently collected personal information fro
   },
   {
     title: "11. International Data Transfers",
-    body: `Alphaa is operated by 18355355 Canada INC (1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada), the controller of your personal data, and our servers are in the United States. If you are accessing the Service from the European Economic Area (EEA), United Kingdom, or other regions with laws governing data collection and use that may differ from U.S. law, please be aware that your information may be transferred to, stored, and processed in the United States and other countries.
+    body: `Alphaa is operated by 9629033 Canada INC (1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada), the controller of your personal data, and our servers are in the United States. If you are accessing the Service from the European Economic Area (EEA), United Kingdom, or other regions with laws governing data collection and use that may differ from U.S. law, please be aware that your information may be transferred to, stored, and processed in the United States and other countries.
 
 For transfers of personal data from the EEA or UK to the United States, Alphaa relies on the following transfer mechanisms:
 • Standard Contractual Clauses (SCCs) approved by the European Commission, incorporated into our data processing agreements with sub-processors.
@@ -296,7 +296,7 @@ Subject line: Privacy Request — [your request type]
 Website: https://alphaa.app
 
 Mailing address:
-18355355 Canada INC (Alphaa)
+9629033 Canada INC (Alphaa)
 1000 Innovation Drive, Suite 500
 Kanata, ON K2K 3E7
 Canada
