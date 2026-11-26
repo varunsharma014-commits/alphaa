@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { analyzeCompetitor } from "@/lib/competitor-analyzer"
+import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
+import { hostOf } from "@/lib/competitor-relevance"
 
 export const dynamic = "force-dynamic"
 
@@ -76,6 +78,7 @@ export async function POST(req: NextRequest) {
           crawlData: {
             ...analysis.crawlData,
             aiSummary: analysis.aiSummary,
+            source: "manual",
           },
           analyzedAt: new Date(),
         },
@@ -89,11 +92,18 @@ export async function POST(req: NextRequest) {
           crawlData: {
             ...analysis.crawlData,
             aiSummary: analysis.aiSummary,
+            // The owner added it: the niche check never hides it (domain rules still do).
+            source: "manual",
           },
           analyzedAt: new Date(),
         },
       })
     }
+
+    // Added by hand: if they had dismissed it before, it counts again.
+    const host = hostOf(normalizedUrl)
+    const st = await getAgentSettings(user.id)
+    if (host && st.competitorsDismissed?.includes(host)) await saveAgentSettings(user.id, { competitorsDismissed: st.competitorsDismissed.filter((h) => h !== host) })
 
     return NextResponse.json({ competitor, analysis })
   } catch (err) {

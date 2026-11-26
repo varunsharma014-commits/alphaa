@@ -50,6 +50,10 @@ export type AgentSettings = {
   autoApprove?: { acceptedAt: string; version: string; consentId: string }
   /** Email outreach (Growth, lib/email-campaigns): the business mailing address every email must carry. */
   emailOutreach?: { address?: string; at?: string }
+  /** Niche check per competitor host (lib/competitor-relevance.ts). */
+  competitorRelevance?: Record<string, { ok: boolean; why?: string; at: string }>
+  /** Hosts the owner marked "Not a competitor". */
+  competitorsDismissed?: string[]
 }
 
 export type Autopilot = {

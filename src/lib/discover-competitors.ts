@@ -8,6 +8,7 @@ import { analyzeCompetitor } from "@/lib/competitor-analyzer"
 import { analyzeContentGaps } from "@/lib/content-gaps"
 import { claudeFor } from "@/lib/claude"
 import { logActivity } from "@/lib/activity"
+import { blockedHost, dismissedHosts, nicheVerdicts } from "@/lib/competitor-relevance"
 
 const anthropic = claudeFor("competitors")
 
@@ -87,7 +88,7 @@ function hostOf(url: string): string | null {
 }
 
 function isDirectory(host: string): boolean {
-  return DIRECTORY_HOSTS.some((d) => host.includes(d))
+  return DIRECTORY_HOSTS.some((d) => host.includes(d)) || blockedHost(host)
 }
 
 // Returns the number of new competitors discovered + stored.
@@ -100,16 +101,20 @@ export async function discoverCompetitors(user: DiscoverUser, max = 5): Promise<
   if (results.length === 0) return 0
 
   const ownHost = user.websiteUrl ? hostOf(user.websiteUrl) : null
+  const dismissed = await dismissedHosts(user.id).catch(() => new Set<string>())
   const seen = new Set<string>()
-  const picks: string[] = []
+  const cands: { host: string; name: string; about: string }[] = []
 
   for (const r of results) {
     const host = hostOf(r.url)
-    if (!host || isDirectory(host) || host === ownHost || seen.has(host)) continue
+    if (!host || isDirectory(host) || host === ownHost || dismissed.has(host) || seen.has(host)) continue
     seen.add(host)
-    picks.push(`https://${host}`)
-    if (picks.length >= max) break
+    cands.push({ host, name: r.title, about: r.description ?? "" })
   }
+  // Niche check before the (expensive) crawl + analysis: only real competitors get stored.
+  // No verdict (model unavailable) = keep the old behaviour for that site.
+  const verdicts = await nicheVerdicts(user, cands).catch(() => ({} as Record<string, { ok: boolean }>))
+  const picks = cands.filter((c) => verdicts[c.host]?.ok !== false).slice(0, max).map((c) => `https://${c.host}`)
 
   let created = 0
   for (const url of picks) {
@@ -181,10 +186,10 @@ export async function runAutoDiscovery(
   let gapsGenerated = 0
   if (user.websiteUrl && user.businessType) {
     try {
-      const top = await db.competitor.findFirst({
-        where: { userId: user.id },
-        orderBy: { createdAt: "desc" },
-      })
+      const recent = await db.competitor.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 10 })
+      const dismissed = await dismissedHosts(user.id).catch(() => new Set<string>())
+      const ok = await nicheVerdicts(user, recent.map((c) => ({ host: hostOf(c.url) ?? c.url, name: c.name }))).catch(() => ({} as Record<string, { ok: boolean }>))
+      const top = recent.find((c) => { const h = hostOf(c.url); return h && !blockedHost(h) && !dismissed.has(h) && ok[h]?.ok !== false }) ?? null
       if (top) {
         const { gaps, summary } = await analyzeContentGaps(
           user.websiteUrl,
