@@ -19,7 +19,12 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
   const [recap, setRecap] = useState<number | null>(null)
 
   // Back from connecting a website (?connected= …): say how it went, in the chat.
-  useEffect(() => { if (notice) askAlphaa({ push: [notice] }) }, [notice])
+  useEffect(() => {
+    if (!notice) return
+    // After the shell's own effects (a parent's run after its children's), so it's listening.
+    const t = window.setTimeout(() => askAlphaa({ push: [notice] }), 0)
+    return () => window.clearTimeout(t)
+  }, [notice])
   useEffect(() => { try { setSkipped(sessionStorage.getItem(SKIP_KEY)) } catch {} }, [])
 
   const q = data.question && data.question.id !== skipped ? data.question : null
