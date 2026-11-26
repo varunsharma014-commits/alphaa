@@ -171,7 +171,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
         <div className={`ax-scrim${drawer ? " open" : ""}`} onClick={() => setDrawer(false)} aria-hidden="true" />
         <aside className={`ax-sb${drawer ? " open" : ""}`} aria-label="Workspaces">
           <div className="ax-sbt">
-            <div className="ax-brand"><span className="ax-orb" style={{ width: 30, height: 30 }} /><span><b>Alphaa</b><small>{data.businessName}</small></span></div>
+            <div className="ax-brand"><span className="ax-orb" style={{ width: 30, height: 30 }} /><span><b>Alphaa</b><small>{showUser ? "Your marketing agent" : data.businessName}</small></span></div>
             {showUser && <div className="ax-site"><SiteSwitcher name={data.businessName} /></div>}
             <p className="ax-sec">Command</p>
             <nav className="ax-nav">{ni("/dashboard", "Briefing", "briefing")}</nav>
