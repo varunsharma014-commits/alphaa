@@ -11,6 +11,7 @@ import { getGadsAccount } from "@/lib/gads/store"
 import { healthItems } from "@/lib/tracking-health"
 import { eventDays } from "@/lib/tracking-events"
 import { getDone } from "./briefing"
+import { scheduledSitePosts } from "./site-posts"
 import { PRO_RE } from "@/lib/agent/autopilot"
 import { consentCurrent } from "@/lib/auto-approve-text"
 
@@ -48,6 +49,7 @@ export async function getShellData(user: User): Promise<ShellData> {
     growth ? getGadsAccount(user.id).catch(() => null) : Promise.resolve(null),
     getDone(user.id).then((d) => d.length).catch(() => 0),
   ])
+  const sitePosts = (await scheduledSitePosts(user.id).catch(() => [])).filter((p) => Date.parse(p.m.scheduledFor!) < week.getTime()).length
   const socialScheduled = posts.filter((p) => p.status === "scheduled" && p.scheduledFor && Date.parse(p.scheduledFor) > Date.now() && Date.parse(p.scheduledFor) < week.getTime()).length
   const channels = [
     !!integ?.gmbLocationId,
@@ -71,7 +73,7 @@ export async function getShellData(user: User): Promise<ShellData> {
     growth,
     autopilot: !!s.autoApprove,
     consentStale: !!s.autoApprove && !consentCurrent(s),
-    goingOut: socialScheduled + gbpSoon,
+    goingOut: socialScheduled + gbpSoon + sitePosts,
     socialScheduled,
     channels,
     signals,

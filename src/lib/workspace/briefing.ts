@@ -17,6 +17,7 @@ import { LEDGER_TYPES, ledgerText, ENGINE_NAME, ENGINE_ORDER } from "@/lib/agent
 import { REVIEW_DRAFT } from "@/lib/approvals"
 import type { Chip } from "@/lib/agent/types"
 import { getAiCards, type AiCard } from "./ai-cards"
+import { scheduledSitePosts } from "./site-posts"
 import { ART, ago, cached, channelOf, headlineOf, n, pctChange, short, whenAhead, within } from "./common"
 
 const DAY = 86_400_000
@@ -26,7 +27,7 @@ export type Headline = { total: number; prev: number | null; parts: Part[]; days
 export type Tile = { key: string; label: string; value: string | null; delta: string | null; empty: string; href?: string }
 export type GoingItem = {
   id: string
-  kind: "social" | "gbp"
+  kind: "social" | "gbp" | "site"
   lane: string
   big: string
   small: string
@@ -187,6 +188,14 @@ export async function getGoing(user: User): Promise<GoingItem[]> {
     out.push({
       id: g.id, kind: "gbp", lane: "Google listing · update", big: short(headlineOf(g.content, 40), 40), small: "On your Google listing",
       title: headlineOf(g.content), text: g.content, image: null, at: g.scheduledFor!.toISOString(), when: whenAhead(g.scheduledFor!.toISOString()), art: ART.google,
+    })
+  }
+  for (const p of await scheduledSitePosts(user.id).catch(() => [])) {
+    const at = p.m.scheduledFor!
+    out.push({
+      id: p.id, kind: "site", lane: "Website · new post", big: short(p.m.title ?? "New post", 40), small: "On your website",
+      title: p.m.title ?? "New post", text: p.m.excerpt || headlineOf(p.m.markdown ?? "", 200), image: p.m.imageId ? imageUrl(p.m.imageId) : null,
+      at, when: whenAhead(at), art: ART.blog,
     })
   }
   return out.sort((a, b) => Date.parse(a.at) - Date.parse(b.at)).slice(0, 9)

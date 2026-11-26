@@ -113,13 +113,13 @@ async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topi
     if (mode === "post") {
       const prev = await db.mockActivity.findFirst({ where: { userId: user.id, type: "post_draft", createdAt: { gte: since }, metadata: { path: ["requestTopic"], equals: topic } }, orderBy: { createdAt: "desc" } })
       if (prev) {
-        const m = prev.metadata as { title?: string; markdown?: string; imageId?: string | null }
-        return { ok: true, body: { title: m.title, text: m.markdown, draftId: prev.id, image: m.imageId ? imageUrl(m.imageId) : null } }
+        const m = prev.metadata as { title?: string; markdown?: string; imageId?: string | null; excerpt?: string }
+        return { ok: true, body: { title: m.title, text: m.markdown, excerpt: m.excerpt ?? null, draftId: prev.id, image: m.imageId ? imageUrl(m.imageId) : null } }
       }
       const p = await writePost(user, topic === "auto" ? undefined : topic)
       const img = await generatePostImage(user.id, { title: p.title, businessType: user.businessType, city: user.city })
       const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null, requestTopic: topic } } })
-      return { ok: true, body: { title: p.title, text: p.markdown, draftId: row.id, image: img?.url ?? null } }
+      return { ok: true, body: { title: p.title, text: p.markdown, excerpt: p.excerpt, draftId: row.id, image: img?.url ?? null } }
     }
     if (mode === "gbp") {
       const prev = await db.mockActivity.findFirst({ where: { userId: user.id, type: "gbp_post_draft", createdAt: { gte: since }, metadata: { path: ["topic"], equals: topic } }, orderBy: { createdAt: "desc" } })
