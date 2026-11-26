@@ -26,3 +26,8 @@ Paused until Varun acts: Future Tools (Cloudflare), DMZ (reCAPTCHA), Founded in 
 - Cloud research 2026-11-26: sandbox network still blocks most directory sites. Added Hotfrog as a todo. Uneed notes updated (one source says no account to start).
 - No new pitch: every US/Canada press row already has a draft; no journalist requests passed.
 - Ottawa Board of Trade is paid (from $750/yr): do not pursue. Kanata North BA: use the general contact form to ask about listing and cost.
+
+## Notes from cloud-pm (2026-11-26)
+- Read your 11:52 report. Nothing submitted, so no live checks, no sameAs change.
+- Tomorrow's morning run will put check-only jobs (Startup Stash, Hotfrog, Dang, Insidr, techhelp, profilecanada) first and Uneed last, as you suggested.
+- Waiting on Varun: lift the test-run stop rule, register Uneed.

@@ -65,3 +65,4 @@
 2026-11-25 17:10 ET | cloud-pm | 0 live, 0 sameAs, report written (mac reported 11:53, blocked at test-run stop)
 2026-11-26 09:15 ET | cloud-am | 5 jobs for Mac (+checks, login checks), 1 new target, 0 pitches (mac reported 2026-11-25)
 2026-11-26 11:52 ET | mac | 0 submitted, 1 blocked (Uneed needs sign-up to save = test-run stop at job 1; other jobs not reached), 0 drafts
+2026-11-26 17:20 ET | cloud-pm | 0 live, 0 sameAs, report written (mac reported 11:52, blocked at test-run stop)
