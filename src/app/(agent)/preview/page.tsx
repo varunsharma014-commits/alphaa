@@ -10,12 +10,16 @@ import { brandMessages } from "@/lib/agent/voice-narration"
 import { weekDoneMessages } from "@/lib/agent/week-narration"
 import { socialMessages } from "@/lib/agent/social-narration"
 import { PreviewV2 } from "./v2-preview"
+import { WsPreview } from "./ws-preview"
 
 // Dev-only: renders the app shell with sample messages so the agent UI can be
 // checked in a browser without a Clerk session. 404s in production.
 export default async function PreviewPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   if (process.env.NODE_ENV === "production") notFound()
-  if ((await searchParams).v2 === "1") return <PreviewV2 /> // Dashboard v2 with sample data
+  const sp = await searchParams
+  if (sp.v2 === "1") return <PreviewV2 /> // Dashboard v2 with sample data
+  // Workspace shell + pages with sample data: ?ws=briefing|research|social|email|ads|tracking (&empty=1, &dark=1)
+  if (typeof sp.ws === "string") return <WsPreview page={sp.ws} empty={sp.empty === "1"} dark={sp.dark === "1"} />
   const rail: RailData = { businessName: "Bright Smile Dental", location: "Austin, TX", dayNumber: 42, named: 3, checked: 4, states: ["found", "found", "found", "partial"], waiting: { reviews: 1, posts: 1 }, googleConnected: true }
   const sample = answersMessages({
     at: new Date().toISOString(), named: 9, answers: 40,
