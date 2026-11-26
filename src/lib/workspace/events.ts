@@ -1,0 +1,22 @@
+// Window events between the workspace pages, the shell and the agent chat (client-safe).
+//
+//   WS_EVENT     anything on a page → the shell: open the chat panel, then pass `detail` on.
+//   AGENT_EVENT  the shell → DashboardAgent (mounted inside the chat panel): run a chip, send a
+//                message as the owner, or push messages. Topics go through the existing ASK_EVENT.
+import type { Chip, Message } from "@/lib/agent/types"
+
+export const WS_EVENT = "alphaa:ws"
+export const AGENT_EVENT = "alphaa:agent"
+export const TOAST_EVENT = "alphaa:toast"
+
+export type AgentEventDetail = { chip?: Chip; say?: string; push?: Message[] }
+export type WsDetail = AgentEventDetail & { topic?: string; label?: string }
+
+/** Open the chat and do one thing there (pull a thread, run a chip, or say something). */
+export function askAlphaa(detail: WsDetail = {}) {
+  window.dispatchEvent(new CustomEvent<WsDetail>(WS_EVENT, { detail }))
+}
+
+export function toast(text: string) {
+  window.dispatchEvent(new CustomEvent<string>(TOAST_EVENT, { detail: text }))
+}
