@@ -41,6 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 // The one note every example playbook page carries (its H1 marker links here).
+const CASE_NOTE = "This page is an illustrative example, not a real customer. The business type, place and figures show how Alphaa works week by week; agency fees and ad spend are typical figures, not quotes. Results vary, and no one can guarantee what an AI will say."
 const PLAYBOOK_NOTE = "This page is an illustrative example, not a real customer: there is no named business, owner, quote, rating or result here. It shows the work Alphaa does for this kind of business using features available today. Results vary, and no one can guarantee what an AI will say."
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -104,6 +105,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             </div>
           </Section>
         )}
+        <Notes items={[CASE_NOTE]} />
       </Frame>
     </V3Page>
   )

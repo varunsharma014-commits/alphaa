@@ -26,7 +26,6 @@ function CaseStudyCard({ cs }: { cs: Card }) {
     <div className={`v3-card v3-card--tint v3-c-${tone}`} style={{ display: "flex", flexDirection: "column", gap: 0 }}>
       <span className="v3-pill" style={{ alignSelf: "flex-start" }}>{cs.industry}</span>
       <h3 className="v3-h3" style={{ marginTop: 16 }}>{cs.business.split(" ").slice(0, -1).join(" ")}{cs.business.includes(" ") ? " " : ""}<span style={{ whiteSpace: "nowrap" }}>{cs.business.split(" ").slice(-1)[0]}<NoteRef n={1} /></span></h3>
-      <p className="v3-fine" style={{ marginTop: 4 }}>{cs.location}</p>
       <p>{cs.headline}</p>
       <div style={{ marginTop: 16, background: "var(--v-card)", borderRadius: 16, padding: 16 }}>
         <p style={{ margin: 0, color: "var(--cc)", fontSize: 22, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.1 }}>{cs.keyResult}</p>

@@ -2,7 +2,7 @@
 // straight from case-studies/data.tsx; nothing here adds a claim.
 import Link from "next/link"
 import type { CaseStudy } from "@/app/(marketing)/case-studies/data"
-import { Eyebrow } from "@/components/marketing/v3"
+import { Eyebrow, NoteRef } from "@/components/marketing/v3"
 import { INDUSTRY_TONE } from "@/components/marketing/v3/pages/case-tone"
 
 export function FullCaseStudy({ cs }: { cs: CaseStudy }) {
@@ -12,8 +12,8 @@ export function FullCaseStudy({ cs }: { cs: CaseStudy }) {
       {/* Hero */}
       <div className="v3-chapter v3-chapter--solo">
         <div>
-          <Eyebrow small={<>Illustrative example · {cs.location}</>}>{cs.industry}</Eyebrow>
-          <h2 className="v3-h2">{cs.business}</h2>
+          <Eyebrow>{cs.industry}</Eyebrow>
+          <h2 className="v3-h2">{cs.business}<NoteRef n={1} /></h2>
           <p className="v3-chapter__body" style={{ maxWidth: "60ch" }}>{cs.headline}</p>
           <div className="v3-proof"><span className="n" style={{ fontSize: "clamp(26px, 4vw, 40px)" }}>{cs.keyResult}</span><span>{cs.keyResultSub}</span></div>
           <div className="v3-mosaic" style={{ marginTop: 24 }}>
