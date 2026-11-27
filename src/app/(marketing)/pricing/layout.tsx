@@ -6,7 +6,7 @@ import { pageMeta } from "@/lib/seo"
 export const metadata = pageMeta({
   title: "Pricing: AI Marketing Agent from $99/month, no contracts",
   description:
-    "Alphaa is an AI Agent that runs your marketing: SEO and AI search, content and review replies from $99/month, social media on Pro, and ads and email on Growth (early access). Month to month, instead of agency retainers that often run $1,000+ a month.",
+    "Alphaa is an AI Agent that runs your marketing: SEO and AI search, content and review replies from $99/month, social media on Pro, and email and lead tracking on Growth (early access). Ads coming soon. Month to month, instead of agency retainers that often run $1,000+ a month.",
   path: "/pricing",
 })
 
@@ -14,7 +14,7 @@ const productSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
   name: "Alphaa",
-  description: "An AI agent that runs a small business’s marketing: SEO and AI search (ChatGPT, Gemini, Claude, Perplexity), content and review replies, with social media on the Pro plan and ads and email on the Growth plan (early access). Month to month, no contract.",
+  description: "An AI agent that runs a small business’s marketing: SEO and AI search (ChatGPT, Gemini, Claude, Perplexity), content and review replies, with social media on the Pro plan and email and lead tracking on the Growth plan (early access). Ads coming soon. Month to month, no contract.",
   brand: { "@type": "Brand", name: "Alphaa" },
   url: "https://alphaa.app/pricing",
   offers: plans.map((p) => ({

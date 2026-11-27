@@ -14,7 +14,7 @@ export const market: Market = {
     h1b: "gestito da un agente IA.",
     sub: "Niente parcelle d’agenzia, niente serate a pubblicare post. Scrivo i tuoi contenuti, rispondo alle recensioni, sistemo il sito per Google e ChatGPT e ti mando una breve lista da approvare. Tu ti riprendi il tempo per il tuo lavoro.",
     cta: "Inizia ora",
-    guarantee: ["Se nessuna IA ti nomina entro il giorno 90, con i controlli settimanali attivi,", "il mese successivo lo offriamo noi."],
+    guarantee: ["Se nessuna IA ti nomina nei primi 90 giorni,", "il mese successivo lo offriamo noi."],
     fine: "Il primo controllo è gratuito. Nessuna carta richiesta. Mese per mese.",
     arrows: ["è dal vivo, provalo", "le tue risposte vere in 60 secondi"],
     greet: {
@@ -56,7 +56,7 @@ export const market: Market = {
       "Niente va online senza il tuo ok",
       "Piano Growth (accesso anticipato): tutto il piano Pro, più annunci Google e Meta, email e tracciamento dei contatti. Il budget pubblicitario lo paghi direttamente a Google e Meta, senza ricarichi.",
       "Nessun vincolo: si paga mese per mese e si disdice online in un minuto",
-      "Se nessuna IA ti nomina entro il giorno 90, con i controlli settimanali attivi, il mese successivo non lo paghi",
+      "Se nessuna IA ti nomina nei primi 90 giorni, il mese successivo non lo paghi",
     ],
     priceCta: "Inizia ora: {starter}/mese",
     priceNote: "Starter {starter}, Pro {pro} (social e fino a 3 sedi), Growth {growth} al mese (pubblicità ed email, accesso anticipato). Brand aggiuntivi scontati del 50%. Addebito mensile, disdici quando vuoi. Solo per aziende e professionisti (B2B). Non siamo registrati ai fini IVA: nessuna IVA in fattura; se dovuta, la versi tu con il reverse charge.",

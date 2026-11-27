@@ -81,7 +81,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: "Can you guarantee I show up on ChatGPT?",
-        a: "Nobody controls AI answers, so nobody can promise a spot. Alphaa strengthens the signals those engines read and checks your visibility every week. If no AI names you by day 90 with weekly checks active, next month is free.",
+        a: "Nobody controls AI answers, so nobody can promise a spot. Alphaa strengthens the signals those engines read and checks your visibility every week. If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.",
       },
       {
         q: "How much of my time does this take?",
@@ -136,7 +136,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: "Can you promise I'll be the top recommendation?",
-        a: "No. AI engines and Google decide their own results, and anyone promising a guaranteed spot is overselling. Alphaa does the work that influences them and shows you your trend week over week. If no AI names you by day 90 with weekly checks active, next month is free.",
+        a: "No. AI engines and Google decide their own results, and anyone promising a guaranteed spot is overselling. Alphaa does the work that influences them and shows you your trend week over week. If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.",
       },
       {
         q: "How much of my time does this take?",
@@ -246,7 +246,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: "Can you guarantee I'll get recommended?",
-        a: "No, and be wary of anyone who says yes. Google and AI engines decide their own results. Alphaa strengthens the signals they read and checks your visibility weekly. If no AI names you by day 90 with weekly checks active, next month is free.",
+        a: "No, and be wary of anyone who says yes. Google and AI engines decide their own results. Alphaa strengthens the signals they read and checks your visibility weekly. If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.",
       },
       {
         q: "I'm on jobs all day. How much work is this for me?",
@@ -305,7 +305,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: "Can you guarantee my firm gets recommended by ChatGPT?",
-        a: "No. AI engines decide their own answers, and any vendor guaranteeing placement should worry you. Legal is competitive, so expect 60+ days of consistent work. Alphaa tracks your visibility weekly, and if no AI names you by day 90 with weekly checks active, next month is free.",
+        a: "No. AI engines decide their own answers, and any vendor guaranteeing placement should worry you. Legal is competitive, so expect 60+ days of consistent work. Alphaa tracks your visibility weekly, and if none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.",
       },
     ],
     relatedPostSlug: "get-recommended-by-ai-local-service-business",
@@ -356,7 +356,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: "Can you guarantee AI will recommend my restaurant?",
-        a: "No. Google and AI engines make their own picks. Alphaa does the work that influences them and shows you your visibility every week. If no AI names you by day 90 with weekly checks active, next month is free.",
+        a: "No. Google and AI engines make their own picks. Alphaa does the work that influences them and shows you your visibility every week. If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.",
       },
       {
         q: "I run a restaurant. I don't have time for marketing software.",
@@ -411,7 +411,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: "Can you guarantee ChatGPT recommends our product?",
-        a: "No. Engines choose their own answers, so be wary of anyone selling guaranteed AI placement. Alphaa shapes the public signals they read and tracks your category queries weekly. If no AI names you by day 90 with weekly checks active, next month is free.",
+        a: "No. Engines choose their own answers, so be wary of anyone selling guaranteed AI placement. Alphaa shapes the public signals they read and tracks your category queries weekly. If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.",
       },
       {
         q: "We sell globally, not locally. Does Alphaa still apply?",

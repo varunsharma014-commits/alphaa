@@ -97,7 +97,7 @@ export default function CaseStudiesPage() {
           sub="Get your time back. Start with a free check of what Google and the AIs say about you, then I take it from there."
         >
           <p className="v3-kicker" style={{ color: "inherit", marginBottom: 8 }}>Ready to be next?</p>
-          <p>$99/mo · Month to month · Cancel online in a minute. If no AI names you by day 90 with weekly checks active, next month is free.</p>
+          <p>$99/mo · Month to month · Cancel online in a minute. If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.</p>
         </FinalCta>
       </Frame>
     </V3Page>

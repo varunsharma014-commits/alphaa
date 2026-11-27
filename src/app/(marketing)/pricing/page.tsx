@@ -35,7 +35,7 @@ const ART: Record<string, { tone: SvcKey; art: React.ReactNode }> = {
     tone: "mk",
     art: (
       <>
-        <Note title="Your Google ads are built" body="Aimed at people near you searching for what you sell. Paused until you approve the budget." />
+        <Note title="This month’s email is ready" body="A short note to past customers who said yes to hearing from you. Tap once to send." />
       </>
     ),
   },
@@ -45,7 +45,7 @@ const ART: Record<string, { tone: SvcKey; art: React.ReactNode }> = {
 const ROWS: [string, string, string][] = [
   ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what I did today, what changed, what I need from you."],
   ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel online in a minute. I only stay if I keep earning it."],
-  ["The scope", "Usually one channel per retainer. Ask about ChatGPT or Claude and many stumble.", "SEO and AI search, content and reviews on every plan. Social media on Pro. Ads and email on Growth (early access)."],
+  ["The scope", "Usually one channel per retainer. Ask about ChatGPT or Claude and many stumble.", "SEO and AI search, content and reviews on every plan. Social media on Pro. Email and lead tracking on Growth (early access). Ads coming soon."],
 ]
 
 export default function PricingPage() {
@@ -60,9 +60,9 @@ export default function PricingPage() {
             Search marketing agencies often charge $1,000+ a month. Your marketing agent starts at <b style={{ color: "var(--v-fg)" }}>$99</b>.
           </p>
           <h1 className="v3-h1">
-            Your whole marketing.<br /><span className="v3-blue">Run by an AI Agent. From $99/month.</span>
+            All your marketing.<br /><span className="v3-blue">Run by an AI Agent. From $99/month.</span>
           </h1>
-          <p className="v3-lede">SEO and AI search, blog and Google posts, and review replies on every plan. Social media on Pro. Ads, email and lead tracking on Growth (early access). Month to month, no contracts, no technical skills needed.</p>
+          <p className="v3-lede">SEO and AI search, blog and Google posts, and review replies on every plan. Social media on Pro. Email and lead tracking on Growth (early access). Ads coming soon. Month to month, no contracts, no technical skills needed.</p>
           <p style={{ fontSize: 15, margin: "14px auto 0", maxWidth: "60ch" }}><b>90-day AI Visibility Guarantee:</b> {GUARANTEE_LINE}</p>
 
           <div className="v3-chips" role="tablist" aria-label="Billing period">
@@ -85,7 +85,6 @@ export default function PricingPage() {
                     <div className="pg-plan__price"><b>${price}</b><span>/month</span></div>
                     <div className="pg-plan__note">
                       {annual ? `Billed annually ($${(price * 12).toLocaleString("en-US")}/yr)` : "Month to month · cancel anytime"}
-                      {plan.name === "Growth" ? " · ad spend paid to Google and Meta" : ""}
                     </div>
                     {href.startsWith("mailto:") ? <a href={href} className={cn("v3-btn", !plan.highlight && "v3-btn--ghost")}>{plan.cta}</a> : <Link href={href} className={cn("v3-btn", !plan.highlight && "v3-btn--ghost")}>{plan.cta}</Link>}
                     <p className="pg-plan__fine">{GUARANTEE_LINE} {RENEWAL_LINE}</p>

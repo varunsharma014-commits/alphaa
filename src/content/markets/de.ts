@@ -14,7 +14,7 @@ export const market: Market = {
     h1b: "erledigt von einem KI-Agenten.",
     sub: "Keine Agenturrechnung, keine Abende mit Beiträgen. Ich schreibe Ihre Inhalte, beantworte Bewertungen, mache Ihre Website fit für Google und ChatGPT und schicke Ihnen eine kurze Liste zur Freigabe. Sie gewinnen Zeit für die Arbeit, die Geld bringt.",
     cta: "Jetzt starten",
-    guarantee: ["Nennt Sie bis Tag 90 bei aktiven Wochenchecks keine KI,", "geht der nächste Monat auf uns."],
+    guarantee: ["Nennt Sie in den ersten 90 Tagen keine KI,", "geht der nächste Monat auf uns."],
     fine: "Der erste Check ist kostenlos. Keine Kreditkarte nötig. Monatlich kündbar.",
     arrows: ["läuft live, probieren Sie es", "Ihre echten Antworten in 60 Sekunden"],
     greet: {
@@ -62,7 +62,7 @@ export const market: Market = {
       "Pro mit Social Media für bis zu 3 Standorte: {pro} im Monat. Growth mit Anzeigen und E-Mail: {growth} im Monat (Early Access).",
       "Growth-Tarif (Early Access): alles aus Pro, dazu Google- und Meta-Anzeigen, E-Mail und Lead-Tracking. Das Werbebudget zahlen Sie direkt an Google und Meta, ohne Aufschlag.",
       "Monatlich kündbar, online in einer Minute. 7 Tage Geld zurück auf die erste Abbuchung.",
-      "Nennt Sie bis Tag 90 bei aktiven Wochenchecks keine KI, ist der nächste Monat kostenlos.",
+      "Nennt Sie in den ersten 90 Tagen keine KI, ist der nächste Monat kostenlos.",
     ],
     priceCta: "Jetzt starten: {starter}/Monat",
     priceNote: "Monatliche Abrechnung, jederzeit zum Monatsende kündbar. Weitere Marken 50 % günstiger. Nur für Unternehmen (B2B). Wir sind nicht umsatzsteuerlich registriert und berechnen keine USt.; fällt USt. an, schulden Sie sie im Reverse-Charge-Verfahren.",

@@ -177,6 +177,10 @@
 .hv-plan li { padding-left: 24px; position: relative; }
 .hv-plan li::before { content: "✓"; position: absolute; left: 0; color: var(--hv-green); font-weight: 700; }
 .hv-plan .hv-pill { margin-top: auto; }
+.hv-cost__soon td { color: var(--hv-muted); }
+.hv-soon-tag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--hv-muted); border: 1px solid var(--hv-line); border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
+.hv-soon { margin: 16px auto 0; max-width: 720px; padding: 14px 20px; border: 1px dashed var(--hv-line); border-radius: 18px; font-size: 15px; color: var(--hv-fg2); }
+.hv-soon b { color: var(--hv-fg); margin-right: 6px; }
 .hv-guar { margin-top: 26px; font-size: 15px; color: var(--hv-fg2); display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; }
 
 /* Final */

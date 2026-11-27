@@ -14,7 +14,7 @@ export const market: Market = {
     h1b: "confié à un agent IA.",
     sub: "Pas de facture d’agence, pas de soirées passées à publier. J’écris vos contenus, je réponds à vos avis, je prépare votre site pour Google et ChatGPT, et je vous envoie une courte liste à valider. Vous gardez votre temps pour votre métier.",
     cta: "Commencer",
-    guarantee: ["Si aucune IA ne vous cite d’ici le jour 90, vérifications hebdo actives,", "le mois suivant est pour nous."],
+    guarantee: ["Si aucune IA ne vous cite dans vos 90 premiers jours,", "le mois suivant est pour nous."],
     fine: "La première vérification est gratuite. Sans carte bancaire. Sans engagement.",
     arrows: ["c’est en direct, essayez", "les vraies réponses en 60 s"],
     greet: {
@@ -61,7 +61,7 @@ export const market: Market = {
       "Rien n’est publié sans votre accord, et chaque modification peut être annulée",
       "Formule Growth (accès anticipé) : tout ce qu’offre Pro, plus les pubs Google et Meta, les e-mails et le suivi des demandes. Le budget pub est payé directement à Google et Meta, sans marge.",
       "Sans engagement, résiliable en ligne en une minute, remboursement possible sous 7 jours après le premier prélèvement",
-      "Si aucune IA ne vous cite d’ici le jour 90, vérifications hebdomadaires actives, le mois suivant vous est offert.",
+      "Si aucune IA ne vous cite dans vos 90 premiers jours, le mois suivant vous est offert.",
     ],
     priceCta: "Commencer, {starter}/mois",
     priceNote:

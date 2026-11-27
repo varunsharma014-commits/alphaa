@@ -71,7 +71,7 @@ export const SERVICES: Service[] = [
     ],
     savings: { them: "$500–$3,000", themWhat: "a month is what most small businesses are quoted for social media management", us: "$399", usWhat: "a month for Pro, with SEO, Google posts and blogs included too", sources: [{ label: "SocialBu, social media management pricing 2026", url: "https://socialbu.com/blog/social-media-management-pricing" }, { label: "Boomp, pricing benchmarks for local businesses", url: "https://www.boomp.net/research/social-media-management-pricing-benchmarks-local-businesses" }] },
     plan: "pro",
-    availability: "Social media is part of the Pro and Growth plans. Posts and images are written for you today. Posting straight to Facebook, Instagram and LinkedIn opens as Meta and LinkedIn approve Alphaa; until then you copy each post with one tap.",
+    availability: "Social media is part of the Pro and Growth plans. Today I write each post and its image, and you publish it with one tap. Posting straight to Facebook, Instagram and LinkedIn opens as Meta and LinkedIn approve Alphaa.",
     faqs: [
       { q: "Can an AI agent really manage my social media?", a: "Yes. Alphaa plans your week, writes each post in your voice and makes an image in your brand colours with your logo. You approve each post with one tap, or let it post on its own once your accounts are connected." },
       { q: "Will the posts sound like me?", a: "Alphaa reads your website and the replies you’ve written to customers, then gives you three voices to choose from, with an example of each. You can also set the tone, emoji, length and language, or describe your voice in your own words." },
@@ -83,7 +83,7 @@ export const SERVICES: Service[] = [
     feature: {
       title: "Show up every week without lifting a finger.",
       body: "No more staring at a blank screen at 11pm. Your Facebook, Instagram and LinkedIn stay active with posts people stop scrolling for, written in your voice and made in your brand colours.",
-      points: ["Planned around what your customers care about this week", "Your logo and colours on every image", "Posted for you, or ready with one tap"],
+      points: ["Planned around what your customers care about this week", "Your logo and colours on every image", "Ready to publish in one tap"],
       label: "Social posts · this week",
       scenes: [
         <Fragment key={k(1)}><div className="say">Run my social for this week</div><div className="row"><i />Reading your brand: logo, colours, voice</div><div className="row"><i />Checking which posts got the most likes</div></Fragment>,
@@ -124,14 +124,14 @@ export const SERVICES: Service[] = [
       "Your customers’ questions tracked every week (10 on Starter, 20 on Pro)",
       "Website fixes AI needs, published for you or sent to your web person",
       "2 Google listing updates a week (4 on Pro) and review replies",
-      "If no AI names you by day 90 with weekly checks active, next month is free",
+      "If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free",
     ],
     savings: { them: "$500–$3,000", themWhat: "a month is the usual local SEO retainer, and most SEO agencies still don’t work on AI answers", us: "$99", usWhat: "a month for Starter, month to month", sources: [{ label: "Ahrefs, SEO pricing survey", url: "https://ahrefs.com/blog/seo-pricing" }, { label: "SEO.com, local SEO pricing 2026", url: "https://www.seo.com/es/blog/local-seo-pricing" }] },
     plan: "starter",
     faqs: [
       { q: "What is AEO?", a: "AEO (answer engine optimization) is making your business the answer AI assistants like ChatGPT, Gemini, Claude and Perplexity give when customers ask for a recommendation. It works alongside SEO, which is about showing up in Google’s search results." },
       { q: "How do I get my business recommended by ChatGPT?", a: "AI assistants recommend businesses they can read clearly and see confirmed in many places. Alphaa checks what the four main AIs say about you every week, adds the business facts and pages they need to your website, and keeps your Google listing and reviews active." },
-      { q: "How long does it take?", a: "Changes to your Google listing can show up within days. AI answers usually take longer, often weeks. Nobody can honestly guarantee a ranking, which is why Alphaa offers this instead: if no AI names you by day 90 with weekly checks active, next month is free." },
+      { q: "How long does it take?", a: "Changes to your Google listing can show up within days. AI answers usually take longer, often weeks. Nobody can honestly guarantee a ranking, which is why Alphaa offers this instead: if none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free." },
       { q: "How much does SEO cost for a small business?", a: "Local SEO retainers usually run $500 to $3,000 a month, according to 2026 pricing guides and agency surveys. Alphaa starts at $99 a month, month to month, and covers AI answers as well as Google." },
       { q: "Do I need to change my website?", a: "Alphaa makes the changes for you if your site runs on WordPress, Webflow, Shopify or Wix. Otherwise it writes exactly what to change and emails it to your web person." },
     ],
@@ -183,7 +183,7 @@ export const SERVICES: Service[] = [
     ],
     savings: { them: "$500–$2,500", themWhat: "a month in management fees for a small business, or 10–20% of ad spend, on top of the ads themselves", us: "$499", usWhat: "a month for Growth, with social, email, SEO and blogs included too", sources: [{ label: "OuterBox, PPC management pricing 2026", url: "https://www.outerboxdesign.com/ppc-management" }, { label: "ClicksGeek, PPC management cost 2026", url: "https://clicksgeek.com/ppc-management-cost/" }] },
     plan: "growth",
-    availability: "Ads are part of the Growth plan, in early access. Tracking setup works today. Building and tuning campaigns opens as Google and Meta approve Alphaa’s access.",
+    availability: "Ads management is coming soon and isn’t part of any current plan. Building and tuning campaigns opens as Google and Meta approve Alphaa’s access.",
     faqs: [
       { q: "How much does Google Ads management cost?", a: "Small businesses are usually quoted $500 to $2,500 a month in management fees, or 10–20% of ad spend, on top of the ad spend itself, according to 2026 pricing guides. With Alphaa, ads management is part of the Growth plan at $499 a month, and we never take a cut of your ad spend." },
       { q: "Is my ad spend included?", a: "No. Your ad budget is paid to Google and Meta directly from your own ad accounts. Alphaa never marks it up and never spends more than the monthly limit you set." },

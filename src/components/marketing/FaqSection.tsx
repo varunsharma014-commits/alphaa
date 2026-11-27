@@ -2,18 +2,14 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { faqs } from "./faq-data"
+import { faqs, FAQ_GROUPS } from "./faq-data"
 
-
-// Apple-style "More questions? More answers.": category pills filter a
-// grouped list of hairline-divided questions. Indexes point into faqs above.
-const GROUPS: { name: string; items: number[] }[] = [
-  { name: "Getting started", items: [0, 2, 3, 7] },
-  { name: "Results", items: [4, 10] },
-  { name: "Agencies and other tools", items: [1, 5, 11] },
-  { name: "Pricing and cancelling", items: [6] },
-  { name: "Access and safety", items: [8, 9] },
-]
+// Apple-style FAQ: category pills filter a grouped list of hairline-divided questions.
+// Each question's topic is its `group` in faq-data.ts (indexes point into faqs).
+const GROUPS: { name: string; items: number[] }[] = FAQ_GROUPS.map((name) => ({
+  name,
+  items: faqs.flatMap((f, i) => (f.group === name ? [i] : [])),
+}))
 
 export function FaqSection() {
   const [filter, setFilter] = useState<string>("All")
@@ -22,7 +18,7 @@ export function FaqSection() {
 
   return (
     <section className="v3-sec v3-center" id="faq">
-      <h2 className="v3-h2">More questions? More answers.</h2>
+      <h2 className="v3-h2">Before you hire me.</h2>
       <div className="v3-chips" role="tablist" aria-label="Question topics">
         {["All", ...GROUPS.map((g) => g.name)].map((name) => (
           <button key={name} type="button" role="tab" aria-selected={filter === name} className="v3-chip" onClick={() => setFilter(name)}>

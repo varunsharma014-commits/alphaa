@@ -55,12 +55,12 @@ const PROGRESS_DONE: Record<string, number> = { site: 0, profile: 1, engines: 2,
 // Not shown as pills (they invited doubt at checkout) — answered when typed.
 const CANNED: Record<string, string> = {
   "What exactly will you do?":
-    "Every week I run your marketing: posts for your Google listing and social media in your voice and brand colours, blog posts that answer what your customers ask, replies to your reviews, and fixes to your website so ChatGPT and Google can recommend you. On Growth I also run your Google and Meta ads and email your past customers. You approve what goes out, or let me run on my own. You never touch code.",
+    "Every week I run your marketing: posts for your Google listing in your voice, blog posts that answer what your customers ask, replies to your reviews, and fixes to your website so ChatGPT and Google can recommend you. On Pro I also write 3 social posts a week in your brand colours, ready to publish in one tap. On Growth I email your past customers. Google and Meta ads are coming soon. You approve what goes out, or let me run on my own. You never touch code.",
   "Is this real?":
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
     // {starter} / {pro} / {growth} become local prices when answered (localPrice).
-    `{starter} a month for Starter, month to month: your Google listing, blog, reviews and website. Pro ({pro}) adds your social media; Growth ({growth}) adds ads and email. Cancel online in a minute, no contract. ${GUARANTEE_LINE}`,
+    `{starter} a month for Starter, month to month: your Google listing, blog, reviews and website. Pro ({pro}) adds your social media; Growth ({growth}) adds email and lead tracking. Ads are coming soon. Cancel online in a minute, no contract. ${GUARANTEE_LINE}`,
 }
 
 // Where the conversation runs:
@@ -82,8 +82,8 @@ export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint:
 export type AgentPlan = "starter" | "pro" | "growth"
 const PLAN_LINE: Record<AgentPlan, string> = {
   starter: "Starter plan: I post to your Google listing, write your blog, reply to your reviews and fix your website, so more customers find you and you get your time back.",
-  pro: "Pro plan: I run your social media too, with twice the posts, up to 3 locations, and posts that can publish on their own.",
-  growth: "Growth plan: everything in Pro, plus I set up your lead tracking, email your customers, and build and run your Google and Meta ads.",
+  pro: "Pro plan: I write your social media too, 3 branded posts a week ready to publish in one tap, with twice the Google posts, up to 3 locations, and Google and blog posts that can publish on their own.",
+  growth: "Growth plan: everything in Pro, plus I set up your lead tracking and email your past customers.",
 }
 
 /** "$399 a month. Month to month." or, billed yearly (USD only), "$319 a month, billed yearly ($3,828 a year)." */
@@ -346,7 +346,7 @@ export function StartAgent({
       agent([
         { kind: "text", text: "Here’s what I’d do for you this week.", big: true },
         { kind: "receipt", title: "Your first week", sub: `${plan.length} things`, items: plan },
-        { kind: "text", text: "I run your marketing every week: your Google listing, blog, reviews and website, plus social media and ads on the bigger plans. Nobody on your side has to learn anything. I do the work, you tap approve, and you get your time back." },
+        { kind: "text", text: "I run your marketing every week: your Google listing, blog, reviews and website, plus social media and email on the bigger plans. Nobody on your side has to learn anything. I do the work, you tap approve, and you get your time back." },
       ])
     )
     push(

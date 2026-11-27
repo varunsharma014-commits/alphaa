@@ -14,7 +14,7 @@ export const market: Market = {
     h1b: "using an AI agent.",
     sub: "No agency retainer, no late nights posting. I write your content, answer your reviews, fix your website for Google and ChatGPT, and send you one short list to approve. From Dubai Marina to Abu Dhabi, you get your time back to run the business.",
     cta: "Get started",
-    guarantee: ["If no AI names you by day 90 with weekly checks active,", "next month is on us."],
+    guarantee: ["If no AI names you in your first 90 days,", "next month is on us."],
     fine: "Your first check is free. No card needed. Month to month.",
     arrows: ["it's live, try it", "your real answers, in 60s"],
     greet: {
@@ -61,7 +61,7 @@ export const market: Market = {
       "A short weekly briefing, and every change approved with one tap",
       "Growth plan, {growth} a month (early access): everything in Pro, plus Google and Meta ads, email and lead tracking. Ad spend goes to Google and Meta directly, never marked up.",
       "Month to month. Cancel online in a minute. 7-day refund on your first charge.",
-      "If no AI names you by day 90 with weekly checks active, next month is free.",
+      "If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.",
     ],
     priceCta: "Get started: {starter}/month",
     priceNote: "Monthly, cancel any time. Extra brands 50% off. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",

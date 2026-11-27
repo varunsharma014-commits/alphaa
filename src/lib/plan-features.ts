@@ -16,12 +16,12 @@ export const STARTER_FEATURES = [
 
 export const PRO_FEATURES = [
   "Everything in Starter",
-  "Social media handled: posts with images in your brand for Facebook, Instagram, LinkedIn and TikTok",
-  "I post straight to each platform as it approves Alphaa. Until then, I write each post and you copy it with one tap.",
+  "3 branded social posts a week for Facebook, Instagram, LinkedIn and TikTok, ready to publish in one tap",
+  "Direct posting turns on as each platform approves Alphaa",
   "4 Google Business Profile posts per week",
   "4 AI-optimized blog posts per month",
   "Up to 3 business locations",
-  "Auto-approve: posts can publish on their own",
+  "Auto-approve: Google and blog posts can publish on their own",
   "Competitor benchmarking",
   "Priority chat support",
 ]

@@ -1,6 +1,7 @@
 // The Growth plan ($499/mo, $399/mo billed yearly; plans set 2026-11-18): everything in Pro,
-// plus Google + Meta ads built and tuned by the agent, email campaigns and lead tracking.
-// Social media moved down to Pro on 2026-11-18.
+// plus email campaigns and lead tracking. Social media moved down to Pro on 2026-11-18.
+// Ads (Google + Meta) are NOT in Growth: they move to a new top plan above it (owner decision
+// 2026-11-26, price not set) and are sold as "Coming soon" until Google and Meta approve access.
 //
 // Ads need platform approvals (Google Ads API developer token, Meta app review). Until those
 // land the plan is shown as early access and nobody is charged for it: set
@@ -11,9 +12,6 @@ export const GROWTH_EARLY_ACCESS_HREF = "mailto:hi@alphaa.app?subject=Growth%20p
 
 export const GROWTH_FEATURES = [
   "Everything in Pro",
-  "Google and Meta ads that reach people looking for what you sell",
-  "Less wasted ad spend: I tune your ads every week",
   "Emails that keep past customers coming back",
   "See which calls, emails and forms your marketing brought in",
-  "Your ad budget goes straight to Google and Meta. We never take a cut.",
 ]

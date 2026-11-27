@@ -25,7 +25,8 @@ function SocialCard({ text, color, logo }: { text: string; color: string; logo: 
 }
 
 // ── Cost comparison ─────────────────────────────────────────────────────────
-const COSTS: [string, number][] = [["Social media management", 1200], ["Ads management", 1000], ["SEO & AEO", 1500], ["Content writing", 800], ["Email marketing", 600], ["Website fixes", 400], ["Analytics & tracking", 300]]
+// Ads management isn't in any plan yet (coming soon), so its row shows "Coming soon" and is left out of both totals.
+const COSTS: [string, number][] = [["Social media management", 1200], ["SEO & AEO", 1500], ["Content writing", 800], ["Email marketing", 600], ["Website fixes", 400], ["Analytics & tracking", 300]]
 const ALPHAA = 499
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`
 
@@ -45,12 +46,17 @@ export function CostTable() {
                 <td><span className="hv-inc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7" /></svg><span>Included</span></span></td>
               </tr>
             ))}
+            <tr className="hv-cost__soon">
+              <td>Ads management</td>
+              <td>Not counted</td>
+              <td><span className="hv-soon-tag">Coming soon</span></td>
+            </tr>
           </tbody>
           <tfoot><tr><td>Total</td><td>{money(total)}</td><td>{money(ALPHAA)}</td></tr></tfoot>
         </table>
       </div>
       <div className="hv-save"><span>You keep, every year</span><b>{money(Math.max(0, (total - ALPHAA) * 12))}</b></div>
-      <p className="hv-fine">Agency prices are an example quote. Change them to yours. Alphaa price is the Growth plan.</p>
+      <p className="hv-fine">Agency prices are an example quote. Change them to yours. Alphaa price is the Growth plan. Ads management is coming soon and isn’t counted.</p>
     </div>
   )
 }
@@ -150,7 +156,6 @@ export function BrandStudio() {
 const SWITCHES = [
   { title: "Post for me", sub: "Blog posts and Google updates go live on their own", on: true, yes: "Done. Your posts go out on time, every week.", no: "Got it. I’ll check with you before each post." },
   { title: "Thank my happy customers", sub: "Replies to 4 and 5 star reviews", on: true, yes: "Every happy customer hears back the same day.", no: "Got it. Every reply waits for you." },
-  { title: "Run my ads", sub: "Up to $500 a month, never more", on: false, yes: "Your ads keep running and improving, inside your budget.", no: "Got it. I’ll ask before any new campaign." },
   { title: "Email my customers", sub: "People who said yes to hearing from you", on: false, yes: "Past customers hear from you, without you writing a word.", no: "Got it. I’ll ask before every email." },
 ]
 export function Autopilot() {

@@ -8,6 +8,8 @@ export type SvcKey = "mk" | "ad" | "ct" | "se" | "em"
 export type SvcV3 = {
   key: SvcKey
   pill: string
+  /** Not in any current plan yet: shown as "Coming soon". */
+  soon?: boolean
   /** Two-tone headline: plain part, then the coloured part. */
   a: string
   b: string
@@ -29,19 +31,20 @@ export const SVC: Record<ServiceSlug, SvcV3> = {
     a: "Show up every week",
     b: "without lifting a finger",
     proof: { n: "3 posts", t: "a week for Facebook, Instagram and LinkedIn, each with a branded image" },
-    cards: ["Tue 9:00 · Instagram", "Thu 12:30 · Facebook", "Sat 10:00 · LinkedIn"],
-    demo: { tab: "Social posts", ask: "Post on Instagram this week", steps: ["Read your brand and voice", "Wrote 3 posts with your logo", "Scheduled Tue, Thu, Sat"], res: ["Tue 9:00", "Thu 12:30", "Sat 10:00"] },
-    home: { a: "I will manage", b: "your social presence.", body: "I learn your voice, draft 3 posts a week, and publish them through the week." },
+    cards: ["Tue · Instagram post ready", "Thu · Facebook post ready", "Sat · LinkedIn post ready"],
+    demo: { tab: "Social posts", ask: "Post on Instagram this week", steps: ["Read your brand and voice", "Wrote 3 posts with your logo", "Ready to publish in one tap"], res: ["Tue", "Thu", "Sat"] },
+    home: { a: "I will manage", b: "your social presence.", body: "I learn your voice and write 3 branded posts a week, ready to publish in one tap." },
   },
   "ads-management": {
     key: "ad",
     pill: "Ads",
+    soon: true,
     a: "Ads that reach people",
     b: "ready to buy now",
     proof: { n: "$0", t: "markup on your ad spend. It’s paid to Google and Meta directly" },
     cards: ["Paused · waiting for your OK", "Budget: never more than you set", "Cut searches that never call"],
     demo: { tab: "Ad campaigns", ask: "Get me more calls from Google", steps: ["Found the searches that already find you", "Built a campaign, paused", "Waiting for your budget OK"], res: ["11 searches", "$15/day", "Paused"] },
-    home: { a: "I will run", b: "your paid campaigns.", body: "I write the copy, target your buyers, and manage your daily budget to drive inbound calls." },
+    home: { a: "Soon, I’ll run", b: "your paid campaigns.", body: "I’ll write your Google and Meta ads, aim them at buyers near you and keep your daily budget in check. Ads aren’t part of any plan yet." },
   },
   "content-writing": {
     key: "ct",

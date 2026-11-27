@@ -532,7 +532,7 @@ function Timeline() {
         </div>
       ))}
       <p className="rp-timeline__note">
-        If no AI names you by day 90 with weekly checks active, next month is free. No one can promise exactly what an AI will say, so I show you every week.
+        If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free. No one can promise exactly what an AI will say, so I show you every week.
       </p>
     </div>
   )
