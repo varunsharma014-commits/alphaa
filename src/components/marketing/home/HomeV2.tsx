@@ -41,7 +41,11 @@ export function HomeV2() {
             <Link className="v3-btn" href="/start">Hire your agent →</Link>
             <a className="v3-btn v3-btn--ghost" href="#features">See what I do</a>
           </div>
-          <p className="v3-fine">{GUARANTEE_LINE} Month to month. Cancel online in a minute.</p>
+          <div className="v3-guarantee" role="note" aria-label="Our guarantee">
+            <span className="v3-guarantee-mark" aria-hidden="true">✓</span>
+            <p><b>Our Guarantee:</b> {GUARANTEE_LINE} Guaranteed!</p>
+          </div>
+          <p className="v3-fine">Month to month. Cancel online in a minute.</p>
         </div>
         <HeroShapes cards={["3 posts ready for this week", "Replied to Sarah’s review", "ChatGPT named you"]} tones={["mk", "ad", "se", "ct"]} />
       </Section>

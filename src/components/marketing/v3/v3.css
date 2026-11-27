@@ -69,6 +69,11 @@
 .v3-center .v3-lede, .v3-center .v3-narrow { margin-inline: auto; }
 .v3-narrow { max-width: 760px; }
 .v3-fine { font-size: 13px; color: var(--v-muted); margin-top: 12px; }
+.v3-guarantee { display: flex; gap: 12px; align-items: flex-start; max-width: 640px; margin-top: 22px; padding: 14px 18px; border: 1.5px solid var(--v-fg); border-radius: 16px; background: var(--v-soft); }
+.v3-guarantee p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--v-fg); }
+.v3-guarantee b { font-weight: 700; }
+.v3-guarantee-mark { flex: none; width: 26px; height: 26px; border-radius: 999px; background: var(--v-ink); color: var(--v-inkfg); display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; margin-top: 1px; }
+@media (max-width: 600px) { .v3-guarantee { padding: 12px 14px; } .v3-guarantee p { font-size: 14.5px; } }
 .v3-fine a { text-decoration: underline; text-underline-offset: 2px; }
 .v3-example { display: inline-block; font-size: 12px; color: var(--v-muted); border: 1px solid var(--v-line2); border-radius: 999px; padding: 2px 10px; }
 .v3-link { color: var(--v-blue) !important; font-weight: 600; text-decoration: none; }
