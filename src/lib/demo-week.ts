@@ -92,16 +92,13 @@ export async function demoTeaser(leadId: string): Promise<DemoTeaser | null> {
         ? `Customers ask AI “${q}”, and ${evs.length - named} of the ${evs.length} AIs I asked didn’t name you. This post answers it in your words, so the answer exists with your name on it.`
         : `Customers ask AI “${q}”. The AIs named you; this post keeps that answer fresh with your name on it.`
       : "Keeps you in front of customers this week."
-    const [brand, sp] = await Promise.all([
-      f.site ? Promise.race([readBrandKit(f.site, { name: lead.businessName }).catch(() => null), new Promise<null>((r) => setTimeout(() => r(null), 12_000))]) : null,
-      writeSocialFrom(f.block, title, why),
-    ])
+    // Text only (Varun 2026-11-27): no image for the pre-email teaser post.
+    const sp = await writeSocialFrom(f.block, title, why)
     if (!sp?.text) return null
-    const png = await renderCardPng({ headline: sp.headline, businessName: f.name, brand: brand ? { primary: brand.primary, logo: brand.logo } : null }).catch(() => null)
-    const teaser: DemoTeaser = { v: 1, title, why, text: sp.text, headline: sp.headline, image: !!png, at: new Date().toISOString() }
+    const teaser: DemoTeaser = { v: 1, title, why, text: sp.text, headline: sp.headline, image: false, at: new Date().toISOString() }
     const row = await db.scanLead.findUnique({ where: { id: leadId }, select: { ogData: true } })
     const now = isRecord(row?.ogData) ? row!.ogData : {}
-    await db.scanLead.update({ where: { id: leadId }, data: { ogData: { ...now, demoTeaser: teaser, ...(png ? { demoTeaserImage: png.toString("base64") } : {}) } as object } })
+    await db.scanLead.update({ where: { id: leadId }, data: { ogData: { ...now, demoTeaser: teaser } as object } })
     return teaser
   })()
     .catch((err) => {

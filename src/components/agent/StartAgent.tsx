@@ -365,8 +365,8 @@ export function StartAgent({
         teaserRef.current = teaser
         if (teaser?.text) {
           push(agent([
-            { kind: "text", text: "Here’s one post from your first week, finished, in your colours:" },
-            { kind: "doc", title: teaser.title, meta: "Social post · draft", text: teaser.text, image: teaser.image ?? undefined, square: true },
+            { kind: "text", text: "Here’s one post from your first week, finished, in your voice:" },
+            { kind: "doc", title: teaser.title, meta: "Social post · draft", text: teaser.text },
             { kind: "text", text: teaser.why },
           ]))
         } else {
@@ -380,7 +380,7 @@ export function StartAgent({
       else {
         // The ask while scanning wasn't answered: this is now the only email ask.
         patch("scan-email", (m) => ({ ...m, blocks: [{ kind: "text", text: "While I work, I’m reading your site the way AI does." }] }))
-        push(weekGate(ident.businessName, !!teaserRef.current?.text))
+        push(weekGate(ident.businessName, !!teaserRef.current?.text, scanId))
       }
       return
     }
@@ -453,13 +453,17 @@ export function StartAgent({
   }
 
   // The email gate: one first week per address. Asked only when the first ask went unanswered.
-  function weekGate(name: string, shownOne = false): Message {
+  function weekGate(name: string, shownOne = false, scanId?: string): Message {
     return agent([
       { kind: "text", text: shownOne ? "Want the rest of your week?" : "Now let me show you what I’d actually do.", big: true },
       { kind: "text", text: shownOne
         ? `I’ll write ${name}’s Google update and another social post now, in your voice, planned around what’s happening this week. Where should I send them?`
         : `I’ll write ${name}’s first week of marketing right now: a Google update and 2 social posts, in your voice, with your logo and colours, planned around what’s happening this week. Where should I send it?` },
       emailBlock(shownOne ? "Write the rest of my week" : "Write my first week"),
+      ...(scanId ? [
+        { kind: "text" as const, text: `Ready now? Hire me and I start this week: Pro is ${localPrice("pro")} a month for all of it. ${GUARANTEE}` },
+        { kind: "cta" as const, chip: { label: "Hire your agent →", action: { type: "link" as const, href: proHref(scanId) }, primary: true } },
+      ] : []),
     ], "week-gate")
   }
 
