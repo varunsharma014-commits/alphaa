@@ -61,14 +61,7 @@ export function PlaybookStudy({ pb, note }: { pb: Playbook; note: number }) {
             </>)}
             {pb.social && (<>
               <h3 className="pb-h3">Social post ideas (Pro, 3 a week, ready to publish in one tap)</h3>
-              <div className="pb-social">
-                {pb.social.map((s) => (
-                  <div key={s.headline} className="pb-card">
-                    <div className="pb-card__img" aria-hidden="true"><span>{s.headline}</span></div>
-                    <p><b>{s.headline}</b><br />{s.idea}</p>
-                  </div>
-                ))}
-              </div>
+              <ul>{pb.social.map((s) => <li key={s.headline}><b>{s.headline}</b>: {s.idea}</li>)}</ul>
             </>)}
           </Block>
         )}
