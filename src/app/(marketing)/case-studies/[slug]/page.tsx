@@ -47,7 +47,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const { slug } = await params
   const pb = getPlaybook(slug)
   if (pb) {
-    const more = [...playbooks.filter((p) => p.slug !== pb.slug), ...caseStudies]
+    const more = [...playbooks.filter((p) => p.slug !== pb.slug), ...caseStudies].slice(0, 9)
     return (
       <V3Page>
         <Frame top>
@@ -59,7 +59,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </Section>
           <Section>
             <p className="v3-kicker">More examples</p>
-            <div className="v3-grid" style={{ marginTop: 0 }}>
+            <div className="v3-grid v3-grid--3" style={{ marginTop: 0 }}>
               {more.map((o) => (
                 <Link key={o.slug} href={`/case-studies/${o.slug}`} className={`v3-card v3-card--tint v3-c-${INDUSTRY_TONE[o.industry] ?? "ad"}`}>
                   <span className="v3-pill" style={{ alignSelf: "flex-start" }}>{o.industry}</span>
@@ -77,7 +77,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const cs = getCaseStudy(slug)
   if (!cs) notFound()
 
-  const others = caseStudies.filter((c) => c.slug !== cs.slug)
+  const others = caseStudies.filter((c) => c.slug !== cs.slug).slice(0, 9)
 
   return (
     <V3Page>
@@ -93,7 +93,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         {others.length > 0 && (
           <Section>
             <p className="v3-kicker">More examples</p>
-            <div className="v3-grid v3-grid--2" style={{ marginTop: 0 }}>
+            <div className="v3-grid v3-grid--3" style={{ marginTop: 0 }}>
               {others.map((o) => (
                 <Link key={o.slug} href={`/case-studies/${o.slug}`} className={`v3-card v3-card--tint v3-c-${INDUSTRY_TONE[o.industry] ?? "ad"}`}>
                   <span className="v3-pill" style={{ alignSelf: "flex-start" }}>{o.industry}</span>
