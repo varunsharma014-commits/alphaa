@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
 import { Webhook } from "svix"
 import { db } from "@/lib/db"
+import { disconnectSite } from "@/lib/connector/connection"
 import { sendWelcomeEmail } from "@/lib/email"
 import { leadName } from "@/emails/copy"
 
@@ -51,7 +52,10 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "user.deleted") {
-    // The login and every extra website it owns (lib/sites.ts).
+    // The login and every extra website it owns (lib/sites.ts). Revoke website tokens first
+    // (Webflow: revoke_authorization), best effort; the rows (and tokens) are deleted below.
+    const rows = await db.user.findMany({ where: { OR: [{ clerkId: event.data.id }, { clerkId: { startsWith: `site:${event.data.id}:` } }] }, select: { id: true } })
+    for (const r of rows) await disconnectSite(r.id).catch((e) => console.error("[Clerk Webhook] disconnect on delete", e))
     await db.user.deleteMany({ where: { OR: [{ clerkId: event.data.id }, { clerkId: { startsWith: `site:${event.data.id}:` } }] } })
   }
 

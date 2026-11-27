@@ -14,32 +14,65 @@ export const webflowRedirectUri = () => `${process.env.NEXT_PUBLIC_APP_URL ?? ""
 // ---------------------------------------------------------------------------
 // HTTP
 
+/** Webflow said 401: the token was revoked (app uninstalled / access removed in Webflow) or is invalid. */
+export class WebflowAuthError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = "WebflowAuthError"
+  }
+}
+
+const MAX_RETRIES = 3 // on 429 only
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+/** Wait before retry n (0-based): exponential 1s, 2s, 4s, or Retry-After when Webflow sends a short one. */
+export function backoffMs(attempt: number, retryAfter: string | null): number | null {
+  const base = 1000 * 2 ** attempt
+  if (!retryAfter) return base
+  const secs = Number(retryAfter)
+  if (!Number.isFinite(secs) || secs < 0) return base
+  // A long reset (often 60s) is not worth holding the owner's request open: give up and say so.
+  return secs > 8 ? null : Math.max(base, secs * 1000)
+}
+
 async function wf<T>(token: string, path: string, init: { method?: string; body?: unknown } = {}): Promise<T> {
-  let res: Response
-  try {
-    res = await fetch(path.startsWith("http") ? path : `${API}${path}`, {
-      method: init.method ?? "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-        ...(init.body !== undefined ? { "Content-Type": "application/json" } : {}),
-      },
-      body: init.body !== undefined ? JSON.stringify(init.body) : undefined,
-      signal: AbortSignal.timeout(20_000),
-    })
-  } catch (e) {
-    const timeout = e instanceof Error && (e.name === "TimeoutError" || e.name === "AbortError")
-    throw new Error(timeout ? "Webflow took too long to answer. Try again in a minute." : "Couldn’t reach Webflow. Try again in a minute.")
+  for (let attempt = 0; ; attempt++) {
+    let res: Response
+    try {
+      res = await fetch(path.startsWith("http") ? path : `${API}${path}`, {
+        method: init.method ?? "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          ...(init.body !== undefined ? { "Content-Type": "application/json" } : {}),
+        },
+        body: init.body !== undefined ? JSON.stringify(init.body) : undefined,
+        signal: AbortSignal.timeout(20_000),
+      })
+    } catch (e) {
+      const timeout = e instanceof Error && (e.name === "TimeoutError" || e.name === "AbortError")
+      throw new Error(timeout ? "Webflow took too long to answer. Try again in a minute." : "Couldn’t reach Webflow. Try again in a minute.")
+    }
+    // Rate limited: exponential backoff with a retry cap (a 429 means nothing was written, so a retry is safe).
+    if (res.status === 429 && attempt < MAX_RETRIES) {
+      const wait = backoffMs(attempt, res.headers.get("retry-after"))
+      if (wait !== null) {
+        await res.text().catch(() => "")
+        await sleep(wait)
+        continue
+      }
+    }
+    const text = await res.text()
+    let data: unknown = null
+    try {
+      data = text ? JSON.parse(text) : null
+    } catch {
+      data = null
+    }
+    if (res.status === 401) throw new WebflowAuthError(webflowErrorMessage(res.status, data))
+    if (!res.ok) throw new Error(webflowErrorMessage(res.status, data))
+    return data as T
   }
-  const text = await res.text()
-  let data: unknown = null
-  try {
-    data = text ? JSON.parse(text) : null
-  } catch {
-    data = null
-  }
-  if (!res.ok) throw new Error(webflowErrorMessage(res.status, data))
-  return data as T
 }
 
 export function webflowErrorMessage(status: number, data: unknown): string {
@@ -109,12 +142,12 @@ export async function webflowExchange(code: string): Promise<{ accessToken: stri
 }
 
 /**
- * Best effort: tell Webflow to drop this token. Webflow documents the revoke endpoint for its
- * OAuth apps; if it fails we still forget the token on our side.
+ * Best effort: tell Webflow to drop this token (POST https://webflow.com/oauth/revoke_authorization,
+ * per developers.webflow.com/data/reference/oauth-app). If it fails we still delete the token on our side.
  */
 export async function webflowRevoke(accessToken: string): Promise<boolean> {
   try {
-    const res = await fetch("https://api.webflow.com/oauth/revoke_authorization", {
+    const res = await fetch("https://webflow.com/oauth/revoke_authorization", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({ client_id: process.env.WEBFLOW_CLIENT_ID, client_secret: process.env.WEBFLOW_CLIENT_SECRET, access_token: accessToken }),

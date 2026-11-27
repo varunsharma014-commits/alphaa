@@ -4,7 +4,7 @@
 import { db } from "@/lib/db"
 import { getAgentSettings, saveAgentSettings, type AgentSettings } from "@/lib/agent/settings"
 import { wpCall, type WpStatus } from "@/lib/connector/wordpress"
-import { webflow, webflowRevoke, webflowToken } from "@/lib/connector/webflow"
+import { webflow, webflowRevoke, webflowToken, WebflowAuthError } from "@/lib/connector/webflow"
 import { shopify } from "@/lib/connector/shopify"
 import { wix } from "@/lib/connector/wix"
 import { PLATFORM_NAME } from "@/lib/connector/platforms"
@@ -47,6 +47,9 @@ export async function connectionStatus(userId: string, s?: AgentSettings): Promi
       await CONNECTORS[s.site.platform].ping(s.site)
       return { ...base, health: "ok" }
     } catch (e) {
+      if (await forgetRevokedWebflow(userId, e)) {
+        return { platform: "none", siteUrl: null, label: null, connectedAt: null, health: "error", healthError: REVOKED_MSG }
+      }
       return { ...base, health: "error", healthError: e instanceof Error ? e.message : `${PLATFORM_NAME[s.site.platform]} didn’t answer.` }
     }
   }
@@ -73,6 +76,23 @@ export async function disconnectSite(userId: string): Promise<{ platform: Platfo
     data: { userId, type: "site_disconnected", title: `Disconnected your ${PLATFORM_NAME[platform]} site`, metadata: { platform, revoked } },
   })
   return { platform, revoked }
+}
+
+export const REVOKED_MSG = "Webflow access was removed (the app was uninstalled or its access revoked in Webflow), so Alphaa deleted its Webflow token. Connect Webflow again to keep publishing."
+
+/**
+ * Webflow answered 401: the app was uninstalled or its access revoked on Webflow's side (Webflow
+ * sends apps no uninstall event). Stop using the token and delete it. True when it was forgotten.
+ */
+export async function forgetRevokedWebflow(userId: string, e: unknown): Promise<boolean> {
+  if (!(e instanceof WebflowAuthError)) return false
+  const s = await getAgentSettings(userId)
+  if (s.site?.platform !== "webflow") return false
+  await saveAgentSettings(userId, { site: undefined })
+  await db.mockActivity.create({
+    data: { userId, type: "site_disconnected", title: "Webflow access was removed, so I deleted the Webflow connection", metadata: { platform: "webflow", reason: "revoked", revoked: true } },
+  })
+  return true
 }
 
 /** Shopify told us the app was uninstalled (or the shop asked to be erased): drop every connection to that shop. */

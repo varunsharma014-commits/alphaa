@@ -11,6 +11,17 @@ import type { SiteConnector, SiteConnection } from "@/lib/connector/types"
 import { webflow } from "@/lib/connector/webflow"
 import { shopify } from "@/lib/connector/shopify"
 import { wix } from "@/lib/connector/wix"
+import { forgetRevokedWebflow, REVOKED_MSG } from "@/lib/connector/connection"
+
+/** A revoked Webflow token is deleted the moment Webflow refuses it (401), then the owner gets a plain message. */
+async function onSite<T>(userId: string, run: () => Promise<T>): Promise<T> {
+  try {
+    return await run()
+  } catch (e) {
+    if (await forgetRevokedWebflow(userId, e)) throw new Error(REVOKED_MSG)
+    throw e
+  }
+}
 
 const CONNECTORS: Record<SiteConnection["platform"], SiteConnector> = { webflow, shopify, wix }
 export { PLATFORM_NAME } from "@/lib/connector/platforms"
@@ -59,7 +70,8 @@ async function publishUnmetered(userId: string, input: ContentInput, label: stri
     const r = await wpCall<{ id: string; url: string }>(userId, s.wp, input.kind, { title: input.title, html, jsonld, excerpt: input.excerpt, ...(image ? { image } : {}) })
     out = { url: r.url, changeId: r.id, platform: "wordpress", indexed: await announce(userId, s.wp.siteUrl, r.url, true) }
   } else if (s.site) {
-    const r = await CONNECTORS[s.site.platform].publish(s.site, { kind: input.kind, title: input.title, html, excerpt: input.excerpt, jsonld, image })
+    const site = s.site
+    const r = await onSite(userId, () => CONNECTORS[site.platform].publish(site, { kind: input.kind, title: input.title, html, excerpt: input.excerpt, jsonld, image }))
     out = { url: r.url, changeId: `${s.site.platform}:${r.id}`, platform: s.site.platform, indexed: await announce(userId, s.site.siteUrl, r.url, false), note: r.note }
   } else {
     throw new Error("Your website isn’t connected yet.")
@@ -73,7 +85,8 @@ export async function updateMetaOnSite(userId: string, url: string, title: strin
   if (!s.site) throw new Error("Your website isn’t connected yet.")
   const c = CONNECTORS[s.site.platform]
   if (!c.updateMeta) throw new Error(`${PLATFORM_NAME[s.site.platform]} doesn’t let apps change page titles — I’ll email your web person instead.`)
-  const r = await c.updateMeta(s.site, { url, title, description })
+  const site = s.site
+  const r = await onSite(userId, () => c.updateMeta!(site, { url, title, description }))
   const out: Published = { url: r.url, changeId: `${s.site.platform}:${r.id}`, platform: s.site.platform, indexed: false, note: r.note }
   await db.mockActivity.create({ data: { userId, type: "site_change", title: "Updated your page title and description", metadata: { op: "meta", changeId: out.changeId, url: out.url, platform: out.platform, undone: false } } })
   return out
@@ -84,7 +97,8 @@ export async function undoChange(userId: string, changeId: string): Promise<void
   const s = await getAgentSettings(userId)
   const [platform, ...rest] = changeId.split(":")
   if (platform in CONNECTORS && s.site?.platform === platform) {
-    await CONNECTORS[platform as SiteConnection["platform"]].undo(s.site, rest.join(":"))
+    const site = s.site
+    await onSite(userId, () => CONNECTORS[platform as SiteConnection["platform"]].undo(site, rest.join(":")))
   } else if (s.wp) {
     await wpCall(userId, s.wp, "undo", { id: changeId })
   } else {
