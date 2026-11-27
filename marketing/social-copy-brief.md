@@ -124,7 +124,7 @@ Brand name on social: **Alphaa AI Agent** · Website: **alphaa.app** · Free che
 - **Honest.** Admit what can't be promised. That honesty is the brand.
 - Social post rules: **1 image, a 4–5 word headline on the image, a scroll-stopping hook, real value, simple, "get it in 2 seconds".**
 
-**Visual style:** black and white only (Grok-style). Pure black background, white type, grey secondary text, no colour accents.
+**Visual style (since 2026-11-26):** the colour system (orb + "alphaa", pastel service tones, ink type; `brand/color/README.md`). Text, typography and gradient art only; no stock, web or AI photos, no people. Black & white (Grok-style) is retired.
 
 ---
 

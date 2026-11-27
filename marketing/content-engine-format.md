@@ -179,8 +179,10 @@ edit `llms-base.txt` when a post deserves a spot in a curated section ("Key guid
 
 ## 7. Hero image (generated, never sourced)
 
-No `image` field in `meta`. Every post's hero, card and og:image is a black &
-white title cover made from its title + tag:
+No `image` field in `meta`. Every post's hero, card and og:image is a title cover
+in Alphaa's colour system (pastel service-tone block, ink headline, the orb + "alphaa"
+mark; the tone follows the post's topic, else its tag, else its slug), made from its
+title + tag:
 
 ```bash
 node scripts/blog-covers.mjs --slug <slug>

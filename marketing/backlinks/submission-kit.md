@@ -175,11 +175,11 @@ Medium:       https://medium.com/@alphaaaiagent
 X:            none yet (leave blank)
 (Do not link /case-studies until it's rebuilt with real data.)
 
-ASSETS (all black & white)
-Logo / square icon:  brand/mono/alphaa-mono-icon-512.png (also 256, 900, 1200)
-Logo wordmark:       brand/mono/Alphaa logo.png (900x900)
-Screenshots (16:9):  brand/apps/listing/mono/s1.png, s2.png, s3.png (1600x900)
-Feature/hero image:  brand/apps/listing/mono/feature.png (1600x900)
+ASSETS (colour system since 2026-11-26, see brand/color/README.md; brand/mono/ is retired)
+Logo / square icon:  brand/color/logo/alphaa-orb-on-white-512.png (also 900, 1024; 900-small.png is under 50KB)
+Logo wordmark:       brand/color/logo/alphaa-lockup-on-white.png (orb + "alphaa"; .svg too)
+Screenshots (16:9):  brand/apps/listing/s1.png, s2.png, s3.png (1600x900)
+Feature/hero image:  brand/color/covers/alphaa-facebook-cover-1640x624.png
 Promo frames:        brand/apps/listing/mono/promo-title.png, promo-end.png
 Video:               brand/apps/listing/mono/alphaa-shopify-promo.mp4 (Shopify-specific; for general sites record a 60s scan → results video)
 Covers:              brand/mono/alphaa-mono-linkedin-cover.png, -facebook-cover.png
@@ -206,7 +206,7 @@ Check first whether Alphaa already launched (see section 0). If it hasn't:
   - Lead with the honest angle: nobody can guarantee a spot in AI answers, so the agent shows the real answers and the measured change every week.
   - Point people to the free check at alphaa.app/start.
   - **No "no signup"** (the check asks for an email), no founder name, no Google AI.
-- [ ] Record a 60-second black-and-white video: type a website into /start, see what the four AIs said, one-tap approve a fix.
+- [ ] Record a 60-second video (colour system, brand/color/): type a website into /start, see what the four AIs said, one-tap approve a fix.
 - [ ] Pick a Tuesday or Wednesday 2–3 weeks out. Launches go live at 12:01 AM PT.
 - [ ] Line up real people who've used it to leave comments. **Never ask for upvotes.** PH now flags vote spikes and brand-new accounts.
 - [ ] Make sure /start can handle a traffic spike.

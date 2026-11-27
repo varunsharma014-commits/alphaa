@@ -4,7 +4,7 @@ Four short scripts for Meta prospecting (and TikTok Spark Ads / YouTube Shorts f
 
 **Rules for every video**
 - The first 2 seconds carry the hook: AI is naming other businesses, not you. No logo intro, no price in the hook.
-- Black and white on-screen text: white type on black, grey secondary. Keep text out of the top 250px and bottom 340px (Reels/Stories UI).
+- On-screen text in the colour system: ink type on the pastel service-tone blocks (brand/social/base-color.css). Keep text out of the top 250px and bottom 340px (Reels/Stories UI).
 - Any AI answer shown on screen is either a **real, unedited** answer from a check you ran (say so) or labelled **"Example"**. Blur every business name that isn't the viewer's (we never shame named small businesses).
 - Four AIs only: ChatGPT, Gemini, Claude, Perplexity. No "#1", no "best", no promised rankings or timelines, no invented results. No "free trial", no "no signup".
 - Guarantee wording, if used: "If no AI names you in 90 days, your next month is free. Terms apply."

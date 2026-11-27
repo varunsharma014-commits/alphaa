@@ -387,7 +387,7 @@ export const POSTS: Post[] = [
   { meta: homeInspectorsMeta, Body: HomeInspectorsBody },
 ]
 
-// Every post's hero / og:image is its generated black & white title cover
+// Every post's hero / og:image is its generated colour-system title cover
 // (scripts/blog-covers.mjs → public/blog-covers/<slug>.jpg). No stock or AI images.
 const COVERED: Post[] = POSTS.map((p) => ({
   ...p,

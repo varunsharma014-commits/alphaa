@@ -5,7 +5,7 @@
 ## Rules every ad follows
 
 - **Lead with getting customers from AI.** The hook is always: customers ask ChatGPT/Gemini/Claude/Perplexity who to hire, and it isn't naming you. Price, agency comparison and the guarantee live in body copy, the offer line, or retargeting. The "money gap" creative (c15) is **retargeting only**.
-- Image headline 4 to 5 words, self-contained, names AI/ChatGPT. Black and white only.
+- Image headline 4 to 5 words, self-contained, names AI/ChatGPT. Colour system (brand/color/README.md); black & white is retired.
 - No em-dashes, no "#1/best/leading", no promised rankings or timelines, no invented stats/customers. Every chat answer on a creative carries an **Example** tag and blurred business names.
 - Four AIs only: ChatGPT, Gemini, Claude, Perplexity. Never "free trial" or "no signup".
 - Guarantee wording, exactly: "If no AI names you in 90 days, your next month is free" + "Terms apply." 7-day refund. Month to month.
