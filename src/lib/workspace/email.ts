@@ -2,7 +2,10 @@
 // Opens and clicks aren't tracked, so they are never shown.
 import type { User } from "@prisma/client"
 import { db } from "@/lib/db"
-import { getContacts, listCampaigns, lastSentAt, nextAllowedSend, optedOutSet } from "@/lib/email-campaigns/store"
+import { createCampaign, getContacts, listCampaigns, lastSentAt, nextAllowedSend, optedOutSet, updateCampaign } from "@/lib/email-campaigns/store"
+import { writeCampaign } from "@/lib/email-campaigns/write"
+import { render } from "@/lib/email-campaigns/render"
+import { runAsUser } from "@/lib/usage"
 import { addCustomersChip, addressChip, writeChip } from "@/lib/email-campaigns/narration"
 import { getAgentSettings } from "@/lib/agent/settings"
 import type { Chip } from "@/lib/agent/types"
@@ -30,6 +33,10 @@ export type EmailData = {
   campaigns: CampaignCard[]
   sentTotal: number
   nextSend: string | null
+  /** This month's note, written before a list exists ("Issue #N"), shown as the real email. */
+  issue: { id: string; number: number; subject: string; html: string } | null
+  writingIssue: boolean
+  island: string
   chips: { add: Chip; address: Chip; write: Chip }
 }
 
@@ -59,6 +66,29 @@ export async function getEmailData(user: User): Promise<EmailData> {
       auto: !!c.auto,
     }
   })
+  // This month's note: the newest draft if it's under a month old, else write one in the background
+  // (the existing writer: facts-only claims, no invented offers). One write per brand at a time.
+  const newestDraft = rows.find((r) => r.c.status === "draft")
+  const fresh = newestDraft && Date.now() - newestDraft.createdAt.getTime() < 30 * 86_400_000 ? newestDraft : null
+  let writingIssue = writing.has(user.id)
+  if (!fresh && !writingIssue) {
+    writing.add(user.id)
+    writingIssue = true
+    void runAsUser(user.id, async () => {
+      const avoid = rows.filter((r) => r.c.status === "sent").slice(0, 4).map((r) => r.c.subject)
+      const c = await writeCampaign(user.id, { avoid })
+      for (const d of rows.filter((r) => r.c.status === "draft")) await updateCampaign(d.id, { status: "deleted" })
+      await createCampaign(user.id, { v: 1, status: "draft", ...c })
+    }).catch((e) => console.error("[workspace/email] issue", e instanceof Error ? e.message : e)).finally(() => setTimeout(() => writing.delete(user.id), 60_000))
+  }
+  const ordered = [...rows].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+  const biz = user.businessName?.trim() || user.fullName?.trim() || "Your business"
+  const issue = fresh ? {
+    id: fresh.id,
+    number: ordered.findIndex((r) => r.id === fresh.id) + 1,
+    subject: fresh.c.subject,
+    html: render(fresh.c, { biz, signOff: user.fullName?.trim() ? `${user.fullName.trim()}\n${biz}` : biz, replyTo: "", address: settings.emailOutreach?.address?.trim() || "Your mailing address goes here", city: user.city }, { n: "Sam" }, "#").html,
+  } : null
   const next = nextAllowedSend(last)
   const address = settings.emailOutreach?.address?.trim() || null
   return {
@@ -70,8 +100,12 @@ export async function getEmailData(user: User): Promise<EmailData> {
     campaigns,
     sentTotal: campaigns.reduce((a, c) => a + (c.sent ?? 0), 0),
     nextSend: next ? whenAhead(next.toISOString()) : null,
+    issue,
+    writingIssue: !fresh && writingIssue,
+    island: issue ? `Issue #${issue.number} is ready${contacts.length ? "" : " · add your list to send it"}` : "Writing this month’s note for your customers",
     chips: { add: addCustomersChip("Add my customers", true), address: addressChip(address ?? undefined), write: writeChip("Write an email", true) },
   }
 }
 
 export const fmt = n
+const writing = new Set<string>()

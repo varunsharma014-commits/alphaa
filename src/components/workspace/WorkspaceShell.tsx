@@ -167,7 +167,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
     )
   }
   const failing = data.signals ? data.signals.total - data.signals.ok : 0
-  const island = `Working on ${data.channels} channel${data.channels === 1 ? "" : "s"} · ${data.goingOut ? `${data.goingOut} going out this week` : "nothing scheduled this week"}`
+  const island = `Working on ${data.channels} channel${data.channels === 1 ? "" : "s"} · ${data.goingOut ? `${data.goingOut} going out this week` : "planning what goes out next"}`
 
   return (
     <div data-dashboard-root="" data-agent="" data-theme={theme} data-brand="blue">

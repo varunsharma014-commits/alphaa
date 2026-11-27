@@ -17,6 +17,8 @@ import { listPhotos, nextPhoto, photoBytes, refreshPhotos } from "@/lib/brand-ph
 export type ImageStyle = "card" | "photo" | "ai" | "canva"
 export type ImageSettings = {
   style: ImageStyle
+  /** Text card look (lib/social-card.ts CARD_STYLES), picked from Social Studio's Preview. */
+  cardStyle?: import("@/lib/social-card").CardStyle
   /** photo / ai: square 1080×1080 or tall 1080×1350. The text card is always square. */
   size?: ImageSize
   /** One sample per style (post_image ids) for the panel. */

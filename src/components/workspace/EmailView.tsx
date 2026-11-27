@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { EmailData } from "@/lib/workspace/email"
-import { askAlphaa } from "@/lib/workspace/events"
+import { askAlphaa, ISLAND_EVENT } from "@/lib/workspace/events"
 import { Empty, PlanGate, Tabs, useInspector } from "./ui"
 
 type Tab = "f" | "l" | "c"
@@ -10,6 +10,11 @@ type Tab = "f" | "l" | "c"
 export function EmailView({ data }: { data: EmailData | null }) {
   const { node, open } = useInspector()
   const [tab, setTab] = useState<Tab>("f")
+  useEffect(() => {
+    if (!data?.island) return
+    const t = window.setTimeout(() => window.dispatchEvent(new CustomEvent<string | null>(ISLAND_EVENT, { detail: data.island })), 0)
+    return () => { window.clearTimeout(t); window.dispatchEvent(new CustomEvent<string | null>(ISLAND_EVENT, { detail: null })) }
+  }, [data?.island])
   const head = (
     <div className="ax-hdr">
       <div><h1 className="ax-h1">Email & Flows</h1><p className="ax-sub">Emails to your own customers, written in your voice. Every send carries your address and an unsubscribe link.</p></div>
@@ -20,11 +25,11 @@ export function EmailView({ data }: { data: EmailData | null }) {
 
   const lastSent = data.campaigns.find((c) => c.sent != null)
   const nodes = [
-    { k: "Starts with", t: `Your list · ${data.listSize.toLocaleString("en-US")} people`, d: data.imports[0] ? `Last added ${data.imports[0].when}` : "Paste or upload your customers", color: "var(--x-blue)", go: () => askAlphaa({ chip: data.chips.add }) },
-    { k: "I write", t: "One email a month", d: "In your voice. Only facts you gave me.", color: "var(--x-ink)", go: () => askAlphaa({ chip: data.chips.write }) },
-    { k: data.auto ? "Goes out" : "Waits for", t: data.auto ? "On its own (autopilot)" : "Your OK", d: data.auto ? "You can stop it in the chat" : "Turn on “Send without asking” to skip this", color: "#af52de", go: () => askAlphaa({ topic: "autopilot", label: "What I send without asking" }) },
-    { k: "Sent", t: lastSent ? `${(lastSent.sent ?? 0).toLocaleString("en-US")} people, ${lastSent.when}` : "Nothing sent yet", d: `${data.campaigns.filter((c) => c.sent != null).length} email${data.campaigns.filter((c) => c.sent != null).length === 1 ? "" : "s"} so far`, color: "var(--x-gink)", go: () => setTab("c") },
-    { k: "Then", t: `${data.optedOut.toLocaleString("en-US")} opted out`, d: "Unsubscribes, bounces and spam reports come off the list for good", color: "var(--x-mut)", go: () => setTab("l") },
+    { next: data.listSize === 0, k: "Starts with", t: `Your list · ${data.listSize.toLocaleString("en-US")} people`, d: data.imports[0] ? `Last added ${data.imports[0].when}` : "Paste or upload your customers", color: "var(--x-blue)", go: () => askAlphaa({ chip: data.chips.add }) },
+    { next: data.listSize > 0 && !data.address, k: "I write", t: "One email a month", d: "In your voice. Only facts you gave me.", color: "var(--x-ink)", go: () => askAlphaa({ chip: data.chips.write }) },
+    { next: false, k: data.auto ? "Goes out" : "Waits for", t: data.auto ? "On its own (autopilot)" : "Your OK", d: data.auto ? "You can stop it in the chat" : "Turn on “Send without asking” to skip this", color: "#af52de", go: () => askAlphaa({ topic: "autopilot", label: "What I send without asking" }) },
+    { next: false, k: "Sent", t: lastSent ? `${(lastSent.sent ?? 0).toLocaleString("en-US")} people, ${lastSent.when}` : "Nothing sent yet", d: `${data.campaigns.filter((c) => c.sent != null).length} email${data.campaigns.filter((c) => c.sent != null).length === 1 ? "" : "s"} so far`, color: "var(--x-gink)", go: () => setTab("c") },
+    { next: false, k: "Then", t: `${data.optedOut.toLocaleString("en-US")} opted out`, d: "Unsubscribes, bounces and spam reports come off the list for good", color: "var(--x-mut)", go: () => setTab("l") },
   ]
 
   return (
@@ -42,21 +47,40 @@ export function EmailView({ data }: { data: EmailData | null }) {
         <>
           <div style={{ display: "flex", gap: 8, marginTop: 20, alignItems: "center", flexWrap: "wrap" }}>
             <span className="ax-pill b">Monthly note</span>
-            <span style={{ marginLeft: "auto", fontSize: 12.5, color: "var(--x-mut)", display: "flex", gap: 7, alignItems: "center" }}><span className="ax-dot" />{data.nextSend ? `Next send allowed ${data.nextSend}` : "Tap any step to change it"}</span>
+            <span style={{ marginLeft: "auto", fontSize: 12.5, color: "var(--x-mut)", display: "flex", gap: 7, alignItems: "center" }}><span className="ax-dot" />{data.nextSend ? `Next send allowed ${data.nextSend} · tap any step to change it` : "Tap any step to change it"}</span>
           </div>
           <section className="ax-card ax-flow">
             {nodes.map((n, i) => (
               <span key={i} style={{ display: "contents" }}>
                 {i > 0 && <span className="ax-link" aria-hidden="true" />}
-                <button type="button" className="ax-node" onClick={n.go}>
+                <div role="button" tabIndex={0} className={`ax-node${n.next ? " next" : ""}`} style={{ flexGrow: n.next ? 1.6 : 1 }} onClick={n.go} onKeyDown={(e) => { if (e.key === "Enter") n.go() }}>
+                  <span className="chev" aria-hidden="true">›</span>
                   <div className="k" style={{ color: n.color }}>{n.k}</div>
                   <div className="t">{n.t}</div>
                   <div className="d">{n.d}</div>
-                </button>
+                  {n.next && i === 0 && <button type="button" className="ax-btn p sm" style={{ marginTop: 10, whiteSpace: "normal", textAlign: "left" }} onClick={(e) => { e.stopPropagation(); askAlphaa({ chip: data.chips.add }) }}>+ Import CSV / paste emails</button>}
+                </div>
               </span>
             ))}
           </section>
-          <p className="ax-note">Automatic flows (a welcome email, a win-back note) aren’t built yet. Today I write and send one email a month to your whole list, at most one a week. Opens and clicks aren’t tracked, so I don’t show them.</p>
+          {data.issue ? (
+            <section className="ax-card ax-issue" style={{ marginTop: 18, overflow: "hidden" }}>
+              <div style={{ padding: "16px 20px", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", borderBottom: "1px solid var(--x-line)" }}>
+                <div style={{ flex: 1, minWidth: 220 }}>
+                  <div className="ax-eb">Issue #{data.issue.number} · {data.issue.subject}</div>
+                  <div style={{ fontSize: 15, fontWeight: 600, marginTop: 4 }}>{data.listSize ? "Here’s this month’s note for your customers." : "Here’s the first note I wrote for your customers. Add your list to send it."}</div>
+                </div>
+                {data.listSize ? <button className="ax-btn p sm" type="button" onClick={() => askAlphaa({ topic: "email", label: "My email" })}>Review & send</button> : <button className="ax-btn p sm" type="button" onClick={() => askAlphaa({ chip: data.chips.add })}>+ Add my list</button>}
+              </div>
+              <iframe title={`Issue #${data.issue.number}`} srcDoc={data.issue.html} sandbox="" loading="lazy" />
+            </section>
+          ) : data.writingIssue ? (
+            <section className="ax-card" style={{ marginTop: 18, padding: "18px 20px", display: "flex", gap: 10, alignItems: "center" }}><span className="ax-dot" />I’m writing this month’s note for your customers. It shows up here in a minute or two.</section>
+          ) : null}
+          <div className="ax-g2" style={{ marginTop: 18 }}>
+            <section className="ax-card ax-soon"><span className="ax-pill n" style={{ alignSelf: "flex-start" }}>Coming soon</span><b style={{ fontSize: 15 }}>Welcome email</b><span className="ax-p">A first note for every new customer you add.</span></section>
+            <section className="ax-card ax-soon"><span className="ax-pill n" style={{ alignSelf: "flex-start" }}>Coming soon</span><b style={{ fontSize: 15 }}>Win-back note</b><span className="ax-p">A friendly hello to customers you haven’t seen in a while.</span></section>
+          </div>
         </>
       )}
 
@@ -87,7 +111,7 @@ export function EmailView({ data }: { data: EmailData | null }) {
                   <div><div className="ax-t11">Bounced</div><b>{c.sent != null ? c.bounced : "—"}</b></div>
                   <div><div className="ax-t11">Spam reports</div><b>{c.sent != null ? c.complained : "—"}</b></div>
                 </div>
-                <button className="ax-btn s sm" type="button" onClick={() => open({ eb: `Email · ${c.status}`, title: c.subject, rows: [{ k: "Preview line", v: c.preview }, { k: "Body", v: c.body.join("\n\n"), box: true }, ...(c.sent != null ? [{ k: "What happened", v: `Sent to ${c.sent.toLocaleString("en-US")}. ${c.bounced} bounced, ${c.complained} marked it as spam. Opens and clicks aren’t tracked.` }] : [])], cta: { label: "Open it in chat", topic: "email" } })}>Read it</button>
+                <button className="ax-btn s sm" type="button" onClick={() => open({ eb: `Email · ${c.status}`, title: c.subject, rows: [{ k: "Preview line", v: c.preview }, { k: "Body", v: c.body.join("\n\n"), box: true }, ...(c.sent != null ? [{ k: "What happened", v: `Sent to ${c.sent.toLocaleString("en-US")}. ${c.bounced} bounced, ${c.complained} marked it as spam.` }] : [])], cta: { label: "Open it in chat", topic: "email" } })}>Read it</button>
               </article>
             ))}
           </div>
