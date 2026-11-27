@@ -3,6 +3,7 @@ import Script from "next/script"
 import { ConsentBanner } from "@/components/common/ConsentBanner"
 import { HtmlLang } from "@/components/common/HtmlLang"
 import { PATH_LANG_JS } from "@/lib/path-lang"
+import { CONSENT_JS } from "@/lib/consent-script"
 import { Toaster } from "sonner"
 import "./globals.css"
 import "./agent.css"
@@ -93,32 +94,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
           />
-          {/* Cookie consent (GDPR / UK GDPR / UAE PDPL): visitors in Europe or
-              the UAE (by time zone), or on the /uk /de /fr /it /ae pages, get
-              analytics and ads cookies only after they accept. Runs before GA
-              and the pixel so both start denied. */}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `(function(){var c=null;try{c=localStorage.getItem('alphaa.consent')}catch(e){}var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}var seg=location.pathname.split('/')[1]||'';var eu=tz.indexOf('Europe/')===0||['Atlantic/Canary','Atlantic/Madeira','Atlantic/Azores','Atlantic/Reykjavik','Atlantic/Faroe','Arctic/Longyearbyen','Asia/Nicosia','Asia/Famagusta','Asia/Dubai'].indexOf(tz)>-1||['uk','de','fr','it','ae'].indexOf(seg)>-1;window.__ccEu=eu;window.__ccNeed=eu&&!c;window.__ccDenied=(eu&&c!=='granted')||c==='denied';window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}if(window.__ccDenied){g('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'})}})();`,
-            }}
-          />
-          {/* GA4 — only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set. Same rule as
-              the pixel: where consent is needed (window.__ccDenied) the gtag
-              script is not loaded at all until Accept (ConsentBanner calls
-              window.__alphaaGA()); never on Reject. */}
+          {/* Cookie consent by region (lib/consent-script.ts): sets the Consent Mode v2
+              defaults and window.__cc before GA and the pixel. US and most of Canada
+              load with consent granted (GPC / "Your privacy choices" keep ads off);
+              Quebec, Europe, the UK, the UAE and unknown locations stay denied until
+              Accept. */}
+          <script dangerouslySetInnerHTML={{ __html: CONSENT_JS }} />
+          {/* GA4 — only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set. Loaded when analytics
+              consent is granted for this visitor (window.__cc.a); where it isn't, the
+              gtag script is not loaded at all until Accept (ConsentBanner calls
+              window.__alphaaGA()); never on Reject. Ads consent is handled by the
+              Consent Mode defaults above. */}
           {GA_ID && (
             <Script
               id="ga4-init"
               strategy="afterInteractive"
               dangerouslySetInnerHTML={{
-                __html: `window.__alphaaGA=function(){if(window.__gaOn)return;window.__gaOn=1;var t=document.createElement('script');t.async=true;t.src='https://www.googletagmanager.com/gtag/js?id=${GA_ID}';document.head.appendChild(t);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${GA_ID}')};if(!window.__ccDenied)window.__alphaaGA();`,
+                __html: `window.__alphaaGA=function(){if(window.__gaOn)return;window.__gaOn=1;var t=document.createElement('script');t.async=true;t.src='https://www.googletagmanager.com/gtag/js?id=${GA_ID}';document.head.appendChild(t);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${GA_ID}')};if(window.__cc&&window.__cc.a)window.__alphaaGA();`,
               }}
             />
           )}
-          {/* Meta Pixel — only when NEXT_PUBLIC_FB_PIXEL_ID is set. Where consent
-              is needed (window.__ccDenied) nothing is loaded from Meta and
-              nothing fires until the visitor taps Accept: ConsentBanner calls
-              window.__alphaaPixel(). On Reject it is never loaded. PageView
+          {/* Meta Pixel — only when NEXT_PUBLIC_FB_PIXEL_ID is set, and only when ads
+              consent is granted (window.__cc.ad): never with GPC or the "Your privacy
+              choices" opt-out, and in opt-in regions only after Accept
+              (ConsentBanner calls window.__alphaaPixel()). PageView
               fires on load; funnel events fire from lib/pixel.ts (no-op while
               fbq is undefined). No <noscript> pixel: it can't check consent. */}
           {FB_PIXEL_ID && (
@@ -126,7 +125,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               id="fb-pixel"
               strategy="afterInteractive"
               dangerouslySetInnerHTML={{
-                __html: `window.__alphaaPixel=function(){if(window.__pxOn)return;window.__pxOn=1;!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${FB_PIXEL_ID}');fbq('track','PageView')};if(!window.__ccDenied)window.__alphaaPixel();`,
+                __html: `window.__alphaaPixel=function(){if(window.__pxOn)return;window.__pxOn=1;!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${FB_PIXEL_ID}');fbq('track','PageView')};if(window.__cc&&window.__cc.ad)window.__alphaaPixel();`,
               }}
             />
           )}

@@ -56,7 +56,7 @@ Security and Fraud Prevention: To detect, investigate, and prevent fraudulent ac
 
 Legal Compliance: To comply with applicable laws, regulations, and legal processes.
 
-We do NOT sell your personal information to any third party. Apart from the Meta Pixel and Google Analytics measurement on our public website described in Section 7 (which, where consent is required, runs only after you accept), we do not use your information for advertising or share it for third-party ad targeting.`,
+We do NOT sell your personal information to any third party. Apart from the Meta Pixel and Google Analytics measurement on our public website described in Section 7 (which follows the regional cookie rules there, including your opt-out and Global Privacy Control), we do not use your information for advertising or share it for third-party ad targeting.`,
   },
   {
     title: "3a. Legal Bases for Processing (GDPR Art. 6)",
@@ -219,9 +219,15 @@ Measurement and advertising (on our public website):
 
 Meta Pixel and retargeting: when the Meta Pixel is on, your browser sends Meta Platforms the page you viewed, actions such as starting a free check or opening checkout, and standard technical data (IP address, browser and device information, and Meta's own cookies). We do not send Meta your name, email address or the results of your check. Meta may combine this with information it holds if you use Facebook or Instagram, so it can measure our ads and include you in audiences of recent visitors that we advertise to. Meta acts as an independent controller for its own use of this data; see Meta's Privacy Policy (https://www.facebook.com/privacy/policy) and your Facebook or Instagram ad preferences to control the ads you see.
 
-If you visit from the European Economic Area, the United Kingdom or the United Arab Emirates, or use our UK, German, French, Italian or UAE pages, these measurement and advertising tools stay off, and neither Google Analytics nor the Meta Pixel is loaded at all, until you choose "Accept" in the cookie notice. If you choose "Reject", they stay off. Your choice is stored in your browser. You can change it at any time with the "Cookie settings" link in the website footer; choosing "Reject" there turns both off on future page loads, wherever you are.
+How we decide which choices you see: we don't look up your IP address. Your browser tells our page its time zone (and, in eastern Canada, its language), and we use that, plus the page you're on, to apply the rules for where you are:
 
-We never sell personal information.
+• European Economic Area, United Kingdom, Switzerland, United Arab Emirates, Quebec, our UK, German, French, Italian and UAE pages, and anywhere we can't place: measurement and advertising stay off, and neither Google Analytics nor the Meta Pixel is loaded at all, until you choose "Accept" in the cookie notice. If you choose "Reject", they stay off.
+• Canada (outside Quebec): they are on when you arrive, and a small notice on your first visit links to your choices. Where your browser's time zone can't tell Ontario from Quebec, advertising cookies stay off until you close that notice or move to another page.
+• United States: they are on when you arrive, with no banner. If your browser sends a Global Privacy Control signal, or you opt out with the "Your privacy choices" link in the website footer, advertising cookies and the Meta Pixel stay off (Google Analytics still counts visits).
+
+We use Google's Consent Mode, so Google's tags follow these choices. Your choice is stored in your browser (and in a small "alphaa_consent" preference cookie). You can change it at any time with the "Cookie settings" or "Your privacy choices" links in the website footer; choosing "Reject" turns both tools off on future page loads, wherever you are.
+
+We never sell personal information for money. Some US state laws (for example California's CCPA/CPRA) treat letting Meta and Google use ad cookies on our website for cross-context behavioural advertising as "sharing"; you can opt out of that sharing with "Your privacy choices" or a Global Privacy Control signal, and we honour both.
 
 You can also control cookies through your browser preferences. Disabling session cookies will prevent you from logging in to the Service.`,
   },
@@ -254,7 +260,7 @@ GDPR Rights (EEA and UK Residents):
 CCPA Rights (California Residents):
 • Right to Know: Request disclosure of the categories and specific pieces of personal information we have collected about you.
 • Right to Delete: Request deletion of your personal information, subject to certain exceptions.
-• Right to Opt-Out of Sale: We do not sell personal information. No opt-out is needed, but you have this right.
+• Right to Opt-Out of Sale or Sharing: We do not sell personal information. To opt out of "sharing" for cross-context behavioural advertising (the Meta Pixel and Google ad cookies on our website), use the "Your privacy choices" link in the website footer or turn on Global Privacy Control in your browser; we honour both.
 • Right to Non-Discrimination: We will not discriminate against you for exercising your CCPA rights.
 
 To exercise any of these rights, please email privacy@alphaa.app with your name, email address, and a description of your request. We will respond within 30 days (or within the timeframe required by applicable law).`,
@@ -312,7 +318,7 @@ export default function PrivacyPage() {
       <Section flush>
       <div className="rd3">
         <h1 className="v3-h1 v3-h1--md">Privacy Policy</h1>
-        <p className="lgl3-updated" style={{ marginBottom: 32 }}>Last updated: November 18, 2026</p>
+        <p className="lgl3-updated" style={{ marginBottom: 32 }}>Last updated: November 26, 2026</p>
 
         <p className="lgl3-note">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.

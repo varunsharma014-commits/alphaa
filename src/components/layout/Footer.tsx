@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Sparkles } from "lucide-react"
 import { MarketSwitcher } from "@/components/layout/MarketSwitcher"
 import { CookieSettingsLink } from "@/components/common/CookieSettingsLink"
+import { PrivacyChoicesLink } from "@/components/common/PrivacyChoicesLink"
 import "@/components/marketing/v3/v3.css"
 
 const footerLinks = {
@@ -88,7 +89,7 @@ export function Footer() {
                   <li key={link.href}><Link href={link.href}>{link.label}</Link></li>
                 ))}
                 {section === "Company" && (
-                  <li><CookieSettingsLink /></li>
+                  <><li><CookieSettingsLink /></li><li><PrivacyChoicesLink /></li></>
                 )}
               </ul>
             </div>

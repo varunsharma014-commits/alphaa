@@ -806,3 +806,13 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 @media (prefers-reduced-motion: reduce) { .ag-mic--on { animation: none; } }
 .ag-weekbtn { min-height: 44px; padding: 0 20px; border-radius: 980px; border: 0; background: var(--ag-btn); color: var(--ag-btn-fg); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
 .ag-heard { max-width: 640px; margin: 0 auto 4px; padding: 0 16px; text-align: center; font-size: 15px; color: var(--ag-fg2); }
+/* Canada notice (small, non-blocking) and the "Your privacy choices" panel (ConsentBanner). */
+.cc--notice { max-width: 420px; left: 16px; right: auto; margin: 0; padding: 10px 10px 10px 16px; gap: 8px; font-size: 13px; border-radius: 14px; box-shadow: 0 8px 24px rgb(0 0 0 / 0.12); }
+.cc__link { background: none; border: 0; padding: 0; font: inherit; color: #0071e3; text-decoration: underline; cursor: pointer; }
+.cc__x { flex: none; width: 32px; height: 32px; border-radius: 999px; border: 0; background: transparent; color: #424245; font-size: 14px; cursor: pointer; }
+.cc__x:hover, .cc__x:focus-visible { background: rgb(0 0 0 / 0.06); }
+.cc--choices { align-items: flex-end; }
+.cc--choices .cc__h { font-weight: 700; margin-bottom: 4px; }
+.cc--choices > div:first-child { flex: 1; }
+.cc--choices > div:first-child p + p { margin-top: 2px; }
+@media (max-width: 560px) { .cc--notice { right: 16px; max-width: none; flex-direction: row; align-items: center; } .cc--choices { align-items: stretch; } }
