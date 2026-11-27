@@ -8,14 +8,21 @@ import { getAccess, listCampaigns as metaCampaigns, recentChanges as metaChanges
 import { getGadsAccount, recentChanges as gadsChanges } from "@/lib/gads/store"
 import { gadsFor } from "@/lib/gads/client"
 import { adsReport } from "@/lib/gads/report"
-import { lastReadyStrategy } from "@/lib/ad-strategy/generate"
+import { lastReadyStrategy, latestStrategy, startStrategy, strategyRunning } from "@/lib/ad-strategy/generate"
+import { relevantCompetitors } from "@/lib/competitor-relevance"
+import { latestTune } from "@/lib/gads/store"
+import { db } from "@/lib/db"
+import { hasPro } from "@/lib/billing"
+import { runAsUser } from "@/lib/usage"
 import { imageUrl } from "@/lib/images"
 import type { Chip } from "@/lib/agent/types"
 import { ART, ago, cached, money, n, within } from "./common"
 
 export type ResultBox = { platform: string; spend: string; clicks: string; leads: string | null; perLead: string | null; extra: string | null; days: number }
 export type AdCard = { id: string; platform: string; name: string; status: string; pc: "g" | "n" | "b" | "a"; head: string; text: string; daily: string | null; image: string | null; art: string }
-export type ChangeRow = { text: string; by: string; when: string; platform: string }
+export type ChangeRow = { text: string; by: string; when: string; platform: string; undo?: Record<string, string> | null }
+export type FirstAd = { platform: "Facebook & Instagram" | "Google search" | "LinkedIn"; headline: string; primary: string; image: string | null; audience: string; inPlanOnly?: boolean }
+export type WatchedAd = { page: string; text: string; days: number | null; url: string; format: string }
 
 export type AdsData = {
   metaConnected: boolean
@@ -26,6 +33,20 @@ export type AdsData = {
   changes: ChangeRow[]
   plan: { at: string; angles: { name: string; why: string }[]; split: { platform: string; monthly: string | null }[] } | null
   budgetChip: Chip
+  /** A campaign is running on Meta or Google. */
+  live: boolean
+  /** Ready-to-launch previews from the ad plan (lib/ad-strategy statics). */
+  firstAds: FirstAd[]
+  planState: "ready" | "running" | "none"
+  /** For the limit slider: the plan's own inputs to testingPlan(). */
+  planInputs: { b2b: boolean; local: boolean; currency: string }
+  /** Competitors' active ads from the plan's Ad Library pull (only real competitors). */
+  watching: WatchedAd[]
+  beatIt: string[]
+  /** At least 7 days since a campaign of mine started spending. */
+  sevenDays: boolean
+  /** A report fetch that should have worked didn't. */
+  fetchFailed: string | null
 }
 
 export async function getAdsData(user: User): Promise<AdsData> {
@@ -41,7 +62,9 @@ export async function getAdsData(user: User): Promise<AdsData> {
   const budget = settings.autopilot?.adBudget ?? null
   const results: ResultBox[] = []
 
+  const liveMeta = mCamps.some((c) => c.status === "active" && c.built?.campaignId)
   const meta = access ? await within(metaReport(user.id), 8000, null) : null
+  let fetchFailed: string | null = access && liveMeta && !meta ? "Couldn’t reach Meta just now. I’ll retry." : null
   if (meta) {
     const w = meta.d30
     results.push({
@@ -53,6 +76,7 @@ export async function getAdsData(user: User): Promise<AdsData> {
   }
   if (gacc?.customerId) {
     const g = await cached(`ws:gads:${user.id}`, 15 * 60_000, () => within(gadsFor(user.id).then(adsReport), 8000, null).catch(() => null))
+    if (!g) fetchFailed = fetchFailed ?? "Couldn’t reach Google Ads just now. I’ll retry."
     if (g) {
       const a = g.account[1]
       const cur = gacc.currency ?? "USD"
@@ -89,10 +113,50 @@ export async function getAdsData(user: User): Promise<AdsData> {
   const changes: ChangeRow[] = [
     ...mChanges.map((c) => ({ text: `${c.what}${c.why ? `. ${c.why}` : ""}`, by: c.by === "owner" ? "You" : "Me", when: ago(c.at), at: c.at, platform: "Meta" })),
     ...gChanges.map((c) => ({ text: c.title, by: (c.metadata as { by?: string } | null)?.by === "owner" ? "You" : "Me", when: ago(c.createdAt.toISOString()), at: c.createdAt.toISOString(), platform: "Google" })),
-  ].sort((a, b) => Date.parse(b.at) - Date.parse(a.at)).slice(0, 12).map(({ at: _at, ...r }) => r)
+  ].sort((a, b) => Date.parse(b.at) - Date.parse(a.at)).slice(0, 12).map(({ at: _at, ...r }): ChangeRow => ({ ...r, undo: null }))
+
+  // Undo where the code has one: a Google campaign pause/enable, and the latest applied tune-up.
+  const tune = await latestTune(user.id).catch(() => null)
+  const gRows = gChanges.map((c) => {
+    const m = (c.metadata ?? {}) as { undo?: string | null; op?: string }
+    // Only the latest applied tune-up can be undone (lib/gads/create.ts undoTune), so only its change rows get the button.
+    const undo: Record<string, string> | null = m.undo === "pause" ? { op: "pause" } : m.undo === "enable" ? { op: "enable" } : (m.undo === "remove_negatives" || m.undo === "enable_keywords") && tune?.status === "applied" && Date.parse(tune.at) <= c.createdAt.getTime() ? { op: "tune_undo", id: tune.id } : null
+    return { id: c.id, undo }
+  })
+  for (const r of changes) {
+    const g = gChanges.find((c) => c.title === r.text && r.platform === "Google")
+    if (g) r.undo = gRows.find((x) => x.id === g.id)?.undo ?? null
+  }
+
+  // First ads: launch-ready previews from the plan (every line already passed the claims check).
+  let planState: AdsData["planState"] = plan ? "ready" : strategyRunning(user.id) ? "running" : "none"
+  if (!plan) {
+    const latest = await latestStrategy(user.id).catch(() => null)
+    if (latest?.status === "running" && Date.now() - Date.parse(latest.at) < 15 * 60_000) planState = "running"
+    else if (hasPro(user) && startStrategy(user.id)) planState = "running"
+  }
+  const audience = plan?.business ? (plan.business.local ? `People near ${plan.business.markets}` : `People in ${plan.business.markets}`) : ""
+  const firstAds: FirstAd[] = []
+  for (const m of (plan?.statics?.meta ?? []).slice(0, 2)) firstAds.push({ platform: "Facebook & Instagram", headline: m.headline, primary: m.primary, image: m.imageId ? imageUrl(m.imageId) : null, audience })
+  const gs = plan?.statics?.google
+  if (gs?.headlines?.length) firstAds.push({ platform: "Google search", headline: gs.headlines.slice(0, 3).join(" | "), primary: gs.descriptions?.[0] ?? "", image: null, audience: plan?.business?.local ? `Searches near ${plan.business.markets}` : `Searches in ${plan?.business?.markets ?? "your market"}` })
+  if (plan?.testing?.platforms.some((p) => p.platform === "LinkedIn") && plan.statics?.linkedin?.[0]) firstAds.push({ platform: "LinkedIn", headline: plan.statics.linkedin[0].headline, primary: plan.statics.linkedin[0].intro, image: null, audience: `Decision makers in ${plan.business?.markets ?? "your market"}`, inPlanOnly: true })
+
+  // Competitor ads I'm watching: only pages that belong to a real competitor (shared gate).
+  const comps = await relevantCompetitors(user, await db.competitor.findMany({ where: { userId: user.id }, take: 30, select: { url: true, name: true, crawlData: true } })).catch(() => [])
+  const key = (x: string) => x.toLowerCase().replace(/[^a-z0-9]/g, "")
+  const names = comps.flatMap((c) => [key(c.name ?? ""), key((c.url.replace(/^https?:\/\//, "").replace(/^www\./, "").split(".")[0]) ?? "")]).filter((k) => k.length >= 3)
+  const watching: WatchedAd[] = (plan?.competitors?.ads ?? []).filter((a) => { const k = key(a.page); return names.some((nm) => k === nm || k.includes(nm) || nm.includes(k)) })
+    .slice(0, 6).map((a) => ({ page: a.page, text: (a.title || a.text).slice(0, 220), days: a.daysRunning, url: a.url, format: a.format }))
+  const firstSpend = [...mCamps.map((c) => c.enabledAt), gacc?.campaign?.enabledAt].filter((x): x is string => !!x).sort()[0]
+  const sevenDays = !!firstSpend && Date.now() - Date.parse(firstSpend) >= 7 * 86_400_000
 
   const cur = plan?.testing?.currency ?? "USD"
   return {
+    live: liveMeta || gacc?.campaign?.status === "ENABLED",
+    firstAds, planState,
+    planInputs: { b2b: !!plan?.business?.b2b, local: plan?.business?.local ?? true, currency: cur },
+    watching, beatIt: (plan?.competitors?.gaps ?? []).slice(0, 3), sevenDays, fetchFailed,
     metaConnected: !!access,
     googleConnected: !!gacc?.customerId,
     results,
