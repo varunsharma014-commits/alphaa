@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { EngineIcon } from "./EngineIcon"
 import type { BriefingData, GoingItem } from "@/lib/workspace/briefing"
 import type { AiCard } from "@/lib/workspace/ai-cards"
 import { AI_NOTE, askAlphaa, toast } from "@/lib/workspace/events"
@@ -240,7 +241,7 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
   )
 }
 
-const MARK_BG: Record<string, string> = { chatgpt: "linear-gradient(135deg,#10a37f,#0d8a6b)", claude: "linear-gradient(135deg,#d97757,#b85c3c)", perplexity: "linear-gradient(135deg,#1f6f7a,#20808d)", gemini: "linear-gradient(135deg,#4f6bed,#9b72cb)" }
+const MARK_BG: Record<string, string> = { chatgpt: "#0f0f0f", claude: "linear-gradient(135deg,#d97757,#b85c3c)", perplexity: "linear-gradient(135deg,#1f6f7a,#20808d)", gemini: "linear-gradient(135deg,#4f6bed,#9b72cb)" }
 
 /** What the four AI assistants tell customers: one card each, from the stored checks. */
 function AiRow({ cards, open, pages }: { cards: AiCard[]; open: (i: Insp | null) => void; pages: number }) {
@@ -260,7 +261,7 @@ function AiRow({ cards, open, pages }: { cards: AiCard[]; open: (i: Insp | null)
           <article key={c.engine} className="ax-card ax-aicard">
             <div style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "space-between", flexWrap: "wrap" }}>
               <span style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-                <span className="ax-mark" style={{ background: MARK_BG[c.engine] }} aria-hidden="true">{c.mark}</span>
+                <span className="ax-mark" style={{ background: MARK_BG[c.engine] }} aria-hidden="true"><EngineIcon engine={c.engine} /></span>
                 <b style={{ fontSize: 14.5 }}>{c.name}</b>
               </span>
               {c.state !== "unknown" && <span className={`ax-pill ${c.state === "yes" ? "g" : "n"}`}>{c.state === "yes" ? "Names you" : "Not yet"}</span>}
