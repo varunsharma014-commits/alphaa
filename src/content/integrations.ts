@@ -133,8 +133,8 @@ export const INTEGRATIONS: Integration[] = [
       "You need a CMS collection with a rich-text field (like a Blog) to publish posts to.",
     ],
     steps: [
-      "In Alphaa, tap “Connect my website” and pick Webflow.",
-      "Sign in to Webflow, choose your site and click Authorize.",
+      "Install Alphaa from the Webflow Marketplace, or in Alphaa tap “Connect my website” and pick Webflow.",
+      "Sign in to Webflow, choose your site and click Authorize. New to Alphaa? Create your account right after; you only authorize once.",
       "You’re back in Alphaa, connected. Approve your first post and it goes live on your site.",
     ],
     perms: [
@@ -151,7 +151,8 @@ export const INTEGRATIONS: Integration[] = [
       { q: "Can Alphaa add schema or llms.txt on Webflow?", a: "Not with the permissions it asks for. Alphaa writes the structured data and llms.txt for you and emails your web person exactly where to paste them in Webflow." },
       { q: "What happens when I click Undo?", a: "A published post is unpublished and kept as a draft in your CMS, not deleted. Page title and description changes go back to what they were." },
       { q: "Will Alphaa publish without asking?", a: APPROVAL },
-      { q: "How do I disconnect?", a: "In Alphaa, go to Settings → Website connection and click Disconnect. Alphaa forgets the connection and asks Webflow to revoke its access. You can also remove Alphaa in your Webflow workspace’s app settings." },
+      { q: "How do I disconnect?", a: "In Alphaa, go to Settings → Website connection and click Disconnect. Alphaa revokes its Webflow access and deletes its token. You can also uninstall Alphaa in your Webflow workspace’s app settings; the next time Alphaa tries to reach Webflow it sees the access is gone and deletes its token too." },
+      { q: "What stays on my site if I uninstall?", a: "Alphaa adds no custom code, scripts or design changes to your site, so there is nothing to clean up in your code. Posts you approved stay in your CMS, because they are your content. To remove one, click Undo in Alphaa before you uninstall (it becomes a draft), or delete the item in your Webflow CMS. Page titles you approved stay as they are; edit them in your page settings if you want the old ones back." },
     ],
   },
   {

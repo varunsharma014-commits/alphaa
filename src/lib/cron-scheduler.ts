@@ -47,6 +47,8 @@ export function startCron(): void {
     // (Google APIs only — no Anthropic spend — so left running.)
     // Daily 04:00 UTC: LinkedIn company Page post stats.
     if (hour === 4) hit("/api/cron/social-stats")
+    // Daily 03:00 UTC: delete Webflow tokens that were revoked/uninstalled in Webflow (one read each, no AI).
+    if (hour === 3) hit("/api/cron/webflow-tokens")
     if (hour === 5) hit("/api/cron/seo-sync")
     // Daily 06:00 UTC — write replies to new Google reviews so approving is one tap (Anthropic)
     if (hour === 6) hit("/api/cron/review-drafts")
