@@ -36,7 +36,7 @@ export async function GET(req: Request) {
     : []
   const hot: string[] = []
   for (const u of users) {
-    const cap = limitsFor(u.plan, "ai_cost_usd").day
+    const cap = limitsFor(isComped(u.email) ? "growth" : u.plan, "ai_cost_usd").day // comped: Growth numbers, like the meter
     const spent = byBrand.get(u.id) ?? 0
     if (cap && spent >= 0.8 * cap) {
       hot.push(`${u.businessName || u.websiteUrl || u.id} (${u.plan}${isComped(u.email) ? ", comped: not blocked" : ""}): $${spent.toFixed(2)} of its $${cap} daily AI ceiling${spent >= cap && !isComped(u.email) ? " (AI paused for this brand until tomorrow)" : ""}`)
