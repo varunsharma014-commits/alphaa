@@ -120,6 +120,10 @@ export const BASE_PUBLIC = {
   identify_global_day: 1500,
   quickfix_ip_day: 10, // POST /api/scan/quick-fix
   quickfix_global_day: 500,
+  teaser_ip_day: 10, // POST /api/scan/week/teaser (one social post + image, before the email)
+  teaser_global_day: 500,
+  snapshot_ip_day: 20, // POST /api/scan/snapshot (brand / content / competitors cards; 2 calls per scan)
+  snapshot_global_day: 1000,
 }
 export type PublicKey = keyof typeof BASE_PUBLIC
 
@@ -373,7 +377,7 @@ export function createPublicCounter() {
   let day = ""
   const counts = new Map<string, number>()
   return {
-    hit(name: "scan" | "identify" | "quickfix", ip: string, now = new Date(), raw?: string): { ok: boolean; reason?: "ip" | "global" } {
+    hit(name: "scan" | "identify" | "quickfix" | "teaser" | "snapshot", ip: string, now = new Date(), raw?: string): { ok: boolean; reason?: "ip" | "global" } {
       const k = dayKey(now)
       if (k !== day) { day = k; counts.clear() }
       const ipKey = `${name}|ip|${ip}`

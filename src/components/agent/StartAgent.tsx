@@ -1,7 +1,6 @@
 "use client"
 
 import { AgentWorkPreview } from "@/components/agent/AgentWorkPreview"
-import { Sparkles } from "lucide-react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { AgentFeed, Composer } from "./AgentFeed"
@@ -17,6 +16,8 @@ import { BRAND } from "@/lib/brand"
 import { localPrice } from "@/lib/local-price"
 import { PLAN_PRICES } from "@/lib/constants"
 import { GUARANTEE_LINE } from "@/lib/offer-copy"
+import { GROWTH_ON_SALE, GROWTH_EARLY_ACCESS_HREF } from "@/lib/growth"
+import type { Snapshot } from "@/lib/scan-snapshot"
 import { NURTURE_EU_FINE, NURTURE_NOTICE, NURTURE_OPTIN_LABEL, visitorConsentRegion } from "@/lib/nurture-consent"
 
 type Phase = "website" | "manual" | "scanning" | "result" | "claimed"
@@ -55,7 +56,7 @@ const PROGRESS_DONE: Record<string, number> = { site: 0, profile: 1, engines: 2,
 // Not shown as pills (they invited doubt at checkout) — answered when typed.
 const CANNED: Record<string, string> = {
   "What exactly will you do?":
-    "Every week I check what ChatGPT, Gemini, Claude and Perplexity say about you, fix your website so they and Google can recommend you, and write blog posts that answer what your customers ask. On Pro I also post to your Google listing in your voice, reply to your reviews, write 3 social posts a week in your brand colours, ready to publish in one tap, and email your past customers. On Growth (early access) I’ll run your Google and Meta ads too, when ads open. You approve what goes out, or let me run on my own. You never touch code.",
+    "Every week I check what ChatGPT, Gemini, Claude and Perplexity say about you, fix your website so they and Google can recommend you, and write blog posts that answer what your customers ask. On Pro I also post to your Google listing in your voice, reply to your reviews, write 3 social posts a week in your brand colours and email your past customers. On Growth (early access) I’ll run your Google or Meta ads too, when ads open. With Autopilot on, finished work goes out on its own after a stop window of up to 3 days; with it off, each item waits for your OK. You never touch code.",
   "Is this real?":
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
@@ -82,7 +83,7 @@ export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint:
 export type AgentPlan = "starter" | "pro" | "growth"
 const PLAN_LINE: Record<AgentPlan, string> = {
   starter: "Starter plan: I get you named by ChatGPT, Gemini, Claude and Perplexity. I check what they say every week, fix your website and write 2 blog posts a month, so more customers find you and you get your time back.",
-  pro: "Pro plan: everything except ads. I write your social media too, 3 branded posts a week ready to publish in one tap, post to your Google listing, reply to your reviews, email your past customers and show which calls and forms your marketing brought in, for up to 3 locations, with posts that can publish on their own.",
+  pro: "Pro plan: everything except ads. I write your social media too, 3 branded posts a week, post to your Google listing, reply to your reviews, email your past customers and show which calls and forms your marketing brought in, for up to 3 locations. With Autopilot on, work goes out on its own after a stop window of up to 3 days; with it off, each item waits for your OK.",
   growth: "Growth plan (early access): everything in Pro, plus I build and tune your Google or Meta ads for 1 ad account when ads open. Nothing spends until you approve it.",
 }
 
@@ -171,6 +172,12 @@ export function StartAgent({
   const draftedRef = useRef(false)
   // The address given while the scan was still running (so the close doesn't ask twice).
   const emailRef = useRef<string | null>(null)
+  // What the pitch ties back to: the scan, the cards, the post shown before the email.
+  const resultRef = useRef<ScanResult | null>(null)
+  const snapRef = useRef<Snapshot | null>(null)
+  const teaserRef = useRef<Teaser | null>(null)
+  const weekRef = useRef<{ title: string; kind: string }[]>([])
+  const weekStarted = useRef(false)
 
   const push = useCallback((...m: Message[]) => setMessages((prev) => [...prev, ...m]), [])
   const patch = useCallback((id: string, fn: (m: Message) => Message) => {
@@ -262,6 +269,8 @@ export function StartAgent({
       return
     }
     scanRef.current = { id: scanId, businessName: ident.businessName, domain }
+    // Start reading the brand (logo, colours, tone) while the AIs answer.
+    if (mode === "public") void fetch("/api/scan/snapshot", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scanId }) }).catch(() => null)
     // The 60-second wait is the best moment to ask for the address: most visitors who
     // leave never come back, and 2 of 21 left one when we only asked at the end (Nov 2026).
     if (mode === "public") {
@@ -296,7 +305,9 @@ export function StartAgent({
 
     if (!result) {
       setBusy(false)
-      push(agent([{ kind: "text", text: "The AIs are slow to answer right now. I’ll keep trying — leave me your email and I’ll send the report the moment it’s ready." }, emailBlock()]))
+      push(agent(emailRef.current
+        ? [{ kind: "text", text: `The AIs are slow to answer right now. I’ll keep trying and send the report to ${emailRef.current} the moment it’s ready.` }]
+        : [{ kind: "text", text: "The AIs are slow to answer right now. I’ll keep trying. Leave me your email and I’ll send the report the moment it’s ready." }, emailBlock()]))
       setPhase("result")
       return
     }
@@ -315,7 +326,15 @@ export function StartAgent({
       const ev = ENGINES.map((e) => (isEvidence(resp[e]) ? (resp[e] as EngineEvidence) : null))
       track("scan_result_shown", { named: ev.filter((x) => x?.appeared).length, checked: ev.filter(Boolean).length })
     }
-    push(...narrate(result, ident.businessName, domain, hireHref(scanId)))
+    resultRef.current = result
+    const post = (url: string) => fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scanId }) }).then((r) => (r.ok ? r.json() : null)).catch(() => null)
+    const snapP: Promise<Snapshot | null> = mode === "public" ? post("/api/scan/snapshot").then((d) => (d?.snapshot as Snapshot) ?? null) : Promise.resolve(null)
+    // One finished post before the email ask (only when no address yet).
+    const teaserP: Promise<Teaser | null> = mode === "public" && !emailRef.current ? post("/api/scan/week/teaser").then((d) => (d?.teaser as Teaser) ?? null) : Promise.resolve(null)
+    const offer = mode === "public"
+      ? { href: proHref(scanId), label: "Hire your agent →", line: `Pro is ${localPrice("pro")} a month for all of it. Starter is ${localPrice()} a month for AI search only. ${GUARANTEE}` }
+      : { href: CHECKOUT, label: "Get started →", line: `${priceText(buyPlan, annual)} ${GUARANTEE}` }
+    push(...narrate(result, ident.businessName, domain, offer, mode === "public"))
 
     const qf = (await quickFix) as { faqHtml?: string; quickFix?: { faqHtml?: string } } | null
     const faq = qf?.faqHtml ?? qf?.quickFix?.faqHtml
@@ -323,21 +342,46 @@ export function StartAgent({
       draftedRef.current = true
       const og = isRecord(result.ogData) ? (result.ogData as Record<string, unknown>) : {}
       const siteBlocked = !!(isRecord(og.siteChecks) && isRecord(og.siteChecks.you) && og.siteChecks.you.blocked)
+      const faqCheck = isRecord(og.siteChecks) && isRecord(og.siteChecks.you) && Array.isArray(og.siteChecks.you.checks) ? (og.siteChecks.you.checks as { key: string; ok: boolean | null }[]).find((c) => c.key === "faq") : null
+      const hasFaq = faqCheck?.ok === true
       push(
         agent([
-          { kind: "text", text: "I’ve already started. Here’s the first page AI needs and your site doesn’t have — the questions customers ask before they call:" },
+          { kind: "text", text: hasFaq
+            ? "I’ve already started. Here’s an FAQ block for the questions AI answered without you, in a form AI can quote:"
+            : `I’ve already started. Here’s the first page AI needs and your site doesn’t have: the questions customers ask before they ${insightsLocal(result) ? "call" : "buy"}.` },
           { kind: "doc", title: `${domain} — FAQ`, meta: "draft · not published", html: faq },
-          { kind: "text", text: `${siteBlocked ? "Written from what the AIs already know about you — your site wouldn’t let me in." : "Written from your own site."} Anything in [brackets] is a fact only you know. I won’t publish anything until you say so.` },
+          { kind: "text", text: `${siteBlocked ? "Written from what the AIs already know about you: your site wouldn’t let me in." : "Written from your own site: your homepage, pricing and About pages."} Anything in [brackets] is a fact your site doesn’t give yet. It’s a draft; nothing is on your site.` },
         ])
       )
     }
 
-    // Public: the first week of marketing, written now, behind the visitor's email.
+    // Public: the brand / content / competitor cards, one finished post, then the first week.
     if (mode === "public") {
+      const snap = await snapP
+      snapRef.current = snap
+      if (snap) push(...snapshotCards(snap, ident.businessName))
+      if (!emailRef.current) {
+        const teaser = await teaserP
+        teaserRef.current = teaser
+        if (teaser?.text) {
+          push(agent([
+            { kind: "text", text: "Here’s one post from your first week, finished, in your colours:" },
+            { kind: "doc", title: teaser.title, meta: "Social post · draft", text: teaser.text, image: teaser.image ?? undefined, square: true },
+            { kind: "text", text: teaser.why },
+          ]))
+        } else {
+          const plan = buildPlan(result, ident.businessName)
+          push(agent([{ kind: "receipt", title: "What I’d start with", items: plan }]))
+        }
+      }
       setBusy(false)
       setPhase("result")
       if (emailRef.current) await runWeekDemo(scanId, ident.businessName)
-      else push(weekGate(ident.businessName))
+      else {
+        // The ask while scanning wasn't answered: this is now the only email ask.
+        patch("scan-email", (m) => ({ ...m, blocks: [{ kind: "text", text: "While I work, I’m reading your site the way AI does." }] }))
+        push(weekGate(ident.businessName, !!teaserRef.current?.text))
+      }
       return
     }
 
@@ -346,7 +390,7 @@ export function StartAgent({
       agent([
         { kind: "text", text: "Here’s what I’d do for you this week.", big: true },
         { kind: "receipt", title: "Your first week", sub: `${plan.length} things`, items: plan },
-        { kind: "text", text: "I run your marketing every week: AI search, your website and your blog, plus your Google listing, reviews, social media and email on Pro. Nobody on your side has to learn anything. I do the work, you tap approve, and you get your time back." },
+        { kind: "text", text: "I run your marketing every week: AI search, your website and your blog, plus your Google listing, reviews, social media and email on Pro. Nobody on your side has to learn anything. With Autopilot on, finished work goes out on its own after a stop window of up to 3 days; with it off, each item waits for your OK." },
       ])
     )
     push(
@@ -362,17 +406,7 @@ export function StartAgent({
   }
 
   function priceMessage(scanId: string, afterWeek = false): Message {
-    // The first week shows a Google update and social posts: on a public visit with no plan
-    // picked, those are Pro work (2026-11-26), so the week sells Pro with Starter as the option.
-    if (afterWeek && buyPlan === "starter" && mode === "public") {
-      return agent([
-        { kind: "text", text: "Want me to post these and do this every week?", big: true },
-        { kind: "text", text: `${PLAN_LINE.pro} ${localPrice("pro")} a month, month to month. ${GUARANTEE} Cancel online in a minute, no contract.` },
-        { kind: "text", text: `Just want ChatGPT, Gemini, Claude and Perplexity to name you? Starter is ${localPrice("starter")} a month for AI search.` },
-        { kind: "chips", items: [{ label: "Start with Starter", action: { type: "link", href: `/signup?scan=${scanId}` } }] },
-        { kind: "cta", chip: { label: "Get Pro →", action: { type: "link", href: `/signup?scan=${scanId}&plan=pro` }, primary: true } },
-      ], "ask")
-    }
+    if (mode === "public") return pitch(scanId, afterWeek)
     return agent([
       ...(PLAN_LINE[buyPlan] ? [{ kind: "text", text: PLAN_LINE[buyPlan] } as Block] : []),
       { kind: "text", text: afterWeek ? "Want me to post these and do this every week?" : priceText(buyPlan, annual), big: true },
@@ -381,16 +415,57 @@ export function StartAgent({
     ], "ask")
   }
 
-  // The email gate: one first week per address.
-  function weekGate(name: string): Message {
+  // The close on /start: the whole agent, tied to what this check found, leading to Pro.
+  function pitch(scanId: string, afterWeek: boolean): Message {
+    const result = resultRef.current
+    const snap = snapRef.current
+    const og = result && isRecord(result.ogData) ? (result.ogData as Record<string, unknown>) : {}
+    const sc = isRecord(og.siteChecks) ? (og.siteChecks as unknown as SiteChecks) : null
+    const q = typeof (og.insights as Record<string, unknown> | undefined)?.query === "string" ? String((og.insights as Record<string, unknown>).query) : null
+    const worst = sc?.you && !sc.you.blocked ? hurtingMost(sc.you)[0] : null
+    const google = weekRef.current.find((i) => i.kind === "google")
+    const social = teaserRef.current?.title ?? weekRef.current.find((i) => i.kind === "social")?.title
+    const idea = snap?.content.ideas[0]
+    const rival = snap?.competitors.find((r) => r.has.length)
+    const blog = snap?.content.blog
+    const items = [
+      `AI search: ${draftedRef.current && q ? `publish the FAQ answers I drafted, aimed at “${q}”` : "answer the questions AI asks about you"}${worst && PLAN_STEP[worst.key] ? `; then ${PLAN_STEP[worst.key]!.charAt(0).toLowerCase()}${PLAN_STEP[worst.key]!.slice(1)}` : ""}`,
+      `Website and blog: ${idea ? `write “${idea.title}”` : "write posts that answer what customers ask AI"}${blog?.lastDate ? ` (your last post I found is from ${blog.lastDate})` : blog && !blog.found ? " (I didn’t find a blog on your site)" : ""}`,
+      `Social: 3 posts a week in your colours${social ? `, starting with “${social}”` : ""}`,
+      `Google: 4 updates a week on your Google listing${google ? `, starting with “${google.title}”` : ""}, and replies to your reviews`,
+      `Email: notes that bring past customers back`,
+      ...(rival ? [`Competitors: close the gap on ${rival.name} (they have ${rival.has.slice(0, 2).join(" and ")})`] : []),
+      `Ads (Growth, early access): your Google or Meta ads, when ads open`,
+    ]
+    const growth: Chip = GROWTH_ON_SALE
+      ? { label: `Growth with ads: ${localPrice("growth")}/mo`, action: { type: "link", href: `/signup?plan=growth_monthly&scan=${scanId}` } }
+      : { label: "Join Growth early access (ads)", action: { type: "link", href: GROWTH_EARLY_ACCESS_HREF } }
     return agent([
-      { kind: "text", text: "Now let me show you what I’d actually do.", big: true },
-      { kind: "text", text: `I’ll write ${name}’s first week of marketing right now: a Google update and 2 social posts, in your voice, with your logo and colours, planned around what’s happening this week. Where should I send it?` },
-      emailBlock("Write my first week"),
+      { kind: "text", text: afterWeek ? "Want me to post these and do this every week?" : "Here’s what I’d do this week.", big: true },
+      { kind: "text", text: "I’m your marketing agent, not just an AI check. From what I found today:" },
+      { kind: "receipt", title: "What I’d do this week", sub: "on Pro", items },
+      { kind: "text", text: "You choose how it goes out. With Autopilot on, finished work goes out on its own, with up to 3 days to stop anything first. With it off, each item waits for your OK." },
+      { kind: "text", text: `Pro is ${localPrice("pro")} a month, month to month, or 15% off billed yearly. ${GUARANTEE} Cancel online in a minute.` },
+      { kind: "cta", chip: { label: "Hire your agent →", action: { type: "link", href: proHref(scanId) }, primary: true } },
+      { kind: "text", text: `Only want AI search? Starter is ${localPrice()} a month.` },
+      { kind: "chips", items: [{ label: `Starter, AI search only: ${localPrice()}/mo`, action: { type: "link", href: `/signup?plan=starter_monthly&scan=${scanId}` } }, growth] },
+    ], "ask")
+  }
+
+  // The email gate: one first week per address. Asked only when the first ask went unanswered.
+  function weekGate(name: string, shownOne = false): Message {
+    return agent([
+      { kind: "text", text: shownOne ? "Want the rest of your week?" : "Now let me show you what I’d actually do.", big: true },
+      { kind: "text", text: shownOne
+        ? `I’ll write ${name}’s Google update and another social post now, in your voice, planned around what’s happening this week. Where should I send them?`
+        : `I’ll write ${name}’s first week of marketing right now: a Google update and 2 social posts, in your voice, with your logo and colours, planned around what’s happening this week. Where should I send it?` },
+      emailBlock(shownOne ? "Write the rest of my week" : "Write my first week"),
     ], "week-gate")
   }
 
   async function runWeekDemo(scanId: string, name: string) {
+    if (weekStarted.current) return
+    weekStarted.current = true
     setBusy(true)
     track("week_preview_started")
     let id = scanId
@@ -431,10 +506,11 @@ export function StartAgent({
     }
     setBusy(false)
     if (!week || week.status === "failed" || !week.items.some((i) => i.text)) {
-      push(agent([{ kind: "text", text: "Writing took longer than it should. I’ll email your first week as soon as it’s done." }]), priceMessage(scanId))
+      push(agent([{ kind: "text", text: "Writing took longer than it should, so I stopped here. Once you start, I write a week like this for you every week." }]), priceMessage(scanId))
       return
     }
     track("week_preview_shown")
+    weekRef.current = week.items.filter((i) => i.text).map((i) => ({ title: i.title, kind: i.kind }))
     const label = { google: "Google update", social: "Social post" } as const
     const out: Message[] = [agent([
       { kind: "text", text: "Here’s your first week, ready to go.", big: true },
@@ -446,7 +522,7 @@ export function StartAgent({
       { kind: "sources", items: week.trends.map((t) => ({ name: t.title, detail: t.why, status: t.when ?? "", ok: true, href: t.url })) },
     ]))
     for (const it of week.items) {
-      if (!it.text) continue
+      if (!it.text || it.teaser) continue // shown above already
       out.push(agent([
         { kind: "text", text: `${it.day}: ${it.why}` },
         { kind: "doc", title: it.title, meta: label[it.kind], text: it.text, image: it.image ?? undefined, square: it.kind === "social" },
@@ -457,7 +533,11 @@ export function StartAgent({
   }
 
   function hireHref(scanId: string) {
-    return mode === "public" ? `/signup?scan=${scanId}` : CHECKOUT
+    return mode === "public" ? proHref(scanId) : CHECKOUT
+  }
+  // Same signup + checkout as the homepage "Hire your agent" button, with the scan carried over.
+  function proHref(scanId: string) {
+    return mode === "public" ? `/signup?plan=pro_monthly&scan=${scanId}` : CHECKOUT
   }
 
   function emailBlock(cta = "Send it →"): Block {
@@ -613,6 +693,8 @@ export function StartAgent({
       }
       if (mode === "public") {
         setPhase("claimed")
+        patch("scan-email", (m) => ({ ...m, blocks: m.blocks.filter((b) => b.kind !== "email") }))
+        patch("week-gate", (m) => ({ ...m, blocks: m.blocks.filter((b) => b.kind !== "email") }))
         push(user(email), agent([{ kind: "text", text: `Got it. Your full report is on its way to ${email}.` }]))
         void runWeekDemo(scan.id, scan.businessName)
         return null
@@ -622,8 +704,8 @@ export function StartAgent({
         user(email),
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
-          { kind: "text", text: `If you want me to fix this and get you named by AI from here (your website, your blog and weekly AI checks), start today and I begin this week. ${localPrice()} a month, cancel any time. ${GUARANTEE}` },
-          { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
+          { kind: "text", text: `${priceText(buyPlan, annual)} ${GUARANTEE} Cancel online in a minute.` },
+          { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: hireHref(scan.id) }, primary: true } },
           {
             kind: "chips",
             items: [
@@ -684,8 +766,8 @@ export function StartAgent({
     <div className="ag-land">
       <div className="ag-land__top">
         <Link className="ag-brand" href="/">
-          <Sparkles className="ag-brand__mark" aria-hidden="true" />
-          {BRAND.name}
+          <span className="ag-orb" aria-hidden="true" />
+          alphaa
         </Link>
         <span>{greet?.agentLabel ?? "AI agent · online"}</span>
       </div>
@@ -725,7 +807,15 @@ function useTypedExamples(on: boolean): string {
 }
 
 // ── turn a ScanResult into agent messages ────────────────────────────────────
-function narrate(result: ScanResult, businessName: string, domain: string, hire: string): Message[] {
+type Teaser = { title: string; why: string; text: string; image: string | null }
+type Offer = { href: string; label: string; line: string }
+
+function insightsLocal(result: ScanResult): boolean {
+  const og = isRecord(result.ogData) ? (result.ogData as Record<string, unknown>) : {}
+  return !(isRecord(og.insights) && og.insights.isLocal === false)
+}
+
+function narrate(result: ScanResult, businessName: string, domain: string, offer: Offer, agentPitch: boolean): Message[] {
   const out: Message[] = []
   const responses = isRecord(result.engineResponses) ? result.engineResponses : {}
   const evidence = ENGINES.map((e) => ({ engine: e, ev: isEvidence(responses[e]) ? (responses[e] as EngineEvidence) : null }))
@@ -798,7 +888,9 @@ function narrate(result: ScanResult, businessName: string, domain: string, hire:
       out.push(
         agent([
           { kind: "text", text: `They recommended ${rivals.map((r) => r.name).join(", ")} instead. ${top.name} was named by ${top.aiMentions} of ${checked}${rank}.` },
-          { kind: "text", text: "That’s not because they’re better. It’s because AI can find the facts about them — hours, prices, what makes them different — and can’t find yours." },
+          { kind: "text", text: insightsLocal(result)
+            ? "That’s not because they’re better. It’s because AI can find the facts about them (hours, prices, what makes them different) and can’t find yours."
+            : "That’s not because they’re better. It’s because AI can find clear facts about them (what they do, who it’s for, pricing and proof) and can’t find the same about you." },
         ])
       )
     } else if (named < checked) {
@@ -818,9 +910,9 @@ function narrate(result: ScanResult, businessName: string, domain: string, hire:
   if (checked > 0 && named < checked) {
     out.push(
       agent([
-        { kind: "text", text: rivals.length > 0 ? `I can fix this and get you into those answers. I start this week, and nothing goes live until you approve it.` : "I can fix this. I start this week, and nothing goes live until you approve it." },
-        { kind: "cta", chip: { label: "Fix this for me →", action: { type: "link", href: hire }, primary: true } },
-        { kind: "text", text: `${localPrice()} a month. ${GUARANTEE} The details are below.` },
+        { kind: "text", text: `${rivals.length > 0 ? "I can fix this and get you into those answers, starting this week." : "I can fix this, starting this week."}${agentPitch ? " AI search is one part of what I do: I run your whole marketing, from social posts and your Google listing to your website, blog and email. More below." : ""}` },
+        { kind: "cta", chip: { label: offer.label, action: { type: "link", href: offer.href }, primary: true } },
+        { kind: "text", text: offer.line },
       ])
     )
   }
@@ -902,7 +994,8 @@ function narrate(result: ScanResult, businessName: string, domain: string, hire:
       ])
     )
   }
-  if (sc && sc.competitors.length > 0) {
+  // Public: the competitor card (snapshotCards) shows this for every rival, so don't say it twice.
+  if (!agentPitch && sc && sc.competitors.length > 0) {
     const you = sc.you
     for (const rival of sc.competitors.slice(0, 2)) {
       const theyHave = rival.checks
@@ -995,4 +1088,54 @@ function buildPlan(result: ScanResult, businessName: string): string[] {
   plan.push(`Ask ChatGPT, Gemini, Claude and Perplexity about ${businessName} again — and tell you what changed`)
   plan.push("Send you one short note: what I did, what moved, what I need a yes on")
   return plan
+}
+
+// ── The brand / content / competitor cards (lib/scan-snapshot.ts), real data only ──
+function snapshotCards(snap: Snapshot, businessName: string): Message[] {
+  const out: Message[] = []
+  const b = snap.brand
+  if (b) {
+    const items = [
+      { name: "Logo", detail: b.logo ? "Found on your site" : "Couldn’t find one I could use", status: b.logo ? "Yes" : "No", ok: !!b.logo },
+      ...(b.colors.length ? [{ name: "Colours", detail: b.colors.join("  "), status: `${b.colors.length}`, ok: true }] : []),
+      ...(b.font ? [{ name: "Font", detail: b.font, status: "Yes", ok: true }] : []),
+      ...(b.tone ? [{ name: "How you write", detail: b.tone, status: "Read", ok: true }] : []),
+    ]
+    out.push(agent([
+      { kind: "text", text: "Your brand, as I read it from your site. Every post I write uses it:" },
+      { kind: "sources", title: "Brand", items },
+      ...(b.observation ? [{ kind: "text", text: `One thing I noticed: ${b.observation}` } as Block] : []),
+    ]))
+  }
+  const c = snap.content
+  const blogLine = !c.blog ? null : !c.blog.found ? "I didn’t find a blog or news section on your site." : c.blog.lastDate ? `Your newest post I found is from ${c.blog.lastDate}${c.blog.posts ? ` (${c.blog.posts} posts linked from your blog page)` : ""}.` : `You have a blog${c.blog.posts ? ` with ${c.blog.posts} posts linked` : ""}, but I couldn’t find dates on it.`
+  const socialLine = c.social.length ? `Your homepage links to ${c.social.join(", ")}. I write and post there on Pro.` : "Your homepage doesn’t link to any social profiles."
+  if (blogLine || c.ideas.length) {
+    out.push(agent([
+      { kind: "text", text: [blogLine, socialLine].filter(Boolean).join(" ") },
+      ...(c.ideas.length ? [{ kind: "receipt", title: "Pages I’d write next", sub: "from today’s AI questions", items: c.ideas.map((i) => `${i.title}: ${i.why}`) } as Block] : []),
+    ]))
+  }
+  if (snap.competitors.length) {
+    out.push(agent([
+      { kind: "text", text: `Who the AIs named instead of ${businessName}:` },
+      {
+        kind: "sources",
+        title: "Competitors",
+        items: snap.competitors.map((r) => ({
+          name: r.name,
+          detail: [
+            `Named by ${r.aiMentions} of ${r.checked} AIs`,
+            r.googleRank ? `#${r.googleRank} on Google` : "",
+            r.score ? `site ${r.score} checks` : "",
+            r.has.length ? `has what you lack: ${r.has.join(", ")}` : "",
+          ].filter(Boolean).join(" · "),
+          status: r.domain ?? "",
+          ok: false,
+          ...(r.domain ? { href: `https://${r.domain}` } : {}),
+        })),
+      },
+    ]))
+  }
+  return out
 }

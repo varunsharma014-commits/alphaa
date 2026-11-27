@@ -319,29 +319,35 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
     hrefs.find((h) => new RegExp(`/(${BLOG_SECTION})/?(\\?|#|$)`, "i").test(h)) ??
     hrefs.map((h) => h.match(new RegExp(`^(.*?/(?:${BLOG_SECTION}))/[a-z0-9-]{6,}`, "i"))?.[1]).find(Boolean)
 
-  type Inner = { count: number | null; innerPath: string | null; innerCanon: string | null }
+  // `paths`: every page path the sitemap lists (all child sitemaps of an index, up to 4), so a
+  // page the homepage doesn't link to (an About page only in the footer of inner pages, a /faq)
+  // still counts. A false "you don't have X" costs more trust than a missed pass.
+  type Inner = { count: number | null; innerPath: string | null; innerCanon: string | null; paths: string[] }
   const innerTask: Promise<Inner> = (async () => {
     let urls = locs(smText)
     let count: number | null = smIsIndex ? null : urls.length || null
-    if (smIsIndex && urls[0]) {
-      const child = await get(urls[0], 5000)
-      urls = child && child.ok ? locs(child.text) : []
+    if (smIsIndex && urls.length) {
+      const children = await Promise.all(urls.slice(0, 4).map((u) => get(u, 5000)))
+      urls = children.flatMap((c) => (c && c.ok ? locs(c.text) : []))
       count = urls.length || null
     }
+    const paths = urls.flatMap((u) => { try { const x = new URL(u); return x.hostname.replace(/^www\./, "") === domain ? [x.pathname.replace(/\/+$/, "") || "/"] : [] } catch { return [] } })
     const inner = urls.find((u) => {
       const n = normUrl(u, origin)
       return !!n && n !== homeNorm && n.startsWith(domain) && !/\.(xml|pdf|jpe?g|png|webp)$/i.test(n)
     })
-    if (!inner) return { count, innerPath: null, innerCanon: null }
+    if (!inner) return { count, innerPath: null, innerCanon: null, paths }
     const page = await get(inner, 6000)
-    if (!page || !page.ok) return { count, innerPath: null, innerCanon: null }
+    if (!page || !page.ok) return { count, innerPath: null, innerCanon: null, paths }
     const c = load(page.text)('link[rel="canonical" i]').attr("href")
-    return { count, innerPath: new URL(inner).pathname, innerCanon: c ? normUrl(c, page.finalUrl) : null }
-  })().catch(() => ({ count: null, innerPath: null, innerCanon: null }))
+    return { count, innerPath: new URL(inner).pathname, innerCanon: c ? normUrl(c, page.finalUrl) : null, paths }
+  })().catch(() => ({ count: null, innerPath: null, innerCanon: null, paths: [] as string[] }))
 
   const blogTask: Promise<SiteCheck["blog"]> = (async () => {
-    if (!blogLink) return { found: false, posts: 0, lastDate: null }
-    const url = blogLink.startsWith("http") ? blogLink : `${origin}${blogLink.startsWith("/") ? "" : "/"}${blogLink}`
+    // No blog link on the homepage: the sitemap's blog section ("/blog/my-post" → "/blog").
+    const link = blogLink ?? (await innerTask).paths.map((p) => p.match(new RegExp(`^(/(?:${BLOG_SECTION}))/[a-z0-9-]{6,}`, "i"))?.[1]).find(Boolean)
+    if (!link) return { found: false, posts: 0, lastDate: null }
+    const url = link.startsWith("http") ? link : `${origin}${link.startsWith("/") ? "" : "/"}${link}`
     const page = await get(url, 6000)
     if (!page || !page.ok) return { found: false, posts: 0, lastDate: null }
     const $$ = load(page.text)
@@ -377,8 +383,10 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
   const httpsProblems = [!finalHttps && "No secure (https) version", finalHttps && !httpRedirects && "http:// doesn’t redirect to https", altSplit && `${altHost} and ${host} load as two separate sites`].filter((x): x is string => !!x)
   push("https", httpsProblems.length === 0, httpsProblems.length ? httpsProblems.join("; ") : "Yes")
 
+  // Bing verification usually leaves no trace on the site (DNS record, or imported from Google
+  // Search Console), so a missing tag is "can't tell", never "you're not set up".
   const bingOk = !!$('meta[name="msvalidate.01" i]').attr("content") || !!(bingAuth && bingAuth.ok && /<users>/i.test(bingAuth.text))
-  push("bing", bingOk, bingOk ? "Verified with Bing Webmaster Tools" : "No sign of Bing Webmaster Tools")
+  push("bing", bingOk ? true : null, bingOk ? "Verified with Bing Webmaster Tools" : "Can’t tell from your site (Bing is often verified by DNS or through Google Search Console)")
 
   push("llms", llms ? llmsOk : null, llmsOk ? "Present" : "Missing")
 
@@ -428,7 +436,7 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
 
   const desc = ($('meta[name="description" i]').attr("content") || "").trim()
   const metaOk = title.length >= 15 && title.length <= 70 && desc.length >= 50
-  push("meta", metaOk, metaOk ? "Good" : !desc ? "No description" : title.length < 15 ? "Title too short" : title.length > 70 ? "Title too long" : "Description too short")
+  push("meta", metaOk, metaOk ? "Good" : !desc ? "No description" : title.length < 15 ? "Title too short" : title.length > 70 ? `Title is ${title.length} characters; Google shows about 60` : "Description too short")
 
   push("headings", h1s.length > 0, h1s.length ? `“${h1s[0].slice(0, 60)}”` : "No main heading (H1)")
 
@@ -439,18 +447,26 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
   if (innerRes.count == null && navLinks.size === 0) push("pages", null, "Couldn’t find your list of pages")
   else push("pages", pageCount >= 6, `${pageCount} ${pageCount === 1 ? "page" : "pages"} ${innerRes.count != null ? "in your sitemap" : "linked from your homepage"}`)
 
-  const faqOk = types.has("FAQPage") || /\bFAQs?\b|frequently asked/i.test(text) || hrefs.some((h) => /faq/i.test(h))
-  push("faq", faqOk, faqOk ? "Found" : "None found")
+  const faqPage = innerRes.paths.find((p) => /\/(faqs?|frequently-asked-questions)(\/|$)/i.test(p))
+  const faqOk = types.has("FAQPage") || /\bFAQs?\b|frequently asked/i.test(text) || hrefs.some((h) => /faq/i.test(h)) || !!faqPage
+  push("faq", faqOk, faqOk ? (faqPage && !types.has("FAQPage") ? `Found at ${faqPage}` : "Found") : "None found")
 
   // ── Can AI trust you? ──────────────────────────────────────────────────────
   // Only reviews in the HTML count: widgets load by script, which AI readers don't run.
   const hasRatingLd = ld.some((o) => o.aggregateRating != null || o.review != null || typesOf(o).some((t) => /Review|AggregateRating/.test(t)))
-  const reviewText = /testimonials?|what (our )?(clients|customers|patients|guests) (say|are saying)|customer reviews|google reviews|\b[45](\.\d)?\s*(stars?|★)|★★★★/i.test(text)
+  const reviewText = /testimonials?|what (our )?(clients|customers|patients|guests) (say|are saying)|what [a-z&' -]{2,30} (say|said|are saying)\b|customer reviews|google reviews|\b[45](\.\d)?\s*(stars?|★)|★★★★/i.test(text)
+  // A testimonials section in the HTML itself (heading "What Industry Leaders Say", id/aria
+  // "testimonials") with real quote text in it: AI readers can see that.
+  const reviewBlock = $('[id*="testimonial" i], [class*="testimonial" i], [aria-label*="testimonial" i], [aria-labelledby*="testimonial" i], [id*="review" i], [class*="reviews" i]')
+    .toArray()
+    .some((el) => $(el).text().replace(/\s+/g, " ").trim().length >= 80)
+  const reviewPage = innerRes.paths.find((p) => /\/(testimonials?|reviews|success-stories|what-(our-)?(clients|customers)-say)(\/|$)/i.test(p))
   const reviewWidget = /elfsight|trustindex|birdeye|podium|reviewsonmywebsite|embedsocial|grade\.us|yotpo|judge\.me|sociablekit/i.test(html)
+  const reviewsOk = hasRatingLd || reviewText || reviewBlock || !!reviewPage
   push(
     "reviews",
-    hasRatingLd || reviewText,
-    hasRatingLd ? "Rating in structured facts" : reviewText ? "Found on the page" : reviewWidget ? "Only a review widget — AI readers can’t see it" : "None found"
+    reviewsOk,
+    hasRatingLd ? "Rating in structured facts" : reviewText || reviewBlock ? "Found on the page" : reviewPage ? `Found at ${reviewPage}` : reviewWidget ? "Only a review widget — AI readers can’t see it" : "None found"
   )
 
   const sameAs = ld.flatMap((o) => (Array.isArray(o.sameAs) ? o.sameAs : o.sameAs ? [o.sameAs] : [])).filter((x): x is string => typeof x === "string")
@@ -458,8 +474,8 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
   const noGoogle = opts.isLocal && !found.has("Google")
   push("profiles", found.size >= 2 && !noGoogle, found.size ? `${[...found].slice(0, 4).join(", ")}${noGoogle ? " — no Google Maps link" : ""}` : "None linked")
 
-  const aboutOk = hrefs.some((h) => /about|our-story|team|who-we-are|meet-(the-)?(doctor|team|dr)/i.test(h)) || /\babout us\b|our story|meet the (team|doctor)/i.test(text)
-  push("about", aboutOk, aboutOk ? "Found" : "None found")
+  const about = await findAbout($, hrefs, innerRes.paths, text, origin, domain, title)
+  push("about", about.ok, about.detail)
 
   const fresh = blog.lastDate ? Date.now() - new Date(blog.lastDate).getTime() < 90 * 86_400_000 : false
   push(
@@ -469,6 +485,67 @@ export async function checkSite(input: string, opts: { isLocal: boolean; city?: 
   )
 
   return finish(domain, items, blog)
+}
+
+// About page: a homepage link (by address or by its words: "About", "Company", "Our story"…),
+// a sitemap entry, or one of the usual addresses answering with a real page. Many sites link
+// About only from the footer of inner pages or from a menu built by script (gigaboost.ai/about
+// was reported missing on 2026-11-27), so the address probe is what makes this check fair.
+const ABOUT_PATH = /\/(about(-us|-me)?|about-[a-z0-9-]+|company|our-company|team|our-team|the-team|our-story|story|who-we-are|meet-(the-)?(team|doctor|doctors|dr|owner|founders?))(\/|$)/i
+const ABOUT_WORDS = /^(about( us| me)?|about [\w .&'’-]{1,40}|company|our company|team|our team|the team|meet the (team|doctor|founders?)|our story|who we are)$/i
+const ABOUT_PROBES = ["/about", "/about-us", "/company", "/team", "/our-story"]
+
+async function findAbout(
+  $: ReturnType<typeof import("cheerio").load>,
+  hrefs: string[],
+  sitemapPaths: string[],
+  text: string,
+  origin: string,
+  domain: string,
+  homeTitle: string
+): Promise<{ ok: boolean | null; detail: string }> {
+  const pathOf = (h: string) => { try { const u = new URL(h, origin); return u.hostname.replace(/^www\./, "") === domain ? u.pathname : null } catch { return null } }
+  const linked = hrefs.map(pathOf).find((p) => !!p && ABOUT_PATH.test(p))
+  if (linked) return { ok: true, detail: `Found at ${linked.replace(/\/+$/, "") || "/"}` }
+  let byWords: string | null = null
+  $("a[href]").each((_, a) => {
+    if (byWords) return
+    const words = $(a).text().replace(/\s+/g, " ").trim()
+    const p = pathOf($(a).attr("href") || "")
+    if (p && p !== "/" && ABOUT_WORDS.test(words)) byWords = p
+  })
+  if (byWords) return { ok: true, detail: `Found at ${byWords}` }
+  const listed = sitemapPaths.find((p) => ABOUT_PATH.test(p))
+  if (listed) return { ok: true, detail: `Found at ${listed}` }
+  if (/\babout us\b|our story|meet the (team|doctor)|who we are/i.test(text)) return { ok: true, detail: "Found on your homepage" }
+
+  // Probe the usual addresses. Single-page sites answer 200 for ANY address with the same shell,
+  // so a page only counts when it reads like an About page or differs from a made-up address.
+  const { load } = await import("cheerio")
+  const [baseline, ...pages] = await Promise.all([
+    get(`${origin}/alphaa-check-${Math.random().toString(36).slice(2, 10)}`, 5000),
+    ...ABOUT_PROBES.map((p) => get(`${origin}${p}`, 5000)),
+  ])
+  const titleOf = (f: Fetched | null) => (f && f.ok ? load(f.text)("title").first().text().trim() : "")
+  const baseTitle = titleOf(baseline)
+  let unknown = pages.every((f) => f === null)
+  for (let i = 0; i < pages.length; i++) {
+    const f = pages[i]
+    if (!f || !f.ok || isChallenge(f)) continue
+    let finalHost = ""
+    let finalPath = ABOUT_PROBES[i]
+    try { const u = new URL(f.finalUrl); finalHost = u.hostname.replace(/^www\./, ""); finalPath = u.pathname.replace(/\/+$/, "") || "/" } catch {}
+    if (finalHost && finalHost !== domain) continue
+    if (finalPath === "/") continue // redirected home: no About page there
+    const $$ = load(f.text)
+    const t = $$("title").first().text().trim()
+    const h1 = $$("h1").first().text().trim()
+    const aboutish = /\babout\b|our story|our team|the team|who we are|company|founder/i.test(`${t} ${h1}`)
+    const distinct = !!t && t !== baseTitle && t !== homeTitle
+    if (aboutish || distinct) return { ok: true, detail: `Found at ${finalPath}` }
+    unknown = false
+  }
+  return unknown ? { ok: null, detail: "Couldn’t check" } : { ok: false, detail: "None found" }
 }
 
 // When the SERP didn't hand us a competitor's domain, ask Haiku for it and

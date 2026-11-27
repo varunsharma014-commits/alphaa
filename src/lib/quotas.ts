@@ -181,7 +181,7 @@ export function ipOf(req: Request): string {
  * Per-IP and global daily caps for the free scan and its helpers (lib/quota-rules BASE_PUBLIC,
  * QUOTAS_JSON "public"). Signed-in people skip the per-IP cap (offices share an IP; the founder tests).
  */
-export async function publicHit(name: "scan" | "identify" | "quickfix", req: Request): Promise<{ ok: true } | { ok: false; error: string }> {
+export async function publicHit(name: "scan" | "identify" | "quickfix" | "teaser" | "snapshot", req: Request): Promise<{ ok: true } | { ok: false; error: string }> {
   let signedIn = false
   try {
     const { realAuth } = await import("@/lib/auth")

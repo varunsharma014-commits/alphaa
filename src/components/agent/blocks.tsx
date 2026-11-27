@@ -597,7 +597,7 @@ export function FormBlock({
 export function Typing() {
   return (
     <div className="ag-msg">
-      <div className="ag-msg__av">a</div>
+      <div className="ag-msg__av ag-msg__av--orb" aria-hidden="true" />
       <div className="ag-typing">
         <i />
         <i />

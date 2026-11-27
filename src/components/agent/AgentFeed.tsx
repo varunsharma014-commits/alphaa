@@ -162,7 +162,7 @@ export function AgentFeed({
             ))}
             {msg.blocks.length > dividers.length && (
               <div className={`ag-msg ${msg.role === "user" ? "ag-msg--user" : ""}`}>
-                <div className="ag-msg__av">{msg.role === "user" ? "you" : "a"}</div>
+                <div className={`ag-msg__av${msg.role === "user" ? "" : " ag-msg__av--orb"}`} aria-hidden={msg.role !== "user"}>{msg.role === "user" ? "you" : null}</div>
                 <div className="ag-msg__body">{body}</div>
               </div>
             )}

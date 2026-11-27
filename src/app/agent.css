@@ -816,3 +816,9 @@ body:has(> [data-agent][data-theme="dark"]) { background-color: #000000; }
 .cc--choices > div:first-child { flex: 1; }
 .cc--choices > div:first-child p + p { margin-top: 2px; }
 @media (max-width: 560px) { .cc--notice { right: 16px; max-width: none; flex-direction: row; align-items: center; } .cc--choices { align-items: stretch; } }
+
+/* The orb (same mark as the site header and dashboard): /start header + the agent's avatar. */
+.ag-orb { display: inline-block; flex: none; width: 19px; height: 19px; border-radius: 999px; background: conic-gradient(from 0deg, #5ac8fa, #0071e3, #af52de, #ff2d55, #ff9500, #5ac8fa); box-shadow: 0 0 10px rgba(0, 113, 227, .22); animation: ag-orb-spin 9s linear infinite; }
+.ag-msg__av--orb { background: conic-gradient(from 0deg, #5ac8fa, #0071e3, #af52de, #ff2d55, #ff9500, #5ac8fa); box-shadow: 0 0 8px rgba(0, 113, 227, .2); }
+@keyframes ag-orb-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ag-orb { animation: none; } }

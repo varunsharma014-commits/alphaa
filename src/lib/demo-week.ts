@@ -22,7 +22,10 @@ import { numbers } from "@/lib/insights"
 
 const anthropic = claudeFor("demo-week")
 
-export type DemoItem = { kind: "google" | "social"; day: string; title: string; why: string; text?: string; image?: number | null; failed?: boolean }
+export type DemoItem = { kind: "google" | "social"; day: string; title: string; why: string; text?: string; image?: number | null; failed?: boolean; teaser?: boolean }
+/** The one finished post shown BEFORE the email ask (ogData.demoTeaser, image in ogData.demoTeaserImage).
+ *  The week written after the email reuses it as one of its 2 social posts. */
+export type DemoTeaser = { v: 1; title: string; why: string; text: string; headline: string; image: boolean; at: string }
 export type DemoWeek = {
   v: 1
   status: "running" | "done" | "failed"
@@ -43,8 +46,76 @@ const CAP = () => Number(process.env.DEMO_WEEK_DAILY_CAP || 150)
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v)
 
 function secret() { return process.env.CONNECTOR_SECRET || process.env.CLERK_SECRET_KEY || "dev" }
-export const demoImgSig = (leadId: string, n: number) => createHmac("sha256", secret()).update(`demo:${leadId}:${n}`).digest("hex").slice(0, 20)
-export const demoImgUrl = (leadId: string, n: number) => `/api/scan/week/img?id=${leadId}&n=${n}&s=${demoImgSig(leadId, n)}`
+export const demoImgSig = (leadId: string, n: number | "t") => createHmac("sha256", secret()).update(`demo:${leadId}:${n}`).digest("hex").slice(0, 20)
+export const demoImgUrl = (leadId: string, n: number | "t") => `/api/scan/week/img?id=${leadId}&n=${n}&s=${demoImgSig(leadId, n)}`
+
+export function teaserOf(og: unknown): DemoTeaser | null {
+  return isRecord(og) && isRecord(og.demoTeaser) && og.demoTeaser.v === 1 && typeof og.demoTeaser.text === "string" ? (og.demoTeaser as unknown as DemoTeaser) : null
+}
+
+/** Facts about the business for the writers: their own site title/summary, never guesses. */
+function businessFacts(lead: { businessName: string | null; businessUrl: string | null; city: string | null; ogData: unknown }, vText?: string | null) {
+  const og = isRecord(lead.ogData) ? lead.ogData : {}
+  const insights = isRecord(og.insights) ? og.insights : {}
+  const industry = typeof insights.industry === "string" ? insights.industry : null
+  const city = lead.city && lead.city !== "your area" ? lead.city : null
+  const desc = [typeof og.description === "string" ? og.description : "", typeof og.title === "string" ? og.title : ""].filter(Boolean).join(" · ").slice(0, 400)
+  const name = lead.businessName || "your business"
+  const site = lead.businessUrl || null
+  const block = [`Business: ${name}`, industry ? `Type: ${industry}` : "", city ? `Location: ${city}` : "", site ? `Website: ${site}` : "", desc ? `About them (their words): ${desc}` : "", vText ?? ""].filter(Boolean).join("\n")
+  return { name, site, industry, city, desc, block }
+}
+
+const teaserRuns = new Map<string, Promise<DemoTeaser | null>>()
+
+/** One finished social post with its branded image, written from the scan before the visitor
+ *  gives an email (value first). One per scan, cached on the lead; ~10-20 seconds. */
+export async function demoTeaser(leadId: string): Promise<DemoTeaser | null> {
+  const lead = await db.scanLead.findUnique({ where: { id: leadId } })
+  if (!lead) return null
+  const have = teaserOf(lead.ogData)
+  if (have) return have
+  const running = teaserRuns.get(leadId)
+  if (running) return running
+  const job = (async () => {
+    const f = businessFacts(lead)
+    const resp = isRecord(lead.engineResponses) ? lead.engineResponses : {}
+    const evs = Object.values(resp).filter(isRecord) as Record<string, unknown>[]
+    const og = isRecord(lead.ogData) ? lead.ogData : {}
+    const insights = isRecord(og.insights) ? og.insights : {}
+    const q = (typeof insights.query === "string" && insights.query) || (evs.find((v) => typeof v.query === "string")?.query as string | undefined) || null
+    const named = evs.filter((v) => v.appeared === true).length
+    // The customer's own question, quoted as asked ("best" is their word, not a claim of ours).
+    const title = q ? `Answering “${q.length > 80 ? `${q.slice(0, 79)}…` : q}”` : `Why customers choose ${f.name}`
+    const why = q
+      ? named < evs.length
+        ? `Customers ask AI “${q}”, and ${evs.length - named} of the ${evs.length} AIs I asked didn’t name you. This post answers it in your words, so the answer exists with your name on it.`
+        : `Customers ask AI “${q}”. The AIs named you; this post keeps that answer fresh with your name on it.`
+      : "Keeps you in front of customers this week."
+    const [brand, sp] = await Promise.all([
+      f.site ? Promise.race([readBrandKit(f.site, { name: lead.businessName }).catch(() => null), new Promise<null>((r) => setTimeout(() => r(null), 12_000))]) : null,
+      writeSocialFrom(f.block, title, why),
+    ])
+    if (!sp?.text) return null
+    const png = await renderCardPng({ headline: sp.headline, businessName: f.name, brand: brand ? { primary: brand.primary, logo: brand.logo } : null }).catch(() => null)
+    const teaser: DemoTeaser = { v: 1, title, why, text: sp.text, headline: sp.headline, image: !!png, at: new Date().toISOString() }
+    const row = await db.scanLead.findUnique({ where: { id: leadId }, select: { ogData: true } })
+    const now = isRecord(row?.ogData) ? row!.ogData : {}
+    await db.scanLead.update({ where: { id: leadId }, data: { ogData: { ...now, demoTeaser: teaser, ...(png ? { demoTeaserImage: png.toString("base64") } : {}) } as object } })
+    return teaser
+  })()
+    .catch((err) => {
+      console.error("[demo-week] teaser", err instanceof Error ? err.message : err)
+      return null
+    })
+    .finally(() => teaserRuns.delete(leadId))
+  teaserRuns.set(leadId, job)
+  return job
+}
+
+export function publicTeaser(leadId: string, t: DemoTeaser) {
+  return { title: t.title, why: t.why, text: t.text, image: t.image ? demoImgUrl(leadId, "t") : null }
+}
 
 export function demoOf(og: unknown): DemoWeek | null {
   return isRecord(og) && isRecord(og.demoWeek) && og.demoWeek.v === 1 ? (og.demoWeek as unknown as DemoWeek) : null
@@ -67,7 +138,7 @@ export async function startDemoWeek(leadId: string, ip: string): Promise<StartRe
     db.scanLead.count({ where: { createdAt: { gte: since }, ogData: { path: ["demoWeek", "v"], equals: 1 } } }),
   ])
   if (byIp >= 3) return { ok: false, status: 429, error: "You’ve had a few previews today. Start your plan and I’ll write the real thing every week." }
-  if (total >= CAP()) return { ok: false, status: 503, error: "I’m writing a lot of first weeks right now. Leave it with me: I’ll email yours as soon as I can." }
+  if (total >= CAP()) return { ok: false, status: 503, error: "I’m writing a lot of first weeks right now. Try again in a few hours, or start your plan and I’ll write yours first thing." }
 
   const week: DemoWeek = {
     v: 1, status: "running", startedAt: new Date().toISOString(), ip, email: lead.email,
@@ -80,6 +151,7 @@ export async function startDemoWeek(leadId: string, ip: string): Promise<StartRe
     ],
     items: [], trends: [],
   }
+  if (teaserOf(lead.ogData)) week.steps[4].text = "Writing your second social post with its image"
   const og = isRecord(lead.ogData) ? lead.ogData : {}
   await db.scanLead.update({ where: { id: lead.id }, data: { ogData: { ...og, demoWeek: week } as object } })
   void runDemoWeek(lead.id, week).catch(async (err) => {
@@ -202,7 +274,16 @@ ${facts.map((f) => `${f.key}: ${f.text}`).join("\n") || "none"}` }],
 
   // 5: social posts + images
   const images: string[] = []
-  for (const it of week.items.filter((i) => i.kind === "social")) {
+  // The post already shown before the email is one of this week's two: reuse it, don't rewrite it.
+  const fresh = await db.scanLead.findUnique({ where: { id: leadId }, select: { ogData: true } })
+  const teaser = teaserOf(fresh?.ogData)
+  const teaserImg = isRecord(fresh?.ogData) && typeof fresh!.ogData.demoTeaserImage === "string" ? fresh!.ogData.demoTeaserImage : null
+  const firstSocial = week.items.find((i) => i.kind === "social")
+  if (teaser && firstSocial) {
+    Object.assign(firstSocial, { title: teaser.title, why: teaser.why, text: teaser.text, teaser: true })
+    if (teaserImg) { images.push(teaserImg); firstSocial.image = 0 }
+  }
+  for (const it of week.items.filter((i) => i.kind === "social" && !i.teaser)) {
     try {
       const sp = await writeSocialFrom(factsBlock, it.title, it.why)
       it.text = sp.text
@@ -223,7 +304,7 @@ export function publicWeek(leadId: string, w: DemoWeek) {
     steps: w.steps,
     trends: w.trends,
     voiceName: w.voiceName ?? null,
-    items: w.items.map((i) => ({ kind: i.kind, day: i.day, title: i.title, why: i.why, text: i.text ?? null, failed: !!i.failed, image: typeof i.image === "number" ? demoImgUrl(leadId, i.image) : null })),
+    items: w.items.map((i) => ({ kind: i.kind, day: i.day, title: i.title, why: i.why, text: i.text ?? null, failed: !!i.failed, teaser: !!i.teaser, image: typeof i.image === "number" ? demoImgUrl(leadId, i.image) : null })),
   }
 }
 export type PublicWeek = ReturnType<typeof publicWeek>
