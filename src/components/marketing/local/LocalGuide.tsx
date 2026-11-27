@@ -43,10 +43,15 @@ export function guideMeta(key: LocaleKey, slug: string): Metadata {
 export function guideIndexMeta(key: LocaleKey): Metadata {
   const l = MARKETS[key].copy
   const label = GUIDES[key].label
+  const title = `${label} · ${l.country} | Alphaa`
+  const description = clipDescription(`${label}: ${GUIDES[key].guides.map((g) => g.h1).join(" · ")}`)
+  const og = `${SITE}/og?${new URLSearchParams({ title: `${label} · ${l.country}` }).toString()}`
   return {
-    title: { absolute: `${label} · ${l.country} | Alphaa` },
-    description: clipDescription(`${label}: ${GUIDES[key].guides.map((g) => g.h1).join(" · ")}`),
+    title: { absolute: title },
+    description,
     alternates: { canonical: guidePath(key) },
+    openGraph: { title, description, url: `${SITE}${guidePath(key)}`, locale: l.lang.replace("-", "_"), images: [{ url: og, width: 1200, height: 630 }] },
+    twitter: { card: "summary_large_image", title, description, images: [og] },
   }
 }
 

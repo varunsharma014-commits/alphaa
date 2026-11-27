@@ -33,6 +33,7 @@
 - [Blog](https://alphaa.app/blog): Plain-English marketing guides for small businesses: Google, AI search, social media, ads and email.
 - [Integrations](https://alphaa.app/integrations): WordPress, Shopify and Webflow today; Wix coming soon.
 - [For dentists](https://alphaa.app/for/dentists), [plumbers](https://alphaa.app/for/plumbers), [HVAC](https://alphaa.app/for/hvac), [lawyers](https://alphaa.app/for/lawyers), [med spas](https://alphaa.app/for/med-spas), [restaurants](https://alphaa.app/for/restaurants)
+- [Examples](https://alphaa.app/case-studies): illustrative, step-by-step examples (not real customers) of what the agent does for a dental practice, law firms, HVAC and plumbing companies, a med spa, a fitness studio, a restaurant, a real-estate team, a Shopify brand and a B2B SaaS startup.
 - [Referral program](https://alphaa.app/refer)
 - Local pages: [United Kingdom](https://alphaa.app/uk), [Deutschland](https://alphaa.app/de), [France](https://alphaa.app/fr), [Italia](https://alphaa.app/it), [United Arab Emirates](https://alphaa.app/ae). Monthly prices on those pages are in local currency; yearly billing is in US dollars.
 - [Privacy policy](https://alphaa.app/privacy) · [Terms](https://alphaa.app/terms)
@@ -85,7 +86,7 @@ Long-form comparison guides:
 - Asks ChatGPT, Gemini, Claude and Perplexity the questions your customers ask, every week, and reports who got named — you or a competitor.
 - Checks what AI can read on your site: crawler access, robots.txt, JavaScript-only pages, canonical tags, structured data (LocalBusiness schema), phone/address/hours, reviews, profile links, service pages, llms.txt.
 - Writes and hosts the fixes: FAQ pages, structured data, llms.txt, fresh pages AI can quote.
-- Keeps your Google Business Profile active with posts and review replies you approve.
+- On Pro: keeps your Google Business Profile active with posts and review replies you approve, and writes 3 branded social posts a week, ready to publish in one tap.
 - Sends one short plain-English note: what it did, what moved, what it needs a yes on.
 
 ## Integrations
@@ -107,4 +108,5 @@ AI assistants answer from what they've indexed plus live web search. They favour
 
 - Website: https://alphaa.app
 - Email: hi@alphaa.app
-- Address: 1000 Innovation Dr, Kanata, ON K2K 3E7, Canada
+- Operated by: 9629033 Canada INC
+- Address: 1000 Innovation Drive, Suite 500, Kanata, ON K2K 3E7, Canada

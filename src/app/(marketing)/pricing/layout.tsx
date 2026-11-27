@@ -1,5 +1,6 @@
 import { plans, billingFaqs } from "./pricing-data"
 import { pageMeta } from "@/lib/seo"
+import { planOffer } from "@/lib/seo-offers"
 
 // page.tsx is a client component (the monthly/annual toggle needs state), and
 // client components can't export metadata — hence this layout.
@@ -17,16 +18,7 @@ const productSchema = {
   description: "An AI agent that runs a small business’s marketing: AI search (ChatGPT, Gemini, Claude, Perplexity) on every plan; social media, Google Business Profile posts, review replies, email and lead tracking on the Pro plan; Google and Meta ads on the Growth plan (early access). Month to month, no contract, or 15% off billed yearly.",
   brand: { "@type": "Brand", name: "Alphaa" },
   url: "https://alphaa.app/pricing",
-  offers: plans.map((p) => ({
-    "@type": "Offer",
-    name: p.name,
-    description: p.description,
-    price: String(p.monthly),
-    priceCurrency: "USD",
-    priceSpecification: { "@type": "UnitPriceSpecification", price: String(p.monthly), priceCurrency: "USD", unitText: "MONTH" },
-    availability: p.href ? "https://schema.org/PreOrder" : "https://schema.org/InStock",
-    url: "https://alphaa.app/pricing",
-  })),
+  offers: plans.map((p) => planOffer(p.key, { description: p.description })),
 }
 
 const faqSchema = {

@@ -2,11 +2,9 @@ import { notFound } from "next/navigation"
 import { ServicePage } from "@/components/marketing/home/ServicePage"
 import { SERVICES, SERVICE_BY_SLUG, type ServiceSlug } from "@/content/services"
 import { pageMeta } from "@/lib/seo"
-import { SVC } from "@/components/marketing/v3/services-v3"
-import { PLAN_PRICES } from "@/lib/constants"
+import { planOffer } from "@/lib/seo-offers"
 
 const SITE = "https://alphaa.app"
-const PRICE = { starter: String(PLAN_PRICES.starter.monthly), pro: String(PLAN_PRICES.pro.monthly), growth: String(PLAN_PRICES.growth.monthly) } as const
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: s.slug }))
@@ -32,8 +30,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       url,
       provider: { "@type": "Organization", name: "Alphaa", url: SITE },
       areaServed: ["US", "CA"],
-      // No offer for a service that isn't live yet (ads: Growth early access, no checkout).
-      ...(SVC[s.slug].soon ? {} : { offers: { "@type": "Offer", price: PRICE[s.plan], priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: PRICE[s.plan], priceCurrency: "USD", unitText: "MONTH" }, url: `${SITE}/pricing` } }),
+      // The cheapest plan that includes this service, monthly and yearly. Ads = Growth, which is
+      // PreOrder while it's early access (nobody is charged until ads open).
+      offers: planOffer(s.plan),
     },
     { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: s.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
     {

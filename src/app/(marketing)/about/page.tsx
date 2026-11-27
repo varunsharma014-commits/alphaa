@@ -6,7 +6,7 @@ import "@/components/marketing/v3/pages/pages.css"
 export const metadata = pageMeta({
   title: "About Alphaa: the AI marketing agent for small businesses",
   description:
-    "Alphaa (alphaa.app) is an AI agent that runs a small business's marketing: social media, ads, SEO and AI search, content and email. What it does, pricing, guides and contact.",
+    "Alphaa (alphaa.app) is an AI agent that runs a small business's marketing: SEO and AI search, content, social media and email, with ads in early access. What it does, pricing and contact.",
   path: "/about",
 })
 
@@ -14,11 +14,12 @@ const org = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Alphaa",
+  legalName: "9629033 Canada INC",
   url: "https://alphaa.app",
   logo: "https://alphaa.app/logo.png",
   email: "hi@alphaa.app",
-  description: "Alphaa is an AI agent that runs marketing for small businesses: social media, SEO and AI search, blog and Google posts, review replies and email.",
-  address: { "@type": "PostalAddress", streetAddress: "1000 Innovation Dr", addressLocality: "Kanata", addressRegion: "ON", postalCode: "K2K 3E7", addressCountry: "CA" },
+  description: "Alphaa is an AI agent that runs marketing for small businesses: SEO and AI search, blog and Google posts, review replies, social media and email, with Google and Meta ads management in early access.",
+  address: { "@type": "PostalAddress", streetAddress: "1000 Innovation Drive, Suite 500", addressLocality: "Kanata", addressRegion: "ON", postalCode: "K2K 3E7", addressCountry: "CA" },
   contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: "hi@alphaa.app" },
 }
 

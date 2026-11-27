@@ -2,9 +2,9 @@ import { StartAgent } from "@/components/agent/StartAgent"
 import { pageMeta } from "@/lib/seo"
 
 export const metadata = pageMeta({
-  title: "Start with your AI marketing agent",
+  title: "Free AI check: what 4 AIs say about your business",
   description:
-    "Give Alphaa your website. Your AI marketing agent checks where customers find you, including ChatGPT and Google, then writes your first week of marketing in your voice and your brand colours.",
+    "Enter your website. In about 60 seconds your AI marketing agent shows what ChatGPT, Gemini, Claude and Perplexity say about your business and who they name instead. Free, no card. Plans from $99/month.",
   path: "/start",
 })
 

@@ -11,6 +11,9 @@ import { INDUSTRY_TONE } from "@/components/marketing/v3/pages/case-tone"
 // The listing page has always linked to /case-studies/<slug>, but this route
 // didn't exist, so every "Read full case study" link 404'd. Each case study now
 // has its own indexable URL instead of being an anchor on the listing page.
+// "A Shopify skincare brand" -> "a Shopify skincare brand" (keeps proper nouns like Shopify, B2B, SaaS).
+const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1)
+
 export function generateStaticParams() {
   return [...caseStudies, ...playbooks].map((cs) => ({ slug: cs.slug }))
 }
@@ -20,8 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const pb = getPlaybook(slug)
   if (pb) {
     return pageMeta({
-      title: `${pb.industry} example: what an AI marketing agent does for ${pb.business.toLowerCase().replace(/^an? /, "a ")}`,
-      description: `An illustrative, step-by-step example (not a real customer): the AI questions, pages, posts and weekly work Alphaa does for ${pb.business.toLowerCase()}, and what to measure.`,
+      title: `${pb.industry} example: what an AI marketing agent does for ${lowerFirst(pb.business)}`,
+      description: `An illustrative, step-by-step example (not a real customer): the AI questions, pages, posts and weekly work Alphaa does for ${lowerFirst(pb.business)}, and what to measure.`,
       path: `/case-studies/${pb.slug}`,
       eyebrow: "Example",
     })

@@ -72,6 +72,7 @@ export const LOCALE_LIST: LocaleCopy[] = Object.values(LOCALES)
 /** hreflang map for the homepage and every market page. */
 export const HREFLANG: Record<string, string> = {
   "en-US": "/",
+  "en-CA": "/", // the US page serves US & Canada (USD prices)
   ...Object.fromEntries(LOCALE_LIST.map((l) => [l.hreflang, l.path])),
   "x-default": "/",
 }

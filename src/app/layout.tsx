@@ -20,21 +20,21 @@ export const metadata: Metadata = {
     template: "%s | Alphaa",
   },
   description:
-    "Alphaa is an AI agent that runs your marketing: social media, ads, SEO and AI search, blog posts, Google posts, reviews and email. It does the work; you approve. From $99/month, month to month.",
+    "Alphaa is an AI agent that runs your marketing: getting recommended by ChatGPT and Google, social posts, Google posts, reviews and email, with Google and Meta ads in early access. It does the work; you approve. From $99/month, month to month.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"),
   // Defaults for pages that don't declare their own card. No og:url here: a
   // root og:url made every inheriting page claim to be the homepage.
   openGraph: {
-    title: "Alphaa: Run your entire marketing using an AI agent",
-    description: "Social, ads, SEO, AI search, content and email, done for you every week. You approve. From $99/month.",
+    title: "Alphaa: Your entire marketing, run by an AI agent",
+    description: "AI search, social posts, Google posts, reviews and email, done for you every week, with ads in early access. You approve. From $99/month.",
     siteName: "Alphaa",
     type: "website",
-    images: [{ url: "/og", width: 1200, height: 630, alt: "Alphaa: run your entire marketing using an AI agent." }],
+    images: [{ url: "/og", width: 1200, height: 630, alt: "Alphaa: your entire marketing, run by an AI agent." }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alphaa: Run your entire marketing using an AI agent",
-    description: "Social, ads, SEO, AI search, content and email, done for you every week. You approve. From $99/month.",
+    title: "Alphaa: Your entire marketing, run by an AI agent",
+    description: "AI search, social posts, Google posts, reviews and email, done for you every week, with ads in early access. You approve. From $99/month.",
     images: ["/og"],
   },
   // No site-wide canonical: a root default made every page point at the homepage,
@@ -49,12 +49,15 @@ const orgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Alphaa",
+  legalName: "9629033 Canada INC",
   alternateName: ["Alphaa App", "alphaa.app"],
   url: "https://alphaa.app",
   email: "hi@alphaa.app",
   description:
-    "Alphaa is an AI marketing agent for small businesses. It runs social media, Google and Meta ads, SEO and AI search optimization (AEO), blog and Google Business Profile posts, review replies and email marketing, and checks what ChatGPT, Gemini, Claude and Perplexity say about the business every week.",
+    "Alphaa is an AI marketing agent for small businesses. It does SEO and AI search optimization (AEO), blog and Google Business Profile posts, review replies, social media posts and email marketing, with Google and Meta ads management in early access, and checks what ChatGPT, Gemini, Claude and Perplexity say about the business every week.",
   logo: "https://alphaa.app/logo.png",
+  address: { "@type": "PostalAddress", streetAddress: "1000 Innovation Drive, Suite 500", addressLocality: "Kanata", addressRegion: "ON", postalCode: "K2K 3E7", addressCountry: "CA" },
+  areaServed: ["US", "CA", "GB", "DE", "FR", "IT", "AE"],
   sameAs: ["https://www.linkedin.com/company/135966599/", "https://www.facebook.com/61592044887737", "https://www.instagram.com/alphaa.ai.agent/", "https://medium.com/@alphaaaiagent"],
 }
 

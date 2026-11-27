@@ -2,7 +2,7 @@ import { MetadataRoute } from "next"
 import { getAllPosts } from "@/content/blog"
 import { VERTICALS } from "@/content/verticals"
 import { CONTENT_REVIEWED } from "@/content/blog/reviewed"
-import { COMPARES, COMPARE_CHECKED } from "@/content/compare"
+import { COMPARES } from "@/content/compare"
 import { INTEGRATIONS, INTEGRATIONS_CHECKED } from "@/content/integrations"
 import { HREFLANG, LOCALE_LIST, MARKETS, type LocaleKey } from "@/content/locales"
 import { GUIDES } from "@/content/markets/guides"
@@ -18,17 +18,18 @@ const BASE_URL = "https://alphaa.app"
 // changed on every deploy — so it learns to ignore our dates. Bump the date
 // here when you actually change one of these pages.
 const PAGE_UPDATED: Record<string, string> = {
-  "/": "2026-11-17",
-  "/start": "2026-11-17",
-  "/for": "2026-10-29",
-  "/pricing": "2026-10-30",
-  "/about": "2026-11-14",
-  "/how-it-works": "2026-11-17",
+  "/": "2026-11-26",
+  "/start": "2026-11-26",
+  "/for": "2026-11-26",
+  "/pricing": "2026-11-26",
+  "/compare": "2026-11-26", // plan prices on every comparison (competitor details: COMPARE_CHECKED)
+  "/about": "2026-11-26",
+  "/how-it-works": "2026-11-26",
   "/scan": "2026-10-29",
   "/case-studies": "2026-11-26",
-  "/refer": "2026-10-29",
+  "/refer": "2026-11-26",
   "/author/varun-sharma": "2026-10-29",
-  "/markets": "2026-11-14", // the /uk /de /fr /it /ae /ae/ar pages
+  "/markets": "2026-11-26", // the /uk /de /fr /it /ae /ae/ar pages
 }
 const updated = (path: string) => new Date(PAGE_UPDATED[path])
 
@@ -49,10 +50,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }))
 
   const comparePages: MetadataRoute.Sitemap = [
-    { url: `${BASE_URL}/compare`, lastModified: new Date(COMPARE_CHECKED), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/compare`, lastModified: updated("/compare"), changeFrequency: "monthly", priority: 0.8 },
     ...COMPARES.map((c) => ({
       url: `${BASE_URL}/compare/${c.slug}`,
-      lastModified: new Date(COMPARE_CHECKED),
+      lastModified: updated("/compare"),
       changeFrequency: "monthly" as const,
       priority: 0.85,
     })),

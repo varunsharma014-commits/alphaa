@@ -8,11 +8,12 @@ export const SITE = "https://alphaa.app"
 export function clipDescription(text: string, max = 160): string {
   const clean = text.replace(/\s+/g, " ").trim()
   if (clean.length <= max) return clean
-  const sentences = clean.match(/[^.!?]+[.!?]+(\s|$)/g) ?? []
+  const sentences = clean.split(/(?<=[.!?])\s+/)
   let out = ""
   for (const s of sentences) {
-    if ((out + s).trim().length > max) break
-    out += s
+    const next = out ? `${out} ${s}` : s
+    if (next.length > max) break
+    out = next
   }
   // A lone short first sentence makes a weak snippet; cut at a word instead.
   if (out.trim().length >= 100) return out.trim()

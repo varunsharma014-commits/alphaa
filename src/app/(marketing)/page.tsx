@@ -1,4 +1,4 @@
-import { PLAN_NAMES, PLAN_PRICES } from "@/lib/constants"
+import { PLAN_OFFERS } from "@/lib/seo-offers"
 import type { Metadata } from "next"
 import { FaqSection } from "@/components/marketing/FaqSection"
 import { HomeV2, HomeV2Final } from "@/components/marketing/home/HomeV2"
@@ -31,15 +31,9 @@ const softwareSchema = {
   operatingSystem: "Web",
   url: "https://alphaa.app",
   description:
-    "Alphaa is an AI marketing agent for small businesses. Every week it runs their marketing. Starter ($99/month): AI search, meaning weekly checks of what ChatGPT, Gemini, Claude and Perplexity say, website fixes so they can recommend the business, and blog posts that answer what customers ask AI. Pro ($499/month): everything except ads, adding social media posts with branded images ready to publish in one tap, Google Business Profile updates, review replies, email campaigns and lead tracking. Growth ($799/month, early access): Pro plus Google or Meta ads for 1 ad account. Written in the owner's own voice. Month to month, or 15% off billed yearly.",
+    "Alphaa is an AI marketing agent for small businesses. Every week it runs their marketing. Starter ($99/month): AI search, meaning weekly checks of what ChatGPT, Gemini, Claude and Perplexity say, website fixes so they can recommend the business, and blog posts that answer what customers ask AI. Pro ($499/month): everything except ads, adding social media posts with branded images ready to publish in one tap, Google Business Profile updates, review replies, email campaigns and lead tracking. Growth ($799/month, early access): Pro plus Google or Meta ads for 1 ad account, +$200/month per additional ad account. Written in the owner's own voice. Month to month, or 15% off billed yearly.",
   // Same three plans as /pricing (lib/constants PLAN_PRICES).
-  offers: (["starter", "pro", "growth"] as const).map((k) => ({
-    "@type": "Offer",
-    name: PLAN_NAMES[k],
-    price: String(PLAN_PRICES[k].monthly),
-    priceCurrency: "USD",
-    priceSpecification: { "@type": "UnitPriceSpecification", price: String(PLAN_PRICES[k].monthly), priceCurrency: "USD", unitText: "MONTH" },
-  })),
+  offers: PLAN_OFFERS,
 }
 
 export default function HomePage() {
