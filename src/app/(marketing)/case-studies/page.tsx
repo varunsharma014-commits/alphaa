@@ -3,22 +3,29 @@
 import { useState } from "react"
 import Link from "next/link"
 import { caseStudies } from "./data"
-import { V3Page, Frame, Section, ProofMosaic, FinalCta } from "@/components/marketing/v3"
+import { playbooks } from "./playbooks"
+import { V3Page, Frame, Section, ProofMosaic, FinalCta, NoteRef, Notes } from "@/components/marketing/v3"
 import { INDUSTRY_TONE } from "@/components/marketing/v3/pages/case-tone"
 
-const filters = ["All", "Dental", "Legal", "HVAC"] as const
-type Filter = (typeof filters)[number]
+// Detailed playbooks first, then the original three walkthroughs. Both share the card fields.
+const ALL = [...playbooks, ...caseStudies]
+type Card = Pick<(typeof caseStudies)[number], "slug" | "industry" | "business" | "location" | "headline" | "keyResult" | "keyResultSub"> & { metrics: { label: string; value: string }[] }
+const filters = ["All", ...Array.from(new Set(ALL.map((c) => c.industry)))]
+
+// One disclosure for every card (2026-11-26): a marker next to each example business, one note in
+// the Notes block at the bottom of the page, and the plain-words line in the intro.
+const NOTES = [
+  "Every business on this page is an illustrative example, not a real customer. The business types, places and figures show how Alphaa works week by week; agency fees and ad spend are typical figures, not quotes. Results vary, and no one can guarantee what an AI will say.",
+]
+type Filter = string
 
 
-function CaseStudyCard({ cs }: { cs: (typeof caseStudies)[0] }) {
+function CaseStudyCard({ cs }: { cs: Card }) {
   const tone = INDUSTRY_TONE[cs.industry] ?? "ad"
   return (
     <div className={`v3-card v3-card--tint v3-c-${tone}`} style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-        <span className="v3-pill">{cs.industry}</span>
-        <span className="v3-example">Illustrative example</span>
-      </div>
-      <h3 className="v3-h3" style={{ marginTop: 16 }}>{cs.business}</h3>
+      <span className="v3-pill" style={{ alignSelf: "flex-start" }}>{cs.industry}</span>
+      <h3 className="v3-h3" style={{ marginTop: 16 }}>{cs.business}<NoteRef n={1} /></h3>
       <p className="v3-fine" style={{ marginTop: 4 }}>{cs.location}</p>
       <p>{cs.headline}</p>
       <div style={{ marginTop: 16, background: "var(--v-card)", borderRadius: 16, padding: 16 }}>
@@ -43,9 +50,9 @@ function CaseStudyCard({ cs }: { cs: (typeof caseStudies)[0] }) {
 export default function CaseStudiesPage() {
   const [activeFilter, setActiveFilter] = useState<Filter>("All")
 
-  const filtered = activeFilter === "All"
-    ? caseStudies
-    : caseStudies.filter((cs) => cs.industry === activeFilter)
+  const filtered: Card[] = activeFilter === "All"
+    ? ALL
+    : ALL.filter((cs) => cs.industry === activeFilter)
 
   return (
     <V3Page>
@@ -59,7 +66,7 @@ export default function CaseStudiesPage() {
             <span className="v3-blue">Industry by industry.</span>
           </h1>
           <p className="v3-lede">
-            Illustrative examples, not customer stories: what Alphaa's AI Agent does, week by week, to run a local business's marketing. Google posts, blogs, review replies, and getting named when ChatGPT, Gemini, Claude and Perplexity pick a competitor instead of you.
+            These are illustrative examples, not real customers. Each one shows what Alphaa's AI Agent does, week by week, to run a local business's marketing: Google posts, blogs, review replies, and getting named when ChatGPT, Gemini, Claude and Perplexity pick a competitor instead of you.
           </p>
           <div style={{ maxWidth: 720, margin: "0 auto" }}>
             <ProofMosaic tiles={[
@@ -82,7 +89,7 @@ export default function CaseStudiesPage() {
 
           <div className="v3-grid">
             {filtered.map((cs) => (
-              <CaseStudyCard key={cs.id} cs={cs} />
+              <CaseStudyCard key={cs.slug} cs={cs} />
             ))}
           </div>
 
@@ -99,6 +106,9 @@ export default function CaseStudiesPage() {
           <p className="v3-kicker" style={{ color: "inherit", marginBottom: 8 }}>Ready to be next?</p>
           <p>$99/mo · Month to month · Cancel online in a minute. If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.</p>
         </FinalCta>
+
+        {/* The page's small print: the marker on each example links here. */}
+        <Notes items={NOTES} />
       </Frame>
     </V3Page>
   )

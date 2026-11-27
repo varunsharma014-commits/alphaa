@@ -55,8 +55,24 @@ export function ServicePills({ links = true, only }: { links?: boolean; only?: S
   )
 }
 
-/** Soft drifting colour shapes with a few live-status cards. Cards are examples. */
-export function HeroShapes({ cards = [], tones = ["mk", "ad", "se", "ct"], note = "Example" }: { cards?: string[]; tones?: SvcKey[]; note?: string | null }) {
+/** Footnote marker: a small superscript linking to a note in a <Notes> block on the same page. */
+export function NoteRef({ n }: { n: number }) {
+  return <sup className="v3-sup"><a href={`#note-${n}`} aria-label={`Note ${n}`}>{n}</a></sup>
+}
+
+/** The numbered notes block (page bottom). Each item's anchor is #note-N, N = its position. */
+export function Notes({ items, title = "Notes" }: { items: ReactNode[]; title?: string }) {
+  return (
+    <section className="v3-sec v3-notes" aria-labelledby="v3-notes-h">
+      <h2 id="v3-notes-h">{title}</h2>
+      <ol>{items.map((t, i) => <li key={i} id={`note-${i + 1}`}>{t}</li>)}</ol>
+    </section>
+  )
+}
+
+/** Soft drifting colour shapes with a few live-status cards. Cards are examples. `mark` replaces
+ *  the "Example" chip with a footnote marker (the note itself lives in the page's Notes block). */
+export function HeroShapes({ cards = [], tones = ["mk", "ad", "se", "ct"], note = "Example", mark }: { cards?: string[]; tones?: SvcKey[]; note?: string | null; mark?: ReactNode }) {
   const spots: CSSProperties[] = [
     { width: "46%", height: "46%", left: "8%", top: "10%" },
     { width: "34%", height: "34%", right: "6%", top: "4%", animationDelay: "-2s" },
@@ -69,27 +85,27 @@ export function HeroShapes({ cards = [], tones = ["mk", "ad", "se", "ct"], note 
     { left: "6%", top: "12%", animationDelay: "-1.5s" },
   ]
   return (
-    <div className="v3-shapes" aria-hidden="true">
-      {spots.map((st, i) => <div key={i} className="v3-sh" style={{ ...st, background: `var(--${tones[i % tones.length]}-2)` }} />)}
+    <div className="v3-shapes" aria-hidden={mark ? undefined : true}>
+      {spots.map((st, i) => <div key={i} aria-hidden="true" className="v3-sh" style={{ ...st, background: `var(--${tones[i % tones.length]}-2)` }} />)}
       {cards.slice(0, 3).map((c, i) => (
-        <div key={c} className={`v3-vcard v3-c-${tones[i % tones.length]}`} style={cardSpots[i]}><span className="v3-dot">✓</span>{c}</div>
+        <div key={c} aria-hidden="true" className={`v3-vcard v3-c-${tones[i % tones.length]}`} style={cardSpots[i]}><span className="v3-dot">✓</span>{c}</div>
       ))}
-      {note && cards.length > 0 && <div className="v3-shapes__note"><span className="v3-example">{note}</span></div>}
+      {mark && cards.length > 0 ? <div className="v3-shapes__mark">{mark}</div> : note && cards.length > 0 && <div className="v3-shapes__note"><span className="v3-example">{note}</span></div>}
     </div>
   )
 }
 
 /** Floating example cards inside a chapter visual. */
-export function CardsVisual({ cards, note = "Example" }: { cards: string[]; note?: string | null }) {
+export function CardsVisual({ cards, note = "Example", mark }: { cards: string[]; note?: string | null; mark?: ReactNode }) {
   const spots: CSSProperties[] = [
     { left: "8%", top: "14%" },
     { right: "8%", top: "42%", animationDelay: "-2s" },
     { left: "16%", bottom: "14%", animationDelay: "-4s" },
   ]
   return (
-    <div className="v3-visual" aria-hidden="true">
-      {cards.slice(0, 3).map((c, i) => <div key={c} className="v3-vcard" style={spots[i]}><span className="v3-dot">✓</span>{c}</div>)}
-      {note && <div className="v3-visual__note"><span className="v3-example">{note}</span></div>}
+    <div className="v3-visual" aria-hidden={mark ? undefined : true}>
+      {cards.slice(0, 3).map((c, i) => <div key={c} aria-hidden="true" className="v3-vcard" style={spots[i]}><span className="v3-dot">✓</span>{c}</div>)}
+      {mark ? <div className="v3-visual__mark">{mark}</div> : note && <div className="v3-visual__note"><span className="v3-example">{note}</span></div>}
     </div>
   )
 }
@@ -125,7 +141,9 @@ export function Chapter({ tone, eyebrow, eyebrowNote, a, b, as = "h2", body, poi
 }
 
 /** One chapter per service, built from content/services.tsx. */
-export function ServiceChapter({ slug, growthNote, flip, visual, as, home }: { slug: ServiceSlug; growthNote?: string; flip?: boolean; visual?: ReactNode; as?: "h2" | "h3"; home?: boolean }) {
+/** `marks` (homepage): footnote markers instead of the "Example" chip (visual) and the
+ *  availability line (note, shown after the body). The notes live in the page's Notes block. */
+export function ServiceChapter({ slug, growthNote, flip, visual, as, home, marks }: { slug: ServiceSlug; growthNote?: string; flip?: boolean; visual?: ReactNode; as?: "h2" | "h3"; home?: boolean; marks?: { visual?: ReactNode; note?: ReactNode } }) {
   const sv = SERVICE_BY_SLUG[slug]
   const v = SVC[slug]
   return (
@@ -136,13 +154,13 @@ export function ServiceChapter({ slug, growthNote, flip, visual, as, home }: { s
       a={home ? v.home.a : v.a}
       b={home ? v.home.b : v.b}
       as={as}
-      body={home ? v.home.body : sv.feature.body}
+      body={<>{home ? v.home.body : sv.feature.body}{marks?.note}</>}
       points={sv.feature.points}
       proof={v.proof}
-      note={sv.plan !== "starter" ? sv.availability : undefined}
+      note={sv.plan !== "starter" && !marks?.note ? sv.availability : undefined}
       href={`/services/${slug}`}
       hrefLabel={`Learn more about ${v.pill.toLowerCase().replace("seo & ai", "SEO & AI")}`}
-      visual={visual ?? <CardsVisual cards={v.cards} />}
+      visual={visual ?? <CardsVisual cards={v.cards} mark={marks?.visual} />}
       flip={flip}
     />
   )

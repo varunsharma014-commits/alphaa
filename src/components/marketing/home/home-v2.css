@@ -61,19 +61,8 @@
 .hv-card__logo { position: absolute; left: 9%; bottom: 8%; font-weight: 700; font-size: 11px; padding: 5px 9px; border-radius: 6px; }
 
 /* Cost comparison */
-.hv-cost { max-width: 860px; margin: 44px auto 0; background: var(--hv-card); border-radius: 26px; padding: 8px 26px 26px; text-align: left; }
-.hv-cost__wrap { overflow-x: auto; }
-.hv-cost table { width: 100%; border-collapse: collapse; font-size: 16px; }
-.hv-cost th { text-align: left; font-size: 13px; color: var(--hv-muted); font-weight: 600; padding: 16px 8px 10px; }
-.hv-cost th:not(:first-child), .hv-cost td:not(:first-child) { text-align: right; }
-.hv-cost td { padding: 12px 8px; border-top: 1px solid var(--hv-line); }
-.hv-cost td:first-child { font-weight: 600; }
-.hv-cost input { width: 92px; font: inherit; text-align: right; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--hv-line); background: #fff; color: var(--hv-fg); font-variant-numeric: tabular-nums; }
 .hv-inc { display: inline-flex; align-items: center; gap: 6px; color: var(--hv-green); font-weight: 600; }
 .hv-inc svg { width: 16px; height: 16px; }
-.hv-cost tfoot td { border-top: 2px solid var(--hv-fg); font-size: 22px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.hv-save { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 18px; padding: 18px 20px; border-radius: 18px; background: var(--hv-fg); color: #fff; }
-.hv-save b { font-size: clamp(26px, 4vw, 36px); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .hv-why4 { max-width: 860px; margin: 18px auto 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--hv-card); border-radius: 26px; text-align: left; }
 .hv-why4 > div { padding: 26px 22px; min-width: 0; }
 .hv-why4 > div + div { border-left: 1px solid var(--hv-line); }
@@ -162,7 +151,6 @@
 .hv-switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.2); transition: transform .2s; }
 .hv-switch[aria-checked="true"] { background: var(--hv-green); }
 .hv-switch[aria-checked="true"]::after { transform: translateX(20px); }
-.hv-saved { margin-top: 18px; font-size: 15px; color: var(--hv-fg2); min-height: 24px; }
 
 /* Pricing */
 .hv-plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 44px; text-align: left; }
@@ -181,7 +169,6 @@
 .hv-plan__bill b { color: var(--hv-fg); font-weight: 600; }
 .hv-plan__fine { font-size: 12px; color: var(--hv-muted); margin-top: 8px; text-align: center; }
 .hv-plan__extra { font-size: 14px; color: var(--hv-fg2); margin-top: 14px; }
-.hv-cost__soon td { color: var(--hv-muted); }
 .hv-soon-tag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--hv-muted); border: 1px solid var(--hv-line); border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
 .hv-soon { margin: 16px auto 0; max-width: 720px; padding: 14px 20px; border: 1px dashed var(--hv-line); border-radius: 18px; font-size: 15px; color: var(--hv-fg2); }
 .hv-soon b { color: var(--hv-fg); margin-right: 6px; }
@@ -206,14 +193,6 @@
   .hv-band { padding-block: 72px; }
 }
 @media (prefers-reduced-motion: reduce) { .hv *, .hv *::after { animation: none !important; transition: none !important; } }
-@media (max-width: 600px) {
-  .hv-cost { padding: 4px 14px 16px; }
-  .hv-cost table { font-size: 15px; }
-  .hv-cost th, .hv-cost td { padding-left: 4px; padding-right: 4px; }
-  .hv-cost input { width: 66px; padding: 5px 6px; }
-  .hv-inc span { display: none; }
-  .hv-cost th:last-child { width: 1%; white-space: nowrap; }
-}
 
 /* Service pages */
 .hv-crumbs { font-size: 13px; color: var(--hv-muted); }
@@ -284,4 +263,55 @@
   background: var(--v-blue); opacity: .85; pointer-events: none;
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'%3E%3Cpath d='M4 16C42 7 96 5 140 8s48 6 56 2' fill='none' stroke='black' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
           mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'%3E%3Cpath d='M4 16C42 7 96 5 140 8s48 6 56 2' fill='none' stroke='black' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+/* Savings (2026-11-26): the core value prop. Count-up number in the chapters' palette, agency vs
+   Alphaa bars, then the editable agency quote. All numbers come from CostTable's own maths. */
+.hv-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.hv-sv { max-width: 920px; margin: 44px auto 0; text-align: left; border-radius: 32px; overflow: hidden; background: var(--v-card); box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 18px 50px rgba(0,0,0,.08); border: 1px solid var(--v-line); }
+.hv-sv__top { padding: clamp(28px, 5vw, 52px); text-align: center; background:
+  radial-gradient(60% 80% at 0% 0%, var(--mk-bg), transparent 70%),
+  radial-gradient(60% 80% at 100% 0%, var(--ad-bg), transparent 70%),
+  radial-gradient(70% 90% at 50% 110%, var(--se-bg), transparent 70%),
+  var(--v-card); }
+.hv-sv .hv-sv__kicker { font-size: 15px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--v-fg2); }
+.hv-sv .hv-sv__num { margin: 8px 0 6px; font-size: clamp(52px, 13vw, 128px); font-weight: 800; line-height: 1; letter-spacing: -0.045em; font-variant-numeric: tabular-nums;
+  color: var(--mk-ink); background: linear-gradient(95deg, var(--mk-ink) 0%, var(--em-ink) 38%, var(--ad-ink) 68%, var(--se-ink) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.hv-sv .hv-sv__line { font-size: clamp(17px, 2.2vw, 20px); color: var(--v-fg2); margin: 0 auto; max-width: 40ch; text-align: center; }
+.hv-sv__bars { display: grid; gap: 14px; margin: 32px auto 0; max-width: 680px; text-align: left; }
+.hv-sv__bar { display: grid; grid-template-columns: 116px minmax(0, 1fr) auto; align-items: center; gap: 14px; }
+.hv-sv__name { font-size: 15px; font-weight: 700; color: var(--v-fg); }
+.hv-sv__track { height: 18px; border-radius: 999px; background: color-mix(in srgb, var(--v-fg) 7%, transparent); overflow: hidden; }
+.hv-sv__track i { display: block; height: 100%; border-radius: 999px; transition: width .6s cubic-bezier(.2,.8,.2,1); }
+.hv-sv__bar--them .hv-sv__track i { background: repeating-linear-gradient(135deg, var(--v-fg2) 0 8px, color-mix(in srgb, var(--v-fg2) 80%, transparent) 8px 16px); }
+.hv-sv__bar--us .hv-sv__track i { background: linear-gradient(90deg, var(--mk), var(--em), var(--ad), var(--se)); }
+.hv-sv__bar b { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--v-fg); }
+.hv-sv__bar b small { font-size: 13px; font-weight: 600; color: var(--v-muted); margin-left: 2px; }
+.hv-sv__bar--them b { color: var(--v-fg2); text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: color-mix(in srgb, var(--mk) 70%, transparent); }
+.hv-sv__edit { padding: clamp(20px, 4vw, 36px); border-top: 1px solid var(--v-line); }
+.hv-sv .hv-sv__edit-h { font-weight: 700; color: var(--v-fg); margin-bottom: 12px; }
+.hv-sv__edit-h span { font-weight: 500; color: var(--v-muted); }
+.hv-sv__rows { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.hv-sv__rows li { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name in" "inc in"; align-items: center; column-gap: 10px; padding: 12px 14px; border-radius: 16px; background: var(--v-soft); min-width: 0; }
+.hv-sv__rows li > :first-child { grid-area: name; font-weight: 600; font-size: 15px; color: var(--v-fg); }
+.hv-sv__rows .hv-inc { grid-area: inc; font-size: 13px; }
+.hv-sv__rows .hv-inc svg { width: 14px; height: 14px; }
+.hv-sv__in { grid-area: in; display: inline-flex; align-items: center; gap: 2px; font-weight: 700; color: var(--v-fg2); background: var(--v-card); border: 1.5px solid var(--v-line2); border-radius: 12px; padding: 0 4px 0 10px; transition: border-color .15s, box-shadow .15s; }
+.hv-sv__in:focus-within { border-color: var(--ad); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ad) 18%, transparent); }
+.hv-sv__in input { width: 64px; font: inherit; font-weight: 700; font-size: 17px; text-align: right; padding: 9px 6px 9px 0; border: 0; background: transparent; color: var(--v-fg); font-variant-numeric: tabular-nums; outline: none; }
+.hv-sv__soon { opacity: .9; }
+.hv-sv__soon > span:nth-child(2) { grid-area: inc; font-size: 13px; color: var(--v-muted); }
+.hv-sv__soon .hv-soon-tag { grid-area: in; }
+.hv-sv .hv-sv__sum { display: flex; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; margin-top: 14px; font-size: 15px; color: var(--v-fg2); }
+.hv-sv__sum b { color: var(--v-fg); font-size: 18px; margin-left: 6px; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) {
+  .hv-sv__rows { grid-template-columns: minmax(0, 1fr); }
+  .hv-sv__bar { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name val" "track track"; row-gap: 6px; }
+  .hv-sv__name { grid-area: name; }
+  .hv-sv__track { grid-area: track; }
+  .hv-sv__bar b { grid-area: val; }
+}
+@media (prefers-reduced-motion: reduce) { .hv-sv__track i { transition: none; } }
+@media (prefers-color-scheme: dark) {
+  :root:has(.v3-page) .hv-sv__num { color: var(--mk); background-image: linear-gradient(95deg, var(--mk) 0%, var(--em) 38%, var(--ad) 68%, var(--se) 100%); }
 }

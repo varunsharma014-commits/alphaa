@@ -16,7 +16,9 @@ import { GROWTH_ON_SALE } from "@/lib/growth"
 import { AUTHOR } from "@/lib/author"
 import { HomePlans } from "./HomePlans"
 import { WithWithout } from "./WithWithout"
-import { Frame, Section, ServicePills, HeroShapes, ServiceChapter, FinalCta, Head, SVC_ORDER } from "@/components/marketing/v3"
+import { Frame, Section, ServicePills, HeroShapes, ServiceChapter, FinalCta, Head, NoteRef, SVC_ORDER } from "@/components/marketing/v3"
+import { HOME_NOTE as N } from "./home-notes"
+import type { ServiceSlug } from "@/content/services"
 import { FollowTheme } from "@/components/marketing/v3/FollowTheme"
 
 const GREET: StartGreet = {
@@ -26,6 +28,11 @@ const GREET: StartGreet = {
   idleHint: "Type your website and I’ll start working on it right now.",
   agentLabel: "AI agent · online",
 }
+
+// Ads (Growth, early access) comes after the live services on the homepage.
+const HOME_ORDER: ServiceSlug[] = [...SVC_ORDER.filter((s) => s !== "ads-management"), "ads-management"]
+// Footnote for each chapter's availability line (moved to the Notes block).
+const CHAPTER_NOTE: Partial<Record<ServiceSlug, number>> = { "social-media-management": N.social, "email-marketing": N.email, "ads-management": N.ads }
 
 export function HomeV2() {
   const growthNote = GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access"
@@ -47,7 +54,7 @@ export function HomeV2() {
           </div>
           <p className="v3-fine">Month to month. Cancel online in a minute.</p>
         </div>
-        <HeroShapes cards={["3 posts ready for this week", "Replied to Sarah’s review", "ChatGPT named you"]} tones={["mk", "ad", "se", "ct"]} />
+        <HeroShapes cards={["3 posts ready for this week", "Replied to Sarah’s review", "ChatGPT named you"]} tones={["mk", "ad", "se", "ct"]} mark={<NoteRef n={N.examples} />} />
       </Section>
 
       {/* The real agent (same conversation as /start), straight under the hero: the website typed
@@ -64,13 +71,14 @@ export function HomeV2() {
           <Head kicker="What your agent does" title="One agent. All your marketing." />
         </div>
         <div className="v3-chapters">
-          {SVC_ORDER.map((slug) => (
+          {HOME_ORDER.map((slug) => (
             <ServiceChapter
               home
               key={slug}
               slug={slug}
               growthNote={growthNote}
-              visual={slug === "ai-search-optimization" ? <div className="v3-visual v3-visual--fit"><AiAnswers /></div> : undefined}
+              marks={{ visual: <NoteRef n={N.examples} />, note: CHAPTER_NOTE[slug] ? <NoteRef n={CHAPTER_NOTE[slug]!} /> : undefined }}
+              visual={slug === "ai-search-optimization" ? <div className="v3-visual v3-visual--fit"><AiAnswers mark={<NoteRef n={N.aiAnswer} />} /></div> : undefined}
             />
           ))}
         </div>
@@ -80,12 +88,12 @@ export function HomeV2() {
       <Section center>
         <h2 className="v3-h2">Fire your expensive<br /><span className="v3-blue">marketing agency.</span></h2>
         <p className="v3-lede">Paying an agency for each piece adds up fast, and you still end up chasing them for updates. One AI agent does the work every week, for a fraction of the price.</p>
-        <CostTable />
+        <CostTable mark={<NoteRef n={N.agency} />} />
       </Section>
 
       {/* Insights: the pain is guessing */}
       <Section center>
-        <Head kicker="No more guessing" title={<>Marketing shouldn’t be your<br />second full-time job.</>} lede="Most owners spend money on marketing and just hope. Every week I tell you, in plain English, what brought you customers, what’s quietly losing them, and what your competitors are doing. Then I fix it." />
+        <Head kicker="No more guessing" title={<>Marketing shouldn’t be your<br />second full-time job.<NoteRef n={N.dental} /></>} lede="Most owners spend money on marketing and just hope. Every week I tell you, in plain English, what brought you customers, what’s quietly losing them, and what your competitors are doing. Then I fix it." />
         <div className="hv-ins">
           <div className="up"><h3>Bringing you customers</h3><ul>
             <li>“dentist near me” brought <span className="hv-num">41</span> clicks this month, up <span className="hv-num">11</span>.</li>
@@ -100,7 +108,6 @@ export function HomeV2() {
             <li>They posted twice this week.</li>
           </ul></div>
         </div>
-        <p style={{ marginTop: 18 }}><span className="v3-example">Illustrative example: a sample dental practice, not real customer data</span></p>
       </Section>
 
       {/* Brand + voice: the pain is writing */}
@@ -125,7 +132,7 @@ export function HomeV2() {
       {/* Pricing: Growth (anchor) → Pro (recommended) → Starter, monthly / annual (2026-11-26) */}
       <Section center id="pricing">
         <h2 className="v3-h2">Pick how much I take off your plate.</h2>
-        <HomePlans />
+        <HomePlans growthMark={<NoteRef n={N.growth} />} />
         <p className="hv-guar">{GUARANTEE_LINE}</p>
         <p className="v3-fine"><Link className="v3-link" href="/pricing">Compare all plans ›</Link></p>
       </Section>

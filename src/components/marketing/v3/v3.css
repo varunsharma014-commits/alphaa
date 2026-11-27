@@ -222,14 +222,6 @@ a.v3-card:hover { transform: translateY(-2px); box-shadow: var(--v-shadow); }
 .v3-prompt .ag-window { margin-top: 0; }
 
 /* Final CTA panel */
-.v3-final { background: var(--v-ink); color: var(--v-inkfg); border-radius: 32px; padding: 56px 32px; text-align: center; }
-.v3-final h2 { color: var(--v-inkfg); font-size: clamp(32px, 5vw, 56px); font-weight: 700; }
-.v3-final h2 span { color: color-mix(in srgb, var(--v-inkfg) 62%, transparent); }
-.v3-final p { color: color-mix(in srgb, var(--v-inkfg) 72%, transparent); margin-top: 14px; }
-.v3-final p a { color: var(--v-inkfg); text-decoration: underline; }
-.v3-final .v3-btn { background: var(--v-inkfg); color: var(--v-ink) !important; border-color: var(--v-inkfg); margin-top: 26px; }
-.v3-final .v3-btn--ghost { background: transparent; color: var(--v-inkfg) !important; border-color: color-mix(in srgb, var(--v-inkfg) 40%, transparent); }
-.v3-final__extra { max-width: 620px; margin: 30px auto 0; font-size: 14px; }
 
 /* Older homepage widgets (HomeV2Client) inside v3: fix their hard-coded whites for dark mode. */
 .v3 .hv-cost, .v3 .hv-why4, .v3 .hv-toggles { background: var(--v-soft); }
@@ -257,7 +249,6 @@ a.v3-card:hover { transform: translateY(-2px); box-shadow: var(--v-shadow); }
   .v3-mosaic, .v3-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .v3-sec { padding-block: 56px; }
   .v3-stage { padding: 14px; border-radius: 22px; }
-  .v3-final { padding: 44px 20px; border-radius: 26px; }
   .v3-shapes { max-width: 320px; }
 }
 @media (max-width: 420px) {
@@ -308,3 +299,87 @@ a.v3-card:hover { transform: translateY(-2px); box-shadow: var(--v-shadow); }
 .v3-float a span { font-size: 12px; font-weight: 400; opacity: .78; }
 .v3-float--off { transform: translateY(80px); opacity: 0; pointer-events: none; }
 @media (max-width: 767px) { .v3-float { display: flex; } }
+
+/* Final CTA (2026-11-26): the chapters' colour system instead of black. Soft tints with the
+   palette's blobs in the corners; body text stays --v-fg (AA on every tint), button stays ink. */
+.v3-final { position: relative; overflow: hidden; color: var(--v-fg); border-radius: 32px; padding: 64px 32px; text-align: center; isolation: isolate;
+  background:
+    radial-gradient(42% 60% at 0% 0%, var(--mk-2), transparent 72%),
+    radial-gradient(40% 60% at 100% 0%, var(--ad-2), transparent 72%),
+    radial-gradient(42% 60% at 100% 100%, var(--se-2), transparent 72%),
+    radial-gradient(40% 60% at 0% 100%, var(--ct-2), transparent 72%),
+    linear-gradient(135deg, var(--mk-bg), var(--em-bg) 50%, var(--ad-bg)); }
+.v3-final h2 { color: var(--v-fg); font-size: clamp(32px, 5vw, 56px); font-weight: 700; }
+.v3-final h2 span { color: var(--em); }
+.v3-final p { color: var(--v-fg2); margin-top: 14px; }
+.v3-final p a { color: var(--v-fg); text-decoration: underline; text-underline-offset: 2px; }
+.v3-final .v3-btn { margin-top: 26px; }
+.v3-final .v3-btn--ghost { background: color-mix(in srgb, var(--v-card) 70%, transparent); color: var(--v-fg) !important; border-color: color-mix(in srgb, var(--v-fg) 30%, transparent); }
+.v3-final__extra { max-width: 620px; margin: 30px auto 0; font-size: 14px; }
+@media (max-width: 720px) { .v3-final { padding: 44px 20px; border-radius: 26px; } }
+
+/* Footnote markers + the numbered Notes block (small print kept on the same page). */
+.v3-sup { font-size: 11px; line-height: 0; vertical-align: super; margin-left: 2px; font-weight: 700; letter-spacing: 0; }
+.v3-sup a { color: var(--v-muted) !important; text-decoration: none; padding: 2px 3px; border-radius: 4px; }
+.v3-sup a:hover, .v3-sup a:focus-visible { color: var(--v-fg) !important; text-decoration: underline; }
+h1 .v3-sup, h2 .v3-sup { font-size: 15px; }
+h3 .v3-sup { font-size: 12px; }
+.v3-shapes__mark, .v3-visual__mark { position: absolute; right: 12px; bottom: 8px; font-size: 22px; }
+.v3-shapes__mark { right: 4px; bottom: -6px; }
+.v3-notes { padding-block: 8px 40px; }
+.v3-notes h2 { font-size: 15px; font-weight: 700; color: var(--v-fg2); margin: 0 0 10px; letter-spacing: 0; }
+.v3-notes ol { list-style: decimal; margin: 0; padding-left: 22px; display: grid; gap: 8px; font-size: 13px; line-height: 1.55; color: var(--v-muted); max-width: 90ch; }
+.v3-notes li { padding-left: 4px; scroll-margin-top: 96px; }
+.v3-notes li:target { color: var(--v-fg); background: color-mix(in srgb, var(--ct-2) 60%, transparent); border-radius: 8px; }
+
+/* Footer market picker popover (MarketSwitcher). Scoped under .v3-foot to override its link/list rules. */
+.v3-foot .ms { position: relative; display: inline-block; }
+.v3-foot .ms__btn { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 10px; margin: -6px -10px; border-radius: 10px; background: none; border: 0; cursor: pointer; font: inherit; font-size: 13px; }
+.v3-foot .ms__btn:hover { background: var(--v-soft); text-decoration: none; }
+.v3-foot .ms__btn:focus-visible { outline: 2px solid var(--v-blue); outline-offset: 2px; }
+.v3-foot .ms__btn svg { width: 14px; height: 14px; flex: none; }
+.v3-foot .ms__chev { transition: transform .15s; }
+.v3-foot .ms--open .ms__chev { transform: rotate(180deg); }
+.v3-foot .ms__pop { position: absolute; z-index: 60; top: calc(100% + 8px); left: -10px; width: 264px; margin: 0; padding: 6px; list-style: none; display: flex; flex-direction: column; gap: 0;
+  background: var(--v-card); border: 1px solid var(--v-line2); border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 12px 32px -6px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.06);
+  transform-origin: top left; animation: ms-in .14s ease-out; }
+.v3-foot .ms__pop[hidden] { display: none; }
+.v3-foot .ms__pop--up { top: auto; bottom: calc(100% + 8px); transform-origin: bottom left; }
+.v3-foot .ms__pop--end { left: auto; right: -10px; transform-origin: bottom right; }
+.v3-foot .ms__item { display: flex; align-items: center; gap: 10px; min-height: 38px; padding: 0 10px; border-radius: 9px; color: var(--v-fg) !important; text-decoration: none !important; font-size: 13.5px; outline: none; }
+.v3-foot .ms__item:hover, .v3-foot .ms__item:focus-visible { background: var(--v-soft); }
+.v3-foot .ms__item:focus-visible { box-shadow: inset 0 0 0 2px var(--v-blue); }
+.v3-foot .ms__item[aria-current="true"] { font-weight: 600; }
+.v3-foot .ms__code { flex: none; width: 28px; text-align: center; font-size: 10.5px; font-weight: 700; letter-spacing: .04em; color: var(--v-muted); background: var(--v-soft); border: 1px solid var(--v-line); border-radius: 6px; padding: 2px 0; }
+.v3-foot .ms__item:hover .ms__code, .v3-foot .ms__item:focus-visible .ms__code { background: var(--v-card); }
+.v3-foot .ms__label { flex: 1 1 auto; min-width: 0; }
+.v3-foot .ms__check { flex: none; width: 15px; height: 15px; color: var(--v-blue); }
+.v3-foot .ms__scrim { display: none; }
+@keyframes ms-in { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
+@media (max-width: 600px) {
+  .v3-foot .ms__scrim { display: block; position: fixed; inset: 0; z-index: 59; background: rgba(0,0,0,.28); }
+  .v3-foot .ms__pop, .v3-foot .ms__pop--up, .v3-foot .ms__pop--end { position: fixed; top: auto; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom, 0px)); width: auto; padding: 8px; border-radius: 18px; transform-origin: bottom center; }
+  .v3-foot .ms__item { min-height: 44px; font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { .v3-foot .ms__pop { animation: none; } .v3-foot .ms__chev { transition: none; } }
+.v3-notes li::marker { color: var(--v-fg2); font-weight: 700; }
+
+/* Example playbooks (/case-studies/<slug>, PlaybookStudy). */
+.pb-toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.pb-toc a { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: var(--v-card); color: var(--v-fg) !important; text-decoration: none; border: 1px solid var(--v-line); }
+.pb-toc a:hover { border-color: var(--cc); }
+.pb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 14px; margin-top: 14px; }
+.pb-block { scroll-margin-top: 96px; }
+.pb-block h2 { margin: 0; }
+.pb-block .pb-h3 { font-size: 15px; font-weight: 700; color: var(--v-fg); margin: 18px 0 0; }
+.pb-q li { color: var(--v-fg); font-weight: 500; }
+.pb-social { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 10px; margin-top: 12px; }
+.pb-card { background: var(--v-card); border-radius: 16px; padding: 10px; min-width: 0; }
+.pb-card__img { aspect-ratio: 1; border-radius: 12px; background: var(--ci, var(--v-ink)); color: #fff; display: grid; place-items: center; padding: 14px; text-align: center; font-weight: 800; font-size: 17px; line-height: 1.15; letter-spacing: -0.02em; }
+.pb-card p { font-size: 13.5px; margin-top: 8px; }
+.pb-timeline { margin-top: 14px; padding: 24px; border-radius: 22px; background: var(--cb); scroll-margin-top: 96px; }
+.pb-steps { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 12px; }
+.pb-steps > li { background: var(--v-card); border-radius: 18px; padding: 18px; min-width: 0; }
+.pb-steps h3 { font-size: 17px; font-weight: 700; color: var(--ci, var(--v-fg)); }
+.pb-steps ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: var(--v-fg2); }

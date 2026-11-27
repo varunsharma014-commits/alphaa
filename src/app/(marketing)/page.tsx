@@ -2,6 +2,7 @@ import { PLAN_NAMES, PLAN_PRICES } from "@/lib/constants"
 import type { Metadata } from "next"
 import { FaqSection } from "@/components/marketing/FaqSection"
 import { HomeV2, HomeV2Final } from "@/components/marketing/home/HomeV2"
+import { HomeNotes } from "@/components/marketing/home/home-notes"
 import { faqs } from "@/components/marketing/faq-data"
 import { ScrollReveal } from "@/components/marketing/ScrollReveal"
 import { pageMeta } from "@/lib/seo"
@@ -65,6 +66,9 @@ export default function HomePage() {
       <Frame><FaqSection /></Frame>
 
       <HomeV2Final />
+
+      {/* The page's small print, numbered; each marker above links to its note. */}
+      <Frame><HomeNotes /></Frame>
     </V3Page>
   )
 }

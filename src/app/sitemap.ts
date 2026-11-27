@@ -8,6 +8,8 @@ import { HREFLANG, LOCALE_LIST, MARKETS, type LocaleKey } from "@/content/locale
 import { GUIDES } from "@/content/markets/guides"
 import { tradeAlternates } from "@/content/markets/equivalents"
 import { SERVICES, SERVICES_UPDATED } from "@/content/services"
+import { caseStudies } from "@/app/(marketing)/case-studies/data"
+import { playbooks } from "@/app/(marketing)/case-studies/playbooks"
 
 const BASE_URL = "https://alphaa.app"
 
@@ -23,7 +25,7 @@ const PAGE_UPDATED: Record<string, string> = {
   "/about": "2026-11-14",
   "/how-it-works": "2026-11-17",
   "/scan": "2026-10-29",
-  "/case-studies": "2026-10-29",
+  "/case-studies": "2026-11-26",
   "/refer": "2026-10-29",
   "/author/varun-sharma": "2026-10-29",
   "/markets": "2026-11-14", // the /uk /de /fr /it /ae /ae/ar pages
@@ -161,6 +163,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    // Each example has its own page (illustrative examples, not customer stories).
+    ...[...playbooks, ...caseStudies].map((c) => ({
+      url: `${BASE_URL}/case-studies/${c.slug}`,
+      lastModified: updated("/case-studies"),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     {
       url: `${BASE_URL}/refer`,
       lastModified: updated("/refer"),

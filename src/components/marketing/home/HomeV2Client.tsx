@@ -31,33 +31,89 @@ const COSTS: [string, number][] = [["Social media management", 1200], ["SEO & AE
 const ALPHAA = PLAN_PRICES.pro.monthly
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`
 
-export function CostTable() {
+/** Counts up to `to` the first time it scrolls into view (from the last shown value on later edits).
+ *  Until then, on the server and with reduced motion it shows the final number (never a stray $0). */
+function useCountUp(to: number, root: React.RefObject<HTMLElement | null>) {
+  const [shown, setShown] = useState(to)
+  const seen = useRef(false)
+  const from = useRef(to)
+  const raf = useRef(0)
+  useEffect(() => {
+    const run = (start: number, dur: number) => {
+      cancelAnimationFrame(raf.current)
+      const t0 = performance.now()
+      const step = (now: number) => {
+        const p = Math.min(1, (now - t0) / dur)
+        const v = start + (to - start) * (1 - (1 - p) ** 3)
+        from.current = v
+        setShown(v)
+        if (p < 1) raf.current = requestAnimationFrame(step)
+      }
+      raf.current = requestAnimationFrame(step)
+    }
+    if (reduced()) { from.current = to; setShown(to); return }
+    if (seen.current) { run(from.current, 450); return () => cancelAnimationFrame(raf.current) }
+    const el = root.current
+    if (!el || typeof IntersectionObserver === "undefined") { seen.current = true; from.current = to; setShown(to); return }
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return
+      io.disconnect()
+      seen.current = true
+      run(0, 1400)
+    }, { threshold: 0.4 })
+    io.observe(el)
+    return () => { io.disconnect(); cancelAnimationFrame(raf.current) }
+  }, [to, root])
+  return shown
+}
+
+export function CostTable({ mark }: { mark?: React.ReactNode } = {}) {
   const [vals, setVals] = useState(COSTS.map(([, v]) => String(v)))
   const total = vals.reduce((t, v) => t + (Number(v.replace(/[^\d.]/g, "")) || 0), 0)
+  const agencyYear = total * 12
+  const alphaaYear = ALPHAA * 12
+  const keep = Math.max(0, agencyYear - alphaaYear)
+  const root = useRef<HTMLDivElement>(null)
+  const shown = useCountUp(keep, root)
+  const max = Math.max(agencyYear, alphaaYear, 1)
   return (
-    <div className="hv-cost">
-      <div className="hv-cost__wrap">
-        <table>
-          <thead><tr><th>Service</th><th>Marketing agency, per month</th><th>Your AI agent</th></tr></thead>
-          <tbody>
-            {COSTS.map(([name], i) => (
-              <tr key={name}>
-                <td>{name}</td>
-                <td style={{ whiteSpace: "nowrap" }}>$<input type="text" inputMode="numeric" value={vals[i]} aria-label={`Agency monthly cost for ${name}`} onChange={(e) => setVals((v) => v.map((x, j) => (j === i ? e.target.value : x)))} /></td>
-                <td><span className="hv-inc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7" /></svg><span>Included</span></span></td>
-              </tr>
-            ))}
-            <tr className="hv-cost__soon">
-              <td>Ads management</td>
-              <td>Not counted</td>
-              <td><span className="hv-soon-tag">Growth · early access</span></td>
-            </tr>
-          </tbody>
-          <tfoot><tr><td>Total</td><td>{money(total)}</td><td>{money(ALPHAA)}</td></tr></tfoot>
-        </table>
+    <div className="hv-sv" ref={root}>
+      <div className="hv-sv__top">
+        <p className="hv-sv__kicker">You keep, every year{mark}</p>
+        <p className="hv-sv__num" aria-hidden="true">{money(shown)}</p>
+        <p className="hv-sr" aria-live="polite">You keep {money(keep)} every year.</p>
+        <p className="hv-sv__line">Put it back into your business, not an agency’s.</p>
+        <div className="hv-sv__bars" role="img" aria-label={`Agency stack ${money(agencyYear)} a year. Alphaa Pro ${money(alphaaYear)} a year.`}>
+          <div className="hv-sv__bar hv-sv__bar--them">
+            <span className="hv-sv__name">Agency stack</span>
+            <span className="hv-sv__track"><i style={{ width: `${(agencyYear / max) * 100}%` }} /></span>
+            <b>{money(agencyYear)}<small>/yr</small></b>
+          </div>
+          <div className="hv-sv__bar hv-sv__bar--us">
+            <span className="hv-sv__name">Alphaa Pro</span>
+            <span className="hv-sv__track"><i style={{ width: `${Math.max(2, (alphaaYear / max) * 100)}%` }} /></span>
+            <b>{money(alphaaYear)}<small>/yr</small></b>
+          </div>
+        </div>
       </div>
-      <div className="hv-save"><span>You keep, every year</span><b>{money(Math.max(0, (total - ALPHAA) * 12))}</b></div>
-      <p className="hv-fine">Agency prices are an example quote. Change them to yours. Alphaa price is the Pro plan. Ads management is on the Growth plan (early access) and isn’t counted.</p>
+      <div className="hv-sv__edit">
+        <p className="hv-sv__edit-h">Your agency quote, per month. <span>Change any number to yours.</span></p>
+        <ul className="hv-sv__rows">
+          {COSTS.map(([name], i) => (
+            <li key={name}>
+              <label htmlFor={`hv-cost-${i}`}>{name}</label>
+              <span className="hv-sv__in">$<input id={`hv-cost-${i}`} type="text" inputMode="numeric" value={vals[i]} onChange={(e) => setVals((v) => v.map((x, j) => (j === i ? e.target.value : x)))} /></span>
+              <span className="hv-inc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7" /></svg><span>Included in Pro</span></span>
+            </li>
+          ))}
+          <li className="hv-sv__soon">
+            <span>Ads management</span>
+            <span>Not counted</span>
+            <span className="hv-soon-tag">Growth · early access</span>
+          </li>
+        </ul>
+        <p className="hv-sv__sum"><span>Agency, per month <b>{money(total)}</b></span><span>Alphaa Pro, per month <b>{money(ALPHAA)}</b></span></p>
+      </div>
     </div>
   )
 }
@@ -107,16 +163,16 @@ const ANSWERS: Record<string, string[]> = {
   Claude: ["Bright Smile Dental", "Zilker Smiles"],
   Perplexity: ["SmileNow", "Barton Family Dental", "Bright Smile Dental"],
 }
-export function AiAnswers() {
+export function AiAnswers({ mark }: { mark?: React.ReactNode } = {}) {
   const [eng, setEng] = useState("ChatGPT")
   return (
     <div className="hv-answer">
       <div className="hv-chips" role="group" aria-label="AI assistant">
         {Object.keys(ANSWERS).map((e) => <button key={e} type="button" className="hv-chip" aria-pressed={eng === e} onClick={() => setEng(e)}>{e}</button>)}
       </div>
-      <p className="hv-answer__q">“Who’s a good family dentist near me that’s open Saturdays?”</p>
+      <p className="hv-answer__q">“Who’s a good family dentist near me that’s open Saturdays?”{mark}</p>
       <ol>{ANSWERS[eng].map((n) => <li key={n}>{n === "Bright Smile Dental" ? <mark>{n}</mark> : n}</li>)}</ol>
-      <p style={{ marginTop: 14 }}><span className="hv-example">Example answer</span></p>
+      {!mark && <p style={{ marginTop: 14 }}><span className="hv-example">Example answer</span></p>}
     </div>
   )
 }
