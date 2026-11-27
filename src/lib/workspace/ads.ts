@@ -134,7 +134,7 @@ export async function getAdsData(user: User): Promise<AdsData> {
   if (!plan) {
     const latest = await latestStrategy(user.id).catch(() => null)
     if (latest?.status === "running" && Date.now() - Date.parse(latest.at) < 15 * 60_000) planState = "running"
-    else if (hasPro(user) && (await checkQuota(user, "ad_plan", { record: false })).allowed && startStrategy(user.id)) planState = "running"
+    else if (hasPro(user) && (await checkQuota(user, "ad_plan", { record: false, credits: false })).allowed && startStrategy(user.id)) planState = "running"
   }
   const audience = plan?.business ? (plan.business.local ? `People near ${plan.business.markets}` : `People in ${plan.business.markets}`) : ""
   const firstAds: FirstAd[] = []

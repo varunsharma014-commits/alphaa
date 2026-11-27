@@ -60,7 +60,7 @@ export async function POST(req: Request) {
   if (mode === "post" || mode === "gbp" || mode === "social") {
     const r = await once(`draft:${user.id}:${mode}:${input.topic.trim().toLowerCase()}`, () => writeDraft(user, mode, input.topic))
     if (r.ok) return NextResponse.json(r.body)
-    return r.quota ? NextResponse.json({ error: r.quota, quota: true }, { status: 429 }) : NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
+    return r.quota ? NextResponse.json({ error: r.quota, quota: true, buy: true }, { status: 429 }) : NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
   }
 
   try {

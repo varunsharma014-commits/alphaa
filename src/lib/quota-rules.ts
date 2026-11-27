@@ -191,6 +191,12 @@ export type Decision = {
   bypassed?: boolean
   /** First-person words for the owner when not allowed. */
   message?: string
+  /** Credits spent to let this through after the plan quota ran out (lib/credit-rules.ts). */
+  credits?: number
+  /** Only looking (record: false): allowed because credits would cover it. */
+  wouldUseCredits?: boolean
+  /** Not allowed, but credits can extend it: what it would cost and what the brand has. Shows "Buy more". */
+  buy?: { need: number; balance: number; autoUse: boolean }
 }
 
 /** Thrown when a brand is out of a quota. `message` is first-person, safe to show the owner. */
@@ -287,11 +293,21 @@ export type UsageStore = {
   add(userId: string, kind: QuotaKind, n: number): void
 }
 
+/** Where credits come from (lib/credits.ts in the app, an in-memory ledger in the tests). */
+export type CreditProvider = {
+  /** The brand's live balance and whether it lets credits be used when a quota runs out. */
+  state(userId: string, now: Date): Promise<{ balance: number; autoUse: boolean }>
+  /** Record a spend (inside the limiter's lock, so two requests can't spend the same credits). */
+  spend(userId: string, credits: number, kind: QuotaKind, n: number): Promise<void>
+}
+
 /**
  * check(): counts every limited period, decides, and records the use when allowed, all inside a
- * per-brand lock, so a burst of parallel requests can't all slip past the last free slot.
+ * per-brand lock, so a burst of parallel requests can't all slip past the last free slot. Over the
+ * plan quota, credits (if a provider is given, the call allows them and the owner keeps auto-use
+ * on) pay for it at creditCost(kind) per unit: plan quota first, then credits.
  */
-export function createLimiter(store: UsageStore) {
+export function createLimiter(store: UsageStore, credits?: CreditProvider, costOf: (k: QuotaKind) => number | null = () => null) {
   const locks = new Map<string, Promise<unknown>>()
   async function locked<T>(key: string, fn: () => Promise<T>): Promise<T> {
     const prev = locks.get(key) ?? Promise.resolve()
@@ -313,12 +329,28 @@ export function createLimiter(store: UsageStore) {
     return used
   }
   return {
-    async check(s: Subject, kind: QuotaKind, opts: { n?: number; record?: boolean; now?: Date; limits?: Limits } = {}): Promise<Decision> {
+    async check(s: Subject, kind: QuotaKind, opts: { n?: number; record?: boolean; now?: Date; limits?: Limits; useCredits?: boolean } = {}): Promise<Decision> {
       const n = opts.n ?? 1
       const now = opts.now ?? new Date()
       const limits = opts.limits ?? limitsFor(s.plan, kind)
       return locked(s.userId, async () => {
-        const d = decide(kind, limits, await usedBy(s, kind, limits, now), n, s, now)
+        let d = decide(kind, limits, await usedBy(s, kind, limits, now), n, s, now)
+        const cost = costOf(kind)
+        if (!d.allowed && credits && cost !== null && cost > 0) {
+          const need = Math.round(cost * n * 1e6) / 1e6
+          const st = await credits.state(s.userId, now)
+          if (opts.useCredits !== false && st.autoUse && st.balance + 1e-9 >= need) {
+            if (opts.record === false) return { ...d, allowed: true, message: undefined, wouldUseCredits: true }
+            await credits.spend(s.userId, need, kind, n)
+            store.add(s.userId, kind, n)
+            return { ...d, allowed: true, message: undefined, credits: need, remaining: 0 }
+          }
+          const why = st.balance + 1e-9 >= need && !st.autoUse
+            ? ` You have ${fmtCredits(st.balance)} credits: turn on "Use credits when I run out" in Your rules and I'll use them.`
+            : opts.useCredits === false ? "" : " Buy more credits to keep going now."
+          d = { ...d, message: `${d.message ?? ""}${why}`, buy: { need, balance: st.balance, autoUse: st.autoUse } }
+          return d
+        }
         if (d.allowed && opts.record !== false) store.add(s.userId, kind, n)
         else if (d.allowed && d.remaining !== null) d.remaining += n // only looking: nothing was used
         if (d.bypassed) console.warn(`[quotas] comped account over ${kind} (${d.period} ${d.used}/${d.limit}), allowed`, s.userId)
@@ -333,6 +365,8 @@ export function createLimiter(store: UsageStore) {
     },
   }
 }
+
+export const fmtCredits = (n: number) => (Math.round(n * 10) / 10).toLocaleString("en-US")
 
 /** A public-endpoint counter (per UTC day, in memory): per-IP and global caps. */
 export function createPublicCounter() {

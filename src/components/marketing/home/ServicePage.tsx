@@ -17,7 +17,7 @@ export function ServicePage({ s }: { s: Service }) {
   // Not live yet (ads): Growth plan, early access until Google and Meta approve Alphaa.
   const soon = !!v.soon
   const priceLine = soon
-    ? `Part of the Growth plan (early access): $${PLAN_PRICES.growth.monthly} a month for 1 ad account, +$${EXTRA_AD_ACCOUNT_PRICE.monthly} a month per extra ad account. Ads open as Google and Meta approve Alphaa.`
+    ? `Part of the Growth plan (early access): $${PLAN_PRICES.growth.monthly} a month for 1 ad account, +$${EXTRA_AD_ACCOUNT_PRICE.monthly} a month per additional ad account (Google or Meta). Ads open as Google and Meta approve Alphaa.`
     : growth
     ? `Part of the Growth plan, $${PLAN_PRICES.growth.monthly} a month${GROWTH_ON_SALE ? "" : " (early access)"}.`
     : pro ? `Part of the Pro plan, $${PLAN_PRICES.pro.monthly} a month, and Growth.` : `From $${PLAN_PRICES.starter.monthly} a month.`

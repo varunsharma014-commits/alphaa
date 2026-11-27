@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 120
 
-import { isQuotaError } from "@/lib/quotas"
+import { isQuotaError, quotaBody } from "@/lib/quotas"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
           return createCampaign(user.id, { v: 1, status: "draft", ...c })
         })
       } catch (e) {
-        if (isQuotaError(e)) return err(e.message)
+        if (isQuotaError(e)) return NextResponse.json(...quotaBody(e))
         throw e
       }
       return reply(undefined, drafts.map((d) => agent([{ kind: "text", text: "Replaced with the new draft below." }], `em-draft-${d.id}`)).filter((m) => m.id !== `em-draft-${made.id}`))
@@ -133,7 +133,7 @@ export async function POST(req: Request) {
     case "send": {
       if (!input.id) return err("Which email?")
       const r = await startSend(user.id, input.id)
-      if (!r.ok) return err(r.error)
+      if (!r.ok) return r.quota ? NextResponse.json({ error: r.error, quota: true, buy: true }, { status: 429 }) : err(r.error)
       return reply(`Sending to ${r.count.toLocaleString("en-US")} customer${r.count === 1 ? "" : "s"} now. It takes a minute or two for a big list.`, [agent([{ kind: "text", text: "On its way." }], `em-draft-${input.id}`)])
     }
 

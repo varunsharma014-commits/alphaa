@@ -14,6 +14,7 @@
 import { AsyncLocalStorage } from "async_hooks"
 import { usageCost, estimateCallCost, type Tok as PriceTok } from "@/lib/ai-prices"
 import { limitsFor, periodStart, dayKey, QuotaError, quotaMessage, type QuotaKind, type Period } from "@/lib/quota-rules"
+import { aiHeadroom, CREDITS_PER_AI_DOLLAR } from "@/lib/credit-rules"
 
 // userId = the brand's User row id (exact). clerkId = set by auth() for any signed-in request,
 // resolved to the brand at flush time, so routes that never call currentUser() still count.
@@ -138,7 +139,7 @@ export function countUsage(userId: string, kind: QuotaKind | string, period: Per
 // AI_DAILY_BUDGET_USD (default 20) across everyone; crossing it pauses non-essential crons
 // (lib/quotas.ts cronAllowed). Costs are added as each call lands; an estimate is held while a
 // call is in flight so a burst can't overshoot.
-type BrandCost = { day: string; month: string; dayBase: number; monthBase: number; running: number; plan: string; comped: boolean; loadedAt: number; warned?: string }
+type BrandCost = { day: string; month: string; dayBase: number; monthBase: number; running: number; plan: string; comped: boolean; loadedAt: number; warned?: string; /** Credits spent today / this month: +$1 of AI ceiling per 10 (lib/credit-rules aiHeadroom). */ creditsDay: number; creditsMonth: number }
 const brandCost = new Map<string, BrandCost>()
 const loadingCost = new Set<string>()
 const reserved = new Map<string, number>()
@@ -192,7 +193,8 @@ async function loadBrandCost(userId: string): Promise<void> {
       if (who === userId || (who.startsWith("clerk:") && clerkToUser.get(who.slice(6)) === userId)) memMonth += dayCost(d)
     }
     const prev = brandCost.get(userId)
-    brandCost.set(userId, { day, month, dayBase: dayBase + memCost(userId, day), monthBase: monthBase + memMonth, running: 0, plan: isComped(u.email) ? "growth" : u.plan, comped: isComped(u.email), loadedAt: Date.now(), warned: prev?.warned })
+    const spent = await import("@/lib/credits").then((c) => c.creditsSpent(userId)).catch(() => ({ day: 0, month: 0 }))
+    brandCost.set(userId, { creditsDay: spent.day, creditsMonth: spent.month, day, month, dayBase: dayBase + memCost(userId, day), monthBase: monthBase + memMonth, running: 0, plan: isComped(u.email) ? "growth" : u.plan, comped: isComped(u.email), loadedAt: Date.now(), warned: prev?.warned })
   } catch (err) {
     console.error("[usage] cost load", err instanceof Error ? err.message : err)
   } finally {
@@ -246,7 +248,9 @@ function aiGate(key: string): QuotaError | null {
   const day = today()
   if (!b || b.day !== day || b.month !== monthKey() || Date.now() - b.loadedAt > RELOAD_MS) void loadBrandCost(key)
   if (!b || b.day !== day) return null // first call of the day for this brand: allowed while its numbers load
-  const limits = limitsFor(b.plan, "ai_cost_usd")
+  const base = limitsFor(b.plan, "ai_cost_usd")
+  // Credits spent today raise this brand's AI ceiling ($1 per 10); the platform budget never moves.
+  const limits = { day: base.day === undefined ? undefined : base.day + aiHeadroom(b.creditsDay), month: base.month === undefined ? undefined : base.month + aiHeadroom(b.creditsMonth) }
   const held = reserved.get(key) ?? 0
   const spentDay = b.dayBase + b.running + held
   const spentMonth = b.monthBase + b.running + held
@@ -258,7 +262,20 @@ function aiGate(key: string): QuotaError | null {
   }
   if (b.warned !== day) { b.warned = day; console.warn(`[usage] brand ${key} hit its ${over} AI ceiling ($${(over === "day" ? spentDay : spentMonth).toFixed(2)}); blocking AI calls`) }
   const limit = limits[over] ?? 0
-  return new QuotaError({ allowed: false, kind: "ai_cost_usd", period: over, limit, used: over === "day" ? spentDay : spentMonth, remaining: 0, message: quotaMessage("ai_cost_usd", over, limit, b.plan) })
+  return new QuotaError({ allowed: false, kind: "ai_cost_usd", period: over, limit, used: over === "day" ? spentDay : spentMonth, remaining: 0, message: `${quotaMessage("ai_cost_usd", over, limit, b.plan)} Buy more credits to keep going now.`, buy: { need: CREDITS_PER_AI_DOLLAR, balance: 0, autoUse: false } })
+}
+
+/** A credit spend (or give-back) for this brand: moves its AI ceiling at once. */
+export function noteCreditsSpent(userId: string, credits: number): void {
+  const b = brandCost.get(userId)
+  if (!b || b.day !== today()) return
+  b.creditsDay += credits
+  b.creditsMonth += credits
+}
+
+/** True inside a signed-in owner's own request (auth()/currentUser()); false in crons and background work. */
+export function ownerRequest(): boolean {
+  return !!als.getStore()?.clerkId
 }
 
 /** Today's and this month's AI spend for a brand, as the ceiling sees it (dashboards). */
@@ -373,9 +390,18 @@ export function installUsageMeter(client: { messages: { create: unknown } }): vo
   m.create = (...args: unknown[]) => {
     const body = args[0] as { model?: string; stream?: boolean; max_tokens?: number; messages?: unknown; system?: unknown } | undefined
     const key = ctxKey()
-    // Over this brand's AI ceiling: no call leaves the server (lib/quota-rules ai_cost_usd).
+    // Over this brand's AI ceiling: no call leaves the server (lib/quota-rules ai_cost_usd). In the
+    // owner's own request, 10 credits buy $1 more headroom today (auto-use on, balance covers it).
     const block = aiGate(key)
-    if (block) return Promise.reject(block)
+    if (block) {
+      if (!ownerRequest() || key === HOUSE || key.startsWith("clerk:")) return Promise.reject(block)
+      return import("@/lib/credits").then((c) => c.buyAiHeadroom(key)).catch(() => false).then((bought) => {
+        if (bought && !aiGate(key)) return go()
+        throw block
+      })
+    }
+    return go()
+    function go() {
     let hold = 0
     if (body && key !== HOUSE) {
       let chars = 0
@@ -399,5 +425,6 @@ export function installUsageMeter(client: { messages: { create: unknown } }): vo
       () => release(),
     )
     return p
+    }
   }
 }

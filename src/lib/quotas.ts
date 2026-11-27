@@ -8,16 +8,37 @@
 // Comped / founder accounts are counted but never blocked.
 import { db } from "@/lib/db"
 import { isComped } from "@/lib/billing"
-import { currentBrandId, tallyUsage, usedSince, platformSpendToday, aiDailyBudget, countUsage, flush } from "@/lib/usage"
+import { currentBrandId, tallyUsage, usedSince, platformSpendToday, aiDailyBudget, countUsage, flush, ownerRequest } from "@/lib/usage"
+import { creditCost } from "@/lib/credit-rules"
 import { createLimiter, createPublicCounter, isQuotaError, limitsFor, QuotaError, type Decision, type Limits, type QuotaKind, type Subject } from "@/lib/quota-rules"
 
 export { countUsage, isQuotaError, QuotaError }
 export type { QuotaKind, Decision }
 
-const limiter = createLimiter({
-  used: (userId, kind, since) => usedSince(userId, kind, since),
-  add: (userId, kind, n) => tallyUsage(userId, kind, n),
-})
+// Credits spent per (brand, kind) in the last minutes, so refundQuota can give them back when the work fails.
+const recentSpends = new Map<string, { credits: number; at: number }[]>()
+const limiter = createLimiter(
+  {
+    used: (userId, kind, since) => usedSince(userId, kind, since),
+    add: (userId, kind, n) => tallyUsage(userId, kind, n),
+  },
+  {
+    async state(userId, now) {
+      const { creditState } = await import("@/lib/credits")
+      const st = await creditState(userId, now)
+      return { balance: st.balance, autoUse: st.autoUse }
+    },
+    async spend(userId, credits, kind, n) {
+      const { spendCredits } = await import("@/lib/credits")
+      await spendCredits(userId, credits, kind, n)
+      const k = `${userId}|${kind}`
+      const list = (recentSpends.get(k) ?? []).filter((x) => Date.now() - x.at < 15 * 60_000)
+      list.push({ credits, at: Date.now() })
+      recentSpends.set(k, list)
+    },
+  },
+  (kind) => creditCost(kind),
+)
 
 type U = { id: string; plan: string; email?: string | null }
 const subjects = new Map<string, { s: Subject; at: number }>()
@@ -56,11 +77,15 @@ async function limitsOf(s: Subject, kind: QuotaKind): Promise<Limits> {
  * Is there room for `n` more of `kind` for this brand? Records the use when allowed (pass
  * `record: false` to only look). A user row is preferred (no lookup); an id works too.
  */
-export async function checkQuota(user: U | string, kind: QuotaKind, opts: { n?: number; record?: boolean } = {}): Promise<Decision> {
+export async function checkQuota(user: U | string, kind: QuotaKind, opts: { n?: number; record?: boolean; credits?: boolean } = {}): Promise<Decision> {
   const s = await subjectOf(user)
   if (!s) return { allowed: true, kind, period: null, limit: null, used: 0, remaining: null }
+  // Credits pay for work past the plan quota only when the owner asked for it: their own request
+  // (auth()/currentUser() context), or `credits: true` from a path the owner started. Crons and
+  // background work never spend credits (`credits: false` forces that).
+  const useCredits = opts.credits ?? ownerRequest()
   try {
-    return await limiter.check(s, kind, { ...opts, limits: await limitsOf(s, kind) })
+    return await limiter.check(s, kind, { n: opts.n, record: opts.record, useCredits, limits: await limitsOf(s, kind) })
   } catch (err) {
     // Never fail work because the ledger couldn't be read; log it loudly instead.
     console.error("[quotas] check failed, allowing", kind, err instanceof Error ? err.message : err)
@@ -69,15 +94,20 @@ export async function checkQuota(user: U | string, kind: QuotaKind, opts: { n?: 
 }
 
 /** checkQuota, throwing a QuotaError (first-person message for the owner) when there's no room. */
-export async function requireQuota(user: U | string, kind: QuotaKind, n = 1): Promise<Decision> {
-  const d = await checkQuota(user, kind, { n })
+export async function requireQuota(user: U | string, kind: QuotaKind, n = 1, credits?: boolean): Promise<Decision> {
+  const d = await checkQuota(user, kind, { n, credits })
   if (!d.allowed) throw new QuotaError(d)
   return d
 }
 
-/** Give back a use recorded by checkQuota when the work itself failed. */
+/** Give back a use recorded by checkQuota when the work itself failed (and the credits it cost, if any). */
 export function refundQuota(userId: string, kind: QuotaKind, n = 1): void {
   tallyUsage(userId, kind, -n)
+  const k = `${userId}|${kind}`
+  const last = (recentSpends.get(k) ?? []).filter((x) => Date.now() - x.at < 15 * 60_000).pop()
+  if (!last) return
+  recentSpends.set(k, (recentSpends.get(k) ?? []).filter((x) => x !== last))
+  void import("@/lib/credits").then((c) => c.spendCredits(userId, -last.credits, kind, -n)).catch((e) => console.error("[quotas] credit give-back", e instanceof Error ? e.message : e))
 }
 
 /**
@@ -119,9 +149,10 @@ export async function withQuotaHere<T>(kind: QuotaKind, fn: () => Promise<T>, n 
 }
 
 /** JSON body + status for a route that hit a quota: { error, quota: true }, 429. */
-export function quotaBody(e: QuotaError | Decision): [{ error: string; quota: true; kind: string; period: string | null }, { status: number }] {
+export function quotaBody(e: QuotaError | Decision): [{ error: string; quota: true; kind: string; period: string | null; buy: boolean }, { status: number }] {
   const d = e instanceof QuotaError ? e.decision : e
-  return [{ error: d.message ?? "I've done all the work your plan covers for now.", quota: true, kind: d.kind, period: d.period }, { status: 429 }]
+  // buy: the dashboard shows a "Buy more" button with the credit packs (components/workspace/CreditsSheet).
+  return [{ error: d.message ?? "I've done all the work your plan covers for now.", quota: true, kind: d.kind, period: d.period, buy: !!d.buy || creditCost(d.kind) !== null }, { status: 429 }]
 }
 
 // ── Platform budget: crons ───────────────────────────────────────────────────

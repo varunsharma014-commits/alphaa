@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       return text ? NextResponse.json({ text }) : NextResponse.json({ error: "I couldn’t write it just now. Try again in a minute." }, { status: 502 })
     }
     const r = await approve(userId, input.kind, input.id, input.text)
-    return r.ok ? NextResponse.json({ ok: true, url: r.url ?? null }) : NextResponse.json({ error: r.error }, { status: 400 })
+    return r.ok ? NextResponse.json({ ok: true, url: r.url ?? null }) : NextResponse.json({ error: r.error, ...(r.quota ? { quota: true, buy: true } : {}) }, { status: r.quota ? 429 : 400 })
   } catch (err) {
     if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
     console.error("[approve]", err)

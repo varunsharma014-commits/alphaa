@@ -3,7 +3,7 @@
 //   Starter $99  = AI search (AEO) only: getting named by ChatGPT, Gemini, Claude and Perplexity.
 //   Pro     $499 = everything except ads: + social, Google Business Profile posts, review
 //                  replies, email to past customers, lead tracking, up to 3 locations.
-//   Growth  $799 = Pro + Google and Meta ads for 1 ad account (+$200/mo per extra ad account).
+//   Growth  $799 = Pro + Google or Meta ads for 1 ad account (+$200/mo per additional ad account, Google or Meta).
 //                  Early access (no checkout) until Google and Meta approve ads access.
 // Only shipped features go here. Growth lives in lib/growth.ts with its early-access switch.
 export { GROWTH_FEATURES } from "@/lib/growth"

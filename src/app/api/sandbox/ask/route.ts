@@ -62,7 +62,7 @@ export async function POST(req: Request) {
   // Recorded BEFORE spending money, so a crash mid-run can't hand out free extra runs.
   const quota = await checkQuota(user, "sandbox_question")
   if (!quota.allowed) {
-    return NextResponse.json({ error: quota.message, remaining: 0, quota: true }, { status: 429 })
+    return NextResponse.json({ error: quota.message, remaining: 0, quota: true, buy: true }, { status: 429 })
   }
   // The ledger row the engine pages and the work log read (no longer the rate-limit counter).
   await logActivity(
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
   } catch (err) {
     if (isQuotaError(err)) {
       refundQuota(user.id, "sandbox_question")
-      return NextResponse.json({ error: err.message, remaining: 0, quota: true }, { status: 429 })
+      return NextResponse.json({ error: err.message, remaining: 0, quota: true, buy: true }, { status: 429 })
     }
     console.error("[sandbox] scanAllEngines failed:", err)
     return NextResponse.json(

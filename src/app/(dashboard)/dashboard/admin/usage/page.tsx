@@ -9,6 +9,7 @@ import { aiPrices, SEARCH_USD as SEARCH_USD_PRICE, usageCost } from "@/lib/ai-pr
 import { limitsFor, periodStart, dayKey, QUOTA_KINDS, PERIODS, type QuotaKind, type Period } from "@/lib/quota-rules"
 import { aiDailyBudget, flush } from "@/lib/usage"
 import { isComped } from "@/lib/billing"
+import { replay, type LedgerEntry } from "@/lib/credit-rules"
 
 // Admins only (isAdmin, not the comp list): what Alphaa did for each brand in the last 30 days, the AI it used, and what
 // that cost by feature, plus usage vs plan quota today / this month (lib/quota-rules.ts; 80%+ highlighted).
@@ -151,6 +152,24 @@ export default async function UsagePage() {
   const fmt = (k: QuotaKind, v: number) => (k.endsWith("_usd") ? `$${v.toFixed(2)}` : Math.round(v).toLocaleString("en-US"))
   const hot = (pct: number) => (pct >= 1 ? "#fde2e1" : pct >= 0.8 ? "#fff4d6" : undefined)
 
+  // Usage credits: every brand with a ledger, balance now, purchases and spend (lib/credits.ts).
+  const ledgerRows = await db.mockActivity.findMany({ where: { type: "credit_ledger" }, orderBy: { createdAt: "asc" }, select: { userId: true, metadata: true }, take: 20000 })
+  const byBrandLedger = new Map<string, LedgerEntry[]>()
+  for (const r of ledgerRows) byBrandLedger.set(r.userId, [...(byBrandLedger.get(r.userId) ?? []), r.metadata as LedgerEntry])
+  const missing = [...byBrandLedger.keys()].filter((id) => !users.some((u) => u.id === id))
+  const extraUsers = missing.length ? await db.user.findMany({ where: { id: { in: missing } }, select: { id: true, email: true, businessName: true, websiteUrl: true } }) : []
+  const nameOf = (id: string) => { const u = users.find((x) => x.id === id) ?? extraUsers.find((x) => x.id === id); return u ? `${u.businessName || u.websiteUrl || id} · ${realEmail(u.email)}` : id }
+  const cutoff30iso = new Date(Date.now() - 30 * 86_400_000).toISOString()
+  const creditRows = [...byBrandLedger.entries()].map(([id, es]) => {
+    const r = replay(es)
+    const buys = es.filter((e): e is Extract<LedgerEntry, { t: "purchase" }> => e.t === "purchase")
+    const spend30 = es.filter((e) => e.t === "spend" && e.at >= cutoff30iso).reduce((a, e) => a + e.credits, 0)
+    const byAction = new Map<string, number>()
+    for (const e of es) if (e.t === "spend" && e.at >= cutoff30iso) byAction.set(e.action, (byAction.get(e.action) ?? 0) + e.credits)
+    const refunded = es.filter((e) => e.t === "refund").reduce((a, e) => a + e.credits, 0)
+    return { id, balance: r.balance, bought: buys.reduce((a, e) => a + e.credits, 0), paid: buys.reduce((a, e) => a + (e.amount ?? 0), 0) / 100, purchases: buys.length, spend30, refunded, expired: r.expired, top: [...byAction.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3) }
+  }).sort((a, b) => b.spend30 - a.spend30 || b.balance - a.balance)
+
   const n = (v: number | undefined) => (v ?? 0).toLocaleString("en-US")
   const th = { textAlign: "left" as const, padding: "8px 10px", fontSize: 12, color: "#6e6e73", borderBottom: "1px solid #d2d2d7", whiteSpace: "nowrap" as const }
   const td = { padding: "8px 10px", fontSize: 13, borderBottom: "1px solid #eee", verticalAlign: "top" as const, fontVariantNumeric: "tabular-nums" as const }
@@ -236,6 +255,39 @@ export default async function UsagePage() {
               <td style={td}>{n(house.searches)}</td>
               <td style={td}>{money(house)}</td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 style={{ fontSize: 18, fontWeight: 700, margin: "28px 0 8px" }}>Usage credits</h2>
+      <p style={{ color: "#6e6e73", fontSize: 13, margin: "0 0 10px" }}>Packs 50/$25, 120/$50, 300/$100 (one-time, 12-month expiry). Spent only after the plan quota runs out, in an owner&apos;s own request. &quot;Paid&quot; is in the purchase currency&apos;s main unit.</p>
+      <div style={{ overflowX: "auto", marginBottom: 8 }}>
+        <table style={{ borderCollapse: "collapse", width: "100%", maxWidth: 1000 }}>
+          <thead>
+            <tr>
+              <th style={th}>Brand</th>
+              <th style={th}>Balance</th>
+              <th style={th}>Purchases</th>
+              <th style={th}>Credits bought / paid</th>
+              <th style={th}>Spent, 30 days</th>
+              <th style={th}>Spent on</th>
+              <th style={th}>Refunded / expired</th>
+            </tr>
+          </thead>
+          <tbody>
+            {creditRows.length ? creditRows.map((c) => (
+              <tr key={c.id}>
+                <td style={td}>{nameOf(c.id)}</td>
+                <td style={td}>{c.balance.toLocaleString("en-US")}</td>
+                <td style={td}>{c.purchases}</td>
+                <td style={td}>{c.bought.toLocaleString("en-US")} / {c.paid.toLocaleString("en-US", { maximumFractionDigits: 2 })}</td>
+                <td style={td}>{c.spend30.toLocaleString("en-US", { maximumFractionDigits: 1 })}</td>
+                <td style={td}>{c.top.length ? c.top.map(([a, v]) => `${a} ${v.toLocaleString("en-US", { maximumFractionDigits: 1 })}`).join(", ") : "—"}</td>
+                <td style={td}>{c.refunded.toLocaleString("en-US")} / {c.expired.toLocaleString("en-US")}</td>
+              </tr>
+            )) : (
+              <tr><td style={td} colSpan={7}>No credits bought yet.</td></tr>
+            )}
           </tbody>
         </table>
       </div>

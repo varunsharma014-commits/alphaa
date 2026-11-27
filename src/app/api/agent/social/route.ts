@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 120
 
-import { isQuotaError } from "@/lib/quotas"
+import { isQuotaError, quotaBody } from "@/lib/quotas"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
       try {
         r = await publishPost(user.id, p.id)
       } catch (err) {
-        if (isQuotaError(err)) return NextResponse.json({ error: err.message, quota: true }, { status: 429 })
+        if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
         throw err
       }
       said = r?.status === "published" ? "Posted." : r?.status === "partial" ? "Posted to some of your accounts. The rest are below." : "It didn’t post. The reason is below."

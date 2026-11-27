@@ -56,6 +56,13 @@ export const EXTRA_AD_ACCOUNT_PRICE_IDS = {
   monthly: process.env.STRIPE_EXTRA_AD_ACCOUNT_MONTHLY_PRICE_ID ?? "",
   annual: process.env.STRIPE_EXTRA_AD_ACCOUNT_ANNUAL_PRICE_ID ?? "",
 }
+// Usage credit packs (one-time, mode=payment; lib/credit-rules.ts CREDIT_PACKS, app/api/stripe/credits).
+export const CREDIT_PRICE_IDS = {
+  50: process.env.STRIPE_CREDITS_50_PRICE_ID ?? "",
+  120: process.env.STRIPE_CREDITS_120_PRICE_ID ?? "",
+  300: process.env.STRIPE_CREDITS_300_PRICE_ID ?? "",
+}
+
 type PriceLike = { id: string; metadata?: Record<string, string> | null; lookup_key?: string | null; product?: unknown } | null | undefined
 
 /** Is this the "Extra ad account" add-on (env id, metadata or lookup key)? */

@@ -60,6 +60,8 @@ export type AgentSettings = {
   competitorsDismissed?: string[]
   /** Billing add-ons, written by the Stripe webhook: extra ad accounts on top of Growth's 1 (lib/ad-accounts.ts). */
   billing?: { extraAdAccounts: number; subscriptionId?: string; at: string }
+  /** Usage credits: "Use credits when I run out" (lib/credits.ts). On after the first purchase unless turned off. */
+  credits?: { autoUse: boolean; at: string }
 }
 
 export type Autopilot = {

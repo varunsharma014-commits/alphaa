@@ -43,7 +43,7 @@ export const faqs: { q: string; a: string; group: FaqGroup }[] = [
   },
   {
     q: "Which marketing does it handle?",
-    a: "On every plan: a weekly check of what ChatGPT, Gemini, Claude and Perplexity say about you, website fixes for Google and AI search, and blog posts. On Pro: Google Business Profile posts, review replies, 3 social posts a week with images in your brand, ready to publish in one tap, email marketing and lead tracking. On Growth (early access): Google and Meta ads for 1 ad account, when ads open.",
+    a: "On every plan: a weekly check of what ChatGPT, Gemini, Claude and Perplexity say about you, website fixes for Google and AI search, and blog posts. On Pro: Google Business Profile posts, review replies, 3 social posts a week with images in your brand, ready to publish in one tap, email marketing and lead tracking. On Growth (early access): Google or Meta ads for 1 ad account, when ads open.",
     group: "Getting started",
   },
   {
@@ -68,7 +68,7 @@ export const faqs: { q: string; a: string; group: FaqGroup }[] = [
   },
   {
     q: "How much does it cost?",
-    a: "Starter is $99 a month for AI search: getting named by ChatGPT, Gemini, Claude and Perplexity. Pro is $499 a month and adds everything except ads: social media, Google posts, review replies, email, lead tracking and up to 3 locations. Growth adds Google and Meta ads for 1 ad account at $799 a month, in early access, plus $200 a month for each extra ad account. Paying yearly takes 15% off: Starter $84, Pro $424 and Growth $679 a month. You can try it free first at alphaa.app/start: give it your website and it shows what AI says about you and plans your first week of marketing.",
+    a: "Starter is $99 a month for AI search: getting named by ChatGPT, Gemini, Claude and Perplexity. Pro is $499 a month and adds everything except ads: social media, Google posts, review replies, email, lead tracking and up to 3 locations. Growth adds Google or Meta ads for 1 ad account at $799 a month, in early access, plus $200 a month for each additional ad account (Google or Meta). Paying yearly takes 15% off: Starter $84, Pro $424 and Growth $679 a month. You can try it free first at alphaa.app/start: give it your website and it shows what AI says about you and plans your first week of marketing.",
     group: "Pricing and cancelling",
   },
 ]

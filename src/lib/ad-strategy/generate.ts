@@ -188,12 +188,12 @@ export async function lastReadyStrategy(userId: string): Promise<AdStrategy | nu
 }
 
 /** Starts a fresh plan in the background. False if one is already running. */
-export function startStrategy(userId: string): boolean {
+export function startStrategy(userId: string, opts: { credits?: boolean } = {}): boolean {
   if (inFlight.has(userId)) return false
   inFlight.add(userId)
   void runAsUser(userId, async () => {
     // One ad plan on the plan's quota (lib/quotas.ts ad_plan). Out of room: no row, nothing spent.
-    const q = await checkQuota(userId, "ad_plan")
+    const q = await checkQuota(userId, "ad_plan", { credits: opts.credits ?? false })
     if (!q.allowed) { console.warn("[ad-strategy] quota", userId, q.message); return }
     const start: AdStrategy = { v: 1, status: "running", at: new Date().toISOString(), playbook: PLAYBOOK_VERSION }
     const row = await db.mockActivity.create({ data: { userId, type: AD_STRATEGY, title: "Wrote your ad plan", metadata: start as object } })

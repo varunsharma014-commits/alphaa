@@ -60,7 +60,7 @@ const CANNED: Record<string, string> = {
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
     // {starter} / {pro} / {growth} become local prices when answered (localPrice).
-    `{starter} a month for Starter, month to month: I get you named by ChatGPT, Gemini, Claude and Perplexity, with website fixes and blog posts. Pro ({pro}) is everything except ads: your social media, Google listing, reviews and emails to past customers. Growth ({growth}, early access) adds Google and Meta ads for 1 ad account. Cancel online in a minute, no contract. ${GUARANTEE_LINE}`,
+    `{starter} a month for Starter, month to month: I get you named by ChatGPT, Gemini, Claude and Perplexity, with website fixes and blog posts. Pro ({pro}) is everything except ads: your social media, Google listing, reviews and emails to past customers. Growth ({growth}, early access) adds Google or Meta ads for 1 ad account. Cancel online in a minute, no contract. ${GUARANTEE_LINE}`,
 }
 
 // Where the conversation runs:
@@ -83,7 +83,7 @@ export type AgentPlan = "starter" | "pro" | "growth"
 const PLAN_LINE: Record<AgentPlan, string> = {
   starter: "Starter plan: I get you named by ChatGPT, Gemini, Claude and Perplexity. I check what they say every week, fix your website and write 2 blog posts a month, so more customers find you and you get your time back.",
   pro: "Pro plan: everything except ads. I write your social media too, 3 branded posts a week ready to publish in one tap, post to your Google listing, reply to your reviews, email your past customers and show which calls and forms your marketing brought in, for up to 3 locations, with posts that can publish on their own.",
-  growth: "Growth plan (early access): everything in Pro, plus I build and tune your Google and Meta ads for 1 ad account when ads open. Nothing spends until you approve it.",
+  growth: "Growth plan (early access): everything in Pro, plus I build and tune your Google or Meta ads for 1 ad account when ads open. Nothing spends until you approve it.",
 }
 
 /** "$499 a month. Month to month." or, billed yearly (USD only), "$424 a month, billed yearly ($5,090 a year)." */

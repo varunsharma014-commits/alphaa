@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
 import { stripe, planFromPrice, planItem, extraAdAccounts } from "@/lib/stripe"
 import { saveAgentSettings } from "@/lib/agent/settings"
+import { packFor } from "@/lib/credit-rules"
 import { db } from "@/lib/db"
 import { sendPaymentFailureEmail } from "@/lib/email"
 import { resend } from "@/lib/resend"
@@ -46,6 +47,17 @@ export async function POST(req: NextRequest) {
         })
         await saveAdAllowance({ stripeCustomerId: customerId }, subscriptionId, extraAdAccounts(subscription.items.data))
         await flagFirstMarketCustomer(customerId, sub.metadata?.market)
+      } else if (sub.mode === "payment" && sub.metadata?.alphaa_credits) {
+        // Usage credits (app/api/stripe/credits): credited once per session id, only when paid.
+        if (sub.payment_status === "paid") {
+          const credits = Number(sub.metadata.alphaa_credits)
+          const userId = (sub.metadata.userId as string | undefined) ?? (await db.user.findFirst({ where: { stripeCustomerId: customerId }, select: { id: true } }))?.id
+          if (userId && packFor(credits)) {
+            const { grantCredits } = await import("@/lib/credits")
+            const added = await grantCredits({ userId, sessionId: sub.id, credits, paymentIntent: (sub.payment_intent as string | null) ?? null, amount: sub.amount_total ?? undefined, currency: sub.currency ?? undefined })
+            if (added) await logActivity(userId, "credits_bought", `Bought ${credits} credits`, "They're used only when your plan's included work runs out, and last 12 months.", { credits, sessionId: sub.id })
+          } else console.error("[stripe] credits session without a brand or pack", sub.id)
+        }
       } else if (sub.mode === "payment" && sub.metadata?.purpose === "concierge_setup") {
         // One-time white-glove setup fee paid — a human owes this customer a
         // completed installation within the stated SLA. Record it and alert
@@ -99,6 +111,21 @@ export async function POST(req: NextRequest) {
         data: { subscriptionStatus: "cancelled", plan: "none" },
       })
       await saveAdAllowance({ stripeSubscriptionId: sub.id }, sub.id, 0)
+      break
+    }
+    case "charge.refunded": {
+      // A refunded credit pack loses what's left of it (a share of it for a partial refund).
+      // Needs "charge.refunded" enabled on the Stripe webhook endpoint.
+      if (sub.payment_intent) { // any charge: only one matching a credit purchase in the ledger changes anything
+        try {
+          const { refundCredits } = await import("@/lib/credits")
+          const r = await refundCredits({ paymentIntent: sub.payment_intent as string, chargeId: sub.id, amount: sub.amount ?? 0, amountRefunded: sub.amount_refunded ?? 0 })
+          if (r) console.log(`[stripe] refund removed ${r.credits} credits`, r.userId)
+        } catch (e) {
+          console.error("[stripe] credit refund", e instanceof Error ? e.message : e)
+          return NextResponse.json({ error: "retry" }, { status: 500 })
+        }
+      }
       break
     }
     case "invoice.payment_succeeded": {

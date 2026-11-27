@@ -20,7 +20,7 @@ export function nextGbpRun(after: Date): Date {
   return new Date(after.getTime() + 86_400_000)
 }
 
-export async function scheduleMade(userId: string, kind: "social" | "gbp" | "site", id: string, window: boolean): Promise<{ ok: true; at: string | null; url?: string | null } | { ok: false; error: string }> {
+export async function scheduleMade(userId: string, kind: "social" | "gbp" | "site", id: string, window: boolean): Promise<{ ok: true; at: string | null; url?: string | null } | { ok: false; error: string; quota?: boolean }> {
   const s = await getAgentSettings(userId)
   if (window && !(s.autoApprove && consentCurrent(s))) return { ok: false, error: "Autopilot is off, so this waits for your OK. Use Schedule instead." }
   const base = window ? new Date(Date.now() + STOP_WINDOW_MS) : new Date(Date.now() + 5 * 60_000)
@@ -50,5 +50,5 @@ export async function scheduleMade(userId: string, kind: "social" | "gbp" | "sit
     return r.ok ? { ok: true, at: r.at } : r
   }
   const r = await approveSitePost(userId, id)
-  return r.ok ? { ok: true, at: null, url: r.url ?? null } : { ok: false, error: r.error }
+  return r.ok ? { ok: true, at: null, url: r.url ?? null } : { ok: false, error: r.error, quota: r.quota }
 }

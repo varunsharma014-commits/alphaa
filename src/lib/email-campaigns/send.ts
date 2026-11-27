@@ -60,7 +60,7 @@ export async function sendBlocker(userId: string): Promise<string | null> {
 }
 
 /** Starts (or resumes) sending in the background. Returns how many it will go to. */
-export async function startSend(userId: string, id: string): Promise<{ ok: true; count: number } | { ok: false; error: string }> {
+export async function startSend(userId: string, id: string): Promise<{ ok: true; count: number } | { ok: false; error: string; quota?: boolean }> {
   const row = await getCampaign(userId, id)
   if (!row) return { ok: false, error: "I can’t find that email any more." }
   if (row.c.status === "sent") return { ok: false, error: "That one already went out." }
@@ -72,7 +72,7 @@ export async function startSend(userId: string, id: string): Promise<{ ok: true;
     if (!to.length) return { ok: false, error: "Your list is empty. Add your customers first." }
     // Every recipient counts against the plan's email quota (lib/quotas.ts email_send).
     const q = await checkQuota(userId, "email_send", { n: to.length })
-    if (!q.allowed) return { ok: false, error: q.message ?? "I've sent all the emails your plan covers for now." }
+    if (!q.allowed) return { ok: false, error: q.message ?? "I've sent all the emails your plan covers for now.", quota: true }
     await updateCampaign(id, { status: "sending", to, done: 0, sent: 0, skipped: 0, failed: 0, startedAt: new Date().toISOString(), error: undefined })
   }
   void runSend(userId, id)

@@ -89,7 +89,7 @@ export async function POST() {
       }
     }
 
-    if (!posts.length && note) return NextResponse.json({ error: note, quota: true, posts, count: 0 }, { status: 429 })
+    if (!posts.length && note) return NextResponse.json({ error: note, quota: true, buy: true, posts, count: 0 }, { status: 429 })
     return NextResponse.json({ posts, count: posts.length, ...(note ? { note } : {}) })
   } catch (err) {
     console.error("[GBP] generate-month error:", err)

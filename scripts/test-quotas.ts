@@ -1,10 +1,30 @@
-// Pure tests for plan quotas (lib/quota-rules.ts), AI prices (lib/ai-prices.ts) and the
-// "Extra ad account" add-on helpers (lib/stripe.ts). No database, no network.
+// Pure tests for plan quotas (lib/quota-rules.ts), usage credits (lib/credit-rules.ts), AI prices
+// (lib/ai-prices.ts), the ad-account allowance (lib/ad-account-rules.ts) and the "Extra ad account"
+// add-on helpers (lib/stripe.ts). No database, no network.
 //   npx tsx scripts/test-quotas.ts
 import assert from "node:assert/strict"
 import { createLimiter, createPublicCounter, decide, limitsFor, periodStart, planKey, quotaMessage, QuotaError, isQuotaError, type QuotaKind, type UsageStore } from "../src/lib/quota-rules"
 import { estimateCallCost, tokCost, usageCost } from "../src/lib/ai-prices"
 import { extraAdAccounts, isAdAccountAddon, planItem } from "../src/lib/stripe"
+import { aiHeadroom, creditCost, expiryFor, grantEntry, refundEntry, replay, type LedgerEntry } from "../src/lib/credit-rules"
+import { accountsAfter, adAccountDecision, allowanceFor, type AdAccountState } from "../src/lib/ad-account-rules"
+import type { CreditProvider } from "../src/lib/quota-rules"
+
+/** In-memory credit ledger for the limiter (same replay as the app). */
+function memCredits(entries: LedgerEntry[], autoUse = true, clock: () => Date = () => new Date()): CreditProvider & { entries: LedgerEntry[] } {
+  return {
+    entries,
+    async state(_u, now) {
+      await new Promise((r) => setTimeout(r, Math.random() * 5))
+      return { balance: replay(entries, now).balance, autoUse }
+    },
+    async spend(_u, credits, kind, n) {
+      entries.push({ t: "spend", credits, at: clock().toISOString(), action: kind, n })
+    },
+  }
+}
+const buyAt = (credits: number, at: string, sessionId = `cs_${credits}_${at}`, pi = `pi_${sessionId}`): LedgerEntry =>
+  grantEntry([], { sessionId, credits, paymentIntent: pi, amount: credits * 50, currency: "usd", at: new Date(at) })!
 
 let passed = 0
 async function test(name: string, fn: () => void | Promise<void>) {
@@ -236,6 +256,166 @@ async function main() {
     assert.equal(extraAdAccounts([plan, addon, byKey]), 4)
     assert.equal(extraAdAccounts([plan]), 0)
     assert.equal(extraAdAccounts(undefined), 0)
+  })
+
+
+  // ── Usage credits ─────────────────────────────────────────────────────────
+  await test("credit costs: Varun's numbers, QUOTAS_JSON override", () => {
+    assert.equal(creditCost("content_piece:blog", ""), 5)
+    assert.equal(creditCost("content_piece:social", ""), 1)
+    assert.equal(creditCost("content_piece:gbp", ""), 1)
+    assert.equal(creditCost("content_piece:email", ""), 3)
+    assert.equal(creditCost("content_piece:review", ""), 0.5)
+    assert.equal(creditCost("ad_plan", ""), 10)
+    assert.equal(creditCost("week_run", ""), 8)
+    assert.equal(creditCost("image_gen", ""), 1)
+    assert.equal(creditCost("sandbox_question", ""), 0.2)
+    assert.equal(creditCost("engine_check", ""), 0.1)
+    assert.equal(creditCost("search", ""), 0.2)
+    assert.equal(creditCost("scan", ""), 2)
+    assert.equal(creditCost("content_piece:blog", JSON.stringify({ credits: { "content_piece:blog": 4 } })), 4)
+    assert.equal(creditCost("content_piece:blog", "{bad"), 5)
+  })
+
+  await test("spending order: plan quota first, then credits", async () => {
+    const store = memStore(() => new Date())
+    const credits = memCredits([buyAt(50, new Date(Date.now() - 86_400_000).toISOString())])
+    const lim = createLimiter(store, credits, (k) => creditCost(k, ""))
+    const s = { userId: "c1", plan: "starter" } // 4 blogs a month
+    for (let i = 0; i < 4; i++) {
+      const d = await lim.check(s, "content_piece:blog")
+      assert.equal(d.allowed, true)
+      assert.equal(d.credits, undefined) // inside the plan: free
+    }
+    assert.equal(credits.entries.filter((e) => e.t === "spend").length, 0)
+    const fifth = await lim.check(s, "content_piece:blog")
+    assert.equal(fifth.allowed, true)
+    assert.equal(fifth.credits, 5)
+    assert.equal(replay(credits.entries).balance, 45)
+  })
+
+  await test("insufficient balance: blocked with Buy more; auto-use off: blocked and told how", async () => {
+    const store = memStore(() => new Date())
+    const recent = new Date(Date.now() - 3_600_000).toISOString()
+    const low = memCredits([buyAt(50, recent), { t: "spend", credits: 47, at: new Date(Date.now() - 1_800_000).toISOString(), action: "x" }])
+    const lim = createLimiter(store, low, (k) => creditCost(k, ""))
+    const s = { userId: "c2", plan: "starter" }
+    for (let i = 0; i < 4; i++) await lim.check(s, "content_piece:blog")
+    const d = await lim.check(s, "content_piece:blog") // needs 5, has 3
+    assert.equal(d.allowed, false)
+    assert.deepEqual(d.buy, { need: 5, balance: 3, autoUse: true })
+    assert.match(d.message ?? "", /Buy more credits/)
+    assert.equal(replay(low.entries).balance, 3) // nothing taken
+    // Enough credits, but the owner turned auto-use off.
+    const off = createLimiter(memStore(() => new Date()), memCredits([buyAt(50, recent)], false), (k) => creditCost(k, ""))
+    for (let i = 0; i < 4; i++) await off.check({ userId: "c3", plan: "starter" }, "content_piece:blog")
+    const o = await off.check({ userId: "c3", plan: "starter" }, "content_piece:blog")
+    assert.equal(o.allowed, false)
+    assert.match(o.message ?? "", /turn on "Use credits when I run out"/)
+    // Background work (useCredits: false) never spends.
+    const bg = createLimiter(memStore(() => new Date()), memCredits([buyAt(50, recent)]), (k) => creditCost(k, ""))
+    for (let i = 0; i < 4; i++) await bg.check({ userId: "c4", plan: "starter" }, "content_piece:blog")
+    assert.equal((await bg.check({ userId: "c4", plan: "starter" }, "content_piece:blog", { useCredits: false })).allowed, false)
+  })
+
+  await test("credits burst: 30 parallel checks, 10 in plan, then exactly 12 paid with 12 credits (no double-spend)", async () => {
+    const store = memStore(() => new Date())
+    const credits = memCredits([buyAt(12, new Date(Date.now() - 60_000).toISOString())])
+    const lim = createLimiter(store, credits, (k) => creditCost(k, ""))
+    const s = { userId: "c5", plan: "pro" }
+    const out = await Promise.all(Array.from({ length: 30 }, () => lim.check(s, "content_piece:social"))) // 10/week in plan, then 1 credit each
+    assert.equal(out.filter((d) => d.allowed && !d.credits).length, 10)
+    assert.equal(out.filter((d) => d.credits === 1).length, 12)
+    assert.equal(out.filter((d) => !d.allowed).length, 8)
+    assert.equal(replay(credits.entries).balance, 0)
+  })
+
+  await test("record: false only looks: credits would cover it, nothing spent", async () => {
+    const credits = memCredits([buyAt(50, new Date(Date.now() - 60_000).toISOString())])
+    const lim = createLimiter(memStore(() => new Date()), credits, (k) => creditCost(k, ""))
+    const s = { userId: "c6", plan: "none" }
+    for (let i = 0; i < 5; i++) await lim.check(s, "sandbox_question") // 5 a day
+    const peek = await lim.check(s, "sandbox_question", { record: false })
+    assert.equal(peek.allowed, true)
+    assert.equal(peek.wouldUseCredits, true)
+    assert.equal(credits.entries.filter((e) => e.t === "spend").length, 0)
+  })
+
+  await test("expiry: a pack lasts 12 months; spends use the pack that expires first", () => {
+    const a = buyAt(50, "2025-12-01T00:00:00Z", "cs_a")
+    const b = buyAt(120, "2026-06-01T00:00:00Z", "cs_b")
+    assert.equal(expiryFor(new Date("2025-12-01T00:00:00Z")).toISOString(), "2026-12-01T00:00:00.000Z")
+    const spend: LedgerEntry = { t: "spend", credits: 60, at: "2026-07-01T00:00:00Z", action: "content_piece:blog" }
+    const r = replay([a, b, spend], new Date("2026-07-02T00:00:00Z"))
+    assert.equal(r.balance, 110) // 50 from a (all), 10 from b
+    assert.equal(r.lots.find((l) => l.sessionId === "cs_a")?.left, 0)
+    // Pack a expires on Dec 1, 2026 with whatever's left; spends after that can't use it.
+    const r2 = replay([a, b], new Date("2026-12-02T00:00:00Z"))
+    assert.equal(r2.balance, 120)
+    assert.equal(r2.expired, 50)
+    const late: LedgerEntry = { t: "spend", credits: 10, at: "2026-12-05T00:00:00Z", action: "x" }
+    assert.equal(replay([a, b, late], new Date("2026-12-06T00:00:00Z")).lots.find((l) => l.sessionId === "cs_b")?.left, 110)
+  })
+
+  await test("webhook is idempotent by session id", () => {
+    const first = grantEntry([], { sessionId: "cs_1", credits: 120, paymentIntent: "pi_1", amount: 5000 })
+    assert.ok(first)
+    assert.equal(grantEntry([first!], { sessionId: "cs_1", credits: 120, paymentIntent: "pi_1", amount: 5000 }), null)
+    // Even if a duplicate row slipped in, the balance counts the session once.
+    assert.equal(replay([first!, first!]).balance, 120)
+    assert.equal(grantEntry([], { sessionId: "cs_2", credits: 0 }), null)
+  })
+
+  await test("refund removes the unspent remainder (full), a share (partial), once per charge state", () => {
+    const buy = grantEntry([], { sessionId: "cs_r", credits: 120, paymentIntent: "pi_r", amount: 5000, at: new Date(Date.now() - 86_400_000) })!
+    const spent: LedgerEntry = { t: "spend", credits: 30, at: new Date(Date.now() - 3_600_000).toISOString(), action: "content_piece:blog" }
+    const full = refundEntry([buy, spent], { paymentIntent: "pi_r", chargeId: "ch_r", amount: 5000, amountRefunded: 5000 })
+    assert.equal(full?.credits, 90)
+    assert.equal(replay([buy, spent, full!]).balance, 0)
+    assert.equal(refundEntry([buy, spent, full!], { paymentIntent: "pi_r", chargeId: "ch_r", amount: 5000, amountRefunded: 5000 }), null) // replayed webhook
+    // Partial: half the money back = up to half the pack, from what's left.
+    const half = refundEntry([buy], { paymentIntent: "pi_r", chargeId: "ch_p", amount: 5000, amountRefunded: 2500 })
+    assert.equal(half?.credits, 60)
+    const rest = refundEntry([buy, half!], { paymentIntent: "pi_r", chargeId: "ch_p", amount: 5000, amountRefunded: 5000 })
+    assert.equal(rest?.credits, 60)
+    assert.equal(refundEntry([buy], { paymentIntent: "pi_other", chargeId: "ch_x", amount: 5000, amountRefunded: 5000 }), null) // not a credit purchase
+  })
+
+  await test("give-back: failed work returns its credits", () => {
+    const buy = buyAt(50, new Date(Date.now() - 86_400_000).toISOString())
+    const now = Date.now()
+    const es: LedgerEntry[] = [buy, { t: "spend", credits: 5, at: new Date(now - 2000).toISOString(), action: "content_piece:blog" }, { t: "spend", credits: -5, at: new Date(now - 1000).toISOString(), action: "content_piece:blog" }]
+    const r = replay(es)
+    assert.equal(r.balance, 50)
+    assert.equal(r.spentToday, 0)
+  })
+
+  await test("credits raise the daily AI ceiling: +$1 per 10 credits spent today", () => {
+    assert.equal(aiHeadroom(0), 0)
+    assert.equal(aiHeadroom(10), 1)
+    assert.equal(aiHeadroom(25), 2.5)
+    assert.equal(aiHeadroom(-5), 0)
+    assert.equal(creditCost("ai_cost_usd", ""), 10)
+  })
+
+  // ── Ad accounts: a total across Google and Meta ───────────────────────────
+  await test("1 ad account means 1 in total: Google + Meta needs 1 add-on", () => {
+    const none: AdAccountState = { live: { google: [], meta: [] }, picks: { google: null, meta: null } }
+    const g: AdAccountState = { live: { google: [], meta: [] }, picks: { google: "123", meta: null } }
+    assert.equal(allowanceFor("growth", false, 0), 1)
+    assert.equal(allowanceFor("growth", false, 2), 3)
+    assert.equal(allowanceFor("pro", false, 5), 0)
+    assert.equal(allowanceFor("starter", true, 0), Infinity)
+    assert.equal(adAccountDecision(none, 1, "google", "123", false).ok, true)
+    const d = adAccountDecision(g, 1, "meta", "act_9", true)
+    assert.equal(d.ok, false)
+    if (!d.ok) assert.match(d.message, /1 ad account in total, Google or Meta/)
+    assert.equal(adAccountDecision(g, 2, "meta", "act_9", true).ok, true) // with 1 add-on
+    // Switching Google accounts with nothing running is fine; with the old one still running it isn't.
+    assert.equal(adAccountDecision(g, 1, "google", "456", false).ok, true)
+    const running: AdAccountState = { live: { google: ["123"], meta: [] }, picks: { google: "123", meta: null } }
+    assert.equal(adAccountDecision(running, 1, "google", "456", false).ok, false)
+    assert.equal(accountsAfter({ live: { google: ["1"], meta: ["act_1"] }, picks: { google: "1", meta: "act_1" } }, "meta", "act_1").size, 2)
   })
 
   const kinds: QuotaKind[] = ["content_piece:blog", "publish:social", "ai_cost_usd"]

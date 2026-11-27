@@ -1,5 +1,5 @@
 // The Growth plan ($799/mo, $679/mo billed yearly; plans set 2026-11-26): everything in Pro, plus
-// Google and Meta ads management for 1 ad account. Each extra ad account is +$200/mo ($170/mo
+// Google or Meta ads management for 1 ad account. Each additional ad account (Google or Meta) is +$200/mo ($170/mo
 // billed yearly): EXTRA_AD_ACCOUNT_PRICE in lib/constants.ts. Email and lead tracking moved down
 // to Pro on 2026-11-26.
 //
@@ -15,7 +15,7 @@ export const GROWTH_CTA = GROWTH_ON_SALE ? "Get Growth" : "Join early access"
 
 export const GROWTH_FEATURES = [
   "Everything in Pro",
-  "Google and Meta ads for 1 ad account, built and tuned every week, when ads open",
+  "Google or Meta ads for 1 ad account, built and tuned every week, when ads open",
   "Ads aimed at people already searching for what you sell",
   "Your budget moved to the ads that bring calls and bookings",
   "Nothing spends until you approve it. Your ad budget is paid to Google and Meta directly, never marked up",

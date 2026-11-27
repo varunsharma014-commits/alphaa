@@ -59,7 +59,7 @@ export default async function UpgradePage({ searchParams }: { searchParams: Prom
   return (
     <div style={{ maxWidth: "640px", margin: "0 auto" }}>
       <h1 style={h}>{already ? "You’re on Growth." : "Your ads, handled too."}</h1>
-      <p style={p}>Everything in Pro, plus I build and tune your Google and Meta ads for 1 ad account when ads open, so more people looking for what you sell find you. Nothing spends until you approve it. {already ? "" : `$${price} a month, plus $${EXTRA_AD_ACCOUNT_PRICE.monthly} a month for each extra ad account.`}</p>
+      <p style={p}>Everything in Pro, plus I build and tune your Google or Meta ads for 1 ad account when ads open, so more people looking for what you sell find you. Nothing spends until you approve it. {already ? "" : `$${price} a month, plus $${EXTRA_AD_ACCOUNT_PRICE.monthly} a month for each additional ad account (Google or Meta).`}</p>
       <ul style={{ ...p, margin: "16px 0 20px", paddingLeft: "18px", color: "var(--ds-text)" }}>
         {GROWTH_FEATURES.map((f) => <li key={f}>{f}</li>)}
       </ul>

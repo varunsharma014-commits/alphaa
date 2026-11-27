@@ -15,7 +15,7 @@ import { hasPro } from "@/lib/billing"
 const anthropic = claudeFor("approvals")
 
 export type ApprovalKind = "review" | "gbp" | "post"
-export type ApprovalResult = { ok: true; url?: string | null } | { ok: false; error: string }
+export type ApprovalResult = { ok: true; url?: string | null } | { ok: false; error: string; /** Out of a plan quota: the dashboard offers "Buy more". */ quota?: boolean }
 
 /** Review replies are written ahead of time (overnight) and kept here until approved. */
 export const REVIEW_DRAFT = "review_draft"
@@ -100,7 +100,7 @@ export async function approveGbpPost(userId: string, postId: string, text?: stri
   if (content !== post.content) await db.gbpPost.update({ where: { id: post.id }, data: { content } })
   // One Google post on the plan's publish quota (lib/quotas.ts publish:gbp).
   const q = await checkQuota(userId, "publish:gbp")
-  if (!q.allowed) return { ok: false, error: q.message ?? "I've posted all the Google updates your plan covers for now." }
+  if (!q.allowed) return { ok: false, error: q.message ?? "I've posted all the Google updates your plan covers for now.", quota: true }
   const accessToken = await resolveAccessToken(integration)
   const result = await postToGmb(accessToken, integration.gmbAccountId, integration.gmbLocationId, content, post.postType)
   if (!result.success) {
@@ -124,7 +124,7 @@ export async function approveSitePost(userId: string, draftId: string, text?: st
   if (m.status === "published") return { ok: true, url: m.url ?? null }
   const res = await pushChange(user, { op: "post", title: m.title, text: text?.trim() || m.markdown || "", draftId })
   const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string }
-  if (!res.ok || !data.url) return { ok: false, error: data.error ?? "Your site didn’t accept it. Nothing changed." }
+  if (!res.ok || !data.url) return { ok: false, error: data.error ?? "Your site didn’t accept it. Nothing changed.", ...(res.status === 429 ? { quota: true } : {}) }
   return { ok: true, url: data.url }
 }
 

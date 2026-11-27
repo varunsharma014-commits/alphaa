@@ -68,7 +68,7 @@ export function BillingClient({ shopifyUrl, adAccounts = null }: { shopifyUrl: s
         <GlassCard>
           <h2 className="text-fg font-medium mb-2">Ad accounts</h2>
           <p className="text-muted text-sm leading-relaxed mb-4">
-            Growth includes 1 ad account on Google and 1 on Facebook &amp; Instagram. Each extra ad account is ${adAccounts.monthly} a month
+            Growth includes 1 ad account in total: one Google Ads account or one Facebook &amp; Instagram ad account. Running both takes 1 more. Each additional ad account (Google or Meta) is ${adAccounts.monthly} a month
             (${adAccounts.annual} a month if you pay yearly). You pay the difference for the rest of this billing period.
           </p>
           <UpgradeButton plan="growth" value={adAccounts.plan} addon={{ monthly: adAccounts.monthly }} initialExtra={adAccounts.extra} label="Update ad accounts" />

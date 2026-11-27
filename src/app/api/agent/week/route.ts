@@ -27,7 +27,7 @@ export async function POST() {
       throw err
     }
   })
-  if ("quota" in r) return NextResponse.json({ error: r.quota, quota: true }, { status: 429 })
+  if ("quota" in r) return NextResponse.json({ error: r.quota, quota: true, buy: true }, { status: 429 })
   return NextResponse.json(r)
 }
 

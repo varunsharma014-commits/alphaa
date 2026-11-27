@@ -18,6 +18,7 @@ import type { DashboardTheme } from "@/lib/theme"
 import { AGENT_EVENT, AI_NOTE, ASK_EVENT, ISLAND_EVENT, TOAST_EVENT, WS_EVENT, type AskDetail, type AgentEventDetail, type WsDetail } from "@/lib/workspace/events"
 import type { ShellData } from "@/lib/workspace/shell"
 import { Check, Icon, SendArrow, type IconName } from "./icons"
+import { CreditsSheet } from "./CreditsSheet"
 
 const WORKSPACES = ["/dashboard", "/dashboard/research", "/dashboard/social", "/dashboard/email", "/dashboard/ads", "/dashboard/tracking"]
 
@@ -263,6 +264,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
 
         {toastText && <div className="ax-toast" role="status"><Check />{toastText}</div>}
         <AutoApproveModal pro={data.planPro} growth={data.pro} />
+        <CreditsSheet />
       </div>
     </div>
   )

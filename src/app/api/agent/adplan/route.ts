@@ -25,8 +25,8 @@ export async function POST(req: Request) {
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
   if (input.op === "make" && !strategyRunning(user.id)) {
     const room = await checkQuota(user, "ad_plan", { record: false })
-    if (!room.allowed) return NextResponse.json({ error: room.message, quota: true }, { status: 429 })
-    startStrategy(user.id)
+    if (!room.allowed) return NextResponse.json({ error: room.message, quota: true, buy: !!room.buy }, { status: 429 })
+    startStrategy(user.id, { credits: true }) // the owner asked: credits may pay once the plan's ad plans are used
   }
   // Give the new row a moment to exist so the thread shows it running.
   if (input.op === "make") await new Promise((r) => setTimeout(r, 400))
