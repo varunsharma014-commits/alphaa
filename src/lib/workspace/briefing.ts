@@ -9,7 +9,9 @@ import { latestQuestionScan } from "@/lib/questions"
 import { getEngineEvidence } from "@/lib/engine-evidence"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { setupProgress } from "@/lib/agent/setup"
-import { hasGrowth, hasPro } from "@/lib/billing"
+import { hasGrowth, hasPaidPlan, hasPro } from "@/lib/billing"
+import { startWeekRun, WEEK_RUN, type WeekRun } from "@/lib/agent/week"
+import { runAsUser } from "@/lib/usage"
 import { listPosts, listAccounts } from "@/lib/social/store"
 import { PLATFORM_NAME } from "@/lib/social/types"
 import { imageUrl } from "@/lib/images"
@@ -40,10 +42,20 @@ export type GoingItem = {
 }
 /** What a button does: open a page, run an existing agent chip, open a chat thread, or open the autopilot warning. */
 export type Act = { label: string; href?: string; chip?: Chip; topic?: string; autopilot?: boolean; primary?: boolean }
-export type Question = { id: string; eyebrow: string; title: string; text: string; fallback: string; acts: Act[] }
+export type Question = { id: string; eyebrow: string; title: string; text: string; fallback: string; acts: Act[]; review?: { ai: string; claim: string; truth: string; fix: Chip } | null }
 export type DoneItem = { ch: string; text: string; when: string; at: string; href: string | null }
 
+export type PlanItem = { kind: "blog" | "google" | "social"; title: string; day: string; status: string; needsOk: boolean }
+export type WeekPlan = { runId: string; running: boolean; items: PlanItem[]; summary: string; needsOk: number } | null
+
 export type BriefingData = {
+  plan: WeekPlan
+  /** Website pages written and waiting or scheduled (post_draft ready / scheduled). */
+  pagesInProgress: number
+  /** Something real happened in the period (a published item or a lead): the recap has content. */
+  recapReady: boolean
+  /** Connections that feed the numbers, for the compact setup bar. */
+  connected: { n: number; total: number; next: Act | null }
   firstName: string | null
   ai: AiCard[]
   headline: Headline
@@ -227,7 +239,8 @@ export async function getQuestion(user: User, waiting: { total: number; topic: s
       title: `${ai} tells customers “${short(high.claim, 120)}”. Is that wrong?`,
       text: `What I found on your site: ${short(high.truth, 200)}. I’ve written the correction.`,
       fallback: "Until you confirm, I don’t change anything on your site.",
-      acts: [{ label: "Show me", topic: "answers", primary: true }],
+      acts: [{ label: "See every answer", topic: "answers" }],
+      review: { ai, claim: high.claim, truth: high.truth, fix: { label: "Write the correction", action: { type: "draft", topic: `The facts about ${user.businessName ?? "our business"}: ${short(high.truth, 160)}` } } },
     }
   }
   // 2. A first-time connection, one at a time (lib/agent/setup.ts).
@@ -293,5 +306,51 @@ export async function getBriefingData(user: User): Promise<BriefingData> {
     getDone(user.id).catch(() => []),
   ])
   const question = await getQuestion(user, waiting, autopilot).catch(() => null)
-  return { firstName: user.fullName?.trim().split(/\s+/)[0] || null, ai, headline, tiles, question, going, waiting: waiting.total, waitingTopic: waiting.topic, autopilot, done }
+  const [plan, pagesInProgress, published, connected] = await Promise.all([
+    going.length ? Promise.resolve(null) : getPlan(user).catch(() => null),
+    db.mockActivity.count({ where: { userId: user.id, type: "post_draft", OR: [{ metadata: { path: ["status"], equals: "ready" } }, { metadata: { path: ["status"], equals: "scheduled" } }] } }),
+    db.mockActivity.count({ where: { userId: user.id, type: { in: ["gbp_post", "social_published", "site_change", "review_reply", "email_campaign_sent"] }, createdAt: { gte: new Date(Date.now() - 30 * DAY) } } }),
+    getConnected(user).catch(() => ({ n: 0, total: 0, next: null })),
+  ])
+  const recapReady = published > 0 || (headline.total ?? 0) > 0
+  return { plan, pagesInProgress, recapReady, connected, firstName: user.fullName?.trim().split(/\s+/)[0] || null, ai, headline, tiles, question, going, waiting: waiting.total, waitingTopic: waiting.topic, autopilot, done }
+}
+
+const KIND_WORD = { blog: ["page that answers AI questions", "pages that answer AI questions"], google: ["Google update", "Google updates"], social: ["social post", "social posts"] } as const
+const planKicked = new Set<string>()
+
+/**
+ * Nothing scheduled: show this week's plan from the existing week run (lib/agent/week.ts). If there
+ * is no run in the last 7 days, start one in the background (paid plans, once per brand).
+ */
+export async function getPlan(user: User): Promise<WeekPlan> {
+  const row = await db.mockActivity.findFirst({ where: { userId: user.id, type: WEEK_RUN, createdAt: { gte: new Date(Date.now() - 7 * DAY) } }, orderBy: { createdAt: "desc" }, select: { id: true, metadata: true } })
+  if (!row) {
+    if (!hasPaidPlan(user) || planKicked.has(user.id)) return null
+    planKicked.add(user.id)
+    setTimeout(() => planKicked.delete(user.id), 6 * 3_600_000)
+    const id = await runAsUser(user.id, () => startWeekRun(user.id)).catch(() => null)
+    return id ? { runId: id, running: true, items: [], summary: "", needsOk: 0 } : null
+  }
+  const run = row.metadata as WeekRun
+  if (run.status === "failed") return null
+  const items: PlanItem[] = (run.items ?? []).filter((i) => i.status !== "failed").map((i) => ({
+    kind: i.kind, title: i.title, day: i.day, status: i.status,
+    needsOk: (i.kind === "social" && i.socialId && i.socialStatus === "draft") || (i.kind === "google" && i.postId && i.status === "ready") || (i.kind === "blog" && i.draftId && i.status === "ready") ? true : false,
+  }))
+  const counts = (["social", "blog", "google"] as const).map((k) => [k, items.filter((i) => i.kind === k).length] as const).filter(([, c]) => c)
+  const summary = counts.map(([k, c]) => `${c} ${KIND_WORD[k][c === 1 ? 0 : 1]}`).join(" · ")
+  return { runId: row.id, running: run.status === "running", items, summary, needsOk: items.filter((i) => i.needsOk).length }
+}
+
+/** How many of the connections behind the numbers are on, and the next one to connect. */
+async function getConnected(user: User): Promise<BriefingData["connected"]> {
+  const [integ, s] = await Promise.all([db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationId: true, gaPropertyId: true, gscSiteUrl: true } }), getAgentSettings(user.id)])
+  const list: { ok: boolean; act: Act }[] = [
+    { ok: !!integ?.gmbLocationId, act: { label: "Connect your Google listing", href: "/api/integrations/google/connect?go=1" } },
+    { ok: !!integ?.gaPropertyId, act: { label: integ ? "Pick your Analytics property" : "Connect Google Analytics", href: integ ? "/dashboard/settings/integrations" : "/api/integrations/google/connect?go=1" } },
+    { ok: !!(s.wp || s.site), act: { label: "Connect your website", chip: { label: "Connect my website", action: { type: "wp-connect" } } } },
+  ]
+  if (hasGrowth(user)) list.push({ ok: !!s.tracking?.on, act: { label: "Turn on lead tracking", topic: "tracking" } })
+  return { n: list.filter((x) => x.ok).length, total: list.length, next: list.find((x) => !x.ok)?.act ?? null }
 }

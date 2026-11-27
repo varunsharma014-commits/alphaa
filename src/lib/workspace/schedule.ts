@@ -28,8 +28,10 @@ export async function scheduleMade(userId: string, kind: "social" | "gbp" | "sit
     const p = await getPost(userId, id)
     if (!p) return { ok: false, error: "That post isn’t here any more." }
     if (!p.accountIds.length) return { ok: false, error: "Connect a social account first, then I can post it." }
+    // A planned day (the week run sets one) is kept when it's later than the earliest allowed time.
+    const planned = p.scheduledFor && Date.parse(p.scheduledFor) > base.getTime() ? p.scheduledFor : null
     p.status = "scheduled"
-    p.scheduledFor = base.toISOString()
+    p.scheduledFor = planned ?? base.toISOString()
     await savePost(userId, p)
     return { ok: true, at: p.scheduledFor }
   }

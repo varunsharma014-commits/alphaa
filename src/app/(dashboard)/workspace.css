@@ -297,3 +297,7 @@
 .ax-console-act { margin-top: 12px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 12px 14px; border-radius: 14px; background: rgba(0,113,227,.16); border: 1px solid rgba(100,210,255,.25); }
 .ax-main::before { content: ""; position: fixed; top: 0; left: 250px; right: 0; height: 72px; z-index: 25; pointer-events: none; background: linear-gradient(to bottom, var(--x-bg) 35%, rgba(245,245,247,0)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); mask-image: linear-gradient(to bottom, #000 40%, transparent); -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent); }
 @media (max-width: 1023px) { .ax-main::before { display: none; } }
+/* ── Briefing: setup bar, plan, name chips ───────────────────────────────── */
+.ax-setupbar { padding: 20px 24px; display: flex; gap: 18px; align-items: center; flex-wrap: wrap; background: linear-gradient(135deg, var(--x-surf) 60%, rgba(175,82,222,.06)); }
+.ax-plan { padding: 18px 22px; background: linear-gradient(180deg, rgba(0,113,227,.04), var(--x-surf)); border-style: dashed; }
+.ax-chip { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 8px; font-size: 12px; font-weight: 600; background: var(--x-tint); color: var(--x-ink); border: 1px solid var(--x-line); }
