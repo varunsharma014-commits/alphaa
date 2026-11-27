@@ -36,7 +36,7 @@ export function HomeV2() {
         <div>
           <ServicePills />
           <h1 className="v3-h1">Your <span className="hv-mark">entire</span> marketing, run by Alphaa.</h1>
-          <p className="v3-lede">I work to get you recommended on ChatGPT and Gemini, create viral social content, build and execute your brand growth strategy, handle the technical setup, and run your ad campaigns. You do what you do best: running your business.</p>
+          <p className="v3-lede">I create viral social content, improve rankings on ChatGPT and Gemini, build and execute your brand growth strategy, handle the tracking and technical setup, and run your entire ad campaigns like a $300K/year CMO. You do what you do best: running your business.</p>
           <div className="v3-btns">
             <Link className="v3-btn" href="/start">Hire your agent →</Link>
             <a className="v3-btn v3-btn--ghost" href="#features">See what I do</a>
