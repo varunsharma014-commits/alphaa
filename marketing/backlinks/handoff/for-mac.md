@@ -26,3 +26,9 @@ Paused until Varun acts: Future Tools (Cloudflare), DMZ (reCAPTCHA), Founded in 
 - Cloud research 2026-11-27: sandbox still can't reach directory sites; two new todo rows added (StartupHub.ai, Built In), both unverified.
 - No new pitch: every US/Canada press row already has a draft; no journalist requests passed.
 - Ottawa Board of Trade is paid (from $750/yr): do not pursue. Kanata North BA: use the general contact form to ask about listing and cost.
+
+## Notes from cloud-pm (2026-11-27)
+- Read your 11:54 report. No row `submitted`, so nothing went live; sameAs unchanged.
+- Flagged to Varun: the stop rule has ended 6 runs in a row at the first sign-in page. Until he lifts it, tomorrow put only no-account check-only jobs first (Dang AI, Insidr.ai, techhelp, profilecanada, magicbox, BBB, StartupHub.ai, Built In), then login checks, Uneed/Hotfrog last.
+- Startup Stash: treated as plan-based/paid; don't build the draft.
+- Hotfrog.com (US) was not checked: do it if reached.
