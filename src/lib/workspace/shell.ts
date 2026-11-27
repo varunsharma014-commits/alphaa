@@ -11,6 +11,7 @@ import { getGadsAccount } from "@/lib/gads/store"
 import { healthItems } from "@/lib/tracking-health"
 import { eventDays } from "@/lib/tracking-events"
 import { getDone } from "./briefing"
+import { getTrackingData } from "./tracking"
 import { scheduledSitePosts } from "./site-posts"
 import { PRO_RE } from "@/lib/agent/autopilot"
 import { consentCurrent } from "@/lib/auto-approve-text"
@@ -31,6 +32,8 @@ export type ShellData = {
   channels: number
   /** Lead-tracking checks that pass / all (Growth with tracking on), else null. */
   signals: { ok: number; total: number } | null
+  /** Rows under "Needs you" on Tracking & Setup (same function as that page). */
+  trackingNeeds: number
   doneThisWeek: number
 }
 
@@ -78,5 +81,6 @@ export async function getShellData(user: User): Promise<ShellData> {
     channels,
     signals,
     doneThisWeek: done,
+    trackingNeeds: await getTrackingData(user).then((d) => d.needs).catch(() => 0),
   }
 }

@@ -190,7 +190,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
               {ni("/dashboard/social", "Social Studio", "social", data.socialScheduled ? <span className="ax-bdg">{data.socialScheduled}</span> : !data.pro ? <span className="ax-tag">Pro</span> : null)}
               {ni("/dashboard/email", "Email & Flows", "email", <span className="ax-tag">Growth</span>)}
               {ni("/dashboard/ads", "Ads", "ads", <span className="ax-tag">Top plan</span>)}
-              {ni("/dashboard/tracking", "Tracking & Setup", "tracking", failing ? <span className="ax-bdg amber">{failing}</span> : null)}
+              {ni("/dashboard/tracking", "Tracking & Setup", "tracking", data.trackingNeeds ? <span className="ax-bdg amber">{data.trackingNeeds}</span> : null)}
             </nav>
             <nav className="ax-nav">
               {ni("/dashboard/settings", "Your rules", "rules")}
