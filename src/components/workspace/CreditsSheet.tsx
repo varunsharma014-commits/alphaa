@@ -126,7 +126,7 @@ export function CreditsSheet() {
               Use credits when I run out
             </label>
             {error ? <p role="alert" style={{ fontSize: 13, color: "#b42318", marginTop: 8 }}>{error}</p> : null}
-            <p style={{ fontSize: 11, color: "#6e6e73", marginTop: 10 }}>One-time payment, no subscription. Business customers only.</p>
+            <p style={{ fontSize: 11, color: "#6e6e73", marginTop: 10 }}>One-time payment, no subscription. Credits are non-refundable and have no cash value. Business customers only. See the <a href="/terms" style={{ color: "inherit" }}>Terms</a>.</p>
           </>
         )}
       </div>

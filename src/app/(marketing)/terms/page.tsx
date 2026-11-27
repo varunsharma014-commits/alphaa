@@ -59,6 +59,8 @@ Refund Policy: If you are not satisfied with the Service, you may request a full
 
 AI Visibility Guarantee: If, during the first 90 days of your paid subscription, none of ChatGPT, Gemini, Claude or Perplexity names your business in any of Alphaa's weekly visibility checks for your account, Alphaa will credit your account with one month of your plan's price (for annual plans, one twelfth of the annual price), applied automatically to your next invoice. The guarantee applies once per customer and business, requires an active subscription at day 90, and is not redeemable for cash. If you are billed through Shopify, the guarantee applies in the same way and the credit is issued through your Shopify billing. The weekly checks run automatically for your account; you don't need to switch anything on. Alphaa's weekly check records are the basis for determining eligibility.
 
+Usage Credits: Credits are a one-time purchase that extend your plan's included usage. Credits are non-refundable, have no cash value, are not transferable between accounts, and expire 12 months after purchase. The 7-day first-charge refund above does not apply to credit purchases. Nothing in this section limits any refund right that applicable law gives you and that cannot be waived.
+
 Price Changes: Alphaa reserves the right to modify subscription pricing upon 30 days' written notice to your registered email address. Your continued use of the Service after the price change takes effect constitutes your acceptance of the new pricing.
 
 Stripe processes all payments. By subscribing, you also agree to Stripe's terms of service available at https://stripe.com/legal.`,
