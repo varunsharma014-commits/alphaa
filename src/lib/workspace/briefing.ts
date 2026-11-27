@@ -9,7 +9,7 @@ import { latestQuestionScan } from "@/lib/questions"
 import { getEngineEvidence } from "@/lib/engine-evidence"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { setupProgress } from "@/lib/agent/setup"
-import { hasGrowth, hasPaidPlan, hasPro } from "@/lib/billing"
+import { hasGrowth, hasPaidPlan, hasPro, isComped } from "@/lib/billing"
 import { startWeekRun, WEEK_RUN, type WeekRun } from "@/lib/agent/week"
 import { runAsUser } from "@/lib/usage"
 import { listPosts, listAccounts } from "@/lib/social/store"
@@ -326,7 +326,7 @@ const planKicked = new Set<string>()
 export async function getPlan(user: User): Promise<WeekPlan> {
   const row = await db.mockActivity.findFirst({ where: { userId: user.id, type: WEEK_RUN, createdAt: { gte: new Date(Date.now() - 7 * DAY) } }, orderBy: { createdAt: "desc" }, select: { id: true, metadata: true } })
   if (!row) {
-    if (!hasPaidPlan(user) || planKicked.has(user.id)) return null
+    if ((!hasPaidPlan(user) && !isComped(user.email)) || planKicked.has(user.id)) return null
     planKicked.add(user.id)
     setTimeout(() => planKicked.delete(user.id), 6 * 3_600_000)
     const id = await runAsUser(user.id, () => startWeekRun(user.id)).catch(() => null)
