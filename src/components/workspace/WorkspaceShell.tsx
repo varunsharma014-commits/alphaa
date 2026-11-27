@@ -32,7 +32,11 @@ const SUGGEST: Record<string, Suggest[]> = {
   "/dashboard/tracking": [{ label: "Is everything counting?", topic: "tracking" }, { label: "Finish setting up", topic: "setup" }, { label: "All my channels", topic: "channels" }],
 }
 
-const MORE: { href: string; label: string }[] = [
+// `topic` entries open that chat thread in place (the website posts & pages queue lives in the
+// "content" thread); the href is the same thread as a URL for new tabs and old links.
+const MORE: { href: string; label: string; topic?: string }[] = [
+  { href: "/dashboard?ask=content", label: "Website posts & pages", topic: "content" },
+  { href: "/dashboard/settings/website", label: "Website connection" },
   { href: "/dashboard/sandbox", label: "Ask the AIs" },
   { href: "/dashboard/vault", label: "What AI reads about you" },
   { href: "/dashboard/visibility", label: "AI search, per AI" },
@@ -200,7 +204,9 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
               </button>
               {more && (
                 <div style={{ paddingLeft: 18 }}>
-                  {MORE.map((m) => (
+                  {MORE.map((m) => m.topic ? (
+                    <Link key={m.href} href={m.href} className="ax-ni sm" onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey) return; e.preventDefault(); open({ topic: m.topic, label: m.label }) }}>{m.label}</Link>
+                  ) : (
                     <Link key={m.href} href={m.href} className={`ax-ni sm${pathname === m.href || pathname.startsWith(`${m.href}/`) ? " on" : ""}`}>{m.label}</Link>
                   ))}
                   {admin && <Link href="/dashboard/admin/usage" className={`ax-ni sm${pathname.startsWith("/dashboard/admin") ? " on" : ""}`}>Admin · usage</Link>}

@@ -10,10 +10,10 @@ Alphaa is a local-business SEO SaaS that replaces an SEO agency. It automaticall
 
 | Layer | Package / Version |
 |---|---|
-| Framework | Next.js ^15.3.0 (App Router) |
+| Framework | Next.js ^15.5.29 (App Router) |
 | Language | TypeScript ^5 |
 | Auth | @clerk/nextjs ^7.3.7 |
-| Database | PostgreSQL via Prisma ^7.8.0 + @prisma/adapter-pg ^7.8.0 |
+| Database | PostgreSQL via Prisma ^7.10.1 + @prisma/adapter-pg ^7.10.1 |
 | AI — primary | @anthropic-ai/sdk ^0.97.1 |
 | AI — scan | openai ^6.39.0 (GPT-4o-mini + Perplexity via OpenAI-compat) |
 | AI — scan | @google/generative-ai ^0.24.1 (Gemini 1.5 Flash) |
@@ -25,7 +25,7 @@ Alphaa is a local-business SEO SaaS that replaces an SEO agency. It automaticall
 | UI primitives | @radix-ui/* (accordion, dialog, progress, select, separator, switch, tabs, tooltip) |
 | Icons | lucide-react ^1.16.0 |
 | Styling | Tailwind CSS ^3.4.1 + tailwind-merge ^3.6.0 + clsx ^2.1.1 |
-| Validation | zod ^4.4.3 |
+| Validation | zod ^4.6.7 |
 | Toast | sonner ^2.0.7 |
 | Webhooks | svix ^1.94.0 (Clerk webhook verification) |
 
@@ -230,7 +230,7 @@ Prices created 2026-11-26 by `scripts/stripe-create-plan-prices.mjs` (idempotent
 - Marketing email goes through `lib/marketing-email.ts` (footer + `List-Unsubscribe` one-click headers). Unsubscribe links are HMAC-signed (`lib/unsubscribe.ts`): `/unsubscribe` page (GET) and `/api/unsubscribe` (POST one-click). Abandoned checkout (`checkout.session.expired`) → `lib/abandoned-checkout.ts`, once per account.
 
 ### Workspace shell (2026-11-26, replaces AgentShell for everyone)
-- `(dashboard)/layout.tsx` renders `components/workspace/WorkspaceShell.tsx` (scoped CSS `(dashboard)/workspace.css`, every rule under `.ax`): frosted sidebar (Briefing; Research & Ideas, Social Studio, Email & Flows [Pro], Ads [Growth, gated by `hasGrowth`], Tracking & Setup; Your rules → /dashboard/settings; "More" lists every older detail page), status island, Autopilot switch = the existing auto-approve consent (`openAutoApprove` / `turnOffAutoApprove`). Light only (dark mode off 2026-11-26; the theme cookie is ignored). Under 1024px the sidebar is a drawer behind a top bar.
+- `(dashboard)/layout.tsx` renders `components/workspace/WorkspaceShell.tsx` (scoped CSS `(dashboard)/workspace.css`, every rule under `.ax`): frosted sidebar (Briefing; Research & Ideas, Social Studio, Email & Flows [Pro], Ads [Growth, gated by `hasGrowth`], Tracking & Setup; Your rules → /dashboard/settings; "More" lists every older detail page, led by "Website posts & pages" (opens the `content` chat thread in place; href `/dashboard?ask=content`) and "Website connection" (/dashboard/settings/website), added 2026-11-27 for Shopify/Webflow reviewers), status island, Autopilot switch = the existing auto-approve consent (`openAutoApprove` / `turnOffAutoApprove`). Light only (dark mode off 2026-11-26; the theme cookie is ignored). Under 1024px the sidebar is a drawer behind a top bar.
 - The ⌘K ask bar opens a panel that mounts the real `DashboardAgent` (`composerOpen`). Pages drive it with `askAlphaa({ topic | chip | say | push })` (`lib/workspace/events.ts`): topics go through `ASK_EVENT`, chips/messages through `AGENT_EVENT`, which DashboardAgent handles with its own `onChip`/`send`. `?ask=<topic>` on any dashboard URL opens the chat on that thread.
 - Pages: `/dashboard` (Briefing), `/dashboard/research|social|email|ads|tracking`. Data in `lib/workspace/*.ts`, real rows only, honest empty states. Headline = calls + leads over 30 days: Google listing CALL_CLICKS (`getProfileActions`, cached 6h) + website lead beacons (`tracking_event`) + Meta lead-form leads; prev is null when there is nothing to compare with. "Going out soon" = scheduled social posts + scheduled GbpPosts; Stop/Undo = `POST /api/workspace/hold` (back to draft / back on schedule). "One question" = at most one of: an AI fact to confirm, a first-time connection (setup step), the ad budget (money), or turning autopilot on when finished work is waiting.
 - Briefing top = 4 AI cards (`lib/workspace/ai-cards.ts`): verdict from `getEngineEvidence()` (question scan as fallback), question/answer/"names instead" from `storedAnswers()` (lib/agent/first-answer.ts) when it agrees with the verdict, else the weekly question scan's `named`. Never-checked = "Not checked yet". FirstAnswer is no longer shown.
@@ -458,6 +458,8 @@ Status colors (not in Tailwind config, use standard Tailwind): `text-green-500` 
 ---
 
 ## 11. Build and Dev Commands
+
+**Dependency audit (2026-11-27):** `npm audit` = 0. `package.json` `overrides` pin `effect` ^3.22.5 (prisma 7.10's @prisma/config pins a vulnerable 3.20) and Next 15's own `postcss` to ^8.5.33 (Next 15.5.29 pins 8.4.31; Next 16 ships 8.5.x). Drop both when moving to Prisma 8 / Next 16.
 
 ```bash
 # Install dependencies (also runs prisma generate via postinstall)
