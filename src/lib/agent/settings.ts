@@ -44,7 +44,7 @@ export type AgentSettings = {
   setup?: import("@/lib/agent/setup").SetupState
   /** Brand library (Drive / Dropbox links): the video picked for the next post, a one-time note (lib/library). */
   library?: import("@/lib/library/types").LibrarySettings
-  /** Dashboard v2 (grouped rail + one focus card) for this brand, before everyone gets it (lib/dash-v2.ts). */
+  /** Retired 2026-11-27 (the old dashboard v2 flag); kept so stored settings still parse. */
   dashV2?: boolean
   /** "Auto-approve and post": the owner accepted the warning (lib/agent/auto-approve.ts). Unset = off. */
   autoApprove?: { acceptedAt: string; version: string; consentId: string }

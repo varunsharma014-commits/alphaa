@@ -5,6 +5,10 @@
 //                message as the owner, or push messages. Topics go through the existing ASK_EVENT.
 import type { Chip, Message } from "@/lib/agent/types"
 
+/** Pull a topic thread into the chat (handled by DashboardAgent). */
+export const ASK_EVENT = "alphaa:ask"
+export type AskDetail = { topic: string; label: string }
+
 export const WS_EVENT = "alphaa:ws"
 export const AGENT_EVENT = "alphaa:agent"
 export const TOAST_EVENT = "alphaa:toast"

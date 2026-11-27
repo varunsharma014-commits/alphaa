@@ -3,8 +3,7 @@
 import { hasPlaceholders, withoutPlaceholders } from "@/lib/brackets"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
-import { ASK_EVENT, type AskDetail } from "./AgentShell"
-import { AGENT_EVENT, type AgentEventDetail } from "@/lib/workspace/events"
+import { AGENT_EVENT, ASK_EVENT, type AgentEventDetail, type AskDetail } from "@/lib/workspace/events"
 import { AgentFeed, Composer } from "./AgentFeed"
 import { agent, mid, user as userMsg, type AgentOpEndpoint, type Block, type Chip, type Message, type SiteOp, type Task } from "@/lib/agent/types"
 import { voiceRunMessage } from "@/lib/agent/voice-narration"
@@ -38,9 +37,6 @@ import { siteCheckBlocks, describeSchemas } from "@/lib/agent/site-narration"
 import { NONE_AVAILABLE, PLATFORM_NAME, platformPickerBlocks, type Availability } from "@/lib/connector/platforms"
 import type { Platform } from "@/lib/connector/types"
 import type { AgentStatus } from "@/lib/agent/feed"
-import type { Briefing as BriefingData } from "@/lib/agent/briefing"
-import { Briefing } from "./Briefing"
-import { BriefingV2 } from "./BriefingV2"
 import { openAutoApprove } from "./AutoApproveModal"
 import { AUTO_APPROVE_CHANGED, type AutoApproveChangedDetail } from "@/lib/auto-approve-text"
 import { NeedsConnect, pickFromDrive, pickFromDropbox, preloadPicker } from "./library-pickers"
@@ -81,23 +77,18 @@ export function DashboardAgent({
   current = "/dashboard",
   context,
   status,
-  briefing,
   notice,
   setup = [],
-  v2 = false,
   composerOpen = false,
 }: {
   /** Workspace chat panel: start with the text box open instead of the two buttons. */
   composerOpen?: boolean
-  /** Dashboard v2 (lib/dash-v2.ts): focus card home, setup opens from the header pill instead of being pinned. */
-  v2?: boolean
   initial: Message[]
   businessName: string
   autorun?: Task[]
   current?: string
   context?: { businessType: string | null; city: string | null }
   status?: AgentStatus
-  briefing?: BriefingData
   /** Shown below the briefing on arrival (e.g. "I'm connected to your Wix site"). */
   notice?: Message
   /** Guided setup card ("3 of 7 done"), pinned above the briefing until finished. */
@@ -106,17 +97,15 @@ export function DashboardAgent({
   const router = useRouter()
   const [messages, setMessages] = useState<Message[]>(notice ? [...initial, notice] : initial)
   const [setupMsgs, setSetupMsgs] = useState<Message[]>(setup)
-  // v2: the setup card shows only once the owner opens it (header pill, rail, or the last item of today).
-  const [setupOpen, setSetupOpen] = useState(!v2)
+  const [setupOpen, setSetupOpen] = useState(true)
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
   const [asking, setAsking] = useState(composerOpen)
-  // With a briefing on top, the detail behind it stays folded until asked for.
-  const [why, setWhy] = useState(!briefing)
+  const why = true
   const detailIds = useRef(new Set(initial.map((m) => m.id)))
-  // The briefing opens at the top and stays put; the view only follows new
+  // The view follows new messages as they arrive
   // messages once the owner has done something (or arrived with a result to see).
-  const [followNew, setFollowNew] = useState(!briefing || !!notice)
+  const [followNew, setFollowNew] = useState(true)
   const docEdits = useRef<Record<string, string>>({})
   const prefs = useRef<Prefs>({ webPersonEmail: null, wpConnected: false, siteConnected: false, platform: null, available: NONE_AVAILABLE })
   const pending = useRef<Record<string, Pending>>({})
@@ -322,8 +311,7 @@ export function DashboardAgent({
     ;(async () => {
       await loadPrefs()
       // Nothing checked yet: do the check now instead of asking permission.
-      // (With the briefing, FirstAnswer asks it and shows the answer up top.)
-      if (status?.firstCheck && !briefing) await liveCheck(status.firstCheck, true)
+      if (status?.firstCheck) await liveCheck(status.firstCheck, true)
       for (const t of autorun) await runTask(t)
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1013,13 +1001,7 @@ export function DashboardAgent({
         {setupOpen && setupMsgs.length > 0 && (
           <AgentFeed messages={setupMsgs} animate="stagger" busy={false} onChip={onChip} onForm={onForm} onDocEdit={() => {}} autoScroll={false} />
         )}
-        {briefing && (v2
-          ? <BriefingV2 data={briefing} onShow={(topic, label) => void pullThread(topic, label)} onChip={(c) => void onChip(c, "")} />
-          : <Briefing data={briefing} onShow={(topic, label) => void pullThread(topic, label)} />)}
-        {briefing && initial.length > 0 && (
-          <button type="button" className="ag-why" onClick={(e) => { const btn = e.currentTarget; setWhy(!why); if (!why) window.setTimeout(() => btn.scrollIntoView({ block: "start", behavior: "smooth" }), 50) }} aria-expanded={why}>{why ? "Hide the details" : "Show me why"}</button>
-        )}
-        {status && !briefing && (
+        {status && (
           <div className="ag-status" aria-live="polite">
             <span className={`ag-dot ${busy ? "ag-dot--live" : "ag-dot--ok"}`} />
             {busy ? (
