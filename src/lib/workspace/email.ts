@@ -1,4 +1,4 @@
-// Email & Flows (Growth): the owner's list, their campaigns and what happened to each send.
+// Email & Flows (Pro and up since 2026-11-26): the owner's list, their campaigns and what happened to each send.
 // Opens and clicks aren't tracked, so they are never shown.
 import type { User } from "@prisma/client"
 import { db } from "@/lib/db"

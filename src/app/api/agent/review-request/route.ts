@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic"
 
+import { hasPro } from "@/lib/billing"
 import { NextResponse } from "next/server"
 import { createHash } from "crypto"
 import { z } from "zod"
@@ -26,6 +27,7 @@ const DAILY_CAP = 50
 export async function POST(req: Request) {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!hasPro(user)) return NextResponse.json({ error: "Review requests come with the Pro plan." }, { status: 403 })
   let input: z.infer<typeof body>
   try {
     input = body.parse(await req.json())

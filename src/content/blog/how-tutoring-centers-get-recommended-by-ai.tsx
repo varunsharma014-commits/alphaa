@@ -266,7 +266,7 @@ export function Body() {
         Alphaa does this work for owners who do not have time for it. It asks ChatGPT, Gemini, Claude and
         Perplexity about your business every week, runs a 23-point check of your site, and drafts subject pages,
         FAQs, structured data and review replies for you to approve. Approved changes publish to WordPress, Shopify
-        or Webflow, from $99 a month. It cannot control what an AI says; it improves the public facts the assistants
+        or Webflow, from $99 a month (review replies on Pro). It cannot control what an AI says; it improves the public facts the assistants
         read. Our wider guide for{" "}
         <Link href="/blog/get-recommended-by-ai-local-service-business">local service businesses</Link> covers the
         same mechanics for other trades.

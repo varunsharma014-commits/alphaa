@@ -69,7 +69,7 @@ export const SERVICES: Service[] = [
       "Planned around local events, seasons and news",
       "Every post shown to you before it goes out",
     ],
-    savings: { them: "$500–$3,000", themWhat: "a month is what most small businesses are quoted for social media management", us: "$399", usWhat: "a month for Pro, with SEO, Google posts and blogs included too", sources: [{ label: "SocialBu, social media management pricing 2026", url: "https://socialbu.com/blog/social-media-management-pricing" }, { label: "Boomp, pricing benchmarks for local businesses", url: "https://www.boomp.net/research/social-media-management-pricing-benchmarks-local-businesses" }] },
+    savings: { them: "$500–$3,000", themWhat: "a month is what most small businesses are quoted for social media management", us: "$499", usWhat: "a month for Pro, with SEO, Google posts and blogs included too", sources: [{ label: "SocialBu, social media management pricing 2026", url: "https://socialbu.com/blog/social-media-management-pricing" }, { label: "Boomp, pricing benchmarks for local businesses", url: "https://www.boomp.net/research/social-media-management-pricing-benchmarks-local-businesses" }] },
     plan: "pro",
     availability: "Social media is part of the Pro and Growth plans. Today I write each post and its image, and you publish it with one tap. Posting straight to Facebook, Instagram and LinkedIn opens as Meta and LinkedIn approve Alphaa.",
     faqs: [
@@ -77,7 +77,7 @@ export const SERVICES: Service[] = [
       { q: "Will the posts sound like me?", a: "Alphaa reads your website and the replies you’ve written to customers, then gives you three voices to choose from, with an example of each. You can also set the tone, emoji, length and language, or describe your voice in your own words." },
       { q: "Which platforms does it cover?", a: "Facebook, Instagram and LinkedIn." },
       { q: "Do I need to design the images?", a: "No. Every post comes with a square image in your brand colours, with your logo and a short headline. Alphaa reads your colours and logo from your website, and you can change them in one tap." },
-      { q: "How much does social media management cost?", a: "Most small businesses are quoted $500 to $3,000 a month by agencies, according to 2026 pricing guides. With Alphaa it’s part of the Pro plan at $399 a month, which also covers SEO, Google posts and blog posts." },
+      { q: "How much does social media management cost?", a: "Most small businesses are quoted $500 to $3,000 a month by agencies, according to 2026 pricing guides. With Alphaa it’s part of the Pro plan at $499 a month, which also covers SEO, Google posts and blog posts." },
       { q: "Does it post automatically?", a: "Only if you want it to. Posting straight to your accounts opens as Meta and LinkedIn approve Alphaa’s access. Until then, each post is ready to copy with one tap." },
     ],
     feature: {
@@ -111,26 +111,26 @@ export const SERVICES: Service[] = [
     beforeAfter: [
       ["AI names your competitor", "AI names you, and you know when it starts"],
       ["Your website confuses AI", "AI can read exactly what you do, where and for whom"],
-      ["Reviews sit unanswered", "Every review gets a reply in your voice"],
+      ["Reviews sit unanswered", "On Pro, every review gets a reply in your voice"],
       ["Guessing if SEO works", "A plain-English note every week: what changed and why"],
     ],
     how: [
       { t: "I ask the AIs about you", p: "Every week I ask ChatGPT, Gemini, Claude and Perplexity the questions your customers ask, and see who they name." },
       { t: "I fix what keeps you out", p: "The business facts AI can’t read, the pages it quotes, the settings that turn its crawlers away. On WordPress, Webflow, Shopify or Wix." },
-      { t: "I keep Google busy", p: "Fresh Google listing updates and replies to your reviews, so Google and AI see a business that’s open and active." },
+      { t: "I keep Google busy", p: "On Pro, fresh Google listing updates and replies to your reviews, so Google and AI see a business that’s open and active." },
     ],
     gets: [
       "Weekly checks across ChatGPT, Gemini, Claude and Perplexity",
       "Your customers’ questions tracked every week (10 on Starter, 20 on Pro)",
       "Website fixes AI needs, published for you or sent to your web person",
-      "2 Google listing updates a week (4 on Pro) and review replies",
+      "On Pro: 4 Google listing updates a week and review replies",
       "If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free",
     ],
     savings: { them: "$500–$3,000", themWhat: "a month is the usual local SEO retainer, and most SEO agencies still don’t work on AI answers", us: "$99", usWhat: "a month for Starter, month to month", sources: [{ label: "Ahrefs, SEO pricing survey", url: "https://ahrefs.com/blog/seo-pricing" }, { label: "SEO.com, local SEO pricing 2026", url: "https://www.seo.com/es/blog/local-seo-pricing" }] },
     plan: "starter",
     faqs: [
       { q: "What is AEO?", a: "AEO (answer engine optimization) is making your business the answer AI assistants like ChatGPT, Gemini, Claude and Perplexity give when customers ask for a recommendation. It works alongside SEO, which is about showing up in Google’s search results." },
-      { q: "How do I get my business recommended by ChatGPT?", a: "AI assistants recommend businesses they can read clearly and see confirmed in many places. Alphaa checks what the four main AIs say about you every week, adds the business facts and pages they need to your website, and keeps your Google listing and reviews active." },
+      { q: "How do I get my business recommended by ChatGPT?", a: "AI assistants recommend businesses they can read clearly and see confirmed in many places. Alphaa checks what the four main AIs say about you every week, adds the business facts and pages they need to your website, and on Pro keeps your Google listing and reviews active." },
       { q: "How long does it take?", a: "Changes to your Google listing can show up within days. AI answers usually take longer, often weeks. Nobody can honestly guarantee a ranking, which is why Alphaa offers this instead: if none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free." },
       { q: "How much does SEO cost for a small business?", a: "Local SEO retainers usually run $500 to $3,000 a month, according to 2026 pricing guides and agency surveys. Alphaa starts at $99 a month, month to month, and covers AI answers as well as Google." },
       { q: "Do I need to change my website?", a: "Alphaa makes the changes for you if your site runs on WordPress, Webflow, Shopify or Wix. Otherwise it writes exactly what to change and emails it to your web person." },
@@ -138,7 +138,7 @@ export const SERVICES: Service[] = [
     feature: {
       title: "Get recommended by ChatGPT, not your competitor.",
       body: "People now ask AI who to call. When ChatGPT, Gemini, Claude or Perplexity names someone else, you lose that customer without ever knowing. I fix what keeps you out and check every week.",
-      points: ["Weekly checks across 4 AI assistants", "Fixes what AI can’t read on your website", "Keeps your Google listing busy and fresh"],
+      points: ["Weekly checks across 4 AI assistants", "Fixes what AI can’t read on your website", "Keeps your Google listing busy and fresh on Pro"],
       label: "AI visibility · weekly check",
       scenes: [
         <Fragment key={k(1)}><div className="say">Does ChatGPT recommend me?</div><div className="row"><i />Asking ChatGPT, Gemini, Claude and Perplexity</div></Fragment>,
@@ -153,10 +153,10 @@ export const SERVICES: Service[] = [
     name: "Ads Management",
     color: "#d6ecff",
     metaTitle: "AI Google Ads & Meta Ads Management for Small Businesses",
-    metaDescription: "Google and Meta ads management from your AI agent is coming soon: tracking first, ads built around what people search for, and your budget moved to what brings calls. No cut of your ad spend.",
+    metaDescription: "Google and Meta ads management from your AI agent, in early access on the Growth plan: tracking first, ads built around what people search for, and your budget moved to what brings calls. No cut of your ad spend.",
     kicker: "Ads Management",
     h1: "Stop paying for clicks that never call.",
-    sub: "Coming soon: your AI agent will show your ads to people already looking for what you sell, count every call, form and booking they bring, and move your money to what works every week.",
+    sub: "Early access on the Growth plan: your AI agent will show your ads to people already looking for what you sell, count every call, form and booking they bring, and move your money to what works every week.",
     dream: "Same budget as last month. More calls. And you know exactly which ad brought each one.",
     pains: [
       { t: "Money in, nothing you can see out", p: "Your ads are running. Are they bringing customers? Nobody can give you a straight answer." },
@@ -171,7 +171,7 @@ export const SERVICES: Service[] = [
     ],
     how: [
       { t: "I count what matters", p: "I set up Google Analytics and the Meta Pixel on your website and count phone taps, emails and form sends, so ads learn who your customers are." },
-      { t: "I build your ads", p: "Coming soon: Google Search and Meta campaigns around what people search for and what your business does. You approve the budget." },
+      { t: "I build your ads", p: "When ads open: Google Search and Meta campaigns around what people search for and what your business does. You approve the budget." },
       { t: "I tune them every week", p: "Once ads open: pause what doesn’t bring customers, write fresh ads, move money to what does. You see every change in plain English." },
     ],
     gets: [
@@ -181,11 +181,11 @@ export const SERVICES: Service[] = [
       "Weekly tuning: wasted spend cut, fresh ads, budget moved to what works",
       "A monthly budget limit, never exceeded, and no cut of your ad spend",
     ],
-    savings: { them: "$500–$2,500", themWhat: "a month in management fees for a small business, or 10–20% of ad spend, on top of the ads themselves", us: "Coming soon", usWhat: "on a new plan above Growth; the price isn’t set yet", sources: [{ label: "OuterBox, PPC management pricing 2026", url: "https://www.outerboxdesign.com/ppc-management" }, { label: "ClicksGeek, PPC management cost 2026", url: "https://clicksgeek.com/ppc-management-cost/" }] },
+    savings: { them: "$500–$2,500", themWhat: "a month in management fees for a small business, or 10–20% of ad spend, on top of the ads themselves", us: "$799", usWhat: "a month for Growth (early access) with ads for 1 ad account, +$200 a month per extra ad account, and everything in Pro too", sources: [{ label: "OuterBox, PPC management pricing 2026", url: "https://www.outerboxdesign.com/ppc-management" }, { label: "ClicksGeek, PPC management cost 2026", url: "https://clicksgeek.com/ppc-management-cost/" }] },
     plan: "growth",
-    availability: "Ads management is coming soon and isn’t part of any current plan. Building and tuning campaigns opens as Google and Meta approve Alphaa’s access.",
+    availability: "Ads management is part of the Growth plan, in early access: $799 a month for 1 ad account, +$200 a month per extra ad account. Building and tuning campaigns opens as Google and Meta approve Alphaa’s access.",
     faqs: [
-      { q: "How much does Google Ads management cost?", a: "Small businesses are usually quoted $500 to $2,500 a month in management fees, or 10–20% of ad spend, on top of the ad spend itself, according to 2026 pricing guides. Alphaa’s ads management is coming soon on a new plan above Growth and isn’t part of any current plan. When it opens, we never take a cut of your ad spend." },
+      { q: "How much does Google Ads management cost?", a: "Small businesses are usually quoted $500 to $2,500 a month in management fees, or 10–20% of ad spend, on top of the ad spend itself, according to 2026 pricing guides. Alphaa’s ads management is part of the Growth plan, in early access: $799 a month for 1 ad account, +$200 a month per extra ad account, with everything in Pro included. We never take a cut of your ad spend." },
       { q: "Is my ad spend included?", a: "No. Your ad budget is paid to Google and Meta directly from your own ad accounts. Alphaa never marks it up and never spends more than the monthly limit you set." },
       { q: "Do I keep my ad accounts?", a: "Yes. Campaigns run in your own Google Ads and Meta accounts. If you leave, everything stays with you." },
       { q: "Will it spend money without asking me?", a: "Only within the monthly budget you set, and only if you switch that on. Otherwise Alphaa asks before starting any new campaign." },
@@ -193,7 +193,7 @@ export const SERVICES: Service[] = [
     ],
     feature: {
       title: "Stop paying for clicks that never call.",
-      body: "Coming soon: your ads will reach people already looking for what you sell. Every week I’ll cut what isn’t bringing customers and put the money into what is, so the same budget brings in more.",
+      body: "When ads open, your ads will reach people already looking for what you sell. Every week I’ll cut what isn’t bringing customers and put the money into what is, so the same budget brings in more.",
       points: ["Never spends more than your monthly budget", "Your budget goes to Google and Meta. We never take a cut", "See which ads brought calls and bookings"],
       label: "Ads · weekly tune-up",
       scenes: [
@@ -237,7 +237,7 @@ export const SERVICES: Service[] = [
       "Published to WordPress, Webflow or Shopify (Wix by email for now)",
       "See which posts bring visitors",
     ],
-    savings: { them: "$250–$400", themWhat: "per 1,500-word post is the most common freelance rate, so four posts a month is $1,000 or more", us: "$99", usWhat: "a month for Starter with 2 posts a month, or $399 for Pro with 4 and social media too", sources: [{ label: "Peak Freelance, survey of 213 freelance writers", url: "https://peakfreelance.com/blog/freelance-writing-rates/" }] },
+    savings: { them: "$250–$400", themWhat: "per 1,500-word post is the most common freelance rate, so four posts a month is $1,000 or more", us: "$99", usWhat: "a month for Starter with 2 posts a month, or $499 for Pro with 4 and social media too", sources: [{ label: "Peak Freelance, survey of 213 freelance writers", url: "https://peakfreelance.com/blog/freelance-writing-rates/" }] },
     plan: "starter",
     faqs: [
       { q: "Can AI write blog posts that rank?", a: "Posts rank when they answer a real question clearly. Alphaa picks topics from what your customers actually search for and ask AI, answers the question in the first lines, and adds a short FAQ, which is the format Google and AI assistants quote." },
@@ -263,7 +263,7 @@ export const SERVICES: Service[] = [
     name: "Email Marketing",
     color: "#eadcff",
     metaTitle: "AI Email Marketing for Small Businesses",
-    metaDescription: "Your AI agent writes short, friendly emails your past customers actually open, sends them at the right moment and shows you who came back. Part of Alphaa Growth.",
+    metaDescription: "Your AI agent writes short, friendly emails your past customers actually open, sends them at the right moment and shows you who came back. Part of Alphaa Pro.",
     kicker: "Email Marketing",
     h1: "Turn past customers into repeat customers.",
     sub: "Your easiest sale is someone who already bought from you. Your AI agent writes short, friendly emails at the right moment, so they come back to you instead of wandering off to a competitor.",
@@ -291,13 +291,13 @@ export const SERVICES: Service[] = [
       "Unsubscribe link and legal footer in every email",
       "See who opened, clicked and came back",
     ],
-    savings: { them: "$500–$3,000", themWhat: "a month is the usual small-business email agency retainer", us: "$499", usWhat: "a month for Growth (early access), with social, SEO and blogs included too", sources: [{ label: "Nutshell, email marketing costs 2026", url: "https://www.nutshell.com/blog/cost-of-email-marketing" }, { label: "Email Vendor Selection, pricing guide", url: "https://www.emailvendorselection.com/email-marketing-cost-pricing-guide/" }] },
-    plan: "growth",
-    availability: "Email campaigns are part of the Growth plan, opening in early access.",
+    savings: { them: "$500–$3,000", themWhat: "a month is the usual small-business email agency retainer", us: "$499", usWhat: "a month for Pro, with social, SEO and blogs included too", sources: [{ label: "Nutshell, email marketing costs 2026", url: "https://www.nutshell.com/blog/cost-of-email-marketing" }, { label: "Email Vendor Selection, pricing guide", url: "https://www.emailvendorselection.com/email-marketing-cost-pricing-guide/" }] },
+    plan: "pro",
+    availability: "Email campaigns are part of the Pro and Growth plans.",
     faqs: [
       { q: "Who will the emails go to?", a: "Only customers who agreed to hear from you. Alphaa never emails anyone who didn’t, and every email has an unsubscribe link and your business address, as CAN-SPAM and CASL require." },
       { q: "How often will it send?", a: "Only when there’s a reason: a reminder that’s due, a seasonal moment or an offer you approved. You choose whether each email waits for your OK or goes out on its own." },
-      { q: "How much does email marketing cost?", a: "Small businesses are usually quoted $500 to $3,000 a month by email marketing agencies, according to 2026 pricing guides. With Alphaa it’s part of the Growth plan at $499 a month." },
+      { q: "How much does email marketing cost?", a: "Small businesses are usually quoted $500 to $3,000 a month by email marketing agencies, according to 2026 pricing guides. With Alphaa it’s part of the Pro plan at $499 a month." },
       { q: "Will the emails sound like me?", a: "Yes. They’re written in the same voice you pick for your posts, learned from your own website and customer replies." },
     ],
     feature: {
@@ -316,4 +316,4 @@ export const SERVICES: Service[] = [
 ]
 
 export const SERVICE_BY_SLUG = Object.fromEntries(SERVICES.map((s) => [s.slug, s])) as Record<ServiceSlug, Service>
-export const SERVICES_UPDATED = "2026-11-17"
+export const SERVICES_UPDATED = "2026-11-26"

@@ -51,8 +51,8 @@ export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "listings", label: "Listings & Profiles", blurb: "Bing, Apple, your social profiles, your details across directories, and your locations" },
   { key: "competitors", label: "Competitors", blurb: "What they have that you don’t — and drafts to close it" },
   { key: "briefings", label: "Weekly Briefings", blurb: "What I did each week, in plain English" },
-  { key: "tracking", label: "Tracking & Ads", blurb: "Google Analytics, the Meta Pixel and the leads your website sends (Growth)" },
-  { key: "email", label: "Email your past customers", blurb: "Your customer list and the emails I write to bring people back, sent only when you say so (Growth)" },
+  { key: "tracking", label: "Tracking & Ads", blurb: "Google Analytics, the Meta Pixel and the leads your website sends (Pro)" },
+  { key: "email", label: "Email your past customers", blurb: "Your customer list and the emails I write to bring people back, sent only when you say so (Pro)" },
   { key: "adplan", label: "Your ad plan", blurb: "Your two strongest angles, opening lines, video scripts, static ads and budget plan, written from your business and your competitors’ ads (Pro)" },
   { key: "ads", label: "Ads", blurb: "Your Google, Facebook and Instagram ads: the campaigns I built, what they cost, the leads they brought and what I tuned (Growth)" },
 ]
@@ -102,6 +102,19 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
   switch (topic) {
     // ── Reviews ────────────────────────────────────────────────────────────
     case "reviews": {
+      // Review replies are Pro and up since 2026-11-26 (Starter is AI search only).
+      if (!hasPro(user)) {
+        return {
+          autorun: [],
+          messages: [
+            agent([
+              { kind: "text", text: "Every review answered, in your voice.", big: true },
+              { kind: "text", text: "On the Pro plan I read every new Google review, write a reply in your voice and post it when you tap approve. Pro also covers your social media, Google listing posts and emails to past customers." },
+              { kind: "chips", items: [{ label: "See the Pro plan", action: { type: "link", href: "/dashboard/upgrade?plan=pro" }, primary: true }] },
+            ], "rv-upgrade"),
+          ],
+        }
+      }
       if (!user.integration) {
         return {
           autorun: [],
@@ -175,7 +188,7 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
       }
     }
 
-    // ── Tracking & Ads (Growth) ──────────────────────────────────────────
+    // ── Tracking & Ads (tracking: Pro, ads: Growth) ──────────────────────────────────────────
     case "tracking":
       return { autorun: [], messages: await trackingMessages(user) }
 

@@ -42,7 +42,7 @@ export function leadBrief(day: number, d: Dossier): Brief {
         day, prefer: ["gap:", "rival:", "google:", "fresh:"],
         required: ["That is $99 a month."],
         allowNumbers: [99],
-        goal: `What I'd do for ${d.business.name} THIS week if they start, as 2 to 4 bullets built from their own gaps and rivals (not generic features). Then the price via the required sentence, month to month, cancel any time. Ask them to start.`,
+        goal: `What I'd do for ${d.business.name} THIS week if they start on Starter, as 2 to 4 bullets of AI-search work (AI checks, website fixes, wrong facts, blog posts) built from their own gaps and rivals (not generic features). Then the price via the required sentence, month to month, cancel any time. Ask them to start.`,
       }
     case 11:
       return {

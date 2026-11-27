@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { hasPro } from "@/lib/billing"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { approveReviewReply, draftReviewReply, REVIEW_DRAFT } from "@/lib/approvals"
@@ -28,6 +29,9 @@ export async function GET(req: NextRequest) {
     select: { id: true, userId: true, rating: true },
     take: 500,
   })
+  // Review replies are Pro and up since 2026-11-26 (Starter is AI search only).
+  const owners = await db.user.findMany({ where: { id: { in: [...new Set(reviews.map((r) => r.userId))] } }, select: { id: true, plan: true, email: true } })
+  const proIds = new Set(owners.filter(hasPro).map((u) => u.id))
   const drafted = await db.mockActivity.findMany({ where: { type: REVIEW_DRAFT, userId: { in: [...new Set(reviews.map((r) => r.userId))] } }, select: { metadata: true } })
   const have = new Set(drafted.map((d) => (d.metadata as { reviewId?: string } | null)?.reviewId).filter(Boolean))
 
@@ -38,7 +42,7 @@ export async function GET(req: NextRequest) {
   const errors: string[] = []
   for (const r of reviews) {
     asUser(r.userId)
-    if (have.has(r.id) || (perUser.get(r.userId) ?? 0) >= PER_USER) continue
+    if (!proIds.has(r.userId) || have.has(r.id) || (perUser.get(r.userId) ?? 0) >= PER_USER) continue
     try {
       const text = await draftReviewReply(r.userId, r.id)
       if (text) {

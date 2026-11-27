@@ -5,7 +5,7 @@
 import { db } from "@/lib/db"
 import { agent, type Chip, type Message } from "@/lib/agent/types"
 import { getAgentSettings, saveAgentSettings, type AgentSettings } from "@/lib/agent/settings"
-import { hasGrowth, hasPro } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { listAccounts } from "@/lib/social/store"
 import { PROVIDERS, providerConfigured } from "@/lib/social/types"
 import type { User } from "@prisma/client"
@@ -76,7 +76,7 @@ async function steps(user: User, s: AgentSettings): Promise<Step[]> {
       chips: [{ label: "Choose", primary: true, action: { type: "thread", topic: "autopilot" } }, op({ op: "done", step: "autopilot" }, "Ask me before anything goes out")],
     },
   ]
-  // Social is Pro and up (2026-11-18); lead tracking stays Growth.
+  // Social and lead tracking are Pro and up (2026-11-26).
   if (hasPro(user)) {
     const anyApp = PROVIDERS.some(providerConfigured)
     out.push({
@@ -90,7 +90,7 @@ async function steps(user: User, s: AgentSettings): Promise<Step[]> {
       chips: [{ label: "Connect", primary: true, action: { type: "thread", topic: "social" } }],
     })
   }
-  if (hasGrowth(user)) {
+  if (hasPro(user)) {
     const t = s.tracking
     const tested = t?.test?.result?.beacon === "yes"
     out.push({
@@ -98,7 +98,7 @@ async function steps(user: User, s: AgentSettings): Promise<Step[]> {
       name: "Count your leads",
       why: t?.on
         ? "Tracking is on. Run a 1-minute test so we know every call, email and form your marketing brings is counted."
-        : "So you can see which calls, emails and forms your marketing brought in, and so your ads learn what a customer looks like.",
+        : "So you can see which calls, emails and forms your marketing brought in.",
       ok: !!t?.on && tested,
       chips: [{ label: t?.on ? "Run the test" : "Set it up", primary: true, action: { type: "thread", topic: "tracking" } }],
     })

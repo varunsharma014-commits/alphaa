@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "LLMrefs lists one public plan, All in One, at $79 a month for 500 prompts, with a 7-day free trial, as of October 2026.",
     "LLMrefs says every keyword updates at least once a week and lists about ten AI engines with no extra engine fees.",
     "LLMrefs is organised around keywords that it expands into fan-out prompts, with unlimited projects and team members.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
     "Choose LLMrefs to measure many brands cheaply; choose Alphaa when nobody has time to turn the data into website changes.",
   ],
   sources: [
@@ -104,7 +104,7 @@ export function Body() {
             <tr>
               <td>Higher plans</td>
               <td>Upgrade to add keywords; no other tiers listed</td>
-              <td>Pro $399, Growth $499 (early access) a month</td>
+              <td>Pro $499, Growth $799 (early access) a month</td>
             </tr>
             <tr>
               <td>Unit of tracking</td>
@@ -156,7 +156,7 @@ export function Body() {
         not listed. If you plan to track a large keyword set, confirm the cost in the app before committing.
       </p>
       <p>
-        Alphaa costs $99 (Starter), $399 (Pro) or $499 (Growth, early access) a month, month to month. There is no free
+        Alphaa costs $99 (Starter), $499 (Pro) or $799 (Growth, early access) a month, month to month. There is no free
         trial; the <Link href="/start">free 60-second AI check</Link> shows what the four assistants say about your
         business today, and plan details are on the <Link href="/pricing">pricing page</Link>.
       </p>

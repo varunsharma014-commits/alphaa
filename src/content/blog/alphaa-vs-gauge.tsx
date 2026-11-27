@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Gauge's Growth plan costs $599 a month for 600 prompts run daily, 18 articles a month and three seats, as of November 2026.",
     "Gauge Growth tracks ChatGPT, Google AI Mode and Microsoft Copilot; Gemini, Perplexity and AI Overviews are listed for Enterprise only.",
     "Gauge adds agent traffic analytics from server logs and AI crawler monitoring through Cloudflare and Vercel.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
     "Gauge suits marketing teams with volume and a CMS like Webflow or Sanity; Alphaa suits an owner who wants fixes drafted and approved.",
   ],
   sources: [
@@ -152,7 +152,7 @@ export function Body() {
       <h2>How much does Gauge cost compared with Alphaa?</h2>
       <p>
         Gauge&apos;s Growth plan is listed at $599 a month and its Enterprise plan is custom-priced, while Alphaa is
-        $99, $399 or $499 a month. Gauge Growth includes 600 prompts run daily, which Gauge describes as 54,000 AI answers
+        $99, $499 or $799 a month. Gauge Growth includes 600 prompts run daily, which Gauge describes as 54,000 AI answers
         tracked a month, plus 18 publish-ready articles, three seats and email and Slack support. Enterprise adds custom
         prompt, article and seat counts, sentiment analysis, exports and recurring sessions with the Gauge team.
       </p>
@@ -162,7 +162,7 @@ export function Body() {
         The separate Gauge Agents product has a free plan with 500 credits at signup.
       </p>
       <p>
-        Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, with all four
+        Alphaa is $99 a month for Starter, $499 for Pro and $799 for Growth (early access), month to month, with all four
         assistants on every plan. The full breakdown is on the <Link href="/pricing">pricing page</Link>, and our guide
         to <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> puts tools, agents and agencies side by
         side.

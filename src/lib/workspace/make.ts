@@ -49,6 +49,11 @@ export async function makeFromNiche(user: User, itemId: string): Promise<Made | 
 export async function makeFromIdea(user: User, idea: { title: string; format: "blog" | "google" | "social" }): Promise<Made> {
   if (idea.format === "social") return social(user, idea.title)
   if (idea.format === "google") {
+    // Google listing posts are Pro and up (2026-11-26): on Starter the text is copy-only.
+    if (!hasPro(user)) {
+      const g = await generateGbpPost(user.businessName ?? "Our Business", user.businessType ?? "local business", user.city ?? "", "UPDATE", idea.title, await voiceFor(user.id).catch(() => null))
+      return { kind: "copy", id: null, title: "Google listing update", text: g.content, image: null }
+    }
     const integ = await db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationName: true } })
     const g = await generateGbpPost(integ?.gmbLocationName ?? user.businessName ?? "Our Business", user.businessType ?? "local business", user.city ?? "", "UPDATE", idea.title, await voiceFor(user.id).catch(() => null))
     const post = await db.gbpPost.create({ data: { userId: user.id, content: g.content, postType: "UPDATE", status: "draft" } })

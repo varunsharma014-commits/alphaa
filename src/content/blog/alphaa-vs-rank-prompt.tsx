@@ -7,7 +7,7 @@ export const meta: PostMeta = {
   description:
     "Alphaa vs Rank Prompt compared from each company's own pages: prices, credits, AI engines, publishing and which one fits an agency or a local business owner.",
   subtitle:
-    "Rank Prompt is a credit-based AI visibility and content platform from $49 a month that tracks nine AI engines for marketers and agencies, while Alphaa is a $99-a-month agent that checks four assistants weekly and runs AI search, Google posts and review replies for one local business.",
+    "Rank Prompt is a credit-based AI visibility and content platform from $49 a month that tracks nine AI engines for marketers and agencies, while Alphaa is a $99-a-month agent that checks four assistants weekly and runs AI search for one local business, with Google posts and review replies on Pro.",
   date: "2026-11-24",
   updated: "2026-11-24",
   readMins: 8,
@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Rank Prompt lists Starter at $49 a month, Pro at $89, Agency at $149 and Agency Plus at $299, as of November 2026.",
     "Rank Prompt runs on monthly credits: one credit per prompt for every three AI platforms you pick, and five with all nine.",
     "Rank Prompt offers a free plan with 10 credits, enough for one full report, plus a 7-day trial on paid plans.",
-    "Alphaa costs $99, $399 or $499 a month and checks ChatGPT, Gemini, Claude and Perplexity weekly for one business.",
+    "Alphaa costs $99, $499 or $799 a month and checks ChatGPT, Gemini, Claude and Perplexity weekly for one business.",
     "Rank Prompt suits marketers and agencies running many brands; Alphaa suits local owners who want fixes, Google posts and review replies approved in one place.",
   ],
   sources: [
@@ -53,8 +53,8 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> Alphaa vs Rank Prompt is a choice between a platform and an agent. Rank Prompt is
         a credit-based AI visibility and content platform from $49 a month that tracks nine AI engines for marketers
-        and agencies. Alphaa checks four assistants weekly for one local business and drafts site fixes, Google posts
-        and review replies for approval, from $99.
+        and agencies. Alphaa checks four assistants weekly for one local business and drafts site fixes for approval
+        from $99, with Google posts and review replies on Pro.
       </p>
 
       <p>
@@ -122,7 +122,7 @@ export function Body() {
             <tr>
               <td>Higher plans</td>
               <td>Pro $89, Agency $149, Agency Plus $299, Enterprise custom</td>
-              <td>Pro $399/mo, Growth $499/mo (early access)</td>
+              <td>Pro $499/mo, Growth $799/mo (early access)</td>
             </tr>
             <tr>
               <td>How usage is measured</td>
@@ -187,10 +187,10 @@ export function Body() {
         heavy-tracking team will compare Pro or Agency, not Starter. The page includes a calculator for this.
       </p>
       <p>
-        Alphaa Starter is $99 a month for one location: weekly checks on four assistants, website fixes, two Google
-        Business Profile posts a week, two AI-optimized blog posts a month and review replies. Pro at $399 adds social
-        media posts, more Google and blog posts, up to three locations and competitor benchmarking. Growth at $499, in
-        early access, adds email and lead tracking; ads are coming soon. The full list is on the <Link href="/pricing">pricing page</Link>
+        Alphaa Starter is $99 a month for one location: weekly checks on four assistants, website fixes and two
+        AI-optimized blog posts a month. Pro at $499 adds social media posts, Google Business Profile posts, review
+        replies, email and lead tracking, more blog posts, up to three locations and competitor benchmarking. Growth at
+        $799, in early access, adds Google and Meta ads for one ad account when ads open. The full list is on the <Link href="/pricing">pricing page</Link>
         , and our guide to <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> sets both against agency
         retainers.
       </p>

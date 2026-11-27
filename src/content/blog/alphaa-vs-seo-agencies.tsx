@@ -34,7 +34,7 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> A typical local SEO agency retainer of around $2,000 a month buys human
         time aimed mostly at Google&apos;s blue links: technical fixes, content, links and a monthly report.
-        Alphaa costs $99 to $499 a month and focuses on getting you named by ChatGPT, Gemini, Claude and
+        Alphaa costs $99 to $799 a month and focuses on getting you named by ChatGPT, Gemini, Claude and
         Perplexity. Many owners need one, not both. Which one depends on where your customers now ask.
       </p>
 
@@ -129,7 +129,7 @@ export function Body() {
             <tr>
               <td>Monthly cost</td>
               <td>Around $2,000 (varies widely)</td>
-              <td>$99 Starter, $399 Pro, $499 Growth (early access)</td>
+              <td>$99 Starter, $499 Pro, $799 Growth (early access)</td>
             </tr>
             <tr>
               <td>Contract</td>
@@ -212,7 +212,7 @@ export function Body() {
       <h2>Is it cheaper to switch from an SEO agency to Alphaa?</h2>
       <p>
         Yes, on price alone: at around $2,000 a month, an agency costs roughly four to twenty times more than
-        Alphaa&apos;s $99 to $499 plans. But cheaper only matters if it does the job you need, so compare the work,
+        Alphaa&apos;s $99 to $799 plans. But cheaper only matters if it does the job you need, so compare the work,
         not just the invoice.
       </p>
       <p>

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Knowatoa lists Starter at $59 a month, Growth at $199 a month and custom Enterprise pricing, with a free trial, as of November 2026.",
     "Knowatoa Starter covers ChatGPT, AI Overviews and AI Mode; Growth and Enterprise cover all seven services it monitors.",
     "Knowatoa shares one question limit across unlimited sites on an account, which suits agencies and multi-brand teams.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
     "Knowatoa suits marketers who want broad monitoring data; Alphaa suits owners who want the fixes written and approved.",
   ],
   sources: [
@@ -171,7 +171,7 @@ export function Body() {
         calculator.
       </p>
       <p>
-        Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, with all
+        Alphaa is $99 a month for Starter, $499 for Pro and $799 for Growth (early access), month to month, with all
         four assistants checked weekly on every plan. There is no free trial; the{" "}
         <Link href="/start">free 60-second AI check</Link> shows what the assistants say about you before you pay. Full
         plan details are on the <Link href="/pricing">pricing page</Link>.

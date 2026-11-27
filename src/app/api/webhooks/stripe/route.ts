@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
-import { stripe } from "@/lib/stripe"
+import { stripe, planFromPrice } from "@/lib/stripe"
 import { db } from "@/lib/db"
 import { sendPaymentFailureEmail } from "@/lib/email"
 import { resend } from "@/lib/resend"
@@ -27,10 +27,9 @@ export async function POST(req: NextRequest) {
       const customerId = sub.customer as string
       const subscriptionId = sub.subscription as string
       if (subscriptionId) {
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId, { expand: ["items.data.price.product"] })
         const trialEnd = subscription.trial_end ? new Date(subscription.trial_end * 1000) : null
-        const priceId = subscription.items.data[0]?.price.id ?? ""
-        const plan = getPlanFromPriceId(priceId)
+        const plan = planFromPrice(subscription.items.data[0]?.price)
         // Full Service checkouts carry no trial, so their status is active.
         // A Shopify-billed account ("shopify:" marker, lib/billing.ts) that checks out here becomes
         // Stripe-billed; Shopify webhooks only clear rows still carrying their marker.
@@ -82,7 +81,8 @@ export async function POST(req: NextRequest) {
       break
     }
     case "customer.subscription.updated": {
-      const plan = getPlanFromPriceId(sub.items?.data[0]?.price.id ?? "")
+      // The event's price has metadata but an unexpanded product id; planFromPrice handles both.
+      const plan = planFromPrice(sub.items?.data[0]?.price)
       await db.user.updateMany({
         where: { stripeSubscriptionId: sub.id },
         data: { subscriptionStatus: sub.status, plan },
@@ -128,19 +128,6 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ received: true })
-}
-
-function getPlanFromPriceId(priceId: string) {
-  const ids = {
-    [process.env.STRIPE_STARTER_MONTHLY_PRICE_ID!]: "starter",
-    [process.env.STRIPE_STARTER_ANNUAL_PRICE_ID!]: "starter",
-    [process.env.STRIPE_PRO_MONTHLY_PRICE_ID!]: "pro",
-    [process.env.STRIPE_PRO_ANNUAL_PRICE_ID!]: "pro",
-    [process.env.STRIPE_FULLSERVICE_MONTHLY_PRICE_ID!]: "fullservice",
-    ...(process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID ? { [process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID]: "growth" } : {}),
-    ...(process.env.STRIPE_GROWTH_ANNUAL_PRICE_ID ? { [process.env.STRIPE_GROWTH_ANNUAL_PRICE_ID]: "growth" } : {}),
-  }
-  return ids[priceId] ?? "starter"
 }
 
 const MARKET_NAMES: Record<string, string> = { uk: "United Kingdom", de: "Germany", fr: "France", it: "Italy", ae: "UAE (English)", ar: "UAE (Arabic)" }

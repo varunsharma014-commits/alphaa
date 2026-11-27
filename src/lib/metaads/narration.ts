@@ -22,7 +22,7 @@ export async function metaAdsMessages(user: User, note?: string | null): Promise
   if (!hasGrowth(user)) {
     out.push(agent([
       { kind: "text", text: "Facebook and Instagram ads that bring you customers nearby." },
-      { kind: "text", text: "On the Growth plan I write the ads, show them only to people near you, and tune them every week inside your budget." },
+      { kind: "text", text: "On the Growth plan (early access while Meta approves ads access) I write the ads, show them only to people near you, and tune them every week inside your budget." },
       { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade?plan=growth" }, primary: true }] },
     ], "ma-upgrade"))
     return out

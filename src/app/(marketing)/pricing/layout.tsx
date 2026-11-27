@@ -6,7 +6,7 @@ import { pageMeta } from "@/lib/seo"
 export const metadata = pageMeta({
   title: "Pricing: AI Marketing Agent from $99/month, no contracts",
   description:
-    "Alphaa is an AI Agent that runs your marketing: SEO and AI search, content and review replies from $99/month, social media on Pro, and email and lead tracking on Growth (early access). Ads coming soon. Month to month, instead of agency retainers that often run $1,000+ a month.",
+    "Alphaa is an AI Agent that runs your marketing: AI search from $99/month, everything except ads on Pro at $499 (social, Google posts, reviews, email, lead tracking), and Google and Meta ads on Growth at $799 (early access). Month to month or 15% off yearly, instead of agency retainers that often run $1,000+ a month.",
   path: "/pricing",
 })
 
@@ -14,7 +14,7 @@ const productSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
   name: "Alphaa",
-  description: "An AI agent that runs a small business’s marketing: SEO and AI search (ChatGPT, Gemini, Claude, Perplexity), content and review replies, with social media on the Pro plan and email and lead tracking on the Growth plan (early access). Ads coming soon. Month to month, no contract.",
+  description: "An AI agent that runs a small business’s marketing: AI search (ChatGPT, Gemini, Claude, Perplexity) on every plan; social media, Google Business Profile posts, review replies, email and lead tracking on the Pro plan; Google and Meta ads on the Growth plan (early access). Month to month, no contract, or 15% off billed yearly.",
   brand: { "@type": "Brand", name: "Alphaa" },
   url: "https://alphaa.app/pricing",
   offers: plans.map((p) => ({
@@ -24,7 +24,7 @@ const productSchema = {
     price: String(p.monthly),
     priceCurrency: "USD",
     priceSpecification: { "@type": "UnitPriceSpecification", price: String(p.monthly), priceCurrency: "USD", unitText: "MONTH" },
-    availability: "https://schema.org/InStock",
+    availability: p.href ? "https://schema.org/PreOrder" : "https://schema.org/InStock",
     url: "https://alphaa.app/pricing",
   })),
 }

@@ -51,9 +51,9 @@ export async function acceptAutoApprove(user: User, req: Request, only?: Consent
   const patch: Parameters<typeof saveAgentSettings>[1] = { autoApprove: { acceptedAt, version: CONSENT_VERSION, consentId: row.id } }
   const next = { ...a, at: acceptedAt }
   if ((!only || only === "posts") && scope.pro) patch.autoPublishPosts = true
-  if (!only || only === "reviews") next.reviews = only === "reviews" && value === "positive" ? "positive" : "all"
+  if ((!only || only === "reviews") && scope.growth) next.reviews = only === "reviews" && value === "positive" ? "positive" : "all"
   if ((!only || only === "social") && scope.growth) next.social = "auto"
-  if (only === "email" && hasGrowth(user)) next.email = "auto"
+  if (only === "email" && hasPro(user)) next.email = "auto"
   if (only === "ads" && hasGrowth(user) && next.adBudget) next.ads = "budget"
   patch.autopilot = next
   await saveAgentSettings(user.id, patch)
@@ -63,7 +63,7 @@ export async function acceptAutoApprove(user: User, req: Request, only?: Consent
   if (only === "email") return { said: "Done. I’ll send your email campaigns myself and show each one in “What I’ve done”." }
   if (only === "ads") return { said: next.ads === "budget" ? "Done. I’ll start and tune campaigns myself, always inside your monthly budget." : "Set your monthly ad budget first, so I know where to stop." }
   if (only === "social") return { said: "Done. I’ll post to your connected social accounts myself and show each one in “What I’ve done”." }
-  const parts = [scope.pro && "Google listing and website posts", scope.growth && "social posts", "review replies"].filter(Boolean)
+  const parts = [scope.pro && "Google listing and website posts", scope.growth && "social posts", scope.growth && "review replies"].filter(Boolean)
   return { said: `Auto-approve is on. I’ll publish ${parts.join(", ")} myself and show each one in “What I’ve done”. I’ll still ask before anything that spends money.` }
 }
 

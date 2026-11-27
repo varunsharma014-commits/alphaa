@@ -1,3 +1,4 @@
+import { hasPro } from "@/lib/billing"
 import { voiceFor } from "@/lib/voice"
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
@@ -20,6 +21,9 @@ export async function POST(request: NextRequest) {
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
+    }
+    if (!hasPro(user)) {
+      return NextResponse.json({ error: "Google listing posts come with the Pro plan." }, { status: 403 })
     }
 
     const body = (await request.json()) as { postType?: string; topic?: string }

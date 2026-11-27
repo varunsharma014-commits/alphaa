@@ -5,7 +5,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { currentUser } from "@/lib/connector/user"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { agent, type Message } from "@/lib/agent/types"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { once } from "@/lib/draft-dedupe"
@@ -39,7 +39,7 @@ export async function GET() {
 export async function POST(req: Request) {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  if (!hasGrowth(user)) return NextResponse.json({ error: "Email outreach is on the Growth plan." }, { status: 403 })
+  if (!hasPro(user)) return NextResponse.json({ error: "Email to your customers comes with the Pro plan." }, { status: 403 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That didn’t come through. Try again." }, { status: 400 }) }
   const err = (error: string, status = 400) => NextResponse.json({ error }, { status })

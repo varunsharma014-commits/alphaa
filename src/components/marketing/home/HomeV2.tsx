@@ -2,7 +2,8 @@
 // drifting shapes, one colour chapter per service, a proof mosaic of TRUE facts,
 // the real agent in the prompt box (straight under the hero) and a black final panel.
 // Only what works today is sold: social posts are ready to publish in one tap (direct posting
-// waits on Meta/LinkedIn approval) and ads are "Coming soon", in no current plan (2026-11-26).
+// waits on Meta/LinkedIn approval). Plans (2026-11-26): Starter = AI search, Pro = everything
+// except ads, Growth = Pro + ads (early access, waitlist until Google and Meta approve ads).
 // Server-rendered so every word is crawlable; the interactive pieces are small client islands.
 // Rules: sell the outcome, not the mechanics. No invented ratings, quotes or results: every
 // example business, number and answer is labelled as an example.
@@ -11,9 +12,10 @@ import "./home-v2.css"
 import { AiAnswers, Autopilot, BrandStudio, CostTable } from "./HomeV2Client"
 import { StartAgent, type StartGreet } from "@/components/agent/StartAgent"
 import { GUARANTEE_LINE } from "@/lib/offer-copy"
-import { GROWTH_EARLY_ACCESS_HREF, GROWTH_ON_SALE } from "@/lib/growth"
+import { GROWTH_ON_SALE } from "@/lib/growth"
 import { AUTHOR } from "@/lib/author"
-import { plans } from "@/app/(marketing)/pricing/pricing-data"
+import { HomePlans } from "./HomePlans"
+import { WithWithout } from "./WithWithout"
 import { Frame, Section, ServicePills, HeroShapes, ServiceChapter, FinalCta, Head, SVC_ORDER } from "@/components/marketing/v3"
 import { FollowTheme } from "@/components/marketing/v3/FollowTheme"
 
@@ -25,10 +27,7 @@ const GREET: StartGreet = {
   agentLabel: "AI agent · online",
 }
 
-const price = (name: string) => plans.find((p) => p.name === name)?.monthly
-
 export function HomeV2() {
-  const growthHref = GROWTH_ON_SALE ? "/signup?plan=growth_monthly" : GROWTH_EARLY_ACCESS_HREF
   const growthNote = GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access"
   return (
     <Frame top>
@@ -36,8 +35,8 @@ export function HomeV2() {
       <Section className="v3-hero" label="Introduction">
         <div>
           <ServicePills />
-          <h1 className="v3-h1">Hire the AI agent <span className="v3-blue">that runs your marketing for you.</span></h1>
-          <p className="v3-lede">More customers find you on Google and in AI answers, and you get your evenings back. I write your social posts, keep your Google profile fresh and fix what keeps AI from naming you. You just tap “Approve.”</p>
+          <h1 className="v3-h1">Your <span className="hv-mark">entire</span> marketing, run by Alphaa.</h1>
+          <p className="v3-lede">I work to get you recommended on ChatGPT and Gemini, create viral social content, build and execute your brand growth strategy, handle the technical setup, and run your ad campaigns. You do what you do best: running your business.</p>
           <div className="v3-btns">
             <Link className="v3-btn" href="/start">Hire your agent →</Link>
             <a className="v3-btn v3-btn--ghost" href="#features">See what I do</a>
@@ -112,21 +111,17 @@ export function HomeV2() {
         <Autopilot />
       </Section>
 
-      {/* Pricing */}
+      {/* With / Without */}
+      <Section center id="with-alphaa" label="With Alphaa and without">
+        <h2 className="v3-h2">Your week without Alphaa.<br /><span className="v3-blue">And with it.</span></h2>
+        <p className="v3-lede">Same business, same customers. The difference is who does the marketing.</p>
+        <WithWithout />
+      </Section>
+
+      {/* Pricing: Growth (anchor) → Pro (recommended) → Starter, monthly / annual (2026-11-26) */}
       <Section center id="pricing">
         <h2 className="v3-h2">Pick how much I take off your plate.</h2>
-        <div className="hv-plans">
-          <div className="hv-plan"><div className="hv-plan__badge" /><h3>Starter</h3><p className="hv-plan__for">Get found on Google and by AI.</p><div className="hv-plan__price">$99<small>/month</small></div>
-            <ul><li>Get recommended by ChatGPT, Gemini, Claude and Perplexity</li><li>Your week of marketing in one tap</li><li>2 Google updates a week, in your voice</li><li>Review replies written for you</li><li>What’s working, every week</li></ul>
-            <Link className="hv-pill hv-pill--ghost" href="/start">Get started</Link></div>
-          <div className="hv-plan hv-plan--hi"><div className="hv-plan__badge">Recommended</div><h3>Pro</h3><p className="hv-plan__for">Your social media too, ready in one tap.</p><div className="hv-plan__price">${price("Pro")}<small>/month</small></div>
-            <ul><li>Everything in Starter</li><li>3 branded social posts a week, ready to publish in one tap</li><li>4 Google updates a week</li><li>Google updates and blog posts can go live on their own</li><li>20 customer questions checked with AI every week</li><li>Up to 3 locations</li></ul>
-            <Link className="hv-pill hv-pill--blue" href="/signup?plan=pro">Get started</Link></div>
-          <div className="hv-plan"><div className="hv-plan__badge">{GROWTH_ON_SALE ? "New" : "Early access"}</div><h3>Growth</h3><p className="hv-plan__for">Bring past customers back.</p><div className="hv-plan__price">${price("Growth")}<small>/month</small></div>
-            <ul><li>Everything in Pro</li><li>Emails that bring customers back</li><li>See which calls and forms your marketing brought in</li></ul>
-            <a className="hv-pill hv-pill--ghost" href={growthHref}>{GROWTH_ON_SALE ? "Get started" : "Get early access"}</a></div>
-        </div>
-        <p className="hv-soon"><b>Ads · Coming soon</b> Google and Meta ads, built and tuned every week, on a new plan above Growth. Not part of any plan yet.</p>
+        <HomePlans />
         <p className="hv-guar">{GUARANTEE_LINE}</p>
         <p className="v3-fine"><Link className="v3-link" href="/pricing">Compare all plans ›</Link></p>
       </Section>
@@ -138,7 +133,7 @@ export function HomeV2Final() {
   return (
     <Frame>
       <FinalCta
-        title={<>Run the business.<br /><span>I’ll run the marketing.</span></>}
+        title={<>Running a business is hard.<br /><span>Alphaa can help!</span></>}
         sub="Set up in minutes. Your first week of marketing can be ready today. Month to month, cancel online in a minute."
       >
         <p>Built by <Link href={AUTHOR.path}>{AUTHOR.name}</Link>, who spent over a decade in performance marketing and founded Growth Turbine, a marketing agency in Ottawa. Questions? Email <a href="mailto:hi@alphaa.app">hi@alphaa.app</a> and a person answers.</p>

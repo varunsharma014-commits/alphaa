@@ -124,7 +124,7 @@ export function Body() {
             <tr>
               <td><strong>Pricing model</strong></td>
               <td>Tiered plans, price on request on its site; monthly or annual; 14-day free trial; citations and managed service extra</td>
-              <td>$99, $399 (up to 3 locations) or $499/mo Growth (early access); month to month, no contract, no free trial</td>
+              <td>$99, $499 (up to 3 locations) or $799/mo Growth (early access); month to month, no contract, no free trial</td>
             </tr>
             <tr>
               <td><strong>Reporting</strong></td>
@@ -204,15 +204,15 @@ export function Body() {
       <h2>How much does each one cost?</h2>
       <p>
         As of September 2026, BrightLocal lists its Track, Manage and Grow plans as price on request, with a
-        14-day free trial and a discount for paying annually. Alphaa costs $99, $399 or $499 a month, month to
+        14-day free trial and a discount for paying annually. Alphaa costs $99, $499 or $799 a month, month to
         month.
       </p>
       <p>
         BrightLocal&apos;s{" "}
         <a href="https://www.brightlocal.com/pricing/" target="_blank" rel="noopener noreferrer">pricing page</a>{" "}
         also lists a pay-as-you-go Citation Builder from $2 per citation and a managed local SEO service at
-        $1,299 a month. Alphaa&apos;s plans are Starter at $99, Pro at $399 for up to three locations, and Growth
-        at $499 in early access, with no contract and no free trial. Full details are on our{" "}
+        $1,299 a month. Alphaa&apos;s plans are Starter at $99, Pro at $499 for up to three locations, and Growth
+        at $799 in early access, with no contract and no free trial. Full details are on our{" "}
         <Link href="/pricing">pricing page</Link>, and{" "}
         <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> covers the wider market.
       </p>

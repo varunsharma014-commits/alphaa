@@ -351,6 +351,6 @@ async function getConnected(user: User): Promise<BriefingData["connected"]> {
     { ok: !!integ?.gaPropertyId, act: { label: integ ? "Pick your Analytics property" : "Connect Google Analytics", href: integ ? "/dashboard/settings/integrations" : "/api/integrations/google/connect?go=1" } },
     { ok: !!(s.wp || s.site), act: { label: "Connect your website", chip: { label: "Connect my website", action: { type: "wp-connect" } } } },
   ]
-  if (hasGrowth(user)) list.push({ ok: !!s.tracking?.on, act: { label: "Turn on lead tracking", topic: "tracking" } })
+  if (hasPro(user)) list.push({ ok: !!s.tracking?.on, act: { label: "Turn on lead tracking", topic: "tracking" } })
   return { n: list.filter((x) => x.ok).length, total: list.length, next: list.find((x) => !x.ok)?.act ?? null }
 }

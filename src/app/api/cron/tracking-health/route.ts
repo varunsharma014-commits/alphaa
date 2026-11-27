@@ -4,13 +4,13 @@ export const maxDuration = 300
 import { NextResponse } from "next/server"
 import { activeUsers, authorized } from "@/lib/cron/users"
 import { db } from "@/lib/db"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { asUser } from "@/lib/usage"
 import { eventDays } from "@/lib/tracking-events"
 import { healthItems, refreshTracking, regressions, snapshot } from "@/lib/tracking-health"
 
-// Daily: re-read every Growth site that has tracking on, fix what's safe to fix by itself
+// Daily: re-read every Pro and Growth site that has tracking on, fix what's safe to fix by itself
 // (lib/tracking-health.ts), and note anything that got worse since yesterday in the
 // "Tracking & Ads" thread (settings tracking.regressions + a MockActivity "tracking_regression").
 // Plain fetches only: no AI spend. `?dryRun=1` reports without saving a new snapshot.
@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   const dryRun = new URL(req.url).searchParams.get("dryRun") === "1"
   const all = await activeUsers()
   const ids = all.map((u) => u.id)
-  const users = (await db.user.findMany({ where: { id: { in: ids } }, select: { id: true, plan: true, email: true, websiteUrl: true } })).filter(hasGrowth)
+  const users = (await db.user.findMany({ where: { id: { in: ids } }, select: { id: true, plan: true, email: true, websiteUrl: true } })).filter(hasPro)
 
   const run = async () => {
     const out: { id: string; fixed: number; worse: string[] }[] = []

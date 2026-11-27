@@ -24,7 +24,8 @@ export async function GET(req: NextRequest) {
   const resumed = await resumeStuckSends()
   const owners = await db.mockActivity.findMany({ where: { type: "email_contacts" }, select: { userId: true }, distinct: ["userId"], take: 1000 })
   const users = await db.user.findMany({
-    where: { id: { in: owners.map((o) => o.userId) }, OR: [{ plan: { contains: "growth", mode: "insensitive" }, subscriptionStatus: "active" }, ...compedEmailWhere()] },
+    // Email is Pro and up since 2026-11-26 (was Growth).
+    where: { id: { in: owners.map((o) => o.userId) }, OR: [...["pro", "full", "growth"].map((p) => ({ plan: { contains: p, mode: "insensitive" as const }, subscriptionStatus: "active" })), ...compedEmailWhere()] },
     select: { id: true },
   })
   const due: { id: string; auto: boolean }[] = []

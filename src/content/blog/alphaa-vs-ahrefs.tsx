@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Ahrefs lists Lite, Standard and Advanced plans at $129, $249 and $449 a month before tax, each with a small set of tracked AI prompts.",
     "Ahrefs sells Brand Radar AI on its own from $199 a month, with custom prompt packages from $50 a month.",
     "Brand Radar's index covers AI Overviews, AI Mode, ChatGPT, Perplexity, Gemini and Copilot, with Claude also listed as available.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
     "Ahrefs suits marketing teams who analyse data and do their own fixes; Alphaa suits owners who want fixes drafted and published on approval.",
   ],
   sources: [
@@ -155,7 +155,7 @@ export function Body() {
 
       <h2>How much does Ahrefs cost compared with Alphaa?</h2>
       <p>
-        Ahrefs lists its main plans at $129, $249 and $449 a month, while Alphaa costs $99, $399 or $499 a month.
+        Ahrefs lists its main plans at $129, $249 and $449 a month, while Alphaa costs $99, $499 or $799 a month.
         Ahrefs&apos; pricing page shows those three plans as Lite, Standard and Advanced, says prices exclude tax, and
         notes that paying annually saves up to 17%. Enterprise is priced through sales.
       </p>

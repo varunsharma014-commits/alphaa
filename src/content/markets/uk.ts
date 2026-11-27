@@ -9,7 +9,7 @@ export const market: Market = {
     country: "United Kingdom",
     title: "AI Marketing Agent for UK Small Businesses | Alphaa",
     description:
-      "Alphaa is an AI agent that runs your marketing: Google posts, blogs, review replies, SEO and getting recommended by ChatGPT. Social on Pro, email on Growth. Ads coming soon.",
+      "Alphaa is an AI agent that runs your marketing: Google posts, blogs, review replies, SEO and getting recommended by ChatGPT. Social and email on Pro, ads on Growth (early access).",
     h1a: "Run your entire marketing",
     h1b: "using an AI agent.",
     sub: "No agency retainer, no evenings lost to posting. I write your content, answer your reviews, fix your website for Google and ChatGPT, and send you one short list to approve. You get your time back for the work that pays.",
@@ -40,8 +40,8 @@ export const market: Market = {
         body: "I fix your website, structured data and details so Google, ChatGPT, Gemini, Claude and Perplexity can name you, and I check every week who they name instead.",
       },
       {
-        title: "Social on Pro. Email on Growth",
-        body: "From the Pro plan I also write your social posts with branded images, ready to publish in one tap. On Growth (early access) I add emails that bring past customers back. Google and Meta ads are coming soon.",
+        title: "Social and email on Pro. Ads on Growth",
+        body: "Starter covers getting found by AI. From the Pro plan I also write your Google Business Profile posts, review replies and social posts with branded images, ready to publish in one tap, and send emails that bring past customers back. On Growth (early access) I'll also run your Google and Meta ads, once ads open.",
       },
     ],
     whereTitle: "Where customers and AI look you up in the UK",
@@ -56,24 +56,24 @@ export const market: Market = {
     priceTitle: "One AI agent. A fraction of an agency retainer.",
     priceSub: "Your weekly marketing done for you, with nothing going live until you say yes.",
     priceItems: [
-      "Google Business Profile posts, blog posts and review replies, written in your voice",
-      "Your website fixed for Google and AI search, with weekly checks of what ChatGPT, Gemini, Claude and Perplexity say",
+      "Starter, {starter} a month: getting found by AI. Weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about you, blog posts that answer what customers ask AI, website fixes and wrong facts corrected",
+      "Pro, {pro} a month: everything in Starter, plus social posts ready in one tap, Google Business Profile posts, review replies, emails that bring past customers back and lead tracking, for up to 3 locations",
+      "Growth, {growth} a month (early access): everything in Pro, plus Google and Meta ads for 1 ad account once ads open, and {adaccount} a month for each extra ad account. Join early access; nobody is charged yet.",
       "A short weekly briefing, and every change approved with one tap",
-      "Growth plan, {growth} a month (early access): everything in Pro, plus email and lead tracking. Google and Meta ads are coming soon.",
       "Month to month. Cancel online in a minute. 7-day refund on your first charge.",
       "If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.",
     ],
     priceCta: "Get started: {starter}/month",
-    priceNote: "Starter {starter}, Pro {pro} (social media, up to 3 locations), Growth {growth} (email and lead tracking, early access). Extra brands 50% off. Monthly, cancel any time. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
+    priceNote: "Starter {starter} (AI search), Pro {pro} (Google posts, review replies, social media, email and lead tracking, up to 3 locations), Growth {growth} (adds Google and Meta ads, early access; {adaccount} per extra ad account). Extra brands 50% off. Monthly, cancel any time. For business customers only. We are not VAT-registered, so no VAT is added; if VAT applies, you account for it under the reverse charge.",
     faqTitle: "Questions from UK business owners",
     faq: [
       {
         q: "What does Alphaa actually do for a UK business?",
-        a: "I run your marketing week to week: Google Business Profile posts, blog posts, review replies and website fixes, plus checks of what ChatGPT, Gemini, Claude and Perplexity say about you and the UK sites they read (Google, Trustpilot, Yell, Checkatrade). Social media is on Pro; email is on the Growth plan, in early access. Ads are coming soon.",
+        a: "I run your marketing week to week: Google Business Profile posts, blog posts, review replies and website fixes, plus checks of what ChatGPT, Gemini, Claude and Perplexity say about you and the UK sites they read (Google, Trustpilot, Yell, Checkatrade). Starter covers the AI search work; Google posts, review replies, social media and email come with Pro; Google and Meta ads are on the Growth plan, in early access.",
       },
       {
         q: "How much does it cost?",
-        a: "Starter is {starter} a month, Pro is {pro} a month (social media, up to 3 locations), and Growth, with email and lead tracking, is {growth} a month in early access. Month to month, cancel online in a minute, and the check on this page is free.",
+        a: "Starter is {starter} a month for AI search. Pro is {pro} a month and adds Google posts, review replies, social media, email and lead tracking, for up to 3 locations. Growth is {growth} a month in early access: everything in Pro plus Google and Meta ads for 1 ad account once ads open, and {adaccount} a month for each extra ad account. Month to month, cancel online in a minute, and the check on this page is free.",
       },
       {
         q: "I'm a sole trader with no time for marketing. Is this for me?",
@@ -126,7 +126,7 @@ export const market: Market = {
           { name: "Your practice website", why: "Clear pages on each treatment, fees and how to register as a new patient give AI something to quote." },
         ],
         steps: [
-          { title: "I run the weekly marketing", body: "Google Business Profile posts, blog posts on the treatments you want more of, and replies to patient reviews, all drafted for you to approve. Social is on Pro; email is on Growth, in early access. Ads are coming soon." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, blog posts on the treatments you want more of, and replies to patient reviews, all drafted for you to approve. Google posts, review replies, social and email come with Pro; Google and Meta ads with Growth, in early access." },
           { title: "I write the pages AI quotes", body: "Treatment pages, fees and FAQs in plain English (implants, whitening, hygienist appointments, registering as a new patient), ready for you to approve." },
           { title: "I keep your listings consistent", body: "I check your phone number, address and opening hours match across Google and the sites AI reads, and draft replies to your patient reviews." },
         ],
@@ -156,7 +156,7 @@ export const market: Market = {
           { name: "Your firm's website", why: "Practice-area pages, fee information and plain answers to client questions AI can quote." },
         ],
         steps: [
-          { title: "I run the weekly marketing", body: "Google Business Profile posts, articles on your practice areas and draft replies to client reviews, every week, for you to check. Social is on Pro; email is on Growth, in early access. Ads are coming soon." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, articles on your practice areas and draft replies to client reviews, every week, for you to check. Google posts, review replies, social and email come with Pro; Google and Meta ads with Growth, in early access." },
           { title: "I write answers AI can quote", body: "Practice-area pages and FAQs in plain English (how conveyancing works, what a divorce costs, what to do after a dismissal), for you to check and approve." },
           { title: "I keep your firm's details right", body: "I make sure your offices, phone numbers and areas of law match across Google, the Law Society and the sites AI reads, and draft replies to client reviews." },
         ],
@@ -186,7 +186,7 @@ export const market: Market = {
           { name: "Your website", why: "Clear pages for boiler installs, servicing, repairs and the areas you cover give AI something to quote." },
         ],
         steps: [
-          { title: "I run the marketing while you work", body: "Google Business Profile posts about recent jobs, replies to your reviews and pages for each area you cover, drafted for you to approve in a minute. Social is on Pro; email is on Growth, in early access. Ads are coming soon." },
+          { title: "I run the marketing while you work", body: "Google Business Profile posts about recent jobs, replies to your reviews and pages for each area you cover, drafted for you to approve in a minute. Google posts, review replies, social and email come with Pro; Google and Meta ads with Growth, in early access." },
           { title: "I write the pages AI quotes", body: "Service pages for boiler installs, servicing, power flushes and leaks, plus a page for each area you cover, ready for you to approve." },
           { title: "I keep your profile busy", body: "I draft Google Business Profile posts and replies to your reviews, and check your details match across Checkatrade, Yell and the rest." },
         ],
@@ -216,7 +216,7 @@ export const market: Market = {
           { name: "Your clinic website", why: "Clear treatment pages, practitioner qualifications and aftercare answers AI can quote." },
         ],
         steps: [
-          { title: "I run the weekly marketing", body: "Google Business Profile posts, aftercare and treatment articles, and replies to your reviews, drafted for you to approve. Social posts are on Pro; email is on Growth, in early access. Ads are coming soon." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, aftercare and treatment articles, and replies to your reviews, drafted for you to approve. Google posts, review replies, social and email come with Pro; Google and Meta ads with Growth, in early access." },
           { title: "I write the pages AI quotes", body: "Treatment pages, practitioner profiles and aftercare FAQs in plain English, written to the advertising rules for your sector and ready for you to approve." },
           { title: "I keep your reputation visible", body: "I draft replies to your reviews and Google Business Profile posts, and check your details match on the sites AI reads." },
         ],

@@ -38,7 +38,7 @@ Your Customers' Contact Details: If you ask Alphaa to request a review from one 
 
 Website Connector: If you install the Alphaa Connector plugin on your website, it tells us when a visitor arrives from an AI assistant (for example ChatGPT or Perplexity), sending only the assistant's name and the page path. It sets no cookies and sends no IP address or other information about the visitor.
 
-Lead Tracking (Growth plan): If you turn on tracking, the Alphaa tag or plugin tells us when a visitor to your website taps your phone number or email link or sends a form, sending only the kind of lead and an event ID, never the visitor's personal data, and if you add a Meta Conversions API token we pass that event to Meta with the visitor's IP address and browser string (not stored by us), skipping any visitor whose browser sends Global Privacy Control.`,
+Lead Tracking (Pro and Growth plans): If you turn on tracking, the Alphaa tag or plugin tells us when a visitor to your website taps your phone number or email link or sends a form, sending only the kind of lead and an event ID, never the visitor's personal data, and if you add a Meta Conversions API token we pass that event to Meta with the visitor's IP address and browser string (not stored by us), skipping any visitor whose browser sends Global Privacy Control.`,
   },
   {
     title: "3. How We Use Your Information",

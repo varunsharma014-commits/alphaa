@@ -1,13 +1,13 @@
 export const dynamic = "force-dynamic"
 
 import { db } from "@/lib/db"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { EVENT_KINDS, recordEvent, sendCapi, verifyTestToken, type EventKind } from "@/lib/tracking-events"
 
 // Beacon from the Alphaa tag / WordPress plugin when a lead event fires on an owner's site
 // (navigator.sendBeacon, text/plain, so no CORS preflight). Public by nature: it runs in
-// visitors' browsers. It only counts for Growth accounts with tracking on, caps volume per IP
+// visitors' browsers. It only counts for Pro and Growth accounts with tracking on, caps volume per IP
 // and per account, and stores only the kind of event and a count per day. The visitor's IP and
 // browser string are passed to Meta's Conversions API when the owner set it up, never stored.
 
@@ -56,13 +56,13 @@ export async function POST(req: Request) {
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || req.headers.get("x-real-ip") || ""
   if (!allowIp(ip || "unknown") || !allowAccount(id)) return done()
 
-  // Known Growth account with tracking on? Cached 5 minutes so a busy site doesn't hit the DB per tap.
+  // Known Pro or Growth account with tracking on? Cached 5 minutes so a busy site doesn't hit the DB per tap.
   const cached = accounts.get(id)
   let ok = cached && cached.at > Date.now() - 300_000 ? cached.ok : null
   const settings = await getAgentSettings(id).catch(() => null)
   if (ok === null) {
     const user = await db.user.findUnique({ where: { id }, select: { plan: true, email: true } }).catch(() => null)
-    ok = !!user && hasGrowth(user) && !!settings?.tracking?.on
+    ok = !!user && hasPro(user) && !!settings?.tracking?.on
     if (accounts.size > 20_000) accounts.clear()
     accounts.set(id, { at: Date.now(), ok })
   }

@@ -68,8 +68,8 @@ export function shopifyPlanFor(sub: Pick<ShopifyAppSubscription, "name" | "lineI
     const order: ShopifyPlan[] = ["growth", "pro", "starter"]
     for (const plan of order) {
       const p = PLAN_PRICES[plan]
-      // Exact interval only: Pro monthly ($399) equals Growth's annual-per-month rate.
-      const candidates = annual ? [p.annual * 12, p.annual] : [p.monthly]
+      // Exact interval only: one plan's monthly price can equal another's yearly per-month rate.
+      const candidates = annual ? [p.annualTotal, p.annual * 12, p.annual] : [p.monthly]
       if (candidates.some((c) => Math.abs(c - amount) < 0.5)) return plan
     }
   }

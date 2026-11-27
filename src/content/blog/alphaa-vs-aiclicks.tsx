@@ -7,7 +7,7 @@ export const meta: PostMeta = {
   description:
     "Alphaa vs AIclicks compared from each company's own pages: prices, AI models, prompts, how content ships, and which fits a marketing team or a local owner.",
   subtitle:
-    "AIclicks is a $59-a-month AI visibility tracker with an agent and article credits for marketing teams that pick their own AI models, while Alphaa is a $99-a-month agent that checks four assistants weekly and runs AI search, Google posts and review replies for one local business.",
+    "AIclicks is a $59-a-month AI visibility tracker with an agent and article credits for marketing teams that pick their own AI models, while Alphaa is a $99-a-month agent that checks four assistants weekly and runs AI search for one local business, with Google posts and review replies on Pro.",
   date: "2026-11-23",
   updated: "2026-11-23",
   readMins: 7,
@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "AIclicks lists Starter at $59 a month, Pro at $189 and Business at $499, with a 3-day free trial, as of November 2026.",
     "AIclicks lets you choose 3, 4 or 6 AI models by plan from a list that includes ChatGPT, Gemini, Claude, Perplexity and Google AI Overviews.",
     "AIclicks checks tracked prompts daily: 30 on Starter, 150 on Pro and 300 on Business.",
-    "Alphaa costs $99, $399 or $499 a month and checks ChatGPT, Gemini, Claude and Perplexity weekly for one business.",
+    "Alphaa costs $99, $499 or $799 a month and checks ChatGPT, Gemini, Claude and Perplexity weekly for one business.",
     "AIclicks suits marketing teams and agencies; Alphaa suits local owners who want fixes, Google posts and review replies approved in one place.",
   ],
   sources: [
@@ -53,8 +53,8 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> Alphaa vs AIclicks comes down to who does the work. AIclicks is a daily AI
         visibility tracker with an agent and article credits, from $59 a month, built for marketing teams that choose
-        their own models. Alphaa checks four assistants weekly for one local business and drafts site fixes, Google
-        posts and review replies for approval, from $99.
+        their own models. Alphaa checks four assistants weekly for one local business and drafts site fixes for approval
+        from $99, with Google posts and review replies on Pro.
       </p>
 
       <p>
@@ -122,7 +122,7 @@ export function Body() {
             <tr>
               <td>Higher plans</td>
               <td>Pro $189/mo, Business $499/mo, Enterprise custom</td>
-              <td>Pro $399/mo, Growth $499/mo (early access)</td>
+              <td>Pro $499/mo, Growth $799/mo (early access)</td>
             </tr>
             <tr>
               <td>AI models</td>
@@ -166,8 +166,8 @@ export function Body() {
 
       <h2>How much does AIclicks cost compared with Alphaa?</h2>
       <p>
-        AIclicks is cheaper at the entry level, $59 a month against Alphaa&apos;s $99, and the two meet at $499 for
-        their top self-serve plans. What each price includes is what separates them.
+        AIclicks is cheaper at the entry level, $59 a month against Alphaa&apos;s $99, and AIclicks Business costs
+        $499, the same as Alphaa Pro. What each price includes is what separates them.
       </p>
       <p>
         AIclicks&apos; pricing page lists Starter at $59 a month for one website, 30 tracked prompts, three AI models of
@@ -178,10 +178,10 @@ export function Body() {
         with a 3-day trial, and the page says you pay nothing if you cancel before day three.
       </p>
       <p>
-        Alphaa Starter is $99 a month for one location: weekly checks on four assistants, website fixes, Google
-        Business Profile posts, AI-optimized blog posts and review replies. Pro at $399 adds social media posts, more
-        Google and blog posts, up to three locations and competitor benchmarking. Growth at $499, in early access, adds
-        email and lead tracking; Google and Meta ads are coming soon. The full list is on the <Link href="/pricing">pricing page</Link>,
+        Alphaa Starter is $99 a month for one location: weekly checks on four assistants, website fixes and
+        AI-optimized blog posts. Pro at $499 adds social media posts, Google Business Profile posts, review replies,
+        email and lead tracking, more blog posts, up to three locations and competitor benchmarking. Growth at $799, in
+        early access, adds Google and Meta ads for one ad account when ads open. The full list is on the <Link href="/pricing">pricing page</Link>,
         and our guide to <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> sets both against agency
         retainers.
       </p>

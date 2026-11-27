@@ -16,7 +16,7 @@ export const meta: PostMeta = {
   keyphrase: "alphaa vs semrush",
   takeaways: [
     "Semrush bundles AI visibility into its SEO plans from $139 a month billed monthly, and sells a standalone AI Visibility Toolkit at $99 a month per domain billed annually.",
-    "Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, for one business.",
+    "Alphaa is $99 a month for Starter, $499 for Pro and $799 for Growth (early access), month to month, for one business.",
     "Semrush tracks Google AI Mode and AI Overviews, which Alphaa does not; Alphaa tracks Claude, which Semrush does not list.",
     "Semrush reports and recommends; the publishing is still your team's job. Alphaa drafts the fix and publishes it once you approve.",
     "A marketing team with an SEO on staff gets more from Semrush; an owner with no marketer gets more from Alphaa.",
@@ -145,13 +145,13 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$399/mo, month to month</td>
-              <td>Multiple locations, competitor comparison, auto-publish for blog posts</td>
+              <td>$499/mo, month to month</td>
+              <td>Multiple locations, competitor comparison, auto-publish for blog posts, social posts, Google posts, review replies, email and lead tracking</td>
             </tr>
             <tr>
               <td>Alphaa Growth</td>
-              <td>$499/mo, early access</td>
-              <td>Everything in Pro, plus email and lead tracking (ads coming soon)</td>
+              <td>$799/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads for 1 ad account when ads open</td>
             </tr>
           </tbody>
         </table>

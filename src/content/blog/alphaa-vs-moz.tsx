@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Moz Pro Standard costs $99 a month, or $79 a month billed yearly, and includes 150 tracked AI prompts, as of November 2026.",
     "Every Moz Pro plan tracks prompts weekly in three AI models: GPT, Gemini and Google AI Mode.",
     "Moz Pro adds keyword research, rank tracking, site crawls and backlink data that Alphaa does not try to replace.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
     "Moz suits marketers who want data and do the work; Alphaa suits owners who want the fixes written and approved.",
   ],
   sources: [
@@ -193,7 +193,7 @@ export function Body() {
         also notes that overages are not included. Moz offers a free trial of Moz Pro.
       </p>
       <p>
-        Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, with all
+        Alphaa is $99 a month for Starter, $499 for Pro and $799 for Growth (early access), month to month, with all
         four assistants checked weekly on every plan. There is no free trial; the{" "}
         <Link href="/start">free 60-second AI check</Link> shows what the assistants say about you before you pay. Full
         plan details are on the <Link href="/pricing">pricing page</Link>.
@@ -245,7 +245,7 @@ export function Body() {
           <strong>Owner approval.</strong> Nothing publishes without a yes, unless you turn on auto-approve on Pro.
         </li>
         <li>
-          <strong>Local work included.</strong> Google Business Profile posts and review replies are part of Starter.
+          <strong>Local work included.</strong> Google Business Profile posts and review replies are part of Pro.
         </li>
       </ul>
       <p>

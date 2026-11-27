@@ -7,7 +7,7 @@ import { V3Page, Frame, Section, ServicePills, HeroShapes, ServiceChapter, Final
 
 export const metadata = pageMeta({
   title: "AI Marketing Services for Small Businesses",
-  description: "One AI agent runs your marketing: social media, SEO and AI search, blog posts and email, with Google and Meta ads coming soon. Month to month, from $99.",
+  description: "One AI agent runs your marketing: social media, SEO and AI search, blog posts and email, with Google and Meta ads in early access on Growth. Month to month, from $99.",
   path: "/services",
 })
 
@@ -42,7 +42,7 @@ export default function ServicesIndex() {
             ))}
           </div>
         </Section>
-        <FinalCta title={<>Run the business.<br /><span>I’ll run the marketing.</span></>} sub="Month to month. Cancel online in a minute." />
+        <FinalCta title={<>Running a business is hard.<br /><span>Alphaa can help!</span></>} sub="Month to month. Cancel online in a minute." />
       </Frame>
     </V3Page>
   )

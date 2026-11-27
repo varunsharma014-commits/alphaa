@@ -291,7 +291,7 @@ export function Body() {
         If you would rather not do the first step by hand, Alphaa&apos;s{" "}
         <Link href="/start">free 60-second AI check</Link> shows what ChatGPT, Gemini, Claude and Perplexity say about
         your business today. Alphaa is an AI agent that monitors those answers and drafts site fixes, Google posts and
-        review replies for your approval, from $99 a month, and works with WordPress, Shopify and Webflow. It cannot
+        review replies for your approval, from $99 a month (Google posts and review replies on Pro), and works with WordPress, Shopify and Webflow. It cannot
         guarantee that any assistant will recommend you. For other trades, see{" "}
         <Link href="/blog/how-real-estate-agents-get-recommended-by-ai">how real estate agents get recommended by AI</Link>{" "}
         and our guide for <Link href="/blog/get-recommended-by-ai-local-service-business">local service businesses</Link>.

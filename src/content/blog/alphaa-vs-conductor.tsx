@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Conductor lists Essentials, Growth and Enterprise plans on its pricing page without public prices, and describes a usage-based model.",
     "Conductor's Growth plan lists 2,500 AI Search Credits a year, 5,000 tracked keywords and 180 Writing Assistant drafts.",
     "Conductor Intelligence tracks mentions, citations and sentiment in answer engines such as ChatGPT and Perplexity alongside classic search.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly about one business.",
     "Conductor suits enterprise marketing teams with many sites and pages; Alphaa suits owners who want fixes drafted and published on approval.",
   ],
   sources: [
@@ -168,7 +168,7 @@ export function Body() {
             <tr>
               <td>Price</td>
               <td>Not listed; usage-based, via demo or sales</td>
-              <td>$99, $399 or $499 a month</td>
+              <td>$99, $499 or $799 a month</td>
             </tr>
           </tbody>
         </table>
@@ -176,7 +176,7 @@ export function Body() {
 
       <h2>How much does Conductor cost compared with Alphaa?</h2>
       <p>
-        Conductor does not publish prices, while Alphaa lists $99, $399 and $499 a month. Conductor&apos;s pricing page
+        Conductor does not publish prices, while Alphaa lists $99, $499 and $799 a month. Conductor&apos;s pricing page
         shows three plans, Essentials, Growth and Enterprise, with buttons to try Essentials for free, request a demo
         for Growth and contact sales for Enterprise. It says its model is usage-based and priced around the value you
         get rather than the seats you buy.

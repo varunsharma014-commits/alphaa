@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Otterly AI lists Lite at $29 a month for 15 prompts, Standard at $189 for 100 and Premium at $489 for 400, as of November 2026.",
     "Otterly AI's core plans track ChatGPT, Google AI Overviews, Perplexity and Microsoft Copilot; Gemini, AI Mode and Claude are paid add-ons.",
     "Otterly AI audits pages and suggests fixes, but its pages do not say it writes or publishes them to your site.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
     "Pick Otterly AI to monitor many prompts or brands yourself; pick Alphaa when nobody has time to make the changes.",
   ],
   sources: [
@@ -111,7 +111,7 @@ export function Body() {
             <tr>
               <td>Higher plans</td>
               <td>Standard $189 (100 prompts), Premium $489 (400), Enterprise custom from 1,000</td>
-              <td>Pro $399, Growth $499 (early access) a month</td>
+              <td>Pro $499, Growth $799 (early access) a month</td>
             </tr>
             <tr>
               <td>Engines included</td>
@@ -166,7 +166,7 @@ export function Body() {
         all seven engines would pay $29 plus $47 in add-ons, or $76 a month, for 15 prompts.
       </p>
       <p>
-        Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, with ChatGPT,
+        Alphaa is $99 a month for Starter, $499 for Pro and $799 for Growth (early access), month to month, with ChatGPT,
         Gemini, Claude and Perplexity included in each. The full breakdown is on the{" "}
         <Link href="/pricing">pricing page</Link>. If you want to see how these prices sit against the rest of the
         market, our guide to <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> lays out tools,

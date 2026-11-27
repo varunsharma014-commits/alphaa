@@ -38,7 +38,7 @@ const caseStudies = [
       timeline: [
         { week: "Day 1", title: "Find out why AI names someone else", detail: "The agent asks ChatGPT, Gemini, Claude and Perplexity the questions patients ask, such as \"family dentist near me\" and \"dentist that takes my insurance\", and shows which practices they name instead, and what those practices have that this one doesn't." },
         { week: "Week 1", title: "Fix the facts AI reads", detail: "It checks the practice's name, address, phone, hours and category everywhere AI looks, then drafts the fixes: structured data (schema), an llms.txt file and a services page that lists treatments, insurance accepted and the dentists' credentials." },
-        { week: "Weeks 2–4", title: "Answer the questions patients ask AI", detail: "It turns the real questions patients ask AI into FAQ answers and blog posts (2 a month on Starter), drafts Google Business Profile posts (2 a week on Starter) and writes replies to new reviews, each waiting for one-tap approval." },
+        { week: "Weeks 2–4", title: "Answer the questions patients ask AI", detail: "It turns the real questions patients ask AI into FAQ answers and blog posts (2 a month on Starter) and, on Pro, drafts Google Business Profile posts (4 a week) and writes replies to new reviews, each waiting for one-tap approval." },
         { week: "Every week", title: "Re-check and report in plain English", detail: "It asks the four AIs again, watches what nearby practices publish, and sends a short weekly email: what it did, what's waiting for approval, and an alert the first time an AI names the practice." },
         { week: "Months 1–3", title: "When AI can start naming the practice", detail: "Each AI updates on its own schedule, so this varies. Alphaa's guarantee covers the wait: if none of the four AIs names the practice in any weekly check during the first 90 days, the next month is free." },
       ],
@@ -77,7 +77,7 @@ const caseStudies = [
       timeline: [
         { week: "Day 1", title: "Find out why AI names someone else", detail: "The agent asks the four AIs the questions prospects ask, such as \"experienced divorce attorney near me\" and \"how is custody decided in my state\", and shows which firms they name and why." },
         { week: "Week 1", title: "Give AI clear facts about the firm", detail: "It drafts attorney profile pages with structured data, a clear practice-areas page and corrected firm details (address, phone, hours, category), so AI assistants can describe the firm accurately." },
-        { week: "Weeks 2–4", title: "Answer the questions prospects ask AI", detail: "It writes FAQ answers and blog posts on the family law questions people ask AI in the firm's state, drafts Google Business Profile posts and review replies, all waiting for one-tap approval." },
+        { week: "Weeks 2–4", title: "Answer the questions prospects ask AI", detail: "It writes FAQ answers and blog posts on the family law questions people ask AI in the firm's state and, on Pro, drafts Google Business Profile posts and review replies, all waiting for one-tap approval." },
         { week: "Every week", title: "Re-check and report in plain English", detail: "It re-asks the four AIs, watches what competing firms publish, and sends a short weekly email of what it did and what needs approval." },
         { week: "Months 1–3", title: "When AI can start naming the firm", detail: "Timing varies by AI and by market. If none of the four AIs names the firm in any weekly check during the first 90 days, the next month is free." },
       ],
@@ -96,7 +96,7 @@ const caseStudies = [
     keyResultSub: "Alphaa Starter vs typical off-season Local Services ad spend",
     metrics: [
       { icon: Search, label: "AIs checked every week", value: "4", sub: "ChatGPT, Gemini, Claude, Perplexity" },
-      { icon: FileText, label: "Google posts a week", value: "2", sub: "on Starter (4 on Pro)" },
+      { icon: FileText, label: "Google posts a week", value: "4", sub: "on Pro" },
       { icon: Clock, label: "Free check", value: "~60s", sub: "see what AI says today" },
       { icon: DollarSign, label: "Monthly cost", value: "$99", sub: "keeps working when ad spend stops" },
     ],
@@ -116,7 +116,7 @@ const caseStudies = [
       timeline: [
         { week: "Day 1", title: "Find out why AI names someone else", detail: "The agent asks the four AIs year-round questions, such as \"furnace tune-up near me\" and \"duct cleaning near me\", as well as AC repair, and shows who gets named for each." },
         { week: "Week 1", title: "Cover every service, not just AC", detail: "It drafts a clear page for each service the company actually offers (furnace maintenance, duct cleaning, air quality testing, thermostat installs, winter tune-ups) with FAQ structured data, and corrects business details where they're wrong." },
-        { week: "Weeks 2–4", title: "Seasonal answers AI can quote", detail: "It writes posts on the off-season questions people ask AI in that climate, drafts Google Business Profile posts (2 a week on Starter) and review replies, all waiting for one-tap approval." },
+        { week: "Weeks 2–4", title: "Seasonal answers AI can quote", detail: "It writes posts on the off-season questions people ask AI in that climate and, on Pro, drafts Google Business Profile posts (4 a week) and review replies, all waiting for one-tap approval." },
         { week: "Every week", title: "Re-check and report in plain English", detail: "It re-asks the four AIs, watches what competitors publish, and sends a short weekly email of what it did and what needs approval." },
         { week: "Months 1–3", title: "When AI can start naming the company", detail: "Timing varies. Unlike ads, the pages keep working after they're published. If none of the four AIs names the company in any weekly check during the first 90 days, the next month is free." },
       ],

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Writesonic's self-serve plans cost $79, $199 and $399 a month billed annually, as listed on its pricing page in October 2026.",
     "Writesonic's Starter, Basic and Growth plans track ChatGPT, Gemini and Google AI Overviews; Claude and Perplexity are listed on Enterprise.",
     "Every self-serve Writesonic plan includes an AI article writer, site audits and a WordPress integration.",
-    "Alphaa costs $99, $399 or $499 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes fixes the owner approves.",
+    "Alphaa costs $99, $499 or $799 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes fixes the owner approves.",
     "Writesonic fits a marketing team that will run the platform; Alphaa fits a business owner with no marketer.",
   ],
   sources: [
@@ -94,8 +94,8 @@ export function Body() {
 
       <h2>How much do Alphaa and Writesonic cost?</h2>
       <p>
-        Writesonic&apos;s self-serve plans cost $79, $199 and $399 a month billed annually, and Alphaa costs $99, $399
-        or $499 a month, month to month. Writesonic prices by prompts, articles, audits, users and projects; Alphaa
+        Writesonic&apos;s self-serve plans cost $79, $199 and $399 a month billed annually, and Alphaa costs $99, $499
+        or $799 a month, month to month. Writesonic prices by prompts, articles, audits, users and projects; Alphaa
         prices by business. Here is what each publishes, as of 27 October 2026.
       </p>
       <div className="table-wrap">
@@ -133,17 +133,17 @@ export function Body() {
             <tr>
               <td>Alphaa Starter</td>
               <td>$99/mo, month to month</td>
-              <td>1 location, weekly checks on four assistants, 2 AI-optimized blog posts a month, 2 Business Profile posts a week</td>
+              <td>1 location, weekly checks on four assistants, 2 AI-optimized blog posts a month, website fixes</td>
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$399/mo, month to month</td>
-              <td>Up to 3 locations, 4 blog posts a month, 4 profile posts a week, competitor benchmarking</td>
+              <td>$499/mo, month to month</td>
+              <td>Up to 3 locations, 4 blog posts a month, 4 profile posts a week, social posts, review replies, email and lead tracking, competitor benchmarking</td>
             </tr>
             <tr>
               <td>Alphaa Growth</td>
-              <td>$499/mo, early access</td>
-              <td>Everything in Pro, plus email and lead tracking (ads coming soon)</td>
+              <td>$799/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads for 1 ad account when ads open</td>
             </tr>
           </tbody>
         </table>

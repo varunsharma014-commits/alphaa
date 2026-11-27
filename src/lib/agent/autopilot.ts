@@ -1,8 +1,8 @@
 // "What I do without asking": the owner approves once, here, instead of item by item.
 // Blog and Google listing posts use the existing autoPublishPosts flag (Pro and up).
 // Review replies are honoured by the overnight review-drafts cron. Social, email and ads are
-// saved now and take effect as each one goes live on the account (social: Pro and up; email
-// and ads: Growth).
+// saved now and take effect as each one goes live on the account (social, review replies and
+// email: Pro and up since 2026-11-26; ads: Growth). Starter (AI search only) has none of these.
 import { agent, type Chip, type Message } from "@/lib/agent/types"
 import { getAgentSettings, type Autopilot } from "@/lib/agent/settings"
 import { hasGrowth, hasPro } from "@/lib/billing"
@@ -52,7 +52,7 @@ export async function autopilotMessages(user: User): Promise<Message[]> {
       : [{ label: "See plans", action: { type: "link", href: "/dashboard/settings/billing" } }] },
   ], "ap-posts"))
 
-  out.push(agent([
+  if (social) out.push(agent([
     { kind: "text", text: "Replies to your Google reviews" },
     { kind: "text", text: reviews === "positive" ? "I post replies to 4 and 5 star reviews myself. Replies to 1 to 3 star reviews wait for you." : "I write a reply to every new review overnight." },
     { kind: "chips", items: [
@@ -62,32 +62,40 @@ export async function autopilotMessages(user: User): Promise<Message[]> {
     ] },
   ], "ap-reviews"))
 
-  // Social is Pro and up (2026-11-18); email and ads stay Growth.
-  if (social) {
+  // Social, review replies and email are Pro and up (2026-11-26); ads are Growth.
+  if (!social) {
     out.push(agent([
-      { kind: "text", text: "Social posts" },
-      { kind: "text", text: "Set it once now. It kicks in as each of your social accounts is connected." },
-      { kind: "chips", items: [op({ op: "set", key: "social", value: "ask" }, "Ask me first", (a.social ?? "ask") === "ask"), op({ op: "set", key: "social", value: "auto" }, "Post without asking", a.social === "auto")] },
-    ], "ap-social"))
+      { kind: "text", text: "Social posts, review replies and email campaigns" },
+      { kind: "text", text: "These come with the Pro plan: I post your social media and Google listing updates, reply to your reviews and email your past customers. Google and Meta ads come with Growth, in early access." },
+      { kind: "chips", items: [{ label: "See the Pro plan", action: { type: "link", href: "/dashboard/upgrade?plan=pro" }, primary: true }] },
+    ], "ap-growth"))
+    return out
   }
+
+  out.push(agent([
+    { kind: "text", text: "Social posts" },
+    { kind: "text", text: "Set it once now. It kicks in as each of your social accounts is connected." },
+    { kind: "chips", items: [op({ op: "set", key: "social", value: "ask" }, "Ask me first", (a.social ?? "ask") === "ask"), op({ op: "set", key: "social", value: "auto" }, "Post without asking", a.social === "auto")] },
+  ], "ap-social"))
+
+  out.push(agent([
+    { kind: "text", text: "Email to your past customers (one a month at most)" },
+    { kind: "chips", items: [op({ op: "set", key: "email", value: "ask" }, "Ask me before each send", (a.email ?? "ask") === "ask"), op({ op: "set", key: "email", value: "auto" }, "Send without asking", a.email === "auto")] },
+  ], "ap-email"))
 
   if (!growth) {
     out.push(agent([
-      { kind: "text", text: social ? "Email campaigns and ads" : "Social posts, email campaigns and ads" },
-      { kind: "text", text: social
-        ? "These come with the Growth plan, in early access: I send your email campaigns, and build and tune your Google and Meta ads."
-        : "Social posts come with the Pro plan. Email campaigns and Google and Meta ads come with Growth, in early access." },
-      { kind: "chips", items: [{ label: social ? "See the Growth plan" : "See the Pro plan", action: { type: "link", href: social ? "/dashboard/upgrade?plan=growth" : "/dashboard/upgrade?plan=pro" }, primary: true }] },
+      { kind: "text", text: "Google and Meta ads" },
+      { kind: "text", text: "Ads come with the Growth plan, in early access: I build and tune your Google and Meta ads inside the budget you set." },
+      { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade?plan=growth" }, primary: true }] },
     ], "ap-growth"))
     return out
   }
 
   const budget = a.adBudget
   out.push(agent([
-    { kind: "text", text: "Email campaigns and ads" },
-    { kind: "text", text: "Set it once now. Each choice kicks in the day that work starts on your account." },
-    { kind: "text", text: "Email to your past customers (one a month at most)" },
-    { kind: "chips", items: [op({ op: "set", key: "email", value: "ask" }, "Ask me before each send", (a.email ?? "ask") === "ask"), op({ op: "set", key: "email", value: "auto" }, "Send without asking", a.email === "auto")] },
+    { kind: "text", text: "Ads" },
+    { kind: "text", text: "Set it once now. It kicks in the day ads start on your account." },
     { kind: "text", text: `Ads. Monthly budget: ${budget ? `${budget.toLocaleString("en-US")} a month, never more` : "not set yet"}. Ad spend is billed to you by Google and Meta directly. I never mark it up.` },
     { kind: "chips", items: [
       { label: budget ? "Change my budget" : "Set my monthly budget", primary: !budget, action: { type: "agent-op", endpoint: "autopilot", body: { op: "budget" }, form: {

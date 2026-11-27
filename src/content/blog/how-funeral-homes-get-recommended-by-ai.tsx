@@ -273,7 +273,7 @@ export function Body() {
         Be wary, too, of anyone promising that ChatGPT will recommend you. No one can edit what an AI model says;
         the honest work is improving the public information it reads. Alphaa does that work for you: it asks the
         four assistants what they say about your funeral home every week, then drafts the fixes (price pages, FAQs,
-        schema, profile posts, review replies) for you to approve before anything goes live, from $99 a month. You
+        schema, profile posts, review replies) for you to approve before anything goes live, from $99 a month (profile posts and review replies on Pro). You
         can see where you stand today with the <Link href="/start">free 60-second AI check</Link>, and our broader
         guide covers <Link href="/blog/get-recommended-by-ai-local-service-business">AI visibility for local service businesses</Link>.
       </p>

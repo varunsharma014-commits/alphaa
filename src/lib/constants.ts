@@ -17,14 +17,24 @@ export const PLAN_NAMES = {
   fullservice: "Full Service (retired)",
 } as const
 
-// USD per month; `annual` is the per-month price when billed yearly (20% off).
+// Plans set 2026-11-26 (owner decision): Starter $99 = AI search (AEO) only, Pro $499 = everything
+// except ads, Growth $799 = Pro + ads for 1 ad account (early access until ads open).
+// USD. `monthly` = billed monthly; `annualTotal` = what one year costs billed yearly (15% off,
+// rounded to $10); `annual` = that yearly total shown per month (rounded down to the dollar).
+// Checkout (api/stripe/checkout verifiedPrice) charges `annualTotal` on the yearly Stripe price.
 export const PLAN_PRICES = {
-  starter: { monthly: 99, annual: 79 },
-  pro: { monthly: 399, annual: 319 },
-  growth: { monthly: 499, annual: 399 },
+  starter: { monthly: 99, annual: 84, annualTotal: 1010 },
+  pro: { monthly: 499, annual: 424, annualTotal: 5090 },
+  growth: { monthly: 799, annual: 679, annualTotal: 8150 },
   // Retired, not sold: what a legacy row paid (monthly only).
-  fullservice: { monthly: 299, annual: 299 },
+  fullservice: { monthly: 299, annual: 299, annualTotal: 3588 },
 } as const
+
+/** Annual billing discount, in percent, on every plan. */
+export const ANNUAL_DISCOUNT_PERCENT = 15
+
+/** Growth includes ads for 1 ad account; each extra ad account costs this (USD a month). */
+export const EXTRA_AD_ACCOUNT_PRICE = { monthly: 200, annual: 170, annualTotal: 2040 } as const
 
 export const SUPPORT_EMAIL = "hi@alphaa.app"
 

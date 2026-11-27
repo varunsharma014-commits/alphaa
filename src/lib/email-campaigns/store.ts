@@ -1,4 +1,4 @@
-// Email outreach (Growth): the owner's own customer list, opt-outs and campaigns.
+// Email outreach (Pro and up since 2026-11-26): the owner's own customer list, opt-outs and campaigns.
 // No schema change, all MockActivity rows per brand:
 //   email_contacts  one row, metadata { contacts: Contact[] } (cap MAX_CONTACTS)
 //   email_import    one row per import: how many, from where, and the consent the owner gave (proof for CASL / CAN-SPAM)

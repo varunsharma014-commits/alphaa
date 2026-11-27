@@ -3,9 +3,10 @@ import { ServicePage } from "@/components/marketing/home/ServicePage"
 import { SERVICES, SERVICE_BY_SLUG, type ServiceSlug } from "@/content/services"
 import { pageMeta } from "@/lib/seo"
 import { SVC } from "@/components/marketing/v3/services-v3"
+import { PLAN_PRICES } from "@/lib/constants"
 
 const SITE = "https://alphaa.app"
-const PRICE = { starter: "99", pro: "399", growth: "499" } as const
+const PRICE = { starter: String(PLAN_PRICES.starter.monthly), pro: String(PLAN_PRICES.pro.monthly), growth: String(PLAN_PRICES.growth.monthly) } as const
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: s.slug }))
@@ -31,7 +32,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       url,
       provider: { "@type": "Organization", name: "Alphaa", url: SITE },
       areaServed: ["US", "CA"],
-      // No offer for a service that isn't in any plan yet (ads: coming soon).
+      // No offer for a service that isn't live yet (ads: Growth early access, no checkout).
       ...(SVC[s.slug].soon ? {} : { offers: { "@type": "Offer", price: PRICE[s.plan], priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: PRICE[s.plan], priceCurrency: "USD", unitText: "MONTH" }, url: `${SITE}/pricing` } }),
     },
     { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: s.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },

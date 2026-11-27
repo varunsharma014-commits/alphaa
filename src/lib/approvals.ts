@@ -9,6 +9,7 @@ import { postToGmb, containsPlaceholders } from "@/lib/gbp-poster"
 import { logActivity } from "@/lib/activity"
 import { pushChange } from "@/lib/connector/push"
 import { voiceFor } from "@/lib/voice"
+import { hasPro } from "@/lib/billing"
 
 const anthropic = claudeFor("approvals")
 
@@ -17,6 +18,13 @@ export type ApprovalResult = { ok: true; url?: string | null } | { ok: false; er
 
 /** Review replies are written ahead of time (overnight) and kept here until approved. */
 export const REVIEW_DRAFT = "review_draft"
+
+/** Google listing posts and review replies are Pro and up (2026-11-26); Starter is AI search only. */
+const PRO_ONLY = "Google listing posts and review replies come with the Pro plan."
+async function onPro(userId: string): Promise<boolean> {
+  const u = await db.user.findUnique({ where: { id: userId }, select: { plan: true, email: true } })
+  return !!u && hasPro(u)
+}
 
 export async function savedReviewDraft(userId: string, reviewId: string): Promise<string | null> {
   const row = await db.mockActivity.findFirst({
@@ -60,6 +68,7 @@ export async function approveReviewReply(userId: string, reviewId: string, rawTe
   const review = await db.gmbReview.findUnique({ where: { id: reviewId }, select: { id: true, userId: true, reviewId: true, reply: true } })
   if (!review || review.userId !== userId) return { ok: false, error: "That review isn’t here any more." }
   if (review.reply) return { ok: true }
+  if (!(await onPro(userId))) return { ok: false, error: PRO_ONLY }
   const text = (rawText ?? (await savedReviewDraft(userId, reviewId)) ?? "").trim()
   if (!text) return { ok: false, error: "There’s no reply to post yet." }
   if (text.length > 4000) return { ok: false, error: "Google allows replies up to 4,000 characters." }
@@ -77,6 +86,7 @@ export async function approveGbpPost(userId: string, postId: string, text?: stri
   const post = await db.gbpPost.findUnique({ where: { id: postId }, select: { id: true, userId: true, content: true, postType: true, status: true } })
   if (!post || post.userId !== userId) return { ok: false, error: "That post isn’t here any more." }
   if (post.status === "posted") return { ok: true }
+  if (!(await onPro(userId))) return { ok: false, error: PRO_ONLY }
   const content = text?.trim() || post.content
   if (containsPlaceholders(content)) return { ok: false, error: "It still has a [placeholder] in it. Tap Edit and fill it in first." }
   const integration = await db.integration.findUnique({ where: { userId } })

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Surfer's plans cost $49, $82, $99, $182 and $299 a month billed yearly, as listed on its pricing page in October 2026.",
     "Surfer's Standard plan tracks 25 prompts weekly in ChatGPT only; its AI Search Analytics, Pro and Peace of Mind plans track five engines daily.",
     "Claude is not listed as a tracked engine on any Surfer plan in its pricing table.",
-    "Alphaa costs $99, $399 or $499 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes fixes the owner approves.",
+    "Alphaa costs $99, $499 or $799 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes fixes the owner approves.",
     "Surfer fits a team that writes and optimizes content itself; Alphaa fits a business owner with no marketer.",
   ],
   sources: [
@@ -92,7 +92,7 @@ export function Body() {
 
       <h2>How much do Alphaa and Surfer cost?</h2>
       <p>
-        Surfer&apos;s plans cost $49 to $299 a month billed yearly, and Alphaa costs $99, $399 or $499 a month, month
+        Surfer&apos;s plans cost $49 to $299 a month billed yearly, and Alphaa costs $99, $499 or $799 a month, month
         to month. Surfer prices by documents, tracked prompts and features; Alphaa prices by business and location.
         Here is what each publishes, as of 27 October 2026.
       </p>
@@ -134,17 +134,17 @@ export function Body() {
             <tr>
               <td>Alphaa Starter</td>
               <td>$99/mo, month to month</td>
-              <td>1 location, weekly checks on four assistants, 2 AI-optimized blog posts a month, 2 Business Profile posts a week</td>
+              <td>1 location, weekly checks on four assistants, 2 AI-optimized blog posts a month, website fixes</td>
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$399/mo, month to month</td>
-              <td>Up to 3 locations, 4 blog posts a month, 4 profile posts a week, competitor benchmarking</td>
+              <td>$499/mo, month to month</td>
+              <td>Up to 3 locations, 4 blog posts a month, 4 profile posts a week, social posts, review replies, email and lead tracking, competitor benchmarking</td>
             </tr>
             <tr>
               <td>Alphaa Growth</td>
-              <td>$499/mo, early access</td>
-              <td>Everything in Pro, plus email and lead tracking (ads coming soon)</td>
+              <td>$799/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads for 1 ad account when ads open</td>
             </tr>
           </tbody>
         </table>

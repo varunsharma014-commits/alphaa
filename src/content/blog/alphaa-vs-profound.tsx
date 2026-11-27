@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Profound lists a free trial and custom-priced Enterprise plans, with no monthly price on its pricing page as of October 2026.",
     "Profound's Enterprise plan tracks up to nine AI surfaces; its free trial covers ChatGPT, Gemini and Google AI Overviews.",
     "Profound's Agents can draft content and publish it to a CMS, and its docs say Agents are available on all plans.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
     "Choose Profound for a brand marketing team with budget; choose Alphaa for an owner who wants fixes drafted for approval.",
   ],
   sources: [
@@ -83,7 +83,7 @@ export function Body() {
             <tr>
               <td>Published price</td>
               <td>Free trial; Enterprise is custom (no monthly price listed)</td>
-              <td>$99, $399 or $499 a month, month to month</td>
+              <td>$99, $499 or $799 a month, month to month</td>
             </tr>
             <tr>
               <td>Free option</td>
@@ -144,7 +144,7 @@ export function Body() {
         not, so we are not repeating them; ask Profound for a quote if price decides it.
       </p>
       <p>
-        Alphaa costs $99 (Starter), $399 (Pro) or $499 (Growth, early access) a month, month to month with no contract. There
+        Alphaa costs $99 (Starter), $499 (Pro) or $799 (Growth, early access) a month, month to month with no contract. There
         is no free trial; instead, the <Link href="/start">free 60-second AI check</Link> shows what the four
         assistants say about your business today. Full plan details are on the <Link href="/pricing">pricing page</Link>.
       </p>

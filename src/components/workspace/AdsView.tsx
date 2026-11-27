@@ -41,10 +41,10 @@ export function AdsView({ data }: { data: AdsData | null }) {
   const head = (
     <div className="ax-hdr">
       <div><h1 className="ax-h1">Ads</h1><p className="ax-sub">I build, run and tune your ads on Facebook & Instagram and Google, inside the monthly limit you set.</p></div>
-      <span className="ax-pill n" style={{ marginTop: 12 }}>Top plan</span>
+      <span className="ax-pill n" style={{ marginTop: 12 }}>Growth plan · early access</span>
     </div>
   )
-  if (!data) return <>{head}<div style={{ marginTop: 26 }}><PlanGate plan="Growth" title="Ads come with the top plan" text="I build your Google and Meta ads from what your competitors run, keep them inside your limit, and pause what stops working." /></div></>
+  if (!data) return <>{head}<div style={{ marginTop: 26 }}><PlanGate plan="Growth" title="Ads come with the Growth plan" text="Growth is in early access while Google and Meta approve ads access. When ads open, I build your Google and Meta ads from what your competitors run, keep them inside your limit, and pause what stops working." /></div></>
 
   async function saveLimit() {
     setSaving(true)

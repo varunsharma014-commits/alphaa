@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Local Falcon runs the same prompt from up to 441 grid points across a market and maps where AI and Google Maps name you.",
     "Local Falcon's AI visibility page lists ChatGPT, Gemini, Google AI Overviews and AI Mode; it does not list Claude or Perplexity.",
     "Local Falcon sells credits, one per map pin, from $24.99 a month for 7,500 credits, as of November 2026.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly from one business's point of view.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity weekly from one business's point of view.",
     "Local Falcon suits rank-tracking agencies and map-heavy local SEO; Alphaa suits an owner who wants AI visibility fixes drafted for approval.",
   ],
   sources: [
@@ -149,7 +149,7 @@ export function Body() {
             <tr>
               <td>Price model</td>
               <td>Credits, one per map pin; $24.99 to $199.99 a month</td>
-              <td>Flat $99, $399 or $499 a month</td>
+              <td>Flat $99, $499 or $799 a month</td>
             </tr>
             <tr>
               <td>Try before buying</td>
@@ -190,7 +190,7 @@ export function Body() {
       <h2>How much does Local Falcon cost compared with Alphaa?</h2>
       <p>
         Local Falcon charges for credits rather than a flat fee, from $24.99 a month for 7,500 credits to $199.99 for
-        63,150, while Alphaa charges a flat $99, $399 or $499 a month. One credit is one map pin, so a 5x5 grid scan
+        63,150, while Alphaa charges a flat $99, $499 or $799 a month. One credit is one map pin, so a 5x5 grid scan
         uses 25 credits and a 9x9 grid uses 81. Falcon AI analysis costs 25 credits per report, and Falcon Agent is
         included with every credit package.
       </p>
@@ -202,7 +202,7 @@ export function Body() {
         packages run from $499 to $4,999 a month. New accounts get 100 free credits with no card.
       </p>
       <p>
-        Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, with all four
+        Alphaa is $99 a month for Starter, $499 for Pro and $799 for Growth (early access), month to month, with all four
         assistants on every plan and no usage meter. The full breakdown is on the <Link href="/pricing">pricing page</Link>,
         and our guide to <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> puts tools, agents and
         agencies side by side.

@@ -1,3 +1,4 @@
+import { hasPro } from "@/lib/billing"
 import { NextRequest, NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
 import { approveReviewReply, draftReviewReply, savedReviewDraft } from "@/lib/approvals"
@@ -14,6 +15,7 @@ export const maxDuration = 60
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!hasPro(user)) return NextResponse.json({ error: "Review replies come with the Pro plan." }, { status: 403 })
   const { id } = await params
   const body = (await request.json().catch(() => null)) as { action?: unknown; text?: unknown } | null
   try {

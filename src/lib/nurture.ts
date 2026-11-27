@@ -214,7 +214,7 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
             { kind: "p", text: "It answers a question your customers ask, written so AI can quote it easily:" },
             { kind: "quote", text: `"${f.draft.question} ${f.draft.answer}"` },
             { kind: "p", text: "Anything in brackets is a fact only you know, so I left it for you. I never guess." },
-            { kind: "p", text: "Once you start, I keep writing these, plus your Google posts, blogs and review replies. You approve each one before it goes live." },
+            { kind: "p", text: "Once you start, I keep writing these, plus your blogs, and on Pro your Google posts and review replies. You approve each one before it goes live." },
           ],
           cta: start,
         }
@@ -227,7 +227,7 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
           { kind: "p", text: `Here is what I'd draft first for ${site}.` },
           { kind: "p", text: `An FAQ that answers the questions your customers ask AI${where}. The answer comes in the first sentence, in plain words.` },
           { kind: "p", text: "Then the code AI reads, stating your hours, address and services." },
-          { kind: "p", text: "That is one piece of the job. I also write your Google posts and blogs and reply to your reviews. I never guess facts, and you approve each piece before it goes live." },
+          { kind: "p", text: "That is one piece of the job. I also write your blogs, and on Pro your Google posts and review replies. I never guess facts, and you approve each piece before it goes live." },
         ],
         cta: start,
       }
@@ -249,19 +249,20 @@ export function buildNurtureCopy(day: NurtureDay, f: LeadFacts, links: CopyLinks
     case 4:
       return {
         subject: `What $99 a month does for ${you}.`,
-        preview: "I run your marketing every week, so you can run the business.",
+        preview: "I get you named by AI every week, so you can run the business.",
         blocks: [
-          { kind: "p", text: "You did not start a business to write posts and chase reviews. Here is what I do every week, so you don't have to:" },
+          { kind: "p", text: "You did not start a business to keep track of what AI says about you. Here is what I do every week, so you don't have to:" },
           {
             kind: "bullets",
             items: [
-              "Write your Google posts and blogs in your voice.",
-              "Reply to your reviews.",
-              "Fix your website so Google and AI can read it.",
               "Ask ChatGPT, Gemini, Claude, and Perplexity about you, and tell you what changed.",
+              "Fix your website so Google and AI can read it.",
+              "Catch wrong facts AI states about you.",
+              "Write 2 blog posts a month that answer what your customers ask AI.",
             ],
           },
           { kind: "p", text: "That is $99 a month. Month to month. Cancel online in a minute." },
+          { kind: "p", text: "Pro, at $499 a month, adds your Google posts, review replies, social media and emails to past customers." },
           { kind: "p", text: "Agencies often charge $1,000+ a month. You approve everything I do with one tap." },
         ],
         cta: start,

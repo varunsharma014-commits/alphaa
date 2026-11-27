@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Birdeye describes itself as AI coworkers for multi-location brands, with AI Search sitting inside its Jay marketing agent.",
     "Birdeye's AI Search page lists ChatGPT, Gemini, Claude, Perplexity, Google AI Overviews, AI Mode and Grok, as of November 2026.",
     "Birdeye publishes no prices; its pricing form asks for location count, from 1 to 3 up to more than 1,000.",
-    "Alphaa costs $99, $399 or $499 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly.",
+    "Alphaa costs $99, $499 or $799 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly.",
     "Birdeye suits brands that want reviews, listings, messaging and AI search on one contract; Alphaa suits one business that wants AI visibility fixes written.",
   ],
   sources: [
@@ -147,7 +147,7 @@ export function Body() {
             <tr>
               <td>Price</td>
               <td>Not published; quote by location count</td>
-              <td>$99, $399 or $499 a month</td>
+              <td>$99, $499 or $799 a month</td>
             </tr>
             <tr>
               <td>Contract</td>
@@ -188,7 +188,7 @@ export function Body() {
 
       <h2>How much does Birdeye cost compared with Alphaa?</h2>
       <p>
-        Birdeye does not publish prices, so the only like-for-like comparison is that Alphaa lists $99 to $499 a month
+        Birdeye does not publish prices, so the only like-for-like comparison is that Alphaa lists $99 to $799 a month
         and Birdeye asks you to request a quote. Its pricing page says pricing is &quot;built around outcomes, not seat
         counts&quot; and offers &quot;one platform, one contract&quot;, with the form asking how many locations you
         have: 1 to 3, 4 to 9, 10 to 39, 40 to 249, 250 to 999, or more than 1,000. It does not say whether AI Search is
@@ -200,7 +200,7 @@ export function Body() {
         package. Those answers make a fair comparison possible.
       </p>
       <p>
-        Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, with all four
+        Alphaa is $99 a month for Starter, $499 for Pro and $799 for Growth (early access), month to month, with all four
         assistants on every plan. The full breakdown is on the <Link href="/pricing">pricing page</Link>, and our guide
         to <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> puts tools, agents and agencies side by
         side.

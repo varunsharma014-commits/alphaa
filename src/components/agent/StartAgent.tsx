@@ -55,12 +55,12 @@ const PROGRESS_DONE: Record<string, number> = { site: 0, profile: 1, engines: 2,
 // Not shown as pills (they invited doubt at checkout) — answered when typed.
 const CANNED: Record<string, string> = {
   "What exactly will you do?":
-    "Every week I run your marketing: posts for your Google listing in your voice, blog posts that answer what your customers ask, replies to your reviews, and fixes to your website so ChatGPT and Google can recommend you. On Pro I also write 3 social posts a week in your brand colours, ready to publish in one tap. On Growth I email your past customers. Google and Meta ads are coming soon. You approve what goes out, or let me run on my own. You never touch code.",
+    "Every week I check what ChatGPT, Gemini, Claude and Perplexity say about you, fix your website so they and Google can recommend you, and write blog posts that answer what your customers ask. On Pro I also post to your Google listing in your voice, reply to your reviews, write 3 social posts a week in your brand colours, ready to publish in one tap, and email your past customers. On Growth (early access) I’ll run your Google and Meta ads too, when ads open. You approve what goes out, or let me run on my own. You never touch code.",
   "Is this real?":
     "Yes. The answer above is what that AI returned a few seconds ago — I asked it live, the same way a customer would. The sources list is what Google shows for the same search. The people-per-month figure is an estimate, and I label it as one.",
   "How much?":
     // {starter} / {pro} / {growth} become local prices when answered (localPrice).
-    `{starter} a month for Starter, month to month: your Google listing, blog, reviews and website. Pro ({pro}) adds your social media; Growth ({growth}) adds email and lead tracking. Ads are coming soon. Cancel online in a minute, no contract. ${GUARANTEE_LINE}`,
+    `{starter} a month for Starter, month to month: I get you named by ChatGPT, Gemini, Claude and Perplexity, with website fixes and blog posts. Pro ({pro}) is everything except ads: your social media, Google listing, reviews and emails to past customers. Growth ({growth}, early access) adds Google and Meta ads for 1 ad account. Cancel online in a minute, no contract. ${GUARANTEE_LINE}`,
 }
 
 // Where the conversation runs:
@@ -81,16 +81,16 @@ export type StartGreet = { lines: string[]; ask: string; hint: string; idleHint:
 /** Plans the agent conversation can sell (/onboarding?plan=…). */
 export type AgentPlan = "starter" | "pro" | "growth"
 const PLAN_LINE: Record<AgentPlan, string> = {
-  starter: "Starter plan: I post to your Google listing, write your blog, reply to your reviews and fix your website, so more customers find you and you get your time back.",
-  pro: "Pro plan: I write your social media too, 3 branded posts a week ready to publish in one tap, with twice the Google posts, up to 3 locations, and Google and blog posts that can publish on their own.",
-  growth: "Growth plan: everything in Pro, plus I set up your lead tracking and email your past customers.",
+  starter: "Starter plan: I get you named by ChatGPT, Gemini, Claude and Perplexity. I check what they say every week, fix your website and write 2 blog posts a month, so more customers find you and you get your time back.",
+  pro: "Pro plan: everything except ads. I write your social media too, 3 branded posts a week ready to publish in one tap, post to your Google listing, reply to your reviews, email your past customers and show which calls and forms your marketing brought in, for up to 3 locations, with posts that can publish on their own.",
+  growth: "Growth plan (early access): everything in Pro, plus I build and tune your Google and Meta ads for 1 ad account when ads open. Nothing spends until you approve it.",
 }
 
-/** "$399 a month. Month to month." or, billed yearly (USD only), "$319 a month, billed yearly ($3,828 a year)." */
+/** "$499 a month. Month to month." or, billed yearly (USD only), "$424 a month, billed yearly ($5,090 a year)." */
 function priceText(plan: AgentPlan, annual: boolean): string {
   if (!annual) return `${localPrice(plan)} a month. Month to month.`
-  const m = PLAN_PRICES[plan].annual
-  return `$${m} a month, billed yearly ($${(m * 12).toLocaleString("en-US")} a year).`
+  const p = PLAN_PRICES[plan]
+  return `$${p.annual} a month, billed yearly ($${p.annualTotal.toLocaleString("en-US")} a year).`
 }
 
 function greeting(mode: StartMode, name?: string, greet?: StartGreet, embedded = false, plan: AgentPlan = "starter", annual = false): Message[] {
@@ -346,7 +346,7 @@ export function StartAgent({
       agent([
         { kind: "text", text: "Here’s what I’d do for you this week.", big: true },
         { kind: "receipt", title: "Your first week", sub: `${plan.length} things`, items: plan },
-        { kind: "text", text: "I run your marketing every week: your Google listing, blog, reviews and website, plus social media and email on the bigger plans. Nobody on your side has to learn anything. I do the work, you tap approve, and you get your time back." },
+        { kind: "text", text: "I run your marketing every week: AI search, your website and your blog, plus your Google listing, reviews, social media and email on Pro. Nobody on your side has to learn anything. I do the work, you tap approve, and you get your time back." },
       ])
     )
     push(
@@ -362,6 +362,17 @@ export function StartAgent({
   }
 
   function priceMessage(scanId: string, afterWeek = false): Message {
+    // The first week shows a Google update and social posts: on a public visit with no plan
+    // picked, those are Pro work (2026-11-26), so the week sells Pro with Starter as the option.
+    if (afterWeek && buyPlan === "starter" && mode === "public") {
+      return agent([
+        { kind: "text", text: "Want me to post these and do this every week?", big: true },
+        { kind: "text", text: `${PLAN_LINE.pro} ${localPrice("pro")} a month, month to month. ${GUARANTEE} Cancel online in a minute, no contract.` },
+        { kind: "text", text: `Just want ChatGPT, Gemini, Claude and Perplexity to name you? Starter is ${localPrice("starter")} a month for AI search.` },
+        { kind: "chips", items: [{ label: "Start with Starter", action: { type: "link", href: `/signup?scan=${scanId}` } }] },
+        { kind: "cta", chip: { label: "Get Pro →", action: { type: "link", href: `/signup?scan=${scanId}&plan=pro` }, primary: true } },
+      ], "ask")
+    }
     return agent([
       ...(PLAN_LINE[buyPlan] ? [{ kind: "text", text: PLAN_LINE[buyPlan] } as Block] : []),
       { kind: "text", text: afterWeek ? "Want me to post these and do this every week?" : priceText(buyPlan, annual), big: true },
@@ -561,7 +572,7 @@ export function StartAgent({
         if (stale(r)) return reloadForCheckout(scan.id)
         if (!r.ok) throw new Error("onboard")
       }
-      const value = annual ? PLAN_PRICES[buyPlan].annual * 12 : PLAN_PRICES[buyPlan].monthly
+      const value = annual ? PLAN_PRICES[buyPlan].annualTotal : PLAN_PRICES[buyPlan].monthly
       fbTrack("InitiateCheckout", { value, currency: "USD" })
       track("begin_checkout", { value, currency: "USD", plan: buyPlan })
       const res = await fetch("/api/stripe/checkout", {
@@ -611,7 +622,7 @@ export function StartAgent({
         user(email),
         agent([
           { kind: "text", text: `Done. The full report is on its way to ${email}.` },
-          { kind: "text", text: `If you want me to fix this and run your marketing from here (your Google listing, blog, reviews and website), start today and I begin this week. ${localPrice()} a month, cancel any time. ${GUARANTEE}` },
+          { kind: "text", text: `If you want me to fix this and get you named by AI from here (your website, your blog and weekly AI checks), start today and I begin this week. ${localPrice()} a month, cancel any time. ${GUARANTEE}` },
           { kind: "cta", chip: { label: "Get started →", action: { type: "link", href: `/signup?scan=${scan.id}` }, primary: true } },
           {
             kind: "chips",

@@ -9,7 +9,7 @@ const A = BRAND.agentName
 const ROWS: [string, string, string][] = [
   ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what I did today, what changed, what I need from you."],
   ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel online in a minute. I only stay if I keep earning it."],
-  ["The scope", "Usually one channel per retainer. Ask about ChatGPT or Claude and many stumble.", "SEO and AI search, content and reviews on every plan. Social media on Pro. Email and lead tracking on Growth (early access). Ads coming soon."],
+  ["The scope", "Usually one channel per retainer. Ask about ChatGPT or Claude and many stumble.", "SEO and AI search and content on every plan. Reviews, social media, email and lead tracking on Pro. Ads on Growth (early access)."],
 ]
 
 export function AgencyVs() {

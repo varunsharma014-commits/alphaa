@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Goodie's pricing page lists Core at $295 a month, Pro at $999 a month and a quote-based Enterprise plan, as of November 2026.",
     "Goodie's Core plan tracks five answer engines; its pricing table shows Gemini from Pro and Claude only on Enterprise.",
     "Goodie offers a 7-day free trial on Core, unlimited seats and daily data collection on every plan.",
-    "Alphaa costs $99, $399 or $499 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly on every plan.",
+    "Alphaa costs $99, $499 or $799 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly on every plan.",
     "Goodie suits marketing teams that want prompt research, daily tracking and attribution; Alphaa suits one business that wants fixes written and approved.",
   ],
   sources: [
@@ -199,7 +199,7 @@ export function Body() {
       <h2>How much does Goodie cost compared with Alphaa?</h2>
       <p>
         Goodie publishes Core at $295 a month and Pro at $999 a month, with Enterprise by quote, while Alphaa publishes
-        $99, $399 and $499 a month. Goodie&apos;s page also offers annual billing with &quot;2 months free&quot; and
+        $99, $499 and $799 a month. Goodie&apos;s page also offers annual billing with &quot;2 months free&quot; and
         says plainly that &quot;some AEO platforms start lower than our Core plan&quot;, which is fair: it is priced for
         teams that will use the research and reporting.
       </p>
@@ -235,20 +235,20 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$399</td>
-              <td>Up to 3 locations, 4 blog posts a month, competitor benchmarking, auto-approval rules</td>
+              <td>$499</td>
+              <td>Up to 3 locations, 4 blog posts a month, competitor benchmarking, auto-approval rules, social, Google posts, review replies, email and lead tracking</td>
             </tr>
             <tr>
               <td>Alphaa Growth</td>
-              <td>$499 (early access)</td>
-              <td>Everything in Pro, plus email and lead tracking (ads coming soon)</td>
+              <td>$799 (early access)</td>
+              <td>Everything in Pro, plus Google and Meta ads for 1 ad account when ads open</td>
             </tr>
           </tbody>
         </table>
       </div>
       <p>
         Over a year at monthly rates, Goodie Core is $3,540 and Alphaa Starter is $1,188; both offer cheaper annual
-        billing, and Alphaa&apos;s Starter is $79 a month billed annually. The full Alphaa breakdown
+        billing, and Alphaa&apos;s Starter is $84 a month billed annually. The full Alphaa breakdown
         is on the <Link href="/pricing">pricing page</Link>, and our guide to{" "}
         <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> puts tools, agents and agencies side by
         side.

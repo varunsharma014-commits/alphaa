@@ -1,8 +1,8 @@
-// The "Email your past customers" thread (topic "email", Growth). Built from real rows only.
+// The "Email your past customers" thread (topic "email", Pro and up). Built from real rows only.
 import type { User } from "@prisma/client"
 import { agent, type Block, type Chip, type Message } from "@/lib/agent/types"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { CONSENT_TEXT, MAX_CONTACTS, getContacts, lastSentAt, listCampaigns, nextAllowedSend, type CampaignRow } from "./store"
 
 const op = (body: Record<string, string | number | boolean>, label: string, primary = false): Chip => ({ label, primary, action: { type: "agent-op", endpoint: "email", body } })
@@ -96,11 +96,11 @@ function draftMessage(r: CampaignRow, listSize: number, blocked: string | null):
 }
 
 export async function emailMessages(user: User, note?: string | null): Promise<Message[]> {
-  if (!hasGrowth(user)) {
+  if (!hasPro(user)) {
     return [agent([
       { kind: "text", text: "Email your past customers", big: true },
-      { kind: "text", text: "Your past customers are the easiest people to win back. On the Growth plan I write a short email in your voice, you approve it, and I send it from your business with replies going straight to you." },
-      { kind: "chips", items: [{ label: "See the Growth plan", primary: true, action: { type: "link", href: "/dashboard/upgrade?plan=growth" } }] },
+      { kind: "text", text: "Your past customers are the easiest people to win back. On the Pro plan I write a short email in your voice, you approve it, and I send it from your business with replies going straight to you." },
+      { kind: "chips", items: [{ label: "See the Pro plan", primary: true, action: { type: "link", href: "/dashboard/upgrade?plan=pro" } }] },
     ], "em-upsell")]
   }
   const [s, contacts, campaigns, last] = await Promise.all([getAgentSettings(user.id), getContacts(user.id), listCampaigns(user.id, 8), lastSentAt(user.id)])

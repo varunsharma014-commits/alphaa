@@ -232,7 +232,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         },
       },
     })
-  ).filter((u) => DAYS[/pro|full|growth/i.test(u.plan) ? "pro" : "starter"].includes(dow))
+    // Google listing posts are Pro and up since 2026-11-26 (Starter is AI search only).
+  ).filter((u) => /pro|full|growth/i.test(u.plan) && DAYS.pro.includes(dow))
 
   let processed = 0
   let drafted = 0

@@ -4,6 +4,7 @@
 // table, the looping feature screens, the brand studio and the autopilot switches. Every
 // business, number and answer here is an example and is labelled as one on the page.
 import { useEffect, useRef, useState } from "react"
+import { PLAN_PRICES } from "@/lib/constants"
 
 const reduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
 function lum(hex: string): number {
@@ -25,9 +26,9 @@ function SocialCard({ text, color, logo }: { text: string; color: string; logo: 
 }
 
 // ── Cost comparison ─────────────────────────────────────────────────────────
-// Ads management isn't in any plan yet (coming soon), so its row shows "Coming soon" and is left out of both totals.
+// Everything listed is in Pro. Ads management is the Growth plan (early access, not live yet), so its row is left out of both totals.
 const COSTS: [string, number][] = [["Social media management", 1200], ["SEO & AEO", 1500], ["Content writing", 800], ["Email marketing", 600], ["Website fixes", 400], ["Analytics & tracking", 300]]
-const ALPHAA = 499
+const ALPHAA = PLAN_PRICES.pro.monthly
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`
 
 export function CostTable() {
@@ -49,14 +50,14 @@ export function CostTable() {
             <tr className="hv-cost__soon">
               <td>Ads management</td>
               <td>Not counted</td>
-              <td><span className="hv-soon-tag">Coming soon</span></td>
+              <td><span className="hv-soon-tag">Growth · early access</span></td>
             </tr>
           </tbody>
           <tfoot><tr><td>Total</td><td>{money(total)}</td><td>{money(ALPHAA)}</td></tr></tfoot>
         </table>
       </div>
       <div className="hv-save"><span>You keep, every year</span><b>{money(Math.max(0, (total - ALPHAA) * 12))}</b></div>
-      <p className="hv-fine">Agency prices are an example quote. Change them to yours. Alphaa price is the Growth plan. Ads management is coming soon and isn’t counted.</p>
+      <p className="hv-fine">Agency prices are an example quote. Change them to yours. Alphaa price is the Pro plan. Ads management is on the Growth plan (early access) and isn’t counted.</p>
     </div>
   )
 }

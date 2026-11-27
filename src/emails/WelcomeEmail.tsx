@@ -53,7 +53,7 @@ export default function WelcomeEmail({ firstName, businessName }: WelcomeEmailPr
 
             <Hr style={hr} />
 
-            <Text style={smallText}>$99/mo · No contract · Cancel online in a minute</Text>
+            <Text style={smallText}>From $99/mo · No contract · Cancel online in a minute</Text>
           </Section>
 
           <Section style={footer}>

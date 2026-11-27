@@ -143,7 +143,7 @@ export function Body() {
               <td>Price</td>
               <td>Free</td>
               <td>$50/mo, or $45/mo billed annually</td>
-              <td>$99, $399 or $499/mo, month to month</td>
+              <td>$99, $499 or $799/mo, month to month</td>
             </tr>
             <tr>
               <td>Account needed</td>
@@ -195,7 +195,7 @@ export function Body() {
         Marketing Hub Pro and Enterprise, which is where HubSpot says content creation tools are built in.
       </p>
       <p>
-        Alphaa costs $99 (Starter), $399 (Pro) or $499 (Growth, early access) a month, month to month, with no free trial.
+        Alphaa costs $99 (Starter), $499 (Pro) or $799 (Growth, early access) a month, month to month, with no free trial.
         Instead there is a <Link href="/start">free 60-second AI check</Link> that shows what ChatGPT, Gemini,
         Claude and Perplexity say about your business today. Full plan details are on the{" "}
         <Link href="/pricing">pricing page</Link>.

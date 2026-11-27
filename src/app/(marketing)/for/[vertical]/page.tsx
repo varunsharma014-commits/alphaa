@@ -37,7 +37,7 @@ export async function generateMetadata({
   // Layout appends " | Alphaa"; keep the whole thing inside Google's ~65 chars.
   const long = `AI Marketing for ${displayPlural(v.plural)}: An AI Agent That Runs It`
   const title = long.length + 9 <= 65 ? long : `AI Marketing for ${displayPlural(v.plural)}`
-  const description = clipDescription(`An AI agent that runs your ${v.noun}'s marketing: Google posts, blogs, review replies, SEO and AI search from $99/mo. Social on Pro, email on Growth, ads coming soon. No ${v.agencyCostLabel} agency retainer.`)
+  const description = clipDescription(`An AI agent that runs your ${v.noun}'s marketing: SEO, AI search and blogs from $99/mo. Google posts, reviews, social and email on Pro, ads on Growth. No ${v.agencyCostLabel} agency retainer.`)
   return {
     title,
     description,
@@ -107,7 +107,7 @@ export default async function VerticalPage({
             </h1>
             <p className="v3-lede">
               Alphaa writes your Google posts and blogs, replies to reviews and gets you found on
-              Google and AI search. You approve with one tap. From $99/mo, no agency retainer.
+              Google and AI search. You approve with one tap. From $99/mo for AI search, with Google posts and review replies on Pro. No agency retainer.
             </p>
             <div id="scan-input" style={{ scrollMarginTop: 112 }}>
               <ScanInputV3 source={`vertical_${v.slug}`} ctaLabel="Get started →" />
@@ -169,7 +169,7 @@ export default async function VerticalPage({
             <div className="is-us">
               <p className="k">Alphaa</p>
               <span className="big">${ALPHAA_ANNUAL.toLocaleString()}<small>/yr</small></span>
-              <p className="sub">Starter $99/mo · Google posts, blogs, reviews, SEO &amp; AI search. {GUARANTEE_LINE}</p>
+              <p className="sub">Starter $99/mo · SEO &amp; AI search, website fixes and blogs. {GUARANTEE_LINE}</p>
             </div>
           </div>
           <p className="vt3-keep">

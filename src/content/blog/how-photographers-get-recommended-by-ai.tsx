@@ -244,7 +244,7 @@ export function Body() {
       <h3>Can Alphaa do this work for a photography business?</h3>
       <p>
         Yes, Alphaa checks what ChatGPT, Gemini, Claude and Perplexity say about you weekly and drafts page fixes,
-        Google posts and review replies for your approval, from $99 a month. It works with WordPress, Shopify and
+        Google posts and review replies for your approval, from $99 a month (Google posts and review replies on Pro). It works with WordPress, Shopify and
         Webflow.
       </p>
     </div>

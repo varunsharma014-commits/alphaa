@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { generateBusinessSchema } from "@/lib/business-schema"
 import type { SchemaItem } from "@/lib/schema-generator"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { tagTracking } from "@/lib/tracking"
 
 // Public JSON-LD for a business, fetched by the tag.js snippet from the
@@ -45,8 +45,8 @@ export async function GET(req: Request): Promise<Response> {
     }
   }
 
-  // Growth: GA4 / Meta Pixel IDs the tag loads (public IDs, same as in any page source).
-  const tracking = hasGrowth(user) ? tagTracking((await getAgentSettings(user.id)).tracking) : null
+  // Pro and up: GA4 / Meta Pixel IDs the tag loads (public IDs, same as in any page source).
+  const tracking = hasPro(user) ? tagTracking((await getAgentSettings(user.id)).tracking) : null
 
   return new Response(JSON.stringify({ v: 2, schemas, ...(tracking ? { tracking } : {}) }), { headers: CORS })
 }

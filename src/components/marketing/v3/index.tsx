@@ -47,7 +47,7 @@ export function ServicePills({ links = true, only }: { links?: boolean; only?: S
         const s = SVC[slug]
         return (
           <li key={slug} className={`v3-c-${s.key}`}>
-            {links ? <Link className="v3-pill" href={`/services/${slug}`}>{s.pill}{s.soon && <small className="v3-pill__soon">· soon</small>}</Link> : <span className="v3-pill">{s.pill}{s.soon && <small className="v3-pill__soon">· soon</small>}</span>}
+            {links ? <Link className="v3-pill" href={`/services/${slug}`}>{s.pill}{s.soon && <small className="v3-pill__soon">· early access</small>}</Link> : <span className="v3-pill">{s.pill}{s.soon && <small className="v3-pill__soon">· early access</small>}</span>}
           </li>
         )
       })}
@@ -132,7 +132,7 @@ export function ServiceChapter({ slug, growthNote, flip, visual, as, home }: { s
     <Chapter
       tone={v.key}
       eyebrow={v.pill}
-      eyebrowNote={v.soon ? "Coming soon" : sv.plan === "growth" ? growthNote : sv.plan === "pro" ? "Pro and Growth plans" : "Every plan, from $99/month"}
+      eyebrowNote={sv.plan === "growth" ? (growthNote ?? "Growth plan · early access") : sv.plan === "pro" ? "Pro and Growth plans" : "Every plan, from $99/month"}
       a={home ? v.home.a : v.a}
       b={home ? v.home.b : v.b}
       as={as}

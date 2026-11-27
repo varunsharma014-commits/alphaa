@@ -50,7 +50,7 @@ export const VERTICALS: Vertical[] = [
         body: "Smile tips, new-patient offers, team moments. Posts and branded images written in your voice for you to approve. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
-        title: "Keeps your Google profile busy",
+        title: "Keeps your Google profile busy (Pro)",
         body: "Fresh Google Business Profile posts about cleanings, implants and emergency visits, on a steady schedule. Patients see an active practice before they call.",
       },
       {
@@ -58,7 +58,7 @@ export const VERTICALS: Vertical[] = [
         body: "“Does it hurt?” “Do you take my insurance?” “How much is a crown?” Clear posts in your voice that answer real patient questions and bring in search traffic.",
       },
       {
-        title: "Replies to every Google review",
+        title: "Replies to every Google review (Pro)",
         body: "Warm, professional reply drafts for each new review, so your profile reads cared-for. You approve with one tap.",
       },
       {
@@ -66,14 +66,14 @@ export const VERTICALS: Vertical[] = [
         body: "Dentist schema, website fixes and weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about dentists near you, so you can see where you stand.",
       },
       {
-        title: "Emails that fill the chair (Growth)",
-        body: "Emails that bring overdue patients back for a cleaning. Early access on Growth. Google and Meta ads are coming soon.",
+        title: "Emails that fill the chair (Pro)",
+        body: "Emails that bring overdue patients back for a cleaning. Part of Pro. Google and Meta ads are on Growth, in early access.",
       },
     ],
     faq: [
       {
         q: "What does the AI agent actually do for my practice?",
-        a: "It runs the marketing you never have time for: Google posts, blog posts, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes emails to past patients. Google and Meta ads are coming soon. You get a weekly briefing and approve anything with one tap.",
+        a: "It runs the marketing you never have time for: blog posts, website fixes and SEO and AI search checks on every plan. On Pro it also writes Google posts, review replies and social posts, ready to publish in one tap, plus emails to past patients. Google and Meta ads are on the Growth plan, in early access. You get a weekly briefing and approve anything with one tap.",
       },
       {
         q: "I already pay a dental marketing agency. Why switch?",
@@ -105,7 +105,7 @@ export const VERTICALS: Vertical[] = [
         body: "Treatment spotlights, seasonal offers and membership promos, written in your voice with branded images. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
-        title: "Publishes treatment-focused Google posts",
+        title: "Publishes treatment-focused Google posts (Pro)",
         body: "Botox, fillers, laser, microneedling, memberships. Your Google Business Profile keeps posting about what clients search for: one tap from you, or on its own on Pro.",
       },
       {
@@ -113,7 +113,7 @@ export const VERTICALS: Vertical[] = [
         body: "“How long does Botox last?” “What's the downtime?” “Is it safe?” Clear answers in your voice that build trust before the consult.",
       },
       {
-        title: "Answers every review",
+        title: "Answers every review (Pro)",
         body: "Warm, on-brand reply drafts for each Google review so your profile signals an engaged, trusted practice. Approve with one tap.",
       },
       {
@@ -121,14 +121,14 @@ export const VERTICALS: Vertical[] = [
         body: "Schema for your treatments, website fixes, and weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about med spas in your area.",
       },
       {
-        title: "Brings clients back with email (Growth)",
-        body: "Emails that remind past clients it's time to rebook. Early access on Growth. Google and Meta ads are coming soon.",
+        title: "Brings clients back with email (Pro)",
+        body: "Emails that remind past clients it's time to rebook. Part of Pro. Google and Meta ads are on Growth, in early access.",
       },
     ],
     faq: [
       {
         q: "My clients come from Instagram. Is this just about AI search?",
-        a: "No. Alphaa is an AI agent that runs your marketing: Google posts, blogs, review replies and SEO and AI search on every plan, social posts on Pro, and email on Growth (early access); ads are coming soon. Instagram builds desire; Google and AI search are often where the booking decision gets made. You want to show up in both.",
+        a: "No. Alphaa is an AI agent that runs your marketing: blogs and SEO and AI search on every plan; Google posts, review replies, social posts and email on Pro; ads on Growth (early access). Instagram builds desire; Google and AI search are often where the booking decision gets made. You want to show up in both.",
       },
       {
         q: "How is this different from my med spa marketing agency?",
@@ -160,7 +160,7 @@ export const VERTICALS: Vertical[] = [
         body: "Seasonal tune-up reminders, before-and-after installs, financing offers. Written in your voice with branded images. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
-        title: "Keeps your Google profile posting",
+        title: "Keeps your Google profile posting (Pro)",
         body: "Tune-ups, emergency repair, new installs and financing. Fresh Google Business Profile posts so homeowners see an active company when they search.",
       },
       {
@@ -168,7 +168,7 @@ export const VERTICALS: Vertical[] = [
         body: "“Why is my AC blowing warm air?” “How much does a new furnace cost?” Helpful posts in your voice that bring in local search traffic.",
       },
       {
-        title: "Replies to your reviews",
+        title: "Replies to your reviews (Pro)",
         body: "Reply drafts for every Google review, so your profile shows a responsive company. Approve from the truck with one tap.",
       },
       {
@@ -176,14 +176,14 @@ export const VERTICALS: Vertical[] = [
         body: "HVACBusiness schema, service-area fixes on your site, and weekly checks of who ChatGPT, Gemini, Claude and Perplexity recommend for HVAC near you.",
       },
       {
-        title: "Fills slow weeks with email (Growth)",
-        body: "Maintenance reminder emails to past customers. Early access on Growth. Google and Meta ads are coming soon.",
+        title: "Fills slow weeks with email (Pro)",
+        body: "Maintenance reminder emails to past customers. Part of Pro. Google and Meta ads are on Growth, in early access.",
       },
     ],
     faq: [
       {
         q: "What does the AI agent actually do for my HVAC company?",
-        a: "It runs your marketing while you run jobs: Google posts, blogs, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes tune-up reminder emails. Google and Meta ads are coming soon. You get a weekly briefing and approve with one tap.",
+        a: "It runs your marketing while you run jobs: blogs, website fixes and SEO and AI search checks on every plan. On Pro it also writes Google posts, review replies and social posts, ready to publish in one tap, plus tune-up reminder emails. Google and Meta ads are on the Growth plan, in early access. You get a weekly briefing and approve with one tap.",
       },
       {
         q: "I pay a marketing company $1,200/month. Is this the same thing?",
@@ -215,7 +215,7 @@ export const VERTICALS: Vertical[] = [
         body: "Job photos, seasonal tips and offers, written in your voice with branded images. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
-        title: "Keeps your Google profile fresh",
+        title: "Keeps your Google profile fresh (Pro)",
         body: "Emergency service, drain cleaning, water heaters, repiping. Regular Google Business Profile posts so you look open for business every time someone searches.",
       },
       {
@@ -223,7 +223,7 @@ export const VERTICALS: Vertical[] = [
         body: "“Why is my water heater leaking?” “What does a repipe cost?” Plain-English posts in your voice that bring in search traffic.",
       },
       {
-        title: "Replies to every review",
+        title: "Replies to every review (Pro)",
         body: "Professional reply drafts for each Google review, keeping your profile active and trustworthy. Approve with one tap.",
       },
       {
@@ -231,14 +231,14 @@ export const VERTICALS: Vertical[] = [
         body: "Plumber schema, website fixes and weekly checks of who ChatGPT, Gemini, Claude and Perplexity recommend for plumbers near you.",
       },
       {
-        title: "Repeat-customer emails (Growth)",
-        body: "Emails that bring past customers back. Early access on Growth. Google and Meta ads are coming soon.",
+        title: "Repeat-customer emails (Pro)",
+        body: "Emails that bring past customers back. Part of Pro. Google and Meta ads are on Growth, in early access.",
       },
     ],
     faq: [
       {
         q: "What does the AI agent actually do for a plumber?",
-        a: "It handles the marketing you don't have time for: Google posts, blogs, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes emails to past customers. Google and Meta ads are coming soon.",
+        a: "It handles the marketing you don't have time for: blogs, website fixes and SEO and AI search checks on every plan. On Pro it also writes Google posts, review replies and social posts, ready to publish in one tap, plus emails to past customers. Google and Meta ads are on the Growth plan, in early access.",
       },
       {
         q: "What does this cost compared to my current marketing?",
@@ -270,7 +270,7 @@ export const VERTICALS: Vertical[] = [
         body: "Practice-area explainers and firm news for LinkedIn and Facebook, written in your voice for you to review. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
-        title: "Keeps your Google profile active",
+        title: "Keeps your Google profile active (Pro)",
         body: "Practice-area posts on injury, family, criminal defense and estate planning, published on schedule so your firm looks active and established.",
       },
       {
@@ -278,7 +278,7 @@ export const VERTICALS: Vertical[] = [
         body: "“What's my case worth?” “How long do I have to file?” Clear, informational posts in your voice. Not legal advice, and you review every one.",
       },
       {
-        title: "Replies to reviews with care",
+        title: "Replies to reviews with care (Pro)",
         body: "Measured, professional reply drafts for each Google review. You approve every reply before it goes out.",
       },
       {
@@ -286,8 +286,8 @@ export const VERTICALS: Vertical[] = [
         body: "LegalService schema, website fixes and weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about lawyers in your market.",
       },
       {
-        title: "Client emails (Growth)",
-        body: "Emails that keep past clients and referrers in touch. Early access on Growth. Google and Meta ads are coming soon.",
+        title: "Client emails (Pro)",
+        body: "Emails that keep past clients and referrers in touch. Part of Pro. Google and Meta ads are on Growth, in early access.",
       },
     ],
     faq: [
@@ -297,7 +297,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: "What does the AI agent actually do for my firm?",
-        a: "Google posts, blog posts, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes client emails. Google and Meta ads are coming soon. You get a weekly briefing and approve with one tap.",
+        a: "Blog posts, website fixes and SEO and AI search checks on every plan. On Pro it also writes Google posts, review replies and social posts, ready to publish in one tap, plus client emails. Google and Meta ads are on the Growth plan, in early access. You get a weekly briefing and approve with one tap.",
       },
       {
         q: "We already pay a legal marketing agency $2,000+/month. Why switch?",
@@ -325,7 +325,7 @@ export const VERTICALS: Vertical[] = [
         body: "New dishes, events and happy hour, written in your voice with branded images. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
-        title: "Keeps your Google profile sizzling",
+        title: "Keeps your Google profile sizzling (Pro)",
         body: "Menu items, specials, events and hours, posted to your Google Business Profile on a steady schedule so it always looks alive.",
       },
       {
@@ -333,7 +333,7 @@ export const VERTICALS: Vertical[] = [
         body: "Date night, birthday dinner, kid-friendly, late night. Posts in your voice that match the occasions people actually search for.",
       },
       {
-        title: "Replies to every review",
+        title: "Replies to every review (Pro)",
         body: "Friendly, on-brand reply drafts for each Google review. Approve from your phone between services.",
       },
       {
@@ -341,18 +341,18 @@ export const VERTICALS: Vertical[] = [
         body: "Restaurant schema with menu data, fixes for un-crawlable PDF menus, and weekly checks of what ChatGPT, Gemini, Claude and Perplexity recommend in your area.",
       },
       {
-        title: "Fills quiet nights with email (Growth)",
-        body: "Emails that bring regulars back on slow nights. Early access on Growth. Google and Meta ads are coming soon.",
+        title: "Fills quiet nights with email (Pro)",
+        body: "Emails that bring regulars back on slow nights. Part of Pro. Google and Meta ads are on Growth, in early access.",
       },
     ],
     faq: [
       {
         q: "We're full on weekends already. Why do we need this?",
-        a: "Weekends fill themselves. Tuesdays don't. Steady Google posts, fresh review replies, social posts (on Pro) and emails to regulars (on Growth) drive the discretionary visits: out-of-towners, groups picking a spot, the “where should we go tonight?” crowd.",
+        a: "Weekends fill themselves. Tuesdays don't. Steady Google posts, fresh review replies, social posts and emails to regulars (on Pro) drive the discretionary visits: out-of-towners, groups picking a spot, the “where should we go tonight?” crowd.",
       },
       {
         q: "What does the AI agent actually do for my restaurant?",
-        a: "Google posts, blog posts, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes emails to regulars. Google and Meta ads are coming soon. You get a weekly briefing and approve with one tap.",
+        a: "Blog posts, website fixes and SEO and AI search checks on every plan. On Pro it also writes Google posts, review replies and social posts, ready to publish in one tap, plus emails to regulars. Google and Meta ads are on the Growth plan, in early access. You get a weekly briefing and approve with one tap.",
       },
       {
         q: "Can you guarantee AI will recommend my restaurant?",
@@ -396,14 +396,14 @@ export const VERTICALS: Vertical[] = [
         body: "What got published, what moved and what to do next, in plain English. Approve the next batch with one tap.",
       },
       {
-        title: "Nurture emails (Growth)",
-        body: "Emails that bring trial users and past leads back. Early access on Growth. Google and Meta ads are coming soon.",
+        title: "Nurture emails (Pro)",
+        body: "Emails that bring trial users and past leads back. Part of Pro. Google and Meta ads are on Growth, in early access.",
       },
     ],
     faq: [
       {
         q: "We do content marketing already. How is this different?",
-        a: "Alphaa is an AI agent that runs the work end to end: blogs, comparison pages, website fixes, SEO and AI search tracking on every plan, social posts on Pro, and email on Growth (early access); ads are coming soon. It also measures whether you're named in real AI answers, which most content programs don't.",
+        a: "Alphaa is an AI agent that runs the work end to end: blogs, comparison pages, website fixes, SEO and AI search tracking on every plan, social posts and email on Pro, and ads on Growth (early access). It also measures whether you're named in real AI answers, which most content programs don't.",
       },
       {
         q: "Our agency charges $3,000+/month. Does Alphaa replace them?",

@@ -5,14 +5,18 @@ import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { V3Page, Frame } from "@/components/marketing/v3"
 import "@/components/marketing/v3/pages/refer.css"
+import { PLAN_PRICES } from "@/lib/constants"
+
+const usd = (n: number, cents = true) => `$${n.toLocaleString("en-US", { minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 })}`
+const PRO_CUT_YEAR = Math.floor(PLAN_PRICES.pro.monthly * 0.3 * 12)
 
 // ─── Earnings Calculator ───────────────────────────────────────────────────────
 function EarningsCalculator() {
   const [referrals, setReferrals] = useState(5)
   const [plan, setPlan] = useState<"starter" | "pro">("starter")
 
-  const planPrice = plan === "starter" ? 99 : 399
-  const planLabel = plan === "starter" ? "Starter ($99)" : "Pro ($399)"
+  const planPrice = PLAN_PRICES[plan].monthly
+  const planLabel = plan === "starter" ? `Starter ($${PLAN_PRICES.starter.monthly})` : `Pro ($${PLAN_PRICES.pro.monthly})`
   const commission = 0.3
 
   const monthly = referrals * planPrice * commission
@@ -82,7 +86,7 @@ function EarningsCalculator() {
                     : "text-fg/40 hover:text-fg/70"
                 }`}
               >
-                {p === "starter" ? "Starter · $99/mo" : "Pro · $399/mo"}
+                {p === "starter" ? `Starter · $${PLAN_PRICES.starter.monthly}/mo` : `Pro · $${PLAN_PRICES.pro.monthly}/mo`}
               </button>
             ))}
           </div>
@@ -218,7 +222,7 @@ export default function ReferPage() {
           <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
             {[
               { value: "30% recurring", sub: "commission rate" },
-              { value: "Up to $716/year", sub: "per Pro referral" },
+              { value: `Up to ${usd(PRO_CUT_YEAR, false)}/year`, sub: "per Pro referral" },
             ].map((s) => (
               <div
                 key={s.value}
@@ -325,10 +329,10 @@ export default function ReferPage() {
               </thead>
               <tbody>
                 {[
-                  { plan: "Starter Monthly", price: "$99/mo", cut: "$29.70/mo", year: "$356.40/yr" },
-                  { plan: "Starter Annual", price: "$948/yr", cut: "$284.40 one-time", year: "—" },
-                  { plan: "Pro Monthly", price: "$399/mo", cut: "$119.70/mo", year: "$1,436.40/yr", highlight: true },
-                  { plan: "Pro Annual", price: "$3,828/yr", cut: "$1,148.40 one-time", year: "—" },
+                  { plan: "Starter Monthly", price: `${usd(PLAN_PRICES.starter.monthly, false)}/mo`, cut: `${usd(PLAN_PRICES.starter.monthly * 0.3)}/mo`, year: `${usd(PLAN_PRICES.starter.monthly * 0.3 * 12)}/yr` },
+                  { plan: "Starter Annual", price: `${usd(PLAN_PRICES.starter.annualTotal, false)}/yr`, cut: `${usd(PLAN_PRICES.starter.annualTotal * 0.3)} one-time`, year: "—" },
+                  { plan: "Pro Monthly", price: `${usd(PLAN_PRICES.pro.monthly, false)}/mo`, cut: `${usd(PLAN_PRICES.pro.monthly * 0.3)}/mo`, year: `${usd(PLAN_PRICES.pro.monthly * 0.3 * 12)}/yr`, highlight: true },
+                  { plan: "Pro Annual", price: `${usd(PLAN_PRICES.pro.annualTotal, false)}/yr`, cut: `${usd(PLAN_PRICES.pro.annualTotal * 0.3)} one-time`, year: "—" },
                 ].map((row, i) => (
                   <tr
                     key={row.plan}

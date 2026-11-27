@@ -14,9 +14,9 @@ import { PLAN_PRICES } from "@/lib/constants"
 type SellPlan = "starter" | "pro" | "growth"
 const SELL_PLANS: SellPlan[] = ["starter", "pro", "growth"]
 
-// Never charge a price that doesn't match what the site shows (plans changed 2026-11-18; an old
-// $199 Pro price left in env must not be sold as the $399 plan). Checks the USD amount and
-// interval of the price id against PLAN_PRICES once per process.
+// Never charge a price that doesn't match what the site shows (plans changed 2026-11-26; an old
+// $399 Pro price left in env must not be sold as the $499 plan). Checks the USD amount and
+// interval of the price id against PLAN_PRICES (monthly, or the yearly `annualTotal`) once per process.
 const verified = new Map<string, boolean>()
 async function verifiedPrice(plan: SellPlan, annual: boolean): Promise<string | null> {
   const id = STRIPE_PRICE_IDS[plan][annual ? "annual" : "monthly"]
@@ -24,7 +24,7 @@ async function verifiedPrice(plan: SellPlan, annual: boolean): Promise<string | 
   if (!verified.has(id)) {
     try {
       const p = await stripe.prices.retrieve(id)
-      const want = annual ? PLAN_PRICES[plan].annual * 12 * 100 : PLAN_PRICES[plan].monthly * 100
+      const want = (annual ? PLAN_PRICES[plan].annualTotal : PLAN_PRICES[plan].monthly) * 100
       const ok = p.active && p.currency === "usd" && p.unit_amount === want && p.recurring?.interval === (annual ? "year" : "month")
       if (!ok) console.error("[checkout] price does not match the site", plan, annual ? "annual" : "monthly", id, p.unit_amount, p.recurring?.interval)
       verified.set(id, ok)

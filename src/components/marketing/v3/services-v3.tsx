@@ -8,7 +8,7 @@ export type SvcKey = "mk" | "ad" | "ct" | "se" | "em"
 export type SvcV3 = {
   key: SvcKey
   pill: string
-  /** Not in any current plan yet: shown as "Coming soon". */
+  /** Not live yet (ads: Growth plan, early access until Google and Meta approve): shown as "early access". */
   soon?: boolean
   /** Two-tone headline: plain part, then the coloured part. */
   a: string
@@ -44,7 +44,7 @@ export const SVC: Record<ServiceSlug, SvcV3> = {
     proof: { n: "$0", t: "markup on your ad spend. It’s paid to Google and Meta directly" },
     cards: ["Paused · waiting for your OK", "Budget: never more than you set", "Cut searches that never call"],
     demo: { tab: "Ad campaigns", ask: "Get me more calls from Google", steps: ["Found the searches that already find you", "Built a campaign, paused", "Waiting for your budget OK"], res: ["11 searches", "$15/day", "Paused"] },
-    home: { a: "Soon, I’ll run", b: "your paid campaigns.", body: "I’ll write your Google and Meta ads, aim them at buyers near you and keep your daily budget in check. Ads aren’t part of any plan yet." },
+    home: { a: "Soon, I’ll run", b: "your paid campaigns.", body: "I’ll write your Google and Meta ads, aim them at buyers near you and keep your daily budget in check. Ads are on the Growth plan, in early access." },
   },
   "content-writing": {
     key: "ct",

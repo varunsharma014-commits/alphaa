@@ -8,7 +8,7 @@ export const FAQ_GROUPS: FaqGroup[] = ["Getting started", "Results", "Agencies a
 export const faqs: { q: string; a: string; group: FaqGroup }[] = [
   {
     q: "What does Alphaa actually do?",
-    a: "Alphaa is an AI agent that runs your marketing, so you can run your business. Every week it writes your blog and Google Business Profile posts, replies to reviews, fixes your website for Google and AI search, and checks who ChatGPT, Gemini, Claude and Perplexity recommend. On Pro it also writes 3 social posts a week with branded images, ready to publish in one tap. On Growth (early access) it sends emails that bring customers back and shows which calls and forms your marketing brought in. Google and Meta ads are coming soon. Everything is in your voice, and you approve with one tap.",
+    a: "Alphaa is an AI agent that runs your marketing, so you can run your business. Every week it checks who ChatGPT, Gemini, Claude and Perplexity recommend, fixes your website for Google and AI search, and writes your blog posts. On Pro it also writes your Google Business Profile posts, replies to reviews, writes 3 social posts a week with branded images, ready to publish in one tap, sends emails that bring customers back and shows which calls and forms your marketing brought in. On Growth (early access) it adds Google and Meta ads, when ads open. Everything is in your voice, and you approve with one tap.",
     group: "Getting started",
   },
   {
@@ -43,7 +43,7 @@ export const faqs: { q: string; a: string; group: FaqGroup }[] = [
   },
   {
     q: "Which marketing does it handle?",
-    a: "On every plan: blog posts, Google Business Profile posts, review replies, website fixes for Google and AI search, and a weekly check of what ChatGPT, Gemini, Claude and Perplexity say about you. On Pro: 3 social posts a week with images in your brand, ready to publish in one tap. On Growth (early access): email marketing and lead tracking. Google and Meta ads are coming soon and aren't part of any plan yet.",
+    a: "On every plan: a weekly check of what ChatGPT, Gemini, Claude and Perplexity say about you, website fixes for Google and AI search, and blog posts. On Pro: Google Business Profile posts, review replies, 3 social posts a week with images in your brand, ready to publish in one tap, email marketing and lead tracking. On Growth (early access): Google and Meta ads for 1 ad account, when ads open.",
     group: "Getting started",
   },
   {
@@ -63,12 +63,12 @@ export const faqs: { q: string; a: string; group: FaqGroup }[] = [
   },
   {
     q: "How does it handle my Google Business Profile?",
-    a: "Through Google's official Business Profile API, after you connect. It drafts posts (2 a week on Starter, 4 on Pro) and replies to your reviews, and you approve each one with a tap.",
+    a: "Through Google's official Business Profile API, after you connect. On Pro, it drafts 4 posts a week and replies to your reviews, and you approve each one with a tap.",
     group: "Getting started",
   },
   {
     q: "How much does it cost?",
-    a: "Starter is $99 a month. Pro is $399 a month and adds social media, more posts and up to 3 locations. Growth, with email and lead tracking, is $499 a month in early access. Paying yearly brings Starter to $79, Pro to $319 and Growth to $399 a month. Google and Meta ads are coming soon. You can try it free first at alphaa.app/start: give it your website and it shows what AI says about you and plans your first week of marketing.",
+    a: "Starter is $99 a month for AI search: getting named by ChatGPT, Gemini, Claude and Perplexity. Pro is $499 a month and adds everything except ads: social media, Google posts, review replies, email, lead tracking and up to 3 locations. Growth adds Google and Meta ads for 1 ad account at $799 a month, in early access, plus $200 a month for each extra ad account. Paying yearly takes 15% off: Starter $84, Pro $424 and Growth $679 a month. You can try it free first at alphaa.app/start: give it your website and it shows what AI says about you and plans your first week of marketing.",
     group: "Pricing and cancelling",
   },
 ]

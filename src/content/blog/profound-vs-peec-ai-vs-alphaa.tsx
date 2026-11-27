@@ -86,7 +86,7 @@ export function Body() {
               <td>Published price (Oct 2026)</td>
               <td>None. Free 7-day trial, then custom Enterprise quotes</td>
               <td>$95, $245 and $495 a month; Enterprise custom, annual</td>
-              <td>$99, $399 and $499 a month, month to month</td>
+              <td>$99, $499 and $799 a month, month to month</td>
             </tr>
             <tr>
               <td>Built for</td>
@@ -213,7 +213,7 @@ export function Body() {
       </p>
       <p>
         It is deliberately narrower. Ten or twenty tracked questions, not 350. Weekly, not daily. No log-file
-        analysis, no share-of-voice chart, no seat management. Starter is $99 a month, Pro $399, Growth $499 (early access),
+        analysis, no share-of-voice chart, no seat management. Starter is $99 a month, Pro $499, Growth $799 (early access),
         month to month, and there is no free trial — the{" "}
         <Link href="/start">free 60-second check</Link> is how you see what the engines say before paying
         anything. We cannot edit a model&apos;s weights, and nothing here guarantees a recommendation; what the

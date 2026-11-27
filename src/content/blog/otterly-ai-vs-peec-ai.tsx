@@ -258,7 +258,7 @@ export function Body() {
         Perplexity 10 or 20 customer questions a week, runs a 23-point check on what those engines can read on
         your site, then drafts the fix: a page, an FAQ block, structured data, an llms.txt file, a review reply.
         You approve each one and it publishes to{" "}
-        <Link href="/integrations">WordPress, Shopify or Webflow</Link>. Plans are $99, $399 and $499 a month,
+        <Link href="/integrations">WordPress, Shopify or Webflow</Link>. Plans are $99, $499 and $799 a month,
         month to month.
       </p>
       <p>

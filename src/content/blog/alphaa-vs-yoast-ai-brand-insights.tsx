@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Yoast AI Brand Insights comes inside Yoast SEO AI+, listed at $358.80 a year excluding VAT as of November 2026.",
     "Yoast runs one scheduled analysis per brand each week, for up to five brand questions, across ChatGPT, Gemini, Claude and Perplexity.",
     "Yoast AI Brand Insights reports mentions, sentiment, competitors and cited sources; its pages do not say it writes fixes to your site.",
-    "Alphaa costs $99, $399 or $499 a month and drafts fixes that publish to WordPress, Shopify or Webflow after owner approval.",
+    "Alphaa costs $99, $499 or $799 a month and drafts fixes that publish to WordPress, Shopify or Webflow after owner approval.",
     "Pick Yoast for a low-cost weekly read on a WordPress site you maintain; pick Alphaa when nobody has time to make the changes.",
   ],
   sources: [
@@ -109,7 +109,7 @@ export function Body() {
             <tr>
               <td>Price</td>
               <td>$358.80/year excluding VAT, billed annually</td>
-              <td>Starter $99/mo, Pro $399/mo, Growth $499/mo (early access), month to month</td>
+              <td>Starter $99/mo, Pro $499/mo, Growth $799/mo (early access), month to month</td>
             </tr>
             <tr>
               <td>AI engines</td>

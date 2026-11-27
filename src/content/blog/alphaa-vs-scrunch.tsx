@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Scrunch Starter costs $250 a month billed annually or $300 month to month, with a 7-day trial and no card, as of October 2026.",
     "Scrunch tracks ChatGPT, Claude, Gemini, Perplexity, Google AI Mode, AI Overviews and Meta, according to its pricing page.",
     "Sitecore announced it had acquired Scrunch on 3 June 2026 and is combining it with its content management tools.",
-    "Alphaa costs $99, $399 or $499 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes approved fixes.",
+    "Alphaa costs $99, $499 or $799 a month, asks ChatGPT, Gemini, Claude and Perplexity weekly, and publishes approved fixes.",
     "Scrunch suits a brand or agency team that will run the platform; Alphaa suits an owner with no marketer.",
   ],
   sources: [
@@ -159,13 +159,13 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$399/mo, month to month</td>
-              <td>20 questions, up to 3 locations, competitor comparison, auto-publish for blog posts</td>
+              <td>$499/mo, month to month</td>
+              <td>20 questions, up to 3 locations, competitor comparison, auto-publish for blog posts, social posts, Google posts, review replies, email and lead tracking</td>
             </tr>
             <tr>
               <td>Alphaa Growth</td>
-              <td>$499/mo, early access</td>
-              <td>Everything in Pro, plus email and lead tracking (ads coming soon)</td>
+              <td>$799/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads for 1 ad account when ads open</td>
             </tr>
           </tbody>
         </table>
@@ -307,7 +307,7 @@ export function Body() {
         </li>
         <li>
           <strong>Your customers are local.</strong> Review replies, Business Profile posts and listing consistency
-          are part of the job.
+          are part of the job on Pro.
         </li>
       </ul>
       <p>

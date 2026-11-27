@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Search Atlas lists Starter at $99, Growth at $199, Pro at $399 and Agency from $999 a month, as of November 2026.",
     "Search Atlas tracks one unnamed AI provider on Starter and six engines, including Claude and Perplexity, only from the $399 Pro plan.",
     "OTTO runs on autopilot by default and deploys changes itself unless you turn on approval mode.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
     "Pick Search Atlas for a full classic SEO suite or many client sites; pick Alphaa to fix AI answers with owner sign-off.",
   ],
   sources: [
@@ -108,7 +108,7 @@ export function Body() {
             <tr>
               <td>Higher plans</td>
               <td>Growth $199, Pro $399, Agency from $999 a month</td>
-              <td>Pro $399, Growth $499 (early access) a month</td>
+              <td>Pro $499, Growth $799 (early access) a month</td>
             </tr>
             <tr>
               <td>AI engines tracked</td>
@@ -170,7 +170,7 @@ export function Body() {
         </li>
       </ul>
       <p>
-        Alphaa&apos;s plans are Starter at $99, Pro at $399 and Growth at $499 (early access) a month, billed month to month,
+        Alphaa&apos;s plans are Starter at $99, Pro at $499 and Growth at $799 (early access) a month, billed month to month,
         with all four assistants on every plan. There is no free trial; instead, the{" "}
         <Link href="/start">free 60-second AI check</Link> shows what the assistants say about you before you pay.
         Full details are on the <Link href="/pricing">pricing page</Link>.

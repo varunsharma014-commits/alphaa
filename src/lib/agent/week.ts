@@ -155,9 +155,9 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   const user = await db.user.findUnique({ where: { id: userId }, include: { integration: true } })
   if (!user) throw new Error("no user")
   const s = await getAgentSettings(userId)
-  // Social posts are Pro and up (2026-11-18).
+  // Social posts and Google listing updates are Pro and up (2026-11-26); Starter gets the blog post.
   const growth = hasPro(user)
-  const google = !!(user.integration?.gmbAccountId && user.integration?.gmbLocationId)
+  const google = growth && !!(user.integration?.gmbAccountId && user.integration?.gmbLocationId)
   const siteConnected = !!(s.wp || s.site)
   const auto = !!s.autoPublishPosts && /pro|full|growth/i.test(user.plan)
   run.siteConnected = siteConnected
@@ -244,10 +244,11 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   // 6. Notes and summary
   const reviews = google ? await db.gmbReview.count({ where: { userId, reply: null, publishedAt: { gte: new Date(Date.now() - 60 * DAY) } } }) : 0
   if (reviews) run.notes.push(s.autopilot?.reviews && s.autopilot.reviews !== "ask" ? `I’m replying to your ${reviews} new ${reviews === 1 ? "review" : "reviews"} overnight, the way you told me to.` : `${reviews} new ${reviews === 1 ? "review is" : "reviews are"} waiting for a reply. I’ve written them; they’re on your home screen.`)
-  if (!google) run.notes.push("Connect your Google listing and I’ll add two Google updates every week, so you show up when people nearby search for what you do.")
-  if (!growth) run.notes.push("Want me to post on your social media too? That’s the Pro plan.")
-  else if (!hasGrowth(user)) run.notes.push("Want me to email your customers and run your ads too? That’s the Growth plan, in early access.")
-  else run.notes.push("Your ads and email campaigns join the week as soon as Google and Meta approve Alphaa. I’ll tell you here when they do.")
+  // Google posts are Pro and up (2026-11-26): only nudge Pro users to connect.
+  if (!google && growth) run.notes.push("Connect your Google listing and I’ll add 4 Google updates every week, so you show up when people nearby search for what you do.")
+  if (!growth) run.notes.push("Want me to post on your social media and Google listing, reply to your reviews and email your past customers too? That’s the Pro plan.")
+  else if (!hasGrowth(user)) run.notes.push("Want me to run your Google and Meta ads too? That’s the Growth plan, in early access.")
+  else run.notes.push("Your ads join the week as soon as Google and Meta approve Alphaa. I’ll tell you here when they do.")
   const live = run.items.filter((i) => i.status === "published" || i.status === "scheduled").length
   const waiting = run.items.filter((i) => i.status === "ready").length
   const count = (k: WeekKind, one: string, many: string) => { const n = run.items.filter((i) => i.kind === k && i.status !== "failed").length; return n ? `${n} ${n === 1 ? one : many}` : null }

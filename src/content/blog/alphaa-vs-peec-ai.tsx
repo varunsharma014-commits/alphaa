@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Peec AI lists Starter at $95 a month for 50 prompts, Pro at $245 for 150 and Advanced at $495 for 350, as of November 2026.",
     "Each Peec AI self-serve plan tracks three models chosen from ChatGPT, AI Mode, AI Overviews, Copilot, Gemini and Naver AI.",
     "Peec AI includes a credit-based agent and recommended actions, but its pages do not say it publishes changes to your website.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
     "Pick Peec AI for daily analytics across many prompts and brands; pick Alphaa when nobody has time to make the changes.",
   ],
   sources: [
@@ -113,7 +113,7 @@ export function Body() {
             <tr>
               <td>Higher plans</td>
               <td>Pro $245 (150 prompts), Advanced $495 (350), Enterprise custom</td>
-              <td>Pro $399, Growth $499 (early access) a month</td>
+              <td>Pro $499, Growth $799 (early access) a month</td>
             </tr>
             <tr>
               <td>Engines per plan</td>
@@ -175,7 +175,7 @@ export function Body() {
         plan; the per-model prices were not in the page text we could read, so check them in the dashboard.
       </p>
       <p>
-        Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, with ChatGPT,
+        Alphaa is $99 a month for Starter, $499 for Pro and $799 for Growth (early access), month to month, with ChatGPT,
         Gemini, Claude and Perplexity included in each. The full breakdown is on the{" "}
         <Link href="/pricing">pricing page</Link>, and our guide to{" "}
         <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> sets tools, agents and agencies side by

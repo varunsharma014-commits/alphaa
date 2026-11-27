@@ -26,7 +26,7 @@ export async function channelsMessages(user: User): Promise<Message[]> {
     db.mockActivity.count({ where: { userId: user.id, type: { in: ["social_published", "post_draft", "review_reply"] }, createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) } } }),
   ])
   const growth = hasGrowth(user)
-  // Social media and Canva are Pro and up (2026-11-18); ads, email and tracking stay Growth.
+  // Social, Canva, email and lead tracking are Pro and up (2026-11-26); ads are Growth.
   const pro = hasPro(user)
   const paid = hasPaidPlan(user) || isComped(user.email)
   const rows: Row[] = []
@@ -63,8 +63,8 @@ export async function channelsMessages(user: User): Promise<Message[]> {
   }
 
   const t = s.tracking
-  rows.push({ name: "Lead tracking", detail: t?.on ? [t.ga4 && "Google Analytics", t.pixel && "Meta Pixel"].filter(Boolean).join(" and ") + " counting calls, emails and forms" : "Counts the calls, emails and forms your marketing brings", status: t?.on ? "On" : growth ? "Not set up" : "Growth plan", ok: !!t?.on })
-  if (growth && !t?.on) chips.push({ label: "Set up tracking", action: { type: "thread", topic: "tracking" } })
+  rows.push({ name: "Lead tracking", detail: t?.on ? [t.ga4 && "Google Analytics", t.pixel && "Meta Pixel"].filter(Boolean).join(" and ") + " counting calls, emails and forms" : "Counts the calls, emails and forms your marketing brings", status: t?.on ? "On" : pro ? "Not set up" : "Pro plan", ok: !!t?.on })
+  if (pro && !t?.on) chips.push({ label: "Set up tracking", action: { type: "thread", topic: "tracking" } })
 
   // Google Ads (lib/gads): real status once it's open to this brand (GOOGLE_ADS_ENABLED=1 or a founder).
   const gads = growth && gadsAvailable(user) ? await getGadsAccount(user.id) : null
@@ -79,19 +79,19 @@ export async function channelsMessages(user: User): Promise<Message[]> {
     })
     chips.push(!gads || !live ? connectAdsChip(gads ? "Reconnect Google Ads" : "Connect Google Ads") : { label: c ? "See my ads" : "Plan my Google Ads", action: { type: "thread", topic: "ads" } })
   } else {
-    rows.push({ name: "Google Ads", detail: "Campaigns built and tuned every week, inside your budget", status: growth ? "Opens soon" : "Growth plan", ok: false })
+    rows.push({ name: "Google Ads", detail: "Campaigns built and tuned every week, inside your budget", status: growth ? "Opens soon" : "Growth plan · early access", ok: false })
   }
   // Meta Ads (lib/metaads): Facebook + Instagram campaigns on the same Meta login as posting.
   const meta = await metaAdsChannel(user, accounts)
   rows.push(meta.row)
   if (meta.chip && !chips.some((c) => c.label === meta.chip!.label)) chips.push(meta.chip)
-  if (growth) {
+  if (pro) {
     const [contacts, s2] = await Promise.all([getContacts(user.id), getAgentSettings(user.id)])
     const ready = contacts.length > 0 && !!s2.emailOutreach?.address
     rows.push({ name: "Email marketing", detail: contacts.length ? `${contacts.length.toLocaleString("en-US")} past customers on your list` : "Emails that bring past customers back", status: ready ? "Ready" : contacts.length ? "Add your address" : "Add your customers", ok: ready })
     if (!ready) chips.push({ label: "Set up customer emails", action: { type: "thread", topic: "email" } })
   } else {
-    rows.push({ name: "Email marketing", detail: "Emails that bring past customers back", status: "Growth plan", ok: false })
+    rows.push({ name: "Email marketing", detail: "Emails that bring past customers back", status: "Pro plan", ok: false })
   }
 
   const connected = rows.filter((r) => r.ok).length
@@ -102,11 +102,11 @@ export async function channelsMessages(user: User): Promise<Message[]> {
     ...(chips.length ? [{ kind: "chips" as const, items: chips }] : []),
   ], "ch-all")]
   if (!pro) out.push(agent([
-    { kind: "text", text: "Want me to run your social media too? That’s the Pro plan." },
+    { kind: "text", text: "Want me to run your social media, Google profile, review replies and customer emails too? That’s the Pro plan." },
     { kind: "chips", items: [{ label: "See the Pro plan", action: { type: "link", href: "/dashboard/upgrade?plan=pro" } }] },
   ], "ch-growth"))
   else if (!growth) out.push(agent([
-    { kind: "text", text: "Want me to run your ads and email too? That’s the Growth plan, in early access." },
+    { kind: "text", text: "Want me to run your Google and Meta ads too? That’s the Growth plan, in early access." },
     { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade?plan=growth" } }] },
   ], "ch-growth"))
   return out

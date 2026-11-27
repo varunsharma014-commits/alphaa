@@ -7,17 +7,17 @@ import { FeatureVideo } from "./HomeV2Client"
 import { SERVICE_BY_SLUG, type Service } from "@/content/services"
 import { GUARANTEE_LINE } from "@/lib/offer-copy"
 import { GROWTH_ON_SALE } from "@/lib/growth"
-import { PLAN_PRICES } from "@/lib/constants"
+import { PLAN_PRICES, EXTRA_AD_ACCOUNT_PRICE } from "@/lib/constants"
 import { V3Page, Frame, Section, Eyebrow, Points, Faq, FinalCta, ProofMosaic, HeroShapes, SVC } from "@/components/marketing/v3"
 
 export function ServicePage({ s }: { s: Service }) {
   const growth = s.plan === "growth"
   const v = SVC[s.slug]
   const pro = s.plan === "pro"
-  // Not in any plan yet (ads): no plan price, and "Coming soon" instead of the plan badge.
+  // Not live yet (ads): Growth plan, early access until Google and Meta approve Alphaa.
   const soon = !!v.soon
   const priceLine = soon
-    ? "Coming soon. Not part of any plan yet."
+    ? `Part of the Growth plan (early access): $${PLAN_PRICES.growth.monthly} a month for 1 ad account, +$${EXTRA_AD_ACCOUNT_PRICE.monthly} a month per extra ad account. Ads open as Google and Meta approve Alphaa.`
     : growth
     ? `Part of the Growth plan, $${PLAN_PRICES.growth.monthly} a month${GROWTH_ON_SALE ? "" : " (early access)"}.`
     : pro ? `Part of the Pro plan, $${PLAN_PRICES.pro.monthly} a month, and Growth.` : `From $${PLAN_PRICES.starter.monthly} a month.`
@@ -28,7 +28,7 @@ export function ServicePage({ s }: { s: Service }) {
           <div className="v3-chapter">
             <div>
               <nav className="v3-crumbs" aria-label="Breadcrumb"><Link href="/">Home</Link> › <Link href="/services">Services</Link> › <span>{s.name}</span></nav>
-              <Eyebrow small={soon ? "Coming soon" : growth ? (GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access") : pro ? "Pro and Growth plans" : "Every plan"}>{s.kicker}</Eyebrow>
+              <Eyebrow small={soon ? "Growth plan · early access" : growth ? (GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access") : pro ? "Pro and Growth plans" : "Every plan"}>{s.kicker}</Eyebrow>
               <h1 className="v3-h1 v3-h1--md">{s.h1}</h1>
               <p className="v3-lede">{s.sub}</p>
               <div className="v3-btns"><Link className="v3-btn" href="/start">Get started →</Link><a className="v3-btn v3-btn--ghost" href="#how">How it works</a></div>
@@ -116,7 +116,7 @@ export function ServicePage({ s }: { s: Service }) {
           </div>
         </Section>
 
-        <FinalCta title={<>Run the business.<br /><span>I’ll run the marketing.</span></>} sub="Month to month. Cancel online in a minute." />
+        <FinalCta title={<>Running a business is hard.<br /><span>Alphaa can help!</span></>} sub="Month to month. Cancel online in a minute." />
       </Frame>
     </V3Page>
   )

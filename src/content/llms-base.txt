@@ -1,12 +1,12 @@
 # Alphaa
 
-> Alphaa is an AI marketing agent for small businesses. It runs the marketing every week, in the owner's own voice and brand colours: Google Business Profile updates, blog posts that answer what customers ask, review replies, website fixes so AI assistants (ChatGPT, Gemini, Claude, Perplexity) and Google can recommend the business, social media posts with branded images on the Pro plan, ready to publish in one tap, and on the Growth plan email campaigns and lead tracking. Google and Meta ads management is coming soon and is not part of any plan yet. The owner can say "run my marketing for this week" by typing or out loud, approves anything public with one tap, or lets the agent run on its own. From $99 a month.
+> Alphaa is an AI marketing agent for small businesses. It runs the marketing every week, in the owner's own voice and brand colours: website fixes so AI assistants (ChatGPT, Gemini, Claude, Perplexity) and Google can recommend the business and blog posts that answer what customers ask on every plan; on the Pro plan also Google Business Profile updates, review replies, social media posts with branded images, ready to publish in one tap, email campaigns and lead tracking. Google and Meta ads management is on the Growth plan, in early access until Google and Meta approve Alphaa's access. The owner can say "run my marketing for this week" by typing or out loud, approves anything public with one tap, or lets the agent run on its own. From $99 a month.
 
 ## Key facts
 
-- Price: three plans. Starter $99/month ($79/month billed yearly): SEO and AI search, Google posts, blogs, review replies, website fixes. Pro $399/month ($319/month billed yearly) adds social media management, more posts, up to 3 locations and auto-approve. Growth $499/month ($399/month billed yearly, early access) adds email campaigns and lead tracking. Google and Meta ads management is coming soon.
+- Price: three plans, 15% off billed yearly. Starter $99/month ($84/month billed yearly): AI search (AEO) only: weekly checks of what ChatGPT, Gemini, Claude and Perplexity say, website fixes, 2 blog posts a month. Pro $499/month ($424/month billed yearly): everything except ads: adds social media posts, Google Business Profile posts, review replies, email campaigns, lead tracking, more posts, up to 3 locations and auto-approve. Growth $799/month ($679/month billed yearly, early access) adds Google and Meta ads management for 1 ad account, +$200/month per extra ad account; ad spend is paid to Google and Meta directly.
 - Services: social media management, ads management, SEO and AI search (AEO), blog and content writing, email marketing. One agent does all of them.
-- Local prices (charged in local currency; Starter / Pro / Growth a month): UK £79 / £319 / £399 (alphaa.app/uk); Germany, France and Italy 99 € / 399 € / 499 € (alphaa.app/de, /fr, /it); UAE AED 369 / 1,469 / 1,849 (alphaa.app/ae). US, Canada and everywhere else: $99 / $399 / $499 USD. Business customers only; Alphaa is not VAT-registered and adds no VAT.
+- Local prices (charged in local currency; Starter / Pro / Growth a month): UK £79 / £399 / £639 (alphaa.app/uk); Germany, France and Italy 99 € / 499 € / 799 € (alphaa.app/de, /fr, /it); UAE AED 369 / 1,849 / 2,939 (alphaa.app/ae). US, Canada and everywhere else: $99 / $499 / $799 USD. Business customers only; Alphaa is not VAT-registered and adds no VAT.
 - 90-day AI Visibility Guarantee: if none of ChatGPT, Gemini, Claude or Perplexity names the business in Alphaa's weekly checks during the first 90 days on a paid plan, the next month is free (credited automatically, once per customer).
 - Month to month. No contract, no exit fees, cancel online in a minute. There is no free trial — the free check below is how you see what you'd get.
 - No technical skills needed: the agent does the work, the owner approves.
@@ -23,18 +23,18 @@
 - [Get started](https://alphaa.app/start): The check and first week above.
 - [Services](https://alphaa.app/services): Everything the agent does, one page per service.
   - [Social media management](https://alphaa.app/services/social-media-management): Facebook, Instagram and LinkedIn posts every week, in your voice, with branded images (Pro and Growth).
-  - [Ads management](https://alphaa.app/services/ads-management): tracking, Google and Meta campaigns and weekly tuning, never above your budget, no cut of ad spend (Growth).
+  - [Ads management](https://alphaa.app/services/ads-management): tracking, Google and Meta campaigns and weekly tuning, never above your budget, no cut of ad spend (Growth, early access).
   - [SEO and AI search](https://alphaa.app/services/ai-search-optimization): get recommended by ChatGPT, Gemini, Claude and Perplexity and show up on Google (from $99).
   - [Blog and content writing](https://alphaa.app/services/content-writing): posts that answer what customers search for, published to your site (from $99).
-  - [Email marketing](https://alphaa.app/services/email-marketing): emails that bring past customers back, only to people who agreed (Growth).
+  - [Email marketing](https://alphaa.app/services/email-marketing): emails that bring past customers back, only to people who agreed (Pro and Growth).
 - [How it works](https://alphaa.app/how-it-works): Step by step.
 - [About](https://alphaa.app/about): Who Alphaa is, what it does, contact details.
-- [Pricing](https://alphaa.app/pricing): Starter $99/month, Pro $399/month, Growth $499/month (early access). 20% off billed yearly. Month to month.
+- [Pricing](https://alphaa.app/pricing): Starter $99/month (AI search), Pro $499/month (everything except ads), Growth $799/month (adds ads for 1 ad account, early access). 15% off billed yearly. Month to month.
 - [Blog](https://alphaa.app/blog): Plain-English marketing guides for small businesses: Google, AI search, social media, ads and email.
 - [Integrations](https://alphaa.app/integrations): WordPress, Shopify and Webflow today; Wix coming soon.
 - [For dentists](https://alphaa.app/for/dentists), [plumbers](https://alphaa.app/for/plumbers), [HVAC](https://alphaa.app/for/hvac), [lawyers](https://alphaa.app/for/lawyers), [med spas](https://alphaa.app/for/med-spas), [restaurants](https://alphaa.app/for/restaurants)
 - [Referral program](https://alphaa.app/refer)
-- Local pages: [United Kingdom](https://alphaa.app/uk), [Deutschland](https://alphaa.app/de), [France](https://alphaa.app/fr), [Italia](https://alphaa.app/it), [United Arab Emirates](https://alphaa.app/ae). Prices are in US dollars everywhere.
+- Local pages: [United Kingdom](https://alphaa.app/uk), [Deutschland](https://alphaa.app/de), [France](https://alphaa.app/fr), [Italia](https://alphaa.app/it), [United Arab Emirates](https://alphaa.app/ae). Monthly prices on those pages are in local currency; yearly billing is in US dollars.
 - [Privacy policy](https://alphaa.app/privacy) · [Terms](https://alphaa.app/terms)
 
 ## Original research

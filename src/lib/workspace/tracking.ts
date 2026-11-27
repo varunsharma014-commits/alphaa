@@ -45,6 +45,7 @@ const KIND_TEXT: Record<string, string> = { phone: "Phone tap", email: "Email ta
 const PLATFORM_LABEL: Record<string, string> = { wordpress: "WordPress", webflow: "Webflow", shopify: "Shopify", wix: "Wix" }
 
 export async function getTrackingData(user: User): Promise<TrackingData> {
+  // Lead tracking is Pro and up (2026-11-26); the ad accounts stay Growth.
   const growth = hasGrowth(user)
   const pro = hasPro(user)
   const [s, integ, accounts, meta, gacc, days, visits, leads, snap, rank, review, posts, mCamps] = await Promise.all([
@@ -95,8 +96,8 @@ export async function getTrackingData(user: User): Promise<TrackingData> {
     verified: s.wp?.lastSeenAt ? { verb: "Plugin checked in", at: s.wp.lastSeenAt } : null,
     detail: "With your website connected I publish posts and fixes myself, and every change has an Undo.",
   })
-  const health = growth ? healthItems(s, s.tracking?.check, days) : []
-  if (growth) {
+  const health = pro ? healthItems(s, s.tracking?.check, days) : []
+  if (pro) {
     const on = !!s.tracking?.on
     const broken = health.filter((h) => !h.ok && !h.soft).length
     conns.push({
@@ -164,9 +165,10 @@ export async function getTrackingData(user: User): Promise<TrackingData> {
     health,
     trackingOn,
     signals: signals.slice(0, 12),
-    growth,
+    // `growth` here = lead tracking is on the plan (Pro and up since 2026-11-26).
+    growth: pro,
     // WordPress (plugin 1.3.0+) installs it itself; other builders need the Alphaa tag pasted once.
-    turnOn: growth && !trackingOn && site ? { platform: PLATFORM_LABEL[platform ?? ""] ?? "your website", auto: platform === "wordpress" } : null,
+    turnOn: pro && !trackingOn && site ? { platform: PLATFORM_LABEL[platform ?? ""] ?? "your website", auto: platform === "wordpress" } : null,
     needs: conns.filter((c) => c.state === "needs").length,
   }
 }

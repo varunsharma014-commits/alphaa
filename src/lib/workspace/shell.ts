@@ -30,7 +30,7 @@ export type ShellData = {
   goingOut: number
   socialScheduled: number
   channels: number
-  /** Lead-tracking checks that pass / all (Growth with tracking on), else null. */
+  /** Lead-tracking checks that pass / all (Pro and up with tracking on), else null. */
   signals: { ok: number; total: number } | null
   /** Rows under "Needs you" on Tracking & Setup (same function as that page). */
   trackingNeeds: number
@@ -47,7 +47,7 @@ export async function getShellData(user: User): Promise<ShellData> {
     pro ? listAccounts(user.id).catch(() => []) : Promise.resolve([]),
     pro ? listPosts(user.id, 30).catch(() => []) : Promise.resolve([]),
     db.gbpPost.count({ where: { userId: user.id, status: "scheduled", scheduledFor: { gte: new Date(), lte: week } } }),
-    growth ? getContacts(user.id).catch(() => []) : Promise.resolve([]),
+    pro ? getContacts(user.id).catch(() => []) : Promise.resolve([]),
     growth ? getAccess(user.id).catch(() => null) : Promise.resolve(null),
     growth ? getGadsAccount(user.id).catch(() => null) : Promise.resolve(null),
     getDone(user.id).then((d) => d.length).catch(() => 0),
@@ -64,7 +64,7 @@ export async function getShellData(user: User): Promise<ShellData> {
     !!gacc?.customerId,
   ].filter(Boolean).length
   let signals: ShellData["signals"] = null
-  if (growth && s.tracking?.on) {
+  if (pro && s.tracking?.on) {
     const items = healthItems(s, s.tracking.check, await eventDays(user.id, 30).catch(() => [])).filter((i) => !i.soft)
     if (items.length) signals = { ok: items.filter((i) => i.ok).length, total: items.length }
   }

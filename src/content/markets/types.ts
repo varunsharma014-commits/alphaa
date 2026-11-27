@@ -1,7 +1,7 @@
 // Content for one local market (alphaa.app/uk, /de, /fr, /it, /ae, /ae/ar).
 // Each market lives in its own file in this folder; LocalHome and
 // LocalIndustry render them. Prices are never written here: use the tokens
-// {starter} {pro} {growth} and they are filled from MARKET_PRICES (see prices.ts),
+// {starter} {pro} {growth} {adaccount} (Growth's extra ad account) and they are filled by fillPrices (see prices.ts),
 // already formatted for the market (e.g. "99 €", "£79", "AED 369").
 import type { LocaleCopy } from "@/content/locales"
 

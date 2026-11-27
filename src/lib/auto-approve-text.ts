@@ -9,7 +9,7 @@ export const consentCurrent = (s: { autoApprove?: { version?: string } | null })
 
 export const CONSENT_TITLE = "Turn on Autopilot?"
 
-/** What turns on, per plan. Ads are never included. `growth` = social posts allowed (Pro and up since 2026-11-18; the name is kept for stored callers). */
+/** What turns on, per plan. Ads are never included. `growth` = Pro features allowed (social posts, review replies: Pro and up since 2026-11-26; the name is kept for stored callers). Starter (AI search only) has nothing that publishes without asking. */
 export type ConsentOnly = "posts" | "reviews" | "social" | "email" | "ads"
 export type ConsentScope = { pro: boolean; growth: boolean; /** One setting only (the owner tapped that chip). */ only?: ConsentOnly }
 const ONLY: Record<ConsentOnly, string> = { posts: "Google listing posts and website posts", reviews: "replies to your reviews", social: "social posts on your connected accounts", email: "email campaigns to your customer list", ads: "starting and tuning ad campaigns inside your monthly budget" }
@@ -18,11 +18,10 @@ export function consentTurnsOn(o: ConsentScope): { on: string[]; later: string |
   if (o.only) return { on: [ONLY[o.only]], later: null }
   const on = [
     ...(o.pro ? ["Google listing posts", "website posts"] : []),
-    ...(o.growth ? ["social posts on your connected accounts"] : []),
-    "replies to your reviews",
+    ...(o.growth ? ["social posts on your connected accounts", "replies to your reviews"] : []),
   ]
-  const later = !o.pro
-    ? "On your Starter plan this covers replies to your reviews. Posting to your Google listing, website and social media without asking comes with Pro."
+  const later = !o.pro && !o.growth
+    ? "Publishing without asking comes with the Pro plan, along with Google listing posts, review replies and social media."
     : !o.growth
       ? "Social posts without asking come with the Pro plan."
       : null

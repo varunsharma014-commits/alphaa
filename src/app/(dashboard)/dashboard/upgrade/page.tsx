@@ -5,13 +5,14 @@ import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { hasPaidPlan, isComped } from "@/lib/billing"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
-import { GROWTH_EARLY_ACCESS_HREF, GROWTH_ON_SALE } from "@/lib/growth"
+import { GROWTH_CTA, GROWTH_EARLY_ACCESS_HREF, GROWTH_ON_SALE } from "@/lib/growth"
 import { GROWTH_FEATURES, PRO_FEATURES } from "@/lib/plan-features"
-import { PLAN_PRICES } from "@/lib/constants"
+import { PLAN_PRICES, EXTRA_AD_ACCOUNT_PRICE } from "@/lib/constants"
 import { UpgradeButton } from "./UpgradeButton"
 
-// Moving an existing customer up a plan: Starter → Pro (social media, more posts, 3 locations,
-// auto-approve) or → Growth (ads, email, lead tracking; early access). The checkout route
+// Moving an existing customer up a plan (plans set 2026-11-26): Starter (AI search only) → Pro
+// (everything except ads: social, Google listing posts, review replies, email, lead tracking,
+// 3 locations, auto-approve) or → Growth (Pro + Google and Meta ads; early access, no charge). The checkout route
 // switches the price on their current Stripe subscription (prorated), so they never end up
 // with two subscriptions. `?plan=pro|growth`; without it, the next plan up.
 export default async function UpgradePage({ searchParams }: { searchParams: Promise<{ plan?: string }> }) {
@@ -36,8 +37,8 @@ export default async function UpgradePage({ searchParams }: { searchParams: Prom
   if (target === "pro") {
     return (
       <div style={{ maxWidth: "640px", margin: "0 auto" }}>
-        <h1 style={h}>{already ? "You’re on Pro." : "Your social media, handled too."}</h1>
-        <p style={p}>Everything you have now, plus I write and post your social media with images in your brand, twice the Google and blog posts, up to 3 locations, and posts that can publish on their own. You decide what goes live. {already ? "" : `$${price} a month.`}</p>
+        <h1 style={h}>{already ? "You’re on Pro." : "All your marketing, handled. Except ads."}</h1>
+        <p style={p}>Everything you have now, plus I write your social posts with images in your brand, keep your Google listing fresh, reply to your reviews, email your past customers and show you which calls and forms your marketing brought in. Up to 3 locations, and posts that can publish on their own. You decide what goes live. {already ? "" : `$${price} a month, or $${PLAN_PRICES.pro.annual} a month billed yearly.`}</p>
         <ul style={{ ...p, margin: "16px 0 20px", paddingLeft: "18px", color: "var(--ds-text)" }}>
           {PRO_FEATURES.map((f) => <li key={f}>{f}</li>)}
         </ul>
@@ -57,8 +58,8 @@ export default async function UpgradePage({ searchParams }: { searchParams: Prom
 
   return (
     <div style={{ maxWidth: "640px", margin: "0 auto" }}>
-      <h1 style={h}>{already ? "You’re on Growth." : "Your whole marketing, handled."}</h1>
-      <p style={p}>Everything in Pro, plus I email your customers, count the calls and forms your marketing brings, and run your Google and Meta ads, so more people find you and the ones you have come back. You decide what goes live. {already ? "" : `$${price} a month.`}</p>
+      <h1 style={h}>{already ? "You’re on Growth." : "Your ads, handled too."}</h1>
+      <p style={p}>Everything in Pro, plus I build and tune your Google and Meta ads for 1 ad account when ads open, so more people looking for what you sell find you. Nothing spends until you approve it. {already ? "" : `$${price} a month, plus $${EXTRA_AD_ACCOUNT_PRICE.monthly} a month for each extra ad account.`}</p>
       <ul style={{ ...p, margin: "16px 0 20px", paddingLeft: "18px", color: "var(--ds-text)" }}>
         {GROWTH_FEATURES.map((f) => <li key={f}>{f}</li>)}
       </ul>
@@ -71,7 +72,7 @@ export default async function UpgradePage({ searchParams }: { searchParams: Prom
         </>
       ) : (
         <>
-          <a href={GROWTH_EARLY_ACCESS_HREF} style={btn}>Get early access</a>
+          <a href={GROWTH_EARLY_ACCESS_HREF} style={btn}>{GROWTH_CTA}</a>
           <p style={{ ...p, fontSize: "12px", marginTop: "10px" }}>Growth opens as Google and Meta approve our access. Nothing is charged until then.</p>
         </>
       )}

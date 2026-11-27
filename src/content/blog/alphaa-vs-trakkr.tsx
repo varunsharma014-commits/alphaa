@@ -7,7 +7,7 @@ export const meta: PostMeta = {
   description:
     "Alphaa vs Trakkr compared from each company's own pages: prices, AI models, how fixes ship, and which one fits a brand team or a local business owner.",
   subtitle:
-    "Trakkr is a $100-a-month AI visibility platform that tracks eight AI models daily and ships approved fixes for brands and agencies, while Alphaa is a $99-a-month agent that runs AI search, Google posts and review replies for one local business.",
+    "Trakkr is a $100-a-month AI visibility platform that tracks eight AI models daily and ships approved fixes for brands and agencies, while Alphaa is a $99-a-month agent that runs AI search for one local business, with Google posts and review replies on Pro.",
   date: "2026-11-22",
   updated: "2026-11-22",
   readMins: 8,
@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Trakkr lists Growth at $100 a month, Scale at $500 and a done-for-you Managed service at $2,500, as of November 2026.",
     "Trakkr checks ChatGPT, Claude, Gemini, Perplexity, Grok, DeepSeek, Meta AI and Google AI Overviews daily on every plan.",
     "Both products draft site fixes and ship them to WordPress, Shopify or Webflow only after you approve them.",
-    "Alphaa costs $99, $399 or $499 a month and adds Google Business Profile posts, review replies and blog posts for one business.",
+    "Alphaa costs $99, $499 or $799 a month and adds blog posts for one business, plus Google Business Profile posts and review replies from Pro.",
     "Trakkr fits brand, ecommerce and agency teams; Alphaa fits local business owners who want their marketing run for them.",
   ],
   sources: [
@@ -53,8 +53,8 @@ export function Body() {
       <p>
         <strong>Short answer:</strong> Alphaa vs Trakkr is closer than most comparisons, because both draft fixes and
         ship them after approval. Trakkr tracks eight AI models daily for brands and agencies from $100 a month. Alphaa
-        asks ChatGPT, Gemini, Claude and Perplexity weekly about one local business and also handles Google posts and
-        review replies, from $99.
+        asks ChatGPT, Gemini, Claude and Perplexity weekly about one local business from $99, and also handles Google posts
+        and review replies on Pro.
       </p>
 
       <p>
@@ -124,7 +124,7 @@ export function Body() {
             <tr>
               <td>Higher plans</td>
               <td>Scale $500/mo (10 brands), Enterprise custom, Managed $2,500/mo</td>
-              <td>Pro $399/mo, Growth $499/mo (early access)</td>
+              <td>Pro $499/mo, Growth $799/mo (early access)</td>
             </tr>
             <tr>
               <td>AI models</td>
@@ -181,10 +181,10 @@ export function Body() {
         free 90-day plan, and the page says larger brands start from $6,000.
       </p>
       <p>
-        Alphaa Starter is $99 a month for one location: weekly checks on four assistants, website fixes, two Google
-        Business Profile posts a week, two AI-optimized blog posts a month and review replies. Pro at $399 adds social
-        media posts, more Google and blog posts, up to three locations and competitor benchmarking. Growth at $499,
-        in early access, adds email and lead tracking; Google and Meta ads are coming soon. The full list is on the{" "}
+        Alphaa Starter is $99 a month for one location: weekly checks on four assistants, website fixes and two
+        AI-optimized blog posts a month. Pro at $499 adds social media posts, Google Business Profile posts, review
+        replies, email and lead tracking, more blog posts, up to three locations and competitor benchmarking. Growth at
+        $799, in early access, adds Google and Meta ads for one ad account when ads open. The full list is on the{" "}
         <Link href="/pricing">pricing page</Link>, and our guide to{" "}
         <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> puts both against agencies.
       </p>
@@ -266,7 +266,7 @@ export function Body() {
           is also the marketer.
         </li>
         <li>
-          <strong>Alphaa fits</strong> businesses that want Google posts, review replies, blog posts and, on Pro,
+          <strong>Alphaa fits</strong> businesses that want blog posts and, on Pro, Google posts, review replies and
           social media in the same weekly approval queue.
         </li>
       </ul>

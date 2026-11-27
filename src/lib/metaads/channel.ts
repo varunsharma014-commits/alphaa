@@ -9,7 +9,7 @@ import { getAccess, listCampaigns } from "./store"
 export async function metaAdsChannel(user: User, accounts: SocialAccount[]): Promise<{ row: { name: string; detail: string; status: string; ok: boolean }; chip?: Chip }> {
   const name = "Meta Ads"
   const detail = "Facebook and Instagram campaigns, inside your budget"
-  if (!hasGrowth(user)) return { row: { name, detail, status: "Growth plan", ok: false } }
+  if (!hasGrowth(user)) return { row: { name, detail, status: "Growth plan · early access", ok: false } }
   if (!metaAdsConfigured()) return { row: { name, detail, status: "Opens soon", ok: false } }
   const access = await getAccess(user.id)
   if (!access) {

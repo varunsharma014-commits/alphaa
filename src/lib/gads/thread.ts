@@ -19,8 +19,8 @@ const n = (x: number) => x.toLocaleString("en-US", { maximumFractionDigits: 1 })
 export async function adsMessages(user: User, note?: string | null): Promise<Message[]> {
   if (!hasGrowth(user)) {
     return [agent([
-      { kind: "text", text: "Google Ads that pay for themselves.", big: true },
-      { kind: "text", text: "On the Growth plan I build a Google Ads campaign from what your customers already search for, you approve it, and I tune it every week inside your budget." },
+      { kind: "text", text: "Google Ads for people already searching for what you sell.", big: true },
+      { kind: "text", text: "On the Growth plan (early access while Google approves ads access) I build a Google Ads campaign from what your customers already search for, you approve it, and I tune it every week inside your budget." },
       { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade?plan=growth" }, primary: true }] },
     ], "ad-upgrade")]
   }

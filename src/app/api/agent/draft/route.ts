@@ -12,6 +12,7 @@ import { writePost, writeMeta, writeLocationPage, writeSocial } from "@/lib/cont
 import { getAgentSettings } from "@/lib/agent/settings"
 import { generatePostImage, imageUrl } from "@/lib/images"
 import { generateGbpPost } from "@/lib/gbp-poster"
+import { hasPro } from "@/lib/billing"
 import { once } from "@/lib/draft-dedupe"
 
 const anthropic = claudeFor("draft")
@@ -54,6 +55,7 @@ export async function POST(req: Request) {
   // draft instead of writing a second copy: one in-flight write per brand + mode + topic, and a
   // finished one from the last 15 minutes is returned as is.
   const mode = input.mode
+  if (mode === "gbp" && !hasPro(user)) return NextResponse.json({ error: "Google listing posts come with the Pro plan." }, { status: 403 })
   if (mode === "post" || mode === "gbp" || mode === "social") {
     const r = await once(`draft:${user.id}:${mode}:${input.topic.trim().toLowerCase()}`, () => writeDraft(user, mode, input.topic))
     return r.ok ? NextResponse.json(r.body) : NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })

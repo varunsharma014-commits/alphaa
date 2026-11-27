@@ -337,7 +337,7 @@ export function Body() {
       <p>
         Alphaa handles the repeatable part of this for a pool company. It asks ChatGPT, Gemini, Claude and Perplexity what
         they say about you each week, then drafts service pages, FAQs, structured data, Google profile posts and review
-        replies for you to approve before anything goes live, from $99 a month. Start with the{" "}
+        replies for you to approve before anything goes live, from $99 a month (Google posts and review replies on Pro). Start with the{" "}
         <Link href="/start">free 60-second AI check</Link> to see what the assistants say today.
       </p>
 

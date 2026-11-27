@@ -4,7 +4,7 @@ export const maxDuration = 60
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { cleanGa4, cleanPixel, installTracking, removeTracking } from "@/lib/tracking"
 import { testMessages, trackingMessages, upgradeMessages, verifyMessages } from "@/lib/agent/tracking-narration"
 import { applyFix, startTest, verifyTest } from "@/lib/tracking-health"
@@ -13,7 +13,7 @@ import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { encryptSecret } from "@/lib/checks/bing-webmaster"
 import { db } from "@/lib/db"
 
-// Growth plan: set up / check / turn off GA4 + Meta Pixel on the owner's site.
+// Pro plan and up: set up / check / turn off GA4 + Meta Pixel on the owner's site.
 // Every answer is the thread's messages, so the chat just shows them.
 const body = z.discriminatedUnion("op", [
   z.object({ op: z.literal("save"), ga4: z.string().max(40).optional(), pixel: z.string().max(40).optional(), events: z.boolean().optional() }),
@@ -38,7 +38,7 @@ export async function GET() {
 export async function POST(req: Request) {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  if (!hasGrowth(user)) return NextResponse.json({ messages: upgradeMessages(), upgrade: true }, { status: 403 })
+  if (!hasPro(user)) return NextResponse.json({ messages: upgradeMessages(), upgrade: true }, { status: 403 })
   let input: z.infer<typeof body>
   try {
     input = body.parse(await req.json())

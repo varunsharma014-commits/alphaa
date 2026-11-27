@@ -14,7 +14,7 @@ export const metadata = pageMeta({
 const A = BRAND.agentName
 
 // Accurate to what the product does today. Social posts are ready to publish in one tap (posting
-// straight to accounts opens as Meta/LinkedIn approve); ads are coming soon, in no plan yet.
+// straight to accounts opens as Meta/LinkedIn approve); ads are on Growth (early access), not live yet.
 const STEPS = [
   {
     tone: "se" as SvcKey,
@@ -34,7 +34,7 @@ const STEPS = [
     tone: "mk" as SvcKey,
     eyebrow: "Step 3 · Every week",
     title: "I run your marketing.",
-    body: `Social posts with images in your brand colours, Google listing updates, blog posts that answer what customers ask, replies to your reviews, and fixes so AI and Google can recommend you. On Growth, ${A} also emails your past customers. Google and Meta ads are coming soon. Just say “run my marketing for this week”.`,
+    body: `Social posts with images in your brand colours, Google listing updates, blog posts that answer what customers ask, replies to your reviews, and fixes so AI and Google can recommend you. On Pro, ${A} also emails your past customers. Google and Meta ads are on the Growth plan, in early access. Just say “run my marketing for this week”.`,
     art: <><Note head="Draft" title="This week · Example Dental Co. (example)" body={<>Tue · Blog post: weekend dental emergencies<br />Thu · Google update: Saturday visits<br />Fri · Social post with your logo</>} /><Note head={null} title="Your marketing for this week is done." /></>,
   },
   {
@@ -97,7 +97,7 @@ export default function HowItWorksPage() {
             ))}
           </div>
         </Section>
-        <FinalCta title="Run the business. I’ll run the marketing." sub="Give me your website and see your first week." secondary={{ href: "/services", label: "See every service ›" }}>
+        <FinalCta title={<>Running a business is hard.<br /><span>Alphaa can help!</span></>} sub="Give me your website and see your first week." secondary={{ href: "/services", label: "See every service ›" }}>
           <p>Month to month. Cancel online in a minute.</p>
         </FinalCta>
       </Frame>

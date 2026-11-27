@@ -1,7 +1,7 @@
-// The "Tracking & ads" thread (Growth plan): what's measured on the owner's site, in plain words.
+// The "Tracking & ads" thread (Pro plan and up): what's measured on the owner's site, in plain words.
 import { agent, type Block, type Message } from "@/lib/agent/types"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { hasGrowth } from "@/lib/billing"
+import { hasPro } from "@/lib/billing"
 import { type TestResult, type TrackingCheck } from "@/lib/tracking"
 import { beaconsOn, healthItems, refreshTracking, type HealthItem } from "@/lib/tracking-health"
 import { eventDays } from "@/lib/tracking-events"
@@ -14,9 +14,9 @@ const APP = () => process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"
 export function upgradeMessages(): Message[] {
   return [
     agent([
-      { kind: "text", text: "Know exactly which ads bring you customers.", big: true },
-      { kind: "text", text: "On the Growth plan I count every call, email and form your website gets, then run your Google and Meta ads and keep moving money to the ones that bring people in." },
-      { kind: "chips", items: [{ label: "See the Growth plan", action: { type: "link", href: "/dashboard/upgrade?plan=growth" }, primary: true }] },
+      { kind: "text", text: "Know exactly which marketing brings you customers.", big: true },
+      { kind: "text", text: "On the Pro plan I count every call, email and form your website gets, so you can see which marketing brings people in." },
+      { kind: "chips", items: [{ label: "See the Pro plan", action: { type: "link", href: "/dashboard/upgrade?plan=pro" }, primary: true }] },
     ], "trk-upgrade"),
   ]
 }
@@ -49,7 +49,7 @@ function leadsLine(c: TrackingCheck): string | null {
 
 /** The thread, from saved settings plus a fresh look at the site when `fresh` (or never checked). */
 export async function trackingMessages(user: User, opts: { fresh?: boolean } = {}): Promise<Message[]> {
-  if (!hasGrowth(user)) return upgradeMessages()
+  if (!hasPro(user)) return upgradeMessages()
   const s = await getAgentSettings(user.id)
   const t = s.tracking
   const siteUrl = s.wp?.siteUrl ?? s.site?.siteUrl ?? user.websiteUrl

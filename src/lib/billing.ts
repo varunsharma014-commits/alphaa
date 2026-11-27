@@ -61,23 +61,34 @@ export function isComped(email: string | null | undefined): boolean {
 }
 
 /**
- * Pro and up (2026-11-18): social media (connect, branded images, Canva, posting), more posts,
- * up to 3 locations, auto-approve. "fullservice" is retired from sale (no subscribers) but still
- * reads as Pro-level so any old row keeps working. Comped accounts get it too.
+ * Pro and up (plans set 2026-11-26): everything except ads. Social media (connect, branded images,
+ * Canva, posting), Google Business Profile posts, review replies and review requests, email to
+ * past customers, lead tracking, more posts, up to 3 locations, auto-approve. Starter is AI
+ * search (AEO) only. "fullservice" is retired from sale (no subscribers) but still reads as
+ * Pro-level so any old row keeps working. Comped accounts get it too.
  */
 export function hasPro(u: { plan: string; email?: string | null }): boolean {
   return /pro|full|growth/i.test(u.plan) || isComped(u.email)
 }
 
 /**
- * Growth plan ($499/mo, early access): Google + Meta ads, ad tuning, email and lead tracking,
- * on top of everything in Pro. Social moved to Pro on 2026-11-18. Comped accounts get it too,
- * so the founder and app reviewers can see every feature.
+ * Growth plan ($799/mo, early access until ads open): Pro + Google and Meta ads management (ad
+ * accounts, campaigns, tuning, ad budget). Email and lead tracking moved down to Pro on
+ * 2026-11-26. Comped accounts get it too, so the founder and app reviewers can see every feature.
  */
 export function hasGrowth(u: { plan: string; email?: string | null }): boolean {
   return /growth/i.test(u.plan) || isComped(u.email)
 }
 
+/** Ads management (Google Ads, Meta ads, ad budget): Growth only. */
+export const hasAds = hasGrowth
+
+/** Email to past customers and lead/call tracking: Pro and up since 2026-11-26 (was Growth). */
+export const hasEmail = hasPro
+export const hasTracking = hasPro
+
+/** Google Business Profile posts, review replies and review requests: Pro and up since 2026-11-26. */
+export const hasGoogleProfile = hasPro
 
 // ── Extra brands (Varun, 2026-11-17): every brand after the first on one login is 50% off ──
 // Each brand is its own User row with its own subscription (lib/sites.ts). A brand gets the

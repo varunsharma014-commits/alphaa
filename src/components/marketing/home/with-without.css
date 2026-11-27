@@ -1,0 +1,40 @@
+/* With Alphaa / Without Alphaa (homepage). Reads the v3 tokens, so it follows light and dark. */
+.ww { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 36px; text-align: left; }
+.ww-col { border-radius: 24px; padding: 24px; border: 1px solid var(--v-line); background: var(--v-card); min-width: 0; }
+.ww-col--with { border: 2px solid var(--v-blue); }
+.ww-art { border-radius: 16px; background: var(--v-bg); overflow: hidden; }
+.ww-svg { display: block; width: 100%; height: auto; }
+.ww-title { display: flex; align-items: center; gap: 10px; font-size: 22px; margin-top: 20px !important; }
+.ww-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--v-bad); flex: none; }
+.ww-col--with .ww-dot { background: var(--v-good); }
+.ww-list { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 16px; color: var(--v-fg2); }
+.ww-list li { display: flex; gap: 10px; align-items: flex-start; }
+.ww-ic { flex: none; width: 20px; height: 20px; margin-top: 2px; border-radius: 50%; position: relative; }
+.ww-ic--x { background: color-mix(in srgb, var(--v-bad) 14%, transparent); }
+.ww-ic--ok { background: color-mix(in srgb, var(--v-good) 16%, transparent); }
+.ww-ic::before, .ww-ic::after { content: ""; position: absolute; }
+.ww-ic--x::before, .ww-ic--x::after { left: 5px; top: 9px; width: 10px; height: 2px; border-radius: 1px; background: var(--v-bad); transform: rotate(45deg); }
+.ww-ic--x::after { transform: rotate(-45deg); }
+.ww-ic--ok::before { left: 7px; top: 4px; width: 5px; height: 9px; border: solid var(--v-good); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+/* SVG paint, from the tokens */
+.ww-svg .f-soft { fill: var(--v-soft); }
+.ww-svg .f-card { fill: var(--v-card); }
+.ww-svg .f-ink { fill: var(--v-fg); }
+.ww-svg .f-mute { fill: var(--v-line2); }
+.ww-svg .f-accent { fill: var(--v-blue); }
+.ww-svg .f-accent2 { fill: var(--ct); }
+.ww-svg .f-bad { fill: var(--v-bad); }
+.ww-svg .f-good { fill: var(--v-good); }
+.ww-svg .f-good2 { fill: color-mix(in srgb, var(--v-good) 35%, var(--v-card)); }
+.ww-svg .s-ink { stroke: var(--v-fg); }
+.ww-svg .s-mute { stroke: var(--v-line2); }
+.ww-svg .s-line { stroke: var(--v-line2); }
+.ww-svg .s-accent2 { stroke: var(--ct); }
+.ww-svg .s-white { stroke: #fff; }
+.ww-svg .t-badge { fill: #fff; font: 700 10px/1 var(--v-font); }
+
+@media (max-width: 760px) {
+  .ww { grid-template-columns: minmax(0, 1fr); }
+  .ww-col { padding: 18px; }
+}

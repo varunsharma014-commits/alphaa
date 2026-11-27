@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Promptmonitor lists Starter at $39 a month, Growth at $79 and Pro at $149 when billed monthly, as of November 2026.",
     "Promptmonitor's Starter plan tracks ChatGPT, Gemini and Perplexity; Claude, DeepSeek and the other models start on Growth.",
     "Promptmonitor adds AI crawler logging, cited-source tracking and publisher contact data for outreach.",
-    "Alphaa costs $99, $399 or $499 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
+    "Alphaa costs $99, $499 or $799 a month and asks ChatGPT, Gemini, Claude and Perplexity about one business every week.",
     "Pick Promptmonitor to track many prompts and run outreach yourself; pick Alphaa when nobody has time to make the changes.",
   ],
   sources: [
@@ -122,7 +122,7 @@ export function Body() {
             <tr>
               <td>Higher plans</td>
               <td>Growth $79 (2 sites, 50 prompts), Pro $149 (5 sites, 150 prompts), Enterprise custom</td>
-              <td>Pro $399, Growth $499 (early access) a month</td>
+              <td>Pro $499, Growth $799 (early access) a month</td>
             </tr>
             <tr>
               <td>AI models</td>
@@ -178,7 +178,7 @@ export function Body() {
         matters to you, Growth at $79 is the real starting price.
       </p>
       <p>
-        Alphaa is $99 a month for Starter, $399 for Pro and $499 for Growth (early access), month to month, with
+        Alphaa is $99 a month for Starter, $499 for Pro and $799 for Growth (early access), month to month, with
         ChatGPT, Gemini, Claude and Perplexity included in each. The full breakdown is on the{" "}
         <Link href="/pricing">pricing page</Link>. To see where these prices sit against tools, agents and agencies
         across the market, read our guide to <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link>.

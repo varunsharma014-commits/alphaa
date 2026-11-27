@@ -167,7 +167,7 @@ export function Body() {
       <p>
         Nothing goes live until you approve it. Approved changes publish through the{" "}
         <Link href="/integrations">WordPress, Shopify and Webflow connections</Link>. It runs month to month at $99,
-        $399 or $499, the last of which (Growth) is in early access.
+        $499 or $799, the last of which (Growth) is in early access.
       </p>
       <p>
         The limits matter too. Alphaa does not report on Google AI Overviews, AI Mode or Copilot, so a business that

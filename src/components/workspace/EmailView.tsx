@@ -18,10 +18,10 @@ export function EmailView({ data }: { data: EmailData | null }) {
   const head = (
     <div className="ax-hdr">
       <div><h1 className="ax-h1">Email & Flows</h1><p className="ax-sub">Emails to your own customers, written in your voice. Every send carries your address and an unsubscribe link.</p></div>
-      <span className="ax-pill n" style={{ marginTop: 12 }}>Growth plan</span>
+      <span className="ax-pill n" style={{ marginTop: 12 }}>Pro plan</span>
     </div>
   )
-  if (!data) return <>{head}<div style={{ marginTop: 26 }}><PlanGate plan="Growth" title="Email comes with the Growth plan" text="Growth adds email to your past customers, Google and Meta ads, and lead tracking." /></div></>
+  if (!data) return <>{head}<div style={{ marginTop: 26 }}><PlanGate plan="Pro" title="Email comes with the Pro plan" text="Pro adds email to your past customers, social posts, Google profile posts, review replies and lead tracking." /></div></>
 
   const lastSent = data.campaigns.find((c) => c.sent != null)
   const nodes = [

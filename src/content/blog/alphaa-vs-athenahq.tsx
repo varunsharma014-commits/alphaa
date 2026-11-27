@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   takeaways: [
     "AthenaHQ lists a free plan with 300 credits and a Starter plan at $295 a month with 3,600 credits, as of October 2026.",
     "One AthenaHQ credit equals one AI response, and Starter covers 11 AI models including Google AI Overviews and AI Mode.",
-    "Alphaa costs $99, $399 or $499 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly.",
+    "Alphaa costs $99, $499 or $799 a month, month to month, and asks ChatGPT, Gemini, Claude and Perplexity weekly.",
     "Both can publish content to WordPress, Shopify and Webflow; Alphaa also handles review replies and listing consistency for local businesses.",
     "AthenaHQ suits a marketing team with a GEO owner; Alphaa suits a business owner with no marketer.",
   ],
@@ -134,13 +134,13 @@ export function Body() {
             </tr>
             <tr>
               <td>Alphaa Pro</td>
-              <td>$399/mo, month to month</td>
-              <td>20 questions, up to 3 locations, competitor comparison, auto-publish for blog posts</td>
+              <td>$499/mo, month to month</td>
+              <td>20 questions, up to 3 locations, competitor comparison, auto-publish for blog posts, social posts, Google posts, review replies, email and lead tracking</td>
             </tr>
             <tr>
               <td>Alphaa Growth</td>
-              <td>$499/mo, early access</td>
-              <td>Everything in Pro, plus email and lead tracking (ads coming soon)</td>
+              <td>$799/mo, early access</td>
+              <td>Everything in Pro, plus Google and Meta ads for 1 ad account when ads open</td>
             </tr>
           </tbody>
         </table>
@@ -288,7 +288,7 @@ export function Body() {
         </li>
         <li>
           <strong>Your customers are local.</strong> Review replies, Business Profile posts and directory consistency
-          are part of the job, not extras.
+          are part of the job on Pro, not extras.
         </li>
         <li>
           <strong>Claude matters and you are on a small budget.</strong> Claude is in every Alphaa plan; on

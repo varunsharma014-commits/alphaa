@@ -63,8 +63,9 @@ export async function POST(req: Request) {
   let said: string
 
   if (input.op === "auto_on") {
-    if (input.key && input.key !== "reviews" && !(input.key === "posts" ? PRO_RE.test(user.plan) : hasPro(user))) return NextResponse.json({ error: "Publishing without asking comes with the Pro plan." }, { status: 403 })
-    if ((input.key === "email" || input.key === "ads") && !hasGrowth(user)) return NextResponse.json({ error: "That comes with the Growth plan." }, { status: 403 })
+    // Starter is AI search only (2026-11-26): nothing on it publishes without asking.
+    if (!hasPro(user) || (input.key === "posts" && !PRO_RE.test(user.plan))) return NextResponse.json({ error: "Publishing without asking comes with the Pro plan." }, { status: 403 })
+    if (input.key === "ads" && !hasGrowth(user)) return NextResponse.json({ error: "Ads come with the Growth plan, in early access." }, { status: 403 })
     if (input.key === "ads" && !a.adBudget) return NextResponse.json({ error: "Set your monthly budget first, so I know where to stop." }, { status: 400 })
     said = (await acceptAutoApprove(user, req, input.key, input.value)).said
     return NextResponse.json({ on: true, messages: [agent([{ kind: "text", text: said }]), ...(await autopilotMessages(user))] })
@@ -79,7 +80,7 @@ export async function POST(req: Request) {
   }
 
   if (input.op === "budget") {
-    if (!hasGrowth(user)) return NextResponse.json({ error: "Ads come with the Growth plan." }, { status: 403 })
+    if (!hasGrowth(user)) return NextResponse.json({ error: "Ads come with the Growth plan, in early access." }, { status: 403 })
     const amount = Math.round(Number(input.amount.replace(/[^\d.]/g, "")))
     if (!Number.isFinite(amount) || amount < 1 || amount > 1_000_000) return NextResponse.json({ error: "Type the amount as a number, like 500." }, { status: 400 })
     await saveAgentSettings(user.id, { autopilot: { ...a, adBudget: amount, at: now } })
@@ -95,7 +96,8 @@ export async function POST(req: Request) {
       await saveAgentSettings(user.id, { autoPublishPosts: value === "auto" })
     } else {
       if (key === "social" && !hasPro(user)) return NextResponse.json({ error: "Social media comes with the Pro plan." }, { status: 403 })
-      if ((key === "email" || key === "ads") && !hasGrowth(user)) return NextResponse.json({ error: "That comes with the Growth plan." }, { status: 403 })
+      if ((key === "reviews" || key === "email") && !hasPro(user)) return NextResponse.json({ error: "That comes with the Pro plan." }, { status: 403 })
+      if (key === "ads" && !hasGrowth(user)) return NextResponse.json({ error: "Ads come with the Growth plan, in early access." }, { status: 403 })
       if (key === "ads" && value === "budget" && !a.adBudget) return NextResponse.json({ error: "Set your monthly budget first, so I know where to stop." }, { status: 400 })
       await saveAgentSettings(user.id, { autopilot: { ...a, [key]: value, at: now } })
     }
