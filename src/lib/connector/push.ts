@@ -1,3 +1,4 @@
+import { checkQuota, isQuotaError, quotaBody, refundQuota } from "@/lib/quotas"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
@@ -31,6 +32,7 @@ async function viaConnector(userId: string, s: AgentSettings, input: PushInput) 
     }
     return NextResponse.json({ error: `${name} doesn’t let apps change that part of your site. Tap “Email it to my web person” and I’ll send them exactly what to do.` }, { status: 400 })
   } catch (err) {
+    if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
     return NextResponse.json({ error: `${name} didn’t accept it: ${err instanceof Error ? err.message : err}. Nothing changed.` }, { status: 502 })
   }
 }
@@ -64,6 +66,13 @@ export async function pushChange(user: User, input: PushInput): Promise<NextResp
 
   let result: PushResult
   let label: string
+  // Posts and pages count against the plan's website publish quota (lib/quotas.ts publish:site).
+  let counted = false
+  const room = async () => {
+    const q = await checkQuota(user, "publish:site")
+    counted = q.allowed
+    return q
+  }
   try {
     if (input.op === "page") {
       const text = input.text ?? ""
@@ -84,6 +93,8 @@ export async function pushChange(user: User, input: PushInput): Promise<NextResp
           ...(user.websiteUrl ? { parentOrganization: { "@type": "Organization", name: user.businessName, url: user.websiteUrl } } : {}),
         })
       }
+      const q = await room()
+      if (!q.allowed) return NextResponse.json(...quotaBody(q))
       result = await wpCall<PushResult>(user.id, s.wp, "page", { title, html, jsonld })
       label = `Published “${title}” to your website`
     } else if (input.op === "post") {
@@ -95,6 +106,8 @@ export async function pushChange(user: User, input: PushInput): Promise<NextResp
       if (faq.length) jsonld.push(faqLd(faq))
       const draft = input.draftId ? await db.mockActivity.findFirst({ where: { id: input.draftId, userId: user.id, type: "post_draft" } }) : null
       const imageId = (draft?.metadata as { imageId?: string | null } | null)?.imageId
+      const q = await room()
+      if (!q.allowed) return NextResponse.json(...quotaBody(q))
       result = await wpCall<PushResult>(user.id, s.wp, "post", { title, html: mdToHtml(text), jsonld, ...(imageId ? { image: { url: imageUrl(imageId), alt: title } } : {}) })
       label = `Published the post “${title}”`
       if (input.draftId) {
@@ -134,6 +147,7 @@ export async function pushChange(user: User, input: PushInput): Promise<NextResp
       label = "Opened robots.txt to AI search assistants"
     }
   } catch (err) {
+    if (counted) refundQuota(user.id, "publish:site")
     const msg = err instanceof Error ? err.message : String(err)
     return NextResponse.json({ error: `Your website didn’t accept it: ${msg}. Nothing changed.` }, { status: 502 })
   }

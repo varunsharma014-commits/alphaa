@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic"
 
+import { cronAllowed } from "@/lib/quotas"
 import { NextResponse } from "next/server"
 import { activeUsers, authorized } from "@/lib/cron/users"
 import { runCheck, type CheckKind } from "@/lib/checks/run"
@@ -12,6 +13,8 @@ import { checkSite } from "@/lib/site-check"
 // sitemap, HTTPS). Runs in the background.
 export async function GET(req: Request) {
   if (!authorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
+  if (!(await cronAllowed("checks"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
   const users = await activeUsers()
   const kinds: CheckKind[] = ["security", "profiles", "listings", "bing"]
   void (async () => {

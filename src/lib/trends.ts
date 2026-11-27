@@ -17,6 +17,10 @@ export async function trendsFor(userId: string): Promise<Trend[]> {
   if (cached) return ((cached.metadata as { trends?: Trend[] } | null)?.trends ?? [])
   const user = await db.user.findUnique({ where: { id: userId }, select: { businessName: true, businessType: true, city: true, state: true, websiteUrl: true } })
   if (!user) return []
+  // Room for a few web searches in the plan's quota (lib/quotas.ts search; the meter counts the real ones)?
+  const { checkQuota } = await import("@/lib/quotas")
+  const q = await checkQuota(userId, "search", { n: 5, record: false })
+  if (!q.allowed) { console.warn("[trends] search quota", userId, q.period); return [] }
   const trends = await searchTrends(user)
   // Only cache a real answer, so a failed search is retried next time.
   if (trends.length) await db.mockActivity.create({ data: { userId, type: TYPE, title: "Looked up what’s happening this week", metadata: { trends } } })

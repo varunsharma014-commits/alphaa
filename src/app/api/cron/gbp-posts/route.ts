@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { checkQuota, cronAllowed } from "@/lib/quotas"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
@@ -113,6 +114,12 @@ async function processUser(user: CronUser): Promise<{ status: "draft" | "posted"
 
   const businessName = user.businessName ?? "the business"
 
+  // Plan quota (lib/quotas.ts content_piece:gbp): out of Google posts for the week = skip this brand.
+  const q = await checkQuota(user.id, "content_piece:gbp")
+  if (!q.allowed) {
+    console.warn(`[gbp-posts-cron] ${user.id} quota: ${q.message}`)
+    return { status: "skipped" }
+  }
   const content = await generatePost(businessName, user.businessType, user.city, await voiceFor(user.id).catch(() => null), previous)
   if (!content) throw new Error("Claude returned empty post content")
   if (previous.some((p) => draftKey(p) === draftKey(content))) return { status: "skipped" }
@@ -145,6 +152,12 @@ async function processUser(user: CronUser): Promise<{ status: "draft" | "posted"
     return { status: "draft" }
   }
 
+  const pq = await checkQuota(user.id, "publish:gbp")
+  if (!pq.allowed) {
+    // Out of Google publishes for the week: keep it as a draft for the owner instead.
+    await db.gbpPost.create({ data: { userId: user.id, content, postType: "UPDATE", status: "draft" } })
+    return { status: "draft" }
+  }
   const accessToken = await resolveAccessToken(user.integration)
   const result = await postToGmb(
     accessToken,
@@ -206,6 +219,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     if (r.ok) scheduledPosted++
     else await db.gbpPost.update({ where: { id: p.id }, data: { status: "draft" } }).catch(() => null)
   }
+
+  // New drafts need AI: they wait while the platform is over AI_DAILY_BUDGET_USD (scheduled posts above still go out).
+  if (!(await cronAllowed("gbp-posts"))) return NextResponse.json({ skipped: "platform AI budget reached for today", scheduledPosted })
 
   const dow = new Date().getUTCDay()
 

@@ -22,7 +22,7 @@ import { writePost, writeSocial } from "@/lib/content"
 import { generatePostImage } from "@/lib/images"
 import { generateGbpPost, containsPlaceholders } from "@/lib/gbp-poster"
 import { approveSitePost } from "@/lib/approvals"
-import { countUsage } from "@/lib/usage"
+import { isQuotaError, requireQuota } from "@/lib/quotas"
 import { listAccounts, createPost } from "@/lib/social/store"
 import { PLATFORM_NAME } from "@/lib/social/types"
 
@@ -138,6 +138,8 @@ ${ideas.map((i) => `- [${i.format}] ${i.title}: ${i.why}`).join("\n") || "none"}
 }
 
 export async function startWeekRun(userId: string): Promise<string> {
+  // One weekly plan on the plan's quota (lib/quotas.ts week_run). Throws a QuotaError when out.
+  await requireQuota(userId, "week_run")
   const run: WeekRun = { status: "running", startedAt: new Date().toISOString(), steps: [{ text: "Reading your brand: logo, colours and voice", done: false }], items: [], trends: [], notes: [] }
   const row = await db.mockActivity.create({ data: { userId, type: WEEK_RUN, title: "Ran your marketing for the week", metadata: run as object } })
   void runWeek(userId, row.id, run).catch(async (err) => {
@@ -233,7 +235,9 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
         }
       }
     } catch (err) {
-      console.error("[week] write failed", it.kind, err instanceof Error ? err.message : err)
+      // Out of this kind for the week/month: say so in the notes instead of a silent failure.
+      if (isQuotaError(err)) { if (!run.notes.includes(err.message)) run.notes.push(err.message) }
+      else console.error("[week] write failed", it.kind, err instanceof Error ? err.message : err)
       it.status = "failed"
     }
     await finish(it)
@@ -260,7 +264,6 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   run.spoken = list ? `Done. Your marketing for this week is ready.${live ? ` ${live} ${live === 1 ? "is" : "are"} live.` : ""}${waiting ? ` ${waiting} just ${waiting === 1 ? "needs" : "need"} your OK.` : ""}` : "Sorry, I couldn’t finish this week’s marketing. Nothing was published."
   run.status = "done"
   run.finishedAt = new Date().toISOString()
-  countUsage(userId, "week_run")
   for (const st of run.steps) st.done = true
   await save()
 }

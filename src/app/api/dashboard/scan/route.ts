@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { runVisibilityScan } from "@/lib/visibility-scan"
+import { isQuotaError, quotaBody } from "@/lib/quotas"
 
 export const maxDuration = 90
 
@@ -19,6 +20,11 @@ export async function POST(_req: NextRequest) {
     return NextResponse.json({ error: "User not found" }, { status: 404 })
   }
 
-  const result = await runVisibilityScan(user.id)
-  return NextResponse.json(result)
+  try {
+    const result = await runVisibilityScan(user.id)
+    return NextResponse.json(result)
+  } catch (err) {
+    if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
+    throw err
+  }
 }

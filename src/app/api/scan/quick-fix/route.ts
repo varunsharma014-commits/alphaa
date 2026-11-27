@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
 
+import { publicHit } from "@/lib/quotas"
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
@@ -168,6 +169,8 @@ export async function POST(req: NextRequest) {
     if (!businessName) {
       return NextResponse.json({ error: "Scan not found" }, { status: 404 })
     }
+    const cap = await publicHit("quickfix", req)
+    if (!cap.ok) return NextResponse.json({ error: cap.error, quota: true }, { status: 429 })
 
     const message = await anthropic.messages.create({
       model: MODEL,

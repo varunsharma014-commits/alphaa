@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Loader2, Check } from "lucide-react"
 import { DsCard } from "@/components/dashboard/DsCard"
 import { RemoveWebsite } from "@/components/agent/RemoveWebsite"
+import { UsageCard } from "@/components/dashboard/UsageCard"
 
 // Business details — the info alphaa uses to write posts and run checks.
 // Previously this was only editable during onboarding; users had no way to fix
@@ -118,6 +119,8 @@ export default function BusinessSettingsPage() {
         This is what I know about your business. I use it to write your posts and to ask the AIs the
         questions your customers ask. Keep it accurate and I’ll do the rest.
       </p>
+
+      <UsageCard />
 
       <DsCard>
         {loading ? (

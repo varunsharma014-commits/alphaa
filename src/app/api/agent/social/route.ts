@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 120
 
+import { isQuotaError } from "@/lib/quotas"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
@@ -34,7 +35,13 @@ export async function POST(req: Request) {
     if (!p) return NextResponse.json({ error: "That post isn’t here any more." }, { status: 404 })
     if (input.op === "post_now") {
       if (!p.accountIds.length) return NextResponse.json({ error: "Connect an account first, then I can post it." }, { status: 409 })
-      const r = await publishPost(user.id, p.id)
+      let r: Awaited<ReturnType<typeof publishPost>>
+      try {
+        r = await publishPost(user.id, p.id)
+      } catch (err) {
+        if (isQuotaError(err)) return NextResponse.json({ error: err.message, quota: true }, { status: 429 })
+        throw err
+      }
       said = r?.status === "published" ? "Posted." : r?.status === "partial" ? "Posted to some of your accounts. The rest are below." : "It didn’t post. The reason is below."
     } else if (input.op === "approve") {
       p.status = "scheduled"

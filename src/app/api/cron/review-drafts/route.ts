@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { cronAllowed } from "@/lib/quotas"
 import { hasPro } from "@/lib/billing"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
@@ -22,6 +23,8 @@ export async function GET(req: NextRequest) {
   if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
+  // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
+  if (!(await cronAllowed("review-drafts"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
   const since = new Date(Date.now() - 60 * 86_400_000)
   const reviews = await db.gmbReview.findMany({
     where: { reply: null, publishedAt: { gte: since }, user: { integration: { gmbLocationId: { not: null } } } },

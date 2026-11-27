@@ -436,6 +436,11 @@ export async function scanAllEngines(
       ? [customQuery.trim(), customQuery.trim(), customQuery.trim()]
       : buildQueries(businessType, city)
 
+  // 4 engine checks against the brand's plan quota (lib/quotas.ts engine_check). Throws a
+  // QuotaError (first-person message) when the brand is out; public scans (no brand) pass.
+  const { requireQuotaHere } = await import("@/lib/quotas")
+  await requireQuotaHere("engine_check", 4)
+
   const settled = await Promise.allSettled([
     scanClaude(businessName, businessType, city, queries),
     scanChatGPT(businessName, businessType, city, queries),

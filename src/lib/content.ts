@@ -1,5 +1,6 @@
 // Everything the agent writes for a business's own website, from
 // the business's facts only — unknown facts become [bracketed] placeholders.
+import { withQuota } from "@/lib/quotas"
 import { relevantGaps } from "@/lib/competitor-relevance"
 import { ownScanWhere } from "@/lib/scan-match"
 import { db } from "@/lib/db"
@@ -47,8 +48,13 @@ Give ONE question a real prospective customer of this specific business would ty
   return q.length > 10 && q.length < 160 ? q : null
 }
 
+/** writePost, counted against the brand's plan quota (content_piece:blog; lib/quotas.ts). Throws a QuotaError when out. */
+export function writePost(...args: Parameters<typeof writePostUnmetered>): ReturnType<typeof writePostUnmetered> {
+  return withQuota(args[0], "content_piece:blog", () => writePostUnmetered(...args))
+}
+
 /** A blog post answering a real customer question — markdown with ## question headings. */
-export async function writePost(user: U, topic?: string, opts: { noPlaceholders?: boolean } = {}): Promise<{ title: string; markdown: string; excerpt: string; topic: string }> {
+async function writePostUnmetered(user: U, topic?: string, opts: { noPlaceholders?: boolean } = {}): Promise<{ title: string; markdown: string; excerpt: string; topic: string }> {
   // Write in the owner's chosen voice (learned from their own words the first time).
   const learned = await ensureVoice(user.id).catch(() => null)
   const voice = learned ? voiceText(learned) : null
@@ -99,8 +105,13 @@ ${factsOf(user, voice)}`,
   return { title, markdown, excerpt, topic: t }
 }
 
+/** writeMeta, counted against the brand's plan quota (content_piece:draft; lib/quotas.ts). Throws a QuotaError when out. */
+export function writeMeta(...args: Parameters<typeof writeMetaUnmetered>): ReturnType<typeof writeMetaUnmetered> {
+  return withQuota(args[0], "content_piece:draft", () => writeMetaUnmetered(...args))
+}
+
 /** Homepage title (≤60) + meta description (≤155), as "Title: …\nDescription: …". */
-export async function writeMeta(user: U, page: { url: string; currentTitle?: string | null; currentDescription?: string | null }): Promise<string> {
+async function writeMetaUnmetered(user: U, page: { url: string; currentTitle?: string | null; currentDescription?: string | null }): Promise<string> {
   const voice = await voiceFor(user.id).catch(() => null)
   const res = await anthropic.messages.create({
     model: SONNET,
@@ -124,8 +135,13 @@ export function parseMeta(s: string): { title: string; description: string } {
   return { title: s.match(/^Title:\s*(.+)$/im)?.[1]?.trim() ?? "", description: s.match(/^Description:\s*(.+)$/im)?.[1]?.trim() ?? "" }
 }
 
+/** writeLocationPage, counted against the brand's plan quota (content_piece:draft; lib/quotas.ts). Throws a QuotaError when out. */
+export function writeLocationPage(...args: Parameters<typeof writeLocationPageUnmetered>): ReturnType<typeof writeLocationPageUnmetered> {
+  return withQuota(args[0], "content_piece:draft", () => writeLocationPageUnmetered(...args))
+}
+
 /** A page for one location — markdown, answer-first, with the location's facts. */
-export async function writeLocationPage(user: U, loc: Location): Promise<{ title: string; markdown: string }> {
+async function writeLocationPageUnmetered(user: U, loc: Location): Promise<{ title: string; markdown: string }> {
   const voice = await voiceFor(user.id).catch(() => null)
   const res = await anthropic.messages.create({
     model: SONNET,
@@ -153,8 +169,13 @@ export async function locationsOf(userId: string): Promise<Location[]> {
 }
 
 
+/** writeSocial, counted against the brand's plan quota (content_piece:social; lib/quotas.ts). Throws a QuotaError when out. */
+export function writeSocial(...args: Parameters<typeof writeSocialUnmetered>): ReturnType<typeof writeSocialUnmetered> {
+  return withQuota(args[0], "content_piece:social", () => writeSocialUnmetered(...args))
+}
+
 /** A social post (Facebook / Instagram / LinkedIn) in the owner's voice, plus a 4-5 word headline for its image. */
-export async function writeSocial(user: U, topic: string, context?: string): Promise<{ text: string; headline: string }> {
+async function writeSocialUnmetered(user: U, topic: string, context?: string): Promise<{ text: string; headline: string }> {
   const voice = await voiceFor(user.id).catch(() => null)
   return writeSocialFrom(factsOf(user, voice), topic, context)
 }

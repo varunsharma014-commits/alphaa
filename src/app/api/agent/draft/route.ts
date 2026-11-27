@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 180
 
+import { checkQuota, isQuotaError, quotaBody, refundQuota } from "@/lib/quotas"
 import { voiceFor } from "@/lib/voice"
 import { NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
@@ -58,7 +59,8 @@ export async function POST(req: Request) {
   if (mode === "gbp" && !hasPro(user)) return NextResponse.json({ error: "Google listing posts come with the Pro plan." }, { status: 403 })
   if (mode === "post" || mode === "gbp" || mode === "social") {
     const r = await once(`draft:${user.id}:${mode}:${input.topic.trim().toLowerCase()}`, () => writeDraft(user, mode, input.topic))
-    return r.ok ? NextResponse.json(r.body) : NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
+    if (r.ok) return NextResponse.json(r.body)
+    return r.quota ? NextResponse.json({ error: r.quota, quota: true }, { status: 429 }) : NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
   }
 
   try {
@@ -78,10 +80,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ title: p.title, text: p.markdown })
     }
   } catch (err) {
+    if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
     console.error("[agent/draft]", input.mode, err instanceof Error ? err.message : err)
     return NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
   }
 
+  // FAQ section: one more written piece on the plan's draft quota.
+  const q = await checkQuota(user, "content_piece:draft")
+  if (!q.allowed) return NextResponse.json(...quotaBody(q))
   try {
     const res = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
@@ -101,6 +107,8 @@ ${facts}`,
     await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Drafted an FAQ section: “${input.topic}”`, description: input.competitor ? `To close a gap with ${input.competitor}` : null, metadata: { topic: input.topic, text } } })
     return NextResponse.json({ title: input.topic, text })
   } catch (err) {
+    refundQuota(user.id, "content_piece:draft")
+    if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
     console.error("[agent/draft]", err instanceof Error ? err.message : err)
     return NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
   }
@@ -109,7 +117,7 @@ ${facts}`,
 const RECENT_MS = 15 * 60_000
 type DraftUser = NonNullable<Awaited<ReturnType<typeof db.user.findUnique>>>
 
-async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topic: string): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false }> {
+async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topic: string): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false; quota?: string }> {
   const since = new Date(Date.now() - RECENT_MS)
   try {
     if (mode === "post") {
@@ -147,6 +155,7 @@ async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topi
     await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Wrote a social post: “${topic}”`, metadata: { topic, text: sp.text, kind: "social", imageId: card?.id ?? null } } })
     return { ok: true, body: { title: "Social post", text: sp.text, image: card?.url ?? null } }
   } catch (err) {
+    if (isQuotaError(err)) return { ok: false, quota: err.message }
     console.error("[agent/draft]", mode, err instanceof Error ? err.message : err)
     return { ok: false }
   }

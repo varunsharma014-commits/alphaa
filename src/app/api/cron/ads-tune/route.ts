@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { cronAllowed } from "@/lib/quotas"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { hasGrowth, isComped } from "@/lib/billing"
@@ -16,6 +17,8 @@ let running = false
 export async function GET(req: NextRequest) {
   const secret = process.env.CRON_SECRET
   if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
+  if (!(await cronAllowed("ads-tune"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
   const rows = await db.mockActivity.findMany({ where: { type: "gads_account", metadata: { path: ["status"], equals: "active" } }, select: { userId: true, metadata: true }, take: 500 })
   const withCampaign = rows.filter((r) => (r.metadata as { campaign?: unknown } | null)?.campaign)
   const users = await db.user.findMany({ where: { id: { in: withCampaign.map((r) => r.userId) } }, select: { id: true, plan: true, email: true, subscriptionStatus: true } })

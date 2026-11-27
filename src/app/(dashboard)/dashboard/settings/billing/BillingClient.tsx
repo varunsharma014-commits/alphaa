@@ -4,8 +4,11 @@ import { useState } from "react"
 import { GlassCard } from "@/components/common/GlassCard"
 import { OrangePillButton } from "@/components/common/OrangePillButton"
 import { ExternalLink, CreditCard } from "lucide-react"
+import { UpgradeButton } from "../../upgrade/UpgradeButton"
 
-export function BillingClient({ shopifyUrl }: { shopifyUrl: string | null }) {
+type AdAccounts = { extra: number; monthly: number; annual: number; plan: number } | null
+
+export function BillingClient({ shopifyUrl, adAccounts = null }: { shopifyUrl: string | null; adAccounts?: AdAccounts }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -60,6 +63,17 @@ export function BillingClient({ shopifyUrl }: { shopifyUrl: string | null }) {
           <p className="text-xs mt-3 leading-relaxed" style={{ color: "var(--ds-bad)" }}>{error}</p>
         )}
       </GlassCard>
+
+      {adAccounts ? (
+        <GlassCard>
+          <h2 className="text-fg font-medium mb-2">Ad accounts</h2>
+          <p className="text-muted text-sm leading-relaxed mb-4">
+            Growth includes 1 ad account on Google and 1 on Facebook &amp; Instagram. Each extra ad account is ${adAccounts.monthly} a month
+            (${adAccounts.annual} a month if you pay yearly). You pay the difference for the rest of this billing period.
+          </p>
+          <UpgradeButton plan="growth" value={adAccounts.plan} addon={{ monthly: adAccounts.monthly }} initialExtra={adAccounts.extra} label="Update ad accounts" />
+        </GlassCard>
+      ) : null}
 
       <GlassCard>
         <h2 className="text-fg font-medium mb-2">Cancel subscription</h2>

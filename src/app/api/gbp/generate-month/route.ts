@@ -1,3 +1,4 @@
+import { isQuotaError } from "@/lib/quotas"
 import { hasPro } from "@/lib/billing"
 import { NextResponse } from "next/server"
 import { voiceFor } from "@/lib/voice"
@@ -55,6 +56,7 @@ export async function POST() {
 
     const voice = await voiceFor(user.id).catch(() => null)
     const posts = []
+    let note: string | null = null
     for (let i = 0; i < 8; i++) {
       const postType = POST_TYPES[i]
       const topic = TOPICS[i]
@@ -80,12 +82,15 @@ export async function POST() {
 
         posts.push(post)
       } catch (err) {
+        // Out of Google posts for this week/month: stop and say so (lib/quotas.ts content_piece:gbp).
+        if (isQuotaError(err)) { note = err.message; break }
         console.error(`[GBP] generate-month post ${i + 1} error:`, err)
         // Continue generating remaining posts
       }
     }
 
-    return NextResponse.json({ posts, count: posts.length })
+    if (!posts.length && note) return NextResponse.json({ error: note, quota: true, posts, count: 0 }, { status: 429 })
+    return NextResponse.json({ posts, count: posts.length, ...(note ? { note } : {}) })
   } catch (err) {
     console.error("[GBP] generate-month error:", err)
     return NextResponse.json(

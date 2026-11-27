@@ -1,3 +1,4 @@
+import { withQuotaHere } from "@/lib/quotas"
 import { claudeFor } from "./claude"
 
 const anthropic = claudeFor("google-posts")
@@ -11,7 +12,12 @@ export function containsPlaceholders(content: string): boolean {
   return /\[[^\]\n]{1,40}\]/.test(content)
 }
 
-export async function generateGbpPost(
+/** generateGbpPost, counted against the brand's plan quota (content_piece:gbp; lib/quotas.ts). Throws a QuotaError when out. */
+export function generateGbpPost(...args: Parameters<typeof generateGbpPostUnmetered>): ReturnType<typeof generateGbpPostUnmetered> {
+  return withQuotaHere("content_piece:gbp", () => generateGbpPostUnmetered(...args))
+}
+
+async function generateGbpPostUnmetered(
   businessName: string,
   businessType: string,
   city: string,

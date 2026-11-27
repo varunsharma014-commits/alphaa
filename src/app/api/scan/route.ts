@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic"
+import { publicHit } from "@/lib/quotas"
 import { computeScore, buildFindings, findingsToIssues, type ReportEngine, type ReportQuestion } from "@/lib/scan-report"
 import { NextRequest, NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
@@ -78,6 +79,9 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const input = schema.parse(body)
+    // Free scans: per visitor IP and across everyone, per day (lib/quotas.ts publicHit).
+    const cap = await publicHit("scan", req)
+    if (!cap.ok) return NextResponse.json({ error: cap.error, quota: true }, { status: 429 })
 
     // Create scan lead immediately (so result polling can find it)
     const lead = await db.scanLead.create({

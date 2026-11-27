@@ -49,6 +49,33 @@ export const STRIPE_PRICE_IDS = {
 
 type SoldPlan = "starter" | "pro" | "growth" | "fullservice"
 
+// Growth add-on (2026-11-27): each extra ad account beyond the 1 included, $200/mo or $2,040/yr
+// (EXTRA_AD_ACCOUNT_PRICE). Its own Stripe product "Extra ad account", prices tagged
+// metadata { alphaa_addon: "extra_ad_account" } (scripts/stripe-create-plan-prices.mjs).
+export const EXTRA_AD_ACCOUNT_PRICE_IDS = {
+  monthly: process.env.STRIPE_EXTRA_AD_ACCOUNT_MONTHLY_PRICE_ID ?? "",
+  annual: process.env.STRIPE_EXTRA_AD_ACCOUNT_ANNUAL_PRICE_ID ?? "",
+}
+type PriceLike = { id: string; metadata?: Record<string, string> | null; lookup_key?: string | null; product?: unknown } | null | undefined
+
+/** Is this the "Extra ad account" add-on (env id, metadata or lookup key)? */
+export function isAdAccountAddon(price: PriceLike): boolean {
+  if (!price) return false
+  if (price.id && (price.id === EXTRA_AD_ACCOUNT_PRICE_IDS.monthly || price.id === EXTRA_AD_ACCOUNT_PRICE_IDS.annual)) return true
+  if (price.metadata?.alphaa_addon === "extra_ad_account") return true
+  return !!price.lookup_key?.startsWith("alphaa_extra_ad_account")
+}
+
+type ItemLike = { price?: PriceLike; quantity?: number | null }
+/** The subscription item that carries the plan (never an add-on), whatever order Stripe lists them in. */
+export function planItem<T extends ItemLike>(items: T[] | undefined | null): T | undefined {
+  return (items ?? []).find((i) => !isAdAccountAddon(i.price)) ?? undefined
+}
+/** How many extra ad accounts a subscription pays for. */
+export function extraAdAccounts(items: ItemLike[] | undefined | null): number {
+  return (items ?? []).filter((i) => isAdAccountAddon(i.price)).reduce((n, i) => n + (i.quantity ?? 1), 0)
+}
+
 /**
  * The plan a Stripe price sells. Env price ids first, then the price's `alphaa_plan` metadata
  * (set on every price created 2026-11-26), then the product name ("Alphaa Pro"). Older env ids

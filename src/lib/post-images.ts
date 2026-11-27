@@ -5,6 +5,7 @@
 //   ai     an AI-made scene (no people, text or logos) + headline + logo, only with OPENAI_API_KEY
 //   canva  their Canva brand template, filled with the headline (and a photo) via autofill
 // Anything that fails falls back to the text card, so a post always gets an image.
+import { quotaHere } from "@/lib/quotas"
 import OpenAI from "openai"
 import { db } from "@/lib/db"
 import { imageUrl } from "@/lib/images"
@@ -56,6 +57,9 @@ export async function storePostImage(userId: string, jpeg: Buffer, alt: string, 
 /** An AI-made background scene. Null without a key, on refusal or timeout. */
 export async function aiScene(input: { topic: string; businessType: string | null; city: string | null; size: ImageSize }): Promise<Buffer | null> {
   if (!aiImagesAvailable()) return null
+  // One picture on the brand's image quota (lib/quotas.ts image_gen); out of room = the text card.
+  const q = await quotaHere("image_gen")
+  if (!q.allowed) { console.warn("[post-images] quota", q.userId, q.period); return null }
   const prompt = `A realistic photograph-style scene for a social media post by a ${input.businessType || "local business"}${input.city ? ` in ${input.city}` : ""} about: ${input.topic.slice(0, 160)}. Show the place, objects, tools, food or setting, in natural light, warm and inviting, with calm empty space in the lower half.
 Strict rules: no people, no faces, no hands, no bodies. No text, letters, numbers or signs. No logos, brand names, trademarks or product packaging from real brands. No watermarks. Not a famous landmark or a real business.`
   try {

@@ -13,10 +13,12 @@ import { pickAccount } from "@/lib/gads/connect"
 import { proposePlan, money } from "@/lib/gads/plan"
 import { createFromPlan, setCampaignStatus, undoTune } from "@/lib/gads/create"
 import { applyTune } from "@/lib/gads/tune"
-import { getPlan, getTune, removeGadsAccount, savePlan, saveTune } from "@/lib/gads/store"
+import { getGadsAccount, getPlan, getTune, removeGadsAccount, savePlan, saveTune } from "@/lib/gads/store"
 import { adsMessages, planMessages } from "@/lib/gads/thread"
 import { checkDaily } from "@/lib/gads/rules"
 import { askCityMessages } from "@/lib/agent/city"
+import { checkAdAccount } from "@/lib/ad-accounts"
+import { checkQuota } from "@/lib/quotas"
 
 const id = z.string().min(5).max(40)
 const body = z.discriminatedUnion("op", [
@@ -51,12 +53,16 @@ export async function POST(req: Request) {
   try {
     switch (input.op) {
       case "pick": {
+        const allowed = await checkAdAccount(user, "google", input.customerId)
+        if (!allowed.ok) return NextResponse.json({ error: allowed.message }, { status: 402 })
         const a = await pickAccount(user.id, input.customerId)
         return a ? reply(`I’ll use ${a.customerName}.`) : NextResponse.json({ error: "That account isn’t on your Google login." }, { status: 404 })
       }
       case "plan": {
         // No city yet: ask for it in the chat (small form) instead of failing.
         if (!user.city?.trim()) return NextResponse.json({ messages: askCityMessages("ads", user.state) })
+        const q = await checkQuota(user, "ad_plan")
+        if (!q.allowed) return NextResponse.json({ error: q.message }, { status: 429 })
         const p = await proposePlan(user.id)
         // The plan messages come back inside the thread (same ids replace older copies).
         return NextResponse.json({ messages: [agent([{ kind: "text", text: "I looked at the searches that already find you and checked each keyword with Google’s Keyword Planner." }]), ...planMessages(p)] })
@@ -67,6 +73,11 @@ export async function POST(req: Request) {
         const cap = (await getAgentSettings(user.id)).autopilot?.adBudget ?? null
         const d = checkDaily(input.daily, cap)
         if (!d.ok) return NextResponse.json({ error: d.error }, { status: 400 })
+        const acct = (await getGadsAccount(user.id))?.customerId
+        const allowed = acct ? await checkAdAccount(user, "google", acct) : { ok: true as const }
+        if (!allowed.ok) return NextResponse.json({ error: allowed.message }, { status: 402 })
+        const q = await checkQuota(user, "ad_change")
+        if (!q.allowed) return NextResponse.json({ error: q.message }, { status: 429 })
         await createFromPlan(user.id, p, d.daily)
         return reply(`Built it in Google Ads, paused, at ${money(d.daily, p.currency)} a day. Nothing is spent until you turn it on.`)
       }
@@ -77,6 +88,9 @@ export async function POST(req: Request) {
       }
       case "enable": {
         // The only place a campaign is turned on: the owner's tap. Never from a cron.
+        const acct = (await getGadsAccount(user.id))?.customerId
+        const allowed = acct ? await checkAdAccount(user, "google", acct) : { ok: true as const }
+        if (!allowed.ok) return NextResponse.json({ error: allowed.message }, { status: 402 })
         await setCampaignStatus(user.id, "ENABLED")
         return reply("It’s on. Your ads can start showing within a few hours, once Google reviews them.")
       }

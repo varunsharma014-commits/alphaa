@@ -1,3 +1,4 @@
+import { cronAllowed } from "@/lib/quotas"
 import { NextRequest, NextResponse } from "next/server"
 import React from "react"
 import { db } from "@/lib/db"
@@ -69,6 +70,8 @@ export async function GET(req: NextRequest) {
   if (!process.env.CRON_SECRET || auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
+  // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
+  if (!(await cronAllowed("nurture"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
   const dryRun = req.nextUrl.searchParams.get("dryRun") === "1"
   const previewLimit = Math.min(10, Math.max(0, Number(req.nextUrl.searchParams.get("limit") ?? 3) || 0))
 

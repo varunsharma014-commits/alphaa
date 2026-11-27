@@ -1,6 +1,7 @@
 // Ads: real results from the owner's connected Meta and Google Ads accounts (only campaigns I
 // built on Meta; the whole account on Google), the monthly limit they set, the campaigns and the
 // changes I made. No forecasts: "what if" numbers would be made up.
+import { checkQuota } from "@/lib/quotas"
 import type { User } from "@prisma/client"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { metaReport } from "@/lib/metaads/report"
@@ -133,7 +134,7 @@ export async function getAdsData(user: User): Promise<AdsData> {
   if (!plan) {
     const latest = await latestStrategy(user.id).catch(() => null)
     if (latest?.status === "running" && Date.now() - Date.parse(latest.at) < 15 * 60_000) planState = "running"
-    else if (hasPro(user) && startStrategy(user.id)) planState = "running"
+    else if (hasPro(user) && (await checkQuota(user, "ad_plan", { record: false })).allowed && startStrategy(user.id)) planState = "running"
   }
   const audience = plan?.business ? (plan.business.local ? `People near ${plan.business.markets}` : `People in ${plan.business.markets}`) : ""
   const firstAds: FirstAd[] = []

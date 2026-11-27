@@ -1,7 +1,8 @@
 // Publish one queued post to every account it targets, record each result, and log it.
 import { db } from "@/lib/db"
 import { imageUrl } from "@/lib/images"
-import { countUsage } from "@/lib/usage"
+import { tallyUsage } from "@/lib/usage"
+import { requireQuota, refundQuota } from "@/lib/quotas"
 import { getPost, listAccounts, patchAccount, savePost } from "./store"
 import { meta } from "./providers/meta"
 import { linkedin } from "./providers/linkedin"
@@ -14,6 +15,11 @@ export const providerFor = (p: SocialPlatform): Provider => (p === "facebook" ||
 export async function publishPost(userId: string, postId: string): Promise<SocialPost | null> {
   const post = await getPost(userId, postId)
   if (!post || post.status === "publishing" || post.status === "published") return post
+  // One social post (any number of its platforms) on the plan's publish quota. A retry of the
+  // accounts that failed last time isn't counted again. Out of room: a QuotaError, and the post
+  // stays as it was (a scheduled one goes out when room opens again).
+  const firstTry = !(post.results ?? []).some((r) => r.ok)
+  if (firstTry) await requireQuota(userId, "publish:social")
   post.status = "publishing"
   await savePost(userId, post)
 
@@ -48,11 +54,12 @@ export async function publishPost(userId: string, postId: string): Promise<Socia
     }
   }
   const ok = results.filter((r) => r.ok).length
+  if (firstTry && !ok) refundQuota(userId, "publish:social") // nothing went out
   post.results = results
   post.status = ok === results.length && ok > 0 ? "published" : ok > 0 ? "partial" : "failed"
   if (ok) post.publishedAt = new Date().toISOString()
   await savePost(userId, post)
-  for (const r of results) if (r.ok) countUsage(userId, `posted_${r.platform}`)
+  for (const r of results) if (r.ok) tallyUsage(userId, `posted_${r.platform}`)
   if (ok) {
     const where = Array.from(new Set(results.filter((r) => r.ok).map((r) => PLATFORM_NAME[r.platform])))
     await db.mockActivity.create({ data: { userId, type: "social_published", title: `Posted to ${where.join(", ")}`, metadata: { postId, url: results.find((r) => r.ok && r.url)?.url ?? null, platforms: where } } })

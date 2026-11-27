@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
-import { stripe, STRIPE_PRICE_IDS } from "@/lib/stripe"
+import { stripe, STRIPE_PRICE_IDS, EXTRA_AD_ACCOUNT_PRICE_IDS, isAdAccountAddon, planItem } from "@/lib/stripe"
 import { db } from "@/lib/db"
 import { isComped, hasStripePlan, isExtraBrand, EXTRA_BRAND_COUPON, EXTRA_BRAND_PERCENT } from "@/lib/billing"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
@@ -9,7 +9,7 @@ import { MARKET_CURRENCY, MARKET_COOKIE, isMarketKey } from "@/content/markets/p
 import type Stripe from "stripe"
 import { realEmail } from "@/lib/sites"
 import { GROWTH_ON_SALE } from "@/lib/growth"
-import { PLAN_PRICES } from "@/lib/constants"
+import { PLAN_PRICES, EXTRA_AD_ACCOUNT_PRICE } from "@/lib/constants"
 
 type SellPlan = "starter" | "pro" | "growth"
 const SELL_PLANS: SellPlan[] = ["starter", "pro", "growth"]
@@ -34,6 +34,33 @@ async function verifiedPrice(plan: SellPlan, annual: boolean): Promise<string | 
     }
   }
   return verified.get(id) ? id : null
+}
+
+// The Growth add-on "Extra ad account" ($200/mo or $2,040/yr), checked the same way.
+async function verifiedAddonPrice(annual: boolean): Promise<string | null> {
+  const id = EXTRA_AD_ACCOUNT_PRICE_IDS[annual ? "annual" : "monthly"]
+  if (!id) return null
+  if (!verified.has(id)) {
+    try {
+      const p = await stripe.prices.retrieve(id)
+      const want = (annual ? EXTRA_AD_ACCOUNT_PRICE.annualTotal : EXTRA_AD_ACCOUNT_PRICE.monthly) * 100
+      const ok = p.active && p.currency === "usd" && p.unit_amount === want && p.recurring?.interval === (annual ? "year" : "month") && isAdAccountAddon(p)
+      if (!ok) console.error("[checkout] add-on price does not match the site", annual ? "annual" : "monthly", id, p.unit_amount, p.recurring?.interval)
+      verified.set(id, ok)
+    } catch (e) {
+      console.error("[checkout] add-on price lookup", id, e instanceof Error ? e.message : e)
+      return null
+    }
+  }
+  return verified.get(id) ? id : null
+}
+
+/** Extra ad accounts asked for (Growth only): a whole number 0..MAX_EXTRA_AD_ACCOUNTS. */
+const MAX_EXTRA_AD_ACCOUNTS = 20
+function parseExtra(v: unknown): number | null {
+  if (v === undefined || v === null || v === "") return 0
+  const n = Number(v)
+  return Number.isInteger(n) && n >= 0 && n <= MAX_EXTRA_AD_ACCOUNTS ? n : null
 }
 
 /** "pro_annual" / "growth_monthly" / "starter" (pricing page and agent) → plan + period. */
@@ -126,6 +153,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "That service is no longer offered. See the plans at alphaa.app/pricing." }, { status: 410 })
   }
   if (!named) return NextResponse.json({ error: "Pick a plan first." }, { status: 400 })
+  // Growth only: extra ad accounts beyond the 1 included (the "Extra ad account" add-on).
+  const extraAds = parseExtra(body.extraAdAccounts)
+  if (extraAds === null) return NextResponse.json({ error: `Pick between 0 and ${MAX_EXTRA_AD_ACCOUNTS} extra ad accounts.` }, { status: 400 })
+  if (extraAds > 0 && named.plan !== "growth") return NextResponse.json({ error: "Extra ad accounts come with the Growth plan." }, { status: 400 })
   // Comped accounts (founder, app-store reviewers) never pay: send them on.
   if (isComped(user.email)) {
     return NextResponse.json({ url: `${appUrl}/dashboard` })
@@ -174,19 +205,34 @@ export async function POST(req: NextRequest) {
   // the existing subscription (prorated) instead of opening a second subscription.
   if ((purchase === "pro" || purchase === "growth") && hasStripePlan(user) && user.stripeSubscriptionId) {
     // Keep the billing period they already pay on (a yearly Starter moves to yearly Pro).
-    const sub0 = await stripe.subscriptions.retrieve(user.stripeSubscriptionId)
-    const onYearly = sub0.items.data[0]?.price.recurring?.interval === "year"
-    const target = await verifiedPrice(purchase, onYearly || annual)
+    const sub = await stripe.subscriptions.retrieve(user.stripeSubscriptionId)
+    const item = planItem(sub.items.data)
+    const onYearly = item?.price.recurring?.interval === "year"
+    const yearly = onYearly || annual
+    const target = await verifiedPrice(purchase, yearly)
     if (!target) return NextResponse.json({ error: "This plan isn't available right now. Email hi@alphaa.app." }, { status: 500 })
-    const sub = sub0
-    const item = sub.items.data[0]
-    if (item && item.price.id !== target) {
+    const items: Stripe.SubscriptionUpdateParams.Item[] = []
+    if (item && item.price.id !== target) items.push({ id: item.id, price: target })
+    // The add-on follows the plan: set to the asked quantity on Growth, removed on any other plan.
+    const addonItems = sub.items.data.filter((i) => isAdAccountAddon(i.price))
+    const want = purchase === "growth" ? extraAds : 0
+    if (want > 0) {
+      const addon = await verifiedAddonPrice(yearly)
+      if (!addon) return NextResponse.json({ error: "Extra ad accounts aren't available right now. Email hi@alphaa.app." }, { status: 500 })
+      const [first, ...rest] = addonItems
+      if (first) {
+        if (first.price.id !== addon || first.quantity !== want) items.push({ id: first.id, price: addon, quantity: want })
+      } else items.push({ price: addon, quantity: want })
+      for (const r of rest) items.push({ id: r.id, deleted: true })
+    } else for (const r of addonItems) items.push({ id: r.id, deleted: true })
+    if (items.length) {
       await stripe.subscriptions.update(sub.id, {
-        items: [{ id: item.id, price: target }],
+        items,
         proration_behavior: "always_invoice",
-        metadata: { ...sub.metadata, upgraded_to: purchase },
+        metadata: { ...sub.metadata, upgraded_to: purchase, ...(purchase === "growth" ? { extra_ad_accounts: String(want) } : {}) },
       })
       await db.user.update({ where: { id: user.id }, data: { plan: purchase } })
+      // The webhook (customer.subscription.updated) writes the ad-account allowance.
     }
     return NextResponse.json({ url: `${appUrl}/dashboard?upgraded=${purchase}` })
   }
@@ -195,14 +241,21 @@ export async function POST(req: NextRequest) {
   const fromAgent = SELL_PLANS.includes(named.plan)
   const price = await verifiedPrice(named.plan, annual)
   if (!price) return NextResponse.json({ error: "This plan isn't available right now. Email hi@alphaa.app." }, { status: 500 })
+  const line_items: NonNullable<Stripe.Checkout.SessionCreateParams["line_items"]> = [{ price, quantity: 1 }]
+  if (extraAds > 0) {
+    const addon = await verifiedAddonPrice(annual)
+    if (!addon) return NextResponse.json({ error: "Extra ad accounts aren't available right now. Email hi@alphaa.app." }, { status: 500 })
+    line_items.push({ price: addon, quantity: extraAds })
+  }
   // Local currencies exist on the monthly prices only; annual stays in USD.
   const monthly = !annual
   const session = await createSession({
     customer: stripeCustomerId,
     branding_settings,
-    line_items: [{ price, quantity: 1 }],
+    line_items,
     mode: "subscription",
     ...(discounts ? { discounts, metadata: { extra_brand: "1" } } : {}),
+    ...(extraAds > 0 ? { subscription_data: { metadata: { extra_ad_accounts: String(extraAds) } } } : {}),
     // No trial (decided 2026-09-24): the /start analysis does the convincing;
     // month to month, cancel any time.
     payment_method_collection: "always",

@@ -3,6 +3,7 @@
 // business's mailing address and a one-click unsubscribe (List-Unsubscribe + footer link) that
 // opts the person out of THIS business only. Opt-outs are re-read before every batch. The
 // recipient list is frozen on the campaign when sending starts, so a restart resumes where it was.
+import { checkQuota } from "@/lib/quotas"
 import { db } from "@/lib/db"
 import { resend } from "@/lib/resend"
 import { fromAs } from "@/lib/email-sender"
@@ -69,6 +70,9 @@ export async function startSend(userId: string, id: string): Promise<{ ok: true;
     const [contacts, out] = await Promise.all([getContacts(userId), optedOutSet(userId)])
     const to = contacts.filter((c) => !out.has(fingerprint(c.e))).map((c) => ({ e: c.e, n: c.n }))
     if (!to.length) return { ok: false, error: "Your list is empty. Add your customers first." }
+    // Every recipient counts against the plan's email quota (lib/quotas.ts email_send).
+    const q = await checkQuota(userId, "email_send", { n: to.length })
+    if (!q.allowed) return { ok: false, error: q.message ?? "I've sent all the emails your plan covers for now." }
     await updateCampaign(id, { status: "sending", to, done: 0, sent: 0, skipped: 0, failed: 0, startedAt: new Date().toISOString(), error: undefined })
   }
   void runSend(userId, id)

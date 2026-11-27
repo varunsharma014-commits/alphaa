@@ -1,3 +1,4 @@
+import { checkQuota, quotaBody, refundQuota } from "@/lib/quotas"
 import { hasPro } from "@/lib/billing"
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
@@ -58,6 +59,10 @@ export async function POST(
       )
     }
 
+    // One Google post on the plan's publish quota (lib/quotas.ts publish:gbp).
+    const q = await checkQuota(user, "publish:gbp")
+    if (!q.allowed) return NextResponse.json(...quotaBody(q))
+
     // Drafts from the cron can sit for days before "Post it" — refresh the
     // Google token if it has expired rather than failing on a stale one.
     const accessToken = await resolveAccessToken(integration)
@@ -71,6 +76,7 @@ export async function POST(
     )
 
     if (!result.success) {
+      refundQuota(user.id, "publish:gbp")
       await db.gbpPost.update({
         where: { id },
         data: { status: "failed" },

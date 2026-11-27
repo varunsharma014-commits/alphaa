@@ -7,7 +7,7 @@ import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
-import { countUsage, runAsUser } from "@/lib/usage"
+import { tallyUsage, runAsUser } from "@/lib/usage"
 import { imageInfo, normalizePhoto } from "@/lib/photo-render"
 import { HEX_RE } from "@/lib/brand-kit"
 import { driveFile, driveThumb, MissingFile, type DriveFile } from "./drive"
@@ -93,7 +93,7 @@ export async function ingestAsset(userId: string, id: string, chooserThumb?: str
       await patchAsset(userId, id, { size, mime: meta.mimeType || a.mime, name: meta.name || a.name })
     }
     const done = a.kind === "photo" ? await ingestPhoto(userId, a, meta, chooserThumb) : a.kind === "video" ? await ingestVideo(userId, a, meta, chooserThumb) : await ingestBook(userId, a, meta)
-    countUsage(userId, `library_${a.kind}`)
+    tallyUsage(userId, `library_${a.kind}`)
     return done
   } catch (err) {
     if (err instanceof MissingFile) return markMissing(userId, a, err.message)

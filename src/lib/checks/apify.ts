@@ -42,8 +42,12 @@ export async function proxyGet(url: string, headers: Record<string, string>, ms 
   }
 }
 
-export async function runActor<T>(actor: string, input: unknown, timeoutSecs = 90): Promise<T[] | null> {
+export async function runActor<T>(actor: string, input: unknown, timeoutSecs = 90, estUsd = 0.05): Promise<T[] | null> {
   if (!apifyEnabled()) return null
+  // Counted at its estimated charge against the brand's Apify quota (lib/quotas.ts apify_usd).
+  const { quotaHere } = await import("@/lib/quotas")
+  const q = await quotaHere("apify_usd", estUsd)
+  if (!q.allowed) { console.warn(`[apify] ${actor} skipped: quota`, q.userId, q.period); return null }
   try {
     const r = await fetch(`https://api.apify.com/v2/acts/${actor}/run-sync-get-dataset-items?token=${encodeURIComponent(TOKEN())}&timeout=${timeoutSecs}`, {
       method: "POST",

@@ -1,3 +1,4 @@
+import { isQuotaError, quotaBody } from "@/lib/quotas"
 import { hasPro } from "@/lib/billing"
 import { voiceFor } from "@/lib/voice"
 import { NextRequest, NextResponse } from "next/server"
@@ -51,6 +52,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ post, callToAction: generated.callToAction })
   } catch (err) {
+    if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
     console.error("[GBP] generate error:", err)
     return NextResponse.json(
       { error: "Failed to generate post" },

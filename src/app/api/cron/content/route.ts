@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic"
 
+import { cronAllowed } from "@/lib/quotas"
 import { asUser } from "@/lib/usage"
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
@@ -16,6 +17,8 @@ const DAYS: Record<string, number[]> = { starter: [1, 15], pro: [1, 8, 15, 22] }
 
 export async function GET(req: Request) {
   if (!authorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
+  if (!(await cronAllowed("content"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
   const day = new Date().getUTCDate()
   const users = (await activeUsers()).filter((u) => (DAYS[/pro|full|growth/i.test(u.plan) ? "pro" : "starter"]).includes(day))
   void (async () => {

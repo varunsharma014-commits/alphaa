@@ -88,6 +88,8 @@ export function startCron(): void {
     if (now.getUTCDate() === 1 && hour === 18) hit("/api/cron/monthly-recap")
     // Mon 12:00 UTC — Google Ads weekly tune-up for Growth brands with a campaign (Google Ads API only)
     if (dow === 1 && hour === 12) hit("/api/cron/ads-tune")
+    // Hourly — founder alert when a brand or the platform passes 80% of its AI ceiling (once a day max)
+    hit("/api/cron/usage-alert")
     // Hourly — new leads from Facebook & Instagram lead forms (Meta API only, lib/metaads)
     hit("/api/cron/meta-ads?job=leads")
     // Mon 11:00 UTC — Facebook & Instagram weekly tune-up (Meta API only)

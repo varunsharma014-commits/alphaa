@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic"
 
+import { cronAllowed } from "@/lib/quotas"
 import { asUser } from "@/lib/usage"
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
@@ -11,6 +12,8 @@ import { runQuestionScan } from "@/lib/questions"
 // long-lived server and the request returns straight away.
 export async function GET(req: Request) {
   if (!authorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
+  if (!(await cronAllowed("questions"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
   const users = await activeUsers()
   void (async () => {
     for (const u of users) {

@@ -2,6 +2,7 @@
 // scripts scene by scene, statics per platform, and a budget/testing plan, all built from the
 // playbook (./playbook.ts) plus this business's own facts. Code decides the budget maths, the
 // vertical rules and which lines survive the claims check; the model writes the creative.
+import { checkQuota } from "@/lib/quotas"
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
@@ -191,6 +192,9 @@ export function startStrategy(userId: string): boolean {
   if (inFlight.has(userId)) return false
   inFlight.add(userId)
   void runAsUser(userId, async () => {
+    // One ad plan on the plan's quota (lib/quotas.ts ad_plan). Out of room: no row, nothing spent.
+    const q = await checkQuota(userId, "ad_plan")
+    if (!q.allowed) { console.warn("[ad-strategy] quota", userId, q.message); return }
     const start: AdStrategy = { v: 1, status: "running", at: new Date().toISOString(), playbook: PLAYBOOK_VERSION }
     const row = await db.mockActivity.create({ data: { userId, type: AD_STRATEGY, title: "Wrote your ad plan", metadata: start as object } })
     try {

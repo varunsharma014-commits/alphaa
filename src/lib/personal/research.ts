@@ -282,6 +282,9 @@ export function socialLinks(html: string): Record<string, string> {
 async function runApify(actor: string, input: object): Promise<unknown[]> {
   const token = process.env.APIFY_TOKEN
   if (!token) return []
+  // A brand's run counts against its Apify quota (lib/quotas.ts apify_usd); leads (no brand) pass.
+  const { quotaHere } = await import("@/lib/quotas")
+  if (!(await quotaHere("apify_usd", 0.02)).allowed) return []
   try {
     const res = await fetch(`https://api.apify.com/v2/acts/${actor}/run-sync-get-dataset-items?token=${encodeURIComponent(token)}&maxItems=3`, {
       method: "POST",

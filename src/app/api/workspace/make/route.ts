@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 120
 
+import { isQuotaError, quotaBody } from "@/lib/quotas"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
@@ -29,6 +30,7 @@ export async function POST(req: Request) {
     if (!made) return NextResponse.json({ error: "That post isn’t in this week’s list any more." }, { status: 404 })
     return NextResponse.json(made)
   } catch (err) {
+    if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
     console.error("[workspace/make]", err instanceof Error ? err.message : err)
     return NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
   }

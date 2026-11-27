@@ -77,7 +77,7 @@ export async function competitorAds(userId: string, country: string | null): Pro
   const looked = rows.map(nameOf).filter(Boolean)
   if (!apifyEnabled() || !looked.length) return { looked, ads: [] }
   const urls = looked.map((n) => ({ url: libraryUrl(n, country ?? "US") }))
-  const raw = (await runActor<Raw>("apify~facebook-ads-scraper", { startUrls: urls, resultsLimit: PER }, 120)) ?? []
+  const raw = (await runActor<Raw>("apify~facebook-ads-scraper", { startUrls: urls, resultsLimit: PER }, 120, 0.005 * PER * urls.length)) ?? []
   const seen = new Set<string>()
   const ads: CompetitorAd[] = []
   for (const r of raw) {

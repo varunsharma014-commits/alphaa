@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 120
 
+import { isQuotaError } from "@/lib/quotas"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
@@ -93,11 +94,17 @@ export async function POST(req: Request) {
       const existing = (await listCampaigns(user.id, 10))
       const drafts = existing.filter((r) => r.c.status === "draft")
       const avoid = existing.filter((r) => r.c.status === "sent").slice(0, 4).map((r) => r.c.subject)
-      const made = await once(`email-write:${user.id}`, async () => {
-        const c = await writeCampaign(user.id, { topic: input.topic, avoid })
-        for (const d of drafts) await updateCampaign(d.id, { status: "deleted" })
-        return createCampaign(user.id, { v: 1, status: "draft", ...c })
-      })
+      let made: Awaited<ReturnType<typeof createCampaign>>
+      try {
+        made = await once(`email-write:${user.id}`, async () => {
+          const c = await writeCampaign(user.id, { topic: input.topic, avoid })
+          for (const d of drafts) await updateCampaign(d.id, { status: "deleted" })
+          return createCampaign(user.id, { v: 1, status: "draft", ...c })
+        })
+      } catch (e) {
+        if (isQuotaError(e)) return err(e.message)
+        throw e
+      }
       return reply(undefined, drafts.map((d) => agent([{ kind: "text", text: "Replaced with the new draft below." }], `em-draft-${d.id}`)).filter((m) => m.id !== `em-draft-${made.id}`))
     }
 

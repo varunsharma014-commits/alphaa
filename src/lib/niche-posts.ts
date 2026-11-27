@@ -115,6 +115,10 @@ export function metricLine(i: Pick<NicheItem, "metrics" | "postedAt" | "platform
 async function actor(id: string, input: object, maxItems: number): Promise<Record<string, unknown>[]> {
   const token = process.env.APIFY_TOKEN
   if (!token || maxItems <= 0) return []
+  // Counted at its spend cap ($0.25) against the brand's Apify quota (lib/quotas.ts apify_usd).
+  const { quotaHere } = await import("@/lib/quotas")
+  const q = await quotaHere("apify_usd", 0.25)
+  if (!q.allowed) { console.warn(`[niche] ${id} skipped: quota`, q.userId, q.period); return [] }
   try {
     const qs = new URLSearchParams({ token, timeout: "150", maxItems: String(maxItems), maxTotalChargeUsd: "0.25" })
     const r = await fetch(`https://api.apify.com/v2/acts/${id}/run-sync-get-dataset-items?${qs}`, {

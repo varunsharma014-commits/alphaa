@@ -2,6 +2,7 @@
 // routes and the no-login links in the weekly briefing email. Each function
 // takes our internal user id and checks the item belongs to that user.
 
+import { checkQuota, refundQuota, withQuota } from "@/lib/quotas"
 import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
 import { postReviewReply, resolveAccessToken } from "@/lib/gmb"
@@ -34,8 +35,13 @@ export async function savedReviewDraft(userId: string, reviewId: string): Promis
   return (row?.metadata as { text?: string } | null)?.text ?? null
 }
 
+/** draftReviewReply, counted against the brand's plan quota (content_piece:review; lib/quotas.ts). Throws a QuotaError when out. */
+export function draftReviewReply(...args: Parameters<typeof draftReviewReplyUnmetered>): ReturnType<typeof draftReviewReplyUnmetered> {
+  return withQuota(args[0], "content_piece:review", () => draftReviewReplyUnmetered(...args))
+}
+
 /** Write (and keep) a reply to a Google review. Nothing is posted. */
-export async function draftReviewReply(userId: string, reviewId: string): Promise<string | null> {
+async function draftReviewReplyUnmetered(userId: string, reviewId: string): Promise<string | null> {
   const [user, review] = await Promise.all([
     db.user.findUnique({ where: { id: userId }, select: { businessName: true, businessType: true } }),
     db.gmbReview.findUnique({ where: { id: reviewId }, select: { userId: true, authorName: true, rating: true, comment: true } }),
@@ -92,9 +98,13 @@ export async function approveGbpPost(userId: string, postId: string, text?: stri
   const integration = await db.integration.findUnique({ where: { userId } })
   if (!integration?.gmbAccountId || !integration.gmbLocationId) return { ok: false, error: "Your Google listing isn’t connected." }
   if (content !== post.content) await db.gbpPost.update({ where: { id: post.id }, data: { content } })
+  // One Google post on the plan's publish quota (lib/quotas.ts publish:gbp).
+  const q = await checkQuota(userId, "publish:gbp")
+  if (!q.allowed) return { ok: false, error: q.message ?? "I've posted all the Google updates your plan covers for now." }
   const accessToken = await resolveAccessToken(integration)
   const result = await postToGmb(accessToken, integration.gmbAccountId, integration.gmbLocationId, content, post.postType)
   if (!result.success) {
+    refundQuota(userId, "publish:gbp")
     await db.gbpPost.update({ where: { id: post.id }, data: { status: "failed" } })
     return { ok: false, error: result.error ?? "Google didn’t accept the post. Nothing was published." }
   }

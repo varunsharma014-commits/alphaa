@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
 
+import { isQuotaError, quotaBody } from "@/lib/quotas"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
@@ -43,6 +44,7 @@ export async function POST(req: Request) {
     const r = await approve(userId, input.kind, input.id, input.text)
     return r.ok ? NextResponse.json({ ok: true, url: r.url ?? null }) : NextResponse.json({ error: r.error }, { status: 400 })
   } catch (err) {
+    if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
     console.error("[approve]", err)
     return NextResponse.json({ error: "Something went wrong. Nothing was published." }, { status: 500 })
   }

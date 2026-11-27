@@ -39,7 +39,7 @@ export const FOUNDER_EMAILS = [
  * COMP_ACCESS_EMAILS holds app-store reviewer logins, who must never see other customers.
  * Extra emails via ADMIN_EMAILS (comma-separated).
  */
-const ADMIN_EMAILS = ["varunsharma014@gmail.com", ...(process.env.ADMIN_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean)]
+export const ADMIN_EMAILS = ["varunsharma014@gmail.com", ...(process.env.ADMIN_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean)]
 export function isAdmin(email: string | null | undefined): boolean {
   return !!email && ADMIN_EMAILS.includes(realEmail(email).trim().toLowerCase())
 }

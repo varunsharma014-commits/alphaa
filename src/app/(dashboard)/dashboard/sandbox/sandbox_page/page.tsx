@@ -4,12 +4,11 @@ import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { MessagesSquare } from "lucide-react"
 import { db } from "@/lib/db"
+import { checkQuota } from "@/lib/quotas"
 import { AutopilotBar } from "@/components/dashboard/AutopilotBar"
 import SandboxClient from "@/components/dashboard/SandboxClient"
 import {
   SANDBOX_DAILY_LIMIT,
-  SANDBOX_ACTIVITY_TYPE,
-  sandboxWindowStart,
   suggestedQuestion,
 } from "@/lib/sandbox"
 
@@ -20,20 +19,10 @@ export default async function SandboxPage() {
   const user = await db.user.findUnique({ where: { clerkId } })
   if (!user) redirect("/login")
 
-  // Same counter the API enforces, so the UI opens with a truthful number.
-  let used = 0
-  try {
-    used = await db.mockActivity.count({
-      where: {
-        userId: user.id,
-        type: SANDBOX_ACTIVITY_TYPE,
-        createdAt: { gte: sandboxWindowStart() },
-      },
-    })
-  } catch (err) {
-    console.error("[sandbox] usage count failed:", err)
-  }
-  const remaining = Math.max(0, SANDBOX_DAILY_LIMIT - used)
+  // Same quota the API enforces (lib/quotas.ts sandbox_question), so the UI opens with a truthful number.
+  const quota = await checkQuota(user, "sandbox_question", { record: false })
+  const limit = quota.limit ?? SANDBOX_DAILY_LIMIT
+  const remaining = quota.remaining ?? limit
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
@@ -52,7 +41,7 @@ export default async function SandboxPage() {
         businessName={user.businessName ?? ""}
         placeholder={suggestedQuestion(user.businessType, user.city)}
         initialRemaining={remaining}
-        limit={SANDBOX_DAILY_LIMIT}
+        limit={limit}
       />
     </div>
   )

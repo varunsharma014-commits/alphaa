@@ -1,6 +1,7 @@
 // One place that publishes approved work to whichever site is connected:
 // the WordPress plugin, or a Webflow / Shopify / Wix app connection. Every
 // publish is logged as a "site_change" with the id needed to undo it.
+import { withQuota } from "@/lib/quotas"
 import { db } from "@/lib/db"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { wpCall, pingIndexNow, mdToHtml, mdFaq } from "@/lib/connector/wordpress"
@@ -39,6 +40,11 @@ async function announce(userId: string, siteUrl: string, url: string, viaWp: boo
 }
 
 export async function publishContent(userId: string, input: ContentInput, label: string): Promise<Published> {
+  // One post/page on the plan's website publish quota (lib/quotas.ts publish:site): a QuotaError when out.
+  return withQuota(userId, "publish:site", () => publishUnmetered(userId, input, label))
+}
+
+async function publishUnmetered(userId: string, input: ContentInput, label: string): Promise<Published> {
   const s = await getAgentSettings(userId)
   const user = await db.user.findUnique({ where: { id: userId } })
   const html = mdToHtml(input.markdown)

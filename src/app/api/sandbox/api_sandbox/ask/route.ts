@@ -1,8 +1,7 @@
 // Live AI Sandbox — asks all four engines a user-supplied question RIGHT NOW.
 //
-// This spends real API money on every call, so it is rate limited to
-// SANDBOX_DAILY_LIMIT questions per user per rolling 24h. The counter is the
-// MockActivity ledger (type "sandbox_query") — no schema change needed.
+// This spends real API money on every call, so it is limited per plan per UTC day by the
+// quota ledger (lib/quotas.ts sandbox_question; QUOTAS_JSON overrides the numbers).
 //
 // Nothing here ever fabricates an answer: unconfigured/failed engines come back
 // from scanAllEngines with status "not_configured"/"error" and an empty
@@ -17,7 +16,8 @@ import { db } from "@/lib/db"
 import { scanAllEngines } from "@/lib/ai-engines"
 import { extractMentionedBusinesses } from "@/lib/scan-insights"
 import { logActivity } from "@/lib/activity"
-import { SANDBOX_DAILY_LIMIT, SANDBOX_ACTIVITY_TYPE, sandboxWindowStart } from "@/lib/sandbox"
+import { SANDBOX_DAILY_LIMIT, SANDBOX_ACTIVITY_TYPE } from "@/lib/sandbox"
+import { checkQuota, isQuotaError, refundQuota } from "@/lib/quotas"
 
 export type SandboxEngineResult = {
   engine: "chatgpt" | "claude" | "gemini" | "perplexity"
@@ -58,36 +58,13 @@ export async function POST(req: Request) {
     )
   }
 
-  // ── Rate limit: count sandbox runs in the last rolling 24h ────────────────
-  let used = 0
-  try {
-    used = await db.mockActivity.count({
-      where: {
-        userId: user.id,
-        type: SANDBOX_ACTIVITY_TYPE,
-        createdAt: { gte: sandboxWindowStart() },
-      },
-    })
-  } catch (err) {
-    console.error("[sandbox] rate-limit count failed:", err)
-    return NextResponse.json(
-      { error: "We couldn't check your usage right now. Please try again in a minute." },
-      { status: 500 }
-    )
+  // ── Plan quota (lib/quota-rules sandbox_question: Starter 20/day, Pro and Growth 50/day) ──
+  // Recorded BEFORE spending money, so a crash mid-run can't hand out free extra runs.
+  const quota = await checkQuota(user, "sandbox_question")
+  if (!quota.allowed) {
+    return NextResponse.json({ error: quota.message, remaining: 0, quota: true }, { status: 429 })
   }
-
-  if (used >= SANDBOX_DAILY_LIMIT) {
-    return NextResponse.json(
-      {
-        error: `You've used your ${SANDBOX_DAILY_LIMIT} live checks today — they reset in a few hours. alphaa also checks automatically every Wednesday.`,
-        remaining: 0,
-      },
-      { status: 429 }
-    )
-  }
-
-  // Reserve the slot BEFORE spending money, so a crash mid-run can't hand out
-  // free extra runs.
+  // The ledger row the engine pages and the work log read (no longer the rate-limit counter).
   await logActivity(
     user.id,
     SANDBOX_ACTIVITY_TYPE,
@@ -95,7 +72,8 @@ export async function POST(req: Request) {
     raw.slice(0, 200),
     { question: raw }
   )
-  const remaining = Math.max(0, SANDBOX_DAILY_LIMIT - (used + 1))
+  const remaining = quota.remaining ?? 0
+  const limit = quota.limit ?? SANDBOX_DAILY_LIMIT
 
   const businessName = user.businessName ?? ""
   const websiteUrl = user.websiteUrl ?? ""
@@ -111,6 +89,10 @@ export async function POST(req: Request) {
     )
     engineResults = scan.results
   } catch (err) {
+    if (isQuotaError(err)) {
+      refundQuota(user.id, "sandbox_question")
+      return NextResponse.json({ error: err.message, remaining: 0, quota: true }, { status: 429 })
+    }
     console.error("[sandbox] scanAllEngines failed:", err)
     return NextResponse.json(
       { error: "The live check didn't finish this time. Please try again in a minute." },
@@ -145,5 +127,5 @@ export async function POST(req: Request) {
     }
   })
 
-  return NextResponse.json({ question: raw, results, remaining, limit: SANDBOX_DAILY_LIMIT })
+  return NextResponse.json({ question: raw, results, remaining, limit })
 }

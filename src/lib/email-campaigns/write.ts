@@ -2,6 +2,7 @@
 // own note for this email, and pages that really exist on their site. A draft is rejected (one
 // retry, then a plain template) if it uses a number, price or offer that isn't in the facts,
 // names another AI, or uses hype words.
+import { withQuota } from "@/lib/quotas"
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
@@ -27,7 +28,12 @@ const withHttps = (u: string) => (/^https?:\/\//.test(u) ? u : `https://${u}`)
 const nums = (s: string) => (s.match(/\d+(?:[.,]\d+)?/g) ?? []).map((n) => n.replace(",", "."))
 const BANNED = /\b(best|#1|number one|leading|world[- ]class|guarantee[ds]?|act now|limited time|don[’']t miss|chatgpt|gemini|perplexity|claude)\b/i
 
-export async function writeCampaign(userId: string, opts: { topic?: string; avoid?: string[] } = {}): Promise<Omit<Campaign, "v" | "status">> {
+/** writeCampaign, counted against the brand's plan quota (content_piece:email; lib/quotas.ts). Throws a QuotaError when out. */
+export function writeCampaign(...args: Parameters<typeof writeCampaignUnmetered>): ReturnType<typeof writeCampaignUnmetered> {
+  return withQuota(args[0], "content_piece:email", () => writeCampaignUnmetered(...args))
+}
+
+async function writeCampaignUnmetered(userId: string, opts: { topic?: string; avoid?: string[] } = {}): Promise<Omit<Campaign, "v" | "status">> {
   const user = await db.user.findUnique({ where: { id: userId }, select: { businessName: true, businessType: true, city: true, state: true, websiteUrl: true, voiceDescription: true } })
   if (!user) throw new Error("no user")
   const biz = user.businessName?.trim() || "our business"

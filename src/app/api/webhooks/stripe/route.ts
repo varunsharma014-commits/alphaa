@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from "next/server"
-import { stripe, planFromPrice } from "@/lib/stripe"
+import { stripe, planFromPrice, planItem, extraAdAccounts } from "@/lib/stripe"
+import { saveAgentSettings } from "@/lib/agent/settings"
 import { db } from "@/lib/db"
 import { sendPaymentFailureEmail } from "@/lib/email"
 import { resend } from "@/lib/resend"
@@ -29,7 +30,8 @@ export async function POST(req: NextRequest) {
       if (subscriptionId) {
         const subscription = await stripe.subscriptions.retrieve(subscriptionId, { expand: ["items.data.price.product"] })
         const trialEnd = subscription.trial_end ? new Date(subscription.trial_end * 1000) : null
-        const plan = planFromPrice(subscription.items.data[0]?.price)
+        // The plan item, never the "Extra ad account" add-on (which can be listed first).
+        const plan = planFromPrice(planItem(subscription.items.data)?.price)
         // Full Service checkouts carry no trial, so their status is active.
         // A Shopify-billed account ("shopify:" marker, lib/billing.ts) that checks out here becomes
         // Stripe-billed; Shopify webhooks only clear rows still carrying their marker.
@@ -42,6 +44,7 @@ export async function POST(req: NextRequest) {
             trialEndsAt: trialEnd,
           },
         })
+        await saveAdAllowance({ stripeCustomerId: customerId }, subscriptionId, extraAdAccounts(subscription.items.data))
         await flagFirstMarketCustomer(customerId, sub.metadata?.market)
       } else if (sub.mode === "payment" && sub.metadata?.purpose === "concierge_setup") {
         // One-time white-glove setup fee paid — a human owes this customer a
@@ -82,11 +85,12 @@ export async function POST(req: NextRequest) {
     }
     case "customer.subscription.updated": {
       // The event's price has metadata but an unexpanded product id; planFromPrice handles both.
-      const plan = planFromPrice(sub.items?.data[0]?.price)
+      const plan = planFromPrice(planItem(sub.items?.data)?.price)
       await db.user.updateMany({
         where: { stripeSubscriptionId: sub.id },
         data: { subscriptionStatus: sub.status, plan },
       })
+      await saveAdAllowance({ stripeSubscriptionId: sub.id }, sub.id, extraAdAccounts(sub.items?.data))
       break
     }
     case "customer.subscription.deleted": {
@@ -94,6 +98,7 @@ export async function POST(req: NextRequest) {
         where: { stripeSubscriptionId: sub.id },
         data: { subscriptionStatus: "cancelled", plan: "none" },
       })
+      await saveAdAllowance({ stripeSubscriptionId: sub.id }, sub.id, 0)
       break
     }
     case "invoice.payment_succeeded": {
@@ -128,6 +133,24 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ received: true })
+}
+
+// Growth's ad-account allowance = 1 + the "Extra ad account" quantity on the subscription
+// (lib/ad-accounts.ts). Kept in agent settings `billing` so nothing reads Stripe on each check.
+// Only writes when the number changed or was never written; never fails the webhook.
+async function saveAdAllowance(where: { stripeCustomerId: string } | { stripeSubscriptionId: string }, subscriptionId: string, extra: number) {
+  try {
+    const users = await db.user.findMany({ where, select: { id: true } })
+    const { getAgentSettings } = await import("@/lib/agent/settings")
+    for (const u of users) {
+      const cur = (await getAgentSettings(u.id)).billing
+      if (cur && cur.extraAdAccounts === extra && cur.subscriptionId === subscriptionId) continue
+      if (!cur && extra === 0) continue
+      await saveAgentSettings(u.id, { billing: { extraAdAccounts: extra, subscriptionId, at: new Date().toISOString() } })
+    }
+  } catch (e) {
+    console.error("[stripe] ad-account allowance", e instanceof Error ? e.message : e)
+  }
 }
 
 const MARKET_NAMES: Record<string, string> = { uk: "United Kingdom", de: "Germany", fr: "France", it: "Italy", ae: "UAE (English)", ar: "UAE (Arabic)" }

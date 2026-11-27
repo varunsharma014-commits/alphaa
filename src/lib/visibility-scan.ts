@@ -17,6 +17,12 @@ export async function runVisibilityScan(userId: string) {
   if (!user) {
     throw new Error(`User not found: ${userId}`)
   }
+  // Plan quota (lib/quotas.ts): one full scan, and room for its 4 engine checks. Throws a
+  // QuotaError with a first-person message; nothing is spent.
+  const { checkQuota, requireQuota, QuotaError } = await import("@/lib/quotas")
+  const room = await checkQuota(user, "engine_check", { n: 4, record: false })
+  if (!room.allowed) throw new QuotaError(room)
+  await requireQuota(user, "scan")
 
   const businessName = user.businessName ?? "this business"
   const businessType = user.businessType ?? "business"

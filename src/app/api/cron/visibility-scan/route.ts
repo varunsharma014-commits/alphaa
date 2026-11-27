@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { cronAllowed } from "@/lib/quotas"
 import { asUser } from "@/lib/usage"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
@@ -21,6 +22,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   if (!process.env.CRON_SECRET || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
+  // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
+  if (!(await cronAllowed("visibility-scan"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
 
   const now = Date.now()
   const fourteenDaysAgo = new Date(now - 14 * 24 * 60 * 60 * 1000)

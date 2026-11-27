@@ -12,7 +12,7 @@ import { createPost, listAccounts } from "@/lib/social/store"
 import { generateGbpPost } from "@/lib/gbp-poster"
 import { generatePostImage } from "@/lib/images"
 import { voiceFor } from "@/lib/voice"
-import { countUsage } from "@/lib/usage"
+import { tallyUsage } from "@/lib/usage"
 
 export type Made = {
   /** social = a SocialPost draft, gbp = a GbpPost draft, site = a post_draft row, copy = text only (no plan for posting). */
@@ -42,7 +42,7 @@ export async function makeFromNiche(user: User, itemId: string): Promise<Made | 
   if (!item) return null
   const topic = item.angle || `A post for your business in the spirit of this: ${item.about}`
   const context = `A ${item.platform === "meta_ad" ? "long-running ad" : "post"} in this business's niche is getting attention. What it is: ${item.about}${item.why ? ` Why it works: ${item.why}` : ""} Make an original post for this business in the same spirit. Never copy or mention the other account.`
-  countUsage(user.id, "niche_version")
+  tallyUsage(user.id, "niche_version")
   return social(user, topic, context)
 }
 

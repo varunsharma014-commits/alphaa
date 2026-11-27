@@ -67,7 +67,7 @@ export default async function UpgradePage({ searchParams }: { searchParams: Prom
         <p style={p}>Growth isn’t available for Shopify stores yet. Email <a href="mailto:hi@alphaa.app" style={{ color: "var(--ds-accent)" }}>hi@alphaa.app</a> and we’ll let you know when it is.</p>
       ) : GROWTH_ON_SALE ? (
         <>
-          <UpgradeButton plan="growth" value={price} />
+          <UpgradeButton plan="growth" value={price} addon={{ monthly: EXTRA_AD_ACCOUNT_PRICE.monthly }} />
           <p style={{ ...p, fontSize: "12px", marginTop: "10px" }}>{fine}</p>
         </>
       ) : (

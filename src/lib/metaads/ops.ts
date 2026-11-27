@@ -1,7 +1,7 @@
 // Owner-approved writes to Meta: build a proposed campaign (everything PAUSED), turn it on only
 // when the owner taps, pause it. Every write is counted (usage "ads_op") and logged (ads_change).
 import { db } from "@/lib/db"
-import { countUsage } from "@/lib/usage"
+import { tallyUsage } from "@/lib/usage"
 import { listAccounts } from "@/lib/social/store"
 import { dec } from "@/lib/social/store"
 import { buildPaused, setStatus, type CampaignSpec } from "./graph"
@@ -66,7 +66,7 @@ export async function approveAndBuild(userId: string, id: string, input: { daily
       dailyBudget: daily, pageId: c.pageId, pageToken: page ? dec(page.tokenEnc) : null, igUserId: access.picks.igUserId ?? null, pixelId: access.picks.pixelId ?? null,
       website: site, privacyUrl, city: c.plan.city, radiusMiles: c.plan.radiusMiles, ads,
     }, async (what, objectId) => {
-      countUsage(userId, "ads_op")
+      tallyUsage(userId, "ads_op")
       if (what === "campaign") c.built = { ...c.built, campaignId: objectId }
       if (what === "ad_set") c.built = { ...c.built, adSetId: objectId }
       if (what === "lead_form") c.built = { ...c.built, formId: objectId }
@@ -106,7 +106,7 @@ export async function setLive(userId: string, id: string, on: boolean): Promise<
   try {
     for (const oid of ids) {
       await setStatus(token, oid, status)
-      countUsage(userId, "ads_op")
+      tallyUsage(userId, "ads_op")
     }
   } catch (err) {
     return { ok: false, error: `Meta didn’t accept that: ${err instanceof Error ? err.message : "error"}` }

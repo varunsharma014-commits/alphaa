@@ -8,12 +8,14 @@ import { hasGrowth } from "@/lib/billing"
 import { agent } from "@/lib/agent/types"
 import { metaAdsConfigured } from "@/lib/metaads/connect"
 import { metaAdsMessages } from "@/lib/metaads/narration"
-import { getAccess, listCampaigns, patchAccess, removeAccess } from "@/lib/metaads/store"
+import { getAccess, getCampaign, listCampaigns, patchAccess, removeAccess } from "@/lib/metaads/store"
 import { proposePlan } from "@/lib/metaads/plan"
 import { askCityMessages } from "@/lib/agent/city"
 import { approveAndBuild, dismissPlan, setLive } from "@/lib/metaads/ops"
 import { applyTune, dismissTune } from "@/lib/metaads/tune"
 import { forget } from "@/lib/metaads/report"
+import { checkAdAccount } from "@/lib/ad-accounts"
+import { checkQuota } from "@/lib/quotas"
 
 // Facebook + Instagram ads, owner choices from the ads thread. Answers with the updated messages.
 const id = z.string().min(5).max(40)
@@ -54,6 +56,10 @@ export async function POST(req: Request) {
       const picks = { ...a.picks }
       if (input.key === "adAccount") {
         if (v && !a.adAccounts.some((x) => x.id === v)) return fail("That ad account isn’t shared with me.")
+        if (v) {
+          const allowed = await checkAdAccount(user, "meta", v)
+          if (!allowed.ok) return fail(allowed.message, 402)
+        }
         picks.adAccountId = v ?? undefined
         picks.pixelId = null
       } else if (input.key === "page") picks.pageId = v ?? undefined
@@ -66,6 +72,8 @@ export async function POST(req: Request) {
     case "plan": {
       // No city yet: ask for it in the chat (small form) instead of failing.
       if (!user.city?.trim()) return NextResponse.json({ messages: askCityMessages("metaads", user.state) })
+      const q = await checkQuota(user, "ad_plan")
+      if (!q.allowed) return fail(q.message ?? "", 429)
       const r = await proposePlan(user.id)
       if (!r.ok) return fail(r.reason, 409)
       said = "Here’s my plan. Nothing is built until you approve it."
@@ -73,6 +81,13 @@ export async function POST(req: Request) {
     }
     case "approve": {
       const daily = Number(String(input.dailyBudget).replace(/[^\d.]/g, ""))
+      const planned = await getCampaign(user.id, input.id)
+      if (planned) {
+        const allowed = await checkAdAccount(user, "meta", planned.adAccountId)
+        if (!allowed.ok) return fail(allowed.message, 402)
+      }
+      const q = await checkQuota(user, "ad_change")
+      if (!q.allowed) return fail(q.message ?? "", 429)
       const r = await approveAndBuild(user.id, input.id, { dailyBudget: daily, privacyUrl: input.privacyUrl ?? null })
       if (!r.ok) return fail(r.error, 409)
       said = r.said
@@ -86,6 +101,14 @@ export async function POST(req: Request) {
     }
     case "enable":
     case "pause": {
+      // Pausing is never blocked; turning on counts against the ad-account allowance.
+      if (input.op === "enable") {
+        const c = await getCampaign(user.id, input.id)
+        if (c) {
+          const allowed = await checkAdAccount(user, "meta", c.adAccountId)
+          if (!allowed.ok) return fail(allowed.message, 402)
+        }
+      }
       const r = await setLive(user.id, input.id, input.op === "enable")
       if (!r.ok) return fail(r.error, 409)
       forget(user.id)

@@ -20,6 +20,11 @@ export async function googleSearch(
 ): Promise<SerpResult[]> {
   const token = process.env.APIFY_TOKEN
   if (!token) return []
+  // One results page on the brand's search quota (lib/quotas.ts search); public scans (no brand) pass.
+  const { quotaHere } = await import("@/lib/quotas")
+  const q = await quotaHere("search")
+  if (!q.allowed) { console.warn("[apify-search] search quota", q.userId, q.period); return [] }
+  if (q.userId) void quotaHere("apify_usd", 0.005) // ~$0.005 a page, for the cost view
 
   // run-sync-get-dataset-items runs the actor and returns its dataset directly.
   const endpoint = `https://api.apify.com/v2/acts/${ACTOR}/run-sync-get-dataset-items?token=${encodeURIComponent(token)}`

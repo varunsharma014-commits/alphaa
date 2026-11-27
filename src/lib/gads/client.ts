@@ -1,6 +1,6 @@
 // One brand's Google Ads connection: access tokens from the encrypted refresh token (kept in
 // memory only), and every write counted as usage ("ads_op", one per operation).
-import { countUsage } from "@/lib/usage"
+import { tallyUsage } from "@/lib/usage"
 import { refreshGadsToken } from "./oauth"
 import { dec, getGadsAccount, saveGadsAccount, type GadsAccount } from "./store"
 import * as api from "./api"
@@ -54,12 +54,12 @@ export async function gadsFor(userId: string): Promise<Gads> {
     search: (q) => api.searchStream(cid, q, o),
     mutate: async (service, ops) => {
       const r = await api.mutate(cid, service, ops, o)
-      countUsage(userId, "ads_op", ops.length)
+      tallyUsage(userId, "ads_op", ops.length)
       return r
     },
     mutateAll: async (ops) => {
       const r = await api.mutateAll(cid, ops, o)
-      countUsage(userId, "ads_op", ops.length)
+      tallyUsage(userId, "ads_op", ops.length)
       return r
     },
     keywordIdeas: (body) => api.generateKeywordIdeas(cid, body, o),

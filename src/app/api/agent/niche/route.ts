@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 120
 
+import { isQuotaError, quotaBody } from "@/lib/quotas"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
@@ -12,7 +13,7 @@ import { writeSocial } from "@/lib/content"
 import { renderSocialCard } from "@/lib/social-card"
 import { ensureBrandKit } from "@/lib/brand-kit"
 import { createPost, listAccounts } from "@/lib/social/store"
-import { countUsage } from "@/lib/usage"
+import { tallyUsage } from "@/lib/usage"
 import { agent } from "@/lib/agent/types"
 
 const body = z.object({ op: z.enum(["status", "refresh", "make"]), id: z.string().min(4).max(40).optional() })
@@ -43,7 +44,13 @@ export async function POST(req: Request) {
   if (!item) return NextResponse.json({ error: "That post isn’t in this week’s list any more." }, { status: 404 })
   const topic = item.angle || `A post for your business in the spirit of this: ${item.about}`
   const context = `A ${item.platform === "meta_ad" ? "long-running ad" : "post"} in this business's niche is getting attention. What it is: ${item.about}${item.why ? ` Why it works: ${item.why}` : ""} Make an original post for this business in the same spirit. Never copy or mention the other account.`
-  const sp = await writeSocial(user, topic, context)
+  let sp: Awaited<ReturnType<typeof writeSocial>>
+  try {
+    sp = await writeSocial(user, topic, context)
+  } catch (err) {
+    if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
+    throw err
+  }
   const brand = await ensureBrandKit(user.id).catch(() => null)
   const card = await renderSocialCard(user.id, { headline: sp.headline, businessName: user.businessName, brand }).catch(() => null)
   // Saving it as a social post is Pro and up (2026-11-18).
@@ -55,6 +62,6 @@ export async function POST(req: Request) {
     saved = true
   }
   await db.mockActivity.create({ data: { userId: user.id, type: "draft_written", title: `Wrote a social post: “${sp.headline}”`, metadata: { topic, text: sp.text, kind: "social", imageId: card?.id ?? null, niche: item.id } } })
-  countUsage(user.id, "niche_version")
+  tallyUsage(user.id, "niche_version")
   return NextResponse.json({ messages: [madeMessage({ text: sp.text, image: card?.url ?? null, saved, growth, from: item })] })
 }

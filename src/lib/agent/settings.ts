@@ -58,6 +58,8 @@ export type AgentSettings = {
   ideaHooks?: Record<string, { hook: string; at: string }>
   /** Hosts the owner marked "Not a competitor". */
   competitorsDismissed?: string[]
+  /** Billing add-ons, written by the Stripe webhook: extra ad accounts on top of Growth's 1 (lib/ad-accounts.ts). */
+  billing?: { extraAdAccounts: number; subscriptionId?: string; at: string }
 }
 
 export type Autopilot = {

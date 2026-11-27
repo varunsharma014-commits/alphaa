@@ -4,7 +4,7 @@
 //  - if the owner lowered their cap, scale budgets down to fit; never above it
 // autopilot.ads "budget" = I apply it and report; "each" (default) = I propose and wait for a tap.
 import { db } from "@/lib/db"
-import { countUsage } from "@/lib/usage"
+import { tallyUsage } from "@/lib/usage"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { insights, resultsOf, setDailyBudget, setStatus, type InsightRow } from "./graph"
 import { decToken, getAccess, getTune, listCampaigns, logChange, saveCampaign, saveTune, type TuneAction, type TunePass } from "./store"
@@ -67,7 +67,7 @@ export async function applyTune(userId: string, id: string, by: "owner" | "autop
         await saveCampaign(userId, c)
         await logChange(userId, { campaignRowId: c.id, objectId: a.adSetId, what: `changed the daily budget of “${c.name}” from ${a.from} to ${a.to} ${c.currency}`, why: a.why, by, before: a.from, after: a.to })
       }
-      countUsage(userId, "ads_op")
+      tallyUsage(userId, "ads_op")
       done.push(a)
     } catch (err) {
       console.error("[metaads] tune", err instanceof Error ? err.message : "failed")

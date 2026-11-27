@@ -1,3 +1,4 @@
+import { isQuotaError, quotaBody } from "@/lib/quotas"
 import { hasPro } from "@/lib/billing"
 import { NextRequest, NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
@@ -33,6 +34,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
     return NextResponse.json({ error: 'Invalid action — expected "generate" or "post"' }, { status: 400 })
   } catch (err) {
+    if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
     console.error("[GBP] review reply error:", err)
     return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 })
   }

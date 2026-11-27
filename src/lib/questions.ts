@@ -104,6 +104,14 @@ export async function runQuestionScan(userId: string): Promise<QuestionScan | nu
   if (!user || !biz) return null
   const qs = await trackedQuestions(userId)
   if (!qs.length) return null
+  // Room for every question × 4 AIs in this plan's quota? Otherwise skip the whole scan (a half
+  // scan would read as "not named" for the questions that were never asked).
+  const { checkQuota } = await import("@/lib/quotas")
+  const room = await checkQuota(user, "engine_check", { n: qs.length * 4, record: false })
+  if (!room.allowed) {
+    console.warn("[questions] engine-check quota reached, skipping scan", userId, room.period, room.used, room.limit)
+    return null
+  }
   const type = user.businessType ?? "business"
   const city = user.city ?? ""
 

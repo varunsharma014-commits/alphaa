@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 export const maxDuration = 30
 
+import { publicHit } from "@/lib/quotas"
 import { NextRequest, NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
 import { z } from "zod"
@@ -73,6 +74,8 @@ export async function POST(req: NextRequest) {
   if (!title && !description && text.length < 80) {
     return NextResponse.json({ error: "unreadable", domain }, { status: 422 })
   }
+  const cap = await publicHit("identify", req)
+  if (!cap.ok) return NextResponse.json({ error: cap.error, quota: true }, { status: 429 })
 
   try {
     const msg = await anthropic.messages.create({

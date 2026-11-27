@@ -8,7 +8,7 @@
 import { db } from "@/lib/db"
 import { SUPPORT_EMAIL } from "@/lib/constants"
 import { shopifyBilledShop } from "@/lib/billing"
-import { getStripe } from "@/lib/stripe"
+import { getStripe, planItem } from "@/lib/stripe"
 import { sendAs, shell, esc } from "@/lib/connector/mail"
 import { AGENT_SENDER_NAME, REPLY_TO } from "@/lib/email-sender"
 
@@ -42,7 +42,7 @@ export async function guaranteeVerdict(userId: string): Promise<GuaranteeVerdict
     const sub = await getStripe().subscriptions.retrieve(user.stripeSubscriptionId)
     if (sub.status !== "active") return { eligible: false, reason: `subscription ${sub.status}` }
     start = new Date(sub.start_date * 1000)
-    const price = sub.items.data[0]?.price
+    const price = planItem(sub.items.data)?.price // the plan, not an "Extra ad account" add-on
     const unit = price?.unit_amount ?? 0
     const months = price?.recurring?.interval === "year" ? 12 * (price.recurring.interval_count ?? 1) : price?.recurring?.interval_count ?? 1
     amountCents = Math.round(unit / months)
