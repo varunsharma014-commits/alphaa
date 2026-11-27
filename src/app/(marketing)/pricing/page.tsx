@@ -7,9 +7,7 @@ import { V3Page, Frame, Section, ServicePills, FinalCta, type SvcKey } from "@/c
 import { ExBox, Note, Engines } from "@/components/marketing/v3/pages/Examples"
 import { plans, billingFaqs, planHref, ANNUAL_LABEL } from "./pricing-data"
 import { GUARANTEE_LINE, RENEWAL_LINE } from "@/lib/offer-copy"
-import { BRAND } from "@/lib/brand"
 
-const A = BRAND.agentName
 
 // Each plan gets its own example "product shot": what that plan looks like in use.
 const ART: Record<string, { tone: SvcKey; art: React.ReactNode }> = {
@@ -41,12 +39,6 @@ const ART: Record<string, { tone: SvcKey; art: React.ReactNode }> = {
   },
 }
 
-// Agency vs agent: same rows and numbers as before (apple/Sections AgencyToggle).
-const ROWS: [string, string, string][] = [
-  ["The report", "A monthly PDF full of jargon and vanity metrics. You have no idea if it worked.", "One line: what I did today, what changed, what I need from you."],
-  ["The contract", "6-month minimums, 12-month contracts, exit fees. Locked in before they deliver.", "Month to month. Cancel online in a minute. I only stay if I keep earning it."],
-  ["The scope", "Usually one channel per retainer. Ask about ChatGPT or Claude and many stumble.", "AI search on every plan. Social media, Google listing, reviews, email and lead tracking on Pro. Google and Meta ads on Growth (early access)."],
-]
 
 export default function PricingPage() {
   const [annual, setAnnual] = useState(false)
@@ -97,30 +89,6 @@ export default function PricingPage() {
                 </article>
               )
             })}
-          </div>
-        </Section>
-
-        <Section center>
-          <h2 className="v3-h2">Agencies often charge $1,000+ a month<br /><span className="v3-blue">for marketing an AI Agent now runs for you.</span></h2>
-          <p className="v3-lede">Keep the money, get your time back, and show up where customers search and ask today.</p>
-          <div className="pg-vs">
-            <div className="pg-vs__col">
-              <div className="pg-vs__name">Marketing agency (example)</div>
-              <div className="pg-vs__price"><b>$1,000+</b><span>/mo</span></div>
-              <div className="pg-vs__year">for example, $12,000+ a year</div>
-              {ROWS.map(([k, them]) => <div key={k}><h3>{k}</h3><p>{them}</p></div>)}
-            </div>
-            <div className="pg-vs__col pg-vs__col--us">
-              <div className="pg-vs__name">{A}</div>
-              <div className="pg-vs__price"><b>$99</b><span>/mo</span></div>
-              <div className="pg-vs__year">$1,188 a year</div>
-              {ROWS.map(([k, , us]) => <div key={k}><h3>{k}</h3><p>{us}</p></div>)}
-            </div>
-            <div className="pg-vs__save">
-              <span>For example, against a $1,000 a month agency, save</span>
-              <b>$10,812 a year</b>
-              <em>…and your marketing still gets done every week.</em>
-            </div>
           </div>
         </Section>
 
