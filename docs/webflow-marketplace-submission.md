@@ -10,7 +10,7 @@ Code was brought in line with the current Marketplace Guidelines on 2026-11-27 (
 
 ## 1. What only Varun can do (in order)
 
-1. **Make the test site** (about 20 min, Webflow Designer): see §5. Do **not** use "Copy of FairWayPay". It is a live copy of a Reg CF offering page ("Invest Now", "View Form C"), and reviewers would publish test posts onto it. After the new site works, unpublish or delete the FairWayPay copy too.
+1. ~~Make the test site~~ **DONE 2026-11-27:** "Alphaa Test Blog" (free Notable blog template, Blog CMS + categories) in GT's Workspace, published at https://alphaa-test-blog.webflow.io. Both FairWayPay sites were archived (unpublished, off the dashboard; Webflow has no other delete).
 2. **Create the reviewer login** `webflow-review@alphaa.app` (about 5 min): see §6. Set its password, add it to `COMP_ACCESS_EMAILS` on Railway, then install the app on the test site **from that login**.
 3. **Record the reviewer demo video** (2:30 to 3:30, macOS screen recording): follow the shot list in §4. Upload it to YouTube as **Unlisted** (or Loom), then check that it plays in a private window.
 4. **Upload the promo video** `brand/apps/listing/color/webflow/alphaa-webflow-listing.mp4` to YouTube as **Unlisted**, title "Alphaa for Webflow", thumbnail `alphaa-webflow-listing-poster.png`. It is optional, but it helps.
@@ -241,6 +241,9 @@ Re-record if anything shows: a real customer's data, any client site (FairWayPay
 ---
 
 ## 5. Test site plan
+
+**Status 2026-11-27:** created and published: https://alphaa-test-blog.webflow.io (site "Alphaa Test Blog"). Remaining: install the Alphaa app on it from the reviewer login (step 2).
+
 
 **Don't reuse "Copy of FairWayPay"** (`fairwaypayg-6537782e4c146322cfdfe82cadb.webflow.io`, published 2026-09-29, still connected to the founder account). It copies a live Reg CF offering (Invest Now, Form C links). Reviewers publishing posts onto it, and a public copy of an offering page, both break our legal-safety rules.
 
