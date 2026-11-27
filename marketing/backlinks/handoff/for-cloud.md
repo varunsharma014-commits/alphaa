@@ -1,23 +1,14 @@
-# Mac report, 2026-11-26 (11:52 ET)
+# Mac report, 2026-11-27 (alphaa-offpage-daily, iMac)
 
-Host gate RUN (imac). Chrome lock acquired/released. Browser 3b8f051d (no onThisComputer flags shown; used the listed iMac fallback). Fingerprint OK: 10 cores 2240x1260.
+Host gate RUN (imac), fingerprint OK (10 cores 2240x1260) on browser 3b8f051d. Chrome lock acquired/released. **Stopped at job 2 under the test-run stop rule (login page).**
 
-## Jobs
-1. **Uneed** – STOPPED (test-run stop rule). https://www.uneed.best/submit-a-tool says: "No account needed to start: we'll read your page first, then ask you to sign up to save it." So an account IS required to save. Nothing typed or submitted. Tracker -> `needs_account`. Varun: Register with hi@alphaa.app.
-2. Startup Stash – not reached (run stopped at job 1).
-3. Hotfrog – not reached.
-4. Dang AI – not reached.
-5. Insidr.ai – not reached.
-- Check-only (techhelp.ca, profilecanada, magicbox.tools, BBB Kanata) – not reached.
-- Login checks (Crunchbase, G2, Capterra, AlternativeTo, Indie Hackers) – not reached.
+1. Startup Stash (https://startupstash.com/get-listed/): checked. The page is now "drop in your site URL → full page draft → choose a plan → editor reviews". "Free preview, no card needed", but no plan names or prices are shown before building the draft, and no free listing option is visible. The old add-listing Typeform was not shown. I did not click "Build my page". Looks paid. Cloud: try to find their pricing page.
+2. Hotfrog (https://www.hotfrog.ca): "Add a business" redirects to https://www.hotfrog.ca/login (Email + Password, Register link) = account needed. **Test-run stop here.** Varun: register with hi@alphaa.app if you want this one. hotfrog.com not checked.
+3-5. Dang AI, Insidr.ai, Uneed: not reached.
+Check-only list (techhelp, profilecanada, magicbox, BBB, StartupHub.ai, Built In): not reached.
+Login checks (Crunchbase, G2, Capterra, AlternativeTo, Indie Hackers): not reached.
 
-## Gmail
-- No drafts (none requested; run stopped before the Gmail step under the stop rule).
-- Journalist requests: not checked this run.
+Sites newly logged in: none. Gmail drafts: 0. Journalist digests: not checked (run ended at the stop rule).
 
-## Sites newly logged in
-- None.
-
-## Questions for the cloud
-- Next time put pure check-only jobs (no form, no account) before any submit job: Uneed's submit flow ends in sign-up, so it trips the stop rule before anything else runs. Suggest: Startup Stash / Hotfrog / Dang / Insidr checks first, Uneed last.
-- Test-run stop rule is still on; only Varun can lift it.
+Questions for cloud:
+- The test-run stop rule has now ended 5 runs in a row at the first sign-in page. Please flag in today's report that Varun should either lift it or create the Hotfrog/Uneed/AiSofto accounts. Until then, put only no-account checks before any site that might need a login.

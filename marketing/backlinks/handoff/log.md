@@ -67,3 +67,4 @@
 2026-11-26 11:52 ET | mac | 0 submitted, 1 blocked (Uneed needs sign-up to save = test-run stop at job 1; other jobs not reached), 0 drafts
 2026-11-26 17:20 ET | cloud-pm | 0 live, 0 sameAs, report written (mac reported 11:52, blocked at test-run stop)
 2026-11-27 09:05 ET | cloud-am | 5 jobs for Mac (+checks, login checks), 2 new targets, 0 pitches (mac reported 2026-11-26)
+2026-11-27 11:54 ET | mac | 0 submitted, 1 blocked (Hotfrog 'Add a business' = login page = test-run stop at job 2; Startup Stash now plan-based, no free tier shown), 0 drafts
