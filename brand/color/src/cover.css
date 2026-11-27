@@ -1,0 +1,15 @@
+/* Shared by the brand/color pages (covers, avatar, newsletter). Tokens: ../../social/base-color.css */
+html,body{margin:0}
+.cv{position:absolute;inset:0;display:flex;align-items:center;color:var(--ink);
+  background:
+    radial-gradient(34% 70% at 0% 0%,var(--mk-2),transparent 72%),
+    radial-gradient(32% 70% at 100% 0%,var(--ad-2),transparent 72%),
+    radial-gradient(34% 70% at 100% 100%,var(--se-2),transparent 72%),
+    radial-gradient(32% 70% at 0% 100%,var(--ct-2),transparent 72%),
+    linear-gradient(135deg,var(--mk-bg),var(--em-bg) 50%,var(--ad-bg))}
+.cv h1{font-weight:800;letter-spacing:-.045em;line-height:1.02}
+.cv h1 span{color:var(--em)}
+.cv .sub{color:var(--fg2);line-height:1.35;margin:0}
+.pills{display:flex;flex-wrap:wrap}
+.pills .pill{font-weight:700}
+.lock{display:inline-flex;align-items:center;font-weight:800;letter-spacing:-.03em}

@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../../social/base-color.css><link rel=stylesheet href=cover.css>
+<!-- Template: 1920x1080 article / LinkedIn newsletter cover. Fill it with
+     node brand/color/render-cover.mjs --title "..." [--kicker "The Answer · Issue 4"] [--sub "..."] [--tone se] --out file.png
+     Text only. Tone = one of mk ad ct se em (the pastel block). -->
+<style>html,body{width:1920px;height:1080px}
+.bg{padding:110px 120px}
+.kick{display:inline-block;font-size:30px;font-weight:700;color:var(--ci);background:var(--c2);border-radius:999px;padding:12px 28px}
+h1{font-size:128px;max-width:1560px;margin-top:44px;line-height:1.0}
+.sub{font-size:42px;max-width:1360px;margin-top:40px}
+.foot{left:120px;right:120px;bottom:88px}
+.brand{font-size:40px;gap:18px}.brand .orb{width:58px;height:58px}
+.nl{font-size:28px;color:var(--fg2)}</style>
+<script>
+addEventListener("DOMContentLoaded",()=>{
+  const q=new URLSearchParams(location.search),set=(id,v)=>{const el=document.getElementById(id);if(v===null)return;if(!v){el.remove();return}el.textContent=v}
+  set("k",q.get("kicker"));set("t",q.get("title"));set("s",q.get("sub"));set("n",q.get("note"))
+  const tone=q.get("tone");if(/^(mk|ad|ct|se|em)$/.test(tone||""))document.body.className="t-"+tone
+  const h=document.getElementById("t"),len=h.textContent.length;h.style.fontSize=(len>70?92:len>48?110:128)+"px"
+})
+</script></head>
+<body class=t-ad><div class=bg>
+<div class=kick id=k>The Answer</div>
+<h1 id=t>How small businesses get recommended by AI</h1>
+<p class=sub id=s>What AI recommends this week, and how to be in the answer.</p>
+<div class=foot><div class=brand><span class=orb></span>alphaa.app</div><div class=nl id=n>Alphaa AI Agent</div></div>
+</div></body></html>

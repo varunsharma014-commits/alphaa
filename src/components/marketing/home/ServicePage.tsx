@@ -27,7 +27,7 @@ export function ServicePage({ s }: { s: Service }) {
         <Section tight>
           <div className="v3-chapter">
             <div>
-              <nav className="v3-crumbs" aria-label="Breadcrumb"><Link href="/">Home</Link> › <Link href="/services">Services</Link> › <span>{s.name}</span></nav>
+              <nav className="v3-crumbs" aria-label="Breadcrumb"><Link href="/">Home</Link> › <Link href="/services">Solutions</Link> › <span>{s.name}</span></nav>
               <Eyebrow small={soon ? "Growth plan · early access" : growth ? (GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access") : pro ? "Pro and Growth plans" : "Every plan"}>{s.kicker}</Eyebrow>
               <h1 className="v3-h1 v3-h1--md">{s.h1}</h1>
               <p className="v3-lede">{s.sub}</p>

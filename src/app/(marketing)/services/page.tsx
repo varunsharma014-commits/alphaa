@@ -26,7 +26,7 @@ export default function ServicesIndex() {
       <Frame top>
         <Section className="v3-hero">
           <div>
-            <p className="v3-kicker">Services</p>
+            <p className="v3-kicker">Solutions</p>
             <ServicePills />
             <h1 className="v3-h1">Your whole marketing. <span className="v3-blue">One AI agent.</span></h1>
             <p className="v3-lede">Stop juggling an agency, a freelancer and five apps. Your AI agent does all of it every week, in your voice, and shows you what’s bringing customers in.</p>

@@ -1,12 +1,11 @@
 import Link from "next/link"
-import { Sparkles } from "lucide-react"
 import { MarketSwitcher } from "@/components/layout/MarketSwitcher"
 import { CookieSettingsLink } from "@/components/common/CookieSettingsLink"
 import { PrivacyChoicesLink } from "@/components/common/PrivacyChoicesLink"
 import "@/components/marketing/v3/v3.css"
 
 const footerLinks = {
-  Services: [
+  Solutions: [
     { href: "/services/social-media-management", label: "Social media management" },
     { href: "/services/ads-management", label: "Ads management" },
     { href: "/services/ai-search-optimization", label: "SEO & AI search" },
@@ -65,7 +64,7 @@ export function Footer() {
         <div className="v3-foot__grid">
           <div className="v3-foot__brand">
             <Link href="/" className="v3-logo" style={{ marginBottom: 12 }}>
-              <Sparkles aria-hidden="true" />
+              <span className="v3-orb" aria-hidden="true" />
               alphaa
             </Link>
             <p style={{ maxWidth: 340 }}>

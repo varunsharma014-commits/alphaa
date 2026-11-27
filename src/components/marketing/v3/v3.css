@@ -266,6 +266,13 @@ a.v3-card:hover { transform: translateY(-2px); box-shadow: var(--v-shadow); }
 .v3-nav__in { max-width: 1120px; margin: 0 auto; height: 56px; display: flex; align-items: center; gap: 22px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
 .v3-logo { display: inline-flex; align-items: center; gap: 7px; font-weight: 800; font-size: 18px; letter-spacing: -0.03em; color: var(--v-fg) !important; text-decoration: none !important; }
 .v3-logo svg { width: 18px; height: 18px; }
+/* Brand mark (2026-11-26): the dashboard's orb (.ax-orb in (dashboard)/workspace.css). It turns
+   slowly in the header only; static in the footer and for anyone who prefers reduced motion. */
+.v3-orb { display: inline-block; flex: none; width: 19px; height: 19px; border-radius: 999px; background: conic-gradient(from 0deg, #5ac8fa, #0071e3, #af52de, #ff2d55, #ff9500, #5ac8fa); box-shadow: 0 0 10px rgba(0, 113, 227, .22); }
+.v3-orb--live { animation: v3-orb-spin 9s linear infinite, v3-orb-glow 4.5s ease-in-out infinite; }
+@keyframes v3-orb-spin { to { transform: rotate(360deg); } }
+@keyframes v3-orb-glow { 0%, 100% { filter: saturate(1); } 50% { filter: saturate(1.35); } }
+@media (prefers-reduced-motion: reduce) { .v3-orb--live { animation: none; } }
 .v3-nav__links { display: flex; gap: 22px; align-items: center; }
 .v3-nav__links a, .v3-nav__acct { color: var(--v-muted) !important; text-decoration: none !important; font-size: 14px; transition: color .15s; }
 .v3-nav__links a:hover, .v3-nav__links a[aria-current="page"], .v3-nav__acct:hover { color: var(--v-fg) !important; }

@@ -10,6 +10,7 @@ import { db } from "@/lib/db"
 import { safeFetch } from "@/lib/safe-fetch"
 import { imageUrl } from "@/lib/images"
 import { luminance, type BrandKit } from "@/lib/brand-kit"
+import { orbShapes } from "@/lib/brand-orb"
 
 const S = 1080
 const PAD = 84
@@ -92,17 +93,33 @@ export const CARD_STYLES = ["minimal", "editorial", "gradient", "warm"] as const
 export type CardStyle = (typeof CARD_STYLES)[number]
 export const CARD_STYLE_NAME: Record<CardStyle, string> = { minimal: "Minimal light", editorial: "Editorial dark", gradient: "Bold gradient", warm: "Warm" }
 
+/**
+ * Alphaa's own style (alphaa.app's posts only, never offered to customers): the site's pastel
+ * service blocks (v3.css tones), ink type, the orb + "alphaa" footer. Replaced black & white
+ * `mono` on 2026-11-26. The tone is picked from the headline, so a post keeps its colour.
+ */
+export const HOUSE_STYLE = "alphaa" as const
+const HOUSE_TONES = [
+  { bg: "#fff0f4", soft: "#ffd6e2", accent: "#e8457a", n1: "#ffedb3", n2: "#e1d4ff" }, // Social media
+  { bg: "#eef4ff", soft: "#d4e3ff", accent: "#2f6fde", n1: "#e1d4ff", n2: "#c9efd8" }, // Ads
+  { bg: "#fffaeb", soft: "#ffedb3", accent: "#b07a00", n1: "#ffd6e2", n2: "#c9efd8" }, // Content
+  { bg: "#effaf3", soft: "#c9efd8", accent: "#1f9d55", n1: "#d4e3ff", n2: "#ffedb3" }, // SEO & AI search
+  { bg: "#f5f0ff", soft: "#e1d4ff", accent: "#7a4fd6", n1: "#ffd6e2", n2: "#d4e3ff" }, // Email
+]
+const houseTone = (headline: string) => HOUSE_TONES[[...headline].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % HOUSE_TONES.length]
+const isHouse = (websiteUrl: string | null | undefined) => /(^|\.)alphaa\.app$/i.test((websiteUrl ?? "").replace(/^https?:\/\//, "").replace(/\/.*$/, ""))
+
 /** Draws the card and saves it. Null when the headline uses letters the font can't draw. */
 export async function renderSocialCard(userId: string, input: CardInput): Promise<{ id: string; url: string } | null> {
-  // The owner's saved style, and Alphaa's own brand stays black & white (brand rule).
+  // The owner's saved style; alphaa.app's own posts always use Alphaa's house style (brand rule).
   const [u, st] = await Promise.all([
     db.user.findUnique({ where: { id: userId }, select: { websiteUrl: true } }),
     db.mockActivity.findFirst({ where: { userId, type: "agent_settings" }, orderBy: { createdAt: "desc" }, select: { metadata: true } }),
   ])
   const saved = ((st?.metadata as { images?: { cardStyle?: string } } | null)?.images?.cardStyle ?? null) as CardStyle | null
-  const mono = input.mono ?? /(^|\.)alphaa\.app$/i.test((u?.websiteUrl ?? "").replace(/^https?:\/\//, "").replace(/\/.*$/, ""))
+  const house = input.house ?? isHouse(u?.websiteUrl)
   // JPEG: Instagram and TikTok only take JPEG for photo posts.
-  const img = await renderCardJpeg({ ...input, style: input.style ?? (saved && CARD_STYLES.includes(saved) ? saved : undefined), mono })
+  const img = await renderCardJpeg({ ...input, style: input.style ?? (saved && CARD_STYLES.includes(saved) ? saved : undefined), house })
   if (!img) return null
   const headline = input.headline.trim().replace(/\s+/g, " ").slice(0, 80)
   const row = await db.mockActivity.create({ data: { userId, type: "post_image", title: `Made an image for “${headline}”`, metadata: { b64: img.toString("base64"), mime: "image/jpeg", alt: headline, kind: "social_card" } } })
@@ -116,8 +133,8 @@ export type CardInput = {
   /** Optional second line under the headline (short). */
   subline?: string | null
   style?: CardStyle
-  /** Black & white only (Alphaa's own brand). */
-  mono?: boolean
+  /** Alphaa's own house style (alphaa.app's posts): overrides `style`. */
+  house?: boolean
 }
 
 /** The card as a JPEG (what social platforms accept). */
@@ -144,15 +161,10 @@ function shade(c: string, amt: number): string {
 
 type Palette = { bg: string; bg2?: string; ink: string; sub: string; accent: string; rule: string; tile: "light" | "dark" | "auto" }
 
-function palette(style: CardStyle, brandColor: string | null, mono: boolean): Palette {
+function palette(style: CardStyle, brandColor: string | null): Palette {
   const brand = hex(brandColor ?? "#111111")
   // A brand colour that's nearly white or black can't be the accent on a matching background.
   const accentOn = (bg: string) => (Math.abs(luminance(brand) - luminance(bg)) > 0.25 ? brand : luminance(bg) > 0.5 ? "#111111" : "#FFFFFF")
-  if (mono) {
-    if (style === "minimal" || style === "warm") return { bg: "#FFFFFF", ink: "#0A0A0A", sub: "#5A5A5A", accent: "#0A0A0A", rule: "#E5E5E5", tile: "light" }
-    if (style === "gradient") return { bg: "#000000", bg2: "#2A2A2A", ink: "#FFFFFF", sub: "#BDBDBD", accent: "#FFFFFF", rule: "#3A3A3A", tile: "dark" }
-    return { bg: "#0A0A0A", ink: "#FFFFFF", sub: "#A3A3A3", accent: "#FFFFFF", rule: "#2A2A2A", tile: "dark" }
-  }
   if (style === "minimal") return { bg: "#FAFAF7", ink: "#111111", sub: "#5B5B5B", accent: accentOn("#FAFAF7"), rule: "#E6E4DE", tile: "light" }
   if (style === "warm") return { bg: "#F6EBDD", ink: "#2B1A0E", sub: "#6B4F3A", accent: accentOn("#F6EBDD"), rule: "#E5D3BD", tile: "light" }
   if (style === "gradient") {
@@ -174,7 +186,8 @@ async function cardSvg(input: CardInput): Promise<string | null> {
   const name = (input.businessName ?? "").trim().slice(0, 40)
   if (!headline || !covered(f.bold, headline)) return null
   const style: CardStyle = input.style ?? (input.brand?.primary ? "gradient" : "editorial")
-  const P = palette(style, input.brand?.primary ?? null, !!input.mono)
+  const tone = input.house ? houseTone(headline) : null
+  const P: Palette = tone ? { bg: tone.bg, ink: "#111114", sub: "#3a3a40", accent: tone.accent, rule: "#dcdce2", tile: "light" } : palette(style, input.brand?.primary ?? null)
   const M = 96
   const maxW = S - M * 2
   const footerH = 150
@@ -194,7 +207,13 @@ async function cardSvg(input: CardInput): Promise<string | null> {
   const blockTop = Math.max(M, (S - footerH - block) / 2 - 18)
 
   const parts: string[] = []
-  if (P.bg2) {
+  if (tone) {
+    // The site's pastel block: the tone's tint with soft blobs in three corners (like the final CTA).
+    const blob = (id: string, c: string) => `<radialGradient id="${id}"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`
+    parts.push(`<defs>${blob("b1", tone.soft)}${blob("b2", tone.n1)}${blob("b3", tone.n2)}</defs>`)
+    parts.push(`<rect width="${S}" height="${S}" fill="${P.bg}"/>`)
+    parts.push(`<circle cx="${S}" cy="0" r="560" fill="url(#b1)"/><circle cx="0" cy="${S}" r="480" fill="url(#b2)"/><circle cx="${S}" cy="${S}" r="420" fill="url(#b3)"/>`)
+  } else if (P.bg2) {
     parts.push(`<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${P.bg}"/><stop offset="1" stop-color="${P.bg2}"/></linearGradient></defs>`)
     parts.push(`<rect width="${S}" height="${S}" fill="url(#g)"/>`)
     // Soft shape art: one large circle, low contrast, top-right.
@@ -214,9 +233,13 @@ async function cardSvg(input: CardInput): Promise<string | null> {
 
   // Footer: hairline, then the logo (on a tile that suits it) or the business name.
   parts.push(`<rect x="${M}" y="${S - footerH}" width="${maxW}" height="2" fill="${P.rule}"/>`)
-  const logo = await logoData(input.brand?.logo ?? null)
+  const logo = tone ? null : await logoData(input.brand?.logo ?? null)
   const fy = S - footerH / 2 + 2
-  if (logo) {
+  if (tone) {
+    // Alphaa's mark: the orb + the "alphaa" wordmark, as on the site header.
+    parts.push(orbShapes(M + 26, fy, 26))
+    parts.push(pathFor(f.bold, "alphaa", M + 70, fy + 14, 42, P.ink, -0.03))
+  } else if (logo) {
     const h = 64, w = Math.min(320, (logo.w / logo.h) * h)
     const needTile = P.tile === "light" ? logo.light : P.tile === "dark" ? !logo.light : true
     const tileFill = logo.light ? "#111111" : "#FFFFFF"

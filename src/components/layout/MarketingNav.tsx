@@ -5,12 +5,12 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, Sparkles } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import "@/components/marketing/v3/v3.css"
 import { SVC, SVC_ORDER } from "@/components/marketing/v3/services-v3"
 
 const navLinks = [
-  { href: "/services", label: "Services" },
+  { href: "/services", label: "Solutions" },
   { href: "/how-it-works", label: "How it Works" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/pricing", label: "Pricing" },
@@ -43,7 +43,7 @@ export function MarketingNav() {
       <header className="v3-nav">
         <div className="v3-nav__in">
           <Link href="/" className="v3-logo" aria-label="Alphaa home">
-            <Sparkles aria-hidden="true" />
+            <span className="v3-orb v3-orb--live" aria-hidden="true" />
             alphaa
           </Link>
           <nav className="v3-nav__links" aria-label="Main">

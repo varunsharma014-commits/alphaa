@@ -38,7 +38,7 @@ Source rules: `marketing/growth-playbook.html`, `marketing/social-copy-brief.md`
 - Facebook: link in body is fine.
 
 ## Images
-Built by `brand/social/posts/build.py` (HTML in `brand/social/posts/src/`, CSS `src/post.css` extends `brand/social/base-mono.css`). Black and white only. Rebuild all: `python3 brand/social/posts/build.py`; one: `python3 brand/social/posts/build.py w2_hvac`. Any image showing an AI answer or agent message is an **example** and carries an "Example" label; the businesses in it are placeholders (Practice A, Firm B), never real names.
+Built by `brand/social/posts/build.py` in the **colour system** (since 2026-11-26): HTML in `brand/social/posts/color/src/`, CSS `color/src/post.css` extends `brand/social/base-color.css`, PNGs in `brand/social/posts/color/`. Pastel service-tone block, ink headline, the orb + "alphaa.app" footer; text and typography only (no stock/web/AI photos, no people). Rebuild all: `python3 brand/social/posts/build.py`; one: `python3 brand/social/posts/build.py w2_hvac`; exact ids: `python3 brand/social/posts/build.py w2_hvac w3_reviews`. Queued items point at `brand/social/posts/color/...`; posted items keep their original black & white files in `brand/social/posts/` (never re-render or move those; `--mono` only reproduces them). Brand kit (logo, avatar, covers, newsletter cover renderer): `brand/color/README.md`. Any image showing an AI answer or agent message is an **example** and carries an "Example" label; the businesses in it are placeholders (Practice A, Firm B), never real names.
 
 Spare renders not in the queue: `w3_myth_keywords.png`, `w3_seo_vs_ai-x.png`, `w2_agent_approve-x.png`, `w1_dogfood-x.png`.
 

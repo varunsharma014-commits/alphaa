@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
-"""Build the Alphaa social post images (black & white system).
+"""Build the Alphaa social post images.
 
-Writes HTML to brand/social/posts/src/<id>.html and renders PNGs to
-brand/social/posts/<id>.png (1080x1350) and <id>-x.png (1600x900 for X).
-Carousel slides render to <id>-s<N>.png.
+Colour system (default since 2026-11-26): pastel service blocks + the orb, CSS in
+brand/social/posts/color/src/post.css (extends brand/social/base-color.css). Writes HTML to
+brand/social/posts/color/src/<id>.html and PNGs to brand/social/posts/color/<id>.png (1080x1350)
+and <id>-x.png (1600x900 for X). Carousel slides render to <id>-s<N>.png.
 
-Usage:  python3 brand/social/posts/build.py            # build everything
+--mono rebuilds the retired black & white versions in brand/social/posts/ (only to reproduce
+images that were already posted; never for new posts).
+
+Usage:  python3 brand/social/posts/build.py            # build everything (colour)
         python3 brand/social/posts/build.py w1_chat     # only ids containing "w1_chat"
+        python3 brand/social/posts/build.py a b c       # exactly these ids
 """
 import os, sys, subprocess, tempfile, time, signal, shutil, html as H
 from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(HERE, "src")
-ICON = "file:///Users/varunsharma/alphaa/brand/mono/alphaa-mono-icon-256.png"
+MONO = "--mono" in sys.argv
+OUT = HERE if MONO else os.path.join(HERE, "color")
+SRC = os.path.join(OUT, "src")
+ICON = "file://" + os.path.abspath(os.path.join(HERE, "../../mono/alphaa-mono-icon-256.png"))
+# Brand mark: the orb (CSS conic gradient in base-color.css), or the old mono icon.
+MARK = f"<img src='{ICON}'>" if MONO else "<span class=orb></span>"
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 AIS = ["ChatGPT", "Gemini", "Claude", "Perplexity"]
 
@@ -60,7 +69,7 @@ def agent(paras, time="8:02 AM", buttons=("Post it", "Edit", "Skip")):
     ps = "".join(f"<p>{p}</p>" for p in paras)
     bs = "".join(f"<span class={'ok' if i == 0 else ''}>{e(b)}</span>" for i, b in enumerate(buttons))
     btn = f"<div class=btns>{bs}</div>" if buttons else ""
-    return (f"<div class=agent><div class=ag-h><img src='{ICON}'><b>Alphaa</b> · your AI Agent · {e(time)}</div>"
+    return (f"<div class=agent><div class=ag-h>{MARK}<b>Alphaa</b> · your AI Agent · {e(time)}</div>"
             f"<div class=ag-b>{ps}</div>{btn}</div>")
 
 
@@ -472,7 +481,7 @@ def m_agent(lg, paras, time):
     L = ML[lg]
     ps = "".join(f"<p>{p}</p>" for p in paras)
     bs = "".join(f"<span class={'ok' if i == 0 else ''}>{e(b)}</span>" for i, b in enumerate(L["btns"]))
-    return (f"<div class=agent><div class=ag-h><img src='{ICON}'><b>Alphaa</b> · {e(L['agent'])} · {e(time)}"
+    return (f"<div class=agent><div class=ag-h>{MARK}<b>Alphaa</b> · {e(L['agent'])} · {e(time)}"
             f"<span class=ag-ex>{e(L['ex'])}</span></div>"
             f"<div class=ag-b>{ps}</div><div class=btns>{bs}</div></div>")
 
@@ -600,14 +609,31 @@ MARKET_IMAGES = {
 IMAGES.update(MARKET_IMAGES)
 
 
+# Colour: each post sits on one service tone, picked from its tag (stable per post).
+TONE_BY_TAG = [
+    ("ct", ("building alphaa", "our own test")),
+    ("em", ("agent", "how it works", "journal", "diario", "tagebuch", "يوميات")),
+    ("mk", ("free ai check", "risk off", "guarantee", "alphaa ai agent", "new in the free check")),
+    ("se", ("seo said", "save this", "try this", "60-second", "why them", "zum merken", "à garder", "da salvare", "احفظ")),
+]
+
+
+def tone_for(*keys):
+    k = " ".join(x for x in keys if x).lower()
+    for tone, words in TONE_BY_TAG:
+        if any(w in k for w in words):
+            return tone
+    return "ad"
+
+
 def page(body_cls, w, h, inner, lang="en", dir="ltr"):
     return (f"<!doctype html><html lang={lang} dir={dir} style='width:{w}px;height:{h}px'><head><meta charset=utf-8>"
-            f"<link rel=stylesheet href=post.css></head><body class={body_cls}>{inner}</body></html>")
+            f"<link rel=stylesheet href=post.css></head><body class='{body_cls}'>{inner}</body></html>")
 
 
 def foot(example, right=None):
     r = (f"<span class=ex>{e(right)}</span>" if right else "") or ("<span class=ex>Example scenario</span>" if example else "")
-    return f"<div class=foot><div class=brand><img src='{ICON}'>alphaa.app</div>{r}</div>"
+    return f"<div class=foot><div class=brand>{MARK}alphaa.app</div>{r}</div>"
 
 
 def single_html(spec, land):
@@ -615,7 +641,8 @@ def single_html(spec, land):
     tag = f"<div class=tag>{e(spec['tag'])}</div>" if spec.get("tag") else ""
     inner = (f"<div class=bg><div class=txt>{tag}<h1>{e(spec['h1'])}</h1>{sub}</div>"
              f"<div class=vis>{spec['vis']}</div>{foot(spec.get('example'), spec.get('note'))}</div>")
-    return page("x" if land else "p", 1600 if land else 1080, 900 if land else 1350, inner,
+    cls = ("x" if land else "p") + ("" if MONO else " t-" + spec.get("tone", tone_for(spec.get("tag"))))
+    return page(cls, 1600 if land else 1080, 900 if land else 1350, inner,
                 spec.get("lang", "en"), spec.get("dir", "ltr"))
 
 
@@ -630,7 +657,7 @@ def slide_html(kind, title, body, i, n, deck=""):
     else:
         inner = (f"<div class=bg>{cnt}<div class=tag>Free AI check</div><div class=mid><h1 class=lg>{e(title)}</h1>"
                  f"<p class=sub>{e(body)}</p><div><span class=urlpill>alphaa.app/start</span></div></div>{foot(False)}</div>")
-    return page("p slide", 1080, 1350, inner)
+    return page("p slide" + ("" if MONO else " t-" + tone_for(deck)), 1080, 1350, inner)
 
 
 def render(job):
@@ -662,29 +689,32 @@ def render(job):
 
 
 def main():
-    flt = sys.argv[1] if len(sys.argv) > 1 else ""
+    os.makedirs(SRC, exist_ok=True)
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    # No args = everything; one arg = ids containing it; several = exactly those ids.
+    sel = lambda iid: not args or iid in args or (len(args) == 1 and args[0] in iid)
     jobs = []
     for iid, spec in IMAGES.items():
-        if flt not in iid:
+        if not sel(iid):
             continue
         for land in ((False,) if spec.get("portrait_only") else (False, True)):
             name = iid + ("-x" if land else "")
             src = os.path.join(SRC, name + ".html")
             open(src, "w").write(single_html(spec, land))
-            jobs.append((src, os.path.join(HERE, name + ".png"), 1600 if land else 1080, 900 if land else 1350))
+            jobs.append((src, os.path.join(OUT, name + ".png"), 1600 if land else 1080, 900 if land else 1350))
     for cid, slides in CAROUSELS.items():
-        if flt not in cid:
+        if not sel(cid):
             continue
         n = len(slides)
         for i, (kind, t, b) in enumerate(slides, 1):
             name = f"{cid}-s{i}"
             src = os.path.join(SRC, name + ".html")
             open(src, "w").write(slide_html(kind, t, b, i, n, slides[0][1]))
-            jobs.append((src, os.path.join(HERE, name + ".png"), 1080, 1350))
+            jobs.append((src, os.path.join(OUT, name + ".png"), 1080, 1350))
     with ThreadPoolExecutor(6) as ex:
         for out in ex.map(render, jobs):
             ok = os.path.exists(out)
-            print(("ok  " if ok else "FAIL ") + os.path.relpath(out, HERE))
+            print(("ok  " if ok else "FAIL ") + os.path.relpath(out, os.path.dirname(HERE)))
 
 
 if __name__ == "__main__":
