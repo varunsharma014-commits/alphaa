@@ -12,6 +12,7 @@ import "./home-v2.css"
 import { AiAnswers, Autopilot, BrandStudio, CostTable } from "./HomeV2Client"
 import { StartAgent, type StartGreet } from "@/components/agent/StartAgent"
 import { GUARANTEE_LINE } from "@/lib/offer-copy"
+import { plans, planHref } from "@/app/(marketing)/pricing/pricing-data"
 import { GROWTH_ON_SALE } from "@/lib/growth"
 import { AUTHOR } from "@/lib/author"
 import { HomePlans } from "./HomePlans"
@@ -45,8 +46,8 @@ export function HomeV2() {
           <h1 className="v3-h1">Your <span className="hv-mark">entire</span> marketing, run by Alphaa.</h1>
           <p className="v3-lede">I create viral social content, improve rankings on ChatGPT and Gemini, build and execute your brand growth strategy, handle the tracking and technical setup, and run your entire ad campaigns like a $300K/year CMO. You do what you do best: running your business.</p>
           <div className="v3-btns">
-            <Link className="v3-btn" href="/start">Hire your agent →</Link>
-            <a className="v3-btn v3-btn--ghost" href="#features">See what I do</a>
+            <Link className="v3-btn" href={planHref(plans.find((p) => p.key === "pro")!, false)}>Hire your agent →</Link>
+            <Link className="v3-btn v3-btn--ghost" href="/start">Get your free AI check</Link>
           </div>
           <div className="v3-guarantee" role="note" aria-label="Our guarantee">
             <span className="v3-guarantee-mark" aria-hidden="true">✓</span>
