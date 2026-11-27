@@ -185,7 +185,7 @@ How tokens are stored: Shopify and Webflow access tokens (and refresh tokens, wh
 
 What we keep: a log of each change Alphaa made to your site (what it was, the page address, and what's needed to undo it), shown in your dashboard.
 
-Disconnecting: in Settings → Website connection, click Disconnect. We delete the stored connection and tokens at once and, for Webflow, ask Webflow to revoke the token. For Shopify, you can also uninstall the app in your Shopify admin; Shopify then notifies us and we delete the connection. Content already published stays on your site until you remove it or use Undo.`,
+Disconnecting: in Settings → Website connection, click Disconnect. We delete the stored connection and tokens at once and, for Webflow, ask Webflow to revoke the token. For Shopify, you can also uninstall the app in your Shopify admin; Shopify then notifies us and we delete the connection. For Webflow, you can also uninstall the app in your Webflow workspace; Webflow then refuses the token, and we delete it as soon as we see that (we check every Webflow connection daily). Content already published stays on your site until you remove it or use Undo.`,
   },
   {
     title: "6a. Social Media and Ad Accounts (Facebook, Instagram, LinkedIn, TikTok)",
@@ -318,7 +318,7 @@ export default function PrivacyPage() {
       <Section flush>
       <div className="rd3">
         <h1 className="v3-h1 v3-h1--md">Privacy Policy</h1>
-        <p className="lgl3-updated" style={{ marginBottom: 32 }}>Last updated: November 26, 2026</p>
+        <p className="lgl3-updated" style={{ marginBottom: 32 }}>Last updated: November 27, 2026</p>
 
         <p className="lgl3-note">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.
