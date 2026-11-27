@@ -17,7 +17,7 @@ const org = {
   url: "https://alphaa.app",
   logo: "https://alphaa.app/logo.png",
   email: "hi@alphaa.app",
-  description: "Alphaa is an AI agent that runs marketing for small businesses: social media, Google and Meta ads, SEO and AI search, blog and Google posts, review replies and email.",
+  description: "Alphaa is an AI agent that runs marketing for small businesses: social media, SEO and AI search, blog and Google posts, review replies and email.",
   address: { "@type": "PostalAddress", streetAddress: "1000 Innovation Dr", addressLocality: "Kanata", addressRegion: "ON", postalCode: "K2K 3E7", addressCountry: "CA" },
   contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: "hi@alphaa.app" },
 }
@@ -51,13 +51,13 @@ export default function AboutPage() {
             <li>Writes blog posts and Google Business Profile posts, and replies to reviews, in the owner&apos;s voice.</li>
             <li>Fixes the website for Google and AI search: it checks 23 things AI reads, from crawler access to structured facts, and writes FAQ answers, structured data and llms.txt.</li>
             <li>Asks ChatGPT, Gemini, Claude and Perplexity the questions customers ask, and reports who got named.</li>
-            <li>On the Pro plan: writes and posts social media with images in the business&apos;s brand.</li>
-            <li>On the Growth plan (early access): builds and tunes Google and Meta ads inside an approved budget, tracks leads, and sends emails that bring past customers back.</li>
+            <li>On the Pro plan: writes social media posts with images in the business&apos;s brand, ready to publish in one tap.</li>
+            <li>On the Growth plan (early access): tracks leads and sends emails that bring past customers back. Google and Meta ads are coming soon.</li>
             <li>Sends one short, plain-English note: what it did, what worked, and what needs a yes.</li>
           </ul>
           <h2>How much does Alphaa cost?</h2>
           <p>
-            Alphaa costs $99 a month for Starter and $399 for Pro, which adds social media, month to month with no contract. Growth, which adds ads, email and lead tracking, is $499 a month in early access. There is no free trial; the{" "}
+            Alphaa costs $99 a month for Starter and $399 for Pro, which adds social media, month to month with no contract. Growth, which adds email and lead tracking, is $499 a month in early access. Ads are coming soon. There is no free trial; the{" "}
             <Link href="/start">free check</Link> shows what the AIs say about a business today and plans its first week of marketing. See <Link href="/pricing">pricing</Link>.
           </p>
           <h2>Does Alphaa guarantee rankings?</h2>

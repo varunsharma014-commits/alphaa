@@ -9,7 +9,7 @@ export const market: Market = {
     country: "Italia",
     title: "Un agente IA per tutto il tuo marketing | Alphaa",
     description:
-      "Alphaa è un agente IA che gestisce il tuo marketing: profilo Google, articoli, recensioni, SEO e consigli di ChatGPT. Social con Pro, pubblicità ed email con Growth.",
+      "Alphaa è un agente IA che gestisce il tuo marketing: profilo Google, articoli, recensioni, SEO e consigli di ChatGPT. Social con Pro, email con Growth. Pubblicità in arrivo.",
     h1a: "Tutto il tuo marketing,",
     h1b: "gestito da un agente IA.",
     sub: "Niente parcelle d’agenzia, niente serate a pubblicare post. Scrivo i tuoi contenuti, rispondo alle recensioni, sistemo il sito per Google e ChatGPT e ti mando una breve lista da approvare. Tu ti riprendi il tempo per il tuo lavoro.",
@@ -36,8 +36,8 @@ export const market: Market = {
         body: "Sistemo sito, dati strutturati e informazioni perché Google, ChatGPT, Gemini, Claude e Perplexity possano nominarti. Ogni settimana controllo chi viene nominato al posto tuo (“un dentista bravo a Bologna?”).",
       },
       {
-        title: "Social con Pro. Pubblicità ed email con Growth",
-        body: "Dal piano Pro scrivo anche i tuoi post social, con immagini coordinate al tuo brand. Con il piano Growth (accesso anticipato) preparo in più annunci Google e Meta in pausa finché non approvi il budget, e mando email che riportano i vecchi clienti. Si attiva man mano che le piattaforme ci approvano.",
+        title: "Social con Pro. Email con Growth",
+        body: "Dal piano Pro scrivo anche i tuoi post social, con immagini coordinate al tuo brand, pronti da pubblicare con un tocco. Con il piano Growth (accesso anticipato) mando in più email che riportano i vecchi clienti. Gli annunci Google e Meta arriveranno presto.",
       },
     ],
     whereTitle: "Dove clienti e IA si informano su di te in Italia",
@@ -54,21 +54,21 @@ export const market: Market = {
       "Post sul profilo Google, articoli e risposte alle recensioni, in italiano e con il tuo stile",
       "Il sito pronto per Google e per la ricerca IA, con un controllo settimanale di cosa dicono ChatGPT, Gemini, Claude e Perplexity",
       "Niente va online senza il tuo ok",
-      "Piano Growth (accesso anticipato): tutto il piano Pro, più annunci Google e Meta, email e tracciamento dei contatti. Il budget pubblicitario lo paghi direttamente a Google e Meta, senza ricarichi.",
+      "Piano Growth (accesso anticipato): tutto il piano Pro, più email e tracciamento dei contatti. Gli annunci Google e Meta arriveranno presto.",
       "Nessun vincolo: si paga mese per mese e si disdice online in un minuto",
       "Se nessuna IA ti nomina nei primi 90 giorni, il mese successivo non lo paghi",
     ],
     priceCta: "Inizia ora: {starter}/mese",
-    priceNote: "Starter {starter}, Pro {pro} (social e fino a 3 sedi), Growth {growth} al mese (pubblicità ed email, accesso anticipato). Brand aggiuntivi scontati del 50%. Addebito mensile, disdici quando vuoi. Solo per aziende e professionisti (B2B). Non siamo registrati ai fini IVA: nessuna IVA in fattura; se dovuta, la versi tu con il reverse charge.",
+    priceNote: "Starter {starter}, Pro {pro} (social e fino a 3 sedi), Growth {growth} al mese (email e tracciamento dei contatti, accesso anticipato). Brand aggiuntivi scontati del 50%. Addebito mensile, disdici quando vuoi. Solo per aziende e professionisti (B2B). Non siamo registrati ai fini IVA: nessuna IVA in fattura; se dovuta, la versi tu con il reverse charge.",
     faqTitle: "Le domande che ci fanno le attività italiane",
     faq: [
       {
         q: "In pratica, cosa fa Alphaa per un’attività italiana?",
-        a: "Gestisco il tuo marketing settimana dopo settimana: post sul profilo Google, articoli, risposte alle recensioni e modifiche al sito. In più controllo, in italiano, cosa dicono di te ChatGPT, Gemini, Claude e Perplexity e cosa c’è su PagineGialle e sui portali del tuo settore. I social sono nel piano Pro, pubblicità ed email nel piano Growth, in accesso anticipato.",
+        a: "Gestisco il tuo marketing settimana dopo settimana: post sul profilo Google, articoli, risposte alle recensioni e modifiche al sito. In più controllo, in italiano, cosa dicono di te ChatGPT, Gemini, Claude e Perplexity e cosa c’è su PagineGialle e sui portali del tuo settore. I social sono nel piano Pro, le email nel piano Growth, in accesso anticipato. La pubblicità arriverà presto.",
       },
       {
         q: "Quanto costa?",
-        a: "Starter costa {starter} al mese, Pro {pro} al mese (social e fino a 3 sedi). Growth, con pubblicità ed email, costa {growth} al mese ed è in accesso anticipato. Mese per mese, disdetta online in un minuto, rimborso entro 7 giorni sul primo addebito. Il controllo in questa pagina è gratuito.",
+        a: "Starter costa {starter} al mese, Pro {pro} al mese (social e fino a 3 sedi). Growth, con email e tracciamento dei contatti, costa {growth} al mese ed è in accesso anticipato. Mese per mese, disdetta online in un minuto, rimborso entro 7 giorni sul primo addebito. Il controllo in questa pagina è gratuito.",
       },
       {
         q: "Devo capirne di marketing o di siti web?",
@@ -119,7 +119,7 @@ export const market: Market = {
           { name: "Il sito dello studio", why: "Pagine chiare per ogni trattamento (impianti, ortodonzia, igiene) che l’IA può citare." },
         ],
         steps: [
-          { title: "Gestisco il marketing ogni settimana", body: "Post sul profilo Google, articoli informativi sui tuoi trattamenti e risposte alle recensioni, pronti per il tuo ok. I social sono nel piano Pro, pubblicità ed email nel piano Growth, in accesso anticipato." },
+          { title: "Gestisco il marketing ogni settimana", body: "Post sul profilo Google, articoli informativi sui tuoi trattamenti e risposte alle recensioni, pronti per il tuo ok. I social sono nel piano Pro, le email nel piano Growth, in accesso anticipato. La pubblicità arriverà presto." },
           { title: "Scrivo le pagine dei trattamenti", body: "Preparo pagine e risposte informative sui tuoi trattamenti, con toni misurati come si addice a uno studio medico. Niente va online senza il tuo ok." },
           { title: "Curo il profilo Google e le recensioni", body: "Correggo orari e dati sbagliati, scrivo i post e preparo risposte cortesi alle recensioni, senza mai citare dati sanitari dei pazienti." },
         ],
@@ -148,7 +148,7 @@ export const market: Market = {
           { name: "Il tuo sito", why: "Una pagina per ogni servizio e ogni zona servita, che l’IA può citare." },
         ],
         steps: [
-          { title: "Io il marketing, tu i lavori", body: "Post sui lavori recenti, risposte alle recensioni e una pagina per ogni zona che copri, da approvare in un minuto dal telefono. I social sono nel piano Pro, pubblicità ed email nel piano Growth, in accesso anticipato." },
+          { title: "Io il marketing, tu i lavori", body: "Post sui lavori recenti, risposte alle recensioni e una pagina per ogni zona che copri, da approvare in un minuto dal telefono. I social sono nel piano Pro, le email nel piano Growth, in accesso anticipato. La pubblicità arriverà presto." },
           { title: "Metto in ordine i tuoi dati", body: "Telefono, zona servita, orari e reperibilità: li allineo tra Google, PagineGialle e il tuo sito, così l’IA non dà un numero sbagliato." },
           { title: "Rispondo alle recensioni e scrivo i post", body: "Preparo le risposte alle recensioni e i post sul profilo Google per te. Tu li approvi dal telefono, anche tra un lavoro e l’altro." },
         ],
@@ -177,7 +177,7 @@ export const market: Market = {
           { name: "Il sito dello studio", why: "Pagine chiare per ogni area di pratica e risposte alle domande che i clienti fanno davvero." },
         ],
         steps: [
-          { title: "Curo la comunicazione ogni settimana", body: "Post sul profilo Google, articoli sulle tue aree di attività e risposte alle recensioni, pronti per la tua revisione. I social sono nel piano Pro, pubblicità ed email nel piano Growth, in accesso anticipato." },
+          { title: "Curo la comunicazione ogni settimana", body: "Post sul profilo Google, articoli sulle tue aree di attività e risposte alle recensioni, pronti per la tua revisione. I social sono nel piano Pro, le email nel piano Growth, in accesso anticipato. La pubblicità arriverà presto." },
           { title: "Scrivo pagine informative, non slogan", body: "Preparo pagine e risposte chiare sulle tue aree di pratica, con toni sobri e senza promesse di risultato. Le leggi tu prima che vadano online." },
           { title: "Tengo in ordine la tua presenza online", body: "Correggo i dati dello studio dove sono sbagliati e preparo risposte misurate alle recensioni, senza mai entrare nel merito delle pratiche." },
         ],
@@ -206,7 +206,7 @@ export const market: Market = {
           { name: "Il tuo sito", why: "Una pagina per ogni trattamento, con prezzi indicativi e risposte che l’IA può citare." },
         ],
         steps: [
-          { title: "Gestisco il marketing ogni settimana", body: "Post sulle novità, articoli sui trattamenti e risposte a ogni recensione, con il tuo stile. I post social sono nel piano Pro, pubblicità ed email nel piano Growth, in accesso anticipato." },
+          { title: "Gestisco il marketing ogni settimana", body: "Post sulle novità, articoli sui trattamenti e risposte a ogni recensione, con il tuo stile. I post social sono nel piano Pro, le email nel piano Growth, in accesso anticipato. La pubblicità arriverà presto." },
           { title: "Scrivo le pagine dei trattamenti", body: "Una pagina chiara per ogni trattamento, con le domande che fanno le clienti (quante sedute, quanto dura, fa male?). Niente va online senza il tuo ok." },
           { title: "Tengo vivo il profilo Google", body: "Scrivo i post settimanali e preparo risposte gentili a ogni recensione. Tu approvi dal telefono, tra una cliente e l’altra." },
         ],

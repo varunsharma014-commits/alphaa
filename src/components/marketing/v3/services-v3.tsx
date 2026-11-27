@@ -29,7 +29,7 @@ export const SVC: Record<ServiceSlug, SvcV3> = {
     key: "mk",
     pill: "Social media",
     a: "Show up every week",
-    b: "without lifting a finger",
+    b: "with posts ready in one tap",
     proof: { n: "3 posts", t: "a week for Facebook, Instagram and LinkedIn, each with a branded image" },
     cards: ["Tue · Instagram post ready", "Thu · Facebook post ready", "Sat · LinkedIn post ready"],
     demo: { tab: "Social posts", ask: "Post on Instagram this week", steps: ["Read your brand and voice", "Wrote 3 posts with your logo", "Ready to publish in one tap"], res: ["Tue", "Thu", "Sat"] },

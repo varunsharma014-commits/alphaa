@@ -46,8 +46,8 @@ export const VERTICALS: Vertical[] = [
     agencyCostLabel: "$1,500–$2,500/mo",
     playbook: [
       {
-        title: "Posts to your social accounts (Growth)",
-        body: "Smile tips, new-patient offers, team moments. Posts and branded images written in your voice for you to approve. Early access on Growth; direct posting opens as Meta and LinkedIn approve.",
+        title: "Writes your social posts (Pro)",
+        body: "Smile tips, new-patient offers, team moments. Posts and branded images written in your voice for you to approve. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
         title: "Keeps your Google profile busy",
@@ -66,14 +66,14 @@ export const VERTICALS: Vertical[] = [
         body: "Dentist schema, website fixes and weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about dentists near you, so you can see where you stand.",
       },
       {
-        title: "Runs ads and emails that fill the chair (Growth)",
-        body: "Google and Meta ads built paused until you approve the budget, plus emails that bring overdue patients back for a cleaning. Early access on Growth; ad spend goes to Google and Meta directly, never marked up.",
+        title: "Emails that fill the chair (Growth)",
+        body: "Emails that bring overdue patients back for a cleaning. Early access on Growth. Google and Meta ads are coming soon.",
       },
     ],
     faq: [
       {
         q: "What does the AI agent actually do for my practice?",
-        a: "It runs the marketing you never have time for: Google posts, blog posts, review replies, website fixes and SEO and AI search checks on every plan. On Growth (early access) it also drafts social posts, builds Google and Meta ads and writes emails to past patients. You get a weekly briefing and approve anything with one tap.",
+        a: "It runs the marketing you never have time for: Google posts, blog posts, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes emails to past patients. Google and Meta ads are coming soon. You get a weekly briefing and approve anything with one tap.",
       },
       {
         q: "I already pay a dental marketing agency. Why switch?",
@@ -101,12 +101,12 @@ export const VERTICALS: Vertical[] = [
     agencyCostLabel: "$1,500–$2,500/mo",
     playbook: [
       {
-        title: "Creates your social posts (Growth)",
-        body: "Treatment spotlights, seasonal offers and membership promos, written in your voice with branded images. Early access on Growth; direct posting opens as Meta and LinkedIn approve.",
+        title: "Creates your social posts (Pro)",
+        body: "Treatment spotlights, seasonal offers and membership promos, written in your voice with branded images. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
         title: "Publishes treatment-focused Google posts",
-        body: "Botox, fillers, laser, microneedling, memberships. Your Google Business Profile keeps posting about what clients search for, without you lifting a finger.",
+        body: "Botox, fillers, laser, microneedling, memberships. Your Google Business Profile keeps posting about what clients search for: one tap from you, or on its own on Pro.",
       },
       {
         title: "Writes blogs around real client questions",
@@ -121,14 +121,14 @@ export const VERTICALS: Vertical[] = [
         body: "Schema for your treatments, website fixes, and weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about med spas in your area.",
       },
       {
-        title: "Brings clients back with ads and email (Growth)",
-        body: "Google and Meta ads built paused until you approve the budget, and emails that remind past clients it's time to rebook. Early access on Growth; ad spend is paid to Google and Meta directly.",
+        title: "Brings clients back with email (Growth)",
+        body: "Emails that remind past clients it's time to rebook. Early access on Growth. Google and Meta ads are coming soon.",
       },
     ],
     faq: [
       {
         q: "My clients come from Instagram. Is this just about AI search?",
-        a: "No. Alphaa is an AI agent that runs your marketing: Google posts, blogs, review replies and SEO and AI search on every plan, social posts on Pro, and ads and email on Growth (early access). Instagram builds desire; Google and AI search are often where the booking decision gets made. You want to show up in both.",
+        a: "No. Alphaa is an AI agent that runs your marketing: Google posts, blogs, review replies and SEO and AI search on every plan, social posts on Pro, and email on Growth (early access); ads are coming soon. Instagram builds desire; Google and AI search are often where the booking decision gets made. You want to show up in both.",
       },
       {
         q: "How is this different from my med spa marketing agency?",
@@ -156,8 +156,8 @@ export const VERTICALS: Vertical[] = [
     agencyCostLabel: "$1,000–$1,500/mo",
     playbook: [
       {
-        title: "Posts your jobs to social (Growth)",
-        body: "Seasonal tune-up reminders, before-and-after installs, financing offers. Written in your voice with branded images. Early access on Growth; direct posting opens as Meta and LinkedIn approve.",
+        title: "Writes social posts about your jobs (Pro)",
+        body: "Seasonal tune-up reminders, before-and-after installs, financing offers. Written in your voice with branded images. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
         title: "Keeps your Google profile posting",
@@ -176,14 +176,14 @@ export const VERTICALS: Vertical[] = [
         body: "HVACBusiness schema, service-area fixes on your site, and weekly checks of who ChatGPT, Gemini, Claude and Perplexity recommend for HVAC near you.",
       },
       {
-        title: "Fills slow weeks with ads and email (Growth)",
-        body: "Google and Meta ads built paused until you approve the budget, plus maintenance reminder emails to past customers. Early access on Growth; ad spend goes to Google and Meta directly, never marked up.",
+        title: "Fills slow weeks with email (Growth)",
+        body: "Maintenance reminder emails to past customers. Early access on Growth. Google and Meta ads are coming soon.",
       },
     ],
     faq: [
       {
         q: "What does the AI agent actually do for my HVAC company?",
-        a: "It runs your marketing while you run jobs: Google posts, blogs, review replies, website fixes and SEO and AI search checks on every plan. On Growth (early access) it also drafts social posts, builds Google and Meta ads and writes tune-up reminder emails. You get a weekly briefing and approve with one tap.",
+        a: "It runs your marketing while you run jobs: Google posts, blogs, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes tune-up reminder emails. Google and Meta ads are coming soon. You get a weekly briefing and approve with one tap.",
       },
       {
         q: "I pay a marketing company $1,200/month. Is this the same thing?",
@@ -211,8 +211,8 @@ export const VERTICALS: Vertical[] = [
     agencyCostLabel: "$1,000–$1,500/mo",
     playbook: [
       {
-        title: "Posts to your social accounts (Growth)",
-        body: "Job photos, seasonal tips and offers, written in your voice with branded images. Early access on Growth; direct posting opens as Meta and LinkedIn approve.",
+        title: "Writes your social posts (Pro)",
+        body: "Job photos, seasonal tips and offers, written in your voice with branded images. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
         title: "Keeps your Google profile fresh",
@@ -231,14 +231,14 @@ export const VERTICALS: Vertical[] = [
         body: "Plumber schema, website fixes and weekly checks of who ChatGPT, Gemini, Claude and Perplexity recommend for plumbers near you.",
       },
       {
-        title: "Runs ads and repeat-customer emails (Growth)",
-        body: "Google and Meta ads built paused until you approve the budget, plus emails that bring past customers back. Early access on Growth; ad spend is paid to Google and Meta directly.",
+        title: "Repeat-customer emails (Growth)",
+        body: "Emails that bring past customers back. Early access on Growth. Google and Meta ads are coming soon.",
       },
     ],
     faq: [
       {
         q: "What does the AI agent actually do for a plumber?",
-        a: "It handles the marketing you don't have time for: Google posts, blogs, review replies, website fixes and SEO and AI search checks on every plan. On Growth (early access) it also drafts social posts, builds Google and Meta ads and writes emails to past customers.",
+        a: "It handles the marketing you don't have time for: Google posts, blogs, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes emails to past customers. Google and Meta ads are coming soon.",
       },
       {
         q: "What does this cost compared to my current marketing?",
@@ -266,8 +266,8 @@ export const VERTICALS: Vertical[] = [
     agencyCostLabel: "$1,500–$2,500/mo",
     playbook: [
       {
-        title: "Drafts your social posts (Growth)",
-        body: "Practice-area explainers and firm news for LinkedIn and Facebook, written in your voice for you to review. Early access on Growth; direct posting opens as Meta and LinkedIn approve.",
+        title: "Drafts your social posts (Pro)",
+        body: "Practice-area explainers and firm news for LinkedIn and Facebook, written in your voice for you to review. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
         title: "Keeps your Google profile active",
@@ -286,8 +286,8 @@ export const VERTICALS: Vertical[] = [
         body: "LegalService schema, website fixes and weekly checks of what ChatGPT, Gemini, Claude and Perplexity say about lawyers in your market.",
       },
       {
-        title: "Runs ads and client emails (Growth)",
-        body: "Google and Meta ads built paused until you approve the budget, plus emails that keep past clients and referrers in touch. Early access on Growth; ad spend goes to Google and Meta directly, never marked up.",
+        title: "Client emails (Growth)",
+        body: "Emails that keep past clients and referrers in touch. Early access on Growth. Google and Meta ads are coming soon.",
       },
     ],
     faq: [
@@ -297,7 +297,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: "What does the AI agent actually do for my firm?",
-        a: "Google posts, blog posts, review replies, website fixes and SEO and AI search checks on every plan. On Growth (early access) it also drafts social posts, builds Google and Meta ads and writes client emails. You get a weekly briefing and approve with one tap.",
+        a: "Google posts, blog posts, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes client emails. Google and Meta ads are coming soon. You get a weekly briefing and approve with one tap.",
       },
       {
         q: "We already pay a legal marketing agency $2,000+/month. Why switch?",
@@ -321,8 +321,8 @@ export const VERTICALS: Vertical[] = [
     agencyCostLabel: "$1,000–$1,500/mo",
     playbook: [
       {
-        title: "Posts your specials to social (Growth)",
-        body: "New dishes, events and happy hour, written in your voice with branded images. Early access on Growth; direct posting opens as Meta and LinkedIn approve.",
+        title: "Writes social posts for your specials (Pro)",
+        body: "New dishes, events and happy hour, written in your voice with branded images. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
         title: "Keeps your Google profile sizzling",
@@ -341,8 +341,8 @@ export const VERTICALS: Vertical[] = [
         body: "Restaurant schema with menu data, fixes for un-crawlable PDF menus, and weekly checks of what ChatGPT, Gemini, Claude and Perplexity recommend in your area.",
       },
       {
-        title: "Fills quiet nights with ads and email (Growth)",
-        body: "Google and Meta ads built paused until you approve the budget, plus emails that bring regulars back on slow nights. Early access on Growth; ad spend is paid to Google and Meta directly.",
+        title: "Fills quiet nights with email (Growth)",
+        body: "Emails that bring regulars back on slow nights. Early access on Growth. Google and Meta ads are coming soon.",
       },
     ],
     faq: [
@@ -352,7 +352,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: "What does the AI agent actually do for my restaurant?",
-        a: "Google posts, blog posts, review replies, website fixes and SEO and AI search checks on every plan. On Growth (early access) it also drafts social posts, builds Google and Meta ads and writes emails to regulars. You get a weekly briefing and approve with one tap.",
+        a: "Google posts, blog posts, review replies, website fixes and SEO and AI search checks on every plan. On Pro it also writes social posts, ready to publish in one tap, and on Growth (early access) it writes emails to regulars. Google and Meta ads are coming soon. You get a weekly briefing and approve with one tap.",
       },
       {
         q: "Can you guarantee AI will recommend my restaurant?",
@@ -376,8 +376,8 @@ export const VERTICALS: Vertical[] = [
     agencyCostLabel: "$3,000+/mo",
     playbook: [
       {
-        title: "Drafts your LinkedIn and social posts (Growth)",
-        body: "Product updates, customer problems and founder takes, written in your voice. Early access on Growth; direct posting opens as Meta and LinkedIn approve.",
+        title: "Drafts your LinkedIn and social posts (Pro)",
+        body: "Product updates, customer problems and founder takes, written in your voice. On Pro, ready to publish in one tap; direct posting opens as Meta and LinkedIn approve.",
       },
       {
         title: "Writes comparison and alternative blogs",
@@ -396,14 +396,14 @@ export const VERTICALS: Vertical[] = [
         body: "What got published, what moved and what to do next, in plain English. Approve the next batch with one tap.",
       },
       {
-        title: "Runs ads and nurture emails (Growth)",
-        body: "Google and Meta ads built paused until you approve the budget, plus emails that bring trial users and past leads back. Early access on Growth; ad spend goes to Google and Meta directly, never marked up.",
+        title: "Nurture emails (Growth)",
+        body: "Emails that bring trial users and past leads back. Early access on Growth. Google and Meta ads are coming soon.",
       },
     ],
     faq: [
       {
         q: "We do content marketing already. How is this different?",
-        a: "Alphaa is an AI agent that runs the work end to end: blogs, comparison pages, website fixes, SEO and AI search tracking on every plan, social posts on Pro, and ads and email on Growth (early access). It also measures whether you're named in real AI answers, which most content programs don't.",
+        a: "Alphaa is an AI agent that runs the work end to end: blogs, comparison pages, website fixes, SEO and AI search tracking on every plan, social posts on Pro, and email on Growth (early access); ads are coming soon. It also measures whether you're named in real AI answers, which most content programs don't.",
       },
       {
         q: "Our agency charges $3,000+/month. Does Alphaa replace them?",

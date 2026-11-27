@@ -9,7 +9,7 @@ export const market: Market = {
     country: "Deutschland",
     title: "KI-Agent für Ihr gesamtes Marketing | Alphaa",
     description:
-      "Alphaa ist ein KI-Agent, der Ihr Marketing übernimmt: Google-Beiträge, Blog, Bewertungen, SEO und Empfehlungen durch ChatGPT. Social Media mit Pro, Ads und E-Mail mit Growth.",
+      "Alphaa ist ein KI-Agent, der Ihr Marketing übernimmt: Google-Beiträge, Blog, Bewertungen, SEO und Empfehlungen durch ChatGPT. Social Media mit Pro, E-Mail mit Growth. Anzeigen folgen in Kürze.",
     h1a: "Ihr gesamtes Marketing,",
     h1b: "erledigt von einem KI-Agenten.",
     sub: "Keine Agenturrechnung, keine Abende mit Beiträgen. Ich schreibe Ihre Inhalte, beantworte Bewertungen, mache Ihre Website fit für Google und ChatGPT und schicke Ihnen eine kurze Liste zur Freigabe. Sie gewinnen Zeit für die Arbeit, die Geld bringt.",
@@ -40,8 +40,8 @@ export const market: Market = {
         body: "Ich bringe Website, strukturierte Daten und Angaben in Ordnung, damit Google, ChatGPT, Gemini, Claude und Perplexity Sie nennen können. Jede Woche prüfe ich, wen sie statt Ihnen nennen.",
       },
       {
-        title: "Social Media mit Pro. Anzeigen und E-Mail mit Growth",
-        body: "Ab dem Pro-Tarif schreibe ich auch Ihre Social-Media-Beiträge mit Bildern in Ihrem Markendesign. Im Growth-Tarif (Early Access) baue ich zusätzlich Google- und Meta-Anzeigen pausiert zur Budgetfreigabe auf und schicke E-Mails, die frühere Kunden zurückholen. Freigeschaltet, sobald die Plattformen zustimmen.",
+        title: "Social Media mit Pro. E-Mail mit Growth",
+        body: "Ab dem Pro-Tarif schreibe ich auch Ihre Social-Media-Beiträge mit Bildern in Ihrem Markendesign, mit einem Tippen bereit zum Veröffentlichen. Im Growth-Tarif (Early Access) schicke ich zusätzlich E-Mails, die frühere Kunden zurückholen. Google- und Meta-Anzeigen folgen in Kürze.",
       },
     ],
     whereTitle: "Wo Kunden und KI Sie in Deutschland nachschlagen",
@@ -59,8 +59,8 @@ export const market: Market = {
       "Beiträge für Ihr Google Unternehmensprofil, Blogartikel und Antworten auf Bewertungen, in Ihrem Ton",
       "Ihre Website fit für Google und KI-Suche, mit Wochenchecks, was ChatGPT, Gemini, Claude und Perplexity über Sie sagen",
       "Ein kurzes Wochenbriefing, jede Änderung mit einem Tipp freigegeben",
-      "Pro mit Social Media für bis zu 3 Standorte: {pro} im Monat. Growth mit Anzeigen und E-Mail: {growth} im Monat (Early Access).",
-      "Growth-Tarif (Early Access): alles aus Pro, dazu Google- und Meta-Anzeigen, E-Mail und Lead-Tracking. Das Werbebudget zahlen Sie direkt an Google und Meta, ohne Aufschlag.",
+      "Pro mit Social Media für bis zu 3 Standorte: {pro} im Monat. Growth mit E-Mail und Lead-Tracking: {growth} im Monat (Early Access).",
+      "Growth-Tarif (Early Access): alles aus Pro, dazu E-Mail und Lead-Tracking. Google- und Meta-Anzeigen folgen in Kürze.",
       "Monatlich kündbar, online in einer Minute. 7 Tage Geld zurück auf die erste Abbuchung.",
       "Nennt Sie in den ersten 90 Tagen keine KI, ist der nächste Monat kostenlos.",
     ],
@@ -70,11 +70,11 @@ export const market: Market = {
     faq: [
       {
         q: "Was genau macht Alphaa für einen Betrieb in Deutschland?",
-        a: "Ich übernehme Ihr Marketing Woche für Woche: Beiträge für Ihr Google Unternehmensprofil, Blogartikel, Antworten auf Bewertungen und Verbesserungen an Ihrer Website. Dazu prüfe ich auf Deutsch, was ChatGPT, Gemini, Claude und Perplexity über Sie sagen und was auf Gelbe Seiten oder Jameda steht. Social Media gibt es ab dem Pro-Tarif, Anzeigen und E-Mail im Growth-Tarif, derzeit im Early Access.",
+        a: "Ich übernehme Ihr Marketing Woche für Woche: Beiträge für Ihr Google Unternehmensprofil, Blogartikel, Antworten auf Bewertungen und Verbesserungen an Ihrer Website. Dazu prüfe ich auf Deutsch, was ChatGPT, Gemini, Claude und Perplexity über Sie sagen und was auf Gelbe Seiten oder Jameda steht. Social Media gibt es ab dem Pro-Tarif, E-Mail im Growth-Tarif, derzeit im Early Access. Anzeigen folgen in Kürze.",
       },
       {
         q: "Was kostet das?",
-        a: "Starter kostet {starter} im Monat, Pro {pro} im Monat (Social Media, bis zu 3 Standorte). Growth mit Anzeigen und E-Mail kostet {growth} im Monat (Early Access). Monatlich online in einer Minute kündbar, 7 Tage Geld zurück auf die erste Abbuchung. Der Check auf dieser Seite ist kostenlos.",
+        a: "Starter kostet {starter} im Monat, Pro {pro} im Monat (Social Media, bis zu 3 Standorte). Growth mit E-Mail und Lead-Tracking kostet {growth} im Monat (Early Access). Monatlich online in einer Minute kündbar, 7 Tage Geld zurück auf die erste Abbuchung. Der Check auf dieser Seite ist kostenlos.",
       },
       {
         q: "Muss ich mich mit Marketing auskennen?",
@@ -127,7 +127,7 @@ export const market: Market = {
           { name: "Ihre Praxis-Website", why: "Seiten zu Leistungen wie Implantaten, Prophylaxe oder Angstpatienten, die die KI zitieren kann." },
         ],
         steps: [
-          { title: "Ich übernehme das wöchentliche Marketing", body: "Beiträge für Ihr Google Unternehmensprofil, Blogartikel zu den Leistungen, die Sie stärken wollen, und Antwortentwürfe auf Bewertungen, alles zur Freigabe. Social Media gibt es mit Pro, Anzeigen und E-Mail mit Growth im Early Access." },
+          { title: "Ich übernehme das wöchentliche Marketing", body: "Beiträge für Ihr Google Unternehmensprofil, Blogartikel zu den Leistungen, die Sie stärken wollen, und Antwortentwürfe auf Bewertungen, alles zur Freigabe. Social Media gibt es mit Pro, E-Mail mit Growth im Early Access. Anzeigen folgen in Kürze." },
           {
             title: "Ich schreibe die Antworten, die die KI zitiert",
             body: "Ich entwerfe sachliche Seiten und FAQ-Antworten zu Ihren Leistungen, etwa zu Kosten, Ablauf oder Behandlung von Angstpatienten. Sie prüfen jeden Satz, bevor er online geht.",
@@ -172,7 +172,7 @@ export const market: Market = {
           { name: "ProvenExpert", why: "Gesammelte Kundenbewertungen, die viele SHK-Betriebe auf der Website zeigen und die KI mitliest." },
         ],
         steps: [
-          { title: "Ich mache das Marketing, Sie die Aufträge", body: "Google-Beiträge zu aktuellen Projekten, Antworten auf Bewertungen und eine Seite für jeden Ort, den Sie anfahren, zur Freigabe in einer Minute. Social Media gibt es mit Pro, Anzeigen und E-Mail mit Growth im Early Access." },
+          { title: "Ich mache das Marketing, Sie die Aufträge", body: "Google-Beiträge zu aktuellen Projekten, Antworten auf Bewertungen und eine Seite für jeden Ort, den Sie anfahren, zur Freigabe in einer Minute. Social Media gibt es mit Pro, E-Mail mit Growth im Early Access. Anzeigen folgen in Kürze." },
           {
             title: "Ich schreibe Seiten für Ihre Leistungen",
             body: "Wärmepumpe, Gasheizung tauschen, Badsanierung, Notdienst: Ich entwerfe für jede Leistung eine klare Seite mit den Fragen, die Kunden wirklich stellen. Sie geben frei.",
@@ -217,7 +217,7 @@ export const market: Market = {
           { name: "Ihre Kanzlei-Website", why: "Seiten zu Ihren Rechtsgebieten mit verständlichen Antworten auf typische Mandantenfragen." },
         ],
         steps: [
-          { title: "Ich übernehme das wöchentliche Marketing", body: "Beiträge für Ihr Google-Profil, sachliche Artikel zu Ihren Rechtsgebieten und Antwortentwürfe auf Bewertungen, jede Woche zur Prüfung. Social Media gibt es mit Pro, Anzeigen und E-Mail mit Growth im Early Access." },
+          { title: "Ich übernehme das wöchentliche Marketing", body: "Beiträge für Ihr Google-Profil, sachliche Artikel zu Ihren Rechtsgebieten und Antwortentwürfe auf Bewertungen, jede Woche zur Prüfung. Social Media gibt es mit Pro, E-Mail mit Growth im Early Access. Anzeigen folgen in Kürze." },
           {
             title: "Ich schreibe verständliche Antworten",
             body: "Ich entwerfe sachliche Seiten zu den Fragen, die Mandanten stellen, etwa zu Fristen nach einer Kündigung oder zum Ablauf einer Scheidung. Sie prüfen jede Formulierung.",
@@ -262,7 +262,7 @@ export const market: Market = {
           { name: "Ihre Praxis-Website", why: "Seiten zu Ihren Therapien und Hinweise zu Rezept, Hausbesuch und Selbstzahlern, die die KI zitieren kann." },
         ],
         steps: [
-          { title: "Ich übernehme das wöchentliche Marketing", body: "Beiträge für Ihr Google-Profil, Artikel zu Ihren Therapien und Kursen und Antwortentwürfe auf Bewertungen, alles zur Freigabe. Social Media gibt es mit Pro, Anzeigen und E-Mail mit Growth im Early Access." },
+          { title: "Ich übernehme das wöchentliche Marketing", body: "Beiträge für Ihr Google-Profil, Artikel zu Ihren Therapien und Kursen und Antwortentwürfe auf Bewertungen, alles zur Freigabe. Social Media gibt es mit Pro, E-Mail mit Growth im Early Access. Anzeigen folgen in Kürze." },
           {
             title: "Ich mache Ihre Leistungen sichtbar",
             body: "Ich schreibe Seiten zu Krankengymnastik, Manueller Therapie, Lymphdrainage oder Ihren Kursen, damit die KI weiß, was Sie anbieten. Sie geben jede Seite frei.",

@@ -7,7 +7,7 @@ import { V3Page, Frame, Section, ServicePills, HeroShapes, ServiceChapter, Final
 
 export const metadata = pageMeta({
   title: "AI Marketing Services for Small Businesses",
-  description: "One AI agent runs your whole marketing: social media, Google and Meta ads, SEO and AI search, blog posts and email. Month to month, from $99.",
+  description: "One AI agent runs your marketing: social media, SEO and AI search, blog posts and email, with Google and Meta ads coming soon. Month to month, from $99.",
   path: "/services",
 })
 

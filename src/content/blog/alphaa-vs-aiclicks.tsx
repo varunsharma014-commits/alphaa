@@ -181,7 +181,7 @@ export function Body() {
         Alphaa Starter is $99 a month for one location: weekly checks on four assistants, website fixes, Google
         Business Profile posts, AI-optimized blog posts and review replies. Pro at $399 adds social media posts, more
         Google and blog posts, up to three locations and competitor benchmarking. Growth at $499, in early access, adds
-        Google and Meta ads, email and lead tracking. The full list is on the <Link href="/pricing">pricing page</Link>,
+        email and lead tracking; Google and Meta ads are coming soon. The full list is on the <Link href="/pricing">pricing page</Link>,
         and our guide to <Link href="/blog/how-much-does-aeo-cost">how much AEO costs</Link> sets both against agency
         retainers.
       </p>

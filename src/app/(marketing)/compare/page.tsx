@@ -34,7 +34,7 @@ export default function CompareHub() {
             </h1>
             <p className="v3-lede">
               How Alphaa stacks up against agencies, freelancers and SEO tools, and what SEO, AEO and GEO actually mean.
-              Alphaa handles your SEO and AI search, content and reviews, with social media on Pro, and ads and email on the Growth plan (early access).
+              Alphaa handles your SEO and AI search, content and reviews, with social media on Pro, and email on the Growth plan (early access). Ads are coming soon.
               We say where the other option is better, too.
             </p>
           </div>

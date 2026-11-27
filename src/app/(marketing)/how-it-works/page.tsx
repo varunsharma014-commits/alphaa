@@ -7,14 +7,14 @@ import { pageMeta } from "@/lib/seo"
 export const metadata = pageMeta({
   title: "How it works: an AI agent that runs your marketing",
   description:
-    "Give Alphaa your website. It learns your voice and brand, checks where customers find you (including ChatGPT and Google), writes your first week free, then runs your social media, Google listing, blog, ads and email every week.",
+    "Give Alphaa your website. It learns your voice and brand, checks where customers find you (including ChatGPT and Google), writes your first week free, then runs your social media, Google listing, blog and email every week.",
   path: "/how-it-works",
 })
 
 const A = BRAND.agentName
 
-// Accurate to what the product does today. Ads and email campaigns (Growth) open as the
-// platforms approve access; social posting straight to accounts likewise.
+// Accurate to what the product does today. Social posts are ready to publish in one tap (posting
+// straight to accounts opens as Meta/LinkedIn approve); ads are coming soon, in no plan yet.
 const STEPS = [
   {
     tone: "se" as SvcKey,
@@ -27,21 +27,21 @@ const STEPS = [
     tone: "ad" as SvcKey,
     eyebrow: "Step 2 · A few clicks",
     title: "Connect what you already have.",
-    body: "Your Google listing, your website, your social accounts on Pro, and your ad accounts on Growth. One secure click each. No passwords to hand over, nothing to install.",
+    body: "Your Google listing, your website, and your social accounts on Pro. One secure click each. No passwords to hand over, nothing to install.",
     art: <Checks rows={["Brand and voice learned", "Google Business Profile connected", "Website connected", "First week planned"]} />,
   },
   {
     tone: "mk" as SvcKey,
     eyebrow: "Step 3 · Every week",
     title: "I run your marketing.",
-    body: `Social posts with images in your brand colours, Google listing updates, blog posts that answer what customers ask, replies to your reviews, and fixes so AI and Google can recommend you. On Growth, ${A} also runs your Google and Meta ads and emails your past customers. Just say “run my marketing for this week”.`,
+    body: `Social posts with images in your brand colours, Google listing updates, blog posts that answer what customers ask, replies to your reviews, and fixes so AI and Google can recommend you. On Growth, ${A} also emails your past customers. Google and Meta ads are coming soon. Just say “run my marketing for this week”.`,
     art: <><Note head="Draft" title="This week · Example Dental Co. (example)" body={<>Tue · Blog post: weekend dental emergencies<br />Thu · Google update: Saturday visits<br />Fri · Social post with your logo</>} /><Note head={null} title="Your marketing for this week is done." /></>,
   },
   {
     tone: "em" as SvcKey,
     eyebrow: "Step 4 · Your call",
     title: "Approve with a tap, or let me run.",
-    body: "Anything public waits for your yes, unless you tell me what I can do on my own. Close the laptop: your posts go out and your customers hear back. Website changes can always be undone.",
+    body: "Anything public waits for your yes, unless you tell me what I can do on my own. Close the laptop: your Google updates and blog posts go out, your customers hear back, and your social posts wait for one tap. Website changes can always be undone.",
     art: (
       <Note title="Reply to Maria’s ★★★★★ review?" body="“Thank you, Maria! We’re so glad the cleaning was painless — see you in six months.”" actions={["Approve", "Edit"]} />
     ),
@@ -66,7 +66,7 @@ export default function HowItWorksPage() {
     "@context": "https://schema.org",
     "@type": "HowTo",
     name: `How ${A} runs your marketing`,
-    description: "From your website to a week of marketing written in your voice, then social media, Google, blog, ads and email run every week.",
+    description: "From your website to a week of marketing written in your voice, then social media, Google, blog and email run every week.",
     step: STEPS.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.title, text: s.body, url: `https://alphaa.app/how-it-works#step-${i + 1}` })),
   }
   return (

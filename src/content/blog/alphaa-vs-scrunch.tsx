@@ -165,7 +165,7 @@ export function Body() {
             <tr>
               <td>Alphaa Growth</td>
               <td>$499/mo, early access</td>
-              <td>Everything in Pro, plus Google and Meta ads, email and lead tracking</td>
+              <td>Everything in Pro, plus email and lead tracking (ads coming soon)</td>
             </tr>
           </tbody>
         </table>

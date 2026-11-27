@@ -14,7 +14,11 @@ export function ServicePage({ s }: { s: Service }) {
   const growth = s.plan === "growth"
   const v = SVC[s.slug]
   const pro = s.plan === "pro"
-  const priceLine = growth
+  // Not in any plan yet (ads): no plan price, and "Coming soon" instead of the plan badge.
+  const soon = !!v.soon
+  const priceLine = soon
+    ? "Coming soon. Not part of any plan yet."
+    : growth
     ? `Part of the Growth plan, $${PLAN_PRICES.growth.monthly} a month${GROWTH_ON_SALE ? "" : " (early access)"}.`
     : pro ? `Part of the Pro plan, $${PLAN_PRICES.pro.monthly} a month, and Growth.` : `From $${PLAN_PRICES.starter.monthly} a month.`
   return (
@@ -24,11 +28,11 @@ export function ServicePage({ s }: { s: Service }) {
           <div className="v3-chapter">
             <div>
               <nav className="v3-crumbs" aria-label="Breadcrumb"><Link href="/">Home</Link> › <Link href="/services">Services</Link> › <span>{s.name}</span></nav>
-              <Eyebrow small={growth ? (GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access") : pro ? "Pro and Growth plans" : "Every plan"}>{s.kicker}</Eyebrow>
+              <Eyebrow small={soon ? "Coming soon" : growth ? (GROWTH_ON_SALE ? "Growth plan" : "Growth plan · early access") : pro ? "Pro and Growth plans" : "Every plan"}>{s.kicker}</Eyebrow>
               <h1 className="v3-h1 v3-h1--md">{s.h1}</h1>
               <p className="v3-lede">{s.sub}</p>
               <div className="v3-btns"><Link className="v3-btn" href="/start">Get started →</Link><a className="v3-btn v3-btn--ghost" href="#how">How it works</a></div>
-              <p className="v3-fine">{priceLine} Month to month. Cancel online in a minute.</p>
+              <p className="v3-fine">{priceLine}{soon ? "" : " Month to month. Cancel online in a minute."}</p>
             </div>
             <HeroShapes cards={v.cards} tones={[v.key, v.key, v.key, v.key]} />
           </div>
@@ -44,7 +48,7 @@ export function ServicePage({ s }: { s: Service }) {
           <div className="v3-split">
             <FeatureVideo color={`var(--${v.key}-2)`} label={s.feature.label} scenes={s.feature.scenes} />
             <div>
-              <Eyebrow>What you get</Eyebrow>
+              <Eyebrow>{soon ? "What you’ll get" : "What you get"}</Eyebrow>
               <h2 className="v3-h2">{v.a}<br /><span className="v3-em">{v.b}</span></h2>
               <Points items={s.gets} />
               <div className="v3-proof"><span className="n">{v.proof.n}</span><span>{v.proof.t}</span></div>

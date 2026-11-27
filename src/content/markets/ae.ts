@@ -9,7 +9,7 @@ export const market: Market = {
     country: "United Arab Emirates",
     title: "AI Marketing Agent for Dubai & UAE Businesses | Alphaa",
     description:
-      "Alphaa is an AI agent that runs your UAE marketing: Google posts, blogs, review replies, SEO and getting named by ChatGPT. Social on Pro, ads and email on Growth.",
+      "Alphaa is an AI agent that runs your UAE marketing: Google posts, blogs, review replies, SEO and getting named by ChatGPT. Social on Pro, email on Growth. Ads coming soon.",
     h1a: "Run your entire marketing",
     h1b: "using an AI agent.",
     sub: "No agency retainer, no late nights posting. I write your content, answer your reviews, fix your website for Google and ChatGPT, and send you one short list to approve. From Dubai Marina to Abu Dhabi, you get your time back to run the business.",
@@ -40,8 +40,8 @@ export const market: Market = {
         body: "I fix your website, structured data and details so Google, ChatGPT, Gemini, Claude and Perplexity can name you, and I check every week who they name instead, from JLT to Jumeirah to Sharjah.",
       },
       {
-        title: "Social on Pro. Ads and email on Growth",
-        body: "From the Pro plan I also write your social posts with branded images. On Growth (early access) I add Google and Meta ads paused for your budget approval, and emails that bring past customers back. Opening as the platforms approve us.",
+        title: "Social on Pro. Email on Growth",
+        body: "From the Pro plan I also write your social posts with branded images, ready to publish in one tap. On Growth (early access) I add emails that bring past customers back. Google and Meta ads are coming soon.",
       },
     ],
     whereTitle: "Where customers and AI look you up in the UAE",
@@ -59,7 +59,7 @@ export const market: Market = {
       "Google Business Profile posts, blog posts and review replies, written in your voice",
       "Your website fixed for Google and AI search, with weekly checks of what ChatGPT, Gemini, Claude and Perplexity say",
       "A short weekly briefing, and every change approved with one tap",
-      "Growth plan, {growth} a month (early access): everything in Pro, plus Google and Meta ads, email and lead tracking. Ad spend goes to Google and Meta directly, never marked up.",
+      "Growth plan, {growth} a month (early access): everything in Pro, plus email and lead tracking. Google and Meta ads are coming soon.",
       "Month to month. Cancel online in a minute. 7-day refund on your first charge.",
       "If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free.",
     ],
@@ -69,11 +69,11 @@ export const market: Market = {
     faq: [
       {
         q: "Does Alphaa work for businesses in Dubai, Abu Dhabi and the northern emirates?",
-        a: "Yes. I run your marketing week to week: Google Business Profile posts, blog posts, review replies and website fixes. I also check what ChatGPT, Gemini, Claude and Perplexity tell customers in your emirate and area, and fix what's missing. Social media is on Pro; ads and email are on the Growth plan, in early access.",
+        a: "Yes. I run your marketing week to week: Google Business Profile posts, blog posts, review replies and website fixes. I also check what ChatGPT, Gemini, Claude and Perplexity tell customers in your emirate and area, and fix what's missing. Social media is on Pro; email is on the Growth plan, in early access. Ads are coming soon.",
       },
       {
         q: "How much does it cost?",
-        a: "Starter is {starter} a month, Pro is {pro} a month (social media, up to 3 locations), and Growth, with ads and email, is {growth} a month in early access. Month to month, cancel online in a minute. The check on this page is free.",
+        a: "Starter is {starter} a month, Pro is {pro} a month (social media, up to 3 locations), and Growth, with email and lead tracking, is {growth} a month in early access. Month to month, cancel online in a minute. The check on this page is free.",
       },
       {
         q: "My customers search in Arabic and English. Do you cover both?",
@@ -123,7 +123,7 @@ export const market: Market = {
           { name: "Your clinic website", why: "Treatment pages, your doctors' names and licences, insurance you accept and real answers AI can quote." },
         ],
         steps: [
-          { title: "I run the weekly marketing", body: "Google Business Profile posts, treatment articles and replies to patient reviews, drafted for you to approve. Social is on Pro; ads and email are on Growth, in early access." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, treatment articles and replies to patient reviews, drafted for you to approve. Social is on Pro; email is on Growth, in early access. Ads are coming soon." },
           { title: "I write the answers AI quotes", body: "I draft treatment pages and FAQs in plain language: what it involves, who it suits, which insurance you accept. You approve before anything goes live." },
           { title: "I keep your listing and reviews alive", body: "I draft Google posts and polite, careful replies to patient reviews, and correct any wrong phone number, area or hours AI has for you." },
         ],
@@ -153,7 +153,7 @@ export const market: Market = {
           { name: "Google Business Profile and reviews", why: "Client reviews that mention a community and an agent by name carry real weight." },
         ],
         steps: [
-          { title: "I run the weekly marketing", body: "Google Business Profile posts, community guides and replies to client reviews, drafted for you to approve. Social is on Pro; ads and email are on Growth, in early access." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts, community guides and replies to client reviews, drafted for you to approve. Social is on Pro; email is on Growth, in early access. Ads are coming soon." },
           { title: "I build your area pages", body: "I draft community guides and answers AI can quote, such as service charges, commute times and what to know before renting, all approved by you first." },
           { title: "I keep your facts straight", body: "I correct a wrong office address, phone or licence details where AI has them wrong, and draft replies to client reviews." },
         ],
@@ -183,7 +183,7 @@ export const market: Market = {
           { name: "Your own website", why: "A clear menu of services with your area and booking details that AI can quote." },
         ],
         steps: [
-          { title: "I run the weekly marketing", body: "Google Business Profile posts on your offers, treatment pages and replies to every review, in your voice. Social posts are on Pro; ads and email are on Growth, in early access." },
+          { title: "I run the weekly marketing", body: "Google Business Profile posts on your offers, treatment pages and replies to every review, in your voice. Social posts are on Pro; email is on Growth, in early access. Ads are coming soon." },
           { title: "I write your service pages", body: "I draft simple pages for your signature treatments, with your area, hours and booking link, so AI has something clear to quote." },
           { title: "I keep your Google listing busy", body: "I draft Google posts for new treatments and offers, and warm replies to every review. You approve with one tap." },
         ],
@@ -213,7 +213,7 @@ export const market: Market = {
           { name: "Yellow Pages UAE", why: "A long-standing UAE directory that helps confirm your name, phone and address." },
         ],
         steps: [
-          { title: "I run the marketing while you work", body: "Google Business Profile posts on recent jobs, service pages and replies to your reviews, drafted for you to approve in a minute. Social is on Pro; ads and email are on Growth, in early access." },
+          { title: "I run the marketing while you work", body: "Google Business Profile posts on recent jobs, service pages and replies to your reviews, drafted for you to approve in a minute. Social is on Pro; email is on Growth, in early access. Ads are coming soon." },
           { title: "I write pages AI can quote", body: "I draft clear pages for each service and the makes you specialise in, with what's included and how to book." },
           { title: "I fix your facts and reviews", body: "Garages are hard to find in Al Quoz and Mussafah. I correct wrong locations and phone numbers AI has, and draft replies to reviews." },
         ],
