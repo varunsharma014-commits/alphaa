@@ -3,7 +3,9 @@
 Round 1 (decided 2026-11-19): **5 permissions, Page + Instagram posting only**: pages_show_list,
 pages_read_engagement, pages_manage_posts, instagram_basic, instagram_content_publish (+ default
 public_profile). ads_management, ads_read, business_management, pages_manage_ads and
-leads_retrieval were removed from the App Review draft and move to round 2.
+leads_retrieval were removed from the App Review draft and move to round 2. Round 2 also adds
+Instagram data: instagram_manage_insights, the Instagram Public Content Access feature, and
+optionally read_insights (see "Round 2 additions: Instagram data").
 
 Why: on 2026-11-19 the "Alphaa connect v2" login (system-user token) never granted the three ads
 permissions, even to the app admin with the ad account ticked and after removing/re-adding the
@@ -133,6 +135,56 @@ reviewer test login in "App verification details" (Varun enters the password; ne
 > campaigns; nothing is published and no budget is spent until the owner approves it. The videos
 > use our own test business (Page "Alphaa AI Agent", Instagram @alphaa.ai.agent, ad account
 > "Alphaa.app"), never a customer's.
+
+## Round 2 additions: Instagram data (added 2026-11-28, Varun)
+
+Goal: replace the Apify Instagram scrapers (rivals' posts, "What's working in your niche", email
+research) with Meta's own API, and get our customers' own Instagram post stats (reach, saves) for
+Social Studio. Requirements checked against Meta's docs on 2026-11-28:
+
+| Ask | Type | Unlocks | Meta doc |
+|---|---|---|---|
+| `instagram_manage_insights` | permission (new) | Business Discovery (another Business/Creator account's followers, media, like/comment/view counts) **and** the owner's own post insights (reach, saves, shares) | ig-user/business_discovery, ig-media/insights |
+| Instagram Public Content Access | feature (new) | Hashtag search (`ig_hashtag_search`, top/recent media), max 30 unique hashtags per IG account per 7 days | ig-hashtag-search |
+| `instagram_basic`, `pages_read_engagement` | already in round 1 | required by both of the above | |
+| `ads_read` or `ads_management` | already in round 2 | Business Discovery also needs one of these when the user's Page role comes through Business Manager (ours does) | ig-user/business_discovery |
+| `read_insights` (optional, recommended) | permission (new) | Facebook Page post stats for Social Studio (the audit's "no Facebook reach" gap) | |
+
+Not possible this way: other businesses' Facebook Page posts (needs Page Public Content Access,
+which Meta rarely grants), personal Instagram accounts (Business Discovery only covers Business and
+Creator accounts), and Meta ads of competitors outside politics in the US/CA.
+
+### Build before recording (the app must already use each permission in the video)
+1. `lib/social/meta-insights.ts`: Business Discovery for rival usernames (from the competitor
+   list's Instagram links), hashtag search for the niche hashtags (respect the 30/7-day cap per
+   connected IG account; cache), own-media insights on published posts → `PostResult.stats`.
+2. Swap `lib/niche-posts.ts` and the email dossier Instagram calls from Apify to these when a
+   connected IG account with the permissions exists; Apify stays as fallback until approval.
+3. Social Studio shows reach/saves/shares on our own Instagram posts.
+
+### Paste text (draft)
+
+**instagram_manage_insights**
+> Alphaa shows the business owner how their own Instagram posts perform (reach, saves, shares)
+> next to each post it published for them, so they can see what works. It also looks up a few
+> public Instagram Business accounts the owner chose as competitors (followers, recent posts and
+> their like and comment counts) to suggest post ideas in the "What's working in your niche"
+> card. Alphaa stores counts and post links only, never other accounts' captions or images.
+
+**Instagram Public Content Access**
+> For the owner's chosen industry hashtags (for example #dentistottawa), Alphaa reads the top
+> public posts' like and comment counts and links to show which formats get engagement in the
+> owner's niche, then writes an original post idea. It stays under 30 hashtags per week per
+> connected account, stores counts and links only, and never reposts other people's content.
+
+**read_insights** (if added)
+> Alphaa reads post reach and engagement for the Facebook Page the owner connected, to show how
+> each post it published performed.
+
+### Video (round 2, after the ads take)
+Competitors card → "Instagram: @rival, 2,140 followers, last 12 posts" with counts; niche card
+with a hashtag's top posts (counts + links); Social Studio post with reach/saves from Instagram.
+Use our own test business and public Business accounts only.
 
 ## Data Handling questionnaire (draft answers)
 
