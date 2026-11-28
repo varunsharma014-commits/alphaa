@@ -7,11 +7,22 @@ import { askAlphaa, toast } from "@/lib/workspace/events"
 import type { Act } from "@/lib/workspace/briefing"
 import { ago, whenAhead } from "@/lib/workspace/common"
 
-// Small shared pieces for the workspace pages: buttons that do one real thing, tabs, the
-// slide-over inspector and empty states.
+// Small shared pieces for the workspace pages: buttons that do one real thing, the slide-over
+// inspector and empty states. The design system (PageHeader, StatTile, Sheet, DataTable…) lives in
+// ./ds and is re-exported here, so pages import everything from "@/components/workspace/ui".
+// (Named re-exports, not `export *`: this is a client boundary.)
+import { Spinner } from "./ds"
+export {
+  Button, Spinner, Glyph, PageHeader, SectionHeader, Pill, StatusDot, StatTile, StatRow, List, ListRow, RowIcon, Timeline, ActivityRow,
+  ChannelBadge, ChannelMark, PlatformIcons, channelsOf, CHANNEL_LABEL, EmptyState, Skeleton, Tabs, LinkTabs, useTabParam, Segmented, FilterPills,
+  Sheet, Modal, ConfirmSheet, useConfirm, Popover, Menu, DataTable, Field, TextInput, TextArea, Select, TokenSelect, Sentence, FieldGrid,
+  SettingsSection, SaveBar, ConnectionCard, ConnectionRow, ConnectCard, PlanCard, PlanGrid, StaleBadge, isStale, sinceText, CodeBlock, IssueList,
+} from "./ds"
+export type { ButtonVariant, GlyphName, Tone, Delta, Activity, Channel, TabItem, MenuItem, Column, ConnState, IssueGroup } from "./ds"
 
-export function ActButton({ act, className = "", small = false }: { act: Act; className?: string; small?: boolean }) {
+export function ActButton({ act, className = "", small = false, loading = false }: { act: Act; className?: string; small?: boolean; loading?: boolean }) {
   const cls = `ax-btn ${act.primary ? "p" : "s"}${small ? " sm" : ""} ${className}`.trim()
+  if (loading) return <button type="button" className={cls} disabled aria-busy="true"><Spinner size={small ? 12 : 14} />{act.label}</button>
   if (act.href) {
     if (/^https?:/.test(act.href) || act.href.startsWith("/api/")) return <a className={cls} href={act.href}>{act.label}</a>
     return <Link className={cls} href={act.href}>{act.label}</Link>
@@ -27,16 +38,6 @@ export function ActButton({ act, className = "", small = false }: { act: Act; cl
     >
       {act.label}
     </button>
-  )
-}
-
-export function Tabs<T extends string>({ tabs, value, onChange }: { tabs: { key: T; label: string }[]; value: T; onChange: (k: T) => void }) {
-  return (
-    <div className="ax-tabs" role="tablist">
-      {tabs.map((t) => (
-        <button key={t.key} type="button" role="tab" aria-selected={value === t.key} className={value === t.key ? "on" : ""} onClick={() => onChange(t.key)}>{t.label}</button>
-      ))}
-    </div>
   )
 }
 
@@ -79,6 +80,7 @@ export function useInspector() {
   return { node, open: setInsp }
 }
 
+/** Older one-line empty card. New code uses EmptyState (icon, bullets, actions inside). */
 export function Empty({ title, text, act, acts }: { title: string; text?: string; act?: Act | null; acts?: Act[] }) {
   const list = acts ?? (act ? [act] : [])
   return (

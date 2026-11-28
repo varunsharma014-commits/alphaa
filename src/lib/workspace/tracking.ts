@@ -14,6 +14,7 @@ import { getGadsAccount } from "@/lib/gads/store"
 import { hasGrowth, hasPro } from "@/lib/billing"
 import type { Chip } from "@/lib/agent/types"
 import { ago, within } from "./common"
+import { displayName } from "@/lib/display-name"
 
 export type Act = { label: string; href?: string; topic?: string; chip?: Chip }
 export type Conn = {
@@ -117,7 +118,7 @@ export async function getTrackingData(user: User, opts: { wait?: boolean } = {})
       key: "social", name: "Social accounts",
       state: !accounts.length ? "needs" : bad.length ? "needs" : "ok",
       warn: bad.length ? `${bad.length} need${bad.length === 1 ? "s" : ""} attention` : null,
-      sum: accounts.length ? accounts.map((a) => `${PLATFORM_NAME[a.platform]}: ${a.name}${bad.includes(a) ? " (login expired)" : ""}`).join(" · ") : "None connected. I write your posts, but I can’t post them yet.",
+      sum: accounts.length ? accounts.map((a) => `${PLATFORM_NAME[a.platform]}: ${displayName(a.name)}${bad.includes(a) ? " (login expired)" : ""}`).join(" · ") : "None connected. I write your posts, but I can’t post them yet.",
       act: bad.length ? { label: `Reconnect ${PLATFORM_NAME[bad[0].platform]}`, href: `/api/social/connect/${provider(bad[0].platform)}` } : accounts.length ? undefined : { label: "Connect", topic: "social" },
       verified: !bad.length && lastPosted ? { verb: "Last posted", at: lastPosted } : null,
       detail: "Facebook, Instagram and LinkedIn accounts I post to. I read each account’s login state before every post.",

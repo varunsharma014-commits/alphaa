@@ -4,6 +4,7 @@ import type { Role } from "@/lib/team/permissions"
 import "../../(dashboard)/workspace.css"
 import "../../(dashboard)/calendar.css"
 import { CalendarPreview } from "./calendar-preview"
+import { DsGallery } from "@/components/workspace/ds/Gallery"
 import { WorkspaceShell } from "@/components/workspace/WorkspaceShell"
 import { BriefingView } from "@/components/workspace/BriefingView"
 import { ResearchView } from "@/components/workspace/ResearchView"
@@ -60,8 +61,9 @@ const SAMPLE_CLUSTERS = viewOf("preview", validatePlan({ clusters: [
 const soon = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString()
 
 export function WsPreview({ page, empty, dark, role }: { page: string; empty: boolean; dark: boolean; role?: Role }) {
-  const path = page === "briefing" ? "/dashboard" : page === "calendar" ? "/dashboard/social/calendar" : `/dashboard/${page}`
+  const path = page === "briefing" ? "/dashboard" : page === "calendar" ? "/dashboard/social/calendar" : page === "ds" ? "/dashboard/admin/ds" : `/dashboard/${page}`
   const body = (() => {
+    if (page === "ds") return <DsGallery />
     if (page === "calendar") return <CalendarPreview empty={empty} />
     if (page === "research") return <ResearchView data={empty ? { summary: "Here’s what I’ve found about your market so far.", nicheOn: true, instagram: "connect" as const, working: [], trends: [], ideas: [], hooks: [], moves: [], comps: [], compGaps: [], strategyAt: null, hiddenComps: 2, hiddenGaps: 4, lastChecked: null, compared: 0, autopilot: false, siteConnected: false, top: null, island: "", droppedPosts: 0, ideasAt: null, topIdea: null, hasSocialAccounts: false, gmbConnected: false, published: [], clusters: null, webPersonEmail: null } : {
       summary: "I looked at 12 posts on Instagram and YouTube for #sampletag. Here’s what I found, with a link to every source.", nicheOn: true, instagram: "on" as const, strategyAt: new Date().toISOString(),

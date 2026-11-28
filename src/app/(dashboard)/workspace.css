@@ -8,6 +8,15 @@
   --x-gink: #198737; --x-gbg: rgba(52,199,89,.12); --x-amber: #c46a00; --x-abg: rgba(255,149,0,.15);
   --x-shadow: 0 2px 12px rgba(0,0,0,.035), 0 1px 2px rgba(0,0,0,.025);
   --x-float: 0 16px 48px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.05);
+  /* Design tokens (package 0). Type scale, status colours, radii, focus ring, motion.
+     Use these instead of hand-set sizes and hex colours. */
+  --x-fs-xs: 12px; --x-fs-sm: 13px; --x-fs-md: 14px; --x-fs-lg: 16px; --x-fs-xl: 20px; --x-fs-2xl: 26px;
+  --x-ok: #34c759; --x-warn: #ff9500; --x-bad: #ff3b30; --x-idle: #c7c7cc;
+  --x-ok-ink: #198737; --x-warn-ink: #b25000; --x-bad-ink: #d70015; --x-rbg: rgba(255,59,48,.1);
+  --x-r-sm: 12px; --x-r-md: 16px; --x-r-lg: 22px;
+  --x-focus: 0 0 0 3px rgba(0,113,227,.32);
+  --x-ease: cubic-bezier(.22,1,.36,1);
+  --x-blue-hover: #0077ed; --x-blue-press: #006edb;
   min-height: 100vh; background: var(--x-bg); color: var(--x-ink);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased; display: flex; letter-spacing: -.01em; transition: background .3s, color .3s;
@@ -19,8 +28,11 @@
   --x-shadow: 0 2px 14px rgba(0,0,0,.4); --x-float: 0 16px 48px rgba(0,0,0,.6);
 }
 .ax *, .ax *::before, .ax *::after { box-sizing: border-box; }
-.ax :where(button) { font: inherit; cursor: pointer; color: inherit; }
-.ax :where(a) { color: inherit; text-decoration: none; }
+/* The reset skips the chat (ag-*) and editor (dx-*) components: they style their own buttons and
+   links, and an inherited colour used to blank the chat's primary chips. */
+.ax :where(button:not([class*="ag-"]):not([class*="dx-"])) { font: inherit; cursor: pointer; color: inherit; }
+.ax :where(a:not([class*="ag-"]):not([class*="dx-"])) { color: inherit; text-decoration: none; }
+.ax :where(button) { cursor: pointer; }
 .ax :focus-visible { outline: 2px solid var(--x-blue); outline-offset: 2px; }
 
 /* ── Sidebar ─────────────────────────────────────────────────────────────── */
@@ -343,3 +355,67 @@
 .ax-tbl th { text-align: left; font-size: 12px; font-weight: 500; color: var(--x-mut); padding: 8px 10px 8px 0; border-bottom: 1px solid var(--x-line); }
 .ax-tbl td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--x-line); vertical-align: top; }
 .ax-tbl tr:last-child td { border-bottom: 0; }
+
+/* ── Interaction states (package 0): every control answers hover, press and keyboard focus ── */
+.ax-btn { transition: background-color .15s, box-shadow .15s, transform .15s var(--x-ease), opacity .15s, color .15s, filter .15s; position: relative; }
+.ax-btn:active:not(:disabled) { transform: scale(.98); }
+.ax-btn:focus-visible { outline: none; box-shadow: var(--x-focus); }
+.ax-btn.p:hover:not(:disabled) { background: var(--x-blue-hover); }
+.ax-btn.p:active:not(:disabled) { background: var(--x-blue-press); }
+.ax-btn.s:hover:not(:disabled) { background: rgba(0,0,0,.06); }
+.ax-btn.s:active:not(:disabled) { background: rgba(0,0,0,.09); }
+.ax-btn.d:hover:not(:disabled) { background: var(--x-rbg); }
+.ax-btn.d.undo:hover:not(:disabled) { background: rgba(0,113,227,.08); }
+.ax-btn.grad:hover:not(:disabled) { filter: brightness(1.07) saturate(1.05); }
+.ax-btn.r { background: var(--x-bad); color: #fff; }
+.ax-btn.r:hover:not(:disabled) { background: #e5352b; }
+.ax-btn[aria-busy="true"] { cursor: progress; }
+.ax-tabs button, .ax-seg button { transition: background-color .15s, color .15s, box-shadow .15s, transform .15s var(--x-ease); }
+.ax-tabs button:hover:not(.on), .ax-seg button:hover:not(.on) { color: var(--x-ink); background: rgba(0,0,0,.035); }
+.ax-tabs button:active, .ax-seg button:active { transform: scale(.98); }
+.ax-tabs button:focus-visible, .ax-seg button:focus-visible { outline: none; box-shadow: var(--x-focus); }
+.ax-lnk { cursor: pointer; border-radius: 4px; transition: color .15s; }
+.ax-lnk:hover { text-decoration: underline; text-underline-offset: 3px; }
+.ax-lnk:active { color: var(--x-blue-press); }
+.ax-src:hover { text-decoration: underline; text-underline-offset: 3px; }
+button.ax-chip, a.ax-chip { cursor: pointer; transition: background-color .15s, border-color .15s, transform .15s var(--x-ease); }
+button.ax-chip:hover, a.ax-chip:hover { background: var(--x-surf); border-color: rgba(0,0,0,.14); }
+button.ax-chip:active, a.ax-chip:active { transform: scale(.98); }
+.ax-chips button, .ax-chatp .ax-chatchips button { transition: color .15s, border-color .15s, box-shadow .15s, transform .15s var(--x-ease); }
+.ax-chips button:hover, .ax-chatp .ax-chatchips button:hover { color: var(--x-ink); border-color: rgba(0,113,227,.35); }
+.ax-chips button:active, .ax-chatp .ax-chatchips button:active { transform: scale(.98); }
+.ax-x { transition: background-color .15s, transform .15s var(--x-ease); }
+.ax-x:hover { background: rgba(0,0,0,.08); }
+.ax-x:active { transform: scale(.94); }
+.ax-sw:focus-visible { outline: none; box-shadow: var(--x-focus); }
+.ax-ni { transition: background-color .15s, color .15s; }
+.ax-ni:active { background: rgba(0,0,0,.06); }
+.ax-pill.r { background: var(--x-rbg); color: var(--x-bad-ink); }
+/* Chat chips inside the shell: the primary one is the blue action, never a blank black pill. */
+.ax .ag-chip { transition: background-color .15s, border-color .15s, transform .15s var(--x-ease); }
+.ax .ag-chip:hover:not(:disabled) { border-color: rgba(0,113,227,.35); }
+.ax .ag-chip:active:not(:disabled) { transform: scale(.98); }
+.ax .ag-chip--primary { background: var(--x-blue); border-color: var(--x-blue); color: #fff; }
+.ax .ag-chip--primary:hover:not(:disabled) { background: var(--x-blue-hover); border-color: var(--x-blue-hover); }
+.ax .ag-pill.ag-pill--blue { background: var(--x-blue); color: #fff; transition: background-color .15s, transform .15s var(--x-ease); }
+.ax .ag-pill.ag-pill--blue:hover { background: var(--x-blue-hover); color: #fff; }
+.ax .ag-pill:active:not(:disabled) { transform: scale(.98); }
+.ax .ag-chip:focus-visible, .ax .ag-pill:focus-visible { outline: none; box-shadow: var(--x-focus); }
+/* Tabs that scroll sideways fade at the cut edge (the Tabs component sets data-fade). */
+.ax-tabs { scrollbar-width: none; scroll-behavior: smooth; }
+.ax-tabs::-webkit-scrollbar { display: none; }
+.ax-tabs[data-fade="r"] { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+.ax-tabs[data-fade="l"] { -webkit-mask-image: linear-gradient(270deg, #000 85%, transparent); mask-image: linear-gradient(270deg, #000 85%, transparent); }
+.ax-tabs[data-fade="lr"] { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+/* Mobile guard: grid and flex children may shrink, long words wrap, nothing pushes the page sideways. */
+:where(.ax-stage) :where(div, section, article, header, footer, aside, ul, ol, li, form, label, p, h1, h2, h3, h4) { min-width: 0; }
+.ax-card { overflow-wrap: anywhere; }
+.ax-stage { overflow-x: clip; }
+/* Touch screens: 44px tap targets without changing how desktop looks. */
+@media (pointer: coarse) {
+  .ax-btn, .ax-tabs button, .ax-seg button { min-height: 44px; }
+  .ax-btn.sm { min-height: 36px; }
+  .ax-btn.sm::after, .ax-lnk::after, .ax-x::after, button.ax-chip::after, a.ax-chip::after { content: ""; position: absolute; inset: -9px -4px; }
+  .ax-lnk, .ax-x, button.ax-chip, a.ax-chip { position: relative; }
+}
+@media (prefers-reduced-motion: reduce) { .ax-btn:active, .ax-tabs button:active, .ax-seg button:active { transform: none; } }

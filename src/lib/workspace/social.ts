@@ -14,6 +14,7 @@ import { startWeekRun, WEEK_RUN } from "@/lib/agent/week"
 import { runAsUser } from "@/lib/usage"
 import { refreshPostStats, statsLine } from "@/lib/social/stats"
 import { audienceOf, metaGrants } from "@/lib/social/meta-stats"
+import { displayName } from "@/lib/display-name"
 
 const kicked = new Set<string>()
 
@@ -126,8 +127,8 @@ export async function getSocialData(user: User): Promise<SocialData> {
     accounts: accounts.map((a) => {
       const expired = a.status === "expired" || (!!a.expiresAt && Date.parse(a.expiresAt) < now && !a.refreshEnc)
       return {
-        id: a.id, name: a.name, platform: PLATFORM_NAME[a.platform], ok: !expired,
-        fix: expired ? `${PLATFORM_NAME[a.platform]} stopped letting me post as ${a.name} (the login expired). Reconnect it once and I carry on.` : null,
+        id: a.id, name: displayName(a.name), platform: PLATFORM_NAME[a.platform], ok: !expired,
+        fix: expired ? `${PLATFORM_NAME[a.platform]} stopped letting me post as ${displayName(a.name)} (the login expired). Reconnect it once and I carry on.` : null,
         reconnect: expired ? `/api/social/connect/${provider(a)}` : null,
       }
     }),
@@ -135,7 +136,7 @@ export async function getSocialData(user: User): Promise<SocialData> {
     auto,
     posts: cards,
     tabs,
-    audience: audience.filter((a) => a.followers != null).map((a) => ({ platform: PLATFORM_NAME[a.platform], name: a.name, followers: a.followers!, change: a.change, since: a.since, points: a.points.map((p) => p.n) })),
+    audience: audience.filter((a) => a.followers != null).map((a) => ({ platform: PLATFORM_NAME[a.platform], name: displayName(a.name), followers: a.followers!, change: a.change, since: a.since, points: a.points.map((p) => p.n) })),
     statsAsk,
   }
 }

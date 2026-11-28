@@ -22,8 +22,8 @@ import { CreditsSheet } from "./CreditsSheet"
 import { BannedWordConfirm } from "./BannedWordConfirm"
 import { RoleContext, useMemberFetchNotice } from "./role"
 import { can, ROLE_LABEL } from "@/lib/team/permissions"
+import { isStageRoute } from "@/lib/workspace/stage-routes"
 
-const WORKSPACES = ["/dashboard", "/dashboard/research", "/dashboard/social", "/dashboard/social/calendar", "/dashboard/email", "/dashboard/ads", "/dashboard/tracking", "/dashboard/citations"]
 
 type Suggest = { label: string; say?: string; topic?: string }
 const SUGGEST: Record<string, Suggest[]> = {
@@ -170,7 +170,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
     window.history.replaceState(null, "", window.location.pathname)
   }, [pathname, open])
 
-  const isWs = WORKSPACES.includes(pathname)
+  const isWs = isStageRoute(pathname)
   const suggest = SUGGEST[pathname] ?? SUGGEST["/dashboard"]
   const ni = (href: string, label: string, icon: IconName, extra?: React.ReactNode) => {
     const on = href === "/dashboard" ? pathname === "/dashboard" : (pathname === href || pathname.startsWith(`${href}/`)) && !(href === "/dashboard/social" && pathname.startsWith("/dashboard/social/calendar"))

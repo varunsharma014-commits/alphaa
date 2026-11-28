@@ -13,6 +13,9 @@ import { WorkspaceShell } from "@/components/workspace/WorkspaceShell"
 import { getShellData } from "@/lib/workspace/shell"
 import "./workspace.css"
 
+// Signed-in app tab titles read "Page · Alphaa" (lib/page-title.ts pageTitle() sets the same, absolute).
+export const metadata = { title: { template: "%s · Alphaa", default: "Alphaa" } }
+
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { userId } = await auth()
   if (!userId) redirect("/login")
