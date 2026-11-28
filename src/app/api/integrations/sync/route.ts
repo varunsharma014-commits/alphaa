@@ -3,6 +3,7 @@ import { auth } from '@/lib/auth'
 import { Prisma } from '@prisma/client'
 import { db } from '@/lib/db'
 import { getTopKeywords } from '@/lib/gsc'
+import { syncPageStats } from '@/lib/seo/page-stats'
 import { getAnalyticsSnapshot } from '@/lib/ga'
 import { getReviews } from '@/lib/gmb'
 import { logActivity } from '@/lib/activity'
@@ -110,6 +111,7 @@ export async function POST(request: NextRequest) {
     today.setHours(0, 0, 0, 0)
 
     let keywordCount = 0
+    let pageCount = 0
     let reviewCount = 0
     let authFailure = false
 
@@ -162,6 +164,19 @@ export async function POST(request: NextRequest) {
         }
       } catch (err) {
         console.error('[Sync] GSC keyword fetch error:', err)
+        if (isGoogleAuthError(err)) authFailure = true
+      }
+
+      // --- GSC: page-level clicks/impressions/position, this 4 weeks vs the 4 before (SEO decay) ---
+      try {
+        pageCount = await syncPageStats(userId, {
+          accessToken: integration.accessToken,
+          refreshToken: integration.refreshToken,
+          expiresAt: integration.expiresAt,
+          gscSiteUrl: integration.gscSiteUrl,
+        })
+      } catch (err) {
+        console.error('[Sync] GSC page stats error:', err)
         if (isGoogleAuthError(err)) authFailure = true
       }
     }
@@ -290,7 +305,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      synced: { keywords: keywordCount, reviews: reviewCount },
+      synced: { keywords: keywordCount, pages: pageCount, reviews: reviewCount },
     })
   } catch (err) {
     console.error('[Sync] Unexpected error:', err)

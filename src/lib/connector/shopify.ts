@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from "crypto"
 import { decryptSecret, encryptSecret } from "@/lib/checks/bing-webmaster"
-import type { MetaInput, PublishInput, PublishResult, SiteConnection, SiteConnector } from "./types"
+import type { ContentSnapshot, MetaInput, PublishInput, PublishResult, SiteConnection, SiteConnector, UpdateInput, UpdateResult } from "./types"
 
 // Shopify connector: a public app installed with the OAuth authorization code grant,
 // then Admin GraphQL for blog articles, pages and SEO metafields.
@@ -299,7 +299,55 @@ function seoMetafields(ownerId: string, title: string, description: string) {
   ].filter((m) => m.value.trim())
 }
 
+/** The article or page behind a storefront URL, with what it says now (for Undo). */
+async function findContent(shop: string, token: string, url: string): Promise<{ kind: "article" | "page"; gid: string; prev: ContentSnapshot }> {
+  const target = matchShopifyPath(url)
+  if (target.type === "page") {
+    const d = await gql<{ pages: { nodes: { id: string; handle: string; title: string; body: string }[] } }>(
+      shop, token, `query($q: String!) { pages(first: 50, query: $q) { nodes { id handle title body } } }`, { q: `handle:'${target.handle.replace(/'/g, "")}'` },
+    )
+    const p = d.pages.nodes.find((x) => x.handle === target.handle)
+    if (!p) throw new Error(`Couldn't find a Shopify page at /pages/${target.handle}.`)
+    return { kind: "page", gid: p.id, prev: { title: p.title, html: p.body } }
+  }
+  if (target.type === "article") {
+    const d = await gql<{ articles: { nodes: { id: string; handle: string; title: string; body: string; summary: string | null; blog: { handle: string } }[] } }>(
+      shop, token, `query($q: String!) { articles(first: 50, query: $q) { nodes { id handle title body summary blog { handle } } } }`, { q: `handle:'${target.handle.replace(/'/g, "")}'` },
+    )
+    const a = d.articles.nodes.find((x) => x.handle === target.handle && x.blog.handle === target.blog)
+    if (!a) throw new Error(`Couldn't find a Shopify blog post at /blogs/${target.blog}/${target.handle}.`)
+    return { kind: "article", gid: a.id, prev: { title: a.title, html: a.body, excerpt: a.summary } }
+  }
+  throw new Error("Shopify only lets apps change pages (/pages/…) and blog posts (/blogs/…). This address is something else.")
+}
+
+async function writeContent(shop: string, token: string, kind: "article" | "page", gid: string, c: { title: string; html: string; excerpt?: string | null }) {
+  if (kind === "article") {
+    const article: Record<string, unknown> = { title: c.title, body: c.html }
+    if (c.excerpt != null) article.summary = c.excerpt
+    const d = await gql<{ articleUpdate: { userErrors: UserError[] } }>(shop, token, `mutation($id: ID!, $article: ArticleUpdateInput!) { articleUpdate(id: $id, article: $article) { article { id } userErrors { field message } } }`, { id: gid, article })
+    check("update the blog post", d.articleUpdate.userErrors)
+  } else {
+    const d = await gql<{ pageUpdate: { userErrors: UserError[] } }>(shop, token, `mutation($id: ID!, $page: PageUpdateInput!) { pageUpdate(id: $id, page: $page) { page { id } userErrors { field message } } }`, { id: gid, page: { title: c.title, body: c.html } })
+    check("update the page", d.pageUpdate.userErrors)
+  }
+}
+
 export const shopify: SiteConnector = {
+  /** Refresh an article/page in place (same handle = same URL). */
+  async update(conn: SiteConnection, input: UpdateInput): Promise<UpdateResult> {
+    const token = await accessToken(conn)
+    const found = await findContent(conn.config.shop, token, input.url)
+    await writeContent(conn.config.shop, token, found.kind, found.gid, { title: input.title, html: input.html, excerpt: input.excerpt ?? null })
+    return { id: `update:${found.kind}:${found.gid}`, url: input.url, prev: found.prev }
+  },
+
+  async restore(conn: SiteConnection, id: string, prev: ContentSnapshot): Promise<void> {
+    const m = /^update:(article|page):(gid:\/\/shopify\/(?:Article|Page)\/\d+)$/.exec(id)
+    if (!m) throw new Error("That update wasn't made through Shopify, so it can't be undone here.")
+    await writeContent(conn.config.shop, await accessToken(conn), m[1] as "article" | "page", m[2], { title: prev.title, html: prev.html ?? "", excerpt: prev.excerpt ?? null })
+  },
+
   async ping(conn: SiteConnection): Promise<void> {
     await gql<unknown>(conn.config.shop, await accessToken(conn), `{ shop { name } }`)
   },

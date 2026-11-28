@@ -63,7 +63,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
   const [evidence, weekActivity] = await Promise.all([
     getEngineEvidence({ id: user.id, email: user.email }),
     db.mockActivity.findMany({
-      where: { userId: user.id, createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) }, type: { notIn: ["sandbox_query", "agent_settings", "question_scan_started", "ai_visit", "site_check", "citation_scan", "check_security", "check_profiles", "check_listings", "check_bing", "market_customer", "post_revision"] } },
+      where: { userId: user.id, createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) }, type: { notIn: ["sandbox_query", "agent_settings", "question_scan_started", "ai_visit", "site_check", "citation_scan", "check_security", "check_profiles", "check_listings", "check_bing", "market_customer", "post_revision", "gsc_pages"] } },
       orderBy: { createdAt: "desc" },
       take: 30,
     }),

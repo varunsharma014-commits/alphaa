@@ -121,8 +121,14 @@ export async function approveSitePost(userId: string, draftId: string, text?: st
     db.mockActivity.findFirst({ where: { id: draftId, userId, type: "post_draft" } }),
   ])
   if (!user || !draft) return { ok: false, error: "That post isn’t here any more." }
-  const m = (draft.metadata ?? {}) as { title?: string; markdown?: string; status?: string; url?: string }
+  const m = (draft.metadata ?? {}) as { title?: string; markdown?: string; status?: string; url?: string; refresh?: { url?: string } }
   if (m.status === "published") return { ok: true, url: m.url ?? null }
+  // A refresh / link fix of an existing page: update that page in place (lib/seo/refresh.ts).
+  if (m.refresh?.url) {
+    const { publishRefreshDraft } = await import("@/lib/seo/refresh")
+    const r = await publishRefreshDraft(userId, draftId)
+    return r.ok ? { ok: true, url: r.url } : { ok: false, error: r.error, ...(r.quota ? { quota: true } : {}) }
+  }
   // The saved draft (lib/draft-versions.ts) is what goes out; text passed in is saved first. A post
   // still "scheduled" at this point is the cron publishing it under Autopilot (by the agent).
   const by = m.status === "scheduled" ? "agent" : "owner"

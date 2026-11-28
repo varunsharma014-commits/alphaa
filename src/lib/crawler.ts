@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import { load } from "cheerio"
 import { safeFetch } from "@/lib/safe-fetch"
+import { checkLinks, classify, stateText, type LinkCheck } from "@/lib/seo/links"
 
 type CheerioRoot = ReturnType<typeof load>
 // Use the element type that works with both old @types/cheerio and new cheerio
@@ -15,6 +16,13 @@ export type CrawlIssue = {
   fix: string
   // Set on AI-crawler-block issues so the UI can render a per-engine card.
   engine?: string
+  // Link issues (broken_internal_link / broken_outbound_link / redirect_chain): the link
+  // itself, what it answered, the redirect hops and the pages on the site that link to it.
+  target?: string
+  status?: number | null
+  hops?: string[]
+  finalUrl?: string
+  sources?: string[]
 }
 
 export type CrawlOutput = {
@@ -27,6 +35,9 @@ export type CrawlOutput = {
     missingDescriptions: number
     missingH1: number
     imagesWithoutAlt: number
+    /** Set when links were checked (own-site crawl): how many internal / outbound links. */
+    linksChecked?: number
+    outboundChecked?: number
   }
 }
 
@@ -47,6 +58,8 @@ interface PageData {
   imagesWithoutAlt: number
   internalLinksCount: number
   internalLinks: string[]
+  /** Links to other websites (http/https only). */
+  outboundLinks: string[]
 }
 
 function normalizeUrl(rawUrl: string, base: string): string | null {
@@ -91,23 +104,54 @@ function isSkippable(url: string): boolean {
   return false
 }
 
-async function fetchPage(url: string): Promise<string | null> {
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
-  try {
-    const res = await safeFetch(url, {
-      headers: { "User-Agent": USER_AGENT },
-      signal: controller.signal,
-    })
-    clearTimeout(timer)
-    if (!res.ok) return null
-    const contentType = res.headers.get("content-type") ?? ""
-    if (!contentType.includes("text/html")) return null
-    return await res.text()
-  } catch {
-    clearTimeout(timer)
-    return null
+type Fetched = { html: string | null; check: LinkCheck }
+
+/** GET a page, following redirects hop by hop so redirect chains and error statuses are kept. */
+async function fetchPage(url: string): Promise<Fetched> {
+  const hops: string[] = []
+  let cur = url
+  for (let i = 0; i <= 6; i++) {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+    let res: Response
+    try {
+      res = await safeFetch(cur, { headers: { "User-Agent": USER_AGENT }, signal: controller.signal, redirect: "manual" })
+    } catch (e) {
+      clearTimeout(timer)
+      const error = e instanceof Error ? `${e.name}: ${e.message}${(e as { cause?: { code?: string } }).cause?.code ? ` ${(e as { cause?: { code?: string } }).cause!.code}` : ""}` : String(e)
+      return { html: null, check: { url, status: null, state: classify(null, error), hops, finalUrl: cur, error } }
+    }
+    const location = res.headers.get("location")
+    if (res.status >= 300 && res.status < 400 && location) {
+      clearTimeout(timer)
+      await res.body?.cancel().catch(() => {})
+      try {
+        cur = new URL(location, cur).toString()
+      } catch {
+        return { html: null, check: { url, status: res.status, state: "broken", hops, finalUrl: cur, error: "bad redirect" } }
+      }
+      hops.push(cur)
+      continue
+    }
+    const check: LinkCheck = { url, status: res.status, state: classify(res.status), hops, finalUrl: cur }
+    try {
+      if (!res.ok) {
+        await res.body?.cancel().catch(() => {})
+        return { html: null, check }
+      }
+      const contentType = res.headers.get("content-type") ?? ""
+      if (!contentType.includes("text/html")) {
+        await res.body?.cancel().catch(() => {})
+        return { html: null, check }
+      }
+      return { html: await res.text(), check }
+    } catch {
+      return { html: null, check: { ...check, state: "unreachable", error: "timed out reading the page" } }
+    } finally {
+      clearTimeout(timer)
+    }
   }
+  return { html: null, check: { url, status: null, state: "broken", hops, finalUrl: cur, error: "Too many redirects" } }
 }
 
 function extractSchemaTypes($: CheerioRoot): string[] {
@@ -180,8 +224,10 @@ function parsePage(url: string, html: string, baseOrigin: string): PageData {
     }
   })
 
-  // Internal links
+  // Internal links (crawled) and outbound links (only checked)
   const internalLinks: string[] = []
+  const outboundLinks: string[] = []
+  const bare = (h: string) => h.toLowerCase().replace(/^www\./, "")
   $("a[href]").each((_: number, el: AnyElement) => {
     const href = $(el).attr("href") ?? ""
     if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return
@@ -190,8 +236,10 @@ function parsePage(url: string, html: string, baseOrigin: string): PageData {
     try {
       const parsed = new URL(normalized)
       const base = new URL(url)
-      if (parsed.origin === base.origin && !isSkippable(normalized)) {
-        internalLinks.push(normalized)
+      if (parsed.origin === base.origin) {
+        if (!isSkippable(normalized)) internalLinks.push(normalized)
+      } else if (bare(parsed.hostname) !== bare(base.hostname)) {
+        outboundLinks.push(normalized)
       }
     } catch {
       // ignore
@@ -211,6 +259,7 @@ function parsePage(url: string, html: string, baseOrigin: string): PageData {
     imagesWithoutAlt,
     internalLinksCount: internalLinks.length,
     internalLinks,
+    outboundLinks: Array.from(new Set(outboundLinks)),
   }
 }
 
@@ -460,7 +509,98 @@ async function checkAiCrawlerBlocks(
   return Array.from(byEngine, ([engine, agents]) => ({ engine, agents }))
 }
 
-export async function crawlWebsite(url: string, maxPages = 40): Promise<CrawlOutput> {
+// ── Broken links + redirect chains ─────────────────────────────────────────
+
+const shortPath = (u: string) => {
+  try {
+    const p = new URL(u)
+    return `${p.pathname}${p.search}` || "/"
+  } catch {
+    return u
+  }
+}
+
+/** Exported for tests: turn link check results into fix items naming the pages that link there. */
+export function buildLinkIssues(
+  internalFrom: Map<string, { target: string; sources: Set<string> }>,
+  fetched: Map<string, LinkCheck>,
+  outboundFrom: Map<string, Set<string>>,
+  outbound: Map<string, LinkCheck>,
+): CrawlIssue[] {
+  const out: CrawlIssue[] = []
+  const list = (s: Set<string>) => [...s].slice(0, 10)
+  const on = (s: string[]) => (s.length === 1 ? `on ${shortPath(s[0])}` : `on ${s.length} pages (${s.slice(0, 3).map(shortPath).join(", ")}${s.length > 3 ? "…" : ""})`)
+  for (const [key, { target, sources }] of internalFrom) {
+    const c = fetched.get(key)
+    if (!c || !sources.size) continue
+    const src = list(sources)
+    if (c.state === "broken" || c.state === "unreachable") {
+      out.push({
+        type: "broken_internal_link",
+        severity: "critical",
+        url: target,
+        target,
+        status: c.status,
+        sources: src,
+        description: `A link ${on(src)} goes to ${shortPath(target)}, which ${stateText(c)}. Visitors and search engines hit a dead end there.`,
+        fix: `Point the link to the right page, remove it, or redirect ${shortPath(target)} to the page that replaced it.`,
+      })
+    } else if (c.state === "ok" && c.hops.length > 1) {
+      out.push({
+        type: "redirect_chain",
+        severity: "improvement",
+        url: target,
+        target,
+        status: c.status,
+        hops: c.hops,
+        finalUrl: c.finalUrl,
+        sources: src,
+        description: `A link ${on(src)} to ${shortPath(target)} bounces through ${c.hops.length} redirects before it lands on ${shortPath(c.finalUrl)}. Each hop slows the page and wastes Google’s crawl.`,
+        fix: `Change the link to go straight to ${c.finalUrl}.`,
+      })
+    }
+  }
+  for (const [target, c] of outbound) {
+    const sources = outboundFrom.get(target)
+    if (!sources?.size) continue
+    const src = list(sources)
+    if (c.state === "broken" || (c.state === "unreachable" && c.status !== null)) {
+      out.push({
+        type: "broken_outbound_link",
+        severity: "warning",
+        url: target,
+        target,
+        status: c.status,
+        sources: src,
+        description: `A link ${on(src)} to ${target} ${stateText(c)}. Dead links to other sites make a page look out of date to Google and AI assistants.`,
+        fix: "Replace it with a working source, or remove the link.",
+      })
+    } else if (c.state === "ok" && c.hops.length > 1) {
+      out.push({
+        type: "redirect_chain",
+        severity: "improvement",
+        url: target,
+        target,
+        status: c.status,
+        hops: c.hops,
+        finalUrl: c.finalUrl,
+        sources: src,
+        description: `A link ${on(src)} to ${target} goes through ${c.hops.length} redirects before it lands on ${c.finalUrl}.`,
+        fix: `Change the link to go straight to ${c.finalUrl}.`,
+      })
+    }
+  }
+  return out
+}
+
+export type CrawlOptions = {
+  /** Own-site audit: also check every link (broken internal/outbound, redirect chains). Off for competitor crawls. */
+  checkLinks?: boolean
+  /** Time budget for the extra link checks, ms (default 20s). */
+  linkBudgetMs?: number
+}
+
+export async function crawlWebsite(url: string, maxPages = 40, opts: CrawlOptions = {}): Promise<CrawlOutput> {
   // Users type their site as "growthturbine.com" — without a protocol,
   // `new URL()` throws and every crawl 500s before fetching a single page
   // (which is why "Check my site now" always failed and Website health showed
@@ -474,6 +614,17 @@ export async function crawlWebsite(url: string, maxPages = 40): Promise<CrawlOut
   const visited = new Set<string>()
   const seenDedupeKeys = new Set<string>()
   const pages: PageData[] = []
+  // Link bookkeeping: what each fetched internal URL answered, and which pages link where.
+  const fetched = new Map<string, LinkCheck>() // dedupeKey → result
+  const internalFrom = new Map<string, { target: string; sources: Set<string> }>()
+  const outboundFrom = new Map<string, Set<string>>()
+  const bareHost = (u: string) => {
+    try {
+      return new URL(u).hostname.toLowerCase().replace(/^www\./, "")
+    } catch {
+      return ""
+    }
+  }
 
   seenDedupeKeys.add(dedupeKey(seedUrl))
 
@@ -483,15 +634,33 @@ export async function crawlWebsite(url: string, maxPages = 40): Promise<CrawlOut
     if (visited.has(currentUrl)) continue
     visited.add(currentUrl)
 
-    const html = await fetchPage(currentUrl)
+    const { html, check } = await fetchPage(currentUrl)
+    fetched.set(dedupeKey(currentUrl), check)
     if (!html) continue
 
-    const pageData = parsePage(currentUrl, html, baseOrigin)
+    // A redirect to the same site (http → https, example.com → www.example.com): read the page
+    // at its real address, so its links count as internal.
+    const pageUrl = check.finalUrl !== currentUrl && bareHost(check.finalUrl) === bareHost(currentUrl) ? normalizeUrl(check.finalUrl, check.finalUrl) ?? currentUrl : currentUrl
+    if (pageUrl !== currentUrl) {
+      visited.add(pageUrl)
+      seenDedupeKeys.add(dedupeKey(pageUrl))
+    }
+
+    const pageData = parsePage(pageUrl, html, baseOrigin)
     pages.push(pageData)
+
+    for (const link of pageData.outboundLinks) {
+      const set = outboundFrom.get(link) ?? new Set<string>()
+      set.add(pageData.url)
+      outboundFrom.set(link, set)
+    }
 
     // Enqueue discovered internal links
     for (const link of pageData.internalLinks) {
       const key = dedupeKey(link)
+      const from = internalFrom.get(key) ?? { target: link, sources: new Set<string>() }
+      if (dedupeKey(pageData.url) !== key) from.sources.add(pageData.url)
+      internalFrom.set(key, from)
       if (!seenDedupeKeys.has(key) && !visited.has(link)) {
         seenDedupeKeys.add(key)
         queue.push(link)
@@ -499,7 +668,25 @@ export async function crawlWebsite(url: string, maxPages = 40): Promise<CrawlOut
     }
   }
 
-  const issues = buildIssues(pages)
+  const linkIssues: CrawlIssue[] = []
+  let linksChecked: number | undefined
+  let outboundChecked: number | undefined
+  if (opts.checkLinks) {
+    const deadline = Date.now() + (opts.linkBudgetMs ?? 20_000)
+    // Internal links the crawl didn't reach (page limit): a quick check, our own host first.
+    const unvisited = [...internalFrom.entries()].filter(([k]) => !fetched.has(k)).slice(0, 40).map(([, v]) => v.target)
+    const outbound = [...outboundFrom.keys()].slice(0, 80)
+    const [extra, out] = await Promise.all([
+      checkLinks(unvisited, { concurrency: 1, perHost: 40, gapMs: 150, deadline }),
+      checkLinks(outbound, { concurrency: 4, perHost: 5, gapMs: 300, deadline }),
+    ])
+    for (const [u, c] of extra) fetched.set(dedupeKey(u), c)
+    linksChecked = [...internalFrom.keys()].filter((k) => fetched.has(k)).length
+    outboundChecked = out.size
+    linkIssues.push(...buildLinkIssues(internalFrom, fetched, outboundFrom, out))
+  }
+
+  const issues = [...buildIssues(pages), ...linkIssues]
 
   // robots.txt AI-crawler audit — surfaced first as the most critical finding.
   const aiBlocks = await checkAiCrawlerBlocks(baseOrigin)
@@ -529,6 +716,7 @@ export async function crawlWebsite(url: string, maxPages = 40): Promise<CrawlOut
     missingDescriptions: pages.filter((p) => !p.metaDescription).length,
     missingH1: pages.filter((p) => p.h1Count === 0).length,
     imagesWithoutAlt: pages.reduce((sum, p) => sum + p.imagesWithoutAlt, 0),
+    ...(linksChecked !== undefined ? { linksChecked, outboundChecked } : {}),
   }
 
   return {

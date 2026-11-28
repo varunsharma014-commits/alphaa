@@ -12,6 +12,7 @@ import { AdsView } from "@/components/workspace/AdsView"
 import { TrackingView } from "@/components/workspace/TrackingView"
 import { CitationsView } from "@/components/workspace/CitationsView"
 import type { CitationsData } from "@/lib/workspace/citations"
+import { SiteUpkeep } from "@/components/workspace/SiteUpkeep"
 import type { ShellData } from "@/lib/workspace/shell"
 import { ART } from "@/lib/workspace/common"
 import type { AiCard } from "@/lib/workspace/ai-cards"
@@ -94,11 +95,19 @@ export function WsPreview({ page, empty, dark }: { page: string; empty: boolean;
         }
       return <CitationsView data={data} />
     }
-    if (page === "tracking") return <TrackingView data={{ growth: true, trackingOn: !empty, needs: 1, turnOn: empty ? { platform: "Webflow", auto: false } : null, health: [], signals: empty ? [] : [{ src: "Website", ev: "Form sent × 2", t: "today", at: new Date().toISOString(), tone: "g" }, { src: "AI answers", ev: "Visit on /services · from ChatGPT", t: "2h ago", at: new Date(Date.now() - 7_200_000).toISOString(), tone: "b" }], conns: [
+    if (page === "tracking") return <><TrackingView data={{ growth: true, trackingOn: !empty, needs: 1, turnOn: empty ? { platform: "Webflow", auto: false } : null, health: [], signals: empty ? [] : [{ src: "Website", ev: "Form sent × 2", t: "today", at: new Date().toISOString(), tone: "g" }, { src: "AI answers", ev: "Visit on /services · from ChatGPT", t: "2h ago", at: new Date(Date.now() - 7_200_000).toISOString(), tone: "b" }], conns: [
       { key: "gbp", name: "Google Business Profile", state: "ok", sum: "Sample: connected.", detail: "Sample.", verified: { verb: "Reviews synced", at: new Date(Date.now() - 3_600_000).toISOString() } },
       { key: "social", name: "Social accounts", state: "needs", warn: "1 needs attention", sum: "Instagram: Sample · LinkedIn: Sample (login expired)", act: { label: "Reconnect LinkedIn", href: "#" }, detail: "Sample." },
       { key: "gads", name: "Google Ads account", state: "optional", sum: "Not connected. Only needed if you run ads on Google.", act: { label: "Connect", topic: "ads" }, detail: "Sample." },
-    ] }} />
+    ] }} /><SiteUpkeep data={{ siteConnected: true, platform: "WordPress", autopilot: false, webPersonEmail: null,
+      gsc: { connected: true, checked: empty ? 18 : 42, span: "Sep 28 – Oct 25 vs Oct 26 – Nov 22", at: new Date().toISOString(), pages: empty ? [] : [
+        { page: "https://example.com/blog/sample-post", path: "/blog/sample-post", lostClicks: 27, ours: true, blocker: null, draft: null, evidence: ["Clicks from Google: 48 → 21 (−56%), Sep 28 – Oct 25 vs Oct 26 – Nov 22", "Average position: 4.2 → 7.9 (lower is better), Sep 28 – Oct 25 vs Oct 26 – Nov 22"] },
+        { page: "https://example.com/services/sample", path: "/services/sample", lostClicks: 0, ours: false, blocker: null, draft: { id: "d1", status: "ready", kind: "refresh" }, evidence: ["Times shown on Google: 900 → 520 (−42%), Sep 28 – Oct 25 vs Oct 26 – Nov 22"] },
+      ] },
+      links: { crawledAt: new Date(Date.now() - 86_400_000).toISOString(), checked: 38, outboundChecked: 14, items: empty ? [] : [
+        { type: "broken_internal_link", target: "https://example.com/old-page", status: 404, sources: ["https://example.com/blog/sample-post"], hops: 0, text: "Sample." },
+        { type: "redirect_chain", target: "https://example.com/pricing", status: 200, sources: ["https://example.com/blog/sample-post"], finalUrl: "https://example.com/plans", hops: 2, text: "Sample." },
+      ], pages: empty ? [] : [{ page: "https://example.com/blog/sample-post", path: "/blog/sample-post", count: 2, ours: true, blocker: null, draft: null }] } }} /></>
     return <BriefingView data={empty ? { plan: { runId: "r1", running: false, summary: "2 social posts · 1 page that answers AI questions", needsOk: 3, items: [{ kind: "social", title: "Sample social post", day: "Tuesday", status: "ready", needsOk: true }, { kind: "blog", title: "Sample page that answers a question", day: "Wednesday", status: "ready", needsOk: true }, { kind: "social", title: "Sample second post", day: "Friday", status: "ready", needsOk: true }] }, pagesInProgress: 0, recapReady: false, connected: { n: 1, total: 4, next: { label: "Connect your Google listing", href: "#" } }, firstName: "Sam", ai: AI_EMPTY, headline: { total: null, missing: ["Connect your Google listing to count calls from Google."] }, tiles: [{ key: "ai", label: "AI answers naming you", value: null, delta: null, empty: "My first check runs this week." }, { key: "visits", label: "Website visits", value: null, delta: null, empty: "Connect Google Analytics to see visits.", href: "#" }, { key: "rating", label: "Google rating", value: null, delta: null, empty: "Connect your Google listing to see reviews.", href: "#" }], question: { id: "q", eyebrow: "AI answers · a fact to check", title: "ChatGPT tells customers “Sample wrong claim”. Is that wrong?", review: { ai: "ChatGPT", claim: "Sample wrong claim", truth: "Sample truth", fix: { label: "Write", action: { type: "say", text: "x" } } }, text: "Sample why.", fallback: "Until then, I keep working with what I have.", acts: [{ label: "Connect Google", href: "#", primary: true }, { label: "See all steps", topic: "setup" }] }, going: [], waiting: 0, waitingTopic: "social", autopilot: false, done: [] } : {
       plan: null, pagesInProgress: 2, recapReady: true, connected: { n: 4, total: 4, next: null },
       firstName: "Sam", ai: AI_SAMPLE,

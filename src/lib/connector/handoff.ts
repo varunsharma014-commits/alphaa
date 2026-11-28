@@ -7,7 +7,7 @@ import { faqToHtml, mdToHtml, mdFaq } from "@/lib/connector/wordpress"
 import { parseMeta } from "@/lib/content"
 import { codeBox, esc, shell } from "@/lib/connector/mail"
 
-export type HandoffWhat = "schema" | "llms" | "page" | "robots" | "post" | "meta" | "sitemap" | "headers"
+export type HandoffWhat = "schema" | "llms" | "page" | "robots" | "post" | "meta" | "sitemap" | "headers" | "refresh"
 export type HandoffInput = { what: HandoffWhat; title?: string; text?: string; url?: string }
 type U = NonNullable<Awaited<ReturnType<typeof db.user.findUnique>>>
 
@@ -39,6 +39,7 @@ function why(what: HandoffWhat, biz: string, user: U): string {
     case "meta": return "The page title and description are the first thing Google and AI assistants read about a page. Saying clearly what we do and where makes it far more likely we’re the business they name."
     case "headers": return "Browsers and security scanners check for these standard headers. They take minutes to add and don’t change how the site looks."
     case "sitemap": return "A sitemap lets search engines and AI crawlers find every page, so new pages get picked up in days rather than weeks."
+    case "refresh": return "This page has been losing visits from Google (or has links that no longer work). An up-to-date page that answers what people search for today is what Google and AI assistants keep showing."
     case "post":
     case "page": return `AI assistants quote pages that answer customers’ questions directly. This one answers a question customers ask, in a form AI can quote.`
   }
@@ -87,6 +88,14 @@ Referrer-Policy: strict-origin-when-cross-origin`
     what = "An XML sitemap listing every page, so search engines and AI crawlers find all of them."
     where = "Most site builders and SEO plugins can generate one (WordPress has one built in at /wp-sitemap.xml). Then add the line below to /robots.txt, pointing at the real sitemap address, and submit it in Google Search Console and Bing Webmaster Tools."
     check = "Open the sitemap address in a browser — it should list your pages."
+  } else if (input.what === "refresh") {
+    // Body HTML of an existing page, refreshed (lib/seo/refresh.ts). Same address, same slug.
+    const html = input.text ?? ""
+    if (!html.trim() || !input.url) return { error: "There’s no update to send." }
+    code = html
+    what = `An updated version of an existing page${input.title ? ` (“${esc(input.title)}”)` : ""}.`
+    where = `Replace the body of ${esc(input.url)} with this, keeping the same address (URL/slug)${input.title ? ` and setting the title to “${esc(input.title)}”` : ""}. Leave the menu, header and footer as they are.`
+    check = "Load the page and compare: same address, the new text and links in place, nothing else on the page changed."
   } else if (input.what === "post") {
     const text = input.text ?? ""
     if (/\[[^\]]{2,}\]/.test(text)) return { error: "Fill in the [bracketed] details first — tap the draft to edit it." }

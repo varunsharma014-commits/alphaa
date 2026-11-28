@@ -7,7 +7,7 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { wpCall, pingIndexNow, mdToHtml, mdFaq } from "@/lib/connector/wordpress"
 import { imageUrl } from "@/lib/images"
 import { bingSubmitUrls, decryptSecret } from "@/lib/checks/bing-webmaster"
-import type { SiteConnector, SiteConnection } from "@/lib/connector/types"
+import type { ContentSnapshot, SiteConnector, SiteConnection } from "@/lib/connector/types"
 import { webflow } from "@/lib/connector/webflow"
 import { shopify } from "@/lib/connector/shopify"
 import { wix } from "@/lib/connector/wix"
@@ -92,23 +92,103 @@ export async function updateMetaOnSite(userId: string, url: string, title: strin
   return out
 }
 
+/** A refresh can't go through this site's API: the UI offers "send it to my web person" instead. */
+export class CantUpdateError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = "CantUpdateError"
+  }
+}
+
+export type UpdateContent = { url: string; title: string; html: string; excerpt?: string; jsonld?: object[] }
+
+/** Can this site's connection update the page at `url` in place? (null = yes, else the reason.) */
+export function updateBlocker(s: { wp?: { siteUrl: string } | null; site?: SiteConnection | null }, url: string): string | null {
+  let host = ""
+  try {
+    host = new URL(url).hostname.replace(/^www\./, "").toLowerCase()
+  } catch {
+    return "That isn’t a web address."
+  }
+  const same = (site: string) => {
+    try {
+      return new URL(/^https?:/i.test(site) ? site : `https://${site}`).hostname.replace(/^www\./, "").toLowerCase() === host
+    } catch {
+      return false
+    }
+  }
+  if (s.wp) {
+    // Plugins older than 1.5 have no "update" route; that's caught when the call is made (the
+    // stored version is only refreshed on reconnect, so it can't be trusted here).
+    return same(s.wp.siteUrl) ? null : "That page isn’t on the WordPress site you connected."
+  }
+  if (!s.site) return "Your website isn’t connected yet."
+  if (!same(s.site.siteUrl) && !same(s.site.label)) return `That page isn’t on the ${PLATFORM_NAME[s.site.platform]} site you connected.`
+  if (!CONNECTORS[s.site.platform].update) return `${PLATFORM_NAME[s.site.platform]} doesn’t let apps update existing pages.`
+  return null
+}
+
+/**
+ * Replace the content of an existing post/page (a refresh) on the connected site. Logged as a
+ * site_change (op "update") with the earlier version, so Undo puts it back. One website publish.
+ */
+export async function updateContentOnSite(userId: string, input: UpdateContent, label: string): Promise<Published> {
+  const s = await getAgentSettings(userId)
+  const why = updateBlocker(s, input.url)
+  if (why) throw new CantUpdateError(why)
+  return withQuota(userId, "publish:site", async () => {
+    let out: Published
+    let prev: unknown = null
+    if (s.wp) {
+      let r: { id: string; url: string }
+      try {
+        r = await wpCall<{ id: string; url: string }>(userId, s.wp, "update", { url: input.url, title: input.title, html: input.html, excerpt: input.excerpt, jsonld: input.jsonld })
+      } catch (e) {
+        if (e instanceof Error && /no route|rest_no_route/i.test(e.message)) throw new CantUpdateError("Your Alphaa WordPress plugin needs updating (1.5 or newer) before it can refresh existing posts. Update it, or send this to your web person.")
+        if (e instanceof Error && /no published post or page/i.test(e.message)) throw new CantUpdateError(e.message)
+        throw e
+      }
+      out = { url: r.url || input.url, changeId: r.id, platform: "wordpress", indexed: await announce(userId, s.wp.siteUrl, r.url || input.url, true) }
+    } else {
+      const site = s.site!
+      const c = CONNECTORS[site.platform]
+      const r = await onSite(userId, () => c.update!(site, { url: input.url, title: input.title, html: input.html, excerpt: input.excerpt }))
+      prev = r.prev
+      out = { url: r.url, changeId: `${site.platform}:${r.id}`, platform: site.platform, indexed: await announce(userId, site.siteUrl, r.url, false), note: r.note }
+    }
+    await db.mockActivity.create({ data: { userId, type: "site_change", title: label, metadata: { op: "update", changeId: out.changeId, url: out.url, platform: out.platform, indexed: out.indexed, undone: false, ...(prev ? { prev: prev as object } : {}) } } })
+    return out
+  })
+}
+
 /** Undo any logged change. WordPress changes go through the plugin; the rest through their connector. */
 export async function undoChange(userId: string, changeId: string): Promise<void> {
   const s = await getAgentSettings(userId)
   const [platform, ...rest] = changeId.split(":")
+  const rows = await db.mockActivity.findMany({ where: { userId, type: "site_change" }, orderBy: { createdAt: "desc" }, take: 200 })
+  const row = rows.find((r) => (r.metadata as { changeId?: string } | null)?.changeId === changeId)
+  // A refresh (op "update"): put the earlier version back on the same page; the page stays live.
+  const isUpdate = (row?.metadata as { op?: string } | null)?.op === "update" || rest[0] === "update" || /^update-/.test(changeId)
   if (platform in CONNECTORS && s.site?.platform === platform) {
     const site = s.site
-    await onSite(userId, () => CONNECTORS[platform as SiteConnection["platform"]].undo(site, rest.join(":")))
+    const c = CONNECTORS[platform as SiteConnection["platform"]]
+    const id = rest.join(":")
+    if (id.startsWith("update:")) {
+      const prev = (row?.metadata as { prev?: ContentSnapshot } | null)?.prev
+      if (!prev || !c.restore) throw new Error("I don’t have the earlier version of that page any more.")
+      await onSite(userId, () => c.restore!(site, id, prev))
+    } else {
+      await onSite(userId, () => c.undo(site, id))
+    }
   } else if (s.wp) {
     await wpCall(userId, s.wp, "undo", { id: changeId })
   } else {
     throw new Error("That site isn’t connected any more.")
   }
-  const rows = await db.mockActivity.findMany({ where: { userId, type: "site_change" }, orderBy: { createdAt: "desc" }, take: 200 })
-  const row = rows.find((r) => (r.metadata as { changeId?: string } | null)?.changeId === changeId)
   if (row) await db.mockActivity.update({ where: { id: row.id }, data: { metadata: { ...(row.metadata as object), undone: true } } })
   // The draft it came from is no longer live: drop it from "published" counts (keeps the text).
-  const url = (row?.metadata as { url?: string } | null)?.url
+  // An undone refresh only touches the refresh draft: the original post is still live at that URL.
+  const url = isUpdate ? undefined : (row?.metadata as { url?: string } | null)?.url
   const drafts = await db.mockActivity.findMany({ where: { userId, type: "post_draft" }, orderBy: { createdAt: "desc" }, take: 50 })
   for (const d of drafts) {
     const m = (d.metadata ?? {}) as { status?: string; url?: string; changeId?: string }

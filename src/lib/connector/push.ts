@@ -60,6 +60,15 @@ const BRACKETS = "Fill in the [bracketed] details first — they’re facts only
 type PushResult = { ok: boolean; id: string; url: string; shadowed?: boolean }
 
 export async function pushChange(user: User, input: PushInput): Promise<NextResponse> {
+  // A refresh draft is an update of an existing page, never a new post (lib/seo/refresh.ts).
+  if (input.op === "post" && input.draftId) {
+    const d = await db.mockActivity.findFirst({ where: { id: input.draftId, userId: user.id, type: "post_draft" }, select: { metadata: true } })
+    if ((d?.metadata as { refresh?: { url?: string } } | null)?.refresh?.url) {
+      const { publishRefreshDraft } = await import("@/lib/seo/refresh")
+      const r = await publishRefreshDraft(user.id, input.draftId)
+      return r.ok ? NextResponse.json({ url: r.url, changeId: r.changeId, indexed: false, note: r.note }) : NextResponse.json({ error: r.error, ...(r.quota ? { quota: true } : {}) }, { status: r.quota ? 429 : 502 })
+    }
+  }
   const s = await getAgentSettings(user.id)
   if (!s.wp && s.site) return viaConnector(user.id, s, input)
   if (!s.wp) return NextResponse.json({ error: "Your website isn’t connected yet." }, { status: 400 })

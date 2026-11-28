@@ -25,6 +25,9 @@ export async function scheduleSitePost(userId: string, draftId: string): Promise
   const m = row.metadata as Meta
   if (m.status === "published") return { ok: false, error: "It’s already live." }
   if (/\[[^\]]{2,}\]/.test(m.markdown ?? "")) return { ok: false, error: "This draft still has [bracketed] facts only you know. Fill them in first." }
+  // A refresh with numbers I couldn't trace to the page or the owner's facts waits for the owner's own OK.
+  const refresh = (row.metadata as { refresh?: { unverified?: string[] } }).refresh
+  if (refresh?.unverified?.length) return { ok: false, error: `This refresh has numbers I couldn’t check (${refresh.unverified.slice(0, 3).join(", ")}). Read it and use Publish instead.` }
   const at = new Date(Date.now() + STOP_WINDOW_MS).toISOString()
   await db.mockActivity.update({ where: { id: row.id }, data: { metadata: { ...(row.metadata as object), status: "scheduled", scheduledFor: at, stopUntil: at, ownerOk: false, scheduleError: null } } })
   return { ok: true, at }

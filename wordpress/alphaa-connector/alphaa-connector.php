@@ -3,7 +3,7 @@
  * Plugin Name:       Alphaa Connector
  * Plugin URI:        https://alphaa.app
  * Description:       Lets your Alphaa agent publish the pages, structured data and llms.txt you approve — and undo them in one tap. Also tells you when ChatGPT, Perplexity, Claude or Gemini send you a visitor.
- * Version:           1.4.0
+ * Version:           1.5.0
  * Requires at least: 5.6
  * Requires PHP:      7.4
  * Author:            Alphaa
@@ -14,7 +14,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('ALPHAA_VERSION', '1.4.0');
+define('ALPHAA_VERSION', '1.5.0');
 if (!defined('ALPHAA_API')) define('ALPHAA_API', 'https://alphaa.app');
 
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
@@ -65,6 +65,7 @@ add_action('rest_api_init', function () {
     'sitemap' => 'alphaa_rest_sitemap',
     'headers' => 'alphaa_rest_headers',
     'tracking' => 'alphaa_rest_tracking',
+    'update' => 'alphaa_rest_update',
   );
   foreach ($routes as $route => $cb) {
     register_rest_route('alphaa/v1', '/' . $route, array(
@@ -165,6 +166,35 @@ function alphaa_rest_post(WP_REST_Request $req) {
   return array('ok' => true, 'id' => $id, 'url' => get_permalink($post_id));
 }
 
+// Refresh a post or page that already exists (same URL): new title, content and excerpt.
+// What was there before is kept in post meta so Undo can put it back; WordPress also keeps its own revision.
+function alphaa_rest_update(WP_REST_Request $req) {
+  $p = $req->get_json_params();
+  $url = isset($p['url']) ? esc_url_raw($p['url']) : '';
+  $title = isset($p['title']) ? sanitize_text_field($p['title']) : '';
+  $html = isset($p['html']) ? wp_kses_post($p['html']) : '';
+  if (!$url || !$title || !$html) return new WP_Error('alphaa_bad', 'Missing address, title or content.', array('status' => 400));
+  $pid = alphaa_resolve_url($url);
+  $post = $pid ? get_post($pid) : null;
+  if (!$post || !in_array($post->post_type, array('post', 'page'), true) || $post->post_status !== 'publish') return new WP_Error('alphaa_unknown', 'There is no published post or page at that address.', array('status' => 404));
+  $prev = array(
+    'post_id' => $pid,
+    'title' => $post->post_title,
+    'content' => $post->post_content,
+    'excerpt' => $post->post_excerpt,
+    'schema' => get_post_meta($pid, '_alphaa_schema', true),
+  );
+  $data = array('ID' => $pid, 'post_title' => $title, 'post_content' => $html);
+  if (isset($p['excerpt']) && $p['excerpt'] !== '') $data['post_excerpt'] = sanitize_text_field($p['excerpt']);
+  $r = wp_update_post(wp_slash($data), true);
+  if (is_wp_error($r)) return $r;
+  // Structured data only on pages Alphaa published (others keep whatever their theme / SEO plugin adds).
+  if (get_post_meta($pid, '_alphaa', true) && !empty($p['jsonld']) && is_array($p['jsonld'])) update_post_meta($pid, '_alphaa_schema', wp_json_encode($p['jsonld']));
+  $id = alphaa_log_change('update', array('post_id' => $pid));
+  update_post_meta($pid, '_alphaa_prev_' . $id, wp_slash($prev));
+  return array('ok' => true, 'id' => $id, 'url' => get_permalink($pid));
+}
+
 // Page title + meta description. Written where the site's SEO plugin reads
 // them (Yoast / Rank Math), otherwise served by this plugin.
 function alphaa_rest_meta(WP_REST_Request $req) {
@@ -259,6 +289,15 @@ function alphaa_rest_undo(WP_REST_Request $req) {
     case 'sitemap': update_option('alphaa_sitemap', 0, false); break;
     case 'headers': update_option('alphaa_headers', 0, false); break;
     case 'tracking': update_option('alphaa_tracking', get_option('alphaa_tracking_prev', array()), true); break;
+    case 'update':
+      $pid = intval($ch['post_id']);
+      $pv = get_post_meta($pid, '_alphaa_prev_' . $id, true);
+      if (!is_array($pv)) return new WP_Error('alphaa_unknown', 'The earlier version is no longer stored on this site. WordPress keeps it under Revisions on that post.', array('status' => 404));
+      $r = wp_update_post(wp_slash(array('ID' => $pid, 'post_title' => $pv['title'], 'post_content' => $pv['content'], 'post_excerpt' => $pv['excerpt'])), true);
+      if (is_wp_error($r)) return $r;
+      if (isset($pv['schema']) && $pv['schema'] !== '') update_post_meta($pid, '_alphaa_schema', wp_slash($pv['schema']));
+      delete_post_meta($pid, '_alphaa_prev_' . $id);
+      break;
     case 'meta':
       $pv = isset($ch['prev']) ? $ch['prev'] : array();
       if (isset($pv['store']) && $pv['store'] === 'postmeta') {

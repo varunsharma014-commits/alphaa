@@ -21,7 +21,7 @@
 // SEO:   https://dev.wix.com/docs/api-reference/business-management/seo/item-seo-tags-v1/introduction.md
 import { createHmac, timingSafeEqual } from "crypto"
 import { decryptSecret } from "@/lib/checks/bing-webmaster"
-import type { MetaInput, PublishInput, PublishResult, SiteConnection, SiteConnector } from "./types"
+import type { ContentSnapshot, MetaInput, PublishInput, PublishResult, SiteConnection, SiteConnector, UpdateInput, UpdateResult } from "./types"
 
 const API = "https://www.wixapis.com"
 
@@ -613,6 +613,43 @@ export const wix: SiteConnector = {
     await wx<unknown>(token, `/blog/v3/draft-posts/${encodeURIComponent(id)}`, {
       method: "PATCH",
       body: { draftPost: { id }, action: "UPDATE_REVERT_TO_DRAFT" },
+    })
+  },
+
+  /** Refresh a blog post in place: update the draft and publish it (same post, same slug). */
+  async update(conn: SiteConnection, input: UpdateInput): Promise<UpdateResult> {
+    const token = await tokenFor(conn)
+    const want = pathOf(input.url)
+    const sitePath = pathOf(conn.siteUrl)
+    const rel = sitePath !== "/" && want.startsWith(sitePath) ? want.slice(sitePath.length) || "/" : want
+    const slug = /^\/post\/([^/]+)$/.exec(rel)
+    if (!slug) throw new Error("Wix only lets apps change blog posts (addresses with /post/), not regular pages.")
+    const got = await wx<{ post?: Post }>(token, `/blog/v3/posts/slugs/${encodeURIComponent(decodeURIComponent(slug[1]))}`)
+    const id = got.post?.id
+    if (!id) throw new Error(`I couldn’t find the Wix blog post at ${input.url}.`)
+    type Draft = { id?: string; title?: string; excerpt?: string; richContent?: RicosDocument }
+    const cur = await wx<{ draftPost?: Draft }>(token, `/blog/v3/draft-posts/${encodeURIComponent(id)}?fieldsets=RICH_CONTENT`)
+    const old = cur.draftPost?.richContent
+    if (!old?.nodes) throw new Error("Wix didn’t return the post’s current text, so I didn’t change it.")
+    const prev: ContentSnapshot = { title: cur.draftPost?.title ?? "", excerpt: cur.draftPost?.excerpt ?? null, extra: { richContent: old } }
+    const doc = htmlToRicos(input.html)
+    if (!doc.nodes.length) throw new Error("This refresh has no content to publish.")
+    // Keep the cover picture (the post's first image) where it was.
+    if (old.nodes[0]?.type === "IMAGE") doc.nodes.unshift(old.nodes[0])
+    await wx<unknown>(token, `/blog/v3/draft-posts/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      body: { draftPost: { id, title: input.title.slice(0, 200), richContent: doc, ...(input.excerpt ? { excerpt: input.excerpt.slice(0, 500) } : {}) }, action: "UPDATE_PUBLISH" },
+    })
+    return { id: `update:${id}`, url: input.url, prev }
+  },
+
+  async restore(conn: SiteConnection, id: string, prev: ContentSnapshot): Promise<void> {
+    const postId = id.replace(/^update:/, "")
+    const richContent = prev.extra?.richContent
+    if (!richContent) throw new Error("I don’t have the earlier version of that post any more.")
+    await wx<unknown>(await tokenFor(conn), `/blog/v3/draft-posts/${encodeURIComponent(postId)}`, {
+      method: "PATCH",
+      body: { draftPost: { id: postId, title: prev.title, richContent, ...(prev.excerpt != null ? { excerpt: prev.excerpt } : {}) }, action: "UPDATE_PUBLISH" },
     })
   },
 

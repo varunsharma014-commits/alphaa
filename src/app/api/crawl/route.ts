@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic"
-export const maxDuration = 60
+export const maxDuration = 90
 
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
@@ -25,7 +25,7 @@ export async function POST(): Promise<NextResponse> {
       )
     }
 
-    const output = await crawlWebsite(user.websiteUrl)
+    const output = await crawlWebsite(user.websiteUrl, 40, { checkLinks: true })
 
     const result = await db.crawlResult.create({
       data: {

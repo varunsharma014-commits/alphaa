@@ -4,7 +4,7 @@
 //       https://developers.webflow.com/data/reference/cms/collection-items/live-items/delete-item-live
 //       https://developers.webflow.com/data/reference/pages-and-components/pages/update-page-settings
 import { decryptSecret } from "@/lib/checks/bing-webmaster"
-import type { MetaInput, PublishInput, PublishResult, SiteConnection, SiteConnector } from "./types"
+import type { ContentSnapshot, MetaInput, PublishInput, PublishResult, SiteConnection, SiteConnector, UpdateInput, UpdateResult } from "./types"
 
 const API = "https://api.webflow.com/v2"
 export const WEBFLOW_SCOPES = ["sites:read", "cms:read", "cms:write", "pages:read", "pages:write"]
@@ -399,6 +399,46 @@ const STAGED_NOTE = "Your Webflow site isn’t published yet, so this is saved i
 const PAGE_NOTE = "Webflow can’t create standalone pages through its API, so this went into your blog collection."
 
 type WfItem = { id: string; fieldData?: { slug?: string } }
+type WfItemFull = { id: string; isDraft?: boolean; fieldData?: Record<string, unknown> }
+
+/** The CMS item slug behind a blog URL (/<collectionSlug>/<slug>), or null for any other page. */
+export function webflowItemSlug(url: string, collectionSlug: string): string | null {
+  let path = url
+  try {
+    path = new URL(url).pathname
+  } catch {
+    /* already a path */
+  }
+  const parts = decodeURIComponent(path).replace(/\/+$/, "").split("/").filter(Boolean)
+  return parts.length === 2 && parts[0].toLowerCase() === collectionSlug.toLowerCase() ? parts[1].toLowerCase() : null
+}
+
+async function findItemBySlug(token: string, collectionId: string, slug: string): Promise<WfItemFull | null> {
+  const hit = (items?: WfItemFull[]) => (items ?? []).find((i) => String(i.fieldData?.slug ?? "").toLowerCase() === slug) ?? null
+  const first = await wf<{ items?: WfItemFull[] }>(token, `/collections/${collectionId}/items?slug=${encodeURIComponent(slug)}`).catch(() => null)
+  const direct = hit(first?.items)
+  if (direct) return direct
+  for (let offset = 0; offset < 2000; offset += 100) {
+    const r = await wf<{ items?: WfItemFull[]; pagination?: { total?: number } }>(token, `/collections/${collectionId}/items?limit=100&offset=${offset}`)
+    const found = hit(r.items)
+    if (found) return found
+    if (!r.items?.length || offset + 100 >= (r.pagination?.total ?? 0)) break
+  }
+  return null
+}
+
+/** Write fields to the live item; a never-published site only takes the staged item. */
+async function patchItem(token: string, collectionId: string, itemId: string, fieldData: Record<string, unknown>): Promise<boolean> {
+  const id = encodeURIComponent(itemId)
+  try {
+    await wf<unknown>(token, `/collections/${collectionId}/items/${id}/live`, { method: "PATCH", body: { isArchived: false, isDraft: false, fieldData } })
+    return false
+  } catch (e) {
+    if (!(e instanceof Error && /not published|not live|409/i.test(e.message))) throw e
+    await wf<unknown>(token, `/collections/${collectionId}/items/${id}`, { method: "PATCH", body: { fieldData } })
+    return true
+  }
+}
 
 export const webflow: SiteConnector = {
   async ping(conn: SiteConnection): Promise<void> {
@@ -456,6 +496,35 @@ export const webflow: SiteConnector = {
       return
     }
     await wf<unknown>(token, `/collections/${conn.config.collectionId}/items/${encodeURIComponent(id)}/live`, { method: "DELETE" })
+  },
+
+  /** Refresh a blog post in place: same item, same slug; the old name/body/summary ride along for Undo. */
+  async update(conn: SiteConnection, input: UpdateInput): Promise<UpdateResult> {
+    const token = accessToken(conn)
+    const f = fieldsOf(conn)
+    const collectionId = conn.config.collectionId
+    const slug = webflowItemSlug(input.url, f.collectionSlug)
+    if (!slug) throw new Error(`Webflow only lets apps change CMS items, and ${input.url} isn’t in your /${f.collectionSlug}/ collection.`)
+    const item = await findItemBySlug(token, collectionId, slug)
+    if (!item) throw new Error(`I couldn’t find the Webflow item for /${f.collectionSlug}/${slug}.`)
+    const fd = item.fieldData ?? {}
+    const prev: ContentSnapshot = {
+      title: String(fd[f.name] ?? ""),
+      html: String(fd[f.body] ?? ""),
+      excerpt: f.excerpt ? (fd[f.excerpt] == null ? null : String(fd[f.excerpt])) : null,
+    }
+    const fieldData: Record<string, unknown> = { [f.name]: input.title, [f.body]: input.html }
+    if (f.excerpt && input.excerpt) fieldData[f.excerpt] = input.excerpt.slice(0, 256)
+    const staged = await patchItem(token, collectionId, item.id, fieldData)
+    return { id: `update:${item.id}`, url: input.url, prev, ...(staged ? { note: STAGED_NOTE } : {}) }
+  },
+
+  async restore(conn: SiteConnection, id: string, prev: ContentSnapshot): Promise<void> {
+    const itemId = id.replace(/^update:/, "")
+    const f = fieldsOf(conn)
+    const fieldData: Record<string, unknown> = { [f.name]: prev.title, [f.body]: prev.html ?? "" }
+    if (f.excerpt && prev.excerpt != null) fieldData[f.excerpt] = prev.excerpt
+    await patchItem(accessToken(conn), conn.config.collectionId, itemId, fieldData)
   },
 
   async updateMeta(conn: SiteConnection, input: MetaInput): Promise<PublishResult> {

@@ -11,7 +11,7 @@ import { buildHandoffEmail } from "@/lib/connector/handoff"
 // "Email it to my web person": sends the exact code or content, with where it
 // goes and how to check it, to the owner's developer. Replies go to the owner.
 const body = z.object({
-  what: z.enum(["schema", "llms", "page", "robots", "post", "meta", "sitemap", "headers"]),
+  what: z.enum(["schema", "llms", "page", "robots", "post", "meta", "sitemap", "headers", "refresh"]),
   email: z.string().email().max(200),
   title: z.string().max(200).optional(),
   text: z.string().max(30_000).optional(),
@@ -49,6 +49,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "The email didn’t send. Try again in a minute." }, { status: 502 })
   }
   await saveAgentSettings(user.id, { webPersonEmail: input.email })
-  await db.mockActivity.create({ data: { userId: user.id, type: "handoff_sent", title: `Emailed ${input.what === "page" ? "a page" : input.what} to ${input.email}`, metadata: { what: input.what, to: input.email } } })
+  await db.mockActivity.create({ data: { userId: user.id, type: "handoff_sent", title: `Emailed ${input.what === "page" ? "a page" : input.what === "refresh" ? "a page update" : input.what} to ${input.email}`, metadata: { what: input.what, to: input.email } } })
   return NextResponse.json({ ok: true })
 }

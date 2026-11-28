@@ -141,7 +141,11 @@ export default async function AuditPage() {
   // AI-crawler blocks (robots.txt audit) get their own prominent card above
   // everything else — the most impactful AEO finding.
   const aiCrawlerBlocks = allCrawlIssues.filter((i) => i.type === "ai_crawler_blocked")
-  const regularCrawlIssues = allCrawlIssues.filter((i) => i.type !== "ai_crawler_blocked")
+  // Broken links + redirect chains get their own section (with the pages that link to them).
+  const LINK_TYPES = ["broken_internal_link", "broken_outbound_link", "redirect_chain"]
+  const linkIssues = allCrawlIssues.filter((i) => LINK_TYPES.includes(String(i.type)))
+  const linkMeta = (latestCrawl?.metaIssues ?? {}) as { linksChecked?: number; outboundChecked?: number }
+  const regularCrawlIssues = allCrawlIssues.filter((i) => i.type !== "ai_crawler_blocked" && !LINK_TYPES.includes(String(i.type)))
 
   // Combined plain-English issue list (crawl + AI audit), sorted by severity.
   const sevRank: Record<string, number> = { critical: 0, warning: 1, improvement: 2 }
@@ -152,7 +156,7 @@ export default async function AuditPage() {
 
   // Stat-row numbers (plain English).
   const pagesChecked = latestCrawl?.pagesScanned ?? 0
-  const brokenLinks = regularCrawlIssues.filter((i) => i.severity === "critical").length
+  const brokenLinks = regularCrawlIssues.filter((i) => i.severity === "critical").length + linkIssues.filter((i) => i.severity === "critical").length
   const missingDescriptions = regularCrawlIssues.filter((i) => i.severity === "warning").length
   const issuesFixed = auditIssues.filter((i) => i.fix_summary).length
 
@@ -320,6 +324,44 @@ export default async function AuditPage() {
             Speed data updates shortly — we check this weekly and you will see it here next time.
           </div>
         </DsCard>
+      )}
+
+      {/* ── Links (broken internal / outbound, redirect chains) ── */}
+      {latestCrawl && typeof linkMeta.linksChecked === "number" && (
+        <>
+          <SectionDivider>LINKS</SectionDivider>
+          <p style={{ fontSize: "12px", color: "var(--ds-text-faint)", margin: "0 0 10px", lineHeight: 1.5 }}>
+            {linkMeta.linksChecked} links on your site and {linkMeta.outboundChecked ?? 0} links to other sites checked on {formatDate(latestCrawl.crawledAt)}.
+          </p>
+          {linkIssues.length ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {linkIssues.slice(0, 30).map((issue, i) => (
+                <DsCard key={`link-${i}`}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: SEV_DOT[issue.severity] ?? "var(--ds-partial)", flexShrink: 0, marginTop: "5px" }} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontSize: "13px", color: "var(--ds-text-strong)", lineHeight: 1.6, wordBreak: "break-word" }}>{String(issue.description ?? "")}</p>
+                      <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", lineHeight: 1.5, marginTop: "4px", wordBreak: "break-all" }}>
+                        {String(issue.target ?? "")}{typeof issue.status === "number" ? ` · ${issue.status}` : ""}
+                        {Array.isArray(issue.sources) && issue.sources.length ? ` · linked from ${(issue.sources as string[]).slice(0, 3).join(", ")}${issue.sources.length > 3 ? "…" : ""}` : ""}
+                      </p>
+                    </div>
+                    <Link href="/dashboard/tracking#links" style={{ background: "var(--ds-accent)", color: "var(--ds-on-accent)", fontSize: "11px", fontWeight: 500, padding: "5px 12px", borderRadius: "8px", whiteSpace: "nowrap", flexShrink: 0, textDecoration: "none" }}>
+                      Fix it
+                    </Link>
+                  </div>
+                </DsCard>
+              ))}
+            </div>
+          ) : (
+            <DsCard>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <CheckCircle2 size={18} color="var(--ds-ok)" />
+                <div style={{ fontSize: "13px", color: "var(--ds-text-mute)" }}>Every link alphaa checked works, and none bounce through a chain of redirects.</div>
+              </div>
+            </DsCard>
+          )}
+        </>
       )}
 
       {/* ── Issues list ─────────────────────────────────────── */}
