@@ -270,7 +270,15 @@
 .ax-md h2 { font-size: 19px; margin: 18px 0 6px; letter-spacing: -.015em; }
 .ax-md h3 { font-size: 16px; margin: 14px 0 4px; }
 .ax-md p { margin: 0 0 10px; }
-.ax-md ul { margin: 0 0 10px; padding-left: 20px; }
+.ax-md ul, .ax-md ol { margin: 0 0 10px; padding-left: 22px; }
+.ax-md ul { list-style: disc outside; }
+.ax-md ol { list-style: decimal outside; }
+.ax-md ul ul { list-style-type: circle; }
+.ax-md li { margin: 2px 0; }
+.ax-md li::marker { color: currentColor; }
+.ax-md blockquote { margin: 0 0 10px; padding: 6px 12px; border-left: 3px solid rgba(17,17,20,.15); }
+.ax-md table { border-collapse: collapse; margin: 0 0 10px; font-size: 14px; }
+.ax-md th, .ax-md td { border: 1px solid rgba(17,17,20,.12); padding: 4px 8px; text-align: left; }
 .ax-md mark { background: rgba(255,149,0,.2); border-radius: 4px; padding: 0 3px; }
 .ax-reveal { animation: ax-in .35s ease both; }
 @keyframes ax-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
@@ -291,6 +299,7 @@
 .ax .ax-pv-mut { color: #8a8a8f; font-size: 12px; margin-left: auto; }
 .ax .ax-pv-pic { position: relative; width: 100%; background: #f2f2f5; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .ax .ax-insp .bd .ax-pv-pic img, .ax .ax-pv-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; border-radius: 0; }
+.ax .ax-insp .bd .ax-pv-pic img.fit, .ax .ax-pv-pic img.fit { object-fit: contain; background: #1c1c1f; }
 .ax .ax-pv-wait { color: #8a8a8f; font-size: 12.5px; padding: 12px; text-align: center; }
 .ax .ax-pv-cap { margin: 0; padding: 8px 12px 12px; white-space: pre-line; overflow-wrap: anywhere; }
 .ax .ax-pv-feed .ax-pv-head + .ax-pv-cap { padding-top: 0; }

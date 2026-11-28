@@ -12,12 +12,15 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { readSitemap } from "@/lib/page-reader"
 import { businessLd, faqLdFrom, onlyValid, websiteLd } from "@/lib/schema/build"
 import { extractFaq } from "@/lib/schema/extract"
-import { fetchHtml } from "@/lib/schema/audit"
+import { fetchHtml, latestSchemaAudit } from "@/lib/schema/audit"
+import { filterSuggestions, isOnlineBusiness } from "@/lib/schema/suggest"
 
 export type SchemaItem = {
   type: string   // "LocalBusiness", "FAQPage", etc.
   pageUrl: string // e.g. "/" or "/contact"
   jsonLd: object
+  /** The page was read when this block was made (older AI-made records don't have it). */
+  checked?: boolean
 }
 
 function hostOf(url: string): string | null {
@@ -55,6 +58,7 @@ export async function generateSchemaFor(user: User): Promise<{ schemas: SchemaIt
   const locs = settings.locations ?? []
   const main = locs.find((l) => l.city?.trim().toLowerCase() === user.city?.trim().toLowerCase()) ?? (user.city?.trim() ? null : locs[0]) ?? null
   const items: SchemaItem[] = []
+  const online = isOnlineBusiness(user.businessType)
 
   const biz = businessLd({
     name: user.businessName,
@@ -67,10 +71,11 @@ export async function generateSchemaFor(user: User): Promise<{ schemas: SchemaIt
     city: main?.city || user.city,
     region: main?.state || user.state,
     postal: main?.zip || user.zip,
+    online,
   })
-  items.push({ type: typeOf(biz), pageUrl: "/", jsonLd: biz })
+  items.push({ type: typeOf(biz), pageUrl: "/", jsonLd: biz, checked: true })
   const web = websiteLd(user.businessName, site)
-  if (web) items.push({ type: "WebSite", pageUrl: "/", jsonLd: web })
+  if (web) items.push({ type: "WebSite", pageUrl: "/", jsonLd: web, checked: true })
 
   // FAQPage: only the site's own questions with their own answers (homepage, else an FAQ page).
   let faqFrom: string | null = null
@@ -81,12 +86,16 @@ export async function generateSchemaFor(user: User): Promise<{ schemas: SchemaIt
       const got = await fetchHtml(url)
       const qas = got.html ? extractFaq(got.html).filter((q) => q.source !== "jsonld") : []
       const faq = qas.length >= 2 ? faqLdFrom(qas) : null
-      if (faq) { items.push({ type: "FAQPage", pageUrl: pathOf(got.finalUrl), jsonLd: faq }); faqFrom = got.finalUrl; break }
+      if (faq) { items.push({ type: "FAQPage", pageUrl: pathOf(got.finalUrl), jsonLd: faq, checked: true }); faqFrom = got.finalUrl; break }
     }
   }
 
+  // Never a type the page already has (from the newest structured data audit of the live site).
+  const audit = await latestSchemaAudit(user.id).catch(() => null)
+  const offered = filterSuggestions(items, { pages: [], existing: (audit?.pages ?? []).map((p) => ({ url: p.url, types: p.types })), online })
+
   const own = hostOf(site ?? "")
-  const clean = items.map((i) => ({ ...i, jsonLd: sanitizeNode(i.jsonLd, own) as object }))
+  const clean = offered.map((i) => ({ ...i, jsonLd: sanitizeNode(i.jsonLd, own) as object }))
   const { kept, dropped } = onlyValid(clean)
   for (const d of dropped) console.error("[schema] dropped a block that failed validation", d.item.type, d.reasons.slice(0, 3))
   return { schemas: kept, faqFrom }

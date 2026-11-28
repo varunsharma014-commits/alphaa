@@ -9,6 +9,7 @@
 import { auditActor } from "@/lib/activity"
 import { whoName } from "@/lib/team/permissions"
 import { db } from "@/lib/db"
+import { countPostWords } from "@/lib/content-grade"
 import { imageUrl } from "@/lib/images"
 
 export const REVISION_TYPE = "post_revision"
@@ -30,7 +31,8 @@ export type SavedDraft = {
 /** `who`: the team member's first name when someone other than the owner alone saved it (lib/team). */
 export type RevisionRow = { id: string; at: string; by: RevisionBy; reason: RevisionReason; title: string; words: number; restoredFrom: string | null; who?: string | null }
 
-const countWords = (s: string) => (s.match(/[\p{L}\p{N}][^\s]*/gu) ?? []).length
+// One word count everywhere (the editor footer uses the same function).
+const countWords = (s: string) => countPostWords(s)
 const same = (a?: string | null, b?: string | null) => (a ?? "").trim() === (b ?? "").trim()
 
 async function row(userId: string, draftId: string) {
@@ -88,7 +90,7 @@ async function ensureOriginal(userId: string, r: NonNullable<Awaited<ReturnType<
 }
 
 export type SaveResult =
-  | { ok: true; draft: SavedDraft; revisionId: string | null }
+  | { ok: true; draft: SavedDraft; revisionId: string | null; /** A checkpoint was asked for but the text matched the newest version, so nothing new was kept. */ nothingNew?: boolean }
   | { ok: false; status: number; error: string; current?: SavedDraft }
 
 /**
@@ -120,14 +122,15 @@ export async function saveDraftText(
     })
   }
   let revisionId: string | null = null
+  let nothingNew = false
   if (input.checkpoint) {
     const last = await latestRevision(userId, r.id)
     const lm = last?.metadata as RevMeta | undefined
     // Same text + same reason as the newest version = nothing new to keep.
-    if (last && lm && same(lm.markdown, markdown) && (lm.title ?? "") === title && (lm.reason === input.checkpoint || (input.checkpoint === "save" && lm.reason !== "publish"))) revisionId = last.id
+    if (last && lm && same(lm.markdown, markdown) && (lm.title ?? "") === title && (lm.reason === input.checkpoint || (input.checkpoint === "save" && lm.reason !== "publish"))) { revisionId = last.id; nothingNew = true }
     else revisionId = (await addRevision(userId, r.id, { markdown, title, by: input.by, reason: input.checkpoint, ...(input.restoredFrom ? { restoredFrom: input.restoredFrom } : {}) })).id
   }
-  return { ok: true, draft: shape(updated), revisionId }
+  return { ok: true, draft: shape(updated), revisionId, ...(nothingNew ? { nothingNew } : {}) }
 }
 
 /** Newest first. */
@@ -139,7 +142,7 @@ export async function listRevisions(userId: string, draftId: string, take = 40):
   })
   return rows.map((x) => {
     const m = x.metadata as RevMeta
-    return { id: x.id, at: x.createdAt.toISOString(), by: m.by, reason: m.reason, title: m.title ?? "", words: m.words ?? countWords(m.markdown ?? ""), restoredFrom: m.restoredFrom ?? null, who: m.actor?.role ? whoName(m.actor) : null }
+    return { id: x.id, at: x.createdAt.toISOString(), by: m.by, reason: m.reason, title: m.title ?? "", words: countWords(m.markdown ?? ""), restoredFrom: m.restoredFrom ?? null, who: m.actor?.role ? whoName(m.actor) : null }
   })
 }
 
@@ -147,7 +150,7 @@ export async function getRevision(userId: string, draftId: string, revId: string
   const x = await db.mockActivity.findFirst({ where: { id: revId, userId, type: REVISION_TYPE } })
   const m = x?.metadata as RevMeta | undefined
   if (!x || !m || m.draftId !== draftId) return null
-  return { id: x.id, at: x.createdAt.toISOString(), by: m.by, reason: m.reason, title: m.title ?? "", words: m.words ?? countWords(m.markdown), restoredFrom: m.restoredFrom ?? null, markdown: m.markdown }
+  return { id: x.id, at: x.createdAt.toISOString(), by: m.by, reason: m.reason, title: m.title ?? "", words: countWords(m.markdown ?? ""), restoredFrom: m.restoredFrom ?? null, markdown: m.markdown }
 }
 
 /** Restore = keep the current text as a version first (so a restore can itself be undone), then save the old one. */

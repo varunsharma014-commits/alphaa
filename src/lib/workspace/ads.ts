@@ -20,6 +20,8 @@ import type { RuleMark } from "@/lib/ad-rules/run"
 import { hasPro } from "@/lib/billing"
 import { runAsUser } from "@/lib/usage"
 import { imageUrl } from "@/lib/images"
+import { isHouse } from "@/lib/social-card"
+import { houseImageFor } from "@/lib/image-variants"
 import type { Chip } from "@/lib/agent/types"
 import { ART, ago, money, n, within } from "./common"
 
@@ -172,7 +174,12 @@ export async function getAdsData(user: User): Promise<AdsData> {
   }
   const audience = plan?.business ? (plan.business.local ? `People near ${plan.business.markets}` : `People in ${plan.business.markets}`) : ""
   const firstAds: FirstAd[] = []
-  for (const m of (plan?.statics?.meta ?? []).slice(0, 2)) firstAds.push({ platform: "Facebook & Instagram", headline: m.headline, primary: m.primary, image: m.imageId ? imageUrl(m.imageId) : null, audience })
+  // alphaa.app's own plan: a retired black & white house card is shown (and later built) in colour.
+  const house = isHouse(user.websiteUrl)
+  for (const m of (plan?.statics?.meta ?? []).slice(0, 2)) {
+    const img = m.imageId && house ? await houseImageFor(user.id, m.imageId).catch(() => m.imageId!) : m.imageId
+    firstAds.push({ platform: "Facebook & Instagram", headline: m.headline, primary: m.primary, image: img ? imageUrl(img) : null, audience })
+  }
   const gs = plan?.statics?.google
   if (gs?.headlines?.length) firstAds.push({ platform: "Google search", headline: gs.headlines.slice(0, 3).join(" | "), primary: gs.descriptions?.[0] ?? "", image: null, audience: plan?.business?.local ? `Searches near ${plan.business.markets}` : `Searches in ${plan?.business?.markets ?? "your market"}` })
   if (plan?.testing?.platforms.some((p) => p.platform === "LinkedIn") && plan.statics?.linkedin?.[0]) firstAds.push({ platform: "LinkedIn", headline: plan.statics.linkedin[0].headline, primary: plan.statics.linkedin[0].intro, image: null, audience: `Decision makers in ${plan.business?.markets ?? "your market"}`, inPlanOnly: true })

@@ -10,13 +10,19 @@ import { captionCut, PREVIEW_SPOTS, type PreviewSpot } from "@/lib/image-formats
 import { Tabs } from "./ui"
 
 const NET_OF: Record<PreviewSpot["platform"], string> = { instagram: "Instagram", facebook: "Facebook", linkedin: "LinkedIn" }
+// Pictures I can't redraw in another size are shown whole with bars, so nothing on them is cut off.
+const FIXED_NOTE = {
+  canva: "This is a Canva design, so I can’t redraw it in this size. It’s shown whole with bars. Resize it in Canva for a full fit.",
+  photo: "This photo post was made before I could draw other sizes, so it’s shown whole with bars.",
+  other: "I can’t redraw this picture in this size, so it’s shown whole with bars.",
+} as const
 const RATIO = { square: "1 / 1", portrait: "4 / 5", story: "9 / 16", wide: "16 / 9", link: "16 / 9" } as const
 
 export function SizePreview({ postId, text, image, nets, brandName, version }: { postId: string; text: string; image: string | null; nets: string[]; brandName: string; version?: string }) {
   const mine = PREVIEW_SPOTS.filter((s) => nets.includes(NET_OF[s.platform]))
   const spots = mine.length ? mine : PREVIEW_SPOTS
   const [key, setKey] = useState(spots[0].key)
-  const [pics, setPics] = useState<Record<string, { url: string; note: string | null }>>({})
+  const [pics, setPics] = useState<Record<string, { url: string; note: string | null; fit?: boolean }>>({})
   const [safe, setSafe] = useState(false)
   const spot = spots.find((s) => s.key === key) ?? spots[0]
   const k = `${spot.format}|${version ?? ""}`
@@ -26,13 +32,13 @@ export function SizePreview({ postId, text, image, nets, brandName, version }: {
   useEffect(() => {
     if (!image || pics[k]) return
     let off = false
-    // Can't draw it: the post's own picture cropped to the frame, and I say so.
-    const cropped = (note?: string | null) => setPics((m) => ({ ...m, [k]: { url: image, note: note ?? "I couldn’t draw this size, so this is your picture cropped." } }))
+    // Can't draw it: the post's own picture shown whole in the frame (bars, never cropped), and I say so.
+    const cropped = (note?: string | null) => setPics((m) => ({ ...m, [k]: { url: image, fit: true, note: note ? `${note} This is your picture as it is.` : "I couldn’t draw this size, so this is your picture as it is, with bars." } }))
     fetch("/api/workspace/sizes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: postId, format: spot.format }) })
-      .then(async (r) => ({ ok: r.ok, d: (await r.json().catch(() => null)) as { image?: string; error?: string; exact?: boolean } | null }))
+      .then(async (r) => ({ ok: r.ok, d: (await r.json().catch(() => null)) as { image?: string; error?: string; exact?: boolean; fixed?: "canva" | "photo" | "other" | null } | null }))
       .then(({ ok, d }) => {
         if (off) return
-        if (ok && d?.image) setPics((m) => ({ ...m, [k]: { url: d.image!, note: d.exact === false ? "This picture can’t be redrawn in other sizes (a Canva design), so it’s shown cropped." : null } }))
+        if (ok && d?.image) setPics((m) => ({ ...m, [k]: { url: d.image!, fit: d.exact === false, note: d.exact === false ? FIXED_NOTE[d.fixed ?? "other"] : null } }))
         else cropped(d?.error)
       })
       .catch(() => { if (!off) cropped() })
@@ -44,7 +50,7 @@ export function SizePreview({ postId, text, image, nets, brandName, version }: {
   const cap = captionCut(text, spot.cut)
   const picture = (
     <div className="ax-pv-pic" style={{ aspectRatio: RATIO[spot.format] }}>
-      {pic ? <img src={pic} alt="" /> : <span className="ax-pv-wait">{image ? "Drawing this size…" : "No picture"}</span>}
+      {pic ? <img src={pic} alt="" className={got?.fit ? "fit" : undefined} /> : <span className="ax-pv-wait">{image ? "Drawing this size…" : "No picture"}</span>}
     </div>
   )
   const head = (

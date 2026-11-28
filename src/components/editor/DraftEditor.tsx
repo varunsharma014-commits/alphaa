@@ -13,7 +13,7 @@
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { mdToHtml } from "@/lib/markdown"
-import { gradeContent } from "@/lib/content-grade"
+import { countPostWords, gradeContent } from "@/lib/content-grade"
 import { diffStats, diffText } from "@/lib/text-diff"
 import { GradeCard } from "./GradeCard"
 import { OnPageCard } from "./OnPageCard"
@@ -25,7 +25,7 @@ export { DRAFT_SAVED_EVENT, type DraftSavedDetail }
 
 type Draft = { id: string; title: string; markdown: string; excerpt: string | null; status: string; url: string | null; scheduledFor: string | null; rev: number; editedAt: string | null; editedBy: "owner" | "agent" | null; createdAt: string; image: string | null }
 type Rev = { id: string; at: string; by: "owner" | "agent"; reason: "original" | "save" | "publish" | "ai_rewrite" | "restore"; title: string; words: number; restoredFrom: string | null; who?: string | null }
-type SaveState = { k: "idle" } | { k: "dirty" } | { k: "saving" } | { k: "saved"; at: number } | { k: "error"; msg: string } | { k: "conflict"; current: Draft }
+type SaveState = { k: "idle" } | { k: "dirty" } | { k: "saving" } | { k: "saved"; at: number } | { k: "note"; msg: string } | { k: "error"; msg: string } | { k: "conflict"; current: Draft }
 
 const REASON: Record<Rev["reason"], string> = { original: "First draft", save: "Saved", publish: "Published", ai_rewrite: "AI rewrite", restore: "Restored" }
 const AUTOSAVE_MS = 1200
@@ -197,7 +197,7 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
         if (d.revisions) setRevs(d.revisions)
         // Still typing since this save started? Keep the local copy for the newer text.
         if (latest.current.text === snap.text && latest.current.title === snap.title) writeLocal(draftId, null)
-        setSave({ k: "saved", at: Date.now() })
+        setSave(checkpoint && d.nothingNew ? { k: "note", msg: "No changes since the last version" } : { k: "saved", at: Date.now() })
         broadcast(dr)
         return true
       } catch {
@@ -349,14 +349,14 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
   const html = useMemo(() => (view === "preview" ? mdToHtml(deferred, { highlightPlaceholders: true }) : ""), [deferred, view])
   const diff = useMemo(() => (diffOf ? diffText(diffOf.markdown, text) : null), [diffOf, text])
   const stats = diff ? diffStats(diff) : null
-  const words = grade.readability.words
+  const words = useMemo(() => countPostWords(deferred), [deferred])
   const ph = phCount(text)
 
   const status =
     save.k === "saving" ? "Saving…"
       : save.k === "dirty" ? "Editing…"
         : save.k === "saved" ? `Saved ${new Date(save.at).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`
-          : save.k === "error" ? save.msg
+          : save.k === "error" || save.k === "note" ? save.msg
             : save.k === "conflict" ? "Changed somewhere else"
               : draft?.editedAt ? `Saved ${when(draft.editedAt)}` : "Saved"
 

@@ -40,5 +40,5 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     await holdSitePost(user.id, id, "stop").catch(() => null)
     r.draft.status = "draft"
   }
-  return NextResponse.json({ ok: true, draft: r.draft, revisionId: r.revisionId, ...(input.checkpoint ? { revisions: await listRevisions(user.id, id) } : {}) })
+  return NextResponse.json({ ok: true, draft: r.draft, revisionId: r.revisionId, ...(r.nothingNew ? { nothingNew: true } : {}), ...(input.checkpoint ? { revisions: await listRevisions(user.id, id) } : {}) })
 }

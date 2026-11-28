@@ -2,6 +2,7 @@
 // Weekly from /api/cron/site-vitals (Thu 06:00 UTC + hourly catch-up through Friday, per-brand
 // dedupe: a brand checked in the last 6 days is skipped) and on demand from Tracking & Setup.
 // Kept apart from the site-check cron on purpose (its own lib + cron hit).
+import { filterSuggestions, isOnlineBusiness } from "@/lib/schema/suggest"
 import type { User } from "@prisma/client"
 import { db } from "@/lib/db"
 import { getAgentSettings, type AgentSettings } from "@/lib/agent/settings"
@@ -83,7 +84,18 @@ export async function getSiteVitals(user: User): Promise<SiteVitals> {
     cwvPrev,
     cwvFail: cwvLastFail(user.id),
     schema,
-    generated: gen && Array.isArray(gen.schemas) ? { at: gen.generatedAt.toISOString(), items: gen.schemas as unknown as SchemaItem[] } : null,
+    // Only blocks for pages that exist and types those pages don't have yet; an online business is
+    // never offered LocalBusiness (older AI-made records offered /product and /faq pages that weren't there).
+    generated: gen && Array.isArray(gen.schemas)
+      ? {
+          at: gen.generatedAt.toISOString(),
+          items: filterSuggestions(gen.schemas as unknown as SchemaItem[], {
+            pages: (schema?.pages ?? []).filter((p) => p.status != null && p.status < 400).map((p) => p.url),
+            existing: (schema?.pages ?? []).map((p) => ({ url: p.url, types: p.types })),
+            online: isOnlineBusiness(user.businessType),
+          }),
+        }
+      : null,
     install: installOption(settings),
     webPersonEmail: settings.webPersonEmail ?? null,
   }

@@ -1,5 +1,6 @@
 // Owner-approved writes to Meta: build a proposed campaign (everything PAUSED), turn it on only
 // when the owner taps, pause it. Every write is counted (usage "ads_op") and logged (ads_change).
+import { houseImageFor } from "@/lib/image-variants"
 import { db } from "@/lib/db"
 import { tallyUsage } from "@/lib/usage"
 import { listAccounts } from "@/lib/social/store"
@@ -10,8 +11,10 @@ import { dailyFromMonthly, metaMonthlyCap } from "./plan"
 
 export type OpResult = { ok: true; said: string; campaign?: MetaCampaign } | { ok: false; error: string }
 
-async function imageB64(userId: string, id: string | null | undefined): Promise<string | null> {
-  if (!id) return null
+async function imageB64(userId: string, imageId: string | null | undefined): Promise<string | null> {
+  if (!imageId) return null
+  // alphaa.app's own ads: a retired black & white house card is built in the colour house style.
+  const id = await houseImageFor(userId, imageId).catch(() => imageId)
   const r = await db.mockActivity.findFirst({ where: { id, userId, type: "post_image" }, select: { metadata: true } })
   return (r?.metadata as { b64?: string } | null)?.b64 ?? null
 }

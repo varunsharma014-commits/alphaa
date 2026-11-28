@@ -93,6 +93,14 @@ export function wordsOf(s: string): string[] {
   return plain(s).split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w))
 }
 
+/**
+ * Words in a post (headings, paragraphs, list items, quotes and tables; Markdown marks, link URLs
+ * and images left out). The ONE word count every surface shows: the editor footer, History, cards.
+ */
+export function countPostWords(md: string): number {
+  return blocksOf(md ?? "").reduce((n, b) => n + wordsOf(b.text).length, 0)
+}
+
 /** Sentences in a block of plain text (abbreviations like "e.g." and "Dr." don't split). */
 export function sentencesOf(s: string): string[] {
   const t = plain(s)

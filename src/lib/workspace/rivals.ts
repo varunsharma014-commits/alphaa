@@ -81,6 +81,26 @@ export function ourTitle(raw: string, topic: string, brands: string[]): string {
   return t.length >= 8 ? t : topic.trim()
 }
 
+/**
+ * A title built from the profile's category label, not from what anyone searches or asks:
+ * "SaaS / Software Services in Kanata", "Plumbing Services in Ottawa", the label itself.
+ * These never lead (Research "#1 move", 2026-11-28).
+ */
+export function isLabelTitle(title: string, businessType: string | null | undefined): boolean {
+  const t = title.trim().toLowerCase().replace(/\s+/g, " ")
+  if (!t) return true
+  if (/\w\s*\/\s*\w/.test(t)) return true
+  const bt = (businessType ?? "").trim().toLowerCase().replace(/\s+/g, " ")
+  if (bt && (t === bt || t.includes(bt))) return true
+  const m = t.match(/^(.+?)\s+services?\s+(?:in|near|around)\s+\S.*$/)
+  if (m) {
+    const label = new Set([...words(bt), "services", "service", "local", "professional"])
+    const lead = words(m[1])
+    if (!lead.length || lead.every((w) => label.has(w))) return true
+  }
+  return false
+}
+
 const BUYER = /\b(price|prices|pricing|cost|costs|quote|hire|hiring|near me|vs|versus|alternative|alternatives|services?|agency|agencies|company|companies|consultant|book|booking|buy|for sale|software|tool|tools|plans?)\b/i
 
 type Rank = { query: string; impressions: number; position: number }

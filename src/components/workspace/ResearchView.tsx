@@ -21,6 +21,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
   const [tab, setTab] = useState<Tab>("w")
   const [all, setAll] = useState(false)
   const [sheet, setSheet] = useState<MoveCard | null>(null)
+  const [sheetCluster, setSheetCluster] = useState<{ ref: string; pillar: string } | null>(null)
   const [ready, setReady] = useState<{ source: ReadySource; make: boolean } | null>(null)
   const [gone, setGone] = useState<Set<string>>(new Set())
   const [adding, setAdding] = useState<false | "open" | "busy">(false)
@@ -99,7 +100,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
             )}
           </div>
           {(() => { const t = data.top; return t.kind === "move"
-            ? <button className="ax-btn p" type="button" onClick={() => setSheet(t.move)}>Draft it</button>
+            ? <button className="ax-btn p" type="button" onClick={() => { setSheetCluster(t.cluster ?? null); setSheet(t.move) }}>Draft it</button>
             : <button className="ax-btn p" type="button" onClick={() => askAlphaa({ chip: t.card.makeChip })}>Make my version</button> })()}
         </section>
       )}
@@ -296,7 +297,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
       {tab === "c" && data.hiddenComps > 0 && comps.length > 0 && <p className="ax-note">I left out {data.hiddenComps} site{data.hiddenComps === 1 ? "" : "s"} that aren’t competitors (wikis, directories, platforms or other industries).</p>}
       {node}
       {ready && <ReadySheet source={ready.source} make={ready.make} flags={{ autopilot: data.autopilot, siteConnected: data.siteConnected, hasSocialAccounts: data.hasSocialAccounts, gmbConnected: data.gmbConnected }} onClose={() => setReady(null)} />}
-      {sheet && <DraftSheet move={sheet} autopilot={data.autopilot} siteConnected={data.siteConnected} onClose={() => setSheet(null)} />}
+      {sheet && <DraftSheet move={sheet} cluster={sheetCluster} autopilot={data.autopilot} siteConnected={data.siteConnected} onClose={() => { setSheet(null); setSheetCluster(null) }} />}
     </>
   )
 }

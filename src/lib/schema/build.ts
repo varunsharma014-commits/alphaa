@@ -83,6 +83,8 @@ export type BusinessFacts = {
   postal?: string | null
   /** Profile URLs on the business's OWN site (sameAs is only kept for these; never guessed). */
   sameAs?: string[]
+  /** An online business (software, SaaS, online store; lib/schema/suggest.ts isOnlineBusiness): always an Organization. */
+  online?: boolean
 }
 
 /**
@@ -97,7 +99,8 @@ export function businessLd(f: BusinessFacts): Obj {
   const url = t(f.url) ? (/^https?:\/\//i.test(f.url!) ? f.url!.trim() : `https://${f.url!.trim()}`) : undefined
   return prune({
     "@context": "https://schema.org",
-    "@type": address ? localSubtype(f.businessType) : "Organization",
+    // No place customers visit (online) or no address = Organization; its address is still listed.
+    "@type": address && !f.online ? localSubtype(f.businessType) : "Organization",
     name: t(f.name),
     url,
     description: t(f.description),

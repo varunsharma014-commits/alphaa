@@ -2,7 +2,9 @@
 // platform reports them (LinkedIn company Pages, Instagram, Facebook Pages: lib/social/stats.ts),
 // per platform; follower growth from the daily snapshots (lib/social/meta-stats.ts).
 import type { User } from "@prisma/client"
-import { listAccounts, listPosts } from "@/lib/social/store"
+import { listAccounts, listPosts, savePost } from "@/lib/social/store"
+import { isHouse } from "@/lib/social-card"
+import { refreshHousePost } from "@/lib/image-variants"
 import { PLATFORM_NAME, PROVIDERS, providerConfigured, type SocialPlatform } from "@/lib/social/types"
 import { imageUrl } from "@/lib/images"
 import { getAgentSettings } from "@/lib/agent/settings"
@@ -51,6 +53,12 @@ export type SocialData = {
 
 export async function getSocialData(user: User): Promise<SocialData> {
   const [accounts, posts, settings] = await Promise.all([listAccounts(user.id).catch(() => []), listPosts(user.id, 40).catch(() => []), getAgentSettings(user.id)])
+  // alphaa.app's own waiting posts: retired black & white house cards are redrawn in the colour
+  // house style when the owner looks at them (once each; published posts keep their picture).
+  if (isHouse(user.websiteUrl)) {
+    const waiting = posts.filter((p) => p.imageId && !["published", "partial", "publishing"].includes(p.status)).slice(0, 8)
+    await Promise.all(waiting.map((p) => refreshHousePost(user.id, p, (x) => savePost(user.id, x)).catch(() => p)))
+  }
   const byId = new Map(accounts.map((a) => [a.id, a]))
   const cards: SocialCard[] = posts.map((p) => {
     const nets = Array.from(new Set(p.accountIds.map((id) => byId.get(id)?.platform).filter((x): x is SocialPlatform => !!x).map((x) => PLATFORM_NAME[x])))

@@ -265,7 +265,9 @@
 .ag-doc__md h2 { font-size: 17px; font-weight: 600; margin: 18px 0 6px; }
 .ag-doc__md h3 { font-size: 15px; font-weight: 600; margin: 14px 0 4px; }
 .ag-doc__md p { margin: 0 0 10px; }
-.ag-doc__md ul { margin: 0 0 10px; padding-left: 20px; list-style: disc; }
+.ag-doc__md ul, .ag-doc__md ol { margin: 0 0 10px; padding-left: 22px; }
+.ag-doc__md ul { list-style: disc outside; }
+.ag-doc__md ol { list-style: decimal outside; }
 .ag-doc__md > :first-child { margin-top: 0; }
 .ag-ph { background: var(--ag-bg3); box-shadow: inset 0 0 0 1px var(--ag-muted); color: inherit; border-radius: 4px; padding: 0 3px; }
 .ag-form { display: grid; gap: 12px; }

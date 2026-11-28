@@ -1,6 +1,7 @@
 // Structured data validator + builders + extraction (lib/schema/*). Pure: no network, no database.
 //   npx tsx scripts/test-schema-validate.ts
 //   npx tsx scripts/test-schema-validate.ts --live <url> [url…]   also checks real pages (prints the report)
+import { filterSuggestions, isOnlineBusiness } from "../src/lib/schema/suggest"
 import assert from "node:assert/strict"
 import { factMismatches, flattenJsonLd, passes, validateBlocks, type BlocksReport } from "../src/lib/schema/rules"
 import { extractFaq, extractJsonLd } from "../src/lib/schema/extract"
@@ -168,6 +169,38 @@ test("onlyValid drops a block with errors and says why", () => {
   assert.equal(kept.length, 1)
   assert.equal(dropped.length, 1)
   assert.ok(dropped[0].reasons[0].includes("address"))
+})
+
+test("suggestions: only real pages, no type the page has, online = Organization", () => {
+  assert.equal(isOnlineBusiness("SaaS / Software Services"), true)
+  assert.equal(isOnlineBusiness("Online store"), true)
+  assert.equal(isOnlineBusiness("Plumbing"), false)
+  assert.equal(isOnlineBusiness("Dental clinic"), false)
+  assert.equal(isOnlineBusiness("Physiotherapy"), false)
+  assert.equal(isOnlineBusiness(""), false)
+  const saas = businessLd({ name: "Alphaa", businessType: "SaaS / Software Services", url: "alphaa.app", city: "Kanata", region: "ON", online: true })
+  assert.equal(saas["@type"], "Organization")
+  assert.equal((saas.address as Record<string, string>).addressLocality, "Kanata")
+  assert.equal(businessLd({ name: "P", businessType: "Plumbing", url: "p.com", city: "Ottawa", region: "ON" })["@type"], "Plumber")
+  // The old AI-made record for alphaa.app.
+  const old = [
+    { type: "LocalBusiness", pageUrl: "/", jsonLd: {} },
+    { type: "SoftwareApplication", pageUrl: "/product", jsonLd: {} },
+    { type: "FAQPage", pageUrl: "/faq", jsonLd: {} },
+    { type: "WebSite", pageUrl: "/", jsonLd: {} },
+  ]
+  const kept = filterSuggestions(old, { pages: ["https://alphaa.app/", "https://alphaa.app/pricing"], existing: [{ url: "https://alphaa.app/", types: ["WebSite"] }], online: true })
+  assert.deepEqual(kept.map((k) => k.type), [])
+  // A page read at generation time counts even when the audit didn't see it; a page's own types are skipped.
+  const fresh = [
+    { type: "Organization", pageUrl: "/", jsonLd: {}, checked: true },
+    { type: "FAQPage", pageUrl: "/help", jsonLd: {}, checked: true },
+    { type: "FAQPage", pageUrl: "/pricing", jsonLd: {} },
+  ]
+  const k2 = filterSuggestions(fresh, { pages: ["https://x.com/pricing/"], existing: [{ url: "https://x.com/pricing", types: ["FAQPage"] }], online: false })
+  assert.deepEqual(k2.map((k) => `${k.type} ${k.pageUrl}`), ["Organization /", "FAQPage /help"])
+  // The homepage already describes the business: no second business block.
+  assert.equal(filterSuggestions([{ type: "Plumber", pageUrl: "/", jsonLd: {}, checked: true }], { pages: [], existing: [{ url: "https://p.com/", types: ["LocalBusiness"] }], online: false }).length, 0)
 })
 
 console.log(`\n${passed} passed`)

@@ -9,7 +9,7 @@ import { linkedin } from "./providers/linkedin"
 import { tiktok } from "./providers/tiktok"
 import { x } from "./providers/x"
 import { finishSocial, getGuardrails } from "@/lib/guardrails"
-import { variantFor } from "@/lib/image-variants"
+import { refreshHousePost, variantFor } from "@/lib/image-variants"
 import { formatForPlatform } from "@/lib/image-formats"
 import { PLATFORM_NAME, type Provider, type PostResult, type SocialPlatform, type SocialPost } from "./types"
 
@@ -23,6 +23,8 @@ export async function publishPost(userId: string, postId: string): Promise<Socia
   // stays as it was (a scheduled one goes out when room opens again).
   const firstTry = !(post.results ?? []).some((r) => r.ok)
   if (firstTry) await requireQuota(userId, "publish:social")
+  // alphaa.app's own posts: a retired black & white house card goes out in the colour house style.
+  await refreshHousePost(userId, post, (x) => savePost(userId, x)).catch(() => null)
   post.status = "publishing"
   await savePost(userId, post)
 

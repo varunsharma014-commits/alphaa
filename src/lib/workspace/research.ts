@@ -16,11 +16,11 @@ import type { Trend } from "@/lib/trends"
 import { latestQuestionScan } from "@/lib/questions"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { consentCurrent } from "@/lib/auto-approve-text"
-import { getRivals, type AttackCard, type MoveCard } from "./rivals"
+import { getRivals, isLabelTitle, type AttackCard, type MoveCard } from "./rivals"
 import type { Chip } from "@/lib/agent/types"
 import { ART_CYCLE, n, short } from "./common"
 import { listAccounts } from "@/lib/social/store"
-import { clusterView, type ClusterView } from "@/lib/clusters"
+import { clusterView, nextClusterArticle, type ClusterView } from "@/lib/clusters"
 
 export type WorkingCard = {
   id: string
@@ -79,7 +79,7 @@ export type ResearchData = {
   compared: number
   autopilot: boolean
   siteConnected: boolean
-  top: { kind: "move"; move: MoveCard } | { kind: "post"; card: WorkingCard; why: string } | null
+  top: { kind: "move"; move: MoveCard; cluster?: { ref: string; pillar: string } | null } | { kind: "post"; card: WorkingCard; why: string } | null
   island: string
   /** Niche posts left out: off-topic, or not above this scrape's typical engagement. */
   droppedPosts: number
@@ -246,11 +246,23 @@ export async function getResearchData(user: User): Promise<ResearchData> {
       ? `I looked at ${n(ads.length)} competitor ads. Here’s what I found, with a link to every source.`
       : "Here’s what I’ve found about your market so far. Every finding links to where it came from."
 
-  // My #1 move: the best gap by real signals, else the strongest niche post to make my version of.
-  const bestMove = rivals.moves[0]
+  // My #1 move: a real page title, never one built from the category label ("SaaS / Software
+  // Services in Kanata"). Order: a gap Google searches back up, the topic plan's next article (its
+  // titles cite real questions, searches and competitor pages), any other clean gap, else the
+  // strongest niche post to make my version of.
+  const clean = rivals.moves.filter((m) => !isLabelTitle(m.title, user.businessType))
+  const backed = clean.find((m) => m.signals.length)
+  const next = backed ? null : await nextClusterArticle(user.id).catch(() => null)
+  const planned: { move: MoveCard; cluster: { ref: string; pillar: string } } | null = next && !isLabelTitle(next.title, user.businessType)
+    ? {
+        move: { id: next.gapId ?? "", title: next.title, topic: next.question ?? next.title, rival: "", rivalHost: next.competitor ?? "", signals: [], outline: [], score: 0, why: next.question ? `people ask “${next.question}” and no page on your site answers it yet` : `it’s the next page in your topic plan (${next.pillar})` },
+        cluster: { ref: next.ref, pillar: next.pillar },
+      }
+    : null
+  const bestMove = backed ?? planned?.move ?? clean[0]
   const bestPost = working.find((w) => w.stats.length)
   const top: ResearchData["top"] = bestMove
-    ? { kind: "move", move: bestMove }
+    ? { kind: "move", move: bestMove, cluster: !backed && planned ? planned.cluster : null }
     : bestPost
       ? { kind: "post", card: bestPost, why: `It’s doing well right now (${bestPost.stats.map((x) => `${x.v} ${x.k.toLowerCase()}`).join(", ")}), and nobody near you has made one like it yet.` }
       : null
