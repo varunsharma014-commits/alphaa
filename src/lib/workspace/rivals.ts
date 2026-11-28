@@ -1,7 +1,7 @@
 // Research → Competitors ("attack cards") and Blog & page gaps ("winning moves").
 // Every line is built from stored data; a line with no data behind it is left out.
 //   Competitors: Competitor rows (crawl + analysis), the weekly AI question scan (who the AIs name),
-//   competitor ads from the ad plan's Ad Library scrape, rivals' social posts from niche research,
+//   competitor ads from the ad plan (Google Ads Transparency Center), rivals' Instagram posts from niche research,
 //   and ContentGap rows for that competitor. Hidden: domain-rule hosts, owner dismissals, and hosts
 //   the niche check says aren't competitors (unless the owner added them).
 //   Gaps: ContentGap rows from visible competitors only. Signals come from the owner's own Search
@@ -184,7 +184,7 @@ export async function getRivals(user: User, ctx: { strategy: AdStrategy | null; 
     const winning = aiCount > 0
       ? `Named in ${aiCount} AI answer${aiCount === 1 ? "" : "s"} to your customers’ questions`
       : theirAds.length
-        ? `${theirAds.length} ad${theirAds.length === 1 ? "" : "s"} running on Facebook & Instagram${longest ? `, one for ${n(longest)} days` : ""}`
+        ? `${theirAds.length} ad${theirAds.length === 1 ? "" : "s"} running on ${theirAds[0].platform === "google" ? "Google search" : "Facebook & Instagram"}${longest ? `, one for ${n(longest)} days` : ""}`
         : social.length
           ? `${social.length} recent social post${social.length === 1 ? "" : "s"}${likes ? ` with ${n(likes)} likes` : ""}`
           : strengths[0] ? short(strengths[0], 110) : null
@@ -204,7 +204,7 @@ export async function getRivals(user: User, ctx: { strategy: AdStrategy | null; 
     const topics = read ? strs(d.keyTopics) : []
     if (topics.length) detail.push({ k: "Topics they cover", v: topics.join(", ") })
     if (read) detail.push({ k: "Their site", v: `${pages} page${pages === 1 ? "" : "s"} read${schema.length ? ` · structured data: ${schema.join(", ")}` : " · no structured data"}` })
-    for (const a of theirAds.slice(0, 4)) detail.push({ k: `Ad${a.daysRunning ? ` · running ${a.daysRunning} days` : ""}`, v: short(a.title || a.text, 200), href: a.url })
+    for (const a of theirAds.slice(0, 4)) detail.push({ k: `${a.platform === "google" ? "Google ad" : "Ad"}${a.daysRunning ? ` · running ${a.daysRunning} days` : ""}`, v: short(a.title || a.text || `A ${a.format} ad`, 200), href: a.url })
     for (const p of social.slice(0, 3)) detail.push({ k: "Social post", v: short(p.about, 160), href: p.url })
     for (const m of moves.filter((x) => x.rivalHost === h).slice(0, 4)) detail.push({ k: "Gap I can take", v: m.title })
 

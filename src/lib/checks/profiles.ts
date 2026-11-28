@@ -4,7 +4,7 @@
 // back? Networks that block automated visits are reported as unreadable,
 // never as a fabricated mismatch. Nothing here throws.
 
-import { apifyEnabled, facebookPage, instagramProfile, type SocialData } from "./apify"
+import { igProfile } from "@/lib/social/meta-insights"
 import { checkAppearance } from "@/lib/ai-engines"
 import { fetchPage, jsonLdNodes, mapLimit } from "./fetch-page"
 
@@ -140,14 +140,15 @@ const BLOCKED_ISSUE = "Couldn’t read it — the network blocks automated visit
 
 async function readProfile(
   p: { network: ProfileNetwork; url: string; source: "website" | "owner" },
-  ctx: { businessName: string; phone: string | null; domain: string | null; load: typeof import("cheerio").load }
+  ctx: { businessName: string; phone: string | null; domain: string | null; load: typeof import("cheerio").load; userId?: string }
 ): Promise<ProfileFinding> {
   const base: ProfileFinding = { ...p, readable: false, nameMatches: null, phoneMatches: null, linksToWebsite: null, bio: null, issues: [BLOCKED_ISSUE] }
   try {
-    // Facebook and Instagram need a real scraper; Apify returns structured data.
-    if ((p.network === "facebook" || p.network === "instagram") && apifyEnabled()) {
-      const d = p.network === "facebook" ? await facebookPage(p.url) : await instagramProfile(p.url)
-      if (d) return fromSocialData(p, d, ctx)
+    // Instagram: Meta's own Business Discovery when the owner's connected account allows it.
+    if (p.network === "instagram" && ctx.userId) {
+      const username = p.url.match(/instagram\.com\/([A-Za-z0-9_.]+)/)?.[1]
+      const d = username ? await igProfile(ctx.userId, username).catch(() => null) : null
+      if (d) return fromSocialData(p, { name: d.name ?? d.username, bio: d.bio, phone: null, website: d.website }, ctx)
     }
     const page = await fetchPage(p.url)
     if (!page.readable) return base
@@ -188,6 +189,8 @@ async function readProfile(
   }
 }
 
+type SocialData = { name: string | null; bio: string | null; phone: string | null; website: string | null }
+
 function fromSocialData(
   p: { network: ProfileNetwork; url: string; source: "website" | "owner" },
   d: SocialData,
@@ -213,6 +216,8 @@ export async function checkProfiles(input: {
   businessName: string
   phone: string | null
   extraUrls?: string[]
+  /** The brand: lets Instagram be read through Meta's API when the connected account allows it. */
+  userId?: string
 }): Promise<ProfileFinding[]> {
   try {
     const fromSite = await findProfileUrls(input.siteUrl)
@@ -227,7 +232,7 @@ export async function checkProfiles(input: {
     }
     if (!list.length) return []
     const { load } = await import("cheerio")
-    const ctx = { businessName: input.businessName, phone: input.phone, domain: domainOf(input.siteUrl), load }
+    const ctx = { businessName: input.businessName, phone: input.phone, domain: domainOf(input.siteUrl), load, userId: input.userId }
     return await mapLimit(list, 3, (p) => readProfile(p, ctx))
   } catch {
     return []

@@ -138,11 +138,12 @@ export function ResearchView({ data }: { data: ResearchData }) {
             <div style={{ marginTop: 22 }}>
               <Empty
                 title={data.nicheOn ? "I haven’t looked at your niche yet" : "Niche research isn’t switched on yet"}
-                text={data.nicheOn ? "I read what businesses like yours post on Instagram, TikTok and Facebook, and what rivals advertise, then show you what works with a link to each post." : "It needs our research service, which isn’t set up on this account yet. Your ideas, page gaps and competitors below still work."}
+                text={data.nicheOn ? `I read the top YouTube videos for businesses like yours${data.instagram === "on" ? ", the top Instagram posts and what your competitors post there" : ""}, then show you what works with a link to each one.${data.instagram === "connect" ? " I’ll show what’s working on Instagram once you connect it." : data.instagram === "pending" ? " I’ll add Instagram as soon as Meta approves Alphaa to read post stats." : ""}` : "It needs our research service, which isn’t set up on this account yet. Your ideas, page gaps and competitors below still work."}
                 act={data.nicheOn ? { label: "Look now", topic: "niche", primary: true } : null}
               />
             </div>
           )}
+          {data.working.length > 0 && data.instagram !== "on" && <p className="ax-note">{data.instagram === "connect" ? "I’ll show what’s working on Instagram once you connect it." : "I’ll add Instagram as soon as Meta approves Alphaa to read post stats."}</p>}
           {data.working.length > 0 && data.working.length < 3 && <p className="ax-note">Only {data.working.length} post{data.working.length === 1 ? "" : "s"} beat the typical engagement in your niche in my last look. I don’t pad this list.</p>}
           {data.working.length > 4 && <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}><button className="ax-btn s" type="button" onClick={() => setAll(!all)}>{all ? "Show fewer" : `Show all ${data.working.length}`}</button></div>}
           {data.trends.length > 0 && (

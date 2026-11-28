@@ -199,7 +199,7 @@ async function checkOne(url: string, facts: NapFacts): Promise<NapFinding> {
   }
   try {
     if (!domain) return base
-    // Direct, then through Apify's residential proxy if the directory blocks us.
+    // A direct read; a directory that blocks automated visits is reported as unreadable.
     const page = await fetchPage(url, TIMEOUT_MS)
     if (!page.readable) return base
     const html = page.html

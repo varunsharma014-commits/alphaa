@@ -1,0 +1,240 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "6.2306 sec.",
+ "cost": 0.0054,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280706-3309-0572-0000-f68eb1220192",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "6.0420 sec.",
+   "cost": 0.0054,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "business_data",
+    "google",
+    "my_business_info",
+    "live"
+   ],
+   "data": {
+    "api": "business_data",
+    "function": "my_business_info",
+    "se": "google",
+    "keyword": "The Keg Steakhouse + Bar - Ottawa Market",
+    "location_name": "Ottawa,Ontario,Canada",
+    "language_code": "en",
+    "se_type": "my_business_info",
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "The Keg Steakhouse   Bar - Ottawa Market",
+     "se_domain": "google.com",
+     "location_code": 9198644,
+     "language_code": "en",
+     "check_url": "https://www.google.com/maps?cid=15175313326371681177&hl=en&gl=CA",
+     "datetime": "2026-11-28 07:06:43 +00:00",
+     "item_types": [
+      "google_business_info"
+     ],
+     "items_count": 1,
+     "items": [
+      {
+       "type": "google_business_info",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "position": "left",
+       "title": "The Keg Steakhouse + Bar - Ottawa Market",
+       "original_title": null,
+       "description": "Classic steak & seafood dishes are the mainstays at this stylish yet casual chain restaurant.",
+       "category": "Restaurant",
+       "category_ids": null,
+       "additional_categories": [
+        "Bar",
+        "Bar & grill",
+        "Cocktail bar",
+        "Lunch restaurant",
+        "Seafood restaurant",
+        "Steak house",
+        "Wine bar"
+       ],
+       "cid": "15175313326371681177",
+       "feature_id": "0x4cce0502653b1873:0xd2998b116da2b399",
+       "address": "75 York St, Ottawa, ON K1N 5T2",
+       "address_info": {
+        "borough": "Byward Market - Parliament Hill",
+        "address": "75 York St",
+        "city": "Ottawa",
+        "zip": "K1N 5T2",
+        "region": "Ontario",
+        "country_code": "CA"
+       },
+       "place_id": "ChIJcxg7ZQIFzkwRmbOibRGLmdI",
+       "phone": "+1613-241-8514",
+       "url": "https://thekeg.com/en/locations/ottawa-market",
+       "contact_url": null,
+       "contributor_url": "https://maps.google.com/maps/contrib/104535657730513626185",
+       "book_online_url": "https://www.google.com/searchviewer/42?cvd=CLw_EiUKI-ICIDIeEhciFdLX29IPDwoLL2cvMXRqd2hjamgYADoDCPAN&hl=en-CA&gl=ca&fo_m=MfohQo559jFvMUOzJVpjPL1YMfZ3bInYwBDuMfaXTPp5KXh-&utm_source=tactile&gei=gn0Ka_qvJriq5NoP-bWi6AM&ei=gn0Ka_qvJriq5NoP-bWi6AM&fo_s=OA,SOE&opi=79508299&ebb=1&cs=0&foub=mcpp",
+       "domain": "thekeg.com",
+       "logo": "https://lh6.googleusercontent.com/-E8hI2_i5CUY/AAAAAAAAAAI/AAAAAAAAAAA/-pMy_LVXPhU/s44-p-k-no-ns-nd/photo.jpg",
+       "main_image": "https://lh3.googleusercontent.com/grass-cs/AABkmLcbeIPlYFRts526ynxB60Tay-DAe1_-yM266zwyrquapYlvV8EPEmRydKEVCsutRhTX3hEdNhih60I4N16EYCGV3MrokSHQj56EMDhIh5WdQfE2AI6tDDl4DSXVcQ5qT2BqWPHO=w408-h306-k-no",
+       "total_photos": 1504,
+       "snippet": "75 York St, Ottawa, ON K1N 5T2",
+       "latitude": 45.4288247,
+       "longitude": -75.6920154,
+       "is_claimed": true,
+       "questions_and_answers_count": null,
+       "attributes": {
+        "available_attributes": {
+         "accessibility": [
+          "has_wheelchair_accessible_seating",
+          "has_wheelchair_accessible_entrance",
+          "has_wheelchair_accessible_parking",
+          "has_wheelchair_accessible_restroom"
+         ]
+        },
+        "unavailable_attributes": null
+       },
+       "place_topics": {
+        "prime rib": 83,
+        "filet mignon": 51,
+        "quick seating": 4,
+        "steak": 169,
+        "twice baked potato": 25,
+        "bar seating": 6,
+        "lobster": 36,
+        "baseball sirloin": 14,
+        "escargot": 13,
+        "Billy Miner Pie": 11
+       },
+       "rating": {
+        "rating_type": "Max5",
+        "value": 4.5,
+        "votes_count": 3115,
+        "rating_max": null
+       },
+       "hotel_rating": null,
+       "price_level": null,
+       "rating_distribution": {
+        "1": 76,
+        "2": 77,
+        "3": 179,
+        "4": 655,
+        "5": 2128
+       },
+       "people_also_search": null,
+       "work_time": {
+        "work_hours": {
+         "timetable": {
+          "sunday": [
+           {
+            "open": {
+             "hour": 16,
+             "minute": 30
+            },
+            "close": {
+             "hour": 21,
+             "minute": 0
+            }
+           }
+          ],
+          "monday": [
+           {
+            "open": {
+             "hour": 17,
+             "minute": 0
+            },
+            "close": {
+             "hour": 22,
+             "minute": 0
+            }
+           }
+          ],
+          "tuesday": [
+           {
+            "open": {
+             "hour": 17,
+             "minute": 0
+            },
+            "close": {
+             "hour": 22,
+             "minute": 0
+            }
+           }
+          ],
+          "wednesday": [
+           {
+            "open": {
+             "hour": 17,
+             "minute": 0
+            },
+            "close": {
+             "hour": 22,
+             "minute": 0
+            }
+           }
+          ],
+          "thursday": [
+           {
+            "open": {
+             "hour": 17,
+             "minute": 0
+            },
+            "close": {
+             "hour": 22,
+             "minute": 0
+            }
+           }
+          ],
+          "friday": [
+           {
+            "open": {
+             "hour": 16,
+             "minute": 30
+            },
+            "close": {
+             "hour": 22,
+             "minute": 30
+            }
+           }
+          ],
+          "saturday": [
+           {
+            "open": {
+             "hour": 16,
+             "minute": 30
+            },
+            "close": {
+             "hour": 22,
+             "minute": 30
+            }
+           }
+          ]
+         },
+         "current_status": "close"
+        }
+       },
+       "popular_times": null,
+       "local_business_links": [
+        {
+         "type": "reservation",
+         "title": "thekeg.com",
+         "url": "https://thekeg.com/en/locations/ottawa-market"
+        }
+       ],
+       "is_directory_item": false,
+       "directory": null,
+       "services": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

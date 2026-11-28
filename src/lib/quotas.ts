@@ -111,7 +111,7 @@ export function refundQuota(userId: string, kind: QuotaKind, n = 1): void {
 }
 
 /**
- * For library code (writers, image makers, Apify runs) that only knows the brand from the
+ * For library code (writers, image makers, data calls) that only knows the brand from the
  * request/cron context (auth(), currentUser(), asUser()). No brand (public pages) = allowed here;
  * public endpoints have their own per-IP caps (publicHit).
  */

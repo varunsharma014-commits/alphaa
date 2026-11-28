@@ -32,7 +32,7 @@ export type AdStrategy = {
   error?: string
   business?: { name: string; vertical: Vertical; b2b: boolean; local: boolean; markets: string }
   angles?: Angle[]
-  competitors?: { looked: string[]; ads: CompetitorAd[]; cliches: string[]; gaps: string[] }
+  competitors?: { looked: string[]; ads: CompetitorAd[]; cliches: string[]; gaps: string[]; /** What I couldn't look at (competitors' Meta ads). */ note?: string }
   hooks?: Hook[]
   scripts?: Script[]
   statics?: { meta: MetaStatic[]; linkedin: LinkedInStatic[]; google: { headlines: string[]; descriptions: string[] } }

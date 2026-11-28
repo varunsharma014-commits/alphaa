@@ -1,0 +1,536 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "1.4802 sec.",
+ "cost": 0.002,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280728-3309-0139-0000-8ad0925b436a",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "1.4142 sec.",
+   "cost": 0.002,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "organic",
+    "live",
+    "advanced"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "live",
+    "se": "google",
+    "se_type": "organic",
+    "keyword": "family dentist ottawa",
+    "location_code": 9198644,
+    "language_code": "en",
+    "depth": 10,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "family dentist ottawa",
+     "type": "organic",
+     "se_domain": "google.com",
+     "location_code": 9198644,
+     "language_code": "en",
+     "check_url": "https://www.google.com/search?q=family%20dentist%20ottawa&hl=en&gl=CA&ie=UTF-8&uule=w+CAIQIFISCSEnm65H-81MEWD3FAhqKdFN",
+     "datetime": "2026-11-28 07:28:30 +00:00",
+     "spell": null,
+     "refinement_chips": null,
+     "item_types": [
+      "local_pack",
+      "organic",
+      "people_also_ask"
+     ],
+     "se_results_count": 81,
+     "pages_count": 1,
+     "items_count": 13,
+     "items": [
+      {
+       "type": "local_pack",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "page": 1,
+       "position": "left",
+       "title": "Family Dental Care - Ottawa South - Emergency Dental Services",
+       "description": "2 Lorry Greenberg Dr · (819) 412-6878 \nClosed · Opens 8 a.m. \n\"Seeing my daughter’s beautiful smile and improved bite has been wonderful.\" \n",
+       "domain": "google.com",
+       "phone": "(819) 412-6878",
+       "booking_url": null,
+       "url": "https://google.com/goto?url=CAESagHEIkXXReH52yKAd1jBlm-2ghBixFnPhf46pt7boTl7Sl9o1DwNmUEdFbjCKjdLUYCMu91glwUe9b5i3R-HdaQu0Osyy_eRJKh-0kMNFqcPwFBtKECaopmKSxyHhvw9fjFucorTEf6_wQY",
+       "is_paid": false,
+       "rating": {
+        "rating_type": "Max5",
+        "value": 4.8,
+        "votes_count": 318,
+        "rating_max": 5
+       },
+       "cid": "7908964994487984159"
+      },
+      {
+       "type": "local_pack",
+       "rank_group": 2,
+       "rank_absolute": 2,
+       "page": 1,
+       "position": "left",
+       "title": "Ottawa Dental Care | Emergency & Direct Billing in Downtown",
+       "description": "170 Laurier Ave W · (343) 307-5050 \nClosed · Opens 8 a.m. Mon \n\" Family Dental Care was welcoming, knowledgeable and professional!\" \n",
+       "domain": "google.com",
+       "phone": "(343) 307-5050",
+       "booking_url": null,
+       "url": "https://google.com/goto?url=CAESXAHEIkXXQBDB8TNDcyM9gwcnHidCeXKRDjCAep-APv-Ky5Mw0D-lW3Zqkl05GZKC62dxdzwQ6-a3dD0dw8PJJTe7gw3i6Zp2uC4pfQGnUY_QjxZLrraSazoQ6UzL",
+       "is_paid": false,
+       "rating": {
+        "rating_type": "Max5",
+        "value": 4.9,
+        "votes_count": 323,
+        "rating_max": 5
+       },
+       "cid": "14015363369236352138"
+      },
+      {
+       "type": "local_pack",
+       "rank_group": 3,
+       "rank_absolute": 3,
+       "page": 1,
+       "position": "left",
+       "title": "Westboro Family Dentistry",
+       "description": "147 Holland Ave · (613) 722-1957 \nClosed · Opens 8 a.m. \n\"Very good Dentist and hygienists\" \n",
+       "domain": "google.com",
+       "phone": "(613) 722-1957",
+       "booking_url": null,
+       "url": "https://google.com/goto?url=CAESYwHEIkXXJ9tTtMtH416g1HHF6-O5HyGt5QrHV2iSMw6WS2IbTfJ4nvbzbQjxS6CEHWiXxjjIUcY_SOkXhqrDNNCjwBcH7H63qmGW3c3l6eDA4UJ0A2MfFkat7CYsjlYGFFl1Nw",
+       "is_paid": false,
+       "rating": {
+        "rating_type": "Max5",
+        "value": 4.8,
+        "votes_count": 106,
+        "rating_max": 5
+       },
+       "cid": "10916742435023134567"
+      },
+      {
+       "type": "organic",
+       "rank_group": 1,
+       "rank_absolute": 4,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Dentistree Family Dental Clinic",
+       "url": "https://google.com/goto?url=CAESgAEBxCJF15vU4f4F7PNY3IUU484FvHsFQYvfvN7zNqQ-Wi4LR4U8LlCvVf-7W1mIeXHA-yQM77XoxZwIygwOTIpalmJ0QFEXx9j706Iwk5QJzMwF5WBVgxS6v-t9JZLkbIKAyoGZLQw6S89vkLl5WIZltkOP_F-f8mJV7mAaE2dTSQ&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.drgreat.ca › clinic › dentistree-family-denta...",
+       "website_name": "DrGreat",
+       "is_image": true,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": [
+        "is_image"
+       ],
+       "description": "1340 Hemlock Road, Ottawa, Ontario K1K 5C3 4.9(110 reviews) Contact (613) 695-0318. Hours Monday9:00 AM – 8:00 PM. Saturday9:00 AM – 3:00 PM SundayClosed",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": [
+        {
+         "type": "images_element",
+         "alt": "family dentist ottawa from www.drgreat.ca",
+         "url": "https://google.com/goto?url=CAESgAEBxCJF1-_Hb7_M-voAvvecwWtx12XPr06g-xCVbJFs7DD7mfUpjTY6pAvHDoZCNXbrbkbXXLcfMRGrSMeMvIdv4_Oo3ghvQWBQ_rDF2Pv1IyjKH5D2LdTQ5LYQfcO3sUa17H9gB73wY256Vd59aAmdu0vBqgNDt8qLFbzOt-R6YA&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+         "image_url": "https://api.dataforseo.com/cdn/i/11280728-3309-0139-0000-8ad0925b436a:0"
+        }
+       ],
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "1340 Hemlock Road, Ottawa, Ontario K1K 5C3"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 2,
+       "rank_absolute": 5,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Your Ottawa Dentist | Expert Care in Downtown Ottawa",
+       "url": "https://google.com/goto?url=CAESbwHEIkXXomt2FPMu7upL7vB5igrU870IeQTYHjbcJEVD5z2JIjN8jXRbcI3MJNgOyYT5xVi1-0nLDl0FL-88gNQba2xcjTmGRIOv_nwTwfKsP7Ek4hHgNkAcNL3YwvOJtLMD8M5yzSh3A3PuRQnSrg&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://ottawadowntowndentist.ca › dentist-in-ottawa",
+       "website_name": "Florence Dentistry",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Looking for an Ottawa dentist? Get expert care for all ages at our downtown clinic. Cleanings, check-ups, and cosmetic dentistry. Book now!",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "Get expert care for all ages at our downtown clinic"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 3,
+       "rank_absolute": 6,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Oral Health Care Ottawa | Trusted Dental Care for Families",
+       "url": "https://google.com/goto?url=CAEShAEBxCJF1zHwHAUBjQMa2W-j9hZYbFxQOy__NqPeIdvRybpKPFcU9CzoGksNsd1ucEF4eb_xuYbio5asSnzRSP2pw-31BXZfGLq7AfONMuyEx9mtgpJv8HwuycNLUy7vqvWfohhsjYKksyaIQ_r7X5uCD_GVXllB_uPA1lcjuIIEh3Eqgdw&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://islandparkdental.ca › Blog",
+       "website_name": "Island Park Dental",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Jan 14, 2026 — Discover trusted oral health care in Ottawa at Island Park Dental. +1 (613) 722-2265",
+       "pre_snippet": "01/14/2026 00:00:00",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "Island Park Dental"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": "2026-01-14 00:00:00 +00:00"
+      },
+      {
+       "type": "organic",
+       "rank_group": 4,
+       "rank_absolute": 7,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Family Dental Care - Vanier — 25 Montréal Rd (2 ... - Dentli",
+       "url": "https://google.com/goto?url=CAESeQHEIkXXPOaY3sUc2yR824RNLtODA8HJKOWzef1YTOdjwY54ZSCXgtgPb4RVa7HpJkSGsMRmqnofO5SXzeQksqwYX9IEzoxKA-dIOBPLmfbwlJN0UwYfSI6TjUoNzw4672zjFMxdEjMaUk0juVApUt6tLO8IQuxIrC8&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://dentli.ca › dentist › family-...",
+       "website_name": "dentli.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Ottawa ਵਿੱਚ Family Dental Care - Vanier ・ 25 Montréal Rd, Ottawa, ON K1L 6E8 (613) 656-1400 ・ 8:00 AM8:30 AM9:00. Monday 09:00 – 17:00 Tuesday",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "25 Montréal Rd, Ottawa, ON K1L 6E8"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 5,
+       "rank_absolute": 8,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Clinics - Dentor",
+       "url": "https://google.com/goto?url=CAESYgHEIkXXi4OTrRADrxvWbb6FhDTeqNglQxV9LAYk7XrjjJYBFkG4VJ6nxmhQg9i8xJ-6pU-bt5TnKe1rw99Z8pb7pa5jjjOZ7DyaRjvDEs70hDnq-g2UILYXxO4Cd6xC0zQm&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.dentor.ca › clinics",
+       "website_name": "dentor.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Our dental office provides services that range from general dentistry, to cosmetic services, and even services for children. If you live in the west-end Ottawa ... Read more",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "general dentistry, to cosmetic services, and even services for children"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://google.com/goto?url=CAESuwEBxCJF1ySwwdBnjK1cWLnim3nSLplNM8nmJPPzteV_ypBnnafH2gcqGg3fkAT88Npz09cnRwzD5y5U6TbW5y3_J1KEVtewEGtx8K7URAmDBKbgTuoM0CSAoYt9EuZMTd265RbTI_THTBfgtJL1BpFfSGy9WQzq_HxnK8O5L8L_2A1uXNb6HYdSeekCoXKS0xPW33O7WfJEVf73nVyQZJoGro1dQPZT3rA7f-CZII-OXc9_yjvZhNuE2NW5&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+         "domain": "google.com"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 6,
+       "rank_absolute": 9,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Dentists near Ottawa East Ottawa ON",
+       "url": "https://google.com/goto?url=CAESgQEBxCJF1yzUVgVPq-j3LH70BjVr-jXIC138_2AtQCMgRF5RW0lv4Zx5lhROCBBWnMXkmtIjcohMRqYQK-wqrLO9H2Rn7XUGxemX_hLYSiJeFC6IovD72GE_Nb5JNKfY8ClORkJ4L3kGscnoKUK7YqDU4KAFSdSGbvNO6IFAgf0B1FE&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.yellowpages.ca › ... › Dental Care › Dentists",
+       "website_name": "YellowPages.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "A family practice for Kanata patients since 1996. Dental 1960 Scott St, Ottawa, ON ・ 1537 Merivale Road, Ottawa, ON ・ for your whole family, we gladly accept ...",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "1960 Scott St, Ottawa, ON"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "people_also_ask",
+       "rank_group": 1,
+       "rank_absolute": 10,
+       "page": 1,
+       "position": "left",
+       "items": [
+        {
+         "type": "people_also_ask_element",
+         "title": "How much do 3 fillings cost in Canada?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "Which country is best for foreign dentists?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "What are the different types of dental services?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "What is the dentist 2 year rule?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "organic",
+       "rank_group": 7,
+       "rank_absolute": 11,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Contact - Family Dental Care of Ottawa, Ontario",
+       "url": "https://google.com/goto?url=CAEScAHEIkXX_ZG-19ndSWomUMhoPmK3rMbmwu3uXQYf-ZoGKJDpYrTribJCnX51PlZQq6dlsI9kScYji41x57dcgvrFzPHm2n-4o3hUvWt-jkx-fcfPprO_aaEfkkBTFdBE4Hi4MLutBa8QQt5fIgVO7us&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://family-dental-care-1.ottawadirect.ca › contact",
+       "website_name": "CityDirect Network",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "1-866-445-9004 BOOK … +1 613 627 3500 170 Laurier Ave W Ottawa, ON. Physical Location Address: 170 Laurier Ave W Ottawa, ON, K1P 5V5 Canada",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "170 Laurier Ave W Ottawa, ON"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 8,
+       "rank_absolute": 12,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Family Dental Care — 1574 Walkley Rd #Upstairs (14 ... - Dentli",
+       "url": "https://google.com/goto?url=CAEScgHEIkXX2eQmEtpm8ruN_6HB-DytKnJ6FFWT35dBMiS4fuOxaxSD0tlv4LCSK-k7T10AIgW6BCjWgObjnOgQQTqO3zJA3iMXGQaZr13waIOLgzd-0YpW1iaIRGeqF7SJpL1rPw2LQsR5kRsx_RldQlNU5A&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://dentli.ca › dentist › family-...",
+       "website_name": "dentli.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Ottawa ਵਿੱਚ Family Dental Care (1574 Walkley Rd #Upstairs, Ottawa, ON K1V 6P4 (613) 907-9119. The staff are so kind, friendly, and attentive, and the doctors are ...",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "Ottawa",
+        "Family Dental"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 9,
+       "rank_absolute": 13,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Dentists. Family Dental Care serves Ottawa, Ontario",
+       "url": "https://google.com/goto?url=CAESbwHEIkXX2ys3kuJpn8j4IbrIzuay2d6iFrrxOzEW7SRKVmvgza7rZKyL41XtrUO4v37QsqXpcXFU8EphZie4LJFMjvRNaKjP5fk1ifz0ixFooioab5HeaOXryq-SkhC1Cg88iK2oU_vMhZ17YBmXFQ&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://family-dental-care.ottawadirect.ca › profile",
+       "website_name": "CityDirect Network",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "2 Lorry Greenberg Drive Ottawa, ON, K1G 5H6 Canada. GPS Coordinates: -75.620655, - 45.3696723. Hours of Operation. Sunday: Closed. Monday: 9:00 am. Read more",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "2 Lorry Greenberg Drive Ottawa, ON, K1G 5H6 Canada"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://google.com/goto?url=CAESrQEBxCJF1z_ZSWgeA3qEjlyAqX91aXjaGF0TCt9zymkC_Rki0Uxai9h2qgn3iH4CoKVJcNiOx7Q1tMUOdKSRo0E9cBsYeZYz0a5tgMm_jIGAbOklZBYMTdj-OPUy_6I1LUUHiipZ3rWPvx_xglFjDuhOEUoASbhNtJy8dHuCFkhNN4OT0L-2n_WfAUMD74PYBbCNifPfmEqG-SzWhWZ9IR56iFTmTiAnIMR4yXA8zg&gsessionid=ROkfuxjvRV5Ro9KJ4UOmOzVgRGBHQ6yWldt9YJToK57R97z3QmRASA",
+         "domain": "google.com"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

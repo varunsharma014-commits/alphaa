@@ -7,6 +7,7 @@ import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { discoverCompetitors } from "@/lib/discover-competitors"
+import { dataforseoConfigured } from "@/lib/dataforseo"
 import { runAsUser } from "@/lib/usage"
 
 const body = z.object({ op: z.literal("dismiss"), host: z.string().min(3).max(200) })
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
 
   let looking = false
   const last = lastKick.get(user.id) ?? 0
-  if (process.env.APIFY_TOKEN && user.businessType && Date.now() - last > 30 * 60_000) {
+  if (dataforseoConfigured() && user.businessType && Date.now() - last > 30 * 60_000) {
     lastKick.set(user.id, Date.now())
     looking = true
     void runAsUser(user.id, () => discoverCompetitors(user, 1)).catch(() => 0)

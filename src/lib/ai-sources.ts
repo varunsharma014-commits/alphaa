@@ -4,7 +4,7 @@
 //   - classify a cited page: the owner's site, a competitor, a directory/review site, ...
 //   - rank the businesses an answer names (by where they first appear)
 //   - competitor share of voice per week from stored question scans
-//   - Google AI Overview parsing from the Apify SERP item
+//   - Google AI Overview parsing (re-exported from lib/dataforseo-parse.ts)
 
 export type CitedSource = {
   url: string
@@ -251,16 +251,9 @@ export function validStance(raw: unknown, answer: string, fallbackQuote: string 
 
 export const TONE_LABEL: Record<Tone, string> = { positive: "Positive", neutral: "Neutral", negative: "Negative", mixed: "Mixed" }
 
-// ── Google AI Overviews (Apify google-search-scraper `aiOverview`) ───────────────────────────────
+// ── Google AI Overviews (DataForSEO results page `ai_overview` item, lib/dataforseo-parse.ts) ──
 
-export type AiOverview = { shown: boolean; content: string | null; sources: { url: string; title: string | null }[] }
-
-export function parseAiOverview(item: unknown): AiOverview {
-  const ao = isObj(item) && isObj(item.aiOverview) ? item.aiOverview : null
-  const content = ao ? str(ao.content) : null
-  const sources = ao ? arr(ao.sources).filter(isObj).map((s) => ({ url: str(s.url) ?? "", title: str(s.title) })).filter((s) => /^https?:\/\//.test(s.url)).slice(0, 10) : []
-  return { shown: !!(content || sources.length), content: content ? content.replace(/\s*\[Highlight (start|end)\]\s*/g, " ").replace(/[ \t]+/g, " ").trim().slice(0, 1500) : null, sources }
-}
+export { parseAiOverview, type AiOverview } from "@/lib/dataforseo-parse"
 
 // ── Competitor share of voice per week ──────────────────────────────────────────────────────────
 

@@ -1,0 +1,231 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.0762 sec.",
+ "cost": 0.0006,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280706-3309-0066-0000-34c0e8c2bfa4",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.0152 sec.",
+   "cost": 0.0006,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "ads_search",
+    "task_get",
+    "advanced",
+    "11280706-3309-0066-0000-34c0e8c2bfa4"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "task_get",
+    "se": "google",
+    "se_type": "ads_search",
+    "target": "semrush.com",
+    "location_code": 2840,
+    "platform": "google_search",
+    "depth": 40,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "semrush.com",
+     "type": "ads_search",
+     "se_domain": "adstransparency.google.com",
+     "location_code": 2840,
+     "language_code": "en",
+     "check_url": "https://adstransparency.google.com/?region=US&domain=semrush.com&platform=SEARCH",
+     "datetime": "2026-11-28 07:06:54 +00:00",
+     "spell": null,
+     "refinement_chips": null,
+     "item_types": [
+      "ads_search"
+     ],
+     "se_results_count": 3000,
+     "items_count": 9,
+     "items": [
+      {
+       "type": "ads_search",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "advertiser_id": "AR12174930187514806273",
+       "creative_id": "CR15723373017180405761",
+       "title": "Semrush INC",
+       "url": "https://adstransparency.google.com/advertiser/AR12174930187514806273/creative/CR15723373017180405761?region=US",
+       "verified": true,
+       "format": "text",
+       "preview_image": {
+        "url": "https://tpc.googlesyndication.com/archive/simgad/13514919386875491899",
+        "height": 167,
+        "width": 380
+       },
+       "preview_url": null,
+       "first_shown": "2025-02-18 14:36:17 +00:00",
+       "last_shown": "2026-11-28 06:25:15 +00:00"
+      },
+      {
+       "type": "ads_search",
+       "rank_group": 2,
+       "rank_absolute": 2,
+       "advertiser_id": "AR12174930187514806273",
+       "creative_id": "CR13695757680163946497",
+       "title": "Semrush INC",
+       "url": "https://adstransparency.google.com/advertiser/AR12174930187514806273/creative/CR13695757680163946497?region=US",
+       "verified": true,
+       "format": "text",
+       "preview_image": {
+        "url": "https://tpc.googlesyndication.com/archive/simgad/1283098797018069245",
+        "height": 173,
+        "width": 380
+       },
+       "preview_url": null,
+       "first_shown": "2025-03-18 12:20:10 +00:00",
+       "last_shown": "2026-11-28 06:22:59 +00:00"
+      },
+      {
+       "type": "ads_search",
+       "rank_group": 3,
+       "rank_absolute": 3,
+       "advertiser_id": "AR12174930187514806273",
+       "creative_id": "CR01332540558798749697",
+       "title": "Semrush INC",
+       "url": "https://adstransparency.google.com/advertiser/AR12174930187514806273/creative/CR01332540558798749697?region=US",
+       "verified": true,
+       "format": "text",
+       "preview_image": {
+        "url": "https://tpc.googlesyndication.com/archive/simgad/16981070804197647207",
+        "height": 167,
+        "width": 380
+       },
+       "preview_url": null,
+       "first_shown": "2025-02-18 14:59:14 +00:00",
+       "last_shown": "2026-11-28 06:07:34 +00:00"
+      },
+      {
+       "type": "ads_search",
+       "rank_group": 4,
+       "rank_absolute": 4,
+       "advertiser_id": "AR12174930187514806273",
+       "creative_id": "CR14728686233836322817",
+       "title": "Semrush INC",
+       "url": "https://adstransparency.google.com/advertiser/AR12174930187514806273/creative/CR14728686233836322817?region=US",
+       "verified": true,
+       "format": "text",
+       "preview_image": {
+        "url": "https://tpc.googlesyndication.com/archive/simgad/18193141623676281645",
+        "height": 164,
+        "width": 348
+       },
+       "preview_url": null,
+       "first_shown": "2024-01-13 22:20:47 +00:00",
+       "last_shown": "2026-11-28 06:05:43 +00:00"
+      },
+      {
+       "type": "ads_search",
+       "rank_group": 5,
+       "rank_absolute": 5,
+       "advertiser_id": "AR12174930187514806273",
+       "creative_id": "CR07313000218868318209",
+       "title": "Semrush INC",
+       "url": "https://adstransparency.google.com/advertiser/AR12174930187514806273/creative/CR07313000218868318209?region=US",
+       "verified": true,
+       "format": "text",
+       "preview_image": {
+        "url": "https://tpc.googlesyndication.com/archive/simgad/11476901923762384151",
+        "height": 173,
+        "width": 380
+       },
+       "preview_url": null,
+       "first_shown": "2025-03-18 17:51:04 +00:00",
+       "last_shown": "2026-11-28 06:03:03 +00:00"
+      },
+      {
+       "type": "ads_search",
+       "rank_group": 6,
+       "rank_absolute": 6,
+       "advertiser_id": "AR12174930187514806273",
+       "creative_id": "CR15941557665054851073",
+       "title": "Semrush INC",
+       "url": "https://adstransparency.google.com/advertiser/AR12174930187514806273/creative/CR15941557665054851073?region=US",
+       "verified": true,
+       "format": "text",
+       "preview_image": {
+        "url": "https://tpc.googlesyndication.com/archive/simgad/17089154346675250142",
+        "height": 309,
+        "width": 364
+       },
+       "preview_url": null,
+       "first_shown": "2025-07-29 15:45:03 +00:00",
+       "last_shown": "2026-11-28 06:02:47 +00:00"
+      },
+      {
+       "type": "ads_search",
+       "rank_group": 7,
+       "rank_absolute": 7,
+       "advertiser_id": "AR12174930187514806273",
+       "creative_id": "CR06289793478289260545",
+       "title": "Semrush INC",
+       "url": "https://adstransparency.google.com/advertiser/AR12174930187514806273/creative/CR06289793478289260545?region=US",
+       "verified": true,
+       "format": "text",
+       "preview_image": {
+        "url": "https://tpc.googlesyndication.com/archive/simgad/5494253923404032737",
+        "height": 173,
+        "width": 380
+       },
+       "preview_url": null,
+       "first_shown": "2024-04-18 17:01:12 +00:00",
+       "last_shown": "2026-11-28 05:58:34 +00:00"
+      },
+      {
+       "type": "ads_search",
+       "rank_group": 8,
+       "rank_absolute": 8,
+       "advertiser_id": "AR12174930187514806273",
+       "creative_id": "CR12869363529546727425",
+       "title": "Semrush INC",
+       "url": "https://adstransparency.google.com/advertiser/AR12174930187514806273/creative/CR12869363529546727425?region=US",
+       "verified": true,
+       "format": "video",
+       "preview_image": {
+        "url": null,
+        "height": null,
+        "width": null
+       },
+       "preview_url": "https://displayads-formats.googleusercontent.com/ads/preview/content.js?client=ads-integrity-transparency&obfuscatedCustomerId=6353561229&creativeId=823872548876&uiFeatures=12,54&adGroupId=204757109888&versionId=4&assets=%3DH4sIAAAAAAAAAOPy4eLkmLZxzffvnAJsXJwc5zufrJnNI8DMxcnx786ef5t4BHi4ODneTHh6YB-HAAcXJ8cxiAImLk6OqxAmIxcHx_5r0047CGgCACbRGw9OAAAA&sig=ACiVB_wFd8nfWaoiwHnE1GhXjmGVHhVwQg&htmlParentId=fletch-render-4633464773886128796&responseCallback=fletchCallback4633464773886128796",
+       "first_shown": "2026-09-11 08:50:51 +00:00",
+       "last_shown": "2026-11-28 05:57:00 +00:00"
+      },
+      {
+       "type": "ads_search",
+       "rank_group": 18,
+       "rank_absolute": 18,
+       "advertiser_id": "AR12174930187514806273",
+       "creative_id": "CR14225791442315378689",
+       "title": "Semrush INC",
+       "url": "https://adstransparency.google.com/advertiser/AR12174930187514806273/creative/CR14225791442315378689?region=US",
+       "verified": true,
+       "format": "video",
+       "preview_image": {
+        "url": null,
+        "height": null,
+        "width": null
+       },
+       "preview_url": "https://displayads-formats.googleusercontent.com/ads/preview/content.js?client=ads-integrity-transparency&obfuscatedCustomerId=6353561229&creativeId=823750802541&uiFeatures=12,54&adGroupId=200907958314&versionId=4&assets=%3DH4sIAAAAAAAAAOPK5eLkONbbd3kWjwAjFyfHtI1rvn_nFGDj4uQ4iRDd_njr1U08AjxcHBz7r0077SCgycXJsQsiz8zFyfFmwtMD-zgEOEBKEaLnEQYcgIoCAOvnwGFvAAAA&sig=ACiVB_yXhYNFZKmeIlYEsAEtJwrs1PfRtA&htmlParentId=fletch-render-1011891530690728712&responseCallback=fletchCallback1011891530690728712",
+       "first_shown": "2026-09-11 08:33:59 +00:00",
+       "last_shown": "2026-11-28 05:16:03 +00:00"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

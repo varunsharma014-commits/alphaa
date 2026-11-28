@@ -1,7 +1,8 @@
 // Tests for lib/ai-sources.ts against real API responses recorded 2026-11-28 (scripts/fixtures/
 // ai-citations/: Claude Haiku 5.5 + web_search, gpt-4o-mini Responses + web_search_preview,
-// gemini-3-flash-preview + googleSearch (thinkingLevel low), Perplexity sonar, Apify
-// google-search-scraper with an AI Overview). Encrypted fields stripped. No network, no DB.
+// gemini-3-flash-preview + googleSearch (thinkingLevel low), Perplexity sonar; the Google AI
+// Overview is DataForSEO's results page in scripts/fixtures/dataforseo/). Encrypted fields
+// stripped. No network, no DB.
 //   npx tsx scripts/test-ai-citations.ts
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
@@ -9,6 +10,7 @@ import {
   claudeSources, openaiSources, geminiSources, perplexitySources, inlineSources, classifySource, sourceSite,
   rankNames, validStance, parseAiOverview, shareOfVoice, rivalKeys, weekOf, cleanUrl, PLATFORM_NAME,
 } from "../src/lib/ai-sources"
+import { firstTask } from "../src/lib/dataforseo-parse"
 
 const dir = join(__dirname, "fixtures", "ai-citations")
 const fx = (name: string) => JSON.parse(readFileSync(join(dir, `${name}.json`), "utf8"))
@@ -105,10 +107,12 @@ console.log("Stance")
 
 console.log("AI Overview")
 {
-  const ao = parseAiOverview(fx("serp"))
+  const serp = firstTask(JSON.parse(readFileSync(join(__dirname, "fixtures", "dataforseo", "serp_live_advanced.json"), "utf8"))).result
+  const ao = parseAiOverview(serp)
   ok(ao.shown && ao.sources.length > 0, `AI Overview parsed (${ao.sources.length} sources)`)
   ok(!!ao.content && !/Highlight (start|end)/.test(ao.content), "highlight markers removed")
-  ok(!parseAiOverview({ organicResults: [] }).shown, "no aiOverview = not shown")
+  ok(ao.sources.every((x) => !/google\.com\/goto/.test(x.url)), "Google redirect links left out of the sources")
+  ok(!parseAiOverview({ items: [] }).shown, "no ai_overview item = not shown")
 }
 
 console.log("Share of voice")

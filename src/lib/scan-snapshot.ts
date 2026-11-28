@@ -1,7 +1,7 @@
 // The three short cards on /start after the AI answers: brand, content, competitors. Real data
 // only, cheap and quick: the brand-kit reader + the site's own words (HTTP), the scan's site
 // checks and AI answers (already paid for), and two small Haiku calls whose output is checked
-// against the source text. No Apify, no new paid services.
+// against the source text. No scraping services, no new paid services.
 //
 // The brand part starts while the AI check runs (the scan's final write replaces ogData, so it
 // waits in memory); the rest is built once the scan is done and saved as ogData.snapshot.

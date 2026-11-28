@@ -6,7 +6,7 @@ import { db } from "@/lib/db"
 import { isAdmin } from "@/lib/billing"
 import { ownerClerkId, realEmail } from "@/lib/sites"
 import { aiPrices, SEARCH_USD as SEARCH_USD_PRICE, usageCost } from "@/lib/ai-prices"
-import { limitsFor, periodStart, dayKey, QUOTA_KINDS, PERIODS, type QuotaKind, type Period } from "@/lib/quota-rules"
+import { countsAmount, limitsFor, periodStart, dayKey, QUOTA_KINDS, PERIODS, type QuotaKind, type Period } from "@/lib/quota-rules"
 import { aiDailyBudget, flush } from "@/lib/usage"
 import { isComped } from "@/lib/billing"
 import { replay, type LedgerEntry } from "@/lib/credit-rules"
@@ -124,7 +124,7 @@ export default async function UsagePage() {
       const add = (k: QuotaKind, v: number) => { if (v) q[p][k] = (q[p][k] ?? 0) + v }
       add("ai_cost_usd", cost)
       add("search", (m?.searches ?? 0) + (m?.counts?.search ?? 0))
-      for (const k of QUOTA_KINDS) if (k !== "ai_cost_usd" && k !== "search") add(k, m?.counts?.[k] ?? 0)
+      for (const k of QUOTA_KINDS) if (k !== "ai_cost_usd" && k !== "search") add(k, countsAmount(m?.counts, k))
     }
     quotaUse.set(u.userId, q)
   }
@@ -149,6 +149,7 @@ export default async function UsagePage() {
     return { id, u, plan, flags, aiDay: q.day.ai_cost_usd ?? 0, aiMonth: q.month.ai_cost_usd ?? 0, aiDayCap: ai.day ?? null, aiMonthCap: ai.month ?? null, comped: isComped(u?.email) }
   }).sort((x, y) => y.aiMonth - x.aiMonth)
   const budget = aiDailyBudget()
+  const KIND_LABEL: Partial<Record<QuotaKind, string>> = { ai_cost_usd: "AI spend", data_usd: "data spend (DataForSEO)", search: "searches" }
   const fmt = (k: QuotaKind, v: number) => (k.endsWith("_usd") ? `$${v.toFixed(2)}` : Math.round(v).toLocaleString("en-US"))
   const hot = (pct: number) => (pct >= 1 ? "#fde2e1" : pct >= 0.8 ? "#fff4d6" : undefined)
 
@@ -206,7 +207,7 @@ export default async function UsagePage() {
                 <td style={{ ...td, background: r.aiMonthCap ? hot(r.aiMonth / r.aiMonthCap) : undefined }}>${r.aiMonth.toFixed(2)}{r.aiMonthCap !== null ? ` / $${r.aiMonthCap}` : ""}</td>
                 <td style={td}>
                   {r.flags.length ? r.flags.slice(0, 5).map((f) => (
-                    <div key={`${f.kind}${f.period}`} style={{ background: hot(f.pct), padding: "1px 4px", borderRadius: 4 }}>{f.kind} · {fmt(f.kind, f.used)} of {fmt(f.kind, f.limit)} {f.period === "day" ? "today" : `this ${f.period}`}</div>
+                    <div key={`${f.kind}${f.period}`} style={{ background: hot(f.pct), padding: "1px 4px", borderRadius: 4 }}>{KIND_LABEL[f.kind] ?? f.kind} · {fmt(f.kind, f.used)} of {fmt(f.kind, f.limit)} {f.period === "day" ? "today" : `this ${f.period}`}</div>
                   )) : <span style={{ color: "#6e6e73" }}>All under 50%</span>}
                 </td>
               </tr>

@@ -2,11 +2,13 @@
 // each with why it works and a one-tap "Make my version". Rendered in its own thread (?ask=niche)
 // and as a short card at the end of the "What's working" thread. No database access here.
 import { agent, type Block, type Chip, type Message } from "@/lib/agent/types"
-import { PLATFORM_LABEL, metricLine, type NicheItem, type NichePosts } from "@/lib/niche-posts"
+import { PLATFORM_LABEL, metricLine, type InstagramState, type NicheItem, type NichePosts } from "@/lib/niche-posts"
 
 export type NicheView = {
-  /** APIFY_TOKEN is set. */
+  /** A source is configured (DataForSEO, the Ad Library token, or Instagram through Meta). */
   enabled: boolean
+  /** Instagram for this brand: on, waiting on Meta's approval, or not connected. */
+  instagram?: InstagramState
   /** The newest row (may be running or failed). */
   latest: NichePosts | null
   /** The last finished one, shown while a newer run is going. */
@@ -17,7 +19,15 @@ export type NicheView = {
 const check: Chip = { label: "Check again", action: { type: "agent-op", endpoint: "niche", body: { op: "status" } }, primary: true }
 const refresh: Chip = { label: "Look again with today’s posts", action: { type: "agent-op", endpoint: "niche", body: { op: "refresh" } } }
 
-const handle = (i: NicheItem) => (i.handle ? (i.platform === "facebook" || i.platform === "meta_ad" ? i.handle : `@${i.handle.replace(/^@/, "")}`) : null)
+const handle = (i: NicheItem) => (i.handle ? (i.platform === "facebook" || i.platform === "meta_ad" || i.platform === "youtube" ? i.handle : `@${i.handle.replace(/^@/, "")}`) : null)
+
+/** The honest Instagram line: what I need before I can show Instagram posts. */
+export function instagramNote(s: InstagramState | undefined): Block | null {
+  if (s === "connect") return { kind: "text", text: "I’ll show what’s working on Instagram once you connect it." }
+  if (s === "pending") return { kind: "text", text: "I’ll show what’s working on Instagram as soon as Meta approves Alphaa to read post stats. I’ve asked." }
+  return null
+}
+const connectChip: Chip = { label: "Connect Instagram", action: { type: "thread", topic: "social" } }
 
 function itemMessage(i: NicheItem, k: number): Message {
   const lines = [i.about, i.why ? `Why it works: ${i.why}` : "", i.angle ? `Your version: ${i.angle}` : ""].filter(Boolean)
@@ -25,7 +35,7 @@ function itemMessage(i: NicheItem, k: number): Message {
     { kind: "doc", title: `${PLATFORM_LABEL[i.platform]}${handle(i) ? ` · ${handle(i)}` : ""}`, meta: metricLine(i), text: lines.join("\n\n") },
     { kind: "chips", items: [
       { label: "Make my version", action: { type: "agent-op", endpoint: "niche", body: { op: "make", id: i.id } }, primary: k === 0 },
-      { label: i.platform === "meta_ad" ? "See the ad" : "See the post", action: { type: "link", href: i.url } },
+      { label: i.platform === "meta_ad" ? "See the ad" : i.platform === "youtube" ? "See the video" : "See the post", action: { type: "link", href: i.url } },
     ] },
   ], `ni-item-${i.id}`)
 }
@@ -44,13 +54,15 @@ export function nicheMessages(v: NicheView, opts: { compact?: boolean } = {}): M
     if (v.running || v.latest?.status === "running") {
       return [agent([
         { kind: "text", text: "I’m looking at what’s working in your niche. I need a bit longer.", big: true },
-        { kind: "text", text: "I’m reading the top posts on Instagram and TikTok for businesses like yours, and what your competitors posted lately. It takes a few minutes." },
+        { kind: "text", text: v.instagram === "on" ? "I’m reading the top posts on Instagram and YouTube for businesses like yours, and what your competitors posted lately. It takes a few minutes." : "I’m reading the top YouTube videos for businesses like yours. It takes a few minutes." },
+        ...(instagramNote(v.instagram) ? [instagramNote(v.instagram)!] : []),
         { kind: "chips", items: [check] },
       ], "ni-head")]
     }
     return [agent([
       { kind: "text", text: v.latest?.status === "failed" ? "I couldn’t read the posts in your niche just now." : "I haven’t looked at your niche yet.", big: true },
-      { kind: "chips", items: [{ ...refresh, primary: true }] },
+      ...(instagramNote(v.instagram) ? [instagramNote(v.instagram)!] : []),
+      { kind: "chips", items: [{ ...refresh, primary: true }, ...(v.instagram === "connect" ? [connectChip] : [])] },
     ], "ni-head")]
   }
   const when = new Date(show.at).toLocaleDateString("en-US", { month: "long", day: "numeric" })
@@ -58,7 +70,8 @@ export function nicheMessages(v: NicheView, opts: { compact?: boolean } = {}): M
     return [agent([
       { kind: "text", text: "I didn’t find posts in your niche that stood out this week.", big: true },
       { kind: "text", text: `I looked at ${show.terms.slice(0, 4).join(", ") || "posts for businesses like yours"}. I’ll look again next week.` },
-      ...(compact ? [] : [{ kind: "chips", items: [refresh] } as Block]),
+      ...(instagramNote(v.instagram) ? [instagramNote(v.instagram)!] : []),
+      ...(compact ? [] : [{ kind: "chips", items: [refresh, ...(v.instagram === "connect" ? [connectChip] : [])] } as Block]),
     ], "ni-head")]
   }
   const items = compact ? show.items.slice(0, 3) : show.items
@@ -66,6 +79,7 @@ export function nicheMessages(v: NicheView, opts: { compact?: boolean } = {}): M
     { kind: "text", text: "What’s working in your niche this week", big: true },
     { kind: "text", text: `${show.items.length === 1 ? "This one is" : `These ${show.items.length} are`} getting real attention from businesses like yours. Tap “Make my version” and I’ll write yours, in your voice, with your brand image.` },
     { kind: "text", text: `From ${list(show.sources) || "public posts"}${show.terms.length ? `, searching ${show.terms.slice(0, 4).join(", ")}` : ""}. Updated ${when}.${v.running ? " I’m checking for newer ones now." : ""}` },
+    ...(instagramNote(v.instagram) ? [instagramNote(v.instagram)!] : []),
   ], "ni-head")]
   items.forEach((i, k) => out.push(itemMessage(i, k)))
   out.push(agent([
@@ -79,7 +93,7 @@ export function nicheMessages(v: NicheView, opts: { compact?: boolean } = {}): M
 export function madeMessage(r: { text: string; image: string | null; saved: boolean; growth: boolean; from: NicheItem }): Message {
   const blocks: Block[] = [
     { kind: "text", text: r.saved ? "Here’s your version. It’s saved as a draft in your social posts." : "Here’s your version. Copy it and post it from your own account." },
-    { kind: "doc", title: "Your post", meta: `Inspired by a ${PLATFORM_LABEL[r.from.platform]} ${r.from.platform === "meta_ad" ? "ad" : "post"} in your niche`, text: r.text, ...(r.image ? { image: r.image, square: true } : {}) },
+    { kind: "doc", title: "Your post", meta: `Inspired by a ${PLATFORM_LABEL[r.from.platform]} ${r.from.platform === "meta_ad" ? "ad" : r.from.platform === "youtube" ? "video" : "post"} in your niche`, text: r.text, ...(r.image ? { image: r.image, square: true } : {}) },
   ]
   const chips: Chip[] = [{ label: "Copy the caption", action: { type: "copy", text: r.text, done: "Copied." }, primary: !r.saved }]
   if (r.saved) chips.unshift({ label: "See my social posts", action: { type: "thread", topic: "social" }, primary: true })

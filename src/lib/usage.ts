@@ -13,7 +13,7 @@
 // per-brand daily AI ceiling and the platform budget (AI_DAILY_BUDGET_USD) can stop the next call.
 import { AsyncLocalStorage } from "async_hooks"
 import { usageCost, estimateCallCost, type Tok as PriceTok } from "@/lib/ai-prices"
-import { limitsFor, periodStart, dayKey, QuotaError, quotaMessage, type QuotaKind, type Period } from "@/lib/quota-rules"
+import { countsAmount, limitsFor, periodStart, dayKey, QuotaError, quotaMessage, type QuotaKind, type Period } from "@/lib/quota-rules"
 import { aiHeadroom, CREDITS_PER_AI_DOLLAR } from "@/lib/credit-rules"
 
 // userId = the brand's User row id (exact). clerkId = set by auth() for any signed-in request,
@@ -95,13 +95,16 @@ export function tallyUsage(userId: string, what: string, n = 1): void {
   d.counts[what] = (d.counts[what] ?? 0) + n
   schedule()
 }
+/** tallyUsage for the brand of this async flow, or the house row when there is none (public scans). */
+export function tallyHere(what: string, n = 1): void {
+  tallyUsage(ctxKey(), what, n)
+}
 
 const dayCost = (d: Pick<Day, "tokens" | "searches">) => usageCost(d.tokens as Record<string, PriceTok>, d.searches ?? 0)
 /** One kind's amount in one day's row. */
 function amountIn(d: Pick<Day, "tokens" | "searches" | "counts">, kind: QuotaKind | string): number {
   if (kind === "ai_cost_usd") return dayCost(d)
-  if (kind === "search") return (d.searches ?? 0) + (d.counts?.search ?? 0) // Claude web searches + Apify SERP pages
-  return d.counts?.[kind] ?? 0
+  return countsAmount(d.counts, kind, d.searches ?? 0) // search = Claude web searches + Google results pages
 }
 /** The in-memory (not yet written) entries for a brand, dated `since` or later. */
 function memEntries(userId: string, since: string): Day[] {

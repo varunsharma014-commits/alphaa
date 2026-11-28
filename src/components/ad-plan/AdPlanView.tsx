@@ -221,11 +221,13 @@ export function AdPlanView({ s, images, rules }: Props) {
         <details className="apv-fold"><summary>Music you can use</summary><ul>{rules.music.map((r) => <li key={r}>{r}</li>)}</ul></details>
         <details className="apv-fold"><summary>Using AI safely</summary><ul>{rules.ai.map((r) => <li key={r}>{r}</li>)}</ul></details>
         <details className="apv-fold"><summary>Rules every ad follows</summary><ul>{[...rules.legal, ...(s.guardrails?.vertical ?? [])].map((r) => <li key={r}>{r}</li>)}</ul></details>
-        {(s.competitors?.ads.length ?? 0) > 0 && (
+        {((s.competitors?.ads.length ?? 0) > 0 || s.competitors?.note) && (
           <details className="apv-fold"><summary>What your competitors run</summary>
             <ul>
+              {(s.competitors?.ads.length ?? 0) > 0 && s.competitors!.ads[0].platform === "google" && <li>{s.competitors!.ads.length} Google search ads running now, from Google’s Ads Transparency Center.</li>}
               {s.competitors!.cliches.map((c) => <li key={c}>They all: {c}</li>)}
               {s.competitors!.gaps.map((g) => <li key={g}>Nobody: {g}</li>)}
+              {s.competitors?.note && <li>{s.competitors.note}</li>}
             </ul>
           </details>
         )}

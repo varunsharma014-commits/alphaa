@@ -1,0 +1,747 @@
+{
+ "ca": {
+  "status_code": 20000,
+  "cost": 0,
+  "tasks": [
+   {
+    "status_code": 20000,
+    "cost": 0,
+    "result": [
+     {
+      "location_code": 2124,
+      "location_name": "Canada",
+      "location_code_parent": null,
+      "country_iso_code": "CA",
+      "location_type": "Country"
+     },
+     {
+      "location_code": 20116,
+      "location_name": "New Brunswick,Canada",
+      "location_code_parent": 2124,
+      "country_iso_code": "CA",
+      "location_type": "Province"
+     },
+     {
+      "location_code": 20118,
+      "location_name": "Nova Scotia,Canada",
+      "location_code_parent": 2124,
+      "country_iso_code": "CA",
+      "location_type": "Province"
+     },
+     {
+      "location_code": 20121,
+      "location_name": "Ontario,Canada",
+      "location_code_parent": 2124,
+      "country_iso_code": "CA",
+      "location_type": "Province"
+     },
+     {
+      "location_code": 20123,
+      "location_name": "Quebec,Canada",
+      "location_code_parent": 2124,
+      "country_iso_code": "CA",
+      "location_type": "Province"
+     },
+     {
+      "location_code": 1001982,
+      "location_name": "Austin,Manitoba,Canada",
+      "location_code_parent": 20115,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1002077,
+      "location_name": "Saint John,New Brunswick,Canada",
+      "location_code_parent": 20116,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1002099,
+      "location_name": "St. John's,Newfoundland and Labrador,Canada",
+      "location_code_parent": 20117,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1002301,
+      "location_name": "Kanata,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "Neighborhood"
+     },
+     {
+      "location_code": 1002310,
+      "location_name": "Kingston,Kingston,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1002325,
+      "location_name": "London,London,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1002376,
+      "location_name": "Ottawa,Ottawa,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1002451,
+      "location_name": "Toronto,Toronto,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1002604,
+      "location_name": "Montreal,Montreal,Quebec,Canada",
+      "location_code_parent": 20123,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9104862,
+      "location_name": "Austin,Quebec,Canada",
+      "location_code_parent": 20123,
+      "country_iso_code": "CA",
+      "location_type": "Municipality"
+     },
+     {
+      "location_code": 9196770,
+      "location_name": "Montreal,Quebec,Canada",
+      "location_code_parent": 20123,
+      "country_iso_code": "CA",
+      "location_type": "Municipality"
+     },
+     {
+      "location_code": 9197763,
+      "location_name": "Saint John,New Brunswick,Canada",
+      "location_code_parent": 20116,
+      "country_iso_code": "CA",
+      "location_type": "County"
+     },
+     {
+      "location_code": 9198640,
+      "location_name": "Kingston,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "Municipality"
+     },
+     {
+      "location_code": 9198644,
+      "location_name": "Ottawa,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "Municipality"
+     },
+     {
+      "location_code": 9209784,
+      "location_name": "Toronto,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "District"
+     },
+     {
+      "location_code": 9222030,
+      "location_name": "Austin,Austin,Quebec,Canada",
+      "location_code_parent": 20123,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9243614,
+      "location_name": "Kingston,Nova Scotia,Canada",
+      "location_code_parent": 20118,
+      "country_iso_code": "CA",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9246483,
+      "location_name": "Springfield,Manitoba,Canada",
+      "location_code_parent": 20115,
+      "country_iso_code": "CA",
+      "location_type": "Municipality"
+     },
+     {
+      "location_code": 9253812,
+      "location_name": "Toronto,Toronto,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "Municipality"
+     },
+     {
+      "location_code": 9262615,
+      "location_name": "London,Ontario,Canada",
+      "location_code_parent": 20121,
+      "country_iso_code": "CA",
+      "location_type": "Municipality"
+     }
+    ]
+   }
+  ]
+ },
+ "us": {
+  "status_code": 20000,
+  "cost": 0,
+  "tasks": [
+   {
+    "status_code": 20000,
+    "cost": 0,
+    "result": [
+     {
+      "location_code": 2840,
+      "location_name": "United States",
+      "location_code_parent": null,
+      "country_iso_code": "US",
+      "location_type": "Country"
+     },
+     {
+      "location_code": 21147,
+      "location_name": "Illinois,United States",
+      "location_code_parent": 2840,
+      "country_iso_code": "US",
+      "location_type": "State"
+     },
+     {
+      "location_code": 21152,
+      "location_name": "Massachusetts,United States",
+      "location_code_parent": 2840,
+      "country_iso_code": "US",
+      "location_type": "State"
+     },
+     {
+      "location_code": 21154,
+      "location_name": "Maine,United States",
+      "location_code_parent": 2840,
+      "country_iso_code": "US",
+      "location_type": "State"
+     },
+     {
+      "location_code": 21157,
+      "location_name": "Missouri,United States",
+      "location_code_parent": 2840,
+      "country_iso_code": "US",
+      "location_type": "State"
+     },
+     {
+      "location_code": 21170,
+      "location_name": "Oregon,United States",
+      "location_code_parent": 2840,
+      "country_iso_code": "US",
+      "location_type": "State"
+     },
+     {
+      "location_code": 21176,
+      "location_name": "Texas,United States",
+      "location_code_parent": 2840,
+      "country_iso_code": "US",
+      "location_type": "State"
+     },
+     {
+      "location_code": 200619,
+      "location_name": "Springfield, MO,United States",
+      "location_code_parent": 2840,
+      "country_iso_code": "US",
+      "location_type": "DMA Region"
+     },
+     {
+      "location_code": 200635,
+      "location_name": "Austin, TX,Texas,United States",
+      "location_code_parent": 21176,
+      "country_iso_code": "US",
+      "location_type": "DMA Region"
+     },
+     {
+      "location_code": 200820,
+      "location_name": "Portland, OR,United States",
+      "location_code_parent": 2840,
+      "country_iso_code": "US",
+      "location_type": "DMA Region"
+     },
+     {
+      "location_code": 1013271,
+      "location_name": "London,Arkansas,United States",
+      "location_code_parent": 21135,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1014438,
+      "location_name": "Austin,Colorado,United States",
+      "location_code_parent": 21138,
+      "country_iso_code": "US",
+      "location_type": "Neighborhood"
+     },
+     {
+      "location_code": 1014632,
+      "location_name": "Springfield,Colorado,United States",
+      "location_code_parent": 21138,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1014810,
+      "location_name": "Portland,Portland,Connecticut,United States",
+      "location_code_parent": 21139,
+      "country_iso_code": "US",
+      "location_type": "Neighborhood"
+     },
+     {
+      "location_code": 1015402,
+      "location_name": "Kingston,Georgia,United States",
+      "location_code_parent": 21143,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1015512,
+      "location_name": "Springfield,Georgia,United States",
+      "location_code_parent": 21143,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1016596,
+      "location_name": "Kingston,Illinois,United States",
+      "location_code_parent": 21147,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1016750,
+      "location_name": "Ottawa,Illinois,United States",
+      "location_code_parent": 21147,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1016864,
+      "location_name": "Springfield,Illinois,United States",
+      "location_code_parent": 21147,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1016989,
+      "location_name": "Austin,Indiana,United States",
+      "location_code_parent": 21148,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1017274,
+      "location_name": "Portland,Indiana,United States",
+      "location_code_parent": 21148,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1017318,
+      "location_name": "Saint John,Indiana,United States",
+      "location_code_parent": 21148,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1017594,
+      "location_name": "Ottawa,Kansas,United States",
+      "location_code_parent": 21149,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1017639,
+      "location_name": "Saint John,Kansas,United States",
+      "location_code_parent": 21149,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1017821,
+      "location_name": "London,Kentucky,United States",
+      "location_code_parent": 21150,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1017891,
+      "location_name": "Springfield,Kentucky,United States",
+      "location_code_parent": 21150,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1018421,
+      "location_name": "Springfield,Massachusetts,United States",
+      "location_code_parent": 21152,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1019006,
+      "location_name": "Portland,Maine,United States",
+      "location_code_parent": 21154,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1019050,
+      "location_name": "Springfield,Maine,United States",
+      "location_code_parent": 21154,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1019394,
+      "location_name": "Kingston,Michigan,United States",
+      "location_code_parent": 21155,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1019541,
+      "location_name": "Portland,Michigan,United States",
+      "location_code_parent": 21155,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1019697,
+      "location_name": "Austin,Minnesota,United States",
+      "location_code_parent": 21156,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1020082,
+      "location_name": "Springfield,Minnesota,United States",
+      "location_code_parent": 21156,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1020421,
+      "location_name": "Kingston,Missouri,United States",
+      "location_code_parent": 21157,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1020610,
+      "location_name": "Springfield,Missouri,United States",
+      "location_code_parent": 21157,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1021549,
+      "location_name": "Saint John,North Dakota,United States",
+      "location_code_parent": 21161,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1021757,
+      "location_name": "Springfield,Nebraska,United States",
+      "location_code_parent": 21162,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1021889,
+      "location_name": "Kingston,New Hampshire,United States",
+      "location_code_parent": 21163,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1022203,
+      "location_name": "Kingston,New Jersey,United States",
+      "location_code_parent": 21164,
+      "country_iso_code": "US",
+      "location_type": "Neighborhood"
+     },
+     {
+      "location_code": 1022423,
+      "location_name": "Springfield,Union County,New Jersey,United States",
+      "location_code_parent": 21164,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1023062,
+      "location_name": "Kingston,New York,United States",
+      "location_code_parent": 21167,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1023282,
+      "location_name": "Portland,New York,United States",
+      "location_code_parent": 21167,
+      "country_iso_code": "US",
+      "location_type": "Municipality"
+     },
+     {
+      "location_code": 1023797,
+      "location_name": "London,Ohio,United States",
+      "location_code_parent": 21168,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1023919,
+      "location_name": "Ottawa,Putnam County,Ohio,United States",
+      "location_code_parent": 21168,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1024005,
+      "location_name": "Springfield,Clark County,Ohio,United States",
+      "location_code_parent": 21168,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1024036,
+      "location_name": "Toronto,Ohio,United States",
+      "location_code_parent": 21168,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1024246,
+      "location_name": "Kingston,Oklahoma,United States",
+      "location_code_parent": 21169,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1024543,
+      "location_name": "Portland,Oregon,United States",
+      "location_code_parent": 21170,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1024569,
+      "location_name": "Springfield,Oregon,United States",
+      "location_code_parent": 21170,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1024986,
+      "location_name": "Kingston,Pennsylvania,United States",
+      "location_code_parent": 21171,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1025460,
+      "location_name": "Kingston,Rhode Island,United States",
+      "location_code_parent": 21172,
+      "country_iso_code": "US",
+      "location_type": "Neighborhood"
+     },
+     {
+      "location_code": 1025660,
+      "location_name": "Springfield,South Carolina,United States",
+      "location_code_parent": 21173,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1025862,
+      "location_name": "Springfield,South Dakota,United States",
+      "location_code_parent": 21174,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1025872,
+      "location_name": "Toronto,South Dakota,United States",
+      "location_code_parent": 21174,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1026035,
+      "location_name": "Kingston,Tennessee,United States",
+      "location_code_parent": 21175,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1026110,
+      "location_name": "Portland,Tennessee,United States",
+      "location_code_parent": 21175,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1026137,
+      "location_name": "Springfield,Tennessee,United States",
+      "location_code_parent": 21175,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1026201,
+      "location_name": "Austin,Texas,United States",
+      "location_code_parent": 21176,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1026705,
+      "location_name": "Portland,Texas,United States",
+      "location_code_parent": 21176,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1027289,
+      "location_name": "Springfield,Virginia,United States",
+      "location_code_parent": 21178,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1027626,
+      "location_name": "Kingston,Washington,United States",
+      "location_code_parent": 21180,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 1027763,
+      "location_name": "Saint John,Washington,United States",
+      "location_code_parent": 21180,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9052240,
+      "location_name": "Kingston,Kingston,Massachusetts,United States",
+      "location_code_parent": 21152,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9052709,
+      "location_name": "Portland,Connecticut,United States",
+      "location_code_parent": 21139,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9052906,
+      "location_name": "Springfield,Vermont,United States",
+      "location_code_parent": 21179,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9052916,
+      "location_name": "Saint John,Missouri,United States",
+      "location_code_parent": 21157,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9189711,
+      "location_name": "Springfield,Duval County,Florida,United States",
+      "location_code_parent": 21142,
+      "country_iso_code": "US",
+      "location_type": "Neighborhood"
+     },
+     {
+      "location_code": 9190125,
+      "location_name": "Springfield,Burlington County,New Jersey,United States",
+      "location_code_parent": 21164,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9192382,
+      "location_name": "Springfield,Michigan,United States",
+      "location_code_parent": 21155,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9193106,
+      "location_name": "Ottawa,Lucas County,Ohio,United States",
+      "location_code_parent": 21168,
+      "country_iso_code": "US",
+      "location_type": "Neighborhood"
+     },
+     {
+      "location_code": 9194911,
+      "location_name": "Springfield,Bay County,Florida,United States",
+      "location_code_parent": 21142,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9197441,
+      "location_name": "Springfield,Springfield,Vermont,United States",
+      "location_code_parent": 21179,
+      "country_iso_code": "US",
+      "location_type": "Neighborhood"
+     },
+     {
+      "location_code": 9198093,
+      "location_name": "Austin,Illinois,United States",
+      "location_code_parent": 21147,
+      "country_iso_code": "US",
+      "location_type": "Neighborhood"
+     },
+     {
+      "location_code": 9215550,
+      "location_name": "Austin,Arkansas,United States",
+      "location_code_parent": 21135,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9216987,
+      "location_name": "Springfield,Louisiana,United States",
+      "location_code_parent": 21151,
+      "country_iso_code": "US",
+      "location_type": "City"
+     },
+     {
+      "location_code": 9231299,
+      "location_name": "Springfield,Wisconsin,United States",
+      "location_code_parent": 21182,
+      "country_iso_code": "US",
+      "location_type": "Municipality"
+     },
+     {
+      "location_code": 9237349,
+      "location_name": "Springfield,New York,United States",
+      "location_code_parent": 21167,
+      "country_iso_code": "US",
+      "location_type": "Municipality"
+     },
+     {
+      "location_code": 9241915,
+      "location_name": "Kingston,New York,United States",
+      "location_code_parent": 21167,
+      "country_iso_code": "US",
+      "location_type": "Municipality"
+     }
+    ]
+   }
+  ]
+ }
+}

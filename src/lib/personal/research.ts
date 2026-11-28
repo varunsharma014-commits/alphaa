@@ -272,59 +272,22 @@ export function socialLinks(html: string): Record<string, string> {
   return out
 }
 
-// ── social posts via Apify's official actors (optional) ──────────────────────
-// apify/instagram-post-scraper: { username: [..], resultsLimit, skipPinnedPosts, onlyPostsNewerThan }
-//   → items { url, caption, timestamp, likesCount }
-// apify/facebook-posts-scraper: { startUrls: [{ url }], resultsLimit, onlyPostsNewerThan }
-//   → items { url, text, time, likes }
-// Input/output fields verified against apify.com/apify/*/input-schema on 2026-10-27.
+// ── social posts: the owner's own Instagram, through Meta's API ──────────────
+// Only for accounts (a lead has no connected Instagram), only when the connected account's token
+// allows it (instagram_basic; lib/social/meta-insights.ts). These are the owner's own posts, so
+// their own caption can be quoted back to them. No other source: nothing is scraped.
 
-async function runApify(actor: string, input: object): Promise<unknown[]> {
-  const token = process.env.APIFY_TOKEN
-  if (!token) return []
-  // A brand's run counts against its Apify quota (lib/quotas.ts apify_usd); leads (no brand) pass.
-  const { quotaHere } = await import("@/lib/quotas")
-  if (!(await quotaHere("apify_usd", 0.02)).allowed) return []
-  try {
-    const res = await fetch(`https://api.apify.com/v2/acts/${actor}/run-sync-get-dataset-items?token=${encodeURIComponent(token)}&maxItems=3`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(input),
-      signal: AbortSignal.timeout(90_000),
-    })
-    if (!res.ok) return []
-    const items = await res.json()
-    return Array.isArray(items) ? items.slice(0, 3) : []
-  } catch {
-    return []
-  }
-}
-
-export async function fetchSocialPosts(links: Record<string, string>): Promise<SocialPost[]> {
-  if (!process.env.APIFY_TOKEN) return []
-  const ig = links.instagram?.match(/instagram\.com\/([A-Za-z0-9_.]+)/i)?.[1]
-  if (ig) {
-    const items = await runApify("apify~instagram-post-scraper", { username: [ig], resultsLimit: 3, skipPinnedPosts: true, onlyPostsNewerThan: "3 months" })
-    const posts = items.filter(isRecord).map((p): SocialPost => ({
-      platform: "instagram",
-      url: typeof p.url === "string" ? p.url : null,
-      date: typeof p.timestamp === "string" ? p.timestamp.slice(0, 10) : null,
-      text: typeof p.caption === "string" ? clean(p.caption).slice(0, 220) : "",
-      likes: typeof p.likesCount === "number" && p.likesCount >= 0 ? p.likesCount : null,
-    })).filter((p) => p.text)
-    if (posts.length) return posts
-  }
-  if (links.facebook) {
-    const items = await runApify("apify~facebook-posts-scraper", { startUrls: [{ url: links.facebook }], resultsLimit: 3, onlyPostsNewerThan: "3 months" })
-    return items.filter(isRecord).map((p): SocialPost => ({
-      platform: "facebook",
-      url: typeof p.url === "string" ? p.url : null,
-      date: typeof p.time === "string" ? p.time.slice(0, 10) : null,
-      text: typeof p.text === "string" ? clean(p.text).slice(0, 220) : "",
-      likes: typeof p.likes === "number" ? p.likes : null,
-    })).filter((p) => p.text)
-  }
-  return []
+export async function fetchSocialPosts(userId: string): Promise<SocialPost[]> {
+  const { igAccess, ownMedia } = await import("@/lib/social/meta-insights")
+  const st = await igAccess(userId)
+  const items = await ownMedia(st, 3)
+  return items.map((p): SocialPost => ({
+    platform: "instagram",
+    url: p.url,
+    date: p.postedAt ? p.postedAt.slice(0, 10) : null,
+    text: p.caption ? clean(p.caption).slice(0, 220) : "",
+    likes: p.likes,
+  })).filter((p) => p.text)
 }
 
 // ── fresh answer: ask one AI the same customer question today ────────────────
@@ -630,7 +593,7 @@ async function research(d: Dossier, website: string | null, prev: FreshResearch 
 
   let social = prev?.social ?? null
   if (!social || now - Date.parse(social.fetchedAt) > SOCIAL_TTL_DAYS * DAY) {
-    const posts = process.env.APIFY_TOKEN && (ownActivity.social.instagram || ownActivity.social.facebook) ? await fetchSocialPosts(ownActivity.social).catch(() => []) : []
+    const posts = d.kind === "account" ? await fetchSocialPosts(d.id).catch(() => []) : []
     social = { fetchedAt: new Date().toISOString(), posts }
   }
 

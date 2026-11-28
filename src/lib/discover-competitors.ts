@@ -3,7 +3,7 @@
 // store them as Competitor records tagged source: "auto_discovered".
 
 import { db } from "@/lib/db"
-import { googleSearch } from "@/lib/apify-search"
+import { dataforseoConfigured, googleSearch, type Mode } from "@/lib/dataforseo"
 import { analyzeCompetitor } from "@/lib/competitor-analyzer"
 import { analyzeContentGaps } from "@/lib/content-gaps"
 import { claudeFor } from "@/lib/claude"
@@ -31,6 +31,7 @@ export type DiscoverUser = {
   businessName: string | null
   businessType: string | null
   city: string | null
+  state?: string | null
   websiteUrl: string | null
   voiceDescription?: string | null
 }
@@ -92,12 +93,14 @@ function isDirectory(host: string): boolean {
 }
 
 // Returns the number of new competitors discovered + stored.
-export async function discoverCompetitors(user: DiscoverUser, max = 5): Promise<number> {
-  if (!process.env.APIFY_TOKEN) return 0
+// `mode`: "live" when the owner is waiting (the "Find competitors now" button), else standard
+// (onboarding, the weekly cron, a dismissal's background re-search): cheaper, a minute or two.
+export async function discoverCompetitors(user: DiscoverUser, max = 5, opts: { mode?: Mode } = {}): Promise<number> {
+  if (!dataforseoConfigured()) return 0
   if (!user.businessType) return 0
 
   const query = await buildCompetitorQuery(user)
-  const results = await googleSearch(query, { results: 10 })
+  const results = await googleSearch(query, { results: 10, city: user.city, state: user.state, websiteUrl: user.websiteUrl, mode: opts.mode ?? "standard", timeoutMs: opts.mode === "live" ? 60_000 : 6 * 60_000 })
   if (results.length === 0) return 0
 
   const ownHost = user.websiteUrl ? hostOf(user.websiteUrl) : null
@@ -157,8 +160,9 @@ export async function discoverCompetitors(user: DiscoverUser, max = 5): Promise<
 // or fails the discovery result.
 export async function runAutoDiscovery(
   user: DiscoverUser,
+  opts: { mode?: Mode } = {},
 ): Promise<{ discovered: number; gapsGenerated: number }> {
-  const discovered = await discoverCompetitors(user)
+  const discovered = await discoverCompetitors(user, 5, opts)
 
   if (discovered > 0) {
     // Pull the names of the competitors just stored so the activity feed can

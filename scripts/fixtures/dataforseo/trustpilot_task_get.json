@@ -1,0 +1,59 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.0363 sec.",
+ "cost": 0,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280706-3309-0358-0000-6efe752af0b1",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.0284 sec.",
+   "cost": 0,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "business_data",
+    "trustpilot",
+    "reviews",
+    "task_get",
+    "11280706-3309-0358-0000-6efe752af0b1"
+   ],
+   "data": {
+    "api": "business_data",
+    "function": "reviews",
+    "se": "trustpilot",
+    "domain": "www.thepearlsource.com",
+    "depth": 20,
+    "sort_by": "recency",
+    "language_name": "English",
+    "language_code": "en",
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "domain": "www.thepearlsource.com",
+     "type": "trustpilot_reviews",
+     "se_domain": "trustpilot.com",
+     "check_url": "https://www.trustpilot.com/review/www.thepearlsource.com?sort=recency&languages=all",
+     "datetime": "2026-11-28 07:07:06 +00:00",
+     "title": "The Pearl Source",
+     "location": "US",
+     "reviews_count": 17972,
+     "rating": {
+      "rating_type": "Max5",
+      "value": 4.8,
+      "votes_count": null,
+      "rating_max": 5
+     },
+     "items_count": 0,
+     "items": []
+    }
+   ]
+  }
+ ]
+}

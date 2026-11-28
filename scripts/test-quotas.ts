@@ -205,10 +205,10 @@ async function main() {
   await test("dollar kinds: fractional amounts", async () => {
     const store = memStore(() => new Date())
     const lim = createLimiter(store)
-    const s = { userId: "a", plan: "starter" } // apify $0.5/day, $1/month
-    assert.equal((await lim.check(s, "apify_usd", { n: 0.25 })).allowed, true)
-    assert.equal((await lim.check(s, "apify_usd", { n: 0.25 })).allowed, true)
-    assert.equal((await lim.check(s, "apify_usd", { n: 0.05 })).allowed, false)
+    const s = { userId: "a", plan: "starter" } // data $0.5/day, $1/month
+    assert.equal((await lim.check(s, "data_usd", { n: 0.25 })).allowed, true)
+    assert.equal((await lim.check(s, "data_usd", { n: 0.25 })).allowed, true)
+    assert.equal((await lim.check(s, "data_usd", { n: 0.05 })).allowed, false)
   })
 
   await test("public counter: per-IP and global caps, reset daily", () => {

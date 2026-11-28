@@ -26,9 +26,9 @@ Qualification bar for ALL lists: has a website + has a Google Business Profile +
 
 | Source | Recipe | Yield / cost *(est.)* |
 |---|---|---|
-| **Apify — Google Maps scraper** | Query `"{vertical} in {city}"` across top-200 US metros. Fields: name, site, phone, rating, review count, category. Then Apify contact-details scraper on each site for emails. | ~500–1,000 qualified/wk per vertical; ~$30–60/10K places |
+| **DataForSEO — Google Maps results** | `serp/google/maps` in standard mode, query `"{vertical} in {city}"` across top-200 US metros. Fields: name, site, phone, rating, review count, category. Then read each site's contact page for emails (free). | ~500–1,000 qualified/wk per vertical; priced per results page (check dataforseo.com/pricing) |
 | **State license directories** | Dental boards (state license lookups), state bar member directories, state contractor-license lookups (HVAC/plumbing). Cross-match name → GMB → website → email. Check each directory's ToS before scraping; some bars prohibit solicitation use — skip those states. | Slower, cleaner; good for lawyers |
-| **Yelp** | Apify Yelp scraper by category + metro; useful as a second signal (review velocity) and to fill metros where GMB scrape is thin. | Supplement |
+| **Yelp** | Look up by category + metro by hand; useful as a second signal (review velocity) and to fill metros where the Maps results are thin. | Supplement |
 | **Email finding** | Site scrape first (free) → Hunter.io / Anymail Finder for the owner's name-based email. Prefer `dr.{last}@`, `{first}@` over `info@` — but `info@` is acceptable for owner-operator SMBs where the owner reads it. | ~$50–100/mo |
 | **Verification** | Debounce every batch. Only `valid`. | ~$10/5K |
 

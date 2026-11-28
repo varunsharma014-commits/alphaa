@@ -5,7 +5,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { runAutoDiscovery } from "@/lib/discover-competitors"
-import { isSearchConfigured } from "@/lib/apify-search"
+import { isSearchConfigured } from "@/lib/dataforseo"
 
 // Manual trigger for competitor auto-discovery + content-gap generation.
 // Powers the "Find competitors now" button on Competitor Intel.
@@ -47,14 +47,16 @@ export async function POST(): Promise<NextResponse> {
     await db.competitor.deleteMany({ where: { id: { in: autoIds } } })
   }
 
+  // The owner is waiting on this button: live Google results.
   const result = await runAutoDiscovery({
     id: user.id,
     businessName: user.businessName,
     businessType: user.businessType,
     city: user.city,
+    state: user.state,
     websiteUrl: user.websiteUrl,
     voiceDescription: user.voiceDescription,
-  })
+  }, { mode: "live" })
 
   return NextResponse.json({ success: true, ...result })
 }

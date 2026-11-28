@@ -31,7 +31,7 @@ export type TiredCard = { campaign: string; label: string; headline: string; why
 export type AdCard = { id: string; platform: string; name: string; status: string; pc: "g" | "n" | "b" | "a"; head: string; text: string; daily: string | null; image: string | null; art: string }
 export type ChangeRow = { text: string; by: string; when: string; platform: string; undo?: Record<string, string> | null }
 export type FirstAd = { platform: "Facebook & Instagram" | "Google search" | "LinkedIn"; headline: string; primary: string; image: string | null; audience: string; inPlanOnly?: boolean }
-export type WatchedAd = { page: string; text: string; days: number | null; url: string; format: string }
+export type WatchedAd = { page: string; text: string; days: number | null; url: string; format: string; /** Google Ads Transparency Center (newer plans) or Meta Ad Library (older plans). */ where: "google" | "meta" }
 
 export type AdsData = {
   metaConnected: boolean
@@ -182,7 +182,7 @@ export async function getAdsData(user: User): Promise<AdsData> {
   const key = (x: string) => x.toLowerCase().replace(/[^a-z0-9]/g, "")
   const names = comps.flatMap((c) => [key(c.name ?? ""), key((c.url.replace(/^https?:\/\//, "").replace(/^www\./, "").split(".")[0]) ?? "")]).filter((k) => k.length >= 3)
   const watching: WatchedAd[] = (plan?.competitors?.ads ?? []).filter((a) => { const k = key(a.page); return names.some((nm) => k === nm || k.includes(nm) || nm.includes(k)) })
-    .slice(0, 6).map((a) => ({ page: a.page, text: (a.title || a.text).slice(0, 220), days: a.daysRunning, url: a.url, format: a.format }))
+    .slice(0, 6).map((a) => ({ page: a.page, text: (a.title || a.text).slice(0, 220), days: a.daysRunning, url: a.url, format: a.format, where: a.platform === "google" ? "google" as const : "meta" as const }))
   const firstSpend = [...mCamps.map((c) => c.enabledAt), gacc?.campaign?.enabledAt].filter((x): x is string => !!x).sort()[0]
   const sevenDays = !!firstSpend && Date.now() - Date.parse(firstSpend) >= 7 * 86_400_000
 

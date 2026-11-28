@@ -1,0 +1,42 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.0313 sec.",
+ "cost": 0,
+ "tasks_count": 1,
+ "tasks_error": 1,
+ "tasks": [
+  {
+   "id": "11280727-3309-0066-0000-be5c3157b970",
+   "status_code": 40602,
+   "status_message": "Task In Queue.",
+   "time": "0.0014 sec.",
+   "cost": 0,
+   "result_count": 0,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "organic",
+    "task_get",
+    "advanced",
+    "11280727-3309-0066-0000-be5c3157b970"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "task_get",
+    "se": "google",
+    "se_type": "organic",
+    "keyword": "how much does a teeth whitening cost in ottawa",
+    "location_code": 9198644,
+    "language_code": "en",
+    "depth": 10,
+    "load_async_ai_overview": true,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": null
+  }
+ ]
+}

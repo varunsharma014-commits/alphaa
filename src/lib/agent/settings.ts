@@ -58,6 +58,10 @@ export type AgentSettings = {
   competitorRelevance?: Record<string, { ok: boolean; why?: string; at: string }>
   /** Does a niche post fit the business (lib/niche-fit.ts), per NicheItem id. */
   nicheFit?: Record<string, { ok: boolean; at: string }>
+  /** Instagram hashtags looked up per IG account (Meta allows 30 unique a week; lib/social/meta-insights.ts). */
+  igHashtags?: Record<string, import("@/lib/social/meta-insights").HashtagLog>
+  /** Trustpilot / Tripadvisor rating tasks still running at DataForSEO, collected on the next check (lib/checks/ratings.ts). */
+  ratingTasks?: Partial<Record<"trustpilot" | "tripadvisor", { id: string; key: string; at: string }>>
   /** Hook lines written for social ideas, per idea title (lib/workspace/research.ts). */
   ideaHooks?: Record<string, { hook: string; at: string }>
   /** Hosts the owner marked "Not a competitor". */

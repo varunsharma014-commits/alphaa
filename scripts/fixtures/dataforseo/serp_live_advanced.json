@@ -1,0 +1,798 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "5.7727 sec.",
+ "cost": 0.002,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280706-3309-0139-0000-7c134ffdb2bb",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "5.5794 sec.",
+   "cost": 0.002,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "organic",
+    "live",
+    "advanced"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "live",
+    "se": "google",
+    "se_type": "organic",
+    "keyword": "how often should you get a dental cleaning",
+    "location_name": "Ottawa,Ontario,Canada",
+    "language_code": "en",
+    "depth": 10,
+    "load_async_ai_overview": true,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "how often should you get a dental cleaning",
+     "type": "organic",
+     "se_domain": "google.com",
+     "location_code": 9198644,
+     "language_code": "en",
+     "check_url": "https://www.google.com/search?q=how%20often%20should%20you%20get%20a%20dental%20cleaning&hl=en&gl=CA&ie=UTF-8&uule=w+CAIQIFISCSEnm65H-81MEWD3FAhqKdFN",
+     "datetime": "2026-11-28 07:06:32 +00:00",
+     "spell": null,
+     "refinement_chips": null,
+     "item_types": [
+      "ai_overview",
+      "organic",
+      "people_also_ask"
+     ],
+     "se_results_count": 60,
+     "pages_count": 1,
+     "items_count": 11,
+     "items": [
+      {
+       "type": "ai_overview",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "page": 1,
+       "position": "left",
+       "asynchronous_ai_overview": false,
+       "markdown": "Most people should get their teeth professionally cleaned  [Highlight start] **every six months** (twice a year) [Highlight end].[[1]](https://google.com/goto?url=CAEShAEBxCJF12K5o881TFIkeXt3CSaWxPM_70my5kTtZjCVSN-xQyZfSykuHuQ6ZqtEONIwq7zAXDKDvlNAIBHOaQ6GJ_1fyC20GQ_pEYrKk_dHMCIlcUhZ4-kXTUG46Zln6nx_pNabhcw29qlo5NkXTxzkWQy3Uinf4LZ6c1pmJsPE5a_eL40)[[2]](https://google.com/goto?url=CAESgQEBxCJF12YAPwlSMUhUIpqsb7z40bp_L3jzliH6ctpV_II84SdU06GreeEXZDd6_v1TxYbw5tbuCr5IbbyiWPUPOlknDM4EiZaa7Thv9rEQG6lNJPUpSOT2rT5XJm5iHYB0vySEydFOgrt8WTj7yT6I6-t57a9-XCufeoQNNeKVRZ4)\n\nThe Canadian Dental Association and most dentists use a six-month schedule as a general starting point to remove plaque and hardened tartar that home brushing and flossing miss. However, your ideal schedule depends on your individual oral health:[[1]](https://google.com/goto?url=CAESgQEBxCJF12YAPwlSMUhUIpqsb7z40bp_L3jzliH6ctpV_II84SdU06GreeEXZDd6_v1TxYbw5tbuCr5IbbyiWPUPOlknDM4EiZaa7Thv9rEQG6lNJPUpSOT2rT5XJm5iHYB0vySEydFOgrt8WTj7yT6I6-t57a9-XCufeoQNNeKVRZ4)[[2]](https://google.com/goto?url=CAEShAEBxCJF12K5o881TFIkeXt3CSaWxPM_70my5kTtZjCVSN-xQyZfSykuHuQ6ZqtEONIwq7zAXDKDvlNAIBHOaQ6GJ_1fyC20GQ_pEYrKk_dHMCIlcUhZ4-kXTUG46Zln6nx_pNabhcw29qlo5NkXTxzkWQy3Uinf4LZ6c1pmJsPE5a_eL40)[[3]](https://google.com/goto?url=CAEShgEBxCJF12c_p7QwS_gh3wFiHC3IH0p1YSmpAQatLcUxbemZ5zmUxq4c1Q-MAwtCtGKYLK6KzvKQdENKFBwLIn0-c3McF83YVwrc-nVtD6NVVz0MagzjtMn1z8VT91ECcabU_vXU2Y-bmIUAgnC11I4dlWp5g6j-OKNbyqBN2Uxa9Zl2FR9Pzg)[[4]](https://google.com/goto?url=CAESfAHEIkXXI-yoiLVhGJerGvGCLBkxA54Io-Fy2DWjLAqDM3eS5rDDcktUQ3m8lNZ_TVoDSajGk4AtetkuHPDZcgxN2vDwo5ydazhSL0Fqmtx039xCv-yhmzeV2L5jGzQBgT4iZWWoP7LRd-AskqfdghvWkD71xoCDmtl3dO8)\n\n- **Every 3 to 4 months:** Often recommended if you have gum disease, deep gum pockets, rapid tartar buildup, diabetes, a weakened immune system, or smoke.[[1]](https://google.com/goto?url=CAESkQEBxCJF198Qf5e9_Upz2IRRh_nDoDsaV6VcjEZ7s0fVvsXe6FzT9r3fAa4MeO75QNHvqEdCtvUMWL8LSMqtwbnUP2eDQ1dYwFTONyKttjcQjqO13jPnKyrxTS8WWqKrlCgZCYm4BnANL_EtIOjVv0AsVM4-Av81C22FmwxE7wnU9TRL7wTWqcvqX34IA131jSzv)[[2]](https://google.com/goto?url=CAESgQEBxCJF163La2wbPbyQ-40t9nPEE9UMIGNi37lgehHMb5wSGX2xCLXUL0mZLR9VsM53Vh9X_5heQuZn_zrg6SaxTOFrkpZXySs77mUIyU6rITX4_tjua6X2XK_yPqaMQodKIL7VvAdqTEqohy4Q4uY1MIplhYW4QZShWTZVFR6A1v8)[[3]](https://google.com/goto?url=CAESfAHEIkXXI-yoiLVhGJerGvGCLBkxA54Io-Fy2DWjLAqDM3eS5rDDcktUQ3m8lNZ_TVoDSajGk4AtetkuHPDZcgxN2vDwo5ydazhSL0Fqmtx039xCv-yhmzeV2L5jGzQBgT4iZWWoP7LRd-AskqfdghvWkD71xoCDmtl3dO8)[[4]](https://google.com/goto?url=CAESegHEIkXXXB2HE7zt5KmVyxNWcQWQXzF73HE9M5cgVamKyb0l5Po7E4DuM9BAdDLgv-F1EosObIXF2LF3_rdkBTjo-UU3kLMEgJ4PdHbnzqaIZdiW1wBEwCNFT6j9baOdLPuoGO687s05VQwGZw6KFDohto3Gmw_ri52J)\n- **Every 6 months:** Typical for people with healthy gums, minimal buildup, and steady daily brushing and flossing habits.[[1]](https://google.com/goto?url=CAEShgEBxCJF12c_p7QwS_gh3wFiHC3IH0p1YSmpAQatLcUxbemZ5zmUxq4c1Q-MAwtCtGKYLK6KzvKQdENKFBwLIn0-c3McF83YVwrc-nVtD6NVVz0MagzjtMn1z8VT91ECcabU_vXU2Y-bmIUAgnC11I4dlWp5g6j-OKNbyqBN2Uxa9Zl2FR9Pzg)[[2]](https://google.com/goto?url=CAESfAHEIkXXI-yoiLVhGJerGvGCLBkxA54Io-Fy2DWjLAqDM3eS5rDDcktUQ3m8lNZ_TVoDSajGk4AtetkuHPDZcgxN2vDwo5ydazhSL0Fqmtx039xCv-yhmzeV2L5jGzQBgT4iZWWoP7LRd-AskqfdghvWkD71xoCDmtl3dO8)[[3]](https://google.com/goto?url=CAESegHEIkXXXB2HE7zt5KmVyxNWcQWQXzF73HE9M5cgVamKyb0l5Po7E4DuM9BAdDLgv-F1EosObIXF2LF3_rdkBTjo-UU3kLMEgJ4PdHbnzqaIZdiW1wBEwCNFT6j9baOdLPuoGO687s05VQwGZw6KFDohto3Gmw_ri52J)\n- **Once a year (or adjusted interval):** Sometimes suggested for low-risk individuals with consistently healthy teeth and gums, depending on a dentist's evaluation.[[1]](https://google.com/goto?url=CAESegHEIkXXXB2HE7zt5KmVyxNWcQWQXzF73HE9M5cgVamKyb0l5Po7E4DuM9BAdDLgv-F1EosObIXF2LF3_rdkBTjo-UU3kLMEgJ4PdHbnzqaIZdiW1wBEwCNFT6j9baOdLPuoGO687s05VQwGZw6KFDohto3Gmw_ri52J)[[2]](https://google.com/goto?url=CAESbAHEIkXXFH7oA5Rc1fLsuo5k7B0BaP87koyBPs_rzPgfejNbn7LAsAk2JGwSARSgMySz1wEAjVO8_StF4QAioZOwCGzVu-qFK0LgpsbrhHx2qGqLx10viEhwtn_BVKBnK55bG3SaKGlu1DtRKQ)\n\nOn [Reddit's r/DentalHygiene](https://google.com/goto?url=CAESkQEBxCJF198Qf5e9_Upz2IRRh_nDoDsaV6VcjEZ7s0fVvsXe6FzT9r3fAa4MeO75QNHvqEdCtvUMWL8LSMqtwbnUP2eDQ1dYwFTONyKttjcQjqO13jPnKyrxTS8WWqKrlCgZCYm4BnANL_EtIOjVv0AsVM4-Av81C22FmwxE7wnU9TRL7wTWqcvqX34IA131jSzv) , opinions are mixed on strict schedules, with contributors noting that more frequent visits like every three months are typically tied to managing gum disease, deep pockets, or heavy buildup rather than routine upkeep alone. For additional background on risks and routine care, see [Healthline](https://google.com/goto?url=CAESnwEBxCJF130B3ossqggXqDDOrfPAG5rockVmPhqvqT8R7J_kMJg7TYCLJRL0soLpWDcggEYnaw0S95-OfMKUZ4naH7zSE0Ii_KarhptutM3XaLZNEuKHuAnBS11pUFoWaE3BZPwpoUYdcZELQ19007kcuI67hoc_vbNhJ9FiFOJewTd9VuGDftis8G2iIv-FkTEuPVKYIlNBE0KNyPmPzyw).[[1]](https://google.com/goto?url=CAESkQEBxCJF198Qf5e9_Upz2IRRh_nDoDsaV6VcjEZ7s0fVvsXe6FzT9r3fAa4MeO75QNHvqEdCtvUMWL8LSMqtwbnUP2eDQ1dYwFTONyKttjcQjqO13jPnKyrxTS8WWqKrlCgZCYm4BnANL_EtIOjVv0AsVM4-Av81C22FmwxE7wnU9TRL7wTWqcvqX34IA131jSzv)[[2]](https://google.com/goto?url=CAESnwEBxCJF130B3ossqggXqDDOrfPAG5rockVmPhqvqT8R7J_kMJg7TYCLJRL0soLpWDcggEYnaw0S95-OfMKUZ4naH7zSE0Ii_KarhptutM3XaLZNEuKHuAnBS11pUFoWaE3BZPwpoUYdcZELQ19007kcuI67hoc_vbNhJ9FiFOJewTd9VuGDftis8G2iIv-FkTEuPVKYIlNBE0KNyPmPzyw)A dentist or dental hygienist can evaluate your gums and buildup to set a schedule that fits you.[[1]](https://google.com/goto?url=CAESgQEBxCJF12YAPwlSMUhUIpqsb7z40bp_L3jzliH6ctpV_II84SdU06GreeEXZDd6_v1TxYbw5tbuCr5IbbyiWPUPOlknDM4EiZaa7Thv9rEQG6lNJPUpSOT2rT5XJm5iHYB0vySEydFOgrt8WTj7yT6I6-t57a9-XCufeoQNNeKVRZ4)[[2]](https://google.com/goto?url=CAESegHEIkXXXB2HE7zt5KmVyxNWcQWQXzF73HE9M5cgVamKyb0l5Po7E4DuM9BAdDLgv-F1EosObIXF2LF3_rdkBTjo-UU3kLMEgJ4PdHbnzqaIZdiW1wBEwCNFT6j9baOdLPuoGO687s05VQwGZw6KFDohto3Gmw_ri52J)If you'd like to narrow down what might fit you best, share any relevant details such as:\n\n- **Gum health or symptoms** (like bleeding, swelling, or sensitivity)\n- **Dental history** (such as past gum disease, cavities, or dental work)\n- **Medical or lifestyle factors** (like diabetes, dry mouth, or smoking)",
+       "items": [
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "Most people should get their teeth professionally cleaned  [Highlight start] every six months (twice a year) [Highlight end] .",
+         "markdown": "Most people should get their teeth professionally cleaned  [Highlight start] **every six months** (twice a year) [Highlight end].[[1]](https://google.com/goto?url=CAEShAEBxCJF12K5o881TFIkeXt3CSaWxPM_70my5kTtZjCVSN-xQyZfSykuHuQ6ZqtEONIwq7zAXDKDvlNAIBHOaQ6GJ_1fyC20GQ_pEYrKk_dHMCIlcUhZ4-kXTUG46Zln6nx_pNabhcw29qlo5NkXTxzkWQy3Uinf4LZ6c1pmJsPE5a_eL40)[[2]](https://google.com/goto?url=CAESgQEBxCJF12YAPwlSMUhUIpqsb7z40bp_L3jzliH6ctpV_II84SdU06GreeEXZDd6_v1TxYbw5tbuCr5IbbyiWPUPOlknDM4EiZaa7Thv9rEQG6lNJPUpSOT2rT5XJm5iHYB0vySEydFOgrt8WTj7yT6I6-t57a9-XCufeoQNNeKVRZ4)",
+         "links": null,
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Markham Dental",
+           "domain": "markhamdentalhw.com",
+           "url": "https://markhamdentalhw.com/how-often-should-you-have-your-teeth-cleaned/",
+           "title": "How Often Should You Have Your Teeth Cleaned?",
+           "text": "# How Often Should You Have Your Teeth Cleaned? Book Appointment Regular dental cleanings preserve oral health and prevent issues ..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "pinnacledental.ca",
+           "domain": "pinnacledental.ca",
+           "url": "https://pinnacledental.ca/how-often-should-you-get-your-teeth-cleaned/",
+           "title": "How Often Should You Get Your Teeth Cleaned? | Calgary",
+           "text": "# How Often Should You Get Your Teeth Cleaned? * Maintaining a healthy smile requires more than just brushing and flossing. Regula..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "The Canadian Dental Association and most dentists use a six-month schedule as a general starting point to remove plaque and hardened tartar that home brushing and flossing miss. However, your ideal schedule depends on your individual oral health:",
+         "markdown": "The Canadian Dental Association and most dentists use a six-month schedule as a general starting point to remove plaque and hardened tartar that home brushing and flossing miss. However, your ideal schedule depends on your individual oral health:[[1]](https://google.com/goto?url=CAESgQEBxCJF12YAPwlSMUhUIpqsb7z40bp_L3jzliH6ctpV_II84SdU06GreeEXZDd6_v1TxYbw5tbuCr5IbbyiWPUPOlknDM4EiZaa7Thv9rEQG6lNJPUpSOT2rT5XJm5iHYB0vySEydFOgrt8WTj7yT6I6-t57a9-XCufeoQNNeKVRZ4)[[2]](https://google.com/goto?url=CAEShAEBxCJF12K5o881TFIkeXt3CSaWxPM_70my5kTtZjCVSN-xQyZfSykuHuQ6ZqtEONIwq7zAXDKDvlNAIBHOaQ6GJ_1fyC20GQ_pEYrKk_dHMCIlcUhZ4-kXTUG46Zln6nx_pNabhcw29qlo5NkXTxzkWQy3Uinf4LZ6c1pmJsPE5a_eL40)[[3]](https://google.com/goto?url=CAEShgEBxCJF12c_p7QwS_gh3wFiHC3IH0p1YSmpAQatLcUxbemZ5zmUxq4c1Q-MAwtCtGKYLK6KzvKQdENKFBwLIn0-c3McF83YVwrc-nVtD6NVVz0MagzjtMn1z8VT91ECcabU_vXU2Y-bmIUAgnC11I4dlWp5g6j-OKNbyqBN2Uxa9Zl2FR9Pzg)[[4]](https://google.com/goto?url=CAESfAHEIkXXI-yoiLVhGJerGvGCLBkxA54Io-Fy2DWjLAqDM3eS5rDDcktUQ3m8lNZ_TVoDSajGk4AtetkuHPDZcgxN2vDwo5ydazhSL0Fqmtx039xCv-yhmzeV2L5jGzQBgT4iZWWoP7LRd-AskqfdghvWkD71xoCDmtl3dO8)",
+         "links": null,
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "pinnacledental.ca",
+           "domain": "pinnacledental.ca",
+           "url": "https://pinnacledental.ca/how-often-should-you-get-your-teeth-cleaned/",
+           "title": "How Often Should You Get Your Teeth Cleaned? | Calgary",
+           "text": "# How Often Should You Get Your Teeth Cleaned? * Maintaining a healthy smile requires more than just brushing and flossing. Regular dental cleanings play a crucial..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Markham Dental",
+           "domain": "markhamdentalhw.com",
+           "url": "https://markhamdentalhw.com/how-often-should-you-have-your-teeth-cleaned/",
+           "title": "How Often Should You Have Your Teeth Cleaned?",
+           "text": "# How Often Should You Have Your Teeth Cleaned? Book Appointment Regular dental cleanings preserve oral health and prevent issues ..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Acacia Dental",
+           "domain": "acaciadentalcentre.com",
+           "url": "https://acaciadentalcentre.com/how-often-should-you-get-your-teeth-cleaned/",
+           "title": "How Often Should You Get Your Teeth Cleaned?",
+           "text": "# Written by Dr. Nicholas Moen Most people are familiar with the “twice a year” rule for dental cleanings, but the truth is that n..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "stillwaterdentistryga.com",
+           "domain": "google.com",
+           "url": "https://google.com/goto?url=CAESfAHEIkXXI-yoiLVhGJerGvGCLBkxA54Io-Fy2DWjLAqDM3eS5rDDcktUQ3m8lNZ_TVoDSajGk4AtetkuHPDZcgxN2vDwo5ydazhSL0Fqmtx039xCv-yhmzeV2L5jGzQBgT4iZWWoP7LRd-AskqfdghvWkD71xoCDmtl3dO8",
+           "title": "How Often Should You Really Get a Dental Cleaning? | Dental Blog | Stillwater Dentistry",
+           "text": "# How Often Should You Really Get a Dental Cleaning? February 20, 2026 9:00 am Most people have heard the same advice for years: g..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "Every 3 to 4 months: Often recommended if you have gum disease, deep gum pockets, rapid tartar buildup, diabetes, a weakened immune system, or smoke. Every 6 months: Typical for people with healthy gums, minimal buildup, and steady daily brushing and flossing habits. Once a year (or adjusted interval): Sometimes suggested for low-risk individuals with consistently healthy teeth and gums, depending on a dentist's evaluation.",
+         "markdown": "- **Every 3 to 4 months:** Often recommended if you have gum disease, deep gum pockets, rapid tartar buildup, diabetes, a weakened immune system, or smoke.[[1]](https://google.com/goto?url=CAESkQEBxCJF198Qf5e9_Upz2IRRh_nDoDsaV6VcjEZ7s0fVvsXe6FzT9r3fAa4MeO75QNHvqEdCtvUMWL8LSMqtwbnUP2eDQ1dYwFTONyKttjcQjqO13jPnKyrxTS8WWqKrlCgZCYm4BnANL_EtIOjVv0AsVM4-Av81C22FmwxE7wnU9TRL7wTWqcvqX34IA131jSzv)[[2]](https://google.com/goto?url=CAESgQEBxCJF163La2wbPbyQ-40t9nPEE9UMIGNi37lgehHMb5wSGX2xCLXUL0mZLR9VsM53Vh9X_5heQuZn_zrg6SaxTOFrkpZXySs77mUIyU6rITX4_tjua6X2XK_yPqaMQodKIL7VvAdqTEqohy4Q4uY1MIplhYW4QZShWTZVFR6A1v8)[[3]](https://google.com/goto?url=CAESfAHEIkXXI-yoiLVhGJerGvGCLBkxA54Io-Fy2DWjLAqDM3eS5rDDcktUQ3m8lNZ_TVoDSajGk4AtetkuHPDZcgxN2vDwo5ydazhSL0Fqmtx039xCv-yhmzeV2L5jGzQBgT4iZWWoP7LRd-AskqfdghvWkD71xoCDmtl3dO8)[[4]](https://google.com/goto?url=CAESegHEIkXXXB2HE7zt5KmVyxNWcQWQXzF73HE9M5cgVamKyb0l5Po7E4DuM9BAdDLgv-F1EosObIXF2LF3_rdkBTjo-UU3kLMEgJ4PdHbnzqaIZdiW1wBEwCNFT6j9baOdLPuoGO687s05VQwGZw6KFDohto3Gmw_ri52J)\n- **Every 6 months:** Typical for people with healthy gums, minimal buildup, and steady daily brushing and flossing habits.[[1]](https://google.com/goto?url=CAEShgEBxCJF12c_p7QwS_gh3wFiHC3IH0p1YSmpAQatLcUxbemZ5zmUxq4c1Q-MAwtCtGKYLK6KzvKQdENKFBwLIn0-c3McF83YVwrc-nVtD6NVVz0MagzjtMn1z8VT91ECcabU_vXU2Y-bmIUAgnC11I4dlWp5g6j-OKNbyqBN2Uxa9Zl2FR9Pzg)[[2]](https://google.com/goto?url=CAESfAHEIkXXI-yoiLVhGJerGvGCLBkxA54Io-Fy2DWjLAqDM3eS5rDDcktUQ3m8lNZ_TVoDSajGk4AtetkuHPDZcgxN2vDwo5ydazhSL0Fqmtx039xCv-yhmzeV2L5jGzQBgT4iZWWoP7LRd-AskqfdghvWkD71xoCDmtl3dO8)[[3]](https://google.com/goto?url=CAESegHEIkXXXB2HE7zt5KmVyxNWcQWQXzF73HE9M5cgVamKyb0l5Po7E4DuM9BAdDLgv-F1EosObIXF2LF3_rdkBTjo-UU3kLMEgJ4PdHbnzqaIZdiW1wBEwCNFT6j9baOdLPuoGO687s05VQwGZw6KFDohto3Gmw_ri52J)\n- **Once a year (or adjusted interval):** Sometimes suggested for low-risk individuals with consistently healthy teeth and gums, depending on a dentist's evaluation.[[1]](https://google.com/goto?url=CAESegHEIkXXXB2HE7zt5KmVyxNWcQWQXzF73HE9M5cgVamKyb0l5Po7E4DuM9BAdDLgv-F1EosObIXF2LF3_rdkBTjo-UU3kLMEgJ4PdHbnzqaIZdiW1wBEwCNFT6j9baOdLPuoGO687s05VQwGZw6KFDohto3Gmw_ri52J)[[2]](https://google.com/goto?url=CAESbAHEIkXXFH7oA5Rc1fLsuo5k7B0BaP87koyBPs_rzPgfejNbn7LAsAk2JGwSARSgMySz1wEAjVO8_StF4QAioZOwCGzVu-qFK0LgpsbrhHx2qGqLx10viEhwtn_BVKBnK55bG3SaKGlu1DtRKQ)",
+         "links": null,
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Reddit",
+           "domain": "www.reddit.com",
+           "url": "https://www.reddit.com/r/DentalHygiene/comments/10pc55n/how_often_for_dental_cleaning/",
+           "title": "How often for dental cleaning : r/DentalHygiene - Reddit",
+           "text": "Cleaning Frequency Rationale: Dental professionals typically recommend more frequent cleanings (e.g., every 3 months) due to speci..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Cleveland Clinic",
+           "domain": "google.com",
+           "url": "https://google.com/goto?url=CAESgQEBxCJF163La2wbPbyQ-40t9nPEE9UMIGNi37lgehHMb5wSGX2xCLXUL0mZLR9VsM53Vh9X_5heQuZn_zrg6SaxTOFrkpZXySs77mUIyU6rITX4_tjua6X2XK_yPqaMQodKIL7VvAdqTEqohy4Q4uY1MIplhYW4QZShWTZVFR6A1v8",
+           "title": "What Happens During a Dental Cleaning?",
+           "text": "# Dental Cleaning Medically Reviewed. Last updated on 01/05/2026. Dental cleanings keep your teeth and gums healthy by removing ba..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "stillwaterdentistryga.com",
+           "domain": "google.com",
+           "url": "https://google.com/goto?url=CAESfAHEIkXXI-yoiLVhGJerGvGCLBkxA54Io-Fy2DWjLAqDM3eS5rDDcktUQ3m8lNZ_TVoDSajGk4AtetkuHPDZcgxN2vDwo5ydazhSL0Fqmtx039xCv-yhmzeV2L5jGzQBgT4iZWWoP7LRd-AskqfdghvWkD71xoCDmtl3dO8",
+           "title": "How Often Should You Really Get a Dental Cleaning? | Dental Blog | Stillwater Dentistry",
+           "text": "# How Often Should You Really Get a Dental Cleaning? February 20, 2026 9:00 am Most people have heard the same advice for years: g..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Galt Dental Care",
+           "domain": "galtdentalcare.ca",
+           "url": "https://galtdentalcare.ca/how-often-dental-cleaning-in-ontario/",
+           "title": "How Often Should You Get a Dental Cleaning in Ontario?",
+           "text": "# How Often Should You Get a Dental Cleaning in Ontario? January 1, 2026 By upmysite.tech Dental Care &Tips If you're wondering ho..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Acacia Dental",
+           "domain": "acaciadentalcentre.com",
+           "url": "https://acaciadentalcentre.com/how-often-should-you-get-your-teeth-cleaned/",
+           "title": "How Often Should You Get Your Teeth Cleaned?",
+           "text": "# Written by Dr. Nicholas Moen Most people are familiar with the “twice a year” rule for dental cleanings, but the truth is that n..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "YouTube",
+           "domain": "google.com",
+           "url": "https://google.com/goto?url=CAESbAHEIkXXFH7oA5Rc1fLsuo5k7B0BaP87koyBPs_rzPgfejNbn7LAsAk2JGwSARSgMySz1wEAjVO8_StF4QAioZOwCGzVu-qFK0LgpsbrhHx2qGqLx10viEhwtn_BVKBnK55bG3SaKGlu1DtRKQ",
+           "title": "How Often Do You Need a Dental Cleaning?",
+           "text": "The number of fillings a person has increases their risk for needing more dental treatments and X-rays because fillings are more s..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "On Reddit's r/DentalHygiene, opinions are mixed on strict schedules, with contributors noting that more frequent visits like every three months are typically tied to managing gum disease, deep pockets, or heavy buildup rather than routine upkeep alone. For additional background on risks and routine care, see Healthline.",
+         "markdown": "On [Reddit's r/DentalHygiene](https://google.com/goto?url=CAESkQEBxCJF198Qf5e9_Upz2IRRh_nDoDsaV6VcjEZ7s0fVvsXe6FzT9r3fAa4MeO75QNHvqEdCtvUMWL8LSMqtwbnUP2eDQ1dYwFTONyKttjcQjqO13jPnKyrxTS8WWqKrlCgZCYm4BnANL_EtIOjVv0AsVM4-Av81C22FmwxE7wnU9TRL7wTWqcvqX34IA131jSzv) , opinions are mixed on strict schedules, with contributors noting that more frequent visits like every three months are typically tied to managing gum disease, deep pockets, or heavy buildup rather than routine upkeep alone. For additional background on risks and routine care, see [Healthline](https://google.com/goto?url=CAESnwEBxCJF130B3ossqggXqDDOrfPAG5rockVmPhqvqT8R7J_kMJg7TYCLJRL0soLpWDcggEYnaw0S95-OfMKUZ4naH7zSE0Ii_KarhptutM3XaLZNEuKHuAnBS11pUFoWaE3BZPwpoUYdcZELQ19007kcuI67hoc_vbNhJ9FiFOJewTd9VuGDftis8G2iIv-FkTEuPVKYIlNBE0KNyPmPzyw).[[1]](https://google.com/goto?url=CAESkQEBxCJF198Qf5e9_Upz2IRRh_nDoDsaV6VcjEZ7s0fVvsXe6FzT9r3fAa4MeO75QNHvqEdCtvUMWL8LSMqtwbnUP2eDQ1dYwFTONyKttjcQjqO13jPnKyrxTS8WWqKrlCgZCYm4BnANL_EtIOjVv0AsVM4-Av81C22FmwxE7wnU9TRL7wTWqcvqX34IA131jSzv)[[2]](https://google.com/goto?url=CAESnwEBxCJF130B3ossqggXqDDOrfPAG5rockVmPhqvqT8R7J_kMJg7TYCLJRL0soLpWDcggEYnaw0S95-OfMKUZ4naH7zSE0Ii_KarhptutM3XaLZNEuKHuAnBS11pUFoWaE3BZPwpoUYdcZELQ19007kcuI67hoc_vbNhJ9FiFOJewTd9VuGDftis8G2iIv-FkTEuPVKYIlNBE0KNyPmPzyw)",
+         "links": [
+          {
+           "type": "link_element",
+           "title": "Reddit's r/DentalHygiene",
+           "description": null,
+           "url": "https://google.com/goto?url=CAESkQEBxCJF198Qf5e9_Upz2IRRh_nDoDsaV6VcjEZ7s0fVvsXe6FzT9r3fAa4MeO75QNHvqEdCtvUMWL8LSMqtwbnUP2eDQ1dYwFTONyKttjcQjqO13jPnKyrxTS8WWqKrlCgZCYm4BnANL_EtIOjVv0AsVM4-Av81C22FmwxE7wnU9TRL7wTWqcvqX34IA131jSzv",
+           "domain": "google.com"
+          },
+          {
+           "type": "link_element",
+           "title": "Healthline",
+           "description": null,
+           "url": "https://google.com/goto?url=CAESnwEBxCJF130B3ossqggXqDDOrfPAG5rockVmPhqvqT8R7J_kMJg7TYCLJRL0soLpWDcggEYnaw0S95-OfMKUZ4naH7zSE0Ii_KarhptutM3XaLZNEuKHuAnBS11pUFoWaE3BZPwpoUYdcZELQ19007kcuI67hoc_vbNhJ9FiFOJewTd9VuGDftis8G2iIv-FkTEuPVKYIlNBE0KNyPmPzyw",
+           "domain": "google.com"
+          }
+         ],
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Reddit",
+           "domain": "www.reddit.com",
+           "url": "https://www.reddit.com/r/DentalHygiene/comments/10pc55n/how_often_for_dental_cleaning/",
+           "title": "How often for dental cleaning : r/DentalHygiene - Reddit",
+           "text": "Cleaning Frequency Rationale: Dental professionals typically recommend more frequent cleanings (e.g., every 3 months) due to specific oral health concerns such as ..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Healthline",
+           "domain": "google.com",
+           "url": "https://google.com/goto?url=CAESnwEBxCJF130B3ossqggXqDDOrfPAG5rockVmPhqvqT8R7J_kMJg7TYCLJRL0soLpWDcggEYnaw0S95-OfMKUZ4naH7zSE0Ii_KarhptutM3XaLZNEuKHuAnBS11pUFoWaE3BZPwpoUYdcZELQ19007kcuI67hoc_vbNhJ9FiFOJewTd9VuGDftis8G2iIv-FkTEuPVKYIlNBE0KNyPmPzyw",
+           "title": "How Often Should You Get Your Teeth Cleaned? What to Know",
+           "text": "Professional teeth cleaning: prevents tooth decay and gum disease; frequency best determined with dentist based on risk factors (d..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "A dentist or dental hygienist can evaluate your gums and buildup to set a schedule that fits you.",
+         "markdown": "A dentist or dental hygienist can evaluate your gums and buildup to set a schedule that fits you.[[1]](https://google.com/goto?url=CAESgQEBxCJF12YAPwlSMUhUIpqsb7z40bp_L3jzliH6ctpV_II84SdU06GreeEXZDd6_v1TxYbw5tbuCr5IbbyiWPUPOlknDM4EiZaa7Thv9rEQG6lNJPUpSOT2rT5XJm5iHYB0vySEydFOgrt8WTj7yT6I6-t57a9-XCufeoQNNeKVRZ4)[[2]](https://google.com/goto?url=CAESegHEIkXXXB2HE7zt5KmVyxNWcQWQXzF73HE9M5cgVamKyb0l5Po7E4DuM9BAdDLgv-F1EosObIXF2LF3_rdkBTjo-UU3kLMEgJ4PdHbnzqaIZdiW1wBEwCNFT6j9baOdLPuoGO687s05VQwGZw6KFDohto3Gmw_ri52J)",
+         "links": null,
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "pinnacledental.ca",
+           "domain": "pinnacledental.ca",
+           "url": "https://pinnacledental.ca/how-often-should-you-get-your-teeth-cleaned/",
+           "title": "How Often Should You Get Your Teeth Cleaned? | Calgary",
+           "text": "# How Often Should You Get Your Teeth Cleaned? * Maintaining a healthy smile requires more than just brushing and flossing. Regular dental cleanings play a crucial..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Galt Dental Care",
+           "domain": "galtdentalcare.ca",
+           "url": "https://galtdentalcare.ca/how-often-dental-cleaning-in-ontario/",
+           "title": "How Often Should You Get a Dental Cleaning in Ontario?",
+           "text": "# How Often Should You Get a Dental Cleaning in Ontario? January 1, 2026 By upmysite.tech Dental Care &Tips If you're wondering ho..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "If you'd like to narrow down what might fit you best, share any relevant details such as:Gum health or symptoms (like bleeding, swelling, or sensitivity)\nDental history (such as past gum disease, cavities, or dental work)\nMedical or lifestyle factors (like diabetes, dry mouth, or smoking)",
+         "markdown": "If you'd like to narrow down what might fit you best, share any relevant details such as:\n\n- **Gum health or symptoms** (like bleeding, swelling, or sensitivity)\n- **Dental history** (such as past gum disease, cavities, or dental work)\n- **Medical or lifestyle factors** (like diabetes, dry mouth, or smoking)",
+         "links": null,
+         "images": null,
+         "references": null
+        }
+       ],
+       "references": [
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Healthline",
+         "domain": "google.com",
+         "url": "https://google.com/goto?url=CAESnwEBxCJF130B3ossqggXqDDOrfPAG5rockVmPhqvqT8R7J_kMJg7TYCLJRL0soLpWDcggEYnaw0S95-OfMKUZ4naH7zSE0Ii_KarhptutM3XaLZNEuKHuAnBS11pUFoWaE3BZPwpoUYdcZELQ19007kcuI67hoc_vbNhJ9FiFOJewTd9VuGDftis8G2iIv-FkTEuPVKYIlNBE0KNyPmPzyw",
+         "title": "How Often Should You Get Your Teeth Cleaned? What to Know",
+         "text": "Professional teeth cleaning: prevents tooth decay and gum disease; frequency best determined with dentist based on risk factors (diabetes, tobacco smoking, family ..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Reddit",
+         "domain": "www.reddit.com",
+         "url": "https://www.reddit.com/r/DentalHygiene/comments/10pc55n/how_often_for_dental_cleaning/",
+         "title": "How often for dental cleaning : r/DentalHygiene - Reddit",
+         "text": "Cleaning Frequency Rationale: Dental professionals typically recommend more frequent cleanings (e.g., every 3 months) due to specific oral health concerns such as ..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "pinnacledental.ca",
+         "domain": "pinnacledental.ca",
+         "url": "https://pinnacledental.ca/how-often-should-you-get-your-teeth-cleaned/",
+         "title": "How Often Should You Get Your Teeth Cleaned? | Calgary",
+         "text": "# How Often Should You Get Your Teeth Cleaned? * Maintaining a healthy smile requires more than just brushing and flossing. Regular dental cleanings play a crucial..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Markham Dental",
+         "domain": "markhamdentalhw.com",
+         "url": "https://markhamdentalhw.com/how-often-should-you-have-your-teeth-cleaned/",
+         "title": "How Often Should You Have Your Teeth Cleaned?",
+         "text": "# How Often Should You Have Your Teeth Cleaned? Book Appointment Regular dental cleanings preserve oral health and prevent issues ..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Acacia Dental",
+         "domain": "acaciadentalcentre.com",
+         "url": "https://acaciadentalcentre.com/how-often-should-you-get-your-teeth-cleaned/",
+         "title": "How Often Should You Get Your Teeth Cleaned?",
+         "text": "# Written by Dr. Nicholas Moen Most people are familiar with the “twice a year” rule for dental cleanings, but the truth is that n..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "stillwaterdentistryga.com",
+         "domain": "google.com",
+         "url": "https://google.com/goto?url=CAESfAHEIkXXI-yoiLVhGJerGvGCLBkxA54Io-Fy2DWjLAqDM3eS5rDDcktUQ3m8lNZ_TVoDSajGk4AtetkuHPDZcgxN2vDwo5ydazhSL0Fqmtx039xCv-yhmzeV2L5jGzQBgT4iZWWoP7LRd-AskqfdghvWkD71xoCDmtl3dO8",
+         "title": "How Often Should You Really Get a Dental Cleaning? | Dental Blog | Stillwater Dentistry",
+         "text": "# How Often Should You Really Get a Dental Cleaning? February 20, 2026 9:00 am Most people have heard the same advice for years: g..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Cleveland Clinic",
+         "domain": "google.com",
+         "url": "https://google.com/goto?url=CAESgQEBxCJF163La2wbPbyQ-40t9nPEE9UMIGNi37lgehHMb5wSGX2xCLXUL0mZLR9VsM53Vh9X_5heQuZn_zrg6SaxTOFrkpZXySs77mUIyU6rITX4_tjua6X2XK_yPqaMQodKIL7VvAdqTEqohy4Q4uY1MIplhYW4QZShWTZVFR6A1v8",
+         "title": "What Happens During a Dental Cleaning?",
+         "text": "# Dental Cleaning Medically Reviewed. Last updated on 01/05/2026. Dental cleanings keep your teeth and gums healthy by removing ba..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Galt Dental Care",
+         "domain": "galtdentalcare.ca",
+         "url": "https://galtdentalcare.ca/how-often-dental-cleaning-in-ontario/",
+         "title": "How Often Should You Get a Dental Cleaning in Ontario?",
+         "text": "# How Often Should You Get a Dental Cleaning in Ontario? January 1, 2026 By upmysite.tech Dental Care &Tips If you're wondering ho..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "YouTube",
+         "domain": "google.com",
+         "url": "https://google.com/goto?url=CAESbAHEIkXXFH7oA5Rc1fLsuo5k7B0BaP87koyBPs_rzPgfejNbn7LAsAk2JGwSARSgMySz1wEAjVO8_StF4QAioZOwCGzVu-qFK0LgpsbrhHx2qGqLx10viEhwtn_BVKBnK55bG3SaKGlu1DtRKQ",
+         "title": "How Often Do You Need a Dental Cleaning?",
+         "text": "The number of fillings a person has increases their risk for needing more dental treatments and X-rays because fillings are more s..."
+        }
+       ]
+      },
+      {
+       "type": "organic",
+       "rank_group": 1,
+       "rank_absolute": 2,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "How Often Should I Have My Teeth Professionally Cleaned?",
+       "url": "https://google.com/goto?url=CAESkQEBxCJF1xxWNFUmOS_YsGYm1mKPekwbVnKvznjbKEzSvHCo1BPejVlCRe1LGZFHRV6iUdbAJM6mYGMgdslvi7ztVM_3nWFP73qs7HPxCEdFeT6_PuWmjDAfiHomUf0DSNHzZkajT6yWU9gWupAMvsB5voqrEW2BonDbjRwsLpqqVX3W_XxOOjaRemeMkcczEWAt&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://harbourviewdental.ca › how-often-should-i-have-...",
+       "website_name": "harbourviewdental.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Nov 1, 2022 — The frequency of dental exams and cleanings for everyone is six months, as mandated by the CDC.",
+       "pre_snippet": "11/01/2022 00:00:00",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "six months"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": "2022-11-01 00:00:00 +00:00"
+      },
+      {
+       "type": "people_also_ask",
+       "rank_group": 1,
+       "rank_absolute": 3,
+       "page": 1,
+       "position": "left",
+       "items": [
+        {
+         "type": "people_also_ask_element",
+         "title": "How often is it recommended to do teeth cleaning?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "What is the 3-3-3 rule in dentistry?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "Do teeth go back to normal after deep cleaning?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "What should I do after a teeth cleaning?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "organic",
+       "rank_group": 2,
+       "rank_absolute": 4,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "How Often Should You Schedule a Dental Cleaning?",
+       "url": "https://google.com/goto?url=CAESiwEBxCJF15-xozFjAezvTstuzOGKngVHnBbMhh_MvQd476uUlot1oN3pggSE-tG2dSah_IXiFsSCK5fMi5Qe4eNB1K1WHabv8e_izOqUsR3crELBQHnG42aArBi1mANhinVuMgRt3CrRwiH74GuMDFcv3meZAQ4HerDsfMtjkdGQ_Hxq5UbYwUPV9J4i&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://expocitydental.com › faqs › how-often-should-y...",
+       "website_name": "Expo City Dental",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Dental cleanings are typically recommended twice every year about every 6 months to ensure that your teeth are well-maintained.",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "twice every year about every 6 months"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 3,
+       "rank_absolute": 5,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "Teeth Cleanings - Why Do I Need Them So Often?",
+       "url": "https://google.com/goto?url=CAEShwEBxCJF13sCoQP7uS3pmaNJetC1RfpmseOMSEuhH5YH19HBnR8xq_QljewZCpoDfwxwRlyfQ5IIrborv5RFE9bjlMLWYsYaH7cc3WPkLs7qeZ4Yl_ILM9iCvQ1zeUxuOxbmVGRhDZ_ureIZdOfts0Js_kl33lYrQpkBU777Snxkyktmb3qbMqw&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://kelownafamilydental.ca › Blog_1",
+       "website_name": "Kelowna Family Dental",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Oct 23, 2017 — If a patient has minimal buildup, no inflammation and does a good job at home, we recommend they come for a cleaning and exam every 6 months.",
+       "pre_snippet": "10/23/2017 00:00:00",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "every 6 months"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": "2017-10-23 00:00:00 +00:00"
+      },
+      {
+       "type": "organic",
+       "rank_group": 4,
+       "rank_absolute": 6,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "How Regular Visits Protect Your Oral Health",
+       "url": "https://google.com/goto?url=CAESvQEBxCJF15agc20EFrFxXafk7gi8X7ZRx-qqLi2655UkT7ThbAw0WTb0GYkWycMpws2g_ydp4NGw-gdI67F33Lb2O5YsobrEMgSaIwm1F7cDyxZ6CyxgV9ZwShXWsOCMqh_xKXO5rkuRz32gaBp0pePDEkJ6rWCF4vnIcIrubrutn2E4xqDawP21gWtIFioZI4vUPgHG49jX6G9fkMrSC17VFyPgEm4Cml4mRtDqQcKCiHmltB5ZrY1b7blfQaQ&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://2000yongedental.com › Dental Articles",
+       "website_name": "2000 Yonge Dental",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Apr 29, 2024 — While the traditional recommendation is to visit your dentist twice a year for cleanings, the ideal frequency can vary based on individual needs ... Read more",
+       "pre_snippet": "04/29/2024 00:00:00",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "twice a year"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://google.com/goto?url=CAESoAIBxCJF17g7gXKtE18UqkjztUojo6QxOfae2Y9PsMUSXgC7mfnE-mFUrO-6wipU7ymVfSVhrvMS2OIe8RZcUF90oAs905JF6jbb1BBjCPbDov5ps-ZrQ58FlyRQETOYh0t8gYTN_rt1LN_D78qj-dpTKs9cUkw4tBRrx_8loYdC2KJy_p25NOhEC7BjUL-p-yWQQVmAFlQ9OeXFxK1bJBNtyC3uyDZQ4CmS8h_wc7wu3Mgf4g83zL-aG84U5rOtTMUVw9vXDHErPpcrc5Jj32RRisWnS621xkzv842irnGi4WD8OUgOfsu6hzU3QK04fkAiYIJx1TRuLiiGlBECisleviMd0ABHisItMsUIwN02pkkTzuK8s3zQnoxp3PNPojg&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+         "domain": "google.com"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": "2024-04-29 00:00:00 +00:00"
+      },
+      {
+       "type": "organic",
+       "rank_group": 5,
+       "rank_absolute": 7,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "How Often Should You Get a Dental Exam and Cleaning?",
+       "url": "https://google.com/goto?url=CAESlAEBxCJF15FWrazPwxKS5eCdgrJNa4AS7GsT8w_4Bqvm04QqowekiEXo-3MXmtQrse1bC0dn5r5Nd3Km81RtyPg1V8fMwfa77RjjB7-x85EdUZx1_tR9nsNaXDa2Kh5LgQPphrj8VEBu2YA9_4RfW1zwei5qXzZnJ-khHLwOcwYKA8k2myB4nCkPTWZbNVi3CBS-QMda&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.drbrentmacdonald.ca › Blog",
+       "website_name": "Dr. Brent MacDonald Dentistry",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "You should have your teeth checked and cleaned at least twice a year, though your dentist or dental hygienist may recommend more frequent visits.",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "at least twice a year"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 6,
+       "rank_absolute": 8,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "What Is a Dental Cleaning?",
+       "url": "https://google.com/goto?url=CAESdQHEIkXX4eF0Fs8navnWBCbweJ4C3IruPZPojb90Ex5SvY-5Iv-WINDpmZJ68FiCNSHAeZ4VvK2rEranlhJClkirOKjunFVR4fXcXoVAxTxZfTngAcKCUBHU5m9_LLpcp-t-P0aK6or5ckTh7Q5pCKr8i7g1hQ&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://vitalityoralhealth.com › Blog",
+       "website_name": "Vitality Oral Health",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Most dentists recommend coming in every 6 months to stay ahead of any issues before they become bigger problems.",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "every 6 months"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 7,
+       "rank_absolute": 9,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "How Often Should You Go to the Dentist? | Bond Head",
+       "url": "https://google.com/goto?url=CAESggEBxCJF16OxUtCQ2S-GOD1hNHtp0aGBs8Tj_XmAQLWp1LIrIS8NOQAOMOXqnC_aeFVVsVDus3KgC_F8Yh-HuRAmRIEw-mn7mzx7S8NejeJ-2QA2Z5Bew-_cbY2wQ8DwKzl3TnefVUrOgFFqSwkCxefmkKz8vYmIsbfkVr7cnePbhwI9&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://hilltopdentalcentre.ca › Family Dentistry",
+       "website_name": "Hill Top Dental Centre",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "As mentioned above, the Canadian Dental Association (CDA) recommends a minimum schedule of every 6 months for a dental exam and cleaning. It's important to ... Read more",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "every 6 months"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://google.com/goto?url=CAES4QEBxCJF1x-POeFxZEm8UdOya5EOy6C2ViBZjz2ZyfIi8NQKmyExFduxDSmOBnzSD2fUahmG1pW149FdtWlSsD-OaNHCcVKCCIFj6w1oYw5jLb9HTWhWvwzpG8s4CeTY3tMosX3kSKpnS7sjHyzwOar1Fnkye5K_PU4lp_2BC3dvX6pcWMvpYlGIMw1baFz5iyj6_rqdQLXou5Dr3NwkLhPSvCE_Et1kPP6aeMEO6Vu6PnxH9_93hYhGJULHHIdKd3NHf8KfTGE6KixHU_qgZ3bsXLcR4OT5b7XjNduH6spiZnE&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+         "domain": "google.com"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 8,
+       "rank_absolute": 10,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "How Often Should You Get Your Teeth Cleaned? | Vernon",
+       "url": "https://google.com/goto?url=CAEShAEBxCJF13PVBVrYbNWQ3h9QXP85OuuJeIq3qIZCvNGVRRFXPg8fg1cxuWRwoKBs-j-VFDSQB5PkoM19YLWlw1BWK_1upMez0tloLoDnr4YcFt4pbujbF-X9m-axSWxpvUcL_wwInAOmtgcqjxrGfKXE8KsOMEZmvoa2FmnLtIbXAUVECBw&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://elevateyoursmile.ca › Dental Exam",
+       "website_name": "elevateyoursmile.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Jan 6, 2026 — For most people, a dental cleaning every six months is a good schedule. This frequency helps keep plaque and tartar under control. It also ... Read more",
+       "pre_snippet": "01/06/2026 00:00:00",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "every six months"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://google.com/goto?url=CAES2gEBxCJF16beOX0PnbfD2_J2q1ODIUdkjoRt9clqVG1h_-v5IHze0q50FByYmTlWCii_XE9_xiegX9UMUHmPgr8ZmIW-yPhhSffTZLapd_FM7HEtg_qjq1dsNafrwcdGpE5pU1tv-rZea_ewnUHv9YOwFRrTksaITaqL3SJO7fbZuy1dRWfLeKZdwX9Jed_xU3Hu65zwQAlMmbTIeGK0e4-QtvpQl8SaDBjdPeE_6r2n9j9ooFAO8zoWt36j8iXyxs6MSWmEf0PGj4-BqzaamD09sKROkCgLIz-6Ow&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+         "domain": "google.com"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": "2026-01-06 00:00:00 +00:00"
+      },
+      {
+       "type": "organic",
+       "rank_group": 9,
+       "rank_absolute": 11,
+       "page": 1,
+       "position": "left",
+       "domain": "google.com",
+       "title": "How Often Should You Get a Dental Cleaning to Avoid Pain",
+       "url": "https://google.com/goto?url=CAESgQEBxCJF1zFia_3P1M-rs1gg_8k2kWLnx-Ak7XNXOmPxBjdPPQ3y5hJBM7fSNhIgFYj_jBi3RSjGU93AyuiPZ8vP0C5znoDwbVmhce0YymTSlFlU53p9dK1QIhPhtFxXxwaFZeVogQpk-emf_fPq7ZaJ5I0Qb81qpFyV6t-BsV10asQ&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://markhamdentist.ca › how-often-should-you-get-a-...",
+       "website_name": "markhamdentist.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "How often should you get a dental cleaning? Most adults should get cleanings every 6 months, but individual needs vary based on oral health, medical conditions, ... Read more",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "Most adults should get cleanings every 6 months"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://google.com/goto?url=CAES1gEBxCJF193ZxtdW9-dZ8XU6cJl1XPO8gfuCrx3gIf34ZMRRZLB-VGvay-8FPMlDS-iqPDGzJlkoOjwZaIQasjQJI7-rHTQjZGbQ1mugfzW9tTBk85N-_kfH9fJpoZfX9RT4Qu-6P7trgDdWt7O-jrVOSRAMmzsCrJQdpLclhmp-Q3uRQ7aoHI2q-ar_GLcynrHqsYXBVHPcSBGM7shsAlcFxnop-FzR3bhIdKqk5niPtkvSRuTgcO-dJSXhTPQzARzhjW2NXNNYe_QEcvso-cP5CW-B7bBp&gsessionid=CxM70nHcpuL5ZvQfjZhMYDp-agBBB0crD28vA5APk6Z1pR1ukGkV3w",
+         "domain": "google.com"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

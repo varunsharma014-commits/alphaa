@@ -7,6 +7,7 @@ import { asUser } from "@/lib/usage"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { runAutoDiscovery } from "@/lib/discover-competitors"
+import { dataforseoConfigured } from "@/lib/dataforseo"
 
 // Weekly auto-discovery. Runs competitor discovery for businesses that have a
 // type + city but no competitors yet (new accounts whose onboarding-time
@@ -20,13 +21,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
   if (!(await cronAllowed("competitors"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
 
-  if (!process.env.APIFY_TOKEN) {
-    return NextResponse.json({ skipped: "APIFY_TOKEN not configured" })
+  if (!dataforseoConfigured()) {
+    return NextResponse.json({ skipped: "DataForSEO not configured" })
   }
 
   const users = await db.user.findMany({
     where: { businessType: { not: null }, city: { not: null } },
-    select: { id: true, businessName: true, businessType: true, city: true, websiteUrl: true, voiceDescription: true },
+    select: { id: true, businessName: true, businessType: true, city: true, state: true, websiteUrl: true, voiceDescription: true },
   })
 
   let processed = 0

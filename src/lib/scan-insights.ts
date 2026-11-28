@@ -11,9 +11,10 @@
 //      many people per month ask AI assistants for this category; null when it
 //      can't be estimated honestly. Basis references the keyword phrase.
 //   4. buildCompetitorList   — frequency-ordered union of mentions (max 5).
-//   5. fetchKeywordSerp      — ONE Apify google-search-scraper run for the
-//      keyword (top 10 organic results). Gated on APIFY_TOKEN and
-//      SCAN_SERP_DISABLED; hard 20s cap; null on any failure.
+//   5. fetchKeywordSerp      — ONE live DataForSEO Google results call for the
+//      keyword (top 10 organic results, in the business's city when it can be
+//      matched). Gated on DATAFORSEO_LOGIN/PASSWORD and SCAN_SERP_DISABLED;
+//      hard 20s cap; null on any failure.
 //   6. buildCompetitorDetails — matches v1 competitor names against the SERP
 //      (domain/title heuristics) to attach link + Google-rank evidence.
 //   7. fallbackKeyword       — keyword derivation when the haiku profile failed.
@@ -23,7 +24,8 @@
 // scan route.
 
 import { claudeFor } from "@/lib/claude"
-import { googleSearch, isSearchConfigured } from "@/lib/apify-search"
+import { googleSearch, isSearchConfigured } from "@/lib/dataforseo"
+import { countryFor } from "@/lib/dataforseo-parse"
 import type { EngineResult } from "@/lib/ai-engines"
 import type { ScanSerp, SerpEntry, CompetitorDetail } from "@/types/scan"
 
@@ -410,7 +412,7 @@ export function buildCompetitorList(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 5. Google SERP evidence for the keyword — ONE Apify run per scan, hard 20s cap
+// 5. Google SERP evidence for the keyword — ONE DataForSEO live call per scan, hard 20s cap
 // ─────────────────────────────────────────────────────────────────────────────
 
 function hostOf(url: string): string {
@@ -427,29 +429,21 @@ function hostOf(url: string): string {
 // customers see (an Ottawa business is judged on google.ca, not US google.com).
 // Deterministic: Canadian province / UK / AU markers in the city string, then
 // the site TLD, else US.
-export function inferCountryCode(city: string, websiteUrl: string): string {
-  const c = (city || "").toUpperCase()
-  if (/,\s*(ON|QC|BC|AB|MB|SK|NS|NB|NL|PE|YT|NT|NU)\b/.test(c) || /\bCANADA\b/.test(c)) return "ca"
-  if (/\b(UK|UNITED KINGDOM|ENGLAND|SCOTLAND|WALES)\b/.test(c)) return "gb"
-  if (/,\s*(NSW|VIC|QLD|WA|SA|TAS|ACT|NT)\b/.test(c) || /\bAUSTRALIA\b/.test(c)) return "au"
-  const host = websiteUrl ? hostOf(websiteUrl) : ""
-  if (host.endsWith(".ca")) return "ca"
-  if (host.endsWith(".co.uk") || host.endsWith(".uk")) return "gb"
-  if (host.endsWith(".com.au") || host.endsWith(".au")) return "au"
-  return "us"
+export function inferCountryCode(city: string, websiteUrl: string, state?: string | null): string {
+  return countryFor({ city, state, websiteUrl })
 }
 
-// The scan route calls this at most ONCE per scan (cost control — the Apify
-// account has a monthly cap). Returns null whenever real SERP evidence isn't
-// available: APIFY_TOKEN unset, SCAN_SERP_DISABLED=1, run failed, timed out
-// (20s), or came back empty — the results page hides the block on null.
-export async function fetchKeywordSerp(keyword: string, countryCode = "us"): Promise<ScanSerp | null> {
+// The scan route calls this at most ONCE per scan (cost control: $0.002 a call).
+// Returns null whenever real SERP evidence isn't available: DataForSEO not
+// configured, SCAN_SERP_DISABLED=1, the call failed, timed out (20s), or came
+// back empty — the results page hides the block on null.
+export async function fetchKeywordSerp(keyword: string, countryCode = "us", city?: string | null): Promise<ScanSerp | null> {
   const kw = keyword.trim()
   if (!kw) return null
   if (process.env.SCAN_SERP_DISABLED === "1") return null
   if (!isSearchConfigured()) return null
   try {
-    const raw = await googleSearch(kw, { results: 10, timeoutMs: 20_000, country: countryCode })
+    const raw = await googleSearch(kw, { results: 10, timeoutMs: 20_000, country: countryCode, city: city || null, mode: "live" })
     const results: SerpEntry[] = raw.slice(0, 10).flatMap((r, i) => {
       const domain = hostOf(r.url)
       // position is the true organic slot (index in the returned list), kept

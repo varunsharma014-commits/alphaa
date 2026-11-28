@@ -1,0 +1,794 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.0253 sec.",
+ "cost": 0.0012,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280727-3309-0066-0000-be5c3157b970",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.0186 sec.",
+   "cost": 0.0012,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "organic",
+    "task_get",
+    "advanced",
+    "11280727-3309-0066-0000-be5c3157b970"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "task_get",
+    "se": "google",
+    "se_type": "organic",
+    "keyword": "how much does a teeth whitening cost in ottawa",
+    "location_code": 9198644,
+    "language_code": "en",
+    "depth": 10,
+    "load_async_ai_overview": true,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "how much does a teeth whitening cost in ottawa",
+     "type": "organic",
+     "se_domain": "google.com",
+     "location_code": 9198644,
+     "language_code": "en",
+     "check_url": "https://www.google.com/search?q=how%20much%20does%20a%20teeth%20whitening%20cost%20in%20ottawa&hl=en&gl=CA&ie=UTF-8&uule=w+CAIQIFISCSEnm65H-81MEWD3FAhqKdFN",
+     "datetime": "2026-11-28 07:28:10 +00:00",
+     "spell": null,
+     "refinement_chips": null,
+     "item_types": [
+      "ai_overview",
+      "organic",
+      "people_also_ask",
+      "discussions_and_forums"
+     ],
+     "se_results_count": 99,
+     "pages_count": 1,
+     "items_count": 11,
+     "items": [
+      {
+       "type": "ai_overview",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "page": 1,
+       "position": "left",
+       "asynchronous_ai_overview": true,
+       "markdown": "Teeth whitening in Ottawa generally costs  [Highlight start] between **$120 and $800 CAD** [Highlight end] , depending on whether you visit a cosmetic studio, a dental clinic, or a teaching clinic.[[1]](https://dentalcostfinder.ca/zh/services/teeth-whitening/ottawa)[[2]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195)[[3]](https://www.fresha.com/book-now/la-perle-beauty-studio-p1d2d0ue/services?lid=1253270&oiid=sv:29323621&pId=1189522)[[4]](https://www.facebook.com/groups/1699009254661099/posts/1771394020755955/)\n\n### Typical Cost Breakdown\n\n- **Cosmetic & Whitening Studios ($120–$300 CAD):** Non-dental studios and salons offer touch-up, single-visit, and multi-session packages. For example, **Shining Smiles** (2310 St. Laurent Blvd, Unit 212) lists a 40-minute touch-up package at **$120 CAD** , a 60-minute first-time package at **$180 CAD** , a two-visit package at **$260 CAD** , and a two-person package at **$300 CAD**. **La Perle Beauty Studio** (2746 St Joseph Blvd, Unit 204) lists a two-session package at **$290 CAD**.[[1]](https://www.fresha.com/book-now/la-perle-beauty-studio-p1d2d0ue/services?lid=1253270&oiid=sv:29323621&pId=1189522)[[2]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122621&pId=1001195)[[3]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195)[[4]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122555&pId=1001195)[[5]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:24850102&pId=1001195)\n- **Dental Clinics ($300–$800 CAD):** Dentist-supervised in-office treatments (such as LED/Zoom whitening) and custom take-home trays typically fall in this range. Individual clinics set their own pricing within general fee guide structures, and some nearby clinics like **Ottawa Valley Smiles** have advertised promotional in-office whitening around **$199 CAD**.[[1]](https://dentalcostfinder.ca/zh/services/teeth-whitening/ottawa)[[2]](https://islandparkdental.ca/blog/family-dental-clinics-ottawa-teeth-whitening-care/)[[3]](https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/)[[4]](https://www.facebook.com/groups/whatsuparnprior/posts/3536729113131964/)\n- **Dental Hygiene Teaching Clinics (~$50 CAD):** Downtown teaching clinics supervised by licensed dental professionals have advertised custom teeth whitening trays starting around **$50 CAD**.[[1]](https://www.facebook.com/groups/1699009254661099/posts/1771394020755955/)\n\n### What to Keep in Mind\n\n- **Insurance & Public Programs:** Cosmetic teeth whitening is generally not covered by OHIP or the Canadian Dental Care Plan (CDCP), and private dental insurance coverage varies by plan.[[1]](https://markhamdentalsmiles.com/is-teeth-whitening-covered-by-insurance/)\n- **Provider Differences:** Dental clinics offer dentist oversight and prescription-strength or custom options, while cosmetic studios focus on shorter cosmetic sessions. One user on [Reddit r/ottawa](https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/) noted that while the Canadian Dental Association sets a fee guide, individual clinics can set prices within a range for certain procedures.[[1]](https://islandparkdental.ca/blog/family-dental-clinics-ottawa-teeth-whitening-care/)[[2]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195)[[3]](https://bookbeauty.ca/ottawa/teeth-whitening/)[[4]](https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/)\n\nTo help narrow down options, are you looking for a **dentist-supervised treatment** or a **cosmetic studio session** , and do you have a preferred **Ottawa neighbourhood** or **budget**?",
+       "items": [
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "Teeth whitening in Ottawa generally costs  [Highlight start] between $120 and $800 CAD [Highlight end] , depending on whether you visit a cosmetic studio, a dental clinic, or a teaching clinic.",
+         "markdown": "Teeth whitening in Ottawa generally costs  [Highlight start] between **$120 and $800 CAD** [Highlight end] , depending on whether you visit a cosmetic studio, a dental clinic, or a teaching clinic.[[1]](https://dentalcostfinder.ca/zh/services/teeth-whitening/ottawa)[[2]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195)[[3]](https://www.fresha.com/book-now/la-perle-beauty-studio-p1d2d0ue/services?lid=1253270&oiid=sv:29323621&pId=1189522)[[4]](https://www.facebook.com/groups/1699009254661099/posts/1771394020755955/)",
+         "links": null,
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "dentalcostfinder.ca",
+           "domain": "dentalcostfinder.ca",
+           "url": "https://dentalcostfinder.ca/zh/services/teeth-whitening/ottawa",
+           "title": "Ottawa Teeth Whitening - $800) 与优质牙医诊所",
+           "text": "寻找Ottawa 提供Teeth Whitening 的牙医诊所？预估平均费用为$300 – $800。对比经过验证的本地诊所、省牙医协会参考价并在线预约咨询。"
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "fresha.com",
+           "domain": "www.fresha.com",
+           "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195",
+           "title": "Shining Smile Package",
+           "text": "Service \"Shining Smile Package\" at \"Shining Smiles\" for 120 CAD (55 minutes). 18 open appointment time slots."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "fresha.com",
+           "domain": "www.fresha.com",
+           "url": "https://www.fresha.com/book-now/la-perle-beauty-studio-p1d2d0ue/services?lid=1253270&oiid=sv:29323621&pId=1189522",
+           "title": "The Bright Premium - 2 Sessions (Best Deal - Value Of $350) $290",
+           "text": "Service \"The Bright Premium - 2 Sessions (Best Deal - Value Of $350) $290\" at \"La Perle Beauty Studio\" for 290 CAD (1 hour 30 minu..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Facebook",
+           "domain": "www.facebook.com",
+           "url": "https://www.facebook.com/groups/1699009254661099/posts/1771394020755955/",
+           "title": "Affordable dental hygiene services in Ottawa, including ...",
+           "text": "# Affordable dental hygiene services in Ottawa, including cleanings and teeth whitening Services include: ✨ Adult cleanings – $40 ..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": "Typical Cost Breakdown",
+         "text": "Cosmetic & Whitening Studios ($120–$300 CAD): Non-dental studios and salons offer touch-up, single-visit, and multi-session packages. For example, Shining Smiles (2310 St. Laurent Blvd, Unit 212) lists a 40-minute touch-up package at $120 CAD, a 60-minute first-time package at $180 CAD, a two-visit package at $260 CAD, and a two-person package at $300 CAD. La Perle Beauty Studio (2746 St Joseph Blvd, Unit 204) lists a two-session package at $290 CAD. Shining Smiles La Perle Beauty Studio Dental Clinics ($300–$800 CAD): Dentist-supervised in-office treatments (such as LED/Zoom whitening) and custom take-home trays typically fall in this range. Individual clinics set their own pricing within general fee guide structures, and some nearby clinics like Ottawa Valley Smiles have advertised promotional in-office whitening around $199 CAD. Ottawa Valley Smiles Dental Hygiene Teaching Clinics (~$50 CAD): Downtown teaching clinics supervised by licensed dental professionals have advertised custom teeth whitening trays starting around $50 CAD.",
+         "markdown": "- **Cosmetic & Whitening Studios ($120–$300 CAD):** Non-dental studios and salons offer touch-up, single-visit, and multi-session packages. For example, **Shining Smiles** (2310 St. Laurent Blvd, Unit 212) lists a 40-minute touch-up package at **$120 CAD** , a 60-minute first-time package at **$180 CAD** , a two-visit package at **$260 CAD** , and a two-person package at **$300 CAD**. **La Perle Beauty Studio** (2746 St Joseph Blvd, Unit 204) lists a two-session package at **$290 CAD**.[[1]](https://www.fresha.com/book-now/la-perle-beauty-studio-p1d2d0ue/services?lid=1253270&oiid=sv:29323621&pId=1189522)[[2]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122621&pId=1001195)[[3]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195)[[4]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122555&pId=1001195)[[5]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:24850102&pId=1001195)\n- **Dental Clinics ($300–$800 CAD):** Dentist-supervised in-office treatments (such as LED/Zoom whitening) and custom take-home trays typically fall in this range. Individual clinics set their own pricing within general fee guide structures, and some nearby clinics like **Ottawa Valley Smiles** have advertised promotional in-office whitening around **$199 CAD**.[[1]](https://dentalcostfinder.ca/zh/services/teeth-whitening/ottawa)[[2]](https://islandparkdental.ca/blog/family-dental-clinics-ottawa-teeth-whitening-care/)[[3]](https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/)[[4]](https://www.facebook.com/groups/whatsuparnprior/posts/3536729113131964/)\n- **Dental Hygiene Teaching Clinics (~$50 CAD):** Downtown teaching clinics supervised by licensed dental professionals have advertised custom teeth whitening trays starting around **$50 CAD**.[[1]](https://www.facebook.com/groups/1699009254661099/posts/1771394020755955/)",
+         "links": null,
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "fresha.com",
+           "domain": "www.fresha.com",
+           "url": "https://www.fresha.com/book-now/la-perle-beauty-studio-p1d2d0ue/services?lid=1253270&oiid=sv:29323621&pId=1189522",
+           "title": "The Bright Premium - 2 Sessions (Best Deal - Value Of $350) $290",
+           "text": "Service \"The Bright Premium - 2 Sessions (Best Deal - Value Of $350) $290\" at \"La Perle Beauty Studio\" for 290 CAD (1 hour 30 minu..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "fresha.com",
+           "domain": "www.fresha.com",
+           "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122621&pId=1001195",
+           "title": "Shining For 2 Package",
+           "text": "Service \"Shining For 2 Package\" at \"Shining Smiles\" for 300 CAD (1 hour 15 minutes). 18 open appointment time slots."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "fresha.com",
+           "domain": "www.fresha.com",
+           "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195",
+           "title": "Shining Smile Package",
+           "text": "Service \"Shining Smile Package\" at \"Shining Smiles\" for 120 CAD (55 minutes). 18 open appointment time slots."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "fresha.com",
+           "domain": "www.fresha.com",
+           "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122555&pId=1001195",
+           "title": "Signature Shining Smile Package",
+           "text": "Service \"Signature Shining Smile Package\" at \"Shining Smiles\" for 260 CAD (1 hour 15 minutes). 18 open appointment time slots."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "fresha.com",
+           "domain": "www.fresha.com",
+           "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:24850102&pId=1001195",
+           "title": "Triple Shining Smile Package",
+           "text": "Service \"Triple Shining Smile Package\" at \"Shining Smiles\" for 180 CAD (1 hour 15 minutes). 18 open appointment time slots."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "dentalcostfinder.ca",
+           "domain": "dentalcostfinder.ca",
+           "url": "https://dentalcostfinder.ca/zh/services/teeth-whitening/ottawa",
+           "title": "Ottawa Teeth Whitening - $800) 与优质牙医诊所",
+           "text": "寻找Ottawa 提供Teeth Whitening 的牙医诊所？预估平均费用为$300 – $800。对比经过验证的本地诊所、省牙医协会参考价并在线预约咨询。"
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Island Park Dental",
+           "domain": "islandparkdental.ca",
+           "url": "https://islandparkdental.ca/blog/family-dental-clinics-ottawa-teeth-whitening-care/",
+           "title": "Family Dental Clinic Ottawa | Professional Teeth Whitening",
+           "text": "Professional Teeth Whitening Ottawa for a Brighter Smile Professional Teeth Whitening Ottawa treatments are designed to provide a ..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Reddit",
+           "domain": "www.reddit.com",
+           "url": "https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/",
+           "title": "$287 teeth cleaning : r/ottawa - Reddit",
+           "text": "Dental Fee Structure: The Canadian Dental Association establishes a fee guide that clinics adhere to, though some procedures allow..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Facebook",
+           "domain": "www.facebook.com",
+           "url": "https://www.facebook.com/groups/whatsuparnprior/posts/3536729113131964/",
+           "title": "Teeth whitening services in Ottawa Valley | Arnprior, ON",
+           "text": "# Teeth whitening services in Ottawa Valley | Arnprior, ON ✨🦷 At Ottawa Valley Smiles you can: 🌸 Lift 4–8 shades in under an hou..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Facebook",
+           "domain": "www.facebook.com",
+           "url": "https://www.facebook.com/groups/1699009254661099/posts/1771394020755955/",
+           "title": "Affordable dental hygiene services in Ottawa, including ...",
+           "text": "# Affordable dental hygiene services in Ottawa, including cleanings and teeth whitening Services include: ✨ Adult cleanings – $40 🦷 Children's cleanings – $15 🤍 ..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": "What to Keep in Mind",
+         "text": "Insurance & Public Programs: Cosmetic teeth whitening is generally not covered by OHIP or the Canadian Dental Care Plan (CDCP), and private dental insurance coverage varies by plan. Provider Differences: Dental clinics offer dentist oversight and prescription-strength or custom options, while cosmetic studios focus on shorter cosmetic sessions. One user on Reddit r/ottawa noted that while the Canadian Dental Association sets a fee guide, individual clinics can set prices within a range for certain procedures.",
+         "markdown": "- **Insurance & Public Programs:** Cosmetic teeth whitening is generally not covered by OHIP or the Canadian Dental Care Plan (CDCP), and private dental insurance coverage varies by plan.[[1]](https://markhamdentalsmiles.com/is-teeth-whitening-covered-by-insurance/)\n- **Provider Differences:** Dental clinics offer dentist oversight and prescription-strength or custom options, while cosmetic studios focus on shorter cosmetic sessions. One user on [Reddit r/ottawa](https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/) noted that while the Canadian Dental Association sets a fee guide, individual clinics can set prices within a range for certain procedures.[[1]](https://islandparkdental.ca/blog/family-dental-clinics-ottawa-teeth-whitening-care/)[[2]](https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195)[[3]](https://bookbeauty.ca/ottawa/teeth-whitening/)[[4]](https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/)",
+         "links": [
+          {
+           "type": "link_element",
+           "title": "Reddit r/ottawa",
+           "description": null,
+           "url": "https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/",
+           "domain": "www.reddit.com"
+          }
+         ],
+         "images": null,
+         "references": [
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Markham Dental Smiles",
+           "domain": "markhamdentalsmiles.com",
+           "url": "https://markhamdentalsmiles.com/is-teeth-whitening-covered-by-insurance/",
+           "title": "Is Teeth Whitening Covered By Insurance? - Markham Dental Smiles",
+           "text": "OHIP covers medical treatments but does not include dental care. The CDCP offers coverage for certain dental services such as clea..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Island Park Dental",
+           "domain": "islandparkdental.ca",
+           "url": "https://islandparkdental.ca/blog/family-dental-clinics-ottawa-teeth-whitening-care/",
+           "title": "Family Dental Clinic Ottawa | Professional Teeth Whitening",
+           "text": "Professional Teeth Whitening Ottawa for a Brighter Smile Professional Teeth Whitening Ottawa treatments are designed to provide a dentist-supervised approach to sm..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "fresha.com",
+           "domain": "www.fresha.com",
+           "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195",
+           "title": "Shining Smile Package",
+           "text": "Service \"Shining Smile Package\" at \"Shining Smiles\" for 120 CAD (55 minutes). 18 open appointment time slots."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "bookbeauty.ca",
+           "domain": "bookbeauty.ca",
+           "url": "https://bookbeauty.ca/ottawa/teeth-whitening/",
+           "title": "Teeth Whitening in Ottawa, ON — 12 Studios Near You",
+           "text": "# 12+ * What to Compare — Teeth Whitening in Ottawa Studios listed under teeth whitening in Ottawa commonly offer touch-up session..."
+          },
+          {
+           "type": "ai_overview_reference",
+           "position": "left",
+           "source": "Reddit",
+           "domain": "www.reddit.com",
+           "url": "https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/",
+           "title": "$287 teeth cleaning : r/ottawa - Reddit",
+           "text": "Dental Fee Structure: The Canadian Dental Association establishes a fee guide that clinics adhere to, though some procedures allow..."
+          }
+         ]
+        },
+        {
+         "type": "ai_overview_element",
+         "position": "left",
+         "title": null,
+         "text": "To help narrow down options, are you looking for a dentist-supervised treatment or a cosmetic studio session, and do you have a preferred Ottawa neighbourhood or budget ?",
+         "markdown": "To help narrow down options, are you looking for a **dentist-supervised treatment** or a **cosmetic studio session** , and do you have a preferred **Ottawa neighbourhood** or **budget**?",
+         "links": null,
+         "images": null,
+         "references": null
+        }
+       ],
+       "references": [
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "dentalcostfinder.ca",
+         "domain": "dentalcostfinder.ca",
+         "url": "https://dentalcostfinder.ca/zh/services/teeth-whitening/ottawa",
+         "title": "Ottawa Teeth Whitening - $800) 与优质牙医诊所",
+         "text": "寻找Ottawa 提供Teeth Whitening 的牙医诊所？预估平均费用为$300 – $800。对比经过验证的本地诊所、省牙医协会参考价并在线预约咨询。"
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Island Park Dental",
+         "domain": "islandparkdental.ca",
+         "url": "https://islandparkdental.ca/blog/family-dental-clinics-ottawa-teeth-whitening-care/",
+         "title": "Family Dental Clinic Ottawa | Professional Teeth Whitening",
+         "text": "Professional Teeth Whitening Ottawa for a Brighter Smile Professional Teeth Whitening Ottawa treatments are designed to provide a dentist-supervised approach to sm..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Facebook",
+         "domain": "www.facebook.com",
+         "url": "https://www.facebook.com/groups/1699009254661099/posts/1771394020755955/",
+         "title": "Affordable dental hygiene services in Ottawa, including ...",
+         "text": "# Affordable dental hygiene services in Ottawa, including cleanings and teeth whitening Services include: ✨ Adult cleanings – $40 🦷 Children's cleanings – $15 🤍 ..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "fresha.com",
+         "domain": "www.fresha.com",
+         "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122538&pId=1001195",
+         "title": "Shining Smile Package",
+         "text": "Service \"Shining Smile Package\" at \"Shining Smiles\" for 120 CAD (55 minutes). 18 open appointment time slots."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "fresha.com",
+         "domain": "www.fresha.com",
+         "url": "https://www.fresha.com/book-now/la-perle-beauty-studio-p1d2d0ue/services?lid=1253270&oiid=sv:29323621&pId=1189522",
+         "title": "The Bright Premium - 2 Sessions (Best Deal - Value Of $350) $290",
+         "text": "Service \"The Bright Premium - 2 Sessions (Best Deal - Value Of $350) $290\" at \"La Perle Beauty Studio\" for 290 CAD (1 hour 30 minu..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "fresha.com",
+         "domain": "www.fresha.com",
+         "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122621&pId=1001195",
+         "title": "Shining For 2 Package",
+         "text": "Service \"Shining For 2 Package\" at \"Shining Smiles\" for 300 CAD (1 hour 15 minutes). 18 open appointment time slots."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "fresha.com",
+         "domain": "www.fresha.com",
+         "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:25122555&pId=1001195",
+         "title": "Signature Shining Smile Package",
+         "text": "Service \"Signature Shining Smile Package\" at \"Shining Smiles\" for 260 CAD (1 hour 15 minutes). 18 open appointment time slots."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "fresha.com",
+         "domain": "www.fresha.com",
+         "url": "https://www.fresha.com/book-now/shining-smiles-wwnltb8h/services?lid=1056140&oiid=sv:24850102&pId=1001195",
+         "title": "Triple Shining Smile Package",
+         "text": "Service \"Triple Shining Smile Package\" at \"Shining Smiles\" for 180 CAD (1 hour 15 minutes). 18 open appointment time slots."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Reddit",
+         "domain": "www.reddit.com",
+         "url": "https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/",
+         "title": "$287 teeth cleaning : r/ottawa - Reddit",
+         "text": "Dental Fee Structure: The Canadian Dental Association establishes a fee guide that clinics adhere to, though some procedures allow..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Facebook",
+         "domain": "www.facebook.com",
+         "url": "https://www.facebook.com/groups/whatsuparnprior/posts/3536729113131964/",
+         "title": "Teeth whitening services in Ottawa Valley | Arnprior, ON",
+         "text": "# Teeth whitening services in Ottawa Valley | Arnprior, ON ✨🦷 At Ottawa Valley Smiles you can: 🌸 Lift 4–8 shades in under an hou..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "Markham Dental Smiles",
+         "domain": "markhamdentalsmiles.com",
+         "url": "https://markhamdentalsmiles.com/is-teeth-whitening-covered-by-insurance/",
+         "title": "Is Teeth Whitening Covered By Insurance? - Markham Dental Smiles",
+         "text": "OHIP covers medical treatments but does not include dental care. The CDCP offers coverage for certain dental services such as clea..."
+        },
+        {
+         "type": "ai_overview_reference",
+         "position": "right",
+         "source": "bookbeauty.ca",
+         "domain": "bookbeauty.ca",
+         "url": "https://bookbeauty.ca/ottawa/teeth-whitening/",
+         "title": "Teeth Whitening in Ottawa, ON — 12 Studios Near You",
+         "text": "# 12+ * What to Compare — Teeth Whitening in Ottawa Studios listed under teeth whitening in Ottawa commonly offer touch-up session..."
+        }
+       ]
+      },
+      {
+       "type": "organic",
+       "rank_group": 1,
+       "rank_absolute": 2,
+       "page": 1,
+       "position": "left",
+       "domain": "bookbeauty.ca",
+       "title": "Ottawa Teeth Whitening — 4.9 (42) - BookBeauty.ca",
+       "url": "https://bookbeauty.ca/listing/ottawa-teeth-whitening/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://bookbeauty.ca › listing › ottawa-teeth-whitening",
+       "website_name": "bookbeauty.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "You can reach Ottawa Teeth Whitening by phone at (613) 808-9344, For detailed pricing and availability, contact the salon directly or visit their website. 📞 ( ...",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "can",
+        "Ottawa Teeth Whitening"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "people_also_ask",
+       "rank_group": 1,
+       "rank_absolute": 3,
+       "page": 1,
+       "position": "left",
+       "items": [
+        {
+         "type": "people_also_ask_element",
+         "title": "How much does it cost to get your teeth whitened on Reddit?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "How much do 3 fillings cost in Canada?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "Can yellow teeth actually be whitened?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "Is it worth getting your teeth cleaned at the dentist?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "organic",
+       "rank_group": 2,
+       "rank_absolute": 4,
+       "page": 1,
+       "position": "left",
+       "domain": "www.yellowpages.ca",
+       "title": "Teeth Whitening Services near South Keys Shopping ...",
+       "url": "https://www.yellowpages.ca/search/si/1/Teeth+Whitening+Services/South+Keys+Shopping+Centre+Ottawa+ON",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.yellowpages.ca › Teeth+Whitening+Services",
+       "website_name": "YellowPages.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "We offer a wide range of services including teeth whitening, give us a call today. offer free consultations to assess your needs best treatment plan for you.",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "teeth whitening"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 3,
+       "rank_absolute": 5,
+       "page": 1,
+       "position": "left",
+       "domain": "www.reddit.com",
+       "title": "$287 teeth cleaning : r/ottawa",
+       "url": "https://www.reddit.com/r/ottawa/comments/1rotoqm/287_teeth_cleaning/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.reddit.com › ottawa › comments › 287_tee...",
+       "website_name": "Reddit",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Mar 9, 2026 — Join $287 teeth cleaning. I think it's 40 to $50 and you're only paying for the one time for all of the appointments. Theres no clinic that ...",
+       "pre_snippet": "03/09/2026 00:00:00",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "40 to $50"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": "2026-03-09 00:00:00 +00:00"
+      },
+      {
+       "type": "organic",
+       "rank_group": 4,
+       "rank_absolute": 6,
+       "page": 1,
+       "position": "left",
+       "domain": "bookbeauty.ca",
+       "title": "Teeth Whitening in Ottawa, ON — 12 Studios Near You",
+       "url": "https://bookbeauty.ca/ottawa/teeth-whitening/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://bookbeauty.ca › Services › Teeth Whitening",
+       "website_name": "bookbeauty.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Teeth whitening service 📞 (613) 204-8184 … what the price includes. It depends on your teeth and dental history, and results vary from person to person.",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "Teeth whitening",
+        "price",
+        "teeth",
+        "dental"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 5,
+       "rank_absolute": 7,
+       "page": 1,
+       "position": "left",
+       "domain": "ottawadentist.net",
+       "title": "Ottawa Dentist",
+       "url": "https://ottawadentist.net/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://ottawadentist.net › Featured",
+       "website_name": "ottawadentist.net",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Compare teeth whitening Ottawa options, costs, and results. Learn which treatment fits your budget, schedule, and sensitivity needs.",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "teeth whitening Ottawa options, costs"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "discussions_and_forums",
+       "rank_group": 1,
+       "rank_absolute": 8,
+       "page": 1,
+       "position": "left",
+       "title": "Discussions and forums",
+       "items": [
+        {
+         "type": "discussions_and_forums_element",
+         "title": "Teeth whitening services in Ottawa Valley | Arnprior, ON",
+         "url": "https://www.facebook.com/groups/whatsuparnprior/posts/3536729113131964/",
+         "domain": "www.facebook.com",
+         "source": "Facebook",
+         "description": null,
+         "timestamp": "2026-02-28 07:27:08 +00:00",
+         "posts_count": 9
+        },
+        {
+         "type": "discussions_and_forums_element",
+         "title": "Affordable dental hygiene services in Ottawa, including cleanings and ...",
+         "url": "https://www.facebook.com/groups/1699009254661099/posts/1771394020755955/",
+         "domain": "www.facebook.com",
+         "source": "Facebook",
+         "description": null,
+         "timestamp": "2026-10-28 07:27:08 +00:00",
+         "posts_count": 1
+        }
+       ]
+      },
+      {
+       "type": "organic",
+       "rank_group": 6,
+       "rank_absolute": 9,
+       "page": 1,
+       "position": "left",
+       "domain": "islandparkdental.ca",
+       "title": "Family Dental Clinic Ottawa | Professional Teeth Whitening",
+       "url": "https://islandparkdental.ca/blog/family-dental-clinics-ottawa-teeth-whitening-care/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://islandparkdental.ca › Blog",
+       "website_name": "Island Park Dental",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Feb 2, 2026 — Visit a trusted family dental clinic in Ottawa for professional teeth whitening and cosmetic dentistry services (+01) 789 987 645 … products  ...",
+       "pre_snippet": "02/02/2026 00:00:00",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "dental",
+        "Ottawa",
+        "teeth whitening"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": "2026-02-02 00:00:00 +00:00"
+      },
+      {
+       "type": "organic",
+       "rank_group": 7,
+       "rank_absolute": 10,
+       "page": 1,
+       "position": "left",
+       "domain": "www.bbb.org",
+       "title": "Teeth Whitening near Ottawa, ON",
+       "url": "https://www.bbb.org/ca/on/ottawa/category/teeth-whitening",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.bbb.org › ottawa › category › teeth-whiten...",
+       "website_name": "Better Business Bureau",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "BBB Directory of Teeth Whitening near Ottawa, ON. Your guide to trusted BBB Ratings, customer reviews and BBB Accredited businesses.",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "BBB Directory of Teeth Whitening near Ottawa"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 8,
+       "rank_absolute": 11,
+       "page": 1,
+       "position": "left",
+       "domain": "dentalcostfinder.ca",
+       "title": "Ottawa Teeth Whitening - $800) 与优质牙医诊所",
+       "url": "https://dentalcostfinder.ca/zh/services/teeth-whitening/ottawa",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://dentalcostfinder.ca › services",
+       "website_name": "dentalcostfinder.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "寻找Ottawa 提供Teeth Whitening 的牙医诊所？预估平均费用为$300 – $800。对比经过验证的本地诊所、省牙医协会参考价并在线预约咨询。",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "Ottawa",
+        "Teeth Whitening"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

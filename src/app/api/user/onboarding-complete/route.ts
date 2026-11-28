@@ -26,8 +26,8 @@ export async function PATCH(req: NextRequest) {
 
   const user = await db.user.findUnique({ where: { clerkId: userId } })
 
-  // Kick off competitor auto-discovery in the background (no-op until APIFY_TOKEN
-  // is set). Railway runs a persistent server, so this fire-and-forget promise
+  // Kick off competitor auto-discovery in the background (no-op until DataForSEO
+  // is configured). Railway runs a persistent server, so this fire-and-forget promise
   // completes after the response is sent — onboarding never waits on it.
   if (user?.businessType) {
     void runAutoDiscovery({

@@ -250,7 +250,7 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
 
     // Post-engine intelligence: mention extraction + loss estimate + Google
     // SERP evidence for the keyword, all in parallel. SERP is the scan's ONE
-    // Apify run (20s cap inside fetchKeywordSerp). Everything is best-effort —
+    // DataForSEO call (20s cap inside fetchKeywordSerp). Everything is best-effort —
     // failures degrade to []/null, never break the scan.
     const followMentions = Promise.all(
       followUps.map((f) =>
@@ -260,7 +260,7 @@ async function processScan(leadId: string, input: z.infer<typeof schema>) {
     const [mentionedSettled, lossSettled, serpSettled] = await Promise.allSettled([
       extractMentionedBusinesses(engineResults, input.businessName, input.websiteUrl),
       industry ? estimateMonthlyLoss(industry, isLocal, input.city, keyword) : Promise.resolve(null),
-      keyword ? fetchKeywordSerp(keyword, inferCountryCode(input.city, input.websiteUrl)) : Promise.resolve<ScanSerp | null>(null),
+      keyword ? fetchKeywordSerp(keyword, inferCountryCode(input.city, input.websiteUrl), isLocal ? input.city : null) : Promise.resolve<ScanSerp | null>(null),
     ])
     const extraction =
       mentionedSettled.status === "fulfilled" ? mentionedSettled.value : { mentioned: {}, domains: {} }

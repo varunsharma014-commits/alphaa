@@ -194,19 +194,19 @@ export function AdsView({ data, initialTab, note }: { data: AdsData | null; init
           {data.roas && <RoasLeads roas={data.roas} />}
           {!data.sevenDays && (
             <>
-              <div className="ax-h2" style={{ marginTop: 6 }}><div><h2>Competitor ads I’m watching</h2><p>Live ads from your competitors, from the public Ad Library. Results fill in after a week of your own spend.</p></div></div>
+              <div className="ax-h2" style={{ marginTop: 6 }}><div><h2>Competitor ads I’m watching</h2><p>Your competitors’ live Google search ads, from Google’s Ads Transparency Center. I can’t see their Facebook and Instagram ads (Meta doesn’t share them). Results fill in after a week of your own spend.</p></div></div>
               {data.watching.length ? (
                 <div className="ax-g2" style={{ marginTop: 0 }}>
                   {data.watching.map((w, i) => (
                     <article key={i} className="ax-card" style={{ padding: "18px 20px", display: "flex", flexDirection: "column", gap: 8 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}><b style={{ fontSize: 14.5 }}>{w.page}</b>{w.days != null && <span className="ax-proof">Running {w.days} days</span>}</div>
-                      <p className="ax-p ax-clamp" style={{ color: "var(--x-ink)" }}>“{w.text}”</p>
+                      {w.text ? <p className="ax-p ax-clamp" style={{ color: "var(--x-ink)" }}>“{w.text}”</p> : <p className="ax-p">A {w.format === "video" ? "video" : w.format === "image" ? "picture" : ""} ad on {w.where === "google" ? "Google" : "Facebook and Instagram"}. Open it to see it.</p>}
                       {data.beatIt[i % Math.max(1, data.beatIt.length)] && <p className="ax-p"><b style={{ color: "var(--x-ink)", fontWeight: 600 }}>How I’d beat it: </b>{data.beatIt[i % data.beatIt.length]}</p>}
-                      <a className="ax-src" href={w.url} target="_blank" rel="noopener noreferrer" style={{ marginTop: "auto" }}>See it in the Ad Library ↗</a>
+                      <a className="ax-src" href={w.url} target="_blank" rel="noopener noreferrer" style={{ marginTop: "auto" }}>{w.where === "google" ? "See it on Google ↗" : "See it in the Ad Library ↗"}</a>
                     </article>
                   ))}
                 </div>
-              ) : <p className="ax-note" style={{ marginTop: 0 }}>None of your competitors has a live ad in the Ad Library right now{data.plan ? "" : ", or I haven’t looked yet (that happens when I build your ad plan)"}.</p>}
+              ) : <p className="ax-note" style={{ marginTop: 0 }}>None of your competitors has a live Google search ad right now{data.plan ? "" : ", or I haven’t looked yet (that happens when I build your ad plan)"}.</p>}
             </>
           )}
         </div>

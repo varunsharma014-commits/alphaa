@@ -119,10 +119,10 @@ Purpose: Asking Perplexity the same customer questions.
 Data shared: Your business name, website, city, category and the questions we ask.
 Privacy policy: https://www.perplexity.ai/hub/legal/privacy-policy
 
-Apify (public web data)
-Purpose: Collecting public search results and public social media posts about your business and its competitors, used in your checks and in emails written for you.
-Data shared: Your business name, city, website and public profile addresses. Only publicly available information is collected.
-Privacy policy: https://apify.com/privacy-policy
+DataForSEO (public search and ratings data)
+Purpose: Collecting public Google and YouTube search results, Google's AI Overviews, competitors' public Google ads (from Google's Ads Transparency Center) and public ratings (Google, Trustpilot, Tripadvisor), used in your checks, research and emails written for you. Operated by DataForSEO OÜ, registered in the Republic of Estonia.
+Data shared: Search phrases (including a few sentences from your drafts when we check they are original), your business name, city, website domain and the website domains of your competitors. No personal contact details. Only publicly available information is collected.
+Privacy policy: https://dataforseo.com/privacy-policy/
 
 Google PageSpeed Insights and Safe Browsing (website checks)
 Purpose: Measuring your website's speed and checking it is not flagged as unsafe.

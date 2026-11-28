@@ -81,8 +81,14 @@ export function listingsMessages(r: ListingsResult): Message[] {
   const rated = r.reviews.filter((v) => v.readable && v.rating !== null)
   if (r.reviews.length) {
     out.push(agent([
-      { kind: "text", text: rated.length ? `Your ratings beyond Google: ${rated.map((v) => `${v.site} ${v.rating!.toFixed(1)}★${v.count ? ` (${v.count})` : ""}`).join(" · ")}.` : "Your reviews beyond Google:" },
-      { kind: "sources", items: r.reviews.map((v) => ({ name: v.site, detail: v.readable ? (v.rating !== null ? `${v.rating.toFixed(1)} stars${v.count ? ` from ${v.count} reviews` : ""}` : "Couldn’t read the rating this time") : "Couldn’t read this page this time", status: v.readable ? (v.rating !== null ? (v.rating < 4 ? "Below 4★" : "Read") : "Rating hidden") : "Retrying weekly", ok: v.readable && (v.rating ?? 0) >= 4, href: v.url })) },
+      { kind: "text", text: rated.length ? `Your ratings ${rated.some((v) => v.site === "Google") ? "across the web" : "beyond Google"}: ${rated.map((v) => `${v.site} ${v.rating!.toFixed(1)}★${v.count ? ` (${v.count})` : ""}`).join(" · ")}.` : "Your reviews beyond Google:" },
+      { kind: "sources", items: r.reviews.map((v) => ({
+        name: v.site,
+        detail: v.checked === false ? `${v.site} doesn’t let me read ratings, so I don’t check them` : v.pending ? "I’m still reading it. It will be here after my next check." : v.readable ? (v.rating !== null ? `${v.rating.toFixed(1)} stars${v.count ? ` from ${v.count} reviews` : ""}` : "Couldn’t read the rating this time") : "Couldn’t read this page this time",
+        status: v.checked === false ? "Not checked" : v.pending ? "Checking" : v.readable ? (v.rating !== null ? (v.rating < 4 ? "Below 4★" : "Read") : "Rating hidden") : "Retrying weekly",
+        ok: v.readable && (v.rating ?? 0) >= 4,
+        ...(v.url ? { href: v.url } : {}),
+      })) },
       { kind: "text", text: "AI reads these too. Asking happy customers to review you on the site where you’re weakest lifts the average fastest." },
     ], "rev-out"))
   }

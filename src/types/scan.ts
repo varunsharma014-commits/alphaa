@@ -32,8 +32,8 @@ export interface SerpEntry {
 }
 
 // Top organic Google results (max 10) for the customer-facing keyword.
-// null when SERP evidence wasn't available (no APIFY_TOKEN, SCAN_SERP_DISABLED,
-// Apify run failed, or the 20s cap was hit).
+// null when SERP evidence wasn't available (DataForSEO not configured,
+// SCAN_SERP_DISABLED, the call failed, or the 20s cap was hit).
 export interface ScanSerp {
   keyword: string
   results: SerpEntry[]

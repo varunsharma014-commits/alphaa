@@ -1,0 +1,64 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.1302 sec.",
+ "cost": 0,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280706-3309-0353-0000-88eaeeb9d446",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.1254 sec.",
+   "cost": 0,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "business_data",
+    "tripadvisor",
+    "reviews",
+    "task_get",
+    "11280706-3309-0353-0000-88eaeeb9d446"
+   ],
+   "data": {
+    "api": "business_data",
+    "function": "reviews",
+    "se": "tripadvisor",
+    "keyword": "The Keg Steakhouse Ottawa Market",
+    "location_name": "Ottawa,Ontario,Canada",
+    "depth": 10,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "url_path": "Restaurant_Review-g155004-d709884-Reviews-The_Keg_Steakhouse_Bar_Ottawa_Market-Ottawa_Ontario.html",
+     "type": "tripadvisor_reviews",
+     "se_domain": "www.tripadvisor.ca",
+     "check_url": "https://www.tripadvisor.ca/Restaurant_Review-g155004-d709884-Reviews-The_Keg_Steakhouse_Bar_Ottawa_Market-Ottawa_Ontario.html",
+     "datetime": "2026-11-28 07:06:54 +00:00",
+     "title": "The Keg Steakhouse + Bar - Ottawa Market",
+     "location": null,
+     "reviews_count": 772,
+     "rating": {
+      "rating_type": "Max5",
+      "value": 4.3,
+      "votes_count": 772,
+      "rating_max": 5
+     },
+     "rating_distribution": {
+      "1": 14,
+      "2": 24,
+      "3": 81,
+      "4": 257,
+      "5": 396
+     },
+     "items_count": 0,
+     "items": []
+    }
+   ]
+  }
+ ]
+}

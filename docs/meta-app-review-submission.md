@@ -138,7 +138,7 @@ reviewer test login in "App verification details" (Varun enters the password; ne
 
 ## Round 2 additions: Instagram data (added 2026-11-28, Varun)
 
-Goal: replace the Apify Instagram scrapers (rivals' posts, "What's working in your niche", email
+Goal: get Instagram data from Meta's own API (rivals' posts, "What's working in your niche", email
 research) with Meta's own API, and get our customers' own Instagram post stats (reach, saves) for
 Social Studio. Requirements checked against Meta's docs on 2026-11-28:
 
@@ -158,8 +158,11 @@ Creator accounts), and Meta ads of competitors outside politics in the US/CA.
 1. `lib/social/meta-insights.ts`: Business Discovery for rival usernames (from the competitor
    list's Instagram links), hashtag search for the niche hashtags (respect the 30/7-day cap per
    connected IG account; cache), own-media insights on published posts → `PostResult.stats`.
-2. Swap `lib/niche-posts.ts` and the email dossier Instagram calls from Apify to these when a
-   connected IG account with the permissions exists; Apify stays as fallback until approval.
+2. DONE 2026-11-28: `lib/niche-posts.ts`, the profiles check and the email dossier use these when a
+   connected IG account's token has the permissions (checked with debug_token). There is no
+   fallback scraper: until approval the niche card says Instagram comes once Meta approves.
+   After approval: add `instagram_manage_insights` to the Facebook Login for Business
+   configuration and set `META_HASHTAG_SEARCH=1` on Railway.
 3. Social Studio shows reach/saves/shares on our own Instagram posts.
 
 ### Paste text (draft)

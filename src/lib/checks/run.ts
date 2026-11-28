@@ -8,6 +8,7 @@ import { checkProfiles, findProfileUrls, missingNetworks, networkOf, type Profil
 import { checkNap, napSummary, type NapFinding } from "./nap"
 import { outsideReviews, reviewSites, type OutsideReview } from "./reviews-elsewhere"
 import { bingSummary, decryptSecret } from "./bing-webmaster"
+import { ownerRequest } from "@/lib/usage"
 
 export type CheckKind = "security" | "profiles" | "listings" | "bing"
 export type ProfilesResult = { findings: ProfileFinding[]; missing: ProfileNetwork[] }
@@ -42,7 +43,7 @@ export async function runCheck(userId: string, kind: CheckKind): Promise<unknown
   if (kind === "profiles") {
     if (!user.websiteUrl) return null
     const loc = user.integration ? await getLocationInfo(user.integration).catch(() => null) : null
-    const findings = await checkProfiles({ siteUrl: site(user.websiteUrl), businessName: user.businessName ?? "", phone: loc?.phone ?? null, extraUrls: s.profiles })
+    const findings = await checkProfiles({ siteUrl: site(user.websiteUrl), businessName: user.businessName ?? "", phone: loc?.phone ?? null, extraUrls: s.profiles, userId })
     const missing = missingNetworks(findings.map((f) => f.network), user.businessType)
     const r: ProfilesResult = { findings, missing }
     await save(userId, kind, `Checked ${findings.length} profiles`, r)
@@ -60,7 +61,13 @@ export async function runCheck(userId: string, kind: CheckKind): Promise<unknown
       city: user.city,
       zip: addr.match(/\b\d{5}(?:-\d{4})?\b/)?.[0] ?? user.zip ?? null,
     }
-    const [nap, reviews] = await Promise.all([urls.length ? checkNap(urls, facts) : Promise.resolve([]), outsideReviews(reviewSites(urls), facts.name)])
+    // DataForSEO's standard tasks: a short wait when the owner is waiting (the rest is collected next time).
+    const waitMs = ownerRequest() ? 35_000 : 150_000
+    const ratingUser = { id: user.id, businessName: user.businessName, businessType: user.businessType, city: user.city, state: user.state, websiteUrl: user.websiteUrl }
+    const [nap, reviews] = await Promise.all([
+      urls.length ? checkNap(urls, facts) : Promise.resolve([]),
+      outsideReviews(urls, facts.name, { user: ratingUser, googleConnected: !!loc, waitMs }),
+    ])
     const r: ListingsResult = { nap, summary: napSummary(nap), reviews }
     await save(userId, kind, `Checked your details on ${nap.length} listings`, r)
     return r

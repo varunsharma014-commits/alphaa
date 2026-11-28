@@ -1,0 +1,519 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.0146 sec.",
+ "cost": 0.0006,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280706-3309-0066-0000-5706364275e5",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.0103 sec.",
+   "cost": 0.0006,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "organic",
+    "task_get",
+    "advanced",
+    "11280706-3309-0066-0000-5706364275e5"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "task_get",
+    "se": "google",
+    "se_type": "organic",
+    "keyword": "dentist ottawa",
+    "location_name": "Ottawa,Ontario,Canada",
+    "language_code": "en",
+    "depth": 10,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": [
+    {
+     "keyword": "dentist ottawa",
+     "type": "organic",
+     "se_domain": "google.com",
+     "location_code": 9198644,
+     "language_code": "en",
+     "check_url": "https://www.google.com/search?q=dentist%20ottawa&hl=en&gl=CA&ie=UTF-8&uule=w+CAIQIFISCSEnm65H-81MEWD3FAhqKdFN",
+     "datetime": "2026-11-28 07:08:21 +00:00",
+     "spell": null,
+     "refinement_chips": null,
+     "item_types": [
+      "ai_overview",
+      "local_pack",
+      "organic",
+      "people_also_ask"
+     ],
+     "se_results_count": 72,
+     "pages_count": 1,
+     "items_count": 13,
+     "items": [
+      {
+       "type": "local_pack",
+       "rank_group": 1,
+       "rank_absolute": 1,
+       "page": 1,
+       "position": "left",
+       "title": "Ottawa Downtown Dentist",
+       "description": "111 Albert St #114 \nClosed · Opens 8 a.m. Mon \n\"She took time to give me feedback and advice to improve my oral hygiene.\" \n",
+       "domain": "www.ottawadowntowndentist.com",
+       "phone": "(343) 429-7802",
+       "booking_url": null,
+       "url": "https://www.ottawadowntowndentist.com/site/home?utm_source=G&utm_medium=LPM&utm_campaign=DentalCorp",
+       "is_paid": false,
+       "rating": {
+        "rating_type": "Max5",
+        "value": 4.8,
+        "votes_count": 364,
+        "rating_max": 5
+       },
+       "cid": "17281467608110700682"
+      },
+      {
+       "type": "local_pack",
+       "rank_group": 2,
+       "rank_absolute": 2,
+       "page": 1,
+       "position": "left",
+       "title": "The Downtown Dental Clinic",
+       "description": "99 Metcalfe St #104 \nClosed · Opens 7:30 a.m. Mon \n\"Went in for root canal and was completed and on my way within an hour.\" \n",
+       "domain": "www.thedowntowndentalclinic.ca",
+       "phone": "(613) 707-7057",
+       "booking_url": null,
+       "url": "https://www.thedowntowndentalclinic.ca/",
+       "is_paid": false,
+       "rating": {
+        "rating_type": "Max5",
+        "value": 4.8,
+        "votes_count": 675,
+        "rating_max": 5
+       },
+       "cid": "2329170828076813864"
+      },
+      {
+       "type": "local_pack",
+       "rank_group": 3,
+       "rank_absolute": 3,
+       "page": 1,
+       "position": "left",
+       "title": "Ottawa Dentistry",
+       "description": "225 Metcalfe St \nClosed · Opens 8 a.m. Mon \n\"Now with Ottawa dentistry , he continues to provide superior service.\" \n",
+       "domain": "www.ottawadentistry.ca",
+       "phone": "(343) 429-9289",
+       "booking_url": null,
+       "url": "https://www.ottawadentistry.ca/site/home?utm_source=G&utm_medium=LPM&utm_campaign=DentalCorp",
+       "is_paid": false,
+       "rating": {
+        "rating_type": "Max5",
+        "value": 4.9,
+        "votes_count": 680,
+        "rating_max": 5
+       },
+       "cid": "15609401925370423687"
+      },
+      {
+       "type": "ai_overview",
+       "rank_group": 1,
+       "rank_absolute": 4,
+       "page": 1,
+       "position": "left",
+       "asynchronous_ai_overview": true,
+       "markdown": null,
+       "items": null,
+       "references": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 1,
+       "rank_absolute": 5,
+       "page": 1,
+       "position": "left",
+       "domain": "www.champlainhealthline.ca",
+       "title": "Dentists - Champlain - champlainhealthline.ca",
+       "url": "https://www.champlainhealthline.ca/listservices.aspx?id=10061",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.champlainhealthline.ca › listservices",
+       "website_name": "Champlain Health Line",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "These services are located in Champlain ; Ottawa Dental Society 1815 Alta Vista Dr, Suite 201, Ottawa, ON K1G 3Y6 613-523-3876 ; Ottawa Dental Society - Dental ... Read more",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "1815 Alta Vista Dr, Suite 201, Ottawa, ON K1G 3Y6"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://www.champlainhealthline.ca/listservices.aspx?id=10061#:~:text=These%20services%20are%20located%20in,Champlain&text=Ottawa%20Dental%20Society,613-523-3876&text=Ottawa%20Dental%20Society%20-%20Dental,Emergency%20Service",
+         "domain": "www.champlainhealthline.ca"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 2,
+       "rank_absolute": 6,
+       "page": 1,
+       "position": "left",
+       "domain": "dentli.ca",
+       "title": "Walk-In Dentist in Ottawa, ON | Dentli™",
+       "url": "https://dentli.ca/find-a-dentist/ottawa/walk-in-dentist",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://dentli.ca › find-a-dentist › ottawa › walk-in-dentist",
+       "website_name": "dentli.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Offices that accept patients without an appointment, including evenings and weekends. Compare walk-in options in Ottawa and book online.",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "Offices that accept patients without an appointment"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "people_also_ask",
+       "rank_group": 1,
+       "rank_absolute": 7,
+       "page": 1,
+       "position": "left",
+       "items": [
+        {
+         "type": "people_also_ask_element",
+         "title": "How much does a dentist make in Ottawa?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "What's the difference between a regular dentist and a cosmetic dentist?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "How much do 3 fillings cost in Canada?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        },
+        {
+         "type": "people_also_ask_element",
+         "title": "Do Canadians get free dental implants?",
+         "seed_question": null,
+         "expanded_element": [
+          {
+           "type": "people_also_ask_ai_overview_expanded_element",
+           "items": null,
+           "references": null,
+           "asynchronous_ai_overview": true
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "organic",
+       "rank_group": 3,
+       "rank_absolute": 8,
+       "page": 1,
+       "position": "left",
+       "domain": "dentocare.ca",
+       "title": "Patient Information | Dentist in Ottawa, Ontario",
+       "url": "https://dentocare.ca/patient-information/2/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://dentocare.ca › patient-information",
+       "website_name": "DentoCare Dental",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Get all the details you need as a new or returning patient Information. DentoCare in Ottawa shares info on forms, insurance, special offers, and appointment ...",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "Get all the details you need as a new or returning patient Information"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 4,
+       "rank_absolute": 9,
+       "page": 1,
+       "position": "left",
+       "domain": "www.whatclinic.com",
+       "title": "Dentists in Ottawa • Check Prices & Reviews",
+       "url": "https://www.whatclinic.com/dentists/canada/ontario/ottawa",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.whatclinic.com › ... › Canada › Ontario",
+       "website_name": "WhatClinic",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "All 53 clinics that provide Dentistry in Ottawa, Ontario · Anata Dental Clinic · Ottawa South Denture Clinic · Le Cabinet Dental Care · Dr John I. Kershman ... Read more",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "All 53 clinics that provide Dentistry in Ottawa"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://www.whatclinic.com/dentists/canada/ontario/ottawa#:~:text=All%2053%20clinics%20that%20provide,Dentistry%20in%20Ottawa%2C%20Ontario&text=Anata%20Dental%20Clinic&text=Ottawa%20South%20Denture%20Clinic&text=Le%20Cabinet%20Dental%20Care&text=Dr%20John%20I.%20Kershman%20Orthodontics,and%20Periodontics",
+         "domain": "www.whatclinic.com"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 5,
+       "rank_absolute": 10,
+       "page": 1,
+       "position": "left",
+       "domain": "dentocare.ca",
+       "title": "Team - Dentist in Downtown Ottawa",
+       "url": "https://dentocare.ca/team/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://dentocare.ca › team",
+       "website_name": "DentoCare Dental",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Skip to content. Request Appointment. Referral Form · (613) 942-0605 · (613)-900-5751 · info@dentocare.ca · 90 Richmond Rd Ottawa, Ontario K1Z 0C3. Read more",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "90 Richmond Rd Ottawa, Ontario K1Z 0C3"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://dentocare.ca/team/#:~:text=Request%20Appointment,Rd%20Ottawa%2C%20Ontario%20K1Z%200C3",
+         "domain": "dentocare.ca"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 6,
+       "rank_absolute": 11,
+       "page": 1,
+       "position": "left",
+       "domain": "dentli.ca",
+       "title": "Ottawa Dentistry — 225 Metcalfe St (664 reviews) - Dentli",
+       "url": "https://dentli.ca/dentist/ottawa-dentistry-ottawa",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://dentli.ca › dentist › ottawa-dentistry-ottawa",
+       "website_name": "dentli.ca",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Oct 22, 2026 — Our dentists and dental team are always welcoming new patients to our dental family. 225 Metcalfe St, Ottawa, ON K2P 1P9. Get directions ... Read more",
+       "pre_snippet": "10/22/2026 00:00:00",
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "225 Metcalfe St, Ottawa, ON K2P 1P9"
+       ],
+       "links": [
+        {
+         "type": "link_element",
+         "title": "Read more",
+         "description": null,
+         "url": "https://dentli.ca/dentist/ottawa-dentistry-ottawa#:~:text=Our%20dentists%20and%20dental%20team,Get%20directions",
+         "domain": "dentli.ca"
+        }
+       ],
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": "2026-10-22 00:00:00 +00:00"
+      },
+      {
+       "type": "organic",
+       "rank_group": 7,
+       "rank_absolute": 12,
+       "page": 1,
+       "position": "left",
+       "domain": "www.instagram.com",
+       "title": "Ottawa Dentist",
+       "url": "https://www.instagram.com/popular/ottawa-dentist/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.instagram.com › popular › ottawa-dentist",
+       "website_name": "Instagram",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Several dental clinics operate near downtown Ottawa with weekday hours. Rideau Dental Centre is open until 8:00 PM Monday to Thursday and Saturday mornings, ...",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "Several dental clinics operate near downtown Ottawa"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      },
+      {
+       "type": "organic",
+       "rank_group": 8,
+       "rank_absolute": 13,
+       "page": 1,
+       "position": "left",
+       "domain": "www.opencare.com",
+       "title": "Clinic - Ottawa, ON K1L 8A9 - Request Appointment",
+       "url": "https://www.opencare.com/dentists/ottawa-on/clinic-24620568865c/",
+       "cache_url": null,
+       "related_search_url": null,
+       "breadcrumb": "https://www.opencare.com › dentists › ottawa-on",
+       "website_name": "Opencare",
+       "is_image": false,
+       "is_video": false,
+       "is_featured_snippet": false,
+       "is_malicious": false,
+       "is_web_story": false,
+       "checks": null,
+       "description": "Clinic - 200 Beechwood Drive Ottawa, ON K1L 8A9. See their team of Dentists, Dental Hygienists, read patient reviews, make an appointment online for free ...",
+       "pre_snippet": null,
+       "extended_snippet": null,
+       "images": null,
+       "amp_version": false,
+       "rating": null,
+       "price": null,
+       "highlighted": [
+        "200 Beechwood Drive Ottawa, ON K1L 8A9"
+       ],
+       "links": null,
+       "faq": null,
+       "extended_people_also_search": null,
+       "about_this_result": null,
+       "related_result": null,
+       "timestamp": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

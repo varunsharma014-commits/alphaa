@@ -14,8 +14,8 @@
 
 export const QUOTA_KINDS = [
   "ai_cost_usd", // Anthropic tokens × list price + web searches (lib/ai-prices.ts), metered per call
-  "search", // web searches: Claude's web_search tool (auto-counted) + Apify Google results pages
-  "apify_usd", // Apify actor runs, counted at each run's charge cap
+  "search", // web searches: Claude's web_search tool (auto-counted) + Google / YouTube results pages (DataForSEO)
+  "data_usd", // paid data calls (DataForSEO: search results, ads, ratings), counted at each task's real cost
   "image_gen", // OpenAI-made pictures (AI image style, blog images)
   "scan", // full visibility scans of a brand (dashboard + the weekly re-scan)
   "engine_check", // one question put to one AI engine (ChatGPT / Gemini / Perplexity / Claude check)
@@ -47,7 +47,7 @@ type Table = Record<PlanKey, Record<QuotaKind, Limits>>
 const STARTER: Record<QuotaKind, Limits> = {
   ai_cost_usd: { day: 1, month: 10 },
   search: { day: 20, month: 120 },
-  apify_usd: { day: 0.5, month: 1 },
+  data_usd: { day: 0.5, month: 1 },
   image_gen: { day: 3, month: 8 },
   scan: { day: 3, month: 15 },
   engine_check: { day: 150, month: 1000 },
@@ -71,7 +71,7 @@ const STARTER: Record<QuotaKind, Limits> = {
 const PRO: Record<QuotaKind, Limits> = {
   ai_cost_usd: { day: 4, month: 40 },
   search: { day: 60, month: 400 },
-  apify_usd: { day: 2, month: 8 },
+  data_usd: { day: 2, month: 8 },
   image_gen: { day: 6, month: 40 },
   scan: { day: 5, month: 30 },
   engine_check: { day: 320, month: 2500 },
@@ -96,7 +96,7 @@ const GROWTH: Record<QuotaKind, Limits> = {
   ...PRO,
   ai_cost_usd: { day: 8, month: 80 },
   search: { day: 100, month: 600 },
-  apify_usd: { day: 3, month: 15 },
+  data_usd: { day: 3, month: 15 },
   image_gen: { day: 8, month: 60 },
   ad_plan: { month: 4 },
   ad_change: { day: 30 }, // per ad account in the allowance (quotas.ts multiplies)
@@ -107,7 +107,7 @@ const NONE: Record<QuotaKind, Limits> = {
   ...STARTER,
   ai_cost_usd: { day: 0.5, month: 3 },
   search: { day: 10, month: 40 },
-  apify_usd: { day: 0.25, month: 0.5 },
+  data_usd: { day: 0.25, month: 0.5 },
   image_gen: { day: 1, month: 2 },
   scan: { day: 2, month: 4 },
   engine_check: { day: 60, month: 200 },
@@ -160,12 +160,34 @@ function overrides(raw = process.env.QUOTAS_JSON): Override {
   return o
 }
 
+/**
+ * The data-spend kind had a provider-specific name before 2026-11-28. Any other "<name>_usd" key
+ * in QUOTAS_JSON (not ai_cost_usd) is read as data_usd; a data_usd key set next to it wins.
+ */
+const isLegacyDataKey = (k: string) => k.endsWith("_usd") && k !== "ai_cost_usd" && k !== "data_usd"
+function legacyLayer(plan: Override[PlanKey] | undefined, kind: QuotaKind): Partial<Record<Period, number | null>> | undefined {
+  if (kind !== "data_usd" || !plan || typeof plan !== "object") return undefined
+  const k = Object.keys(plan).find(isLegacyDataKey)
+  return k ? (plan as Record<string, Partial<Record<Period, number | null>>>)[k] : undefined
+}
+
+/**
+ * One kind's amount in one usage_day row's counts (lib/usage.ts). data_usd also sums the older
+ * provider-specific "<name>_usd" counts, so a month that spans the rename keeps one total.
+ */
+export function countsAmount(counts: Record<string, number> | undefined, kind: QuotaKind | string, searches = 0): number {
+  const c = counts ?? {}
+  if (kind === "search") return searches + (c.search ?? 0)
+  if (kind === "data_usd") return Object.entries(c).reduce((a, [k, v]) => a + (k === "data_usd" || isLegacyDataKey(k) ? v : 0), 0)
+  return c[kind] ?? 0
+}
+
 /** The limits for one plan and kind, after QUOTAS_JSON ("*" first, then the plan). */
 export function limitsFor(plan: string | null | undefined, kind: QuotaKind, raw?: string): Limits {
   const key = planKey(plan)
   const out: Limits = { ...BASE_QUOTAS[key][kind] }
   const o = overrides(raw)
-  for (const layer of [o["*"]?.[kind], o[key]?.[kind]]) {
+  for (const layer of [legacyLayer(o["*"], kind), o["*"]?.[kind], legacyLayer(o[key], kind), o[key]?.[kind]]) {
     if (!layer || typeof layer !== "object") continue
     for (const p of PERIODS) {
       if (!(p in layer)) continue
@@ -254,7 +276,7 @@ export function decide(kind: QuotaKind, limits: Limits, used: Partial<Record<Per
 const NOUN: Record<QuotaKind, [string, string]> = {
   ai_cost_usd: ["", ""],
   search: ["web search", "web searches"],
-  apify_usd: ["", ""],
+  data_usd: ["", ""],
   image_gen: ["picture", "pictures"],
   scan: ["full AI check", "full AI checks"],
   engine_check: ["AI check", "AI checks"],
@@ -299,7 +321,7 @@ function upgradeHint(kind: QuotaKind, period: Period, plan: string): string {
 export function quotaMessage(kind: QuotaKind, period: Period, limit: number, plan: string, now = new Date()): string {
   const when = reopens(period, now)
   const hint = upgradeHint(kind, period, plan)
-  if (kind === "ai_cost_usd" || kind === "apify_usd") {
+  if (kind === "ai_cost_usd" || kind === "data_usd") {
     return `I've done all the work your plan covers ${PERIOD_WORD[period]}, so I'm pausing new writing and research until ${when.replace(/^on /, "")}${hint}. Everything already made is safe.`
   }
   const [one, many] = NOUN[kind]

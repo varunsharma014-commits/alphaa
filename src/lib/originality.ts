@@ -5,8 +5,8 @@
 //   (a) 8-word shingle overlap with every page I read for the draft's brief (the competitor page
 //       the brief benchmarked + the other pages the gap analysis read on that site), read through
 //       lib/page-reader.ts (robots respected, 6-hour cache);
-//   (b) a web check: ~5 distinctive sentences searched as exact phrases on Google via the Apify
-//       SERP (lib/apify-search.ts, each one on the brand's `search` quota); a result whose snippet
+//   (b) a web check: ~5 distinctive sentences searched as exact phrases on Google via DataForSEO
+//       live results (lib/dataforseo.ts, each one on the brand's `search` quota); a result whose snippet
 //       or page holds the sentence is a match with its URL. Sentence results are kept on the
 //       draft, so a re-check after an edit only searches sentences that changed.
 // A paid API can be plugged in later: implement OriginalityProvider, add it to PROVIDERS and set
@@ -21,7 +21,7 @@ import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
-import { googleSearch, isSearchConfigured } from "@/lib/apify-search"
+import { googleSearch, isSearchConfigured } from "@/lib/dataforseo"
 import { hostOf, readArticleCached } from "@/lib/page-reader"
 import { allowedNumbers, numberProblems } from "@/lib/content-check"
 import { checkQuota, withQuota } from "@/lib/quotas"
@@ -89,13 +89,14 @@ const selfProvider: OriginalityProvider = {
             const key = sentenceKey(s)
             const hit = prev.get(key)
             if (hit) return hit
-            const results = await googleSearch(phraseQuery(s), { results: 10, timeoutMs: 90_000 }).catch(() => [])
+            const results = await googleSearch(phraseQuery(s), { results: 10, timeoutMs: 60_000, mode: "live" }).catch(() => [])
             const matches: WebSentence["matches"] = []
             for (const r of results.filter((x) => !excluded(x.url))) {
               if (matches.length >= 3) break
               if (holdsSentence(s, `${r.title} ${r.description ?? ""}`)) { matches.push({ url: r.url, title: r.title ?? null, via: "snippet" }); continue }
-              // The snippet cut it short: read the page itself (a few per check).
-              if (pageReads >= MAX_PAGE_READS) continue
+              // The snippet cut it short: read the page itself (a few per check). Only when Google
+              // gave the page's own address (exact: false = just the site's).
+              if (pageReads >= MAX_PAGE_READS || r.exact === false) continue
               pageReads++
               const p = await readArticleCached(r.url, PAGE_TEXT).catch(() => null)
               if (p?.ok && holdsSentence(s, p.page.text)) matches.push({ url: r.url, title: r.title ?? null, via: "page" })

@@ -2,9 +2,9 @@
 // database only (refuses anything but localhost). Nothing is published and no email is sent:
 //   tracked AI questions (written from the real site) + gap analysis (the competitor's real pages)
 //   → cluster map (one Sonnet call, validated) → writePost picks the next unwritten article →
-//   brief links its pillar/siblings → originality check of that draft (pages + Google if
-//   APIFY_TOKEN) → a planted copy of the competitor's page is held → "Rewrite these lines".
-// Costs a few cents of Claude (+ ~10 Google searches with APIFY_TOKEN).
+//   brief links its pillar/siblings → originality check of that draft (pages + Google when
+//   DataForSEO is configured) → a planted copy of the competitor's page is held → "Rewrite these lines".
+// Costs a few cents of Claude (+ ~10 live Google searches with DataForSEO, $0.002 each).
 //   npx tsx --env-file=.env.local scripts/test-clusters-e2e.ts --site growthturbine.com --rival dealmaker.tech --type "fundraising marketing agency"
 import * as React from "react"
 

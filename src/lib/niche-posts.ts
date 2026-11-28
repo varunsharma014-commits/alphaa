@@ -1,27 +1,31 @@
-// "What's working in your niche": real posts and long-running ads from this business's
+// "What's working in your niche": real posts, videos and long-running ads from this business's
 // vertical and area, so the owner can see what earns attention and make their own version.
 //
 //   1. Terms: 3-6 hashtags / keywords from the business type + city (Haiku, structured), plus
-//      the known rivals (scan dossier + Competitor rows) and their homepage social links.
-//   2. Sources (each optional, each capped hard because Apify bills PER RESULT):
-//      - Instagram hashtag posts   apify/instagram-hashtag-scraper   ≤ 24 results
-//      - TikTok hashtag + keyword  clockworks/tiktok-scraper          ≤ 20 results
-//      - Rivals' Instagram posts   apify/instagram-post-scraper       ≤ 12 results
-//      - Rivals' Facebook posts    apify/facebook-posts-scraper       ≤ 12 results
+//      the known rivals (scan dossier + Competitor rows) and their homepage Instagram links.
+//   2. Sources (each optional):
+//      - Instagram hashtag top posts  Meta's own API (ig_hashtag_search + top_media), only when the
+//        brand's connected Instagram account allows it (lib/social/meta-insights.ts)
+//      - Rivals' Instagram posts      Meta Business Discovery, same condition
+//      - YouTube videos for a phrase  DataForSEO YouTube results (standard mode, $0.0006), with
+//        YouTube's own view counts
 //      - Meta Ad Library (graph.facebook.com/v21.0/ads_archive), only with META_AD_LIBRARY_TOKEN:
 //        active ads that started more than 30 days ago (an ad that keeps running is paying off).
-//   3. Rank by engagement (relative to the author's followers when the source gives it), keep 5-8.
+//      TikTok and rivals' Facebook posts are not read (no source we can use).
+//   3. Rank by engagement against the same pull's median (per follower when the source gives
+//      followers, per view for YouTube, interactions within one hashtag), keep 5-8.
 //      Sonnet writes a one-sentence paraphrase, "why it works" and "your version" from the real
-//      fields only. Captions are never stored; any text sharing 8+ words with a caption is dropped.
-// Saved weekly per brand as MockActivity "niche_posts". Field names verified on the actor pages
-// (apify.com/<actor>) and the Graph API ArchivedAd reference on 2026-11-18.
+//      fields only. Other accounts' captions are never requested; a YouTube title is quoted as
+//      the video's own opening line, with its link.
+// Saved weekly per brand as MockActivity "niche_posts".
 import { relevantCompetitors } from "@/lib/competitor-relevance"
 import { createHash } from "crypto"
 import { z } from "zod/v4"
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
-import { apifyEnabled } from "@/lib/checks/apify"
+import { dataforseoConfigured, youtubeSearch } from "@/lib/dataforseo"
+import { businessDiscovery, hashtagTopMedia, igAccess, type IgMedia, type IgState } from "@/lib/social/meta-insights"
 import { buildAccountDossier, socialLinks } from "@/lib/personal/research"
 import { safeFetch } from "@/lib/safe-fetch"
 import { runAsUser } from "@/lib/usage"
@@ -36,7 +40,8 @@ const RUN_STALE_MS = 20 * 60_000
 const HAIKU = "claude-haiku-4-5"
 const SONNET = "claude-sonnet-5-5"
 
-export type NichePlatform = "instagram" | "tiktok" | "facebook" | "meta_ad"
+/** tiktok and facebook only appear in rows saved before 2026-11-28. */
+export type NichePlatform = "instagram" | "youtube" | "tiktok" | "facebook" | "meta_ad"
 export type NicheSource = "hashtag" | "keyword" | "rival" | "ad"
 export type NicheMetrics = { likes?: number; comments?: number; shares?: number; views?: number; followers?: number; daysRunning?: number }
 export type NicheItem = {
@@ -66,6 +71,8 @@ export type NicheItem = {
   lift?: number | null
   /** The writer's verdict: does this post really belong to the owner's niche? */
   fit?: boolean
+  /** "views" = lift is views against the pull's median (YouTube); else engagement. */
+  liftKind?: "views" | "engagement"
 }
 export type NichePosts = {
   v: 1
@@ -74,17 +81,19 @@ export type NichePosts = {
   terms: string[]
   sources: string[]
   items: NicheItem[]
+  /** Instagram at the time of this look: on, waiting on Meta's approval, or not connected. */
+  instagram?: InstagramState
 }
+export type InstagramState = "on" | "pending" | "connect"
+const igState = (st: IgState): InstagramState => (st.state === "on" ? "on" : st.state === "pending" ? "pending" : "connect")
 
-export const nicheEnabled = () => apifyEnabled()
+export const nicheEnabled = () => dataforseoConfigured() || !!process.env.META_AD_LIBRARY_TOKEN
 export const adLibraryEnabled = () => !!process.env.META_AD_LIBRARY_TOKEN
 
-export const PLATFORM_LABEL: Record<NichePlatform, string> = { instagram: "Instagram", tiktok: "TikTok", facebook: "Facebook", meta_ad: "Facebook & Instagram ad" }
+export const PLATFORM_LABEL: Record<NichePlatform, string> = { instagram: "Instagram", youtube: "YouTube", tiktok: "TikTok", facebook: "Facebook", meta_ad: "Facebook & Instagram ad" }
 
 const n = (x: number) => Math.round(x).toLocaleString("en-US")
-const num = (v: unknown): number | undefined => (typeof v === "number" && Number.isFinite(v) && v >= 0 ? v : undefined)
 const str = (v: unknown): string | null => (typeof v === "string" && v.trim() ? v.trim() : null)
-const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v)
 const hash = (s: string) => createHash("sha1").update(s).digest("hex").slice(0, 10)
 const dateOnly = (v: unknown): string | null => {
   if (typeof v === "number" && v > 1e9) return new Date(v < 1e12 ? v * 1000 : v).toISOString().slice(0, 10)
@@ -110,36 +119,7 @@ export function metricLine(i: Pick<NicheItem, "metrics" | "postedAt" | "platform
   return parts.join(" · ")
 }
 
-// ── Apify (pay per result: every call passes maxItems and a spend cap) ───────
-
-async function actor(id: string, input: object, maxItems: number): Promise<Record<string, unknown>[]> {
-  const token = process.env.APIFY_TOKEN
-  if (!token || maxItems <= 0) return []
-  // Counted at its spend cap ($0.25) against the brand's Apify quota (lib/quotas.ts apify_usd).
-  const { quotaHere } = await import("@/lib/quotas")
-  const q = await quotaHere("apify_usd", 0.25)
-  if (!q.allowed) { console.warn(`[niche] ${id} skipped: quota`, q.userId, q.period); return [] }
-  try {
-    const qs = new URLSearchParams({ token, timeout: "150", maxItems: String(maxItems), maxTotalChargeUsd: "0.25" })
-    const r = await fetch(`https://api.apify.com/v2/acts/${id}/run-sync-get-dataset-items?${qs}`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(input),
-      signal: AbortSignal.timeout(170_000),
-    })
-    if (!r.ok) {
-      console.error(`[niche] ${id} ${r.status}`)
-      return []
-    }
-    const items = await r.json()
-    return Array.isArray(items) ? items.filter(isRecord).slice(0, maxItems) : []
-  } catch (err) {
-    console.error(`[niche] ${id}`, err instanceof Error ? err.message : err)
-    return []
-  }
-}
-
-type Raw = Omit<NicheItem, "id" | "about" | "why" | "angle"> & { caption: string; kind?: string | null }
+type Raw = Omit<NicheItem, "id" | "about" | "why" | "angle"> & { caption: string; kind?: string | null; /** Rough age (YouTube says "2 years ago"): for the freshness filter only, never shown. */ ageAt?: string | null }
 
 /** The post's own opening line: first line, no hashtags, mentions or links, at most 140 characters. */
 export function hookOf(caption: string): string | null {
@@ -162,9 +142,10 @@ export function formatOf(caption: string, kind: string | null | undefined, platf
   if (/\b(founder|ceo|i started|i built|my business)\b/.test(c)) return "Founder story"
   if (/\b(review|testimonial|customer said)\b/.test(c)) return "Testimonial"
   if (/\?\s*$/.test(c.split("\n")[0] ?? "")) return "Question hook"
-  if (kind === "Sidecar") return "Carousel"
-  if (kind === "Video" || kind === "clips" || platform === "tiktok") return platform === "tiktok" ? "Short video" : "Reel"
-  if (kind === "Image") return "Photo"
+  if (platform === "youtube") return kind === "shorts" ? "Short video" : "Video"
+  if (kind === "Sidecar" || kind === "CAROUSEL_ALBUM") return "Carousel"
+  if (kind === "Video" || kind === "clips" || kind === "VIDEO" || kind === "REELS" || platform === "tiktok") return platform === "tiktok" ? "Short video" : "Reel"
+  if (kind === "Image" || kind === "IMAGE") return "Photo"
   return null
 }
 
@@ -181,55 +162,31 @@ export function median(xs: number[]): number | null {
   return a.length % 2 ? a[k] : (a[k - 1] + a[k]) / 2
 }
 
-// apify/instagram-hashtag-scraper: { hashtags, resultsType: "posts", resultsLimit }
-//   → { url, caption, likesCount, commentsCount, videoViewCount, videoPlayCount, timestamp, ownerUsername }
-// apify/instagram-post-scraper: { username: [..], resultsLimit, skipPinnedPosts, onlyPostsNewerThan } → same item shape
-function fromInstagram(p: Record<string, unknown>, source: NicheSource, via: string): Raw | null {
-  const url = str(p.url)
-  if (!url) return null
-  const likes = num(p.likesCount)
+/** One Instagram post from Meta's API (counts, link, type, date; never the caption). */
+function fromIgMedia(m: IgMedia, source: NicheSource, via: string, handle: string | null, followers: number | null): Raw | null {
+  if (!m.url) return null
   return {
-    url, platform: "instagram", source, via,
-    handle: str(p.ownerUsername),
-    metrics: { likes, comments: num(p.commentsCount), views: num(p.videoPlayCount) ?? num(p.videoViewCount) },
-    postedAt: dateOnly(p.timestamp),
-    caption: str(p.caption) ?? "",
-    thumb: str(p.displayUrl),
-    duration: num(p.videoDuration) ?? null,
-    kind: str(p.productType) === "clips" ? "clips" : str(p.type),
+    url: m.url, platform: "instagram", source, via, handle,
+    metrics: { likes: m.likes ?? undefined, comments: m.comments ?? undefined, views: m.views ?? undefined, followers: followers ?? undefined },
+    postedAt: dateOnly(m.postedAt),
+    caption: "",
+    kind: m.product === "REELS" ? "REELS" : m.type,
   }
 }
 
-// clockworks/tiktok-scraper: { hashtags, searchQueries, resultsPerPage, shouldDownload*: false }
-//   → { webVideoUrl, text, diggCount, commentCount, shareCount, playCount, createTimeISO, authorMeta: { name, fans }, isAd }
-function fromTikTok(p: Record<string, unknown>, source: NicheSource, via: string): Raw | null {
-  const url = str(p.webVideoUrl)
-  if (!url || p.isAd === true) return null
-  const author = isRecord(p.authorMeta) ? p.authorMeta : {}
+/** One YouTube video from DataForSEO's YouTube results (views from YouTube). */
+function fromYoutube(v: { url: string; title: string; channel: string | null; views: number | null; timestamp: string | null; seconds: number | null; shorts: boolean; thumb: string | null }, via: string): Raw | null {
+  if (!v.url || v.views == null) return null
   return {
-    url, platform: "tiktok", source, via,
-    handle: str(author.name) ?? str(p["authorMeta.name"]),
-    metrics: { likes: num(p.diggCount), comments: num(p.commentCount), shares: num(p.shareCount), views: num(p.playCount), followers: num(author.fans) ?? num(p["authorMeta.fans"]) },
-    postedAt: dateOnly(p.createTimeISO) ?? dateOnly(p.createTime),
-    caption: str(p.text) ?? "",
-    thumb: isRecord(p.videoMeta) ? str(p.videoMeta.coverUrl) : null,
-    duration: isRecord(p.videoMeta) ? num(p.videoMeta.duration) ?? null : null,
-    kind: "Video",
-  }
-}
-
-// apify/facebook-posts-scraper: { startUrls: [{ url }], resultsLimit, onlyPostsNewerThan }
-//   → { url, text, time, likes, comments, shares, viewsCount, pageName, user: { name } }
-function fromFacebook(p: Record<string, unknown>, via: string): Raw | null {
-  const url = str(p.url)
-  if (!url) return null
-  const user = isRecord(p.user) ? p.user : {}
-  return {
-    url, platform: "facebook", source: "rival", via,
-    handle: str(p.pageName) ?? str(user.name),
-    metrics: { likes: num(p.likes), comments: num(p.comments), shares: num(p.shares), views: num(p.viewsCount) },
-    postedAt: dateOnly(p.time) ?? dateOnly(p.timestamp),
-    caption: str(p.text) ?? "",
+    url: v.url, platform: "youtube", source: "keyword", via, handle: v.channel,
+    metrics: { views: v.views },
+    // YouTube only says "2 years ago"; the exact day isn't known, so no date is shown.
+    postedAt: null,
+    caption: v.title,
+    thumb: v.thumb,
+    duration: v.seconds,
+    kind: v.shorts ? "shorts" : "video",
+    ageAt: v.timestamp,
   }
 }
 
@@ -281,8 +238,8 @@ async function metaAds(terms: string[], country: string): Promise<Raw[]> {
 // ── Terms ────────────────────────────────────────────────────────────────────
 
 const TermSchema = z.object({
-  hashtags: z.array(z.string()).describe("3 to 4 Instagram/TikTok hashtags without #, lowercase, no spaces, that people in this niche and area actually use"),
-  keywords: z.array(z.string()).describe("1 or 2 short search phrases (2-4 words) customers of this business would search on TikTok"),
+  hashtags: z.array(z.string()).describe("3 to 4 Instagram hashtags without #, lowercase, no spaces, that people in this niche and area actually use"),
+  keywords: z.array(z.string()).describe("1 or 2 short search phrases (2-4 words) customers of this business would search on YouTube"),
 })
 
 type Biz = { businessName: string | null; businessType: string | null; city: string | null; state: string | null }
@@ -315,8 +272,8 @@ Never use a tag whose main word also means something else in another language or
   }
 }
 
-/** Rivals with a website, and the Instagram / Facebook pages their homepage links to. */
-async function rivalSocials(userId: string): Promise<{ name: string; instagram?: string; facebook?: string }[]> {
+/** Rivals with a website, and the Instagram account their homepage links to. */
+async function rivalSocials(userId: string): Promise<{ name: string; instagram?: string }[]> {
   const dossier = await buildAccountDossier(userId, { offline: true }).catch(() => null)
   // Only real competitors (shared gate: lib/competitor-relevance.ts).
   const comps = (await relevantCompetitors(userId, await db.competitor.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 30, select: { url: true, name: true, crawlData: true } }))).slice(0, 5)
@@ -330,13 +287,13 @@ async function rivalSocials(userId: string): Promise<{ name: string; instagram?:
   }
   for (const r of dossier?.rivals ?? []) add(r.name, r.domain)
   for (const c of comps) add(c.name ?? c.url, c.url)
-  const out: { name: string; instagram?: string; facebook?: string }[] = []
+  const out: { name: string; instagram?: string }[] = []
   for (const r of list.slice(0, 3)) {
     try {
       const res = await safeFetch(`https://${r.domain}/`, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" }, signal: AbortSignal.timeout(8000) })
       const html = res.ok ? (await res.text()).slice(0, 800_000) : ""
       const links = socialLinks(html)
-      if (links.instagram || links.facebook) out.push({ name: r.name, instagram: links.instagram, facebook: links.facebook })
+      if (links.instagram) out.push({ name: r.name, instagram: links.instagram })
     } catch {
       // unreadable homepage: skip this rival
     }
@@ -351,9 +308,25 @@ function engagement(m: NicheMetrics): number {
   return (m.likes ?? 0) + 2 * (m.comments ?? 0) + 3 * (m.shares ?? 0) + (m.views ?? 0) / 50
 }
 
+const interactions = (m: NicheMetrics) => (m.likes ?? 0) + (m.comments ?? 0) + (m.shares ?? 0)
+
+/**
+ * What a post is judged on, and the group it's judged within: YouTube by views, posts with a
+ * follower or view count by engagement rate, hashtag posts (Meta gives no follower count for
+ * them) by interactions against the other top posts of that hashtag.
+ */
+function measureOf(r: Raw): { group: string; value: number | null; kind: "views" | "engagement" } {
+  if (r.platform === "youtube") return { group: "youtube", value: r.metrics.views ?? null, kind: "views" }
+  const rate = engagementRate(r.metrics)
+  if (rate != null) return { group: `${r.platform}:${r.source}:rate`, value: rate, kind: "engagement" }
+  if (r.source === "hashtag") return { group: `${r.platform}:hashtag:${r.via ?? ""}`, value: interactions(r.metrics), kind: "engagement" }
+  return { group: "none", value: null, kind: "engagement" }
+}
+
 /** Best first within each source group, then taken in turn so one platform doesn't fill the list. */
 function rank(raw: Raw[], ownHandles: Set<string>): Raw[] {
   const cutoff = Date.now() - 120 * DAY
+  const ytCutoff = Date.now() - 365 * DAY
   const seen = new Set<string>()
   const ok = raw.filter((r) => {
     if (seen.has(r.url)) return false
@@ -361,14 +334,28 @@ function rank(raw: Raw[], ownHandles: Set<string>): Raw[] {
     if (r.handle && ownHandles.has(r.handle.toLowerCase().replace(/^@/, ""))) return false
     if (r.platform === "meta_ad") return true
     if (r.postedAt && Date.parse(r.postedAt) < cutoff) return false
+    if (r.ageAt && Date.parse(r.ageAt) < ytCutoff) return false
     return engagement(r.metrics) >= 10
   })
-  // Engagement gate: only posts that beat the median rate of this same scrape (ads are judged by how
-  // long they've run instead). A post with no views or followers to divide by can't be judged and is left out.
-  const rated = ok.filter((r) => r.platform !== "meta_ad").map((r) => ({ r, rate: engagementRate(r.metrics) }))
-  const mid = median(rated.map((x) => x.rate).filter((x): x is number => x != null))
-  for (const x of rated) { x.r.rate = x.rate; x.r.lift = x.rate != null && mid ? x.rate / mid : null }
-  const passes = new Set(rated.filter((x) => x.rate != null && mid != null && x.rate > mid).map((x) => x.r))
+  // Engagement gate: only posts that beat the median of their own group in this same pull (ads are
+  // judged by how long they've run instead). A post with nothing to compare can't be judged and is left out.
+  const groups0 = new Map<string, { r: Raw; v: number }[]>()
+  for (const r of ok) {
+    if (r.platform === "meta_ad") continue
+    const m = measureOf(r)
+    r.liftKind = m.kind
+    if (m.value == null) continue
+    groups0.set(m.group, [...(groups0.get(m.group) ?? []), { r, v: m.value }])
+  }
+  const passes = new Set<Raw>()
+  for (const list of groups0.values()) {
+    const mid = median(list.map((x) => x.v))
+    for (const x of list) {
+      x.r.rate = x.v
+      x.r.lift = mid ? x.v / mid : null
+      if (mid != null && x.v > mid) passes.add(x.r)
+    }
+  }
   for (let i = ok.length - 1; i >= 0; i--) if (ok[i].platform !== "meta_ad" && !passes.has(ok[i])) ok.splice(i, 1)
   const score = (r: Raw) => (r.platform === "meta_ad" ? r.metrics.daysRunning ?? 0 : r.lift ?? 0)
   const groups = new Map<string, Raw[]>()
@@ -377,7 +364,7 @@ function rank(raw: Raw[], ownHandles: Set<string>): Raw[] {
     groups.set(k, [...(groups.get(k) ?? []), r])
   }
   for (const g of groups.values()) g.sort((a, b) => score(b) - score(a))
-  const order = ["ad", "rival:instagram", "rival:facebook", "instagram", "tiktok"].filter((k) => groups.has(k))
+  const order = ["ad", "rival:instagram", "instagram", "youtube"].filter((k) => groups.has(k))
   const out: Raw[] = []
   for (let i = 0; out.length < 8 && order.some((k) => (groups.get(k)?.length ?? 0) > i); i++) {
     for (const k of order) {
@@ -416,7 +403,7 @@ async function describe(items: (Raw & { id: string })[], u: Biz): Promise<NicheI
     ...strip(r),
     hook: hookOf(r.caption),
     format: formatOf(r.caption, r.kind, r.platform),
-    about: r.platform === "meta_ad" ? `An ad from ${r.handle ?? "a business in your niche"} that is still running.` : `A ${PLATFORM_LABEL[r.platform]} post from ${r.handle ? `@${r.handle.replace(/^@/, "")}` : "an account in your niche"}${r.via && r.source !== "rival" ? ` found under ${r.source === "hashtag" ? `#${r.via}` : `“${r.via}”`}` : ""}.`,
+    about: r.platform === "meta_ad" ? `An ad from ${r.handle ?? "a business in your niche"} that is still running.` : r.platform === "youtube" ? `A YouTube video from ${r.handle ?? "a channel in your niche"}${r.via ? ` found for “${r.via}”` : ""}.` : `A ${PLATFORM_LABEL[r.platform]} post from ${r.handle ? `@${r.handle.replace(/^@/, "")}` : "an account in your niche"}${r.via && r.source !== "rival" ? ` found under ${r.source === "hashtag" ? `#${r.via}` : `“${r.via}”`}` : ""}.`,
     why: "",
     angle: "",
   })
@@ -434,7 +421,7 @@ ${items.map((r) => `ID: ${r.id}
 PLATFORM: ${PLATFORM_LABEL[r.platform]}${r.source === "rival" ? " (a competitor's own account)" : r.source === "ad" ? " (a paid ad)" : ` (found under ${r.source === "hashtag" ? `#${r.via}` : `“${r.via}”`})`}
 AUTHOR: ${r.handle ?? "unknown"}
 METRICS: ${metricLine(r) || "none"}
-CAPTION (for your understanding only, do not quote): ${r.caption.replace(/\s+/g, " ").slice(0, 400) || "(none)"}`).join("\n\n")}` }],
+${r.platform === "youtube" ? "VIDEO TITLE" : "CAPTION"} (for your understanding only, do not quote): ${r.caption.replace(/\s+/g, " ").slice(0, 400) || "(none: judge from the format and metrics only)"}`).join("\n\n")}` }],
     })
     const byId = new Map((msg.parsed_output?.items ?? []).map((x) => [x.id, x]))
     return items.map((r) => {
@@ -456,9 +443,10 @@ CAPTION (for your understanding only, do not quote): ${r.caption.replace(/\s+/g,
 }
 
 function strip(r: Raw & { id: string }): Omit<NicheItem, "about" | "why" | "angle"> {
-  const { caption: _c, kind: _k, ...rest } = r
+  const { caption: _c, kind: _k, ageAt: _a, ...rest } = r
   void _c
   void _k
+  void _a
   return rest
 }
 
@@ -467,45 +455,32 @@ function strip(r: Raw & { id: string }): Omit<NicheItem, "about" | "why" | "angl
 async function build(userId: string): Promise<Omit<NichePosts, "v" | "status" | "at">> {
   const user = await db.user.findUnique({ where: { id: userId }, select: { businessName: true, businessType: true, city: true, state: true, websiteUrl: true } })
   if (!user) return { terms: [], sources: [], items: [] }
-  const [terms, rivals] = await Promise.all([pickTerms(user), rivalSocials(userId).catch(() => [])])
+  const [terms, rivals, st] = await Promise.all([pickTerms(user), rivalSocials(userId).catch(() => []), igAccess(userId)])
   const sources = new Set<string>()
   const igUser = (u?: string) => u?.match(/instagram\.com\/([A-Za-z0-9_.]+)/i)?.[1]
   const rivalIg = rivals.map((r) => ({ name: r.name, user: igUser(r.instagram) })).filter((r): r is { name: string; user: string } => !!r.user)
-  const rivalFb = rivals.filter((r) => r.facebook)
   const tags = terms.hashtags.slice(0, 2)
   const country = user.state && CA.test(user.state.trim()) ? "CA" : "US"
+  const phrase = terms.keywords[0] ?? (user.businessType ? `${user.businessType} tips` : null)
 
-  const [ig, tt, rIg, rFb, ads] = await Promise.all([
-    tags.length ? actor("apify~instagram-hashtag-scraper", { hashtags: tags, resultsType: "posts", resultsLimit: 12 }, 24) : Promise.resolve([]),
-    tags.length || terms.keywords.length
-      ? actor("clockworks~tiktok-scraper", { hashtags: tags.slice(0, 1), searchQueries: terms.keywords.slice(0, 1), resultsPerPage: 10, shouldDownloadVideos: false, shouldDownloadCovers: false, shouldDownloadSlideshowImages: false, shouldDownloadAvatars: false, shouldDownloadMusicCovers: false }, 20)
-      : Promise.resolve([]),
-    rivalIg.length ? actor("apify~instagram-post-scraper", { username: rivalIg.map((r) => r.user), resultsLimit: 6, skipPinnedPosts: true, onlyPostsNewerThan: "2 months" }, 12) : Promise.resolve([]),
-    rivalFb.length ? actor("apify~facebook-posts-scraper", { startUrls: rivalFb.map((r) => ({ url: r.facebook })), resultsLimit: 6, onlyPostsNewerThan: "2 months" }, 12) : Promise.resolve([]),
+  const [ig, rIg, yt, ads] = await Promise.all([
+    // Instagram through Meta's own API, only when the connected account allows it.
+    (async () => { const out: { m: IgMedia; tag: string }[] = []; for (const t of tags) for (const m of await hashtagTopMedia(userId, st, t)) out.push({ m, tag: t }); return out })(),
+    Promise.all(rivalIg.slice(0, 2).map(async (r) => ({ r, d: await businessDiscovery(st, r.user, 12) }))),
+    phrase ? youtubeSearch(phrase, { country: country.toLowerCase(), mode: "standard", max: 20 }) : Promise.resolve([]),
     metaAds([...rivals.map((r) => r.name), ...terms.keywords].filter(Boolean), country),
   ])
   const raw: Raw[] = []
-  const tagOf = (p: Record<string, unknown>) => {
-    const h = Array.isArray(p.hashtags) ? p.hashtags.map((x) => String(x).toLowerCase().replace(/^#/, "")) : []
-    return tags.find((t) => h.includes(t)) ?? tags[0]
+  for (const { m, tag } of ig) { const r = fromIgMedia(m, "hashtag", tag, null, null); if (r) raw.push(r) }
+  for (const { r: rival, d } of rIg) {
+    if (!d) continue
+    for (const m of d.media) { const r = fromIgMedia(m, "rival", rival.name, d.username, d.followers); if (r) raw.push(r) }
   }
-  for (const p of ig) { const r = fromInstagram(p, "hashtag", tagOf(p)); if (r) raw.push(r) }
-  for (const p of tt) {
-    const h = Array.isArray(p.hashtags) ? p.hashtags.map((x) => (isRecord(x) ? String(x.name ?? "") : String(x)).toLowerCase()) : []
-    const viaTag = tags.find((t) => h.includes(t))
-    const r = fromTikTok(p, viaTag ? "hashtag" : "keyword", viaTag ?? terms.keywords[0] ?? tags[0])
-    if (r) raw.push(r)
-  }
-  for (const p of rIg) {
-    const owner = str(p.ownerUsername)?.toLowerCase()
-    const r = fromInstagram(p, "rival", rivalIg.find((x) => x.user.toLowerCase() === owner)?.name ?? owner ?? "")
-    if (r) raw.push(r)
-  }
-  for (const p of rFb) { const r = fromFacebook(p, rivalFb[0]?.name ?? ""); if (r) raw.push(r) }
+  for (const v of yt) { const r = fromYoutube(v, phrase ?? ""); if (r) raw.push(r) }
   raw.push(...ads)
   if (ig.length) sources.add("Instagram")
-  if (tt.length) sources.add("TikTok")
-  if (rIg.length || rFb.length) sources.add("your competitors’ own pages")
+  if (rIg.some((x) => x.d?.media.length)) sources.add("your competitors’ Instagram")
+  if (yt.length) sources.add("YouTube")
   if (ads.length) sources.add("the Meta Ad Library")
 
   // The owner's own handles never count as "your niche".
@@ -521,7 +496,7 @@ async function build(userId: string): Promise<Omit<NichePosts, "v" | "status" | 
   const top = rank(raw, own).map((r) => ({ ...r, id: hash(r.url) }))
   // Off-niche posts (the writer says they're about something else) never get stored.
   const items = (await describe(top, user)).filter((i) => i.fit !== false)
-  return { terms: [...terms.hashtags.map((h) => `#${h}`), ...terms.keywords], sources: [...sources], items }
+  return { terms: [...(st.can.hashtags ? terms.hashtags.map((h) => `#${h}`) : []), ...terms.keywords], sources: [...sources], items, instagram: igState(st) }
 }
 
 export async function latestNichePosts(userId: string): Promise<(NichePosts & { rowId: string }) | null> {
@@ -548,7 +523,8 @@ const inFlight = new Set<string>()
  * `minAgeMs` lets the owner's "Refresh" re-run sooner than weekly, but never more than once a day.
  */
 export async function refreshNichePosts(userId: string, opts: { minAgeMs?: number } = {}): Promise<NichePosts | null> {
-  if (!nicheEnabled() || inFlight.has(userId)) return null
+  if (inFlight.has(userId)) return null
+  if (!nicheEnabled() && (await igAccess(userId)).state !== "on") return null
   const cur = await latestNichePosts(userId)
   if (cur?.status === "running") return null
   // A failed run (actor down, no results) isn't retried on every thread open.
@@ -573,7 +549,7 @@ export async function refreshNichePosts(userId: string, opts: { minAgeMs?: numbe
 
 /** Fire-and-forget refresh (thread open, Refresh chip). Usage is counted for this brand. */
 export function startNicheRefresh(userId: string, opts: { minAgeMs?: number } = {}): void {
-  if (!nicheEnabled() || inFlight.has(userId)) return
+  if (inFlight.has(userId)) return
   void runAsUser(userId, () => refreshNichePosts(userId, opts)).catch((err) => console.error("[niche] refresh", err))
 }
 
@@ -588,13 +564,14 @@ export async function nicheFacts(userId: string): Promise<{ key: string; text: s
   if (!p || Date.now() - Date.parse(p.at) > 14 * DAY) return []
   return p.items.slice(0, 5).map((i) => ({
     key: `niche:${i.id}`,
-    text: `${i.platform === "meta_ad" ? "An ad" : `A ${PLATFORM_LABEL[i.platform]} post`}${i.handle ? ` by ${i.handle}` : ""} in your niche (${metricLine(i)}): ${i.about}${i.why ? ` Why it works: ${i.why}` : ""}`,
+    text: `${i.platform === "meta_ad" ? "An ad" : i.platform === "youtube" ? "A YouTube video" : `A ${PLATFORM_LABEL[i.platform]} post`}${i.handle ? ` by ${i.handle}` : ""} in your niche (${metricLine(i)}): ${i.about}${i.why ? ` Why it works: ${i.why}` : ""}`,
   }))
 }
 
 /** What the thread shows. `kick` starts a background refresh when the last one is over a week old. */
-export async function nicheView(userId: string, opts: { kick?: boolean } = {}): Promise<{ enabled: boolean; latest: NichePosts | null; ready: NichePosts | null; running: boolean }> {
-  if (!nicheEnabled()) return { enabled: false, latest: null, ready: null, running: false }
+export async function nicheView(userId: string, opts: { kick?: boolean } = {}): Promise<{ enabled: boolean; latest: NichePosts | null; ready: NichePosts | null; running: boolean; instagram: InstagramState }> {
+  const instagram = igState(await igAccess(userId))
+  if (!nicheEnabled() && instagram !== "on") return { enabled: false, latest: null, ready: null, running: false, instagram }
   const latest = await latestNichePosts(userId)
   const ready = latest?.status === "ready" ? latest : await lastReadyNichePosts(userId)
   let running = inFlight.has(userId) || latest?.status === "running"
@@ -603,5 +580,5 @@ export async function nicheView(userId: string, opts: { kick?: boolean } = {}): 
     startNicheRefresh(userId)
     running = true
   }
-  return { enabled: true, latest, ready, running }
+  return { enabled: true, latest, ready, running, instagram }
 }

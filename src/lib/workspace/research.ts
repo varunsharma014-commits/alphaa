@@ -7,7 +7,7 @@ import { db } from "@/lib/db"
 import { repurposablePosts } from "@/lib/repurpose"
 import { hasPro } from "@/lib/billing"
 import { latestInsights } from "@/lib/insights"
-import { engagementRate, lastReadyNichePosts, median, metricLine, nicheEnabled, PLATFORM_LABEL, type NicheItem } from "@/lib/niche-posts"
+import { engagementRate, lastReadyNichePosts, median, metricLine, nicheEnabled, PLATFORM_LABEL, type InstagramState, type NicheItem } from "@/lib/niche-posts"
 import { nicheFitVerdicts } from "@/lib/niche-fit"
 import { claudeFor } from "@/lib/claude"
 import { getAgentSettings as settingsOf, saveAgentSettings } from "@/lib/agent/settings"
@@ -60,6 +60,8 @@ export type IdeaRow = {
 export type ResearchData = {
   summary: string
   nicheOn: boolean
+  /** Instagram in "What's working": on, waiting on Meta's approval, or not connected (from stored data). */
+  instagram: InstagramState
   working: WorkingCard[]
   trends: Trend[]
   ideas: IdeaRow[]
@@ -127,7 +129,7 @@ export async function getResearchData(user: User): Promise<ResearchData> {
   const onTopic = all.filter((i) => i.fit !== false && fits[i.id] !== false)
   // Stored lift = already gated at scrape time (lib/niche-posts.ts rank). Older scrapes: gate now against
   // the median of the same scrape.
-  const rates = all.filter((i) => i.platform !== "meta_ad").map((i) => i.rate ?? engagementRate(i.metrics)).filter((x): x is number => x != null)
+  const rates = all.filter((i) => i.platform !== "meta_ad" && i.platform !== "youtube").map((i) => i.rate ?? engagementRate(i.metrics)).filter((x): x is number => x != null)
   const mid = median(rates)
   const liftOf = (i: NicheItem) => i.lift ?? (() => { const r = i.rate ?? engagementRate(i.metrics); return r != null && mid ? r / mid : null })()
   const items = onTopic
@@ -146,7 +148,7 @@ export async function getResearchData(user: User): Promise<ResearchData> {
       format: i.format ?? null,
       thumb: i.thumb ?? null,
       duration: dur(i.duration),
-      badge: i.platform === "meta_ad" ? (i.metrics.daysRunning ? `Running ${n(i.metrics.daysRunning)} days` : null) : lift && lift >= 1.05 ? `${lift >= 10 ? Math.round(lift) : lift.toFixed(1)}× typical engagement` : null,
+      badge: i.platform === "meta_ad" ? (i.metrics.daysRunning ? `Running ${n(i.metrics.daysRunning)} days` : null) : lift && lift >= 1.05 ? `${lift >= 10 ? Math.round(lift) : lift.toFixed(1)}× typical ${i.liftKind === "views" ? "views" : "engagement"}` : null,
       why: i.why,
       stats: stats(i),
       use: i.angle ? firstSentence(i.angle) : "",
@@ -158,7 +160,7 @@ export async function getResearchData(user: User): Promise<ResearchData> {
         ["Why it works", i.why],
         ["My version", i.angle],
         ...(metricLine(i) ? [["Numbers from the post", metricLine(i)] as [string, string]] : []),
-        ...(i.handle ? [["Posted by", `@${i.handle.replace(/^@/, "")}`] as [string, string]] : []),
+        ...(i.handle ? [["Posted by", i.platform === "youtube" || i.platform === "meta_ad" ? i.handle : `@${i.handle.replace(/^@/, "")}`] as [string, string]] : []),
         ["Source", i.url],
       ],
       makeChip: { label: "Make my version", action: { type: "agent-op", endpoint: "niche", body: { op: "make", id: i.id } } },
@@ -233,6 +235,8 @@ export async function getResearchData(user: User): Promise<ResearchData> {
   const hooks: IdeaRow[] = (strategy?.hooks ?? []).slice(0, 12).map((h) => ({ kind: h.type, text: h.line, why: "", src: "Your ad plan", url: "/dashboard/ad-strategy" }))
 
   const rivals = await getRivals(user, { strategy, niche, qs })
+  const hasIg = (await listAccounts(user.id).catch(() => [])).some((a) => a.platform === "instagram" && a.status === "active")
+  const instagram: InstagramState = !hasIg ? "connect" : niche?.instagram === "on" ? "on" : "pending"
   const ads = strategy?.competitors?.ads ?? []
 
   const sources = niche?.sources?.length ? niche.sources.join(", ") : null
@@ -258,7 +262,7 @@ export async function getResearchData(user: User): Promise<ResearchData> {
       : working.length ? `Found ${working.length} posts working in your niche` : ""
 
   return {
-    summary, nicheOn: nicheEnabled(), working, trends, ideas, hooks,
+    summary, nicheOn: nicheEnabled(), instagram, working, trends, ideas, hooks,
     moves: rivals.moves, comps: rivals.comps, compGaps: (strategy?.competitors?.gaps ?? []).slice(0, 4),
     strategyAt: strategy?.at ?? null, hiddenComps: rivals.hidden, hiddenGaps: rivals.hiddenGaps, lastChecked: rivals.lastChecked, compared: rivals.compared,
     autopilot: !!settings.autoApprove && consentCurrent(settings), siteConnected: !!(settings.wp || settings.site), top, island,

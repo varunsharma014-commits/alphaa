@@ -2,12 +2,27 @@
 // sites (Yelp, Tripadvisor, BBB, Healthgrades…) — the sources AI assistants
 // quote when they recommend someone. Schema.org AggregateRating first, then
 // microdata, then the "4.5 stars · 120 reviews" text in page meta. Sites that
-// block automated visits come back readable:false. Nothing here throws.
+// block automated visits come back readable:false. Google (when the listing
+// isn't connected), Trustpilot and Tripadvisor come from DataForSEO Business
+// Data instead (lib/checks/ratings.ts). Facebook ratings have no source we can
+// use, so they're marked "not checked" (checked: false), never guessed.
+// Nothing here throws.
 
-import { apifyEnabled, facebookPage } from "./apify"
 import { fetchPage, jsonLdNodes, mapLimit } from "./fetch-page"
+import { dataRatings, type RatingsUser } from "./ratings"
+import { dataforseoConfigured } from "@/lib/dataforseo"
 
-export type OutsideReview = { site: string; url: string; rating: number | null; count: number | null; readable: boolean }
+export type OutsideReview = {
+  site: string
+  url: string
+  rating: number | null
+  count: number | null
+  readable: boolean
+  /** false = I don't check this site at all (Facebook): shown as "Not checked", not as a failure. */
+  checked?: boolean
+  /** DataForSEO is still reading it; the next weekly check picks it up. */
+  pending?: boolean
+}
 
 const REVIEW_SITES: [RegExp, string][] = [
   [/(^|\.)yelp\.[a-z.]+$/i, "Yelp"],
@@ -89,11 +104,8 @@ async function readOne(url: string): Promise<OutsideReview> {
   const full = /^https?:\/\//i.test(url) ? url : `https://${url}`
   const blank: OutsideReview = { site, url: full, rating: null, count: null, readable: false }
   try {
-    // Facebook needs a real scraper; it reports "% recommend", converted to stars.
-    if (/facebook\.com/i.test(full) && apifyEnabled()) {
-      const d = await facebookPage(full)
-      if (d) return { site, url: full, rating: d.rating, count: d.ratingCount, readable: true }
-    }
+    // Facebook only shows ratings to logged-in people and gives apps no way to read them.
+    if (/facebook\.com/i.test(full)) return { ...blank, checked: false }
     const page = await fetchPage(full)
     if (!page.readable) return blank
     const { load } = await import("cheerio")
@@ -124,12 +136,31 @@ async function readOne(url: string): Promise<OutsideReview> {
   }
 }
 
-// businessName is accepted for future page-identity checks; the URLs come from
-// the business's own site or the owner, so we trust they're the right listing.
-export async function outsideReviews(urls: string[], businessName: string): Promise<OutsideReview[]> {
+const DATA_SITES = new Set(["Trustpilot", "Tripadvisor"])
+
+/**
+ * Ratings on outside review sites. With `user` (the weekly check), Google / Trustpilot /
+ * Tripadvisor come from DataForSEO; other linked sites are read from their own page.
+ * `waitMs` = how long to wait for DataForSEO's standard tasks.
+ */
+export async function outsideReviews(urls: string[], businessName: string, opts: { user?: RatingsUser; googleConnected?: boolean; waitMs?: number } = {}): Promise<OutsideReview[]> {
   void businessName
   try {
-    return await mapLimit(reviewSites(urls), 3, readOne)
+    const useData = !!opts.user && dataforseoConfigured()
+    const pages = reviewSites(urls).filter((u) => !(useData && DATA_SITES.has(siteOf(u) ?? "")))
+    const [read, data] = await Promise.all([
+      mapLimit(pages, 3, readOne),
+      useData ? dataRatings(opts.user!, urls, { googleConnected: !!opts.googleConnected, waitMs: opts.waitMs ?? 4 * 60_000 }).catch(() => []) : Promise.resolve([]),
+    ])
+    const fromData: OutsideReview[] = data.map((r) => ({
+      site: r.site,
+      url: r.url ?? urls.find((u) => siteOf(u) === r.site) ?? "",
+      rating: r.rating,
+      count: r.count != null ? Math.round(r.count) : null,
+      readable: !r.pending,
+      ...(r.pending ? { pending: true } : {}),
+    }))
+    return [...fromData, ...read]
   } catch {
     return []
   }

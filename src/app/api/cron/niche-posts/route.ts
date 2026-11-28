@@ -9,8 +9,9 @@ import { nicheEnabled, refreshNichePosts } from "@/lib/niche-posts"
 import { runAsUser } from "@/lib/usage"
 
 // Weekly (Sun 08:00 UTC): refresh "What's working in your niche" for every Growth brand.
-// Apify bills per result, so each brand is capped inside lib/niche-posts.ts (≤ 24 + 20 + 12 + 12
-// results a week) and a brand refreshed in the last 7 days is skipped. Runs in the background
+// Sources per brand (lib/niche-posts.ts): one DataForSEO YouTube results page ($0.0006, standard
+// mode) plus Instagram through Meta's own API when the brand's account allows it; a brand refreshed
+// in the last 7 days is skipped. Runs in the background
 // (one brand at a time) and returns at once; `?dryRun=1` lists who would run.
 let running = false
 
@@ -19,7 +20,7 @@ export async function GET(req: NextRequest) {
   if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
   if (!(await cronAllowed("niche-posts"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
-  if (!nicheEnabled()) return NextResponse.json({ skipped: "APIFY_TOKEN not configured" })
+  if (!nicheEnabled()) return NextResponse.json({ skipped: "no niche source configured (DataForSEO or META_AD_LIBRARY_TOKEN)" })
   const users = await db.user.findMany({
     where: { businessType: { not: null }, OR: [{ plan: { contains: "growth", mode: "insensitive" }, subscriptionStatus: "active" }, ...compedEmailWhere()] },
     select: { id: true },

@@ -49,14 +49,17 @@ export const BASE_CREDIT_COSTS: Partial<Record<QuotaKind, number>> = {
   "publish:site": 1,
   email_send: 0.01, // per recipient: a 2,000-person send = 20 credits
   ad_change: 0.5,
-  apify_usd: 4, // per $1 of scraping
+  data_usd: 4, // per $1 of paid data (search results, ads, ratings)
   ai_cost_usd: CREDITS_PER_AI_DOLLAR, // per $1 of extra AI headroom today
 }
 
 export function creditCost(kind: QuotaKind, raw = process.env.QUOTAS_JSON): number | null {
   let o: unknown = null
   try {
-    o = (JSON.parse(raw || "{}") as { credits?: Record<string, unknown> }).credits?.[kind]
+    const c = (JSON.parse(raw || "{}") as { credits?: Record<string, unknown> }).credits ?? {}
+    o = c[kind]
+    // data_usd had a provider-specific "<name>_usd" key before 2026-11-28 (same rule as lib/quota-rules.ts).
+    if (o === undefined && kind === "data_usd") o = Object.entries(c).find(([k]) => k.endsWith("_usd") && k !== "ai_cost_usd" && k !== "data_usd")?.[1]
   } catch {
     o = null
   }

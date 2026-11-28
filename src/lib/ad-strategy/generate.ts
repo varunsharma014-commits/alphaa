@@ -99,8 +99,9 @@ async function build(user: U, rowId: string): Promise<AdStrategy> {
   const allowed = allowedNumbers(facts)
   const brand = user.businessName?.trim() || null
   const display = brand || (user.websiteUrl ? user.websiteUrl.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/.*$/, "") : null)
-  const compText = comp.ads.length
-    ? comp.ads.map((a) => `- ${a.page} (${a.format}${a.daysRunning !== null ? `, running ${a.daysRunning} days` : ""}): ${a.title ? `${a.title}. ` : ""}${a.text}`).join("\n")
+  const worded = comp.ads.filter((a) => a.text)
+  const compText = worded.length
+    ? worded.map((a) => `- ${a.page} (Google search ad${a.daysRunning !== null ? `, running ${a.daysRunning} days` : ""}): ${a.title ? `${a.title}. ` : ""}${a.text}`).join("\n")
     : "No competitor ads found."
 
   const who = `${display ?? "this business"}${user.businessType ? `, a ${user.businessType}` : ""}${user.city ? ` in ${user.city}${user.state ? `, ${user.state}` : ""}` : ""}`
@@ -110,12 +111,12 @@ ${playbookBrief()}
 
 ${RULES}
 
-Pick the two strongest angles for THIS business from its real facts (for example: the price next to the costlier alternative customers know, showing the real work, a local reason, a specific service). Then write the hooks and static ads using those angles. Read the competitor ads: name the clichés they share and the openings they leave.
+Pick the two strongest angles for THIS business from its real facts (for example: the price next to the costlier alternative customers know, showing the real work, a local reason, a specific service). Then write the hooks and static ads using those angles. Read the competitor ads: name the clichés they share and the openings they leave. They are Google search ads only: competitors' Facebook and Instagram ads can't be seen, so for Meta lean on the playbook's hook types in their priority order.
 
 FACTS
 ${facts}
 
-COMPETITOR ADS (Meta Ad Library, active now; never copy their wording)
+COMPETITOR ADS (Google search ads from Google's Ads Transparency Center, running now; never copy their wording)
 ${compText}`
 
   const p = await anthropic.messages.parse({ model: MODEL, max_tokens: 12000, output_config: { effort: "medium", format: zodOutputFormat(PlanSchema) }, messages: [{ role: "user", content: planPrompt }] })
@@ -176,7 +177,7 @@ ${facts}`
     v: 1, status: "ready", at: new Date().toISOString(), playbook: PLAYBOOK_VERSION,
     business: { name: display ?? "Your business", vertical: plan.vertical, b2b: plan.b2b, local, markets: [user.city, user.state].filter(Boolean).join(", ") || (country === "CA" ? "Canada" : "United States") },
     angles: plan.angles.slice(0, 2),
-    competitors: { looked: comp.looked, ads: comp.ads.slice(0, 6), cliches: comp.ads.length ? plan.cliches.slice(0, 5) : [], gaps: comp.ads.length ? plan.gaps.slice(0, 4) : [] },
+    competitors: { looked: comp.looked, ads: comp.ads.slice(0, 6), cliches: worded.length ? plan.cliches.slice(0, 5) : [], gaps: worded.length ? plan.gaps.slice(0, 4) : [], note: comp.note },
     hooks: hooks.ok.slice(0, 30),
     scripts: scripts.ok,
     statics: { meta: metaStatics, linkedin: li.ok, google: { headlines: gh.ok.slice(0, 15), descriptions: googleDescs } },

@@ -138,7 +138,7 @@ Founders see what Alphaa did for each brand and the AI tokens it used at
 Create a Connect API integration at canva.com/developers → Your integrations → Create. Redirect URL: `https://alphaa.app/api/canva/callback` (local testing needs `http://127.0.0.1:3000/api/canva/callback`, not localhost). Scopes: `design:meta:read design:content:read design:content:write asset:read asset:write brandtemplate:meta:read brandtemplate:content:read profile:read`. Set `CANVA_CLIENT_ID` and `CANVA_CLIENT_SECRET` on Railway. Until Canva reviews and makes the integration public, only the creating account's team can connect. Brand template autofill needs a Canva plan with brand templates.
 
 ## What's working in your niche
-Needs `APIFY_TOKEN` (set). Optional `META_AD_LIBRARY_TOKEN` (Meta developer account with identity confirmed, facebook.com/ads/library/api; long-lived user token, rotate ~60 days). Outside the EU/UK the Ad Library API returns only political/issue ads.
+Needs `DATAFORSEO_LOGIN` / `DATAFORSEO_PASSWORD` (set; YouTube results). Instagram comes through Meta's own API once round 2 is approved (`instagram_manage_insights` for rivals, Public Content Access + `META_HASHTAG_SEARCH=1` for hashtags). Optional `META_AD_LIBRARY_TOKEN` (Meta developer account with identity confirmed, facebook.com/ads/library/api; long-lived user token, rotate ~60 days). Outside the EU/UK the Ad Library API returns only political/issue ads.
 
 ## Tracking self-check
 No new keys. The GA4 realtime check needs the `analytics.readonly` scope (founders only until `GA_SCOPE_ENABLED=1` after Google re-verifies the consent screen). Meta Conversions API uses each owner's own token from Events Manager → Settings → Conversions API.

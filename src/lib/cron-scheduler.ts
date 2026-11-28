@@ -67,7 +67,7 @@ export function startCron(): void {
     if ((dow === 1 || dow === 2 || dow === 4 || dow === 5) && hour === 13) hit("/api/cron/gbp-posts")
     // Sun 06:00 UTC — competitor discovery / refresh (Anthropic)
     if (dow === 0 && hour === 6) hit("/api/cron/competitors")
-    // Sun 08:00 UTC — "What's working in your niche" for Growth brands (Apify, capped per brand)
+    // Sun 08:00 UTC — "What's working in your niche" for Growth brands (DataForSEO YouTube + Instagram via Meta)
     if (dow === 0 && hour === 8) hit("/api/cron/niche-posts")
     // Weekly AI jobs get a catch-up window: a deploy restarts this process, which kills a running
     // loop or misses the exact hour (2026-11-25: deploys at 10:55/11:05/11:08 UTC, no question scan

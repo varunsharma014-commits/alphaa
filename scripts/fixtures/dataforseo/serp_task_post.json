@@ -1,0 +1,39 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.0329 sec.",
+ "cost": 0.0006,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280706-3309-0066-0000-5706364275e5",
+   "status_code": 20100,
+   "status_message": "Task Created.",
+   "time": "0.0030 sec.",
+   "cost": 0.0006,
+   "result_count": 0,
+   "path": [
+    "v3",
+    "serp",
+    "google",
+    "organic",
+    "task_post"
+   ],
+   "data": {
+    "api": "serp",
+    "function": "task_post",
+    "se": "google",
+    "se_type": "organic",
+    "keyword": "dentist ottawa",
+    "location_name": "Ottawa,Ontario,Canada",
+    "language_code": "en",
+    "depth": 10,
+    "device": "desktop",
+    "os": "windows"
+   },
+   "result": null
+  }
+ ]
+}
