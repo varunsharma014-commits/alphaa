@@ -8,7 +8,9 @@ import { metaReport } from "@/lib/metaads/report"
 import { getAccess, listCampaigns as metaCampaigns, recentChanges as metaChanges } from "@/lib/metaads/store"
 import { getGadsAccount, recentChanges as gadsChanges } from "@/lib/gads/store"
 import { gadsFor } from "@/lib/gads/client"
-import { adsReport } from "@/lib/gads/report"
+import { adsReport, gadsKpis } from "@/lib/gads/report"
+import { metaFatigue } from "@/lib/metaads/fatigue"
+import { pct, type Kpis } from "@/lib/ads-kpis"
 import { lastReadyStrategy, latestStrategy, startStrategy, strategyRunning } from "@/lib/ad-strategy/generate"
 import { relevantCompetitors } from "@/lib/competitor-relevance"
 import { latestTune } from "@/lib/gads/store"
@@ -19,7 +21,11 @@ import { imageUrl } from "@/lib/images"
 import type { Chip } from "@/lib/agent/types"
 import { ART, ago, cached, money, n, within } from "./common"
 
-export type ResultBox = { platform: string; spend: string; clicks: string; leads: string | null; perLead: string | null; extra: string | null; days: number }
+/** One window of real numbers. Rates are null when there's nothing to divide by. */
+export type KpiWindow = { days: 7 | 30; spend: string; impressions: string; clicks: string; ctr: string | null; cpc: string | null; cpm: string | null; convRate: string | null; leads: string; perLead: string | null }
+export type ResultBox = { platform: string; spend: string; clicks: string; leads: string | null; perLead: string | null; extra: string | null; days: number; windows: KpiWindow[] }
+/** A Meta ad the fatigue check flagged (lib/metaads/fatigue.ts). */
+export type TiredCard = { campaign: string; label: string; headline: string; why: string; reason: "ctr" | "cpa" }
 export type AdCard = { id: string; platform: string; name: string; status: string; pc: "g" | "n" | "b" | "a"; head: string; text: string; daily: string | null; image: string | null; art: string }
 export type ChangeRow = { text: string; by: string; when: string; platform: string; undo?: Record<string, string> | null }
 export type FirstAd = { platform: "Facebook & Instagram" | "Google search" | "LinkedIn"; headline: string; primary: string; image: string | null; audience: string; inPlanOnly?: boolean }
@@ -48,7 +54,15 @@ export type AdsData = {
   sevenDays: boolean
   /** A report fetch that should have worked didn't. */
   fetchFailed: string | null
+  /** Meta ads that look tired against their own first week. */
+  tired: TiredCard[]
 }
+
+const kw = (days: 7 | 30, t: { spend: number; impressions: number; clicks: number; conversions: number }, k: Kpis, cur: string): KpiWindow => ({
+  days, spend: money(t.spend, cur), impressions: n(t.impressions), clicks: n(t.clicks),
+  ctr: pct(k.ctr), cpc: k.cpc != null ? money(k.cpc, cur) : null, cpm: k.cpm != null ? money(k.cpm, cur) : null,
+  convRate: t.conversions ? pct(k.convRate) : null, leads: n(t.conversions), perLead: k.costPerConversion != null ? money(k.costPerConversion, cur) : null,
+})
 
 export async function getAdsData(user: User): Promise<AdsData> {
   const [settings, access, gacc, mCamps, mChanges, gChanges, plan] = await Promise.all([
@@ -70,9 +84,11 @@ export async function getAdsData(user: User): Promise<AdsData> {
     const w = meta.d30
     results.push({
       platform: "Facebook & Instagram", days: 30,
-      spend: money(w.spend, meta.currency), clicks: n(w.clicks),
+      spend: money(w.spend, meta.currency), clicks: n(w.linkClicks ?? w.clicks),
       leads: n(w.leads), perLead: w.costPerLead != null ? money(w.costPerLead, meta.currency) : null,
       extra: `${meta.campaigns} campaign${meta.campaigns === 1 ? "" : "s"} I built`,
+      // Link clicks: what CTR, CPC and conversion rate are judged on.
+      windows: ([[7, meta.d7], [30, meta.d30]] as const).map(([d, x]) => kw(d, { spend: x.spend, impressions: x.impressions, clicks: x.linkClicks ?? x.clicks, conversions: x.leads }, x.kpis, meta.currency)),
     })
   }
   if (gacc?.customerId) {
@@ -86,9 +102,14 @@ export async function getAdsData(user: User): Promise<AdsData> {
         spend: money(a.cost, cur), clicks: n(a.clicks),
         leads: n(a.conversions), perLead: a.conversions ? money(a.cost / a.conversions, cur) : null,
         extra: gacc.customerName ? `Account: ${gacc.customerName}` : null,
+        windows: ([[7, g.account[0]], [30, g.account[1]]] as const).map(([d, x]) => kw(d, { spend: x.cost, impressions: x.impressions, clicks: x.clicks, conversions: x.conversions }, gadsKpis(x), cur)),
       })
     }
   }
+
+  // Tired Meta ads (own first week vs this week). Notes new ones in the change log; never acts.
+  const fatigue = liveMeta ? await within(metaFatigue(user.id), 8000, null) : null
+  const tired: TiredCard[] = (fatigue?.ads ?? []).map((a) => ({ campaign: a.campaignName, label: a.label, headline: a.headline, why: a.why, reason: a.reason }))
 
   const campaigns: AdCard[] = []
   for (const c of mCamps.filter((x) => x.status !== "dismissed")) {
@@ -157,7 +178,7 @@ export async function getAdsData(user: User): Promise<AdsData> {
     live: liveMeta || gacc?.campaign?.status === "ENABLED",
     firstAds, planState,
     planInputs: { b2b: !!plan?.business?.b2b, local: plan?.business?.local ?? true, currency: cur },
-    watching, beatIt: (plan?.competitors?.gaps ?? []).slice(0, 3), sevenDays, fetchFailed,
+    watching, beatIt: (plan?.competitors?.gaps ?? []).slice(0, 3), sevenDays, fetchFailed, tired,
     metaConnected: !!access,
     googleConnected: !!gacc?.customerId,
     results,

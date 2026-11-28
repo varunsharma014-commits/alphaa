@@ -7,7 +7,8 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { gadsAvailable } from "./oauth"
 import { adsErrorText, gadsFor } from "./client"
 import { getGadsAccount, latestPlan, latestTune, recentChanges, takeNote, type GadsAccount, type Tune } from "./store"
-import { adsReport, type AdsTotals } from "./report"
+import { adsReport, gadsKpis, type AdsTotals } from "./report"
+import { pct } from "@/lib/ads-kpis"
 import { money } from "./plan"
 import { monthlyFromDaily } from "./rules"
 import type { AdPlan } from "./plan-types"
@@ -133,7 +134,7 @@ async function liveMessages(userId: string, acc: GadsAccount, cur: string, cap: 
   }
   try {
     const r = await adsReport(await gadsFor(userId))
-    const rows = (t: AdsTotals, label: string) => ({ name: label, detail: `${n(t.clicks)} clicks · ${n(t.conversions)} leads${t.conversions > 0 ? ` · ${money(t.cost / t.conversions, cur)} a lead` : ""}`, status: money(t.cost, cur), ok: t.conversions > 0 })
+    const rows = (t: AdsTotals, label: string) => ({ name: label, detail: [`${n(t.impressions)} views`, `${n(t.clicks)} clicks`, ...((k) => [k.ctr !== null ? `${pct(k.ctr)} CTR` : null, k.cpc !== null ? `${money(k.cpc, cur)} a click` : null, k.cpm !== null ? `${money(k.cpm, cur)} per 1,000 views` : null, k.convRate !== null ? `${pct(k.convRate)} of clicks became leads` : null].filter((x): x is string => !!x))(gadsKpis(t)), `${n(t.conversions)} leads${t.conversions > 0 ? ` · ${money(t.cost / t.conversions, cur)} a lead` : ""}`].join(" · "), status: money(t.cost, cur), ok: t.conversions > 0 })
     const items = [rows(r.account[0], "Last 7 days"), rows(r.account[1], "Last 30 days")]
     out.push(agent([
       { kind: "sources", title: `Your Google Ads, from ${acc.customerName ?? "your account"}`, items },

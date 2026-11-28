@@ -24,6 +24,7 @@ const GUARDRAILS = [
   { rule: "On Google, a search costing half a day’s budget (at least 5) with 3+ clicks and no conversion is blocked.", where: "Google weekly tune (decideTuning)" },
   { rule: "On Google, a keyword that cost 3 days’ budget (at least 30) with no conversion is paused, always leaving a few running.", where: "Google weekly tune (decideTuning)" },
   { rule: "Google cuts only happen when conversion tracking is on: without it, “0 conversions” means “not measured”.", where: "Google weekly tune" },
+  { rule: "On Meta, I flag an ad that’s wearing out: seen more than 3 times with its click rate down over 30% vs its own first week, or its cost per result up over 40%. Only with enough data (1,500 impressions or $60 each week). I flag it; I don’t change it.", where: "Meta fatigue check (detectFatigue)" },
   { rule: "Every ad line passes my claims check: no superlatives, no guarantees, numbers only from your own facts, platform length limits.", where: "Ad plan + Meta/Google copy checks" },
 ]
 
@@ -36,6 +37,7 @@ export function AdsView({ data }: { data: AdsData | null }) {
   })
   const [saving, setSaving] = useState(false)
   const [undone, setUndone] = useState<Record<number, boolean>>({})
+  const [win, setWin] = useState<7 | 30>(30)
   const split = useMemo(() => (data ? testingPlan({ monthly: limit, currency: data.planInputs.currency, b2b: data.planInputs.b2b, local: data.planInputs.local }) : null), [data, limit])
 
   const head = (
@@ -132,17 +134,49 @@ export function AdsView({ data }: { data: AdsData | null }) {
       {tab === "r" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 18, marginTop: 22 }}>
           {data.fetchFailed && <p className="ax-note" style={{ marginTop: 0 }}>{data.fetchFailed}</p>}
-          {data.results.map((r) => (
-            <section key={r.platform} className="ax-card" style={{ padding: "20px 22px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginBottom: 10 }}><b style={{ fontSize: 15 }}>{r.platform} · last 30 days</b>{r.extra && <span className="ax-t11">{r.extra}</span>}</div>
-              <div className="ax-g3" style={{ gap: 8 }}>
-                <div className="ax-tile"><div className="k">Spent</div><b style={{ fontSize: 20 }}>{r.spend}</b></div>
-                <div className="ax-tile"><div className="k">{r.platform === "Google Ads" ? "Conversions" : "Leads"}</div><b style={{ fontSize: 20, color: "var(--x-gink)" }}>{r.leads ?? "—"}</b></div>
-                <div className="ax-tile"><div className="k">Per {r.platform === "Google Ads" ? "conversion" : "lead"}</div><b style={{ fontSize: 20 }}>{r.perLead ?? "—"}</b></div>
-              </div>
-              <div className="ax-t11" style={{ marginTop: 6 }}>{r.clicks} clicks</div>
+          {data.tired.length > 0 && (
+            <section className="ax-card" style={{ padding: "18px 22px", display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 8, flexWrap: "wrap" }}><b style={{ fontSize: 15 }}>{data.tired.length === 1 ? "1 ad is wearing out" : `${data.tired.length} ads are wearing out`}</b><span className="ax-pill a">Flagged, nothing changed</span></div>
+              {data.tired.map((t, i) => (
+                <div key={i} style={{ fontSize: 14 }}>
+                  <div>{t.why}</div>
+                  {t.headline && <div className="ax-t11" style={{ marginTop: 2 }}>Headline: “{t.headline}” · I’d test a fresh opening hook over the same offer.</div>}
+                </div>
+              ))}
+              <div><button className="ax-btn s sm" type="button" onClick={() => askAlphaa({ topic: "ads", label: "Write fresh hooks for my tired ads" })}>Write fresh hooks</button></div>
             </section>
-          ))}
+          )}
+          {data.results.length > 0 && (
+            <div style={{ display: "flex", gap: 6 }} role="group" aria-label="Period">
+              {([7, 30] as const).map((d) => <button key={d} type="button" className={`ax-btn sm ${win === d ? "p" : "s"}`} onClick={() => setWin(d)}>Last {d} days</button>)}
+            </div>
+          )}
+          {data.results.map((r) => {
+            const w = r.windows?.find((x) => x.days === win)
+            const conv = r.platform === "Google Ads" ? "conversion" : "lead"
+            return (
+            <section key={r.platform} className="ax-card" style={{ padding: "20px 22px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginBottom: 10 }}><b style={{ fontSize: 15 }}>{r.platform} · last {w ? win : r.days} days</b>{r.extra && <span className="ax-t11">{r.extra}</span>}</div>
+              <div className="ax-g3" style={{ gap: 8 }}>
+                <div className="ax-tile"><div className="k">Spent</div><b style={{ fontSize: 20 }}>{w?.spend ?? r.spend}</b></div>
+                <div className="ax-tile"><div className="k">{r.platform === "Google Ads" ? "Conversions" : "Leads"}</div><b style={{ fontSize: 20, color: "var(--x-gink)" }}>{(w ? w.leads : r.leads) ?? "—"}</b></div>
+                <div className="ax-tile"><div className="k">Per {conv}</div><b style={{ fontSize: 20 }}>{(w ? w.perLead : r.perLead) ?? "—"}</b></div>
+              </div>
+              {w ? (
+                <div className="ax-kpis" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: 8, marginTop: 8 }}>
+                  {[
+                    { k: "Impressions", v: w.impressions },
+                    { k: r.platform === "Google Ads" ? "Clicks" : "Link clicks", v: w.clicks },
+                    { k: "Click rate (CTR)", v: w.ctr },
+                    { k: "Cost per click", v: w.cpc },
+                    { k: "Per 1,000 views (CPM)", v: w.cpm },
+                    { k: `Clicks → ${conv}s`, v: w.convRate },
+                  ].map((x) => <div key={x.k} className="ax-tile"><div className="k">{x.k}</div><b style={{ fontSize: 16 }}>{x.v ?? "—"}</b></div>)}
+                </div>
+              ) : <div className="ax-t11" style={{ marginTop: 6 }}>{r.clicks} clicks</div>}
+            </section>
+            )
+          })}
           {!data.sevenDays && (
             <>
               <div className="ax-h2" style={{ marginTop: 6 }}><div><h2>Competitor ads I’m watching</h2><p>Live ads from your competitors, from the public Ad Library. Results fill in after a week of your own spend.</p></div></div>

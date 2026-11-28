@@ -39,7 +39,12 @@ export async function approveAndBuild(userId: string, id: string, input: { daily
   const site = user?.websiteUrl?.trim() ? `https://${user.websiteUrl.replace(/^https?:\/\//, "")}` : null
   if (c.plan.goal === "OUTCOME_TRAFFIC" && !site) return { ok: false, error: "Website-visit ads need your website on your profile." }
   const privacyUrl = (input.privacyUrl ?? c.privacyUrl ?? "").trim() || null
-  if (c.plan.goal === "OUTCOME_LEADS") {
+  const pixelId = access.picks.pixelId ?? null
+  const leadsOn = c.plan.goal === "OUTCOME_LEADS" && c.plan.leadsOn === "website" ? "website" : "form"
+  if (leadsOn === "website") {
+    if (!pixelId) return { ok: false, error: "Website leads need your Meta Pixel. Pick it above, or switch back to the Facebook form." }
+    if (!site) return { ok: false, error: "Website leads need your website on your profile." }
+  } else if (c.plan.goal === "OUTCOME_LEADS") {
     if (!privacyUrl || !/^https:\/\/[^\s]+\.[^\s]+/.test(privacyUrl)) return { ok: false, error: "Meta needs a link to your privacy policy (https://…) for the lead form." }
   }
 
@@ -63,7 +68,7 @@ export async function approveAndBuild(userId: string, id: string, input: { daily
   try {
     const built = await buildPaused(token, {
       adAccountId: c.adAccountId, currency: acct.currency, name: c.name, goal: c.plan.goal, special: c.plan.special, country: c.plan.country,
-      dailyBudget: daily, pageId: c.pageId, pageToken: page ? dec(page.tokenEnc) : null, igUserId: access.picks.igUserId ?? null, pixelId: access.picks.pixelId ?? null,
+      dailyBudget: daily, pageId: c.pageId, pageToken: page ? dec(page.tokenEnc) : null, igUserId: access.picks.igUserId ?? null, pixelId, leadsOn,
       website: site, privacyUrl, city: c.plan.city, radiusMiles: c.plan.radiusMiles, ads,
     }, async (what, objectId) => {
       tallyUsage(userId, "ads_op")
@@ -116,6 +121,17 @@ export async function setLive(userId: string, id: string, on: boolean): Promise<
   await saveCampaign(userId, c)
   await logChange(userId, { campaignRowId: c.id, objectId: c.built.campaignId, what: on ? `turned on “${c.name}”` : `paused “${c.name}”`, why: on ? "You tapped Turn it on." : "You tapped Pause.", by: "owner", before: on ? "paused" : "active", after: on ? "active" : "paused" })
   return { ok: true, said: on ? `It’s live. Meta reviews new ads first, usually within a day, then they start showing near you at up to ${c.plan.dailyBudget} ${c.currency} a day.` : "Paused. It stops spending right away.", campaign: c }
+}
+
+/** Owner switch on a proposed leads plan: Meta's instant form, or their website (needs the pixel). */
+export async function setLeadsOn(userId: string, id: string, on: "form" | "website"): Promise<OpResult> {
+  const [c, access] = await Promise.all([getCampaign(userId, id), getAccess(userId)])
+  if (!c || c.status !== "proposed") return { ok: false, error: "That plan isn’t waiting any more." }
+  if (c.plan.goal !== "OUTCOME_LEADS") return { ok: false, error: "This plan sends people to your website already." }
+  if (on === "website" && !access?.picks.pixelId) return { ok: false, error: "Pick your Meta Pixel first: it counts the leads on your website." }
+  c.plan.leadsOn = on
+  await saveCampaign(userId, c)
+  return { ok: true, said: on === "website" ? "Done. The ads send people to your website, and your pixel counts each lead." : "Done. People fill in a short form on Facebook or Instagram.", campaign: c }
 }
 
 export async function dismissPlan(userId: string, id: string): Promise<OpResult> {

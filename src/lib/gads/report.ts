@@ -1,9 +1,12 @@
-// Spend, clicks, conversions and cost per lead, straight from Google Ads (GAQL), for the
+// Spend, impressions, clicks, conversions and cost per lead (KPIs via gadsKpis), straight from Google Ads (GAQL), for the
 // "Ads" thread. Every number shown comes from these rows.
+import { kpisOf, type Kpis } from "@/lib/ads-kpis"
 import { fromMicros } from "./api"
 import type { Gads } from "./client"
 
 export type AdsTotals = { days: number; cost: number; clicks: number; impressions: number; conversions: number }
+/** CTR, CPC, CPM, conversion rate (conversions ÷ clicks) and cost per conversion, from the same rows. */
+export const gadsKpis = (t: AdsTotals): Kpis => kpisOf({ spend: t.cost, impressions: t.impressions, clicks: t.clicks, conversions: t.conversions })
 type Row = { metrics?: { costMicros?: string; clicks?: string; impressions?: string; conversions?: number } }
 
 const sum = (rows: Row[], days: number): AdsTotals => rows.reduce<AdsTotals>((t, r) => ({

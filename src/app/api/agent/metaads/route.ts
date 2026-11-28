@@ -11,7 +11,7 @@ import { metaAdsMessages } from "@/lib/metaads/narration"
 import { getAccess, getCampaign, listCampaigns, patchAccess, removeAccess } from "@/lib/metaads/store"
 import { proposePlan } from "@/lib/metaads/plan"
 import { askCityMessages } from "@/lib/agent/city"
-import { approveAndBuild, dismissPlan, setLive } from "@/lib/metaads/ops"
+import { approveAndBuild, dismissPlan, setLeadsOn, setLive } from "@/lib/metaads/ops"
 import { applyTune, dismissTune } from "@/lib/metaads/tune"
 import { forget } from "@/lib/metaads/report"
 import { checkAdAccount } from "@/lib/ad-accounts"
@@ -24,6 +24,7 @@ const body = z.discriminatedUnion("op", [
   z.object({ op: z.literal("plan") }),
   z.object({ op: z.literal("approve"), id, dailyBudget: z.union([z.string(), z.number()]), privacyUrl: z.string().max(500).optional() }),
   z.object({ op: z.literal("dismiss"), id }),
+  z.object({ op: z.literal("leads_on"), id, value: z.enum(["form", "website"]) }),
   z.object({ op: z.literal("enable"), id }),
   z.object({ op: z.literal("pause"), id }),
   z.object({ op: z.literal("tune_apply"), id }),
@@ -89,6 +90,12 @@ export async function POST(req: Request) {
       const q = await checkQuota(user, "ad_change")
       if (!q.allowed) return fail(q.message ?? "", 429)
       const r = await approveAndBuild(user.id, input.id, { dailyBudget: daily, privacyUrl: input.privacyUrl ?? null })
+      if (!r.ok) return fail(r.error, 409)
+      said = r.said
+      break
+    }
+    case "leads_on": {
+      const r = await setLeadsOn(user.id, input.id, input.value)
       if (!r.ok) return fail(r.error, 409)
       said = r.said
       break

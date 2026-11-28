@@ -16,6 +16,12 @@
 // - Lead form: POST /{page_id}/leadgen_forms with a Page token (questions FULL_NAME/EMAIL/PHONE).
 // - Leads: GET /{form_id}/leads fields created_time,id,ad_id,form_id,field_data, filtering time_created.
 // - Special ad categories: ages 18-65+, no gender choice, ≥15 mi / 25 km radius (US/CA), no zips.
+// Checked 2026-11-28 (Ad Campaign Group ODAX mapping table + Ad reference):
+// - OUTCOME_LEADS · ON_AD · LEAD_GENERATION → promoted_object { page_id } (instant form).
+// - OUTCOME_LEADS · website · OFFSITE_CONVERSIONS → promoted_object { pixel_id, custom_event_type: "LEAD" }.
+// - OUTCOME_TRAFFIC · website · LINK_CLICKS (or LANDING_PAGE_VIEWS) → no promoted_object for web.
+// - Ads: tracking_specs [{ "action.type": ["offsite_conversion"], fb_pixel: [pixel_id] }] logs the
+//   pixel's website events against the ad (any objective), so the chosen pixel is always linked.
 import { api } from "@/lib/social/oauth"
 
 export const GRAPH_VERSION = "v27.0"
@@ -28,6 +34,12 @@ export async function graph<T>(path: string, token: string, o: { method?: "GET" 
   for (const [k, v] of Object.entries(o.params ?? {})) if (v !== undefined && v !== null) p.set(k, typeof v === "string" ? v : JSON.stringify(v))
   p.set("access_token", token)
   const url = path.startsWith("http") ? path : `${G}/${path.replace(/^\//, "")}`
+  // A paging "next" link already has a query string (and the token); add ours after it.
+  if (method === "GET" && url.includes("?")) {
+    const u = new URL(url)
+    for (const [k, v] of p) u.searchParams.set(k, v)
+    return api<T>(u.toString())
+  }
   return method === "GET" ? api<T>(`${url}?${p}`) : api<T>(url, { method, body: p })
 }
 
@@ -96,6 +108,8 @@ export async function findCity(token: string, city: string, country: string | nu
 
 // ── Build a paused campaign ─────────────────────────────────────────────────
 export type Goal = "OUTCOME_LEADS" | "OUTCOME_TRAFFIC"
+/** Where a leads campaign collects the lead: Meta's instant form, or the website (counted by the pixel's Lead event). */
+export type LeadsOn = "form" | "website"
 export type SpecialCategory = "NONE" | "HOUSING" | "EMPLOYMENT" | "FINANCIAL_PRODUCTS_SERVICES"
 export type AdCopy = { primaryText: string; headline: string; description: string }
 
@@ -111,7 +125,9 @@ export type CampaignSpec = {
   pageToken: string | null // for the lead form
   igUserId?: string | null
   pixelId?: string | null
-  website: string | null // https://… (traffic)
+  /** Leads goal only. "website" needs pixelId + website; default "form". */
+  leadsOn?: LeadsOn
+  website: string | null // https://… (traffic, website leads)
   privacyUrl?: string | null // lead form
   city: GeoCity | null
   radiusMiles: number
@@ -125,13 +141,41 @@ export type Built = {
   ads: { adId: string; creativeId: string; imageHash: string }[]
 }
 
+export type Delivery = {
+  optimization_goal: "LEAD_GENERATION" | "OFFSITE_CONVERSIONS" | "LINK_CLICKS"
+  destination_type: "ON_AD" | "WEBSITE"
+  promoted_object?: { page_id: string } | { pixel_id: string; custom_event_type: "LEAD" }
+  /** An instant form has to be created first. */
+  form: boolean
+}
+
+/**
+ * Pure: the ad set's optimisation, destination and promoted object for a spec (ODAX mapping table).
+ * Website leads need the pixel (it reports the Lead event Meta optimises for) and a website.
+ */
+export function deliveryFor(s: Pick<CampaignSpec, "goal" | "pageId" | "pixelId" | "leadsOn" | "website">): Delivery {
+  if (s.goal === "OUTCOME_TRAFFIC") return { optimization_goal: "LINK_CLICKS", destination_type: "WEBSITE", form: false }
+  if (s.leadsOn === "website") {
+    if (!s.pixelId) throw new Error("Website leads need your Meta Pixel. Pick it first, or use the Facebook form.")
+    if (!s.website) throw new Error("Website leads need your website on your profile.")
+    return { optimization_goal: "OFFSITE_CONVERSIONS", destination_type: "WEBSITE", promoted_object: { pixel_id: s.pixelId, custom_event_type: "LEAD" }, form: false }
+  }
+  return { optimization_goal: "LEAD_GENERATION", destination_type: "ON_AD", promoted_object: { page_id: s.pageId }, form: true }
+}
+
+/** Pure: links the ad to the pixel so website events are attributed to it. Null without a pixel. */
+export const trackingSpecs = (pixelId: string | null | undefined) =>
+  pixelId ? [{ "action.type": ["offsite_conversion"], fb_pixel: [pixelId] }] : null
+
 /** Everything Meta needs, created PAUSED: lead form (leads goal), campaign, ad set, images, creatives, ads. */
 export async function buildPaused(token: string, s: CampaignSpec, onStep?: (what: string, id: string) => Promise<void> | void): Promise<Built> {
   const special = s.special !== "NONE"
   const step = async (what: string, id: string) => { if (onStep) await onStep(what, id) }
 
+  const delivery = deliveryFor(s)
+  const tracking = trackingSpecs(s.pixelId)
   let formId: string | undefined
-  if (s.goal === "OUTCOME_LEADS") {
+  if (delivery.form) {
     if (!s.privacyUrl) throw new Error("A lead form needs your privacy policy link.")
     const f = await graph<{ id: string }>(`${s.pageId}/leadgen_forms`, s.pageToken || token, {
       method: "POST",
@@ -181,8 +225,9 @@ export async function buildPaused(token: string, s: CampaignSpec, onStep?: (what
       daily_budget: String(toMinor(s.dailyBudget, s.currency)),
       billing_event: "IMPRESSIONS",
       bid_strategy: "LOWEST_COST_WITHOUT_CAP",
-      optimization_goal: s.goal === "OUTCOME_LEADS" ? "LEAD_GENERATION" : "LINK_CLICKS",
-      ...(s.goal === "OUTCOME_LEADS" ? { promoted_object: { page_id: s.pageId }, destination_type: "ON_AD" } : { destination_type: "WEBSITE" }),
+      optimization_goal: delivery.optimization_goal,
+      destination_type: delivery.destination_type,
+      ...(delivery.promoted_object ? { promoted_object: delivery.promoted_object } : {}),
       targeting,
       status: "PAUSED",
     },
@@ -195,10 +240,10 @@ export async function buildPaused(token: string, s: CampaignSpec, onStep?: (what
     const up = await graph<{ images?: Record<string, { hash: string }> }>(`${s.adAccountId}/adimages`, token, { method: "POST", params: { bytes: a.jpegB64, name: `alphaa-${Date.now()}-${i}.jpg` } })
     const hash = Object.values(up.images ?? {})[0]?.hash
     if (!hash) throw new Error("Meta didn’t accept the ad image.")
-    const link = s.goal === "OUTCOME_LEADS" ? "http://fb.me/" : s.website!
-    const cta = s.goal === "OUTCOME_LEADS"
+    const link = delivery.form ? "http://fb.me/" : s.website!
+    const cta = delivery.form
       ? { type: "SIGN_UP", value: { lead_gen_form_id: formId } }
-      : { type: "LEARN_MORE", value: { link: s.website } }
+      : { type: s.goal === "OUTCOME_LEADS" ? "SIGN_UP" : "LEARN_MORE", value: { link: s.website } }
     const creative = await graph<{ id: string }>(`${s.adAccountId}/adcreatives`, token, {
       method: "POST",
       params: {
@@ -217,6 +262,7 @@ export async function buildPaused(token: string, s: CampaignSpec, onStep?: (what
         name: `${s.name} · ad ${i + 1}`.slice(0, 100),
         adset_id: adSet.id,
         creative: { creative_id: creative.id },
+        ...(tracking ? { tracking_specs: tracking } : {}),
         status: "PAUSED",
       },
     })
@@ -234,8 +280,13 @@ export const setDailyBudget = (token: string, adSetId: string, amount: number, c
 
 // ── Results ─────────────────────────────────────────────────────────────────
 type Action = { action_type: string; value: string }
-export type InsightRow = { ad_id?: string; adset_id?: string; campaign_id?: string; spend?: string; impressions?: string; clicks?: string; actions?: Action[] }
-export type Totals = { spend: number; impressions: number; clicks: number; results: number }
+export type InsightRow = {
+  ad_id?: string; adset_id?: string; campaign_id?: string; date_start?: string
+  spend?: string; impressions?: string; clicks?: string; inline_link_clicks?: string; reach?: string; frequency?: string
+  actions?: Action[]
+}
+/** clicks = all clicks; linkClicks = clicks to the website or form (what CTR/CPC are judged on). */
+export type Totals = { spend: number; impressions: number; clicks: number; linkClicks: number; results: number }
 
 /** "lead" = every lead (instant form + pixel); traffic campaigns count link clicks. */
 export function resultsOf(row: InsightRow, goal: Goal): number {
@@ -243,14 +294,39 @@ export function resultsOf(row: InsightRow, goal: Goal): number {
   return Number(row.actions?.find((a) => a.action_type === want)?.value ?? 0)
 }
 export function totalsOf(rows: InsightRow[], goal: Goal): Totals {
-  return rows.reduce((t, r) => ({ spend: t.spend + Number(r.spend ?? 0), impressions: t.impressions + Number(r.impressions ?? 0), clicks: t.clicks + Number(r.clicks ?? 0), results: t.results + resultsOf(r, goal) }), { spend: 0, impressions: 0, clicks: 0, results: 0 })
+  return rows.reduce((t, r) => ({
+    spend: t.spend + Number(r.spend ?? 0), impressions: t.impressions + Number(r.impressions ?? 0), clicks: t.clicks + Number(r.clicks ?? 0),
+    linkClicks: t.linkClicks + Number(r.inline_link_clicks ?? 0), results: t.results + resultsOf(r, goal),
+  }), { spend: 0, impressions: 0, clicks: 0, linkClicks: 0, results: 0 })
 }
+
+const INSIGHT_FIELDS = "campaign_id,adset_id,ad_id,spend,impressions,clicks,inline_link_clicks,reach,frequency,actions"
 
 export async function insights(token: string, objectId: string, level: "campaign" | "adset" | "ad", days: 7 | 30): Promise<InsightRow[]> {
   const r = await graph<{ data?: InsightRow[] }>(`${objectId}/insights`, token, {
-    params: { level, date_preset: days === 7 ? "last_7d" : "last_30d", fields: "campaign_id,adset_id,ad_id,spend,impressions,clicks,actions", limit: "100" },
+    params: { level, date_preset: days === 7 ? "last_7d" : "last_30d", fields: INSIGHT_FIELDS, limit: "100" },
   })
   return r.data ?? []
+}
+
+/** One row per ad per day (time_increment=1) from `since` (YYYY-MM-DD) to today, for creative fatigue. Follows paging up to 2,000 rows. */
+export async function dailyAdInsights(token: string, campaignId: string, since: string, until = new Date().toISOString().slice(0, 10)): Promise<InsightRow[]> {
+  const out: InsightRow[] = []
+  let next: string | null = `${campaignId}/insights`
+  let params: Record<string, unknown> | undefined = { level: "ad", time_range: { since, until }, time_increment: "1", fields: "ad_id,date_start,spend,impressions,inline_link_clicks,actions", limit: "500" }
+  for (let page = 0; next && page < 4; page++) {
+    const r: { data?: InsightRow[]; paging?: { next?: string } } = await graph(next, token, { params })
+    out.push(...(r.data ?? []))
+    next = r.paging?.next ?? null
+    params = undefined // the next link carries every parameter
+  }
+  return out
+}
+
+/** Frequency (impressions per person) per ad over the window. Reach can't be summed across days, so it's its own call. */
+export async function adFrequency(token: string, campaignId: string, days: 7 | 30 = 30): Promise<Map<string, number>> {
+  const rows = await insights(token, campaignId, "ad", days)
+  return new Map(rows.filter((r) => r.ad_id).map((r) => [r.ad_id!, Number(r.frequency ?? 0)]))
 }
 
 // ── Leads ───────────────────────────────────────────────────────────────────

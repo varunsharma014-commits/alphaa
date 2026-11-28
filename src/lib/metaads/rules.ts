@@ -1,6 +1,7 @@
 // Pure rules for Facebook + Instagram ads (no database, no network), so they're easy to test:
 // special ad categories, the claim check on ad copy, and the weekly tuning decisions.
 import type { Goal, SpecialCategory } from "./graph"
+import { THRESHOLDS } from "@/lib/ad-strategy/playbook"
 import type { PlannedAd, TuneAction } from "./store"
 
 /** Numbers in a text, as the insights check reads them (lib/insights.ts `numbers`). */
@@ -109,3 +110,71 @@ export function decideTuning(t: TuneInput): { actions: TuneAction[]; summary: st
   return { actions, summary }
 }
 
+
+
+// ── Creative fatigue ─────────────────────────────────────────────────────────
+// An ad is tired when people have seen it too often and it stopped working as well as it did in
+// its own first week. Two signals, each judged only with enough data (the playbook's judge marks):
+//  - frequency above 3 AND link CTR down more than 30% vs its first 7 days of delivery
+//    (both weeks need THRESHOLDS.metaJudgeImpressions impressions);
+//  - cost per result up more than 40% vs its first 7 days (both weeks need
+//    THRESHOLDS.metaJudgeSpend spent, and the first week at least one result).
+// Compares the ad with itself only. Flags, never acts: the weekly tune keeps its own rules.
+export const FATIGUE = { frequency: 3, ctrDrop: 0.3, cpaRise: 0.4, windowDays: 7 } as const
+
+export type AdDay = { date: string; spend: number; impressions: number; linkClicks: number; results: number }
+export type FatigueInput = { adId: string; label: string; goal: Goal; frequency: number | null; days: AdDay[] }
+export type FatigueFlag = {
+  adId: string
+  label: string
+  reason: "ctr" | "cpa"
+  frequency: number | null
+  baseCtr: number | null
+  nowCtr: number | null
+  baseCpa: number | null
+  nowCpa: number | null
+  /** Plain English, every number from the input. */
+  why: string
+}
+
+type Win = { spend: number; impressions: number; linkClicks: number; results: number }
+const sumWin = (d: AdDay[]): Win => d.reduce((t, x) => ({ spend: t.spend + x.spend, impressions: t.impressions + x.impressions, linkClicks: t.linkClicks + x.linkClicks, results: t.results + x.results }), { spend: 0, impressions: 0, linkClicks: 0, results: 0 })
+const dayNo = (iso: string) => Math.floor(Date.parse(`${iso.slice(0, 10)}T00:00:00Z`) / 86_400_000)
+const pct1 = (x: number) => `${(Math.round(x * 1000) / 10).toLocaleString("en-US")}%`
+
+/** Pure: which ads look tired. `currency` is only used in the sentence. */
+export function detectFatigue(ads: FatigueInput[], currency: string): FatigueFlag[] {
+  const out: FatigueFlag[] = []
+  for (const a of ads) {
+    const days = a.days.filter((d) => d.impressions > 0 || d.spend > 0).sort((x, y) => x.date.localeCompare(y.date))
+    if (!days.length) continue
+    const first = dayNo(days[0].date)
+    const last = dayNo(days[days.length - 1].date)
+    // The two weeks must not overlap: at least 14 days from the first delivery.
+    if (last - first + 1 < FATIGUE.windowDays * 2) continue
+    const base = sumWin(days.filter((d) => dayNo(d.date) < first + FATIGUE.windowDays))
+    const now = sumWin(days.filter((d) => dayNo(d.date) > last - FATIGUE.windowDays))
+    const unit = a.goal === "OUTCOME_LEADS" ? "lead" : "click"
+
+    const ctrOk = base.impressions >= THRESHOLDS.metaJudgeImpressions && now.impressions >= THRESHOLDS.metaJudgeImpressions
+    const baseCtr = ctrOk && base.impressions ? base.linkClicks / base.impressions : null
+    const nowCtr = ctrOk && now.impressions ? now.linkClicks / now.impressions : null
+    const cpaOk = base.spend >= THRESHOLDS.metaJudgeSpend && now.spend >= THRESHOLDS.metaJudgeSpend && base.results >= 1
+    const baseCpa = cpaOk ? base.spend / base.results : null
+    // No result at all this week: its cost per result is at least what it spent.
+    const nowCpa = cpaOk ? now.spend / Math.max(1, now.results) : null
+    const flag = { adId: a.adId, label: a.label, frequency: a.frequency, baseCtr, nowCtr, baseCpa, nowCpa }
+
+    if (a.frequency !== null && a.frequency > FATIGUE.frequency && baseCtr !== null && nowCtr !== null && baseCtr > 0 && nowCtr < baseCtr * (1 - FATIGUE.ctrDrop)) {
+      out.push({ ...flag, reason: "ctr", why: `${a.label}: people have seen it ${a.frequency.toFixed(1)} times on average, and its click rate fell from ${pct1(baseCtr)} in its first week to ${pct1(nowCtr)} this week (${pct1(1 - nowCtr / baseCtr)} lower).` })
+      continue
+    }
+    if (baseCpa !== null && nowCpa !== null && nowCpa > baseCpa * (1 + FATIGUE.cpaRise)) {
+      const m = (n: number) => `${(Math.round(n * 100) / 100).toLocaleString("en-US", { maximumFractionDigits: 2 })} ${currency}`
+      out.push({ ...flag, reason: "cpa", why: now.results
+        ? `${a.label}: each ${unit} now costs ${m(nowCpa)}, up from ${m(baseCpa)} in its first week (${pct1(nowCpa / baseCpa - 1)} more).`
+        : `${a.label}: it spent ${m(now.spend)} this week with no ${unit}s, after ${m(baseCpa)} a ${unit} in its first week.` })
+    }
+  }
+  return out
+}

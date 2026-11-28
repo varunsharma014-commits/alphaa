@@ -8,9 +8,11 @@ import { runAsUser } from "@/lib/usage"
 import { metaAdsConfigured } from "@/lib/metaads/connect"
 import { pollLeads } from "@/lib/metaads/leads"
 import { brandsWithCampaigns, weeklyTune } from "@/lib/metaads/tune"
+import { metaFatigue } from "@/lib/metaads/fatigue"
 
 // Facebook + Instagram ads.
-//   ?job=leads  hourly: new leads from my lead forms (active or paused campaigns)
+//   ?job=leads  hourly: new leads from my lead forms (active or paused campaigns), and the creative
+//               fatigue check (cached 6h per brand, so ~4 times a day; it notes, never changes)
 //   ?job=tune   Mon 12:00 UTC: last 7 days → pause losers / shift budget (autopilot.ads) and report
 // Background, one brand at a time; `?dryRun=1` lists who would run.
 const running = { leads: false, tune: false }
@@ -29,6 +31,7 @@ export async function GET(req: NextRequest) {
     let n = 0
     for (const u of users) {
       const r = await runAsUser(u.id, () => (job === "tune" ? weeklyTune(u.id).then((t) => (t ? 1 : 0)) : pollLeads(u.id))).catch(() => 0)
+      if (job === "leads") await runAsUser(u.id, () => metaFatigue(u.id)).catch(() => null)
       n += r
     }
     console.log(`[metaads] ${job}: ${users.length} brands, ${n} ${job === "tune" ? "passes" : "new leads"}`)

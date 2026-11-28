@@ -6,7 +6,7 @@
 //   ads_change         every change I make on an ad platform (shared with Google Ads: platform "meta" | "google")
 import { db } from "@/lib/db"
 import { decryptSecret, encryptSecret } from "@/lib/checks/bing-webmaster"
-import type { AdAccount, Built, GeoCity, Goal, Pixel, SpecialCategory } from "./graph"
+import type { AdAccount, Built, GeoCity, Goal, LeadsOn, Pixel, SpecialCategory } from "./graph"
 
 export const ACCESS = "meta_ads_account"
 export const CAMPAIGN = "meta_ads_campaign"
@@ -29,6 +29,8 @@ export type MetaAdsAccess = {
 export type PlannedAd = { primaryText: string; headline: string; description: string; imageHeadline: string; imageId?: string | null }
 export type MetaPlan = {
   goal: Goal
+  /** Leads goal: instant form (default) or website leads counted by the picked pixel. */
+  leadsOn?: LeadsOn
   why: string
   keys: string[]
   special: SpecialCategory
@@ -117,10 +119,15 @@ export async function saveCampaign(userId: string, c: MetaCampaign): Promise<voi
 export const liveCampaigns = (list: MetaCampaign[]) => list.filter((c) => (c.status === "paused" || c.status === "active") && c.built?.campaignId)
 
 // ── Change log ──────────────────────────────────────────────────────────────
-export type AdsChange = { platform: "meta"; campaignRowId?: string; objectId?: string; what: string; why: string; by: "owner" | "autopilot"; before?: string | number | null; after?: string | number | null; at: string }
+export type AdsChange = { platform: "meta"; campaignRowId?: string; objectId?: string; what: string; why: string; by: "owner" | "autopilot"; before?: string | number | null; after?: string | number | null; at: string; /** "fatigue" = a note, nothing changed on Meta. */ kind?: "fatigue" }
 export async function logChange(userId: string, c: Omit<AdsChange, "platform" | "at">): Promise<void> {
   const row: AdsChange = { platform: "meta", ...c, at: new Date().toISOString() }
   await db.mockActivity.create({ data: { userId, type: CHANGE, title: `Meta ads: ${c.what}`.slice(0, 190), metadata: row as object } })
+}
+/** Ad ids I already flagged as tired since `sinceDays` ago (one note per ad per week). */
+export async function recentFatigueAdIds(userId: string, sinceDays = 7): Promise<Set<string>> {
+  const rows = await db.mockActivity.findMany({ where: { userId, type: CHANGE, createdAt: { gte: new Date(Date.now() - sinceDays * 86_400_000) }, metadata: { path: ["kind"], equals: "fatigue" } }, select: { metadata: true }, take: 200 })
+  return new Set(rows.map((r) => (r.metadata as AdsChange).objectId ?? "").filter(Boolean))
 }
 export async function recentChanges(userId: string, take = 10): Promise<AdsChange[]> {
   const rows = await db.mockActivity.findMany({ where: { userId, type: CHANGE, metadata: { path: ["platform"], equals: "meta" } }, orderBy: { createdAt: "desc" }, take })

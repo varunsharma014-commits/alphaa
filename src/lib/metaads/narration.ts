@@ -9,12 +9,15 @@ import { listAccounts } from "@/lib/social/store"
 import { metaAdsConfigured } from "./connect"
 import { getAccess, latestTune, listCampaigns, listLeads, markLeadsSeen, recentChanges, type MetaCampaign } from "./store"
 import { metaReport, type MetaReport } from "./report"
+import { pct } from "@/lib/ads-kpis"
 import { SUGGESTED_DAILY } from "./plan"
 
 const op = (body: Record<string, string>, label: string, primary = false): Chip => ({ label, primary, action: { type: "agent-op", endpoint: "metaads", body } })
 const CONNECT = "/api/social/connect/meta"
 const money = (n: number, cur: string) => `${(Math.round(n * 100) / 100).toLocaleString("en-US", { maximumFractionDigits: 2 })} ${cur}`
 const GOAL = { OUTCOME_LEADS: "Get leads: a short form on Facebook and Instagram sends you their name, email and phone", OUTCOME_TRAFFIC: "Get website visits from people nearby" } as const
+const WEBSITE_LEADS = "Get leads on your website: your Meta Pixel counts each lead, and Meta shows the ads to people likely to become one"
+const goalLine = (pl: MetaCampaign["plan"]) => (pl.goal === "OUTCOME_LEADS" && pl.leadsOn === "website" ? WEBSITE_LEADS : GOAL[pl.goal])
 
 export async function metaAdsMessages(user: User, note?: string | null): Promise<Message[]> {
   const out: Message[] = []
@@ -100,7 +103,7 @@ export async function metaAdsMessages(user: User, note?: string | null): Promise
   // ── Campaigns ──────────────────────────────────────────────────────────────
   const campaigns = (await listCampaigns(user.id, 20)).filter((c) => c.status !== "dismissed")
   const proposed = campaigns.find((c) => c.status === "proposed")
-  if (proposed) out.push(planMessage(proposed))
+  if (proposed) out.push(planMessage(proposed, { pixel: !!pixel, site: !!user.websiteUrl?.trim() }))
   for (const c of campaigns.filter((c) => c.status === "paused" || c.status === "active" || c.status === "building" || c.status === "failed").slice(0, 5)) out.push(campaignMessage(c))
   if (!proposed) {
     out.push(agent([
@@ -144,7 +147,7 @@ export async function metaAdsMessages(user: User, note?: string | null): Promise
   return out
 }
 
-function planMessage(c: MetaCampaign): Message {
+function planMessage(c: MetaCampaign, can: { pixel: boolean; site: boolean }): Message {
   const pl = c.plan
   const where = `${pl.cityLabel ?? "your area"} and ${pl.radiusMiles} miles around, adults 18+`
   const budget = pl.budgetSource === "autopilot"
@@ -153,7 +156,7 @@ function planMessage(c: MetaCampaign): Message {
   const blocks: Block[] = [
     { kind: "text", text: "Here’s the campaign I’d run.", big: true },
     { kind: "text", text: pl.why },
-    { kind: "receipt", title: c.name, items: [GOAL[pl.goal], `Who sees it: ${where}`, `Budget: ${budget}`, ...(pl.special !== "NONE" ? ["Meta treats ads like yours as a special category, so the audience is kept broad (all adults, wider area)."] : [])] },
+    { kind: "receipt", title: c.name, items: [goalLine(pl), `Who sees it: ${where}`, `Budget: ${budget}`, ...(pl.special !== "NONE" ? ["Meta treats ads like yours as a special category, so the audience is kept broad (all adults, wider area)."] : [])] },
     ...pl.ads.map((a, i): Block => ({ kind: "doc", title: a.headline, meta: `Ad ${i + 1} of ${pl.ads.length}${a.description ? ` · ${a.description}` : ""}`, text: a.primaryText, image: a.imageId ? imageUrl(a.imageId) : undefined, square: true })),
     { kind: "text", text: "When you approve, I build it on Meta paused. Nothing spends until you tap Turn it on." },
     { kind: "chips", items: [
@@ -161,11 +164,14 @@ function planMessage(c: MetaCampaign): Message {
         text: "Last check before I build it.",
         fields: [
           { name: "dailyBudget", label: `Daily budget (${c.currency})`, type: "text", value: String(pl.dailyBudget || SUGGESTED_DAILY), required: true },
-          ...(pl.goal === "OUTCOME_LEADS" ? [{ name: "privacyUrl", label: "Your privacy policy link (Meta shows it on the form)", type: "url" as const, value: c.privacyUrl ?? "", placeholder: "https://yoursite.com/privacy", required: true }] : []),
+          ...(pl.goal === "OUTCOME_LEADS" && pl.leadsOn !== "website" ? [{ name: "privacyUrl", label: "Your privacy policy link (Meta shows it on the form)", type: "url" as const, value: c.privacyUrl ?? "", placeholder: "https://yoursite.com/privacy", required: true }] : []),
         ],
         cta: "Build it, paused",
         fine: "Meta bills your ad account directly. I never go over your monthly budget.",
       } } },
+      ...(pl.goal === "OUTCOME_LEADS" && can.pixel && can.site
+        ? [pl.leadsOn === "website" ? op({ op: "leads_on", id: c.id, value: "form" }, "Use the Facebook form instead") : op({ op: "leads_on", id: c.id, value: "website" }, "Collect leads on my website (pixel)")]
+        : []),
       op({ op: "plan" }, "Write a different plan"),
       op({ op: "dismiss", id: c.id }, "Not now"),
     ] },
@@ -176,7 +182,7 @@ function planMessage(c: MetaCampaign): Message {
 function campaignMessage(c: MetaCampaign): Message {
   const status = c.status === "active" ? "Running" : c.status === "paused" ? "Paused" : c.status === "building" ? "Building…" : "Didn’t build"
   const blocks: Block[] = [
-    { kind: "receipt", title: c.name, sub: `${status} · ${money(c.plan.dailyBudget, c.currency)} a day`, items: [GOAL[c.plan.goal], `${c.plan.ads.length} ads · ${c.plan.cityLabel ?? "near you"}`] },
+    { kind: "receipt", title: c.name, sub: `${status} · ${money(c.plan.dailyBudget, c.currency)} a day`, items: [goalLine(c.plan), `${c.plan.ads.length} ads · ${c.plan.cityLabel ?? "near you"}`] },
   ]
   if (c.error) blocks.push({ kind: "text", text: `Meta said: ${c.error}` })
   const chips: Chip[] = []
@@ -188,6 +194,10 @@ function campaignMessage(c: MetaCampaign): Message {
 }
 
 function reportMessage(r: MetaReport): Message {
-  const line = (label: string, w: MetaReport["d7"]) => `${label}: ${money(w.spend, r.currency)} spent · ${w.impressions.toLocaleString("en-US")} views · ${w.clicks.toLocaleString("en-US")} clicks · ${w.leads} ${w.leads === 1 ? "lead" : "leads"}${w.costPerLead !== null ? ` · ${money(w.costPerLead, r.currency)} per lead` : ""}`
+  const line = (label: string, w: MetaReport["d7"]) => {
+    const k = w.kpis
+    const rates = [k?.ctr != null ? `${pct(k.ctr)} CTR` : null, k?.cpc != null ? `${money(k.cpc, r.currency)} a click` : null, k?.cpm != null ? `${money(k.cpm, r.currency)} per 1,000 views` : null, k?.convRate != null && w.leads ? `${pct(k.convRate)} of clicks became leads` : null].filter(Boolean)
+    return `${label}: ${money(w.spend, r.currency)} spent · ${w.impressions.toLocaleString("en-US")} views · ${(w.linkClicks ?? w.clicks).toLocaleString("en-US")} link clicks${rates.length ? ` · ${rates.join(" · ")}` : ""} · ${w.leads} ${w.leads === 1 ? "lead" : "leads"}${w.costPerLead !== null ? ` · ${money(w.costPerLead, r.currency)} per lead` : ""}`
+  }
   return agent([{ kind: "receipt", title: "Facebook & Instagram results", items: [line("Last 7 days", r.d7), line("Last 30 days", r.d30)] }], "ma-report")
 }

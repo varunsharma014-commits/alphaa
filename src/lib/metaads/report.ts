@@ -1,9 +1,11 @@
 // Real Facebook + Instagram results for the ads thread: 7 and 30 days of spend, results and cost
-// per lead, only for campaigns I built. Cached 15 minutes per brand so opening the thread is cheap.
+// per lead, plus impressions, link CTR, CPC, CPM and conversion rate (leads ÷ link clicks), only
+// for campaigns I built. Cached 15 minutes per brand so opening the thread is cheap.
+import { kpisOf, type Kpis } from "@/lib/ads-kpis"
 import { insights, totalsOf, type Totals } from "./graph"
 import { countLeads, decToken, getAccess, listCampaigns, liveCampaigns } from "./store"
 
-export type Window = Totals & { leads: number; clicksResults: number; costPerLead: number | null }
+export type Window = Totals & { leads: number; clicksResults: number; costPerLead: number | null; kpis: Kpis }
 export type MetaReport = { currency: string; d7: Window; d30: Window; campaigns: number; at: string }
 
 const cache = new Map<string, { at: number; r: MetaReport | null }>()
@@ -31,7 +33,7 @@ async function build(userId: string): Promise<MetaReport | null> {
       const rows = await insights(token, c.built!.campaignId!, "campaign", days)
       const t = totalsOf(rows, c.plan.goal)
       const w = out[days]
-      w.spend += t.spend; w.impressions += t.impressions; w.clicks += t.clicks
+      w.spend += t.spend; w.impressions += t.impressions; w.clicks += t.clicks; w.linkClicks += t.linkClicks
       if (c.plan.goal === "OUTCOME_LEADS") w.leads += t.results
       else w.clicksResults += t.results
       w.results += t.results
@@ -40,10 +42,12 @@ async function build(userId: string): Promise<MetaReport | null> {
     const stored = await countLeads(userId, days)
     out[days].leads = Math.max(out[days].leads, stored)
     out[days].costPerLead = out[days].leads ? Math.round((out[days].spend / out[days].leads) * 100) / 100 : null
+    // Link clicks are what CTR/CPC are judged on (the playbook's "link click-through rate").
+    out[days].kpis = kpisOf({ spend: out[days].spend, impressions: out[days].impressions, clicks: out[days].linkClicks, conversions: out[days].leads })
   }
   return { currency: live[0].currency, d7: out[7], d30: out[30], campaigns: live.length, at: new Date().toISOString() }
 }
 
-const empty = (): Window => ({ spend: 0, impressions: 0, clicks: 0, results: 0, leads: 0, clicksResults: 0, costPerLead: null })
+const empty = (): Window => ({ spend: 0, impressions: 0, clicks: 0, linkClicks: 0, results: 0, leads: 0, clicksResults: 0, costPerLead: null, kpis: kpisOf({ spend: 0, impressions: 0, clicks: 0, conversions: 0 }) })
 
 export function forget(userId: string) { cache.delete(userId) }
