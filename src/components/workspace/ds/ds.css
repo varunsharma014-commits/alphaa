@@ -2,6 +2,7 @@
    the tokens from (dashboard)/workspace.css. Light only. Motion respects prefers-reduced-motion. */
 
 /* ── Page + section headers ──────────────────────────────────────────────── */
+.ax .xd-phw { margin-bottom: 28px; }
 .ax .xd-ph { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
 .ax .xd-ph__txt { flex: 1 1 320px; }
 .ax .xd-ph__top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }

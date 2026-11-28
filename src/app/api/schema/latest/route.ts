@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic"
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { trustedSchemas } from "@/lib/schema-generator"
 
 export async function GET(): Promise<NextResponse> {
   try {
@@ -21,14 +22,16 @@ export async function GET(): Promise<NextResponse> {
       orderBy: { generatedAt: "desc" },
     })
 
-    if (!latest) {
+    // Only blocks built from real facts; an older AI-made record counts as none, so callers rewrite it.
+    const schemas = trustedSchemas(latest?.schemas)
+    if (!latest || !schemas.length) {
       return NextResponse.json({ schemaMarkup: null })
     }
 
     return NextResponse.json({
       schemaMarkup: {
         id: latest.id,
-        schemas: latest.schemas,
+        schemas,
         generatedAt: latest.generatedAt,
       },
     })

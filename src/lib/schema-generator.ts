@@ -48,6 +48,24 @@ export function sanitizeNode(node: unknown, ownHost: string | null): unknown {
   return obj
 }
 
+// Placeholder names the old AI generator wrote when the profile had no name ("My Business").
+const PLACEHOLDER_NAME = /^(my|your|the|sample|example)\s+(business|company|brand|store|shop)$/i
+
+/**
+ * The stored blocks that are safe to show, install or serve. Records written by the old AI generator
+ * (before 2026-11-28) have no `checked` flag and carry invented FAQ answers, services and the
+ * placeholder name "My Business", so they are never offered again: the owner rewrites them, and the
+ * new generator only uses real facts. Also drops any block still named like a placeholder.
+ */
+export function trustedSchemas(raw: unknown): SchemaItem[] {
+  if (!Array.isArray(raw)) return []
+  return (raw as SchemaItem[]).filter((i) => {
+    if (!i || typeof i !== "object" || !i.jsonLd || i.checked !== true) return false
+    const name = (i.jsonLd as Record<string, unknown>).name
+    return !(typeof name === "string" && PLACEHOLDER_NAME.test(name.trim()))
+  })
+}
+
 const typeOf = (ld: object) => String((ld as Record<string, unknown>)["@type"] ?? "Thing")
 const pathOf = (u: string) => { try { return new URL(u).pathname || "/" } catch { return "/" } }
 

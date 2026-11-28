@@ -1,91 +1,31 @@
 "use client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { RefreshCw } from "lucide-react"
+import { Button } from "@/components/workspace/ui"
+import { toast } from "@/lib/workspace/events"
 
-interface RunScanButtonProps {
-  prominent?: boolean
-}
-
-export default function RunScanButton({ prominent = false }: RunScanButtonProps) {
+// Asks all four AIs again now (POST /api/dashboard/scan saves a new weekly-style check).
+export default function RunScanButton({ primary = false, label = "Check again now" }: { primary?: boolean; label?: string }) {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
-  async function handleScan() {
+  async function run() {
     setLoading(true)
-    setError(null)
     try {
       const res = await fetch("/api/dashboard/scan", { method: "POST" })
-      if (!res.ok) throw new Error("I couldn’t finish the check")
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as { error?: string } | null
+        throw new Error(data?.error ?? "")
+      }
+      toast("Done. Here’s what the AIs said this time.")
       router.refresh()
-    } catch {
-      setError("The check didn't finish this time. Please try again in a minute — alphaa also re-checks automatically every week.")
+    } catch (err) {
+      const msg = err instanceof Error && err.message ? err.message : "The check didn’t finish this time. Try again in a minute. I also check every week on my own."
+      toast(msg)
     } finally {
       setLoading(false)
     }
   }
 
-  const errorNote = error ? (
-    <p style={{ fontSize: "11px", color: "var(--ds-warn)", marginTop: "6px", maxWidth: "260px", textAlign: "right", lineHeight: 1.5 }}>
-      {error}
-    </p>
-  ) : null
-
-  if (prominent) {
-    return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <button
-        onClick={handleScan}
-        disabled={loading}
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          background: "var(--ds-accent)",
-          color: "var(--ds-on-accent)",
-          fontSize: "13px",
-          fontWeight: 500,
-          borderRadius: "8px",
-          padding: "9px 18px",
-          border: "none",
-          cursor: loading ? "default" : "pointer",
-          opacity: loading ? 0.6 : 1,
-        }}
-      >
-        {loading && <RefreshCw size={13} className="animate-spin" />}
-        {loading ? "Re-checking the AI engines…" : "Check the AI engines now"}
-      </button>
-      {errorNote}
-      </div>
-    )
-  }
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-    <button
-      onClick={handleScan}
-      disabled={loading}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "7px",
-        background: "transparent",
-        color: "var(--ds-text-mute)",
-        fontSize: "13px",
-        fontWeight: 500,
-        borderRadius: "8px",
-        padding: "8px 16px",
-        border: "1px solid var(--ds-border-3)",
-        whiteSpace: "nowrap",
-        cursor: loading ? "default" : "pointer",
-        opacity: loading ? 0.6 : 1,
-      }}
-    >
-      {loading && <RefreshCw size={12} className="animate-spin" />}
-      {loading ? "Re-checking…" : "Check again now"}
-    </button>
-    {errorNote}
-    </div>
-  )
+  return <Button variant={primary ? "primary" : "secondary"} loading={loading} onClick={run}>{loading ? "Asking the AIs" : label}</Button>
 }

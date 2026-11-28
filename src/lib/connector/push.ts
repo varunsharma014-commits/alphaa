@@ -1,4 +1,5 @@
 import { checkQuota, isQuotaError, quotaBody, refundQuota } from "@/lib/quotas"
+import { trustedSchemas } from "@/lib/schema-generator"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { db } from "@/lib/db"
@@ -153,7 +154,7 @@ export async function pushChange(user: User, input: PushInput): Promise<NextResp
       // Profiles the owner confirmed become sameAs on the main entity.
       const profiles = s.profiles ?? []
       // The plugin prints these in every page's header: only site-wide blocks (an FAQPage belongs on its own page only).
-      const siteWide = ((latest?.schemas as { jsonLd: unknown; pageUrl?: string; type?: string }[] | null) ?? []).filter((x) => (!x.pageUrl || x.pageUrl === "/") && x.type !== "FAQPage")
+      const siteWide = trustedSchemas(latest?.schemas).filter((x) => (!x.pageUrl || x.pageUrl === "/") && x.type !== "FAQPage")
       const blocks = siteWide.map((x) => x.jsonLd).filter(Boolean).map((b, i) => {
         if (i !== 0 || !profiles.length || typeof b !== "object") return b
         const o = b as Record<string, unknown>

@@ -60,8 +60,10 @@ export function startCron(): void {
     // Daily 14:00 UTC — lifecycle emails (connect nudges + week-one recap; Resend only)
     if (hour === 14) hit("/api/cron/lifecycle")
 
-    // Mon 13:00 UTC — weekly reports (Anthropic)
-    if (dow === 1 && hour === 13) hit("/api/cron/weekly")
+    // Mon 13:00 UTC (+ hourly catch-up until Tuesday ends) — weekly report + briefing email
+    // (Anthropic + Resend). The route skips a brand with a report from the last 5 days and refuses
+    // to overlap, so a re-hit only finishes brands a deploy cut off and never emails twice.
+    if ((dow === 1 && hour >= 13) || dow === 2) hit("/api/cron/weekly")
     // Mon, Tue, Thu, Fri 13:00 UTC — GBP post drafts (Anthropic). The route
     // picks who is due: Starter Mon/Thu (2 a week), Pro / Growth all four.
     if ((dow === 1 || dow === 2 || dow === 4 || dow === 5) && hour === 13) hit("/api/cron/gbp-posts")

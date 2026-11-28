@@ -2,58 +2,28 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { RefreshCw } from "lucide-react"
+import { Button } from "@/components/workspace/ui"
+import { toast } from "@/lib/workspace/events"
 
 export function SyncReviewsButton() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState<string | null>(null)
 
-  async function handleSync() {
+  async function sync() {
     setLoading(true)
-    setMessage(null)
     try {
       const res = await fetch("/api/integrations/sync", { method: "POST" })
-      if (!res.ok) {
-        const data = (await res.json()) as { error?: string }
-        throw new Error(data.error ?? "I couldn’t reach Google")
-      }
+      if (!res.ok) throw new Error("sync")
       const data = (await res.json()) as { synced?: { reviews?: number } }
-      const count = data.synced?.reviews ?? 0
-      setMessage(`Found ${count} new review${count !== 1 ? "s" : ""}`)
+      const n = data.synced?.reviews ?? 0
+      toast(n ? `Found ${n} new review${n === 1 ? "" : "s"}` : "No new reviews since my last check")
       router.refresh()
     } catch {
-      setMessage("alphaa will check again automatically")
+      toast("I couldn’t reach Google just now. I check again on my own every day.")
     } finally {
       setLoading(false)
     }
   }
 
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-      {message && <span style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>{message}</span>}
-      <button
-        onClick={handleSync}
-        disabled={loading}
-        style={{
-          background: "transparent",
-          color: "var(--ds-text-mute)",
-          border: "1px solid var(--ds-border-3)",
-          borderRadius: "8px",
-          padding: "8px 16px",
-          fontSize: "13px",
-          fontWeight: 500,
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          whiteSpace: "nowrap",
-          cursor: loading ? "not-allowed" : "pointer",
-          opacity: loading ? 0.5 : 1,
-        }}
-      >
-        <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
-        {loading ? "I’m checking Google for new reviews…" : "Check now"}
-      </button>
-    </div>
-  )
+  return <Button loading={loading} onClick={sync}>{loading ? "Checking Google" : "Check for new reviews"}</Button>
 }

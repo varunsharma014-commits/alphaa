@@ -6,6 +6,7 @@ import "../../(dashboard)/calendar.css"
 import { CalendarPreview } from "./calendar-preview"
 import { P4Preview } from "./p4-preview"
 import { P4_PAGES } from "./p4-pages"
+import { P5_PAGES, P5_PATHS } from "./p5-preview"
 import { DsGallery } from "@/components/workspace/ds/Gallery"
 import { WorkspaceShell } from "@/components/workspace/WorkspaceShell"
 import { BriefingView } from "@/components/workspace/BriefingView"
@@ -63,9 +64,10 @@ const SAMPLE_CLUSTERS = viewOf("preview", validatePlan({ clusters: [
 const soon = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString()
 
 export function WsPreview({ page, empty, dark, role, asked = null }: { page: string; empty: boolean; dark: boolean; role?: Role; asked?: string | null }) {
-  const path = P4_PAGES[page] ?? (page === "briefing" ? "/dashboard" : page === "calendar" ? "/dashboard/social/calendar" : page === "ds" ? "/dashboard/admin/ds" : `/dashboard/${page}`)
+  const path = P4_PAGES[page] ?? P5_PATHS[page] ?? (page === "briefing" ? "/dashboard" : page === "calendar" ? "/dashboard/social/calendar" : page === "ds" ? "/dashboard/admin/ds" : `/dashboard/${page}`)
   const body = (() => {
     if (P4_PAGES[page]) return <P4Preview page={page} empty={empty} asked={asked} />
+    if (P5_PAGES[page]) return P5_PAGES[page](empty)
     if (page === "ds") return <DsGallery />
     if (page === "calendar") return <CalendarPreview empty={empty} />
     if (page === "research") return <ResearchView data={empty ? { summary: "Here’s what I’ve found about your market so far.", nicheOn: true, instagram: "connect" as const, working: [], trends: [], ideas: [], hooks: [], moves: [], comps: [], compGaps: [], strategyAt: null, hiddenComps: 2, hiddenGaps: 4, lastChecked: null, compared: 0, autopilot: false, siteConnected: false, top: null, island: "", droppedPosts: 0, ideasAt: null, topIdea: null, hasSocialAccounts: false, gmbConnected: false, published: [], clusters: null, webPersonEmail: null } : {

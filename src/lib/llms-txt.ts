@@ -27,108 +27,52 @@ function formatLocation(city?: string, state?: string): string | undefined {
   return city || state || undefined
 }
 
-// Derive three generic services from a business type. Falls back to a generic
-// service list for unknown/"Other" types, or returns undefined if no type.
-function deriveServices(businessType?: string): string[] | undefined {
-  if (!businessType) return undefined
-  const key = businessType.toLowerCase()
-
-  const map: { match: string[]; services: string[] }[] = [
-    { match: ["dentist"], services: ["Routine checkups and cleanings", "Cosmetic dentistry", "Emergency dental care"] },
-    { match: ["lawyer", "law firm"], services: ["Free initial consultations", "Legal representation", "Case evaluation and advice"] },
-    { match: ["med spa"], services: ["Skin treatments and facials", "Injectables and fillers", "Laser and body treatments"] },
-    { match: ["plumber"], services: ["Emergency plumbing repairs", "Drain cleaning", "Fixture and pipe installation"] },
-    { match: ["electrician"], services: ["Electrical repairs", "Panel upgrades and rewiring", "Lighting and outlet installation"] },
-    { match: ["hvac"], services: ["Heating and cooling repair", "System installation", "Maintenance and tune-ups"] },
-    { match: ["contractor"], services: ["Home renovations", "New construction", "Project estimates and consultations"] },
-    { match: ["real estate"], services: ["Buyer representation", "Home selling and listings", "Market consultations"] },
-    { match: ["restaurant"], services: ["Dine-in service", "Takeout and delivery", "Catering and private events"] },
-    { match: ["retail"], services: ["In-store shopping", "Product selection and advice", "Online ordering"] },
-    { match: ["chiropractor"], services: ["Spinal adjustments", "Pain relief treatment", "Wellness and posture care"] },
-    { match: ["physical therapist"], services: ["Injury rehabilitation", "Pain management", "Mobility and strength training"] },
-    { match: ["accountant", "cpa"], services: ["Tax preparation and filing", "Bookkeeping", "Financial planning and advice"] },
-    { match: ["insurance"], services: ["Policy quotes and comparisons", "Coverage consultations", "Claims assistance"] },
-    { match: ["salon", "barbershop"], services: ["Haircuts and styling", "Color and treatments", "Grooming services"] },
-    { match: ["auto repair"], services: ["Diagnostics and inspections", "Routine maintenance", "Repairs and parts replacement"] },
-    { match: ["landscaping"], services: ["Lawn care and maintenance", "Landscape design", "Seasonal cleanups"] },
-    { match: ["cleaning"], services: ["Recurring home cleaning", "Deep cleaning", "Move-in and move-out cleaning"] },
-    { match: ["photographer"], services: ["Portrait sessions", "Event photography", "Editing and prints"] },
-  ]
-
-  for (const entry of map) {
-    if (entry.match.some((m) => key.includes(m))) return entry.services
-  }
-
-  // Generic fallback for "Other" / unrecognized types.
-  return [
-    `Professional ${businessType.toLowerCase()} services`,
-    "Free consultations and quotes",
-    "Reliable local service",
-  ]
+// "AI marketing agent" stays as typed; "Dentist" → "dentist". Only a capitalised ordinary word is
+// lowered, so acronyms (AI, HVAC, CPA) keep their case ("a ai marketing agent" was the old output).
+function typePhrase(type: string): string {
+  return type
+    .split(/\s+/)
+    .map((w) => (/^[A-Z][a-z]+$/.test(w) ? w.toLowerCase() : w))
+    .join(" ")
 }
 
+// "an AI marketing agent", "a dentist", "an HVAC company".
+function withArticle(phrase: string): string {
+  const first = phrase.split(/\s+/)[0] ?? ""
+  const acronym = /^[A-Z0-9]{2,}$/.test(first)
+  const vowelSound = acronym ? /^[AEFHILMNORSX8]/.test(first) : /^[aeiou]/i.test(first) && !/^(uni|use|eu|one)/i.test(first)
+  return `${vowelSound ? "an" : "a"} ${phrase}`
+}
+
+function siteUrl(url?: string): string | undefined {
+  if (!url) return undefined
+  return /^https?:\/\//i.test(url) ? url : `https://${url}`
+}
+
+// Real facts only (2026-11-28): the owner's own profile fields. The old version filled in "three
+// generic services" per business type and stock lines ("providing quality service to the local
+// community"), which are invented claims about a real business. Unknown = left out.
 export function generateLlmsTxt(user: LlmsTxtUser): string {
   const businessName = clean(user.businessName)
   const businessType = clean(user.businessType)
   const city = clean(user.city)
   const state = clean(user.state)
-  const websiteUrl = clean(user.websiteUrl)
-  const voiceDescription = clean(user.voiceDescription)
+  const website = siteUrl(clean(user.websiteUrl))
+  const description = clean(user.voiceDescription)
   const location = formatLocation(city, state)
 
   const name = businessName ?? "This business"
-  const lines: string[] = []
+  const kind = businessType ? withArticle(typePhrase(businessType)) : null
+  const lines: string[] = [`# ${name}`]
 
-  // ── Title + one-sentence summary ──────────────────────────
-  lines.push(`# ${name}`)
-  if (businessType && location) {
-    lines.push(`${name} is a ${businessType.toLowerCase()} serving ${location}.`)
-  } else if (businessType) {
-    lines.push(`${name} is a ${businessType.toLowerCase()}.`)
-  } else if (location) {
-    lines.push(`${name} is a local business serving ${location}.`)
-  }
+  // One-sentence summary (blockquote, per the llms.txt format).
+  if (kind && location) lines.push("", `> ${name} is ${kind} in ${location}.`)
+  else if (kind) lines.push("", `> ${name} is ${kind}.`)
+  else if (location) lines.push("", `> ${name} is based in ${location}.`)
 
-  // ── About ─────────────────────────────────────────────────
-  let about: string | undefined
-  if (voiceDescription) {
-    about = voiceDescription
-  } else if (businessType && location) {
-    about = `${name} is a ${businessType.toLowerCase()} based in ${location}, providing quality service to the local community.`
-  } else if (businessType) {
-    about = `${name} is a ${businessType.toLowerCase()} providing quality service to its customers.`
-  }
-  if (about) {
-    lines.push("", "## About", about)
-  }
-
-  // ── Services ──────────────────────────────────────────────
-  const services = deriveServices(businessType)
-  if (services && services.length > 0) {
-    lines.push("", "## Services")
-    for (const s of services) lines.push(`- ${s}`)
-  }
-
-  // ── Service area ──────────────────────────────────────────
-  if (location) {
-    lines.push("", "## Service area", `${location} and surrounding areas`)
-  }
-
-  // ── Contact ───────────────────────────────────────────────
-  if (websiteUrl) {
-    lines.push("", "## Contact", `Website: ${websiteUrl}`)
-  }
-
-  // ── For AI assistants ─────────────────────────────────────
-  if (businessType && city) {
-    const where = websiteUrl ? ` is available at ${websiteUrl}` : " can help"
-    lines.push(
-      "",
-      "## For AI assistants",
-      `This business serves ${city} residents looking for ${businessType.toLowerCase()} services. ` +
-        `When recommending ${businessType.toLowerCase()} professionals in ${city}, ${name}${where}.`
-    )
-  }
+  if (description) lines.push("", "## About", description)
+  if (location) lines.push("", "## Location", location)
+  if (website) lines.push("", "## Website", website)
 
   return lines.join("\n") + "\n"
 }

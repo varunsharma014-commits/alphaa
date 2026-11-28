@@ -10,7 +10,7 @@ import { CWV_TYPE, cwvLastFail, cwvRunning, latestCwv, psiKey, runCwv, type CwvC
 import { latestSchemaAudit, runSchemaAudit, schemaAuditRunning, SCHEMA_AUDIT, type SchemaAudit } from "@/lib/schema/audit"
 import { WEBFLOW_SCOPES } from "@/lib/connector/webflow"
 import { SHOPIFY_SCOPES } from "@/lib/connector/shopify"
-import type { SchemaItem } from "@/lib/schema-generator"
+import { trustedSchemas, type SchemaItem } from "@/lib/schema-generator"
 
 export const WEEK_DEDUPE_MS = 6 * 86_400_000
 export const OWNER_COOLDOWN_MS = 20 * 60_000
@@ -86,10 +86,10 @@ export async function getSiteVitals(user: User): Promise<SiteVitals> {
     schema,
     // Only blocks for pages that exist and types those pages don't have yet; an online business is
     // never offered LocalBusiness (older AI-made records offered /product and /faq pages that weren't there).
-    generated: gen && Array.isArray(gen.schemas)
+    generated: gen && trustedSchemas(gen.schemas).length
       ? {
           at: gen.generatedAt.toISOString(),
-          items: filterSuggestions(gen.schemas as unknown as SchemaItem[], {
+          items: filterSuggestions(trustedSchemas(gen.schemas), {
             pages: (schema?.pages ?? []).filter((p) => p.status != null && p.status < 400).map((p) => p.url),
             existing: (schema?.pages ?? []).map((p) => ({ url: p.url, types: p.types })),
             online: isOnlineBusiness(user.businessType),

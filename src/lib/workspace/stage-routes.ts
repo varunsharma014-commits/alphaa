@@ -42,6 +42,13 @@ const P4: string[] = [
 
 // Package 5: AI visibility and Google listing detail pages.
 const P5: string[] = [
+  "/dashboard/visibility",
+  "/dashboard/visibility/*",
+  "/dashboard/sandbox",
+  "/dashboard/reports",
+  "/dashboard/reviews",
+  "/dashboard/posts",
+  "/dashboard/vault",
 ]
 
 export const STAGE_ROUTES: readonly string[] = [...CORE, ...P0, ...P1, ...P2, ...P3, ...P4, ...P5]

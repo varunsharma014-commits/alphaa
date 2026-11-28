@@ -4,6 +4,7 @@
 import { db } from "@/lib/db"
 import { hasPlaceholders } from "@/lib/brackets"
 import { generateLlmsTxt } from "@/lib/llms-txt"
+import { trustedSchemas } from "@/lib/schema-generator"
 import { faqToHtml, mdToHtml, mdFaq } from "@/lib/connector/wordpress"
 import { parseMeta } from "@/lib/content"
 import { codeBox, esc, shell } from "@/lib/connector/mail"
@@ -53,7 +54,7 @@ export async function buildHandoffEmail(user: U, input: HandoffInput): Promise<{
   let what: string, where: string, check: string, code: string
   if (input.what === "schema") {
     const latest = await db.schemaMarkup.findFirst({ where: { userId: user.id }, orderBy: { generatedAt: "desc" } })
-    const blocks = ((latest?.schemas as { jsonLd: unknown }[] | null) ?? []).map((x) => x.jsonLd).filter(Boolean)
+    const blocks = trustedSchemas(latest?.schemas).map((x) => x.jsonLd)
     if (!blocks.length) return { error: "I haven’t written your structured facts yet." }
     code = blocks.map((b) => `<script type="application/ld+json">\n${JSON.stringify(b, null, 2)}\n</script>`).join("\n\n")
     what = "Structured data (JSON-LD) that tells Google, ChatGPT, Claude and Perplexity our business facts — name, services, area, phone and hours."

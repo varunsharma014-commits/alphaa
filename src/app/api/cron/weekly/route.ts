@@ -16,6 +16,7 @@ import { isEmailSuppressed, unsubscribeLinks } from "@/lib/unsubscribe"
 import { logActivity } from "@/lib/activity"
 import BriefingEmail from "@/emails/BriefingEmail"
 import { briefingEmailProps } from "@/lib/agent/briefing-email"
+import { compedEmailWhere } from "@/lib/billing"
 import React from "react"
 
 const anthropic = claudeFor("weekly-briefing")
@@ -128,6 +129,13 @@ async function processUser(
 
   // 4b. What the agent actually did / is waiting on (real rows only) — feeds
   // the "I asked ChatGPT about you this week. I did X. Y needs your OK." tone.
+  // Every channel, not only Google: social posts, review replies, customer emails and ad changes
+  // the agent logged this week (activity ledger rows; real rows only).
+  const ledger = (type: string) => db.mockActivity.count({ where: { userId: user.id, type, createdAt: { gte: sevenDaysAgo } } })
+  const [socialPosted, repliesPosted, emailsSent, adChanges] = await Promise.all([
+    ledger("social_published"), ledger("review_reply"), ledger("email_campaign_sent"), ledger("ads_change"),
+  ])
+
   const [checksThisWeek, latestAuditEngines, draftsWaiting, reviewsUnanswered] = await Promise.all([
     db.audit.count({ where: { userId: user.id, createdAt: { gte: sevenDaysAgo } } }),
     newerAudit
@@ -163,6 +171,10 @@ async function processUser(
           content: `You are Alphaa, an AI agent working for ${businessName}${city ? ` in ${city}` : ""}. Write the owner's weekly note: 2-3 short sentences, first person ("I"), plain English.
 Data (the only facts you may use):
 - Google updates I published this week: ${postsPublished}
+- Social posts I published this week: ${socialPosted}
+- Review replies I posted this week: ${repliesPosted}
+- Customer emails I sent this week: ${emailsSent}
+- Ad changes I made this week: ${adChanges}
 - New Google reviews this week: ${reviewsNew}
 - Google search movers: ${keywordMovers.slice(0, 3).filter(k => k.change !== 0).map(k => `"${k.query}" moved ${k.change > 0 ? "up" : "down"} ${Math.abs(k.change)}`).join(", ") || "none"}
 - AI checks I ran this week: ${checksThisWeek > 0 ? `${checksThisWeek} (asked ${askedThisWeek.join(", ") || "the AIs"}; named the business: ${namedThisWeek.join(", ") || "none"})` : "none this week"}
@@ -251,6 +263,9 @@ Rules: state only what the data shows. If nothing changed, say so plainly and sa
   }
 }
 
+// One run at a time in this process (the scheduler re-hits this route hourly as a catch-up).
+let running = false
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const authHeader = req.headers.get("authorization")
   const cronSecret = process.env.CRON_SECRET
@@ -258,28 +273,50 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const users = await db.user.findMany({
-    where: {
-      subscriptionStatus: { in: ["active", "trialing"] },
-      stripeSubscriptionId: { not: null },
-      email: { not: "" },
-    },
-    select: { id: true, email: true, businessName: true, city: true, fullName: true },
-  })
+  if (running) return NextResponse.json({ skipped: "already running" })
+  running = true
+  try {
+    // Paying brands plus comped ones (founder accounts and their extra websites). Comped brands have
+    // no Stripe subscription, so the old filter skipped them: no report after the week of Sep 28.
+    const users = await db.user.findMany({
+      where: {
+        email: { not: "" },
+        OR: [
+          { subscriptionStatus: { in: ["active", "trialing"] }, stripeSubscriptionId: { not: null } },
+          { AND: [{ onboardingCompleted: true }, { OR: compedEmailWhere() }] },
+        ],
+      },
+      select: { id: true, email: true, businessName: true, city: true, fullName: true },
+    })
 
-  let processed = 0
-  const errors: { userId: string; error: string }[] = []
+    // Per-brand dedupe: a brand with a report from the last 5 days is done for this week. This is what
+    // makes the hourly catch-up safe (a deploy kills the in-process scheduler, so Monday 13:00 UTC
+    // alone missed whole weeks); without it a re-hit would email the briefing twice.
+    const done = new Set(
+      (await db.weeklyReport.findMany({
+        where: { userId: { in: users.map((u) => u.id) }, createdAt: { gte: new Date(Date.now() - 5 * 86_400_000) } },
+        select: { userId: true },
+      })).map((r) => r.userId)
+    )
 
-  for (const user of users) {
-    try {
-      await processUser(user)
-      processed++
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err)
-      console.error(`[weekly-cron] Failed for user ${user.id}:`, message)
-      errors.push({ userId: user.id, error: message })
+    let processed = 0
+    let skipped = 0
+    const errors: { userId: string; error: string }[] = []
+
+    for (const user of users) {
+      if (done.has(user.id)) { skipped++; continue }
+      try {
+        await processUser(user)
+        processed++
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err)
+        console.error(`[weekly-cron] Failed for user ${user.id}:`, message)
+        errors.push({ userId: user.id, error: message })
+      }
     }
-  }
 
-  return NextResponse.json({ processed, errors })
+    return NextResponse.json({ processed, skipped, errors })
+  } finally {
+    running = false
+  }
 }

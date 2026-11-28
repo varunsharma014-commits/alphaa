@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { db } from "@/lib/db"
 import { generateBusinessSchema } from "@/lib/business-schema"
-import type { SchemaItem } from "@/lib/schema-generator"
+import { trustedSchemas } from "@/lib/schema-generator"
 import { LOCAL_BUSINESS_TYPES, ORGANIZATION_TYPES } from "@/lib/schema/rules"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { hasPro } from "@/lib/billing"
@@ -38,8 +38,9 @@ export async function GET(req: Request): Promise<Response> {
     where: { userId: user.id },
     orderBy: { generatedAt: "desc" },
   })
-  if (latest && Array.isArray(latest.schemas)) {
-    for (const raw of latest.schemas as unknown as SchemaItem[]) {
+  // Only blocks built from real facts (trustedSchemas): older AI-made records had invented FAQ answers.
+  if (latest) {
+    for (const raw of trustedSchemas(latest.schemas)) {
       if (!raw || typeof raw !== "object" || !raw.jsonLd) continue
       // The saved business block (any LocalBusiness subtype / Organization) is the same entity as the live one.
       if (raw.type === businessSchema["@type"] || LOCAL_BUSINESS_TYPES.has(raw.type) || ORGANIZATION_TYPES.has(raw.type)) continue

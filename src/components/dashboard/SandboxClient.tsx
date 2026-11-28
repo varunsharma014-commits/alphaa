@@ -1,10 +1,12 @@
 "use client"
 
 import { useState, type ReactNode } from "react"
-import { Bot, Globe, Sparkles, Search, RefreshCw, Check, X } from "lucide-react"
-import type { LucideIcon } from "lucide-react"
-import { DsCard } from "@/components/dashboard/DsCard"
-import { StatusPill } from "@/components/dashboard/StatusPill"
+import { Button, EmptyState, Glyph, Pill, SectionHeader, Skeleton } from "@/components/workspace/ui"
+import { EngineMark } from "@/components/workspace/EngineCard"
+import "@/components/workspace/detail.css"
+
+// "Ask the AIs": one live question to ChatGPT, Claude, Gemini and Perplexity, answered side by side.
+// The quota is the same one the API enforces (lib/quotas.ts sandbox_question).
 
 type EngineKey = "chatgpt" | "claude" | "gemini" | "perplexity"
 
@@ -16,13 +18,11 @@ type SandboxEngineResult = {
   status: "appeared" | "not_appearing" | "not_configured" | "error"
 }
 
-// Display order + labels. The API returns whatever scanAllEngines produced; we
-// render in this order so the columns never jump around between runs.
-const ENGINES: Array<{ key: EngineKey; label: string; Icon: LucideIcon }> = [
-  { key: "chatgpt", label: "ChatGPT", Icon: Bot },
-  { key: "claude", label: "Claude", Icon: Globe },
-  { key: "gemini", label: "Gemini", Icon: Sparkles },
-  { key: "perplexity", label: "Perplexity", Icon: Search },
+const ENGINES: Array<{ key: EngineKey; label: string }> = [
+  { key: "chatgpt", label: "ChatGPT" },
+  { key: "claude", label: "Claude" },
+  { key: "perplexity", label: "Perplexity" },
+  { key: "gemini", label: "Gemini" },
 ]
 
 function escapeRegex(s: string): string {
@@ -53,17 +53,7 @@ function highlight(answer: string, ownName: string, competitors: string[]): Reac
       if (!isMatch) return <span key={i}>{part}</span>
       const isSelf = selfSet.has(part.toLowerCase())
       return (
-        <mark
-          key={i}
-          style={{
-            background: isSelf ? "var(--ds-accent)" : "var(--ds-bg)",
-            color: isSelf ? "var(--ds-on-accent)" : "var(--ds-text-strong)",
-            border: `1px solid ${isSelf ? "var(--ds-accent)" : "var(--ds-border-3)"}`,
-            borderRadius: "4px",
-            padding: "0 3px",
-            fontWeight: 500,
-          }}
-        >
+        <mark key={i} className={isSelf ? undefined : "rival"}>
           {part}
         </mark>
       )
@@ -79,15 +69,17 @@ export default function SandboxClient({
   placeholder,
   initialRemaining,
   limit,
+  questions = [],
 }: {
   businessName: string
   placeholder: string
   initialRemaining: number
   limit: number
+  /** The customer questions I already ask every week (one tap fills the box). */
+  questions?: string[]
 }) {
   const [question, setQuestion] = useState("")
   const [loading, setLoading] = useState(false)
-  const [progress, setProgress] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [remaining, setRemaining] = useState(initialRemaining)
   const [results, setResults] = useState<SandboxEngineResult[] | null>(null)
@@ -95,258 +87,126 @@ export default function SandboxClient({
 
   const trimmed = question.trim()
   const tooShort = trimmed.length > 0 && trimmed.length < 5
-  const canAsk = !loading && trimmed.length >= 5 && trimmed.length <= 200 && remaining > 0
+  const outOfChecks = remaining <= 0
+  const canAsk = !loading && trimmed.length >= 5 && trimmed.length <= 200 && !outOfChecks
 
-  async function ask() {
-    if (!canAsk) return
+  async function ask(text = trimmed) {
+    if (loading || text.length < 5 || text.length > 200 || outOfChecks) return
     setLoading(true)
     setError(null)
     setResults(null)
-
-    // Narrates the real work: all four engines are asked in parallel, so this
-    // is a progress narration, not a fake per-engine stream.
-    const steps = ["Asking ChatGPT…", "Asking Claude…", "Asking Gemini…", "Asking Perplexity…", "I’m reading the answers…"]
-    let step = 0
-    setProgress(steps[0])
-    const timer = setInterval(() => {
-      step = Math.min(step + 1, steps.length - 1)
-      setProgress(steps[step])
-    }, 2200)
-
+    setAskedQuestion(text)
     try {
       const res = await fetch("/api/sandbox/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: trimmed }),
+        body: JSON.stringify({ question: text }),
       })
       const data = await res.json().catch(() => null)
+      if (data && typeof data.remaining === "number") setRemaining(data.remaining)
       if (!res.ok) {
-        if (data && typeof data.remaining === "number") setRemaining(data.remaining)
-        setError(
-          data && typeof data.error === "string"
-            ? data.error
-            : "The live check didn't finish this time. Please try again in a minute."
-        )
+        setError(data && typeof data.error === "string" ? data.error : "The live check didn’t finish this time. Try again in a minute.")
         return
       }
       if (data && Array.isArray(data.results)) {
         setResults(data.results as SandboxEngineResult[])
-        setAskedQuestion(typeof data.question === "string" ? data.question : trimmed)
+        if (typeof data.question === "string") setAskedQuestion(data.question)
       }
-      if (data && typeof data.remaining === "number") setRemaining(data.remaining)
     } catch {
-      setError("The live check didn't finish this time. Please try again in a minute.")
+      setError("The live check didn’t finish this time. Try again in a minute.")
     } finally {
-      clearInterval(timer)
-      setProgress(null)
       setLoading(false)
     }
   }
 
-  const outOfChecks = remaining <= 0
-
   return (
     <div>
-      {/* Ask box */}
-      <DsCard style={{ marginBottom: "14px" }}>
-        <label
-          htmlFor="sandbox-question"
-          style={{
-            display: "block",
-            fontSize: "10px",
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
-            color: "var(--ds-text-ghost)",
-            marginBottom: "8px",
-          }}
-        >
-          Your question
-        </label>
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+      <form className="xp-ask" onSubmit={(e) => { e.preventDefault(); ask() }}>
+        <label htmlFor="sandbox-question" className="sr-only">Your question</label>
+        <div className="xp-ask__row">
           <input
             id="sandbox-question"
+            className="xp-ask__in"
             value={question}
             maxLength={200}
             placeholder={placeholder}
             onChange={(e) => setQuestion(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") ask()
-            }}
             disabled={loading}
-            style={{
-              flex: "1 1 260px",
-              minWidth: 0,
-              background: "var(--ds-surface)",
-              border: "1px solid var(--ds-border-2)",
-              borderRadius: "8px",
-              padding: "10px 12px",
-              fontSize: "14px",
-              color: "var(--ds-text)",
-              outline: "none",
-            }}
+            autoComplete="off"
           />
-          <button
-            onClick={ask}
-            disabled={!canAsk}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              background: "var(--ds-accent)",
-              color: "var(--ds-on-accent)",
-              fontSize: "13px",
-              fontWeight: 500,
-              borderRadius: "8px",
-              padding: "10px 18px",
-              border: "none",
-              cursor: canAsk ? "pointer" : "default",
-              opacity: canAsk ? 1 : 0.5,
-            }}
-          >
-            {loading && <RefreshCw size={13} className="animate-spin" />}
-            {loading ? "Asking the AIs…" : "Ask the AIs"}
-          </button>
+          <Button type="submit" variant="primary" loading={loading} disabled={!canAsk}>{loading ? "Asking" : "Ask the AIs"}</Button>
         </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "12px",
-            flexWrap: "wrap",
-            marginTop: "8px",
-          }}
-        >
-          <p style={{ fontSize: "11px", color: "var(--ds-text-faint)" }}>
-            {tooShort ? "A little longer, please — at least 5 characters." : `${trimmed.length}/200 characters`}
-          </p>
-          <p style={{ fontSize: "11px", color: outOfChecks ? "var(--ds-warn)" : "var(--ds-text-faint)" }}>
-            {remaining} of {limit} live checks left today
-          </p>
+        <div className="xp-ask__meta">
+          <span>{tooShort ? "A little longer, please. At least 5 characters." : `${trimmed.length}/200`}</span>
+          <span className={outOfChecks ? "warn" : undefined}>{outOfChecks ? `You’ve used today’s ${limit} live questions. They reset tomorrow.` : `${remaining} of ${limit} live questions left today`}</span>
         </div>
-
-        {outOfChecks && !error && (
-          <p style={{ fontSize: "12px", color: "var(--ds-warn)", marginTop: "8px", lineHeight: 1.6 }}>
-            You&apos;ve used your {limit} live checks today — they reset in a few hours. alphaa also checks
-            automatically every Wednesday.
-          </p>
-        )}
-        {error && (
-          <p style={{ fontSize: "12px", color: "var(--ds-warn)", marginTop: "8px", lineHeight: 1.6 }}>{error}</p>
-        )}
-      </DsCard>
-
-      {/* Honest note */}
-      <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", lineHeight: 1.6, marginBottom: "16px" }}>
-        This asks the engines live, right now. Answers can vary between runs — that&apos;s how AI works. Nothing here
-        is a ranking or a promise; it&apos;s just what each engine said this time.
-      </p>
-
-      {loading && progress && (
-        <DsCard accent="var(--ds-accent)" style={{ marginBottom: "16px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <RefreshCw size={15} color="var(--ds-accent)" className="animate-spin" />
-            <span style={{ fontSize: "13px", color: "var(--ds-text-mute)" }}>{progress}</span>
+        {questions.length > 0 && (
+          <div className="xp-ask__chips" aria-label="Questions I ask every week">
+            {questions.map((q) => (
+              <button key={q} type="button" className="ax-chip" disabled={loading} title={q} onClick={() => { setQuestion(q); ask(q) }}>{q}</button>
+            ))}
           </div>
-        </DsCard>
-      )}
+        )}
+        {error && <p className="xp-ask__meta"><span className="warn">{error}</span></p>}
+      </form>
+      <p className="xp-disc">Answers change from one run to the next. This is what each AI said this time, not a ranking.</p>
 
-      {results && askedQuestion && (
+      {(loading || (results && askedQuestion)) && (
         <>
-          <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", marginBottom: "10px" }}>
-            Asked just now: &ldquo;{askedQuestion}&rdquo;
-          </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: "12px",
-              alignItems: "start",
-            }}
-          >
-            {ENGINES.map(({ key, label, Icon }) => {
-              const r = results.find((x) => x.engine === key)
+          <SectionHeader title={`“${askedQuestion}”`} sub={loading ? "Asking all four now. This takes about 20 seconds." : "Asked just now."} />
+          <div className="xp-eng-grid">
+            {ENGINES.map(({ key, label }) => {
+              if (loading) {
+                return (
+                  <article key={key} className="xp-eng" aria-busy="true">
+                    <div className="xp-eng__top"><span className="xp-eng__name"><EngineMark engine={key} />{label}</span></div>
+                    <Skeleton kind="line" lines={4} />
+                  </article>
+                )
+              }
+              const r = results?.find((x) => x.engine === key)
               const unavailable = !r || r.status === "not_configured" || r.status === "error"
               return (
-                <DsCard key={key}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
-                    <Icon size={15} color={r?.appeared ? "var(--ds-ok)" : "var(--ds-text-mute)"} />
-                    <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ds-text)" }}>{label}</span>
+                <article key={key} className="xp-eng">
+                  <div className="xp-eng__top">
+                    <span className="xp-eng__name"><EngineMark engine={key} />{label}</span>
+                    {unavailable ? <Pill tone="idle">No answer</Pill> : r.appeared ? <Pill tone="ok" dot>Names you</Pill> : <Pill tone="warn">Doesn’t name you</Pill>}
                   </div>
-
                   {unavailable ? (
-                    <>
-                      <StatusPill variant="neutral">No answer</StatusPill>
-                      <p style={{ fontSize: "12px", color: "var(--ds-text-mute)", marginTop: "10px", lineHeight: 1.6 }}>
-                        {!r || r.status === "not_configured"
-                          ? `${label} isn't connected on this account, so alphaa didn't ask it. Nothing is being guessed here.`
-                          : `${label} didn't respond this time — so there's no answer to show. Try again in a minute.`}
-                      </p>
-                    </>
+                    <p className="ax-p">{!r || r.status === "not_configured" ? `I can’t ask ${label} on this account yet, so there’s nothing to show.` : `${label} didn’t answer this time. Try again in a minute.`}</p>
                   ) : (
                     <>
-                      <StatusPill variant={r.appeared ? "found" : "error"}>
-                        {r.appeared ? "You were named ✓" : "You weren't named"}
-                      </StatusPill>
-                      <p
-                        style={{
-                          fontSize: "12.5px",
-                          color: "var(--ds-text-strong)",
-                          lineHeight: 1.7,
-                          marginTop: "10px",
-                          whiteSpace: "pre-wrap",
-                        }}
-                      >
-                        {highlight(r.answer, businessName, r.mentioned)}
-                      </p>
+                      <p className="xp-eng__quote full xp-ans">{highlight(r.answer, businessName, r.mentioned)}</p>
                       {r.mentioned.length > 0 && (
-                        <div style={{ marginTop: "10px", borderTop: "1px solid var(--ds-border)", paddingTop: "10px" }}>
-                          <div
-                            style={{
-                              fontSize: "10px",
-                              textTransform: "uppercase",
-                              letterSpacing: "0.08em",
-                              color: "var(--ds-text-ghost)",
-                              marginBottom: "6px",
-                            }}
-                          >
-                            {label} named instead
-                          </div>
-                          <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
-                            {r.mentioned.map((name) => (
-                              <StatusPill key={name} variant="error">
-                                {name}
-                              </StatusPill>
-                            ))}
-                          </div>
+                        <div>
+                          <div className="xp-eng__lbl">{r.appeared ? "Also named" : "Named instead of you"}</div>
+                          <div className="xp-chips">{r.mentioned.map((n) => <span key={n} className="ax-chip">{n}</span>)}</div>
                         </div>
                       )}
                     </>
                   )}
-                </DsCard>
+                </article>
               )
             })}
           </div>
-
-          {/* Legend */}
-          <div
-            style={{
-              display: "flex",
-              gap: "16px",
-              flexWrap: "wrap",
-              marginTop: "14px",
-              fontSize: "11px",
-              color: "var(--ds-text-faint)",
-            }}
-          >
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
-              <Check size={12} color="var(--ds-ok)" /> Black = your business
-            </span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
-              <X size={12} color="var(--ds-text-mute)" /> Grey = someone else the engine named
-            </span>
-          </div>
+          {results && (
+            <div className="xp-legend">
+              <span><i className="you" />Your business</span>
+              <span><i className="rival" />Someone else it named</span>
+            </div>
+          )}
         </>
+      )}
+
+      {!loading && !results && (
+        <div className="xp-gap">
+          <EmptyState
+            icon={<Glyph name="spark" size={22} />}
+            title="Ask what your customers ask"
+            text="Type a question or tap one I already ask every week. You’ll see all four answers side by side."
+            bullets={["Whether each AI names you", "Who it names instead", "The full answer, with names highlighted"]}
+          />
+        </div>
       )}
     </div>
   )

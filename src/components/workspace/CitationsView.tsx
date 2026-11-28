@@ -1,16 +1,26 @@
 "use client"
 
 import type { CitationsData, EngineCell, QuestionRow } from "@/lib/workspace/citations"
-import { TONE_LABEL, type SourceKind, type Tone } from "@/lib/ai-sources"
+import { TONE_LABEL, type SourceKind } from "@/lib/ai-sources"
 import { ShareOfVoiceChart } from "./ShareOfVoiceChart"
-import { Empty, When, useInspector, type InspRow } from "./ui"
+import { EmptyState, Glyph, List, ListRow, PageHeader, Pill, SectionHeader, StatRow, StatTile, When, useInspector, type InspRow } from "./ui"
+import "./detail.css"
 
 // "Where AI gets its answers": the pages each AI cites for the owner's customer questions, the top
 // sites across the niche, how the answers talk about the owner, Google AI Overviews, and share of
 // voice against competitors over time. Real stored rows only (lib/workspace/citations.ts).
 
-const KIND_PILL: Record<SourceKind, string> = { own: "g", competitor: "a", directory: "b", social: "n", forum: "n", media: "n", reference: "n", other: "n" }
-const TONE_PILL: Record<Tone, string> = { positive: "g", neutral: "n", negative: "a", mixed: "b" }
+const KIND_TONE: Record<SourceKind, "ok" | "warn" | "info" | "idle"> = { own: "ok", competitor: "warn", directory: "info", social: "idle", forum: "idle", media: "idle", reference: "idle", other: "idle" }
+
+/** A cited page as a person reads it: its title (or the last part of its path), then the site. */
+function pageName(url: string, title: string | null): { title: string; host: string } {
+  let host = "", path = ""
+  try { const u = new URL(url); host = u.hostname.replace(/^www\./, ""); path = u.pathname.replace(/\/$/, "") } catch { /* keep empty */ }
+  const last = path.split("/").filter(Boolean).pop() ?? ""
+  let slug = last
+  try { slug = decodeURIComponent(last) } catch { /* keep raw */ }
+  return { title: title?.trim() || slug.replace(/[-_]+/g, " ").replace(/\.[a-z]{2,4}$/i, "") || host, host }
+}
 
 function cellRows(c: EngineCell): InspRow[] {
   const rows: InspRow[] = [{ k: "Verdict", v: c.state === "named" ? `Names you${c.rank ? ` · #${c.rank} of the businesses it named` : ""}` : c.state === "error" ? "Didn’t answer this time" : "Doesn’t name you yet" }]
@@ -31,6 +41,7 @@ export function CitationsView({ data }: { data: CitationsData }) {
   const named = data.tones.positive + data.tones.neutral + data.tones.negative + data.tones.mixed
   const ov = data.overviews?.checks.filter((c) => c.shown !== null) ?? []
   const ovShown = ov.filter((c) => c.shown)
+  const totalKinds = Math.max(1, data.kinds.reduce((a, k) => a + k.count, 0))
 
   const openQuestion = (q: QuestionRow) => {
     const rows: InspRow[] = []
@@ -41,11 +52,25 @@ export function CitationsView({ data }: { data: CitationsData }) {
     open({ eb: "Pages AI cites", title: q.q, rows, cta: { label: "See every answer", topic: "answers" } })
   }
 
+  const header = (
+    <PageHeader
+      title="Where AI gets its answers"
+      sub={`The pages each AI cites when your customers ask, and who it names instead of ${data.business}.`}
+      meta={data.at ? <When at={data.at} mode="ago" prefix="Checked " fallback="" /> : undefined}
+    />
+  )
+
   if (!data.scanned) {
     return (
       <>
-        <Header data={data} />
-        <Empty title="I haven’t asked the AIs your customer questions yet" text="Every week I ask ChatGPT, Claude, Perplexity and Gemini the questions your customers ask, and save which pages they cite and who they name." act={{ label: "Ask them now", topic: "answers", primary: true }} />
+        {header}
+        <EmptyState
+          hero
+          icon={<Glyph name="link" size={26} />}
+          title="I haven’t asked the AIs your customer questions yet"
+          text="Every week I ask ChatGPT, Claude, Perplexity and Gemini the questions your customers ask."
+          bullets={["Which pages each AI cites", "Who it names instead of you", "How often you’re named, week by week"]}
+        />
         {node}
       </>
     )
@@ -53,42 +78,49 @@ export function CitationsView({ data }: { data: CitationsData }) {
 
   return (
     <>
-      <Header data={data} />
+      {header}
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12, marginTop: 22 }}>
-        <div className="ax-tile"><div className="k">Answers that name you</div><div className="v"><b>{lastShare != null ? `${lastShare}%` : "—"}</b></div><div className="e">{own ? `Latest week, across ${data.sov!.weeks[data.sov!.weeks.length - 1].answers} answers` : "Shown after two weekly checks"}</div></div>
-        <div className="ax-tile"><div className="k">Your site as a source</div><div className="v"><b>{data.at ? `${data.ownCited} of ${data.totalCitations}` : "—"}</b></div><div className="e">{data.at ? "Pages AI cited in my latest check" : "Saved from my next weekly check"}</div></div>
-        <div className="ax-tile"><div className="k">How they talk about you</div><div className="v"><b>{named ? `${data.tones.positive} positive` : "—"}</b></div><div className="e">{named ? `${data.tones.neutral} neutral · ${data.tones.mixed} mixed · ${data.tones.negative} negative` : "Once an AI names you"}</div></div>
-        <div className="ax-tile"><div className="k">Google AI Overviews</div><div className="v"><b>{ov.length ? `${ovShown.length} of ${ov.length}` : "—"}</b></div><div className="e">{ov.length ? `questions show one · ${ov.filter((c) => c.cited).length} cite your site` : data.overviewsOn ? "Checked with my next weekly pass" : "Not checked"}</div></div>
-      </div>
+      <StatRow>
+        <StatTile label="Answers that name you" value={lastShare != null ? `${lastShare}%` : null} hint={own ? `Latest week, ${data.sov!.weeks[data.sov!.weeks.length - 1].answers} answers` : "Shown after two weekly checks"} />
+        <StatTile label="Your site as a source" value={data.at ? `${data.ownCited} of ${data.totalCitations}` : null} hint={data.at ? "Pages cited in my latest check" : "Saved from my next weekly check"} />
+        <StatTile label="How they talk about you" value={named ? `${data.tones.positive} positive` : null} empty="No mentions yet" hint={named ? `${data.tones.neutral} neutral, ${data.tones.mixed} mixed, ${data.tones.negative} negative` : "Once an AI names you"} />
+        <StatTile label="Google AI Overviews" value={ov.length ? `${ovShown.length} of ${ov.length}` : null} empty={data.overviewsOn ? "Not measured yet" : "Not checked"} hint={ov.length ? `questions show one, ${ov.filter((c) => c.cited).length} cite your site` : data.overviewsOn ? "Checked with my next weekly pass" : undefined} />
+      </StatRow>
 
-      <div className="ax-h2"><div><h2>Share of voice</h2><p>Out of every answer the four AIs gave to your customer questions, how many named you and how many named each top competitor.</p></div></div>
+      <SectionHeader title="Share of voice" sub="Out of every answer to your customer questions, how many named you and each top competitor." />
       {data.sov ? (
-        <section className="ax-card" style={{ padding: 20 }}><ShareOfVoiceChart data={data.sov} /></section>
+        <section className="xp-card">
+          <ShareOfVoiceChart data={data.sov} />
+          {lastShare === 0 && <p className="xp-note">No answer named you yet, so your line sits at 0%. It moves as soon as one AI names you.</p>}
+        </section>
       ) : (
-        <Empty title="Your trend starts after two weekly checks" text={`I have ${data.sovWeeks} week${data.sovWeeks === 1 ? "" : "s"} of answers so far. I ask again every week.`} />
+        <EmptyState title="Your trend starts after two weekly checks" text={`I have ${data.sovWeeks} week${data.sovWeeks === 1 ? "" : "s"} of answers so far. I ask again every week.`} />
       )}
 
-      <div className="ax-h2"><div><h2>Top sources AI uses in your niche</h2><p>The sites the AIs cited most when answering your customer questions{data.at ? <> · <When at={data.at} mode="ago" prefix="checked " fallback="" /></> : null}.</p></div></div>
+      <SectionHeader title="Top sources in your niche" sub="The sites the AIs cited most when answering your customer questions." />
       {!data.at ? (
-        <Empty title="I start saving cited pages with my next weekly check" text="Older checks recorded who the AIs named, not which pages they used. From the next check you’ll see every page each AI cites, and whose site it is." />
+        <EmptyState title="I start saving cited pages with my next weekly check" text="Older checks saved who the AIs named, not which pages they used." />
       ) : !data.topSites.length ? (
-        <Empty title="No sources came back in my latest check" text="The AIs answered from what they already know, without citing pages." />
+        <EmptyState title="No sources came back in my latest check" text="The AIs answered from what they already know, without citing pages." />
       ) : (
-        <section className="ax-card" style={{ padding: "6px 20px" }}>
-          {data.kinds.length > 0 && <p className="ax-t13" style={{ color: "var(--x-mut)", margin: "12px 0 4px" }}>{data.kinds.map((k) => `${k.label} ${Math.round((k.count / Math.max(1, data.totalCitations)) * 100)}%`).join(" · ")}</p>}
+        <section className="xp-card">
+          {data.kinds.length > 0 && (
+            <>
+              <div className="xp-kindbar" role="img" aria-label={data.kinds.map((k) => `${k.label} ${Math.round((k.count / totalKinds) * 100)}%`).join(", ")}>
+                {data.kinds.map((k) => <i key={k.kind} className={`k-${k.kind}`} style={{ width: `${(k.count / totalKinds) * 100}%` }} />)}
+              </div>
+              <div className="xp-kindkey">{data.kinds.map((k) => <span key={k.kind}><i className={`xp-sw k-${k.kind}`} />{k.label} <b>{Math.round((k.count / totalKinds) * 100)}%</b></span>)}</div>
+            </>
+          )}
           {data.topSites.map((s) => (
-            <div key={s.site} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 0", borderTop: "1px solid var(--x-line)", flexWrap: "wrap" }}>
-              <div style={{ flex: 1, minWidth: 220 }}>
-                <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}><b style={{ fontSize: 14.5 }}>{s.site}</b><span className={`ax-pill ${KIND_PILL[s.kind]}`}>{s.kindLabel}</span></div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 4 }}>
-                  {s.pages.map((p) => <a key={p.url} className="ax-src" href={p.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "100%" }}>{p.title || p.url} ↗</a>)}
+            <div key={s.site} className="xp-site">
+              <div className="xp-site__b">
+                <div className="xp-site__n">{s.site}<Pill tone={KIND_TONE[s.kind]}>{s.kindLabel}</Pill></div>
+                <div className="xp-site__pages">
+                  {s.pages.map((p) => { const n = pageName(p.url, p.title); return <a key={p.url} className="xp-src" href={p.url} target="_blank" rel="noopener noreferrer"><span>{n.title}</span><span className="xp-host">↗</span></a> })}
                 </div>
               </div>
-              <div style={{ textAlign: "right", minWidth: 120 }}>
-                <b style={{ fontSize: 14 }}>{s.answers} answer{s.answers === 1 ? "" : "s"}</b>
-                <div className="ax-t11">{s.engines.join(", ")}</div>
-              </div>
+              <div className="xp-site__end"><b>{s.answers} answer{s.answers === 1 ? "" : "s"}</b><span className="ax-t11">{s.engines.join(", ")}</span></div>
             </div>
           ))}
         </section>
@@ -96,16 +128,14 @@ export function CitationsView({ data }: { data: CitationsData }) {
 
       {data.at && (
         <>
-          <div className="ax-h2"><div><h2>By AI</h2><p>The sites each assistant cited most in my latest check.</p></div></div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 12 }}>
+          <SectionHeader title="By AI" sub="The sites each assistant cited most in my latest check." />
+          <div className="xp-byai">
             {data.byEngine.filter((e) => e.answers > 0).map((e) => (
-              <section key={e.engine} id={e.engine} className="ax-card" style={{ padding: 16, scrollMarginTop: 90 }}>
-                <b style={{ fontSize: 14.5 }}>{e.name}</b><div className="ax-t11" style={{ marginTop: 2 }}>{e.pages} page{e.pages === 1 ? "" : "s"} cited · {e.answers} answers</div>
+              <section key={e.engine} id={e.engine} className="xp-card">
+                <b>{e.name}</b><div className="ax-t11">{e.pages} page{e.pages === 1 ? "" : "s"} cited in {e.answers} answers</div>
                 {e.sites.length ? (
-                  <ul style={{ listStyle: "none", margin: "10px 0 0", padding: 0, display: "grid", gap: 6 }}>
-                    {e.sites.map((s) => <li key={s.site} style={{ display: "flex", justifyContent: "space-between", gap: 8, fontSize: 13 }}><span style={{ minWidth: 0 }}><span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{s.site}</span><span className="ax-t11">{s.kindLabel}</span></span><span style={{ color: "var(--x-mut)", fontVariantNumeric: "tabular-nums" }}>{s.count}</span></li>)}
-                  </ul>
-                ) : <p className="ax-p" style={{ marginTop: 8, fontSize: 13 }}>{e.engine === "gemini" ? "No sources returned. Gemini cites pages only when Google Search grounding is on." : e.engine === "chatgpt" ? "No sources returned. ChatGPT only cites pages when it decides to search." : "No sources returned this time."}</p>}
+                  <ul>{e.sites.map((s) => <li key={s.site}><span>{s.site}<span className="ax-t11"> · {s.kindLabel}</span></span><span className="xp-num">{s.count}</span></li>)}</ul>
+                ) : <p className="ax-p xp-gap">{e.engine === "gemini" ? "No sources came back. Gemini only cites pages when it searches Google." : e.engine === "chatgpt" ? "No sources came back. ChatGPT only cites pages when it decides to search." : "No sources came back this time."}</p>}
               </section>
             ))}
           </div>
@@ -114,55 +144,45 @@ export function CitationsView({ data }: { data: CitationsData }) {
 
       {data.overviews && (
         <>
-          <div className="ax-h2"><div><h2>Google AI Overviews</h2><p>The summary Google shows above the results, for your top questions · <When at={data.overviews.at} mode="ago" prefix="checked " fallback="" /></p></div></div>
-          <section className="ax-card" style={{ padding: "6px 20px" }}>
+          <SectionHeader title="Google AI Overviews" sub={<>The summary Google shows above the results for your top questions · <When at={data.overviews.at} mode="ago" prefix="checked " fallback="" /></>} />
+          <List card label="Google AI Overviews">
             {data.overviews.checks.map((c) => (
-              <div key={c.q} style={{ display: "flex", gap: 12, alignItems: "center", padding: "12px 0", borderTop: "1px solid var(--x-line)", flexWrap: "wrap" }}>
-                <span style={{ flex: 1, minWidth: 220, fontSize: 14 }}>{c.q}</span>
-                {c.shown === null ? <span className="ax-pill n">Couldn’t check</span> : c.shown ? <span className="ax-pill b">AI Overview shown</span> : <span className="ax-pill n">No AI Overview</span>}
-                {c.shown && (c.cited ? <span className="ax-pill g">Cites your site</span> : c.named ? <span className="ax-pill g">Names you</span> : <span className="ax-pill a">Doesn’t cite you</span>)}
-                {c.shown && <button className="ax-lnk" type="button" onClick={() => open({ eb: "Google AI Overview", title: c.q, rows: [...(c.excerpt ? [{ k: "What Google’s AI Overview said", v: c.excerpt, box: true }] : []), ...c.sources.map((s, i) => ({ k: i === 0 ? `Sources it cited (${c.sources.length})` : " ", v: s.title ?? s.url, href: s.url }))] })}>Sources</button>}
-              </div>
+              <ListRow
+                key={c.q}
+                title={c.q}
+                meta={c.shown === null ? <Pill tone="idle">Couldn’t check</Pill> : c.shown ? <><Pill tone="info">AI Overview shown</Pill>{c.cited ? <Pill tone="ok">Cites your site</Pill> : c.named ? <Pill tone="ok">Names you</Pill> : <Pill tone="warn">Doesn’t cite you</Pill>}</> : <Pill tone="idle">No AI Overview</Pill>}
+                onClick={c.shown ? () => open({ eb: "Google AI Overview", title: c.q, rows: [...(c.excerpt ? [{ k: "What Google’s AI Overview said", v: c.excerpt, box: true }] : []), ...c.sources.map((s, i) => ({ k: i === 0 ? `Sources it cited (${c.sources.length})` : " ", v: s.title ?? pageName(s.url, null).title, href: s.url }))] }) : undefined}
+                chevron={!!c.shown}
+              />
             ))}
-          </section>
+          </List>
         </>
       )}
 
       {data.questions.length > 0 && (
         <>
-          <div className="ax-h2"><div><h2>Pages AI cites, question by question</h2><p>Tap a question to see each AI’s sources, how it talks about you and who it ranks first.</p></div></div>
-          <section className="ax-card" style={{ padding: "6px 20px" }}>
-            {data.questions.map((q) => (
-              <div key={q.q} className="hv" role="button" tabIndex={0} onClick={() => openQuestion(q)} onKeyDown={(e) => { if (e.key === "Enter") openQuestion(q) }} style={{ padding: "12px 0", borderTop: "1px solid var(--x-line)", cursor: "pointer" }}>
-                <div style={{ fontSize: 14, fontWeight: 550 }}>{q.q}</div>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 6 }}>
-                  {q.engines.map((c) => (
-                    <span key={c.engine} className="ax-chip" style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
-                      <span aria-hidden="true" style={{ width: 7, height: 7, borderRadius: 99, background: c.state === "named" ? "#34c759" : "#c7c7cc" }} />
-                      {c.name}{c.state === "named" ? " names you" : ""}
-                      {c.tone && <span className={`ax-pill ${TONE_PILL[c.tone]}`} style={{ padding: "0 7px", fontSize: 11 }}>{TONE_LABEL[c.tone]}</span>}
-                      <span style={{ color: "var(--x-mut)" }}>· {c.pages.filter((p) => p.cited).length} page{c.pages.filter((p) => p.cited).length === 1 ? "" : "s"}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </section>
+          <SectionHeader title="Question by question" sub="Tap a question to see each AI’s sources and who it names first." />
+          <List card label="Customer questions">
+            {data.questions.map((q) => {
+              const namedBy = q.engines.filter((c) => c.state === "named")
+              const pages = q.engines.reduce((a, c) => a + c.pages.filter((p) => p.cited).length, 0)
+              return (
+                <ListRow
+                  key={q.q}
+                  title={q.q}
+                  onClick={() => openQuestion(q)}
+                  meta={<>
+                    <span className="xp-dots" role="img" aria-label={`${namedBy.length} of ${q.engines.length} AIs name you`}>{q.engines.map((c) => <i key={c.engine} className={c.state === "named" ? "on" : c.state === "error" ? "err" : ""} title={`${c.name}: ${c.state === "named" ? "names you" : c.state === "error" ? "didn’t answer" : "doesn’t name you yet"}`} />)}</span>
+                    <span>{namedBy.length ? `Named by ${namedBy.map((c) => c.name).join(", ")}` : "No AI names you yet"}</span>
+                    <span>· {pages} page{pages === 1 ? "" : "s"} cited</span>
+                  </>}
+                />
+              )
+            })}
+          </List>
         </>
       )}
-      <p className="ax-note" style={{ marginTop: 16 }}>Sources are the pages each AI returned with its answer: ChatGPT and Perplexity from their web search, Claude from its web search, Gemini from Google Search grounding when it’s on. Google AI Overviews come from a Google search for the same question.</p>
       {node}
     </>
-  )
-}
-
-function Header({ data }: { data: CitationsData }) {
-  return (
-    <div className="ax-hdr">
-      <div>
-        <h1 className="ax-h1">Where AI gets its answers</h1>
-        <p className="ax-sub">Which pages ChatGPT, Claude, Perplexity and Gemini cite when your customers ask, who they name instead of {data.business}, and how that changes week to week.</p>
-      </div>
-    </div>
   )
 }
