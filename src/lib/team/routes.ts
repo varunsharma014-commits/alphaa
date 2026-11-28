@@ -111,6 +111,7 @@ export const ROUTE_POLICY: Entry[] = [
   entry("POST", "/api/workspace/roas", "self"), // won/unwon (sales data) = create; uploads = ads
   entry("POST", "/api/workspace/schedule", "self"), // publish, approve or submit by role
   entry("POST", "/api/workspace/site-post", "self"), // same
+  entry("POST", "/api/workspace/sizes", "create"), // draws a post's picture in another size (preview)
 ]
 
 // GETs that aren't plain reads: they start a connection, finish one or hand out an access token.
@@ -128,6 +129,8 @@ export const GET_POLICY: Entry[] = [
   entry("GET", "/api/gads/callback", "connect"),
   entry("GET", "/api/integrations/google/connect", "connect"),
   entry("GET", "/api/integrations/google/callback", "connect"),
+  entry("GET", "/api/linkedin-ads/connect", "connect"),
+  entry("GET", "/api/linkedin-ads/callback", "connect"),
   entry("GET", "/api/library/drive/connect", "connect"),
   entry("GET", "/api/library/drive/callback", "connect"),
   entry("GET", "/api/library/drive/token", "connect"),

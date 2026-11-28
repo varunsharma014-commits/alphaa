@@ -134,6 +134,14 @@ async function main() {
       }
     }
     assert.deepEqual(missing, [], `Classify these in src/lib/team/routes.ts:\n${missing.join("\n")}`)
+    // GETs that start or finish a connection, or hand out a token, must not be open reads.
+    const READ_OK = new Set(["/api/connect/status", "/api/connect/wp/status"])
+    const openConnect = files
+      .map((f) => "/api/" + relative(root, f).replace(/\/route\.ts$/, "").replace(/\[([^\]]+)\]/g, "x$1"))
+      .filter((p) => !p.startsWith("/api/cron/") && /(^|\/)(connect|callback|start|finish|token)(\/|$)/.test(p) && !READ_OK.has(p))
+      .filter((p) => /export (async function|const) GET\b/.test(readFileSync(join(root, p.replace(/^\/api\//, "").replace(/\/x(provider|id)(?=\/|$)/g, "/[$1]"), "route.ts"), "utf8")))
+      .filter((p) => routePolicy("GET", p) !== "connect")
+    assert.deepEqual(openConnect, [], `Add these connection GETs to GET_POLICY in src/lib/team/routes.ts:\n${openConnect.join("\n")}`)
     assert.ok(ROUTE_POLICY.length > 50)
   })
 
