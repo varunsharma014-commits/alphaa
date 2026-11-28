@@ -9,6 +9,7 @@ import { AI_NOTE, askAlphaa, toast } from "@/lib/workspace/events"
 import type { Message } from "@/lib/agent/types"
 import { ActButton, Empty, When, useInspector, type Insp } from "./ui"
 import { SiteAlerts } from "./SiteAlerts"
+import { useCan } from "./role"
 import dynamic from "next/dynamic"
 
 // Scheduled website posts open in the saved editor; the saved text is what the cron publishes.
@@ -28,6 +29,21 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
   const [recap, setRecap] = useState<number | null>(null)
   const [planBusy, setPlanBusy] = useState(false)
   const [planDone, setPlanDone] = useState(false)
+  // Teams (lib/team): reviewers and up may stop an item; only publishers put it back or approve the plan.
+  const canStop = useCan("review")
+  const canPublish = useCan("publish")
+  const [teamDone, setTeamDone] = useState<Record<string, string>>({})
+  async function teamGo(it: NonNullable<BriefingData["team"]>[number]) {
+    setBusy(`t:${it.id}`)
+    const res = it.kind === "social"
+      ? await fetch("/api/workspace/schedule", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "social", id: it.id, window: false }) }).catch(() => null)
+      : await fetch("/api/agent/approve", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: it.kind === "site" ? "post" : it.kind, id: it.id }) }).catch(() => null)
+    const d = (await res?.json().catch(() => null)) as { error?: string; review?: string; message?: string } | null
+    setBusy(null)
+    if (!res?.ok) return toast(d?.error ?? "That didn’t go through. Nothing changed.")
+    setTeamDone((x) => ({ ...x, [it.id]: d?.review ? "Approved · waiting for a publisher" : "Done" }))
+    toast(d?.review ? "Approved" : "Done")
+  }
   async function approvePlan() {
     if (!data.plan) return
     setPlanBusy(true)
@@ -93,6 +109,34 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
         </>
       ) : null}
       {data.siteAlerts?.length ? <SiteAlerts alerts={data.siteAlerts} /> : null}
+      {(data.team?.length ?? 0) > 0 && (
+        <>
+        <div className="ax-h2">
+          <div><h2>Waiting for review</h2><p>{canPublish ? "Your team sent these on. Nothing goes live until you or another publisher say so." : "Nothing goes live until a publisher says so."}</p></div>
+        </div>
+        <section className="ax-card" style={{ padding: "16px 20px", marginBottom: 22 }} aria-label="Waiting for review">
+          <div style={{ display: "grid", gap: 12 }}>
+            {(data.team ?? []).map((it) => {
+              const doneText = teamDone[it.id]
+              const can = canPublish || (canStop && it.state === "submitted")
+              return (
+                <div key={`${it.kind}:${it.id}`} style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
+                  <div style={{ minWidth: 0, flex: "1 1 240px" }}>
+                    <div style={{ fontSize: 14, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis" }}>{it.title}</div>
+                    <div style={{ fontSize: 12.5, color: "var(--x-mut)" }}>{doneText ?? it.label}</div>
+                  </div>
+                  {!doneText && can && (
+                    <button className="ax-btn p sm" type="button" disabled={busy === `t:${it.id}`} onClick={() => void teamGo(it)}>
+                      {canPublish ? (it.kind === "social" ? "Approve & schedule" : "Approve & publish") : "Approve"}
+                    </button>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </section>
+        </>
+      )}
       <AiRow cards={data.ai} open={open} pages={data.pagesInProgress} />
       {h.total == null && data.tiles.filter((t) => !t.value).length >= 2 ? (
         <section className="ax-card ax-setupbar">
@@ -169,7 +213,7 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
                     <span style={{ display: "flex", gap: 4 }}>
                       {g.kind === "site" && <button className="ax-btn s sm" type="button" onClick={() => setEditDraft(g.id)}>Edit</button>}
                       <button className="ax-btn s sm" type="button" onClick={() => open({ eb: g.lane, title: g.title, rows: [{ k: "Goes out", v: st ? "Stopped. It won’t go out." : g.when }, ...(g.image ? [{ k: "Image", v: "", image: g.image }] : []), { k: "Text", v: g.text, box: true }], cta: { label: "Open it in chat", topic: g.kind === "social" ? "social" : "content" } })}>Preview</button>
-                      <button className={`ax-btn d sm${st ? " undo" : ""}`} type="button" disabled={busy === g.id} onClick={() => void hold(g)}>{st ? "Undo" : "Stop"}</button>
+                      {(st ? canPublish : canStop) && <button className={`ax-btn d sm${st ? " undo" : ""}`} type="button" disabled={busy === g.id} onClick={() => void hold(g)}>{st ? "Undo" : "Stop"}</button>}
                     </span>
                   </div>
                 </div>
@@ -185,7 +229,7 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
             <>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <div><div className="ax-eb">This week’s plan</div><div style={{ fontSize: 16, fontWeight: 650, marginTop: 4 }}>{data.plan.summary || "This week’s plan"}</div></div>
-                {!data.autopilot && data.plan.needsOk > 0 && !planDone && <button className="ax-btn p" type="button" disabled={planBusy} onClick={() => void approvePlan()}>{planBusy ? "Approving…" : "Approve this week’s plan"}</button>}
+                {!data.autopilot && data.plan.needsOk > 0 && !planDone && canPublish && <button className="ax-btn p" type="button" disabled={planBusy} onClick={() => void approvePlan()}>{planBusy ? "Approving…" : "Approve this week’s plan"}</button>}
                 {(data.autopilot || planDone) && <span className="ax-pill g">{planDone ? "Approved · going out on schedule" : "Goes out on its own · stop any item from here"}</span>}
               </div>
               <div className="ax-list" style={{ marginTop: 10 }}>

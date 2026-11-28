@@ -9,6 +9,7 @@ import { packFor } from "@/lib/credit-rules"
 import { shopifyMerchantShop } from "@/lib/connector/shopify-billing"
 import { MARKET_CURRENCY, MARKET_COOKIE, isMarketKey } from "@/content/markets/prices"
 import { realEmail } from "@/lib/sites"
+import { requireCan } from "@/lib/team/actor"
 
 // POST { pack: 50 | 120 | 300 }: a one-time Stripe Checkout (mode=payment) for usage credits.
 // The webhook (checkout.session.completed, metadata alphaa_credits) credits the brand once per
@@ -36,6 +37,7 @@ async function verifiedCreditPrice(credits: number): Promise<string | null> {
 }
 
 export async function POST(req: NextRequest) {
+  { const denied = await requireCan("billing"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const body = (await req.json().catch(() => ({}))) as { pack?: unknown }

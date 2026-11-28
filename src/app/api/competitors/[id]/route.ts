@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { requireCan } from "@/lib/team/actor"
 
 export const dynamic = "force-dynamic"
 
@@ -9,6 +10,7 @@ export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  { const denied = await requireCan("settings"); if (denied) return denied } // teams (lib/team)
   const { userId: clerkId } = await auth()
   if (!clerkId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

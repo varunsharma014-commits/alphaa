@@ -3,10 +3,12 @@ export const dynamic = "force-dynamic"
 import { NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
 import { disconnectSite } from "@/lib/connector/connection"
+import { requireCan } from "@/lib/team/actor"
 
 // POST /api/connect/disconnect: forget the website connection and its tokens
 // (revoking at the platform where it has an endpoint for that).
 export async function POST() {
+  { const denied = await requireCan("connect"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const r = await disconnectSite(user.id)

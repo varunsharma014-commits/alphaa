@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { hasPlaceholders } from "@/lib/brackets"
 import { mdToHtml } from "@/lib/markdown"
 import { AI_NOTE, askAlphaa, toast } from "@/lib/workspace/events"
+import { goLiveLabel, reviewMessage, useRole } from "./role"
 import type { IdeaRow, WorkingCard } from "@/lib/workspace/research"
 import type { Made } from "@/lib/workspace/make"
 
@@ -21,6 +22,9 @@ export function ReadySheet({ source, make, flags, onClose }: { source: ReadySour
   const [busy, setBusy] = useState(false)
   const [done, setDone] = useState<string | null>(null)
   const started = useRef(false)
+  // Teams: a reviewer approves it for a publisher, a creator sends it for review (lib/team).
+  const role = useRole()
+  const publisher = goLiveLabel(role, "") === ""
 
   async function write() {
     setWriting(true)
@@ -51,6 +55,8 @@ export function ReadySheet({ source, make, flags, onClose }: { source: ReadySour
     const d = (await res?.json().catch(() => null)) as { error?: string; at?: string | null; url?: string | null } | null
     setBusy(false)
     if (!res?.ok) return toast(d?.error ?? "That didn’t go through. Nothing changed.")
+    const held = reviewMessage(d)
+    if (held) { setDone(held); return toast(goLiveLabel(role, "Done") === "Send for review" ? "Sent for review" : "Approved") }
     const when = d?.at ? new Date(d.at).toLocaleString("en-US", { weekday: "long", hour: "numeric", minute: "2-digit" }) : null
     setDone(d?.url ? `Live: ${d.url}` : when ? `In “Going out soon”. It goes out ${when}${window ? " unless you stop it" : ""}.` : "Done.")
     toast(window ? "Added to Going out soon" : "Scheduled")
@@ -67,6 +73,7 @@ export function ReadySheet({ source, make, flags, onClose }: { source: ReadySour
     if (made.kind === "gbp" && !flags.gmbConnected) return <a className="ax-btn p" href="/api/integrations/google/connect?go=1">Connect your Google listing</a>
     if (made.kind === "site" && !flags.siteConnected) return <button className="ax-btn p" type="button" onClick={() => { onClose(); askAlphaa({ chip: { label: "Email it to my web person", action: { type: "handoff", what: "post", title: made.title, text: made.text, draftId: made.id ?? undefined } } }) }}>Send it to my web person</button>
     if (hasPlaceholders(made.text)) return <button className="ax-btn p" type="button" onClick={() => { onClose(); askAlphaa({ topic: made.kind === "social" ? "social" : "content", label: "My drafts" }) }}>Fill in the facts</button>
+    if (!publisher) return <button className="ax-btn p" type="button" disabled={busy} onClick={() => void go(false)}>{busy ? "Sending…" : goLiveLabel(role, "Schedule")}</button>
     return flags.autopilot
       ? <button className="ax-btn p" type="button" disabled={busy} onClick={() => void go(true)}>{busy ? "Adding…" : "Add to Going out soon"}</button>
       : <button className="ax-btn p" type="button" disabled={busy} onClick={() => void go(false)}>{busy ? "Scheduling…" : "Schedule"}</button>

@@ -16,6 +16,8 @@ import { addPicked, retry, waitFor } from "@/lib/library/ingest"
 import { getAsset, patchAsset, removeAsset, saveLibrarySettings } from "@/lib/library/store"
 import { driveConfigured, removeDriveAccount } from "@/lib/library/drive"
 import { dropboxConfigured } from "@/lib/library/dropbox"
+import { requireCan } from "@/lib/team/actor"
+import type { Action } from "@/lib/team/permissions"
 
 // "Your brand library" (lib/library): add files picked in Google Drive / Dropbox, remove one,
 // "Use this next", and apply what the brand book says. Answers with the panel's messages.
@@ -56,6 +58,9 @@ export async function POST(req: Request) {
   } catch {
     return NextResponse.json({ error: "That didn’t come through. Try again." }, { status: 400 })
   }
+  // Teams (lib/team/routes.ts "self"): what this op needs.
+  const denied = await requireCan(({ "drive-disconnect": "connect", remove: "settings", "bb-apply": "settings", "bb-unapply": "settings" } as Record<string, Action>)[input.op] ?? "create")
+  if (denied) return denied
   const reply = async (said: string | null, extra: Message[] = [], all = false) =>
     NextResponse.json({ messages: [...(said ? [agent([{ kind: "text", text: said }])] : []), ...extra, ...(await libraryMessages(user.id, { all }))] })
 

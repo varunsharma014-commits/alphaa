@@ -34,6 +34,7 @@ export const QUOTA_KINDS = [
   "ad_change", // writes to Google Ads / Meta ads accounts
   "week_run",
   "topic_plan", // a topic cluster map built (lib/clusters.ts): one Sonnet call + page reads
+  "team_seat", // team members on a brand (lib/team): NOT used up over time; the "month" number is the seat cap
 ] as const
 export type QuotaKind = (typeof QUOTA_KINDS)[number]
 export type Period = "day" | "week" | "month"
@@ -65,6 +66,7 @@ const STARTER: Record<QuotaKind, Limits> = {
   ad_change: { day: 5 },
   week_run: { week: 2, month: 6 },
   topic_plan: { week: 2, month: 6 }, // weekly refresh + a few on demand
+  team_seat: { month: 0 }, // Starter: owner only
 }
 const PRO: Record<QuotaKind, Limits> = {
   ai_cost_usd: { day: 4, month: 40 },
@@ -88,6 +90,7 @@ const PRO: Record<QuotaKind, Limits> = {
   ad_change: { day: 10 },
   week_run: { week: 3, month: 12 },
   topic_plan: { week: 3, month: 10 },
+  team_seat: { month: 3 }, // 3 people besides the owner
 }
 const GROWTH: Record<QuotaKind, Limits> = {
   ...PRO,
@@ -97,6 +100,7 @@ const GROWTH: Record<QuotaKind, Limits> = {
   image_gen: { day: 8, month: 60 },
   ad_plan: { month: 4 },
   ad_change: { day: 30 }, // per ad account in the allowance (quotas.ts multiplies)
+  team_seat: { month: 5 },
 }
 const NONE: Record<QuotaKind, Limits> = {
   // No plan: the first 14 days after signup (crons still work for them) and anyone who cancelled.
@@ -113,6 +117,7 @@ const NONE: Record<QuotaKind, Limits> = {
   "publish:site": { day: 1, month: 3 },
   week_run: { week: 1, month: 2 },
   topic_plan: { week: 1, month: 2 },
+  team_seat: { month: 0 }, // no plan: owner only
 }
 export const BASE_QUOTAS: Table = { none: NONE, starter: STARTER, pro: PRO, growth: GROWTH }
 
@@ -170,6 +175,16 @@ export function limitsFor(plan: string | null | undefined, kind: QuotaKind, raw?
     }
   }
   return out
+}
+
+/**
+ * Team seats (people besides the owner, invited or active) a plan includes: Pro 3, Growth 5,
+ * Starter and no plan 0. QUOTAS_JSON {"pro":{"team_seat":{"month":4}}} changes it. Seats are a
+ * cap, not a usage period: nothing tallies "team_seat" in the usage ledger.
+ */
+export function seatCap(plan: string | null | undefined, comped = false, raw?: string): number {
+  const n = limitsFor(comped ? "growth" : plan, "team_seat", raw).month
+  return typeof n === "number" && Number.isFinite(n) && n > 0 ? Math.floor(n) : 0
 }
 
 export function publicLimit(k: PublicKey, raw?: string): number {
@@ -258,6 +273,7 @@ const NOUN: Record<QuotaKind, [string, string]> = {
   ad_change: ["ad change", "ad changes"],
   week_run: ["weekly plan", "weekly plans"],
   topic_plan: ["topic plan update", "topic plan updates"],
+  team_seat: ["team seat", "team seats"],
 }
 
 function reopens(period: Period, now: Date): string {

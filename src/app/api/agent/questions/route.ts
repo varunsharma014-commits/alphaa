@@ -6,6 +6,7 @@ import { db } from "@/lib/db"
 import { currentUser } from "@/lib/connector/user"
 import { saveAgentSettings } from "@/lib/agent/settings"
 import { latestQuestionScan, questionLimit, runQuestionScan, trackedQuestions } from "@/lib/questions"
+import { requireCan } from "@/lib/team/actor"
 
 // GET: the tracked questions + latest results. POST: start a run now (takes a
 // few minutes, so it runs in the background — the server is long-lived on
@@ -31,6 +32,7 @@ export async function POST() {
 const put = z.object({ questions: z.array(z.string().trim().min(8).max(200)).min(1).max(20) })
 
 export async function PUT(req: Request) {
+  { const denied = await requireCan("settings"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof put>

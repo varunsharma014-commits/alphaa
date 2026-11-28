@@ -15,6 +15,7 @@ import { getTrackingData } from "./tracking"
 import { scheduledSitePosts } from "./site-posts"
 import { PRO_RE } from "@/lib/agent/autopilot"
 import { consentCurrent } from "@/lib/auto-approve-text"
+import type { Role } from "@/lib/team/permissions"
 
 export type ShellData = {
   businessName: string
@@ -35,9 +36,11 @@ export type ShellData = {
   /** Rows under "Needs you" on Tracking & Setup (same function as that page). */
   trackingNeeds: number
   doneThisWeek: number
+  /** The signed-in person's role on this brand (lib/team): "owner" unless they're a team member. */
+  role: Role
 }
 
-export async function getShellData(user: User): Promise<ShellData> {
+export async function getShellData(user: User, viewer?: { role: Role; name: string | null; email: string | null }): Promise<ShellData> {
   const pro = hasPro(user)
   const growth = hasGrowth(user)
   const week = new Date(Date.now() + 7 * 86_400_000)
@@ -70,7 +73,8 @@ export async function getShellData(user: User): Promise<ShellData> {
   }
   return {
     businessName: user.businessName?.trim() || user.websiteUrl || "your business",
-    firstName: user.fullName?.trim().split(/\s+/)[0] || null,
+    // A team member is greeted by their own name, never the owner's.
+    firstName: viewer && viewer.role !== "owner" ? viewer.name?.trim().split(/\s+/)[0] || null : user.fullName?.trim().split(/\s+/)[0] || null,
     pro,
     planPro: PRO_RE.test(user.plan),
     growth,
@@ -82,5 +86,6 @@ export async function getShellData(user: User): Promise<ShellData> {
     signals,
     doneThisWeek: done,
     trackingNeeds: await getTrackingData(user).then((d) => d.needs).catch(() => 0),
+    role: viewer?.role ?? "owner",
   }
 }

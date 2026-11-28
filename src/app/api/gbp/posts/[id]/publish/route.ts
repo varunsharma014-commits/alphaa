@@ -7,6 +7,7 @@ import { postToGmb, containsPlaceholders } from "@/lib/gbp-poster"
 import { logActivity } from "@/lib/activity"
 import { resolveAccessToken } from "@/lib/gmb"
 import { bannedBody, ownerBannedHit } from "@/lib/owner-edit-check"
+import { requireCan } from "@/lib/team/actor"
 
 export const dynamic = "force-dynamic"
 
@@ -14,6 +15,7 @@ export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  { const denied = await requireCan("publish"); if (denied) return denied } // teams (lib/team)
   try {
     const { userId: clerkId } = await auth()
     if (!clerkId) {

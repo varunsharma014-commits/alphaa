@@ -18,8 +18,15 @@ import { aiHeadroom, CREDITS_PER_AI_DOLLAR } from "@/lib/credit-rules"
 
 // userId = the brand's User row id (exact). clerkId = set by auth() for any signed-in request,
 // resolved to the brand at flush time, so routes that never call currentUser() still count.
-type Ctx = { userId?: string; clerkId?: string }
+// actor = who is signed in and their role on the open brand (lib/team), for the audit trail only
+// (logActivity, draft versions). Permission checks never read it: they use getActor().
+export type CtxActor = { clerkId: string; role: string; email?: string; name?: string | null; memberId?: string }
+type Ctx = { userId?: string; clerkId?: string; actor?: CtxActor }
 const als = new AsyncLocalStorage<Ctx>()
+/** Who is acting in this request (set by auth()), or undefined in crons and public calls. */
+export function ctxActor(): CtxActor | undefined {
+  return als.getStore()?.actor
+}
 /** Which feature is calling Claude ("scan", "gbp-post", "week"…), set by claudeFor(). */
 const featureAls = new AsyncLocalStorage<string>()
 export function withFeature<T>(feature: string, fn: () => T): T {

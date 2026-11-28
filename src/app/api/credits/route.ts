@@ -6,6 +6,7 @@ import { isComped } from "@/lib/billing"
 import { creditState, setAutoUse } from "@/lib/credits"
 import { CREDIT_PACKS, creditCost } from "@/lib/credit-rules"
 import { shopifyMerchantShop, shopifyPricingUrl } from "@/lib/connector/shopify-billing"
+import { requireCan } from "@/lib/team/actor"
 
 // GET: the brand's credit balance, the packs, and whether buying is possible here
 // (Shopify-billed merchants upgrade in Shopify instead; comped accounts never need credits).
@@ -28,6 +29,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("billing"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const body = (await req.json().catch(() => ({}))) as { autoUse?: unknown }

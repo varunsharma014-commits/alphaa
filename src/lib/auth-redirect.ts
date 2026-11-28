@@ -1,6 +1,6 @@
 // Where to send someone after sign-in / sign-up. Only same-site paths the app expects
 // (connector flows, dashboard, onboarding) — never an open redirect.
-const ALLOWED = ["/api/connect/", "/dashboard", "/onboarding"]
+const ALLOWED = ["/api/connect/", "/dashboard", "/onboarding", "/team/accept"]
 
 export function safeNext(raw: string | undefined | null, fallback: string): string {
   if (!raw) return fallback

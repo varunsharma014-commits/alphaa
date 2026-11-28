@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 import { clerkClient } from "@clerk/nextjs/server"
-import { auth } from "@/lib/auth"
+import { auth, resolveActive } from "@/lib/auth"
+import { membershipsFor } from "@/lib/team/store"
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { hasPaidPlan, isAdmin, isComped } from "@/lib/billing"
@@ -31,6 +32,18 @@ export default async function DashboardLayout({ children }: { children: React.Re
     }
   }
 
+  // Teams: who is signed in and their role on this brand (lib/team/resolve.ts).
+  const active = await resolveActive()
+  const role = active?.role ?? "owner"
+
+  // A team member whose own login has no finished, paid brand (new device, or removed from the
+  // brand they had open) lands on a brand they work on instead of their own empty setup.
+  const ownUnready = role === "owner" && (!user.onboardingCompleted || (!hasPaidPlan(user) && !isComped(user.email)))
+  if (ownUnready && active) {
+    const shared = await membershipsFor(active.realClerkId).catch(() => [])
+    if (shared[0]) redirect(`/api/team/open?id=${encodeURIComponent(shared[0].id)}`)
+  }
+
   if (!user.onboardingCompleted) redirect("/onboarding")
 
   // Paywall: onboarded users without a real Stripe subscription go to
@@ -47,7 +60,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const theme: DashboardTheme = "light"
 
   // Sidebar badges, the status island and the chat greeting (cheap DB reads only).
-  const shell = await getShellData(user)
+  const shell = await getShellData(user, active ? { role, name: active.name ?? null, email: active.email ?? null } : undefined)
 
   return (
     // Provider lives here, not at the app root, so marketing pages never ship
@@ -57,7 +70,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           GA4 gets a real `purchase` (no trial since Oct 2026). Meta keeps StartTrial so any ad set
           already optimizing on it doesn't lose its signal. */}
       <ConversionTracker event="purchase" metaEvent="StartTrial" whenQueryParam="upgraded" params={{ value: 99, currency: "USD" }} />
-      <WorkspaceShell data={shell} theme={theme} admin={isAdmin(user.email)}>
+      <WorkspaceShell data={shell} theme={theme} admin={role === "owner" && isAdmin(user.email)}>
         {children}
       </WorkspaceShell>
     </ClerkProvider>

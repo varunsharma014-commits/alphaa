@@ -5,6 +5,7 @@ import { db } from "@/lib/db"
 import { currentUser } from "@/lib/connector/user"
 import { hasPro } from "@/lib/billing"
 import { parseContacts } from "@/lib/email-campaigns/store"
+import { requireCan } from "@/lib/team/actor"
 
 // The CSV field of the "Add my customers" form posts here first. The file is parsed and staged
 // (MockActivity email_import_staged, read once by POST /api/agent/email op "import"); the
@@ -12,6 +13,7 @@ import { parseContacts } from "@/lib/email-campaigns/store"
 const MAX_BYTES = 2 * 1024 * 1024
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("settings"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   if (!hasPro(user)) return NextResponse.json({ error: "Email to your customers comes with the Pro plan." }, { status: 403 })

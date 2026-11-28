@@ -4,6 +4,8 @@ const ENGINE_NAMES: Record<string, string> = { chatgpt: "ChatGPT", gemini: "Gemi
 export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
+import { briefingMembers } from "@/lib/team/store"
+import { can } from "@/lib/team/permissions"
 import { asUser } from "@/lib/usage"
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
@@ -228,6 +230,24 @@ Rules: state only what the data shows. If nothing changed, say so plainly and sa
     })
   } catch (err) {
     console.error(`[weekly-cron] Email error for user ${user.id}:`, err)
+  }
+
+  // Teams: members who opted in get their own copy (lib/team). Approve links name the member,
+  // so /approve uses their current role. Emails about the brand otherwise still go to the owner.
+  try {
+    for (const m of await briefingMembers(user.id)) {
+      if (await isEmailSuppressed(m.email)) continue
+      const props = await briefingEmailProps(user.id, m.name?.trim().split(/\s+/)[0] || null, { id: m.id, canApprove: can(m.role, "review") })
+      if (!props) break
+      const unsub = unsubscribeLinks(`u_${user.id}`, m.email)
+      const react = React.createElement(BriefingEmail, { ...props, footer: { address: mailingAddress(), unsubscribeUrl: unsub?.pageUrl ?? null } })
+      const name = user.businessName?.trim() || "your brand"
+      const subject = `${name}: ${props.lights.filter((l) => l.light === "yes").length} of 4 AIs recommend it${props.inbox.length ? ` · ${props.inbox.length} waiting` : ""}`
+      if (unsub) await sendMarketingEmail({ to: m.email, subject, react, unsub })
+      else await sendEmail({ to: m.email, subject, react })
+    }
+  } catch (err) {
+    console.error(`[weekly-cron] Member briefing error for ${user.id}:`, err)
   }
 }
 

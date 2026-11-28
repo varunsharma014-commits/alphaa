@@ -2,8 +2,10 @@ import { isQuotaError, quotaBody } from "@/lib/quotas"
 import { hasPro } from "@/lib/billing"
 import { NextRequest, NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
-import { approveReviewReply, draftReviewReply, savedReviewDraft } from "@/lib/approvals"
+import { approveReviewReply, draftReviewReply, savedReviewDraft, REVIEW_DRAFT } from "@/lib/approvals"
 import { GuardrailError } from "@/lib/guardrails"
+import { goLive } from "@/lib/team/review"
+import { db } from "@/lib/db"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -29,6 +31,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     if (body?.action === "post") {
       const text = typeof body.text === "string" ? body.text.trim() : ""
       if (!text) return NextResponse.json({ error: "Reply text is required" }, { status: 400 })
+      const own = await db.gmbReview.findFirst({ where: { id, userId: user.id }, select: { id: true } })
+      if (!own) return NextResponse.json({ error: "That review isn’t here any more." }, { status: 404 })
+      const held = await goLive(user.id, "review", id)
+      if (held) {
+        await db.mockActivity.create({ data: { userId: user.id, type: REVIEW_DRAFT, title: "Edited a review reply", metadata: { reviewId: id, text: text.slice(0, 4000) } } })
+        return held
+      }
       const r = await approveReviewReply(user.id, id, text)
       if (!r.ok && r.banned) return NextResponse.json({ error: r.error, banned: r.banned, confirmBanned: true }, { status: 409 })
       if (!r.ok) return NextResponse.json({ error: r.error }, { status: 400 })

@@ -20,6 +20,8 @@ import type { ShellData } from "@/lib/workspace/shell"
 import { Check, Icon, SendArrow, type IconName } from "./icons"
 import { CreditsSheet } from "./CreditsSheet"
 import { BannedWordConfirm } from "./BannedWordConfirm"
+import { RoleContext, useMemberFetchNotice } from "./role"
+import { can, ROLE_LABEL } from "@/lib/team/permissions"
 
 const WORKSPACES = ["/dashboard", "/dashboard/research", "/dashboard/social", "/dashboard/social/calendar", "/dashboard/email", "/dashboard/ads", "/dashboard/tracking", "/dashboard/citations"]
 
@@ -77,6 +79,10 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
   // Light only (owner, 2026-11-26): dark mode is off; the prop stays for the dev preview.
   const theme: DashboardTheme = initialTheme
   const [ap, setAp] = useState(data.autopilot)
+  // Teams (lib/team): turning Autopilot on is the owner's legal OK; an admin may turn it off.
+  const role = data.role ?? "owner"
+  useMemberFetchNotice(role)
+  const apAllowed = ap ? can(role, "autopilot") : can(role, "autopilot_consent")
   const [drawer, setDrawer] = useState(false)
   const [more, setMore] = useState(() => MORE.some((m) => pathname.startsWith(m.href)) || pathname.startsWith("/dashboard/settings"))
   const [chat, setChat] = useState(false)
@@ -118,6 +124,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
     return () => window.clearTimeout(t)
   }, [data.consentStale])
   const toggleAp = async () => {
+    if (!apAllowed) return flash(ap ? "Only the owner or an admin can turn Autopilot off" : "Only the owner can turn Autopilot on")
     if (ap) { if (!(await turnOffAutoApprove())) flash("That didn’t save. Try again.") }
     else openAutoApprove()
   }
@@ -177,6 +184,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
   const island = `Working on ${data.channels} channel${data.channels === 1 ? "" : "s"} · ${data.goingOut ? `${data.goingOut} going out this week` : "planning what goes out next"}`
 
   return (
+    <RoleContext.Provider value={role}>
     <div data-dashboard-root="" data-agent="" data-theme={theme} data-brand="blue">
       <div className="ax">
         <div className="ax-top">
@@ -187,7 +195,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
         <div className={`ax-scrim${drawer ? " open" : ""}`} onClick={() => setDrawer(false)} aria-hidden="true" />
         <aside className={`ax-sb${drawer ? " open" : ""}`} aria-label="Workspaces">
           <div className="ax-sbt">
-            <div className="ax-brand"><span className="ax-orb" style={{ width: 30, height: 30 }} /><span><b>Alphaa</b><small>{showUser ? "Your marketing agent" : data.businessName}</small></span></div>
+            <div className="ax-brand"><span className="ax-orb" style={{ width: 30, height: 30 }} /><span><b>Alphaa</b><small>{!showUser ? data.businessName : role !== "owner" ? `${ROLE_LABEL[role]} on this brand` : "Your marketing agent"}</small></span></div>
             {showUser && <div className="ax-site"><SiteSwitcher name={data.businessName} /></div>}
             <p className="ax-sec">Command</p>
             <nav className="ax-nav">{ni("/dashboard", "Briefing", "briefing")}</nav>
@@ -220,8 +228,8 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
           </div>
           <div className="ax-sbb">
             <div className="ax-row">
-              <div><div className="ax-t13">Autopilot</div><div className="ax-t11">{ap ? "On · stop anything before it goes out" : "Off · I ask before anything goes out"}</div></div>
-              <button type="button" role="switch" aria-checked={ap} aria-label="Autopilot" onClick={() => void toggleAp()} className={`ax-sw${ap ? " on" : ""}`}><i /></button>
+              <div><div className="ax-t13">Autopilot</div><div className="ax-t11">{ap ? "On · stop anything before it goes out" : "Off · I ask before anything goes out"}{!apAllowed && role !== "owner" ? " · the owner decides" : ""}</div></div>
+              <button type="button" role="switch" aria-checked={ap} aria-label="Autopilot" aria-disabled={!apAllowed} onClick={() => void toggleAp()} className={`ax-sw${ap ? " on" : ""}`} style={apAllowed ? undefined : { opacity: 0.5, cursor: "not-allowed" }}><i /></button>
             </div>
             {showUser && <div className="ax-acct"><span className="ax-t11">Account & billing</span><AccountMenu /></div>}
           </div>
@@ -278,5 +286,6 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
         <BannedWordConfirm />
       </div>
     </div>
+    </RoleContext.Provider>
   )
 }

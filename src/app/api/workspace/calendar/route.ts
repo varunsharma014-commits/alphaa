@@ -15,6 +15,7 @@ import { DEFAULT_TZ, isValidTz } from "@/lib/calendar/tz"
 import { hasPro } from "@/lib/billing"
 import { within } from "@/lib/workspace/common"
 import { CHANNELS, typical } from "@/lib/calendar/best-time"
+import { requireCan } from "@/lib/team/actor"
 
 const DAY = 86_400_000
 
@@ -48,8 +49,15 @@ export async function POST(req: Request) {
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
   if (input.op === "tz") {
+    const s = await getAgentSettings(user.id)
+    if (s.calendar?.timezone) {
+      const denied = await requireCan("settings")
+      if (denied) return denied
+    }
     return (await saveOwnerTz(user.id, input.tz)) ? NextResponse.json({ ok: true, tz: input.tz }) : NextResponse.json({ error: "I don’t know that time zone." }, { status: 400 })
   }
+  const denied = await requireCan("publish")
+  if (denied) return denied
   const r = await moveItem(user, input.kind, input.id, input.at, !!input.confirm)
   if (r.ok) return NextResponse.json(r)
   return NextResponse.json({ error: r.error, needsOk: r.needsOk ?? false, earliest: r.earliest ?? null }, { status: r.status ?? 400 })

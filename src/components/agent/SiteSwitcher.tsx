@@ -2,12 +2,14 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Check, ChevronDown, Plus } from "lucide-react"
+import { ROLE_LABEL, type Role } from "@/lib/team/permissions"
 
 // The website I'm working on, and the owner's other websites (lib/sites.ts).
 // Each website has its own plan, results and connections; switching reloads
-// the page so everything shown belongs to the chosen one.
+// the page so everything shown belongs to the chosen one. Brands this login works on as a team
+// member (lib/team) are listed after its own, with the role.
 
-type Site = { id: string; name: string; url: string | null; paid: boolean; ready: boolean }
+type Site = { id: string; name: string; url: string | null; paid: boolean; ready: boolean; role?: Role }
 
 export function SiteSwitcher({ name }: { name: string }) {
   const [open, setOpen] = useState(false)
@@ -45,7 +47,19 @@ export function SiteSwitcher({ name }: { name: string }) {
     }
   }
 
-  const status = (s: Site) => (!s.ready ? "Setup not finished" : s.paid ? s.url ?? "" : `${s.url ?? ""}${s.url ? " · " : ""}No plan yet`)
+  const status = (s: Site) => {
+    if (s.role && s.role !== "owner") return `${ROLE_LABEL[s.role]}${s.url ? ` · ${s.url}` : ""}`
+    return !s.ready ? "Setup not finished" : s.paid ? s.url ?? "" : `${s.url ?? ""}${s.url ? " · " : ""}No plan yet`
+  }
+  const row = (s: Site) => (
+    <button key={s.id} role="menuitemradio" aria-checked={s.id === activeId} disabled={busy} onClick={() => (s.id === activeId ? setOpen(false) : go("/api/sites/switch", { method: "POST", body: JSON.stringify({ id: s.id }) }))}>
+      <span className="ag-site__name">{s.name}</span>
+      <span className="ag-site__sub">{status(s)}</span>
+      {s.id === activeId && <Check size={15} className="ag-site__check" aria-hidden="true" />}
+    </button>
+  )
+  const mine = (sites ?? []).filter((s) => !s.role || s.role === "owner")
+  const shared = (sites ?? []).filter((s) => s.role && s.role !== "owner")
 
   return (
     <div className="ag-site" ref={ref}>
@@ -59,13 +73,11 @@ export function SiteSwitcher({ name }: { name: string }) {
           {sites === null ? (
             <p className="ag-site__note">Getting your websites…</p>
           ) : (
-            sites.map((s) => (
-              <button key={s.id} role="menuitemradio" aria-checked={s.id === activeId} disabled={busy} onClick={() => (s.id === activeId ? setOpen(false) : go("/api/sites/switch", { method: "POST", body: JSON.stringify({ id: s.id }) }))}>
-                <span className="ag-site__name">{s.name}</span>
-                <span className="ag-site__sub">{status(s)}</span>
-                {s.id === activeId && <Check size={15} className="ag-site__check" aria-hidden="true" />}
-              </button>
-            ))
+            <>
+              {mine.map(row)}
+              {shared.length > 0 && <p className="ag-site__label">Brands you work on</p>}
+              {shared.map(row)}
+            </>
           )}
           <hr />
           <button role="menuitem" disabled={busy} onClick={() => go("/api/sites", { method: "POST" })}>

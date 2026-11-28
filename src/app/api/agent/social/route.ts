@@ -11,6 +11,7 @@ import { publishPost } from "@/lib/social/publish"
 import { socialThread as thread } from "@/lib/social/thread"
 import { agent } from "@/lib/agent/types"
 import { bannedBody, ownerBannedHit } from "@/lib/owner-edit-check"
+import { requireCan } from "@/lib/team/actor"
 
 const body = z.object({ op: z.enum(["approve", "post_now", "unschedule", "delete", "disconnect"]), id: z.string().min(5).max(40) })
 
@@ -26,6 +27,8 @@ export async function POST(req: Request) {
   if (!hasPro(user)) return NextResponse.json({ error: "Social media comes with the Pro plan." }, { status: 403 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
+  const denied = await requireCan(input.op === "disconnect" ? "connect" : "publish")
+  if (denied) return denied
   let said = "Done."
   if (input.op === "disconnect") {
     said = (await removeAccount(user.id, input.id)) ? "Disconnected. I won’t post there any more." : "That account isn’t connected."

@@ -16,6 +16,7 @@ import { hasPro } from "@/lib/billing"
 import { imagesMessages } from "@/lib/agent/images-panel"
 import { aiImagesAvailable, imageSettings, saveImageSettings, styleSample } from "@/lib/post-images"
 import { listPhotos, refreshPhotos, removePhoto } from "@/lib/brand-photos"
+import { requireCan } from "@/lib/team/actor"
 
 // "Your brand & voice": logo + colours, and the voice. Learn the voice from the owner's own words, pick one of three, or tune it.
 // Every answer is the thread's messages, so the chat just shows them.
@@ -61,6 +62,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("settings"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>

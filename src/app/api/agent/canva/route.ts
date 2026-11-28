@@ -14,6 +14,8 @@ import { imageSettings, saveImageSettings, storePostImage, styleSample } from "@
 import { imageInfo, normalizePhoto } from "@/lib/photo-render"
 import { imageUrl } from "@/lib/images"
 import { getPost, listPosts, savePost } from "@/lib/social/store"
+import { requireCan } from "@/lib/team/actor"
+import type { Action } from "@/lib/team/permissions"
 
 // "Use my Canva designs", "Edit in Canva" / "Bring it back", brand templates, disconnect.
 // Every answer is { messages }; the Canva panel ("vc-canva") redraws in place.
@@ -65,6 +67,9 @@ export async function POST(req: Request) {
   if (!hasPro(user)) return NextResponse.json({ error: "Canva comes with the Pro plan." }, { status: 403 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
+  // Teams (lib/team/routes.ts "self"): what this op needs.
+  const denied = await requireCan(({ disconnect: "connect" } as Record<string, Action>)[input.op] ?? "create")
+  if (denied) return denied
   const uid = user.id
 
   if (input.op === "disconnect") {

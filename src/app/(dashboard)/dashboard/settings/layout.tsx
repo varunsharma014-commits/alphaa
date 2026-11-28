@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useRole } from "@/components/workspace/role"
 
 // Settings shell: without this, the Account / Business / Connections / Billing
 // pages were unreachable from each other (sidebar only links to /settings).
@@ -16,12 +17,14 @@ const TABS = [
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const role = useRole()
+  const tabs = TABS.filter((t) => role === "owner" || t.href !== "/dashboard/settings/billing")
 
   return (
     <div className="max-w-3xl mx-auto">
       {/* Tab nav */}
       <div className="flex items-center gap-1 mb-6 border-b border-line/[0.08] overflow-x-auto">
-        {TABS.map((tab) => {
+        {tabs.map((tab) => {
           const active = pathname.startsWith(tab.href)
           return (
             <Link

@@ -12,6 +12,7 @@ import { hasPro } from "@/lib/billing"
 import { getPost, savePost } from "@/lib/social/store"
 import { holdSitePost } from "@/lib/workspace/site-posts"
 import { holdEmail } from "@/lib/calendar/move"
+import { requireCan } from "@/lib/team/actor"
 
 const body = z.object({ kind: z.enum(["social", "gbp", "site", "email"]), id: z.string().min(5).max(40), op: z.enum(["stop", "undo"]) })
 const soon = () => new Date(Date.now() + 5 * 60_000)
@@ -21,6 +22,8 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
+  const denied = await requireCan(input.op === "stop" ? "review" : "publish")
+  if (denied) return denied
 
   if (input.kind === "email") {
     if (!hasPro(user)) return NextResponse.json({ error: "Email campaigns come with the Pro plan." }, { status: 403 })

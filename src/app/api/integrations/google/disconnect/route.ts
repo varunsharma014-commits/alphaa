@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { requireCan } from "@/lib/team/actor"
 
 export const dynamic = 'force-dynamic'
 
 export async function DELETE() {
+  { const denied = await requireCan("connect"); if (denied) return denied } // teams (lib/team)
   try {
     const { userId: clerkId } = await auth()
     if (!clerkId) {

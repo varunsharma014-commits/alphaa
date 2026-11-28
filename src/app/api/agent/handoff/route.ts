@@ -7,6 +7,7 @@ import { currentUser } from "@/lib/connector/user"
 import { saveAgentSettings } from "@/lib/agent/settings"
 import { sendAs } from "@/lib/connector/mail"
 import { buildHandoffEmail } from "@/lib/connector/handoff"
+import { requireCan } from "@/lib/team/actor"
 
 // "Email it to my web person": sends the exact code or content, with where it
 // goes and how to check it, to the owner's developer. Replies go to the owner.
@@ -21,6 +22,7 @@ const body = z.object({
 
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("publish"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>

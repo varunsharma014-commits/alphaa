@@ -14,6 +14,8 @@ import { emailMessages } from "@/lib/email-campaigns/narration"
 import { addContacts, clearContacts, createCampaign, getCampaign, listCampaigns, parseContacts, updateCampaign, type Contact } from "@/lib/email-campaigns/store"
 import { writeCampaign } from "@/lib/email-campaigns/write"
 import { sendTest, startSend } from "@/lib/email-campaigns/send"
+import { requireCan } from "@/lib/team/actor"
+import type { Action } from "@/lib/team/permissions"
 
 // Email outreach ops for the "email" thread (lib/email-campaigns). Every op answers with the
 // thread's messages, which replace the old copies with the same id.
@@ -43,6 +45,9 @@ export async function POST(req: Request) {
   if (!hasPro(user)) return NextResponse.json({ error: "Email to your customers comes with the Pro plan." }, { status: 403 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That didn’t come through. Try again." }, { status: 400 }) }
+  // Teams (lib/team/routes.ts "self"): what this op needs.
+  const denied = await requireCan(({ send: "publish", stop: "publish", import: "settings", address: "settings", clear: "settings" } as Record<string, Action>)[input.op] ?? "create")
+  if (denied) return denied
   const err = (error: string, status = 400) => NextResponse.json({ error }, { status })
   const reply = async (note?: string, extra: Message[] = []) => NextResponse.json({ messages: [...extra, ...(await emailMessages(user, note))] })
 

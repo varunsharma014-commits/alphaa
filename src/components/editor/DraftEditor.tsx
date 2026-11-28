@@ -24,7 +24,7 @@ import { DRAFT_SAVED_EVENT, type DraftSavedDetail } from "./events"
 export { DRAFT_SAVED_EVENT, type DraftSavedDetail }
 
 type Draft = { id: string; title: string; markdown: string; excerpt: string | null; status: string; url: string | null; scheduledFor: string | null; rev: number; editedAt: string | null; editedBy: "owner" | "agent" | null; createdAt: string; image: string | null }
-type Rev = { id: string; at: string; by: "owner" | "agent"; reason: "original" | "save" | "publish" | "ai_rewrite" | "restore"; title: string; words: number; restoredFrom: string | null }
+type Rev = { id: string; at: string; by: "owner" | "agent"; reason: "original" | "save" | "publish" | "ai_rewrite" | "restore"; title: string; words: number; restoredFrom: string | null; who?: string | null }
 type SaveState = { k: "idle" } | { k: "dirty" } | { k: "saving" } | { k: "saved"; at: number } | { k: "error"; msg: string } | { k: "conflict"; current: Draft }
 
 const REASON: Record<Rev["reason"], string> = { original: "First draft", save: "Saved", publish: "Published", ai_rewrite: "AI rewrite", restore: "Restored" }
@@ -492,7 +492,7 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
                           <li key={r.id} className={diffOf?.id === r.id ? "on" : ""}>
                             <button type="button" onClick={() => void openDiff(r)} aria-label={`${REASON[r.reason]}, ${when(r.at)}, ${r.by === "agent" ? "by Alphaa" : "by you"}. Show changes`}>
                               <span className="dx-hist__t"><b>{REASON[r.reason]}</b>{i === 0 && <em>latest</em>}</span>
-                              <span className="dx-hist__m">{when(r.at)} · {r.by === "agent" ? "Alphaa" : "You"} · {r.words} words</span>
+                              <span className="dx-hist__m">{when(r.at)} · {r.by === "agent" ? "Alphaa" : r.who ? (r.who === "the owner" ? "The owner" : r.who) : "You"} · {r.words} words</span>
                             </button>
                           </li>
                         ))}

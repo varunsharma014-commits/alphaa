@@ -4,10 +4,12 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { undoChange } from "@/lib/connector/publish"
 import { currentUser } from "@/lib/connector/user"
+import { requireCan } from "@/lib/team/actor"
 
 const body = z.object({ changeId: z.string().min(3).max(200) })
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("publish"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>

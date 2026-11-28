@@ -5,6 +5,7 @@ import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { EMPTY_GUARDRAILS, normalizeGuardrails, PLATFORMS, saveGuardrails } from "@/lib/guardrails"
+import { requireCan } from "@/lib/team/actor"
 
 // The owner's brand guardrails (Your rules → "Brand rules"): banned words, mandatory hashtags
 // (all platforms + per platform), disclaimers per channel and "always say" items. Every writer
@@ -26,6 +27,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("settings"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>

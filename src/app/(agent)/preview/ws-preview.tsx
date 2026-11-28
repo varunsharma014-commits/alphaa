@@ -1,5 +1,6 @@
 // Dev-only (page.tsx 404s in production): the workspace shell and pages with SAMPLE data, so the
 // layout can be checked in a browser without a Clerk session. Never rendered for a real account.
+import type { Role } from "@/lib/team/permissions"
 import "../../(dashboard)/workspace.css"
 import "../../(dashboard)/calendar.css"
 import { CalendarPreview } from "./calendar-preview"
@@ -22,7 +23,7 @@ import type { AiCard } from "@/lib/workspace/ai-cards"
 import type { MoveCard } from "@/lib/workspace/rivals"
 import { validatePlan, viewOf } from "@/lib/cluster-rules"
 
-const shell: ShellData = { businessName: "Sample Dental (preview)", firstName: "Sam", pro: true, planPro: true, growth: true, autopilot: true, consentStale: false, trackingNeeds: 1, goingOut: 3, socialScheduled: 2, channels: 5, signals: { ok: 4, total: 5 }, doneThisWeek: 6 }
+const shell: ShellData = { businessName: "Sample Dental (preview)", firstName: "Sam", pro: true, planPro: true, growth: true, autopilot: true, consentStale: false, trackingNeeds: 1, goingOut: 3, socialScheduled: 2, channels: 5, signals: { ok: 4, total: 5 }, doneThisWeek: 6, role: "owner" }
 const AI_EMPTY: AiCard[] = (["chatgpt", "claude", "perplexity", "gemini"] as const).map((e, i) => ({ engine: e, name: ["ChatGPT", "Claude", "Perplexity", "Gemini"][i], mark: ["Ch", "Cl", "Pe", "Ge"][i], state: "unknown", question: null, questionFull: null, names: [], namesFrom: "answer", at: null, answer: null }))
 const AI_SAMPLE: AiCard[] = AI_EMPTY.map((c, i) => (i === 3 ? c : { ...c, state: i === 1 ? "yes" : "no", question: "Sample question about a dentist near me?", questionFull: "Sample question about a dentist near me?", names: i === 1 ? [] : ["Sample Rival A", "Sample Rival B"], at: new Date(Date.now() - 2 * 86_400_000).toISOString(), answer: "Sample answer text (preview only).", citedPages: 6 + i, tone: i === 1 ? "positive" : null, toneQuote: i === 1 ? "Sample quote (preview only)." : null }))
 // Ads ROAS sample (dev preview only, every number is a sample).
@@ -58,7 +59,7 @@ const SAMPLE_CLUSTERS = viewOf("preview", validatePlan({ clusters: [
 }), [])
 const soon = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString()
 
-export function WsPreview({ page, empty, dark }: { page: string; empty: boolean; dark: boolean }) {
+export function WsPreview({ page, empty, dark, role }: { page: string; empty: boolean; dark: boolean; role?: Role }) {
   const path = page === "briefing" ? "/dashboard" : page === "calendar" ? "/dashboard/social/calendar" : `/dashboard/${page}`
   const body = (() => {
     if (page === "calendar") return <CalendarPreview empty={empty} />
@@ -154,11 +155,16 @@ export function WsPreview({ page, empty, dark }: { page: string; empty: boolean;
         { id: "g2", kind: "gbp", lane: "Google listing · update", big: "Sample update", small: "On your Google listing", title: "Sample Google update", text: "Sample text.", image: null, at: soon(50), when: "Sat 1 PM", art: ART.google },
       ],
       waiting: 0, waitingTopic: "social", autopilot: true,
-      done: [{ ch: "Reviews", text: "Replied to a Google review", when: "Tue", at: "", href: null }, { ch: "Website", text: "Wrote a new post for you", when: "Mon", at: "", href: "https://example.com" }],
+      done: [{ ch: "Reviews", text: "Replied to a Google review", when: "Tue", at: "", href: null }, { ch: "Website", text: "Wrote a new post for you · by Sam", when: "Mon", at: "", href: "https://example.com" }],
+      // Teams (lib/team/queue.ts): shown when previewing with &role=
+      team: role ? [
+        { kind: "site", id: "d1", state: "approved", label: "Approved by Sam · waiting for a publisher", title: "Sample page that answers a question", at: "" },
+        { kind: "social", id: "s1", state: "submitted", label: "Sent for review by Kim", title: "Sample social post about the spring offer", at: "" },
+      ] : [],
     }} />
   })()
   return (
-    <WorkspaceShell data={shell} theme={dark ? "dark" : "light"} admin={false} showUser={false} path={path}>
+    <WorkspaceShell data={role ? { ...shell, role } : shell} theme={dark ? "dark" : "light"} admin={false} showUser={false} path={path}>
       {body}
     </WorkspaceShell>
   )

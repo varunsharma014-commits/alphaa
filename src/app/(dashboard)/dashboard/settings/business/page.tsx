@@ -6,6 +6,8 @@ import { DsCard } from "@/components/dashboard/DsCard"
 import { RemoveWebsite } from "@/components/agent/RemoveWebsite"
 import { UsageCard } from "@/components/dashboard/UsageCard"
 import { BrandRulesCard } from "@/components/dashboard/BrandRulesCard"
+import { TeamCard } from "@/components/dashboard/TeamCard"
+import { useCan, useRole } from "@/components/workspace/role"
 
 // Business details — the info alphaa uses to write posts and run checks.
 // Previously this was only editable during onboarding; users had no way to fix
@@ -57,6 +59,9 @@ export default function BusinessSettingsPage() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Teams (lib/team): only the owner or an admin changes these; everyone else sees them.
+  const canEdit = useCan("settings")
+  const owner = useRole() === "owner"
 
   useEffect(() => {
     let cancelled = false
@@ -195,7 +200,7 @@ export default function BusinessSettingsPage() {
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <button
+              {canEdit ? <button
                 onClick={handleSave}
                 disabled={saving}
                 style={{
@@ -215,7 +220,7 @@ export default function BusinessSettingsPage() {
               >
                 {saving && <Loader2 size={14} className="animate-spin" />}
                 {saving ? "I’m saving that…" : "Save changes"}
-              </button>
+              </button> : <span style={{ fontSize: "12px", color: "var(--ds-text-mute)" }}>Only the owner or an admin can change these.</span>}
               {saved && (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "12px", color: "var(--ds-ok)" }}>
                   <Check size={14} /> Saved — alphaa will use these from now on
@@ -226,8 +231,9 @@ export default function BusinessSettingsPage() {
           </div>
         )}
       </DsCard>
+      <div style={{ marginTop: "1.25rem" }}><TeamCard /></div>
       <div style={{ marginTop: "1.25rem" }}><BrandRulesCard /></div>
-      <RemoveWebsite />
+      {owner && <RemoveWebsite />}
     </div>
   )
 }

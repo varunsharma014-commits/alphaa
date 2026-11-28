@@ -41,7 +41,9 @@ export async function POST(req: NextRequest) {
         .catch(() => null)
       businessName = lead ? leadName(lead.businessName, lead.businessUrl) : null
     }
-    try {
+    // Someone joining a team from an invite (lib/team) gets the invite page, not the owner welcome.
+    const invited = email ? await db.teamMember.findFirst({ where: { email: email.trim().toLowerCase(), status: "invited" }, select: { id: true } }).catch(() => null) : null
+    if (!invited) try {
       await sendWelcomeEmail(email, {
         firstName: first_name || null,
         businessName,
@@ -57,6 +59,8 @@ export async function POST(req: NextRequest) {
     const rows = await db.user.findMany({ where: { OR: [{ clerkId: event.data.id }, { clerkId: { startsWith: `site:${event.data.id}:` } }] }, select: { id: true } })
     for (const r of rows) await disconnectSite(r.id).catch((e) => console.error("[Clerk Webhook] disconnect on delete", e))
     await db.user.deleteMany({ where: { OR: [{ clerkId: event.data.id }, { clerkId: { startsWith: `site:${event.data.id}:` } }] } })
+    // Teams: a deleted login leaves every brand it worked on.
+    if (event.data.id) await db.teamMember.updateMany({ where: { clerkId: event.data.id }, data: { status: "removed", briefing: false } }).catch(() => null)
   }
 
   return NextResponse.json({ received: true })

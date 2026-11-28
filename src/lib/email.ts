@@ -8,6 +8,7 @@ import ReconnectEmail from "@/emails/ReconnectEmail"
 import ConnectGoogleNudgeEmail from "@/emails/ConnectGoogleNudgeEmail"
 import WeekOneRecapEmail from "@/emails/WeekOneRecapEmail"
 import WinEmail from "@/emails/WinEmail"
+import TeamInviteEmail from "@/emails/TeamInviteEmail"
 import { agentFrom, REPLY_TO } from "@/lib/email-sender"
 import { orYou } from "@/emails/copy"
 import { realEmail } from "@/lib/sites"
@@ -67,6 +68,10 @@ export async function sendConnectGoogleNudgeEmail(to: string, props: Parameters<
 
 export async function sendWeekOneRecapEmail(to: string, props: Parameters<typeof WeekOneRecapEmail>[0]) {
   await send(to, subjects.weekOneRecap(), WeekOneRecapEmail(props))
+}
+
+export async function sendTeamInviteEmail(to: string, props: Parameters<typeof TeamInviteEmail>[0]) {
+  await send(to, `${props.inviter} invited you to work on ${props.brand}`, TeamInviteEmail(props))
 }
 
 export async function sendWinEmail(to: string, props: Parameters<typeof WinEmail>[0]) {

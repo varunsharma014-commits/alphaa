@@ -17,6 +17,8 @@ import { applyTune, dismissTune } from "@/lib/metaads/tune"
 import { forget } from "@/lib/metaads/report"
 import { checkAdAccount } from "@/lib/ad-accounts"
 import { checkQuota } from "@/lib/quotas"
+import { requireCan } from "@/lib/team/actor"
+import type { Action } from "@/lib/team/permissions"
 
 // Facebook + Instagram ads, owner choices from the ads thread. Answers with the updated messages.
 const id = z.string().min(5).max(40)
@@ -46,6 +48,9 @@ export async function POST(req: Request) {
   if (!metaAdsConfigured()) return NextResponse.json({ error: "Facebook & Instagram ads are opening soon." }, { status: 409 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
+  // Teams (lib/team/routes.ts "self"): what this op needs.
+  const denied = await requireCan(({ pick: "connect", disconnect: "connect", plan: "create" } as Record<string, Action>)[input.op] ?? "ads")
+  if (denied) return denied
 
   let said = "Done."
   const fail = (error: string, status = 400) => NextResponse.json({ error }, { status })

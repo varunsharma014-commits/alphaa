@@ -29,6 +29,7 @@ const isPublicRoute = createRouteMatcher([
   "/unsubscribe",
   "/api/unsubscribe",
   "/approve", // briefing-email approvals: a signed one-item token, no login
+  "/team/accept", // team invites: the page sends signed-out people to /signup or /login itself
   "/api/agent/approve", // checks the token or the Clerk session itself
   "/llms/(.*)",
   "/tag.js",
@@ -69,6 +70,12 @@ export default clerkMiddleware(async (auth, req) => {
   const market = seg === "ae" && req.nextUrl.pathname.startsWith("/ae/ar") ? "ar" : seg
   const marketPage = ["uk", "de", "fr", "it", "ae", "ar"].includes(market)
 
+  // Team gate (lib/auth.ts): every request carries its method + path, set HERE so a client can
+  // never choose it. Members whose role can't make this request get no brand in auth().
+  const forward = new Headers(req.headers)
+  forward.set("x-alphaa-route", `${req.method} ${req.nextUrl.pathname}`)
+  const next = () => NextResponse.next({ request: { headers: forward } })
+
   const { userId } = await auth()
 
   // Already signed in → bounce away from login/signup to dashboard
@@ -81,7 +88,7 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   if (marketPage) {
-    const res = NextResponse.next()
+    const res = next()
     res.cookies.set("alphaa_market", market, { path: "/", maxAge: 60 * 60 * 24 * 180, sameSite: "lax" })
     return res
   }
@@ -100,11 +107,12 @@ export default clerkMiddleware(async (auth, req) => {
       internal = false
     }
     if (!appPath && !internal) {
-      const res = NextResponse.next()
+      const res = next()
       res.cookies.set("alphaa_market", "", { path: "/", maxAge: 0, sameSite: "lax" })
       return res
     }
   }
+  return next()
 })
 
 export const config = {

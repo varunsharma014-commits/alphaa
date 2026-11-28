@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { requireCan } from "@/lib/team/actor"
 
 export const dynamic = 'force-dynamic'
 
@@ -14,6 +15,7 @@ interface SavePropertiesBody {
 }
 
 export async function POST(request: NextRequest) {
+  { const denied = await requireCan("connect"); if (denied) return denied } // teams (lib/team)
   try {
     const { userId: clerkId } = await auth()
     if (!clerkId) {

@@ -10,6 +10,7 @@ import { reviewLinkFor } from "@/lib/agent/review-link"
 import { esc, sendAs, shell } from "@/lib/connector/mail"
 import { reviewRequestOptedOut, reviewRequestUnsubLinks } from "@/lib/unsubscribe"
 import { footerAddress } from "@/lib/marketing-email"
+import { requireCan } from "@/lib/team/actor"
 
 // Ask a real customer for a Google review. Email goes out from
 // "<Business> via Alphaa" with replies to the owner; for a phone number we hand
@@ -25,6 +26,7 @@ const body = z.object({
 const DAILY_CAP = 50
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("publish"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   if (!hasPro(user)) return NextResponse.json({ error: "Review requests come with the Pro plan." }, { status: 403 })

@@ -1,5 +1,6 @@
 // Data for the Briefing (/dashboard). Every figure is read from the DB or a connected account.
 // Missing sources become an honest empty state ("Connect Google to see calls"), never a sample.
+import { teamQueue, type QueueItem } from "@/lib/team/queue"
 import type { User } from "@prisma/client"
 import { db } from "@/lib/db"
 import { getProfileActions } from "@/lib/gmb"
@@ -70,6 +71,8 @@ export type BriefingData = {
   done: DoneItem[]
   /** Speed turned poor / structured data now states a wrong fact (lib/seo/site-vitals.ts). */
   siteAlerts?: { text: string; href: string }[]
+  /** Teams: sent for review / approved and waiting for a publisher (lib/team/queue.ts). Empty without a team. */
+  team?: QueueItem[]
 }
 
 /** Calls from the Google listing over [start, end], cached 6h (Google's data lags ~3 days). */
@@ -344,6 +347,7 @@ export async function getBriefingData(user: User): Promise<BriefingData> {
     waitingCount(user).catch(() => ({ total: 0, topic: "content" })),
     getDone(user.id).catch(() => []),
   ])
+  const team = await teamQueue(user.id).catch(() => [])
   const question = await getQuestion(user, waiting, autopilot).catch(() => null)
   const [plan, pagesInProgress, published, connected, siteAlerts] = await Promise.all([
     going.length ? Promise.resolve(null) : getPlan(user).catch(() => null),
@@ -353,7 +357,7 @@ export async function getBriefingData(user: User): Promise<BriefingData> {
     getSiteAlerts(user.id).catch(() => []),
   ])
   const recapReady = published > 0 || (headline.total ?? 0) > 0
-  return { plan, pagesInProgress, recapReady, connected, firstName: user.fullName?.trim().split(/\s+/)[0] || null, ai, headline, tiles, question, going, waiting: waiting.total, waitingTopic: waiting.topic, autopilot, done, siteAlerts }
+  return { plan, pagesInProgress, recapReady, connected, firstName: user.fullName?.trim().split(/\s+/)[0] || null, ai, headline, tiles, question, going, waiting: waiting.total, waitingTopic: waiting.topic, autopilot, done, siteAlerts, team }
 }
 
 const KIND_WORD = { blog: ["page that answers AI questions", "pages that answer AI questions"], google: ["Google update", "Google updates"], social: ["social post", "social posts"] } as const

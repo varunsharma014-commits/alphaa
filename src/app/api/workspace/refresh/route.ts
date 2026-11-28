@@ -16,6 +16,7 @@ import { scheduleSitePost } from "@/lib/workspace/site-posts"
 import { draftLinkFix, draftRefresh, type RefreshDraftMeta } from "@/lib/seo/refresh"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { updateBlocker } from "@/lib/connector/publish"
+import { goLive } from "@/lib/team/review"
 
 const body = z.object({
   op: z.enum(["draft", "links", "get", "publish", "schedule"]),
@@ -54,6 +55,8 @@ export async function POST(req: Request) {
   if (!row || !m?.refresh?.url) return NextResponse.json({ error: "That draft isn’t here any more." }, { status: 404 })
 
   if (input.op === "get") return NextResponse.json(view(row.id, m, await blockerFor(m.refresh.url)))
+  const held = await goLive(user.id, "site", row.id)
+  if (held) return held
   if (input.op === "schedule") {
     const r = await scheduleSitePost(user.id, row.id)
     return r.ok ? NextResponse.json(r) : NextResponse.json({ error: r.error }, { status: 409 })

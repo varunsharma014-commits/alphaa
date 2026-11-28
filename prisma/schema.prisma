@@ -43,6 +43,34 @@ model User {
   gbpPosts           GbpPost[]
   schemaMarkups      SchemaMarkup[]
   weeklyReports      WeeklyReport[]
+  teamMembers        TeamMember[]
+}
+
+/// Teams and roles (2026-11-28, lib/team/): people other than the owner who work on a brand.
+/// The owner is the brand's own User row (implicit, full rights) and never has a row here.
+model TeamMember {
+  id         String    @id @default(cuid())
+  /// The brand (User.id) this person works on.
+  brandId    String
+  brand      User      @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  /// The member's real Clerk user id, set when they accept.
+  clerkId    String?
+  /// Lowercased invite address; only a Clerk login with this verified email can accept.
+  email      String
+  name       String?
+  /// admin | publisher | reviewer | creator (lib/team/permissions.ts)
+  role       String
+  /// invited | active | removed
+  status     String    @default("invited")
+  /// Opted in to a copy of the weekly briefing email.
+  briefing   Boolean   @default(false)
+  /// Clerk id of whoever sent the invite.
+  invitedBy  String
+  invitedAt  DateTime  @default(now())
+  acceptedAt DateTime?
+
+  @@unique([brandId, email])
+  @@index([clerkId])
 }
 
 model Audit {

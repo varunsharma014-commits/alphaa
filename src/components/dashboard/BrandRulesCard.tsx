@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Loader2, Check } from "lucide-react"
 import { DsCard } from "@/components/dashboard/DsCard"
+import { useCan } from "@/components/workspace/role"
 
 // "Brand rules" on Your rules: words I never use, things I always say, the hashtags every social
 // post carries (all platforms, or one platform) and the disclaimer each channel ends with.
@@ -30,6 +31,7 @@ export function BrandRulesCard() {
   const [saving, setSaving] = useState(false)
   const [note, setNote] = useState<{ ok: boolean; text: string } | null>(null)
   const [more, setMore] = useState(false)
+  const canEdit = useCan("settings") // teams: owner or admin
 
   useEffect(() => {
     let off = false
@@ -113,9 +115,9 @@ export function BrandRulesCard() {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-            <button type="button" onClick={() => void save()} disabled={saving} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--ds-accent)", color: "var(--ds-on-accent)", border: "none", borderRadius: 8, padding: "9px 20px", fontSize: 13, fontWeight: 500, cursor: saving ? "not-allowed" : "pointer", opacity: saving ? 0.6 : 1 }}>
+            {!canEdit ? <span style={{ fontSize: 12, color: "var(--ds-text-mute)" }}>Only the owner or an admin can change brand rules.</span> : <button type="button" onClick={() => void save()} disabled={saving} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--ds-accent)", color: "var(--ds-on-accent)", border: "none", borderRadius: 8, padding: "9px 20px", fontSize: 13, fontWeight: 500, cursor: saving ? "not-allowed" : "pointer", opacity: saving ? 0.6 : 1 }}>
               {saving && <Loader2 size={14} className="animate-spin" />}{saving ? "Saving…" : "Save my brand rules"}
-            </button>
+            </button>}
             {note && <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, color: note.ok ? "var(--ds-ok)" : "var(--ds-warn)" }}>{note.ok && <Check size={14} />}{note.text}</span>}
           </div>
         </div>

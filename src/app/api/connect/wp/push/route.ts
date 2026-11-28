@@ -6,10 +6,12 @@ import { currentUser } from "@/lib/connector/user"
 import { pushBody, pushChange, type PushInput } from "@/lib/connector/push"
 import { markPublished, textToPublish } from "@/lib/draft-versions"
 import { bannedBody, ownerBannedHit } from "@/lib/owner-edit-check"
+import { requireCan } from "@/lib/team/actor"
 
 // Publishes one approved change to the owner's site (logic in lib/connector/push.ts,
 // shared with approvals from the briefing email).
 export async function POST(req: Request) {
+  { const denied = await requireCan("publish"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: PushInput

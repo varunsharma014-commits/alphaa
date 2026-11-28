@@ -14,6 +14,7 @@ import type { MoveCard } from "@/lib/workspace/rivals"
 import type { ContentBrief } from "@/lib/content-brief"
 import { BriefView } from "./BriefView"
 import { RepurposeButton } from "./RepurposeButton"
+import { goLiveLabel, reviewMessage, useRole } from "./role"
 
 // "Draft it": a side sheet that plans the page first (POST /api/agent/brief → lib/content-brief.ts:
 // their real page, my own pages to link, the facts, the FAQ), then writes it from that brief
@@ -41,6 +42,8 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose, cluster = 
   const [live, setLive] = useState(false)
   const [orig, setOrig] = useState<OriginalityResult | null>(null)
   const started = useRef(false)
+  const role = useRole()
+  const publisher = goLiveLabel(role, "") === ""
   const grade = useMemo(() => (draft ? gradeContent(draft.text) : null), [draft])
   useEffect(() => {
     const h = (e: Event) => {
@@ -105,6 +108,8 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose, cluster = 
     const d = (await res?.json().catch(() => null)) as { error?: string; url?: string | null; at?: string } | null
     setBusy(false)
     if (!res?.ok) return toast(d?.error ?? "That didn’t go through. Nothing changed.")
+    const held = reviewMessage(d)
+    if (held) { setDone(held); return toast(goLiveLabel(role, "Done") === "Send for review" ? "Sent for review" : "Approved") }
     if (op === "schedule") {
       setDone(`In “Going out soon”. It goes live ${d?.at ? new Date(d.at).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" }) : "in 3 days"} unless you stop it.`)
       toast("Added to Going out soon")
@@ -170,6 +175,8 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose, cluster = 
             <button className="ax-btn p" type="button" onClick={() => setEditing(true)}>Fill in the facts</button>
           ) : !siteConnected ? (
             <button className="ax-btn p" type="button" onClick={() => { onClose(); askAlphaa({ chip: { label: "Email it to my web person", action: { type: "handoff", what: "post", title: draft.title, text: draft.text, draftId: draft.draftId } } }) }}>Send it to my web person</button>
+          ) : !publisher ? (
+            <button className="ax-btn p" type="button" disabled={busy} onClick={() => void act("publish")}>{busy ? "Sending…" : goLiveLabel(role, "Publish")}</button>
           ) : autopilot ? (
             <button className="ax-btn p" type="button" disabled={busy} onClick={() => void act("schedule")}>{busy ? "Adding…" : "Add to Going out soon"}</button>
           ) : (

@@ -14,6 +14,7 @@ import { latestQuestionScan } from "@/lib/questions"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { hasPaidPlan } from "@/lib/billing"
 import { REVIEW_DRAFT } from "@/lib/approvals"
+import { bySuffix, TEAM_REVIEW } from "@/lib/team/permissions"
 import { imageUrl } from "@/lib/images"
 import { listAccounts, listPosts } from "@/lib/social/store"
 import { PLATFORM_NAME } from "@/lib/social/types"
@@ -94,7 +95,13 @@ const SITE_OP: Record<string, string> = {
   meta: "Rewrote your page title and description so Google and AI know what you do",
 }
 export function ledgerText(type: string, title: string, meta: Record<string, unknown>): string | null {
+  const text = ledgerBase(type, title, meta)
+  // Teams: rows written by a signed-in person on a brand with a team say who (lib/activity.ts).
+  return text && type !== TEAM_REVIEW ? `${text}${bySuffix(meta)}` : text
+}
+function ledgerBase(type: string, title: string, meta: Record<string, unknown>): string | null {
   switch (type) {
+    case TEAM_REVIEW: return title
     case "site_change":
       if (meta.undone) return null
       return SITE_OP[String(meta.op)] ?? title
@@ -129,7 +136,7 @@ export function ledgerText(type: string, title: string, meta: Record<string, unk
     default: return null
   }
 }
-export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "insights", "week_run", "social_published", "win", "guarantee_credit", "ads_change", "email_campaign_sent", "email_campaign_draft", "email_complaint", "site_links", "review_blocked", "cwv_check", "schema_audit"]
+export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "insights", "week_run", "social_published", "win", "guarantee_credit", "ads_change", "email_campaign_sent", "email_campaign_draft", "email_complaint", "site_links", "review_blocked", "cwv_check", "schema_audit", TEAM_REVIEW]
 
 // The weekly AI re-check runs Wednesdays 09:00 UTC (lib/cron-scheduler.ts).
 export function nextCheck(now = new Date()): string {

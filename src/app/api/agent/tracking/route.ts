@@ -12,6 +12,8 @@ import { checkCapiToken } from "@/lib/tracking-events"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { encryptSecret } from "@/lib/checks/bing-webmaster"
 import { db } from "@/lib/db"
+import { requireCan } from "@/lib/team/actor"
+import type { Action } from "@/lib/team/permissions"
 
 // Pro plan and up: set up / check / turn off GA4 + Meta Pixel on the owner's site.
 // Every answer is the thread's messages, so the chat just shows them.
@@ -45,6 +47,9 @@ export async function POST(req: Request) {
   } catch {
     return NextResponse.json({ error: "I didn’t understand that." }, { status: 400 })
   }
+  // Teams (lib/team/routes.ts "self"): what this op needs.
+  const denied = await requireCan(({ check: "create", test: "create", verify: "create" } as Record<string, Action>)[input.op] ?? "connect")
+  if (denied) return denied
 
   if (input.op === "off") {
     await removeTracking(user.id)

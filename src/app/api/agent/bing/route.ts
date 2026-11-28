@@ -6,12 +6,14 @@ import { currentUser, bareHost } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { bingSites, encryptSecret } from "@/lib/checks/bing-webmaster"
 import { runCheck } from "@/lib/checks/run"
+import { requireCan } from "@/lib/team/actor"
 
 // Connect Bing Webmaster Tools with the owner's API key (Bing → Settings →
 // API access). The key is stored encrypted and never sent back to the browser.
 const body = z.object({ apiKey: z.string().trim().min(10).max(200) })
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("connect"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>
@@ -32,6 +34,7 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE() {
+  { const denied = await requireCan("connect"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const s = await getAgentSettings(user.id)

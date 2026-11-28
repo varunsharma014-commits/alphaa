@@ -19,6 +19,8 @@ import { checkDaily } from "@/lib/gads/rules"
 import { askCityMessages } from "@/lib/agent/city"
 import { checkAdAccount } from "@/lib/ad-accounts"
 import { checkQuota } from "@/lib/quotas"
+import { requireCan } from "@/lib/team/actor"
+import type { Action } from "@/lib/team/permissions"
 
 const id = z.string().min(5).max(40)
 const body = z.discriminatedUnion("op", [
@@ -48,6 +50,9 @@ export async function POST(req: Request) {
   if (!gadsAvailable(user)) return NextResponse.json({ error: "Google Ads opens soon." }, { status: 403 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
+  // Teams (lib/team/routes.ts "self"): what this op needs.
+  const denied = await requireCan(({ pick: "connect", disconnect: "connect", plan: "create" } as Record<string, Action>)[input.op] ?? "ads")
+  if (denied) return denied
 
   const reply = async (said: string, extra: Message[] = []) => NextResponse.json({ messages: [agent([{ kind: "text", text: said }]), ...extra, ...(await adsMessages(user, null))] })
   try {

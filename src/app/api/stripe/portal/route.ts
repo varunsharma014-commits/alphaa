@@ -5,8 +5,10 @@ import { stripe } from "@/lib/stripe"
 import { db } from "@/lib/db"
 import { shopifyBilledShop } from "@/lib/billing"
 import { shopifyPricingUrl } from "@/lib/connector/shopify-billing"
+import { requireCan } from "@/lib/team/actor"
 
 export async function POST(req: NextRequest) {
+  { const denied = await requireCan("billing"); if (denied) return denied } // teams (lib/team)
   const { userId } = await auth()
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 

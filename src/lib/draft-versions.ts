@@ -6,6 +6,8 @@
 // checkpoints (a manual save, a publish, an AI rewrite, a restore) also write one immutable
 // revision row: MockActivity type "post_revision", metadata { draftId, markdown, title, by,
 // reason }. The first change to a draft first records the agent's original as a revision.
+import { auditActor } from "@/lib/activity"
+import { whoName } from "@/lib/team/permissions"
 import { db } from "@/lib/db"
 import { imageUrl } from "@/lib/images"
 
@@ -19,13 +21,14 @@ type DraftMeta = {
   title?: string; markdown?: string; excerpt?: string; topic?: string; status?: string; url?: string
   scheduledFor?: string; imageId?: string | null; rev?: number; editedAt?: string; editedBy?: RevisionBy
 }
-type RevMeta = { draftId: string; markdown: string; title?: string; by: RevisionBy; reason: RevisionReason; words?: number; restoredFrom?: string }
+type RevMeta = { draftId: string; markdown: string; title?: string; by: RevisionBy; reason: RevisionReason; words?: number; restoredFrom?: string; actor?: { name?: string | null; email?: string | null; role?: string } }
 
 export type SavedDraft = {
   id: string; title: string; markdown: string; excerpt: string | null; status: string; url: string | null
   scheduledFor: string | null; rev: number; editedAt: string | null; editedBy: RevisionBy | null; createdAt: string; image: string | null
 }
-export type RevisionRow = { id: string; at: string; by: RevisionBy; reason: RevisionReason; title: string; words: number; restoredFrom: string | null }
+/** `who`: the team member's first name when someone other than the owner alone saved it (lib/team). */
+export type RevisionRow = { id: string; at: string; by: RevisionBy; reason: RevisionReason; title: string; words: number; restoredFrom: string | null; who?: string | null }
 
 const countWords = (s: string) => (s.match(/[\p{L}\p{N}][^\s]*/gu) ?? []).length
 const same = (a?: string | null, b?: string | null) => (a ?? "").trim() === (b ?? "").trim()
@@ -62,12 +65,14 @@ async function latestRevision(userId: string, draftId: string) {
 }
 
 async function addRevision(userId: string, draftId: string, m: Omit<RevMeta, "draftId" | "words">, at?: Date) {
+  // Teams: who saved it (lib/activity.ts auditActor; null on single-owner brands and in crons).
+  const actor = m.by === "agent" || m.reason === "original" ? null : await auditActor(userId).catch(() => null)
   return db.mockActivity.create({
     data: {
       userId,
       type: REVISION_TYPE,
       title: `Saved a version of “${(m.title ?? "a post").slice(0, 80)}”`,
-      metadata: { draftId, ...m, words: countWords(m.markdown) },
+      metadata: { draftId, ...m, words: countWords(m.markdown), ...(actor ? { actor } : {}) },
       ...(at ? { createdAt: at } : {}),
     },
   })
@@ -134,7 +139,7 @@ export async function listRevisions(userId: string, draftId: string, take = 40):
   })
   return rows.map((x) => {
     const m = x.metadata as RevMeta
-    return { id: x.id, at: x.createdAt.toISOString(), by: m.by, reason: m.reason, title: m.title ?? "", words: m.words ?? countWords(m.markdown ?? ""), restoredFrom: m.restoredFrom ?? null }
+    return { id: x.id, at: x.createdAt.toISOString(), by: m.by, reason: m.reason, title: m.title ?? "", words: m.words ?? countWords(m.markdown ?? ""), restoredFrom: m.restoredFrom ?? null, who: m.actor?.role ? whoName(m.actor) : null }
   })
 }
 

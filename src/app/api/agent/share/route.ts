@@ -5,6 +5,7 @@ import { z } from "zod"
 import { db } from "@/lib/db"
 import { currentUser } from "@/lib/connector/user"
 import { getEngineEvidence, type EngineKey } from "@/lib/engine-evidence"
+import { requireCan } from "@/lib/team/actor"
 
 // "Share it": a public, verified card (/w/[id]) saying an AI recommends the
 // business. Only issued when our latest evidence says that AI named them.
@@ -12,6 +13,7 @@ const NAME: Record<EngineKey, string> = { chatgpt: "ChatGPT", gemini: "Gemini", 
 const body = z.object({ engine: z.enum(["chatgpt", "gemini", "claude", "perplexity"]) })
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("publish"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let engine: EngineKey

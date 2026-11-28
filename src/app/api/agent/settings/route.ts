@@ -7,6 +7,7 @@ import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { networkOf } from "@/lib/checks/profiles"
 import { platformAvailability } from "@/lib/connector/availability"
+import { requireCan } from "@/lib/team/actor"
 
 // Small owner-set flags the agent remembers (Bing/Apple listings done, a
 // review link). The WordPress connection is only ever set by the plugin.
@@ -36,6 +37,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("settings"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>

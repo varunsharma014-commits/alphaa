@@ -9,7 +9,11 @@ import type { BriefingEmailProps } from "@/emails/BriefingEmail"
 const base = () => process.env.NEXT_PUBLIC_APP_URL || "https://alphaa.app"
 const weekday = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" })
 
-export async function briefingEmailProps(userId: string, firstName: string | null): Promise<Omit<BriefingEmailProps, "footer"> | null> {
+/**
+ * `member`: a team member's copy (lib/team). Their approve links name them, so /approve uses
+ * their current role; a creator's copy has no approve links (they can't approve).
+ */
+export async function briefingEmailProps(userId: string, firstName: string | null, member?: { id: string; canApprove: boolean }): Promise<Omit<BriefingEmailProps, "footer"> | null> {
   const b = await buildBriefing(userId)
   if (!b) return null
   const dashboardUrl = `${base()}/briefing`
@@ -36,7 +40,7 @@ export async function briefingEmailProps(userId: string, firstName: string | nul
           title: it.title,
           quote: it.kind === "review" ? it.quote : null,
           text: it.text,
-          approveUrl: it.text ? approveUrl(userId, it.kind, it.id) : null,
+          approveUrl: it.text && (!member || member.canApprove) ? approveUrl(userId, it.kind, it.id, member?.id) : null,
           openUrl: dashboardUrl,
           openLabel: "Open Alphaa",
         }

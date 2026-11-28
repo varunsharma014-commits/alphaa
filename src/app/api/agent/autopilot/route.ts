@@ -9,6 +9,8 @@ import { autopilotMessages, PRO_RE } from "@/lib/agent/autopilot"
 import { agent } from "@/lib/agent/types"
 import { acceptAutoApprove, needsConsent, renewAutoApprove, revokeAutoApprove } from "@/lib/agent/auto-approve"
 import { consentCurrent } from "@/lib/auto-approve-text"
+import { requireCan } from "@/lib/team/actor"
+import type { Action } from "@/lib/team/permissions"
 
 // "What I do without asking": one-tap standing approvals. Answers with the thread's messages.
 const body = z.discriminatedUnion("op", [
@@ -57,6 +59,9 @@ export async function POST(req: Request) {
   } catch {
     return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 })
   }
+  // Teams: the Autopilot declaration is the owner's legal OK; admins may change settings under it.
+  const denied = await requireCan(({ auto_on: "autopilot_consent", auto_renew: "autopilot_consent", budget: "ads" } as Record<string, Action>)[input.op] ?? "autopilot")
+  if (denied) return denied
   const s = await getAgentSettings(user.id)
   const a = s.autopilot ?? {}
   const now = new Date().toISOString()

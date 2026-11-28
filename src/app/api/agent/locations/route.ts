@@ -5,6 +5,7 @@ import { z } from "zod"
 import { randomBytes } from "crypto"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings, maxExtraLocations } from "@/lib/agent/settings"
+import { requireCan } from "@/lib/team/actor"
 
 // Extra locations for multi-location plans. Pro and Growth cover up to
 // 3 locations in total (the main business + 2).
@@ -20,6 +21,7 @@ const add = z.object({
 
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("settings"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof add>
@@ -39,6 +41,7 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  { const denied = await requireCan("settings"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const id = new URL(req.url).searchParams.get("id")

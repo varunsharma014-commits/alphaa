@@ -10,10 +10,12 @@ import { currentUser } from "@/lib/connector/user"
 import { db } from "@/lib/db"
 import { WEEK_RUN, type WeekRun } from "@/lib/agent/week"
 import { scheduleMade } from "@/lib/workspace/schedule"
+import { requireCan } from "@/lib/team/actor"
 
 const body = z.object({ runId: z.string().min(5).max(40) })
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("publish"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>

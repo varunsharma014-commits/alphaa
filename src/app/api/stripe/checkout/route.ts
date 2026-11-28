@@ -10,6 +10,7 @@ import type Stripe from "stripe"
 import { realEmail } from "@/lib/sites"
 import { GROWTH_ON_SALE } from "@/lib/growth"
 import { PLAN_PRICES, EXTRA_AD_ACCOUNT_PRICE } from "@/lib/constants"
+import { requireCan } from "@/lib/team/actor"
 
 type SellPlan = "starter" | "pro" | "growth"
 const SELL_PLANS: SellPlan[] = ["starter", "pro", "growth"]
@@ -134,6 +135,7 @@ async function ensureExtraBrandCoupon(): Promise<boolean> {
 }
 
 export async function POST(req: NextRequest) {
+  { const denied = await requireCan("billing"); if (denied) return denied } // teams (lib/team)
   const { userId } = await auth()
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 

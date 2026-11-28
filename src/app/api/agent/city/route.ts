@@ -5,6 +5,7 @@ import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { db } from "@/lib/db"
 import { agent } from "@/lib/agent/types"
+import { requireCan } from "@/lib/team/actor"
 
 // Saves the business's city (and state/province) from the chat, then offers to carry on with
 // whatever asked for it (the Google or Meta ads plan).
@@ -16,6 +17,7 @@ const body = z.object({
 })
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("settings"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>
