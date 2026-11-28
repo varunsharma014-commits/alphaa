@@ -61,6 +61,8 @@ export type MetaCampaign = {
   approvedAt?: string | null
   enabledAt?: string | null
   lastLeadPollAt?: string | null
+  /** A promoted organic post (lib/metaads/promote.ts): the post it uses and when it stops. */
+  promoted?: { from: "facebook" | "instagram"; postId: string; postUrl?: string | null; socialPostId: string; days: number; /** Set when it is turned on (the ad set gets the same end_time). */ endsAt?: string | null }
 }
 
 const enc = (s: string) => encryptSecret(s)
@@ -121,7 +123,7 @@ export async function saveCampaign(userId: string, c: MetaCampaign): Promise<voi
 export const liveCampaigns = (list: MetaCampaign[]) => list.filter((c) => (c.status === "paused" || c.status === "active") && c.built?.campaignId)
 
 // ── Change log ──────────────────────────────────────────────────────────────
-export type AdsChange = { platform: "meta"; campaignRowId?: string; objectId?: string; what: string; why: string; by: "owner" | "autopilot"; before?: string | number | null; after?: string | number | null; at: string; /** "fatigue" = a note, nothing changed on Meta. */ kind?: "fatigue" }
+export type AdsChange = { platform: "meta"; campaignRowId?: string; objectId?: string; what: string; why: string; by: "owner" | "autopilot"; before?: string | number | null; after?: string | number | null; at: string; /** "fatigue" = a note, nothing changed on Meta; "rule" = one of the owner's ad rules (lib/ad-rules). */ kind?: "fatigue" | "rule"; rule?: import("@/lib/ad-rules/run").RuleMark }
 export async function logChange(userId: string, c: Omit<AdsChange, "platform" | "at">): Promise<void> {
   const row: AdsChange = { platform: "meta", ...c, at: new Date().toISOString() }
   await db.mockActivity.create({ data: { userId, type: CHANGE, title: `Meta ads: ${c.what}`.slice(0, 190), metadata: row as object } })

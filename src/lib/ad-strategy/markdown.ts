@@ -32,7 +32,7 @@ export function hooksMd(s: AdStrategy): string {
 export function scriptMd(x: Script, i: number): string {
   return [
     `### ${i + 1}. ${x.title} (${x.seconds}s, ${x.format})`,
-    `${x.platforms.join(", ")} · angle: ${x.angle}${x.labels.length ? ` · show on screen: ${x.labels.join(", ")}` : ""}`,
+    `${x.platforms.filter((p) => !/tiktok/i.test(p)).join(", ")} · angle: ${x.angle}${x.labels.length ? ` · show on screen: ${x.labels.join(", ")}` : ""}`,
     "",
     "| Time | Visual | On screen | Voice-over | Audio |",
     "|---|---|---|---|---|",

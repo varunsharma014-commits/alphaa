@@ -54,8 +54,8 @@ export const SPECS = {
 } as const
 
 export const MUSIC = {
-  yes: ["Epidemic Sound Pro or Business (covers paid ads)", "Artlist Pro (publish only while subscribed)", "TikTok Commercial Music Library, for TikTok-only cuts", "Meta Sound Collection, for Meta-only cuts"],
-  never: ["trending TikTok or Instagram sounds", "any label song", "YouTube Audio Library in paid ads", "Suno or Udio AI music (licensing still disputed)"],
+  yes: ["Epidemic Sound Pro or Business (covers paid ads)", "Artlist Pro (publish only while subscribed)", "Meta Sound Collection, for Meta-only cuts"],
+  never: ["trending Instagram or Reels sounds", "any label song", "YouTube Audio Library in paid ads", "Suno or Udio AI music (licensing still disputed)"],
   why: "Record labels are suing brands over songs in social ads: Sony and Warner sued DSW, UMG sued Quince, Warner sued Luxottica over 427+ works.",
   log: "Log the track ID, licence and ad ID for every ad, keep the subscription active while the ad runs, and turn off Meta's automatic music in Advantage+ creative.",
 } as const
@@ -64,7 +64,7 @@ export const AI_RULES = [
   "AI makes the props, the real business makes the proof. Use AI video (Veo, Kling, Runway) only for objects, rooms, textures and abstract motion.",
   "Never generate realistic people, fake customers, fake reviews or fake screens of the product.",
   "An AI presenter, if used at all, is labelled \"AI presenter\" on screen the whole time and never poses as a customer or the owner.",
-  "Meta puts its most visible AI label on photorealistic AI people. Turn on TikTok's AI toggle and YouTube's altered-content setting when AI visuals or voices are used. Never strip C2PA data.",
+  "Meta puts its most visible AI label on photorealistic AI people. Turn on YouTube's altered-content setting when AI visuals or voices are used. Never strip C2PA data.",
   "Check every AI clip for warped hands, gibberish text, plastic lighting and stock-avatar faces before it runs.",
 ] as const
 

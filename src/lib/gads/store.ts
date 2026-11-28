@@ -138,7 +138,7 @@ export async function saveTune(userId: string, t: Tune): Promise<void> {
 // ── Change log ───────────────────────────────────────────────────────────────
 
 export type AdsChange = {
-  op: "create_campaign" | "enable" | "pause" | "add_negatives" | "pause_keywords" | "lower_budget" | "undo_negatives"
+  op: "create_campaign" | "enable" | "pause" | "add_negatives" | "pause_keywords" | "lower_budget" | "undo_negatives" | "budget" | "note"
   customerId: string
   resources: string[]
   ops: number
@@ -146,6 +146,8 @@ export type AdsChange = {
   undo?: "pause" | "enable" | "remove_negatives" | "enable_keywords" | null
   detail?: string
   by: "owner" | "agent"
+  /** Set when one of the owner's ad rules made this change (lib/ad-rules). */
+  rule?: import("@/lib/ad-rules/run").RuleMark
 }
 
 export async function logChange(userId: string, title: string, c: AdsChange): Promise<void> {
@@ -153,5 +155,6 @@ export async function logChange(userId: string, title: string, c: AdsChange): Pr
 }
 
 export async function recentChanges(userId: string, take = 8) {
-  return db.mockActivity.findMany({ where: { userId, type: ADS_CHANGE, NOT: { metadata: { path: ["platform"], equals: "meta" } } }, orderBy: { createdAt: "desc" }, take, select: { id: true, title: true, createdAt: true, metadata: true } })
+  // Rows without a platform are Google's (the original format); Meta and LinkedIn rows carry theirs.
+  return db.mockActivity.findMany({ where: { userId, type: ADS_CHANGE, NOT: [{ metadata: { path: ["platform"], equals: "meta" } }, { metadata: { path: ["platform"], equals: "linkedin" } }] }, orderBy: { createdAt: "desc" }, take, select: { id: true, title: true, createdAt: true, metadata: true } })
 }

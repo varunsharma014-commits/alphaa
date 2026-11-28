@@ -16,6 +16,7 @@ import { lastReadyStrategy, latestStrategy, startStrategy, strategyRunning } fro
 import { relevantCompetitors } from "@/lib/competitor-relevance"
 import { latestTune } from "@/lib/gads/store"
 import { db } from "@/lib/db"
+import type { RuleMark } from "@/lib/ad-rules/run"
 import { hasPro } from "@/lib/billing"
 import { runAsUser } from "@/lib/usage"
 import { imageUrl } from "@/lib/images"
@@ -136,10 +137,17 @@ export async function getAdsData(user: User): Promise<AdsData> {
     })
   }
 
+  // A change one of the owner's rules made carries its own Undo (lib/ad-rules/run.ts undoRuleChange).
+  const ruleUndo = (m: unknown): Record<string, string> | null => {
+    const r = (m as { rule?: RuleMark } | null)?.rule
+    return r?.undo && !r.undoneAt ? { op: "rule_undo", key: r.key } : null
+  }
+  const liChanges = await db.mockActivity.findMany({ where: { userId: user.id, type: "ads_change", metadata: { path: ["platform"], equals: "linkedin" } }, orderBy: { createdAt: "desc" }, take: 6, select: { title: true, createdAt: true, metadata: true } }).catch(() => [])
   const changes: ChangeRow[] = [
-    ...mChanges.map((c) => ({ text: `${c.what}${c.why ? `. ${c.why}` : ""}`, by: c.by === "owner" ? "You" : "Me", when: ago(c.at), at: c.at, platform: "Meta" })),
-    ...gChanges.map((c) => ({ text: c.title, by: (c.metadata as { by?: string } | null)?.by === "owner" ? "You" : "Me", when: ago(c.createdAt.toISOString()), at: c.createdAt.toISOString(), platform: "Google" })),
-  ].sort((a, b) => Date.parse(b.at) - Date.parse(a.at)).slice(0, 12).map(({ at: _at, ...r }): ChangeRow => ({ ...r, undo: null }))
+    ...mChanges.map((c) => ({ text: `${c.what}${c.why ? `. ${c.why}` : ""}`, by: c.by === "owner" ? "You" : "Me", when: ago(c.at), at: c.at, platform: "Meta", ru: ruleUndo(c) })),
+    ...gChanges.map((c) => ({ text: c.title, by: (c.metadata as { by?: string } | null)?.by === "owner" ? "You" : "Me", when: ago(c.createdAt.toISOString()), at: c.createdAt.toISOString(), platform: "Google", ru: ruleUndo(c.metadata) })),
+    ...liChanges.map((c) => ({ text: c.title, by: (c.metadata as { by?: string } | null)?.by === "owner" ? "You" : "Me", when: ago(c.createdAt.toISOString()), at: c.createdAt.toISOString(), platform: "LinkedIn", ru: null })),
+  ].sort((a, b) => Date.parse(b.at) - Date.parse(a.at)).slice(0, 12).map(({ at: _at, ru, ...r }): ChangeRow => ({ ...r, undo: ru }))
 
   // Undo where the code has one: a Google campaign pause/enable, and the latest applied tune-up.
   const tune = await latestTune(user.id).catch(() => null)
@@ -150,6 +158,7 @@ export async function getAdsData(user: User): Promise<AdsData> {
     return { id: c.id, undo }
   })
   for (const r of changes) {
+    if (r.undo) continue // a rule change already has its Undo
     const g = gChanges.find((c) => c.title === r.text && r.platform === "Google")
     if (g) r.undo = gRows.find((x) => x.id === g.id)?.undo ?? null
   }

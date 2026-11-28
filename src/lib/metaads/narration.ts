@@ -15,7 +15,7 @@ import { SUGGESTED_DAILY } from "./plan"
 const op = (body: Record<string, string>, label: string, primary = false): Chip => ({ label, primary, action: { type: "agent-op", endpoint: "metaads", body } })
 const CONNECT = "/api/social/connect/meta"
 const money = (n: number, cur: string) => `${(Math.round(n * 100) / 100).toLocaleString("en-US", { maximumFractionDigits: 2 })} ${cur}`
-const GOAL = { OUTCOME_LEADS: "Get leads: a short form on Facebook and Instagram sends you their name, email and phone", OUTCOME_TRAFFIC: "Get website visits from people nearby" } as const
+const GOAL = { OUTCOME_LEADS: "Get leads: a short form on Facebook and Instagram sends you their name, email and phone", OUTCOME_TRAFFIC: "Get website visits from people nearby", OUTCOME_ENGAGEMENT: "Show one of your posts to more people nearby" } as const
 const WEBSITE_LEADS = "Get leads on your website: your Meta Pixel counts each lead, and Meta shows the ads to people likely to become one"
 const goalLine = (pl: MetaCampaign["plan"]) => (pl.goal === "OUTCOME_LEADS" && pl.leadsOn === "website" ? WEBSITE_LEADS : GOAL[pl.goal])
 

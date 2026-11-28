@@ -8,10 +8,11 @@ import { AdsView } from "@/components/workspace/AdsView"
 
 export const metadata = { title: "Ads — Alphaa" }
 
-export default async function AdsPage() {
+export default async function AdsPage({ searchParams }: { searchParams: Promise<{ tab?: string; note?: string }> }) {
+  const { tab, note } = await searchParams
   const { userId } = await auth()
   if (!userId) redirect("/login")
   const user = await db.user.findUnique({ where: { clerkId: userId } })
   if (!user) redirect("/login")
-  return hasGrowth(user) ? <AdsView data={await getAdsData(user)} /> : <AdsView data={null} />
+  return hasGrowth(user) ? <AdsView data={await getAdsData(user)} initialTab={tab ?? null} note={note?.slice(0, 200) ?? null} /> : <AdsView data={null} />
 }

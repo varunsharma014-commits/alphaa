@@ -102,5 +102,11 @@ export function startCron(): void {
     hit("/api/cron/meta-ads?job=leads")
     // Mon 11:00 UTC — Facebook & Instagram weekly tune-up (Meta API only)
     if (dow === 1 && hour === 11) hit("/api/cron/meta-ads?job=tune")
+    // Daily 09:00 UTC (+ hourly catch-up to 12:00) — the owner's own ad rules (lib/ad-rules; ad APIs
+    // only). The route skips a brand checked in the last 20h, so re-hits only finish unfinished brands.
+    if (hour >= 9 && hour <= 12) hit("/api/cron/ad-rules")
+    // 1st of the month 15:00 UTC (+ catch-up to 20:00) — last month's ad report link to owners who
+    // asked for it (lib/ad-report; once per brand per month via settings adReportMail.lastSent).
+    if (now.getUTCDate() === 1 && hour >= 15 && hour <= 20) hit("/api/cron/ad-report")
   }, 60_000)
 }

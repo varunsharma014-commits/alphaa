@@ -7,13 +7,15 @@ import { THRESHOLDS } from "@/lib/ad-strategy/playbook"
 import { askAlphaa, toast } from "@/lib/workspace/events"
 import { Empty, PlanGate, Tabs, useInspector } from "./ui"
 import { RoasCampaigns, RoasKpis, RoasLeads } from "./RoasPanel"
+import { AdRulesPanel, PromotePanel, ReportPanel } from "./AdsExtras"
 
 // Ads: show the ads before asking for money. "Your first ads" (from the ad plan) is the default
 // while nothing is live; the limit is a slider that re-splits with the real testingPlan() rules;
 // results only from the accounts; guardrails are the rules the code applies. Meta and Google are
 // the channels I run; LinkedIn appears only inside a B2B plan ("I prepare these, you run them").
 
-type Tab = "f" | "r" | "a" | "t"
+type Tab = "f" | "r" | "a" | "t" | "x" | "p" | "s"
+const TAB_KEYS: Tab[] = ["f", "r", "a", "t", "x", "p", "s"]
 const STEPS = [250, 500, 750, 1000, 1500, 2000, 3000, 4000, 5000]
 
 // Rules the code enforces (and where): shown before any change exists.
@@ -27,12 +29,13 @@ const GUARDRAILS = [
   { rule: "On Google, a keyword that cost 3 days’ budget (at least 30) with no conversion is paused, always leaving a few running.", where: "Google weekly tune (decideTuning)" },
   { rule: "Google cuts only happen when conversion tracking is on: without it, “0 conversions” means “not measured”.", where: "Google weekly tune" },
   { rule: "On Meta, I flag an ad that’s wearing out: seen more than 3 times with its click rate down over 30% vs its own first week, or its cost per result up over 40%. Only with enough data (1,500 impressions or $60 each week). I flag it; I don’t change it.", where: "Meta fatigue check (detectFatigue)" },
+  { rule: "Your own rules (Your rules tab) run once a day, only on running ads, after their minimum data, at most one change per ad a day, never above your monthly limit. Budget changes need Autopilot.", where: "Owner ad rules (lib/ad-rules)" },
   { rule: "Every ad line passes my claims check: no superlatives, no guarantees, numbers only from your own facts, platform length limits.", where: "Ad plan + Meta/Google copy checks" },
 ]
 
-export function AdsView({ data }: { data: AdsData | null }) {
+export function AdsView({ data, initialTab, note }: { data: AdsData | null; initialTab?: string | null; note?: string | null }) {
   const { node, open } = useInspector()
-  const [tab, setTab] = useState<Tab>(data && !data.live ? "f" : "r")
+  const [tab, setTab] = useState<Tab>(TAB_KEYS.includes(initialTab as Tab) && (initialTab !== "f" || !data?.live) ? (initialTab as Tab) : data && !data.live ? "f" : "r")
   const [limit, setLimit] = useState<number>(() => {
     const b = data?.budget ?? 500
     return STEPS.reduce((a, s) => (Math.abs(s - b) < Math.abs(a - b) ? s : a), STEPS[0])
@@ -60,7 +63,10 @@ export function AdsView({ data }: { data: AdsData | null }) {
     askAlphaa({ topic: "ads", label: "Prepare my launch" })
   }
   async function undo(i: number, body: Record<string, string>) {
-    const res = await fetch("/api/agent/ads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).catch(() => null)
+    // A change one of the owner's rules made has its own undo (lib/ad-rules); the rest is Google's.
+    const res = body.op === "rule_undo"
+      ? await fetch("/api/workspace/ad-rules", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ op: "undo", key: body.key }) }).catch(() => null)
+      : await fetch("/api/agent/ads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).catch(() => null)
     const d = (await res?.json().catch(() => null)) as { error?: string } | null
     if (!res?.ok) return toast(d?.error ?? "That didn’t undo. Nothing changed.")
     setUndone((u) => ({ ...u, [i]: true }))
@@ -105,7 +111,11 @@ export function AdsView({ data }: { data: AdsData | null }) {
   return (
     <>
       {head}
-      <Tabs<Tab> value={tab} onChange={setTab} tabs={[...(!data.live ? [{ key: "f" as Tab, label: "Your first ads" }] : []), { key: "r", label: "Results" }, { key: "a", label: "Ads running" }, { key: "t", label: "What I changed" }]} />
+      <Tabs<Tab> value={tab} onChange={setTab} tabs={[...(!data.live ? [{ key: "f" as Tab, label: "Your first ads" }] : []), { key: "r", label: "Results" }, { key: "a", label: "Ads running" }, { key: "t", label: "What I changed" }, { key: "x", label: "Your rules" }, { key: "p", label: "Promote a post" }, { key: "s", label: "Share a report" }]} />
+
+      {tab === "x" && <AdRulesPanel />}
+      {tab === "p" && <PromotePanel note={note} />}
+      {tab === "s" && <ReportPanel />}
 
       {tab === "f" && (
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1.3fr) minmax(0,1fr)", gap: 18, marginTop: 22 }} className="ax-adsgrid">

@@ -12,6 +12,7 @@ import { getAccess, getCampaign, listCampaigns, patchAccess, removeAccess } from
 import { proposePlan } from "@/lib/metaads/plan"
 import { askCityMessages } from "@/lib/agent/city"
 import { approveAndBuild, dismissPlan, setLeadsOn, setLive } from "@/lib/metaads/ops"
+import { startPromotion } from "@/lib/metaads/promote"
 import { applyTune, dismissTune } from "@/lib/metaads/tune"
 import { forget } from "@/lib/metaads/report"
 import { checkAdAccount } from "@/lib/ad-accounts"
@@ -116,7 +117,9 @@ export async function POST(req: Request) {
           if (!allowed.ok) return fail(allowed.message, 402)
         }
       }
-      const r = await setLive(user.id, input.id, input.op === "enable")
+      // A promoted post gets its end date when it's turned on (lib/metaads/promote.ts).
+      const promo = input.op === "enable" ? await getCampaign(user.id, input.id) : null
+      const r = promo?.promoted ? await startPromotion(user, input.id) : await setLive(user.id, input.id, input.op === "enable")
       if (!r.ok) return fail(r.error, 409)
       forget(user.id)
       said = r.said

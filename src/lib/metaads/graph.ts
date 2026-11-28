@@ -108,7 +108,8 @@ export async function findCity(token: string, city: string, country: string | nu
 }
 
 // ── Build a paused campaign ─────────────────────────────────────────────────
-export type Goal = "OUTCOME_LEADS" | "OUTCOME_TRAFFIC"
+/** OUTCOME_ENGAGEMENT = a promoted (boosted) Page or Instagram post (lib/metaads/promote.ts). */
+export type Goal = "OUTCOME_LEADS" | "OUTCOME_TRAFFIC" | "OUTCOME_ENGAGEMENT"
 /** Where a leads campaign collects the lead: Meta's instant form, or the website (counted by the pixel's Lead event). */
 export type LeadsOn = "form" | "website"
 export type SpecialCategory = "NONE" | "HOUSING" | "EMPLOYMENT" | "FINANCIAL_PRODUCTS_SERVICES"
@@ -168,6 +169,25 @@ export function deliveryFor(s: Pick<CampaignSpec, "goal" | "pageId" | "pixelId" 
 export const trackingSpecs = (pixelId: string | null | undefined) =>
   pixelId ? [{ "action.type": ["offsite_conversion"], fb_pixel: [pixelId] }] : null
 
+/**
+ * Pure: the local audience. The business's city with a radius (at least 15 miles for special
+ * categories, else 5, at most 50), adults 18+ (18-65 for special categories), Advantage audience off.
+ */
+export function targetingFor(s: Pick<CampaignSpec, "special" | "city" | "country" | "radiusMiles">): Record<string, unknown> {
+  const special = s.special !== "NONE"
+  const radius = Math.max(special ? 15 : 5, Math.min(50, Math.round(s.radiusMiles)))
+  const geo = s.city
+    ? { cities: [{ key: s.city.key, radius, distance_unit: "mile" }] }
+    : s.country ? { countries: [s.country] } : null
+  if (!geo) throw new Error("I need your city to target people near you.")
+  return {
+    geo_locations: geo,
+    age_min: 18,
+    ...(special ? { age_max: 65 } : {}),
+    targeting_automation: { advantage_audience: 0 },
+  }
+}
+
 /** Everything Meta needs, created PAUSED: lead form (leads goal), campaign, ad set, images, creatives, ads. */
 export async function buildPaused(token: string, s: CampaignSpec, onStep?: (what: string, id: string) => Promise<void> | void): Promise<Built> {
   const special = s.special !== "NONE"
@@ -206,18 +226,7 @@ export async function buildPaused(token: string, s: CampaignSpec, onStep?: (what
   })
   await step("campaign", campaign.id)
 
-  // Local audience: the business's city with a radius (≥15 miles for special categories), 18+.
-  const radius = Math.max(special ? 15 : 5, Math.min(50, Math.round(s.radiusMiles)))
-  const geo = s.city
-    ? { cities: [{ key: s.city.key, radius, distance_unit: "mile" }] }
-    : s.country ? { countries: [s.country] } : null
-  if (!geo) throw new Error("I need your city to target people near you.")
-  const targeting: Record<string, unknown> = {
-    geo_locations: geo,
-    age_min: 18,
-    ...(special ? { age_max: 65 } : {}),
-    targeting_automation: { advantage_audience: 0 },
-  }
+  const targeting = targetingFor(s)
   const adSet = await graph<{ id: string }>(`${s.adAccountId}/adsets`, token, {
     method: "POST",
     params: {
@@ -284,7 +293,7 @@ export const setDailyBudget = (token: string, adSetId: string, amount: number, c
 // ── Results ─────────────────────────────────────────────────────────────────
 type Action = { action_type: string; value: string }
 export type InsightRow = {
-  ad_id?: string; adset_id?: string; campaign_id?: string; date_start?: string
+  ad_id?: string; adset_id?: string; campaign_id?: string; date_start?: string; ad_name?: string; campaign_name?: string
   spend?: string; impressions?: string; clicks?: string; inline_link_clicks?: string; reach?: string; frequency?: string
   actions?: Action[]
   /** Value per action type (purchases carry the sale amount the pixel / Conversions API sent). */
@@ -296,7 +305,7 @@ export type Totals = { spend: number; impressions: number; clicks: number; linkC
 
 /** "lead" = every lead (instant form + pixel); traffic campaigns count link clicks. */
 export function resultsOf(row: InsightRow, goal: Goal): number {
-  const want = goal === "OUTCOME_LEADS" ? "lead" : "link_click"
+  const want = goal === "OUTCOME_LEADS" ? "lead" : goal === "OUTCOME_ENGAGEMENT" ? "post_engagement" : "link_click"
   return Number(row.actions?.find((a) => a.action_type === want)?.value ?? 0)
 }
 export function totalsOf(rows: InsightRow[], goal: Goal): Totals {
@@ -317,6 +326,20 @@ export async function insights(token: string, objectId: string, level: "campaign
     params: { level, date_preset: days === 7 ? "last_7d" : "last_30d", fields: INSIGHT_FIELDS, limit: "100" },
   })
   return r.data ?? []
+}
+
+/** Totals for a date range (YYYY-MM-DD, inclusive), one row per `level` object. For reports and owner rules. */
+export async function insightsRange(token: string, objectId: string, level: "campaign" | "ad", since: string, until: string): Promise<InsightRow[]> {
+  const r = await graph<{ data?: InsightRow[] }>(`${objectId}/insights`, token, {
+    params: { level, time_range: { since, until }, fields: `${INSIGHT_FIELDS},ad_name,campaign_name`, limit: "200" },
+  })
+  return r.data ?? []
+}
+
+/** Effective status of each ad in a campaign (ACTIVE, PAUSED, CAMPAIGN_PAUSED, ADSET_PAUSED, IN_PROCESS, ...). */
+export async function adStatuses(token: string, campaignId: string): Promise<Map<string, string>> {
+  const r = await graph<{ data?: { id: string; effective_status?: string }[] }>(`${campaignId}/ads`, token, { params: { fields: "id,effective_status", limit: "100" } })
+  return new Map((r.data ?? []).map((a) => [a.id, a.effective_status ?? "UNKNOWN"]))
 }
 
 /** One row per ad per day (time_increment=1) from `since` (YYYY-MM-DD) to today, for creative fatigue. Follows paging up to 2,000 rows. */

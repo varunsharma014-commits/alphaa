@@ -56,7 +56,7 @@ const ScriptSchema = z.object({
     format: z.string().describe("One format from the playbook, e.g. 'Kinetic text', 'Behind the scenes', 'POV one-liner'"),
     hookType: z.enum(HOOK_KEYS),
     seconds: z.number().describe("Total length: 5-10 for short cuts, up to 25 for a main cut"),
-    platforms: z.array(z.string()).describe("e.g. 'Instagram Reels', 'Facebook', 'TikTok', 'YouTube Shorts', 'LinkedIn'"),
+    platforms: z.array(z.string()).describe("e.g. 'Instagram Reels', 'Facebook', 'YouTube Shorts', 'LinkedIn'"),
     scenes: z.array(z.object({
       t: z.string().describe("Time range like '0-2s'"),
       visual: z.string().describe("What's on screen and where it comes from: phone footage of X, a screen recording of Y, kinetic text, licensed b-roll. Never AI people"),
@@ -147,7 +147,7 @@ FACTS
 ${facts}`
 
   const s = await anthropic.messages.parse({ model: MODEL, max_tokens: 16000, output_config: { effort: "medium", format: zodOutputFormat(ScriptSchema) }, messages: [{ role: "user", content: scriptPrompt }] })
-  const scripts = keepLines<Script>((s.parsed_output?.scripts ?? []).map((x) => ({ ...x, seconds: Math.max(3, Math.min(90, Math.round(x.seconds))), hookSwaps: x.hookSwaps.slice(0, 3) })), scriptLines, allowed, brand)
+  const scripts = keepLines<Script>((s.parsed_output?.scripts ?? []).map((x) => ({ ...x, platforms: x.platforms.filter((p) => !/tiktok/i.test(p)), seconds: Math.max(3, Math.min(90, Math.round(x.seconds))), hookSwaps: x.hookSwaps.slice(0, 3) })), scriptLines, allowed, brand)
   if (scripts.ok.length < 4) throw new Error("too few scripts passed the checks")
 
   // The static pictures, in the owner's image style (text card, their photos, Canva…).

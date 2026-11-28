@@ -68,6 +68,12 @@ export type AgentSettings = {
   credits?: { autoUse: boolean; at: string }
   /** Content calendar (lib/calendar): the owner's time zone and the cached "best time to post". */
   calendar?: { timezone?: string; tzAt?: string; best?: import("@/lib/calendar/best-time").BestTimes; /** Google posts the owner OK'd on the calendar (GbpPost has no metadata). */ okGbp?: string[] }
+  /** The owner's own ad rules (lib/ad-rules) and when the daily check last ran. */
+  adRules?: import("@/lib/ad-rules/engine").AdRule[]
+  adRulesRun?: { at: string }
+  /** Shareable ad report links + the optional monthly email (lib/ad-report). */
+  adReports?: import("@/lib/ad-report/token").ReportLink[]
+  adReportMail?: { monthly: boolean; to?: string | null; lastSent?: string | null; at: string }
 }
 
 export type Autopilot = {
