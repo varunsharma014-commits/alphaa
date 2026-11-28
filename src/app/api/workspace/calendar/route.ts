@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic"
 // Content calendar (Social Studio → Calendar, lib/calendar). GET ?from&to = every scheduled and
 // published item in that range across channels + the drafts waiting for a time + best times to
 // post. POST op "move" reschedules one item (rules in lib/calendar/rules.ts), op "tz" saves the
-// owner's time zone (from the browser on first visit, or the picker).
+// owner's time zone (the picker; until then the business address decides, lib/calendar/tz.ts calendarTz).
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
@@ -11,7 +11,7 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { calendarItems, autopilotOn } from "@/lib/calendar/items"
 import { moveItem } from "@/lib/calendar/move"
 import { getBestTimes, saveOwnerTz } from "@/lib/calendar/best-time-data"
-import { DEFAULT_TZ, isValidTz } from "@/lib/calendar/tz"
+import { calendarTz } from "@/lib/calendar/tz"
 import { hasPro } from "@/lib/billing"
 import { within } from "@/lib/workspace/common"
 import { CHANNELS, typical } from "@/lib/calendar/best-time"
@@ -30,12 +30,12 @@ export async function GET(req: Request) {
   if (!Number.isFinite(to) || to <= from) to = from + 42 * DAY
   if (to - from > 70 * DAY) to = from + 70 * DAY
   const s = await getAgentSettings(user.id)
-  const saved = isValidTz(s.calendar?.timezone) ? s.calendar!.timezone! : null
-  const tz = saved ?? (isValidTz(url.searchParams.get("tz")) ? url.searchParams.get("tz")! : DEFAULT_TZ)
+  // The business's own zone (its address) unless the owner picked one; never the viewer's browser.
+  const { tz, from: tzFrom } = calendarTz(user, s.calendar)
   // A slow Google Analytics read mustn't hold the calendar up: typical guidance until it's cached.
   const typicalAll = Object.fromEntries(CHANNELS.map((c) => [c, typical(c)]))
   const [items, best] = await Promise.all([calendarItems(user, new Date(from), new Date(to)), within(getBestTimes(user.id, { tz }).then((b) => b.channels), 4000, typicalAll)])
-  return NextResponse.json({ tz, tzSaved: !!saved, auto: autopilotOn(s), pro: hasPro(user), items, best })
+  return NextResponse.json({ tz, tzSaved: tzFrom === "owner", tzFrom, auto: autopilotOn(s), pro: hasPro(user), items, best })
 }
 
 const body = z.discriminatedUnion("op", [
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
   if (input.op === "tz") {
     const s = await getAgentSettings(user.id)
-    if (s.calendar?.timezone) {
+    if (s.calendar?.tzBy === "owner") {
       const denied = await requireCan("settings")
       if (denied) return denied
     }

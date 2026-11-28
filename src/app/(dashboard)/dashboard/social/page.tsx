@@ -6,8 +6,9 @@ import { hasPro } from "@/lib/billing"
 import { getSocialData } from "@/lib/workspace/social"
 import { SocialView } from "@/components/workspace/SocialView"
 import "../../calendar.css"
+import { pageTitle } from "@/lib/page-title"
 
-export const metadata = { title: "Social Studio — Alphaa" }
+export const metadata = { title: pageTitle("Social Studio") }
 
 export default async function SocialPage() {
   const { userId } = await auth()

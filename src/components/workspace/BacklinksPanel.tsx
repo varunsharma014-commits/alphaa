@@ -6,10 +6,10 @@
 import { useEffect, useState } from "react"
 import type { BacklinksView } from "@/lib/backlinks/view"
 import { askAlphaa, toast } from "@/lib/workspace/events"
-import { Empty, When } from "./ui"
+import { Button, EmptyState, Glyph, List, ListRow, Pill, SectionHeader, Skeleton, StatRow, StatTile, When } from "./ui"
 import "./keywords.css"
 
-const n = (x: number | null | undefined) => (x == null ? "?" : x.toLocaleString("en-US"))
+const n = (x: number | null | undefined) => (x == null ? null : x.toLocaleString("en-US"))
 const monthName = (m: string) => { const [y, mo] = m.split("-").map(Number); return new Date(Date.UTC(y, mo - 1, 15)).toLocaleString("en-US", { month: "long", timeZone: "UTC" }) }
 
 export function BacklinksPanel() {
@@ -17,14 +17,14 @@ export function BacklinksPanel() {
   const [failed, setFailed] = useState(false)
   const [busy, setBusy] = useState(false)
 
-  useEffect(() => {
-    void (async () => {
-      const r = await fetch("/api/workspace/backlinks").catch(() => null)
-      const d = (await r?.json().catch(() => null)) as { view?: BacklinksView } | null
-      if (!r?.ok || !d?.view) return setFailed(true)
-      setV(d.view)
-    })()
-  }, [])
+  async function load() {
+    const r = await fetch("/api/workspace/backlinks").catch(() => null)
+    const d = (await r?.json().catch(() => null)) as { view?: BacklinksView } | null
+    if (!r?.ok || !d?.view) return setFailed(true)
+    setFailed(false)
+    setV(d.view)
+  }
+  useEffect(() => { void load() }, [])
 
   async function refresh() {
     setBusy(true)
@@ -36,21 +36,33 @@ export function BacklinksPanel() {
     toast("Checked. Here’s who links to you now.")
   }
 
-  if (failed) return <div style={{ marginTop: 22 }}><Empty title="I couldn’t load your link data" text="Try again in a minute." /></div>
-  if (!v) return <p className="ax-note" style={{ marginTop: 22 }}>Loading who links to you…</p>
-  if (!v.scope) return <div style={{ marginTop: 22 }}><Empty title="Link checks come with a paid plan" text="Every month I check which sites link to you, what you gained and lost, and which sites link to your competitors but not to you." act={{ label: "See plans", href: "/dashboard/settings/billing", primary: true }} /></div>
+  if (failed && !v) return <div className="ax-kw-top"><EmptyState icon={<Glyph name="link" size={22} />} title="I couldn’t load your link data" text="That’s on my side. Try again in a minute." actions={<Button onClick={() => void load()}>Try again</Button>} /></div>
+  if (!v) return <div className="ax-kw-top" aria-busy="true" aria-label="Loading who links to you"><StatRow><Skeleton kind="tile" /><Skeleton kind="tile" /><Skeleton kind="tile" /></StatRow></div>
+  if (!v.scope) {
+    return (
+      <div className="ax-kw-top">
+        <EmptyState
+          icon={<Glyph name="link" size={22} />}
+          title="Link checks come with a paid plan"
+          text="Every month I check which sites link to you and what changed."
+          bullets={["Sites linking to you, gained and lost each month", "You next to your top competitors", <>Sites that link to them and not you <Pill tone="info">Pro</Pill></>]}
+          actions={<Button variant="primary" href="/dashboard/settings/billing">See plans</Button>}
+        />
+      </div>
+    )
+  }
 
   const s = v.snapshot
   if (!s?.summary) {
     return (
-      <div style={{ marginTop: 22 }}>
-        <section className="ax-card ax-empty">
-          <div style={{ minWidth: 0, flex: 1 }}>
-            <b>I haven’t checked your links yet</b>
-            <p>{s?.notes[0] ?? "I count the sites that link to yours, what changed last month and, on Pro, which sites link to your competitors but not to you. I check once a month."}</p>
-          </div>
-          <button className="ax-btn p" type="button" disabled={busy || !v.canRefresh} onClick={() => void refresh()}>{busy ? "Checking… (about 20 seconds)" : "Check my links now"}</button>
-        </section>
+      <div className="ax-kw-top">
+        <EmptyState
+          icon={<Glyph name="link" size={22} />}
+          title="I haven’t checked your links yet"
+          text={s?.notes[0] ?? "It takes about 20 seconds. After that I check once a month on my own."}
+          bullets={["How many sites link to you, and how strong they are", "What you gained and lost last month", ...(v.scope === "full" ? ["Sites that link to your competitors and not to you"] : [])]}
+          actions={<Button variant="primary" loading={busy} disabled={!v.canRefresh} onClick={() => void refresh()}>Check my links now</Button>}
+        />
       </div>
     )
   }
@@ -60,28 +72,30 @@ export function BacklinksPanel() {
   const maxRd = Math.max(1, ...all.map((x) => x.sum?.referringDomains ?? 0))
 
   return (
-    <div style={{ marginTop: 22 }}>
-      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-        <p className="ax-sub" style={{ margin: 0, flex: 1, minWidth: 220 }}>Checked <When at={s.at} mode="ago" fallback="recently" /> · I look again every month</p>
-        <button className="ax-btn s sm" type="button" disabled={busy || !v.canRefresh} onClick={() => void refresh()}>{busy ? "Checking…" : v.canRefresh ? "Check again" : "Checked today"}</button>
+    <div className="ax-kw-top">
+      <div className="ax-kw-head">
+        <p className="ax-kw-note" style={{ margin: 0 }}>Checked <When at={s.at} mode="ago" fallback="recently" />. I look again every month.</p>
+        <Button size="sm" loading={busy} disabled={!v.canRefresh} onClick={() => void refresh()}>{v.canRefresh ? "Check again" : "Checked today"}</Button>
       </div>
-      <div className="ax-bl-tiles">
-        <div className="ax-card ax-bl-tile"><b>{n(sum.referringDomains)}</b><span>sites link to you</span></div>
-        <div className="ax-card ax-bl-tile"><b>{n(sum.backlinks)}</b><span>links in total</span></div>
-        {mom && mom.newDomains !== null && <div className="ax-card ax-bl-tile"><b>+{n(mom.newDomains)}</b><span>new sites in {monthName(mom.month)}</span></div>}
-        {mom && mom.lostDomains !== null && <div className="ax-card ax-bl-tile"><b>−{n(mom.lostDomains)}</b><span>sites lost in {monthName(mom.month)}</span></div>}
-        <div className="ax-card ax-bl-tile"><b>{n(sum.rank)}</b><span>link strength, 0 to 100</span></div>
+      <div style={{ marginTop: 14 }}>
+        <StatRow>
+          <StatTile label="Sites linking to you" value={n(sum.referringDomains)} />
+          <StatTile label="Links in total" value={n(sum.backlinks)} />
+          {mom && mom.newDomains !== null && <StatTile label={`New in ${monthName(mom.month)}`} value={n(mom.newDomains)} delta={mom.newDomains ? { text: "gained", dir: "up" } : null} />}
+          {mom && mom.lostDomains !== null && <StatTile label={`Lost in ${monthName(mom.month)}`} value={n(mom.lostDomains)} delta={mom.lostDomains ? { text: "lost", dir: "down" } : null} />}
+          <StatTile label="Link strength" value={n(sum.rank)} hint="0 to 100" />
+        </StatRow>
       </div>
 
       {s.scope === "full" && s.competitors.length > 0 && (
         <>
-          <div className="ax-h2"><div><h2>You vs your competitors</h2><p>Sites linking to each of you. More sites linking in usually means more trust from Google and AI.</p></div></div>
-          <section className="ax-card ax-bl-cmp" style={{ padding: "2px 22px" }}>
+          <SectionHeader title="You next to your competitors" sub="Sites linking to each of you. More usually means more trust from Google and AI." />
+          <section className="ax-card ax-bl-cmp">
             {all.map((x) => (
               <div key={x.host}>
-                <div style={{ display: "flex", gap: 10, alignItems: "baseline", flexWrap: "wrap" }}>
-                  <b style={{ fontSize: 15, flex: 1, minWidth: 160, overflowWrap: "anywhere" }}>{x.me ? `You (${x.host})` : x.name}</b>
-                  <span className="ax-kw-score">{x.sum ? `${n(x.sum.referringDomains)} sites · strength ${n(x.sum.rank)}` : "couldn’t read"}</span>
+                <div className="ax-bl-row">
+                  <b>{x.me ? `You (${x.host})` : x.name}</b>
+                  <span className="ax-kw-none">{x.sum ? `${n(x.sum.referringDomains)} sites · strength ${n(x.sum.rank) ?? "not measured"}` : "Couldn’t read"}</span>
                 </div>
                 <div className={`ax-bl-bar${x.me ? " me" : ""}`}><i style={{ width: `${Math.round(((x.sum?.referringDomains ?? 0) / maxRd) * 100)}%` }} /></div>
               </div>
@@ -92,22 +106,13 @@ export function BacklinksPanel() {
 
       {s.scope === "full" && (
         <>
-          <div className="ax-h2"><div><h2>Sites that link to them, not you</h2><p>Each links to at least 2 of your competitors. I left out spam, platforms and social sites. I never contact anyone for you.</p></div></div>
+          <SectionHeader title="Sites that link to them, not you" sub="Each links to at least 2 of your competitors. I never contact anyone for you." />
           {v.actions.length ? (
-            <section className="ax-card ax-list" style={{ padding: "2px 22px" }}>
+            <List card label="Sites worth asking for a link">
               {v.actions.map((a) => (
-                <div key={a.domain} style={{ display: "flex", gap: 14, alignItems: "center", padding: "14px 0", flexWrap: "wrap" }}>
-                  <div style={{ flex: 1, minWidth: 220 }}>
-                    <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
-                      <a className="ax-src" style={{ fontSize: 15.5, fontWeight: 600 }} href={`https://${a.domain}`} target="_blank" rel="noopener noreferrer">{a.domain} ↗</a>
-                      <span className="ax-pill n">{a.kindLabel}</span>
-                    </div>
-                    <div className="ax-p" style={{ marginTop: 3 }}>{a.text}</div>
-                  </div>
-                  <button className="ax-btn p sm" type="button" onClick={() => askAlphaa({ say: a.ask })}>Help me ask</button>
-                </div>
+                <ListRow key={a.domain} lead={<span className="xd-row__ic"><Glyph name="link" size={16} /></span>} title={a.domain} meta={<><Pill tone="idle">{a.kindLabel}</Pill><span>{a.text}</span></>} end={<Button size="sm" variant="primary" onClick={() => askAlphaa({ say: a.ask })}>Help me ask</Button>} wrapEnd />
               ))}
-            </section>
+            </List>
           ) : <p className="ax-note">{s.notes.find((x) => /competitor/i.test(x)) ?? "I didn’t find a site that links to 2 of your competitors and not to you this month."}</p>}
           {s.gap.length > v.actions.length && <p className="ax-note">{s.gap.length - v.actions.length} more on my list. I show the strongest first.</p>}
         </>
@@ -115,19 +120,16 @@ export function BacklinksPanel() {
 
       {s.top.length > 0 && (
         <>
-          <div className="ax-h2"><div><h2>Strongest sites linking to you</h2><p>From the link data, strongest first.</p></div></div>
-          <section className="ax-card ax-list" style={{ padding: "2px 22px" }}>
+          <SectionHeader title="Strongest sites linking to you" sub="Strongest first." />
+          <List card label="Strongest sites linking to you">
             {s.top.slice(0, 10).map((t) => (
-              <div key={t.domain} style={{ display: "flex", gap: 12, alignItems: "center", padding: "12px 0", flexWrap: "wrap" }}>
-                <a className="ax-src" style={{ flex: 1, minWidth: 180, fontWeight: 600 }} href={`https://${t.domain}`} target="_blank" rel="noopener noreferrer">{t.domain} ↗</a>
-                <span className="ax-kw-score">{n(t.backlinks)} link{t.backlinks === 1 ? "" : "s"} · strength {n(t.rank)}</span>
-              </div>
+              <ListRow key={t.domain} lead={<span className="xd-row__ic"><Glyph name="globe" size={16} /></span>} title={t.domain} meta={`${n(t.backlinks) ?? 0} link${t.backlinks === 1 ? "" : "s"} · strength ${n(t.rank) ?? "not measured"}`} href={`https://${t.domain}`} />
             ))}
-          </section>
+          </List>
         </>
       )}
-      {s.scope === "own" && <p className="ax-note">On Pro I also compare your links with your top 3 competitors and list the sites that link to them and not to you.</p>}
-      {s.notes.filter((x) => !/competitor/i.test(x)).map((x, i) => <p key={i} className="ax-note">{x}</p>)}
+      {s.scope === "own" && <p className="ax-note">On Pro I also put you next to your top 3 competitors and list the sites that link to them and not to you.</p>}
+      {s.notes.filter((x) => !/competitor/i.test(x)).length > 0 && <p className="ax-note">{s.notes.filter((x) => !/competitor/i.test(x)).join(" ")}</p>}
     </div>
   )
 }

@@ -71,7 +71,7 @@ export type AgentSettings = {
   /** Usage credits: "Use credits when I run out" (lib/credits.ts). On after the first purchase unless turned off. */
   credits?: { autoUse: boolean; at: string }
   /** Content calendar (lib/calendar): the owner's time zone and the cached "best time to post". */
-  calendar?: { timezone?: string; tzAt?: string; best?: import("@/lib/calendar/best-time").BestTimes; /** Google posts the owner OK'd on the calendar (GbpPost has no metadata). */ okGbp?: string[] }
+  calendar?: { timezone?: string; tzAt?: string; /** "owner" = picked on the calendar (else the business address wins). */ tzBy?: "owner"; best?: import("@/lib/calendar/best-time").BestTimes; /** Google posts the owner OK'd on the calendar (GbpPost has no metadata). */ okGbp?: string[] }
   /** The owner's own ad rules (lib/ad-rules) and when the daily check last ran. */
   adRules?: import("@/lib/ad-rules/engine").AdRule[]
   adRulesRun?: { at: string }

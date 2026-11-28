@@ -5,6 +5,8 @@ const anthropic = claudeFor("competitors")
 
 export type CompetitorAnalysis = {
   name: string
+  /** True when `name` is the site's own spelling (og:site_name / title), not built from the domain. */
+  nameFromSite?: boolean
   url: string
   crawlData: {
     pagesFound: number
@@ -15,6 +17,35 @@ export type CompetitorAnalysis = {
     weaknesses: string[]
   }
   aiSummary: string
+}
+
+/**
+ * The brand as the site writes it ("LogicalPosition"), from og:site_name, application-name or the
+ * title. Only accepted when its letters are the domain's own letters, so it can only fix casing and
+ * spacing, never put another name on the card.
+ */
+export function siteNameFor(html: string, url: string): string | null {
+  let stem: string
+  try { stem = new URL(url).hostname.replace(/^www\./, "").split(".")[0].replace(/[^a-z0-9]/gi, "").toLowerCase() } catch { return null }
+  if (!stem) return null
+  const pick = (re: RegExp) => html.match(re)?.[1]?.replace(/&amp;/g, "&").replace(/&#39;|&rsquo;/g, "’").trim() ?? null
+  const cands = [
+    pick(/<meta[^>]+property=["']og:site_name["'][^>]*content=["']([^"']{2,60})["']/i),
+    pick(/<meta[^>]+content=["']([^"']{2,60})["'][^>]*property=["']og:site_name["']/i),
+    pick(/<meta[^>]+name=["']application-name["'][^>]*content=["']([^"']{2,60})["']/i),
+    ...(pick(/<title[^>]*>([^<]{2,160})<\/title>/i) ?? "").split(/\s[|\-–—:·]\s/).map((x) => x.trim()),
+  ].filter((x): x is string => !!x)
+  for (const c of cands) if (c.replace(/[^a-z0-9]/gi, "").toLowerCase() === stem) return c
+  return null
+}
+
+async function siteName(url: string): Promise<string | null> {
+  try {
+    const { safeFetch } = await import("@/lib/safe-fetch")
+    const r = await safeFetch(url, { headers: { "User-Agent": "AlphaaBot/1.0 (SEO audit; +https://alphaa.app)" }, signal: AbortSignal.timeout(6000) })
+    if (!r.ok) return null
+    return siteNameFor((await r.text()).slice(0, 200_000), url)
+  } catch { return null }
 }
 
 function extractDomainName(url: string): string {
@@ -126,7 +157,8 @@ export async function analyzeCompetitor(
   businessType: string,
   city: string
 ): Promise<CompetitorAnalysis> {
-  const name = businessName || extractDomainName(competitorUrl)
+  const fromSite = businessName ? null : await siteName(competitorUrl)
+  const name = businessName || fromSite || extractDomainName(competitorUrl)
 
   // Step 1: Attempt to crawl
   let crawlSummary: CrawlSummary | null = null
@@ -157,6 +189,7 @@ export async function analyzeCompetitor(
 
   return {
     name,
+    nameFromSite: !!fromSite,
     url: competitorUrl,
     crawlData: {
       pagesFound,

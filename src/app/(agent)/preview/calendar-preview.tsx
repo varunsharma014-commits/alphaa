@@ -8,6 +8,7 @@ import type { CalItem } from "@/lib/calendar/items"
 import { typical, CHANNELS, type Best, type Channel } from "@/lib/calendar/best-time"
 import { decideMove } from "@/lib/calendar/rules"
 import { whenLabel } from "@/lib/calendar/tz"
+import { PageHeader } from "@/components/workspace/ui"
 
 const H = 3_600_000
 const at = (h: number) => { const t = new Date(Date.now() + h * H); t.setMinutes(0, 0, 0); return t.toISOString() }
@@ -28,7 +29,7 @@ function sample(empty: boolean): CalData {
   const best: Partial<Record<Channel, Best>> = {}
   for (const c of CHANNELS) best[c] = typical(c)
   best.linkedin = { ...typical("linkedin"), source: "yours", label: "From 9 of your LinkedIn Page posts: Tue around 9 AM got the most engagement (sample)" }
-  return { tz: "America/Toronto", tzSaved: true, auto: true, pro: true, items, best }
+  return { tz: "America/Toronto", tzSaved: false, tzFrom: "business", auto: true, pro: true, items, best }
 }
 
 export function CalendarPreview({ empty }: { empty: boolean }) {
@@ -49,10 +50,7 @@ export function CalendarPreview({ empty }: { empty: boolean }) {
   }, [empty])
   return (
     <>
-      <div className="ax-hdr">
-        <div><h1 className="ax-h1">Content calendar</h1><p className="ax-sub">Sample data (preview only).</p></div>
-        <ViewSwitch on="calendar" />
-      </div>
+      <PageHeader title="Calendar" sub="Sample data (preview only)." actions={<ViewSwitch on="calendar" />} />
       <CalendarView api={api} />
     </>
   )

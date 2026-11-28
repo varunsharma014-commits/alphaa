@@ -4,8 +4,9 @@ import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { getResearchData } from "@/lib/workspace/research"
 import { ResearchView } from "@/components/workspace/ResearchView"
+import { pageTitle } from "@/lib/page-title"
 
-export const metadata = { title: "Research & Ideas — Alphaa" }
+export const metadata = { title: pageTitle("Research & Ideas") }
 
 export default async function ResearchPage() {
   const { userId } = await auth()

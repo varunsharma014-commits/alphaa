@@ -4,17 +4,19 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
 import type { CalItem, CalKind } from "@/lib/calendar/items"
 import { bestFor, CHANNEL_NAME, nextSlots, timeOnDay, type Best, type Channel } from "@/lib/calendar/best-time"
-import { addDays, DAY_SHORT, dateKey, dowOfKey, hourLabel, isValidTz, parseKey, tzLabel, whenLabel, zonedParts, zonedToUtc } from "@/lib/calendar/tz"
+import { addDays, DAY_SHORT, dateKey, dowOfKey, hourLabel, isValidTz, parseKey, tzLabel, whenLabel, zonedParts, zonedToUtc, type TzFrom } from "@/lib/calendar/tz"
 import { AI_NOTE, toast } from "@/lib/workspace/events"
+import { Button, ChannelMark, FilterPills, Modal, Pill, Segmented, Sheet, Skeleton, useTabParam, type Channel as Mark } from "./ui"
 
 // Content calendar (Social Studio → Calendar). Month and week grids, an agenda on phones, every
 // scheduled and published item across social (per platform), Google listing, website and email,
 // coloured by channel. Drag an item to another day/hour (mouse, pen, or long-press on touch), or
-// open it and pick a date/time (the keyboard way). Times are in the owner's own zone; the server
+// open it and pick a date/time (the keyboard way). Times are in the business's zone (its address,
+// or the zone the owner picked with "Change"), never the viewer's browser; the server
 // stores UTC and applies the rules (lib/calendar/rules.ts): past times refused, the Autopilot stop
 // window needs an explicit OK to cut short, a move is the OK when Autopilot is off.
 
-export type CalData = { tz: string; tzSaved: boolean; auto: boolean; pro: boolean; items: CalItem[]; best: Partial<Record<Channel, Best>> }
+export type CalData = { tz: string; tzSaved: boolean; tzFrom?: TzFrom; auto: boolean; pro: boolean; items: CalItem[]; best: Partial<Record<Channel, Best>> }
 type MoveRes = { ok: true; at: string; approved: boolean } | { ok: false; error: string; needsOk?: boolean; earliest?: string | null }
 export type CalApi = {
   load: (from: string, to: string, tz: string) => Promise<CalData>
@@ -53,12 +55,14 @@ const TONE: Record<"social" | "google" | "site" | "email", { ink: string; tint: 
   email: { ink: "#7a4fd6", tint: "#f5f0ff", soft: "#e1d4ff", name: "Email" },
 }
 const toneOf = (k: CalKind) => TONE[k === "gbp" ? "google" : k]
-const ABBR: Partial<Record<Channel, string>> = { facebook: "FB", instagram: "IG", linkedin: "in", tiktok: "TT", x: "X" }
+const MARK: Partial<Record<Channel, Mark>> = { facebook: "facebook", instagram: "instagram", linkedin: "linkedin", x: "x" }
 const STATUS: Record<CalItem["status"], string> = { scheduled: "Scheduled", planned: "Planned · waiting for your OK", draft: "Waiting for a time", published: "Published", failed: "Didn’t go out", sending: "Going out now" }
-const FILTERS = [{ k: "all", label: "All" }, { k: "social", label: "Social" }, { k: "google", label: "Google listing" }, { k: "site", label: "Website" }, { k: "email", label: "Email" }] as const
+const FILTERS = [{ k: "all", label: "All" }, { k: "social", label: "Social" }, { k: "google", label: "Google" }, { k: "site", label: "Website" }, { k: "email", label: "Email" }] as const
 type Filter = (typeof FILTERS)[number]["k"]
+const FILTER_KEYS = FILTERS.map((f) => f.k)
 type View = "month" | "week" | "agenda"
-const HOURS = Array.from({ length: 17 }, (_, i) => i + 6) // 6 AM - 10 PM rows in the week grid
+/** Week grid rows: 8 AM to 6 PM, widened to fit anything scheduled earlier or later. */
+const hoursFor = (hs: number[]) => { const lo = Math.max(0, Math.min(8, ...hs)); const hi = Math.min(23, Math.max(18, ...hs)); return Array.from({ length: hi - lo + 1 }, (_, i) => i + lo) }
 const browserTz = () => { try { const z = Intl.DateTimeFormat().resolvedOptions().timeZone; return isValidTz(z) ? z : "UTC" } catch { return "UTC" } }
 const mondayOf = (key: string) => addDays(key, -((dowOfKey(key) + 6) % 7))
 const monthTitle = (key: string) => { const { y, m } = parseKey(key); return new Date(Date.UTC(y, m - 1, 1)).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" }) }
@@ -69,7 +73,8 @@ export function CalendarView({ api = liveApi, initial }: { api?: CalApi; initial
   const [data, setData] = useState<CalData | null>(initial ?? null)
   const [view, setView] = useState<View>("month")
   const [anchor, setAnchor] = useState(() => dateKey(Date.now(), initial?.tz ?? browserTz()))
-  const [filter, setFilter] = useState<Filter>("all")
+  // ?channel=google opens the calendar on one channel (links from other pages).
+  const [filter, setFilter] = useTabParam<Filter>(FILTER_KEYS, "all", "channel")
   const [open, setOpen] = useState<CalItem | null>(null)
   const [ask, setAsk] = useState<{ it: CalItem; at: string; message: string; earliest: string | null } | null>(null)
   const [busy, setBusy] = useState(false)
@@ -105,11 +110,6 @@ export function CalendarView({ api = liveApi, initial }: { api?: CalApi; initial
       setFailed(false)
       setData(res)
       if (res.tz !== tz) setTz(res.tz)
-      // First visit: save the browser's zone as the owner's (they can change it below).
-      if (!res.tzSaved) {
-        const b = browserTz()
-        if (b !== "UTC" && (await api.saveTz(b))) { setTz(b); setTick((t) => t + 1) }
-      }
     } catch { setFailed(true) }
   }, [api, range, tz, data?.tz])
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -231,7 +231,8 @@ export function CalendarView({ api = liveApi, initial }: { api?: CalApi; initial
   const chip = (it: CalItem, compact = false) => {
     const t = toneOf(it.kind)
     const time = it.at ? (() => { const p = zonedParts(Date.parse(it.at!), tz); return hourLabel(p.h, p.mi) })() : null
-    const nets = it.kind === "social" ? it.channels.map((c) => ABBR[c] ?? c).join(" ") : null
+    const marks: Mark[] = it.kind === "social" ? it.channels.map((c) => MARK[c]).filter((c): c is Mark => !!c) : it.kind === "gbp" ? ["google"] : it.kind === "site" ? ["web"] : ["email"]
+    const nets = it.kind === "social" && it.channels.length > 0
     const cls = `ax-cal-chip s-${it.status}${drag?.it.key === it.key ? " dragging" : ""}${it.movable ? " mv" : ""}`
     return (
       <button
@@ -245,7 +246,7 @@ export function CalendarView({ api = liveApi, initial }: { api?: CalApi; initial
         aria-label={`${t.name}${nets ? ` (${it.channels.map((c) => CHANNEL_NAME[c]).join(", ")})` : ""}: ${it.title}. ${STATUS[it.status]}${it.at ? `, ${whenLabel(it.at, tz)}` : ""}.${it.movable ? " Press Enter to change the time." : ""}`}
       >
         {!compact && time && <span className="tm">{time}</span>}
-        {nets && <span className="nt">{nets}</span>}
+        {marks.length > 0 && <span className="nt" aria-hidden="true">{marks.slice(0, 3).map((m) => <ChannelMark key={m} channel={m} size={compact ? 12 : 14} />)}</span>}
         <span className="tt">{it.status === "published" ? "✓ " : ""}{it.title}</span>
       </button>
     )
@@ -273,22 +274,26 @@ export function CalendarView({ api = liveApi, initial }: { api?: CalApi; initial
     </div>
   )
 
-  const weekGrid = () => (
+  const weekGrid = () => {
+    const hours = hoursFor(days.flatMap((d) => (byDay.get(d) ?? []).map((it) => zonedParts(Date.parse(it.at!), tz).h)))
+    const first = hours[0], last = hours[hours.length - 1]
+    return (
     <div className="ax-cal-week" role="grid" aria-label={`Week of ${dayTitle(days[0])}`}>
       <div className="corner" />
       {days.map((day) => <div key={day} className={`hd${day === today ? " today" : ""}`} role="columnheader"><b>{DAY_SHORT[dowOfKey(day)]}</b> {parseKey(day).d}</div>)}
-      {HOURS.map((h) => (
+      {hours.map((h) => (
         <div key={h} className="row" style={{ display: "contents" }}>
           <div className="hr">{hourLabel(h)}</div>
           {days.map((day) => {
-            const list = (byDay.get(day) ?? []).filter((it) => { const p = zonedParts(Date.parse(it.at!), tz).h; return h === 6 ? p <= 6 : h === 22 ? p >= 22 : p === h })
-            const c = cell(day, list, h, h === 6 || h === 22 ? " edge" : "")
+            const list = (byDay.get(day) ?? []).filter((it) => zonedParts(Date.parse(it.at!), tz).h === h)
+            const c = cell(day, list, h, h === first || h === last ? " edge" : "")
             return <div key={day} className={`ax-cal-slot${c.cls}`} data-day={day} data-hour={h} role="gridcell" aria-label={`${dayTitle(day)} ${hourLabel(h)}`}>{list.map((it) => chip(it, false))}</div>
           })}
         </div>
       ))}
     </div>
-  )
+    )
+  }
 
   const agenda = () => {
     const withItems = days.filter((d) => (byDay.get(d) ?? []).length)
@@ -299,12 +304,12 @@ export function CalendarView({ api = liveApi, initial }: { api?: CalApi; initial
             <h3>{day === today ? "Today" : day === addDays(today, 1) ? "Tomorrow" : dayTitle(day)}</h3>
             <div className="ls">{(byDay.get(day) ?? []).map((it) => chip(it))}</div>
           </section>
-        )) : <p className="ax-cal-empty">Nothing scheduled in these 4 weeks{filter !== "all" ? " for this channel" : ""}.</p>}
+        )) : <p className="ax-cal-empty">Nothing scheduled in these 4 weeks{filter !== "all" ? " for this channel" : ""}. Ask me to run your week and it fills up.</p>}
       </div>
     )
   }
 
-  const title = view === "month" ? monthTitle(anchor) : view === "week" ? `${dayTitle(days[0], { month: "short", day: "numeric" })} – ${dayTitle(days[6], { month: "short", day: "numeric", year: "numeric" })}` : `${dayTitle(days[0], { month: "short", day: "numeric" })} – ${dayTitle(days[days.length - 1], { month: "short", day: "numeric" })}`
+  const title = view === "month" ? monthTitle(anchor) : view === "week" ? `${dayTitle(days[0], { month: "short", day: "numeric" })} to ${dayTitle(days[6], { month: "short", day: "numeric", year: "numeric" })}` : `${dayTitle(days[0], { month: "short", day: "numeric" })} to ${dayTitle(days[days.length - 1], { month: "short", day: "numeric" })}`
   const step = (dir: 1 | -1) => {
     if (view === "month") { const { y, m } = parseKey(anchor); const t = new Date(Date.UTC(y, m - 1 + dir, 1)); setAnchor(t.toISOString().slice(0, 10)) }
     else setAnchor(addDays(view === "week" ? anchor : range.start, dir * (view === "week" ? 7 : 28)))
@@ -315,36 +320,31 @@ export function CalendarView({ api = liveApi, initial }: { api?: CalApi; initial
     <div className="ax-cal" aria-busy={busy}>
       <div className="ax-cal-bar">
         <div className="nav">
-          <button type="button" className="ax-btn s sm" onClick={() => step(-1)} aria-label="Previous">‹</button>
-          <button type="button" className="ax-btn s sm" onClick={() => setAnchor(today)}>Today</button>
-          <button type="button" className="ax-btn s sm" onClick={() => step(1)} aria-label="Next">›</button>
+          <Button size="sm" onClick={() => step(-1)} ariaLabel="Previous"><span aria-hidden="true">‹</span></Button>
+          <Button size="sm" onClick={() => setAnchor(today)}>Today</Button>
+          <Button size="sm" onClick={() => step(1)} ariaLabel="Next"><span aria-hidden="true">›</span></Button>
           <h2>{title}</h2>
+          {counts.scheduled > 0 && <Pill tone="info">{counts.scheduled} going out</Pill>}
         </div>
-        <div className="ax-seg" role="tablist" aria-label="Calendar view">
-          {(["month", "week", "agenda"] as const).map((v) => <button key={v} type="button" role="tab" aria-selected={view === v} className={view === v ? "on" : ""} onClick={() => pickView(v)}>{v === "month" ? "Month" : v === "week" ? "Week" : "Agenda"}</button>)}
+        <div className="tools">
+          <FilterPills<Filter> label="Show channels" scroll value={filter} onChange={setFilter} options={FILTERS.map((f) => ({ value: f.k, label: f.label, icon: f.k === "all" ? undefined : <i className="ax-cal-dot" style={{ background: TONE[f.k].ink }} aria-hidden="true" /> }))} />
+          <Segmented<View> label="Calendar view" size="sm" value={view} onChange={pickView} options={[{ value: "month", label: "Month" }, { value: "week", label: "Week" }, { value: "agenda", label: "Agenda" }]} />
         </div>
-      </div>
-      <div className="ax-cal-legend" role="toolbar" aria-label="Show channels">
-        {FILTERS.map((f) => {
-          const t = f.k === "all" ? null : TONE[f.k]
-          return <button key={f.k} type="button" aria-pressed={filter === f.k} className={filter === f.k ? "on" : ""} onClick={() => setFilter(f.k)}>{t && <i style={{ background: t.ink }} />}{f.label}</button>
-        })}
-        <span className="hint">{counts.scheduled ? `${counts.scheduled} going out in this view · ` : ""}Drag to move, or open one to pick a time.</span>
       </div>
 
       {waiting.length > 0 && (
         <div className="ax-cal-tray" aria-label="Waiting for a time">
           <b>Waiting for a time ({waiting.length})</b>
-          <span className="sub">Drop one on a day, or open it to pick a time. That’s your OK to post it.</span>
+          <span className="sub">Drop one on a day, or open it and pick a time. That’s your OK to post it.</span>
           <div className="ls">{waiting.map((it) => chip(it))}</div>
         </div>
       )}
 
       {failed && !data ? <p className="ax-cal-empty">I couldn’t load your calendar. <button type="button" className="ax-lnk" onClick={() => setTick((t) => t + 1)}>Try again</button></p>
-        : !data ? <div className="ax-cal-skel" aria-hidden="true" />
+        : !data ? <div className="ax-cal-skel" aria-busy="true" aria-label="Loading your calendar"><Skeleton kind="card" lines={6} /></div>
           : view === "month" ? monthGrid() : view === "week" ? weekGrid() : agenda()}
 
-      <p className="ax-cal-tz">Times in {tzLabel(tz)} · <TzPicker tz={tz} onPick={async (z) => { if (await api.saveTz(z)) { setTz(z); setTick((t) => t + 1); toast(`Times now show in ${tzLabel(z)}`) } else toast("That didn’t save. Try again.") }} /></p>
+      <p className="ax-cal-tz">Times in {tzLabel(tz)}{data?.tzFrom === "business" ? ", from your business address" : data?.tzFrom === "owner" ? ", the zone you picked" : ""} · <TzPicker tz={tz} onPick={async (z) => { if (await api.saveTz(z)) { setTz(z); setTick((t) => t + 1); toast(`Times now show in ${tzLabel(z)}`) } else toast("That didn’t save. Try again.") }} /></p>
 
       {drag && (
         <div className="ax-cal-ghost" style={{ left: drag.x, top: drag.y, "--c": toneOf(drag.it.kind).ink, "--t": toneOf(drag.it.kind).tint } as React.CSSProperties} aria-hidden="true">
@@ -355,20 +355,20 @@ export function CalendarView({ api = liveApi, initial }: { api?: CalApi; initial
 
       {open && <Picker it={open} tz={tz} auto={!!data?.auto} best={bestOf(open)} busy={busy} onClose={() => setOpen(null)} onSave={(at) => void doMove(open, at)} onStop={() => void doStop(open)} />}
 
-      {ask && (
-        <>
-          <div className="ax-bk" style={{ zIndex: 64 }} onClick={() => setAsk(null)} aria-hidden="true" />
-          <div className="ax-cal-ask" role="alertdialog" aria-modal="true" aria-labelledby="cal-ask-t">
-            <h3 id="cal-ask-t">Post it before your stop window ends?</h3>
-            <p>{ask.message}</p>
-            <div className="acts">
-              <button type="button" className="ax-btn s" onClick={() => setAsk(null)}>Keep it as it is</button>
-              {ask.earliest && <button type="button" className="ax-btn s" disabled={busy} onClick={() => void doMove(ask.it, ask.earliest!)}>Use {whenLabel(ask.earliest, tz)}</button>}
-              <button type="button" className="ax-btn p" disabled={busy} autoFocus onClick={() => void doMove(ask.it, ask.at, true)}>Yes, post it {whenLabel(ask.at, tz)}</button>
-            </div>
-          </div>
-        </>
-      )}
+      <Modal
+        open={!!ask}
+        onClose={() => setAsk(null)}
+        title="Post it before your stop window ends?"
+        footer={ask ? (
+          <>
+            <Button onClick={() => setAsk(null)}>Keep it as it is</Button>
+            {ask.earliest && <Button loading={busy} onClick={() => void doMove(ask.it, ask.earliest!)}>Use {whenLabel(ask.earliest, tz)}</Button>}
+            <Button variant="primary" loading={busy} onClick={() => void doMove(ask.it, ask.at, true)}>Yes, post it {whenLabel(ask.at, tz)}</Button>
+          </>
+        ) : null}
+      >
+        <p className="ax-cal-askp">{ask?.message}</p>
+      </Modal>
     </div>
   )
 }
@@ -394,11 +394,6 @@ function Picker({ it, tz, auto, best, busy, onClose, onSave, onStop }: { it: Cal
   const p0 = zonedParts(first, tz)
   const [date, setDate] = useState(`${p0.y}-${String(p0.m).padStart(2, "0")}-${String(p0.d).padStart(2, "0")}`)
   const [time, setTime] = useState(`${String(p0.h).padStart(2, "0")}:${String(p0.mi).padStart(2, "0")}`)
-  useEffect(() => {
-    const k = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
-    window.addEventListener("keydown", k)
-    return () => window.removeEventListener("keydown", k)
-  }, [onClose])
   const chosen = (() => { const [h, mi] = time.split(":").map(Number); const { y, m, d } = parseKey(date); return Number.isFinite(h) && y ? zonedToUtc({ y, m, d, h, mi }, tz) : null })()
   const past = !chosen || chosen.getTime() < Date.now() + 5 * 60_000
   const t = toneOf(it.kind)
@@ -406,14 +401,22 @@ function Picker({ it, tz, auto, best, busy, onClose, onSave, onStop }: { it: Cal
   const setTo = (iso: string) => { const p = zonedParts(Date.parse(iso), tz); setDate(`${p.y}-${String(p.m).padStart(2, "0")}-${String(p.d).padStart(2, "0")}`); setTime(`${String(p.h).padStart(2, "0")}:${String(p.mi).padStart(2, "0")}`) }
   const waitingForOk = it.status === "draft" || it.status === "planned" || !auto
   return (
-    <>
-      <div className="ax-bk" onClick={onClose} aria-hidden="true" />
-      <aside className="ax-insp" role="dialog" aria-modal="true" aria-label={it.title}>
-        <header>
-          <div style={{ minWidth: 0 }}><div className="ax-eb" style={{ color: t.ink }}>{where} · {STATUS[it.status]}</div><h3>{it.title}</h3></div>
-          <button className="ax-x" type="button" aria-label="Close" onClick={onClose}>✕</button>
-        </header>
-        <div className="bd">
+    <Sheet
+      open
+      onClose={onClose}
+      eyebrow={<span style={{ color: t.ink }}>{where} · {STATUS[it.status]}</span>}
+      title={it.title}
+      label={it.title}
+      footer={
+        <>
+          {it.status === "scheduled" && it.movable && <Button variant="ghost" loading={busy} onClick={onStop}>Stop it</Button>}
+          {it.kind === "social" && <Button href="/dashboard/social">Open in Social Studio</Button>}
+          {!it.movable && <Button onClick={onClose}>Close</Button>}
+          {it.movable && <Button variant="primary" loading={busy} disabled={past} onClick={() => chosen && onSave(chosen.toISOString())}>{it.at && it.status === "scheduled" ? "Move it" : "Schedule it"}</Button>}
+        </>
+      }
+    >
+      <div className="ax-cal-sheet">
           {it.image && <img src={it.image} alt="" />}
           {it.text && <div className="box"><div className="v">{it.text}</div></div>}
           {it.at && <div><div className="ax-eb" style={{ marginBottom: 6 }}>{it.status === "published" ? "Went out" : "Now"}</div><div className="v">{whenLabel(it.at, tz)}</div></div>}
@@ -426,24 +429,17 @@ function Picker({ it, tz, auto, best, busy, onClose, onSave, onStop }: { it: Cal
                 <label><span>Date</span><input type="date" value={date} min={dateKey(Date.now(), tz)} onChange={(e) => setDate(e.target.value)} /></label>
                 <label><span>Time</span><input type="time" value={time} step={300} onChange={(e) => setTime(e.target.value)} /></label>
               </div>
-              <div className="ax-eb" style={{ marginTop: 6 }}>Best times <span className={`ax-pill ${best.source === "typical" ? "n" : "g"}`} style={{ marginLeft: 6 }}>{best.source === "typical" ? "Typical" : "Your data"}</span></div>
+              <div className="ax-eb ax-cal-best">Best times <Pill tone={best.source === "typical" ? "idle" : "ok"}>{best.source === "typical" ? "Typical" : "Your data"}</Pill></div>
               <p className="src">{best.label}</p>
-              <div className="slots">{slots.map((s) => <button key={s.at} type="button" className={`ax-pill ${chosen && Math.abs(chosen.getTime() - Date.parse(s.at)) < 60_000 ? "b" : "n"}`} onClick={() => setTo(s.at)}>{s.label} · {dayTitle(dateKey(Date.parse(s.at), tz), { month: "short", day: "numeric" })}</button>)}</div>
+              <div className="slots">{slots.map((s) => <button key={s.at} type="button" className={`ax-cal-slotb${chosen && Math.abs(chosen.getTime() - Date.parse(s.at)) < 60_000 ? " on" : ""}`} aria-pressed={!!chosen && Math.abs(chosen.getTime() - Date.parse(s.at)) < 60_000} onClick={() => setTo(s.at)}>{s.label} · {dayTitle(dateKey(Date.parse(s.at), tz), { month: "short", day: "numeric" })}</button>)}</div>
               {it.windowEnd && Date.parse(it.windowEnd) > Date.now() && <p className="note">Autopilot gives you until {whenLabel(it.windowEnd, tz)} to stop this. An earlier time needs your OK.</p>}
               {waitingForOk && <p className="note">{it.kind === "email" ? "Picking a time is your OK: it goes to your customer list then." : "Picking a time is your OK: it goes out then."}</p>}
               {past && <p className="note warn">Pick a time at least 5 minutes from now.</p>}
             </div>
           ) : it.why ? <p className="ax-note" style={{ marginTop: 0 }}>{it.why}</p> : null}
           <p className="ax-note" style={{ marginTop: 0 }}>{AI_NOTE}</p>
-        </div>
-        <footer>
-          {it.status === "scheduled" && it.movable && <button className="ax-btn d" type="button" disabled={busy} onClick={onStop}>Stop it</button>}
-          {it.kind === "social" && <Link className="ax-btn s" href="/dashboard/social">Open in Social Studio</Link>}
-          <button className="ax-btn s" type="button" onClick={onClose}>Close</button>
-          {it.movable && <button className="ax-btn p" type="button" disabled={busy || past} onClick={() => chosen && onSave(chosen.toISOString())}>{it.at && it.status === "scheduled" ? "Move it" : "Schedule it"}</button>}
-        </footer>
-      </aside>
-    </>
+              </div>
+    </Sheet>
   )
 }
 

@@ -1,6 +1,6 @@
 // Time-zone helpers for the content calendar (client + server, no dependencies). Everything is
 // stored in UTC; the owner sees and picks times in their own zone (agent settings
-// `calendar.timezone`, else the browser's).
+// `calendar.timezone` when they picked it, else the business address: calendarTz below).
 
 export const DEFAULT_TZ = "UTC"
 
@@ -89,4 +89,55 @@ export function tzLabel(tz: string, at = Date.now()): string {
   let abbr = ""
   try { abbr = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "short" }).formatToParts(at).find((x) => x.type === "timeZoneName")?.value ?? "" } catch { /* keep the city */ }
   return abbr ? `${city} time (${abbr})` : `${city} time`
+}
+
+// ── The business's own zone, from its address ─────────────────────────────────────────────
+// US states and Canadian provinces → their main IANA zone (the zone most of the state uses).
+const REGION_TZ: Record<string, string> = {
+  // Canada
+  ON: "America/Toronto", QC: "America/Toronto", NS: "America/Halifax", NB: "America/Moncton", PE: "America/Halifax", NL: "America/St_Johns",
+  MB: "America/Winnipeg", SK: "America/Regina", AB: "America/Edmonton", BC: "America/Vancouver", YT: "America/Whitehorse", NT: "America/Yellowknife", NU: "America/Iqaluit",
+  // United States
+  AL: "America/Chicago", AK: "America/Anchorage", AZ: "America/Phoenix", AR: "America/Chicago", CA: "America/Los_Angeles", CO: "America/Denver", CT: "America/New_York",
+  DE: "America/New_York", DC: "America/New_York", FL: "America/New_York", GA: "America/New_York", HI: "Pacific/Honolulu", ID: "America/Boise", IL: "America/Chicago",
+  IN: "America/Indiana/Indianapolis", IA: "America/Chicago", KS: "America/Chicago", KY: "America/New_York", LA: "America/Chicago", ME: "America/New_York", MD: "America/New_York",
+  MA: "America/New_York", MI: "America/Detroit", MN: "America/Chicago", MS: "America/Chicago", MO: "America/Chicago", MT: "America/Denver", NE: "America/Chicago",
+  NV: "America/Los_Angeles", NH: "America/New_York", NJ: "America/New_York", NM: "America/Denver", NY: "America/New_York", NC: "America/New_York", ND: "America/Chicago",
+  OH: "America/New_York", OK: "America/Chicago", OR: "America/Los_Angeles", PA: "America/New_York", RI: "America/New_York", SC: "America/New_York", SD: "America/Chicago",
+  TN: "America/Chicago", TX: "America/Chicago", UT: "America/Denver", VT: "America/New_York", VA: "America/New_York", WA: "America/Los_Angeles", WV: "America/New_York",
+  WI: "America/Chicago", WY: "America/Denver", PR: "America/Puerto_Rico",
+}
+const REGION_NAME: Record<string, string> = {
+  ontario: "ON", quebec: "QC", "québec": "QC", "nova scotia": "NS", "new brunswick": "NB", "prince edward island": "PE", "newfoundland and labrador": "NL", newfoundland: "NL",
+  manitoba: "MB", saskatchewan: "SK", alberta: "AB", "british columbia": "BC", yukon: "YT", "northwest territories": "NT", nunavut: "NU",
+  alabama: "AL", alaska: "AK", arizona: "AZ", arkansas: "AR", california: "CA", colorado: "CO", connecticut: "CT", delaware: "DE", "district of columbia": "DC", florida: "FL",
+  georgia: "GA", hawaii: "HI", idaho: "ID", illinois: "IL", indiana: "IN", iowa: "IA", kansas: "KS", kentucky: "KY", louisiana: "LA", maine: "ME", maryland: "MD",
+  massachusetts: "MA", michigan: "MI", minnesota: "MN", mississippi: "MS", missouri: "MO", montana: "MT", nebraska: "NE", nevada: "NV", "new hampshire": "NH", "new jersey": "NJ",
+  "new mexico": "NM", "new york": "NY", "north carolina": "NC", "north dakota": "ND", ohio: "OH", oklahoma: "OK", oregon: "OR", pennsylvania: "PA", "rhode island": "RI",
+  "south carolina": "SC", "south dakota": "SD", tennessee: "TN", texas: "TX", utah: "UT", vermont: "VT", virginia: "VA", washington: "WA", "west virginia": "WV",
+  wisconsin: "WI", wyoming: "WY", "puerto rico": "PR",
+}
+
+/** The zone of the business's state or province ("ON" / "Ontario" → America/Toronto), else null. */
+export function businessTz(state: string | null | undefined): string | null {
+  const s = (state ?? "").trim()
+  if (!s) return null
+  const code = s.length <= 3 ? s.toUpperCase().replace(/\./g, "") : REGION_NAME[s.toLowerCase()] ?? null
+  const tz = code ? REGION_TZ[code] : null
+  return tz && isValidTz(tz) ? tz : null
+}
+
+export type TzFrom = "owner" | "business" | "saved" | "default"
+
+/**
+ * The zone the calendar shows: one the owner picked, else the business's own (from its address),
+ * else one saved earlier without the owner picking it (the old browser default), else UTC.
+ */
+export function calendarTz(user: { state?: string | null }, cal: { timezone?: string; tzBy?: string } | null | undefined): { tz: string; from: TzFrom } {
+  const saved = isValidTz(cal?.timezone) ? cal!.timezone! : null
+  if (saved && cal?.tzBy === "owner") return { tz: saved, from: "owner" }
+  const biz = businessTz(user.state)
+  if (biz) return { tz: biz, from: "business" }
+  if (saved) return { tz: saved, from: "saved" }
+  return { tz: DEFAULT_TZ, from: "default" }
 }

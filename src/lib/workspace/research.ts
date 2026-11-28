@@ -94,6 +94,8 @@ export type ResearchData = {
   clusters: ClusterView | null
   /** For "Refresh" on a live Topic plan page (the hand-off to a web person). */
   webPersonEmail: string | null
+  /** The owner's own site host ("example.com"), so live pages show on their real address. */
+  siteHost: string | null
 }
 
 
@@ -109,6 +111,20 @@ function stats(i: NicheItem): { k: string; v: string }[] {
 }
 
 const FORMAT_MODE = { blog: "post", google: "gbp", social: "social" } as const
+/** Ad hook types (lib/ad-strategy/playbook.ts keys) in plain words for the owner. */
+const HOOK_LABEL: Record<string, string> = {
+  price_anchor: "Price comparison", newness: "What’s new", confession: "Honest truth", curiosity: "Curiosity",
+  bold_claim: "Bold claim", reverse: "Reverse psychology", warning: "Warning", contrarian: "Against the grain",
+  social_proof: "Proof from customers", question: "Question", pain: "The problem", benefit: "The payoff",
+}
+export function hookLabel(type: string | null | undefined): string {
+  const t = (type ?? "").trim()
+  if (!t) return "Opening line"
+  if (HOOK_LABEL[t]) return HOOK_LABEL[t]
+  const words = t.replace(/[_-]+/g, " ").toLowerCase()
+  return words.charAt(0).toUpperCase() + words.slice(1)
+}
+
 const FORMAT_NAME = { blog: "Blog post", google: "Google update", social: "Social post" } as const
 
 export async function getResearchData(user: User): Promise<ResearchData> {
@@ -232,7 +248,7 @@ export async function getResearchData(user: User): Promise<ResearchData> {
   }))
   // My top pick: the strongest AI-visibility idea (AIs name a rival but not you beats a lost question).
   const topIdea = ideas.find((i) => i.ai && i.proof?.includes("not you")) ?? ideas.find((i) => i.ai && i.proof) ?? ideas.find((i) => i.ai) ?? null
-  const hooks: IdeaRow[] = (strategy?.hooks ?? []).slice(0, 12).map((h) => ({ kind: h.type, text: h.line, why: "", src: "Your ad plan", url: "/dashboard/ad-strategy" }))
+  const hooks: IdeaRow[] = (strategy?.hooks ?? []).slice(0, 12).map((h) => ({ kind: hookLabel(h.type), text: h.line, why: "", src: "Your ad plan", url: "/dashboard/ad-strategy" }))
 
   const rivals = await getRivals(user, { strategy, niche, qs })
   const hasIg = (await listAccounts(user.id).catch(() => [])).some((a) => a.platform === "instagram" && a.status === "active")
@@ -284,5 +300,6 @@ export async function getResearchData(user: User): Promise<ResearchData> {
     published: hasPro(user) ? await repurposablePosts(user.id).catch(() => []) : [],
     clusters: await clusterView(user.id, { badges: true }).catch(() => null),
     webPersonEmail: settings.webPersonEmail ?? null,
+    siteHost: (user.websiteUrl ?? "").replace(/^https?:\/\//i, "").replace(/^www\./i, "").split(/[/?#]/)[0].toLowerCase() || null,
   }
 }

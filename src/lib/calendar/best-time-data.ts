@@ -11,22 +11,23 @@ import { engagementOf } from "@/lib/social/stats"
 import { audienceOf } from "@/lib/social/meta-stats"
 import type { SocialPlatform } from "@/lib/social/types"
 import { CHANNELS, fromPosts, fromTraffic, MIN_SOCIAL_SESSIONS, shiftGrid, typical, type Best, type BestTimes, type Channel, type PostPoint, type TrafficGrid } from "./best-time"
-import { DEFAULT_TZ, isValidTz, offsetMinutes } from "./tz"
+import { calendarTz, DEFAULT_TZ, isValidTz, offsetMinutes } from "./tz"
 
 const TTL_MS = 24 * 3_600_000
 
+/** The zone the owner sees: the one they picked, else the business address's (calendarTz). */
 export async function ownerTz(userId: string): Promise<string> {
-  const s = await getAgentSettings(userId)
-  return isValidTz(s.calendar?.timezone) ? s.calendar!.timezone! : DEFAULT_TZ
+  const [s, u] = await Promise.all([getAgentSettings(userId), db.user.findUnique({ where: { id: userId }, select: { state: true } })])
+  return calendarTz(u ?? {}, s.calendar).tz
 }
 
-/** Saves the owner's zone (from the browser on first visit, or the picker). */
+/** Saves the zone the owner picked on the calendar ("Change"). */
 export async function saveOwnerTz(userId: string, tz: string): Promise<boolean> {
   if (!isValidTz(tz)) return false
   const s = await getAgentSettings(userId)
-  if (s.calendar?.timezone === tz) return true
+  if (s.calendar?.timezone === tz && s.calendar?.tzBy === "owner") return true
   // A new zone changes every local hour, so the cached best times are recomputed.
-  await saveAgentSettings(userId, { calendar: { ...(s.calendar ?? {}), timezone: tz, tzAt: new Date().toISOString(), best: undefined } })
+  await saveAgentSettings(userId, { calendar: { ...(s.calendar ?? {}), timezone: tz, tzBy: "owner", tzAt: new Date().toISOString(), best: undefined } })
   return true
 }
 
@@ -112,7 +113,7 @@ export async function computeBestTimes(userId: string, tz: string): Promise<Best
 /** Cached for a day per brand (and per zone). Never throws: worst case is the typical guidance. */
 export async function getBestTimes(userId: string, opts: { tz?: string; fresh?: boolean } = {}): Promise<BestTimes> {
   const s = await getAgentSettings(userId)
-  const tz = opts.tz ?? (isValidTz(s.calendar?.timezone) ? s.calendar!.timezone! : DEFAULT_TZ)
+  const tz = opts.tz ?? (await ownerTz(userId))
   const cached = s.calendar?.best
   if (!opts.fresh && cached && cached.tz === tz && Date.now() - Date.parse(cached.at) < TTL_MS) return cached
   try {

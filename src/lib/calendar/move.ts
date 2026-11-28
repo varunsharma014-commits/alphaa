@@ -14,7 +14,7 @@ import { getCampaign, getContacts, lastSentAt, listCampaigns, SEND_GAP_DAYS, upd
 import { logActivity } from "@/lib/activity"
 import { decideMove, windowEndFor } from "./rules"
 import { autopilotOn, gbpOk, socialRows, type CalKind } from "./items"
-import { DEFAULT_TZ, isValidTz, whenLabel } from "./tz"
+import { calendarTz, whenLabel } from "./tz"
 
 export type MoveResult =
   | { ok: true; at: string; approved: boolean }
@@ -26,7 +26,7 @@ const DAY = 86_400_000
 export async function moveItem(user: User, kind: CalKind, id: string, atIso: string, confirm = false): Promise<MoveResult> {
   const userId = user.id
   const s = await getAgentSettings(userId)
-  const tz = isValidTz(s.calendar?.timezone) ? s.calendar!.timezone! : DEFAULT_TZ
+  const tz = calendarTz(user, s.calendar).tz
   const target = Date.parse(atIso)
   const now = Date.now()
   const auto = autopilotOn(s)

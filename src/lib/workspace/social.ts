@@ -15,6 +15,7 @@ import { runAsUser } from "@/lib/usage"
 import { refreshPostStats, statsLine } from "@/lib/social/stats"
 import { audienceOf, metaGrants } from "@/lib/social/meta-stats"
 import { displayName } from "@/lib/display-name"
+import { hasGrowth } from "@/lib/billing"
 
 const kicked = new Set<string>()
 
@@ -38,6 +39,10 @@ export type SocialCard = {
 export type SocialData = {
   /** For the preview frames (the name shown over each post). */
   brandName: string
+  /** Per platform ("Instagram"): the connected account's own name and picture, for the preview frames. */
+  who: Record<string, { name: string; avatar: string | null }>
+  /** Growth: published posts can be boosted from Ads → Promote a post. */
+  canBoost: boolean
   accounts: { id: string; name: string; platform: string; ok: boolean; fix: string | null; reconnect: string | null }[]
   /** Upcoming posts were fewer than 3, so I started planning the week (lib/agent/week.ts). */
   drafting: boolean
@@ -122,6 +127,10 @@ export async function getSocialData(user: User): Promise<SocialData> {
   const provider = (a: (typeof accounts)[number]) => a.platform === "facebook" || a.platform === "instagram" ? "meta" : a.platform === "linkedin" ? (a.extra?.org || /organization/i.test(a.extra?.author ?? "") ? "linkedin_pages" : "linkedin") : a.platform
   return {
     brandName: user.businessName?.trim() || "",
+    who: Object.fromEntries(
+      accounts.filter((a) => a.status === "active").reverse().map((a) => [PLATFORM_NAME[a.platform], { name: displayName(a.name), avatar: a.avatar ?? null }] as const),
+    ),
+    canBoost: hasGrowth(user),
     drafting,
     island,
     accounts: accounts.map((a) => {

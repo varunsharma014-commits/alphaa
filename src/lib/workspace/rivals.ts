@@ -183,10 +183,19 @@ export async function getRivals(user: User, ctx: { strategy: AdStrategy | null; 
   const ads = ctx.strategy?.competitors?.ads ?? []
   const rivalsNamed = ctx.qs && Date.now() - ctx.qs.at.getTime() < 21 * 86_400_000 ? ctx.qs.scan.rivals : []
   const local = !!user.city?.trim()
+  // Names stored from the domain ("Logicalposition"): use a spelling seen in real data instead
+  // (the AI answers, their ads, their Instagram) when it has exactly the same letters.
+  const letters = (x: string) => x.replace(/[^a-z0-9]/gi, "").toLowerCase()
+  const spellings = [...rivalsNamed.map((r) => r.name), ...ads.map((a) => a.page), ...(ctx.niche?.rivalsIg ?? []).map((r) => r.name)].filter((x): x is string => typeof x === "string" && !!x.trim())
+  const betterCase = (name: string) => {
+    if (/[A-Z].*[A-Z]|\s/.test(name.slice(1)) || name !== name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()) return name
+    return spellings.find((p) => p !== name && letters(p) === letters(name))?.trim() ?? name
+  }
+  for (const m of moves) m.rival = betterCase(m.rival)
   const comps: AttackCard[] = visible.slice(0, 9).map((c) => {
     const h = hostOf(c.url)!
     const d = isRecord(c.crawlData) ? c.crawlData : {}
-    const name = c.name?.trim() || h
+    const name = betterCase(c.name?.trim() || h)
     const key = nameKey(name)
     const stem = nameKey(h.split(".")[0])
     const match = (s: string) => { const k = nameKey(s); return !!k && (k === key || k === stem || (key.length > 3 && (k.includes(key) || key.includes(k))) || (stem.length > 3 && k.includes(stem))) }

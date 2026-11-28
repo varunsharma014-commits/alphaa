@@ -1,0 +1,71 @@
+/* Briefing + its row parts (PlanRow, ChecklistStep). Light only, scoped under .ax, tokens from workspace.css. */
+.ax .xb-thumb { position: relative; width: 48px; height: 48px; border-radius: 12px; overflow: visible; flex: none; display: inline-flex; align-items: center; justify-content: center; background: var(--x-tint); border: 1px solid var(--x-line); }
+.ax .xb-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 11px; display: block; }
+.ax .xb-thumb.none { background: var(--x-soft); }
+.ax .xb-thumb__ch { position: absolute; right: -5px; bottom: -5px; border-radius: 999px; padding: 2px; background: var(--x-surf); box-shadow: 0 1px 3px rgba(0,0,0,.12); display: inline-flex; }
+.ax .xb-thumb__dot { width: 14px; height: 14px; border-radius: 999px; background: linear-gradient(135deg, #e8457a, #af52de); }
+.ax .xb-struck { text-decoration: line-through; color: var(--x-ter); }
+
+/* Steps + checklist */
+.ax .xb-steps { display: inline-flex; flex-direction: column; gap: 6px; }
+.ax .xb-steps__t { font-size: var(--x-fs-xs); font-weight: 600; color: var(--x-blue); letter-spacing: .02em; }
+.ax .xb-steps__d { display: inline-flex; gap: 4px; }
+.ax .xb-steps__d i { width: 18px; height: 4px; border-radius: 999px; background: var(--x-line); transition: background-color .3s var(--x-ease); }
+.ax .xb-steps__d i.done { background: var(--x-ok); }
+.ax .xb-steps__d i.on { background: var(--x-blue); }
+.ax .xb-checks { display: flex; flex-direction: column; }
+.ax .xb-check { display: flex; gap: 12px; align-items: center; padding: 10px 0; min-height: 48px; }
+.ax .xb-check + .xb-check { border-top: 1px solid var(--x-line); }
+.ax .xb-check__ic { width: 22px; height: 22px; border-radius: 999px; border: 1.5px solid var(--x-line); flex: none; display: inline-flex; align-items: center; justify-content: center; color: #fff; transition: background-color .2s, border-color .2s; }
+.ax .xb-check.done .xb-check__ic { background: var(--x-ok); border-color: var(--x-ok); }
+.ax .xb-check__b { flex: 1; min-width: 0; }
+.ax .xb-check__t { font-size: var(--x-fs-md); font-weight: 600; }
+.ax .xb-check.done .xb-check__t { color: var(--x-mut); font-weight: 500; }
+.ax .xb-check__h { font-size: var(--x-fs-xs); color: var(--x-mut); margin-top: 2px; }
+.ax .xb-check__a { flex: none; }
+
+/* The "Needs you" stack: one card per thing, the question first */
+.ax .xb-needs { display: flex; flex-direction: column; gap: 12px; }
+.ax .xb-q { padding: 22px 24px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; border-color: rgba(0,113,227,.28); box-shadow: 0 0 0 4px rgba(0,113,227,.05), var(--x-shadow); }
+.ax .xb-q__b { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.ax .xb-q__t { margin: 0; font-size: var(--x-fs-lg); font-weight: 650; letter-spacing: -.015em; line-height: 1.35; }
+.ax .xb-q__s { margin: 0; font-size: var(--x-fs-sm); color: var(--x-mut); line-height: 1.5; }
+.ax .xb-q__s b { color: var(--x-ink); font-weight: 600; }
+.ax .xb-q__a { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Numbers card */
+.ax .xb-num { padding: 22px 24px; display: flex; flex-direction: column; gap: 18px; }
+.ax .xb-num__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.ax .xb-big { font-size: 44px; font-weight: 700; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+.ax .xb-num__l { font-size: var(--x-fs-sm); color: var(--x-mut); margin-top: 6px; }
+.ax .xb-setup { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 24px; align-items: start; }
+.ax .xb-setup h3 { margin: 0; font-size: var(--x-fs-lg); font-weight: 650; letter-spacing: -.015em; }
+.ax .xb-setup p { margin: 6px 0 0; font-size: var(--x-fs-sm); color: var(--x-mut); line-height: 1.5; }
+
+/* Plan card (this week's plan) */
+.ax .xb-plan { padding: 18px 18px 8px; border: 1px solid var(--x-line); }
+.ax .xb-plan__h { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 0 4px 10px; }
+.ax .xb-plan__h b { display: block; font-size: var(--x-fs-lg); font-weight: 650; letter-spacing: -.015em; margin-top: 2px; }
+.ax .xb-plan .xd-list { margin: 0 -6px; }
+.ax .xb-running { display: flex; gap: 10px; align-items: center; padding: 6px 4px 12px; font-size: var(--x-fs-sm); color: var(--x-mut); }
+.ax .xb-running b { color: var(--x-ink); }
+
+/* AI cards row footer */
+.ax .xb-ailine { display: flex; gap: 12px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+.ax .xb-ailine span.t { font-size: var(--x-fs-sm); color: var(--x-mut); flex: 1 1 220px; min-width: 0; }
+
+/* Done timeline inside a card */
+.ax .xb-done { padding: 16px 22px 8px; }
+.ax .xb-done .xd-act__end { align-self: center; }
+
+@media (max-width: 760px) {
+  .ax .xb-q { padding: 18px; }
+  .ax .xb-q__a { width: 100%; }
+  .ax .xb-num { padding: 18px; }
+  .ax .xb-setup { grid-template-columns: 1fr; gap: 12px; }
+  .ax .xb-big { font-size: 38px; }
+  .ax .xb-done { padding: 12px 16px 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax .xb-steps__d i, .ax .xb-check__ic { transition: none; }
+}

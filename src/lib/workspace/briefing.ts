@@ -23,7 +23,8 @@ import type { Chip } from "@/lib/agent/types"
 import { getAiCards, type AiCard } from "./ai-cards"
 import { scheduledSitePosts } from "./site-posts"
 import { pendingLinkNews } from "@/lib/seo/site-watch"
-import { ART, ago, cached, channelOf, headlineOf, n, pctChange, short, whenAhead, within } from "./common"
+import { ART, ago, cached, headlineOf, n, pctChange, short, whenAhead, within } from "./common"
+import type { Channel } from "@/components/workspace/ds/channel"
 
 const DAY = 86_400_000
 
@@ -42,14 +43,23 @@ export type GoingItem = {
   at: string
   when: string
   art: string
+  /** Where it goes, for the channel marks (social = its platforms). */
+  channels: Channel[]
 }
 /** What a button does: open a page, run an existing agent chip, open a chat thread, or open the autopilot warning. */
 export type Act = { label: string; href?: string; chip?: Chip; topic?: string; autopilot?: boolean; primary?: boolean }
-export type Question = { id: string; eyebrow: string; title: string; text: string; fallback: string; acts: Act[]; review?: { ai: string; claim: string; truth: string; fix: Chip } | null }
-export type DoneItem = { ch: string; text: string; when: string; at: string; href: string | null }
+export type Question = { id: string; eyebrow: string; title: string; text: string; fallback: string; acts: Act[]; review?: { ai: string; claim: string; truth: string; fix: Chip } | null; /** Setup questions: which step of how many. */ step?: { n: number; total: number } | null }
+/**
+ * One thing I did. `kind` is the plain label ("Social", "Website"…), `channel` the mark when
+ * there is one. `href` = the live thing (external), `open` = where it lives in the app,
+ * `draftId` = a website draft that opens in the editor.
+ */
+export type DoneItem = { id: string; kind: string; channel: Channel | null; text: string; when: string; at: string; href: string | null; open: string | null; draftId: string | null }
 
 export type PlanItem = { kind: "blog" | "google" | "social"; title: string; day: string; status: string; needsOk: boolean }
 export type WeekPlan = { runId: string; running: boolean; items: PlanItem[]; summary: string; needsOk: number } | null
+
+export type ConnectStep = { key: string; label: string; ok: boolean; act: Act }
 
 export type BriefingData = {
   plan: WeekPlan
@@ -58,7 +68,7 @@ export type BriefingData = {
   /** Something real happened in the period (a published item or a lead): the recap has content. */
   recapReady: boolean
   /** Connections that feed the numbers, for the compact setup bar. */
-  connected: { n: number; total: number; next: Act | null }
+  connected: { n: number; total: number; next: Act | null; steps?: ConnectStep[] }
   firstName: string | null
   ai: AiCard[]
   headline: Headline
@@ -239,12 +249,14 @@ export async function getGoing(user: User): Promise<GoingItem[]> {
     const byId = new Map(accounts.map((a) => [a.id, a]))
     for (const p of posts) {
       if (p.status !== "scheduled" || !p.scheduledFor || Date.parse(p.scheduledFor) < now - 10 * 60_000) continue
-      const where = Array.from(new Set(p.accountIds.map((id) => byId.get(id)).filter((a): a is NonNullable<typeof a> => !!a).map((a) => PLATFORM_NAME[a.platform])))
+      const accs = p.accountIds.map((id) => byId.get(id)).filter((a): a is NonNullable<typeof a> => !!a)
+      const where = Array.from(new Set(accs.map((a) => PLATFORM_NAME[a.platform])))
+      const channels = Array.from(new Set(accs.map((a) => a.platform as string).filter((x): x is Channel => x === "facebook" || x === "instagram" || x === "linkedin" || x === "x")))
       out.push({
         id: p.id, kind: "social", lane: `Social · ${where.join(" & ") || "not connected"}`,
         big: short(p.title || headlineOf(p.text, 40), 40), small: where.length ? `${where.length} account${where.length === 1 ? "" : "s"}` : "",
         title: headlineOf(p.text), text: p.text, image: p.imageId ? imageUrl(p.imageId) : null,
-        at: p.scheduledFor, when: whenAhead(p.scheduledFor), art: ART.social,
+        at: p.scheduledFor, when: whenAhead(p.scheduledFor), art: ART.social, channels,
       })
     }
   }
@@ -252,7 +264,7 @@ export async function getGoing(user: User): Promise<GoingItem[]> {
   for (const g of gbp) {
     out.push({
       id: g.id, kind: "gbp", lane: "Google listing · update", big: short(headlineOf(g.content, 40), 40), small: "On your Google listing",
-      title: headlineOf(g.content), text: g.content, image: null, at: g.scheduledFor!.toISOString(), when: whenAhead(g.scheduledFor!.toISOString()), art: ART.google,
+      title: headlineOf(g.content), text: g.content, image: null, at: g.scheduledFor!.toISOString(), when: whenAhead(g.scheduledFor!.toISOString()), art: ART.google, channels: ["google"],
     })
   }
   for (const p of await scheduledSitePosts(user.id).catch(() => [])) {
@@ -260,7 +272,7 @@ export async function getGoing(user: User): Promise<GoingItem[]> {
     out.push({
       id: p.id, kind: "site", lane: "Website · new post", big: short(p.m.title ?? "New post", 40), small: "On your website",
       title: p.m.title ?? "New post", text: p.m.excerpt || headlineOf(p.m.markdown ?? "", 200), image: p.m.imageId ? imageUrl(p.m.imageId) : null,
-      at, when: whenAhead(at), art: ART.blog,
+      at, when: whenAhead(at), art: ART.blog, channels: ["web"],
     })
   }
   return out.sort((a, b) => Date.parse(a.at) - Date.parse(b.at)).slice(0, 9)
@@ -316,7 +328,7 @@ export async function getQuestion(user: User, waiting: { total: number; topic: s
     const chip = next.chip
     const act: Act = chip?.action.type === "link" ? { label: chip.label, href: chip.action.href, primary: true } : chip ? { label: chip.label, chip, primary: true } : { label: "Set it up", topic: "setup", primary: true }
     return {
-      id: `setup:${next.key}`, eyebrow: `Setup · step ${next.n} of ${setup!.total}`, title: next.name, text: next.why,
+      id: `setup:${next.key}`, eyebrow: "Setup", step: { n: next.n, total: setup!.total }, title: next.name, text: next.why,
       fallback: "Until then, I keep working with what I have.",
       acts: [act, { label: "See all steps", topic: "setup" }],
     }
@@ -343,6 +355,25 @@ export async function getQuestion(user: User, waiting: { total: number; topic: s
   return null
 }
 
+/** The plain label, channel mark and in-app home of one ledger entry. */
+export function doneKind(type: string, meta: Record<string, unknown>): { kind: string; channel: Channel | null; open: string | null } {
+  if (type === "social_published" || (type === "draft_written" && meta.kind === "social")) return { kind: "Social", channel: null, open: "/dashboard/social" }
+  if (type === "draft_written") return { kind: meta.kind === "video_script" ? "Video" : "Writing", channel: null, open: null }
+  if (type === "post_draft") return { kind: "Website", channel: "web", open: null }
+  if (type === "gbp_post" || type === "gbp_post_draft") return { kind: "Google listing", channel: "google", open: "/dashboard/posts" }
+  if (/review/.test(type)) return { kind: "Reviews", channel: "google", open: "/dashboard/reviews" }
+  if (/email/.test(type)) return { kind: "Email", channel: "email", open: "/dashboard/email" }
+  if (/ads/.test(type)) return { kind: "Ads", channel: null, open: "/dashboard/ads" }
+  if (/^(question_scan|visibility_scan|citation_scan|win)$/.test(type)) return { kind: "AI answers", channel: null, open: "/dashboard/citations" }
+  if (/^(site_change|site_check|site_links|handoff_sent|cwv_check|schema_audit)$/.test(type)) return { kind: "Website", channel: "web", open: "/dashboard/tracking" }
+  if (type === "competitors" || type === "content_gaps") return { kind: "Research", channel: null, open: "/dashboard/research?tab=competitors" }
+  if (type === "insights") return { kind: "Research", channel: null, open: "/dashboard/research" }
+  if (type === "week_run") return { kind: "Plan", channel: null, open: "/dashboard/social/calendar" }
+  if (type === "voice_learned") return { kind: "Your voice", channel: null, open: "/dashboard/settings/business" }
+  if (type === "guarantee_credit") return { kind: "Billing", channel: null, open: "/dashboard/settings/billing" }
+  return { kind: "Team", channel: null, open: null }
+}
+
 export async function getDone(userId: string, days = 7): Promise<DoneItem[]> {
   const rows = await db.mockActivity.findMany({ where: { userId, type: { in: LEDGER_TYPES }, createdAt: { gte: new Date(Date.now() - days * DAY) } }, orderBy: { createdAt: "desc" }, take: 80 })
   const seen = new Set<string>()
@@ -355,7 +386,8 @@ export async function getDone(userId: string, days = 7): Promise<DoneItem[]> {
     if (seen.has(key)) continue
     seen.add(key)
     const href = typeof meta.url === "string" && /^https?:\/\//.test(meta.url) && !meta.undone ? meta.url : null
-    out.push({ ch: channelOf(w.type), text, when: ago(w.createdAt.toISOString()), at: w.createdAt.toISOString(), href })
+    const k = doneKind(w.type, meta)
+    out.push({ id: w.id, kind: k.kind, channel: k.channel, text, when: ago(w.createdAt.toISOString()), at: w.createdAt.toISOString(), href, open: k.open, draftId: w.type === "post_draft" && !href ? w.id : null })
     if (out.length >= 14) break
   }
   return out
@@ -415,11 +447,11 @@ export async function getPlan(user: User): Promise<WeekPlan> {
 /** How many of the connections behind the numbers are on, and the next one to connect. */
 async function getConnected(user: User): Promise<BriefingData["connected"]> {
   const [integ, s] = await Promise.all([db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationId: true, gaPropertyId: true, gscSiteUrl: true } }), getAgentSettings(user.id)])
-  const list: { ok: boolean; act: Act }[] = [
-    { ok: !!integ?.gmbLocationId, act: { label: "Connect your Google listing", href: "/api/integrations/google/connect?go=1" } },
-    { ok: !!integ?.gaPropertyId, act: { label: integ ? "Pick your Analytics property" : "Connect Google Analytics", href: integ ? "/dashboard/settings/integrations" : "/api/integrations/google/connect?go=1" } },
-    { ok: !!(s.wp || s.site), act: { label: "Connect your website", chip: { label: "Connect my website", action: { type: "wp-connect" } } } },
+  const list: ConnectStep[] = [
+    { key: "google", label: "Google listing", ok: !!integ?.gmbLocationId, act: { label: "Connect your Google listing", href: "/api/integrations/google/connect?go=1" } },
+    { key: "ga", label: "Google Analytics", ok: !!integ?.gaPropertyId, act: { label: integ ? "Pick your Analytics property" : "Connect Google Analytics", href: integ ? "/dashboard/settings/integrations" : "/api/integrations/google/connect?go=1" } },
+    { key: "site", label: "Your website", ok: !!(s.wp || s.site), act: { label: "Connect your website", chip: { label: "Connect my website", action: { type: "wp-connect" } } } },
   ]
-  if (hasPro(user)) list.push({ ok: !!s.tracking?.on, act: { label: "Turn on lead tracking", topic: "tracking" } })
-  return { n: list.filter((x) => x.ok).length, total: list.length, next: list.find((x) => !x.ok)?.act ?? null }
+  if (hasPro(user)) list.push({ key: "tracking", label: "Lead tracking", ok: !!s.tracking?.on, act: { label: "Turn on lead tracking", topic: "tracking" } })
+  return { n: list.filter((x) => x.ok).length, total: list.length, next: list.find((x) => !x.ok)?.act ?? null, steps: list }
 }

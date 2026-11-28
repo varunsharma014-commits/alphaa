@@ -5,8 +5,9 @@ import { db } from "@/lib/db"
 import { connectMessage } from "@/lib/agent/connect-notice"
 import { getBriefingData } from "@/lib/workspace/briefing"
 import { BriefingView } from "@/components/workspace/BriefingView"
+import { pageTitle } from "@/lib/page-title"
 
-export const metadata = { title: "Your briefing — Alphaa" }
+export const metadata = { title: pageTitle("Briefing") }
 
 // The home screen: calls and leads from real sources, one question at most, what goes out on
 // its own (with Stop), and what I did (lib/workspace/briefing.ts). The chat lives in the shell's

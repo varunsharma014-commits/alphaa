@@ -1,0 +1,55 @@
+/* Research & Ideas (ResearchView.tsx). Light only, scoped under .ax, tokens from workspace.css. */
+.ax .xr-blue { color: var(--x-blue); display: flex; gap: 6px; align-items: center; }
+.ax .xr-ink { color: var(--x-ink); font-weight: 600; }
+.ax .xr-move { margin-top: 28px; }
+.ax .xr-working { margin-top: 0; }
+.ax .xr-art-t { font-size: var(--x-fs-lg); line-height: 1.3; font-weight: 650; }
+.ax .xr-hookline { margin: 0; font-size: var(--x-fs-md); font-weight: 600; line-height: 1.4; }
+.ax .xr-more { display: flex; justify-content: center; margin-top: 18px; }
+.ax .xr-ic { width: 28px; height: 28px; border-radius: 8px; background: var(--x-tint); color: var(--x-mut); display: inline-flex; align-items: center; justify-content: center; }
+.ax .xr-why { flex-basis: 100%; }
+
+/* Hooks: grouped by kind, two quote cards a row */
+.ax .xr-hooks { display: flex; flex-direction: column; gap: 18px; }
+.ax .xr-hooks__k { font-size: var(--x-fs-xs); font-weight: 600; color: var(--x-ter); letter-spacing: .02em; margin-bottom: 8px; }
+.ax .xr-hooks__g { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ax .xr-quote { margin: 0; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; justify-content: space-between; }
+.ax .xr-quote blockquote { margin: 0; font-size: var(--x-fs-md); font-weight: 600; line-height: 1.45; letter-spacing: -.01em; }
+.ax .xr-quote figcaption { display: flex; justify-content: flex-end; }
+
+/* Competitors */
+.ax .xr-gaps { margin-top: 28px; padding: 16px 20px; background: rgba(0,113,227,.05); border-color: rgba(0,113,227,.18); }
+.ax .xr-gaps ul { margin: 8px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: var(--x-fs-sm); line-height: 1.5; }
+.ax .xr-comps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 14px; margin-top: 28px; align-items: stretch; }
+.ax .xr-rival { display: flex; flex-direction: column; gap: 12px; height: 100%; cursor: pointer; }
+.ax .xr-rival:focus-visible { outline: none; box-shadow: var(--x-focus); }
+.ax .xr-rival__h { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.ax .xr-rival__n { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ax .xr-rival__n b { font-size: var(--x-fs-lg); line-height: 1.25; overflow-wrap: anywhere; letter-spacing: -.01em; }
+.ax .xr-rival__n span { font-size: var(--x-fs-xs); color: var(--x-ter); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax .xr-rival .ax-lines { flex: 1; }
+.ax .xr-rival__f { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--x-line); margin-top: auto; cursor: default; }
+
+/* Page gaps */
+.ax .xr-gap { display: flex; gap: 14px; align-items: flex-start; padding: 16px 10px; position: relative; }
+.ax .xr-gap + .xr-gap { border-top: 1px solid var(--x-line); }
+.ax .xr-gap__b { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.ax .xr-gap__s { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+.ax .xr-gap__t { font-size: var(--x-fs-lg); font-weight: 650; letter-spacing: -.015em; line-height: 1.35; overflow-wrap: anywhere; }
+.ax .xr-gap__m { font-size: var(--x-fs-sm); color: var(--x-mut); line-height: 1.5; }
+.ax .xr-outline { margin-top: 6px; font-size: var(--x-fs-sm); }
+.ax .xr-outline summary { cursor: pointer; color: var(--x-blue); font-weight: 600; list-style: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; border-radius: 8px; }
+.ax .xr-outline summary::-webkit-details-marker { display: none; }
+.ax .xr-outline summary::before { content: "›"; display: inline-block; transition: transform .2s var(--x-ease); font-size: 16px; line-height: 1; }
+.ax .xr-outline[open] summary::before { transform: rotate(90deg); }
+.ax .xr-outline summary:focus-visible { outline: none; box-shadow: var(--x-focus); }
+.ax .xr-outline ol { margin: 6px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; color: var(--x-ink); line-height: 1.45; list-style: decimal; }
+
+@media (max-width: 760px) {
+  .ax .xr-hooks__g { grid-template-columns: 1fr; }
+  .ax .xr-gap { flex-wrap: wrap; }
+  .ax .xr-gap > .ax-btn { margin-left: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax .xr-outline summary::before { transition: none; }
+}

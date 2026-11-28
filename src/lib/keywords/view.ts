@@ -45,6 +45,8 @@ export type KeywordRow = {
   score: number
   win: number | null
   pinned: boolean
+  /** A search for the business's own name (or a typo of it). Shown folded, apart from the rest. */
+  branded?: boolean
 }
 
 export type KeywordsView = {
@@ -53,6 +55,8 @@ export type KeywordsView = {
   strengthFrom: "links" | "default"
   measuredAt: string | null
   refreshing: boolean
+  /** When I last asked Google for numbers (the background refresh), ISO. */
+  askedAt?: string | null
   /** Why some numbers are missing (first person). */
   notes: string[]
   canRefresh: boolean
@@ -157,6 +161,37 @@ async function rememberIdeas(userId: string, ideas: string[]) {
   await db.mockActivity.update({ where: { id: row.id }, data: { metadata: { ...(row.metadata as object), ideas: ideas.slice(0, 25), ideasAt: new Date().toISOString() } } })
 }
 
+/** Edit distance, capped: enough to tell "alpha" or "alphaa app" from "alphaa". */
+function near(a: string, b: string, max: number): boolean {
+  if (Math.abs(a.length - b.length) > max) return false
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i)
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i]
+    for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1))
+    if (Math.min(...cur) > max) return false
+    prev = cur
+  }
+  return prev[b.length] <= max
+}
+
+/** The business's own name and domain, letters only ("alphaa"), for spotting searches for it. */
+export function brandKeys(user: Pick<User, "businessName" | "websiteUrl">): string[] {
+  const out = new Set<string>()
+  const name = (user.businessName ?? "").toLowerCase().replace(/[^a-z0-9]/g, "")
+  if (name.length >= 4) out.add(name)
+  const stem = (user.websiteUrl ?? "").replace(/^https?:\/\//i, "").replace(/^www\./i, "").split(/[./]/)[0].toLowerCase().replace(/[^a-z0-9]/g, "")
+  if (stem.length >= 4) out.add(stem)
+  return [...out]
+}
+
+/** True for a search that names the business (or a typo of its name). */
+export function isBranded(keyword: string, brands: string[]): boolean {
+  if (!brands.length) return false
+  const flat = keyword.toLowerCase().replace(/[^a-z0-9]/g, "")
+  const tokens = keyword.toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length >= 4)
+  return brands.some((b) => flat.includes(b) || tokens.some((t) => near(t, b, b.length > 6 ? 2 : 1)))
+}
+
 const bg = new Map<string, number>()
 
 /** The Keywords view from cached numbers; starts a background refresh when they're missing or old (max once a day). */
@@ -171,7 +206,8 @@ export async function keywordsView(user: User, opts: { refresh?: boolean } = {})
   const merged = merge([...list, ...ideas])
   const metrics = await cachedMetrics(user, [...merged.keys()])
   const pins = new Set((settings.keywordPins ?? []).map((p) => normKeyword(p.keyword)))
-  const rows = [...merged.values()].map((s) => rowOf(s, metrics.get(s.keyword), st.strength, pins.has(s.keyword)))
+  const brands = brandKeys(user)
+  const rows = [...merged.values()].map((s) => ({ ...rowOf(s, metrics.get(s.keyword), st.strength, pins.has(s.keyword)), branded: isBranded(s.text, brands) }))
     .sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.score - a.score || (b.impressions ?? 0) - (a.impressions ?? 0))
 
   const last = settings.seoData?.keywordsAt ? Date.parse(settings.seoData.keywordsAt) : 0
@@ -185,12 +221,15 @@ export async function keywordsView(user: User, opts: { refresh?: boolean } = {})
     await saveAgentSettings(user.id, { seoData: { ...settings.seoData, keywordsAt: new Date().toISOString() } }).catch(() => null)
     void runAsUser(user.id, () => refreshKeywordData(user)).catch((e) => console.error("[keywords] refresh", e instanceof Error ? e.message : e))
   }
+  // A refresh started in the last 10 minutes is still running: say so (the page keeps looking).
+  if (!refreshing && missing > 0 && last && Date.now() - last < 10 * 60_000) refreshing = true
   const notes: string[] = []
+  if (!refreshing && missing > 0 && last && missing === rows.length) notes.push("I asked Google for these numbers and they haven’t come back yet. I’ll ask again tomorrow.")
   if (!rows.length) notes.push("I don’t have any searches for you yet. Connect Search Console, or let my weekly AI check run, and they show up here.")
   if (rows.some((r) => r.ranged)) notes.push("Some numbers are ranges: that’s how Google shares them for accounts without ad spend, so I show them as Google gives them.")
   if (rows.length && rows.every((r) => r.difficulty === null) && measured) notes.push("I haven’t measured difficulty for these yet. It needs Google search volume first.")
   if (st.from === "default") notes.push("I don’t have your link data yet, so I treat your site as a small one when I judge what you can win.")
-  return { rows: rows.slice(0, 150), strength: st.strength, strengthFrom: st.from, measuredAt: measured, refreshing, notes, canRefresh: canRefresh && !refreshing }
+  return { rows: rows.slice(0, 150), strength: st.strength, strengthFrom: st.from, measuredAt: measured, askedAt: last ? new Date(last).toISOString() : null, refreshing, notes, canRefresh: canRefresh && !refreshing }
 }
 
 /** "Add to topic plan": remember the phrase for the next Topic plan build (max 20). */
@@ -207,6 +246,6 @@ export async function pinKeyword(userId: string, keyword: string, on = true): Pr
 export async function clusterKeywords(user: User, max = 15): Promise<{ keyword: string; detail: string | null; pinned: boolean }[]> {
   const v = await keywordsView(user).catch(() => null)
   if (!v) return []
-  const pick = [...v.rows.filter((r) => r.pinned), ...v.rows.filter((r) => !r.pinned && r.volumeN > 0 && !r.sources.includes("ai"))].slice(0, max)
+  const pick = [...v.rows.filter((r) => r.pinned), ...v.rows.filter((r) => !r.pinned && !r.branded && r.volumeN > 0 && !r.sources.includes("ai"))].slice(0, max)
   return pick.map((r) => ({ keyword: r.text, detail: r.volumeN > 0 ? [r.volume.replace(/^About /, "about "), r.difficulty !== null ? `difficulty ${r.difficulty}/100` : null].filter(Boolean).join(", ") : null, pinned: r.pinned }))
 }

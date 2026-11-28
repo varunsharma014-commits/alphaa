@@ -6,7 +6,9 @@
 .ax-cal-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .ax-cal-bar .nav { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .ax-cal-bar h2 { margin: 0 0 0 8px; font-size: 20px; font-weight: 650; letter-spacing: -.02em; white-space: nowrap; }
-.ax-cal-bar .ax-seg { min-width: 240px; }
+.ax-cal-bar .tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
+.ax-cal-bar .tools .xd-fp { min-width: 0; }
+.ax-cal-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
 .ax-cal-legend { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
 .ax-cal-legend button { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--x-line); background: var(--x-surf); font-size: 12.5px; font-weight: 500; color: var(--x-mut); }
 .ax-cal-legend button.on { color: var(--x-ink); border-color: var(--x-ink); font-weight: 600; }
@@ -16,21 +18,26 @@
 .ax-cal-tray { margin-top: 14px; padding: 12px 14px; border: 1px dashed var(--x-line); border-radius: 16px; background: var(--x-surf); display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
 .ax-cal-tray b { font-size: 13px; }
 .ax-cal-tray .sub { font-size: 12px; color: var(--x-mut); }
-.ax-cal-tray .ls { flex-basis: 100%; display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
-.ax-cal-tray .ax-cal-chip { max-width: 260px; }
+.ax-cal-tray .ls { flex-basis: 100%; display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; min-width: 0; }
+.ax-cal-tray .ls > * { min-width: 0; }
+.ax-cal-tray .ax-cal-chip { max-width: min(260px, 100%); width: auto; }
 
 /* Chips */
 .ax-cal-chip { display: flex; align-items: center; gap: 5px; width: 100%; min-width: 0; text-align: left; border: 1px solid transparent; border-left: 3px solid var(--c); background: var(--t); color: var(--x-ink); border-radius: 7px; padding: 3px 6px; font-size: 11.5px; line-height: 1.3; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .ax-cal-chip.mv { cursor: grab; }
 .ax-cal-chip .tm { font-weight: 600; color: var(--c); flex: none; font-variant-numeric: tabular-nums; }
-.ax-cal-chip .nt { flex: none; font-size: 9.5px; font-weight: 700; color: var(--c); background: var(--s); border-radius: 4px; padding: 0 4px; letter-spacing: .02em; }
+.ax-cal-chip .nt { flex: none; display: inline-flex; align-items: center; }
+.ax-cal-chip .nt > * + * { margin-left: -3px; box-shadow: 0 0 0 1.5px var(--t); }
 .ax-cal-chip .tt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .ax-cal-chip.s-planned, .ax-cal-chip.s-draft { background: var(--x-surf); border: 1px dashed var(--c); border-left: 3px dashed var(--c); }
 .ax-cal-chip.s-published { background: var(--x-soft); border-left-color: var(--s); color: var(--x-mut); }
 .ax-cal-chip.s-failed { background: var(--x-abg); border-left-color: var(--x-amber); }
 .ax-cal-chip.s-sending { box-shadow: inset 0 0 0 1px var(--c); }
 .ax-cal-chip.dragging { opacity: .35; }
+.ax-cal-chip { transition: box-shadow .15s, transform .15s var(--x-ease); }
 .ax-cal-chip:hover { filter: brightness(.98); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.ax-cal-chip:active { transform: scale(.98); }
+.ax-cal-chip:focus-visible { outline: none; box-shadow: var(--x-focus); }
 
 /* Month */
 .ax-cal-month { margin-top: 14px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border: 1px solid var(--x-line); border-radius: 18px; overflow: hidden; background: var(--x-surf); box-shadow: var(--x-shadow); }
@@ -41,8 +48,14 @@
 .ax-cal-day.today .dn { background: var(--x-blue); color: #fff; }
 .ax-cal-day.out { background: var(--x-soft); }
 .ax-cal-day.out .dn { color: var(--x-ter); }
-.ax-cal-day.past { background: repeating-linear-gradient(135deg, transparent 0 8px, rgba(0,0,0,.018) 8px 9px); }
+.ax-cal-day.past { background: rgba(0,0,0,.012); }
+.ax-cal-day.past .dn { color: var(--x-ter); }
 .ax-cal-day .ls { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+/* Month chips: time and marks on one line, the title under it (two lines), so nothing reads "Sam…". */
+.ax-cal-day .ax-cal-chip { flex-wrap: wrap; row-gap: 1px; align-items: center; padding: 4px 6px; }
+.ax-cal-day .ax-cal-chip .tt { flex-basis: 100%; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
+.ax-cal-week .ax-cal-chip { flex-wrap: wrap; row-gap: 1px; }
+.ax-cal-week .ax-cal-chip .tt { flex-basis: 100%; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .ax-cal-more { border: 0; background: none; font-size: 11px; color: var(--x-blue); text-align: left; padding: 1px 4px; }
 .ax-cal-day.over, .ax-cal-slot.over, .ax-cal-agenda .ad.over { background: rgba(0,113,227,.08); box-shadow: inset 0 0 0 2px rgba(0,113,227,.45); }
 .ax-cal-day.over.past, .ax-cal-slot.over.past { background: rgba(255,59,48,.06); box-shadow: inset 0 0 0 2px rgba(255,59,48,.35); }
@@ -55,7 +68,7 @@
 .ax-cal-week .hr { font-size: 10.5px; color: var(--x-ter); padding: 4px 6px; text-align: right; border-bottom: 1px solid var(--x-line); font-variant-numeric: tabular-nums; }
 .ax-cal-slot { min-height: 38px; padding: 2px 3px; border-left: 1px solid var(--x-line); border-bottom: 1px solid var(--x-line); display: flex; flex-direction: column; gap: 2px; min-width: 0; transition: background .12s; }
 .ax-cal-slot.today { background: rgba(0,113,227,.025); }
-.ax-cal-slot.past { background: repeating-linear-gradient(135deg, transparent 0 8px, rgba(0,0,0,.018) 8px 9px); }
+.ax-cal-slot.past { background: rgba(0,0,0,.012); }
 .ax-cal-slot .ax-cal-chip .tm { display: none; }
 .ax-cal-slot.edge .ax-cal-chip .tm { display: inline; } /* earlier than 6 AM / later than 10 PM: show the real time */
 
@@ -67,7 +80,7 @@
 .ax-cal-agenda .ax-cal-chip { font-size: 13.5px; padding: 8px 10px; border-radius: 10px; }
 .ax-cal-agenda .ax-cal-chip .nt { font-size: 10.5px; }
 .ax-cal-empty { margin-top: 16px; color: var(--x-mut); font-size: 14px; }
-.ax-cal-skel { margin-top: 14px; height: 520px; border-radius: 18px; background: linear-gradient(90deg, var(--x-soft), var(--x-tint), var(--x-soft)); background-size: 200% 100%; animation: ax-cal-sh 1.4s ease-in-out infinite; }
+.ax-cal-skel { margin-top: 14px; }
 @keyframes ax-cal-sh { to { background-position: -200% 0; } }
 
 .ax-cal-tz { margin-top: 12px; font-size: 12px; color: var(--x-mut); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
@@ -93,14 +106,30 @@
 .ax-cal-ask p { margin: 8px 0 0; font-size: 14px; color: var(--x-mut); line-height: 1.5; }
 .ax-cal-ask .acts { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 18px; }
 
+/* Item sheet (picker) + "post it early?" question */
+.ax .ax-cal-sheet { display: flex; flex-direction: column; gap: 16px; }
+.ax .ax-cal-sheet > img { width: 100%; border-radius: 14px; border: 1px solid var(--x-line); }
+.ax .ax-cal-sheet .box { background: var(--x-soft); border-radius: 14px; padding: 12px 14px; }
+.ax .ax-cal-sheet .v { font-size: var(--x-fs-sm); line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ax .ax-cal-best { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+.ax .ax-cal-askp { margin: 0; font-size: var(--x-fs-md); color: var(--x-mut); line-height: 1.5; }
+.ax .ax-cal-slotb { min-height: 36px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--x-line); background: var(--x-surf); font-size: var(--x-fs-xs); font-weight: 600; color: var(--x-ink); cursor: pointer; transition: background-color .15s, border-color .15s, transform .15s var(--x-ease); }
+.ax .ax-cal-slotb:hover { background: var(--x-soft); }
+.ax .ax-cal-slotb:active { transform: scale(.98); }
+.ax .ax-cal-slotb:focus-visible { outline: none; box-shadow: var(--x-focus); }
+.ax .ax-cal-slotb.on { background: rgba(0,113,227,.1); border-color: rgba(0,113,227,.45); color: var(--x-blue); }
+
 /* View switch on Social Studio */
 .ax-viewsw { display: inline-flex; gap: 2px; padding: 3px; background: var(--x-soft); border: 1px solid var(--x-line); border-radius: 999px; }
-.ax-viewsw a { padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--x-mut); }
+.ax-viewsw a { padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--x-mut); transition: background-color .15s, color .15s; }
+.ax-viewsw a:hover:not(.on) { color: var(--x-ink); background: rgba(0,0,0,.04); }
+.ax-viewsw a:focus-visible { outline: none; box-shadow: var(--x-focus); }
 .ax-viewsw a.on { background: var(--x-surf); color: var(--x-ink); box-shadow: var(--x-shadow); font-weight: 600; }
 
 @media (max-width: 720px) {
   .ax-cal-bar h2 { font-size: 17px; margin-left: 4px; }
-  .ax-cal-bar .ax-seg { min-width: 0; width: 100%; }
+  .ax-cal-bar .tools { width: 100%; justify-content: flex-start; }
+  .ax-cal-bar .tools .xd-fp { width: 100%; }
   .ax-cal-legend { flex-wrap: nowrap; overflow-x: auto; margin: 12px -16px 0; padding: 0 16px 4px; scrollbar-width: none; }
   .ax-cal-legend::-webkit-scrollbar { display: none; }
   .ax-cal-legend button { flex: none; }
@@ -113,4 +142,5 @@
   .ax-cal-day .ax-cal-chip.s-published { background: var(--s); }
   .ax-cal-week { overflow-x: auto; grid-template-columns: 44px repeat(7, minmax(84px, 1fr)); }
   .ax-cal-tray .ax-cal-chip { max-width: 100%; font-size: 13px; padding: 7px 9px; }
+  .ax-viewsw a { padding: 10px 16px; }
 }

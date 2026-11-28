@@ -1,0 +1,55 @@
+/* Social Studio (SocialView.tsx) + its preview (SizePreview.tsx). Light only, scoped under .ax. */
+.ax .xs-accts { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 22px; }
+.ax .xs-acct { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 4px 12px 4px 6px; border-radius: 999px; background: var(--x-surf); border: 1px solid var(--x-line); font-size: var(--x-fs-sm); font-weight: 500; color: var(--x-ink); max-width: 100%; }
+.ax .xs-acct__n { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax button.xs-acct { cursor: pointer; transition: box-shadow .15s, transform .15s var(--x-ease); }
+.ax button.xs-acct:hover { box-shadow: var(--x-shadow); }
+.ax button.xs-acct:active { transform: scale(.98); }
+.ax button.xs-acct:focus-visible { outline: none; box-shadow: var(--x-focus); }
+.ax .xs-acct.warn { border-color: rgba(255,149,0,.45); background: var(--x-abg); }
+.ax .xs-acct__fix { font-weight: 600; color: var(--x-amber); }
+.ax .xs-stats { margin-top: 18px; }
+.ax .xs-spark { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ax .xs-ask { margin-top: 12px; padding: 14px 18px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.ax .xs-ask__ic { width: 32px; height: 32px; border-radius: 10px; background: var(--x-tint); color: var(--x-blue); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.ax .xs-ask__b { flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 2px; font-size: var(--x-fs-sm); color: var(--x-mut); line-height: 1.45; }
+.ax .xs-ask__b b { color: var(--x-ink); font-size: var(--x-fs-md); }
+.ax .xs-filter { margin-top: 26px; }
+
+.ax .xs-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.ax .xs-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ax .xs-card { display: flex; flex-direction: column; padding-top: 16px; }
+.ax .xs-img { position: relative; height: 240px; margin: 0 16px; border-radius: 16px; border: 0; padding: 16px; display: flex; align-items: flex-end; color: #fff; text-align: left; cursor: zoom-in; transition: filter .2s; }
+.ax .xs-img:hover { filter: brightness(1.03); }
+.ax .xs-img:focus-visible { outline: none; box-shadow: var(--x-focus); }
+.ax .xs-img b { font-size: var(--x-fs-xl); letter-spacing: -.02em; line-height: 1.2; }
+.ax .xs-img__st { position: absolute; top: 10px; left: 10px; }
+.ax .xs-img__st .ax-pill { background: rgba(17,17,20,.58); color: #fff; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.ax .xs-card.compact .xs-img { height: 180px; }
+.ax .xs-where { display: flex; gap: 8px; align-items: center; font-size: var(--x-fs-xs); color: var(--x-mut); min-width: 0; }
+.ax .xs-where span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax .xs-err { color: var(--x-amber); }
+.ax .xs-when { font-size: var(--x-fs-xs); color: var(--x-mut); min-width: 0; }
+.ax .xs-when b { color: var(--x-ink); font-weight: 600; }
+.ax .xs-acts { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.ax .xs-fix { margin: 0; font-size: var(--x-fs-md); line-height: 1.5; }
+.ax .xs-mut { color: var(--x-mut); }
+.ax .xs-prev { display: flex; flex-direction: column; gap: 18px; }
+.ax .xs-prev .box { background: var(--x-soft); border-radius: 14px; padding: 12px 14px; }
+.ax .xs-prev .v { font-size: var(--x-fs-sm); line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* Preview frames: the platform switcher with marks, and the real account picture */
+.ax .ax-pv-opt { display: inline-flex; align-items: center; gap: 6px; }
+.ax img.ax-pv-av { object-fit: cover; background: var(--x-tint); }
+
+@media (max-width: 1100px) {
+  .ax .xs-grid.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .ax .xs-grid, .ax .xs-grid.three { grid-template-columns: 1fr; }
+  .ax .xs-img { height: 200px; margin: 0 12px; }
+  .ax .xs-acts { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax button.xs-acct, .ax .xs-img { transition: none; }
+}

@@ -33,6 +33,11 @@ export type GapItem = {
   read?: boolean
 }
 
+/** A gap title without a page-title separator left on either end ("… in Kanata |" → "… in Kanata"). */
+export function cleanGapTitle(t: string | null | undefined): string {
+  return (t ?? "").replace(/^[\s|·:–—-]+|[\s|·:–—-]+$/g, "").replace(/\s{2,}/g, " ").trim()
+}
+
 export type GapResult = { gaps: GapItem[]; summary: string; read: number; pages: { url: string; title: string; words: number }[] }
 
 const Schema = z.object({
@@ -112,7 +117,7 @@ Rules:
       const page = m[1].toUpperCase() === "P" ? read[i] : null
       const listedPage = m[1].toUpperCase() === "S" ? listed[i] : null
       if (!page && !listedPage) continue // cites nothing real: dropped
-      const title = g.suggestedTitle.trim() || g.topic.trim()
+      const title = cleanGapTitle(g.suggestedTitle) || cleanGapTitle(g.topic)
       if (!title || seen.has(title.toLowerCase()) || new RegExp(rivalHost.split(".")[0], "i").test(title)) continue
       seen.add(title.toLowerCase())
       gaps.push({
