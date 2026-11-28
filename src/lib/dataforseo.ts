@@ -41,7 +41,14 @@ export const ENDPOINTS = {
   googleBusiness: { live: "/business_data/google/my_business_info/live", post: "/business_data/google/my_business_info/task_post", get: "/business_data/google/my_business_info/task_get" },
   trustpilot: { live: null, post: "/business_data/trustpilot/reviews/task_post", get: "/business_data/trustpilot/reviews/task_get" },
   tripadvisor: { live: null, post: "/business_data/tripadvisor/reviews/task_post", get: "/business_data/tripadvisor/reviews/task_get" },
-} as const
+  // Live only (DataForSEO Labs and the Backlinks API have no standard mode): runTask uses live for these.
+  kwDifficulty: { live: "/dataforseo_labs/google/bulk_keyword_difficulty/live", post: null, get: null },
+  searchIntent: { live: "/dataforseo_labs/google/search_intent/live", post: null, get: null },
+  blSummary: { live: "/backlinks/summary/live", post: null, get: null },
+  blReferringDomains: { live: "/backlinks/referring_domains/live", post: null, get: null },
+  blHistory: { live: "/backlinks/history/live", post: null, get: null },
+  blIntersection: { live: "/backlinks/domain_intersection/live", post: null, get: null },
+} as const satisfies Record<string, { live: string | null; post: string | null; get: string | null }>
 export type Endpoint = keyof typeof ENDPOINTS
 export type Mode = "live" | "standard"
 
@@ -56,6 +63,14 @@ let alertedDay: string | null = null
 
 /** True while calls are paused after an account problem (callers get their empty result). */
 export const dataPaused = () => Date.now() < pausedUntil
+
+// "Access denied, activate your subscription" (40204) on ONE API family (e.g. the Backlinks API
+// needs its own subscription) pauses only that family for 6 hours, never every data call.
+const DENIED_CODE = 40204
+const deniedUntil = new Map<string, number>()
+const familyOf = (path: string) => path.split("/")[1] ?? ""
+/** True while an API family ("backlinks", "dataforseo_labs") answered "access denied" in the last 6 hours. */
+export const apiDenied = (family: string) => (deniedUntil.get(family) ?? 0) > Date.now()
 
 function accountProblem(code: number, message: string | null): void {
   const fresh = !dataPaused()
@@ -113,6 +128,13 @@ async function request(method: "GET" | "POST", path: string, body: unknown, time
       const env = (await res.json().catch(() => null)) as { status_code?: number; status_message?: string } | null
       if (!env) { console.error(`[dataforseo] ${path} unreadable answer (HTTP ${res.status})`); return null }
       const code = env.status_code ?? 0
+      const taskCode = Number((env as { tasks?: { status_code?: number }[] }).tasks?.[0]?.status_code ?? 0)
+      if ((code === DENIED_CODE || taskCode === DENIED_CODE) && familyOf(path) !== "serp") {
+        const why = (env as { tasks?: { status_message?: string }[] }).tasks?.[0]?.status_message ?? env.status_message ?? "no subscription"
+        if (!apiDenied(familyOf(path))) console.error(`[dataforseo] ${familyOf(path)} access denied (${why}): pausing that API for 6 hours`)
+        deniedUntil.set(familyOf(path), Date.now() + 6 * 60 * MIN)
+        return null
+      }
       if (ACCOUNT_CODES.has(code)) { accountProblem(code, env.status_message ?? null); return null }
       if (RATE_CODES.has(code) && attempt === 0) { await sleep(2000); continue }
       if (code !== DFS_OK) { console.error(`[dataforseo] ${path} ${code} ${env.status_message ?? ""}`); return null }
@@ -162,9 +184,10 @@ const FAIL: TaskOutcome = { ok: false, result: null, cost: 0, status: null }
 
 /** POST one standard task. Its cost is recorded. Null when it couldn't be set. */
 export async function postTask(ep: Endpoint, task: Record<string, unknown>, estUsd = 0.001): Promise<{ id: string; cost: number } | null> {
-  if (!dataforseoConfigured() || dataPaused()) return null
+  const post = ENDPOINTS[ep].post
+  if (!dataforseoConfigured() || dataPaused() || !post) return null
   if (!(await room(estUsd))) return null
-  const env = await request("POST", ENDPOINTS[ep].post, [task], 30_000)
+  const env = await request("POST", post, [task], 30_000)
   if (!env) return null
   const t = firstTask(env)
   await charge(t.cost)
@@ -174,8 +197,9 @@ export async function postTask(ep: Endpoint, task: Record<string, unknown>, estU
 
 /** One look at a standard task (free). `ready` false while DataForSEO is still working on it. */
 export async function getTask(ep: Endpoint, id: string): Promise<{ ready: boolean; ok: boolean; result: Record<string, unknown> | null; status: number | null }> {
-  if (!dataforseoConfigured() || dataPaused()) return { ready: false, ok: false, result: null, status: null }
-  const env = await request("GET", `${ENDPOINTS[ep].get}/${encodeURIComponent(id)}`, undefined, 30_000)
+  const get = ENDPOINTS[ep].get
+  if (!dataforseoConfigured() || dataPaused() || !get) return { ready: false, ok: false, result: null, status: null }
+  const env = await request("GET", `${get}/${encodeURIComponent(id)}`, undefined, 30_000)
   if (!env) return { ready: true, ok: false, result: null, status: null }
   const t = firstTask(env)
   if (t.status !== null && DFS_WAITING.has(t.status)) return { ready: false, ok: false, result: null, status: t.status }
@@ -191,8 +215,9 @@ export async function getTask(ep: Endpoint, id: string): Promise<{ ready: boolea
 export async function runTask(ep: Endpoint, task: Record<string, unknown>, opts: { mode?: Mode; timeoutMs?: number; maxWaitMs?: number; estUsd?: number } = {}): Promise<TaskOutcome> {
   if (!dataforseoConfigured() || dataPaused()) return FAIL
   const live = ENDPOINTS[ep].live
-  // Trustpilot and Tripadvisor have no live endpoint: always standard.
-  if (opts.mode === "live" && live) {
+  if (live && apiDenied(familyOf(live))) return FAIL
+  // Trustpilot and Tripadvisor have no live endpoint: always standard. Labs + Backlinks have only live.
+  if (live && (opts.mode === "live" || !ENDPOINTS[ep].post)) {
     if (!(await room(opts.estUsd ?? 0.006))) return FAIL
     const env = await request("POST", live, [task], opts.timeoutMs ?? 60_000)
     if (!env) return FAIL

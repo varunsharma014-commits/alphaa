@@ -1,5 +1,13 @@
 // The campaign plan I show the owner before anything is created in Google Ads.
-export type PlanKeyword = { text: string; match: "EXACT" | "PHRASE"; searches: number | null; why?: string }
+export type PlanKeyword = {
+  text: string
+  match: "EXACT" | "PHRASE"
+  searches: number | null
+  why?: string
+  /** Google's top-of-page bid range for this search, in the plan's currency (Keyword Planner). */
+  bidLow?: number | null
+  bidHigh?: number | null
+}
 export type PlanAdGroup = {
   name: string
   keywords: PlanKeyword[]

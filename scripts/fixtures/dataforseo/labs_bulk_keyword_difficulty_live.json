@@ -1,0 +1,76 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.1630 sec.",
+ "cost": 0.0126,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280745-3309-0392-0000-d0a78c449725",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.0740 sec.",
+   "cost": 0.0126,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "dataforseo_labs",
+    "google",
+    "bulk_keyword_difficulty",
+    "live"
+   ],
+   "data": {
+    "api": "dataforseo_labs",
+    "function": "bulk_keyword_difficulty",
+    "se_type": "google",
+    "keywords": [
+     "seo agency ottawa",
+     "local seo",
+     "ai search optimization",
+     "google business profile optimization",
+     "how to rank on chatgpt"
+    ],
+    "location_code": 2124,
+    "language_code": "en"
+   },
+   "result": [
+    {
+     "se_type": "google",
+     "location_code": 2124,
+     "language_code": "en",
+     "total_count": 5,
+     "items_count": 5,
+     "items": [
+      {
+       "se_type": "google",
+       "keyword": "ai search optimization",
+       "keyword_difficulty": 28
+      },
+      {
+       "se_type": "google",
+       "keyword": "google business profile optimization",
+       "keyword_difficulty": 39
+      },
+      {
+       "se_type": "google",
+       "keyword": "how to rank on chatgpt",
+       "keyword_difficulty": null
+      },
+      {
+       "se_type": "google",
+       "keyword": "local seo",
+       "keyword_difficulty": 36
+      },
+      {
+       "se_type": "google",
+       "keyword": "seo agency ottawa",
+       "keyword_difficulty": 12
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

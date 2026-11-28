@@ -13,7 +13,7 @@ import { once } from "@/lib/draft-dedupe"
 export async function GET() {
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  return NextResponse.json({ view: await clusterView(user.id) })
+  return NextResponse.json({ view: await clusterView(user.id, { badges: true }) })
 }
 
 const body = z.object({ op: z.literal("build") })
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   try {
     const r = await once(`clusters:${user.id}`, () => buildClusters(user, { reason: "owner" }))
     if (!r.ok) return NextResponse.json({ error: r.error }, { status: 422 })
-    return NextResponse.json({ view: await clusterView(user.id) })
+    return NextResponse.json({ view: await clusterView(user.id, { badges: true }) })
   } catch (err) {
     if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
     console.error("[workspace/clusters]", err instanceof Error ? err.message : err)

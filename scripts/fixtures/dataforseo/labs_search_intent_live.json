@@ -1,0 +1,85 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.1707 sec.",
+ "cost": 0.0126,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280745-3309-0541-0000-806d5345c439",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.0940 sec.",
+   "cost": 0.0126,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "dataforseo_labs",
+    "google",
+    "search_intent",
+    "live"
+   ],
+   "data": {
+    "api": "dataforseo_labs",
+    "function": "search_intent",
+    "se_type": "google",
+    "keywords": [
+     "seo agency ottawa",
+     "local seo",
+     "ai search optimization",
+     "google business profile optimization",
+     "how to rank on chatgpt"
+    ]
+   },
+   "result": [
+    {
+     "items_count": 5,
+     "items": [
+      {
+       "keyword": "seo agency ottawa",
+       "keyword_intent": {
+        "label": "commercial",
+        "probability": 0.8447
+       },
+       "secondary_keyword_intents": null
+      },
+      {
+       "keyword": "local seo",
+       "keyword_intent": {
+        "label": "commercial",
+        "probability": 0.6422
+       },
+       "secondary_keyword_intents": null
+      },
+      {
+       "keyword": "ai search optimization",
+       "keyword_intent": {
+        "label": "commercial",
+        "probability": 0.9735
+       },
+       "secondary_keyword_intents": null
+      },
+      {
+       "keyword": "google business profile optimization",
+       "keyword_intent": {
+        "label": "commercial",
+        "probability": 0.9501
+       },
+       "secondary_keyword_intents": null
+      },
+      {
+       "keyword": "how to rank on chatgpt",
+       "keyword_intent": {
+        "label": "informational",
+        "probability": 0.9981
+       },
+       "secondary_keyword_intents": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

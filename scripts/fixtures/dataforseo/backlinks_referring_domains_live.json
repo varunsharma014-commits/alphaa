@@ -1,0 +1,759 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.0861 sec.",
+ "cost": 0.02472,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280745-3309-0273-0000-f9ef0988416f",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.0790 sec.",
+   "cost": 0.02472,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "backlinks",
+    "referring_domains",
+    "live"
+   ],
+   "data": {
+    "api": "backlinks",
+    "function": "referring_domains",
+    "target": "growthturbine.com",
+    "limit": 20,
+    "order_by": [
+     "rank,desc"
+    ],
+    "rank_scale": "one_hundred",
+    "internal_list_limit": 1,
+    "exclude_internal_backlinks": true,
+    "backlinks_status_type": "live"
+   },
+   "result": [
+    {
+     "target": "growthturbine.com",
+     "total_count": 350,
+     "items_count": 20,
+     "items": [
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "ainvest.com",
+       "rank": 13,
+       "backlinks": 95,
+       "first_seen": "2025-10-01 09:29:25 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 4,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 14,
+       "referring_subnets": 14,
+       "referring_pages": 57,
+       "referring_pages_nofollow": 1,
+       "referring_links_tld": {
+        "com": 57
+       },
+       "referring_links_types": {
+        "anchor": 57
+       },
+       "referring_links_attributes": {
+        "nofollow": 1
+       },
+       "referring_links_platform_types": {
+        "news": 57
+       },
+       "referring_links_semantic_locations": {
+        "main": 56
+       },
+       "referring_links_countries": {
+        "US": 55
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "tovest.com",
+       "rank": 11,
+       "backlinks": 41,
+       "first_seen": "2026-02-11 18:51:34 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 2,
+       "referring_subnets": 2,
+       "referring_pages": 17,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 17
+       },
+       "referring_links_types": {
+        "anchor": 17
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "organization": 17
+       },
+       "referring_links_semantic_locations": {
+        "": 9
+       },
+       "referring_links_countries": {
+        "": 17
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "realwealthbusiness.com",
+       "rank": 11,
+       "backlinks": 3,
+       "first_seen": "2024-11-08 16:31:21 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 3,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 3
+       },
+       "referring_links_types": {
+        "anchor": 3
+       },
+       "referring_links_attributes": {
+        "noopener": 3
+       },
+       "referring_links_platform_types": {
+        "unknown": 3
+       },
+       "referring_links_semantic_locations": {
+        "section": 2
+       },
+       "referring_links_countries": {
+        "WW": 3
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "opendi.ca",
+       "rank": 10,
+       "backlinks": 6,
+       "first_seen": "2024-01-18 17:33:13 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 5,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "ca": 5
+       },
+       "referring_links_types": {
+        "anchor": 5
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "unknown": 5
+       },
+       "referring_links_semantic_locations": {
+        "section": 5
+       },
+       "referring_links_countries": {
+        "CA": 5
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "globalbusinessleadersmag.com",
+       "rank": 9,
+       "backlinks": 7,
+       "first_seen": "2022-05-31 20:54:58 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 7,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 7
+       },
+       "referring_links_types": {
+        "anchor": 7
+       },
+       "referring_links_attributes": {
+        "noopener": 7
+       },
+       "referring_links_platform_types": {
+        "blogs": 7
+       },
+       "referring_links_semantic_locations": {
+        "section": 7
+       },
+       "referring_links_countries": {
+        "US": 7
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "theceoviews.com",
+       "rank": 9,
+       "backlinks": 2,
+       "first_seen": "2022-04-10 15:15:57 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 2,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 2
+       },
+       "referring_links_types": {
+        "image": 2
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "cms": 2
+       },
+       "referring_links_semantic_locations": {
+        "article": 1
+       },
+       "referring_links_countries": {
+        "US": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "ontariodirectory.com",
+       "rank": 8,
+       "backlinks": 4,
+       "first_seen": "2026-10-31 02:29:35 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 2,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 2
+       },
+       "referring_links_types": {
+        "anchor": 2
+       },
+       "referring_links_attributes": {
+        "noreferrer": 2
+       },
+       "referring_links_platform_types": {
+        "unknown": 2
+       },
+       "referring_links_semantic_locations": {
+        "section": 2
+       },
+       "referring_links_countries": {
+        "": 2
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "citygoldmedia.net",
+       "rank": 8,
+       "backlinks": 1,
+       "first_seen": "2026-03-22 14:17:15 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "net": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": {
+        "noopener": 1
+       },
+       "referring_links_platform_types": {
+        "blogs": 1
+       },
+       "referring_links_semantic_locations": {
+        "article": 1
+       },
+       "referring_links_countries": {
+        "US": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "publicistpaper.com",
+       "rank": 8,
+       "backlinks": 1,
+       "first_seen": "2025-10-18 18:59:28 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 5,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "blogs": 1
+       },
+       "referring_links_semantic_locations": {
+        "article": 1
+       },
+       "referring_links_countries": {
+        "IT": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "confettisocial.com",
+       "rank": 8,
+       "backlinks": 1,
+       "first_seen": "2025-05-21 17:29:31 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "blogs": 1
+       },
+       "referring_links_semantic_locations": {
+        "article": 1
+       },
+       "referring_links_countries": {
+        "": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "revenueandprofit.net",
+       "rank": 8,
+       "backlinks": 1,
+       "first_seen": "2024-03-18 21:35:30 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 15,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "net": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "blogs": 1
+       },
+       "referring_links_semantic_locations": {
+        "article": 1
+       },
+       "referring_links_countries": {
+        "US": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "allblogthings.com",
+       "rank": 8,
+       "backlinks": 1,
+       "first_seen": "2023-10-10 16:52:35 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "blogs": 1
+       },
+       "referring_links_semantic_locations": {
+        "article": 1
+       },
+       "referring_links_countries": {
+        "US": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "techupdatepro.com",
+       "rank": 8,
+       "backlinks": 1,
+       "first_seen": "2022-07-09 03:16:43 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "blogs": 1
+       },
+       "referring_links_semantic_locations": {
+        "main": 1
+       },
+       "referring_links_countries": {
+        "": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "atlnightspots.com",
+       "rank": 8,
+       "backlinks": 1,
+       "first_seen": "2022-05-05 17:29:39 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 15,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "blogs": 1
+       },
+       "referring_links_semantic_locations": {
+        "article": 1
+       },
+       "referring_links_countries": {
+        "US": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "techktimes.com",
+       "rank": 8,
+       "backlinks": 1,
+       "first_seen": "2021-12-20 09:53:26 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "blogs": 1
+       },
+       "referring_links_semantic_locations": {
+        "article": 1
+       },
+       "referring_links_countries": {
+        "IN": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "fooyoh.com",
+       "rank": 8,
+       "backlinks": 1,
+       "first_seen": "2021-11-28 23:33:52 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "unknown": 1
+       },
+       "referring_links_semantic_locations": {
+        "": 1
+       },
+       "referring_links_countries": {
+        "US": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "corvinadirectory.ca",
+       "rank": 7,
+       "backlinks": 6,
+       "first_seen": "2020-11-29 16:20:59 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 2,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 2,
+       "referring_subnets": 2,
+       "referring_pages": 6,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "ca": 6
+       },
+       "referring_links_types": {
+        "anchor": 6
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "unknown": 6
+       },
+       "referring_links_semantic_locations": {
+        "section": 4
+       },
+       "referring_links_countries": {
+        "CA": 6
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "gigaboost.ai",
+       "rank": 6,
+       "backlinks": 1,
+       "first_seen": "2026-09-09 16:42:39 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 1,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "ai": 1
+       },
+       "referring_links_types": {
+        "anchor": 1
+       },
+       "referring_links_attributes": {
+        "noopener": 1
+       },
+       "referring_links_platform_types": {
+        "organization": 1
+       },
+       "referring_links_semantic_locations": {
+        "section": 1
+       },
+       "referring_links_countries": {
+        "AI": 1
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "smmirror.com",
+       "rank": 6,
+       "backlinks": 2,
+       "first_seen": "2025-10-28 12:33:53 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 2,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 2
+       },
+       "referring_links_types": {
+        "anchor": 2
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "blogs": 2
+       },
+       "referring_links_semantic_locations": {
+        "article": 2
+       },
+       "referring_links_countries": {
+        "US": 2
+       }
+      },
+      {
+       "type": "backlinks_referring_domain",
+       "domain": "issuanceexpress.com",
+       "rank": 5,
+       "backlinks": 4,
+       "first_seen": "2026-01-15 17:28:42 +00:00",
+       "lost_date": null,
+       "backlinks_spam_score": 0,
+       "broken_backlinks": 0,
+       "broken_pages": 0,
+       "referring_domains": 1,
+       "referring_domains_nofollow": 0,
+       "referring_main_domains": 1,
+       "referring_main_domains_nofollow": 0,
+       "referring_ips": 1,
+       "referring_subnets": 1,
+       "referring_pages": 4,
+       "referring_pages_nofollow": 0,
+       "referring_links_tld": {
+        "com": 4
+       },
+       "referring_links_types": {
+        "anchor": 4
+       },
+       "referring_links_attributes": null,
+       "referring_links_platform_types": {
+        "unknown": 4
+       },
+       "referring_links_semantic_locations": {
+        "": 4
+       },
+       "referring_links_countries": {
+        "": 4
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

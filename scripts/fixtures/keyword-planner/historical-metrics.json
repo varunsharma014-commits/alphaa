@@ -1,0 +1,222 @@
+{
+ "results": [
+  {
+   "text": "seo agency ottawa",
+   "keywordMetrics": {
+    "competition": "LOW",
+    "monthlySearchVolumes": [
+     {
+      "month": "NOVEMBER",
+      "year": "2025",
+      "monthlySearches": "320"
+     },
+     {
+      "month": "DECEMBER",
+      "year": "2025",
+      "monthlySearches": "390"
+     },
+     {
+      "month": "JANUARY",
+      "year": "2026",
+      "monthlySearches": "320"
+     },
+     {
+      "month": "FEBRUARY",
+      "year": "2026",
+      "monthlySearches": "140"
+     },
+     {
+      "month": "MARCH",
+      "year": "2026",
+      "monthlySearches": "320"
+     },
+     {
+      "month": "APRIL",
+      "year": "2026",
+      "monthlySearches": "50"
+     },
+     {
+      "month": "MAY",
+      "year": "2026",
+      "monthlySearches": "50"
+     },
+     {
+      "month": "JUNE",
+      "year": "2026",
+      "monthlySearches": "50"
+     },
+     {
+      "month": "JULY",
+      "year": "2026",
+      "monthlySearches": "110"
+     },
+     {
+      "month": "AUGUST",
+      "year": "2026",
+      "monthlySearches": "40"
+     },
+     {
+      "month": "SEPTEMBER",
+      "year": "2026",
+      "monthlySearches": "70"
+     },
+     {
+      "month": "OCTOBER",
+      "year": "2026",
+      "monthlySearches": "90"
+     }
+    ],
+    "avgMonthlySearches": "170",
+    "competitionIndex": "7",
+    "lowTopOfPageBidMicros": "6014031",
+    "highTopOfPageBidMicros": "17494555",
+    "averageCpcMicros": "9627099"
+   }
+  },
+  {
+   "text": "ai search optimization",
+   "keywordMetrics": {
+    "competition": "MEDIUM",
+    "monthlySearchVolumes": [
+     {
+      "month": "NOVEMBER",
+      "year": "2025",
+      "monthlySearches": "20"
+     },
+     {
+      "month": "DECEMBER",
+      "year": "2025",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "JANUARY",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "FEBRUARY",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "MARCH",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "APRIL",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "MAY",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "JUNE",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "JULY",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "AUGUST",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "SEPTEMBER",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "OCTOBER",
+      "year": "2026",
+      "monthlySearches": "10"
+     }
+    ],
+    "avgMonthlySearches": "10",
+    "competitionIndex": "52",
+    "lowTopOfPageBidMicros": "13819024",
+    "highTopOfPageBidMicros": "86742508"
+   }
+  },
+  {
+   "text": "local seo",
+   "keywordMetrics": {
+    "competition": "LOW",
+    "monthlySearchVolumes": [
+     {
+      "month": "NOVEMBER",
+      "year": "2025",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "DECEMBER",
+      "year": "2025",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "JANUARY",
+      "year": "2026",
+      "monthlySearches": "20"
+     },
+     {
+      "month": "FEBRUARY",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "MARCH",
+      "year": "2026",
+      "monthlySearches": "40"
+     },
+     {
+      "month": "APRIL",
+      "year": "2026",
+      "monthlySearches": "20"
+     },
+     {
+      "month": "MAY",
+      "year": "2026",
+      "monthlySearches": "10"
+     },
+     {
+      "month": "JUNE",
+      "year": "2026",
+      "monthlySearches": "30"
+     },
+     {
+      "month": "JULY",
+      "year": "2026",
+      "monthlySearches": "20"
+     },
+     {
+      "month": "AUGUST",
+      "year": "2026",
+      "monthlySearches": "20"
+     },
+     {
+      "month": "SEPTEMBER",
+      "year": "2026",
+      "monthlySearches": "30"
+     },
+     {
+      "month": "OCTOBER",
+      "year": "2026",
+      "monthlySearches": "40"
+     }
+    ],
+    "avgMonthlySearches": "20",
+    "competitionIndex": "30",
+    "lowTopOfPageBidMicros": "7124999",
+    "highTopOfPageBidMicros": "39978956",
+    "averageCpcMicros": "28424960"
+   }
+  }
+ ]
+}

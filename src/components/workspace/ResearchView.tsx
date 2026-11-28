@@ -11,8 +11,10 @@ import { DraftSheet } from "./DraftSheet"
 import { RepurposeButton } from "./RepurposeButton"
 import { ReadySheet, type ReadySource } from "./ReadySheet"
 import { TopicPlan } from "./TopicPlan"
+import { KeywordsPanel } from "./KeywordsPanel"
+import { BacklinksPanel } from "./BacklinksPanel"
 
-type Tab = "w" | "t" | "i" | "g" | "c"
+type Tab = "w" | "t" | "k" | "l" | "i" | "g" | "c"
 
 export function ResearchView({ data }: { data: ResearchData }) {
   const { node, open } = useInspector()
@@ -64,7 +66,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
   return (
     <>
       <h1 className="ax-h1">Research & Ideas</h1>
-      {tab === "t" ? <p className="ax-sub">Your main topics, the pages around each one, and what’s written so far.</p> : tab === "i" ? <p className="ax-sub">From your analytics and AI checks{data.ideasAt ? <> · updated <When at={data.ideasAt} mode="ago" fallback="recently" /></> : null}</p> : tab !== "c" ? <p className="ax-sub">{sub}</p> : (
+      {tab === "t" ? <p className="ax-sub">Your main topics, the pages around each one, and what’s written so far.</p> : tab === "k" ? <p className="ax-sub">The searches that matter to you, with Google’s numbers: how many people search, how hard page one is, and where you are now.</p> : tab === "l" ? <p className="ax-sub">Who links to you vs your competitors, and the sites worth asking for a link.</p> : tab === "i" ? <p className="ax-sub">From your analytics and AI checks{data.ideasAt ? <> · updated <When at={data.ideasAt} mode="ago" fallback="recently" /></> : null}</p> : tab !== "c" ? <p className="ax-sub">{sub}</p> : (
         <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 8 }}>
           <p className="ax-sub" style={{ margin: 0, flex: 1, minWidth: 220 }}>
             Tracking {comps.length} competitor{comps.length === 1 ? "" : "s"}{data.lastChecked ? <> · last checked <When at={data.lastChecked} mode="ago" fallback="recently" /></> : null}
@@ -101,7 +103,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
             : <button className="ax-btn p" type="button" onClick={() => askAlphaa({ chip: t.card.makeChip })}>Make my version</button> })()}
         </section>
       )}
-      <Tabs<Tab> value={tab} onChange={setTab} tabs={[{ key: "w", label: "What’s working nearby" }, { key: "t", label: "Topic plan" }, { key: "i", label: "Ideas & hooks" }, { key: "g", label: "Blog & page gaps" }, { key: "c", label: "Competitors" }]} />
+      <Tabs<Tab> value={tab} onChange={setTab} tabs={[{ key: "w", label: "What’s working nearby" }, { key: "t", label: "Topic plan" }, { key: "k", label: "Keywords" }, { key: "l", label: "Who links to you" }, { key: "i", label: "Ideas & hooks" }, { key: "g", label: "Blog & page gaps" }, { key: "c", label: "Competitors" }]} />
 
       {tab === "w" && (
         <>
@@ -163,6 +165,8 @@ export function ResearchView({ data }: { data: ResearchData }) {
         </>
       )}
 
+      {tab === "k" && <KeywordsPanel autopilot={data.autopilot} siteConnected={data.siteConnected} />}
+      {tab === "l" && <BacklinksPanel />}
       {tab === "t" && <TopicPlan view={data.clusters} autopilot={data.autopilot} siteConnected={data.siteConnected} webPersonEmail={data.webPersonEmail} />}
 
       {tab === "i" && (

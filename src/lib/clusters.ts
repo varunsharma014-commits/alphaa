@@ -96,18 +96,21 @@ export async function gatherInputs(user: User): Promise<ClusterInputs> {
   if (home?.ok) for (const l of home.page.links) { try { if (SERVICE_PATH.test(new URL(l.url).pathname) && l.text) addS(l.text, l.url) } catch {} }
   for (const p of pages) { try { if (SERVICE_PATH.test(new URL(p.url).pathname)) addS(slugTitle(p.url) || p.title, p.url) } catch {} }
 
-  return { questions: questions.slice(0, 30), queries, pages: pages.slice(0, 140), drafts, gaps, services: services.slice(0, 15) }
+  // Searches with Google's numbers (Research → Keywords): the owner's pins + the best opportunities.
+  const keywords = await import("@/lib/keywords/view").then((m) => m.clusterKeywords(user)).catch(() => [])
+
+  return { questions: questions.slice(0, 30), queries, pages: pages.slice(0, 140), drafts, gaps, services: services.slice(0, 15), keywords }
 }
 
 const Schema = z.object({
   clusters: z.array(z.object({
     pillar: z.string().describe("Title of the pillar page: the broad guide for this topic, under 70 characters"),
-    pillarSources: z.array(z.string()).describe("Input ids (Q, K, G, S) this pillar comes from"),
+    pillarSources: z.array(z.string()).describe("Input ids (Q, K, G, S, W) this pillar comes from"),
     pillarPage: z.string().nullable().describe("A P id when a live page already is this pillar, a D id when a draft is, else null"),
     articles: z.array(z.object({
       title: z.string().describe("A supporting article that answers one narrower question, under 70 characters"),
       question: z.string().nullable().describe("The Q or K text it answers, copied exactly, else null"),
-      sources: z.array(z.string()).describe("Input ids (Q, K, G, S) it comes from: at least one"),
+      sources: z.array(z.string()).describe("Input ids (Q, K, G, S, W) it comes from: at least one"),
       page: z.string().nullable().describe("A P id when a live page already covers it, a D id when a draft does, else null"),
     })).describe("3-8 supporting articles"),
   })).describe("3-6 topic clusters, most valuable first"),
@@ -121,7 +124,8 @@ BUSINESS: ${user.businessName ?? "unknown"} (${user.businessType ?? "business"})
 ${promptLists(inputs)}
 
 Rules:
-- Use ONLY the inputs above. Every pillar and every article must cite at least one Q, K, G or S id in its sources. No topic nobody asks about.
+- Use ONLY the inputs above. Every pillar and every article must cite at least one Q, K, G, S or W id in its sources. No topic nobody asks about.
+- Searches with real Google volume (W) are worth an article each when they fit the business; a pinned W must get one.
 - Make 3 to 6 clusters around what this business sells and what its customers are trying to do. Fewer, solid clusters beat padding: if the inputs only support 3, make 3.
 - If a live page (P) already covers a pillar or an article, set its page to that P id (it counts as done). If a draft (D) covers it, set the D id.
 - Group near-duplicate questions and searches into one article; don't make two articles that answer the same thing.
@@ -136,7 +140,7 @@ export type BuildResult = { ok: true; mapId: string; map: ClusterMap } | { ok: f
 export async function buildClusters(user: User, o: { reason: "weekly" | "owner" } = { reason: "owner" }): Promise<BuildResult> {
   // Reading the inputs is free (DB + the owner's own sitemap); only the AI call is on the quota.
   const inputs = await gatherInputs(user)
-  const signals = inputs.questions.length + inputs.queries.length + inputs.gaps.length + inputs.services.length
+  const signals = inputs.questions.length + inputs.queries.length + inputs.gaps.length + inputs.services.length + (inputs.keywords?.length ?? 0)
   if (signals < 3) return { ok: false, error: "I don’t have enough to plan from yet: no tracked AI questions, Google searches or competitor pages. Connect Search Console or let the weekly AI check run first." }
   const map = await withQuota(user, "topic_plan", async () => validatePlan(await proposeClusters(user, inputs), inputs))
   if (!map.clusters.length) return { ok: false as const, error: "I couldn’t group your topics from the data I have yet. I’ll try again after the next weekly check." }
@@ -159,10 +163,32 @@ async function draftRows(userId: string): Promise<DraftRow[]> {
   })
 }
 
-/** The Topic plan view (DB only; no outside calls). */
-export async function clusterView(userId: string): Promise<ClusterView | null> {
+/** The Topic plan view (DB only; no outside calls). `badges` adds cached keyword numbers per article. */
+export async function clusterView(userId: string, opts: { badges?: boolean } = {}): Promise<ClusterView | null> {
   const [m, drafts] = await Promise.all([latestMap(userId), draftRows(userId)])
-  return m ? viewOf(m.mapId, m.map, drafts) : null
+  if (!m) return null
+  const view = viewOf(m.mapId, m.map, drafts)
+  if (opts.badges) await addKeywordBadges(userId, view).catch((e) => console.warn("[clusters] badges", e instanceof Error ? e.message : e))
+  return view
+}
+
+/** The phrase an article targets on Google: its keyword/search source, else a short question, else the title. */
+export function articleKeyword(a: { title: string; question: string | null; sources: { kind: string; text: string }[] }): string {
+  return a.sources.find((s) => s.kind === "kw" || s.kind === "gsc")?.text ?? (a.question && a.question.split(" ").length <= 10 ? a.question : a.title)
+}
+
+async function addKeywordBadges(userId: string, view: ClusterView): Promise<void> {
+  const user = await db.user.findUnique({ where: { id: userId }, select: { id: true, city: true, state: true, websiteUrl: true } })
+  if (!user) return
+  const [{ cachedMetrics }, rules] = await Promise.all([import("@/lib/keywords/data"), import("@/lib/keywords/rules")])
+  const all = view.clusters.flatMap((c) => [c.pillar, ...c.articles])
+  const metrics = await cachedMetrics(user, all.map(articleKeyword))
+  for (const a of all) {
+    const k = rules.normKeyword(articleKeyword(a))
+    const m = metrics.get(k)
+    if (!m?.volumeAt) continue
+    a.kw = { keyword: k, volume: rules.volumeLabel(m.volume), searches: rules.volumeValue(m.volume), difficulty: m.difficulty, label: rules.difficultyLabel(m.difficulty), tone: rules.difficultyTone(m.difficulty) }
+  }
 }
 
 export type NextCluster = { ref: string; title: string; question: string | null; gapId: string | null; competitor: string | null; pillar: string }

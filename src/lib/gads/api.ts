@@ -130,6 +130,59 @@ export async function generateKeywordIdeas(customerId: string, body: ReturnType<
   }))
 }
 
+/** generateKeywordHistoricalMetrics request body (KeywordPlanIdeaService). Up to 10,000 keywords per call. */
+export function historicalMetricsBody(o: { keywords: string[]; language?: string | null; geoTargets: string[] }) {
+  return {
+    keywords: o.keywords.slice(0, 10_000),
+    ...(o.language ? { language: o.language } : {}),
+    geoTargetConstants: o.geoTargets,
+    includeAdultKeywords: false,
+    keywordPlanNetwork: "GOOGLE_SEARCH",
+    historicalMetricsOptions: { includeAverageCpc: true },
+  }
+}
+
+export type HistoricalMetric = {
+  text: string
+  closeVariants: string[]
+  avgMonthlySearches: number | null
+  competition: string | null
+  competitionIndex: number | null
+  lowBidMicros: number | null
+  highBidMicros: number | null
+  avgCpcMicros: number | null
+  monthly: { year: number; month: number; searches: number | null }[]
+}
+
+const MONTHS = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"]
+
+/** Pure parser for a generateKeywordHistoricalMetrics response (int64 come back as strings). */
+export function parseHistoricalMetrics(raw: unknown): HistoricalMetric[] {
+  type M = { avgMonthlySearches?: string; competition?: string; competitionIndex?: string; lowTopOfPageBidMicros?: string; highTopOfPageBidMicros?: string; averageCpcMicros?: string; monthlySearchVolumes?: { year?: string; month?: string; monthlySearches?: string }[] }
+  type R = { results?: { text?: string; closeVariants?: string[]; keywordMetrics?: M }[] }
+  const n = (v?: string | number) => (v == null || v === "" ? null : Number.isFinite(Number(v)) ? Number(v) : null)
+  return ((raw as R | null)?.results ?? []).filter((x) => x.text).map((x) => {
+    const m = x.keywordMetrics ?? {}
+    return {
+      text: x.text!,
+      closeVariants: x.closeVariants ?? [],
+      avgMonthlySearches: n(m.avgMonthlySearches),
+      competition: m.competition ?? null,
+      competitionIndex: n(m.competitionIndex),
+      lowBidMicros: n(m.lowTopOfPageBidMicros),
+      highBidMicros: n(m.highTopOfPageBidMicros),
+      avgCpcMicros: n(m.averageCpcMicros),
+      monthly: (m.monthlySearchVolumes ?? []).map((v) => ({ year: Number(v.year), month: MONTHS.indexOf(String(v.month)) + 1, searches: n(v.monthlySearches) })).filter((v) => v.year && v.month > 0),
+    }
+  })
+}
+
+/** POST /v26/customers/{id}:generateKeywordHistoricalMetrics */
+export async function generateKeywordHistoricalMetrics(customerId: string, body: ReturnType<typeof historicalMetricsBody>, o: CallOpts): Promise<HistoricalMetric[]> {
+  const r = await gadsCall<unknown>(`/customers/${digits(customerId)}:generateKeywordHistoricalMetrics`, { method: "POST", body }, o)
+  return parseHistoricalMetrics(r)
+}
+
 /** POST /v26/geoTargetConstants:suggest → the geo target constant for a city ("geoTargetConstants/1014221"). */
 export async function suggestGeoTarget(city: string, countryCode: string | null, o: CallOpts): Promise<string | null> {
   type R = { geoTargetConstantSuggestions?: { geoTargetConstant?: { resourceName?: string; targetType?: string; countryCode?: string } }[] }

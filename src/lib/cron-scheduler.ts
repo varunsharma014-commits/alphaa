@@ -115,5 +115,8 @@ export function startCron(): void {
     // 1st of the month 15:00 UTC (+ catch-up to 20:00) — last month's ad report link to owners who
     // asked for it (lib/ad-report; once per brand per month via settings adReportMail.lastSent).
     if (now.getUTCDate() === 1 && hour >= 15 && hour <= 20) hit("/api/cron/ad-report")
+    // 1st of the month 10:00 UTC (+ hourly catch-up until the 3rd ends): who links to each brand vs
+    // its competitors + keyword numbers (DataForSEO + Keyword Planner). One snapshot per brand per month.
+    if ((now.getUTCDate() === 1 && hour >= 10) || now.getUTCDate() === 2 || now.getUTCDate() === 3) hit("/api/cron/backlinks")
   }, 60_000)
 }

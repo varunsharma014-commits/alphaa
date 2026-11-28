@@ -17,9 +17,11 @@ export type ClusterInputs = {
   gaps: { id: string; title: string; host: string; url: string | null }[]
   /** What the business sells: its category and its service pages / menu links. */
   services: { name: string; url: string | null }[]
+  /** Searches with Google's own numbers (Research → Keywords: owner pins + best opportunities). Optional. */
+  keywords?: { keyword: string; detail: string | null; pinned: boolean }[]
 }
 
-export type SourceKind = "ai" | "gsc" | "gap" | "service" | "page" | "draft"
+export type SourceKind = "ai" | "gsc" | "gap" | "service" | "page" | "draft" | "kw"
 export type ClusterSource = { kind: SourceKind; ref: string; label: string; text: string; detail: string | null; url: string | null }
 export type ClusterArticle = {
   id: string
@@ -83,12 +85,13 @@ export function promptLists(i: ClusterInputs): string {
     sec("DRAFTS already written, not live yet (D):", i.drafts.map((x, k) => `D${k}: ${x.title}`)),
     sec("COMPETITOR PAGES the business doesn't have (G):", i.gaps.map((x, k) => `G${k}: ${x.title}  [${x.host}]`)),
     sec("WHAT THE BUSINESS SELLS (S):", i.services.map((x, k) => `S${k}: ${x.name}`)),
+    ...(i.keywords?.length ? [sec("SEARCHES WORTH TARGETING (W, Google's monthly searches; pinned = the owner asked for it, give each pinned one an article):", i.keywords.map((x, k) => `W${k}: ${x.keyword}${x.detail ? `  [${x.detail}]` : ""}${x.pinned ? "  [pinned]" : ""}`))] : []),
   ].join("\n\n")
 }
 
 // ── validation ───────────────────────────────────────────────────────────────────────────
 function resolve(ref: string, i: ClusterInputs): ClusterSource | null {
-  const m = ref.trim().toUpperCase().match(/^([QKPDGS])(\d{1,3})$/)
+  const m = ref.trim().toUpperCase().match(/^([QKPDGSW])(\d{1,3})$/)
   if (!m) return null
   const n = Number(m[2])
   switch (m[1]) {
@@ -97,6 +100,7 @@ function resolve(ref: string, i: ClusterInputs): ClusterSource | null {
     case "P": { const x = i.pages[n]; return x ? { kind: "page", ref: `P${n}`, label: "Live on your site", text: x.title, detail: null, url: x.url } : null }
     case "D": { const x = i.drafts[n]; return x ? { kind: "draft", ref: `D${n}`, label: "Your draft", text: x.title, detail: null, url: null } : null }
     case "G": { const x = i.gaps[n]; return x ? { kind: "gap", ref: `G${n}`, label: "Competitor page", text: x.title, detail: `${x.host} has a page on this`, url: x.url } : null }
+    case "W": { const x = i.keywords?.[n]; return x ? { kind: "kw", ref: `W${n}`, label: x.pinned ? "Search you picked" : "Google search", text: x.keyword, detail: x.detail, url: null } : null }
     case "S": { const x = i.services[n]; return x ? { kind: "service", ref: `S${n}`, label: "Your service", text: x.name, detail: null, url: x.url } : null }
   }
   return null
@@ -121,7 +125,7 @@ function articleFrom(o: { title: string; question: string | null; sources: strin
   if (!sources.length) return null
   if (!numbersOk(title, sources)) return null
   // A question it answers: the model's, only when it's one of the real questions/searches; else the first AI question cited.
-  const real = sources.filter((s) => s.kind === "ai" || s.kind === "gsc").map((s) => s.text)
+  const real = sources.filter((s) => s.kind === "ai" || s.kind === "gsc" || s.kind === "kw").map((s) => s.text)
   const q = o.question ? clean(o.question) : null
   const question = (q && real.find((r) => titleKey(r) === titleKey(q))) ?? sources.find((s) => s.kind === "ai")?.text ?? null
   const gap = sources.find((s) => s.kind === "gap")
@@ -146,6 +150,7 @@ export function whyOf(c: { pillar: ClusterArticle; articles: ClusterArticle[] })
     n("ai") ? `${n("ai")} AI question${n("ai") === 1 ? "" : "s"}` : null,
     n("gsc") ? `${n("gsc")} Google search${n("gsc") === 1 ? "" : "es"} you show up for` : null,
     n("gap") ? `${n("gap")} competitor page${n("gap") === 1 ? "" : "s"}` : null,
+    n("kw") ? `${n("kw")} search${n("kw") === 1 ? "" : "es"} with real Google volume` : null,
     n("service") ? `${n("service") === 1 ? "your service" : `${n("service")} of your services`}` : null,
     n("page") ? `${n("page")} page${n("page") === 1 ? "" : "s"} you already have` : null,
   ].filter(Boolean) as string[]
@@ -203,7 +208,8 @@ export function validatePlan(raw: RawPlan | null | undefined, i: ClusterInputs, 
 /** A website draft (post_draft row) as the cluster view needs it. */
 export type DraftRow = { id: string; title: string | null; topic: string | null; requestTopic: string | null; status: string | null; url: string | null; cluster: string | null; at: string }
 export type ArticleStatus = "published" | "drafted" | "planned"
-export type ArticleView = ClusterArticle & { status: ArticleStatus; liveUrl: string | null; openDraftId: string | null; ref: string }
+export type KwBadge = { keyword: string; volume: string; searches: number; difficulty: number | null; label: string; tone: "g" | "a" | "r" | "n" }
+export type ArticleView = ClusterArticle & { status: ArticleStatus; liveUrl: string | null; openDraftId: string | null; ref: string; kw?: KwBadge }
 export type ClusterCard = { id: string; title: string; why: string; pillar: ArticleView; articles: ArticleView[]; written: number; live: number; total: number }
 export type ClusterView = { mapId: string; at: string; clusters: ClusterCard[]; inputs: ClusterMap["inputs"]; next: { ref: string; title: string; pillar: string } | null }
 

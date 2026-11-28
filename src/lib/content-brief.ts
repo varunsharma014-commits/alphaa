@@ -51,6 +51,8 @@ export type ContentBrief = {
   gapId?: string | null
   /** A Topic plan article (lib/clusters.ts): its pillar + live sibling pages are forced link targets. */
   cluster?: { ref: string; pillar: string; isPillar: boolean } | null
+  /** The target keyword's numbers (Keyword Planner + DataForSEO Labs), when Google had data. */
+  keywordData?: import("@/lib/keywords/brief").BriefKeyword | null
 }
 
 export type BriefContext = {
@@ -61,6 +63,8 @@ export type BriefContext = {
   questions: { q: string; source: "ai_question" | "search_console" | "competitor" }[]
   competitor: Benchmark | null
   gap?: GapItem | null
+  /** Picked in code from Google's numbers (volume × winnability): the page's main keyword. */
+  keyword?: { keyword: string; why: string } | null
 }
 
 const clean = (s: string) => s.replace(/\s+/g, " ").trim()
@@ -145,7 +149,7 @@ export async function planBrief(ctx: BriefContext): Promise<ContentBrief> {
   const prompt = `Plan one blog post / web page for a business's own website. Use only the data below.
 
 TOPIC: ${ctx.topic}
-BUSINESS: ${ctx.business.name} (${ctx.business.type})${ctx.business.city ? `, ${ctx.business.city}` : ""}${ctx.business.site ? `, ${ctx.business.site}` : ""}
+${ctx.keyword ? `MAIN KEYWORD: "${ctx.keyword.keyword}" (picked from Google's numbers: ${ctx.keyword.why}). Use it as the keyword, in the question and in at least one h2.\n` : ""}BUSINESS: ${ctx.business.name} (${ctx.business.type})${ctx.business.city ? `, ${ctx.business.city}` : ""}${ctx.business.site ? `, ${ctx.business.site}` : ""}
 ${ctx.gap ? `WHY: a competitor has a page on this and the business doesn't (${ctx.gap.topic}). Suggested sections: ${ctx.gap.suggestedOutline.join(" | ") || "(none)"}\n` : ""}
 FACTS (the only facts the page may state; from the business's own site and profile):
 ${ctx.facts.map((f, i) => `F${i}: ${f.text}  [${f.source}]`).join("\n") || "(none)"}
@@ -177,7 +181,7 @@ Rules: pick facts, pages and questions by their numbers only. Search intent: inf
     v: 1,
     topic: ctx.topic,
     question: clean(o.question).slice(0, 200),
-    keyword: clean(o.keyword).slice(0, 80),
+    keyword: ctx.keyword?.keyword ?? clean(o.keyword).slice(0, 80),
     audience: clean(o.audience).slice(0, 200),
     intent: o.intent,
     angle: clean(o.angle).slice(0, 300),
@@ -227,7 +231,7 @@ export async function buildBrief(user: User, input: { topic: string; gapId?: str
     getAgentSettings(user.id),
     site ? ownPages(site, topic).catch(() => []) : Promise.resolve([]),
     latestQuestionScan(user.id).catch(() => null),
-    db.keywordRanking.findMany({ where: { userId: user.id, date: { gte: since }, impressions: { gt: 0 } }, orderBy: { impressions: "desc" }, take: 400, select: { query: true, impressions: true } }).catch(() => []),
+    db.keywordRanking.findMany({ where: { userId: user.id, date: { gte: since }, impressions: { gt: 0 } }, orderBy: { impressions: "desc" }, take: 400, select: { query: true, impressions: true, position: true } }).catch(() => []),
     competitorBenchmark({ gap: found?.gap, competitor: found?.competitorUrl ?? input.competitor ?? null, topic }).catch(() => null),
   ])
   // Questions: AI questions I track, then Search Console queries on this topic, then the competitor's own question headings.
@@ -241,6 +245,9 @@ export async function buildBrief(user: User, input: { topic: string; gapId?: str
   for (const [q] of [...byQuery.entries()].filter(([q]) => overlaps(q) > 0).sort((a, b) => b[1] - a[1]).slice(0, 12)) pushQ(q, "search_console")
   for (const h of competitor?.headings ?? []) if (/\?$/.test(h)) pushQ(h.replace(/^-\s*/, ""), "competitor")
 
+  // Target keyword: volume × winnability from Google's numbers (lib/keywords/brief.ts). Null = no data.
+  const kwPick = await import("@/lib/keywords/brief").then((m) => m.briefKeyword(user, topic, ranks)).catch(() => null)
+
   // Topic plan: the pillar and live sibling pages come first in the pages it may link to.
   const linkable = cl ? [...cl.targets.map((t) => ({ url: t.url, title: t.title })), ...pages.filter((p) => !cl.targets.some((t) => t.url.replace(/\/+$/, "") === p.url.replace(/\/+$/, "")))] : pages
   const brief = await planBrief({
@@ -251,8 +258,10 @@ export async function buildBrief(user: User, input: { topic: string; gapId?: str
     questions: questions.slice(0, 30),
     competitor,
     gap: found?.gap ?? null,
+    keyword: kwPick ? { keyword: kwPick.keyword, why: kwPick.why } : null,
   })
   brief.gapId = input.gapId ?? null
+  brief.keywordData = kwPick
   if (cl) {
     // Every cluster page links to its pillar (and the pillar to its live pages), whatever the plan picked.
     const same = (a: string, b: string) => a.replace(/\/+$/, "") === b.replace(/\/+$/, "")

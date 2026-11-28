@@ -1,0 +1,86 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.2352 sec.",
+ "cost": 0.024036,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280745-3309-0265-0000-9257866e3435",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.1735 sec.",
+   "cost": 0.024036,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "backlinks",
+    "summary",
+    "live"
+   ],
+   "data": {
+    "api": "backlinks",
+    "function": "summary",
+    "target": "growthturbine.com",
+    "include_subdomains": true,
+    "rank_scale": "one_hundred",
+    "internal_list_limit": 1,
+    "backlinks_status_type": "live"
+   },
+   "result": [
+    {
+     "target": "growthturbine.com",
+     "first_seen": "2020-11-29 16:20:59 +00:00",
+     "lost_date": null,
+     "rank": 31,
+     "backlinks": 1038,
+     "backlinks_spam_score": 13,
+     "crawled_pages": 398,
+     "info": {
+      "server": "cloudflare",
+      "cms": null,
+      "platform_type": [
+       "organization"
+      ],
+      "ip_address": "172.67.151.120",
+      "country": null,
+      "is_ip": false,
+      "target_spam_score": 0
+     },
+     "internal_links_count": 21439,
+     "external_links_count": 3020,
+     "broken_backlinks": 0,
+     "broken_pages": 19,
+     "referring_domains": 370,
+     "referring_domains_nofollow": 167,
+     "referring_main_domains": 350,
+     "referring_main_domains_nofollow": 156,
+     "referring_ips": 278,
+     "referring_subnets": 245,
+     "referring_pages": 896,
+     "referring_pages_nofollow": 548,
+     "referring_links_tld": {
+      "com": 721
+     },
+     "referring_links_types": {
+      "anchor": 888
+     },
+     "referring_links_attributes": {
+      "nofollow": 548
+     },
+     "referring_links_platform_types": {
+      "organization": 596
+     },
+     "referring_links_semantic_locations": {
+      "main": 337
+     },
+     "referring_links_countries": {
+      "": 494
+     }
+    }
+   ]
+  }
+ ]
+}

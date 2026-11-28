@@ -270,7 +270,7 @@ export async function getResearchData(user: User): Promise<ResearchData> {
     hasSocialAccounts: (await listAccounts(user.id).catch(() => [])).some((a) => a.status === "active"),
     gmbConnected: !!(await db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationId: true } }))?.gmbLocationId,
     published: hasPro(user) ? await repurposablePosts(user.id).catch(() => []) : [],
-    clusters: await clusterView(user.id).catch(() => null),
+    clusters: await clusterView(user.id, { badges: true }).catch(() => null),
     webPersonEmail: settings.webPersonEmail ?? null,
   }
 }

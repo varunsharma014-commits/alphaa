@@ -116,7 +116,7 @@ ${facts.map((x) => `${x.key}: ${x.text}`).join("\n")}`,
   // Keywords: cleaned, deduped, then checked against Google's search volumes for this area.
   const groups = out.adGroups.slice(0, 2)
   const wanted = groups.flatMap((gr) => gr.keywords.map((k) => cleanKeyword(k.text)).filter((k): k is string => !!k))
-  const { ideas, checked } = await checkVolumes(g, Array.from(new Set(wanted)), city, country, user.websiteUrl, s.voice?.style.language)
+  const { ideas, checked, bidsOk } = await checkVolumes(g, Array.from(new Set(wanted)), city, country, user.websiteUrl, s.voice?.style.language)
   const vol = new Map(ideas.map((i) => [i.text.toLowerCase(), i]))
 
   const adGroups: PlanAdGroup[] = []
@@ -132,7 +132,7 @@ ${facts.map((x) => `${x.key}: ${x.text}`).join("\n")}`,
       const idea = vol.get(text)
       const searches = idea?.avgMonthlySearches ?? null
       if (checked && searches === 0) continue // Google says nobody searches it
-      kws.push({ text, match: k.match, searches, why: k.why })
+      kws.push({ text, match: k.match, searches, why: k.why, ...(bidsOk && idea ? { bidLow: idea.lowBidMicros !== null ? fromMicros(idea.lowBidMicros) : null, bidHigh: idea.highBidMicros !== null ? fromMicros(idea.highBidMicros) : null } : {}) })
     }
     const heads = cleanLines(gr.headlines, HEADLINE_MAX, 15, allowed, true, brand)
     const descs = cleanLines(gr.descriptions, DESCRIPTION_MAX, 4, allowed, false, brand)
@@ -153,7 +153,8 @@ ${facts.map((x) => `${x.key}: ${x.text}`).join("\n")}`,
   // One monthly cap covers Google and Meta: leave out what live Meta campaigns are set to spend.
   const cap = s.autopilot?.adBudget != null ? Math.max(0, s.autopilot.adBudget - (await metaMonthlyCommitment(userId).catch(() => 0))) : null
   const kwIdeas = adGroups.flatMap((gr) => gr.keywords).map((k) => vol.get(k.text)).filter((i): i is KeywordIdea => !!i)
-  const sug = suggestDaily(kwIdeas.map((i) => i.highBidMicros ?? i.lowBidMicros ?? 0))
+  // Bids are in the currency of the account that answered: only used when that's the plan's currency.
+  const sug = bidsOk ? suggestDaily(kwIdeas.map((i) => i.highBidMicros ?? i.lowBidMicros ?? 0)) : null
   const cur = g.account.currency ?? "USD"
   let daily: number | null = null
   let dailySource: AdPlan["dailySource"] = "none"
@@ -206,16 +207,33 @@ ${facts.map((x) => `${x.key}: ${x.text}`).join("\n")}`,
   })
 }
 
-async function checkVolumes(g: Gads, keywords: string[], city: string, country: string | null, url: string, language?: string): Promise<{ ideas: KeywordIdea[]; checked: boolean }> {
-  if (!keywords.length) return { ideas: [], checked: false }
+/**
+ * Google's numbers for the keywords: the brand's own Google Ads account first, else Alphaa's own
+ * Keyword Planner connection (lib/keywords/planner.ts; a new account without access answers
+ * nothing). `bidsOk` = the bids are in the brand account's currency.
+ */
+async function checkVolumes(g: Gads, keywords: string[], city: string, country: string | null, url: string, language?: string): Promise<{ ideas: KeywordIdea[]; checked: boolean; bidsOk: boolean }> {
+  if (!keywords.length) return { ideas: [], checked: false, bidsOk: false }
+  const lang = LANGUAGE[(language ?? "English").trim().toLowerCase()] ?? null
   try {
     const geo = await g.geoTarget(city, country).catch(() => null)
-    const lang = LANGUAGE[(language ?? "English").trim().toLowerCase()] ?? null
     const ideas = await g.keywordIdeas(keywordIdeasBody({ keywords, url: site(url), language: lang, geoTargets: geo ? [geo] : [] }))
-    return { ideas, checked: ideas.length > 0 }
+    if (ideas.length) return { ideas, checked: true, bidsOk: true }
   } catch (err) {
     console.error("[gads/plan] keyword ideas", err instanceof Error ? err.message : err)
-    return { ideas: [], checked: false }
+  }
+  try {
+    const { plannerConnection, plannerGeo } = await import("@/lib/keywords/planner")
+    const c = await plannerConnection()
+    if (!c) return { ideas: [], checked: false, bidsOk: false }
+    const geo = await plannerGeo(c, city, country === "US" || country === "CA" ? country : null)
+    const api = await import("./api")
+    const ideas = await api.generateKeywordIdeas(c.customerId, keywordIdeasBody({ keywords, url: site(url), language: lang, geoTargets: geo }), { token: c.token, loginCustomerId: c.loginCustomerId })
+    const plannerCurrency = (await import("./store").then((m) => m.getGadsAccount(c.userId)).catch(() => null))?.currency ?? null
+    return { ideas, checked: ideas.length > 0, bidsOk: !!plannerCurrency && plannerCurrency === (g.account.currency ?? "USD") }
+  } catch (err) {
+    console.error("[gads/plan] keyword ideas (Alphaa planner)", err instanceof Error ? err.message : err)
+    return { ideas: [], checked: false, bidsOk: false }
   }
 }
 

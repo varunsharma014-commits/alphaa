@@ -78,6 +78,10 @@ export type AgentSettings = {
   /** Shareable ad report links + the optional monthly email (lib/ad-report). */
   adReports?: import("@/lib/ad-report/token").ReportLink[]
   adReportMail?: { monthly: boolean; to?: string | null; lastSent?: string | null; at: string }
+  /** Research → Keywords "Add to topic plan": phrases the next Topic plan build must consider (lib/clusters.ts). */
+  keywordPins?: { keyword: string; at: string }[]
+  /** Last on-demand refresh of keyword data / backlinks (max once a day each). */
+  seoData?: { keywordsAt?: string; backlinksAt?: string }
 }
 
 export type Autopilot = {

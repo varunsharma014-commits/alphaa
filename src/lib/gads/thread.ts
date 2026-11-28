@@ -97,7 +97,7 @@ export function planMessages(p: AdPlan): Message[] {
   const out: Message[] = [agent(head, "ad-plan")]
   p.adGroups.forEach((g, i) => {
     out.push(agent([
-      { kind: "sources", title: `Searches: ${g.name}`, limit: 8, items: g.keywords.map((k) => ({ name: k.match === "EXACT" ? `[${k.text}]` : `“${k.text}”`, detail: k.match === "EXACT" ? "exactly this" : "this phrase", status: k.searches == null ? "no data" : `${n(k.searches)}/mo`, ok: (k.searches ?? 0) > 0 })) },
+      { kind: "sources", title: `Searches: ${g.name}`, limit: 8, items: g.keywords.map((k) => ({ name: k.match === "EXACT" ? `[${k.text}]` : `“${k.text}”`, detail: k.match === "EXACT" ? "exactly this" : "this phrase", status: k.searches == null ? "no data" : `${n(k.searches)}/mo${k.bidLow != null && k.bidHigh != null ? ` · ${money(k.bidLow, p.currency)} to ${money(k.bidHigh, p.currency)} a click` : ""}`, ok: (k.searches ?? 0) > 0 })) },
       { kind: "doc", title: "Your ad", meta: `${g.ad.headlines.length} headlines · ${g.ad.descriptions.length} descriptions · Google mixes them`, text: `${g.ad.headlines.join(" | ")}\n\n${g.ad.descriptions.join("\n")}` },
     ], `ad-plan-g${i}`))
   })

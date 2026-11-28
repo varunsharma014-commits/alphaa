@@ -23,7 +23,20 @@ export function BriefView({ brief, open = false }: { brief: ContentBrief; open?:
       </summary>
       <div style={{ marginTop: 8 }}>
         {row("Answers", <b>{brief.question}</b>)}
-        {row("Search phrase", brief.keyword)}
+        {row("Search phrase", brief.keywordData ? (
+          <>
+            <b>{brief.keyword}</b>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 4 }}>
+              <span className="ax-pill n">{brief.keywordData.volume} on Google</span>
+              {brief.keywordData.difficulty !== null && <span className="ax-pill n">Difficulty {brief.keywordData.difficulty} of 100 · {brief.keywordData.difficultyLabel}</span>}
+              {brief.keywordData.intent && <span className="ax-pill n">{brief.keywordData.intent}</span>}
+            </div>
+            <div style={{ color: "var(--x-mut)", fontSize: 12.5, marginTop: 4 }}>
+              I picked it for the searches it gets and how likely your site can reach page one.
+              {brief.keywordData.options.length > 0 && <> Also weighed: {brief.keywordData.options.map((o) => `${o.keyword} (${o.volume.toLowerCase()}${o.difficulty !== null ? `, difficulty ${o.difficulty}` : ""})`).join("; ")}.</>}
+            </div>
+          </>
+        ) : brief.keyword)}
         {row("Reader", <>{brief.audience} <span className="ax-pill n" style={{ marginLeft: 4 }}>{INTENT[brief.intent]}</span></>)}
         {row("Outline", (
           <ol style={{ margin: 0, paddingLeft: 18 }}>

@@ -1,0 +1,306 @@
+{
+ "version": "0.1.20261117",
+ "status_code": 20000,
+ "status_message": "Ok.",
+ "time": "0.1070 sec.",
+ "cost": 0.024108,
+ "tasks_count": 1,
+ "tasks_error": 0,
+ "tasks": [
+  {
+   "id": "11280745-3309-0266-0000-85d2d5d10e87",
+   "status_code": 20000,
+   "status_message": "Ok.",
+   "time": "0.0736 sec.",
+   "cost": 0.024108,
+   "result_count": 1,
+   "path": [
+    "v3",
+    "backlinks",
+    "history",
+    "live"
+   ],
+   "data": {
+    "api": "backlinks",
+    "function": "history",
+    "target": "growthturbine.com",
+    "date_from": "2026-08-20",
+    "rank_scale": "one_hundred"
+   },
+   "result": [
+    {
+     "target": "growthturbine.com",
+     "date_from": "2026-08-20",
+     "date_to": null,
+     "items_count": 3,
+     "items": [
+      {
+       "type": "backlinks_history",
+       "date": "2026-08-31 00:00:00 +00:00",
+       "rank": 31,
+       "backlinks": 914,
+       "new_backlinks": 283,
+       "lost_backlinks": 29,
+       "new_referring_domains": 17,
+       "lost_referring_domains": 13,
+       "crawled_pages": 311,
+       "info": {
+        "server": "cloudflare",
+        "cms": null,
+        "platform_type": [
+         "organization"
+        ],
+        "ip_address": "172.67.151.120",
+        "country": null,
+        "is_ip": false,
+        "target_spam_score": 0
+       },
+       "internal_links_count": 15977,
+       "external_links_count": 2226,
+       "broken_backlinks": 0,
+       "broken_pages": 1,
+       "referring_domains": 321,
+       "referring_domains_nofollow": 155,
+       "referring_main_domains": 305,
+       "referring_main_domains_nofollow": 145,
+       "referring_ips": 230,
+       "referring_subnets": 207,
+       "referring_pages": 805,
+       "referring_pages_nofollow": 502,
+       "referring_links_tld": {
+        "com": 651,
+        "ca": 20,
+        "in": 18,
+        "org": 15,
+        "net": 13,
+        "co.in": 10,
+        "xyz": 8,
+        "co": 7,
+        "info": 6,
+        "pages.dev": 5
+       },
+       "referring_links_types": {
+        "anchor": 799,
+        "image": 6
+       },
+       "referring_links_attributes": {
+        "nofollow": 502,
+        "noopener": 444,
+        "noreferrer": 270,
+        "external": 17,
+        "ugc": 2
+       },
+       "referring_links_platform_types": {
+        "organization": 543,
+        "cms": 224,
+        "blogs": 217,
+        "unknown": 200,
+        "news": 94,
+        "ecommerce": 3
+       },
+       "referring_links_semantic_locations": {
+        "main": 310,
+        "article": 222,
+        "": 187,
+        "section": 79,
+        "aside": 3,
+        "figure": 2,
+        "footer": 1,
+        "figcaption": 1
+       },
+       "referring_links_countries": {
+        "": 430,
+        "US": 252,
+        "IN": 38,
+        "WW": 38,
+        "CA": 25,
+        "CO": 7,
+        "ES": 3,
+        "NL": 3,
+        "IO": 2,
+        "GB": 2
+       }
+      },
+      {
+       "type": "backlinks_history",
+       "date": "2026-09-30 00:00:00 +00:00",
+       "rank": 31,
+       "backlinks": 1157,
+       "new_backlinks": 258,
+       "lost_backlinks": 13,
+       "new_referring_domains": 229,
+       "lost_referring_domains": 7,
+       "crawled_pages": 329,
+       "info": {
+        "server": "cloudflare",
+        "cms": null,
+        "platform_type": [
+         "organization"
+        ],
+        "ip_address": "172.67.151.120",
+        "country": null,
+        "is_ip": false,
+        "target_spam_score": 0
+       },
+       "internal_links_count": 17027,
+       "external_links_count": 2371,
+       "broken_backlinks": 0,
+       "broken_pages": 1,
+       "referring_domains": 543,
+       "referring_domains_nofollow": 155,
+       "referring_main_domains": 526,
+       "referring_main_domains_nofollow": 145,
+       "referring_ips": 459,
+       "referring_subnets": 322,
+       "referring_pages": 1043,
+       "referring_pages_nofollow": 518,
+       "referring_links_tld": {
+        "com": 681,
+        "site": 37,
+        "shop": 35,
+        "website": 33,
+        "store": 33,
+        "online": 30,
+        "space": 28,
+        "ca": 20,
+        "org": 17,
+        "in": 16
+       },
+       "referring_links_types": {
+        "anchor": 1037,
+        "image": 6
+       },
+       "referring_links_attributes": {
+        "nofollow": 518,
+        "noopener": 466,
+        "noreferrer": 284,
+        "external": 18,
+        "ugc": 2
+       },
+       "referring_links_platform_types": {
+        "organization": 561,
+        "unknown": 412,
+        "cms": 234,
+        "blogs": 225,
+        "news": 103,
+        "ecommerce": 3
+       },
+       "referring_links_semantic_locations": {
+        "main": 324,
+        "article": 234,
+        "details": 217,
+        "": 175,
+        "section": 86,
+        "aside": 3,
+        "figure": 2,
+        "figcaption": 1,
+        "footer": 1
+       },
+       "referring_links_countries": {
+        "": 661,
+        "US": 251,
+        "WW": 44,
+        "IN": 37,
+        "CA": 25,
+        "CO": 7,
+        "IO": 4,
+        "ES": 3,
+        "AI": 2,
+        "GB": 2
+       }
+      },
+      {
+       "type": "backlinks_history",
+       "date": "2026-10-31 00:00:00 +00:00",
+       "rank": 31,
+       "backlinks": 1027,
+       "new_backlinks": 114,
+       "lost_backlinks": 27,
+       "new_referring_domains": 49,
+       "lost_referring_domains": 12,
+       "crawled_pages": 366,
+       "info": {
+        "server": "cloudflare",
+        "cms": null,
+        "platform_type": [
+         "organization"
+        ],
+        "ip_address": "172.67.151.120",
+        "country": null,
+        "is_ip": false,
+        "target_spam_score": 0
+       },
+       "internal_links_count": 18844,
+       "external_links_count": 2597,
+       "broken_backlinks": 0,
+       "broken_pages": 2,
+       "referring_domains": 367,
+       "referring_domains_nofollow": 165,
+       "referring_main_domains": 348,
+       "referring_main_domains_nofollow": 154,
+       "referring_ips": 279,
+       "referring_subnets": 246,
+       "referring_pages": 886,
+       "referring_pages_nofollow": 540,
+       "referring_links_tld": {
+        "com": 706,
+        "ca": 22,
+        "org": 20,
+        "xyz": 15,
+        "in": 14,
+        "net": 14,
+        "co.in": 10,
+        "io": 9,
+        "co": 8,
+        "ai": 7
+       },
+       "referring_links_types": {
+        "anchor": 879,
+        "image": 7
+       },
+       "referring_links_attributes": {
+        "nofollow": 540,
+        "noopener": 513,
+        "noreferrer": 305,
+        "external": 17,
+        "ugc": 1
+       },
+       "referring_links_platform_types": {
+        "organization": 579,
+        "cms": 253,
+        "blogs": 242,
+        "unknown": 230,
+        "news": 110,
+        "ecommerce": 4
+       },
+       "referring_links_semantic_locations": {
+        "main": 330,
+        "article": 249,
+        "": 193,
+        "section": 98,
+        "details": 7,
+        "aside": 4,
+        "figure": 2,
+        "figcaption": 1,
+        "footer": 1,
+        "nav": 1
+       },
+       "referring_links_countries": {
+        "": 493,
+        "US": 247,
+        "WW": 50,
+        "IN": 34,
+        "CA": 26,
+        "IO": 9,
+        "CO": 8,
+        "AI": 7,
+        "ES": 3,
+        "GB": 2
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -82,6 +82,8 @@ export function TopicPlan({ view, autopilot, siteConnected, webPersonEmail }: { 
             {a.pillar && <span className="ax-pill a">Main guide</span>}
             <span className={`ax-pill ${st.tone}`}>{st.label}</span>
             {[...new Set(a.sources.filter((s) => s.kind !== "page" && s.kind !== "draft").map((s) => s.label))].slice(0, 3).map((l) => <span key={l} className="ax-tp-src">{l}</span>)}
+            {a.kw && a.kw.searches > 0 && <span className="ax-pill n" title={`Google searches for “${a.kw.keyword}”`}>{a.kw.volume}</span>}
+            {a.kw && a.kw.difficulty !== null && <span className={`ax-pill ${a.kw.tone}`} title="How hard it is to reach page one, 0 to 100">Difficulty {a.kw.difficulty} · {a.kw.label}</span>}
           </div>
           <div className="ax-tp-t">{a.title}</div>
           {sig && <div className="ax-tp-s">{sig}</div>}
