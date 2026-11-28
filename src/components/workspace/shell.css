@@ -1,0 +1,168 @@
+/* Shell, navigation and overlays (UI audit package 1). Everything under .ax; tokens from
+   (dashboard)/workspace.css. Loaded after workspace.css rules of the same name, and every rule
+   here is `.ax`-prefixed so it wins either way. */
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+.ax .ax-brand { position: relative; }
+.ax .ax-brand > span:nth-child(2) { min-width: 0; flex: 1; }
+.ax .ax-brand small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax .ax-sbclose { display: none; }
+.ax .ax-sbt { position: relative; }
+.ax .ax-sbt.fade { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent); }
+.ax .ax-chev { display: inline-flex; color: var(--x-ter); transition: transform .2s var(--x-ease); }
+.ax .ax-chev.open { transform: rotate(90deg); }
+.ax .ax-more { display: flex; flex-direction: column; gap: 10px; margin: 4px 0 2px; padding-left: 8px; animation: ax-more-in .2s var(--x-ease); }
+@keyframes ax-more-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.ax .ax-more__g { display: flex; flex-direction: column; gap: 1px; }
+.ax .ax-more__h { display: flex; align-items: center; gap: 6px; margin: 0 0 2px; padding: 0 10px; font-size: 11px; font-weight: 600; color: var(--x-ter); }
+.ax .ax-more__h svg { flex: none; }
+.ax .ax-more .ax-ni.sm { padding-left: 30px; }
+.ax .ax-sw.off { opacity: .5; cursor: not-allowed; }
+.ax .ax-row .ax-t11 { line-height: 1.35; margin-top: 1px; }
+
+/* Site switcher button (top of the sidebar) */
+.ax .ax-site { padding: 0 0 16px; }
+.ax .ax-ssbtn { width: 100%; display: flex; align-items: center; gap: 10px; padding: 7px 10px 7px 7px; border-radius: 13px; border: 1px solid var(--x-line); background: var(--x-surf); box-shadow: var(--x-shadow); text-align: left; color: var(--x-ink); transition: border-color .15s, box-shadow .15s, transform .15s var(--x-ease); }
+.ax .ax-ssbtn:hover { border-color: rgba(0,113,227,.3); }
+.ax .ax-ssbtn:active { transform: scale(.98); }
+.ax .ax-ssbtn[aria-expanded="true"] { border-color: rgba(0,113,227,.45); box-shadow: var(--x-focus); }
+.ax .ax-ssbtn .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--x-fs-md); font-weight: 600; }
+.ax .ax-ssbtn > svg { color: var(--x-ter); flex: none; }
+.ax .ax-ss__fav { width: 26px; height: 26px; border-radius: 8px; flex: none; display: inline-flex; align-items: center; justify-content: center; font-size: var(--x-fs-xs); font-weight: 700; color: #fff; background: linear-gradient(135deg, #5ac8fa, #0071e3 55%, #af52de); }
+/* Site switcher panel */
+.ax .ax-ss { display: flex; flex-direction: column; gap: 1px; }
+.ax .ax-ss__row { align-items: center; }
+.ax .ax-ss__row[aria-checked="true"] { background: rgba(0,113,227,.07); }
+.ax .ax-ss__t { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.ax .ax-ss__t b { font-size: var(--x-fs-md); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax .ax-ss__t small { font-size: var(--x-fs-xs); color: var(--x-mut); font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax .ax-ss__on { color: var(--x-blue); display: inline-flex; flex: none; }
+.ax .ax-ss__load { padding: 4px 6px; }
+.ax .ax-ss__more { align-self: flex-start; margin: 2px 10px 4px; padding: 4px 0; border: 0; background: none; font-size: var(--x-fs-xs); font-weight: 500; color: var(--x-blue); }
+.ax .ax-ss__more:hover { text-decoration: underline; }
+.ax .ax-ss__add { margin-top: 6px; display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 10px; border-radius: 12px; border: 1px dashed rgba(0,0,0,.16); background: none; text-align: left; color: var(--x-ink); min-height: 44px; transition: border-color .15s, background-color .15s; }
+.ax .ax-ss__add:hover:not(:disabled) { border-color: rgba(0,113,227,.45); background: rgba(0,113,227,.04); }
+.ax .ax-ss__add:disabled { opacity: .5; cursor: default; }
+.ax .ax-ss__plus { width: 26px; height: 26px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; background: var(--x-soft); color: var(--x-blue); flex: none; }
+.ax .ax-ss__err { margin: 6px 10px 2px; font-size: var(--x-fs-xs); color: var(--x-bad-ink); }
+
+/* Account row (sidebar footer) + menu */
+.ax .ax-acct { padding: 0; display: block; }
+.ax .ax-acctbtn { width: 100%; display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 13px; border: 1px solid transparent; background: none; text-align: left; color: var(--x-ink); min-height: 46px; transition: background-color .15s, border-color .15s; }
+.ax .ax-acctbtn:hover { background: var(--x-soft); }
+.ax .ax-acctbtn:active { background: rgba(0,0,0,.06); }
+.ax .ax-acctbtn[aria-expanded="true"] { background: var(--x-surf); border-color: var(--x-line); box-shadow: var(--x-shadow); }
+.ax .ax-acctbtn .t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ax .ax-acctbtn .t b { font-size: var(--x-fs-sm); font-weight: 600; }
+.ax .ax-acctbtn .t small { font-size: var(--x-fs-xs); color: var(--x-mut); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax .ax-acctbtn__chev { color: var(--x-ter); display: inline-flex; flex: none; }
+.ax .ax-av { border-radius: 999px; flex: none; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #e8e8ed, #d2d2d7); color: var(--x-ink); font-size: var(--x-fs-sm); font-weight: 650; }
+.ax .ax-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ax .ax-am { display: flex; flex-direction: column; }
+.ax .ax-am__who { display: flex; align-items: center; gap: 10px; padding: 8px 8px 10px; margin-bottom: 4px; border-bottom: 1px solid var(--x-line); }
+.ax .ax-am__who .t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ax .ax-am__who b { font-size: var(--x-fs-md); font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax .ax-am__who small { font-size: var(--x-fs-xs); color: var(--x-mut); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax .ax-am__g { display: flex; flex-direction: column; }
+.ax .ax-am__h { margin: 6px 0 2px; padding: 0 10px; font-size: 11px; font-weight: 600; color: var(--x-ter); letter-spacing: .02em; }
+.ax .ax-am .xd-mi svg, .ax .ax-ss .xd-mi svg { color: var(--x-mut); flex: none; }
+.ax .ax-am .xd-mi.danger svg { color: currentColor; }
+
+/* ── Chat: a sheet from the right, over a scrim ──────────────────────────── */
+.ax .ax-chatscrim { position: fixed; inset: 0; z-index: 62; background: rgba(0,0,0,.18); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .22s ease; }
+.ax .ax-chatscrim.open { opacity: 1; pointer-events: auto; }
+.ax .ax-chatp { position: fixed; z-index: 63; top: 12px; right: 12px; bottom: 12px; width: 520px; max-width: calc(100vw - 24px); height: auto; border-radius: 24px; display: flex; flex-direction: column; background: var(--x-surf); border: 1px solid var(--x-line); box-shadow: var(--x-float); overflow: hidden; outline: none; animation: ax-chat-in .28s var(--x-ease);
+  /* The chat's own blocks (components/agent) read --ag-*: map them onto the workspace look. */
+  --ag-bg: var(--x-surf); --ag-bg2: var(--x-bg); --ag-bg3: var(--x-tint); --ag-fg: var(--x-ink); --ag-fg2: #333336; --ag-muted: var(--x-mut);
+  --ag-line: rgba(0,0,0,.09); --ag-link: var(--x-blue); --ag-btn: var(--x-blue); --ag-btn-fg: #fff; --ag-btn-hover: var(--x-blue-hover);
+  --ag-card: var(--x-surf); --ag-shadow: var(--x-shadow); font-size: 15px; }
+.ax .ax-chatp[hidden] { display: none; }
+@keyframes ax-chat-in { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+.ax .ax-chatp > header { display: flex; align-items: center; gap: 12px; padding: 16px 18px 14px; border-bottom: 1px solid var(--x-line); flex: none; }
+.ax .ax-chatp > header .who { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ax .ax-chatp > header .who b { font-size: var(--x-fs-lg); font-weight: 650; letter-spacing: -.02em; }
+.ax .ax-chatp > header .who small { font-size: var(--x-fs-xs); color: var(--x-mut); }
+.ax .ax-chatp .ax-x { width: 34px; height: 34px; }
+.ax .ax-chatp .ax-chatchips { padding: 12px 16px 2px; display: flex; gap: 8px; flex-wrap: wrap; flex: none; }
+.ax .ax-chatp .ax-chatchips button { padding: 7px 12px; border-radius: 999px; background: var(--x-soft); border: 1px solid var(--x-line); font-size: var(--x-fs-sm); font-weight: 500; color: var(--x-ink); min-height: 34px; }
+.ax .ax-chatp .ag-main { height: auto; flex: 1; min-height: 0; background: transparent; }
+.ax .ax-chatp .ag-main .ag-feed { max-width: none; padding: 16px 18px 20px; font-size: 15px; }
+.ax .ax-chatp .ag-main .ag-composer { width: calc(100% - 32px); margin: 0 auto 10px; border-radius: 16px; border-color: rgba(0,0,0,.1); box-shadow: none; background: var(--x-bg); transition: border-color .15s, box-shadow .15s; }
+.ax .ax-chatp .ag-main .ag-composer:focus-within { border-color: rgba(0,113,227,.5); box-shadow: var(--x-focus); background: var(--x-surf); }
+.ax .ax-chatp .ag-composer input { font-size: 15px; }
+.ax .ax-chatp .ag-composer button { background: var(--x-blue); color: #fff; transition: background-color .15s, transform .15s var(--x-ease); }
+.ax .ax-chatp .ag-composer button:hover:not(:disabled) { background: var(--x-blue-hover); }
+.ax .ax-chatp .ag-composer button:active:not(:disabled) { transform: scale(.94); }
+.ax .ax-chatp .ag-bar { margin: 4px 0 8px; padding: 0 16px; display: flex; align-items: center; gap: 8px; }
+.ax .ax-chatp .ag-bar .ag-composer { flex: 1; margin: 0; width: auto; }
+.ax .ax-chatp .ax-ainote { flex: none; margin: 0 0 12px; padding: 0 18px; text-align: center; font-size: 11px; color: var(--x-ter); }
+
+/* ── Autopilot consent (center Modal) ───────────────────────────────────── */
+.ax .ax-aa { display: flex; flex-direction: column; gap: 12px; }
+.ax .ax-aa > p { margin: 0; }
+.ax .ax-aa__top { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.ax .ax-aa__t { margin: 0; font-size: var(--x-fs-xl); font-weight: 650; letter-spacing: -.02em; line-height: 1.25; }
+.ax .ax-aa__lead { font-size: 15px; line-height: 1.5; }
+.ax .ax-aa__mut { font-size: var(--x-fs-sm); color: var(--x-mut); }
+.ax .ax-aa__ai { padding: 10px 12px; border-radius: var(--x-r-sm); background: var(--x-abg); color: var(--x-warn-ink); font-size: var(--x-fs-sm); font-weight: 500; line-height: 1.45; }
+.ax .ax-aa__decl { padding: 12px 14px; border-radius: var(--x-r-sm); background: var(--x-tint); font-size: var(--x-fs-sm); line-height: 1.5; color: #333336; }
+.ax .ax-aa__decl p { margin: 0 0 6px; font-weight: 600; color: var(--x-ink); }
+.ax .ax-aa__decl ol { margin: 0; padding-left: 26px; list-style: lower-roman; }
+.ax .ax-aa__decl li { margin-bottom: 6px; }
+.ax .ax-aa__decl li:last-child { margin-bottom: 0; }
+.ax .ax-aa__decl a, .ax .ax-cr__fine a { color: var(--x-blue); text-decoration: underline; }
+.ax .ax-aa__money { font-size: var(--x-fs-sm); font-weight: 600; }
+.ax .ax-aa__check { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: var(--x-r-sm); border: 1px solid var(--x-line); background: var(--x-surf); font-size: var(--x-fs-md); line-height: 1.45; cursor: pointer; transition: border-color .15s, background-color .15s; }
+.ax .ax-aa__check:hover { border-color: rgba(0,113,227,.35); }
+.ax .ax-aa__check:has(input:checked) { border-color: rgba(0,113,227,.5); background: rgba(0,113,227,.05); }
+.ax .ax-aa__check input { width: 20px; height: 20px; margin: 0; flex: none; accent-color: var(--x-blue); }
+.ax .ax-aa__err { color: var(--x-bad-ink); font-size: var(--x-fs-sm); }
+.ax .ax-aa__fine { font-size: 11px; color: var(--x-ter); }
+
+/* ── Credits sheet ──────────────────────────────────────────────────────── */
+.ax .ax-cr { display: flex; flex-direction: column; gap: 18px; }
+.ax .ax-cr__p { margin: 0; }
+.ax .ax-cr__h { margin: 0 0 8px; font-size: var(--x-fs-xs); font-weight: 600; color: var(--x-mut); }
+.ax .ax-cr__chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ax .ax-cr__chip { display: inline-flex; gap: 6px; align-items: baseline; padding: 5px 10px; border-radius: 999px; background: var(--x-soft); border: 1px solid var(--x-line); font-size: var(--x-fs-xs); color: var(--x-mut); }
+.ax .ax-cr__chip b { color: var(--x-ink); font-weight: 650; }
+.ax .ax-cr__packs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.ax .ax-cr__packs .xd-plan { padding: 14px; gap: 8px; }
+.ax .ax-cr__packs .xd-plan__price b { font-size: 24px; }
+.ax .ax-cr__packs .ax-btn { width: 100%; justify-content: center; }
+.ax .ax-cr__auto { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 14px; border-radius: var(--x-r-sm); background: var(--x-soft); }
+.ax .ax-cr__auto b { display: block; font-size: var(--x-fs-md); font-weight: 600; }
+.ax .ax-cr__auto small { display: block; font-size: var(--x-fs-xs); color: var(--x-mut); margin-top: 2px; }
+.ax .ax-cr__err { margin: 0; color: var(--x-bad-ink); font-size: var(--x-fs-sm); }
+.ax .ax-cr__fine { margin: 0; font-size: 11px; color: var(--x-ter); }
+
+/* ── Phones and tablets ─────────────────────────────────────────────────── */
+@media (max-width: 1023px) {
+  .ax .ax-sbclose { display: inline-flex; width: 36px; height: 36px; }
+  .ax .ax-chatp { top: 10px; left: 0; right: 0; bottom: 0; width: 100%; max-width: none; border-radius: 22px 22px 0 0; animation: ax-chat-up .28s var(--x-ease); }
+  .ax .ax-chatp .ax-ainote { padding-bottom: env(safe-area-inset-bottom); }
+}
+@keyframes ax-chat-up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (max-width: 560px) {
+  .ax .ax-cr__packs { grid-template-columns: 1fr; }
+}
+@media (pointer: coarse) {
+  .ax .ax-ni { min-height: 44px; }
+  .ax .ax-chatp .ax-chatchips button { min-height: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax .ax-more, .ax .ax-chatp, .ax .ax-chatscrim, .ax .ax-chev { animation: none; transition: none; }
+}
+/* The composer draws the focus ring itself (focus-within), not its input. */
+.ax .ax-chatp .ag-composer input:focus-visible, .ax .ax-chatp .ag-composer textarea:focus-visible { outline: none; }
+.ax .ax-cr__packs { padding-top: 8px; }
+.ax .ax-cr__packs .xd-plan__n { white-space: nowrap; }
+.ax .ax-cr__packs .xd-plan__top .ax-pill { position: absolute; top: -11px; left: 12px; background: var(--x-surf); box-shadow: 0 0 0 1px rgba(0,113,227,.3); }
+/* Phones: each pack is one compact row (name and price left, Buy right). */
+@media (max-width: 560px) {
+  .ax .ax-cr__packs .xd-plan { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; row-gap: 2px; padding: 14px 14px 12px; }
+  .ax .ax-cr__packs .xd-plan > * { grid-column: 1; }
+  .ax .ax-cr__packs .xd-plan__cta { grid-column: 2; grid-row: 1 / span 3; align-self: center; margin: 0; }
+  .ax .ax-cr__packs .ax-btn { width: auto; min-width: 88px; }
+  .ax .ax-cr__packs .xd-plan__price b { font-size: 20px; }
+}

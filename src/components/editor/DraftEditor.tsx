@@ -244,14 +244,17 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
     return () => window.removeEventListener("beforeunload", h)
   }, [doSave])
 
-  async function close() {
+  // Closing with changes that didn't reach the account asks once, inside the editor.
+  const [askClose, setAskClose] = useState(false)
+  async function close(force = false) {
     if (busy) return
-    if (save.k !== "conflict" && (latest.current.text !== savedText.current.text || latest.current.title !== savedText.current.title)) {
+    if (!force && save.k !== "conflict" && (latest.current.text !== savedText.current.text || latest.current.title !== savedText.current.title)) {
       setBusy(true)
       const ok = await doSave()
       setBusy(false)
-      if (!ok && !window.confirm("Your last changes aren’t saved to your account yet (they’re kept on this device). Close anyway?")) return
+      if (!ok) return setAskClose(true)
     }
+    setAskClose(false)
     const d = draft
     ;(lastFocus.current as HTMLElement | null)?.focus?.()
     onClose(d ? { draftId: d.id, title: savedText.current.title, markdown: savedText.current.text, status: d.status } : null)
@@ -351,14 +354,34 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
   const stats = diff ? diffStats(diff) : null
   const words = useMemo(() => countPostWords(deferred), [deferred])
   const ph = phCount(text)
+  // Select the next [fact to fill in] after the cursor (wraps around), in the Write view.
+  const jumpToFact = () => {
+    setDiffOf(null)
+    if (view === "preview") setView("write")
+    setTimeout(() => {
+      const ta = taRef.current
+      if (!ta) return
+      const re = /\[[^\]]{2,}\](?!\()/g
+      const from = ta.selectionEnd ?? 0
+      let m: RegExpExecArray | null = null
+      re.lastIndex = from
+      m = re.exec(ta.value)
+      if (!m) { re.lastIndex = 0; m = re.exec(ta.value) }
+      if (!m) return
+      ta.focus()
+      ta.setSelectionRange(m.index, m.index + m[0].length)
+      const line = ta.value.slice(0, m.index).split("\n").length
+      ta.scrollTop = Math.max(0, (line - 4) * 24)
+    }, 0)
+  }
 
   const status =
     save.k === "saving" ? "Saving…"
       : save.k === "dirty" ? "Editing…"
-        : save.k === "saved" ? `Saved ${new Date(save.at).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`
+        : save.k === "saved" ? (Date.now() - save.at < 60_000 ? "Saved · just now" : `Saved · ${new Date(save.at).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`)
           : save.k === "error" || save.k === "note" ? save.msg
             : save.k === "conflict" ? "Changed somewhere else"
-              : draft?.editedAt ? `Saved ${when(draft.editedAt)}` : "Saved"
+              : draft?.editedAt ? `Saved · ${when(draft.editedAt)}` : "Saved"
 
   if (!host) return null
   return createPortal(
@@ -392,6 +415,15 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
           <div className="dx-body"><p className="dx-msg" aria-live="polite">Opening your draft…</p></div>
         ) : (
           <>
+            {askClose && (
+              <div className="dx-banner dx-banner--warn" role="alertdialog" aria-label="Close without saving?">
+                Your last changes aren’t saved to your account yet. They’re kept on this device.
+                <span className="dx-banner__acts">
+                  <button type="button" className="dx-btn dx-btn--s" autoFocus onClick={() => setAskClose(false)}>Keep editing</button>
+                  <button type="button" className="dx-btn dx-btn--g" onClick={() => void close(true)}>Close anyway</button>
+                </span>
+              </div>
+            )}
             {locked && <div className="dx-banner">This post is live{draft.url ? <> at <a href={draft.url} target="_blank" rel="noopener noreferrer">{draft.url}</a></> : ""}. Editing here wouldn’t change your site, so it’s read only. History still shows every version.</div>}
             {draft.status === "scheduled" && draft.scheduledFor && <div className="dx-banner dx-banner--info">Scheduled for {when(draft.scheduledFor)}. Edits save automatically, and the saved text is what goes out.</div>}
             {localCopy && (
@@ -462,18 +494,22 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
                     onChange={(e) => edit(e.target.value)}
                     readOnly={locked}
                     spellCheck
-                    aria-label="Post text in Markdown"
-                    aria-describedby="dx-md-hint"
+                    aria-label="Post text"
+                    aria-describedby={ph > 0 ? "dx-md-hint" : undefined}
                   />
                 ) : (
                   <div className="dx-prev ax-md" dangerouslySetInnerHTML={{ __html: html }} />
                 )}
-                {!diffOf && <p id="dx-md-hint" className="dx-hint dx-hint--pane">## heading · **bold**{RENDERS_LINKS ? " · [text](https://link)" : ""} · - list. {ph ? <b>{ph} fact{ph === 1 ? "" : "s"} in [brackets] to fill in before it can go live.</b> : null}</p>}
+                {!diffOf && ph > 0 && (
+                  <button type="button" id="dx-md-hint" className="dx-facts" onClick={jumpToFact} disabled={locked}>
+                    <b>{ph} fact{ph === 1 ? "" : "s"} to fill in</b> before this can go live. Show me
+                  </button>
+                )}
               </section>
 
               <aside className="dx-side" aria-label="Score and history">
                 <div className="dx-seg dx-seg--side" role="tablist" aria-label="Panel">
-                  <button type="button" role="tab" aria-selected={side === "score"} onClick={() => setSide("score")}>Score <span className={`dx-mini dx-mini--${grade.level}`}>{grade.readability.words < 30 && !grade.answers.total ? "—" : grade.score}</span></button>
+                  <button type="button" role="tab" aria-selected={side === "score"} onClick={() => setSide("score")}>Score <span className={`dx-mini dx-mini--${grade.level}`}>{grade.readability.words < 30 && !grade.answers.total ? "" : grade.score}</span></button>
                   <button type="button" role="tab" aria-selected={side === "history"} onClick={() => setSide("history")}>History <span className="dx-mini">{revs.length || ""}</span></button>
                 </div>
                 {side === "score" ? (
@@ -485,7 +521,7 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
                 ) : (
                   <div role="tabpanel" className="dx-hist">
                     {!revs.length ? (
-                      <p className="dx-msg">No versions yet. Your first edit keeps Alphaa’s original, and “Save version” keeps a copy you can come back to.</p>
+                      <p className="dx-msg">No versions yet. Your first edit keeps my original, and “Save a copy” keeps one you can come back to.</p>
                     ) : (
                       <ol>
                         {revs.map((r, i) => (
@@ -505,7 +541,7 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
 
             <footer className="dx-foot">
               <span className="dx-foot__w">{words} words</span>
-              {!locked && <button type="button" className="dx-btn dx-btn--s" onClick={() => void saveVersion()} disabled={busy} title="Save version (⌘S)">Save version</button>}
+              {!locked && <button type="button" className="dx-btn dx-btn--s" onClick={() => void saveVersion()} disabled={busy} title="Save a copy (⌘S)">Save a copy</button>}
               <button type="button" className="dx-btn dx-btn--p" onClick={() => void close()} disabled={busy}>{busy ? "Saving…" : "Done"}</button>
             </footer>
           </>

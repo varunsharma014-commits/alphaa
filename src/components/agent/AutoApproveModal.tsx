@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { Button, Modal } from "@/components/workspace/ui"
 import {
   AUTO_APPROVE_CHANGED, AUTO_APPROVE_OPEN, CONSENT_AI, CONSENT_DECLARATION, CONSENT_CHECKBOX, CONSENT_CTA, CONSENT_MONEY, CONSENT_TITLE, CONSENT_VERSION,
   consentIntro, consentTurnsOn, type AutoApproveChangedDetail, type AutoApproveOpenDetail,
@@ -27,24 +28,18 @@ export function AutoApproveModal({ pro, growth }: { pro: boolean; growth: boolea
   const [agreed, setAgreed] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const box = useRef<HTMLDivElement>(null)
+  // Kept while the sheet closes, so the text doesn't blank mid-animation.
+  const last = useRef<AutoApproveOpenDetail>({})
+  if (open) last.current = open
 
   useEffect(() => {
     const on = (e: Event) => { setOpen((e as CustomEvent<AutoApproveOpenDetail>).detail ?? {}); setAgreed(false); setError(null) }
     window.addEventListener(AUTO_APPROVE_OPEN, on)
     return () => window.removeEventListener(AUTO_APPROVE_OPEN, on)
   }, [])
-  useEffect(() => {
-    if (!open) return
-    const prev = document.activeElement as HTMLElement | null
-    box.current?.focus()
-    const esc = (e: KeyboardEvent) => { if (e.key === "Escape" && !busy) setOpen(null) }
-    window.addEventListener("keydown", esc)
-    return () => { window.removeEventListener("keydown", esc); prev?.focus?.() }
-  }, [open, busy])
 
-  if (!open) return null
-  const scope = { pro, growth, only: open.key }
+  const cur = open ?? last.current
+  const scope = { pro, growth, only: cur.key }
   const { later } = consentTurnsOn(scope)
 
   async function accept() {
@@ -62,35 +57,53 @@ export function AutoApproveModal({ pro, growth }: { pro: boolean; growth: boolea
     window.dispatchEvent(new CustomEvent<AutoApproveChangedDetail>(AUTO_APPROVE_CHANGED, { detail: { on: true, messages: data?.messages } }))
     setOpen(null)
   }
+  async function turnOff() {
+    setBusy(true)
+    const ok = await turnOffAutoApprove()
+    setBusy(false)
+    if (ok) setOpen(null)
+    else setError("That didn’t save. Try again.")
+  }
 
+  // The words below are the recorded declaration (lib/auto-approve-text.ts): shown verbatim.
   return (
-    <div className="ag-modal" role="presentation" onClick={(e) => { if (e.target === e.currentTarget && !busy) setOpen(null) }}>
-      <div className="ag-modal__box" role="dialog" aria-modal="true" aria-labelledby="aa-title" tabIndex={-1} ref={box}>
-        <h2 id="aa-title">{open.renew ? "Please confirm the updated Autopilot declaration" : CONSENT_TITLE}</h2>
-        {open.renew && <p className="ag-modal__muted">We updated the declaration. Autopilot keeps your current settings once you confirm, or you can turn it off.</p>}
-        <p>{consentIntro(scope)}</p>
-        {later && <p className="ag-modal__muted">{later}</p>}
-        <p><b>{CONSENT_AI}</b></p>
-        <p style={{ marginBottom: 4 }}>By turning on Autopilot, I declare that:</p>
-        <ol type="i" style={{ maxHeight: "38vh", overflowY: "auto", paddingLeft: 30, listStyleType: "lower-roman", marginBottom: 12 }}>
-          {CONSENT_DECLARATION.map((b) => (
-            <li key={b} style={{ marginBottom: 6 }}>{b.includes("Terms of Service") ? <>{b.split("Terms of Service")[0]}<a href="/terms#ai-autopilot" target="_blank" rel="noopener">Terms of Service</a>{b.split("Terms of Service")[1]}</> : b}</li>
-          ))}
-        </ol>
-        <p className="ag-modal__money">{CONSENT_MONEY}</p>
-        <label className="ag-modal__check">
+    <Modal
+      open={!!open}
+      onClose={() => setOpen(null)}
+      dismissible={!busy}
+      label={cur.renew ? "Confirm the updated Autopilot declaration" : CONSENT_TITLE}
+      footer={<>
+        {cur.renew
+          ? <Button disabled={busy} onClick={() => void turnOff()}>Turn Autopilot off</Button>
+          : <Button disabled={busy} onClick={() => setOpen(null)}>Cancel</Button>}
+        <Button variant="grad" disabled={!agreed} loading={busy} onClick={() => void accept()}>{cur.renew ? "I agree, keep Autopilot on" : CONSENT_CTA}</Button>
+      </>}
+    >
+      <div className="ax-aa">
+        <div className="ax-aa__top">
+          <span className="ax-orb" style={{ width: 40, height: 40 }} aria-hidden="true" />
+          <h2 className="ax-aa__t">{cur.renew ? "Please confirm the updated Autopilot declaration" : CONSENT_TITLE}</h2>
+        </div>
+        {cur.renew && <p className="ax-aa__mut">The declaration changed. Autopilot keeps your current settings once you confirm, or you can turn it off.</p>}
+        <p className="ax-aa__lead">{consentIntro(scope)}</p>
+        {later && <p className="ax-aa__mut">{later}</p>}
+        <p className="ax-aa__ai">{CONSENT_AI}</p>
+        <div className="ax-aa__decl" tabIndex={0} role="region" aria-label="Declaration">
+          <p>By turning on Autopilot, I declare that:</p>
+          <ol>
+            {CONSENT_DECLARATION.map((b) => (
+              <li key={b}>{b.includes("Terms of Service") ? <>{b.split("Terms of Service")[0]}<a href="/terms#ai-autopilot" target="_blank" rel="noopener">Terms of Service</a>{b.split("Terms of Service")[1]}</> : b}</li>
+            ))}
+          </ol>
+        </div>
+        <p className="ax-aa__money">{CONSENT_MONEY}</p>
+        <label className="ax-aa__check">
           <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
           <span>{CONSENT_CHECKBOX}</span>
         </label>
-        {error && <p className="ag-modal__err">{error}</p>}
-        <p className="ag-modal__muted" style={{ fontSize: 12 }}>Declaration version {CONSENT_VERSION}. Your acceptance is recorded with the time and your browser details.</p>
-        <div className="ag-modal__btns">
-          <button type="button" className="ag-btn-primary" disabled={!agreed || busy} onClick={accept}>{busy ? "Saving…" : open.renew ? "I agree, keep Autopilot on" : CONSENT_CTA}</button>
-          {open.renew
-            ? <button type="button" className="ag-btn-ghost" disabled={busy} onClick={async () => { setBusy(true); const ok = await turnOffAutoApprove(); setBusy(false); if (ok) setOpen(null); else setError("That didn’t save. Try again.") }}>Turn Autopilot off</button>
-            : <button type="button" className="ag-btn-ghost" disabled={busy} onClick={() => setOpen(null)}>Cancel</button>}
-        </div>
+        {error && <p className="ax-aa__err" role="alert">{error}</p>}
+        <p className="ax-aa__fine">Declaration version {CONSENT_VERSION}. Your acceptance is recorded with the time and your browser details.</p>
       </div>
-    </div>
+    </Modal>
   )
 }

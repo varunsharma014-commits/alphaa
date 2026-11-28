@@ -8,8 +8,9 @@
 //    balance, the 3 packs (one-time Stripe Checkout via POST /api/stripe/credits) and the
 //    "Use credits when I run out" switch. Shopify-billed merchants see "Upgrade your plan in
 //    Shopify" instead (App Store billing rules); comped accounts never need credits.
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
+import { Button, Pill, PlanCard, Sheet, Skeleton, StatTile } from "./ds"
 
 export const CREDITS_EVENT = "alphaa:credits"
 export function openCredits(reason?: string) {
@@ -45,6 +46,8 @@ function watchQuota() {
 }
 
 const fmt = (n: number) => (Math.round(n * 10) / 10).toLocaleString("en-US")
+const COSTS: [keyof Info["costs"], string][] = [["blog", "Blog post"], ["social", "Social post"], ["gbp", "Google post"], ["email", "Customer email"], ["week", "Weekly plan"]]
+const NO_LIMIT = "Your account has no monthly limit, so there’s nothing to buy."
 
 export function CreditsSheet() {
   const [open, setOpen] = useState(false)
@@ -52,17 +55,33 @@ export function CreditsSheet() {
   const [info, setInfo] = useState<Info | null>(null)
   const [busy, setBusy] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const known = useRef<Info | null>(null)
 
-  const load = useCallback(() => {
-    fetch("/api/credits").then((r) => (r.ok ? r.json() : Promise.reject(new Error("load")))).then(setInfo).catch(() => setError("I couldn't load your credits. Try again in a minute."))
+  const load = useCallback(async (): Promise<Info | null> => {
+    try {
+      const r = await fetch("/api/credits")
+      if (!r.ok) throw new Error("load")
+      const j = (await r.json()) as Info
+      known.current = j
+      setInfo(j)
+      return j
+    } catch {
+      setError("I couldn’t load your credits. Try again in a minute.")
+      return null
+    }
   }, [])
   useEffect(() => {
     watchQuota()
-    const on = (e: Event) => {
-      setReason((e as CustomEvent<string | undefined>).detail ?? null)
+    const on = async (e: Event) => {
+      const why = (e as CustomEvent<string | undefined>).detail ?? null
+      // Comped accounts never run out: no sheet, just say so.
+      if (known.current?.comped) return void toast(NO_LIMIT)
+      setReason(why)
       setError(null)
+      setInfo(null)
       setOpen(true)
-      load()
+      const j = await load()
+      if (j?.comped) { setOpen(false); toast(NO_LIMIT) }
     }
     window.addEventListener(CREDITS_EVENT, on)
     return () => window.removeEventListener(CREDITS_EVENT, on)
@@ -75,61 +94,66 @@ export function CreditsSheet() {
       const res = await fetch("/api/stripe/credits", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pack: credits }) })
       const j = await res.json()
       if (res.ok && j.url) { window.location.href = j.url; return }
-      setError(j.error ?? "That didn't go through. Try again in a minute.")
+      setError(j.error ?? "That didn’t go through. Try again in a minute.")
     } catch {
-      setError("That didn't go through. Try again in a minute.")
+      setError("That didn’t go through. Try again in a minute.")
     }
     setBusy(null)
   }
   async function toggle(on: boolean) {
     setInfo((i) => (i ? { ...i, autoUse: on } : i))
     const res = await fetch("/api/credits", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ autoUse: on }) }).catch(() => null)
-    if (!res?.ok) { setError("That didn't save. Try again."); load() }
+    if (!res?.ok) { setError("That didn’t save. Try again."); void load() }
   }
 
-  if (!open) return null
-  const card = { border: "1px solid #d2d2d7", borderRadius: 14, padding: "12px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, background: "#fff" } as const
-  const btn = { padding: "8px 14px", borderRadius: 999, background: "#000", color: "#fff", fontSize: 13, border: 0, cursor: "pointer" } as const
+  const expiry = info?.nextExpiry ? `${fmt(info.nextExpiry.credits)} last until ${new Date(info.nextExpiry.at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}` : "Credits last 12 months"
+  const per = (p: { credits: number; usd: number }) => p.usd / p.credits
+  const best = info && info.packs.length > 1 ? Math.min(...info.packs.map(per)) : null
   return (
-    <div role="dialog" aria-modal="true" aria-label="Buy credits" onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.35)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
-      <div onClick={(e) => e.stopPropagation()} style={{ background: "#f5f5f7", color: "#1d1d1f", borderRadius: 20, maxWidth: 440, width: "100%", padding: 20, boxShadow: "0 20px 60px rgba(0,0,0,.25)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", gap: 12 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 600 }}>More work this month</h2>
-          <button type="button" aria-label="Close" onClick={() => setOpen(false)} style={{ border: 0, background: "transparent", fontSize: 18, cursor: "pointer" }}>✕</button>
-        </div>
-        {reason ? <p style={{ fontSize: 13, color: "#6e6e73", margin: "6px 0 0" }}>{reason}</p> : null}
-        {!info ? (
-          <p style={{ fontSize: 13, color: "#6e6e73", marginTop: 14 }}>{error ?? "Loading…"}</p>
-        ) : info.comped ? (
-          <p style={{ fontSize: 13, marginTop: 14 }}>Your account never runs out, so there&apos;s nothing to buy.</p>
-        ) : info.shopifyUrl ? (
-          <div style={{ marginTop: 14 }}>
-            <p style={{ fontSize: 13, marginBottom: 12 }}>Your plan is billed through Shopify. For more each month, move up a plan there.</p>
-            <a href={info.shopifyUrl} style={{ ...btn, display: "inline-block", textDecoration: "none" }}>Upgrade your plan in Shopify</a>
+    <Sheet open={open && !info?.comped} onClose={() => setOpen(false)} title="Get more done this month" sub={reason ?? "I only use credits after your plan’s included work runs out."}>
+      {!info ? (
+        error ? <p className="ax-cr__err" role="alert">{error}</p> : (
+          <div className="ax-cr" aria-busy="true">
+            <Skeleton kind="tile" />
+            <Skeleton kind="line" lines={2} />
+            <Skeleton kind="card" />
           </div>
-        ) : (
-          <>
-            <p style={{ fontSize: 13, marginTop: 12 }}>
-              You have <b>{fmt(info.balance)}</b> credits.{info.nextExpiry ? ` ${fmt(info.nextExpiry.credits)} of them last until ${new Date(info.nextExpiry.at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.` : ""}
-            </p>
-            <p style={{ fontSize: 12, color: "#6e6e73", margin: "4px 0 12px" }}>I only use credits after your plan&apos;s included work runs out. A blog post is {info.costs.blog ?? "–"}, a social post {info.costs.social ?? "–"}, a Google post {info.costs.gbp ?? "–"}, a customer email {info.costs.email ?? "–"}, a weekly plan {info.costs.week ?? "–"}. Credits last 12 months.</p>
-            <div style={{ display: "grid", gap: 8 }}>
-              {info.packs.map((p) => (
-                <div key={p.credits} style={card}>
-                  <span style={{ fontSize: 14 }}><b>{p.credits} credits</b> <span style={{ color: "#6e6e73" }}>${p.usd}</span></span>
-                  <button type="button" style={{ ...btn, opacity: busy ? 0.6 : 1 }} disabled={busy !== null} onClick={() => buy(p.credits)}>{busy === p.credits ? "Opening…" : "Buy"}</button>
-                </div>
+        )
+      ) : info.shopifyUrl ? (
+        <div className="ax-cr">
+          <p className="ax-cr__p">Your plan is billed through Shopify. For more each month, move up a plan there.</p>
+          <div><Button variant="primary" href={info.shopifyUrl} external>Upgrade your plan in Shopify</Button></div>
+        </div>
+      ) : (
+        <div className="ax-cr">
+          <StatTile label="Your credits" value={fmt(info.balance)} hint={expiry} soft />
+          <div>
+            <p className="ax-cr__h">What one piece of work costs</p>
+            <div className="ax-cr__chips">
+              {COSTS.filter(([k]) => info.costs[k] != null).map(([k, label]) => (
+                <span key={k} className="ax-cr__chip">{label} <b>{fmt(info.costs[k] as number)}</b></span>
               ))}
             </div>
-            <label style={{ display: "flex", gap: 8, alignItems: "center", fontSize: 13, marginTop: 14 }}>
-              <input type="checkbox" checked={info.autoUse} onChange={(e) => toggle(e.target.checked)} />
-              Use credits when I run out
-            </label>
-            {error ? <p role="alert" style={{ fontSize: 13, color: "#b42318", marginTop: 8 }}>{error}</p> : null}
-            <p style={{ fontSize: 11, color: "#6e6e73", marginTop: 10 }}>One-time payment, no subscription. Credits are non-refundable and have no cash value. Business customers only. See the <a href="/terms" style={{ color: "inherit" }}>Terms</a>.</p>
-          </>
-        )}
-      </div>
-    </div>
+          </div>
+          <div className="ax-cr__packs">
+            {info.packs.map((p) => {
+              const top = best != null && per(p) === best
+              return (
+                <PlanCard key={p.credits} name={`${p.credits} credits`} price={`$${p.usd}`} per="once"
+                  recommended={top} status={top ? <Pill tone="info">Best value</Pill> : null}
+                  was={`$${per(p).toFixed(2)} a credit`}
+                  cta={<Button variant={top ? "primary" : "secondary"} loading={busy === p.credits} disabled={busy !== null && busy !== p.credits} onClick={() => void buy(p.credits)}>Buy</Button>} />
+              )
+            })}
+          </div>
+          <div className="ax-cr__auto">
+            <div><b>Use credits when I run out</b><small>I keep working past your plan’s limits on things you ask for.</small></div>
+            <button type="button" role="switch" aria-checked={info.autoUse} aria-label="Use credits when I run out" className={`ax-sw${info.autoUse ? " on" : ""}`} onClick={() => void toggle(!info.autoUse)}><i /></button>
+          </div>
+          {error && <p className="ax-cr__err" role="alert">{error}</p>}
+          <p className="ax-cr__fine">One-time payment, no subscription. Credits are non-refundable and have no cash value. Business customers only. See the <a href="/terms">Terms</a>.</p>
+        </div>
+      )}
+    </Sheet>
   )
 }

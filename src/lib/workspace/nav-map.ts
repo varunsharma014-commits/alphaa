@@ -18,18 +18,21 @@ const RULES: { prefix: string; key: NavKey; moreHref?: string }[] = [
   { prefix: "/dashboard/settings", key: "settings" },
   { prefix: "/dashboard/upgrade", key: "settings" },
   { prefix: "/dashboard/admin", key: "admin" },
+  { prefix: "/dashboard/concierge", key: "settings" },
+  // Old pages folded into a workspace (their content lives there now): light the workspace.
+  { prefix: "/dashboard/keywords", key: "research" },
+  { prefix: "/dashboard/competitors", key: "research" },
+  { prefix: "/dashboard/content-gaps", key: "research" },
+  { prefix: "/dashboard/audit", key: "tracking" },
+  { prefix: "/dashboard/speed", key: "tracking" },
+  // Inside More.
   { prefix: "/dashboard/sandbox", key: "more", moreHref: "/dashboard/sandbox" },
   { prefix: "/dashboard/vault", key: "more", moreHref: "/dashboard/vault" },
   { prefix: "/dashboard/visibility", key: "more", moreHref: "/dashboard/visibility" },
   { prefix: "/dashboard/citations", key: "more", moreHref: "/dashboard/citations" },
-  { prefix: "/dashboard/keywords", key: "more", moreHref: "/dashboard/keywords" },
-  { prefix: "/dashboard/audit", key: "more", moreHref: "/dashboard/audit" },
-  { prefix: "/dashboard/speed", key: "more", moreHref: "/dashboard/speed" },
   { prefix: "/dashboard/posts", key: "more", moreHref: "/dashboard/posts" },
   { prefix: "/dashboard/content-plan", key: "more", moreHref: "/dashboard/posts" },
   { prefix: "/dashboard/reviews", key: "more", moreHref: "/dashboard/reviews" },
-  { prefix: "/dashboard/content-gaps", key: "more", moreHref: "/dashboard/content-gaps" },
-  { prefix: "/dashboard/competitors", key: "more", moreHref: "/dashboard/competitors" },
   { prefix: "/dashboard/reports", key: "more", moreHref: "/dashboard/reports" },
 ]
 
