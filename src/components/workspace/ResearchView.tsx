@@ -272,12 +272,15 @@ export function ResearchView({ data }: { data: ResearchData }) {
                   {c.winning && <div><span>Winning at</span>{c.winning}</div>}
                   {c.weak && <div><span>Weak spot</span>{c.weak}</div>}
                   {c.counter && <div><span>My counter-move</span>{c.counter}</div>}
-                  {!c.winning && !c.weak && !c.counter && <div className="ax-t11" style={{ fontSize: 13 }}>I couldn’t read enough of their site yet. I’ll try again on my next weekly pass.</div>}
+                  {c.instagram && !c.winning?.startsWith("Instagram") && <div><span>Instagram</span>{c.instagram.line}</div>}
+                  {!c.winning && !c.weak && !c.counter && !c.instagram && <div className="ax-t11" style={{ fontSize: 13 }}>I couldn’t read enough of their site yet. I’ll try again on my next weekly pass.</div>}
                 </div>
                 <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: "auto", flexWrap: "wrap" }} onClick={(e) => e.stopPropagation()}>
                   {c.primary && <button className="ax-btn p sm" type="button" onClick={() => { const p = c.primary!; if (p.move) setSheet(p.move); else askAlphaa({ topic: p.topic, chip: p.chip, label: p.topic ? p.label : undefined }) }}>{c.primary.label}</button>}
                   <a className="ax-src" href={c.site} target="_blank" rel="noopener noreferrer">Their site ↗</a>
                   {c.adUrl && <a className="ax-src" href={c.adUrl} target="_blank" rel="noopener noreferrer">Their ads ↗</a>}
+                  {c.instagram && <a className="ax-src" href={c.instagram.url} target="_blank" rel="noopener noreferrer">Their Instagram ↗</a>}
+                  {c.instagram?.make && <button className="ax-btn s sm" type="button" onClick={() => askAlphaa({ chip: c.instagram!.make! })}>Make my version</button>}
                 </div>
               </article>
             ))}

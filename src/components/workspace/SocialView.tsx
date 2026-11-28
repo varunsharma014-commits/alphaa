@@ -133,6 +133,30 @@ export function SocialView({ data }: { data: SocialData | null }) {
           <button className="ax-btn s sm" type="button" onClick={() => setFix(null)}>Close</button>
         </section>
       )}
+      {data.audience.length > 0 && (
+        <div className="ax-g3" style={{ marginTop: 16, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+          {data.audience.map((a) => (
+            <section key={`${a.platform}:${a.name}`} className="ax-card" style={{ padding: "14px 18px" }} aria-label={`${a.platform} followers`}>
+              <div className="ax-eb">{a.platform} followers · {a.name}</div>
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 10, marginTop: 6 }}>
+                <div>
+                  <div style={{ fontSize: 26, fontWeight: 650, letterSpacing: "-.02em" }}>{a.followers.toLocaleString("en-US")}</div>
+                  <div style={{ fontSize: 12.5, color: "var(--x-mut)" }}>
+                    {a.change == null ? "I save the count every day, so growth shows from tomorrow." : `${a.change > 0 ? "+" : ""}${a.change.toLocaleString("en-US")} since ${new Date(`${a.since}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
+                  </div>
+                </div>
+                <Spark points={a.points} />
+              </div>
+            </section>
+          ))}
+        </div>
+      )}
+      {data.statsAsk && (
+        <section className="ax-card" style={{ marginTop: 12, padding: "14px 18px", display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: 220 }}><p className="ax-ttl" style={{ margin: 0 }}>{data.statsAsk.title}</p><p className="ax-p" style={{ margin: "4px 0 0" }}>{data.statsAsk.text}</p></div>
+          {data.statsAsk.href && <a className="ax-btn p sm" href={data.statsAsk.href}>Reconnect Facebook & Instagram</a>}
+        </section>
+      )}
       {tabs.length > 2 && <Tabs value={tab} onChange={setTab} tabs={tabs.map((t) => ({ key: t, label: t }))} />}
 
       {visible.length ? (
@@ -181,7 +205,12 @@ export function SocialView({ data }: { data: SocialData | null }) {
                 )}
                 <div className="box"><div className="ax-eb" style={{ marginBottom: 6 }}>Caption</div><div className="v">{p.text}</div></div>
                 <div><div className="ax-eb" style={{ marginBottom: 6 }}>When</div><div className="v">{p.verb ? <When at={p.at} mode={p.verb === "Posted " ? "ago" : "ahead"} prefix={p.verb} fallback={p.when} /> : p.when}</div></div>
-                {p.result ? <div><div className="ax-eb" style={{ marginBottom: 6 }}>Numbers from the platform</div><div className="v">{p.result}</div></div> : null}
+                {p.resultBy.length ? (
+                  <div>
+                    <div className="ax-eb" style={{ marginBottom: 6 }}>Numbers from the platform</div>
+                    {p.resultBy.map((r) => <div key={r.platform} className="v"><b style={{ fontWeight: 600 }}>{r.platform}</b> · {r.line}{r.basic ? <span style={{ color: "var(--x-mut)" }}> (reach not shared yet)</span> : null}</div>)}
+                  </div>
+                ) : p.result ? <div><div className="ax-eb" style={{ marginBottom: 6 }}>Numbers from the platform</div><div className="v">{p.result}</div></div> : null}
                 <p className="ax-note" style={{ marginTop: 0 }}>{AI_NOTE}</p>
               </div>
               <footer><button className="ax-btn s" type="button" onClick={() => setPreview(null)}>Close</button></footer>
@@ -191,4 +220,12 @@ export function SocialView({ data }: { data: SocialData | null }) {
       })()}
     </>
   )
+}
+
+/** A tiny follower line (last 90 daily counts). Nothing to draw with under 2 points. */
+function Spark({ points }: { points: number[] }) {
+  if (points.length < 2) return null
+  const w = 96, h = 30, lo = Math.min(...points), hi = Math.max(...points), span = hi - lo || 1
+  const d = points.map((v, i) => `${i ? "L" : "M"}${((i / (points.length - 1)) * w).toFixed(1)},${(h - 2 - ((v - lo) / span) * (h - 4)).toFixed(1)}`).join(" ")
+  return <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} aria-hidden="true" style={{ flex: "none" }}><path d={d} fill="none" stroke="var(--x-blue, #0071e3)" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" /></svg>
 }

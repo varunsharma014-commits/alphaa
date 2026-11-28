@@ -1,14 +1,17 @@
 // Social Studio: the real queue (lib/social/store) and connected accounts. Stats only where a
-// platform reports them (LinkedIn company Pages today); everything else says so.
+// platform reports them (LinkedIn company Pages, Instagram, Facebook Pages: lib/social/stats.ts),
+// per platform; follower growth from the daily snapshots (lib/social/meta-stats.ts).
 import type { User } from "@prisma/client"
 import { listAccounts, listPosts } from "@/lib/social/store"
 import { PLATFORM_NAME, PROVIDERS, providerConfigured, type SocialPlatform } from "@/lib/social/types"
 import { imageUrl } from "@/lib/images"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { ago, headlineOf, n, whenAhead } from "./common"
+import { ago, headlineOf, whenAhead } from "./common"
 import { db } from "@/lib/db"
 import { startWeekRun, WEEK_RUN } from "@/lib/agent/week"
 import { runAsUser } from "@/lib/usage"
+import { refreshPostStats, statsLine } from "@/lib/social/stats"
+import { audienceOf, metaGrants } from "@/lib/social/meta-stats"
 
 const kicked = new Set<string>()
 
@@ -24,6 +27,8 @@ export type SocialCard = {
   at: string | null
   verb: "Posted " | "Goes out " | "Planned for " | null
   result: string | null
+  /** Per platform: "Instagram" → "1,204 reached · 18 likes · 4 saves". */
+  resultBy: { platform: string; line: string; basic: boolean }[]
   links: { label: string; url: string }[]
   error: string | null
 }
@@ -38,6 +43,10 @@ export type SocialData = {
   auto: boolean
   posts: SocialCard[]
   tabs: string[]
+  /** Followers per Facebook Page / Instagram account, from the daily snapshots. */
+  audience: { platform: string; name: string; followers: number; change: number | null; since: string | null; points: number[] }[]
+  /** Shown when a connected Meta account can't share reach/saves yet: reconnect (once the login asks for it) or "coming soon". */
+  statsAsk: { title: string; text: string; href: string | null } | null
 }
 
 export async function getSocialData(user: User): Promise<SocialData> {
@@ -46,16 +55,9 @@ export async function getSocialData(user: User): Promise<SocialData> {
   const cards: SocialCard[] = posts.map((p) => {
     const nets = Array.from(new Set(p.accountIds.map((id) => byId.get(id)?.platform).filter((x): x is SocialPlatform => !!x).map((x) => PLATFORM_NAME[x])))
     const ok = (p.results ?? []).filter((r) => r.ok)
-    const st = ok.map((r) => r.stats).filter((s): s is NonNullable<typeof s> => !!s)
-    const sum = (k: "impressions" | "likes" | "comments" | "clicks" | "shares") => st.some((x) => x[k] != null) ? st.reduce((a, x) => a + (x[k] ?? 0), 0) : null
-    const result = st.length
-      ? [
-          sum("impressions") != null ? `${n(sum("impressions")!)} reach` : null,
-          sum("likes") != null ? `${n(sum("likes")!)} likes` : null,
-          sum("comments") != null ? `${n(sum("comments")!)} comments` : null,
-          sum("clicks") != null ? `${n(sum("clicks")!)} clicks` : null,
-        ].filter(Boolean).join(" · ")
-      : null
+    // Numbers per platform, never added up across them (reach on Instagram and views on LinkedIn aren't the same thing).
+    const resultBy = ok.flatMap((r) => { const line = statsLine(r.stats, r.platform); return line ? [{ platform: PLATFORM_NAME[r.platform], line, basic: r.stats?.level === "basic" }] : [] })
+    const result = resultBy.length === 1 ? resultBy[0].line : resultBy.length ? resultBy.map((x) => `${x.platform}: ${x.line}`).join(" · ") : null
     const at = p.status === "published" || p.status === "partial" ? p.publishedAt : p.scheduledFor
     const when = !at ? "No time set" : p.status === "published" || p.status === "partial" ? `Posted ${ago(at)}` : p.status === "scheduled" ? `Goes out ${whenAhead(at)}` : `Planned for ${whenAhead(at)}`
     return {
@@ -69,6 +71,7 @@ export async function getSocialData(user: User): Promise<SocialData> {
       at: at ?? null,
       verb: !at ? null : p.status === "published" || p.status === "partial" ? "Posted " : p.status === "scheduled" ? "Goes out " : "Planned for ",
       result,
+      resultBy,
       links: ok.filter((r) => r.url).map((r) => ({ label: PLATFORM_NAME[r.platform], url: r.url! })),
       error: (p.results ?? []).find((r) => !r.ok)?.error ?? null,
     }
@@ -97,6 +100,16 @@ export async function getSocialData(user: User): Promise<SocialData> {
     : scheduledSoon ? `${scheduledSoon} post${scheduledSoon === 1 ? "" : "s"} going out this week`
       : drafting ? "Drafting next week’s posts"
         : accounts.length ? "Watching what works · I plan your next posts every few days" : "Connect an account and I’ll start posting"
+  // Numbers older than 6h (and today's follower counts) refresh in the background; they show on the next visit.
+  if (accounts.some((a) => a.status === "active" && (a.platform === "facebook" || a.platform === "instagram" || a.extra?.kind === "organization"))) void runAsUser(user.id, () => refreshPostStats(user.id)).catch(() => {})
+  const hasMeta = accounts.some((a) => a.status === "active" && (a.platform === "facebook" || a.platform === "instagram"))
+  const [audience, grants] = hasMeta ? await Promise.all([audienceOf(user.id, accounts).catch(() => []), metaGrants(user.id, accounts).catch(() => null)]) : [[], null]
+  const igOnly = grants && grants.instagram && !grants.igInsights
+  const fbOnly = grants && grants.facebook && !grants.fbInsights
+  const statsAsk: SocialData["statsAsk"] = !grants || (!igOnly && !fbOnly) ? null
+    : grants.canAsk
+      ? { title: `Reconnect to allow ${igOnly ? "Instagram" : "Facebook"} stats`, text: `Right now I only see likes and comments. Reconnect Facebook & Instagram once and allow ${[igOnly ? "Instagram insights" : null, fbOnly ? "Page insights" : null].filter(Boolean).join(" and ")}, and I’ll show how many people each post reached${igOnly ? ", saves and shares" : ""}.`, href: "/api/social/connect/meta" }
+      : { title: "Reach and saves are coming", text: "I show likes and comments from Facebook and Instagram now. Reach, saves and shares come once Meta approves them for Alphaa.", href: null }
   const provider = (a: (typeof accounts)[number]) => a.platform === "facebook" || a.platform === "instagram" ? "meta" : a.platform === "linkedin" ? (a.extra?.org || /organization/i.test(a.extra?.author ?? "") ? "linkedin_pages" : "linkedin") : a.platform
   return {
     brandName: user.businessName?.trim() || "",
@@ -114,5 +127,7 @@ export async function getSocialData(user: User): Promise<SocialData> {
     auto,
     posts: cards,
     tabs,
+    audience: audience.filter((a) => a.followers != null).map((a) => ({ platform: PLATFORM_NAME[a.platform], name: a.name, followers: a.followers!, change: a.change, since: a.since, points: a.points.map((p) => p.n) })),
+    statsAsk,
   }
 }

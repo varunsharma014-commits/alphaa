@@ -4,8 +4,9 @@ Round 1 (decided 2026-11-19): **5 permissions, Page + Instagram posting only**: 
 pages_read_engagement, pages_manage_posts, instagram_basic, instagram_content_publish (+ default
 public_profile). ads_management, ads_read, business_management, pages_manage_ads and
 leads_retrieval were removed from the App Review draft and move to round 2. Round 2 also adds
-Instagram data: instagram_manage_insights, the Instagram Public Content Access feature, and
-optionally read_insights (see "Round 2 additions: Instagram data").
+Instagram data: instagram_manage_insights, read_insights and the Instagram Public Content Access
+feature (built 2026-11-28; see "Round 2 additions: Instagram data" for the final list, paste
+text, recording script and Varun's to-do).
 
 Why: on 2026-11-19 the "Alphaa connect v2" login (system-user token) never granted the three ads
 permissions, even to the app admin with the ad account ticked and after removing/re-adding the
@@ -136,58 +137,124 @@ reviewer test login in "App verification details" (Varun enters the password; ne
 > use our own test business (Page "Alphaa AI Agent", Instagram @alphaa.ai.agent, ad account
 > "Alphaa.app"), never a customer's.
 
-## Round 2 additions: Instagram data (added 2026-11-28, Varun)
+## Round 2 additions: Instagram data (added 2026-11-28, Varun; BUILT 2026-11-28)
 
-Goal: get Instagram data from Meta's own API (rivals' posts, "What's working in your niche", email
-research) with Meta's own API, and get our customers' own Instagram post stats (reach, saves) for
-Social Studio. Requirements checked against Meta's docs on 2026-11-28:
+Goal: Instagram and Facebook data from Meta's own API: the owner's own post stats (reach, saves,
+shares, views) and follower growth in Social Studio, the calendar and the Briefing; competitors'
+Instagram (Business Discovery) and niche hashtags (hashtag search) in Research. Requirements checked
+against Meta's docs (Graph API v27.0) on 2026-11-28.
 
-| Ask | Type | Unlocks | Meta doc |
-|---|---|---|---|
-| `instagram_manage_insights` | permission (new) | Business Discovery (another Business/Creator account's followers, media, like/comment/view counts) **and** the owner's own post insights (reach, saves, shares) | ig-user/business_discovery, ig-media/insights |
-| Instagram Public Content Access | feature (new) | Hashtag search (`ig_hashtag_search`, top/recent media), max 30 unique hashtags per IG account per 7 days | ig-hashtag-search |
-| `instagram_basic`, `pages_read_engagement` | already in round 1 | required by both of the above | |
-| `ads_read` or `ads_management` | already in round 2 | Business Discovery also needs one of these when the user's Page role comes through Business Manager (ours does) | ig-user/business_discovery |
-| `read_insights` (optional, recommended) | permission (new) | Facebook Page post stats for Social Studio (the audit's "no Facebook reach" gap) | |
+### Final round 2 permission list
 
-Not possible this way: other businesses' Facebook Page posts (needs Page Public Content Access,
-which Meta rarely grants), personal Instagram accounts (Business Discovery only covers Business and
-Creator accounts), and Meta ads of competitors outside politics in the US/CA.
+| Ask | Type | What Alphaa uses it for (in the app) |
+|---|---|---|
+| `ads_management`, `ads_read`, `business_management`, `pages_manage_ads`, `leads_retrieval` | permissions | the ads flow (script B in `docs/meta-app-review.md`); `ads_read` is also required by Business Discovery and IG media insights because our Page role comes through Business Manager |
+| `instagram_manage_insights` | permission (new) | own IG post insights (reach, views, saves, shares) in Social Studio / calendar / Briefing, and Business Discovery of competitors' IG accounts in Research → Competitors |
+| `read_insights` | permission (new) | Facebook Page post views, reach and clicks in Social Studio / calendar / Briefing |
+| Instagram Public Content Access | feature (new) | hashtag search (`ig_hashtag_search` + `top_media`) for "What's working nearby"; max 30 unique hashtags per IG account per 7 days (counted in code) |
+| `instagram_basic`, `pages_read_engagement`, `pages_show_list` | round 1 | required by all of the above; likes/comments counts and follower counts already work with these |
 
-### Build before recording (the app must already use each permission in the video)
-1. `lib/social/meta-insights.ts`: Business Discovery for rival usernames (from the competitor
-   list's Instagram links), hashtag search for the niche hashtags (respect the 30/7-day cap per
-   connected IG account; cache), own-media insights on published posts → `PostResult.stats`.
-2. DONE 2026-11-28: `lib/niche-posts.ts`, the profiles check and the email dossier use these when a
-   connected IG account's token has the permissions (checked with debug_token). There is no
-   fallback scraper: until approval the niche card says Instagram comes once Meta approves.
-   After approval: add `instagram_manage_insights` to the Facebook Login for Business
-   configuration and set `META_HASHTAG_SEARCH=1` on Railway.
-3. Social Studio shows reach/saves/shares on our own Instagram posts.
+Not possible this way: other businesses' Facebook Page posts (Page Public Content Access, rarely
+granted), personal Instagram accounts (Business Discovery covers Business/Creator only), Meta ads of
+competitors outside politics in the US/CA.
 
-### Paste text (draft)
+### What the app does (code, so the paste text matches)
+- `src/lib/social/meta-stats.ts`: per published post, IG `GET /{media-id}?fields=like_count,comments_count,...`
+  (round 1) and, with `instagram_manage_insights`, `GET /{media-id}/insights?metric=reach,views,likes,comments,shares,saved,total_interactions`;
+  FB `GET /{post-id}?fields=shares,reactions.summary,comments.summary` (round 1) and, with `read_insights`,
+  `/{post-id}/insights?metric=post_media_view,post_total_media_view_unique,post_clicks`. No deprecated
+  metric (impressions, plays, video_views, post_impressions*) is requested. Saved on `PostResult.stats`;
+  refreshed daily (`/api/cron/social-stats` 04:00 UTC) and in the background when Social Studio opens.
+  Followers: one `followers_count` snapshot per account per day (MockActivity `social_audience`).
+- Granted permissions: `debug_token` on the brand's business token (cached 6h). Missing ones show
+  "Reconnect to allow Instagram stats" in Social Studio (only with `META_INSIGHTS_IN_LOGIN=1`; before
+  that: "Reach and saves are coming").
+- `src/lib/social/meta-insights.ts` + `lib/niche-posts.ts`: Business Discovery of up to 2 competitors'
+  IG usernames (from the Instagram link on their homepage) → stored as `rivalsIg` (followers, last 12
+  posts' link + like/comment/view counts); hashtag top posts (only with `META_HASHTAG_SEARCH=1`).
+  Captions and images of other accounts are never requested or stored.
+- Best time to post (calendar): Instagram/Facebook posts with stats count as "Your data" once there
+  are 6+ posts with numbers.
+
+### Paste text (matched to the UI)
 
 **instagram_manage_insights**
-> Alphaa shows the business owner how their own Instagram posts perform (reach, saves, shares)
-> next to each post it published for them, so they can see what works. It also looks up a few
-> public Instagram Business accounts the owner chose as competitors (followers, recent posts and
-> their like and comment counts) to suggest post ideas in the "What's working in your niche"
-> card. Alphaa stores counts and post links only, never other accounts' captions or images.
+> Alphaa publishes Instagram posts the business owner approved. In Social Studio, each published post
+> shows the numbers Instagram reports for it (video: "1,204 reached · 18 likes · 3 comments · 2 shares
+> · 4 saves"), the account's follower count and growth is shown above the posts, and the Briefing shows
+> "People reached · 30 days". The calendar uses these numbers to suggest the owner's best times to post
+> ("Your data"). In Research → Competitors, Alphaa looks up the public Instagram Business accounts of the
+> competitors the owner tracks (video: "Instagram @rival, 2,140 followers, last 12 posts: … likes, …
+> comments", each post linked) so the owner can make their own original version of what works. Alphaa
+> stores counts and post links only, never other accounts' captions or images.
+
+**read_insights**
+> For posts Alphaa published to the owner's Facebook Page, Social Studio shows the views, people reached
+> and clicks Facebook reports for each post (video: "Facebook · 840 reached · 1,120 views · 12 reactions
+> · 2 comments"), and the calendar uses them to suggest the owner's best times to post. Alphaa reads
+> insights only for the Page the owner connected and only for posts it published.
 
 **Instagram Public Content Access**
-> For the owner's chosen industry hashtags (for example #dentistottawa), Alphaa reads the top
-> public posts' like and comment counts and links to show which formats get engagement in the
-> owner's niche, then writes an original post idea. It stays under 30 hashtags per week per
-> connected account, stores counts and links only, and never reposts other people's content.
+> In Research → "What's working nearby", Alphaa looks up a few hashtags for the owner's industry and
+> city (video: "Instagram · #dentistottawa") and shows the top public posts' like and comment counts
+> with a link to each post, so the owner sees which formats get engagement. "Make my version" writes an
+> original post for the owner to approve. Alphaa stays under 30 hashtags per week per connected account,
+> stores counts and links only, and never reposts other people's content.
 
-**read_insights** (if added)
-> Alphaa reads post reach and engagement for the Facebook Page the owner connected, to show how
-> each post it published performed.
+### Recording script (round 2, Instagram data video; the ads take is script B in docs/meta-app-review.md)
+Our own test business only: Page "Alphaa AI Agent", Instagram @alphaa.ai.agent, ad account
+"Alphaa.app", signed in as the alphaa.app brand. Public Business accounts only for competitors.
+Before recording: at least 6 posts published to @alphaa.ai.agent and the Page through Alphaa (for
+"Your data" in the calendar), Social Studio opened the day before (follower growth needs 2 days of
+snapshots), one competitor in Research whose homepage links an Instagram Business account, and
+"Look now" run in "What's working nearby" after the reconnect.
 
-### Video (round 2, after the ads take)
-Competitors card → "Instagram: @rival, 2,140 followers, last 12 posts" with counts; niche card
-with a hashtag's top posts (counts + links); Social Studio post with reach/saves from Instagram.
-Use our own test business and public Business accounts only.
+1. **Connect (0:00-0:40).** Alphaa → menu → "Social accounts & posts" → "Connect Facebook & Instagram".
+   Facebook Login for Business: portfolio, Page "Alphaa AI Agent", Instagram @alphaa.ai.agent, ad
+   account "Alphaa.app". Hold the permissions screen 6 s so `instagram_manage_insights` and
+   `read_insights` are readable. Confirm. Back in Alphaa: both accounts Connected.
+2. **Social Studio, own Instagram stats (0:40-1:20).** Sidebar → Social Studio. Show the
+   "Instagram followers · @alphaa.ai.agent" card (count, "+N since …", the line). Scroll to "Posted":
+   a post with "1,… reached · … likes · … saves". Open it: "Numbers from the platform" → Instagram and
+   Facebook lines. Cut to the same post's insights on Instagram so the numbers match.
+3. **Facebook Page stats (1:20-1:40).** Same drawer: the Facebook line (reached, views, reactions,
+   comments). Caption: "read_insights".
+4. **Briefing + calendar (1:40-2:10).** Briefing tile "People reached · 30 days". Sidebar → Calendar:
+   a published post chip with its numbers; open a draft's time picker: "Best times · Your data" with
+   "Your data: from N of your Instagram posts, …".
+5. **Competitors (2:10-2:45).** Research → Competitors: the card with "Instagram @rival, N followers,
+   last 12 posts: … likes, … comments" and "Their Instagram ↗". Open the card: "Instagram post" rows
+   with counts, each linked; click one to show it is the public post. "Make my version" (if shown).
+6. **Hashtags (2:45-3:15).** Research → "What's working nearby": an Instagram card "Instagram ·
+   #<tag>" with likes/comments and Source ↗; X-Ray; "Make my version" → the original draft. Caption:
+   "Instagram Public Content Access: hashtag top posts, counts + links only".
+7. **End (3:15).** Caption: "Alphaa stores counts and links only. Nothing is posted without the owner's
+   approval."
+
+### Varun's to-do (in this order)
+1. **Add the permissions to the Login configuration** (only Varun's Meta account can):
+   developers.facebook.com → My Apps → Alphaa (29091869270477242) → Facebook Login for Business →
+   Configurations → "Alphaa connect v2" → Edit → Permissions: tick `instagram_manage_insights` and
+   `read_insights` (keep every existing one, incl. the ads ones) → Save. If Meta doesn't allow editing
+   it, create a new configuration with the same settings (System-user access token, expires Never,
+   assets: Pages, Instagram accounts, ad accounts, pixels, same permissions + the two new ones) and
+   replace `META_LOGIN_CONFIG_ID` on Railway with its id.
+2. **App Review → Permissions and features**: request Advanced access for `instagram_manage_insights`,
+   `read_insights` and the "Instagram Public Content Access" feature (in the round 2 submission with
+   the ads permissions).
+3. **Railway (service alphaa)**: set `META_INSIGHTS_IN_LOGIN=1` (turns on the "Reconnect to allow
+   Instagram stats" button) and `META_HASHTAG_SEARCH=1` (hashtag search; as an app admin it should work
+   on our own account in development mode).
+4. **Reconnect** in Alphaa (Social Studio → "Reconnect Facebook & Instagram"), tick everything.
+   Next day: check Social Studio shows "reached" and "saves" on our posts and Research shows the
+   competitor's Instagram line. If not, the server log `[meta-stats]` / `[meta-insights]` lines say
+   which call Meta refused.
+5. **Record** the script above (and the ads take), edit like round 1 (1920x1080, captions bar,
+   feeds blurred), upload one video per permission or one covering all three with captions.
+6. **Paste** the text above per permission, add the reviewer test login, **submit**.
+
+Live-verified on 2026-11-28: nothing yet (no token had the new permissions). Parsers are tested
+against doc-shaped answers (`scripts/test-meta-insights.ts`, `scripts/fixtures/meta-insights/`).
 
 ## Data Handling questionnaire (draft answers)
 

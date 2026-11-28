@@ -228,7 +228,7 @@ export function PromotePanel({ note }: { note?: string | null }) {
         <div className="ax-g3" style={{ marginTop: 0 }}>{d.ranked.map(cardFor)}</div>
       </>)}
       {d.recent.length > 0 && (<>
-        <div className="ax-h2" style={{ marginTop: 4 }}><div><h2>Recent posts</h2><p>Newest first, not ranked: Facebook and Instagram don’t share post stats with me yet.</p></div></div>
+        <div className="ax-h2" style={{ marginTop: 4 }}><div><h2>Recent posts</h2><p>Newest first, not ranked: these don’t have enough reach numbers from the platform yet.</p></div></div>
         <div className="ax-g3" style={{ marginTop: 0 }}>{d.recent.map(cardFor)}</div>
       </>)}
       {!d.ranked.length && !d.recent.length && (d.metaOn || d.linkedin.usable) && <p className="ax-note" style={{ marginTop: 0 }}>No published posts from the last 90 days yet. Once I publish your social posts, the ones you can promote show here.</p>}

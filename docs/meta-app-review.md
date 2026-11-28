@@ -19,9 +19,10 @@ account, an ad account and a pixel. Checked against developers.facebook.com on 2
   can cover several permissions if each is clearly shown.
 - **Do not request a permission whose feature isn't live.** Meta rejects a request if the
   recording can't show it in use. Today that means: hold back `pages_read_user_content`,
-  `pages_manage_engagement`, `instagram_manage_comments` and `instagram_manage_insights` until
-  the comment-reply and Instagram-results features ship (marked NOT READY below). They are
-  already in the login configuration; that is fine, they are only granted after review.
+  `pages_manage_engagement` and `instagram_manage_comments` until the comment-reply feature
+  ships (marked NOT READY below). `instagram_manage_insights`, `read_insights` and Instagram
+  Public Content Access are built (2026-11-28) and go in round 2: paste text and the recording
+  script are in `docs/meta-app-review-submission.md` ("Round 2 additions").
 
 ## Shared recording A: connect (used by every permission)
 
@@ -159,11 +160,9 @@ Alphaa reads comments on the owner's Instagram posts it published and posts the 
 approved in the dashboard.
 **Recording (when built):** A, an Instagram post's comments in Alphaa, approve a reply, show it on Instagram.
 
-### instagram_manage_insights — NOT READY
-**How will you use it (when built):**
-Alphaa reads reach, likes, comments and saves for the owner's Instagram posts to show what's
-working in the weekly report and to plan the next posts.
-**Recording (when built):** A, then the "What's working" thread showing Instagram post results.
+### instagram_manage_insights, read_insights, Instagram Public Content Access — BUILT 2026-11-28
+Round 2. Paste text per permission and the scene-by-scene recording script:
+`docs/meta-app-review-submission.md` → "Round 2 additions: Instagram data".
 
 ---
 

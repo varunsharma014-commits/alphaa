@@ -106,7 +106,7 @@ test("fromPosts needs at least 6 posts, then ranks by engagement rate", () => {
   assert.equal(b.source, "yours")
   assert.equal(b.hours[0], 9)
   assert.equal(b.days[0], 2)
-  assert.match(b.label, /From 6 of your LinkedIn Page posts: Tue around 9 AM/)
+  assert.match(b.label, /Your data: from 6 of your LinkedIn Page posts, Tue around 9 AM/)
 })
 test("fromTraffic needs enough sessions and finds the busy hour", () => {
   const grid = Array.from({ length: 7 }, () => Array(24).fill(0))

@@ -8,7 +8,7 @@ import { socialMessages } from "@/lib/agent/social-narration"
 export async function socialThread(user: User, note?: string | null) {
   const [accounts, posts] = await Promise.all([listAccounts(user.id), listPosts(user.id)])
   // Numbers older than 6h refresh in the background; they show next time the thread opens.
-  if (accounts.some((a) => a.extra?.kind === "organization")) void refreshPostStats(user.id).catch(() => {})
+  if (accounts.some((a) => a.extra?.kind === "organization" || a.platform === "facebook" || a.platform === "instagram")) void refreshPostStats(user.id).catch(() => {})
   return socialMessages({ growth: hasPro(user), accounts, posts, note })
 }
 

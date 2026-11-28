@@ -1,6 +1,6 @@
 // "Best time to post" (pure; the data loading is in best-time-data.ts). Three honest sources,
 // best first, each labelled for the owner:
-//   yours   = their own published posts' results (LinkedIn company Page stats today, lib/social/stats.ts)
+//   yours   = their own published posts' results (LinkedIn Page, Instagram, Facebook Page; lib/social/stats.ts)
 //   site    = when people visit their website (GA4 sessions by weekday + hour, last 8 weeks)
 //   typical = general guidance per platform. Never shown as "your data".
 // Hours and weekdays are in the owner's time zone.
@@ -76,7 +76,7 @@ export function fromPosts(channel: Channel, posts: PostPoint[], tz: string, what
   const days = rank(mean(byDay))
   if (!hours.length || !days.length) return null
   const best = `${DAY_SHORT[days[0]]} around ${hourLabel(hours[0])}`
-  return { channel, source: "yours", label: `From ${pts.length} of your ${what} posts: ${best} got the most engagement`, hours: hours.slice(0, 4), days, slots: topSlots(days, hours) }
+  return { channel, source: "yours", label: `Your data: from ${pts.length} of your ${what} posts, ${best} got the most engagement`, hours: hours.slice(0, 4), days, slots: topSlots(days, hours) }
 }
 
 /** A 7×24 grid of website sessions (dow × local hour). */

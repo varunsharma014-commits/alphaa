@@ -42,8 +42,13 @@ export type SocialAccount = {
   connectedAt: string
 }
 
-/** What the platform reports for a published post (LinkedIn company Pages today; profile posts aren't readable by apps). */
-export type PostStats = { impressions?: number; likes: number; comments: number; shares?: number; clicks?: number; at: string }
+/**
+ * What the platform reports for a published post: LinkedIn company Pages (impressions = views),
+ * Instagram (reach, views, saves, shares with instagram_manage_insights) and Facebook Pages (views,
+ * reach, clicks with read_insights). `level: "basic"` = only likes/comments/shares so far (lib/social/meta-stats.ts).
+ * Profile posts on LinkedIn aren't readable by apps.
+ */
+export type PostStats = { impressions?: number; reach?: number; views?: number; likes: number; comments: number; shares?: number; saves?: number; clicks?: number; at: string; level?: "full" | "basic" }
 export type PostResult = { accountId: string; platform: SocialPlatform; ok: boolean; url?: string | null; externalId?: string | null; error?: string; stats?: PostStats }
 export type SocialPostStatus = "draft" | "scheduled" | "publishing" | "published" | "partial" | "failed"
 export type SocialPost = {

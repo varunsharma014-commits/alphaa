@@ -48,7 +48,7 @@ async function view(user: U) {
   const { ranked, recent } = splitPicks(shown)
   const card = (p: (typeof picks)[number]) => ({
     socialPostId: p.socialPostId, accountId: p.accountId, platform: p.platform, accountName: p.accountName, text: p.text, image: p.image, url: p.url, publishedAt: p.publishedAt,
-    stats: statsLine(p.stats ?? undefined), rate: p.rate,
+    stats: statsLine(p.stats ?? undefined, p.platform), rate: p.rate,
     blocked: p.platform === "linkedin" ? null : promoBlocker({ from: p.platform, externalId: p.externalId, pageId: access?.picks.pageId, igUserId: access?.picks.igUserId, accountExternalId: extOf.get(p.accountId) ?? "" }),
   })
   return {

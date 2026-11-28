@@ -2,14 +2,16 @@
 import type { PostStats } from "@/lib/social/types"
 import type { PostPick } from "./posts"
 
-/** A post needs this many views before its stats rank it. */
+/** A post needs this many views (or people reached) before its stats rank it. */
 export const MIN_VIEWS_TO_RANK = 100
 
-/** Pure: (likes + comments + reposts + clicks) ÷ views, %, or null under the minimum. */
+/** Pure: (likes + comments + shares + saves + clicks) ÷ reach (else views), %, or null under the minimum.
+ * Instagram/Facebook posts only have a base once Meta shares reach (instagram_manage_insights / read_insights). */
 export function engagementRate(s: PostStats | null | undefined): number | null {
-  if (!s || s.impressions == null || s.impressions < MIN_VIEWS_TO_RANK) return null
-  const acts = s.likes + s.comments + (s.shares ?? 0) + (s.clicks ?? 0)
-  return Math.round((acts / s.impressions) * 10000) / 100
+  const base = s ? s.reach ?? s.views ?? s.impressions : null
+  if (!s || base == null || base < MIN_VIEWS_TO_RANK) return null
+  const acts = s.likes + s.comments + (s.shares ?? 0) + (s.saves ?? 0) + (s.clicks ?? 0)
+  return Math.round((acts / base) * 10000) / 100
 }
 
 /** Pure: ranked (by real stats) and recent (no stats: newest first, not ranked). */

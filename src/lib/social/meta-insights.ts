@@ -112,7 +112,7 @@ async function graph(path: string, params: Record<string, string>, token: string
 }
 
 const scopeCache = new Map<string, { at: number; scopes: string[] }>()
-async function grantedScopes(token: string): Promise<string[]> {
+export async function grantedScopes(token: string): Promise<string[]> {
   const key = createHash("sha256").update(token).digest("hex").slice(0, 16)
   const hit = scopeCache.get(key)
   if (hit && Date.now() - hit.at < 6 * 3_600_000) return hit.scopes

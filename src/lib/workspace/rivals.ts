@@ -44,6 +44,8 @@ export type AttackCard = {
   primary: { label: string; move?: MoveCard; chip?: Chip; topic?: string } | null
   adUrl: string | null
   detail: { k: string; v: string; href?: string }[]
+  /** Their Instagram Business account (Meta Business Discovery via niche research): counts and links only. */
+  instagram: { username: string; url: string; line: string; posts: { url: string; line: string }[]; make: Chip | null } | null
 }
 export type RivalsData = {
   comps: AttackCard[]
@@ -171,6 +173,16 @@ export async function getRivals(user: User, ctx: { strategy: AdStrategy | null; 
     const theirAds = ads.filter((a) => match(a.page))
     const aiCount = rivalsNamed.filter((r) => match(r.name)).reduce((a, r) => a + r.count, 0)
     const social = (ctx.niche?.items ?? []).filter((i) => i.source === "rival" && ((i.via && match(i.via)) || (i.handle && match(i.handle))))
+    const ig = (ctx.niche?.rivalsIg ?? []).find((r) => match(r.name) || match(r.username))
+    const igSum = (k: "likes" | "comments") => ig?.posts.reduce((a, p) => a + (p[k] ?? 0), 0) ?? 0
+    const instagram: AttackCard["instagram"] = ig ? {
+      username: ig.username,
+      url: `https://www.instagram.com/${ig.username}/`,
+      line: `@${ig.username}${ig.followers != null ? `, ${n(ig.followers)} followers` : ""}${ig.posts.length ? `, last ${ig.posts.length} post${ig.posts.length === 1 ? "" : "s"}: ${n(igSum("likes"))} likes, ${n(igSum("comments"))} comments` : ""}`,
+      posts: ig.posts.map((p) => ({ url: p.url, line: [p.type === "REELS" ? "Reel" : p.type === "CAROUSEL_ALBUM" ? "Carousel" : "Post", p.likes != null ? `${n(p.likes)} likes` : null, p.comments != null ? `${n(p.comments)} comments` : null, p.views ? `${n(p.views)} views` : null, p.postedAt ? new Date(p.postedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : null].filter(Boolean).join(" · ") })),
+      // "Make my version" of their best post: only posts that passed the niche gates are in items.
+      make: social[0] ? { label: "Make my version", action: { type: "agent-op", endpoint: "niche", body: { op: "make", id: social[0].id } } } : null,
+    } : null
     const pages = typeof d.pagesFound === "number" ? d.pagesFound : 0
     const read = pages > 0 // strengths/weaknesses are only trusted when their site was actually read
     const strengths = read ? strs(d.strengths) : []
@@ -187,7 +199,7 @@ export async function getRivals(user: User, ctx: { strategy: AdStrategy | null; 
         ? `${theirAds.length} ad${theirAds.length === 1 ? "" : "s"} running on ${theirAds[0].platform === "google" ? "Google search" : "Facebook & Instagram"}${longest ? `, one for ${n(longest)} days` : ""}`
         : social.length
           ? `${social.length} recent social post${social.length === 1 ? "" : "s"}${likes ? ` with ${n(likes)} likes` : ""}`
-          : strengths[0] ? short(strengths[0], 110) : null
+          : instagram ? `Instagram ${instagram.line}` : strengths[0] ? short(strengths[0], 110) : null
     const weak = weaknesses[0] ? short(weaknesses[0], 110) : read && !schema.length ? "No structured data on their site, so AI has less to confirm who they are" : null
     const counter = myMove ? `I publish “${short(myMove.title, 70)}” to take that search` : theirAds.length && ctx.strategy?.competitors?.gaps?.[0] ? `My ads lead with what theirs leave out: ${short(ctx.strategy.competitors.gaps[0], 80)}` : null
     const primary: AttackCard["primary"] = myMove
@@ -205,12 +217,16 @@ export async function getRivals(user: User, ctx: { strategy: AdStrategy | null; 
     if (topics.length) detail.push({ k: "Topics they cover", v: topics.join(", ") })
     if (read) detail.push({ k: "Their site", v: `${pages} page${pages === 1 ? "" : "s"} read${schema.length ? ` · structured data: ${schema.join(", ")}` : " · no structured data"}` })
     for (const a of theirAds.slice(0, 4)) detail.push({ k: `${a.platform === "google" ? "Google ad" : "Ad"}${a.daysRunning ? ` · running ${a.daysRunning} days` : ""}`, v: short(a.title || a.text || `A ${a.format} ad`, 200), href: a.url })
+    if (instagram) {
+      detail.push({ k: "Instagram", v: instagram.line, href: instagram.url })
+      for (const p of instagram.posts.slice(0, 12)) detail.push({ k: "Instagram post", v: p.line, href: p.url })
+    }
     for (const p of social.slice(0, 3)) detail.push({ k: "Social post", v: short(p.about, 160), href: p.url })
     for (const m of moves.filter((x) => x.rivalHost === h).slice(0, 4)) detail.push({ k: "Gap I can take", v: m.title })
 
     return {
       id: c.id, name, host: h, site: `https://${h}`, favicon: `https://www.google.com/s2/favicons?domain=${encodeURIComponent(h)}&sz=64`,
-      manual: isManual(c), tag, winning, weak, counter, primary, adUrl: theirAds[0]?.url ?? null, detail,
+      manual: isManual(c), tag, winning, weak, counter, primary, adUrl: theirAds[0]?.url ?? null, detail, instagram,
     }
   })
 

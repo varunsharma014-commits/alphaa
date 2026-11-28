@@ -142,7 +142,7 @@ export async function getResearchData(user: User): Promise<ResearchData> {
     const lift = liftOf(i)
     return {
       id: i.id,
-      where: PLATFORM_LABEL[i.platform] ?? i.platform,
+      where: `${PLATFORM_LABEL[i.platform] ?? i.platform}${i.platform === "instagram" && i.source === "hashtag" && i.via ? ` · #${i.via.replace(/^#/, "")}` : ""}`,
       title: short(i.about, 110),
       hook: i.hook ?? null,
       format: i.format ?? null,

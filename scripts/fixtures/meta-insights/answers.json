@@ -1,0 +1,31 @@
+{
+  "_note": "Doc-shaped, not live-verified (see README.md). Graph API v27.0.",
+  "ig_media_fields": { "like_count": 18, "comments_count": 3, "media_type": "IMAGE", "media_product_type": "FEED", "id": "17900000000000001" },
+  "ig_media_insights": { "data": [
+    { "name": "reach", "period": "lifetime", "values": [{ "value": 1204 }], "title": "Accounts reached", "id": "17900000000000001/insights/reach/lifetime" },
+    { "name": "views", "period": "lifetime", "values": [{ "value": 1630 }], "title": "Views", "id": "17900000000000001/insights/views/lifetime" },
+    { "name": "likes", "period": "lifetime", "values": [{ "value": 19 }], "title": "Likes", "id": "17900000000000001/insights/likes/lifetime" },
+    { "name": "comments", "period": "lifetime", "values": [{ "value": 3 }], "title": "Comments", "id": "17900000000000001/insights/comments/lifetime" },
+    { "name": "shares", "period": "lifetime", "values": [{ "value": 2 }], "title": "Shares", "id": "17900000000000001/insights/shares/lifetime" },
+    { "name": "saved", "period": "lifetime", "values": [{ "value": 4 }], "title": "Saved", "id": "17900000000000001/insights/saved/lifetime" },
+    { "name": "total_interactions", "period": "lifetime", "values": [{ "value": 28 }], "title": "Interactions", "id": "17900000000000001/insights/total_interactions/lifetime" }
+  ] },
+  "ig_reel_insights_total_value": { "data": [
+    { "name": "reach", "period": "lifetime", "total_value": { "value": 5310 }, "id": "17900000000000002/insights/reach/lifetime" },
+    { "name": "views", "period": "lifetime", "total_value": { "value": 9120 }, "id": "17900000000000002/insights/views/lifetime" },
+    { "name": "saved", "period": "lifetime", "total_value": { "value": 41 }, "id": "17900000000000002/insights/saved/lifetime" }
+  ] },
+  "ig_permission_error": { "error": { "message": "(#10) Application does not have permission for this action", "type": "OAuthException", "code": 10, "fbtrace_id": "AbCdEf" } },
+  "fb_post_fields": { "shares": { "count": 2 }, "reactions": { "data": [], "summary": { "total_count": 12, "viewer_reaction": "NONE" } }, "comments": { "data": [], "summary": { "order": "ranked", "total_count": 2, "can_comment": true } }, "id": "100000000000001_200000000000001" },
+  "fb_post_insights": { "data": [
+    { "name": "post_media_view", "period": "lifetime", "values": [{ "value": 1120 }], "title": "Lifetime Post media views", "id": "100000000000001_200000000000001/insights/post_media_view/lifetime" },
+    { "name": "post_total_media_view_unique", "period": "lifetime", "values": [{ "value": 840 }], "title": "Lifetime Post total media viewers", "id": "100000000000001_200000000000001/insights/post_total_media_view_unique/lifetime" },
+    { "name": "post_clicks", "period": "lifetime", "values": [{ "value": 37 }], "title": "Lifetime Post Clicks", "id": "100000000000001_200000000000001/insights/post_clicks/lifetime" }
+  ] },
+  "debug_token_round1": { "data": { "app_id": "29091869270477242", "type": "SYSTEM_USER", "application": "Alphaa", "is_valid": true, "scopes": ["pages_show_list", "pages_read_engagement", "pages_manage_posts", "instagram_basic", "instagram_content_publish", "business_management"] } },
+  "debug_token_round2": { "data": { "app_id": "29091869270477242", "type": "SYSTEM_USER", "application": "Alphaa", "is_valid": true, "scopes": ["pages_show_list", "pages_read_engagement", "pages_manage_posts", "instagram_basic", "instagram_content_publish", "instagram_manage_insights", "read_insights", "business_management", "ads_read"] } },
+  "business_discovery": { "business_discovery": { "username": "samplerival", "followers_count": 2140, "media_count": 312, "media": { "data": [
+    { "id": "1", "like_count": 240, "comments_count": 18, "permalink": "https://www.instagram.com/reel/AAA/", "media_type": "VIDEO", "media_product_type": "REELS", "timestamp": "2026-11-20T15:00:00+0000" },
+    { "id": "2", "like_count": 90, "comments_count": 4, "permalink": "https://www.instagram.com/p/BBB/", "media_type": "CAROUSEL_ALBUM", "media_product_type": "FEED", "timestamp": "2026-11-17T15:00:00+0000" }
+  ] }, "id": "17841400000000000" }, "id": "17841400000000001" }
+}

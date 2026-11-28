@@ -91,7 +91,7 @@ export async function calendarItems(user: User, from: Date, to: Date): Promise<C
     const waitingOk = status === "scheduled" || status === "planned" || status === "draft"
     const why = !waitingOk ? (done ? "It already went out." : status === "sending" ? "It’s going out right now." : "It didn’t post. Open Social Studio to try again.") : !plats.length ? "Connect a social account first, then I can post it." : null
     const ok = (p.results ?? []).filter((r) => r.ok)
-    const stats = ok.map((r) => statsLine(r.stats)).filter(Boolean)
+    const stats = ok.map((r) => { const l = statsLine(r.stats, r.platform); return l && ok.length > 1 ? `${PLATFORM_NAME[r.platform]}: ${l}` : l }).filter(Boolean)
     out.push({
       key: `social:${p.id}`, kind: "social", id: p.id, channels: plats.length ? plats : ["facebook"],
       title: p.title?.trim() || headlineOf(p.text), text: short(p.text, 220), image: p.imageId ? imageUrl(p.imageId) : null,

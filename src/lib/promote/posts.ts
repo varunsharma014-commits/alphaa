@@ -1,7 +1,7 @@
-// The owner's published organic posts that can be promoted as ads. Ranked only by real stats:
-// LinkedIn company Page posts carry views/likes/comments/reposts/clicks (PostResult.stats, from
-// lib/social/stats.ts). Facebook and Instagram don't give us post stats yet, so those are listed
-// newest first and labelled "Recent posts", never ranked. Pure ranking below is tested.
+// The owner's published organic posts that can be promoted as ads. Ranked only by real stats
+// (PostResult.stats, lib/social/stats.ts + meta-stats.ts): LinkedIn company Page views, Instagram /
+// Facebook reach once Meta shares it. Posts without a base (likes only) are listed newest first as
+// "Recent posts", never ranked. Pure ranking below is tested.
 import { db } from "@/lib/db"
 import { listAccounts } from "@/lib/social/store"
 import { imageUrl } from "@/lib/images"
@@ -20,7 +20,7 @@ export type PostPick = {
   image: string | null
   publishedAt: string
   stats: PostStats | null
-  /** Engagement per view, in percent (LinkedIn Page posts with enough views only). */
+  /** Engagement per person reached (or view), in percent; null without enough reach/views. */
   rate: number | null
 }
 
@@ -50,7 +50,7 @@ export async function promotablePosts(userId: string): Promise<PostPick[]> {
       out.push({
         socialPostId: p.id, platform: res.platform, accountId: acc.id, accountName: acc.name, externalId: res.externalId, url: res.url ?? null,
         text: p.text.slice(0, 400), image: p.imageId ? imageUrl(p.imageId) : null, publishedAt: p.publishedAt,
-        stats: res.stats ?? null, rate: res.platform === "linkedin" ? engagementRate(res.stats) : null,
+        stats: res.stats ?? null, rate: engagementRate(res.stats),
       })
     }
   }

@@ -182,12 +182,37 @@ export async function getTiles(user: User): Promise<Tile[]> {
     tiles.push({ key: "rating", label: "Google rating", value: null, delta: null, empty: "Connect your Google listing to see reviews.", href: "/api/integrations/google/connect?go=1" })
   }
 
+  // Social: people reached by the posts I published in the last 30 days (Instagram / Facebook / LinkedIn
+  // numbers from the platforms), else followers and their growth from the daily snapshots.
+  if (hasPro(user)) {
+    const t = await socialTile(user.id).catch(() => null)
+    if (t) tiles.push(t)
+  }
+
   // Return on ad spend, once ads have spent (lib/roas): tracked only, else how to turn it on.
   if (hasGrowth(user)) {
     const roas = await roasTile(user).catch(() => null)
     if (roas) tiles.unshift(roas)
   }
   return tiles
+}
+
+async function socialTile(userId: string): Promise<Tile | null> {
+  const [posts, audience] = await Promise.all([listPosts(userId, 60), import("@/lib/social/meta-stats").then((m) => m.audienceOf(userId))])
+  const since = Date.now() - 30 * DAY
+  let reach = 0, counted = 0
+  for (const p of posts) {
+    if (!p.publishedAt || Date.parse(p.publishedAt) < since) continue
+    for (const r of p.results ?? []) {
+      const v = r.ok ? r.stats?.reach ?? null : null
+      if (v != null) { reach += v; counted++ }
+    }
+  }
+  const main = audience.find((a) => a.platform === "instagram" && a.followers != null) ?? audience.find((a) => a.followers != null)
+  const growth = main?.change != null ? `${main.change > 0 ? "+" : ""}${n(main.change)} ${PLATFORM_NAME[main.platform]} followers` : null
+  if (counted) return { key: "social", label: "People reached · 30 days", value: n(reach), delta: growth ?? `${counted} post${counted === 1 ? "" : "s"}`, empty: "", href: "/dashboard/social" }
+  if (main) return { key: "social", label: `${PLATFORM_NAME[main.platform]} followers`, value: n(main.followers!), delta: main.change != null ? `${main.change > 0 ? "+" : ""}${n(main.change)} in 30 days` : null, empty: "", href: "/dashboard/social" }
+  return null
 }
 
 async function roasTile(user: User): Promise<Tile | null> {

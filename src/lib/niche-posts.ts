@@ -83,7 +83,10 @@ export type NichePosts = {
   items: NicheItem[]
   /** Instagram at the time of this look: on, waiting on Meta's approval, or not connected. */
   instagram?: InstagramState
+  /** Competitors' Instagram accounts read through Business Discovery: counts and links only, never captions or images. */
+  rivalsIg?: RivalIg[]
 }
+export type RivalIg = { name: string; username: string; followers: number | null; mediaCount: number | null; at: string; posts: { url: string; type: string | null; likes: number | null; comments: number | null; views: number | null; postedAt: string | null }[] }
 export type InstagramState = "on" | "pending" | "connect"
 const igState = (st: IgState): InstagramState => (st.state === "on" ? "on" : st.state === "pending" ? "pending" : "connect")
 
@@ -496,7 +499,12 @@ async function build(userId: string): Promise<Omit<NichePosts, "v" | "status" | 
   const top = rank(raw, own).map((r) => ({ ...r, id: hash(r.url) }))
   // Off-niche posts (the writer says they're about something else) never get stored.
   const items = (await describe(top, user)).filter((i) => i.fit !== false)
-  return { terms: [...(st.can.hashtags ? terms.hashtags.map((h) => `#${h}`) : []), ...terms.keywords], sources: [...sources], items, instagram: igState(st) }
+  const at = new Date().toISOString()
+  const rivalsIg: RivalIg[] = rIg.flatMap(({ r: rival, d }) => d ? [{
+    name: rival.name, username: d.username, followers: d.followers, mediaCount: d.mediaCount, at,
+    posts: d.media.slice(0, 12).map((m) => ({ url: m.url, type: m.product ?? m.type, likes: m.likes, comments: m.comments, views: m.views, postedAt: m.postedAt })),
+  }] : [])
+  return { terms: [...(st.can.hashtags ? terms.hashtags.map((h) => `#${h}`) : []), ...terms.keywords], sources: [...sources], items, instagram: igState(st), rivalsIg }
 }
 
 export async function latestNichePosts(userId: string): Promise<(NichePosts & { rowId: string }) | null> {

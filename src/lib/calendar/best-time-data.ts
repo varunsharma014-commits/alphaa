@@ -1,12 +1,15 @@
 // Loads the real data behind "best time to post" and caches the result for a day in agent
-// settings `calendar.best`: LinkedIn company Page post stats (lib/social/stats.ts saves them on
-// each post result) and GA4 sessions by weekday + hour (all visits, and visits from social).
+// settings `calendar.best`: the owner's own post stats on LinkedIn company Pages, Instagram and
+// Facebook Pages (lib/social/stats.ts + meta-stats.ts save them on each post result) and GA4 sessions by weekday + hour (all visits, and visits from social).
 // Anything without enough data falls back to labelled general guidance (best-time.ts `typical`).
 import { google } from "googleapis"
 import { db } from "@/lib/db"
 import { getAuthenticatedClient } from "@/lib/google"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { listPosts } from "@/lib/social/store"
+import { engagementOf } from "@/lib/social/stats"
+import { audienceOf } from "@/lib/social/meta-stats"
+import type { SocialPlatform } from "@/lib/social/types"
 import { CHANNELS, fromPosts, fromTraffic, MIN_SOCIAL_SESSIONS, shiftGrid, typical, type Best, type BestTimes, type Channel, type PostPoint, type TrafficGrid } from "./best-time"
 import { DEFAULT_TZ, isValidTz, offsetMinutes } from "./tz"
 
@@ -61,26 +64,33 @@ async function gaGrids(userId: string): Promise<{ tz: string; all: TrafficGrid; 
   }
 }
 
-/** LinkedIn company Page posts with stats, as points (other platforms don't report stats to us yet). */
-async function linkedinPoints(userId: string): Promise<PostPoint[]> {
-  const posts = await listPosts(userId, 200).catch(() => [])
-  const out: PostPoint[] = []
+/** The owner's own published posts with stats, as points per platform. Instagram and Facebook use
+ * reach (or views) when Meta shares it, else the account's follower count as the base. */
+async function postPoints(userId: string): Promise<Partial<Record<SocialPlatform, PostPoint[]>>> {
+  const [posts, audience] = await Promise.all([listPosts(userId, 200).catch(() => []), audienceOf(userId).catch(() => [])])
+  const followers = new Map(audience.map((a) => [a.accountId, a.followers]))
+  const out: Partial<Record<SocialPlatform, PostPoint[]>> = {}
   for (const p of posts) {
     if (!p.publishedAt) continue
     for (const r of p.results ?? []) {
-      if (!r.ok || r.platform !== "linkedin" || !r.stats?.impressions) continue
-      const s = r.stats
-      out.push({ at: Date.parse(p.publishedAt), impressions: s.impressions ?? 0, engagements: (s.likes ?? 0) + (s.comments ?? 0) + (s.shares ?? 0) + (s.clicks ?? 0) })
+      if (!r.ok || !r.stats) continue
+      if (r.platform === "linkedin" && !r.stats.impressions) continue
+      if (r.platform !== "linkedin" && r.platform !== "instagram" && r.platform !== "facebook") continue
+      const e = engagementOf(r.stats, followers.get(r.accountId))
+      if (!e) continue
+      ;(out[r.platform] ??= []).push({ at: Date.parse(p.publishedAt), impressions: e.base, engagements: e.engagements })
     }
   }
   return out
 }
 
 export async function computeBestTimes(userId: string, tz: string): Promise<BestTimes> {
-  const [li, ga] = await Promise.all([linkedinPoints(userId), gaGrids(userId)])
+  const [pts, ga] = await Promise.all([postPoints(userId), gaGrids(userId)])
   const channels: Partial<Record<Channel, Best>> = {}
-  const liBest = fromPosts("linkedin", li, tz, "LinkedIn Page")
-  if (liBest) channels.linkedin = liBest
+  for (const [c, what] of [["linkedin", "LinkedIn Page"], ["instagram", "Instagram"], ["facebook", "Facebook Page"]] as const) {
+    const b = fromPosts(c, pts[c] ?? [], tz, what)
+    if (b) channels[c] = b
+  }
   if (ga) {
     const now = Date.now()
     const shift = (offsetMinutes(now, tz) - offsetMinutes(now, ga.tz)) / 60
