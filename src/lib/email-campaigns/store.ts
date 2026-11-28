@@ -16,7 +16,7 @@ export type Contact = { e: string; n?: string; at: string; src: "paste" | "csv" 
 
 export type Campaign = {
   v: 1
-  status: "draft" | "sending" | "sent" | "failed" | "deleted"
+  status: "draft" | "scheduled" | "sending" | "sent" | "failed" | "deleted"
   subject: string
   preview: string
   paragraphs: string[]
@@ -36,6 +36,8 @@ export type Campaign = {
   complained?: number // people who marked it as spam (taken off the list)
   tests?: string[] // ISO times test copies went to the owner
   touchedAt?: string // last write (MockActivity has no updatedAt)
+  /** Content calendar: the owner put it on the calendar; /api/cron/due sends it at this time (lib/calendar/due.ts). */
+  scheduledFor?: string
 }
 
 const EMAIL_RE = /^[^@\s,;<>"]+@[^@\s,;<>"]+\.[a-z]{2,}$/i

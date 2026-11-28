@@ -64,6 +64,8 @@ export type AgentSettings = {
   billing?: { extraAdAccounts: number; subscriptionId?: string; at: string }
   /** Usage credits: "Use credits when I run out" (lib/credits.ts). On after the first purchase unless turned off. */
   credits?: { autoUse: boolean; at: string }
+  /** Content calendar (lib/calendar): the owner's time zone and the cached "best time to post". */
+  calendar?: { timezone?: string; tzAt?: string; best?: import("@/lib/calendar/best-time").BestTimes; /** Google posts the owner OK'd on the calendar (GbpPost has no metadata). */ okGbp?: string[] }
 }
 
 export type Autopilot = {

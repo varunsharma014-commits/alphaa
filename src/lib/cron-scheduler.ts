@@ -28,6 +28,8 @@ export function startCron(): void {
   setInterval(() => hit("/api/cron/social-publish"), 10 * 60_000)
   // Every 10 minutes: website posts the owner scheduled from Research (lib/workspace/site-posts).
   setInterval(() => hit("/api/cron/site-posts"), 10 * 60_000)
+  // Every 10 minutes: content-calendar times for Google listing posts and customer emails (lib/calendar/due).
+  setInterval(() => hit("/api/cron/due"), 10 * 60_000)
 
   // Run once per hour-boundary we care about; dedupe so we never fire twice
   // within the same matched hour.

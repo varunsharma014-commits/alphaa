@@ -1,6 +1,8 @@
 // Dev-only (page.tsx 404s in production): the workspace shell and pages with SAMPLE data, so the
 // layout can be checked in a browser without a Clerk session. Never rendered for a real account.
 import "../../(dashboard)/workspace.css"
+import "../../(dashboard)/calendar.css"
+import { CalendarPreview } from "./calendar-preview"
 import { WorkspaceShell } from "@/components/workspace/WorkspaceShell"
 import { BriefingView } from "@/components/workspace/BriefingView"
 import { ResearchView } from "@/components/workspace/ResearchView"
@@ -22,8 +24,9 @@ const SAMPLE_MOVE: MoveCard = { id: "m1", title: "Sample page title for your sit
 const soon = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString()
 
 export function WsPreview({ page, empty, dark }: { page: string; empty: boolean; dark: boolean }) {
-  const path = page === "briefing" ? "/dashboard" : `/dashboard/${page}`
+  const path = page === "briefing" ? "/dashboard" : page === "calendar" ? "/dashboard/social/calendar" : `/dashboard/${page}`
   const body = (() => {
+    if (page === "calendar") return <CalendarPreview empty={empty} />
     if (page === "research") return <ResearchView data={empty ? { summary: "Here’s what I’ve found about your market so far.", nicheOn: true, working: [], trends: [], ideas: [], hooks: [], moves: [], comps: [], compGaps: [], strategyAt: null, hiddenComps: 2, hiddenGaps: 4, lastChecked: null, compared: 0, autopilot: false, siteConnected: false, top: null, island: "", droppedPosts: 0, ideasAt: null, topIdea: null, hasSocialAccounts: false, gmbConnected: false } : {
       summary: "I looked at 12 posts on Instagram, TikTok for #sampletag. Here’s what I found, with a link to every source.", nicheOn: true, strategyAt: new Date().toISOString(),
       working: [1, 2, 3, 4, 5].map((k) => ({ id: `w${k}`, where: k % 2 ? "Instagram" : "TikTok", title: `Sample post ${k}: a walk-through of a first visit`, hook: k % 2 ? "Sample opening line of the post, quoted" : null, format: k % 2 ? "Reel" : "Tutorial", thumb: null, duration: k % 2 ? "0:24" : null, badge: `${(1 + k / 2).toFixed(1)}× typical engagement`, why: "Sample why it works.", stats: [{ k: "Views", v: "1,200" }, { k: "Likes", v: "88" }, { k: "Comments", v: "9" }], use: "A short walk-through of your first visit, filmed on a phone.", url: "https://example.com/post", art: ART.social, rows: [["What it is", "Sample"], ["Why it works", "Sample"], ["Source", "https://example.com/post"]] as [string, string][], makeChip: { label: "Make my version", action: { type: "say" as const, text: "preview" } } })),

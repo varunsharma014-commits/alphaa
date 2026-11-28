@@ -26,6 +26,8 @@ import { isQuotaError, requireQuota } from "@/lib/quotas"
 import { GuardrailError } from "@/lib/guardrails"
 import { listAccounts, createPost } from "@/lib/social/store"
 import { PLATFORM_NAME } from "@/lib/social/types"
+import { bestFor, nextOnWeekday, type BestTimes, type Channel } from "@/lib/calendar/best-time"
+import { getBestTimes } from "@/lib/calendar/best-time-data"
 
 const anthropic = claudeFor("week-run")
 
@@ -65,16 +67,11 @@ export type WeekRun = {
 }
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-/** The date of the next `day` (today counts), at 13:00 UTC: when the Google post cron runs. */
-function dateFor(day: string): Date {
+/** The next `day` (today counts) at the best time to post for these channels, in the owner's time
+ *  zone (lib/calendar/best-time: their own post results, else website traffic, else typical guidance). */
+function dateFor(day: string, channels: Channel[], times: BestTimes | null): Date {
   const want = WEEKDAYS.indexOf(day)
-  const d = new Date()
-  d.setUTCHours(13, 0, 0, 0)
-  for (let i = 0; i < 8; i++) {
-    if (d.getUTCDay() === want && d.getTime() > Date.now() - 3_600_000) return d
-    d.setUTCDate(d.getUTCDate() + 1)
-  }
-  return new Date()
+  return nextOnWeekday(bestFor(times, channels), want < 0 ? new Date().getUTCDay() : want, times?.tz ?? "UTC")
 }
 
 const PlanSchema = z.object({
@@ -164,6 +161,8 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   const siteConnected = !!(s.wp || s.site)
   const auto = !!s.autoPublishPosts && /pro|full|growth/i.test(user.plan)
   run.siteConnected = siteConnected
+  // When to schedule each piece (owner's time zone, best time per channel; typical guidance without data).
+  const times = await getBestTimes(userId).catch(() => null)
 
   // 1. Brand + voice
   const [brand, voice] = await Promise.all([ensureBrandKit(userId).catch(() => null), ensureVoice(userId).catch(() => null)])
@@ -217,7 +216,7 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
       } else if (it.kind === "google") {
         const g = await generateGbpPost(user.integration?.gmbLocationName ?? user.businessName ?? "Our Business", user.businessType ?? "local business", user.city ?? "", "UPDATE", `${it.title}. ${it.why}`, voiceStr)
         const ok = auto && !containsPlaceholders(g.content)
-        const post = await db.gbpPost.create({ data: { userId, content: g.content, postType: "UPDATE", status: ok ? "scheduled" : "draft", scheduledFor: ok ? dateFor(it.day) : null } })
+        const post = await db.gbpPost.create({ data: { userId, content: g.content, postType: "UPDATE", status: ok ? "scheduled" : "draft", scheduledFor: ok ? dateFor(it.day, ["google"], times) : null } })
         Object.assign(it, { text: g.content, postId: post.id, status: ok ? "scheduled" : "ready" })
       } else {
         const sp = await writeSocial(user, it.title, it.why)
@@ -229,8 +228,7 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
         const accounts = (await listAccounts(userId)).filter((a) => a.status === "active" && (card || (a.platform !== "instagram" && a.platform !== "tiktok")))
         if (accounts.length) {
           const auto = s.autopilot?.social === "auto"
-          const when = dateFor(it.day)
-          when.setUTCHours(15, 0, 0, 0)
+          const when = dateFor(it.day, accounts.map((a) => a.platform), times)
           const q = await createPost(userId, { text: sp.text, imageId: card?.id ?? null, accountIds: accounts.map((a) => a.id), status: auto ? "scheduled" : "draft", scheduledFor: when.toISOString(), source: "week", title: it.title })
           Object.assign(it, { socialId: q.id, socialStatus: auto ? "scheduled" : "draft", socialWhere: Array.from(new Set(accounts.map((a) => PLATFORM_NAME[a.platform]))), status: auto ? "scheduled" : "ready" })
         }

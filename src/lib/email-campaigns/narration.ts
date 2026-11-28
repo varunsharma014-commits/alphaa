@@ -1,4 +1,5 @@
 // The "Email your past customers" thread (topic "email", Pro and up). Built from real rows only.
+import { isValidTz, whenLabel } from "@/lib/calendar/tz"
 import type { User } from "@prisma/client"
 import { agent, type Block, type Chip, type Message } from "@/lib/agent/types"
 import { getAgentSettings } from "@/lib/agent/settings"
@@ -132,6 +133,15 @@ export async function emailMessages(user: User, note?: string | null): Promise<M
   if (draft) {
     const blocked = !address ? "Add your mailing address and it’s ready to send." : next ? `You sent one recently. To keep your customers glad to hear from you, the next one can go on ${next.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}.` : null
     out.push(draftMessage(draft, contacts.length, blocked))
+  }
+
+  // Put on the content calendar by the owner: goes out at that time (lib/calendar/due.ts).
+  const scheduled = campaigns.filter((r) => r.c.status === "scheduled" && r.c.scheduledFor)
+  if (scheduled.length) {
+    out.push(agent([
+      { kind: "sources", title: "Scheduled on your calendar", items: scheduled.map((r) => ({ name: r.c.subject, detail: `Goes out ${whenLabel(r.c.scheduledFor!, isValidTz(s.calendar?.timezone) ? s.calendar!.timezone! : "UTC")}${isValidTz(s.calendar?.timezone) ? "" : " UTC"}`, status: "Scheduled", ok: true })) },
+      { kind: "text", text: "Move or stop it on the content calendar (Social Studio → Calendar)." },
+    ], "em-scheduled"))
   }
 
   const sending = campaigns.find((r) => r.c.status === "sending")

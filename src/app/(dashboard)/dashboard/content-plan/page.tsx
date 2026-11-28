@@ -12,7 +12,7 @@ import { DsCard } from "@/components/dashboard/DsCard"
 import { EmptyState } from "@/components/dashboard/EmptyState"
 import { GenerateMonthButton } from "./GenerateMonthButton"
 
-export const metadata = { title: "Content Plan" }
+export const metadata = { title: "Google listing posts" }
 
 function formatDate(date: Date) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(date))
@@ -104,10 +104,10 @@ export default async function ContentPlanPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Content calendar</h1>
+          <h1 style={{ fontSize: "22px", fontWeight: 500, color: "var(--ds-text)" }}>Google listing posts</h1>
           <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6, marginTop: "4px", maxWidth: "560px" }}>
-            alphaa plans, writes, and schedules your content — you can approve each post or let it go out
-            automatically.
+            Your Google listing updates by week.{" "}
+            <Link href="/dashboard/social/calendar" style={{ color: "var(--ds-accent)" }}>See every channel on the content calendar →</Link>
           </p>
           <p style={{ fontSize: "11px", color: "var(--ds-text-faint)", marginTop: "6px" }}>{monthName}</p>
         </div>

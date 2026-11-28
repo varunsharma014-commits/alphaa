@@ -45,6 +45,7 @@ export async function POST(req: Request) {
       said = r?.status === "published" ? "Posted." : r?.status === "partial" ? "Posted to some of your accounts. The rest are below." : "It didn’t post. The reason is below."
     } else if (input.op === "approve") {
       p.status = "scheduled"
+      p.ownerOk = true
       if (!p.scheduledFor || Date.parse(p.scheduledFor) < Date.now()) p.scheduledFor = new Date(Date.now() + 5 * 60_000).toISOString()
       await savePost(user.id, p)
       said = "Approved. It goes out on schedule."

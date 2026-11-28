@@ -20,13 +20,14 @@ import type { ShellData } from "@/lib/workspace/shell"
 import { Check, Icon, SendArrow, type IconName } from "./icons"
 import { CreditsSheet } from "./CreditsSheet"
 
-const WORKSPACES = ["/dashboard", "/dashboard/research", "/dashboard/social", "/dashboard/email", "/dashboard/ads", "/dashboard/tracking", "/dashboard/citations"]
+const WORKSPACES = ["/dashboard", "/dashboard/research", "/dashboard/social", "/dashboard/social/calendar", "/dashboard/email", "/dashboard/ads", "/dashboard/tracking", "/dashboard/citations"]
 
 type Suggest = { label: string; say?: string; topic?: string }
 const SUGGEST: Record<string, Suggest[]> = {
   "/dashboard": [{ label: "Run my marketing for this week", say: "Run my marketing for this week" }, { label: "What’s working?", topic: "insights" }, { label: "What have you done?", topic: "work" }],
   "/dashboard/research": [{ label: "What’s working in my niche?", topic: "niche" }, { label: "What are my competitors doing?", topic: "competitors" }, { label: "Ideas from my numbers", topic: "insights" }],
   "/dashboard/social": [{ label: "Plan this week’s posts", say: "Run my marketing for this week" }, { label: "My social accounts", topic: "social" }, { label: "How my images look", topic: "voice" }],
+  "/dashboard/social/calendar": [{ label: "Plan this week’s posts", say: "Run my marketing for this week" }, { label: "Website posts & pages", topic: "content" }, { label: "Write an email", topic: "email" }],
   "/dashboard/email": [{ label: "Write an email", topic: "email" }, { label: "Who is on my list?", topic: "email" }, { label: "What I send without asking", topic: "autopilot" }],
   "/dashboard/ads": [{ label: "How are my ads doing?", topic: "ads" }, { label: "Show my ad plan", topic: "adplan" }, { label: "My monthly limit", topic: "autopilot" }],
   "/dashboard/citations": [{ label: "Every question and answer", topic: "answers" }, { label: "What are my competitors doing?", topic: "competitors" }, { label: "What’s your plan?", topic: "insights" }],
@@ -47,7 +48,7 @@ const MORE: { href: string; label: string; topic?: string }[] = [
   { href: "/dashboard/speed", label: "Site speed" },
   { href: "/dashboard/posts", label: "Google listing posts" },
   { href: "/dashboard/reviews", label: "Reviews" },
-  { href: "/dashboard/content-plan", label: "Content calendar" },
+  { href: "/dashboard/social/calendar", label: "Content calendar" },
   { href: "/dashboard/content-gaps", label: "Content ideas" },
   { href: "/dashboard/competitors", label: "Competitors" },
   { href: "/dashboard/ad-strategy", label: "Your ad plan" },
@@ -164,7 +165,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
   const isWs = WORKSPACES.includes(pathname)
   const suggest = SUGGEST[pathname] ?? SUGGEST["/dashboard"]
   const ni = (href: string, label: string, icon: IconName, extra?: React.ReactNode) => {
-    const on = href === "/dashboard" ? pathname === "/dashboard" : pathname === href || pathname.startsWith(`${href}/`)
+    const on = href === "/dashboard" ? pathname === "/dashboard" : (pathname === href || pathname.startsWith(`${href}/`)) && !(href === "/dashboard/social" && pathname.startsWith("/dashboard/social/calendar"))
     return (
       <Link className={`ax-ni${on ? " on" : ""}`} href={href} aria-current={on ? "page" : undefined}>
         <span className="l"><Icon name={icon} />{label}</span>{extra}
@@ -193,6 +194,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
             <nav className="ax-nav">
               {ni("/dashboard/research", "Research & Ideas", "research")}
               {ni("/dashboard/social", "Social Studio", "social", data.socialScheduled ? <span className="ax-bdg">{data.socialScheduled}</span> : !data.pro ? <span className="ax-tag">Pro</span> : null)}
+              {ni("/dashboard/social/calendar", "Calendar", "calendar")}
               {ni("/dashboard/email", "Email & Flows", "email", <span className="ax-tag">Pro</span>)}
               {ni("/dashboard/ads", "Ads", "ads", <span className="ax-tag">Growth</span>)}
               {ni("/dashboard/tracking", "Tracking & Setup", "tracking", data.trackingNeeds ? <span className="ax-bdg amber">{data.trackingNeeds}</span> : null)}

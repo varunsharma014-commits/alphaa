@@ -132,6 +132,9 @@ export async function approveSitePost(userId: string, draftId: string, text?: st
   const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string }
   if (!res.ok || !data.url) return { ok: false, error: data.error ?? "Your site didn’t accept it. Nothing changed.", ...(res.status === 429 ? { quota: true } : {}) }
   await markPublished(userId, draftId, by).catch(() => {})
+  // When it went live, for the content calendar (lib/calendar/items.ts).
+  const fresh = await db.mockActivity.findUnique({ where: { id: draftId } }).catch(() => null)
+  if (fresh) await db.mockActivity.update({ where: { id: draftId }, data: { metadata: { ...(fresh.metadata as object), publishedAt: new Date().toISOString() } } }).catch(() => null)
   return { ok: true, url: data.url }
 }
 

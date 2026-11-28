@@ -3,6 +3,7 @@ export const maxDuration = 300
 
 import { checkQuota, cronAllowed } from "@/lib/quotas"
 import { NextRequest, NextResponse } from "next/server"
+import { publishDueGbpPosts } from "@/lib/calendar/due"
 import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
 import { logActivity } from "@/lib/activity"
@@ -11,7 +12,6 @@ import { resolveAccessToken } from "@/lib/gmb"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { voiceFor } from "@/lib/voice"
 import { asUser } from "@/lib/usage"
-import { approveGbpPost } from "@/lib/approvals"
 import { draftKey } from "@/lib/draft-dedupe"
 
 const anthropic = claudeFor("google-posts")
@@ -212,13 +212,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   // Google updates the agent scheduled for today (the weekly plan, autopilot on).
-  const due = await db.gbpPost.findMany({ where: { status: "scheduled", scheduledFor: { lte: new Date() } }, select: { id: true, userId: true }, take: 200 })
-  let scheduledPosted = 0
-  for (const p of due) {
-    const r = await approveGbpPost(p.userId, p.id).catch(() => ({ ok: false as const, error: "error" }))
-    if (r.ok) scheduledPosted++
-    else await db.gbpPost.update({ where: { id: p.id }, data: { status: "draft" } }).catch(() => null)
-  }
+  // Same function as /api/cron/due (every 10 minutes, content-calendar times), one run at a time.
+  const { posted: scheduledPosted } = await publishDueGbpPosts()
 
   // New drafts need AI: they wait while the platform is over AI_DAILY_BUDGET_USD (scheduled posts above still go out).
   if (!(await cronAllowed("gbp-posts"))) return NextResponse.json({ skipped: "platform AI budget reached for today", scheduledPosted })

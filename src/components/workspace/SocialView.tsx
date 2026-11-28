@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import type { SocialData, SocialCard } from "@/lib/workspace/social"
 import { AI_NOTE, askAlphaa, ISLAND_EVENT, toast } from "@/lib/workspace/events"
 import { Empty, PlanGate, Tabs, When } from "./ui"
+import { ViewSwitch } from "./CalendarView"
 
 // Social Studio: ready for your OK (autopilot off) / going out soon (with Stop) / posted (with the
 // stats the platform shares). Preview opens a drawer with the post and style swatches that
@@ -114,6 +115,7 @@ export function SocialView({ data }: { data: SocialData | null }) {
     <>
       <div className="ax-hdr">
         <div><h1 className="ax-h1">Social Studio</h1><p className="ax-sub">I write and design every post in your voice{data.auto ? " and post it on schedule. Stop anything before it goes out." : ". Approve a post and it goes out on schedule."}</p></div>
+        <ViewSwitch on="lists" />
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 18, alignItems: "center" }}>
         {data.accounts.length ? data.accounts.map((a) => (

@@ -10,7 +10,7 @@ import { consentCurrent } from "@/lib/auto-approve-text"
 
 export const STOP_WINDOW_MS = 72 * 3_600_000 // the "up to 3 days" to stop it
 
-type Meta = { title?: string; markdown?: string; status?: string; scheduledFor?: string; scheduleError?: string; imageId?: string | null; excerpt?: string }
+type Meta = { title?: string; markdown?: string; status?: string; scheduledFor?: string; scheduleError?: string; imageId?: string | null; excerpt?: string; /** The owner OK'd this time on the content calendar: it goes out even with Autopilot off. */ ownerOk?: boolean; stopUntil?: string | null }
 
 export async function scheduledSitePosts(userId: string) {
   const rows = await db.mockActivity.findMany({ where: { userId, type: "post_draft", metadata: { path: ["status"], equals: "scheduled" } }, orderBy: { createdAt: "desc" }, take: 20 })
@@ -26,7 +26,7 @@ export async function scheduleSitePost(userId: string, draftId: string): Promise
   if (m.status === "published") return { ok: false, error: "It’s already live." }
   if (/\[[^\]]{2,}\]/.test(m.markdown ?? "")) return { ok: false, error: "This draft still has [bracketed] facts only you know. Fill them in first." }
   const at = new Date(Date.now() + STOP_WINDOW_MS).toISOString()
-  await db.mockActivity.update({ where: { id: row.id }, data: { metadata: { ...(row.metadata as object), status: "scheduled", scheduledFor: at, scheduleError: null } } })
+  await db.mockActivity.update({ where: { id: row.id }, data: { metadata: { ...(row.metadata as object), status: "scheduled", scheduledFor: at, stopUntil: at, ownerOk: false, scheduleError: null } } })
   return { ok: true, at }
 }
 
@@ -45,15 +45,18 @@ export async function holdSitePost(userId: string, id: string, op: "stop" | "und
   return { ok: true, status: "scheduled" }
 }
 
-/** Cron: publish what's due. Autopilot turned off since = it stays scheduled (and stoppable). */
+/** Cron: publish what's due. Autopilot turned off since = it stays scheduled (and stoppable), unless the owner OK'd the time. */
 export async function publishDueSitePosts(): Promise<{ due: number; published: number; failed: number }> {
   const rows = await db.mockActivity.findMany({ where: { type: "post_draft", metadata: { path: ["status"], equals: "scheduled" } }, take: 200 })
   const due = rows.filter((r) => { const t = (r.metadata as Meta).scheduledFor; return !!t && Date.parse(t) <= Date.now() })
   let published = 0, failed = 0
   for (const r of due.slice(0, 40)) {
     if (!r.userId) continue
-    const s = await getAgentSettings(r.userId)
-    if (!s.autoApprove || !consentCurrent(s)) continue
+    // Autopilot off = only the times the owner OK'd on the content calendar go out.
+    if (!(r.metadata as Meta).ownerOk) {
+      const s = await getAgentSettings(r.userId)
+      if (!s.autoApprove || !consentCurrent(s)) continue
+    }
     const res = await approveSitePost(r.userId, r.id).catch((e) => ({ ok: false as const, error: e instanceof Error ? e.message : "failed" }))
     if (res.ok) published++
     else {

@@ -3,7 +3,7 @@
 // tap is the approval, so it goes on the schedule now (social: in 5 minutes; Google: the next
 // gbp-posts run; website: published now through approveSitePost).
 import { db } from "@/lib/db"
-import { getAgentSettings } from "@/lib/agent/settings"
+import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { consentCurrent } from "@/lib/auto-approve-text"
 import { getPost, savePost } from "@/lib/social/store"
 import { approveSitePost } from "@/lib/approvals"
@@ -32,6 +32,9 @@ export async function scheduleMade(userId: string, kind: "social" | "gbp" | "sit
     const planned = p.scheduledFor && Date.parse(p.scheduledFor) > base.getTime() ? p.scheduledFor : null
     p.status = "scheduled"
     p.scheduledFor = planned ?? base.toISOString()
+    // Autopilot's stop window (content calendar rules), or the owner's own OK.
+    if (window) p.stopUntil = base.toISOString()
+    else p.ownerOk = true
     await savePost(userId, p)
     return { ok: true, at: p.scheduledFor }
   }
@@ -43,6 +46,8 @@ export async function scheduleMade(userId: string, kind: "social" | "gbp" | "sit
     if (/\[[^\]]{2,}\]/.test(g.content)) return { ok: false, error: "It still has [bracketed] facts only you know. Fill them in first." }
     const at = nextGbpRun(base)
     await db.gbpPost.update({ where: { id: g.id }, data: { status: "scheduled", scheduledFor: at } })
+    // The owner's tap is their OK for this one (the content calendar won't ask again when it moves).
+    if (!window) await saveAgentSettings(userId, { calendar: { ...(s.calendar ?? {}), okGbp: [...(s.calendar?.okGbp ?? []), g.id].slice(-300) } })
     return { ok: true, at: at.toISOString() }
   }
   if (window) {

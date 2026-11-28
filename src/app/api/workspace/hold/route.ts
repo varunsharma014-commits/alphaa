@@ -11,8 +11,9 @@ import { db } from "@/lib/db"
 import { hasPro } from "@/lib/billing"
 import { getPost, savePost } from "@/lib/social/store"
 import { holdSitePost } from "@/lib/workspace/site-posts"
+import { holdEmail } from "@/lib/calendar/move"
 
-const body = z.object({ kind: z.enum(["social", "gbp", "site"]), id: z.string().min(5).max(40), op: z.enum(["stop", "undo"]) })
+const body = z.object({ kind: z.enum(["social", "gbp", "site", "email"]), id: z.string().min(5).max(40), op: z.enum(["stop", "undo"]) })
 const soon = () => new Date(Date.now() + 5 * 60_000)
 
 export async function POST(req: Request) {
@@ -20,6 +21,12 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
+
+  if (input.kind === "email") {
+    if (!hasPro(user)) return NextResponse.json({ error: "Email campaigns come with the Pro plan." }, { status: 403 })
+    const r = await holdEmail(user.id, input.id, input.op)
+    return r.ok ? NextResponse.json(r) : NextResponse.json({ error: r.error }, { status: 409 })
+  }
 
   if (input.kind === "site") {
     const r = await holdSitePost(user.id, input.id, input.op)

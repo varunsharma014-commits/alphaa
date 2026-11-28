@@ -56,6 +56,10 @@ export type SocialPost = {
   title?: string | null
   /** A brand library video (lib/library): Facebook posts it as a video, Instagram as a Reel. Other platforms use the image. */
   videoAssetId?: string | null
+  /** The owner approved this exact time (content calendar move, approval or an early-time OK). */
+  ownerOk?: boolean
+  /** End of the Autopilot stop window when Autopilot scheduled it (lib/calendar/rules.ts). */
+  stopUntil?: string | null
 }
 
 /** What every provider implements. */

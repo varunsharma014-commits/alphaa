@@ -51,13 +51,13 @@ export async function getEmailData(user: User): Promise<EmailData> {
   ])
   const campaigns: CampaignCard[] = rows.map((r) => {
     const c = r.c
-    const status = c.status === "sent" ? `Sent ${c.sentAt ? ago(c.sentAt) : ""}`.trim() : c.status === "sending" ? "Sending now" : c.status === "failed" ? "Didn’t send" : c.auto && settings.autopilot?.email === "auto" ? "Goes out on its own" : "Draft"
+    const status = c.status === "sent" ? `Sent ${c.sentAt ? ago(c.sentAt) : ""}`.trim() : c.status === "sending" ? "Sending now" : c.status === "failed" ? "Didn’t send" : c.status === "scheduled" && c.scheduledFor ? `Goes out ${whenAhead(c.scheduledFor)}` : c.auto && settings.autopilot?.email === "auto" ? "Goes out on its own" : "Draft"
     return {
       id: r.id,
       subject: c.subject,
       preview: c.preview,
       status,
-      pc: c.status === "sent" ? "g" : c.status === "sending" ? "b" : c.status === "failed" ? "a" : "n",
+      pc: c.status === "sent" ? "g" : c.status === "sending" || c.status === "scheduled" ? "b" : c.status === "failed" ? "a" : "n",
       sent: c.status === "sent" || c.status === "sending" ? c.sent ?? 0 : null,
       bounced: c.bounced ?? 0,
       complained: c.complained ?? 0,

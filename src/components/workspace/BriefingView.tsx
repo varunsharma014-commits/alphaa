@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { EngineIcon } from "./EngineIcon"
@@ -144,7 +145,10 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
 
       <div className="ax-h2">
         <div><h2>Going out soon</h2><p>{data.autopilot ? "These go out on their own. Stop anything before it goes out." : "Scheduled to go out. Stop anything before it goes out."}</p></div>
-        {data.going.length > 0 && <span className="ax-pill b">{data.going.filter((g) => !stopped[g.id]).length} scheduled</span>}
+        <span style={{ display: "flex", gap: 10, alignItems: "center", flex: "none" }}>
+          {data.going.length > 0 && <span className="ax-pill b">{data.going.filter((g) => !stopped[g.id]).length} scheduled</span>}
+          <Link className="ax-lnk" href="/dashboard/social/calendar">See the calendar →</Link>
+        </span>
       </div>
       {data.going.length ? (
         <div className="ax-g3 ax-going">

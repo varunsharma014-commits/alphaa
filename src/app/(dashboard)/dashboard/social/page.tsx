@@ -5,6 +5,7 @@ import { db } from "@/lib/db"
 import { hasPro } from "@/lib/billing"
 import { getSocialData } from "@/lib/workspace/social"
 import { SocialView } from "@/components/workspace/SocialView"
+import "../../calendar.css"
 
 export const metadata = { title: "Social Studio — Alphaa" }
 
