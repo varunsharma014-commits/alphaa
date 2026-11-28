@@ -33,7 +33,7 @@ export function weekDoneMessages(run: WeekRun, id: string, siteChips: (op: "post
     const docId = `week-${id}-${k}`
     const blocks: Block[] = [
       { kind: "text", text: `${it.day}: ${it.why}${it.socialWhere?.length ? ` Goes to ${it.socialWhere.join(", ")}.` : ""}` },
-      { kind: "doc", title: it.title, meta: `${LABEL[it.kind]} · ${STATUS[it.status]}`, text: it.text, docId, editable: it.status === "ready", markdown: it.kind === "blog", image: it.image ?? undefined, square: it.kind === "social" },
+      { kind: "doc", title: it.title, meta: `${LABEL[it.kind]} · ${STATUS[it.status]}`, text: it.text, docId, editable: it.status === "ready", markdown: it.kind === "blog", image: it.image ?? undefined, square: it.kind === "social", ...(it.kind === "blog" && it.draftId ? { draftId: it.draftId } : {}) },
     ]
     let chips: Chip[] = []
     if (it.kind === "blog") chips = it.status === "published" && it.href ? [{ label: "See it live", action: { type: "link", href: it.href }, primary: true }] : siteChips("post", { title: it.title, text: it.text, draftId: it.draftId, docId })

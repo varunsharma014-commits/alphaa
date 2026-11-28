@@ -127,6 +127,13 @@ export function DashboardAgent({
       { label: "Connect my website", action: { type: "wp-connect" } },
     ]
   }
+  // A blog post from a saved draft: the saved text (it may have been edited in the editor, another
+  // view or another tab since this chip was made) is what gets published or emailed.
+  async function savedDraftText(a: { op?: SiteOp; what?: SiteOp; draftId?: string; docId?: string }): Promise<string | null> {
+    if ((a.op ?? a.what) !== "post" || !a.draftId || !a.docId) return null
+    const r = await fetch(`/api/workspace/drafts/${a.draftId}`).then((x) => (x.ok ? x.json() : null)).catch(() => null)
+    return (r?.draft?.markdown as string | undefined)?.trim() ? (r.draft.markdown as string) : null
+  }
   const inputRef = useRef<HTMLInputElement>(null)
   // A step finished inside a thread (voice picked, tracking tested...) ticks the card on its own.
   const hasSetup = setupMsgs.length > 0
@@ -376,7 +383,7 @@ export function DashboardAgent({
           const d = data as { title?: string; text?: string; draftId?: string; image?: string | null }
           push(agent([
             { kind: "text", text: "Here’s the post — written to be the answer AI quotes. The highlighted bits are facts only you know: tap Edit and fill them in, then pick who publishes it." },
-            { kind: "doc", title: d.title ?? "New post", meta: "draft · not published", text: d.text, docId, editable: true, markdown: true, image: d.image ?? undefined },
+            { kind: "doc", title: d.title ?? "New post", meta: "draft · not published", text: d.text, docId, editable: true, markdown: true, image: d.image ?? undefined, ...(d.draftId ? { draftId: d.draftId } : {}) },
             { kind: "chips", items: siteChips("post", { title: d.title, text: d.text, docId, draftId: d.draftId }) },
           ]))
           return
@@ -498,7 +505,7 @@ export function DashboardAgent({
         return
       }
       case "wp-push": {
-        const text = (a.docId && docEdits.current[a.docId]) || a.text
+        const text = (a.docId && docEdits.current[a.docId]) || (await savedDraftText(a)) || a.text
         push(userMsg(`Publish ${OP_NAME[a.op]}`))
         setBusy(true)
         const { ok, data } = await post<{ url?: string; changeId?: string; indexed?: boolean; shadowed?: boolean; note?: string }>("/api/connect/wp/push", { op: a.op, title: a.title, text, url: a.url, locationId: a.locationId, draftId: a.draftId })
@@ -550,7 +557,7 @@ export function DashboardAgent({
         return
       }
       case "handoff": {
-        const text = (a.docId && docEdits.current[a.docId]) || a.text
+        const text = (a.docId && docEdits.current[a.docId]) || (await savedDraftText(a)) || a.text
         const formId = mid("handoff")
         pending.current[formId] = { kind: "handoff", what: a.what, title: a.title, text, url: a.url }
         push(userMsg(chip.label), agent([

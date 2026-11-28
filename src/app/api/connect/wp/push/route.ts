@@ -4,6 +4,7 @@ export const maxDuration = 60
 import { NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
 import { pushBody, pushChange, type PushInput } from "@/lib/connector/push"
+import { markPublished, textToPublish } from "@/lib/draft-versions"
 
 // Publishes one approved change to the owner's site (logic in lib/connector/push.ts,
 // shared with approvals from the briefing email).
@@ -15,6 +16,16 @@ export async function POST(req: Request) {
     input = pushBody.parse(await req.json())
   } catch {
     return NextResponse.json({ error: "Bad request" }, { status: 400 })
+  }
+  // A blog post from a saved draft publishes the saved text (lib/draft-versions.ts): text sent
+  // with it (an inline edit, "Publish without them") is saved first, then kept as a version.
+  const draftId = input.op === "post" ? input.draftId : undefined
+  if (draftId) {
+    const pub = await textToPublish(user.id, draftId, input.text)
+    if (!pub.ok) return NextResponse.json({ error: pub.error }, { status: 404 })
+    const res = await pushChange(user, { ...input, text: pub.markdown, title: pub.title })
+    if (res.ok) await markPublished(user.id, draftId, "owner").catch(() => {})
+    return res
   }
   return pushChange(user, input)
 }

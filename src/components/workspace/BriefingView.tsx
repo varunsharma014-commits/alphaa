@@ -7,6 +7,10 @@ import type { AiCard } from "@/lib/workspace/ai-cards"
 import { AI_NOTE, askAlphaa, toast } from "@/lib/workspace/events"
 import type { Message } from "@/lib/agent/types"
 import { ActButton, Empty, When, useInspector, type Insp } from "./ui"
+import dynamic from "next/dynamic"
+
+// Scheduled website posts open in the saved editor; the saved text is what the cron publishes.
+const DraftEditor = dynamic(() => import("@/components/editor/DraftEditor").then((m) => m.DraftEditor), { ssr: false })
 
 type Slide = { eb: string; big: string; small: string; bg: string }
 
@@ -16,6 +20,8 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
   const { node, open } = useInspector()
   const [stopped, setStopped] = useState<Record<string, boolean>>({})
   const [busy, setBusy] = useState<string | null>(null)
+  const [editDraft, setEditDraft] = useState<string | null>(null)
+  const [edited, setEdited] = useState<Record<string, string>>({})
   const [skipped, setSkipped] = useState<string | null>(null)
   const [recap, setRecap] = useState<number | null>(null)
   const [planBusy, setPlanBusy] = useState(false)
@@ -150,11 +156,12 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
                   {!g.image && <div><b>{g.big}</b>{g.small && <small>{g.small}</small>}</div>}
                 </div>
                 <div className="ax-cb">
-                  <p className={`ax-ttl${st ? " st" : ""}`}>{g.title}</p>
+                  <p className={`ax-ttl${st ? " st" : ""}`}>{edited[g.id] ?? g.title}</p>
                   <p className="ax-p ax-clamp">{g.text}</p>
                   <div className="ax-ft">
                     <span style={{ fontSize: 12.5, color: "var(--x-mut)" }}>{st ? "Stopped · won’t go out" : <When at={g.at} mode="ahead" prefix="Goes out " fallback={`Goes out ${g.when}`} />}</span>
                     <span style={{ display: "flex", gap: 4 }}>
+                      {g.kind === "site" && <button className="ax-btn s sm" type="button" onClick={() => setEditDraft(g.id)}>Edit</button>}
                       <button className="ax-btn s sm" type="button" onClick={() => open({ eb: g.lane, title: g.title, rows: [{ k: "Goes out", v: st ? "Stopped. It won’t go out." : g.when }, ...(g.image ? [{ k: "Image", v: "", image: g.image }] : []), { k: "Text", v: g.text, box: true }], cta: { label: "Open it in chat", topic: g.kind === "social" ? "social" : "content" } })}>Preview</button>
                       <button className={`ax-btn d sm${st ? " undo" : ""}`} type="button" disabled={busy === g.id} onClick={() => void hold(g)}>{st ? "Undo" : "Stop"}</button>
                     </span>
@@ -237,6 +244,7 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
         </>
       )}
       {node}
+      {editDraft && <DraftEditor draftId={editDraft} onClose={(d) => { if (d) setEdited((e) => ({ ...e, [d.draftId]: d.title })); setEditDraft(null) }} />}
     </>
   )
 }

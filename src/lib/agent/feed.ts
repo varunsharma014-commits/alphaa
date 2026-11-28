@@ -63,7 +63,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
   const [evidence, weekActivity] = await Promise.all([
     getEngineEvidence({ id: user.id, email: user.email }),
     db.mockActivity.findMany({
-      where: { userId: user.id, createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) }, type: { notIn: ["sandbox_query", "agent_settings", "question_scan_started", "ai_visit", "site_check", "citation_scan", "check_security", "check_profiles", "check_listings", "check_bing", "market_customer"] } },
+      where: { userId: user.id, createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) }, type: { notIn: ["sandbox_query", "agent_settings", "question_scan_started", "ai_visit", "site_check", "citation_scan", "check_security", "check_profiles", "check_listings", "check_bing", "market_customer", "post_revision"] } },
       orderBy: { createdAt: "desc" },
       take: 30,
     }),
@@ -227,7 +227,7 @@ export async function buildFeed(userId: string): Promise<FeedData | null> {
     waiting: { reviews: user.gmbReviews.length, posts: draft && gmbConnected ? 1 : 0 },
     googleConnected: !!user.integration,
   }
-  const last = weekActivity[0] ?? (await db.mockActivity.findFirst({ where: { userId: user.id, type: { notIn: ["sandbox_query", "agent_settings", "ai_visit", "email_sent", "market_customer"] } }, orderBy: { createdAt: "desc" } }))
+  const last = weekActivity[0] ?? (await db.mockActivity.findFirst({ where: { userId: user.id, type: { notIn: ["sandbox_query", "agent_settings", "ai_visit", "email_sent", "market_customer", "post_revision"] } }, orderBy: { createdAt: "desc" } }))
   const status: AgentStatus = { last: last ? { title: last.title, at: last.createdAt.toISOString() } : null, next: nextCheck(now), firstCheck: checked === 0 ? question : null }
   return { messages: sections(messages), rail, status }
 }

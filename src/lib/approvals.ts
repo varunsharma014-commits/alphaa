@@ -11,6 +11,7 @@ import { logActivity } from "@/lib/activity"
 import { pushChange } from "@/lib/connector/push"
 import { voiceFor } from "@/lib/voice"
 import { hasPro } from "@/lib/billing"
+import { markPublished, textToPublish } from "@/lib/draft-versions"
 
 const anthropic = claudeFor("approvals")
 
@@ -122,9 +123,15 @@ export async function approveSitePost(userId: string, draftId: string, text?: st
   if (!user || !draft) return { ok: false, error: "That post isn’t here any more." }
   const m = (draft.metadata ?? {}) as { title?: string; markdown?: string; status?: string; url?: string }
   if (m.status === "published") return { ok: true, url: m.url ?? null }
-  const res = await pushChange(user, { op: "post", title: m.title, text: text?.trim() || m.markdown || "", draftId })
+  // The saved draft (lib/draft-versions.ts) is what goes out; text passed in is saved first. A post
+  // still "scheduled" at this point is the cron publishing it under Autopilot (by the agent).
+  const by = m.status === "scheduled" ? "agent" : "owner"
+  const pub = await textToPublish(userId, draftId, text, by)
+  if (!pub.ok) return { ok: false, error: pub.error }
+  const res = await pushChange(user, { op: "post", title: pub.title, text: pub.markdown, draftId })
   const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string }
   if (!res.ok || !data.url) return { ok: false, error: data.error ?? "Your site didn’t accept it. Nothing changed.", ...(res.status === 429 ? { quota: true } : {}) }
+  await markPublished(userId, draftId, by).catch(() => {})
   return { ok: true, url: data.url }
 }
 

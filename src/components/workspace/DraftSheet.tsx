@@ -1,7 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import dynamic from "next/dynamic"
 import { mdToHtml } from "@/lib/markdown"
+import { gradeContent } from "@/lib/content-grade"
+import { GradeCard } from "@/components/editor/GradeCard"
+import { DRAFT_SAVED_EVENT, type DraftSavedDetail } from "@/components/editor/events"
 import { AI_NOTE, askAlphaa, toast } from "@/lib/workspace/events"
 import type { MoveCard } from "@/lib/workspace/rivals"
 
@@ -11,6 +15,9 @@ import type { MoveCard } from "@/lib/workspace/rivals"
 // off = "Publish" (the usual approval path). No website connected = hand it to the web person.
 
 type Draft = { title: string; text: string; excerpt: string | null; draftId: string; image: string | null }
+// The saved editor (components/editor): edits autosave to the draft, and the saved text is what
+// Publish / Add to Going out soon send.
+const DraftEditor = dynamic(() => import("@/components/editor/DraftEditor").then((m) => m.DraftEditor), { ssr: false })
 const STEPS = ["Planning the page from what they cover", "Writing it in your voice", "Adding the title and description Google shows", "Making the cover image"]
 
 export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: MoveCard; autopilot: boolean; siteConnected: boolean; onClose: () => void }) {
@@ -20,7 +27,17 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
   const [shown, setShown] = useState(0)
   const [busy, setBusy] = useState(false)
   const [done, setDone] = useState<string | null>(null)
+  const [editing, setEditing] = useState(false)
   const started = useRef(false)
+  const grade = useMemo(() => (draft ? gradeContent(draft.text) : null), [draft])
+  useEffect(() => {
+    const h = (e: Event) => {
+      const d = (e as CustomEvent<DraftSavedDetail>).detail
+      setDraft((cur) => (cur && d?.draftId === cur.draftId ? { ...cur, title: d.title, text: d.markdown } : cur))
+    }
+    window.addEventListener(DRAFT_SAVED_EVENT, h)
+    return () => window.removeEventListener(DRAFT_SAVED_EVENT, h)
+  }, [])
 
   async function write() {
     setError(null)
@@ -50,10 +67,10 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
   }, [draft, sections.length])
 
   useEffect(() => {
-    const k = (e: KeyboardEvent) => { if (e.key === "Escape" && !busy) onClose() }
+    const k = (e: KeyboardEvent) => { if (e.key === "Escape" && !busy && !editing) onClose() }
     window.addEventListener("keydown", k)
     return () => window.removeEventListener("keydown", k)
-  }, [busy, onClose])
+  }, [busy, onClose, editing])
 
   async function act(op: "schedule" | "publish") {
     if (!draft) return
@@ -105,18 +122,20 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
               <div className="ax-md">
                 {sections.slice(0, shown).map((sec, i) => <div key={i} className="ax-reveal" dangerouslySetInnerHTML={{ __html: mdToHtml(sec, { highlightPlaceholders: true }) }} />)}
               </div>
-              {/\[[^\]]{2,}\]/.test(draft.text) && <p className="ax-note" style={{ marginTop: 0 }}>The highlighted [brackets] are facts only you know. Fill them in from the chat before it goes out.</p>}
+              {/\[[^\]]{2,}\]/.test(draft.text) && <p className="ax-note" style={{ marginTop: 0 }}>The highlighted [brackets] are facts only you know. Fill them in before it goes out.</p>}
+              {grade && !done && <GradeCard g={grade} compact onOpen={() => setEditing(true)} />}
             </>
           )}
           <p className="ax-note" role="note" style={{ marginTop: 0 }}>{AI_NOTE}</p>
         </div>
         <footer>
+          {draft && !done && <button className="ax-btn s" type="button" disabled={busy} onClick={() => setEditing(true)} style={{ marginRight: "auto" }}>Edit</button>}
           {done ? (
             <><span style={{ flex: 1, fontSize: 13, color: "var(--x-mut)", alignSelf: "center" }}>{done}</span><button className="ax-btn s" type="button" onClick={onClose}>Close</button></>
           ) : !draft ? (
             <button className="ax-btn s" type="button" onClick={onClose}>Close</button>
           ) : /\[[^\]]{2,}\]/.test(draft.text) ? (
-            <button className="ax-btn p" type="button" onClick={() => { onClose(); askAlphaa({ topic: "content", label: "My drafts" }) }}>Fill in the facts</button>
+            <button className="ax-btn p" type="button" onClick={() => setEditing(true)}>Fill in the facts</button>
           ) : !siteConnected ? (
             <button className="ax-btn p" type="button" onClick={() => { onClose(); askAlphaa({ chip: { label: "Email it to my web person", action: { type: "handoff", what: "post", title: draft.title, text: draft.text, draftId: draft.draftId } } }) }}>Send it to my web person</button>
           ) : autopilot ? (
@@ -126,6 +145,7 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
           )}
         </footer>
       </aside>
+      {editing && draft && <DraftEditor draftId={draft.draftId} onClose={() => setEditing(false)} />}
     </>
   )
 }

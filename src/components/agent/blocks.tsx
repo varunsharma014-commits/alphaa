@@ -4,9 +4,15 @@ import type { ReactNode } from "react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { Block, Chip } from "@/lib/agent/types"
 import { mdToHtml } from "@/lib/markdown"
+import { gradeContent } from "@/lib/content-grade"
+import dynamic from "next/dynamic"
+import { DRAFT_SAVED_EVENT, type DraftSavedDetail } from "@/components/editor/events"
+import { GradeCard } from "@/components/editor/GradeCard"
 import { ENGINE_LABEL } from "@/lib/agent/types"
 import { PlatformIcon } from "@/components/brand/PlatformIcon"
 import { PLATFORM_NAME } from "@/lib/connector/platforms"
+
+const DraftEditor = dynamic(() => import("@/components/editor/DraftEditor").then((m) => m.DraftEditor), { ssr: false })
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
@@ -273,10 +279,26 @@ export function DocBlock({
 }) {
   const [editing, setEditing] = useState(false)
   const [text, setText] = useState(b.text ?? "")
+  const [title, setTitle] = useState(b.title)
+  // A saved website draft opens the full editor; its saves (from here or any other view) update this card.
+  const saved = !!(b.draftId && b.editable && !b.html)
+  const [editor, setEditor] = useState(false)
+  useEffect(() => {
+    if (!saved) return
+    const h = (e: Event) => {
+      const d = (e as CustomEvent<DraftSavedDetail>).detail
+      if (d?.draftId !== b.draftId) return
+      setText(d.markdown); setTitle(d.title)
+      if (b.docId) onEdit?.(b.docId, d.markdown)
+    }
+    window.addEventListener(DRAFT_SAVED_EVENT, h)
+    return () => window.removeEventListener(DRAFT_SAVED_EVENT, h)
+  }, [saved, b.draftId, b.docId, onEdit])
+  const grade = useMemo(() => (saved && b.markdown ? gradeContent(text) : null), [saved, b.markdown, text])
   return (
     <div className="ag-doc">
       <div className="ag-doc__h">
-        <b>{b.title}</b>
+        <b>{title}</b>
         <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
           {b.meta ?? ""}
           {b.editable && b.docId && !b.html && (
@@ -284,13 +306,14 @@ export function DocBlock({
               type="button"
               className="ag-gpt__more"
               style={{ padding: 0 }}
-              onClick={() => setEditing((e) => !e)}
+              onClick={() => (saved ? setEditor(true) : setEditing((e) => !e))}
             >
               {editing ? "Done" : "Edit"}
             </button>
           )}
         </span>
       </div>
+      {editor && b.draftId && <DraftEditor draftId={b.draftId} onClose={() => setEditor(false)} />}
       {b.image && !editing && (
         // eslint-disable-next-line @next/next/no-img-element
         <img className={`ag-doc__img${b.square ? " ag-doc__img--square" : ""}`} src={b.image} alt={b.title} loading="lazy" />
@@ -311,6 +334,7 @@ export function DocBlock({
       ) : (
         <div className="ag-doc__b">{text}</div>
       )}
+      {grade && <div style={{ marginTop: 10 }}><GradeCard g={grade} compact onOpen={() => setEditor(true)} /></div>}
     </div>
   )
 }
