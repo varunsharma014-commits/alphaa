@@ -15,6 +15,7 @@ import { hasGrowth, hasPro } from "@/lib/billing"
 import type { Chip } from "@/lib/agent/types"
 import { ago, within } from "./common"
 import { displayName } from "@/lib/display-name"
+import { issueText } from "@/lib/humanize"
 
 export type Act = { label: string; href?: string; topic?: string; chip?: Chip }
 export type Conn = {
@@ -196,5 +197,60 @@ async function salesRow(user: User, adsConnected: boolean, wait: boolean): Promi
     act: live.length ? undefined : { label: "Mark leads won", href: "/dashboard/ads" },
     verified: live.length ? { verb: "Checked", at: r.at } : null,
     detail: `${base.detail} ${r.sources.map((x) => x.text).join(" ")}`,
+  }
+}
+
+// ── Site health (Tracking → Site health; replaced /dashboard/audit and /dashboard/speed) ──────
+// The newest website check (CrawlResult), grouped once per problem type with the pages it was
+// found on. Link problems live in SiteUpkeep ("Links to fix") and speed in SiteVitals, so they're
+// left out here. Read from the database only: nothing here waits on Google.
+export type HealthGroup = { key: string; title: string; why: string; fix: string; severity: "bad" | "warn" | "idle"; urls: string[] }
+export type SiteHealth = {
+  at: string | null
+  pages: number | null
+  serious: number
+  smaller: number
+  groups: HealthGroup[]
+  aiBlocks: { engine: string; fix: string }[]
+  site: string | null
+}
+
+const LINK_TYPES = new Set(["broken_internal_link", "broken_outbound_link", "redirect_chain"])
+const SEV: Record<string, HealthGroup["severity"]> = { critical: "bad", warning: "warn", improvement: "idle" }
+const SEV_RANK: Record<HealthGroup["severity"], number> = { bad: 0, warn: 1, idle: 2 }
+
+export async function getSiteHealth(user: User): Promise<SiteHealth> {
+  const site = user.websiteUrl?.trim() ? (/^https?:\/\//i.test(user.websiteUrl.trim()) ? user.websiteUrl.trim() : `https://${user.websiteUrl.trim()}`) : null
+  const crawl = await db.crawlResult.findFirst({ where: { userId: user.id }, orderBy: { crawledAt: "desc" }, select: { crawledAt: true, pagesScanned: true, issues: true } }).catch(() => null)
+  if (!crawl) return { at: null, pages: null, serious: 0, smaller: 0, groups: [], aiBlocks: [], site }
+  type Raw = { type?: string; code?: string; severity?: string; url?: string; engine?: string; fix?: string; description?: string }
+  const raw = (Array.isArray(crawl.issues) ? crawl.issues : []) as Raw[]
+  const aiBlocks: SiteHealth["aiBlocks"] = []
+  const byType = new Map<string, HealthGroup>()
+  for (const i of raw) {
+    const type = String(i.type ?? i.code ?? "")
+    if (!type || LINK_TYPES.has(type)) continue
+    if (type === "ai_crawler_blocked") {
+      const engine = String(i.engine ?? "An AI assistant")
+      if (!aiBlocks.some((b) => b.engine === engine)) aiBlocks.push({ engine, fix: `In your robots.txt file, allow ${engine} to read your site (change its “Disallow: /” to “Allow: /”, or remove that rule). If someone else manages your site, send them this.` })
+      continue
+    }
+    const t = issueText(type)
+    if (!t) continue
+    const g = byType.get(type) ?? { key: type, ...t, severity: SEV[i.severity ?? ""] ?? "warn", urls: [] }
+    const url = !i.url || i.url === "sitewide" ? site : i.url
+    if (url && !g.urls.includes(url)) g.urls.push(url)
+    if (SEV_RANK[SEV[i.severity ?? ""] ?? "warn"] < SEV_RANK[g.severity]) g.severity = SEV[i.severity ?? ""] ?? g.severity
+    byType.set(type, g)
+  }
+  const groups = [...byType.values()].filter((g) => g.urls.length).sort((a, b) => SEV_RANK[a.severity] - SEV_RANK[b.severity] || b.urls.length - a.urls.length)
+  return {
+    at: crawl.crawledAt.toISOString(),
+    pages: crawl.pagesScanned ?? null,
+    serious: groups.filter((g) => g.severity === "bad").length + aiBlocks.length,
+    smaller: groups.filter((g) => g.severity !== "bad").length,
+    groups,
+    aiBlocks,
+    site,
   }
 }

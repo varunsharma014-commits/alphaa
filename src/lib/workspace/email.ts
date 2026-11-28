@@ -87,7 +87,7 @@ export async function getEmailData(user: User): Promise<EmailData> {
     id: fresh.id,
     number: ordered.findIndex((r) => r.id === fresh.id) + 1,
     subject: fresh.c.subject,
-    html: render(fresh.c, { biz, signOff: user.fullName?.trim() ? `${user.fullName.trim()}\n${biz}` : biz, replyTo: "", address: settings.emailOutreach?.address?.trim() || "Your mailing address goes here", city: user.city }, { n: "Sam" }, "#").html,
+    html: previewHtml(render(fresh.c, { biz, signOff: user.fullName?.trim() ? `${user.fullName.trim()}\n${biz}` : biz, replyTo: "", address: settings.emailOutreach?.address?.trim() || ADDR_TOKEN, city: user.city }, { n: NAME_TOKEN }, "#").html),
   } : null
   const next = nextAllowedSend(last)
   const address = settings.emailOutreach?.address?.trim() || null
@@ -105,6 +105,18 @@ export async function getEmailData(user: User): Promise<EmailData> {
     island: issue ? `Issue #${issue.number} is ready${contacts.length ? "" : " · add your list to send it"}` : "Writing this month’s note for your customers",
     chips: { add: addCustomersChip("Add my customers", true), address: addressChip(address ?? undefined), write: writeChip("Write an email", true) },
   }
+}
+
+// The preview never shows a made-up customer or address: each person's own first name goes in
+// when it's sent, so the preview shows a "first name" token; a missing address shows a red
+// "Add your address" token (nothing sends without one).
+const NAME_TOKEN = "XALPHAAFIRSTNAMEX"
+const ADDR_TOKEN = "XALPHAAADDRESSX"
+function previewHtml(html: string): string {
+  const pill = (text: string, bg: string, fg: string) => `<span style="display:inline-block;padding:0 8px;border-radius:6px;background:${bg};color:${fg};font-weight:600">${text}</span>`
+  return html
+    .split(NAME_TOKEN).join(pill("first name", "#e8f1fd", "#0a5bc4"))
+    .split(ADDR_TOKEN).join(pill("Add your address", "#fde8e7", "#c0271d"))
 }
 
 export const fmt = n

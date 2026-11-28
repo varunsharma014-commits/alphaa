@@ -5,8 +5,9 @@ import { db } from "@/lib/db"
 import { hasGrowth } from "@/lib/billing"
 import { getAdsData } from "@/lib/workspace/ads"
 import { AdsView } from "@/components/workspace/AdsView"
+import { pageTitle } from "@/lib/page-title"
 
-export const metadata = { title: "Ads — Alphaa" }
+export const metadata = { title: pageTitle("Ads") }
 
 export default async function AdsPage({ searchParams }: { searchParams: Promise<{ tab?: string; note?: string }> }) {
   const { tab, note } = await searchParams

@@ -5,8 +5,9 @@ import { db } from "@/lib/db"
 import { hasPro } from "@/lib/billing"
 import { getEmailData } from "@/lib/workspace/email"
 import { EmailView } from "@/components/workspace/EmailView"
+import { pageTitle } from "@/lib/page-title"
 
-export const metadata = { title: "Email & Flows — Alphaa" }
+export const metadata = { title: pageTitle("Email & Flows") }
 
 export default async function EmailPage() {
   const { userId } = await auth()

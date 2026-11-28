@@ -62,6 +62,8 @@ export type AdsData = {
   tired: TiredCard[]
   /** Return on ad spend, tracked vs estimated kept apart (lib/roas). Null when no ad account is connected. */
   roas: RoasView | null
+  /** Who the ad previews show as the advertiser: the connected Facebook Page, else the business name. */
+  brand: { page: string; site: string | null }
 }
 
 const kw = (days: 7 | 30, t: { spend: number; impressions: number; clicks: number; conversions: number }, k: Kpis, cur: string): KpiWindow => ({
@@ -198,6 +200,7 @@ export async function getAdsData(user: User): Promise<AdsData> {
   const roas = access || gacc?.customerId ? await getRoasView(user, { meta, gads: g, live }).catch(() => null) : null
   return {
     roas,
+    brand: { page: access?.picks?.pageName?.trim() || user.businessName?.trim() || (user.websiteUrl ?? "").replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0] || "Your business", site: user.websiteUrl ?? null },
     live,
     firstAds, planState,
     planInputs: { b2b: !!plan?.business?.b2b, local: plan?.business?.local ?? true, currency: cur },

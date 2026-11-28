@@ -1,123 +1,188 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import type { EmailData } from "@/lib/workspace/email"
+import { useEffect } from "react"
+import type { EmailData, CampaignCard } from "@/lib/workspace/email"
 import { askAlphaa, ISLAND_EVENT } from "@/lib/workspace/events"
-import { Empty, PlanGate, Tabs, useInspector } from "./ui"
+import { Button, DataTable, EmptyState, Glyph, List, ListRow, PageHeader, Pill, PlanGate, SectionHeader, Skeleton, Tabs, useInspector, useTabParam } from "./ui"
+import "./p3.css"
 
-type Tab = "f" | "l" | "c"
+// Email & Flows: how the monthly note runs (5 steps you can tap), this month's note as the real
+// email, the list, and every email with what happened to it. Opens and clicks aren't tracked,
+// so they're never shown.
+
+type Tab = "flow" | "list" | "emails"
+const TABS = ["flow", "list", "emails"] as const
+const tone = (pc: CampaignCard["pc"]) => (pc === "g" ? "ok" : pc === "b" ? "info" : pc === "a" ? "warn" : "idle") as "ok" | "info" | "warn" | "idle"
 
 export function EmailView({ data }: { data: EmailData | null }) {
   const { node, open } = useInspector()
-  const [tab, setTab] = useState<Tab>("f")
+  const [tab, setTab] = useTabParam<Tab>(TABS, "flow")
   useEffect(() => {
     if (!data?.island) return
     const t = window.setTimeout(() => window.dispatchEvent(new CustomEvent<string | null>(ISLAND_EVENT, { detail: data.island })), 0)
     return () => { window.clearTimeout(t); window.dispatchEvent(new CustomEvent<string | null>(ISLAND_EVENT, { detail: null })) }
   }, [data?.island])
-  const head = (
-    <div className="ax-hdr">
-      <div><h1 className="ax-h1">Email & Flows</h1><p className="ax-sub">Emails to your own customers, written in your voice. Every send carries your address and an unsubscribe link.</p></div>
-      <span className="ax-pill n" style={{ marginTop: 12 }}>Pro plan</span>
-    </div>
-  )
-  if (!data) return <>{head}<div style={{ marginTop: 26 }}><PlanGate plan="Pro" title="Email comes with the Pro plan" text="Pro adds email to your past customers, social posts, Google profile posts, review replies and lead tracking." /></div></>
 
+  const sub = "Emails to your own customers, written in your voice. Every send carries your address and an unsubscribe link."
+  const pill = <Pill tone="info">Pro</Pill>
+  if (!data) {
+    return (
+      <>
+        <PageHeader title="Email & Flows" sub={sub} pill={pill} />
+        <PlanGate plan="Pro" title="Email comes with the Pro plan" text="Pro adds email to your past customers, social posts, Google profile posts, review replies and lead tracking." />
+      </>
+    )
+  }
+
+  const sentCount = data.campaigns.filter((c) => c.sent != null).length
   const lastSent = data.campaigns.find((c) => c.sent != null)
   const nodes = [
-    { next: data.listSize === 0, k: "Starts with", t: `Your list · ${data.listSize.toLocaleString("en-US")} people`, d: data.imports[0] ? `Last added ${data.imports[0].when}` : "Paste or upload your customers", color: "var(--x-blue)", go: () => askAlphaa({ chip: data.chips.add }) },
-    { next: data.listSize > 0 && !data.address, k: "I write", t: "One email a month", d: "In your voice. Only facts you gave me.", color: "var(--x-ink)", go: () => askAlphaa({ chip: data.chips.write }) },
-    { next: false, k: data.auto ? "Goes out" : "Waits for", t: data.auto ? "On its own (autopilot)" : "Your OK", d: data.auto ? "You can stop it in the chat" : "Turn on “Send without asking” to skip this", color: "#af52de", go: () => askAlphaa({ topic: "autopilot", label: "What I send without asking" }) },
-    { next: false, k: "Sent", t: lastSent ? `${(lastSent.sent ?? 0).toLocaleString("en-US")} people, ${lastSent.when}` : "Nothing sent yet", d: `${data.campaigns.filter((c) => c.sent != null).length} email${data.campaigns.filter((c) => c.sent != null).length === 1 ? "" : "s"} so far`, color: "var(--x-gink)", go: () => setTab("c") },
-    { next: false, k: "Then", t: `${data.optedOut.toLocaleString("en-US")} opted out`, d: "Unsubscribes, bounces and spam reports come off the list for good", color: "var(--x-mut)", go: () => setTab("l") },
+    { next: data.listSize === 0, k: "Starts with", t: `Your list · ${data.listSize.toLocaleString("en-US")} ${data.listSize === 1 ? "person" : "people"}`, d: data.imports[0] ? `Last added ${data.imports[0].when}` : "Paste or upload your customers", go: () => askAlphaa({ chip: data.chips.add }) },
+    { next: data.listSize > 0 && !data.address, k: "I write", t: "One email a month", d: "In your voice, only facts you gave me", go: () => (data.issue ? document.getElementById("issue")?.scrollIntoView({ behavior: "smooth", block: "start" }) : askAlphaa({ chip: data.chips.write })) },
+    { next: false, k: data.auto ? "Goes out" : "Waits for", t: data.auto ? "On its own" : "Your OK", d: data.auto ? "Autopilot sends it. Stop it any time" : "Turn on “Send without asking” to skip this", go: () => askAlphaa({ topic: "autopilot", label: "What I send without asking" }) },
+    { next: false, k: "Sent", t: lastSent ? `${(lastSent.sent ?? 0).toLocaleString("en-US")} people, ${lastSent.when}` : "Nothing sent yet", d: `${sentCount} email${sentCount === 1 ? "" : "s"} so far`, go: () => setTab("emails") },
+    { next: false, k: "Then", t: `${data.optedOut.toLocaleString("en-US")} opted out`, d: "Unsubscribes, bounces and spam reports come off the list for good", go: () => setTab("list") },
   ]
+
+  // The drafted issue is the first row under Emails, even before the list loads it as a campaign.
+  const issueRow = data.issue && !data.campaigns.some((c) => c.id === data.issue!.id) ? data.issue : null
+  const openCampaign = (c: CampaignCard) => open({ eb: `Email · ${c.status}`, title: c.subject, rows: [{ k: "Preview line", v: c.preview }, { k: "Body", v: c.body.join("\n\n"), box: true }, ...(c.sent != null ? [{ k: "What happened", v: `Sent to ${c.sent.toLocaleString("en-US")}. ${c.bounced} bounced, ${c.complained} marked it as spam.` }] : [])], cta: { label: "Open it in chat", topic: "email" } })
 
   return (
     <>
-      {head}
+      <PageHeader
+        title="Email & Flows"
+        sub={sub}
+        pill={pill}
+        meta={data.nextSend ? <span className="ax-t11">Next send allowed {data.nextSend}</span> : undefined}
+        tabs={<Tabs<Tab> label="Email sections" value={tab} onChange={setTab} tabs={[{ key: "flow", label: "How it runs" }, { key: "list", label: "Your list", count: data.listSize || undefined }, { key: "emails", label: "Emails", count: (data.campaigns.length + (issueRow ? 1 : 0)) || undefined }]} />}
+      />
+
       {!data.address && (
-        <section className="ax-card ax-q" style={{ marginTop: 22 }}>
-          <div style={{ flex: 1, minWidth: 0 }}><span className="ax-eb">One question · a new fact</span><p className="t">What’s your business mailing address?</p><p className="s">The law (CAN-SPAM, CASL) needs it at the bottom of every marketing email. <b style={{ color: "var(--x-ink)", fontWeight: 600 }}>No answer = I don’t send any email.</b></p></div>
-          <div className="acts"><button className="ax-btn p" type="button" onClick={() => askAlphaa({ chip: data.chips.address })}>Add my address</button></div>
+        <section className="ax-card ax-q x3-top">
+          <div className="x3-qb">
+            <span className="ax-eb">One question · a new fact</span>
+            <p className="t">What’s your business mailing address?</p>
+            <p className="s">The law (CAN-SPAM, CASL) needs it at the bottom of every marketing email. Until I have it, I don’t send any email.</p>
+          </div>
+          <div className="acts"><Button variant="primary" onClick={() => askAlphaa({ chip: data.chips.address })}>Add my address</Button></div>
         </section>
       )}
-      <Tabs<Tab> value={tab} onChange={setTab} tabs={[{ key: "f", label: "How it runs" }, { key: "l", label: "Your list" }, { key: "c", label: "Emails" }]} />
 
-      {tab === "f" && (
-        <>
-          <div style={{ display: "flex", gap: 8, marginTop: 20, alignItems: "center", flexWrap: "wrap" }}>
-            <span className="ax-pill b">Monthly note</span>
-            <span style={{ marginLeft: "auto", fontSize: 12.5, color: "var(--x-mut)", display: "flex", gap: 7, alignItems: "center" }}><span className="ax-dot" />{data.nextSend ? `Next send allowed ${data.nextSend} · tap any step to change it` : "Tap any step to change it"}</span>
-          </div>
-          <section className="ax-card ax-flow">
-            {nodes.map((n, i) => (
-              <span key={i} style={{ display: "contents" }}>
-                {i > 0 && <span className="ax-link" aria-hidden="true" />}
-                <div role="button" tabIndex={0} className={`ax-node${n.next ? " next" : ""}`} style={{ flexGrow: n.next ? 1.6 : 1 }} onClick={n.go} onKeyDown={(e) => { if (e.key === "Enter") n.go() }}>
-                  <span className="chev" aria-hidden="true">›</span>
-                  <div className="k" style={{ color: n.color }}>{n.k}</div>
-                  <div className="t">{n.t}</div>
-                  <div className="d">{n.d}</div>
-                  {n.next && i === 0 && <button type="button" className="ax-btn p sm" style={{ marginTop: 10, whiteSpace: "normal", textAlign: "left" }} onClick={(e) => { e.stopPropagation(); askAlphaa({ chip: data.chips.add }) }}>+ Import CSV / paste emails</button>}
-                </div>
-              </span>
-            ))}
+      {tab === "flow" && (
+        <div className="x3-col x3-top">
+          <section>
+            <SectionHeader first title="The monthly note" sub="Tap any step to change it." />
+            <div className="ax-card x3-flow" role="list" aria-label="How the monthly note runs">
+              {nodes.map((n, i) => (
+                <button key={i} type="button" role="listitem" className={`x3-node${n.next ? " next" : ""}`} onClick={n.go}>
+                  <span className="x3-node__n"><i>{i + 1}</i>{n.k}</span>
+                  <span className="x3-node__t">{n.t}</span>
+                  <span className="x3-node__d">{n.d}</span>
+                </button>
+              ))}
+            </div>
           </section>
+
           {data.issue ? (
-            <section className="ax-card ax-issue" style={{ marginTop: 18, overflow: "hidden" }}>
-              <div style={{ padding: "16px 20px", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", borderBottom: "1px solid var(--x-line)" }}>
-                <div style={{ flex: 1, minWidth: 220 }}>
+            <section className="ax-card x3-issue" id="issue">
+              <div className="x3-issue__h">
+                <div>
                   <div className="ax-eb">Issue #{data.issue.number} · {data.issue.subject}</div>
-                  <div style={{ fontSize: 15, fontWeight: 600, marginTop: 4 }}>{data.listSize ? "Here’s this month’s note for your customers." : "Here’s the first note I wrote for your customers. Add your list to send it."}</div>
+                  <div className="x3-issue__t">{data.listSize ? "This month’s note for your customers." : "The first note I wrote for your customers. Add your list to send it."}</div>
                 </div>
-                {data.listSize ? <button className="ax-btn p sm" type="button" onClick={() => askAlphaa({ topic: "email", label: "My email" })}>Review & send</button> : <button className="ax-btn p sm" type="button" onClick={() => askAlphaa({ chip: data.chips.add })}>+ Add my list</button>}
+                {data.listSize ? <Button variant="primary" onClick={() => askAlphaa({ topic: "email", label: "My email" })}>Review & send</Button> : <Button variant="primary" onClick={() => askAlphaa({ chip: data.chips.add })}>Add my list</Button>}
               </div>
               <iframe title={`Issue #${data.issue.number}`} srcDoc={data.issue.html} sandbox="" loading="lazy" />
             </section>
           ) : data.writingIssue ? (
-            <section className="ax-card" style={{ marginTop: 18, padding: "18px 20px", display: "flex", gap: 10, alignItems: "center" }}><span className="ax-dot" />I’m writing this month’s note for your customers. It shows up here in a minute or two.</section>
+            <section className="ax-card x3-pad" aria-busy="true">
+              <div className="x3-row"><b>I’m writing this month’s note</b><Pill tone="info" dot>Writing</Pill></div>
+              <Skeleton kind="line" width="60%" /><Skeleton kind="line" /><Skeleton kind="line" width="80%" />
+              <div className="ax-t11">It shows up here in a minute or two.</div>
+            </section>
           ) : null}
-          <div className="ax-g2" style={{ marginTop: 18 }}>
-            <section className="ax-card ax-soon"><span className="ax-pill n" style={{ alignSelf: "flex-start" }}>Coming soon</span><b style={{ fontSize: 15 }}>Welcome email</b><span className="ax-p">A first note for every new customer you add.</span></section>
-            <section className="ax-card ax-soon"><span className="ax-pill n" style={{ alignSelf: "flex-start" }}>Coming soon</span><b style={{ fontSize: 15 }}>Win-back note</b><span className="ax-p">A friendly hello to customers you haven’t seen in a while.</span></section>
-          </div>
-        </>
+
+          <div className="x3-next"><Glyph name="clock" size={16} /><span><b>Next:</b> a welcome email for each new customer, and a win back note for customers you haven’t seen in a while.</span></div>
+        </div>
       )}
 
-      {tab === "l" && (
-        data.listSize ? (
-          <section className="ax-card ax-list" style={{ padding: "2px 22px", marginTop: 22 }}>
-            <div className="ax-grid4" style={{ padding: "12px 0", fontSize: 12, color: "var(--x-ter)", fontWeight: 600 }}><span>Group</span><span>People</span><span>Gets</span><span /></div>
-            <div className="ax-grid4" style={{ padding: "14px 0", fontSize: 14 }}><b>Everyone on your list</b><span>{data.listSize.toLocaleString("en-US")}</span><span className="ax-pill n" style={{ justifySelf: "start" }}>Monthly note</span><button className="ax-lnk" type="button" style={{ justifySelf: "end" }} onClick={() => askAlphaa({ chip: data.chips.add })}>Add more</button></div>
-            <div className="ax-grid4" style={{ padding: "14px 0", fontSize: 14 }}><b>Opted out</b><span>{data.optedOut.toLocaleString("en-US")}</span><span className="ax-pill n" style={{ justifySelf: "start" }}>Never emailed again</span><span /></div>
-            {data.imports.map((i, k) => <div key={k} style={{ padding: "12px 0", fontSize: 13, color: "var(--x-mut)", display: "flex", justifyContent: "space-between", gap: 12 }}><span>{i.text}</span><span>{i.when}</span></div>)}
-          </section>
-        ) : (
-          <div style={{ marginTop: 22 }}><Empty title="Your list is empty" text="Paste your customers or upload a CSV. Only people who bought from you or asked to hear from you." act={{ label: "Add my customers", chip: data.chips.add, primary: true }} /></div>
-        )
+      {tab === "list" && (
+        <div className="x3-col x3-top">
+          {data.listSize ? (
+            <>
+              <DataTable<{ key: string; group: string; people: number; gets: string }>
+                label="Your list"
+                rowKey={(r) => r.key}
+                rows={[
+                  { key: "all", group: "Everyone on your list", people: data.listSize, gets: "Monthly note" },
+                  { key: "out", group: "Opted out", people: data.optedOut, gets: "Never emailed again" },
+                ]}
+                columns={[
+                  { key: "group", label: "Group", render: (r) => <b>{r.group}</b>, value: (r) => r.group },
+                  { key: "people", label: "People", num: true, render: (r) => r.people.toLocaleString("en-US"), value: (r) => r.people },
+                  { key: "gets", label: "Gets", render: (r) => <Pill tone={r.key === "all" ? "info" : "idle"}>{r.gets}</Pill>, value: (r) => r.gets },
+                ]}
+              />
+              <div className="x3-acts"><Button variant="primary" onClick={() => askAlphaa({ chip: data.chips.add })}>Add more customers</Button></div>
+              {data.imports.length > 0 && (
+                <section>
+                  <SectionHeader title="What you added" />
+                  <List card label="Imports">
+                    {data.imports.map((i, k) => <ListRow key={k} lead={<span className="xd-row__ic"><Glyph name="mail" size={16} /></span>} title={i.text} meta={i.when} />)}
+                  </List>
+                </section>
+              )}
+            </>
+          ) : (
+            <EmptyState
+              icon={<Glyph name="mail" size={22} />}
+              title="Your list is empty"
+              text="Paste your customers or upload a CSV in the chat. Only people who bought from you or asked to hear from you."
+              bullets={["I check every address and drop duplicates", "Each import keeps a record of their consent", "Anyone who unsubscribes is never emailed again"]}
+              actions={<Button variant="primary" onClick={() => askAlphaa({ chip: data.chips.add })}>Add my customers</Button>}
+            />
+          )}
+        </div>
       )}
 
-      {tab === "c" && (
-        data.campaigns.length ? (
-          <div style={{ display: "flex", flexDirection: "column", gap: 14, marginTop: 22 }}>
-            {data.campaigns.map((c) => (
-              <article key={c.id} className="ax-card hv" style={{ padding: "20px 22px", display: "flex", gap: 18, alignItems: "center", flexWrap: "wrap" }}>
-                <div style={{ flex: 1, minWidth: 220 }}>
-                  <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}><b style={{ fontSize: 16 }}>{c.subject}</b><span className={`ax-pill ${c.pc}`}>{c.status}</span></div>
-                  <div style={{ fontSize: 13.5, color: "var(--x-mut)", marginTop: 4 }}>{c.preview}</div>
-                </div>
-                <div style={{ display: "flex", gap: 22, fontSize: 13, textAlign: "right" }}>
-                  <div><div className="ax-t11">Sent to</div><b>{c.sent != null ? c.sent.toLocaleString("en-US") : "—"}</b></div>
-                  <div><div className="ax-t11">Bounced</div><b>{c.sent != null ? c.bounced : "—"}</b></div>
-                  <div><div className="ax-t11">Spam reports</div><b>{c.sent != null ? c.complained : "—"}</b></div>
-                </div>
-                <button className="ax-btn s sm" type="button" onClick={() => open({ eb: `Email · ${c.status}`, title: c.subject, rows: [{ k: "Preview line", v: c.preview }, { k: "Body", v: c.body.join("\n\n"), box: true }, ...(c.sent != null ? [{ k: "What happened", v: `Sent to ${c.sent.toLocaleString("en-US")}. ${c.bounced} bounced, ${c.complained} marked it as spam.` }] : [])], cta: { label: "Open it in chat", topic: "email" } })}>Read it</button>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div style={{ marginTop: 22 }}><Empty title="No emails yet" text="I write one in your voice from what’s new at your business. You see it before it goes out." act={{ label: "Write an email", chip: data.chips.write, primary: true }} /></div>
-        )
+      {tab === "emails" && (
+        <div className="x3-col x3-top">
+          {issueRow || data.campaigns.length ? (
+            <List card label="Emails">
+              {issueRow && (
+                <ListRow
+                  lead={<span className="xd-row__ic"><Glyph name="mail" size={16} /></span>}
+                  title={issueRow.subject}
+                  meta={`Issue #${issueRow.number} · ${data.listSize ? "ready for your OK" : "add your list to send it"}`}
+                  end={<Pill tone="idle">Draft</Pill>}
+                  onClick={() => { setTab("flow"); window.setTimeout(() => document.getElementById("issue")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50) }}
+                  wrapEnd
+                />
+              )}
+              {data.campaigns.map((c) => (
+                <ListRow
+                  key={c.id}
+                  lead={<span className="xd-row__ic"><Glyph name="mail" size={16} /></span>}
+                  title={c.subject}
+                  meta={c.sent != null ? `Sent to ${c.sent.toLocaleString("en-US")} · ${c.bounced} bounced · ${c.complained} spam ${c.complained === 1 ? "report" : "reports"}` : c.preview}
+                  end={<Pill tone={tone(c.pc)}>{c.status}</Pill>}
+                  onClick={() => openCampaign(c)}
+                  wrapEnd
+                />
+              ))}
+            </List>
+          ) : data.writingIssue ? (
+            <div className="ax-card x3-pad"><Skeleton kind="row" rows={1} /><div className="ax-t11">I’m writing this month’s note. It shows up here in a minute or two.</div></div>
+          ) : (
+            <EmptyState
+              icon={<Glyph name="mail" size={22} />}
+              title="No emails yet"
+              text="I write one in your voice from what’s new at your business. You see it before it goes out."
+              actions={<Button variant="primary" onClick={() => askAlphaa({ chip: data.chips.write })}>Write an email</Button>}
+            />
+          )}
+        </div>
       )}
       {node}
     </>

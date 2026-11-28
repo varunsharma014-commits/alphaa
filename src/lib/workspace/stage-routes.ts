@@ -31,6 +31,7 @@ const P2: string[] = [
 
 // Package 3: Ads, Email, Tracking (+ site health).
 const P3: string[] = [
+  "/dashboard/ads/plan",
 ]
 
 // Package 4: Settings, billing, plans, admin.
