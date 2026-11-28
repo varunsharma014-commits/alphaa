@@ -140,7 +140,7 @@ export function SocialView({ data }: { data: SocialData | null }) {
             </span>
             <span className="xs-acts">
               {p.links.map((l) => <a key={l.url} className="ax-src" href={l.url} target="_blank" rel="noopener noreferrer">{l.label} ↗</a>)}
-              {lane(p) === "posted" && data.canBoost && p.links.length > 0 && <Button size="sm" href="/dashboard/ads?tab=p">Boost this post</Button>}
+              {lane(p) === "posted" && data.canBoost && p.links.length > 0 && <Button size="sm" href="/dashboard/ads?tab=promote">Boost this post</Button>}
               {lane(p) === "ready" && (noAccount(p)
                 ? <Button size="sm" onClick={() => askAlphaa({ topic: "social", label: "Connect an account" })}>Connect an account</Button>
                 : <Button size="sm" variant="primary" loading={busy === p.id} onClick={() => void act(p, "approve")}>Approve & schedule</Button>)}
