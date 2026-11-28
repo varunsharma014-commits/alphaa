@@ -1,4 +1,6 @@
 import { withQuotaHere } from "@/lib/quotas"
+import { currentBrandId } from "@/lib/usage"
+import { enforce, finishGoogle, guardrailPromptHere } from "@/lib/guardrails"
 import { claudeFor } from "./claude"
 
 const anthropic = claudeFor("google-posts")
@@ -14,7 +16,12 @@ export function containsPlaceholders(content: string): boolean {
 
 /** generateGbpPost, counted against the brand's plan quota (content_piece:gbp; lib/quotas.ts). Throws a QuotaError when out. */
 export function generateGbpPost(...args: Parameters<typeof generateGbpPostUnmetered>): ReturnType<typeof generateGbpPostUnmetered> {
-  return withQuotaHere("content_piece:gbp", () => generateGbpPostUnmetered(...args))
+  // Brand guardrails (lib/guardrails.ts) for the brand in this request/cron: banned words rejected
+  // + one retry, the social disclaimer appended inside Google's 1,500 characters.
+  return withQuotaHere("content_piece:gbp", async () => enforce(await currentBrandId().catch(() => null), "google", () => generateGbpPostUnmetered(...args), {
+    texts: (p) => [p.content, p.callToAction],
+    finish: (p, g) => ({ ...p, content: finishGoogle(p.content, g).text }),
+  }))
 }
 
 async function generateGbpPostUnmetered(
@@ -54,7 +61,7 @@ AEO (AI-engine optimization) hard rules — these are mandatory and apply even w
 3. Include the business name (${businessName}) naturally in the first paragraph${locality ? `, and the city (${locality}) too if location is relevant` : ""}.
 4. End with a single short line stating the business name${locality ? `, city` : ""} and website or phone IF you know them from the details above. NEVER invent an address or phone number, and NEVER write bracket placeholders like "[address]" or "[phone]" — if you don't know a fact, leave it out entirely.
 
-${voice ? `${voice}\n\n` : ""}Never call the business "the best", "#1", "top" or "leading", even if the topic uses those words.
+${voice ? `${voice}\n\n` : ""}${guardrailPromptHere() ? `${guardrailPromptHere()}\n\n` : ""}Never call the business "the best", "#1", "top" or "leading", even if the topic uses those words.
 Return ONLY valid JSON with this exact structure — no markdown, no explanation:
 {
   "content": "<the full post text, 150-200 words>",

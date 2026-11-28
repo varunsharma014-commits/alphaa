@@ -42,6 +42,8 @@ export type MetaPlan = {
   budgetSource: "autopilot" | "suggested"
   monthlyCap: number | null
   ads: PlannedAd[]
+  /** Brand guardrail notes for the owner (e.g. the disclaimer didn't fit). */
+  notes?: string[]
 }
 export type CampaignStatus = "proposed" | "building" | "paused" | "active" | "failed" | "dismissed"
 export type MetaCampaign = {

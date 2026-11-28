@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 180
 
 import { checkQuota, isQuotaError, quotaBody, refundQuota } from "@/lib/quotas"
+import { GuardrailError } from "@/lib/guardrails"
 import { voiceFor } from "@/lib/voice"
 import { NextResponse } from "next/server"
 import { safeFetch } from "@/lib/safe-fetch"
@@ -60,6 +61,7 @@ export async function POST(req: Request) {
   if (mode === "post" || mode === "gbp" || mode === "social") {
     const r = await once(`draft:${user.id}:${mode}:${input.topic.trim().toLowerCase()}`, () => writeDraft(user, mode, input.topic))
     if (r.ok) return NextResponse.json(r.body)
+    if (!r.quota && r.rule) return NextResponse.json({ error: r.rule }, { status: 409 })
     return r.quota ? NextResponse.json({ error: r.quota, quota: true, buy: true }, { status: 429 }) : NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
   }
 
@@ -117,7 +119,7 @@ ${facts}`,
 const RECENT_MS = 15 * 60_000
 type DraftUser = NonNullable<Awaited<ReturnType<typeof db.user.findUnique>>>
 
-async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topic: string): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false; quota?: string }> {
+async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topic: string): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false; quota?: string; rule?: string }> {
   const since = new Date(Date.now() - RECENT_MS)
   try {
     if (mode === "post") {
@@ -156,6 +158,7 @@ async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topi
     return { ok: true, body: { title: "Social post", text: sp.text, image: card?.url ?? null } }
   } catch (err) {
     if (isQuotaError(err)) return { ok: false, quota: err.message }
+    if (err instanceof GuardrailError) return { ok: false, rule: err.message }
     console.error("[agent/draft]", mode, err instanceof Error ? err.message : err)
     return { ok: false }
   }

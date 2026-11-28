@@ -31,5 +31,7 @@ export type AdPlan = {
   /** Facts I used (shown folded). */
   sources: string[]
   keywordCheck: "checked" | "unchecked"
+  /** Brand guardrail notes for the owner (e.g. the disclaimer didn't fit). */
+  notes?: string[]
   error?: string
 }

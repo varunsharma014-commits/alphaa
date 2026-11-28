@@ -94,6 +94,7 @@ export function guardrailsMd(s: AdStrategy): string {
     `**AI:**\n${AI_RULES.map((r) => `- ${r}`).join("\n")}`,
     `**Every ad:**\n${LEGAL.map((r) => `- ${r}`).join("\n")}`,
     s.guardrails?.vertical.length ? `**For your kind of business:**\n${s.guardrails.vertical.map((r) => `- ${r}`).join("\n")}` : "",
+    s.guardrails?.owner?.length ? `**Your brand rules:**\n${s.guardrails.owner.map((r) => `- ${r}`).join("\n")}` : "",
   ].filter(Boolean).join("\n\n")
 }
 

@@ -8,6 +8,7 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod"
 import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
 import { voiceFor } from "@/lib/voice"
+import { enforce, finishEmail } from "@/lib/guardrails"
 import type { Campaign } from "./store"
 
 const anthropic = claudeFor("email-campaign")
@@ -30,7 +31,11 @@ const BANNED = /\b(best|#1|number one|leading|world[- ]class|guarantee[ds]?|act 
 
 /** writeCampaign, counted against the brand's plan quota (content_piece:email; lib/quotas.ts). Throws a QuotaError when out. */
 export function writeCampaign(...args: Parameters<typeof writeCampaignUnmetered>): ReturnType<typeof writeCampaignUnmetered> {
-  return withQuota(args[0], "content_piece:email", () => writeCampaignUnmetered(...args))
+  // Brand guardrails (lib/guardrails.ts): banned words rejected + one retry, the email disclaimer as the last paragraph.
+  return withQuota(args[0], "content_piece:email", () => enforce(args[0], "email", () => writeCampaignUnmetered(...args), {
+    texts: (c) => [c.subject, c.preview, ...c.paragraphs, c.cta?.label ?? ""],
+    finish: (c, g) => ({ ...c, paragraphs: finishEmail(c.paragraphs, g) }),
+  }))
 }
 
 async function writeCampaignUnmetered(userId: string, opts: { topic?: string; avoid?: string[] } = {}): Promise<Omit<Campaign, "v" | "status">> {

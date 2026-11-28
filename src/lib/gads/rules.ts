@@ -12,6 +12,14 @@ export const numbersIn = (s: string) => (s.match(/\d[\d,.]*/g) ?? []).map((x) =>
 
 export type CopyProblem = { text: string; reason: string }
 
+/**
+ * The owner's banned words for the writer running now (lib/guardrails.ts registers this on the
+ * server; client bundles never do, so it stays a no-op there and this file stays pure).
+ */
+let ownerBanned: ((text: string) => string | null) | null = null
+export function registerOwnerBanned(fn: (text: string) => string | null) { ownerBanned = fn }
+export const ownerBannedIn = (text: string): string | null => ownerBanned?.(text) ?? null
+
 /** Why this line can't run, or null if it's fine. `allowedNumbers` = numbers that appear in the business's real facts. */
 export function copyProblem(text: string, max: number, allowedNumbers: Set<string>, headline: boolean, brand?: string | null): string | null {
   const t = text.trim()
@@ -21,6 +29,8 @@ export function copyProblem(text: string, max: number, allowedNumbers: Set<strin
   if (!t) return "empty"
   if (t.length > max) return `over ${max} characters`
   if (BANNED.test(rest)) return "superlative or claim I can’t back up"
+  const own = ownerBannedIn(t)
+  if (own) return `uses “${own}”, which you asked me never to use`
   if (headline && t.includes("!")) return "Google doesn’t allow ! in headlines"
   if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(t)) return "emoji"
   if (/\[|\]/.test(t)) return "placeholder"

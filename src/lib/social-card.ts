@@ -129,7 +129,7 @@ export async function renderSocialCard(userId: string, input: CardInput): Promis
 export type CardInput = {
   headline: string
   businessName: string | null
-  brand: Pick<BrandKit, "logo" | "primary"> | null | undefined
+  brand: (Pick<BrandKit, "logo" | "primary"> & Partial<Pick<BrandKit, "logos">>) | null | undefined
   /** Optional second line under the headline (short). */
   subline?: string | null
   style?: CardStyle
@@ -233,7 +233,13 @@ async function cardSvg(input: CardInput): Promise<string | null> {
 
   // Footer: hairline, then the logo (on a tile that suits it) or the business name.
   parts.push(`<rect x="${M}" y="${S - footerH}" width="${maxW}" height="2" fill="${P.rule}"/>`)
-  const logo = tone ? null : await logoData(input.brand?.logo ?? null)
+  // The owner's logo version for this background (dark card → onDark, light → onLight) needs no
+  // tile; the default logo gets a tile when it would vanish. No full logo: the icon + the name.
+  const darkBg = luminance(hex(P.bg)) < 0.4
+  const variantUrl = tone ? null : (darkBg ? input.brand?.logos?.onDark : input.brand?.logos?.onLight) ?? null
+  const variant = variantUrl ? await logoData(variantUrl) : null
+  const logo = tone ? null : variant ?? await logoData(input.brand?.logo ?? null)
+  const icon = !tone && !logo && input.brand?.logos?.icon ? await logoData(input.brand.logos.icon) : null
   const fy = S - footerH / 2 + 2
   if (tone) {
     // Alphaa's mark: the orb + the "alphaa" wordmark, as on the site header.
@@ -241,10 +247,16 @@ async function cardSvg(input: CardInput): Promise<string | null> {
     parts.push(pathFor(f.bold, "alphaa", M + 70, fy + 14, 42, P.ink, -0.03))
   } else if (logo) {
     const h = 64, w = Math.min(320, (logo.w / logo.h) * h)
-    const needTile = P.tile === "light" ? logo.light : P.tile === "dark" ? !logo.light : true
+    const needTile = variant ? false : P.tile === "light" ? logo.light : P.tile === "dark" ? !logo.light : true
     const tileFill = logo.light ? "#111111" : "#FFFFFF"
     if (needTile) parts.push(`<rect x="${M - 18}" y="${fy - h / 2 - 16}" width="${w + 36}" height="${h + 32}" rx="16" fill="${tileFill}"/>`)
     parts.push(`<image x="${M}" y="${fy - h / 2}" width="${w}" height="${h}" preserveAspectRatio="xMinYMid meet" href="${logo.uri}"/>`)
+  } else if (icon) {
+    const h = 72, w = Math.min(120, (icon.w / icon.h) * h)
+    const needTile = darkBg ? !icon.light : icon.light
+    if (needTile) parts.push(`<rect x="${M - 12}" y="${fy - h / 2 - 12}" width="${w + 24}" height="${h + 24}" rx="16" fill="${icon.light ? "#111111" : "#FFFFFF"}"/>`)
+    parts.push(`<image x="${M}" y="${fy - h / 2}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" href="${icon.uri}"/>`)
+    if (name && covered(f.bold, name)) parts.push(pathFor(f.bold, name, M + w + 30, fy + 13, 36, P.ink, -0.01))
   } else if (name && covered(f.bold, name)) {
     parts.push(pathFor(f.bold, name, M, fy + 13, 36, P.ink, -0.01))
   }

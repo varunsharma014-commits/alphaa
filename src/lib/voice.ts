@@ -11,6 +11,7 @@ import { db } from "@/lib/db"
 import { safeFetch } from "@/lib/safe-fetch"
 import { claudeFor } from "@/lib/claude"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
+import { guardrailPromptHere } from "@/lib/guardrails"
 
 const anthropic = claudeFor("voice")
 
@@ -194,13 +195,15 @@ export function voiceText(v: Voice): string {
     v.phrases.length ? `Words they use: ${v.phrases.map((p) => `"${p}"`).join(", ")}.` : "",
     v.avoid.length ? `Avoid: ${v.avoid.join("; ")}.` : "",
     v.rules?.length ? `From the owner's brand book (follow these):\n${v.rules.map((r) => `- ${r}`).join("\n")}` : "",
+    // The owner's brand guardrails, while a writer runs inside lib/guardrails.ts enforce().
+    guardrailPromptHere(),
   ].filter(Boolean).join("\n")
 }
 
 /** The saved voice as prompt text, or null if I haven't learned it yet. */
 export async function voiceFor(userId: string): Promise<string | null> {
   const v = (await getAgentSettings(userId)).voice
-  return v ? voiceText(v) : null
+  return v ? voiceText(v) : guardrailPromptHere() || null
 }
 
 /** The saved voice, learning it first (closest match, not yet confirmed by the owner) if needed. */

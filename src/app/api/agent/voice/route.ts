@@ -6,7 +6,8 @@ import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { ensureVoice, type Voice } from "@/lib/voice"
-import { brandMessages, voiceMessages } from "@/lib/agent/voice-narration"
+import { brandMessages, guardrailsMessages, voiceMessages } from "@/lib/agent/voice-narration"
+import { getGuardrails } from "@/lib/guardrails"
 import { ensureBrandKit, saveBrand, HEX_RE, type BrandKit } from "@/lib/brand-kit"
 import { imageUrl } from "@/lib/images"
 import type { Voice as V } from "@/lib/voice"
@@ -25,6 +26,8 @@ const body = z.discriminatedUnion("op", [
   z.object({ op: z.literal("brand-read") }),
   z.object({ op: z.literal("brand-color"), value: z.string().trim().max(10) }),
   z.object({ op: z.literal("brand-logo"), value: z.string().trim().url().max(600) }),
+  z.object({ op: z.literal("brand-logos"), onDark: z.string().trim().max(600).optional(), onLight: z.string().trim().max(600).optional(), icon: z.string().trim().max(600).optional() }),
+  z.object({ op: z.literal("brand-font2"), value: z.string().trim().max(60).optional() }),
   z.object({ op: z.literal("style"), key: z.enum(["language", "formality", "emoji", "length", "person"]), value: z.string().trim().min(1).max(30) }),
   // "How your images look" (lib/agent/images-panel.ts)
   z.object({ op: z.literal("img-style"), value: z.enum(["card", "photo", "ai", "canva"]) }),
@@ -46,7 +49,8 @@ const STYLE_VALUES: Record<string, string[] | null> = {
 /** The whole thread: brand first, then how images look, then voice. */
 async function brandAndVoice(user: { id: string; plan: string; email: string }, brand: BrandKit | null | undefined, voice: V | null | undefined) {
   const images = await imagesMessages(user.id, { growth: hasPro(user) }).catch((err) => { console.error("[voice] images panel", err instanceof Error ? err.message : err); return [] })
-  return [...brandMessages(brand, brand?.sampleId ? imageUrl(brand.sampleId) : null), ...images, ...voiceMessages(voice)]
+  const rules = await getGuardrails(user.id).catch(() => null)
+  return [...brandMessages(brand, brand?.sampleId ? imageUrl(brand.sampleId) : null), ...images, ...voiceMessages(voice), ...guardrailsMessages(rules)]
 }
 
 export async function GET() {
@@ -109,6 +113,23 @@ export async function POST(req: Request) {
       await saveImageSettings(user.id, { samples: { ...(st.images?.samples ?? {}), photo: null } })
     }
     return NextResponse.json({ messages: [agent([{ kind: "text", text: said }]), ...(await brandAndVoice(user, st.brand, st.voice))] })
+  }
+  if (input.op === "brand-logos" || input.op === "brand-font2") {
+    let b: BrandKit
+    let said: string
+    if (input.op === "brand-logos") {
+      const url = (v?: string) => { const t = (v ?? "").trim(); if (!t) return null; try { const u = new URL(t); return u.protocol === "https:" || u.protocol === "http:" ? u.toString() : undefined } catch { return undefined } }
+      const logos = { onDark: url(input.onDark), onLight: url(input.onLight), icon: url(input.icon) }
+      if (Object.values(logos).some((x) => x === undefined)) return NextResponse.json({ error: "Each logo needs a full link, starting with https://." }, { status: 400 })
+      b = await saveBrand(user.id, { logos: logos as { onDark: string | null; onLight: string | null; icon: string | null } })
+      said = Object.values(logos).some(Boolean) ? "Saved. I use the right version on light and dark images from now on." : "Removed the extra logo versions."
+    } else {
+      const v = (input.value ?? "").replace(/[^\p{L}\p{N} &'-]/gu, "").trim()
+      b = await saveBrand(user.id, { fontSecondary: v || null })
+      said = v ? `Saved. ${v} is your second font.` : "Removed the second font."
+    }
+    const st = await getAgentSettings(user.id)
+    return NextResponse.json({ messages: [agent([{ kind: "text", text: said }]), ...(await brandAndVoice(user, b, st.voice))] })
   }
   if (input.op === "brand-read" || input.op === "brand-color" || input.op === "brand-logo") {
     let b: BrandKit | null

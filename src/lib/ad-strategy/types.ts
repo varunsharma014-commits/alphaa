@@ -37,7 +37,8 @@ export type AdStrategy = {
   scripts?: Script[]
   statics?: { meta: MetaStatic[]; linkedin: LinkedInStatic[]; google: { headlines: string[]; descriptions: string[] } }
   testing?: TestingPlan
-  guardrails?: { vertical: string[] }
+  /** vertical = per-vertical legal rules; owner = notes from the owner's brand guardrails (lib/guardrails.ts). */
+  guardrails?: { vertical: string[]; owner?: string[] }
   /** Lines my checks removed (a claim I couldn't back up, over the limit…). */
   dropped?: number
 }

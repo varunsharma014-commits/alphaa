@@ -23,6 +23,7 @@ import { generatePostImage } from "@/lib/images"
 import { generateGbpPost, containsPlaceholders } from "@/lib/gbp-poster"
 import { approveSitePost } from "@/lib/approvals"
 import { isQuotaError, requireQuota } from "@/lib/quotas"
+import { GuardrailError } from "@/lib/guardrails"
 import { listAccounts, createPost } from "@/lib/social/store"
 import { PLATFORM_NAME } from "@/lib/social/types"
 
@@ -236,7 +237,7 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
       }
     } catch (err) {
       // Out of this kind for the week/month: say so in the notes instead of a silent failure.
-      if (isQuotaError(err)) { if (!run.notes.includes(err.message)) run.notes.push(err.message) }
+      if (isQuotaError(err) || err instanceof GuardrailError) { if (!run.notes.includes(err.message)) run.notes.push(err.message) }
       else console.error("[week] write failed", it.kind, err instanceof Error ? err.message : err)
       it.status = "failed"
     }

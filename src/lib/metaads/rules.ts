@@ -2,6 +2,7 @@
 // special ad categories, the claim check on ad copy, and the weekly tuning decisions.
 import type { Goal, SpecialCategory } from "./graph"
 import { THRESHOLDS } from "@/lib/ad-strategy/playbook"
+import { ownerBannedIn } from "@/lib/gads/rules"
 import type { PlannedAd, TuneAction } from "./store"
 
 /** Numbers in a text, as the insights check reads them (lib/insights.ts `numbers`). */
@@ -34,7 +35,7 @@ export function checkAds(ads: { primaryText: string; headline: string; descripti
   const allowed = new Set(numbers(factText))
   return ads.flatMap((a) => {
     const all = `${a.primaryText} ${a.headline} ${a.description} ${a.imageHeadline}`
-    if (BANNED.test(all)) return []
+    if (BANNED.test(all) || ownerBannedIn(all)) return [] // our claims rule, or a word the owner banned (lib/guardrails.ts)
     if (numbers(all).some((n) => !allowed.has(n))) return []
     if (/\[|\]/.test(all)) return []
     const out = { primaryText: clean(a.primaryText, 300), headline: clean(a.headline, 60), description: clean(a.description, 60), imageHeadline: clean(a.imageHeadline, 40) }

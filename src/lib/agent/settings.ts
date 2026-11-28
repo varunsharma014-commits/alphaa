@@ -30,6 +30,8 @@ export type AgentSettings = {
   voice?: import("@/lib/voice").Voice
   /** What I do without asking (lib/agent/autopilot.ts). Blog/Google posts use autoPublishPosts. */
   autopilot?: Autopilot
+  /** Banned words, mandatory hashtags/disclaimers, "always say" items, enforced in every writer (lib/guardrails.ts). */
+  guardrails?: import("@/lib/guardrails").Guardrails
   /** Logo, colours and font read from the site, or set by the owner (lib/brand-kit.ts). */
   brand?: import("@/lib/brand-kit").BrandKit
   /** One-time note for the Social thread (the result of the last connect). */

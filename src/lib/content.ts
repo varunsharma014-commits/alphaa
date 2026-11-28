@@ -8,6 +8,7 @@ import { claudeFor } from "@/lib/claude"
 import { getAgentSettings, type Location } from "@/lib/agent/settings"
 import { latestQuestionScan } from "@/lib/questions"
 import { ensureVoice, voiceFor, voiceText } from "@/lib/voice"
+import { enforce, finishBlog, finishSocial } from "@/lib/guardrails"
 
 const anthropic = claudeFor("blog")
 
@@ -50,7 +51,8 @@ Give ONE question a real prospective customer of this specific business would ty
 
 /** writePost, counted against the brand's plan quota (content_piece:blog; lib/quotas.ts). Throws a QuotaError when out. */
 export function writePost(...args: Parameters<typeof writePostUnmetered>): ReturnType<typeof writePostUnmetered> {
-  return withQuota(args[0], "content_piece:blog", () => writePostUnmetered(...args))
+  // Brand guardrails (lib/guardrails.ts): banned words rejected + one retry, blog disclaimer appended.
+  return withQuota(args[0], "content_piece:blog", () => enforce(args[0].id, "blog", () => writePostUnmetered(...args), { texts: (p) => [p.title, p.excerpt, p.markdown], finish: (p, g) => ({ ...p, markdown: finishBlog(p.markdown, g) }) }))
 }
 
 /** A blog post answering a real customer question — markdown with ## question headings. */
@@ -107,7 +109,7 @@ ${factsOf(user, voice)}`,
 
 /** writeMeta, counted against the brand's plan quota (content_piece:draft; lib/quotas.ts). Throws a QuotaError when out. */
 export function writeMeta(...args: Parameters<typeof writeMetaUnmetered>): ReturnType<typeof writeMetaUnmetered> {
-  return withQuota(args[0], "content_piece:draft", () => writeMetaUnmetered(...args))
+  return withQuota(args[0], "content_piece:draft", () => enforce(args[0].id, "blog", () => writeMetaUnmetered(...args), { texts: (t) => [t] }))
 }
 
 /** Homepage title (≤60) + meta description (≤155), as "Title: …\nDescription: …". */
@@ -137,7 +139,7 @@ export function parseMeta(s: string): { title: string; description: string } {
 
 /** writeLocationPage, counted against the brand's plan quota (content_piece:draft; lib/quotas.ts). Throws a QuotaError when out. */
 export function writeLocationPage(...args: Parameters<typeof writeLocationPageUnmetered>): ReturnType<typeof writeLocationPageUnmetered> {
-  return withQuota(args[0], "content_piece:draft", () => writeLocationPageUnmetered(...args))
+  return withQuota(args[0], "content_piece:draft", () => enforce(args[0].id, "blog", () => writeLocationPageUnmetered(...args), { texts: (p) => [p.title, p.markdown], finish: (p, g) => ({ ...p, markdown: finishBlog(p.markdown, g) }) }))
 }
 
 /** A page for one location — markdown, answer-first, with the location's facts. */
@@ -171,7 +173,8 @@ export async function locationsOf(userId: string): Promise<Location[]> {
 
 /** writeSocial, counted against the brand's plan quota (content_piece:social; lib/quotas.ts). Throws a QuotaError when out. */
 export function writeSocial(...args: Parameters<typeof writeSocialUnmetered>): ReturnType<typeof writeSocialUnmetered> {
-  return withQuota(args[0], "content_piece:social", () => writeSocialUnmetered(...args))
+  // Mandatory hashtags + social disclaimer here; each platform's own hashtags/limit at publish (lib/social/publish.ts).
+  return withQuota(args[0], "content_piece:social", () => enforce(args[0].id, "social", () => writeSocialUnmetered(...args), { texts: (p) => [p.text, p.headline], finish: (p, g) => ({ ...p, text: finishSocial(p.text, g).text }) }))
 }
 
 /** A social post (Facebook / Instagram / LinkedIn) in the owner's voice, plus a 4-5 word headline for its image. */

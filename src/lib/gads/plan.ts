@@ -17,6 +17,7 @@ import { keywordIdeasBody, fromMicros, type KeywordIdea } from "./api"
 import { gadsFor, type Gads } from "./client"
 import { createPlan } from "./store"
 import type { AdPlan, PlanAdGroup, PlanKeyword } from "./plan-types"
+import { finishGoogleAd, flagNote, rulesHere, withRules } from "@/lib/guardrails"
 import { cleanKeyword, cleanLines, cleanPath, countryOf, dailyFromMonthly, DESCRIPTION_MAX, HEADLINE_MAX, numbersIn, suggestDaily } from "./rules"
 
 const anthropic = claudeFor("google-ads")
@@ -68,7 +69,12 @@ const LANGUAGE: Record<string, string> = { english: "languageConstants/1000", fr
 const site = (u: string) => (u.startsWith("http") ? u : `https://${u}`)
 
 /** Write a plan, check it against Google's numbers, save it as "proposed". */
-export async function proposePlan(userId: string): Promise<AdPlan> {
+/** Under the brand's guardrails (lib/guardrails.ts): banned words drop lines, the ads disclaimer is added where it fits. */
+export function proposePlan(userId: string): Promise<AdPlan> {
+  return withRules(userId, "ads", () => proposePlanUnruled(userId))
+}
+
+async function proposePlanUnruled(userId: string): Promise<AdPlan> {
   const g = await gadsFor(userId)
   const f = await gatherFacts(userId)
   if (!f) throw new Error("I couldn’t find your business details.")
@@ -114,6 +120,8 @@ ${facts.map((x) => `${x.key}: ${x.text}`).join("\n")}`,
   const vol = new Map(ideas.map((i) => [i.text.toLowerCase(), i]))
 
   const adGroups: PlanAdGroup[] = []
+  const rules = rulesHere()
+  const notes: string[] = []
   for (const gr of groups) {
     const kws: PlanKeyword[] = []
     const seen = new Set<string>()
@@ -129,7 +137,10 @@ ${facts.map((x) => `${x.key}: ${x.text}`).join("\n")}`,
     const heads = cleanLines(gr.headlines, HEADLINE_MAX, 15, allowed, true, brand)
     const descs = cleanLines(gr.descriptions, DESCRIPTION_MAX, 4, allowed, false, brand)
     if (heads.ok.length < 3 || descs.ok.length < 2 || !kws.length) continue
-    adGroups.push({ name: gr.name.trim().slice(0, 80), keywords: kws.slice(0, 20), ad: { headlines: heads.ok, descriptions: descs.ok, path1: cleanPath(gr.path1), path2: cleanPath(gr.path2) } })
+    // The owner's ads disclaimer on every description it fits (Google rotates them).
+    const fin = finishGoogleAd(descs.ok, rules)
+    for (const fl of fin.flags) { const n = flagNote(fl, "ads"); if (n && !notes.includes(n)) notes.push(n) }
+    adGroups.push({ name: gr.name.trim().slice(0, 80), keywords: kws.slice(0, 20), ad: { headlines: heads.ok, descriptions: fin.descriptions, path1: cleanPath(gr.path1), path2: cleanPath(gr.path2) } })
   }
   if (!adGroups.length) throw new Error("The ads I wrote didn’t pass my checks. Try again and I’ll write them fresh.")
   // Top up thin keyword lists with Google's own related searches that share a word with ours.
@@ -191,6 +202,7 @@ ${facts.map((x) => `${x.key}: ${x.text}`).join("\n")}`,
     why,
     sources: facts.map((x) => x.text).slice(0, 12),
     keywordCheck: checked ? "checked" : "unchecked",
+    ...(notes.length ? { notes } : {}),
   })
 }
 

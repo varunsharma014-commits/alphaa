@@ -157,6 +157,7 @@ function planMessage(c: MetaCampaign, can: { pixel: boolean; site: boolean }): M
     { kind: "text", text: "Here’s the campaign I’d run.", big: true },
     { kind: "text", text: pl.why },
     { kind: "receipt", title: c.name, items: [goalLine(pl), `Who sees it: ${where}`, `Budget: ${budget}`, ...(pl.special !== "NONE" ? ["Meta treats ads like yours as a special category, so the audience is kept broad (all adults, wider area)."] : [])] },
+    ...(pl.notes ?? []).map((t): Block => ({ kind: "text", text: t })),
     ...pl.ads.map((a, i): Block => ({ kind: "doc", title: a.headline, meta: `Ad ${i + 1} of ${pl.ads.length}${a.description ? ` · ${a.description}` : ""}`, text: a.primaryText, image: a.imageId ? imageUrl(a.imageId) : undefined, square: true })),
     { kind: "text", text: "When you approve, I build it on Meta paused. Nothing spends until you tap Turn it on." },
     { kind: "chips", items: [

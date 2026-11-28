@@ -11,6 +11,14 @@ export type BrandKit = {
   colors: string[]
   primary: string | null
   font: string | null
+  /** Owner-set: a second font (headings or body) for templates and designers. */
+  fontSecondary?: string | null
+  /**
+   * Owner-set logo versions. onDark = the version made for dark backgrounds (usually white),
+   * onLight = for light backgrounds, icon = the square mark. Social cards pick the one that suits
+   * the card's background (lib/social-card.ts); `logo` stays the default.
+   */
+  logos?: { onDark?: string | null; onLight?: string | null; icon?: string | null }
   source: "site" | "owner"
   at: string
   /** A sample social image in this brand (post_image row id). */
@@ -110,6 +118,9 @@ export async function ensureBrandKit(userId: string, opts: { force?: boolean } =
     colors: read?.colors ?? [],
     primary: owner?.primary ?? read?.primary ?? null,
     font: read?.font ?? null,
+    // Owner-only fields survive a re-read.
+    ...(s.brand?.fontSecondary ? { fontSecondary: s.brand.fontSecondary } : {}),
+    ...(s.brand?.logos ? { logos: s.brand.logos } : {}),
     source: owner ? "owner" : "site",
     at: new Date().toISOString(),
   }
@@ -118,7 +129,7 @@ export async function ensureBrandKit(userId: string, opts: { force?: boolean } =
   return kit
 }
 
-export async function saveBrand(userId: string, patch: Partial<Pick<BrandKit, "logo" | "primary" | "colors" | "font">>): Promise<BrandKit> {
+export async function saveBrand(userId: string, patch: Partial<Pick<BrandKit, "logo" | "primary" | "colors" | "font" | "fontSecondary" | "logos">>): Promise<BrandKit> {
   const s = await getAgentSettings(userId)
   const user = await db.user.findUnique({ where: { id: userId }, select: { businessName: true } })
   const kit: BrandKit = { logo: null, colors: [], primary: null, font: null, ...(s.brand ?? {}), ...patch, source: "owner", at: new Date().toISOString() }

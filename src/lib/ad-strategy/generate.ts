@@ -9,6 +9,7 @@ import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
 import { factsOf } from "@/lib/content"
 import { voiceFor } from "@/lib/voice"
+import { finishGoogleAd, finishMetaAd, flagNote, rulesHere, withRules } from "@/lib/guardrails"
 import { latestInsights } from "@/lib/insights"
 import { nicheFacts } from "@/lib/niche-posts"
 import { getAgentSettings } from "@/lib/agent/settings"
@@ -156,6 +157,19 @@ ${facts}`
     Object.assign(m, { imageId: img?.id ?? null })
   }
 
+  // The owner's ads disclaimer: on each Meta primary text it fits, and every Google description.
+  const rules = rulesHere()
+  const ownerNotes: string[] = []
+  const note = (flags: string[]) => { for (const fl of flags) { const n = flagNote(fl, "ads"); if (n && !ownerNotes.includes(n)) ownerNotes.push(n) } }
+  let googleDescs = gd.ok.slice(0, 4)
+  if (rules) {
+    for (const m of metaStatics) { const f = finishMetaAd(m.primary, rules); m.primary = f.text; note(f.flags) }
+    for (const l of li.ok) { const f = finishMetaAd(l.intro, rules, 600); l.intro = f.text; note(f.flags) }
+    const g = finishGoogleAd(googleDescs, rules)
+    googleDescs = g.descriptions
+    note(g.flags)
+  }
+
   const local = plan.local
   const monthly = settings.autopilot?.adBudget && settings.autopilot.adBudget > 0 ? settings.autopilot.adBudget : null
   return {
@@ -165,9 +179,9 @@ ${facts}`
     competitors: { looked: comp.looked, ads: comp.ads.slice(0, 6), cliches: comp.ads.length ? plan.cliches.slice(0, 5) : [], gaps: comp.ads.length ? plan.gaps.slice(0, 4) : [] },
     hooks: hooks.ok.slice(0, 30),
     scripts: scripts.ok,
-    statics: { meta: metaStatics, linkedin: li.ok, google: { headlines: gh.ok.slice(0, 15), descriptions: gd.ok.slice(0, 4) } },
+    statics: { meta: metaStatics, linkedin: li.ok, google: { headlines: gh.ok.slice(0, 15), descriptions: googleDescs } },
     testing: testingPlan({ monthly, currency: country === "CA" ? "CAD" : "USD", b2b: plan.b2b, local }),
-    guardrails: { vertical: VERTICAL_RULES[plan.vertical] ?? [] },
+    guardrails: { vertical: VERTICAL_RULES[plan.vertical] ?? [], ...(ownerNotes.length ? { owner: ownerNotes } : {}) },
     dropped: hooks.dropped + meta.dropped + li.dropped + gh.dropped + gd.dropped + scripts.dropped,
   }
 }
@@ -200,7 +214,8 @@ export function startStrategy(userId: string, opts: { credits?: boolean } = {}):
     try {
       const user = await db.user.findUnique({ where: { id: userId } })
       if (!user) throw new Error("no user")
-      const out = await build(user, row.id)
+      // Brand guardrails: banned words drop lines (copyProblem), the ads disclaimer goes on where it fits.
+      const out = await withRules(userId, "ads", () => build(user, row.id))
       await db.mockActivity.update({ where: { id: row.id }, data: { metadata: out as object } })
     } catch (err) {
       console.error("[ad-strategy]", err instanceof Error ? err.message : err)

@@ -23,7 +23,51 @@ export function brandMessages(b: BrandKit | null | undefined, sample: string | n
       colorChip(),
     ] },
     { kind: "chips", items: [logoChip(!!b.logo), { label: "Read my site again", action: { type: "agent-op", endpoint: "voice", body: { op: "brand-read" } } }] },
+    ...(b.logos?.onDark || b.logos?.onLight || b.logos?.icon || b.fontSecondary ? [{ kind: "receipt", title: "Also in your brand kit", items: [
+      b.logos?.onDark ? "Logo for dark backgrounds: set" : null,
+      b.logos?.onLight ? "Logo for light backgrounds: set" : null,
+      b.logos?.icon ? "Icon: set" : null,
+      b.fontSecondary ? `Second font: ${b.fontSecondary}` : null,
+    ].filter((x): x is string => !!x) } as Block] : []),
+    { kind: "chips", items: [logoVersionsChip(b), fontChip(b)] },
   ], "vc-brand")]
+}
+
+function logoVersionsChip(b: BrandKit): Chip {
+  return { label: b.logos?.onDark || b.logos?.onLight || b.logos?.icon ? "Change logo versions" : "Add logo versions", action: { type: "agent-op", endpoint: "voice", body: { op: "brand-logos" }, form: {
+    text: "Got other versions of your logo? Paste a link to each one you have (PNG, JPG or SVG). I use the right one on light and dark images. Leave a box empty to remove that version.",
+    fields: [
+      { name: "onDark", label: "Logo for dark backgrounds (often white)", type: "url", value: b.logos?.onDark ?? "", placeholder: "https://…/logo-white.png" },
+      { name: "onLight", label: "Logo for light backgrounds", type: "url", value: b.logos?.onLight ?? "", placeholder: "https://…/logo-dark.png" },
+      { name: "icon", label: "Icon (the square mark on its own)", type: "url", value: b.logos?.icon ?? "", placeholder: "https://…/icon.png" },
+    ],
+    cta: "Save logo versions",
+  } } }
+}
+function fontChip(b: BrandKit): Chip {
+  return { label: b.fontSecondary ? "Change second font" : "Add a second font", action: { type: "agent-op", endpoint: "voice", body: { op: "brand-font2" }, form: {
+    text: `Your main font${b.font ? ` is ${b.font}` : " isn’t set"}. Which font do you use alongside it (for headings or body text)? Leave it empty to remove it.`,
+    fields: [{ name: "value", label: "Second font", type: "text", value: b.fontSecondary ?? "", placeholder: "Playfair Display" }],
+    cta: "Save font",
+  } } }
+}
+
+/** The owner's brand rules (lib/guardrails.ts), summarised, with a link to edit them on Your rules. */
+export function guardrailsMessages(g: { banned: string[]; hashtags: string[]; platformHashtags: Record<string, string[] | undefined>; disclaimers: Record<string, string | undefined>; alwaysSay: string[] } | null | undefined): Message[] {
+  const items = g ? [
+    g.banned.length ? `Words I never use: ${g.banned.slice(0, 6).map((w) => `“${w}”`).join(", ")}${g.banned.length > 6 ? ` and ${g.banned.length - 6} more` : ""}` : null,
+    g.alwaysSay.length ? `Always say: ${g.alwaysSay.slice(0, 4).map((w) => `“${w}”`).join(", ")}` : null,
+    g.hashtags.length ? `Hashtags on every social post: ${g.hashtags.join(" ")}` : null,
+    ...Object.entries(g.platformHashtags).filter(([, t]) => t?.length).map(([p, t]) => `${p === "x" ? "X" : p[0].toUpperCase() + p.slice(1)} only: ${t!.join(" ")}`),
+    ...Object.entries(g.disclaimers).filter(([, d]) => d).map(([c, d]) => `Disclaimer on ${c === "social" ? "social posts and Google updates" : c === "blog" ? "blog posts" : c === "email" ? "emails" : "ads"}: “${d!.length > 80 ? `${d!.slice(0, 80)}…` : d}”`),
+  ].filter((x): x is string => !!x) : []
+  return [agent([
+    { kind: "text", text: "Your brand rules" },
+    items.length
+      ? { kind: "receipt", title: "I follow these in everything I write", items }
+      : { kind: "text", text: "Words I should never use, things I should always say, your hashtags and any disclaimer you need. I check every draft against them, and rewrite any that break one." },
+    { kind: "chips", items: [{ label: items.length ? "Edit my brand rules" : "Set my brand rules", action: { type: "link", href: "/dashboard/settings/business#brand-rules" } }] },
+  ], "vc-rules")]
 }
 
 function colorChip(): Chip {

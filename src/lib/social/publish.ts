@@ -8,6 +8,7 @@ import { meta } from "./providers/meta"
 import { linkedin } from "./providers/linkedin"
 import { tiktok } from "./providers/tiktok"
 import { x } from "./providers/x"
+import { finishSocial, getGuardrails } from "@/lib/guardrails"
 import { PLATFORM_NAME, type Provider, type PostResult, type SocialPlatform, type SocialPost } from "./types"
 
 export const providerFor = (p: SocialPlatform): Provider => (p === "facebook" || p === "instagram" ? meta : p === "linkedin" ? linkedin : p === "tiktok" ? tiktok : x)
@@ -38,6 +39,9 @@ export async function publishPost(userId: string, postId: string): Promise<Socia
   }
   const input = { text: post.text, imageUrl: bytes && post.imageId ? imageUrl(post.imageId) : null, imageBytes: bytes, title: post.title ?? null, videoUrl }
   const accounts = await listAccounts(userId)
+  // Brand guardrails: the owner's mandatory hashtags (common + per platform) and social disclaimer,
+  // inside each platform's own limit (X 280, Instagram 2,200…). Already-present ones aren't repeated.
+  const rules = await getGuardrails(userId).catch(() => null)
   const done = new Map((post.results ?? []).filter((r) => r.ok).map((r) => [r.accountId, r]))
   const results: PostResult[] = []
   for (const id of post.accountIds) {
@@ -45,7 +49,8 @@ export async function publishPost(userId: string, postId: string): Promise<Socia
     const acc = accounts.find((a) => a.id === id)
     if (!acc) { results.push({ accountId: id, platform: "facebook", ok: false, error: "That account was disconnected." }); continue }
     try {
-      const r = await providerFor(acc.platform).publish(acc, input, (patch) => patchAccount(userId, acc.id, patch))
+      const text = rules ? finishSocial(input.text, rules, acc.platform).text : input.text
+      const r = await providerFor(acc.platform).publish(acc, { ...input, text }, (patch) => patchAccount(userId, acc.id, patch))
       results.push({ accountId: id, platform: acc.platform, ok: true, url: r.url, externalId: r.externalId })
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)

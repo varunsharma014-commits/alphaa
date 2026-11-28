@@ -7,6 +7,7 @@ import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
 import { factsOf } from "@/lib/content"
 import { voiceFor } from "@/lib/voice"
+import { finishMetaAd, flagNote, rulesHere, withRules } from "@/lib/guardrails"
 import { latestInsights } from "@/lib/insights"
 import { BANNED, checkAds, clean, countryOf, numbers, specialFor } from "./rules"
 export { BANNED, checkAds, countryOf, specialFor } from "./rules"
@@ -73,7 +74,12 @@ async function factLines(user: U): Promise<{ key: string; text: string }[]> {
 
 export type PlanResult = { ok: true; campaign: MetaCampaign } | { ok: false; reason: string }
 
-export async function proposePlan(userId: string): Promise<PlanResult> {
+/** Under the brand's guardrails (lib/guardrails.ts): banned words drop ads, the ads disclaimer is added where it fits. */
+export function proposePlan(userId: string): Promise<PlanResult> {
+  return withRules(userId, "ads", () => proposePlanUnruled(userId))
+}
+
+async function proposePlanUnruled(userId: string): Promise<PlanResult> {
   const [user, access, existing] = await Promise.all([db.user.findUnique({ where: { id: userId } }), getAccess(userId), listCampaigns(userId, 50)])
   if (!user) return { ok: false, reason: "I couldn’t find your account." }
   if (!access?.picks.adAccountId || !access.picks.pageId) return { ok: false, reason: "Pick your ad account and Facebook Page first." }
@@ -126,6 +132,17 @@ ${facts.map((f) => `${f.key}: ${f.text}`).join("\n")}`
   const token = decToken(access)
   const city = await findCity(token, user.city, country).catch(() => null)
 
+  // The owner's ads disclaimer, on every ad it fits (Meta primary text, our 300-character cap).
+  const rules = rulesHere()
+  const notes: string[] = []
+  if (rules) {
+    for (const a of ads) {
+      const f = finishMetaAd(a.primaryText, rules)
+      a.primaryText = f.text
+      for (const fl of f.flags) { const n = flagNote(fl, "ads"); if (n && !notes.includes(n)) notes.push(n) }
+    }
+  }
+
   // The pictures: the owner's image style (text card, their photos, Canva…), JPEG.
   for (const a of ads) {
     const img = await postImageFor(userId, { headline: a.imageHeadline || a.headline, topic: a.headline }).catch(() => null)
@@ -136,6 +153,7 @@ ${facts.map((f) => `${f.key}: ${f.text}`).join("\n")}`
     goal, why, keys, special, city, cityLabel: city ? [city.name, city.region].filter(Boolean).join(", ") : user.city, country,
     radiusMiles: special !== "NONE" ? 15 : 10,
     dailyBudget, budgetSource, monthlyCap: cap, ads,
+    ...(notes.length ? { notes } : {}),
   }
   const name = `${(user.businessName ?? "Alphaa").slice(0, 60)} · ${goal === "OUTCOME_LEADS" ? "leads" : "website visits"} · ${new Date().toISOString().slice(0, 10)}`
   // A new proposal replaces an older unapproved one.

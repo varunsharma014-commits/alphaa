@@ -93,6 +93,7 @@ export function planMessages(p: AdPlan): Message[] {
     { kind: "text", text: p.keywordCheck === "checked" && searched.length ? `${kws.length} searches your customers type, about ${n(total)} searches a month near you by Google’s count. Your ad shows ${p.location.label}.` : `${kws.length} searches your customers type. Your ad shows ${p.location.label}.` },
   ]
   if (p.why.length) head.push({ kind: "receipt", title: "Why this campaign", items: p.why })
+  for (const t of p.notes ?? []) head.push({ kind: "text", text: t })
   const out: Message[] = [agent(head, "ad-plan")]
   p.adGroups.forEach((g, i) => {
     out.push(agent([
