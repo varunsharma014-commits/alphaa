@@ -77,8 +77,12 @@ export function startCron(): void {
     if ((dow === 3 && hour >= 9) || dow === 4) hit("/api/cron/visibility-scan")
     // Wed 11:00 UTC (+ catch-up) — every tracked customer question × 4 AIs + fact check (engine APIs)
     if ((dow === 3 && hour >= 11) || dow === 4) hit("/api/cron/questions")
-    // Tue 09:00 UTC — security, profiles, directory details, outside ratings, Bing stats
-    if (dow === 2 && hour === 9) hit("/api/cron/checks")
+    // Tue 09:00 UTC (+ catch-up until Wednesday ends) — security, profiles, directory details,
+    // outside ratings, Bing stats, the AI read of the site. Dedupe per brand AND per check kind (5 days).
+    if ((dow === 2 && hour >= 9) || dow === 3) hit("/api/cron/checks")
+    // Sun 09:00 UTC (+ catch-up until Monday 12:00, before the 13:00 briefing email) — weekly site
+    // check: broken links, dead outbound links, redirect chains (fetch only, no AI; 5-day dedupe per brand).
+    if ((dow === 0 && hour >= 9) || (dow === 1 && hour < 13)) hit("/api/cron/site-check")
     // Daily 10:00 UTC — blog post drafts on each plan's schedule (Anthropic)
     if (hour === 10) hit("/api/cron/content")
     // Daily 15:00 UTC — 90-day AI Visibility Guarantee credits (Stripe)

@@ -96,7 +96,7 @@ async function videoScript(user: User, m: PostMeta): Promise<{ text: string; scr
   return withQuota(user, "content_piece:draft", () => enforce(user.id, "social", async () => {
     const voice = await voiceFor(user.id).catch(() => null)
     const allowed = allowedNumbers([factsOf(user), m.markdown, m.title])
-    const prompt = `Write a 30-45 second vertical short-video script (Reels / TikTok / Shorts) for this business, from its new article. The owner films it on a phone: simple shots of the place, the work, hands or the screen, no actors and no AI video. One idea, the most useful point first. Use only what the article and facts say; the only numbers allowed are ones in them. No "best", "#1" or "leading".
+    const prompt = `Write a 30-45 second vertical short-video script (Reels / Shorts) for this business, from its new article. The owner films it on a phone: simple shots of the place, the work, hands or the screen, no actors and no AI video. One idea, the most useful point first. Use only what the article and facts say; the only numbers allowed are ones in them. No "best", "#1" or "leading".
 
 THE ARTICLE
 ${digest(m)}

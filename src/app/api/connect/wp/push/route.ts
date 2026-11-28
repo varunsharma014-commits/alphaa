@@ -5,6 +5,7 @@ import { NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
 import { pushBody, pushChange, type PushInput } from "@/lib/connector/push"
 import { markPublished, textToPublish } from "@/lib/draft-versions"
+import { bannedBody, ownerBannedHit } from "@/lib/owner-edit-check"
 
 // Publishes one approved change to the owner's site (logic in lib/connector/push.ts,
 // shared with approvals from the briefing email).
@@ -23,6 +24,9 @@ export async function POST(req: Request) {
   if (draftId) {
     const pub = await textToPublish(user.id, draftId, input.text)
     if (!pub.ok) return NextResponse.json({ error: pub.error }, { status: 404 })
+    // The owner's own edits: their banned words are flagged before it goes out (they can confirm).
+    const hit = await ownerBannedHit(user.id, [pub.title, pub.markdown])
+    if (hit) return NextResponse.json(...bannedBody(hit))
     const res = await pushChange(user, { ...input, text: pub.markdown, title: pub.title })
     if (res.ok) await markPublished(user.id, draftId, "owner").catch(() => {})
     return res

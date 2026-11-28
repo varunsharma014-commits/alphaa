@@ -20,6 +20,7 @@ import { REVIEW_DRAFT } from "@/lib/approvals"
 import type { Chip } from "@/lib/agent/types"
 import { getAiCards, type AiCard } from "./ai-cards"
 import { scheduledSitePosts } from "./site-posts"
+import { pendingLinkNews } from "@/lib/seo/site-watch"
 import { ART, ago, cached, channelOf, headlineOf, n, pctChange, short, whenAhead, within } from "./common"
 
 const DAY = 86_400_000
@@ -264,7 +265,21 @@ export async function getQuestion(user: User, waiting: { total: number; topic: s
       review: { ai, claim: high.claim, truth: high.truth, fix: { label: "Write the correction", action: { type: "draft", topic: `The facts about ${user.businessName ?? "our business"}: ${short(high.truth, 160)}` } } },
     }
   }
-  // 2. A first-time connection, one at a time (lib/agent/setup.ts).
+  // 2. The weekly site check found new broken links (lib/seo/site-watch.ts): the fix is drafted.
+  const links = await pendingLinkNews(user.id).catch(() => null)
+  if (links) {
+    const n = links.count
+    return {
+      id: `links:${links.id}`, eyebrow: "Website · links to fix",
+      title: `My weekly check found ${n} new broken link${n === 1 ? "" : "s"} on your site.`,
+      text: links.drafts
+        ? `They’re on ${links.pages} page${links.pages === 1 ? "" : "s"}. I’ve fixed them in ${links.drafts === 1 ? "a draft" : `${links.drafts} drafts`}. Take a look and publish.`
+        : `They’re on ${links.pages} page${links.pages === 1 ? "" : "s"}. I couldn’t fix them in the page text, so they need your web person.`,
+      fallback: "Until you publish, nothing on your site changes.",
+      acts: [{ label: "Fix the links", href: "/dashboard/tracking#links", primary: true }],
+    }
+  }
+  // 3. A first-time connection, one at a time (lib/agent/setup.ts).
   const next = setup?.next
   if (next && ["google", "site", "social", "tracking"].includes(next.key)) {
     const chip = next.chip

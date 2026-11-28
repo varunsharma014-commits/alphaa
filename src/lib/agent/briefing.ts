@@ -122,10 +122,12 @@ export function ledgerText(type: string, title: string, meta: Record<string, unk
     case "email_campaign_sent": return title
     case "email_campaign_draft": return title
     case "email_complaint": return title
+    case "site_links": return `Checked the links on your site: ${title.replace(/^Found /, "found ")}`
+    case "review_blocked": return title
     default: return null
   }
 }
-export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "insights", "week_run", "social_published", "win", "guarantee_credit", "ads_change", "email_campaign_sent", "email_campaign_draft", "email_complaint"]
+export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "insights", "week_run", "social_published", "win", "guarantee_credit", "ads_change", "email_campaign_sent", "email_campaign_draft", "email_complaint", "site_links", "review_blocked"]
 
 // The weekly AI re-check runs Wednesdays 09:00 UTC (lib/cron-scheduler.ts).
 export function nextCheck(now = new Date()): string {
@@ -200,9 +202,11 @@ export async function buildBriefing(userId: string, opts: { ledgerDays?: number;
   }
   if (settings.wp || settings.site) {
     for (const d of uniqueBy(postDrafts, (x) => { const m = (x.metadata ?? {}) as { title?: string; status?: string }; return m.status === "ready" ? draftKey(m.title) : "" })) {
-      const m = (d.metadata ?? {}) as { title?: string; markdown?: string; status?: string; imageId?: string | null }
+      const m = (d.metadata ?? {}) as { title?: string; markdown?: string; status?: string; imageId?: string | null; refresh?: { kind?: string } }
       if (m.status !== "ready" || !m.markdown) continue
-      inbox.push({ kind: "post", id: d.id, title: `I wrote a new post for your website: “${m.title ?? "New post"}”`, text: m.markdown, image: m.imageId ? imageUrl(m.imageId) : null })
+      // A refresh / link fix updates an existing page (lib/seo/refresh.ts), it isn't a new post.
+      const title = m.refresh?.kind === "links" ? `I fixed the broken links on your page “${m.title ?? "Your page"}”` : m.refresh ? `I refreshed your page “${m.title ?? "Your page"}”` : `I wrote a new post for your website: “${m.title ?? "New post"}”`
+      inbox.push({ kind: "post", id: d.id, title, text: m.markdown, image: m.imageId ? imageUrl(m.imageId) : null })
     }
   }
   // Weekly: what's working, what isn't, and what to create next.

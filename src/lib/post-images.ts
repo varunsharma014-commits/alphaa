@@ -20,7 +20,7 @@ export type ImageSettings = {
   style: ImageStyle
   /** Text card look (lib/social-card.ts CARD_STYLES), picked from Social Studio's Preview. */
   cardStyle?: import("@/lib/social-card").CardStyle
-  /** photo / ai: square 1080×1080 or tall 1080×1350. The text card is always square. */
+  /** photo / ai: the post's own picture size (square 1080×1080 or tall 1080×1350). Each platform still gets its own size at posting (lib/image-variants.ts). */
   size?: ImageSize
   /** One sample per style (post_image ids) for the panel. */
   samples?: Partial<Record<ImageStyle, string | null>>
@@ -47,12 +47,21 @@ export async function saveImageSettings(userId: string, patch: Partial<ImageSett
   return next
 }
 
-/** Keep a finished JPEG as a post image (served signed by /api/img/[id]). */
-export async function storePostImage(userId: string, jpeg: Buffer, alt: string, kind: string): Promise<{ id: string; url: string }> {
+/** Keep a finished JPEG as a post image (served signed by /api/img/[id]). `extra` = format / recipe (lib/image-variants.ts). */
+export async function storePostImage(userId: string, jpeg: Buffer, alt: string, kind: string, extra: Record<string, unknown> = {}): Promise<{ id: string; url: string }> {
   const a = alt.trim().replace(/\s+/g, " ").slice(0, 120)
-  const row = await db.mockActivity.create({ data: { userId, type: "post_image", title: `Made an image for “${a}”`, metadata: { b64: jpeg.toString("base64"), mime: "image/jpeg", alt: a, kind } } })
+  const row = await db.mockActivity.create({ data: { userId, type: "post_image", title: `Made an image for “${a}”`, metadata: { b64: jpeg.toString("base64"), mime: "image/jpeg", alt: a, kind, ...extra } as object } })
   return { id: row.id, url: imageUrl(row.id) }
 }
+
+/** The background picture behind a photo / AI image, kept once so other sizes can be drawn from it. */
+async function keepSource(userId: string, photo: Buffer): Promise<string | null> {
+  const clean = await normalizePhoto(photo, 1920).catch(() => null)
+  if (!clean) return null
+  const row = await db.mockActivity.create({ data: { userId, type: IMAGE_SOURCE, title: "Picture behind a post image", metadata: { b64: clean.jpeg.toString("base64"), mime: "image/jpeg", w: clean.w, h: clean.h } } })
+  return row.id
+}
+export const IMAGE_SOURCE = "image_source"
 
 /** An AI-made background scene. Null without a key, on refusal or timeout. */
 export async function aiScene(input: { topic: string; businessType: string | null; city: string | null; size: ImageSize | "wide" }): Promise<Buffer | null> {
@@ -64,7 +73,7 @@ export async function aiScene(input: { topic: string; businessType: string | nul
 Strict rules: no people, no faces, no hands, no bodies. No text, letters, numbers or signs. No logos, brand names, trademarks or product packaging from real brands. No watermarks. Not a famous landmark or a real business.`
   try {
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-    const res = await client.images.generate({ model: MODEL, prompt, size: input.size === "portrait" ? "1024x1536" : input.size === "wide" ? "1536x1024" : "1024x1024", quality: "low", output_format: "jpeg", output_compression: 80, n: 1 }, { timeout: 90_000 })
+    const res = await client.images.generate({ model: MODEL, prompt, size: input.size === "portrait" || input.size === "story" ? "1024x1536" : input.size === "wide" || input.size === "link" ? "1536x1024" : "1024x1024", quality: "low", output_format: "jpeg", output_compression: 80, n: 1 }, { timeout: 90_000 })
     const b64 = res.data?.[0]?.b64_json
     return b64 ? Buffer.from(b64, "base64") : null
   } catch (err) {
@@ -107,12 +116,18 @@ export async function postImageFor(userId: string, input: For): Promise<PostImag
       await refreshPhotos(userId).catch(() => null)
       const p = await nextPhoto(userId, input.topic)
       const img = p ? await renderPhotoCard({ photo: p.bytes, headline, businessName: user?.businessName ?? null, brand, size }) : null
-      if (img) return { ...(await storePostImage(userId, img, headline, "photo_card")), kind: "photo" }
+      if (img) {
+        const sourceId = await keepSource(userId, p!.bytes)
+        return { ...(await storePostImage(userId, img, headline, "photo_card", { format: size, ...(sourceId ? { recipe: { v: 1, src: "photo", headline, sourceId } } : {}) })), kind: "photo" }
+      }
     }
     if (s.style === "ai") {
       const scene = await aiScene({ topic: input.topic, businessType: user?.businessType ?? null, city: user?.city ?? null, size })
       const img = scene ? await renderPhotoCard({ photo: scene, headline, businessName: user?.businessName ?? null, brand, size }) : null
-      if (img) return { ...(await storePostImage(userId, img, `AI-made picture: ${headline}`, "ai_scene")), kind: "ai" }
+      if (img) {
+        const sourceId = await keepSource(userId, scene!)
+        return { ...(await storePostImage(userId, img, `AI-made picture: ${headline}`, "ai_scene", { format: size, ...(sourceId ? { recipe: { v: 1, src: "photo", headline, sourceId } } : {}) })), kind: "ai" }
+      }
     }
   } catch (err) {
     console.error("[post-images]", s.style, err instanceof Error ? err.message : err)

@@ -8,7 +8,7 @@ import { DsCard } from "@/components/dashboard/DsCard"
 // post carries (all platforms, or one platform) and the disclaimer each channel ends with.
 // Saved via /api/agent/guardrails; enforced in code by every writer (lib/guardrails.ts).
 type Platform = "facebook" | "instagram" | "linkedin" | "tiktok" | "x"
-type Channel = "social" | "blog" | "email" | "ads"
+type Channel = "social" | "blog" | "email" | "ads" | "reviews"
 type Rules = { banned: string[]; hashtags: string[]; platformHashtags: Partial<Record<Platform, string[]>>; disclaimers: Partial<Record<Channel, string>>; alwaysSay: string[] }
 
 const PLATFORM_NAME: Record<Platform, string> = { facebook: "Facebook", instagram: "Instagram", linkedin: "LinkedIn", tiktok: "TikTok", x: "X" }
@@ -17,6 +17,7 @@ const CHANNEL: { key: Channel; label: string; hint: string }[] = [
   { key: "blog", label: "Blog posts and website pages", hint: "Added as the last line of the page." },
   { key: "email", label: "Customer emails", hint: "Added as the last paragraph." },
   { key: "ads", label: "Ads", hint: "Added where it fits the ad’s length. If it doesn’t fit, I tell you instead of running it cut." },
+  { key: "reviews", label: "Replies to Google reviews", hint: "Leave it empty and my replies carry no disclaimer. Set one and every reply ends with it." },
 ]
 
 const input: React.CSSProperties = { width: "100%", background: "var(--ds-surface)", border: "1px solid var(--ds-border)", borderRadius: 8, padding: "9px 12px", fontSize: 13, color: "var(--ds-text)", outline: "none", resize: "vertical" }
@@ -90,7 +91,7 @@ export function BrandRulesCard() {
           </div>
           {more && (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10 }}>
-              {(Object.keys(PLATFORM_NAME) as Platform[]).map((p) => (
+              {(Object.keys(PLATFORM_NAME) as Platform[]).filter((p) => p !== "tiktok" || !!f.tags_tiktok).map((p) => (
                 <div key={p}>
                   <label style={label} htmlFor={`br-t-${p}`}>{PLATFORM_NAME[p]} only</label>
                   <input id={`br-t-${p}`} style={input} value={f[`tags_${p}`] ?? ""} onChange={(e) => set(`tags_${p}`, e.target.value)} placeholder="#tag" />

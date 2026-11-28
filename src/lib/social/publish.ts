@@ -9,6 +9,8 @@ import { linkedin } from "./providers/linkedin"
 import { tiktok } from "./providers/tiktok"
 import { x } from "./providers/x"
 import { finishSocial, getGuardrails } from "@/lib/guardrails"
+import { variantFor } from "@/lib/image-variants"
+import { formatForPlatform } from "@/lib/image-formats"
 import { PLATFORM_NAME, type Provider, type PostResult, type SocialPlatform, type SocialPost } from "./types"
 
 export const providerFor = (p: SocialPlatform): Provider => (p === "facebook" || p === "instagram" ? meta : p === "linkedin" ? linkedin : p === "tiktok" ? tiktok : x)
@@ -50,7 +52,11 @@ export async function publishPost(userId: string, postId: string): Promise<Socia
     if (!acc) { results.push({ accountId: id, platform: "facebook", ok: false, error: "That account was disconnected." }); continue }
     try {
       const text = rules ? finishSocial(input.text, rules, acc.platform).text : input.text
-      const r = await providerFor(acc.platform).publish(acc, { ...input, text }, (patch) => patchAccount(userId, acc.id, patch))
+      // The picture in this platform's size (Instagram/Facebook feed 4:5, LinkedIn 1200×675…).
+      // No recipe (Canva, older posts) or a failed draw = the post's own picture, as before.
+      const v = post.imageId && bytes ? await variantFor(userId, post.imageId, formatForPlatform(acc.platform)).catch(() => null) : null
+      const pic = v ? { imageUrl: imageUrl(v.id), imageBytes: v.bytes } : {}
+      const r = await providerFor(acc.platform).publish(acc, { ...input, ...pic, text }, (patch) => patchAccount(userId, acc.id, patch))
       results.push({ accountId: id, platform: acc.platform, ok: true, url: r.url, externalId: r.externalId })
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)

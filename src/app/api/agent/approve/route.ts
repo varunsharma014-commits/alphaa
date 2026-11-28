@@ -7,6 +7,7 @@ import { z } from "zod"
 import { currentUser } from "@/lib/connector/user"
 import { approve, draftReviewReply, savedReviewDraft } from "@/lib/approvals"
 import { readApproveToken } from "@/lib/approve-token"
+import { GuardrailError } from "@/lib/guardrails"
 
 // One-tap approvals from the briefing. Signed in: any of the owner's items.
 // From the email: a signed token that names exactly one item (no login).
@@ -42,9 +43,11 @@ export async function POST(req: Request) {
       return text ? NextResponse.json({ text }) : NextResponse.json({ error: "I couldn’t write it just now. Try again in a minute." }, { status: 502 })
     }
     const r = await approve(userId, input.kind, input.id, input.text)
+    if (!r.ok && r.banned) return NextResponse.json({ error: r.error, banned: r.banned, confirmBanned: true }, { status: 409 })
     return r.ok ? NextResponse.json({ ok: true, url: r.url ?? null }) : NextResponse.json({ error: r.error, ...(r.quota ? { quota: true, buy: true } : {}) }, { status: r.quota ? 429 : 400 })
   } catch (err) {
     if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
+    if (err instanceof GuardrailError) return NextResponse.json({ error: err.message, guardrail: true }, { status: 409 })
     console.error("[approve]", err)
     return NextResponse.json({ error: "Something went wrong. Nothing was published." }, { status: 500 })
   }

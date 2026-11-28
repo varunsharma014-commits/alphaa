@@ -8,6 +8,7 @@ import { consentCurrent } from "@/lib/auto-approve-text"
 import { getPost, savePost } from "@/lib/social/store"
 import { approveSitePost } from "@/lib/approvals"
 import { scheduleSitePost, STOP_WINDOW_MS } from "./site-posts"
+import { ownerBannedHit } from "@/lib/owner-edit-check"
 
 /** The gbp-posts cron publishes due posts Mon/Tue/Thu/Fri at 13:00 UTC (lib/cron-scheduler.ts). */
 export function nextGbpRun(after: Date): Date {
@@ -20,7 +21,7 @@ export function nextGbpRun(after: Date): Date {
   return new Date(after.getTime() + 86_400_000)
 }
 
-export async function scheduleMade(userId: string, kind: "social" | "gbp" | "site", id: string, window: boolean): Promise<{ ok: true; at: string | null; url?: string | null } | { ok: false; error: string; quota?: boolean }> {
+export async function scheduleMade(userId: string, kind: "social" | "gbp" | "site", id: string, window: boolean): Promise<{ ok: true; at: string | null; url?: string | null } | { ok: false; error: string; quota?: boolean; banned?: string }> {
   const s = await getAgentSettings(userId)
   if (window && !(s.autoApprove && consentCurrent(s))) return { ok: false, error: "Autopilot is off, so this waits for your OK. Use Schedule instead." }
   const base = window ? new Date(Date.now() + STOP_WINDOW_MS) : new Date(Date.now() + 5 * 60_000)
@@ -28,6 +29,9 @@ export async function scheduleMade(userId: string, kind: "social" | "gbp" | "sit
     const p = await getPost(userId, id)
     if (!p) return { ok: false, error: "That post isn’t here any more." }
     if (!p.accountIds.length) return { ok: false, error: "Connect a social account first, then I can post it." }
+    // The owner's own edits: their banned words are flagged before it's scheduled (they can confirm).
+    const hit = await ownerBannedHit(userId, [p.text, p.title])
+    if (hit) return { ok: false, error: hit.message, banned: hit.word }
     // A planned day (the week run sets one) is kept when it's later than the earliest allowed time.
     const planned = p.scheduledFor && Date.parse(p.scheduledFor) > base.getTime() ? p.scheduledFor : null
     p.status = "scheduled"
@@ -44,6 +48,8 @@ export async function scheduleMade(userId: string, kind: "social" | "gbp" | "sit
     const g = await db.gbpPost.findFirst({ where: { id, userId } })
     if (!g) return { ok: false, error: "That update isn’t here any more." }
     if (/\[[^\]]{2,}\]/.test(g.content)) return { ok: false, error: "It still has [bracketed] facts only you know. Fill them in first." }
+    const hit = await ownerBannedHit(userId, [g.content])
+    if (hit) return { ok: false, error: hit.message, banned: hit.word }
     const at = nextGbpRun(base)
     await db.gbpPost.update({ where: { id: g.id }, data: { status: "scheduled", scheduledFor: at } })
     // The owner's tap is their OK for this one (the content calendar won't ask again when it moves).
@@ -55,5 +61,5 @@ export async function scheduleMade(userId: string, kind: "social" | "gbp" | "sit
     return r.ok ? { ok: true, at: r.at } : r
   }
   const r = await approveSitePost(userId, id)
-  return r.ok ? { ok: true, at: null, url: r.url ?? null } : { ok: false, error: r.error, quota: r.quota }
+  return r.ok ? { ok: true, at: null, url: r.url ?? null } : { ok: false, error: r.error, quota: r.quota, banned: r.banned }
 }

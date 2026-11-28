@@ -5,6 +5,7 @@ import assert from "node:assert/strict"
 import {
   bannedIn, cutTo, enforce, finishBlog, finishEmail, finishGoogle, finishGoogleAd, finishMetaAd, finishSocial, guardrailPrompt,
   guardrailPromptHere, GuardrailError, isEmpty, missingAlways, normalizeGuardrails, normalizeTag, runWithRules, SOCIAL_LIMIT, type Guardrails,
+  finishReview, disclaimerFor, REVIEW_REPLY_LIMIT, bannedInEdit, bannedEditMessage,
 } from "../src/lib/guardrails"
 import { copyProblem } from "../src/lib/gads/rules"
 import { checkAds } from "../src/lib/metaads/rules"
@@ -176,6 +177,51 @@ async function main() {
     assert.equal(checkAds(ads, "").length, 2)
     const kept = await runWithRules(G({ banned: ["affordable"] }), "ads", async () => checkAds(ads, ""))
     assert.deepEqual(kept.map((a) => a.primaryText), ["Same-day repairs"])
+  })
+
+  // ── Review replies (draftReviewReply runs enforce(…, "reviews", …) with finishReview) ──────
+  const reviewWriter = (drafts: string[]) => { let i = 0; const seen: string[] = []; return { seen, write: async () => { seen.push(guardrailPromptHere()); return drafts[Math.min(i++, drafts.length - 1)] } } }
+  await test("reviews: the rules reach the reply prompt; a banned word = one rewrite with a note", async () => {
+    const w = reviewWriter(["Thanks, we're the cheapest in town!", "Thanks so much for the kind words, Sam."])
+    const out = await enforce("u1", "reviews", w.write, { rules: G({ banned: ["cheapest"] }), texts: (t) => [t], finish: (t, g) => finishReview(t, g).text })
+    assert.equal(out, "Thanks so much for the kind words, Sam.")
+    assert.equal(w.seen.length, 2)
+    assert.match(w.seen[0], /Never use these words[\s\S]*"cheapest"/)
+    assert.match(w.seen[1], /Your last draft used "cheapest"/)
+  })
+  await test("reviews: banned twice → GuardrailError (the caller saves nothing and says why)", async () => {
+    const w = reviewWriter(["Cheapest around!", "Still the cheapest!"])
+    await assert.rejects(enforce("u1", "reviews", w.write, { rules: G({ banned: ["cheapest"] }), texts: (t) => [t] }), (e: unknown) => e instanceof GuardrailError && /cheapest/.test((e as Error).message) && /didn’t save/.test((e as Error).message))
+  })
+  await test("reviews: an always-say item missing = one rewrite asking for it", async () => {
+    const w = reviewWriter(["Thanks for visiting!", "Thanks for visiting! Family-owned since 1998."])
+    const out = await enforce("u1", "reviews", w.write, { rules: G({ alwaysSay: ["Family-owned since 1998"] }), texts: (t) => [t] })
+    assert.match(out, /Family-owned since 1998/)
+    assert.match(w.seen[1], /left out: "Family-owned since 1998"/)
+  })
+  await test("reviews: a disclaimer only when the owner set one for reviews", () => {
+    const reply = "Thank you for the review."
+    assert.equal(finishReview(reply, G({ disclaimers: { social: "Ads disclaimer.", blog: "Blog note.", email: "Email note." } })).text, reply)
+    assert.equal(finishReview(reply, G({ disclaimers: { reviews: "Replies are from the owner." } })).text, `${reply}\n\nReplies are from the owner.`)
+    assert.equal(finishReview(`${reply}\n\nReplies are from the owner.`, G({ disclaimers: { reviews: "Replies are from the owner." } })).text, `${reply}\n\nReplies are from the owner.`)
+    assert.equal(disclaimerFor(G({ disclaimers: { social: "S" } }), "reviews"), null)
+    const long = finishReview("x ".repeat(2100), G({ disclaimers: { reviews: "Owner reply." } }))
+    assert.ok(long.text.length <= REVIEW_REPLY_LIMIT && long.text.endsWith("Owner reply."))
+    assert.deepEqual(normalizeGuardrails({ disclaimers: { reviews: "  From the owner.  " } }).disclaimers, { reviews: "From the owner." })
+  })
+  await test("reviews: no reviews rule = no prompt line about a disclaimer", () => {
+    assert.doesNotMatch(guardrailPrompt(G({ disclaimers: { social: "S" } }), "reviews"), /disclaimer/)
+    assert.match(guardrailPrompt(G({ disclaimers: { reviews: "R" } }), "reviews"), /disclaimer afterwards/)
+  })
+
+  // ── The owner's own edits, checked again at approve/publish time ──────────────────────────
+  await test("owner edits: a banned word in edited text is found (any text field), else null", () => {
+    const g = G({ banned: ["cheap", "world class"] })
+    assert.equal(bannedInEdit(["My title", "We are World  Class plumbers"], g), "world class")
+    assert.equal(bannedInEdit([null, "Cheap repairs", undefined], g), "cheap")
+    assert.equal(bannedInEdit(["Cheaper is not the word"], g), null)
+    assert.equal(bannedInEdit(["anything"], null), null)
+    assert.match(bannedEditMessage("cheap"), /“cheap”.*never use/)
   })
 
   console.log(`\n${passed} passed`)

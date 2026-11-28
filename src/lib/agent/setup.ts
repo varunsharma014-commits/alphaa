@@ -83,8 +83,8 @@ async function steps(user: User, s: AgentSettings): Promise<Step[]> {
       key: "social",
       name: "Connect your social accounts",
       why: anyApp
-        ? "Facebook, Instagram, LinkedIn or TikTok. Then I post for you on the days that work best."
-        : "Posting straight to Facebook, Instagram, LinkedIn and TikTok opens as the platforms approve us. Until then I write each post and you copy it with one tap.",
+        ? "Facebook, Instagram or LinkedIn. Then I post for you on the days that work best."
+        : "Posting straight to Facebook, Instagram and LinkedIn opens as the platforms approve us. Until then I write each post and you copy it with one tap.",
       ok: accounts.some((a) => a.status === "active"),
       soon: !anyApp,
       chips: [{ label: "Connect", primary: true, action: { type: "thread", topic: "social" } }],

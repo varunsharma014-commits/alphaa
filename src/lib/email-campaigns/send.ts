@@ -11,6 +11,7 @@ import { render, type Sender } from "./render"
 import { realEmail } from "@/lib/sites"
 import { campaignUnsubLinks } from "@/lib/unsubscribe"
 import { once } from "@/lib/draft-dedupe"
+import { ownerBannedHit } from "@/lib/owner-edit-check"
 import { logActivity } from "@/lib/activity"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { fingerprint, getCampaign, getContacts, lastSentAt, nextAllowedSend, optedOutSet, updateCampaign, type Campaign } from "./store"
@@ -60,11 +61,14 @@ export async function sendBlocker(userId: string): Promise<string | null> {
 }
 
 /** Starts (or resumes) sending in the background. Returns how many it will go to. */
-export async function startSend(userId: string, id: string): Promise<{ ok: true; count: number } | { ok: false; error: string; quota?: boolean }> {
+export async function startSend(userId: string, id: string): Promise<{ ok: true; count: number } | { ok: false; error: string; quota?: boolean; banned?: string }> {
   const row = await getCampaign(userId, id)
   if (!row) return { ok: false, error: "I can’t find that email any more." }
   if (row.c.status === "sent") return { ok: false, error: "That one already went out." }
   if (row.c.status !== "sending") {
+    // The owner's own edits: their banned words are flagged before it goes out (they can confirm).
+    const hit = await ownerBannedHit(userId, [row.c.subject, row.c.preview, ...row.c.paragraphs, row.c.cta?.label])
+    if (hit) return { ok: false, error: hit.message, banned: hit.word }
     const block = await sendBlocker(userId)
     if (block) return { ok: false, error: block === "address" ? "I need your business mailing address first. The law requires it on every marketing email." : block }
     const [contacts, out] = await Promise.all([getContacts(userId), optedOutSet(userId)])

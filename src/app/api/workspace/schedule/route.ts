@@ -14,5 +14,6 @@ export async function POST(req: Request) {
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
   const r = await scheduleMade(user.id, input.kind, input.id, input.window)
+  if (!r.ok && r.banned) return NextResponse.json({ error: r.error, banned: r.banned, confirmBanned: true }, { status: 409 })
   return r.ok ? NextResponse.json(r) : NextResponse.json({ error: r.error, ...(r.quota ? { quota: true, buy: true } : {}) }, { status: r.quota ? 429 : 409 })
 }

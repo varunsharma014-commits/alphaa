@@ -19,6 +19,7 @@ import { AGENT_EVENT, AI_NOTE, ASK_EVENT, ISLAND_EVENT, TOAST_EVENT, WS_EVENT, t
 import type { ShellData } from "@/lib/workspace/shell"
 import { Check, Icon, SendArrow, type IconName } from "./icons"
 import { CreditsSheet } from "./CreditsSheet"
+import { BannedWordConfirm } from "./BannedWordConfirm"
 
 const WORKSPACES = ["/dashboard", "/dashboard/research", "/dashboard/social", "/dashboard/social/calendar", "/dashboard/email", "/dashboard/ads", "/dashboard/tracking", "/dashboard/citations"]
 
@@ -274,6 +275,7 @@ export function WorkspaceShell({ data, theme: initialTheme, admin, children, sho
         {toastText && <div className="ax-toast" role="status"><Check />{toastText}</div>}
         <AutoApproveModal pro={data.planPro} growth={data.pro} />
         <CreditsSheet />
+        <BannedWordConfirm />
       </div>
     </div>
   )

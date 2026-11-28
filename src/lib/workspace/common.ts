@@ -93,7 +93,7 @@ export function channelOf(type: string): string {
   if (/social/.test(type)) return "Social"
   if (/email/.test(type)) return "Email"
   if (/ads/.test(type)) return "Ads"
-  if (/(post_draft|draft_written|site_change|site_check|handoff)/.test(type)) return "Website"
+  if (/(post_draft|draft_written|site_change|site_check|site_links|handoff)/.test(type)) return "Website"
   if (/(question_scan|visibility_scan|citation_scan|win)/.test(type)) return "AI answers"
   if (/(competitors|content_gaps|insights)/.test(type)) return "Research"
   return "Work"

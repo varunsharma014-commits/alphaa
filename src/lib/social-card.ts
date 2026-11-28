@@ -11,6 +11,7 @@ import { safeFetch } from "@/lib/safe-fetch"
 import { imageUrl } from "@/lib/images"
 import { luminance, type BrandKit } from "@/lib/brand-kit"
 import { orbShapes } from "@/lib/brand-orb"
+import { DESIGN_PX, OUT_PX, safeZone, type ImageFormat } from "@/lib/image-formats"
 
 const S = 1080
 const PAD = 84
@@ -118,15 +119,24 @@ export async function renderSocialCard(userId: string, input: CardInput): Promis
   ])
   const saved = ((st?.metadata as { images?: { cardStyle?: string } } | null)?.images?.cardStyle ?? null) as CardStyle | null
   const house = input.house ?? isHouse(u?.websiteUrl)
+  const style = input.style ?? (saved && CARD_STYLES.includes(saved) ? saved : undefined)
+  const format = input.format ?? "square"
   // JPEG: Instagram and TikTok only take JPEG for photo posts.
-  const img = await renderCardJpeg({ ...input, style: input.style ?? (saved && CARD_STYLES.includes(saved) ? saved : undefined), house })
+  const img = await renderCardJpeg({ ...input, style, house }, format)
   if (!img) return null
   const headline = input.headline.trim().replace(/\s+/g, " ").slice(0, 80)
-  const row = await db.mockActivity.create({ data: { userId, type: "post_image", title: `Made an image for “${headline}”`, metadata: { b64: img.toString("base64"), mime: "image/jpeg", alt: headline, kind: "social_card" } } })
+  // The recipe lets lib/image-variants.ts draw the same card in the size each platform wants.
+  const recipe: CardRecipe = { v: 1, src: "card", headline, subline: input.subline ?? null, style: style ?? null, house }
+  const row = await db.mockActivity.create({ data: { userId, type: "post_image", title: `Made an image for “${headline}”`, metadata: { b64: img.toString("base64"), mime: "image/jpeg", alt: headline, kind: "social_card", format, recipe } } })
   return { id: row.id, url: imageUrl(row.id) }
 }
 
+/** How a text card was drawn (stored on its post_image row), so any size can be drawn again. */
+export type CardRecipe = { v: 1; src: "card"; headline: string; subline: string | null; style: CardStyle | null; house: boolean }
+
 export type CardInput = {
+  /** The size to draw (lib/image-formats.ts). Default square. */
+  format?: ImageFormat
   headline: string
   businessName: string | null
   brand: (Pick<BrandKit, "logo" | "primary"> & Partial<Pick<BrandKit, "logos">>) | null | undefined
@@ -137,18 +147,18 @@ export type CardInput = {
   house?: boolean
 }
 
-/** The card as a JPEG (what social platforms accept). */
-export async function renderCardJpeg(input: CardInput): Promise<Buffer | null> {
-  const svg = await cardSvg(input)
+/** The card as a JPEG (what social platforms accept), in any size (default square). */
+export async function renderCardJpeg(input: CardInput, format: ImageFormat = input.format ?? "square"): Promise<Buffer | null> {
+  const svg = await cardSvg(input, format)
   if (!svg) return null
-  const r = new Resvg(svg, { fitTo: { mode: "width", value: S }, background: "#ffffff" }).render()
+  const r = new Resvg(svg, { fitTo: { mode: "width", value: OUT_PX[format].w }, background: "#ffffff" }).render()
   return Buffer.from(jpeg.encode({ data: Buffer.from(r.pixels), width: r.width, height: r.height }, 90).data)
 }
 
 /** The card as a PNG, without saving it (the public first-week preview stores it itself). */
-export async function renderCardPng(input: CardInput): Promise<Buffer | null> {
-  const svg = await cardSvg(input)
-  return svg ? Buffer.from(new Resvg(svg, { fitTo: { mode: "width", value: S } }).render().asPng()) : null
+export async function renderCardPng(input: CardInput, format: ImageFormat = input.format ?? "square"): Promise<Buffer | null> {
+  const svg = await cardSvg(input, format)
+  return svg ? Buffer.from(new Resvg(svg, { fitTo: { mode: "width", value: OUT_PX[format].w } }).render().asPng()) : null
 }
 
 const hex = (c: string) => (/^#[0-9a-f]{6}$/i.test(c) ? c : /^#[0-9a-f]{3}$/i.test(c) ? `#${c.slice(1).split("").map((x) => x + x).join("")}` : "#111111")
@@ -179,7 +189,7 @@ function palette(style: CardStyle, brandColor: string | null): Palette {
  * as the largest element (centred in the space above the footer, left-aligned for reading), an
  * optional subline, and a footer row (logo or name) under a hairline.
  */
-async function cardSvg(input: CardInput): Promise<string | null> {
+async function cardSvg(input: CardInput, format: ImageFormat = "square"): Promise<string | null> {
   const f = await loadFonts()
   const headline = input.headline.trim().replace(/\s+/g, " ").slice(0, 80)
   const subline = (input.subline ?? "").trim().replace(/\s+/g, " ").slice(0, 90)
@@ -188,12 +198,20 @@ async function cardSvg(input: CardInput): Promise<string | null> {
   const style: CardStyle = input.style ?? (input.brand?.primary ? "gradient" : "editorial")
   const tone = input.house ? houseTone(headline) : null
   const P: Palette = tone ? { bg: tone.bg, ink: "#111114", sub: "#3a3a40", accent: tone.accent, rule: "#dcdce2", tile: "light" } : palette(style, input.brand?.primary ?? null)
+  // Every size shares the layout; 9:16 keeps text out of the top 250px / bottom 340px (platform UI).
+  const { w: W, h: H } = DESIGN_PX[format]
+  const safe = safeZone(format)
+  const sc = Math.sqrt((W * H) / (S * S)) // decoration scale (1 for the square)
   const M = 96
-  const maxW = S - M * 2
+  const fullW = W - M * 2
+  // A wide canvas keeps the headline to a readable measure; the rest is calm space.
+  const maxW = W > H ? Math.min(fullW, 1320) : fullW
   const footerH = 150
+  const footerTop = H - safe.bottom - footerH
+  const maxLines = H > W ? 4 : 3
 
   let size = 156, lines = wrap(f.bold, headline, size, maxW)
-  while ((lines.length > 3 || lines.some((l) => width(f.bold, l, size, -0.035) > maxW)) && size > 72) {
+  while ((lines.length > maxLines || lines.some((l) => width(f.bold, l, size, -0.035) > maxW)) && size > 72) {
     size -= 4
     lines = wrap(f.bold, headline, size, maxW)
   }
@@ -203,25 +221,26 @@ async function cardSvg(input: CardInput): Promise<string | null> {
   const subLh = subSize * 1.3
   const ruleGap = 48
   const block = 10 + ruleGap + lines.length * lh + (subLines.length ? 34 + subLines.length * subLh : 0)
-  // Optical centre: a touch above the true middle of the space over the footer.
-  const blockTop = Math.max(M, (S - footerH - block) / 2 - 18)
+  // Optical centre: a touch above the true middle of the space between the top (safe zone) and the footer.
+  const top = safe.top + M
+  const blockTop = Math.max(top, safe.top + (footerTop - safe.top - block) / 2 - 18)
 
   const parts: string[] = []
   if (tone) {
     // The site's pastel block: the tone's tint with soft blobs in three corners (like the final CTA).
     const blob = (id: string, c: string) => `<radialGradient id="${id}"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`
     parts.push(`<defs>${blob("b1", tone.soft)}${blob("b2", tone.n1)}${blob("b3", tone.n2)}</defs>`)
-    parts.push(`<rect width="${S}" height="${S}" fill="${P.bg}"/>`)
-    parts.push(`<circle cx="${S}" cy="0" r="560" fill="url(#b1)"/><circle cx="0" cy="${S}" r="480" fill="url(#b2)"/><circle cx="${S}" cy="${S}" r="420" fill="url(#b3)"/>`)
+    parts.push(`<rect width="${W}" height="${H}" fill="${P.bg}"/>`)
+    parts.push(`<circle cx="${W}" cy="0" r="${560 * sc}" fill="url(#b1)"/><circle cx="0" cy="${H}" r="${480 * sc}" fill="url(#b2)"/><circle cx="${W}" cy="${H}" r="${420 * sc}" fill="url(#b3)"/>`)
   } else if (P.bg2) {
     parts.push(`<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${P.bg}"/><stop offset="1" stop-color="${P.bg2}"/></linearGradient></defs>`)
-    parts.push(`<rect width="${S}" height="${S}" fill="url(#g)"/>`)
+    parts.push(`<rect width="${W}" height="${H}" fill="url(#g)"/>`)
     // Soft shape art: one large circle, low contrast, top-right.
-    parts.push(`<circle cx="${S - 120}" cy="160" r="360" fill="#FFFFFF" opacity="0.06"/>`)
+    parts.push(`<circle cx="${W - 120 * sc}" cy="${160 * sc}" r="${360 * sc}" fill="#FFFFFF" opacity="0.06"/>`)
   } else {
-    parts.push(`<rect width="${S}" height="${S}" fill="${P.bg}"/>`)
-    if (style === "warm") parts.push(`<circle cx="${S - 60}" cy="${S - 260}" r="300" fill="${P.accent}" opacity="0.08"/>`)
-    if (style === "editorial") parts.push(`<rect x="0" y="0" width="${S}" height="12" fill="${P.accent}"/>`)
+    parts.push(`<rect width="${W}" height="${H}" fill="${P.bg}"/>`)
+    if (style === "warm") parts.push(`<circle cx="${W - 60 * sc}" cy="${footerTop - 110 * sc}" r="${300 * sc}" fill="${P.accent}" opacity="0.08"/>`)
+    if (style === "editorial") parts.push(`<rect x="0" y="0" width="${W}" height="12" fill="${P.accent}"/>`)
   }
   parts.push(`<rect x="${M}" y="${blockTop}" width="88" height="10" rx="5" fill="${P.accent}"/>`)
   let y = blockTop + 10 + ruleGap + size * 0.8
@@ -232,7 +251,7 @@ async function cardSvg(input: CardInput): Promise<string | null> {
   }
 
   // Footer: hairline, then the logo (on a tile that suits it) or the business name.
-  parts.push(`<rect x="${M}" y="${S - footerH}" width="${maxW}" height="2" fill="${P.rule}"/>`)
+  parts.push(`<rect x="${M}" y="${footerTop}" width="${fullW}" height="2" fill="${P.rule}"/>`)
   // The owner's logo version for this background (dark card → onDark, light → onLight) needs no
   // tile; the default logo gets a tile when it would vanish. No full logo: the icon + the name.
   const darkBg = luminance(hex(P.bg)) < 0.4
@@ -240,7 +259,7 @@ async function cardSvg(input: CardInput): Promise<string | null> {
   const variant = variantUrl ? await logoData(variantUrl) : null
   const logo = tone ? null : variant ?? await logoData(input.brand?.logo ?? null)
   const icon = !tone && !logo && input.brand?.logos?.icon ? await logoData(input.brand.logos.icon) : null
-  const fy = S - footerH / 2 + 2
+  const fy = footerTop + footerH / 2 + 2
   if (tone) {
     // Alphaa's mark: the orb + the "alphaa" wordmark, as on the site header.
     parts.push(orbShapes(M + 26, fy, 26))
@@ -260,7 +279,7 @@ async function cardSvg(input: CardInput): Promise<string | null> {
   } else if (name && covered(f.bold, name)) {
     parts.push(pathFor(f.bold, name, M, fy + 13, 36, P.ink, -0.01))
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">${parts.join("")}</svg>`
+  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${parts.join("")}</svg>`
 }
 
 // Shared with the photo and AI-scene images (lib/photo-render.ts): same font, same logo tile.

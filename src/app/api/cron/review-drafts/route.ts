@@ -9,6 +9,9 @@ import { approveReviewReply, draftReviewReply, REVIEW_DRAFT } from "@/lib/approv
 import { getAgentSettings } from "@/lib/agent/settings"
 import { asUser } from "@/lib/usage"
 import { containsPlaceholders } from "@/lib/gbp-poster"
+import { GuardrailError } from "@/lib/guardrails"
+
+const REVIEW_BLOCKED = "review_blocked"
 
 // Overnight: write a reply for every new Google review that doesn't have one,
 // so the briefing shows the finished reply and approving it is one tap.
@@ -35,7 +38,8 @@ export async function GET(req: NextRequest) {
   // Review replies are Pro and up since 2026-11-26 (Starter is AI search only).
   const owners = await db.user.findMany({ where: { id: { in: [...new Set(reviews.map((r) => r.userId))] } }, select: { id: true, plan: true, email: true } })
   const proIds = new Set(owners.filter(hasPro).map((u) => u.id))
-  const drafted = await db.mockActivity.findMany({ where: { type: REVIEW_DRAFT, userId: { in: [...new Set(reviews.map((r) => r.userId))] } }, select: { metadata: true } })
+  // A review whose reply couldn't follow the brand rules (review_blocked) isn't retried every night.
+  const drafted = await db.mockActivity.findMany({ where: { type: { in: [REVIEW_DRAFT, REVIEW_BLOCKED] }, userId: { in: [...new Set(reviews.map((r) => r.userId))] } }, select: { metadata: true } })
   const have = new Set(drafted.map((d) => (d.metadata as { reviewId?: string } | null)?.reviewId).filter(Boolean))
 
   const perUser = new Map<string, number>()
@@ -60,6 +64,10 @@ export async function GET(req: NextRequest) {
         }
       }
     } catch (err) {
+      // Brand rules: written twice with a banned word = nothing saved; the owner sees why in the ledger.
+      if (err instanceof GuardrailError) {
+        await db.mockActivity.create({ data: { userId: r.userId, type: REVIEW_BLOCKED, title: `I didn’t write a reply to a ${r.rating}-star review: it kept needing “${err.word}”, which is on your list of words I never use. Reply to it yourself, or change the rule.`, metadata: { reviewId: r.id, word: err.word } } }).catch(() => null)
+      }
       errors.push(`${r.id}: ${err instanceof Error ? err.message : err}`)
     }
   }

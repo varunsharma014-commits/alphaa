@@ -70,6 +70,12 @@ async function robotsFor(origin: string): Promise<RobotsGroup[] | "all" | "none"
   return groups
 }
 
+/** The site's robots groups, or null when it has none we can read (4xx, unreachable). */
+export async function robotsRules(origin: string): Promise<RobotsGroup[] | null> {
+  const g = await robotsFor(origin)
+  return Array.isArray(g) ? g : null
+}
+
 export async function mayRead(url: string): Promise<boolean> {
   let u: URL
   try { u = new URL(url) } catch { return false }

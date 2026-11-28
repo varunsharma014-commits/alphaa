@@ -2,6 +2,7 @@
 import { load } from "cheerio"
 import { safeFetch } from "@/lib/safe-fetch"
 import { checkLinks, classify, stateText, type LinkCheck } from "@/lib/seo/links"
+import { robotsAllows, robotsRules } from "@/lib/page-reader"
 
 type CheerioRoot = ReturnType<typeof load>
 // Use the element type that works with both old @types/cheerio and new cheerio
@@ -598,6 +599,10 @@ export type CrawlOptions = {
   checkLinks?: boolean
   /** Time budget for the extra link checks, ms (default 20s). */
   linkBudgetMs?: number
+  /** Unattended runs (the weekly site check): skip pages robots.txt closes to AlphaaBot (or *). */
+  respectRobots?: boolean
+  /** Pause between page fetches, ms (default 0). The weekly check waits a little between pages. */
+  pageGapMs?: number
 }
 
 export async function crawlWebsite(url: string, maxPages = 40, opts: CrawlOptions = {}): Promise<CrawlOutput> {
@@ -628,11 +633,25 @@ export async function crawlWebsite(url: string, maxPages = 40, opts: CrawlOption
 
   seenDedupeKeys.add(dedupeKey(seedUrl))
 
+  // robots.txt (unattended runs only). Unreadable robots = no rules for the owner's own site.
+  const rules = opts.respectRobots ? await robotsRules(baseOrigin).catch(() => null) : null
+  const allowed = (u: string) => {
+    if (!rules) return true
+    try {
+      const x = new URL(u)
+      return x.origin !== baseOrigin || robotsAllows(rules, `${x.pathname}${x.search}`)
+    } catch {
+      return true
+    }
+  }
+
   while (queue.length > 0 && pages.length < maxPages) {
     const currentUrl = queue.shift()!
 
     if (visited.has(currentUrl)) continue
     visited.add(currentUrl)
+    if (!allowed(currentUrl)) continue
+    if (opts.pageGapMs && pages.length > 0) await new Promise((r) => setTimeout(r, opts.pageGapMs))
 
     const { html, check } = await fetchPage(currentUrl)
     fetched.set(dedupeKey(currentUrl), check)
@@ -674,7 +693,7 @@ export async function crawlWebsite(url: string, maxPages = 40, opts: CrawlOption
   if (opts.checkLinks) {
     const deadline = Date.now() + (opts.linkBudgetMs ?? 20_000)
     // Internal links the crawl didn't reach (page limit): a quick check, our own host first.
-    const unvisited = [...internalFrom.entries()].filter(([k]) => !fetched.has(k)).slice(0, 40).map(([, v]) => v.target)
+    const unvisited = [...internalFrom.entries()].filter(([k, v]) => !fetched.has(k) && allowed(v.target)).slice(0, 40).map(([, v]) => v.target)
     const outbound = [...outboundFrom.keys()].slice(0, 80)
     const [extra, out] = await Promise.all([
       checkLinks(unvisited, { concurrency: 1, perHost: 40, gapMs: 150, deadline }),

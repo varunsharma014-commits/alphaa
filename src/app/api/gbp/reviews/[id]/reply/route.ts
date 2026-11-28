@@ -3,6 +3,7 @@ import { hasPro } from "@/lib/billing"
 import { NextRequest, NextResponse } from "next/server"
 import { currentUser } from "@/lib/connector/user"
 import { approveReviewReply, draftReviewReply, savedReviewDraft } from "@/lib/approvals"
+import { GuardrailError } from "@/lib/guardrails"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -29,12 +30,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       const text = typeof body.text === "string" ? body.text.trim() : ""
       if (!text) return NextResponse.json({ error: "Reply text is required" }, { status: 400 })
       const r = await approveReviewReply(user.id, id, text)
+      if (!r.ok && r.banned) return NextResponse.json({ error: r.error, banned: r.banned, confirmBanned: true }, { status: 409 })
       if (!r.ok) return NextResponse.json({ error: r.error }, { status: 400 })
       return NextResponse.json({ success: true, reply: text })
     }
     return NextResponse.json({ error: 'Invalid action — expected "generate" or "post"' }, { status: 400 })
   } catch (err) {
     if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))
+    if (err instanceof GuardrailError) return NextResponse.json({ error: err.message, guardrail: true }, { status: 409 })
     console.error("[GBP] review reply error:", err)
     return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 })
   }

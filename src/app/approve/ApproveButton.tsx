@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { BannedWordConfirm } from "@/components/workspace/BannedWordConfirm"
 
 export function ApproveButton({ token, kind, id }: { token: string; kind: string; id: string }) {
   const [state, setState] = useState<"idle" | "busy" | "done">("idle")
@@ -29,6 +30,7 @@ export function ApproveButton({ token, kind, id }: { token: string; kind: string
     )
   return (
     <>
+      <BannedWordConfirm />
       <button onClick={go} disabled={state === "busy"} className="w-full rounded-full bg-black text-white py-3.5 text-base font-semibold disabled:opacity-60">
         {state === "busy" ? "I’m publishing it…" : "Approve & publish"}
       </button>

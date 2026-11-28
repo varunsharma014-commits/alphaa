@@ -23,7 +23,7 @@ export const STARTER_FEATURES = [
 
 export const PRO_FEATURES = [
   "Everything in Starter",
-  "3 branded social posts a week for Facebook, Instagram, LinkedIn and TikTok, ready to publish in one tap",
+  "3 branded social posts a week for Facebook, Instagram and LinkedIn, ready to publish in one tap",
   "4 Google Business Profile posts a week",
   "Replies to your Google reviews, in your voice",
   "Emails that bring past customers back",

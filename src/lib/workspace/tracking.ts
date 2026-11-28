@@ -120,7 +120,7 @@ export async function getTrackingData(user: User, opts: { wait?: boolean } = {})
       sum: accounts.length ? accounts.map((a) => `${PLATFORM_NAME[a.platform]}: ${a.name}${bad.includes(a) ? " (login expired)" : ""}`).join(" · ") : "None connected. I write your posts, but I can’t post them yet.",
       act: bad.length ? { label: `Reconnect ${PLATFORM_NAME[bad[0].platform]}`, href: `/api/social/connect/${provider(bad[0].platform)}` } : accounts.length ? undefined : { label: "Connect", topic: "social" },
       verified: !bad.length && lastPosted ? { verb: "Last posted", at: lastPosted } : null,
-      detail: "Facebook, Instagram, LinkedIn and TikTok accounts I post to. I read each account’s login state before every post.",
+      detail: "Facebook, Instagram and LinkedIn accounts I post to. I read each account’s login state before every post.",
     })
   }
   if (growth) {

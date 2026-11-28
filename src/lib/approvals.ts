@@ -12,11 +12,13 @@ import { pushChange } from "@/lib/connector/push"
 import { voiceFor } from "@/lib/voice"
 import { hasPro } from "@/lib/billing"
 import { markPublished, textToPublish } from "@/lib/draft-versions"
+import { enforce, finishReview } from "@/lib/guardrails"
+import { ownerBannedHit } from "@/lib/owner-edit-check"
 
 const anthropic = claudeFor("approvals")
 
 export type ApprovalKind = "review" | "gbp" | "post"
-export type ApprovalResult = { ok: true; url?: string | null } | { ok: false; error: string; /** Out of a plan quota: the dashboard offers "Buy more". */ quota?: boolean }
+export type ApprovalResult = { ok: true; url?: string | null } | { ok: false; error: string; /** Out of a plan quota: the dashboard offers "Buy more". */ quota?: boolean; /** The owner's text uses one of their banned words: they confirm, then it's sent again (lib/owner-edit-check.ts). */ banned?: string }
 
 /** Review replies are written ahead of time (overnight) and kept here until approved. */
 export const REVIEW_DRAFT = "review_draft"
@@ -41,13 +43,28 @@ export function draftReviewReply(...args: Parameters<typeof draftReviewReplyUnme
   return withQuota(args[0], "content_piece:review", () => draftReviewReplyUnmetered(...args))
 }
 
-/** Write (and keep) a reply to a Google review. Nothing is posted. */
+/**
+ * Write (and keep) a reply to a Google review. Nothing is posted. The brand rules apply like every
+ * other writer (lib/guardrails.ts enforce): a banned word or a missing "always say" item = written
+ * once more; a banned word again = GuardrailError and nothing is saved. The reviews disclaimer is
+ * added only when the owner set one for reviews.
+ */
 async function draftReviewReplyUnmetered(userId: string, reviewId: string): Promise<string | null> {
   const [user, review] = await Promise.all([
     db.user.findUnique({ where: { id: userId }, select: { businessName: true, businessType: true } }),
     db.gmbReview.findUnique({ where: { id: reviewId }, select: { userId: true, authorName: true, rating: true, comment: true } }),
   ])
   if (!user || !review || review.userId !== userId) return null
+  const text = await enforce(userId, "reviews", () => writeReviewReply(userId, user, review), { texts: (t) => [t ?? ""], finish: (t, g) => (t ? finishReview(t, g).text : t) })
+  if (!text) return null
+  await db.mockActivity.create({
+    data: { userId, type: REVIEW_DRAFT, title: `Wrote a reply to ${review.authorName}’s review`, metadata: { reviewId, text } },
+  })
+  return text
+}
+
+/** One model call: the reply text (voice + brand rules reach the prompt through voiceFor). */
+async function writeReviewReply(userId: string, user: { businessName: string | null; businessType: string | null }, review: { authorName: string; rating: number; comment: string | null }): Promise<string | null> {
   const voice = await voiceFor(userId).catch(() => null)
   const businessName = user.businessName ?? "our business"
   const prompt = `You are a professional, warm business owner responding to a Google review for ${businessName} (${user.businessType ?? "business"}).
@@ -63,11 +80,7 @@ Write a professional, genuine, and warm reply from the business owner.
 Keep it 2-4 sentences. Sound human, not robotic. Do not use markdown. Return only the reply text.${voice ? `\n\n${voice}\nReply in the same language the review is written in if it differs.` : ""}`
   const message = await anthropic.messages.create({ model: "claude-sonnet-4-6", max_tokens: 512, messages: [{ role: "user", content: prompt }] })
   const text = message.content[0]?.type === "text" ? message.content[0].text.trim() : ""
-  if (!text) return null
-  await db.mockActivity.create({
-    data: { userId, type: REVIEW_DRAFT, title: `Wrote a reply to ${review.authorName}’s review`, metadata: { reviewId, text } },
-  })
-  return text
+  return text || null
 }
 
 /** Post the owner-approved reply to Google, then save it on the review. */
@@ -79,6 +92,9 @@ export async function approveReviewReply(userId: string, reviewId: string, rawTe
   const text = (rawText ?? (await savedReviewDraft(userId, reviewId)) ?? "").trim()
   if (!text) return { ok: false, error: "There’s no reply to post yet." }
   if (text.length > 4000) return { ok: false, error: "Google allows replies up to 4,000 characters." }
+  // The owner's own edit is checked against their banned words (they can confirm and send it anyway).
+  const hit = await ownerBannedHit(userId, [text])
+  if (hit) return { ok: false, error: hit.message, banned: hit.word }
   const integration = await db.integration.findUnique({ where: { userId } })
   if (!integration?.gmbAccountId || !integration.gmbLocationId) return { ok: false, error: "Your Google listing isn’t connected." }
   const result = await postReviewReply(integration, review.reviewId, text)
@@ -96,6 +112,8 @@ export async function approveGbpPost(userId: string, postId: string, text?: stri
   if (!(await onPro(userId))) return { ok: false, error: PRO_ONLY }
   const content = text?.trim() || post.content
   if (containsPlaceholders(content)) return { ok: false, error: "It still has a [placeholder] in it. Tap Edit and fill it in first." }
+  const hit = await ownerBannedHit(userId, [content])
+  if (hit) return { ok: false, error: hit.message, banned: hit.word }
   const integration = await db.integration.findUnique({ where: { userId } })
   if (!integration?.gmbAccountId || !integration.gmbLocationId) return { ok: false, error: "Your Google listing isn’t connected." }
   if (content !== post.content) await db.gbpPost.update({ where: { id: post.id }, data: { content } })
@@ -134,6 +152,10 @@ export async function approveSitePost(userId: string, draftId: string, text?: st
   const by = m.status === "scheduled" ? "agent" : "owner"
   const pub = await textToPublish(userId, draftId, text, by)
   if (!pub.ok) return { ok: false, error: pub.error }
+  if (by === "owner") {
+    const hit = await ownerBannedHit(userId, [pub.title, pub.markdown])
+    if (hit) return { ok: false, error: hit.message, banned: hit.word }
+  }
   const res = await pushChange(user, { op: "post", title: pub.title, text: pub.markdown, draftId })
   const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string }
   if (!res.ok || !data.url) return { ok: false, error: data.error ?? "Your site didn’t accept it. Nothing changed.", ...(res.status === 429 ? { quota: true } : {}) }
@@ -163,6 +185,7 @@ export async function approvalPreview(userId: string, kind: ApprovalKind, id: st
     return p && p.userId === userId ? { title: "An update for your Google listing", text: p.content, done: p.status === "posted" } : null
   }
   const d = await db.mockActivity.findFirst({ where: { id, userId, type: "post_draft" } })
-  const m = (d?.metadata ?? {}) as { title?: string; markdown?: string; status?: string }
-  return d ? { title: `A new post for your website: “${m.title ?? "New post"}”`, text: m.markdown ?? "", done: m.status === "published" } : null
+  const m = (d?.metadata ?? {}) as { title?: string; markdown?: string; status?: string; refresh?: { kind?: string } }
+  const title = m.refresh?.kind === "links" ? `The broken links fixed on “${m.title ?? "your page"}”` : m.refresh ? `An update to your page “${m.title ?? "your page"}”` : `A new post for your website: “${m.title ?? "New post"}”`
+  return d ? { title, text: m.markdown ?? "", done: m.status === "published" } : null
 }

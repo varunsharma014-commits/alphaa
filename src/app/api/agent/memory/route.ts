@@ -16,7 +16,7 @@ type Health = { label: string; ok: boolean | null; fix?: { topic: string } | { h
 // briefing now (lib/agent/hero.ts).
 
 // Ledger rows that are bookkeeping, not work an owner would recognise.
-const NOISE = ["sandbox_query", "agent_settings", "question_scan_started", "ai_visit", "email_sent", "keywords_synced", "post_revision", "gsc_pages"]
+const NOISE = ["sandbox_query", "agent_settings", "question_scan_started", "ai_visit", "email_sent", "keywords_synced", "post_revision", "gsc_pages", "image_source"]
 
 
 export async function GET() {

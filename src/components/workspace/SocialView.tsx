@@ -5,10 +5,11 @@ import type { SocialData, SocialCard } from "@/lib/workspace/social"
 import { AI_NOTE, askAlphaa, ISLAND_EVENT, toast } from "@/lib/workspace/events"
 import { Empty, PlanGate, Tabs, When } from "./ui"
 import { ViewSwitch } from "./CalendarView"
+import { SizePreview } from "./SizePreview"
 
 // Social Studio: ready for your OK (autopilot off) / going out soon (with Stop) / posted (with the
-// stats the platform shares). Preview opens a drawer with the post and style swatches that
-// re-draw its picture in one click and remember the choice.
+// stats the platform shares). Preview opens a drawer with the post in each place it goes (size
+// switcher, SizePreview) and style swatches that re-draw its picture in one click and remember the choice.
 
 const STYLES = [
   { key: "minimal", name: "Minimal light", swatch: "linear-gradient(135deg,#FAFAF7,#E6E4DE)" },
@@ -35,7 +36,7 @@ export function SocialView({ data }: { data: SocialData | null }) {
     return (
       <>
         <h1 className="ax-h1">Social Studio</h1>
-        <p className="ax-sub">I write, design and post to Facebook, Instagram, LinkedIn and TikTok in your voice, with your brand on every image.</p>
+        <p className="ax-sub">I write, design and post to Facebook, Instagram and LinkedIn in your voice, with your brand on every image.</p>
         <div style={{ marginTop: 26 }}><PlanGate plan="Pro" title="Social media comes with the Pro plan" text="Pro adds branded posts for your social accounts, posted as each platform allows." /></div>
       </>
     )
@@ -165,7 +166,7 @@ export function SocialView({ data }: { data: SocialData | null }) {
                 <button className="ax-x" type="button" aria-label="Close" onClick={() => setPreview(null)}>✕</button>
               </header>
               <div className="bd">
-                {image && <img src={image} alt="" />}
+                {image ? <SizePreview postId={p.id} text={p.text} image={image} nets={p.nets} brandName={data.brandName} version={image} /> : null}
                 {editable && image && (
                   <div>
                     <div className="ax-eb" style={{ marginBottom: 8 }}>Picture style</div>

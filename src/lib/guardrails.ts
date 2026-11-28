@@ -12,9 +12,13 @@ import { AsyncLocalStorage } from "node:async_hooks"
 import type { SocialPlatform } from "@/lib/social/types"
 import { registerOwnerBanned } from "@/lib/gads/rules"
 
-export type DisclaimerChannel = "social" | "blog" | "email" | "ads"
-/** What's being written. Google listing posts follow the social disclaimer but get no hashtags. */
+export type DisclaimerChannel = "social" | "blog" | "email" | "ads" | "reviews"
+/**
+ * What's being written. Google listing posts follow the social disclaimer but get no hashtags.
+ * Review replies (`reviews`) get a disclaimer only when the owner set one for reviews.
+ */
 export type Channel = DisclaimerChannel | "google"
+export const DISCLAIMER_CHANNELS: DisclaimerChannel[] = ["social", "blog", "email", "ads", "reviews"]
 
 export type Guardrails = {
   banned: string[]
@@ -37,6 +41,8 @@ export const SOCIAL_DEFAULT_LIMIT = 2200
 export const GOOGLE_POST_LIMIT = 1500
 export const META_PRIMARY_MAX = 300
 export const GOOGLE_DESCRIPTION_MAX = 90
+/** Google review replies (the API allows 4,096; approveReviewReply keeps a margin). */
+export const REVIEW_REPLY_LIMIT = 4000
 
 export class GuardrailError extends Error {
   constructor(public word: string) {
@@ -67,7 +73,7 @@ export function normalizeGuardrails(raw: Partial<Record<keyof Guardrails, unknow
   const platformHashtags: Guardrails["platformHashtags"] = {}
   for (const p of PLATFORMS) { const l = tagList(ph[p]); if (l.length) platformHashtags[p] = l }
   const disclaimers: Guardrails["disclaimers"] = {}
-  for (const c of ["social", "blog", "email", "ads"] as const) { const d = String(dis[c] ?? "").replace(/\s+/g, " ").trim().slice(0, 600); if (d) disclaimers[c] = d }
+  for (const c of DISCLAIMER_CHANNELS) { const d = String(dis[c] ?? "").replace(/\s+/g, " ").trim().slice(0, 600); if (d) disclaimers[c] = d }
   return {
     banned: splitList(r.banned as string | string[]),
     hashtags: tagList(r.hashtags as string | string[]),
@@ -171,6 +177,17 @@ export function finishBlog(markdown: string, g: Guardrails | null | undefined): 
   const d = disclaimerFor(g, "blog")
   const body = markdown.trimEnd()
   return d && !has(body, d) ? `${body}\n\n*${d}*` : body
+}
+
+/** A review reply with the reviews disclaimer (only if the owner set one for reviews), inside Google's limit. */
+export function finishReview(text: string, g: Guardrails | null | undefined): Finished {
+  const body = text.trim()
+  const d = disclaimerFor(g, "reviews")
+  if (!d || has(body, d)) return { text: body, flags: [] }
+  const full = `${body}\n\n${d}`
+  if (full.length <= REVIEW_REPLY_LIMIT) return { text: full, flags: [] }
+  const room = REVIEW_REPLY_LIMIT - d.length - 2
+  return room >= 200 ? { text: `${cutTo(body, room)}\n\n${d}`, flags: ["shortened"] } : { text: cutTo(body, REVIEW_REPLY_LIMIT), flags: ["disclaimer"] }
 }
 
 /** An email's paragraphs with the email disclaimer as the last one. */
@@ -281,3 +298,10 @@ export async function enforce<T>(userId: string | null | undefined, channel: Cha
   }
   return o.finish ? o.finish(out, g) : out
 }
+
+// ── The owner's own edits (checked again when they approve or publish) ───────
+/** The first banned word in text the owner is about to publish, or null. */
+export function bannedInEdit(texts: (string | null | undefined)[], g: Guardrails | null | undefined): string | null {
+  return g?.banned.length ? bannedIn(texts.filter(Boolean).join("\n"), g.banned) : null
+}
+export const bannedEditMessage = (word: string) => `This uses “${word}”, which is on your list of words I never use. Change it, or confirm and I’ll send it as it is.`

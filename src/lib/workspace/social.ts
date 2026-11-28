@@ -28,6 +28,8 @@ export type SocialCard = {
   error: string | null
 }
 export type SocialData = {
+  /** For the preview frames (the name shown over each post). */
+  brandName: string
   accounts: { id: string; name: string; platform: string; ok: boolean; fix: string | null; reconnect: string | null }[]
   /** Upcoming posts were fewer than 3, so I started planning the week (lib/agent/week.ts). */
   drafting: boolean
@@ -97,6 +99,7 @@ export async function getSocialData(user: User): Promise<SocialData> {
         : accounts.length ? "Watching what works · I plan your next posts every few days" : "Connect an account and I’ll start posting"
   const provider = (a: (typeof accounts)[number]) => a.platform === "facebook" || a.platform === "instagram" ? "meta" : a.platform === "linkedin" ? (a.extra?.org || /organization/i.test(a.extra?.author ?? "") ? "linkedin_pages" : "linkedin") : a.platform
   return {
+    brandName: user.businessName?.trim() || "",
     drafting,
     island,
     accounts: accounts.map((a) => {

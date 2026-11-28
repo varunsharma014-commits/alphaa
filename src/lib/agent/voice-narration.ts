@@ -59,7 +59,7 @@ export function guardrailsMessages(g: { banned: string[]; hashtags: string[]; pl
     g.alwaysSay.length ? `Always say: ${g.alwaysSay.slice(0, 4).map((w) => `“${w}”`).join(", ")}` : null,
     g.hashtags.length ? `Hashtags on every social post: ${g.hashtags.join(" ")}` : null,
     ...Object.entries(g.platformHashtags).filter(([, t]) => t?.length).map(([p, t]) => `${p === "x" ? "X" : p[0].toUpperCase() + p.slice(1)} only: ${t!.join(" ")}`),
-    ...Object.entries(g.disclaimers).filter(([, d]) => d).map(([c, d]) => `Disclaimer on ${c === "social" ? "social posts and Google updates" : c === "blog" ? "blog posts" : c === "email" ? "emails" : "ads"}: “${d!.length > 80 ? `${d!.slice(0, 80)}…` : d}”`),
+    ...Object.entries(g.disclaimers).filter(([, d]) => d).map(([c, d]) => `Disclaimer on ${c === "social" ? "social posts and Google updates" : c === "blog" ? "blog posts" : c === "email" ? "emails" : c === "reviews" ? "review replies" : "ads"}: “${d!.length > 80 ? `${d!.slice(0, 80)}…` : d}”`),
   ].filter((x): x is string => !!x) : []
   return [agent([
     { kind: "text", text: "Your brand rules" },

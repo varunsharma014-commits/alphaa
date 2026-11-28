@@ -10,6 +10,7 @@ import { deletePost, getPost, removeAccount, savePost } from "@/lib/social/store
 import { publishPost } from "@/lib/social/publish"
 import { socialThread as thread } from "@/lib/social/thread"
 import { agent } from "@/lib/agent/types"
+import { bannedBody, ownerBannedHit } from "@/lib/owner-edit-check"
 
 const body = z.object({ op: z.enum(["approve", "post_now", "unschedule", "delete", "disconnect"]), id: z.string().min(5).max(40) })
 
@@ -33,6 +34,11 @@ export async function POST(req: Request) {
   } else {
     const p = await getPost(user.id, input.id)
     if (!p) return NextResponse.json({ error: "That post isn’t here any more." }, { status: 404 })
+    // The owner's own edits: their banned words are flagged before it goes out (they can confirm).
+    if (input.op === "post_now" || input.op === "approve") {
+      const hit = await ownerBannedHit(user.id, [p.text, p.title])
+      if (hit) return NextResponse.json(...bannedBody(hit))
+    }
     if (input.op === "post_now") {
       if (!p.accountIds.length) return NextResponse.json({ error: "Connect an account first, then I can post it." }, { status: 409 })
       let r: Awaited<ReturnType<typeof publishPost>>

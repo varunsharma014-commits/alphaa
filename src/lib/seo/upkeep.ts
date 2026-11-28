@@ -55,7 +55,7 @@ export async function getUpkeep(user: U): Promise<Upkeep> {
     if (!m?.refresh?.url) continue
     const k = `${m.refresh.kind}|${key(m.refresh.url)}`
     if (draftFor.has(k)) continue
-    if (m.status === "undone" || (m.status === "published" && Date.now() - d.createdAt.getTime() > 14 * 86_400_000)) continue
+    if (m.status === "undone" || m.status === "superseded" || (m.status === "published" && Date.now() - d.createdAt.getTime() > 14 * 86_400_000)) continue
     draftFor.set(k, { id: d.id, status: m.status, kind: m.refresh.kind, changeId: m.changeId, url: m.url })
   }
   const connected = !!(s.wp || s.site)

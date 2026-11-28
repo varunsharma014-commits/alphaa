@@ -14,7 +14,7 @@ const body = z.object({
   banned: list,
   hashtags: list,
   platformHashtags: z.object(Object.fromEntries(PLATFORMS.map((p) => [p, list])) as Record<(typeof PLATFORMS)[number], typeof list>).partial().optional(),
-  disclaimers: z.object({ social: z.string().max(600), blog: z.string().max(600), email: z.string().max(600), ads: z.string().max(600) }).partial().optional(),
+  disclaimers: z.object({ social: z.string().max(600), blog: z.string().max(600), email: z.string().max(600), ads: z.string().max(600), reviews: z.string().max(600) }).partial().optional(),
   alwaysSay: list,
 })
 

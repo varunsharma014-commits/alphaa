@@ -6,6 +6,7 @@ import { db } from "@/lib/db"
 import { postToGmb, containsPlaceholders } from "@/lib/gbp-poster"
 import { logActivity } from "@/lib/activity"
 import { resolveAccessToken } from "@/lib/gmb"
+import { bannedBody, ownerBannedHit } from "@/lib/owner-edit-check"
 
 export const dynamic = "force-dynamic"
 
@@ -50,6 +51,10 @@ export async function POST(
         { status: 400 }
       )
     }
+
+    // The owner's own edits: banned words are flagged before it goes out (they can confirm).
+    const hit = await ownerBannedHit(user.id, [post.content])
+    if (hit) return NextResponse.json(...bannedBody(hit))
 
     const integration = user.integration
     if (!integration || !integration.gmbAccountId || !integration.gmbLocationId) {

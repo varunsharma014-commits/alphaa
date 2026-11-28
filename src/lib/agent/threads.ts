@@ -38,7 +38,7 @@ export type Topic = "reviews" | "site" | "listings" | "answers" | "content" | "c
 export const TOPICS: { key: Topic; label: string; blurb: string }[] = [
   { key: "setup", label: "Finish setting up", blurb: "The few things I need from you, one at a time" },
   { key: "channels", label: "Your marketing channels", blurb: "Everything I work on, what’s connected and what to connect next" },
-  { key: "social", label: "Social accounts & posts", blurb: "Connect Facebook, Instagram, LinkedIn and TikTok; see what’s scheduled and what went out" },
+  { key: "social", label: "Social accounts & posts", blurb: "Connect Facebook, Instagram and LinkedIn; see what’s scheduled and what went out" },
   { key: "insights", label: "What’s working", blurb: "What’s working and what isn’t, from your real numbers, and what to create next" },
   { key: "niche", label: "What’s working in your niche", blurb: "The posts and ads getting attention from businesses like yours this week, and your own version in one tap" },
   { key: "work", label: "What I’ve done", blurb: "Every step I took for you, day by day" },

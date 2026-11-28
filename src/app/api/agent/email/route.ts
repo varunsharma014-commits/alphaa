@@ -133,6 +133,7 @@ export async function POST(req: Request) {
     case "send": {
       if (!input.id) return err("Which email?")
       const r = await startSend(user.id, input.id)
+      if (!r.ok && r.banned) return NextResponse.json({ error: r.error, banned: r.banned, confirmBanned: true }, { status: 409 })
       if (!r.ok) return r.quota ? NextResponse.json({ error: r.error, quota: true, buy: true }, { status: 429 }) : err(r.error)
       return reply(`Sending to ${r.count.toLocaleString("en-US")} customer${r.count === 1 ? "" : "s"} now. It takes a minute or two for a big list.`, [agent([{ kind: "text", text: "On its way." }], `em-draft-${input.id}`)])
     }

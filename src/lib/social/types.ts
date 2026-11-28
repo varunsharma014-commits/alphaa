@@ -9,9 +9,13 @@ export const PLATFORM_NAME: Record<SocialPlatform, string> = { facebook: "Facebo
 export const PROVIDER_NAME: Record<ConnectProvider, string> = { meta: "Facebook & Instagram", linkedin: "LinkedIn profile", linkedin_pages: "LinkedIn company page", tiktok: "TikTok", x: "X" }
 // X is off for now (Varun, 2026-11-18: its API is paid per call). The provider code stays; add "x" back here to offer it.
 // LinkedIn company Pages need their own app: LinkedIn requires the Community Management API to be the only product on it.
-export const PROVIDERS: ConnectProvider[] = ["meta", "linkedin", "linkedin_pages", "tiktok"]
+// TikTok is off for now (owner decision 2026-11-28): hidden everywhere and "not configured" unless
+// TIKTOK_ENABLED=1. The provider code stays so it can come back.
+export const tiktokEnabled = () => process.env.TIKTOK_ENABLED === "1"
+export const PROVIDERS: ConnectProvider[] = ["meta", "linkedin", "linkedin_pages", ...(tiktokEnabled() ? (["tiktok"] as const) : [])]
 
 export function providerConfigured(p: ConnectProvider): boolean {
+  if (p === "tiktok" && !tiktokEnabled()) return false
   if (p === "meta") return !!(process.env.META_APP_ID && process.env.META_APP_SECRET)
   if (p === "linkedin") return !!(process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET)
   if (p === "linkedin_pages") return !!(process.env.LINKEDIN_PAGES_CLIENT_ID && process.env.LINKEDIN_PAGES_CLIENT_SECRET)

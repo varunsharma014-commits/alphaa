@@ -6,9 +6,11 @@ import { Resvg } from "@resvg/resvg-js"
 import jpeg from "jpeg-js"
 import { loadFonts, pathFor, wrap, textWidth, covered, logoData } from "@/lib/social-card"
 import type { BrandKit } from "@/lib/brand-kit"
+import { OUT_PX, safeZone, type ImageFormat } from "@/lib/image-formats"
 
-export type ImageSize = "square" | "portrait"
-export const SIZE_PX: Record<ImageSize, { w: number; h: number }> = { square: { w: 1080, h: 1080 }, portrait: { w: 1080, h: 1350 } }
+/** The social sizes (lib/image-formats.ts): square, portrait 4:5, story 9:16, wide 16:9, link 1200×675. */
+export type ImageSize = ImageFormat
+export const SIZE_PX: Record<ImageSize, { w: number; h: number }> = OUT_PX
 
 export type ImageInfo = { type: "jpeg" | "png" | "webp" | "other"; w: number; h: number; orientation: number }
 
@@ -123,22 +125,28 @@ export type OverlayInput = {
 export async function renderPhotoCard(input: OverlayInput): Promise<Buffer | null> {
   const f = await loadFonts()
   const { w: W, h: H } = input.dims ?? SIZE_PX[input.size ?? "square"]
-  const PAD = 80
+  // 9:16: the headline stays above the bottom 340px and the logo below the top 250px (platform UI).
+  const safe = input.dims ? { top: 0, bottom: 0 } : safeZone(input.size ?? "square")
   const headline = input.headline.trim().replace(/\s+/g, " ").slice(0, 80)
   const name = (input.businessName ?? "").trim().slice(0, 40)
   if (!headline || !covered(f.bold, headline)) return null
 
-  // A wide cover (1200×630) has less height: smaller type, at most 3 lines.
+  // A wide picture (1200×630 cover, 1200×675 link image, 1920×1080) has less height: smaller type
+  // for its width, at most 3 lines. k scales every measure to the canvas (1 at 1080 / 1200 wide).
   const wide = H < W * 0.7
+  const k = wide ? W / 1200 : W / 1080
+  const PAD = Math.round(80 * k)
   const maxLines = wide ? 3 : 4
-  let size = wide ? 76 : 112, lines = wrap(f.bold, headline, size, W - PAD * 2)
-  while ((lines.length > maxLines || lines.some((l) => textWidth(f.bold, l, size, -0.03) > W - PAD * 2)) && size > (wide ? 44 : 60)) {
+  let size = Math.round((wide ? 76 : 112) * k), lines = wrap(f.bold, headline, size, W - PAD * 2)
+  while ((lines.length > maxLines || lines.some((l) => textWidth(f.bold, l, size, -0.03) > W - PAD * 2)) && size > (wide ? 44 : 60) * k) {
     size -= 6
     lines = wrap(f.bold, headline, size, W - PAD * 2)
   }
   const lh = size * 1.08
   // Headline sits at the bottom, over the darkest part of the gradient.
-  const lastBase = H - PAD - 8
+  // (In a safe zone the descenders of g/p/y must stay out of it too.)
+  const lastBase = H - Math.max(PAD, safe.bottom) - (safe.bottom ? size * 0.3 : 8 * k)
+  const topY = Math.max(PAD, safe.top + 24)
   const firstBase = lastBase - (lines.length - 1) * lh
   const accent = input.brand?.primary ?? "#FFFFFF"
   const parts: string[] = [
@@ -147,19 +155,19 @@ export async function renderPhotoCard(input: OverlayInput): Promise<Buffer | nul
     `<rect width="${W}" height="${H}" fill="#222"/>`,
     `<image width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,${input.photo.toString("base64")}"/>`,
     `<rect y="${Math.round(H * 0.32)}" width="${W}" height="${Math.round(H * 0.68)}" fill="url(#g)"/>`,
-    `<rect width="${W}" height="220" fill="url(#t)"/>`,
-    `<rect x="${PAD}" y="${firstBase - size - 40}" width="72" height="10" rx="5" fill="${accent}"/>`,
+    `<rect width="${W}" height="${Math.round(topY + 140 * k)}" fill="url(#t)"/>`,
+    `<rect x="${PAD}" y="${firstBase - size - 40 * k}" width="${72 * k}" height="${10 * k}" rx="${5 * k}" fill="${accent}"/>`,
   ]
   lines.forEach((l, i) => parts.push(pathFor(f.bold, l, PAD, firstBase + i * lh, size, "#FFFFFF")))
 
   // Logo top-left on its tile; else the business name.
   const logo = await logoData(input.brand?.logo ?? null)
   if (logo) {
-    const h = 72, w = Math.min(320, (logo.w / logo.h) * h)
-    parts.push(`<rect x="${PAD - 20}" y="${PAD - 20}" width="${w + 40}" height="${h + 40}" rx="18" fill="${logo.light ? "#111111" : "#FFFFFF"}"/>`)
-    parts.push(`<image x="${PAD}" y="${PAD}" width="${w}" height="${h}" preserveAspectRatio="xMinYMid meet" href="${logo.uri}"/>`)
+    const h = 72 * k, w = Math.min(320 * k, (logo.w / logo.h) * h)
+    parts.push(`<rect x="${PAD - 20 * k}" y="${topY - 20 * k}" width="${w + 40 * k}" height="${h + 40 * k}" rx="${18 * k}" fill="${logo.light ? "#111111" : "#FFFFFF"}"/>`)
+    parts.push(`<image x="${PAD}" y="${topY}" width="${w}" height="${h}" preserveAspectRatio="xMinYMid meet" href="${logo.uri}"/>`)
   } else if (name && covered(f.bold, name)) {
-    parts.push(pathFor(f.bold, name, PAD, PAD + 36, 38, "#FFFFFF", -0.01))
+    parts.push(pathFor(f.bold, name, PAD, topY + 36 * k, 38 * k, "#FFFFFF", -0.01))
   }
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${parts.join("")}</svg>`
   try {
