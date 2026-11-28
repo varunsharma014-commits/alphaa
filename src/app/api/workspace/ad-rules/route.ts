@@ -9,6 +9,7 @@ import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { describeRule, MAX_RULES, PRESETS, validateRule, type AdRule } from "@/lib/ad-rules/engine"
 import { rulesView, runAdRules, undoRuleChange } from "@/lib/ad-rules/run"
 import { quotaBody, isQuotaError } from "@/lib/quotas"
+import { requireCan } from "@/lib/team/actor"
 
 // The owner's ad rules (Ads → Your rules): list + presets (GET), save / delete / switch on-off,
 // "Check now" (a dry run: decides, changes nothing) and Undo of a change a rule made.
@@ -33,6 +34,7 @@ export async function POST(req: Request) {
   if (!hasGrowth(user)) return NextResponse.json({ error: "Ad rules come with the Growth plan." }, { status: 403 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
+  { const denied = await requireCan(input.op === "check" ? "create" : "ads"); if (denied) return denied } // teams (lib/team)
   const s = await getAgentSettings(user.id)
   const rules: AdRule[] = s.adRules ?? []
   const view = async (said: string, extra: Record<string, unknown> = {}) => NextResponse.json({ said, ...(await rulesView(user)), presets: PRESETS, ...extra })

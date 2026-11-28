@@ -14,6 +14,7 @@ import { statsLine } from "@/lib/social/stats"
 import { linkedinAdsOn } from "@/lib/linkedin-ads/api"
 import { getLiAds, liAdsUsable, listPromos, pickLiAccount, promoteOnLinkedIn, setLiPromo } from "@/lib/linkedin-ads/ops"
 import { db } from "@/lib/db"
+import { requireCan } from "@/lib/team/actor"
 
 // Ads → Promote a post: the owner's best published posts (ranked by real stats where we have
 // them, else "recent"), and the paused-then-approve promotion flow on Meta (and LinkedIn once
@@ -67,6 +68,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("ads"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   if (!hasGrowth(user)) return NextResponse.json({ error: "Promoting posts comes with the Growth plan." }, { status: 403 })

@@ -8,6 +8,7 @@ import { hasGrowth } from "@/lib/billing"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { cleanEmail, createLink, listLinks, revokeLink, setMonthly } from "@/lib/ad-report/links"
 import { rangeFor, TTL_DAYS } from "@/lib/ad-report/token"
+import { requireCan } from "@/lib/team/actor"
 
 // Shareable ad report links (Ads → Share a report): list (GET), make one, turn one off, and the
 // monthly email switch. The only extra recipient is an address the owner types here.
@@ -30,6 +31,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  { const denied = await requireCan("ads"); if (denied) return denied } // teams (lib/team)
   const user = await currentUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   if (!hasGrowth(user)) return NextResponse.json({ error: "Ad reports come with the Growth plan." }, { status: 403 })

@@ -96,6 +96,8 @@ export const ROUTE_POLICY: Entry[] = [
   entry("POST", "/api/user/onboarding-from-scan", "settings"),
   entry("PATCH", "/api/user/onboarding-progress", "settings"),
   entry("POST", "/api/webhooks/*", "create"), // signature-verified, no session
+  entry("POST", "/api/workspace/ad-report", "ads"), // shareable ad report links + the monthly report email
+  entry("POST", "/api/workspace/ad-rules", "self"), // check (dry run) = create; save/delete/toggle/undo = ads
   entry("POST", "/api/workspace/approve-plan", "publish"),
   entry("POST", "/api/workspace/calendar", "self"), // move = publish; tz = settings
   entry("POST", "/api/workspace/competitor", "create"),
@@ -103,8 +105,10 @@ export const ROUTE_POLICY: Entry[] = [
   entry("POST", "/api/workspace/drafts/:id/revisions/:id", "create"), // restore a version (a draft edit)
   entry("POST", "/api/workspace/hold", "self"), // stop = review; undo = publish
   entry("POST", "/api/workspace/make", "create"),
+  entry("POST", "/api/workspace/promote", "ads"), // promote a post on Meta / LinkedIn (spends)
   entry("POST", "/api/workspace/refresh", "self"), // draft/links/get = create; publish/schedule = publish
   entry("POST", "/api/workspace/restyle", "create"),
+  entry("POST", "/api/workspace/roas", "self"), // won/unwon (sales data) = create; uploads = ads
   entry("POST", "/api/workspace/schedule", "self"), // publish, approve or submit by role
   entry("POST", "/api/workspace/site-post", "self"), // same
 ]

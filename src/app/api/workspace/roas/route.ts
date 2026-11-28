@@ -10,6 +10,7 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { listAdLeads, setWon } from "@/lib/roas/leads"
 import { forgetRoas } from "@/lib/roas/sources"
 import { setUploads, uploadWon } from "@/lib/roas/uploads"
+import { requireCan } from "@/lib/team/actor"
 
 const body = z.discriminatedUnion("op", [
   z.object({ op: z.literal("won"), ref: z.string().regex(/^[ms]:[a-z0-9]{10,40}$/i), amount: z.coerce.number().positive().max(10_000_000) }),
@@ -23,6 +24,7 @@ export async function POST(req: Request) {
   if (!hasGrowth(user)) return NextResponse.json({ error: "Ads come with the Growth plan." }, { status: 403 })
   let input: z.infer<typeof body>
   try { input = body.parse(await req.json()) } catch { return NextResponse.json({ error: "That doesn’t look right." }, { status: 400 }) }
+  { const denied = await requireCan(input.op === "uploads" ? "ads" : "create"); if (denied) return denied } // teams (lib/team)
 
   if (input.op === "uploads") {
     const r = await setUploads(user.id, { google: input.google, meta: input.meta })
