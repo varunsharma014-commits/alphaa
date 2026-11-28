@@ -103,6 +103,7 @@ export const ROUTE_POLICY: Entry[] = [
   entry("POST", "/api/workspace/competitor", "create"),
   entry("PUT", "/api/workspace/drafts/:id", "self"), // create; a non-publisher's edit takes it off the schedule
   entry("POST", "/api/workspace/drafts/:id/revisions/:id", "create"), // restore a version (a draft edit)
+  entry("PUT", "/api/workspace/drafts/:id/onpage", "create"), // the draft's summary (excerpt)
   entry("POST", "/api/workspace/hold", "self"), // stop = review; undo = publish
   entry("POST", "/api/workspace/make", "create"),
   entry("POST", "/api/workspace/promote", "ads"), // promote a post on Meta / LinkedIn (spends)
@@ -111,6 +112,7 @@ export const ROUTE_POLICY: Entry[] = [
   entry("POST", "/api/workspace/roas", "self"), // won/unwon (sales data) = create; uploads = ads
   entry("POST", "/api/workspace/schedule", "self"), // publish, approve or submit by role
   entry("POST", "/api/workspace/site-post", "self"), // same
+  entry("POST", "/api/workspace/vitals", "create"), // run the Core Web Vitals + structured data check
   entry("POST", "/api/workspace/sizes", "create"), // draws a post's picture in another size (preview)
 ]
 
