@@ -1,0 +1,15 @@
+/* On-page score card (OnPageCard.tsx); reuses the content score's dx-gr / dx-dot / dx-pill styles. */
+.dx-op { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--d-line); }
+.dx-op__terms { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.dx-op__t { font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--d-line); white-space: nowrap; }
+.dx-op__t--miss { background: var(--d-warnbg); color: var(--d-warn); border-color: transparent; font-weight: 600; }
+.dx-op__t--ok { color: var(--d-mut); }
+.dx-op__src { margin: 8px 0 0; font-size: 11.5px; color: var(--d-mut); overflow-wrap: anywhere; }
+.dx-op__src a { color: var(--d-blue); }
+.dx-op__note { display: block; margin: 6px 0 0; font-size: 12px; color: var(--d-mut); }
+.dx-op__sum { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.dx-op__sum label { font-size: 12.5px; font-weight: 600; display: flex; justify-content: space-between; gap: 8px; }
+.dx-op__sum label span { font-weight: 500; color: var(--d-mut); }
+.dx-op__sum label span.dx-op__warn { color: var(--d-warn); font-weight: 700; }
+.dx-op__sum textarea { width: 100%; resize: vertical; min-height: 64px; font: inherit; font-size: 13px; line-height: 1.45; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--d-line); background: var(--d-surf, #fff); color: var(--d-ink); }
+.dx-op__sum textarea:focus-visible { outline: 2px solid var(--d-blue); outline-offset: 1px; }

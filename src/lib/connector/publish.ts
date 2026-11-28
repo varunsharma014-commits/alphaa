@@ -13,6 +13,7 @@ import { webflow } from "@/lib/connector/webflow"
 import { shopify } from "@/lib/connector/shopify"
 import { wix } from "@/lib/connector/wix"
 import { forgetRevokedWebflow, REVOKED_MSG } from "@/lib/connector/connection"
+import { articleLd } from "@/lib/schema/build"
 
 /** A revoked Webflow token is deleted the moment Webflow refuses it (401), then the owner gets a plain message. */
 async function onSite<T>(userId: string, run: () => Promise<T>): Promise<T> {
@@ -69,9 +70,11 @@ async function publishUnmetered(userId: string, input: ContentInput, label: stri
   const html = mdToHtml(input.markdown, { siteUrl: s.wp?.siteUrl ?? s.site?.siteUrl ?? user?.websiteUrl })
   const faq = mdFaq(input.markdown)
   const jsonld: object[] = [...(input.jsonld ?? [])]
-  if (input.kind === "post") jsonld.unshift({ "@context": "https://schema.org", "@type": "BlogPosting", headline: input.title, datePublished: new Date().toISOString(), author: { "@type": "Organization", name: user?.businessName ?? undefined }, publisher: { "@type": "Organization", name: user?.businessName ?? undefined } })
-  if (faq.length) jsonld.push(faqLd(faq))
   const image = input.imageId ? { url: imageUrl(input.imageId), alt: await coverAlt(userId, input.imageId, input.title) } : undefined
+  // Article markup from real data (lib/schema/build.ts): headline, dates, the cover, the business as author/publisher.
+  // WordPress (plugin) and Wix (post SEO tags) carry it; Webflow/Shopify can't take page code through our scopes.
+  if (input.kind === "post") jsonld.unshift(articleLd({ headline: input.title, datePublished: new Date().toISOString(), image: image?.url, description: input.excerpt, businessName: user?.businessName ?? null, siteUrl: s.wp?.siteUrl ?? s.site?.siteUrl ?? user?.websiteUrl, logo: s.brand?.logo }))
+  if (faq.length) jsonld.push(faqLd(faq))
 
   let out: Published
   if (s.wp) {

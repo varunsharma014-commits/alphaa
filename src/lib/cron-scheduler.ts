@@ -83,6 +83,9 @@ export function startCron(): void {
     // Sun 09:00 UTC (+ catch-up until Monday 12:00, before the 13:00 briefing email) — weekly site
     // check: broken links, dead outbound links, redirect chains (fetch only, no AI; 5-day dedupe per brand).
     if ((dow === 0 && hour >= 9) || (dow === 1 && hour < 13)) hit("/api/cron/site-check")
+    // Thu 06:00 UTC (+ hourly catch-up through Friday) — Core Web Vitals + structured data per brand
+    // (PageSpeed Insights + own-site reads, no AI). Skips brands checked in the last 6 days.
+    if ((dow === 4 && hour >= 6) || dow === 5) hit("/api/cron/site-vitals")
     // Daily 10:00 UTC — blog post drafts on each plan's schedule (Anthropic)
     if (hour === 10) hit("/api/cron/content")
     // Daily 15:00 UTC — 90-day AI Visibility Guarantee credits (Stripe)

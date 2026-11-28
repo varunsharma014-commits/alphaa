@@ -124,10 +124,12 @@ export function ledgerText(type: string, title: string, meta: Record<string, unk
     case "email_complaint": return title
     case "site_links": return `Checked the links on your site: ${title.replace(/^Found /, "found ")}`
     case "review_blocked": return title
+    case "cwv_check": return "Checked how fast your site loads for real visitors"
+    case "schema_audit": return "Checked the structured data Google and AI read on your pages"
     default: return null
   }
 }
-export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "insights", "week_run", "social_published", "win", "guarantee_credit", "ads_change", "email_campaign_sent", "email_campaign_draft", "email_complaint", "site_links", "review_blocked"]
+export const LEDGER_TYPES = ["site_change", "review_reply", "gbp_post", "gbp_post_draft", REVIEW_DRAFT, "post_draft", "draft_written", "question_scan", "visibility_scan", "citation_scan", "site_check", "competitors", "content_gaps", "handoff_sent", "review_request", "voice_learned", "insights", "week_run", "social_published", "win", "guarantee_credit", "ads_change", "email_campaign_sent", "email_campaign_draft", "email_complaint", "site_links", "review_blocked", "cwv_check", "schema_audit"]
 
 // The weekly AI re-check runs Wednesdays 09:00 UTC (lib/cron-scheduler.ts).
 export function nextCheck(now = new Date()): string {

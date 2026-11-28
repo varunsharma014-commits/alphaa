@@ -13,6 +13,9 @@ import { TrackingView } from "@/components/workspace/TrackingView"
 import { CitationsView } from "@/components/workspace/CitationsView"
 import type { CitationsData } from "@/lib/workspace/citations"
 import { SiteUpkeep } from "@/components/workspace/SiteUpkeep"
+import { SiteVitals } from "@/components/workspace/SiteVitals"
+import { parsePsi } from "@/lib/seo/cwv"
+import { businessLd, websiteLd } from "@/lib/schema/build"
 import type { ShellData } from "@/lib/workspace/shell"
 import { ART } from "@/lib/workspace/common"
 import type { AiCard } from "@/lib/workspace/ai-cards"
@@ -124,7 +127,7 @@ export function WsPreview({ page, empty, dark }: { page: string; empty: boolean;
       links: { crawledAt: new Date(Date.now() - 86_400_000).toISOString(), checked: 38, outboundChecked: 14, items: empty ? [] : [
         { type: "broken_internal_link", target: "https://example.com/old-page", status: 404, sources: ["https://example.com/blog/sample-post"], hops: 0, text: "Sample." },
         { type: "redirect_chain", target: "https://example.com/pricing", status: 200, sources: ["https://example.com/blog/sample-post"], finalUrl: "https://example.com/plans", hops: 2, text: "Sample." },
-      ], pages: empty ? [] : [{ page: "https://example.com/blog/sample-post", path: "/blog/sample-post", count: 2, ours: true, blocker: null, draft: null }] } }} /></>
+      ], pages: empty ? [] : [{ page: "https://example.com/blog/sample-post", path: "/blog/sample-post", count: 2, ours: true, blocker: null, draft: null }] } }} /><SiteVitals data={vitalsSample(empty)} /></>
     return <BriefingView data={empty ? { plan: { runId: "r1", running: false, summary: "2 social posts · 1 page that answers AI questions", needsOk: 3, items: [{ kind: "social", title: "Sample social post", day: "Tuesday", status: "ready", needsOk: true }, { kind: "blog", title: "Sample page that answers a question", day: "Wednesday", status: "ready", needsOk: true }, { kind: "social", title: "Sample second post", day: "Friday", status: "ready", needsOk: true }] }, pagesInProgress: 0, recapReady: false, connected: { n: 1, total: 4, next: { label: "Connect your Google listing", href: "#" } }, firstName: "Sam", ai: AI_EMPTY, headline: { total: null, missing: ["Connect your Google listing to count calls from Google."] }, tiles: [{ key: "ai", label: "AI answers naming you", value: null, delta: null, empty: "My first check runs this week." }, { key: "visits", label: "Website visits", value: null, delta: null, empty: "Connect Google Analytics to see visits.", href: "#" }, { key: "rating", label: "Google rating", value: null, delta: null, empty: "Connect your Google listing to see reviews.", href: "#" }], question: { id: "q", eyebrow: "AI answers · a fact to check", title: "ChatGPT tells customers “Sample wrong claim”. Is that wrong?", review: { ai: "ChatGPT", claim: "Sample wrong claim", truth: "Sample truth", fix: { label: "Write", action: { type: "say", text: "x" } } }, text: "Sample why.", fallback: "Until then, I keep working with what I have.", acts: [{ label: "Connect Google", href: "#", primary: true }, { label: "See all steps", topic: "setup" }] }, going: [], waiting: 0, waitingTopic: "social", autopilot: false, done: [] } : {
       plan: null, pagesInProgress: 2, recapReady: true, connected: { n: 4, total: 4, next: null },
       firstName: "Sam", ai: AI_SAMPLE,
@@ -144,4 +147,32 @@ export function WsPreview({ page, empty, dark }: { page: string; empty: boolean;
       {body}
     </WorkspaceShell>
   )
+}
+
+// Sample site vitals (Tracking & Setup → speed + structured data). Shapes from lib/seo/cwv.ts + lib/schema/audit.ts.
+function vitalsSample(empty: boolean): Parameters<typeof SiteVitals>[0]["data"] {
+  const m = (lcp: number, inp: number, cls: number, fcp: number, ttfb: number) => ({
+    LARGEST_CONTENTFUL_PAINT_MS: { percentile: lcp }, INTERACTION_TO_NEXT_PAINT: { percentile: inp }, CUMULATIVE_LAYOUT_SHIFT_SCORE: { percentile: cls }, FIRST_CONTENTFUL_PAINT_MS: { percentile: fcp }, EXPERIMENTAL_TIME_TO_FIRST_BYTE: { percentile: ttfb },
+  })
+  const lab = { categories: { performance: { score: 0.62 } }, audits: { "largest-contentful-paint": { numericValue: 4300 }, "total-blocking-time": { numericValue: 380 }, "cumulative-layout-shift": { numericValue: 0.21 }, "uses-optimized-images": { title: "Efficiently encode images", score: 0.3, details: { type: "opportunity", overallSavingsMs: 1250 } }, "render-blocking-resources": { title: "Eliminate render-blocking resources", score: 0.4, details: { type: "opportunity", overallSavingsMs: 620 } } } }
+  const page = (url: string, field: boolean) => ({ url, errors: [],
+    mobile: parsePsi({ loadingExperience: field ? { metrics: m(4100, 260, 31, 2400, 950) } : undefined, originLoadingExperience: { metrics: m(3200, 180, 8, 2100, 700) }, lighthouseResult: { finalUrl: url, ...lab } }, "mobile"),
+    desktop: parsePsi({ loadingExperience: { metrics: m(1900, 90, 4, 1200, 500) }, lighthouseResult: { finalUrl: url, categories: { performance: { score: 0.91 } }, audits: {} } }, "desktop") })
+  const weeks = Array.from({ length: 25 }, (_, i) => ({ end: `2026-${String(6 + Math.floor(i / 4)).padStart(2, "0")}-${String(1 + (i % 4) * 7).padStart(2, "0")}`, p75: 3600 - i * 30 + (i % 3) * 120 }))
+  return {
+    site: "example.com", keyMissing: false, running: false, cwvFail: null, cwvPrev: null, webPersonEmail: null,
+    cwv: empty ? null : { at: new Date().toISOString(), reason: "weekly", viewportMeta: true, alerts: [], pages: [page("https://example.com/", true), page("https://example.com/services/sample", false)], history: { lcp: weeks, cls: weeks.map((w) => ({ ...w, p75: 0.05 + (w.p75 ?? 0) / 40000 })) } },
+    schema: empty ? null : { at: new Date().toISOString(), reason: "weekly", alerts: [], products: [], totals: { errors: 2, warnings: 5, blocks: 3 },
+      mismatches: [{ field: "telephone", onSite: "(613) 555-0199", ours: "613-555-0100", type: "Dentist", url: "https://example.com/contact" }],
+      pages: [
+        { url: "https://example.com/", status: 200, blocks: 2, types: ["Dentist", "WebSite"], errors: 0, warnings: 3, parseErrors: [], issues: [{ level: "warning", type: "Dentist", property: "geo", message: "Add geo (latitude and longitude) so maps place you exactly.", doc: "https://developers.google.com/search/docs/appearance/structured-data/local-business", node: "Dentist “Sample Dental”" }] },
+        { url: "https://example.com/faq", status: 200, blocks: 1, types: ["FAQPage"], errors: 2, warnings: 0, parseErrors: [], issues: [{ level: "error", type: "FAQPage", property: "mainEntity[2].acceptedAnswer", message: "“Do you take walk-ins?” has no acceptedAnswer.", doc: "https://developers.google.com/search/docs/appearance/structured-data/faqpage", node: "FAQPage" }] },
+        { url: "https://example.com/blog/sample-post", status: 200, blocks: 0, types: [], errors: 0, warnings: 0, parseErrors: [], issues: [] },
+      ] },
+    generated: empty ? null : { at: new Date().toISOString(), items: [
+      { type: "Dentist", pageUrl: "/", jsonLd: businessLd({ name: "Sample Dental", businessType: "dentist", url: "example.com", city: "Kanata", region: "ON", phone: "+1-613-555-0100" }) },
+      { type: "WebSite", pageUrl: "/", jsonLd: websiteLd("Sample Dental", "example.com")! },
+    ] },
+    install: { auto: false, platform: "Webflow", how: "Webflow only lets apps add code to your site with a custom code permission my app doesn’t have yet. Paste it in Site settings, Custom code, Head code, or send it to your web person.", posts: "Webflow blog posts can’t carry extra code from an app, so posts go out without it." },
+  }
 }

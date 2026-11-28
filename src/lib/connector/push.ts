@@ -8,6 +8,7 @@ import { parseMeta } from "@/lib/content"
 import { imageUrl } from "@/lib/images"
 import { publishContent, updateMetaOnSite, coverAlt, PLATFORM_NAME } from "@/lib/connector/publish"
 import type { AgentSettings } from "@/lib/agent/settings"
+import { articleLd } from "@/lib/schema/build"
 
 /** Webflow / Shopify / Wix: posts, pages and page titles go through the platform's API. */
 async function viaConnector(userId: string, s: AgentSettings, input: PushInput) {
@@ -114,11 +115,11 @@ export async function pushChange(user: User, input: PushInput): Promise<NextResp
       if (hasBrackets(text)) return NextResponse.json({ error: BRACKETS }, { status: 400 })
       const title = input.title?.trim() || "New post"
       const faq = mdFaq(text)
-      const jsonld: object[] = [{ "@context": "https://schema.org", "@type": "BlogPosting", headline: title, datePublished: new Date().toISOString(), author: { "@type": "Organization", name: user.businessName ?? undefined }, publisher: { "@type": "Organization", name: user.businessName ?? undefined } }]
-      if (faq.length) jsonld.push(faqLd(faq))
       const draft = input.draftId ? await db.mockActivity.findFirst({ where: { id: input.draftId, userId: user.id, type: "post_draft" } }) : null
       const dm = draft?.metadata as { imageId?: string | null; excerpt?: string } | null
       const imageId = dm?.imageId
+      const jsonld: object[] = [articleLd({ headline: title, datePublished: new Date().toISOString(), image: imageId ? imageUrl(imageId) : null, description: dm?.excerpt, businessName: user.businessName, siteUrl: s.wp.siteUrl, logo: s.brand?.logo })]
+      if (faq.length) jsonld.push(faqLd(faq))
       const q = await room()
       if (!q.allowed) return NextResponse.json(...quotaBody(q))
       const alt = imageId ? await coverAlt(user.id, imageId, title) : title
@@ -144,7 +145,9 @@ export async function pushChange(user: User, input: PushInput): Promise<NextResp
       const latest = await db.schemaMarkup.findFirst({ where: { userId: user.id }, orderBy: { generatedAt: "desc" } })
       // Profiles the owner confirmed become sameAs on the main entity.
       const profiles = s.profiles ?? []
-      const blocks = ((latest?.schemas as { jsonLd: unknown }[] | null) ?? []).map((x) => x.jsonLd).filter(Boolean).map((b, i) => {
+      // The plugin prints these in every page's header: only site-wide blocks (an FAQPage belongs on its own page only).
+      const siteWide = ((latest?.schemas as { jsonLd: unknown; pageUrl?: string; type?: string }[] | null) ?? []).filter((x) => (!x.pageUrl || x.pageUrl === "/") && x.type !== "FAQPage")
+      const blocks = siteWide.map((x) => x.jsonLd).filter(Boolean).map((b, i) => {
         if (i !== 0 || !profiles.length || typeof b !== "object") return b
         const o = b as Record<string, unknown>
         const prev = Array.isArray(o.sameAs) ? (o.sameAs as string[]) : o.sameAs ? [String(o.sameAs)] : []

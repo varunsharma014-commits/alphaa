@@ -16,6 +16,7 @@ import { listPosts, listAccounts } from "@/lib/social/store"
 import { PLATFORM_NAME } from "@/lib/social/types"
 import { imageUrl } from "@/lib/images"
 import { LEDGER_TYPES, ledgerText, ENGINE_NAME, ENGINE_ORDER } from "@/lib/agent/briefing"
+import { getSiteAlerts } from "@/lib/seo/site-vitals"
 import { REVIEW_DRAFT } from "@/lib/approvals"
 import type { Chip } from "@/lib/agent/types"
 import { getAiCards, type AiCard } from "./ai-cards"
@@ -67,6 +68,8 @@ export type BriefingData = {
   waitingTopic: string
   autopilot: boolean
   done: DoneItem[]
+  /** Speed turned poor / structured data now states a wrong fact (lib/seo/site-vitals.ts). */
+  siteAlerts?: { text: string; href: string }[]
 }
 
 /** Calls from the Google listing over [start, end], cached 6h (Google's data lags ~3 days). */
@@ -342,14 +345,15 @@ export async function getBriefingData(user: User): Promise<BriefingData> {
     getDone(user.id).catch(() => []),
   ])
   const question = await getQuestion(user, waiting, autopilot).catch(() => null)
-  const [plan, pagesInProgress, published, connected] = await Promise.all([
+  const [plan, pagesInProgress, published, connected, siteAlerts] = await Promise.all([
     going.length ? Promise.resolve(null) : getPlan(user).catch(() => null),
     db.mockActivity.count({ where: { userId: user.id, type: "post_draft", OR: [{ metadata: { path: ["status"], equals: "ready" } }, { metadata: { path: ["status"], equals: "scheduled" } }] } }),
     db.mockActivity.count({ where: { userId: user.id, type: { in: ["gbp_post", "social_published", "site_change", "review_reply", "email_campaign_sent"] }, createdAt: { gte: new Date(Date.now() - 30 * DAY) } } }),
     getConnected(user).catch(() => ({ n: 0, total: 0, next: null })),
+    getSiteAlerts(user.id).catch(() => []),
   ])
   const recapReady = published > 0 || (headline.total ?? 0) > 0
-  return { plan, pagesInProgress, recapReady, connected, firstName: user.fullName?.trim().split(/\s+/)[0] || null, ai, headline, tiles, question, going, waiting: waiting.total, waitingTopic: waiting.topic, autopilot, done }
+  return { plan, pagesInProgress, recapReady, connected, firstName: user.fullName?.trim().split(/\s+/)[0] || null, ai, headline, tiles, question, going, waiting: waiting.total, waitingTopic: waiting.topic, autopilot, done, siteAlerts }
 }
 
 const KIND_WORD = { blog: ["page that answers AI questions", "pages that answer AI questions"], google: ["Google update", "Google updates"], social: ["social post", "social posts"] } as const

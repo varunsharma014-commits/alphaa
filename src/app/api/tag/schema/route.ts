@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic"
 import { db } from "@/lib/db"
 import { generateBusinessSchema } from "@/lib/business-schema"
 import type { SchemaItem } from "@/lib/schema-generator"
+import { LOCAL_BUSINESS_TYPES, ORGANIZATION_TYPES } from "@/lib/schema/rules"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { hasPro } from "@/lib/billing"
 import { tagTracking } from "@/lib/tracking"
@@ -40,7 +41,10 @@ export async function GET(req: Request): Promise<Response> {
   if (latest && Array.isArray(latest.schemas)) {
     for (const raw of latest.schemas as unknown as SchemaItem[]) {
       if (!raw || typeof raw !== "object" || !raw.jsonLd) continue
-      if (raw.type === businessSchema["@type"]) continue
+      // The saved business block (any LocalBusiness subtype / Organization) is the same entity as the live one.
+      if (raw.type === businessSchema["@type"] || LOCAL_BUSINESS_TYPES.has(raw.type) || ORGANIZATION_TYPES.has(raw.type)) continue
+      // "/" entries go on every page; an FAQPage must only sit on the page that shows those questions.
+      if (raw.type === "FAQPage" && (!raw.pageUrl || raw.pageUrl === "/")) continue
       schemas.push({ pageUrl: raw.pageUrl || "/", jsonLd: raw.jsonLd })
     }
   }

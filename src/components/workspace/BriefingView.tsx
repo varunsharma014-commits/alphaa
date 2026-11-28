@@ -8,6 +8,7 @@ import type { AiCard } from "@/lib/workspace/ai-cards"
 import { AI_NOTE, askAlphaa, toast } from "@/lib/workspace/events"
 import type { Message } from "@/lib/agent/types"
 import { ActButton, Empty, When, useInspector, type Insp } from "./ui"
+import { SiteAlerts } from "./SiteAlerts"
 import dynamic from "next/dynamic"
 
 // Scheduled website posts open in the saved editor; the saved text is what the cron publishes.
@@ -91,6 +92,7 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
           </section>
         </>
       ) : null}
+      {data.siteAlerts?.length ? <SiteAlerts alerts={data.siteAlerts} /> : null}
       <AiRow cards={data.ai} open={open} pages={data.pagesInProgress} />
       {h.total == null && data.tiles.filter((t) => !t.value).length >= 2 ? (
         <section className="ax-card ax-setupbar">

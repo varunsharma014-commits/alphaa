@@ -4,7 +4,7 @@ export const maxDuration = 60
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { generateSchemaMarkup } from "@/lib/schema-generator"
+import { generateSchemaFor } from "@/lib/schema-generator"
 
 export async function POST(): Promise<NextResponse> {
   try {
@@ -25,14 +25,9 @@ export async function POST(): Promise<NextResponse> {
       )
     }
 
-    // Fetch phone from integration if available (none in schema currently — pass undefined)
-    const schemas = await generateSchemaMarkup(
-      user.businessName ?? "My Business",
-      user.businessType ?? "Local Business",
-      user.city ?? "",
-      user.state ?? "",
-      user.websiteUrl
-    )
+    // Built from real data only and validated (lib/schema-generator.ts); FAQPage only from the site's own Q&A.
+    const { schemas } = await generateSchemaFor(user)
+    if (!schemas.length) return NextResponse.json({ error: "I need your business name and website before I can write this." }, { status: 400 })
 
     const record = await db.schemaMarkup.create({
       data: {

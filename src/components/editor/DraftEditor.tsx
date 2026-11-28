@@ -16,6 +16,7 @@ import { mdToHtml } from "@/lib/markdown"
 import { gradeContent } from "@/lib/content-grade"
 import { diffStats, diffText } from "@/lib/text-diff"
 import { GradeCard } from "./GradeCard"
+import { OnPageCard } from "./OnPageCard"
 import "./editor.css"
 
 import { DRAFT_SAVED_EVENT, type DraftSavedDetail } from "./events"
@@ -329,6 +330,19 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
     fn(ta)
   }
 
+  // On-page fixes ("Add link"): insert Markdown where the cursor last was (a textarea keeps it after blur).
+  const insertMd = (md: string) => {
+    if (locked) return
+    if (view === "preview") setView("write")
+    window.setTimeout(() => {
+      const ta = taRef.current
+      if (!ta) return
+      const at = ta.selectionEnd ?? ta.value.length
+      const piece = (at > 0 && !/\s$/.test(ta.value.slice(0, at)) ? " " : "") + md
+      replaceRange(ta, at, at, piece, at + piece.length, at + piece.length)
+    }, 0)
+  }
+
   const deferred = useDeferredValue(text)
   const grade = useMemo(() => gradeContent(deferred), [deferred])
   const html = useMemo(() => (view === "preview" ? mdToHtml(deferred, { highlightPlaceholders: true }) : ""), [deferred, view])
@@ -462,7 +476,10 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
                   <button type="button" role="tab" aria-selected={side === "history"} onClick={() => setSide("history")}>History <span className="dx-mini">{revs.length || ""}</span></button>
                 </div>
                 {side === "score" ? (
-                  <div role="tabpanel"><GradeCard g={grade} /></div>
+                  <div role="tabpanel">
+                    <GradeCard g={grade} />
+                    <OnPageCard draftId={draftId} markdown={deferred} title={title} locked={locked} onInsert={insertMd} />
+                  </div>
                 ) : (
                   <div role="tabpanel" className="dx-hist">
                     {!revs.length ? (
