@@ -6,7 +6,7 @@ import { Pill } from "./pill"
 
 // A plan, pack or option card. Prices are passed in (from PLAN_PRICES etc.), never typed here.
 // `selectable` makes the whole card a toggle button (pack pickers); otherwise put a CTA in `cta`.
-export function PlanCard({ name, status, price, per, was, text, includes, features, cta, fine, recommended = false, current = false, selectable = false, selected = false, onSelect }: {
+export function PlanCard({ name, status, price, per, was, text, includes, features, cta, fine, recommended = false, current = false, selectable = false, selected = false, onSelect, id, highlight = false }: {
   name: ReactNode
   /** e.g. <Pill tone="info">Recommended</Pill> or "Your plan". */
   status?: ReactNode
@@ -27,8 +27,12 @@ export function PlanCard({ name, status, price, per, was, text, includes, featur
   selectable?: boolean
   selected?: boolean
   onSelect?: () => void
+  /** Anchor id (e.g. "plan-pro" for ?plan=pro links). */
+  id?: string
+  /** Briefly ring the card (the plan a link pointed to). */
+  highlight?: boolean
 }) {
-  const cls = `ax-card xd-plan${recommended ? " rec" : ""}${current ? " cur" : ""}`
+  const cls = `ax-card xd-plan${recommended ? " rec" : ""}${current ? " cur" : ""}${highlight ? " hl" : ""}`
   const body = (
     <>
       <div className="xd-plan__top">
@@ -47,8 +51,8 @@ export function PlanCard({ name, status, price, per, was, text, includes, featur
       {(cta || fine) && <div className="xd-plan__cta">{cta}{fine && <div className="xd-plan__fine">{fine}</div>}</div>}
     </>
   )
-  if (selectable) return <button type="button" className={cls} aria-pressed={selected} onClick={onSelect}>{body}</button>
-  return <section className={cls}>{body}</section>
+  if (selectable) return <button type="button" id={id} className={cls} aria-pressed={selected} onClick={onSelect}>{body}</button>
+  return <section id={id} className={cls}>{body}</section>
 }
 
 /** Grid of PlanCards that stacks on phones. */

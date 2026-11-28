@@ -1,11 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Loader2, Check } from "lucide-react"
-import { DsCard } from "@/components/dashboard/DsCard"
+import { Button, Field, FieldGrid, SettingsSection, Skeleton, TextArea, TextInput } from "@/components/workspace/ui"
 import { useCan } from "@/components/workspace/role"
 
-// "Brand rules" on Your rules: words I never use, things I always say, the hashtags every social
+// "Brand rules" on Your business: words I never use, things I always say, the hashtags every social
 // post carries (all platforms, or one platform) and the disclaimer each channel ends with.
 // Saved via /api/agent/guardrails; enforced in code by every writer (lib/guardrails.ts).
 type Platform = "facebook" | "instagram" | "linkedin" | "tiktok" | "x"
@@ -18,17 +17,14 @@ const CHANNEL: { key: Channel; label: string; hint: string }[] = [
   { key: "blog", label: "Blog posts and website pages", hint: "Added as the last line of the page." },
   { key: "email", label: "Customer emails", hint: "Added as the last paragraph." },
   { key: "ads", label: "Ads", hint: "Added where it fits the ad’s length. If it doesn’t fit, I tell you instead of running it cut." },
-  { key: "reviews", label: "Replies to Google reviews", hint: "Leave it empty and my replies carry no disclaimer. Set one and every reply ends with it." },
+  { key: "reviews", label: "Replies to Google reviews", hint: "Leave it empty and my replies carry no disclaimer." },
 ]
-
-const input: React.CSSProperties = { width: "100%", background: "var(--ds-surface)", border: "1px solid var(--ds-border)", borderRadius: 8, padding: "9px 12px", fontSize: 13, color: "var(--ds-text)", outline: "none", resize: "vertical" }
-const label: React.CSSProperties = { display: "block", fontSize: 12, fontWeight: 500, color: "var(--ds-text-strong)", marginBottom: 6 }
-const hint: React.CSSProperties = { fontSize: 11, color: "var(--ds-text-faint)", marginTop: 5, lineHeight: 1.5 }
 const lines = (a: string[] | undefined) => (a ?? []).join("\n")
 
 export function BrandRulesCard() {
   const [f, setF] = useState<Record<string, string> | null>(null)
   const [saving, setSaving] = useState(false)
+  const [dirty, setDirty] = useState(false)
   const [note, setNote] = useState<{ ok: boolean; text: string } | null>(null)
   const [more, setMore] = useState(false)
   const canEdit = useCan("settings") // teams: owner or admin
@@ -47,7 +43,7 @@ export function BrandRulesCard() {
     return () => { off = true }
   }, [])
 
-  const set = (k: string, v: string) => { setF((x) => ({ ...(x ?? {}), [k]: v })); setNote(null) }
+  const set = (k: string) => (e: { target: { value: string } }) => { const v = e.target.value; setF((x) => ({ ...(x ?? {}), [k]: v })); setDirty(true); setNote(null) }
 
   async function save() {
     if (!f) return
@@ -60,68 +56,53 @@ export function BrandRulesCard() {
     const res = await fetch("/api/agent/guardrails", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).catch(() => null)
     const d = (await res?.json().catch(() => null)) as { said?: string; error?: string } | null
     setSaving(false)
+    if (res?.ok) setDirty(false)
     setNote(res?.ok ? { ok: true, text: d?.said ?? "Saved." } : { ok: false, text: d?.error ?? "That didn’t save. Try again in a moment." })
   }
 
+  const ro = !canEdit
   return (
-    <DsCard style={{ marginBottom: "1.25rem" }}>
-      <div id="brand-rules" />
-      <h2 style={{ fontSize: 15, fontWeight: 600, color: "var(--ds-text-strong)", marginBottom: 4 }}>Brand rules</h2>
-      <p style={{ fontSize: 12, color: "var(--ds-text-mute)", marginBottom: 14, lineHeight: 1.6 }}>
-        Rules I follow in everything I write for you: social posts, Google updates, blog posts, emails and ads. If a draft breaks one, I throw it away and write it again.
-      </p>
+    <SettingsSection
+      id="brand-rules"
+      title="Brand rules"
+      text="Rules I follow in everything I write for you. If a draft breaks one, I throw it away and write it again."
+      footer={f ? (
+        canEdit ? (
+          <>
+            {note && <span className={note.ok ? "xs-ok" : "xs-err"} role={note.ok ? "status" : "alert"}>{note.text}</span>}
+            <Button variant="primary" loading={saving} disabled={!dirty} onClick={() => void save()}>Save my brand rules</Button>
+          </>
+        ) : <span className="xs-fine">Only the owner or an admin can change brand rules.</span>
+      ) : undefined}
+    >
       {!f ? (
-        <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ds-text-mute)", fontSize: 13 }}><Loader2 size={15} className="animate-spin" />Loading your rules…</div>
+        <><Skeleton kind="line" width="40%" /><Skeleton kind="line" height={72} /><Skeleton kind="line" width="40%" /><Skeleton kind="line" height={40} /></>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
-            <div>
-              <label style={label} htmlFor="br-banned">Words I never use</label>
-              <textarea id="br-banned" style={input} rows={3} value={f.banned ?? ""} onChange={(e) => set("banned", e.target.value)} placeholder={"cheap\nno-brainer\nworld class"} />
-              <p style={hint}>One per line. Whole words or phrases.</p>
-            </div>
-            <div>
-              <label style={label} htmlFor="br-always">Things I always say</label>
-              <textarea id="br-always" style={input} rows={3} value={f.alwaysSay ?? ""} onChange={(e) => set("alwaysSay", e.target.value)} placeholder={"Family-owned\nLicensed and insured"} />
-              <p style={hint}>One per line. Only true facts about your business.</p>
-            </div>
-          </div>
-          <div>
-            <label style={label} htmlFor="br-tags">Hashtags on every social post</label>
-            <input id="br-tags" style={input} value={f.hashtags ?? ""} onChange={(e) => set("hashtags", e.target.value)} placeholder="#YourBrand #YourCity" />
-            <p style={hint}>Added to every post on every platform. <button type="button" onClick={() => setMore((m) => !m)} style={{ background: "none", border: 0, padding: 0, color: "var(--ds-accent)", cursor: "pointer", fontSize: 11 }}>{more ? "Hide per-platform hashtags" : "Add hashtags for one platform only"}</button></p>
-          </div>
+        <>
+          <FieldGrid min={220}>
+            <Field label="Words I never use" hint="One per line. Whole words or phrases."><TextArea value={f.banned ?? ""} onChange={set("banned")} placeholder={"cheap\nno-brainer\nworld class"} readOnly={ro} /></Field>
+            <Field label="Things I always say" hint="One per line. Only true facts about your business."><TextArea value={f.alwaysSay ?? ""} onChange={set("alwaysSay")} placeholder={"Family owned\nLicensed and insured"} readOnly={ro} /></Field>
+          </FieldGrid>
+          <Field label="Hashtags on every social post" hint="Added to every post on every platform."><TextInput value={f.hashtags ?? ""} onChange={set("hashtags")} placeholder="#YourBrand #YourCity" readOnly={ro} /></Field>
+          <div><button type="button" className="ax-lnk" aria-expanded={more} onClick={() => setMore((m) => !m)}>{more ? "Hide hashtags for one platform" : "Add hashtags for one platform only"}</button></div>
           {more && (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10 }}>
+            <FieldGrid min={160}>
               {(Object.keys(PLATFORM_NAME) as Platform[]).filter((p) => p !== "tiktok" || !!f.tags_tiktok).map((p) => (
-                <div key={p}>
-                  <label style={label} htmlFor={`br-t-${p}`}>{PLATFORM_NAME[p]} only</label>
-                  <input id={`br-t-${p}`} style={input} value={f[`tags_${p}`] ?? ""} onChange={(e) => set(`tags_${p}`, e.target.value)} placeholder="#tag" />
-                </div>
+                <Field key={p} label={`${PLATFORM_NAME[p]} only`}><TextInput value={f[`tags_${p}`] ?? ""} onChange={set(`tags_${p}`)} placeholder="#tag" readOnly={ro} /></Field>
               ))}
-            </div>
+            </FieldGrid>
           )}
           <div>
-            <div style={{ ...label, marginBottom: 2 }}>Disclaimers</div>
-            <p style={{ ...hint, marginTop: 0, marginBottom: 8 }}>Required wording (licence numbers, “Not financial advice”, offer terms). Leave a channel blank if it needs none.</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
-              {CHANNEL.map((c) => (
-                <div key={c.key}>
-                  <label style={label} htmlFor={`br-d-${c.key}`}>{c.label}</label>
-                  <textarea id={`br-d-${c.key}`} style={input} rows={2} value={f[`dis_${c.key}`] ?? ""} onChange={(e) => set(`dis_${c.key}`, e.target.value)} />
-                  <p style={hint}>{c.hint}</p>
-                </div>
-              ))}
-            </div>
+            <h3 className="xs-h3">Disclaimers</h3>
+            <p className="xs-fine">Required wording, like a licence number, “Not financial advice” or offer terms. Leave a channel blank if it needs none.</p>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-            {!canEdit ? <span style={{ fontSize: 12, color: "var(--ds-text-mute)" }}>Only the owner or an admin can change brand rules.</span> : <button type="button" onClick={() => void save()} disabled={saving} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--ds-accent)", color: "var(--ds-on-accent)", border: "none", borderRadius: 8, padding: "9px 20px", fontSize: 13, fontWeight: 500, cursor: saving ? "not-allowed" : "pointer", opacity: saving ? 0.6 : 1 }}>
-              {saving && <Loader2 size={14} className="animate-spin" />}{saving ? "Saving…" : "Save my brand rules"}
-            </button>}
-            {note && <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, color: note.ok ? "var(--ds-ok)" : "var(--ds-warn)" }}>{note.ok && <Check size={14} />}{note.text}</span>}
-          </div>
-        </div>
+          <FieldGrid min={220}>
+            {CHANNEL.map((c) => (
+              <Field key={c.key} label={c.label} hint={c.hint} optional><TextArea rows={2} value={f[`dis_${c.key}`] ?? ""} onChange={set(`dis_${c.key}`)} readOnly={ro} /></Field>
+            ))}
+          </FieldGrid>
+        </>
       )}
-    </DsCard>
+    </SettingsSection>
   )
 }

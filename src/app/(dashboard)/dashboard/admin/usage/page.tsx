@@ -10,6 +10,10 @@ import { countsAmount, limitsFor, periodStart, dayKey, QUOTA_KINDS, PERIODS, typ
 import { aiDailyBudget, flush } from "@/lib/usage"
 import { isComped } from "@/lib/billing"
 import { replay, type LedgerEntry } from "@/lib/credit-rules"
+import { pageTitle } from "@/lib/page-title"
+import { AdminUsageView, type UsageData } from "@/components/workspace/settings/AdminUsageView"
+
+export const metadata = { title: pageTitle("Admin usage") }
 
 // Admins only (isAdmin, not the comp list): what Alphaa did for each brand in the last 30 days, the AI it used, and what
 // that cost by feature, plus usage vs plan quota today / this month (lib/quota-rules.ts; 80%+ highlighted).
@@ -101,7 +105,6 @@ export default async function UsagePage() {
   }
   const features = [...byFeature.entries()].sort((a, b) => b[1].cost - a[1].cost)
   const total = [...ai.values(), house].reduce((s, a) => s + a.cost, 0)
-  const money = (a: Agg | undefined) => (!a || (!a.calls && !a.searches) ? "—" : `$${a.cost.toFixed(2)}${a.unpriced ? "+" : ""}`)
 
   const rows = users.map((u) => ({ u, a: ai.get(u.id) })).sort((x, y) => (y.a?.cost ?? 0) - (x.a?.cost ?? 0) || (y.a?.tin ?? 0) - (x.a?.tin ?? 0))
   const brandsPerLogin = new Map<string, number>()
@@ -151,7 +154,6 @@ export default async function UsagePage() {
   const budget = aiDailyBudget()
   const KIND_LABEL: Partial<Record<QuotaKind, string>> = { ai_cost_usd: "AI spend", data_usd: "data spend (DataForSEO)", search: "searches" }
   const fmt = (k: QuotaKind, v: number) => (k.endsWith("_usd") ? `$${v.toFixed(2)}` : Math.round(v).toLocaleString("en-US"))
-  const hot = (pct: number) => (pct >= 1 ? "#fde2e1" : pct >= 0.8 ? "#fff4d6" : undefined)
 
   // Usage credits: every brand with a ledger, balance now, purchases and spend (lib/credits.ts).
   const ledgerRows = await db.mockActivity.findMany({ where: { type: "credit_ledger" }, orderBy: { createdAt: "asc" }, select: { userId: true, metadata: true }, take: 20000 })
@@ -171,157 +173,40 @@ export default async function UsagePage() {
     return { id, balance: r.balance, bought: buys.reduce((a, e) => a + e.credits, 0), paid: buys.reduce((a, e) => a + (e.amount ?? 0), 0) / 100, purchases: buys.length, spend30, refunded, expired: r.expired, top: [...byAction.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3) }
   }).sort((a, b) => b.spend30 - a.spend30 || b.balance - a.balance)
 
-  const n = (v: number | undefined) => (v ?? 0).toLocaleString("en-US")
-  const th = { textAlign: "left" as const, padding: "8px 10px", fontSize: 12, color: "#6e6e73", borderBottom: "1px solid #d2d2d7", whiteSpace: "nowrap" as const }
-  const td = { padding: "8px 10px", fontSize: 13, borderBottom: "1px solid #eee", verticalAlign: "top" as const, fontVariantNumeric: "tabular-nums" as const }
+  const brandName = (u: { businessName: string | null; websiteUrl: string | null } | undefined, id: string) => u?.businessName || u?.websiteUrl || id
+  const pctMax = (r: (typeof quotaRows)[number]) => Math.max(r.aiDayCap ? r.aiDay / r.aiDayCap : 0, r.aiMonthCap ? r.aiMonth / r.aiMonthCap : 0, ...r.flags.map((f) => f.pct))
 
-  return (
-    <div style={{ maxWidth: 1200, margin: "0 auto", padding: "24px 16px" }}>
-      <h1 style={{ fontSize: 24, fontWeight: 700 }}>Usage by brand · last 30 days</h1>
-      <p style={{ color: "#6e6e73", fontSize: 14, margin: "6px 0 18px" }}>
-        {rows.length} brands. Estimated AI cost, 30 days: <b style={{ color: "#1d1d1f" }}>${total.toFixed(2)}</b> at list prices (compare with the Anthropic Console).
-        Metering by brand started 2026-11-17; calls with no brand, features and web searches on 2026-11-20. &quot;+&quot; means a model with no price set.
-      </p>
-      <h2 style={{ fontSize: 18, fontWeight: 700, margin: "8px 0 6px" }}>Usage vs plan quota · today and this month (UTC)</h2>
-      <p style={{ color: "#6e6e73", fontSize: 13, margin: "0 0 10px" }}>
-        Platform AI spend today: <b style={{ color: "#1d1d1f", background: hot(platformToday / budget) }}>${platformToday.toFixed(2)}</b> of the ${budget} daily budget (AI_DAILY_BUDGET_USD; non-essential crons pause at 100%).
-        Limits from lib/quota-rules.ts, QUOTAS_JSON overrides. Yellow = 80%+, red = at or over. Comped accounts are tracked, never blocked. Counts started 2026-11-27.
-      </p>
-      <div style={{ overflowX: "auto", marginBottom: 24 }}>
-        <table style={{ borderCollapse: "collapse", width: "100%" }}>
-          <thead>
-            <tr>
-              <th style={th}>Brand</th>
-              <th style={th}>Plan</th>
-              <th style={th}>AI today / ceiling</th>
-              <th style={th}>AI this month / ceiling</th>
-              <th style={th}>Closest to a limit (50%+)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {quotaRows.length ? quotaRows.map((r) => (
-              <tr key={r.id}>
-                <td style={td}><b>{r.u?.businessName || r.u?.websiteUrl || r.id}</b>{r.u ? <><br /><span style={{ color: "#6e6e73" }}>{realEmail(r.u.email)}</span></> : null}</td>
-                <td style={td}>{r.comped ? `${r.u?.plan ?? "none"} (comped, Growth limits)` : r.plan}</td>
-                <td style={{ ...td, background: r.aiDayCap ? hot(r.aiDay / r.aiDayCap) : undefined }}>${r.aiDay.toFixed(2)}{r.aiDayCap !== null ? ` / $${r.aiDayCap}` : ""}</td>
-                <td style={{ ...td, background: r.aiMonthCap ? hot(r.aiMonth / r.aiMonthCap) : undefined }}>${r.aiMonth.toFixed(2)}{r.aiMonthCap !== null ? ` / $${r.aiMonthCap}` : ""}</td>
-                <td style={td}>
-                  {r.flags.length ? r.flags.slice(0, 5).map((f) => (
-                    <div key={`${f.kind}${f.period}`} style={{ background: hot(f.pct), padding: "1px 4px", borderRadius: 4 }}>{KIND_LABEL[f.kind] ?? f.kind} · {fmt(f.kind, f.used)} of {fmt(f.kind, f.limit)} {f.period === "day" ? "today" : `this ${f.period}`}</div>
-                  )) : <span style={{ color: "#6e6e73" }}>All under 50%</span>}
-                </td>
-              </tr>
-            )) : (
-              <tr><td style={td} colSpan={5}>No usage recorded this month yet.</td></tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      <h2 style={{ fontSize: 18, fontWeight: 700, margin: "8px 0 8px" }}>Top spenders and work done · last 30 days</h2>
-      <div style={{ overflowX: "auto" }}>
-        <table style={{ borderCollapse: "collapse", width: "100%" }}>
-          <thead>
-            <tr>
-              <th style={th}>Brand</th>
-              <th style={th}>Plan</th>
-              <th style={th}>Brands on login</th>
-              {TYPES.map(([, l]) => <th key={l} style={th}>{l}</th>)}
-              <th style={th}>Google posts out</th>
-              <th style={th}>AI calls</th>
-              <th style={th}>Tokens in / out</th>
-              <th style={th}>Web searches</th>
-              <th style={th}>Est. AI cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map(({ u, a }) => (
-              <tr key={u.id}>
-                <td style={td}><b>{u.businessName || u.websiteUrl || "—"}</b><br /><span style={{ color: "#6e6e73" }}>{realEmail(u.email)}</span></td>
-                <td style={td}>{u.plan}{u.subscriptionStatus !== "active" ? ` (${u.subscriptionStatus})` : ""}</td>
-                <td style={td}>{brandsPerLogin.get(ownerClerkId(u.clerkId))}</td>
-                {TYPES.map(([t]) => <td key={t} style={td}>{n(count.get(`${u.id}|${t}`))}</td>)}
-                <td style={td}>{n(gbpBy.get(u.id))}</td>
-                <td style={td}>{n(a?.calls)}</td>
-                <td style={td}>{n(a?.tin)} / {n(a?.tout)}</td>
-                <td style={td}>{n(a?.searches)}</td>
-                <td style={td}>{money(a)}</td>
-              </tr>
-            ))}
-            <tr>
-              <td style={td}><b>No brand</b><br /><span style={{ color: "#6e6e73" }}>Public scans from /start, work before a brand is picked</span></td>
-              <td style={td} colSpan={TYPES.length + 3} />
-              <td style={td}>{n(house.calls)}</td>
-              <td style={td}>{n(house.tin)} / {n(house.tout)}</td>
-              <td style={td}>{n(house.searches)}</td>
-              <td style={td}>{money(house)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h2 style={{ fontSize: 18, fontWeight: 700, margin: "28px 0 8px" }}>Usage credits</h2>
-      <p style={{ color: "#6e6e73", fontSize: 13, margin: "0 0 10px" }}>Packs 50/$25, 120/$50, 300/$100 (one-time, 12-month expiry). Spent only after the plan quota runs out, in an owner&apos;s own request. &quot;Paid&quot; is in the purchase currency&apos;s main unit.</p>
-      <div style={{ overflowX: "auto", marginBottom: 8 }}>
-        <table style={{ borderCollapse: "collapse", width: "100%", maxWidth: 1000 }}>
-          <thead>
-            <tr>
-              <th style={th}>Brand</th>
-              <th style={th}>Balance</th>
-              <th style={th}>Purchases</th>
-              <th style={th}>Credits bought / paid</th>
-              <th style={th}>Spent, 30 days</th>
-              <th style={th}>Spent on</th>
-              <th style={th}>Refunded / expired</th>
-            </tr>
-          </thead>
-          <tbody>
-            {creditRows.length ? creditRows.map((c) => (
-              <tr key={c.id}>
-                <td style={td}>{nameOf(c.id)}</td>
-                <td style={td}>{c.balance.toLocaleString("en-US")}</td>
-                <td style={td}>{c.purchases}</td>
-                <td style={td}>{c.bought.toLocaleString("en-US")} / {c.paid.toLocaleString("en-US", { maximumFractionDigits: 2 })}</td>
-                <td style={td}>{c.spend30.toLocaleString("en-US", { maximumFractionDigits: 1 })}</td>
-                <td style={td}>{c.top.length ? c.top.map(([a, v]) => `${a} ${v.toLocaleString("en-US", { maximumFractionDigits: 1 })}`).join(", ") : "—"}</td>
-                <td style={td}>{c.refunded.toLocaleString("en-US")} / {c.expired.toLocaleString("en-US")}</td>
-              </tr>
-            )) : (
-              <tr><td style={td} colSpan={7}>No credits bought yet.</td></tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      <h2 style={{ fontSize: 18, fontWeight: 700, margin: "28px 0 8px" }}>AI cost by feature · last 30 days</h2>
-      <div style={{ overflowX: "auto" }}>
-        <table style={{ borderCollapse: "collapse", width: "100%", maxWidth: 760 }}>
-          <thead>
-            <tr>
-              <th style={th}>Feature</th>
-              <th style={th}>AI calls</th>
-              <th style={th}>Tokens in / out</th>
-              <th style={th}>Web searches</th>
-              <th style={th}>Est. cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            {features.length ? (
-              features.map(([f, a]) => (
-                <tr key={f}>
-                  <td style={td}>{f}</td>
-                  <td style={td}>{n(a.calls)}</td>
-                  <td style={td}>{n(a.tin)} / {n(a.tout)}</td>
-                  <td style={td}>{n(a.searches)}</td>
-                  <td style={td}>{money(a)}</td>
-                </tr>
-              ))
-            ) : (
-              <tr><td style={td} colSpan={5}>No feature data yet (recording started 2026-11-20).</td></tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  )
+  const data: UsageData = {
+    total,
+    brands: rows.length,
+    platformToday,
+    budget,
+    hotBrands: quotaRows.filter((r) => pctMax(r) >= 0.8).length,
+    quotas: quotaRows.map((r) => ({
+      id: r.id,
+      name: brandName(r.u, r.id),
+      email: r.u ? realEmail(r.u.email) : null,
+      plan: r.comped ? `${r.u?.plan ?? "none"} (comped, Growth limits)` : r.plan,
+      aiDay: r.aiDay, aiDayCap: r.aiDayCap, aiMonth: r.aiMonth, aiMonthCap: r.aiMonthCap,
+      flags: r.flags.slice(0, 5).map((f) => ({ text: `${KIND_LABEL[f.kind] ?? f.kind} · ${fmt(f.kind, f.used)} of ${fmt(f.kind, f.limit)} ${f.period === "day" ? "today" : `this ${f.period}`}`, pct: f.pct })),
+    })),
+    types: TYPES.map(([t, l]) => ({ key: t, label: l })),
+    work: [
+      ...rows.map(({ u, a }) => ({
+        id: u.id,
+        name: u.businessName || u.websiteUrl || "Unnamed brand",
+        email: realEmail(u.email),
+        plan: `${u.plan}${u.subscriptionStatus !== "active" ? ` (${u.subscriptionStatus})` : ""}`,
+        brandsOnLogin: brandsPerLogin.get(ownerClerkId(u.clerkId)) ?? 1,
+        counts: Object.fromEntries(TYPES.map(([t]) => [t, count.get(`${u.id}|${t}`) ?? 0])),
+        gbp: gbpBy.get(u.id) ?? 0,
+        calls: a?.calls ?? 0, tin: a?.tin ?? 0, tout: a?.tout ?? 0, searches: a?.searches ?? 0,
+        cost: a && (a.calls || a.searches) ? a.cost : null, unpriced: !!a?.unpriced,
+      })),
+      { id: "_house", name: "No brand", email: "Public scans from /start, work before a brand is picked", plan: "", brandsOnLogin: null, counts: {}, gbp: null, calls: house.calls, tin: house.tin, tout: house.tout, searches: house.searches, cost: house.calls || house.searches ? house.cost : null, unpriced: house.unpriced },
+    ],
+    credits: creditRows.map((c) => ({ id: c.id, name: nameOf(c.id), balance: c.balance, purchases: c.purchases, bought: c.bought, paid: c.paid, spend30: c.spend30, top: c.top.map(([a, v]) => `${a} ${v.toLocaleString("en-US", { maximumFractionDigits: 1 })}`).join(", "), refunded: c.refunded, expired: c.expired })),
+    features: features.map(([f, a]) => ({ id: f, calls: a.calls, tin: a.tin, tout: a.tout, searches: a.searches, cost: a.calls || a.searches ? a.cost : null, unpriced: a.unpriced })),
+  }
+  return <AdminUsageView data={data} />
 }

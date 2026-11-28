@@ -294,6 +294,9 @@
 .ax .xd-plan { padding: 24px; display: flex; flex-direction: column; gap: 16px; position: relative; text-align: left; }
 .ax .xd-plan.rec { border: 1.5px solid rgba(0,113,227,.45); box-shadow: 0 0 0 4px rgba(0,113,227,.07), var(--x-shadow); }
 .ax .xd-plan.cur { background: linear-gradient(180deg, rgba(52,199,89,.05), var(--x-surf) 40%); }
+.ax .xd-plan.hl { animation: xd-plan-hl 2.4s var(--x-ease) 1; scroll-margin-top: 96px; }
+@keyframes xd-plan-hl { 0%, 60% { box-shadow: 0 0 0 4px rgba(0,113,227,.28), var(--x-float); } 100% { box-shadow: var(--x-shadow); } }
+@media (prefers-reduced-motion: reduce) { .ax .xd-plan.hl { animation: none; box-shadow: 0 0 0 3px rgba(0,113,227,.22), var(--x-shadow); } }
 .ax button.xd-plan { cursor: pointer; font: inherit; color: inherit; }
 .ax button.xd-plan:hover { box-shadow: var(--x-float); }
 .ax button.xd-plan[aria-pressed="true"] { border: 1.5px solid var(--x-blue); box-shadow: 0 0 0 4px rgba(0,113,227,.1); }

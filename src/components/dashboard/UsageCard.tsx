@@ -1,11 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { DsCard } from "@/components/dashboard/DsCard"
 import { openCredits } from "@/components/workspace/CreditsSheet"
+import { Button, Skeleton } from "@/components/workspace/ui"
 
-// "This month" in Your rules: what the plan includes and what I've used, from the usage ledger
-// (GET /api/usage → lib/quotas.ts ownerUsage). Real counts only; nothing shown until it loads.
+// "This month" on Plan & billing: what the plan includes and what I've used, from the usage ledger
+// (GET /api/usage → lib/quotas.ts ownerUsage). Real counts only; a skeleton until it loads, and
+// nothing at all if it can't load. Credits only for accounts that can buy them (never comped).
 type Line = { label: string; used: number; included: number | null; per: string }
 type Credits = { balance: number; autoUse: boolean; comped: boolean; shopifyUrl: string | null }
 
@@ -16,10 +17,6 @@ export function UsageCard() {
   useEffect(() => {
     let off = false
     fetch("/api/credits").then((r) => (r.ok ? r.json() : null)).then((c) => { if (!off && c) setCredits(c) }).catch(() => undefined)
-    return () => { off = true }
-  }, [])
-  useEffect(() => {
-    let off = false
     fetch("/api/usage")
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error("load"))))
       .then((d) => { if (!off) setData(d) })
@@ -28,29 +25,26 @@ export function UsageCard() {
   }, [])
   if (failed) return null
   const started = data && new Date().toISOString().slice(0, 7) === data.since.slice(0, 7)
+  const since = data ? new Date(data.since).toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" }) : null
   return (
-    <DsCard style={{ marginBottom: "1.25rem" }}>
-      <h2 style={{ fontSize: 15, fontWeight: 600, color: "var(--ds-text-strong)", marginBottom: 4 }}>This month</h2>
-      <p style={{ fontSize: 12, color: "var(--ds-text-mute)", marginBottom: 12 }}>
-        What your plan includes and what I&apos;ve used so far.{started ? " I started counting on November 27." : ""}
-      </p>
+    <section className="ax-card xs-card" aria-busy={!data}>
+      <h2>This month</h2>
+      <p className="xs-mute">What your plan includes and what I’ve used so far.{started && since ? ` I started counting on ${since}.` : ""}</p>
       {!data ? (
-        <p style={{ fontSize: 13, color: "var(--ds-text-mute)" }}>Loading…</p>
+        <div className="xs-meters"><Skeleton kind="line" width="90%" /><Skeleton kind="line" width="80%" /><Skeleton kind="line" width="85%" /><Skeleton kind="line" width="70%" /></div>
       ) : (
-        <div style={{ display: "grid", gap: 8 }}>
+        <div className="xs-meters">
           {data.lines.map((l) => {
             const pct = l.included ? Math.min(1, l.used / l.included) : 0
             return (
               <div key={l.label}>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 13, color: "var(--ds-text)" }}>
-                  <span>{l.label} <span style={{ color: "var(--ds-text-mute)" }}>{l.per}</span></span>
-                  <span style={{ fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
-                    {l.used.toLocaleString("en-US")}{l.included !== null ? ` of ${l.included.toLocaleString("en-US")}` : ""}
-                  </span>
+                <div className="xs-meter__t">
+                  <span>{l.label}<small>{l.per}</small></span>
+                  <span>{l.used.toLocaleString("en-US")}{l.included !== null ? ` of ${l.included.toLocaleString("en-US")}` : ""}</span>
                 </div>
                 {l.included ? (
-                  <div style={{ height: 4, borderRadius: 2, background: "var(--ds-border)", marginTop: 4, overflow: "hidden" }}>
-                    <div style={{ width: `${pct * 100}%`, height: "100%", background: pct >= 0.8 ? "#d97706" : "var(--ds-accent, #000)" }} />
+                  <div className="xs-meter__b" role="progressbar" aria-label={l.label} aria-valuemin={0} aria-valuemax={l.included} aria-valuenow={Math.min(l.used, l.included)}>
+                    <i className={pct >= 0.8 ? "hot" : undefined} style={{ width: `${pct * 100}%` }} />
                   </div>
                 ) : null}
               </div>
@@ -59,18 +53,18 @@ export function UsageCard() {
         </div>
       )}
       {credits && !credits.comped ? (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, borderTop: "1px solid var(--ds-border)", marginTop: 14, paddingTop: 12, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 13, color: "var(--ds-text)" }}>
-            Credits: <b style={{ fontVariantNumeric: "tabular-nums" }}>{(Math.round(credits.balance * 10) / 10).toLocaleString("en-US")}</b>
-            <span style={{ color: "var(--ds-text-mute)" }}>{credits.balance > 0 ? (credits.autoUse ? " · I use them when your plan's work runs out" : " · not used until you turn them on") : " · for when your plan's work runs out"}</span>
-          </span>
+        <div className="xs-row xs-credits">
+          <p className="xs-mute">
+            Credits: <b>{(Math.round(credits.balance * 10) / 10).toLocaleString("en-US")}</b>
+            {credits.balance > 0 ? (credits.autoUse ? ". I use them when your plan’s work runs out." : ". Not used until you turn them on.") : ". For when your plan’s work runs out."}
+          </p>
           {credits.shopifyUrl ? (
-            <a href={credits.shopifyUrl} style={{ fontSize: 13, color: "var(--ds-accent, #000)" }}>Upgrade your plan in Shopify</a>
+            <Button size="sm" href={credits.shopifyUrl}>Upgrade your plan in Shopify</Button>
           ) : (
-            <button type="button" onClick={() => openCredits()} style={{ padding: "7px 14px", borderRadius: 999, background: "#000", color: "#fff", fontSize: 13, border: 0, cursor: "pointer" }}>Buy credits</button>
+            <Button size="sm" onClick={() => openCredits()}>Buy credits</Button>
           )}
         </div>
       ) : null}
-    </DsCard>
+    </section>
   )
 }

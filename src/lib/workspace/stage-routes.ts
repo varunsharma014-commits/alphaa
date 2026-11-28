@@ -35,6 +35,9 @@ const P3: string[] = [
 
 // Package 4: Settings, billing, plans, admin.
 const P4: string[] = [
+  "/dashboard/settings/*",
+  "/dashboard/upgrade",
+  "/dashboard/admin/usage",
 ]
 
 // Package 5: AI visibility and Google listing detail pages.
