@@ -69,7 +69,7 @@ export const SERVICES: Service[] = [
       "Planned around local events, seasons and news",
       "Every post shown to you before it goes out",
     ],
-    savings: { them: "$500–$3,000", themWhat: "a month is what most small businesses are quoted for social media management", us: "$499", usWhat: "a month for Pro, with SEO, Google posts and blogs included too", sources: [{ label: "SocialBu, social media management pricing 2026", url: "https://socialbu.com/blog/social-media-management-pricing" }, { label: "Boomp, pricing benchmarks for local businesses", url: "https://www.boomp.net/research/social-media-management-pricing-benchmarks-local-businesses" }] },
+    savings: { them: "$500–$3,000", themWhat: "a month is what most small businesses are quoted for social media management", us: "$499", usWhat: "a month for Pro, with SEO, Google posts and blogs included too", sources: [{ label: "WebFX, social media management pricing", url: "https://www.webfx.com/blog/social-media/social-media-pricing/" }, { label: "Boomp, pricing benchmarks for local businesses", url: "https://www.boomp.net/research/social-media-management-pricing-benchmarks-local-businesses" }] },
     plan: "pro",
     availability: "Social media is part of the Pro and Growth plans. Today I write each post and its image, and you publish it with one tap. Posting straight to Facebook, Instagram and LinkedIn opens as Meta and LinkedIn approve Alphaa.",
     faqs: [
@@ -126,7 +126,7 @@ export const SERVICES: Service[] = [
       "On Pro: 4 Google listing updates a week and review replies",
       "If none of ChatGPT, Gemini, Claude or Perplexity names your business within your first 90 days, your next month is free",
     ],
-    savings: { them: "$500–$3,000", themWhat: "a month is the usual local SEO retainer, and most SEO agencies still don’t work on AI answers", us: "$99", usWhat: "a month for Starter, month to month", sources: [{ label: "Ahrefs, SEO pricing survey", url: "https://ahrefs.com/blog/seo-pricing" }, { label: "SEO.com, local SEO pricing 2026", url: "https://www.seo.com/es/blog/local-seo-pricing" }] },
+    savings: { them: "$500–$3,000", themWhat: "a month is the usual local SEO retainer, and most SEO agencies still don’t work on AI answers", us: "$99", usWhat: "a month for Starter, month to month", sources: [{ label: "Ahrefs, SEO pricing survey", url: "https://ahrefs.com/blog/seo-pricing" }, { label: "SEO.com, local SEO pricing 2026", url: "https://www.seo.com/blog/local-seo-pricing/" }] },
     plan: "starter",
     faqs: [
       { q: "What is AEO?", a: "AEO (answer engine optimization) is making your business the answer AI assistants like ChatGPT, Gemini, Claude and Perplexity give when customers ask for a recommendation. It works alongside SEO, which is about showing up in Google’s search results." },
