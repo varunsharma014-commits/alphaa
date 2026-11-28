@@ -52,8 +52,16 @@ const MIN_DAILY = 1
 export type TuneInput = {
   currency: string
   capDaily: number | null
-  campaigns: { rowId: string; name: string; adSetId: string; dailyBudget: number; goal: Goal; ads: { adId: string; spend: number; results: number }[] }[]
+  /**
+   * Real revenue is tracked for these campaigns (lib/roas: purchase values, store orders, GA4 or
+   * won leads, never the customer-value estimate). Then budgets follow ROAS instead of cost per
+   * result, and an ad that spent 4 days of budget with no sale while others sold is paused.
+   */
+  roas?: boolean
+  campaigns: { rowId: string; name: string; adSetId: string; dailyBudget: number; goal: Goal; revenue?: number | null; ads: { adId: string; spend: number; results: number; revenue?: number | null }[] }[]
 }
+/** A revenue-based pause needs this many days of the campaign's budget spent with no sale. */
+export const PAUSE_NO_SALE_DAYS = 4
 
 const r2 = (n: number) => Math.round(n * 100) / 100
 const money = (n: number, cur: string) => `${r2(n).toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })} ${cur}`
@@ -66,21 +74,41 @@ export function decideTuning(t: TuneInput): { actions: TuneAction[]; summary: st
   for (const c of t.campaigns) {
     const spend = c.ads.reduce((s, a) => s + a.spend, 0)
     const results = c.ads.reduce((s, a) => s + a.results, 0)
-    summary.push(`“${c.name}”: ${money(spend, t.currency)} spent, ${results} ${unit(c.goal, results)}${results ? `, ${money(spend / results, t.currency)} each` : ""}.`)
+    const rev = t.roas && c.revenue != null ? c.revenue : null
+    summary.push(`“${c.name}”: ${money(spend, t.currency)} spent, ${results} ${unit(c.goal, results)}${results ? `, ${money(spend / results, t.currency)} each` : ""}${rev !== null ? `, ${money(rev, t.currency)} in sales${spend > 0 ? ` (${r2(rev / spend)}x)` : ""}` : ""}.`)
     const limit = c.dailyBudget * PAUSE_AFTER_DAYS_OF_BUDGET
-    const losers = c.ads.filter((a) => a.results === 0 && a.spend >= limit)
-    const keep = c.ads.length - losers.length
+    const losers = c.ads.filter((a) => a.results === 0 && !(a.revenue && a.revenue > 0) && a.spend >= limit)
+    // ROAS: sales are measured per ad, and others in the campaign sold. An ad that spent 4 days of budget with no sale is a loser too (leads alone don't save it).
+    const perAd = !!t.roas && c.ads.some((a) => a.revenue != null)
+    const sold = c.ads.some((a) => (a.revenue ?? 0) > 0)
+    const noSale = perAd && sold ? c.ads.filter((a) => !losers.includes(a) && a.revenue != null && a.revenue === 0 && a.spend >= c.dailyBudget * PAUSE_NO_SALE_DAYS) : []
+    const keep = c.ads.length - losers.length - noSale.length
     // Never pause every ad: if they all lost, leave the campaign for the owner to decide.
-    if (keep >= 1) for (const a of losers) actions.push({ kind: "pause_ad", campaignRowId: c.rowId, adId: a.adId, spend: r2(a.spend), results: 0, why: `It spent ${money(a.spend, t.currency)} with no ${unit(c.goal, 2)}, while the other ads in it did better.` })
+    if (keep >= 1) {
+      for (const a of losers) actions.push({ kind: "pause_ad", campaignRowId: c.rowId, adId: a.adId, spend: r2(a.spend), results: 0, why: `It spent ${money(a.spend, t.currency)} with no ${unit(c.goal, 2)}, while the other ads in it did better.` })
+      for (const a of noSale) actions.push({ kind: "pause_ad", campaignRowId: c.rowId, adId: a.adId, spend: r2(a.spend), results: a.results, why: `It spent ${money(a.spend, t.currency)} with no sale, while other ads in it brought in sales.` })
+    }
   }
 
   const budgets = new Map(t.campaigns.map((c) => [c.rowId, c.dailyBudget]))
   const scored = t.campaigns.map((c) => {
     const spend = c.ads.reduce((s, a) => s + a.spend, 0)
     const results = c.ads.reduce((s, a) => s + a.results, 0)
-    return { c, spend, results, cpr: results ? spend / results : Infinity }
+    return { c, spend, results, cpr: results ? spend / results : Infinity, roas: t.roas && c.revenue != null && spend > 0 ? c.revenue / spend : null }
   }).filter((x) => x.spend > 0)
-  if (scored.length >= 2) {
+  // ROAS when every campaign has real revenue measured (lib/roas), cost per result otherwise.
+  const byRoas = scored.length >= 2 && scored.every((x) => x.roas !== null)
+  if (byRoas) {
+    const best = scored.filter((x) => (x.roas ?? 0) > 0).sort((a, b) => (b.roas ?? 0) - (a.roas ?? 0))[0]
+    const worst = [...scored].sort((a, b) => (a.roas ?? 0) - (b.roas ?? 0))[0]
+    if (best && worst && best.c.rowId !== worst.c.rowId && worst.spend >= worst.c.dailyBudget && (best.roas ?? 0) > (worst.roas ?? 0) * 1.5) {
+      const move = r2(Math.max(MIN_DAILY, worst.c.dailyBudget * SHIFT))
+      if (worst.c.dailyBudget - move >= MIN_DAILY) {
+        budgets.set(worst.c.rowId, r2(worst.c.dailyBudget - move))
+        budgets.set(best.c.rowId, r2(best.c.dailyBudget + move))
+      }
+    }
+  } else if (scored.length >= 2) {
     const best = scored.filter((x) => x.results > 0).sort((a, b) => a.cpr - b.cpr)[0]
     const worst = [...scored].sort((a, b) => b.cpr - a.cpr)[0]
     if (best && worst && best.c.rowId !== worst.c.rowId && best.c.goal === worst.c.goal && worst.spend >= worst.c.dailyBudget && best.cpr * 1.5 < worst.cpr) {
@@ -103,6 +131,10 @@ export function decideTuning(t: TuneInput): { actions: TuneAction[]; summary: st
     const s = scored.find((x) => x.c.rowId === c.rowId)
     const why = t.capDaily !== null && total > t.capDaily + 0.001
       ? `Keeps you inside your budget of ${money(t.capDaily, t.currency)} a day.`
+      : byRoas && s && s.roas !== null
+        ? to > c.dailyBudget
+          ? `It brings back more in sales: ${r2(s.roas)}x what it costs.`
+          : `It brings back less in sales: ${r2(s.roas)}x what it costs.`
       : to > c.dailyBudget
         ? `It gets ${unit(c.goal, 2)} for less${s && s.results ? ` (${money(s.cpr, t.currency)} each)` : ""}.`
         : `It costs more per result${s && s.results ? ` (${money(s.cpr, t.currency)} each)` : s ? ` (${money(s.spend, t.currency)} with none)` : ""}.`

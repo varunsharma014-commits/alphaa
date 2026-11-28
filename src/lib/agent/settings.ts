@@ -24,6 +24,8 @@ export type AgentSettings = {
   autoPublishPosts?: boolean
   /** What one new customer is worth: my estimate until the owner edits it (lib/customer-value.ts). */
   customerValue?: { amount: number; source: "estimate" | "owner"; basis?: string; at: string }
+  /** ROAS: telling Google / Meta about won sales, owner opt-in per platform (lib/roas/uploads.ts). */
+  roas?: { uploads?: import("@/lib/roas/payloads").UploadSettings & { googleActionName?: string | null; at?: string } }
   /** Growth: GA4 + Meta Pixel the agent set up on the site (lib/tracking.ts). */
   tracking?: import("@/lib/tracking").Tracking
   /** How the business sounds: three options learned from the owner's own words + their choices (lib/voice.ts). */

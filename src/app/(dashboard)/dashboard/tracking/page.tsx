@@ -14,7 +14,7 @@ export default async function TrackingPage() {
   if (!userId) redirect("/login")
   const user = await db.user.findUnique({ where: { clerkId: userId } })
   if (!user) redirect("/login")
-  const [data, upkeep] = await Promise.all([getTrackingData(user), getUpkeep(user).catch((e) => { console.error("[tracking] upkeep", e); return null })])
+  const [data, upkeep] = await Promise.all([getTrackingData(user, { wait: true }), getUpkeep(user).catch((e) => { console.error("[tracking] upkeep", e); return null })])
   return (
     <>
       <TrackingView data={data} />

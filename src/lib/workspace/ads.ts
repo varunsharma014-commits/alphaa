@@ -7,8 +7,9 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { metaReport } from "@/lib/metaads/report"
 import { getAccess, listCampaigns as metaCampaigns, recentChanges as metaChanges } from "@/lib/metaads/store"
 import { getGadsAccount, recentChanges as gadsChanges } from "@/lib/gads/store"
-import { gadsFor } from "@/lib/gads/client"
-import { adsReport, gadsKpis } from "@/lib/gads/report"
+import { gadsKpis } from "@/lib/gads/report"
+import { gadsReportCached } from "@/lib/roas/sources"
+import { getRoasView, type RoasView } from "./ads-roas"
 import { metaFatigue } from "@/lib/metaads/fatigue"
 import { pct, type Kpis } from "@/lib/ads-kpis"
 import { lastReadyStrategy, latestStrategy, startStrategy, strategyRunning } from "@/lib/ad-strategy/generate"
@@ -19,7 +20,7 @@ import { hasPro } from "@/lib/billing"
 import { runAsUser } from "@/lib/usage"
 import { imageUrl } from "@/lib/images"
 import type { Chip } from "@/lib/agent/types"
-import { ART, ago, cached, money, n, within } from "./common"
+import { ART, ago, money, n, within } from "./common"
 
 /** One window of real numbers. Rates are null when there's nothing to divide by. */
 export type KpiWindow = { days: 7 | 30; spend: string; impressions: string; clicks: string; ctr: string | null; cpc: string | null; cpm: string | null; convRate: string | null; leads: string; perLead: string | null }
@@ -56,6 +57,8 @@ export type AdsData = {
   fetchFailed: string | null
   /** Meta ads that look tired against their own first week. */
   tired: TiredCard[]
+  /** Return on ad spend, tracked vs estimated kept apart (lib/roas). Null when no ad account is connected. */
+  roas: RoasView | null
 }
 
 const kw = (days: 7 | 30, t: { spend: number; impressions: number; clicks: number; conversions: number }, k: Kpis, cur: string): KpiWindow => ({
@@ -91,8 +94,9 @@ export async function getAdsData(user: User): Promise<AdsData> {
       windows: ([[7, meta.d7], [30, meta.d30]] as const).map(([d, x]) => kw(d, { spend: x.spend, impressions: x.impressions, clicks: x.linkClicks ?? x.clicks, conversions: x.leads }, x.kpis, meta.currency)),
     })
   }
+  let g: Awaited<ReturnType<typeof gadsReportCached>> = null
   if (gacc?.customerId) {
-    const g = await cached(`ws:gads:${user.id}`, 15 * 60_000, () => within(gadsFor(user.id).then(adsReport), 8000, null).catch(() => null))
+    g = await gadsReportCached(user.id)
     if (!g) fetchFailed = fetchFailed ?? "Couldn’t reach Google Ads just now. I’ll retry."
     if (g) {
       const a = g.account[1]
@@ -174,8 +178,11 @@ export async function getAdsData(user: User): Promise<AdsData> {
   const sevenDays = !!firstSpend && Date.now() - Date.parse(firstSpend) >= 7 * 86_400_000
 
   const cur = plan?.testing?.currency ?? "USD"
+  const live = liveMeta || gacc?.campaign?.status === "ENABLED"
+  const roas = access || gacc?.customerId ? await getRoasView(user, { meta, gads: g, live }).catch(() => null) : null
   return {
-    live: liveMeta || gacc?.campaign?.status === "ENABLED",
+    roas,
+    live,
     firstAds, planState,
     planInputs: { b2b: !!plan?.business?.b2b, local: plan?.business?.local ?? true, currency: cur },
     watching, beatIt: (plan?.competitors?.gaps ?? []).slice(0, 3), sevenDays, fetchFailed, tired,

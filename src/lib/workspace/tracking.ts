@@ -13,7 +13,7 @@ import { getAccess, listCampaigns as metaCampaigns, listLeads } from "@/lib/meta
 import { getGadsAccount } from "@/lib/gads/store"
 import { hasGrowth, hasPro } from "@/lib/billing"
 import type { Chip } from "@/lib/agent/types"
-import { ago } from "./common"
+import { ago, within } from "./common"
 
 export type Act = { label: string; href?: string; topic?: string; chip?: Chip }
 export type Conn = {
@@ -44,7 +44,7 @@ export type TrackingData = {
 const KIND_TEXT: Record<string, string> = { phone: "Phone tap", email: "Email tap", form: "Form sent", hubspot: "HubSpot form sent", typeform: "Typeform sent", calendly: "Calendly booking", test: "Test lead (self-check)" }
 const PLATFORM_LABEL: Record<string, string> = { wordpress: "WordPress", webflow: "Webflow", shopify: "Shopify", wix: "Wix" }
 
-export async function getTrackingData(user: User): Promise<TrackingData> {
+export async function getTrackingData(user: User, opts: { wait?: boolean } = {}): Promise<TrackingData> {
   // Lead tracking is Pro and up (2026-11-26); the ad accounts stay Growth.
   const growth = hasGrowth(user)
   const pro = hasPro(user)
@@ -140,6 +140,7 @@ export async function getTrackingData(user: User): Promise<TrackingData> {
       verified: null,
       detail: "Your Google Ads account: spend, clicks and conversions, and the search campaign I build.",
     })
+    conns.push(await salesRow(user, !!meta || !!gacc?.customerId, !!opts.wait))
   }
 
   // Signals that actually arrived: lead counters per day, AI visits (time, source, page) and ad leads.
@@ -170,5 +171,29 @@ export async function getTrackingData(user: User): Promise<TrackingData> {
     // WordPress (plugin 1.3.0+) installs it itself; other builders need the Alphaa tag pasted once.
     turnOn: pro && !trackingOn && site ? { platform: PLATFORM_LABEL[platform ?? ""] ?? "your website", auto: platform === "wordpress" } : null,
     needs: conns.filter((c) => c.state === "needs").length,
+  }
+}
+
+/** "Track sales from your ads": which revenue sources feed ROAS (lib/roas/sources.ts) and the one next step. */
+async function salesRow(user: User, adsConnected: boolean, wait: boolean): Promise<Conn> {
+  const base = { key: "sales", name: "Track sales from your ads", detail: "Return on ad spend needs real sales: purchase values from your Meta Pixel or Google Ads tags, purchases in Google Analytics, WooCommerce orders through the plugin, or leads you mark as won on the Ads page. I use one source per ad platform so a sale is never counted twice, and I label my estimate from your customer value apart from real sales." }
+  if (!adsConnected) return { ...base, state: "optional", sum: "Only needed once you run ads. Then I show what each dollar of ads brings back.", verified: null }
+  const { getRoas, peekRoas } = await import("@/lib/roas/sources")
+  // The sidebar badge (shell) never waits on ad platforms: it uses what's cached and warms it.
+  const r = wait ? await within(getRoas(user), 7000, null) : await peekRoas(user)
+  if (!r && !wait) return { ...base, state: "optional", sum: "Checking your sales sources.", verified: null }
+  if (!r) return { ...base, state: "needs", sum: "I couldn’t read your sales sources just now. I’ll retry.", act: { label: "Open Ads", href: "/dashboard/ads" }, verified: null }
+  const live = r.sources.filter((x) => x.state === "data")
+  const update = r.sources.find((x) => x.state === "update")
+  const spent = r.windows[30].platforms.some((p) => p.spend > 0)
+  if (!live.length && !spent) return { ...base, state: "optional", sum: "Once your ads spend, I show what each dollar brings back. " + (r.next ?? ""), act: { label: "Open Ads", href: "/dashboard/ads" }, verified: null, detail: `${base.detail} ${r.sources.map((x) => x.text).join(" ")}` }
+  return {
+    ...base,
+    state: live.length ? "ok" : "needs",
+    warn: live.length && update ? update.text : null,
+    sum: live.length ? live.map((x) => x.text).join(" ") : r.next ?? "No sales tracked from your ads yet.",
+    act: live.length ? undefined : { label: "Mark leads won", href: "/dashboard/ads" },
+    verified: live.length ? { verb: "Checked", at: r.at } : null,
+    detail: `${base.detail} ${r.sources.map((x) => x.text).join(" ")}`,
   }
 }

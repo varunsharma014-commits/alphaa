@@ -1,4 +1,5 @@
-// Weekly tuning of my Facebook + Instagram campaigns from the last 7 days of real results:
+// Weekly tuning of my Facebook + Instagram campaigns from the last 7 days of real results (by ROAS
+// when real revenue is tracked, lib/roas; by cost per result otherwise):
 //  - pause an ad that spent 2x its campaign's daily budget with no result (never the last one running)
 //  - move 20% of daily budget from a clearly worse campaign to a better one (total unchanged)
 //  - if the owner lowered their cap, scale budgets down to fit; never above it
@@ -11,6 +12,7 @@ import { decToken, getAccess, getTune, listCampaigns, logChange, saveCampaign, s
 import { decideTuning, type TuneInput } from "./rules"
 export { decideTuning, PAUSE_AFTER_DAYS_OF_BUDGET } from "./rules"
 import { dailyFromMonthly, metaMonthlyCap } from "./plan"
+import { metaPurchase } from "@/lib/roas/rules"
 
 /** The weekly pass for one brand (cron). Returns the stored pass, or null when nothing ran. */
 export async function weeklyTune(userId: string): Promise<TunePass | null> {
@@ -22,13 +24,23 @@ export async function weeklyTune(userId: string): Promise<TunePass | null> {
   const input: TuneInput = { currency: live[0].currency, capDaily: null, campaigns: [] }
   const cap = await metaMonthlyCap(userId)
   input.capDaily = cap !== null ? dailyFromMonthly(cap) : null
+  // Real revenue over the same 7 days (lib/roas: one source, never the customer-value estimate).
+  // Per ad only from Meta's purchase values or won form leads; GA4/store revenue is per campaign.
+  const { getRoas } = await import("@/lib/roas/sources")
+  const { wonTotals } = await import("@/lib/roas/leads")
+  const roas = await getRoas({ id: userId }).catch(() => null)
+  const mp = roas?.windows[7].platforms.find((p) => p.platform === "meta") ?? null
+  input.roas = !!mp?.source
+  const won = mp?.source === "won_leads" ? await wonTotals(userId, 7, { meta: input.currency }).then((w) => w.meta).catch(() => null) : null
   for (const c of live) {
     const rows: InsightRow[] = await insights(token, c.built!.campaignId!, "ad", 7).catch(() => [])
     const ads = (c.built?.ads ?? []).map((a) => {
       const r = rows.filter((x) => x.ad_id === a.adId)
-      return { adId: a.adId, spend: r.reduce((s, x) => s + Number(x.spend ?? 0), 0), results: r.reduce((s, x) => s + resultsOf(x, c.plan.goal), 0) }
+      const revenue = mp?.source === "meta_purchases" ? r.reduce((s, x) => s + metaPurchase(x).value, 0) : won ? won.byAd.get(a.adId)?.revenue ?? 0 : null
+      return { adId: a.adId, spend: r.reduce((s, x) => s + Number(x.spend ?? 0), 0), results: r.reduce((s, x) => s + resultsOf(x, c.plan.goal), 0), revenue }
     })
-    input.campaigns.push({ rowId: c.id, name: c.name, adSetId: c.built!.adSetId!, dailyBudget: c.plan.dailyBudget, goal: c.plan.goal, ads })
+    const revenue = input.roas ? mp?.campaigns.find((x) => x.id === c.id)?.revenue ?? 0 : null
+    input.campaigns.push({ rowId: c.id, name: c.name, adSetId: c.built!.adSetId!, dailyBudget: c.plan.dailyBudget, goal: c.plan.goal, revenue, ads })
   }
   const { actions, summary } = decideTuning(input)
   const mode = (await getAgentSettings(userId)).autopilot?.ads === "budget" ? "budget" : "each"

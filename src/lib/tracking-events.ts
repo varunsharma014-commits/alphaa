@@ -113,7 +113,7 @@ const META_NAME: Record<EventKind, string> = { phone: "Contact", email: "Contact
  * hashed because we hold no email or phone. The self-test never sends a real conversion: with the
  * owner's Test Events code it's a Lead that only shows under Test events, otherwise a custom AlphaaTest.
  */
-export async function sendCapi(t: Tracking, ev: { kind: EventKind; eid: string; url?: string; ip?: string | null; ua?: string | null }): Promise<CapiResult | null> {
+export async function sendCapi(t: Tracking, ev: { kind: EventKind; eid: string; url?: string; ip?: string | null; ua?: string | null; fbc?: string | null }): Promise<CapiResult | null> {
   if (!t.capi?.token || !t.capi.pixel) return null
   let token: string
   try {
@@ -129,7 +129,7 @@ export async function sendCapi(t: Tracking, ev: { kind: EventKind; eid: string; 
       event_id: ev.eid,
       action_source: "website",
       ...(ev.url ? { event_source_url: ev.url } : {}),
-      user_data: { ...(ev.ip ? { client_ip_address: ev.ip } : {}), ...(ev.ua ? { client_user_agent: ev.ua } : {}) },
+      user_data: { ...(ev.ip ? { client_ip_address: ev.ip } : {}), ...(ev.ua ? { client_user_agent: ev.ua } : {}), ...(ev.fbc ? { fbc: ev.fbc } : {}) },
       custom_data: { method: ev.kind },
     }],
     ...(test && t.capi.testCode ? { test_event_code: t.capi.testCode } : {}),

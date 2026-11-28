@@ -21,6 +21,22 @@ import type { MoveCard } from "@/lib/workspace/rivals"
 const shell: ShellData = { businessName: "Sample Dental (preview)", firstName: "Sam", pro: true, planPro: true, growth: true, autopilot: true, consentStale: false, trackingNeeds: 1, goingOut: 3, socialScheduled: 2, channels: 5, signals: { ok: 4, total: 5 }, doneThisWeek: 6 }
 const AI_EMPTY: AiCard[] = (["chatgpt", "claude", "perplexity", "gemini"] as const).map((e, i) => ({ engine: e, name: ["ChatGPT", "Claude", "Perplexity", "Gemini"][i], mark: ["Ch", "Cl", "Pe", "Ge"][i], state: "unknown", question: null, questionFull: null, names: [], namesFrom: "answer", at: null, answer: null }))
 const AI_SAMPLE: AiCard[] = AI_EMPTY.map((c, i) => (i === 3 ? c : { ...c, state: i === 1 ? "yes" : "no", question: "Sample question about a dentist near me?", questionFull: "Sample question about a dentist near me?", names: i === 1 ? [] : ["Sample Rival A", "Sample Rival B"], at: new Date(Date.now() - 2 * 86_400_000).toISOString(), answer: "Sample answer text (preview only).", citedPages: 6 + i, tone: i === 1 ? "positive" : null, toneQuote: i === 1 ? "Sample quote (preview only)." : null }))
+// Ads ROAS sample (dev preview only, every number is a sample).
+const SAMPLE_ROAS_WIN = (days: 7 | 30) => ({
+  days, roas: days === 7 ? "2.4x" : "3.1x", revenue: days === 7 ? "$150" : "$650", perSale: days === 7 ? "$31" : "$42", saleWord: "won lead",
+  label: "From leads you marked as won.", gap: null, estimate: null,
+  platforms: [{ platform: "Facebook & Instagram", roas: days === 7 ? "2.4x" : "3.1x", revenue: days === 7 ? "$150" : "$650", perSale: "$31", saleWord: "won lead", source: "From leads you marked as won.", others: ["Purchases Google Analytics tied to these ads: $120 from 1 purchase."], estimate: null }],
+  campaigns: [{ name: "Sample campaign", platform: "Facebook & Instagram", spend: days === 7 ? "$62" : "$210", leads: days === 7 ? "3" : "9", revenue: days === 7 ? "$150" : "$650", roas: days === 7 ? "2.4x" : "3.1x" }],
+})
+const SAMPLE_ROAS = {
+  windows: { 7: SAMPLE_ROAS_WIN(7), 30: SAMPLE_ROAS_WIN(30) }, next: null, defaultValue: 250, currency: "USD",
+  leads: [
+    { ref: "m:sample00001", platform: "Facebook & Instagram", when: "Nov 24", title: "Sample Person filled in your ad form", detail: "Facebook & Instagram · Sample campaign", won: { amount: "$250", raw: 250, atValue: true, sent: null } },
+    { ref: "s:sample00002", platform: "Google", when: "Nov 22", title: "Phone tap on /contact", detail: "From a Google ad", won: null },
+  ],
+  uploads: { google: false, meta: false, googleAction: null, test: true, canGoogle: false, canMeta: false },
+} satisfies import("@/lib/workspace/ads-roas").RoasView
+
 const SAMPLE_MOVE: MoveCard = { id: "m1", title: "Sample page title for your site", topic: "Sample", rival: "Sample Rival", rivalHost: "example.com", signals: [{ label: "Quick win · you’re #11 for “sample query”", tone: "g" }, { label: "Buyer intent", tone: "n" }], outline: ["One", "Two"], score: 4, why: "you already show up at #11 on Google for “sample query”" }
 const soon = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString()
 
@@ -52,6 +68,7 @@ export function WsPreview({ page, empty, dark }: { page: string; empty: boolean;
     ] }], budget: empty ? null : 300, campaigns: [], changes: [{ text: "Paused your search campaign", by: "You", when: "Tue", platform: "Google", undo: { op: "enable" } }], plan: null, budgetChip: { label: "Set", action: { type: "say", text: "x" } }, live: false, planState: "ready", planInputs: { b2b: false, local: true, currency: "USD" }, sevenDays: false, fetchFailed: null, beatIt: ["Sample gap: nobody shows the price"],
       firstAds: [{ platform: "Facebook & Instagram", headline: "Sample headline", primary: "Sample primary text for the ad.", image: null, audience: "People near Austin, TX" }, { platform: "Google search", headline: "Sample one | Sample two | Sample three", primary: "Sample description line.", image: null, audience: "Searches near Austin, TX" }],
       watching: [{ page: "Sample Rival", text: "Sample competitor ad text.", days: 64, url: "https://example.com", format: "image" }],
+      roas: empty ? null : SAMPLE_ROAS,
       tired: empty ? [] : [{ campaign: "Sample campaign", label: "Ad 1 in “Sample campaign”", headline: "Sample headline", why: "Ad 1 in “Sample campaign”: people have seen it 3.4 times on average, and its click rate fell from 2.1% in its first week to 1.3% this week (38.1% lower).", reason: "ctr" }] }} />
     if (page === "citations") {
       const wk = ["2026-10-19", "2026-10-26", "2026-11-02", "2026-11-09", "2026-11-16", "2026-11-23"]

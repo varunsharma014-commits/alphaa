@@ -16,9 +16,12 @@ export async function briefingEmailProps(userId: string, firstName: string | nul
   // Same top number as the dashboard: people AI sent them in the last 30 days, and what one customer is worth.
   const hero = await Promise.race([getHero(userId).catch(() => null), new Promise<null>((r) => setTimeout(() => r(null), 20_000))])
   const v = hero?.visitors
+  // Growth with ads: what the ads brought in last week, tracked sales only (lib/roas).
+  const roas = await import("@/lib/roas/sources").then((m) => m.roasEmailLine(userId)).catch(() => null)
   const result = [
     v && v.total > 0 ? `${v.total} ${v.total === 1 ? "person" : "people"} found you through AI in the last 30 days${v.prev !== null && v.total > v.prev ? `, up ${v.total - v.prev} from the month before` : ""}.` : null,
     hero?.value && hero.paysFor && hero.paysFor >= 1 ? `One new customer is worth about $${hero.value.amount.toLocaleString("en-US")} to you, so just one pays for ${hero.paysFor > 24 ? "Alphaa for years" : hero.paysFor === 1 ? "a month of Alphaa" : `${hero.paysFor} months of Alphaa`}.` : null,
+    roas,
   ].filter(Boolean).join(" ") || null
   return {
     firstName: firstName ?? b.firstName,

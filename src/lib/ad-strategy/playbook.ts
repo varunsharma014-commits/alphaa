@@ -9,8 +9,8 @@
 // REVIEW MONTHLY: re-check platform specs, music licence terms, AI-label rules and benchmarks,
 // then bump PLAYBOOK_VERSION and REVIEWED. Plans keep the version they were made with.
 
-export const PLAYBOOK_VERSION = "2026-11.1"
-export const REVIEWED = "2026-11-25"
+export const PLAYBOOK_VERSION = "2026-11.2"
+export const REVIEWED = "2026-11-28"
 export const NEXT_REVIEW = "2026-12-25"
 
 /** Ad formats, best first (Meta "winner" hit rate, Runneth 2026) [vendor]. */
@@ -79,6 +79,8 @@ export const THRESHOLDS = {
     { metric: "Meta link click-through rate, after $60 spent", kill: "under 0.6%", hold: "0.6–1.0%", scale: "1.0% or more" },
     { metric: "LinkedIn video click-through rate, after $250 spent", kill: "under 0.35%", hold: "0.35–0.55%", scale: "0.55% or more" },
     { metric: "LinkedIn completion (videos under 30s)", kill: "under 20%", hold: "20–35%", scale: "35% or more" },
+    // Only with real tracked revenue (lib/roas), never the customer-value estimate. Heuristic: your margin sets your real break-even.
+    { metric: "Return on ad spend (tracked sales ÷ spend), after $60 spent", kill: "under 1x", hold: "1x–2x", scale: "2x or more" },
   ],
   rules: [
     "Run 3–4 genuinely different concepts per ad set, not 10 versions of one hook.",
@@ -88,6 +90,7 @@ export const THRESHOLDS = {
     "Refresh winning hooks every 1–2 weeks: strong hooks reportedly lose about a third of their pull after a week [vendor].",
     "Raise the budget on a proven ad set by at most 20% every 3–4 days.",
     "Judge on real bookings, calls and sales, not the platform's own conversion count.",
+    "When real sales are tracked, move budget by return on ad spend; without them, by cost per lead.",
     "Expect about 1 real winner in 20 creatives [vendor]. That is normal.",
   ],
 } as const

@@ -4,11 +4,14 @@ import { db } from "@/lib/db"
 import { hasPro } from "@/lib/billing"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { EVENT_KINDS, recordEvent, sendCapi, verifyTestToken, type EventKind } from "@/lib/tracking-events"
+import { adClick, cleanClick } from "@/lib/roas/rules"
+import { recordSiteLead } from "@/lib/roas/leads"
 
 // Beacon from the Alphaa tag / WordPress plugin when a lead event fires on an owner's site
 // (navigator.sendBeacon, text/plain, so no CORS preflight). Public by nature: it runs in
 // visitors' browsers. It only counts for Pro and Growth accounts with tracking on, caps volume per IP
-// and per account, and stores only the kind of event and a count per day. The visitor's IP and
+// and per account, and stores only the kind of event and a count per day, plus, for a lead that came
+// from an ad click, one row with the click ids + UTM (lib/roas/leads.ts) so it can be marked won. The visitor's IP and
 // browser string are passed to Meta's Conversions API when the owner set it up, never stored.
 
 const PER_IP_PER_HOUR = 40
@@ -41,9 +44,9 @@ const cors = { "access-control-allow-origin": "*" }
 const done = () => new Response(null, { status: 204, headers: cors })
 
 export async function POST(req: Request) {
-  let data: { id?: string; k?: string; eid?: string; u?: string; gpc?: number; t?: string }
+  let data: { id?: string; k?: string; eid?: string; u?: string; gpc?: number; t?: string; c?: unknown }
   try {
-    data = JSON.parse((await req.text()).slice(0, 2_000))
+    data = JSON.parse((await req.text()).slice(0, 4_000))
   } catch {
     return done()
   }
@@ -75,9 +78,12 @@ export async function POST(req: Request) {
     if (u.protocol === "https:" || u.protocol === "http:") url = `${u.origin}${u.pathname}`.slice(0, 500)
   } catch {}
 
+  // The ad click the visitor arrived with (click ids + UTM, for ROAS). Never kept for GPC browsers.
+  const click = data.gpc === 1 || kind === "test" ? null : cleanClick(data.c)
   // The visitor asked not to be tracked (Global Privacy Control): count it, don't send it to Meta.
-  const capi = data.gpc === 1 || !eid ? null : await sendCapi(settings.tracking, { kind, eid, url, ip: ip || null, ua: req.headers.get("user-agent")?.slice(0, 400) ?? null })
+  const capi = data.gpc === 1 || !eid ? null : await sendCapi(settings.tracking, { kind, eid, url, ip: ip || null, ua: req.headers.get("user-agent")?.slice(0, 400) ?? null, fbc: click?.click.fbc ?? null })
   await recordEvent(id, kind, { eid, capi }).catch((err) => console.error("[tag/event]", err instanceof Error ? err.message : err))
+  if (click && adClick(click.click, click.utm)) await recordSiteLead(id, { kind, page: url, click: click.click, utm: click.utm, eid }).catch((err) => console.error("[tag/event] lead", err instanceof Error ? err.message : err))
   return done()
 }
 

@@ -23,6 +23,7 @@
 // - Ads: tracking_specs [{ "action.type": ["offsite_conversion"], fb_pixel: [pixel_id] }] logs the
 //   pixel's website events against the ad (any objective), so the chosen pixel is always linked.
 import { api } from "@/lib/social/oauth"
+import { META_URL_TAGS, metaPurchase } from "@/lib/roas/rules"
 
 export const GRAPH_VERSION = "v27.0"
 export const G = `https://graph.facebook.com/${GRAPH_VERSION}`
@@ -253,6 +254,8 @@ export async function buildPaused(token: string, s: CampaignSpec, onStep?: (what
           ...(s.igUserId ? { instagram_user_id: s.igUserId } : {}),
           link_data: { image_hash: hash, link, message: a.primaryText, name: a.headline, description: a.description, call_to_action: cta },
         },
+        // Website ads carry UTMs with the campaign's own name, so GA4 and the store can tie sales to it (lib/roas).
+        ...(delivery.form ? {} : { url_tags: META_URL_TAGS }),
       },
     })
     await step("creative", creative.id)
@@ -284,9 +287,12 @@ export type InsightRow = {
   ad_id?: string; adset_id?: string; campaign_id?: string; date_start?: string
   spend?: string; impressions?: string; clicks?: string; inline_link_clicks?: string; reach?: string; frequency?: string
   actions?: Action[]
+  /** Value per action type (purchases carry the sale amount the pixel / Conversions API sent). */
+  action_values?: Action[]
+  purchase_roas?: Action[]
 }
-/** clicks = all clicks; linkClicks = clicks to the website or form (what CTR/CPC are judged on). */
-export type Totals = { spend: number; impressions: number; clicks: number; linkClicks: number; results: number }
+/** clicks = all clicks; linkClicks = clicks to the website or form (what CTR/CPC are judged on). purchases/purchaseValue from action_values (lib/roas/rules.ts metaPurchase). */
+export type Totals = { spend: number; impressions: number; clicks: number; linkClicks: number; results: number; purchases: number; purchaseValue: number }
 
 /** "lead" = every lead (instant form + pixel); traffic campaigns count link clicks. */
 export function resultsOf(row: InsightRow, goal: Goal): number {
@@ -294,13 +300,17 @@ export function resultsOf(row: InsightRow, goal: Goal): number {
   return Number(row.actions?.find((a) => a.action_type === want)?.value ?? 0)
 }
 export function totalsOf(rows: InsightRow[], goal: Goal): Totals {
-  return rows.reduce((t, r) => ({
-    spend: t.spend + Number(r.spend ?? 0), impressions: t.impressions + Number(r.impressions ?? 0), clicks: t.clicks + Number(r.clicks ?? 0),
-    linkClicks: t.linkClicks + Number(r.inline_link_clicks ?? 0), results: t.results + resultsOf(r, goal),
-  }), { spend: 0, impressions: 0, clicks: 0, linkClicks: 0, results: 0 })
+  return rows.reduce((t, r) => {
+    const p = metaPurchase(r)
+    return {
+      spend: t.spend + Number(r.spend ?? 0), impressions: t.impressions + Number(r.impressions ?? 0), clicks: t.clicks + Number(r.clicks ?? 0),
+      linkClicks: t.linkClicks + Number(r.inline_link_clicks ?? 0), results: t.results + resultsOf(r, goal),
+      purchases: t.purchases + p.count, purchaseValue: t.purchaseValue + p.value,
+    }
+  }, { spend: 0, impressions: 0, clicks: 0, linkClicks: 0, results: 0, purchases: 0, purchaseValue: 0 })
 }
 
-const INSIGHT_FIELDS = "campaign_id,adset_id,ad_id,spend,impressions,clicks,inline_link_clicks,reach,frequency,actions"
+const INSIGHT_FIELDS = "campaign_id,adset_id,ad_id,spend,impressions,clicks,inline_link_clicks,reach,frequency,actions,action_values,purchase_roas"
 
 export async function insights(token: string, objectId: string, level: "campaign" | "adset" | "ad", days: 7 | 30): Promise<InsightRow[]> {
   const r = await graph<{ data?: InsightRow[] }>(`${objectId}/insights`, token, {

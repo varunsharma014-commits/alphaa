@@ -127,7 +127,7 @@ export function BriefingView({ data, notice }: { data: BriefingData; notice?: Me
           {data.recapReady ? <button className="ax-btn grad" type="button" onClick={() => setRecap(0)}>▶ Play the recap</button> : <button className="ax-btn grad" type="button" onClick={() => askAlphaa({ say: "Run my marketing for this week" })}>Run my marketing for this week</button>}
         </div>
         {h.total != null && h.missing.length > 0 && <p className="ax-note" style={{ marginTop: 8 }}>{h.missing.join(" ")}</p>}
-        <div className="ax-g3" style={{ marginTop: 22 }}>
+        <div className="ax-g3" style={{ marginTop: 22, ...(data.tiles.length > 3 ? { gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))" } : {}) }}>
           {data.tiles.map((t) => (
             <div className="ax-tile" key={t.key}>
               <div className="k">{t.label}</div>

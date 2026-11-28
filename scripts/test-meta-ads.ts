@@ -134,7 +134,7 @@ async function main() {
 
   await test("totalsOf sums link clicks; kpisOf: CTR, CPC, CPM, conversion rate, cost per conversion", () => {
     const t = totalsOf([{ spend: "50", impressions: "4000", clicks: "120", inline_link_clicks: "80", actions: [{ action_type: "lead", value: "4" }] }, { spend: "50", impressions: "6000", clicks: "80", inline_link_clicks: "20" }], "OUTCOME_LEADS")
-    assert.deepEqual(t, { spend: 100, impressions: 10000, clicks: 200, linkClicks: 100, results: 4 })
+    assert.deepEqual(t, { spend: 100, impressions: 10000, clicks: 200, linkClicks: 100, results: 4, purchases: 0, purchaseValue: 0 })
     const k = kpisOf({ spend: t.spend, impressions: t.impressions, clicks: t.linkClicks, conversions: t.results })
     assert.deepEqual(k, { ctr: 1, cpc: 1, cpm: 10, convRate: 4, costPerConversion: 25 })
     assert.deepEqual(kpisOf({ spend: 0, impressions: 0, clicks: 0, conversions: 0 }), { ctr: null, cpc: null, cpm: null, convRate: null, costPerConversion: null })

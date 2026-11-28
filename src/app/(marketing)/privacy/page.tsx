@@ -38,7 +38,7 @@ Your Customers' Contact Details: If you ask Alphaa to request a review from one 
 
 Website Connector: If you install the Alphaa Connector plugin on your website, it tells us when a visitor arrives from an AI assistant (for example ChatGPT or Perplexity), sending only the assistant's name and the page path. It sets no cookies and sends no IP address or other information about the visitor.
 
-Lead Tracking (Pro and Growth plans): If you turn on tracking, the Alphaa tag or plugin tells us when a visitor to your website taps your phone number or email link or sends a form, sending only the kind of lead and an event ID, never the visitor's personal data, and if you add a Meta Conversions API token we pass that event to Meta with the visitor's IP address and browser string (not stored by us), skipping any visitor whose browser sends Global Privacy Control.`,
+Lead Tracking (Pro and Growth plans): If you turn on tracking, the Alphaa tag or plugin tells us when a visitor to your website taps your phone number or email link or sends a form, sending only the kind of lead and an event ID, never the visitor's personal data, and if you add a Meta Conversions API token we pass that event to Meta with the visitor's IP address and browser string (not stored by us), skipping any visitor whose browser sends Global Privacy Control. If the visitor came from an ad, we also keep the ad's click ID and campaign tags (utm_source, utm_medium, utm_campaign) with that lead, remembered in a first-party cookie for 90 days, so you can mark it as won and, only if you turn it on, report the sale back to Google Ads or Meta; none of this is kept for a browser that sends Global Privacy Control. With WooCommerce, the plugin can also send us your paid order totals and the ad click each came from, never the customer's name, email, address or products.`,
   },
   {
     title: "3. How We Use Your Information",
@@ -318,7 +318,7 @@ export default function PrivacyPage() {
       <Section flush>
       <div className="rd3">
         <h1 className="v3-h1 v3-h1--md">Privacy Policy</h1>
-        <p className="lgl3-updated" style={{ marginBottom: 32 }}>Last updated: November 27, 2026</p>
+        <p className="lgl3-updated" style={{ marginBottom: 32 }}>Last updated: November 28, 2026</p>
 
         <p className="lgl3-note">
           This Privacy Policy explains how Alphaa collects, uses, and protects your personal information. It is designed to comply with GDPR (for EEA users) and CCPA (for California residents). We take your privacy seriously and are committed to transparency about our data practices.

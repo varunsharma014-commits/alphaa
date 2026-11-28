@@ -1,11 +1,14 @@
 // Real Facebook + Instagram results for the ads thread: 7 and 30 days of spend, results and cost
-// per lead, plus impressions, link CTR, CPC, CPM and conversion rate (leads ÷ link clicks), only
+// per lead, plus impressions, link CTR, CPC, CPM, conversion rate (leads ÷ link clicks) and purchase
+// values (action_values, for ROAS) per campaign, only
 // for campaigns I built. Cached 15 minutes per brand so opening the thread is cheap.
 import { kpisOf, type Kpis } from "@/lib/ads-kpis"
 import { insights, totalsOf, type Totals } from "./graph"
 import { countLeads, decToken, getAccess, listCampaigns, liveCampaigns } from "./store"
 
-export type Window = Totals & { leads: number; clicksResults: number; costPerLead: number | null; kpis: Kpis }
+/** One campaign I built, for the per-campaign ROAS table (purchase values from action_values). */
+export type CampaignTotals = { rowId: string; campaignId: string; name: string; spend: number; leads: number; purchases: number; purchaseValue: number }
+export type Window = Totals & { leads: number; clicksResults: number; costPerLead: number | null; kpis: Kpis; byCampaign: CampaignTotals[] }
 export type MetaReport = { currency: string; d7: Window; d30: Window; campaigns: number; at: string }
 
 const cache = new Map<string, { at: number; r: MetaReport | null }>()
@@ -34,6 +37,8 @@ async function build(userId: string): Promise<MetaReport | null> {
       const t = totalsOf(rows, c.plan.goal)
       const w = out[days]
       w.spend += t.spend; w.impressions += t.impressions; w.clicks += t.clicks; w.linkClicks += t.linkClicks
+      w.purchases += t.purchases; w.purchaseValue += t.purchaseValue
+      w.byCampaign.push({ rowId: c.id, campaignId: c.built!.campaignId!, name: c.name, spend: t.spend, leads: c.plan.goal === "OUTCOME_LEADS" ? t.results : 0, purchases: t.purchases, purchaseValue: t.purchaseValue })
       if (c.plan.goal === "OUTCOME_LEADS") w.leads += t.results
       else w.clicksResults += t.results
       w.results += t.results
@@ -48,6 +53,6 @@ async function build(userId: string): Promise<MetaReport | null> {
   return { currency: live[0].currency, d7: out[7], d30: out[30], campaigns: live.length, at: new Date().toISOString() }
 }
 
-const empty = (): Window => ({ spend: 0, impressions: 0, clicks: 0, linkClicks: 0, results: 0, leads: 0, clicksResults: 0, costPerLead: null, kpis: kpisOf({ spend: 0, impressions: 0, clicks: 0, conversions: 0 }) })
+const empty = (): Window => ({ spend: 0, impressions: 0, clicks: 0, linkClicks: 0, results: 0, purchases: 0, purchaseValue: 0, leads: 0, clicksResults: 0, costPerLead: null, kpis: kpisOf({ spend: 0, impressions: 0, clicks: 0, conversions: 0 }), byCampaign: [] })
 
 export function forget(userId: string) { cache.delete(userId) }

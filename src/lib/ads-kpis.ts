@@ -1,6 +1,6 @@
 // Pure ad KPIs from totals the platforms already return (no database, no network). Shared by the
 // Google and Meta reports and the Ads page. A rate is null when its denominator is 0, never a guess.
-// No ROAS: neither platform gets conversion values from us, so it would be made up.
+// ROAS lives in lib/roas (one labelled revenue source per platform, never the customer-value estimate mixed in).
 
 export type KpiInput = { spend: number; impressions: number; clicks: number; conversions: number }
 export type Kpis = {

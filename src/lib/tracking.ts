@@ -12,6 +12,7 @@ import { db } from "@/lib/db"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { wpCall } from "@/lib/connector/wordpress"
 import { safeFetch } from "@/lib/safe-fetch"
+import { CLICK_CAPTURE_JS } from "@/lib/roas/rules"
 
 export type Tracking = {
   ga4?: string
@@ -271,8 +272,9 @@ export function tagTracking(t: Tracking | undefined): { ga4?: string; pixel?: st
  * and sends lead events. Skips the Pixel when the visitor's browser sends Global Privacy Control.
  * The site's own cookie banner / Google Consent Mode still governs GA4.
  *
- * Each lead event also sends a tiny beacon to /api/tag/event (the kind of lead and an event id,
- * nothing about the visitor) so Alphaa can see events fire, and so the Meta Conversions API can
+ * Each lead event also sends a tiny beacon to /api/tag/event (the kind of lead, an event id and the
+ * ad click the visitor arrived with, if any: click ids + UTM, never for GPC browsers; see
+ * CLICK_CAPTURE_JS in lib/roas/rules.ts), nothing about the visitor, so Alphaa can see events fire, and so the Meta Conversions API can
  * send the same event server-side with the same event id (Meta dedupes the pair).
  * ?alphaa_test=<token> on any page fires one test event under its own name (GA4 alphaa_test, Pixel
  * custom AlphaaTest), never a lead or conversion (lib/tracking-health.ts).
@@ -284,6 +286,7 @@ export const TAG_TRACKING_JS = `
       window.__alphaaTracking = 1;
       var has = function (needle) { var s = document.getElementsByTagName('script'); for (var i = 0; i < s.length; i++) { if ((s[i].src || '').indexOf(needle) > -1 || (s[i].text || '').indexOf(needle) > -1) return true; } return false; };
       var gpc = navigator.globalPrivacyControl === true;
+      ${CLICK_CAPTURE_JS}
       window.dataLayer = window.dataLayer || [];
       if (t.ga4 || t.g) { if (!window.gtag) window.gtag = function () { window.dataLayer.push(arguments); }; }
       if (t.ga4) {
@@ -298,7 +301,7 @@ export const TAG_TRACKING_JS = `
       }
       var beacon = function (k, eid, tok) {
         try {
-          var b = JSON.stringify({ id: id, k: k, eid: eid, u: location.origin + location.pathname, gpc: gpc ? 1 : 0, t: tok || undefined });
+          var b = JSON.stringify({ id: id, k: k, eid: eid, u: location.origin + location.pathname, gpc: gpc ? 1 : 0, t: tok || undefined, c: k === 'test' ? undefined : clk() || undefined });
           if (navigator.sendBeacon) navigator.sendBeacon(origin + '/api/tag/event', b);
           else fetch(origin + '/api/tag/event', { method: 'POST', body: b, keepalive: true, mode: 'no-cors' });
         } catch (e) {}

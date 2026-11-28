@@ -174,7 +174,28 @@ export async function getTiles(user: User): Promise<Tile[]> {
   } else {
     tiles.push({ key: "rating", label: "Google rating", value: null, delta: null, empty: "Connect your Google listing to see reviews.", href: "/api/integrations/google/connect?go=1" })
   }
+
+  // Return on ad spend, once ads have spent (lib/roas): tracked only, else how to turn it on.
+  if (hasGrowth(user)) {
+    const roas = await roasTile(user).catch(() => null)
+    if (roas) tiles.unshift(roas)
+  }
   return tiles
+}
+
+async function roasTile(user: User): Promise<Tile | null> {
+  const [meta, gacc] = await Promise.all([getAccess(user.id).catch(() => null), import("@/lib/gads/store").then((m) => m.getGadsAccount(user.id)).catch(() => null)])
+  if (!meta && !gacc?.customerId) return null
+  const { getRoas } = await import("@/lib/roas/sources")
+  const { fmtRoas } = await import("@/lib/roas/rules")
+  const r = await within(getRoas(user), 3000, null)
+  if (!r) return null
+  const w = r.windows[30]
+  if (!w.platforms.some((p) => p.spend > 0)) return null
+  const o = w.overall
+  return o.roas !== null && o.revenue !== null && o.currency
+    ? { key: "roas", label: "Tracked ROAS · 30 days", value: fmtRoas(o.roas), delta: `${new Intl.NumberFormat("en-US", { style: "currency", currency: o.currency, maximumFractionDigits: 0 }).format(o.revenue)} in sales`, empty: "", href: "/dashboard/ads" }
+    : { key: "roas", label: "Return on ad spend", value: null, delta: null, empty: r.next ?? "Mark leads as won to see what your ads earn.", href: "/dashboard/ads" }
 }
 
 /** Scheduled social and Google posts: they go out on their own, and Stop holds them. */

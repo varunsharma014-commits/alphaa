@@ -3,7 +3,7 @@
  * Plugin Name:       Alphaa Connector
  * Plugin URI:        https://alphaa.app
  * Description:       Lets your Alphaa agent publish the pages, structured data and llms.txt you approve — and undo them in one tap. Also tells you when ChatGPT, Perplexity, Claude or Gemini send you a visitor.
- * Version:           1.5.0
+ * Version:           1.6.0
  * Requires at least: 5.6
  * Requires PHP:      7.4
  * Author:            Alphaa
@@ -14,7 +14,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('ALPHAA_VERSION', '1.5.0');
+define('ALPHAA_VERSION', '1.6.0');
 if (!defined('ALPHAA_API')) define('ALPHAA_API', 'https://alphaa.app');
 
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
@@ -66,6 +66,7 @@ add_action('rest_api_init', function () {
     'headers' => 'alphaa_rest_headers',
     'tracking' => 'alphaa_rest_tracking',
     'update' => 'alphaa_rest_update',
+    'orders' => 'alphaa_rest_orders',
   );
   foreach ($routes as $route => $cb) {
     register_rest_route('alphaa/v1', '/' . $route, array(
@@ -90,6 +91,7 @@ function alphaa_rest_status() {
     'indexnow' => (string) get_option('alphaa_indexnow', ''),
     'seoPlugin' => alphaa_seo_plugin(),
     'sitemap' => alphaa_sitemap_url(),
+    'woo' => class_exists('WooCommerce'),
   );
 }
 
@@ -315,6 +317,77 @@ function alphaa_rest_undo(WP_REST_Request $req) {
   return array('ok' => true);
 }
 
+/* ─── WooCommerce orders for ad ROAS (1.6.0) ──────────────────────────── */
+
+// The ad click a visitor arrived with (cookie alphaa_clk, set by the tracking script; never for
+// Global Privacy Control browsers), cleaned to ids and UTM words only.
+function alphaa_click_cookie() {
+  if (empty($_COOKIE['alphaa_clk'])) return null;
+  $raw = json_decode(wp_unslash((string) $_COOKIE['alphaa_clk']), true);
+  if (!is_array($raw)) return null;
+  $out = array();
+  foreach (array('g', 'b', 'w', 'f', 'fbc') as $k) {
+    if (isset($raw[$k]) && is_string($raw[$k]) && preg_match('/^[A-Za-z0-9._\-]{6,300}$/', $raw[$k])) $out[$k] = $raw[$k];
+  }
+  foreach (array('s', 'm', 'c') as $k) {
+    if (isset($raw[$k]) && is_string($raw[$k])) $out[$k] = substr(sanitize_text_field($raw[$k]), 0, 200);
+  }
+  if (isset($raw['t']) && is_numeric($raw['t'])) $out['t'] = (int) $raw['t'];
+  if (!empty($_COOKIE['_fbc']) && preg_match('/^fb\.\d\.\d{10,16}\.[A-Za-z0-9._\-]{6,300}$/', (string) $_COOKIE['_fbc'])) $out['fbc'] = (string) $_COOKIE['_fbc'];
+  return count($out) ? $out : null;
+}
+function alphaa_save_order_click($order) {
+  if (!is_object($order) || !method_exists($order, 'update_meta_data')) return;
+  $c = alphaa_click_cookie();
+  if ($c) $order->update_meta_data('_alphaa_click', wp_json_encode($c));
+}
+add_action('woocommerce_checkout_create_order', 'alphaa_save_order_click', 10, 1);
+add_action('woocommerce_store_api_checkout_update_order_meta', 'alphaa_save_order_click', 10, 1);
+
+// Paid orders from the last N days (max 90): total minus refunds, currency, date and the ad click /
+// UTM it came from. Only attributed orders are listed; the rest are a count and a sum. No names,
+// emails, addresses or products ever leave the site.
+function alphaa_rest_orders(WP_REST_Request $req) {
+  if (!class_exists('WooCommerce') || !function_exists('wc_get_orders')) return array('ok' => true, 'woo' => false);
+  $p = $req->get_json_params();
+  $days = isset($p['days']) ? max(1, min(90, intval($p['days']))) : 31;
+  $orders = wc_get_orders(array(
+    'status' => array('wc-processing', 'wc-completed'),
+    'date_created' => '>' . (time() - $days * DAY_IN_SECONDS),
+    'limit' => 1000,
+    'type' => 'shop_order',
+  ));
+  $all = array('count' => 0, 'total' => 0.0);
+  $list = array();
+  foreach ($orders as $o) {
+    if (!is_object($o) || !method_exists($o, 'get_total')) continue;
+    $total = (float) $o->get_total() - (float) $o->get_total_refunded();
+    if ($total <= 0) continue;
+    $all['count']++;
+    $all['total'] += $total;
+    $click = json_decode((string) $o->get_meta('_alphaa_click'), true);
+    if (!is_array($click)) $click = array();
+    // WooCommerce's own order attribution (8.5+) when our cookie wasn't there.
+    if (!isset($click['m'])) {
+      $src = (string) $o->get_meta('_wc_order_attribution_utm_source');
+      $med = (string) $o->get_meta('_wc_order_attribution_utm_medium');
+      $cmp = (string) $o->get_meta('_wc_order_attribution_utm_campaign');
+      if ($med !== '') { $click['s'] = substr(sanitize_text_field($src), 0, 200); $click['m'] = substr(sanitize_text_field($med), 0, 200); if ($cmp !== '') $click['c'] = substr(sanitize_text_field($cmp), 0, 200); }
+    }
+    if (!count($click)) continue;
+    $created = $o->get_date_created();
+    $list[] = array(
+      'id' => (string) $o->get_id(),
+      'at' => $created ? $created->date('c') : '',
+      'total' => round($total, 2),
+      'currency' => (string) $o->get_currency(),
+      'click' => $click,
+    );
+  }
+  $all['total'] = round($all['total'], 2);
+  return array('ok' => true, 'woo' => true, 'currency' => get_woocommerce_currency(), 'all' => $all, 'orders' => $list);
+}
+
 /* ─── What visitors and crawlers see ─────────────────────────────────── */
 
 // Structured data in <head>: site-wide blocks plus any page-specific FAQ.
@@ -355,7 +428,9 @@ add_action('wp_head', function () {
   // Events go through whatever Google tag / Pixel the page has, including ones loaded by Tag Manager.
   $cfg = array('id' => alphaa_site_id(), 'api' => ALPHAA_API . '/api/tag/event', 'events' => $events);
   echo "<script data-alphaa-tracking>(function(c){var gpc=navigator.globalPrivacyControl===true;window.dataLayer=window.dataLayer||[];if(!window.gtag)window.gtag=function(){window.dataLayer.push(arguments);};"
-    . "var beacon=function(k,eid,tok){if(!c.id)return;try{var b=JSON.stringify({id:c.id,k:k,eid:eid,u:location.origin+location.pathname,gpc:gpc?1:0,t:tok||undefined});if(navigator.sendBeacon)navigator.sendBeacon(c.api,b);else fetch(c.api,{method:'POST',body:b,keepalive:true,mode:'no-cors'});}catch(e){}};"
+    // Remembers the ad click a visitor arrived with (same code as CLICK_CAPTURE_JS in Alphaa's lib/roas/rules.ts). Nothing for GPC browsers.
+    . "var clk=(function(){if(gpc)return function(){return null;};var now=Date.now(),q=location.search,c=null;var g=function(n){var m=q.match(new RegExp('[?&]'+n+'=([^&#]{1,300})'));try{return m?decodeURIComponent(m[1]):'';}catch(e){return '';}};var n={g:g('gclid'),b:g('gbraid'),w:g('wbraid'),f:g('fbclid'),s:g('utm_source'),m:g('utm_medium'),c:g('utm_campaign')};try{var raw=(document.cookie.match(/(?:^|; )alphaa_clk=([^;]*)/)||[])[1];c=raw?JSON.parse(decodeURIComponent(raw)):null;}catch(e){c=null;}if(n.g||n.b||n.w||n.f||n.m){c={t:now};for(var k in n)if(n[k])c[k]=String(n[k]).slice(0,300);try{document.cookie='alphaa_clk='+encodeURIComponent(JSON.stringify(c))+'; max-age=7776000; path=/; SameSite=Lax'+(location.protocol==='https:'?'; Secure':'');}catch(e){}}if(c&&(!c.t||now-c.t>7776000000))c=null;return function(){var o=c?JSON.parse(JSON.stringify(c)):null;var f=(document.cookie.match(/(?:^|; )_fbc=([^;]{1,300})/)||[])[1];if(f){o=o||{};o.fbc=f;}return o;};})();"
+    . "var beacon=function(k,eid,tok){if(!c.id)return;try{var b=JSON.stringify({id:c.id,k:k,eid:eid,u:location.origin+location.pathname,gpc:gpc?1:0,t:tok||undefined,c:k==='test'?undefined:(clk()||undefined)});if(navigator.sendBeacon)navigator.sendBeacon(c.api,b);else fetch(c.api,{method:'POST',body:b,keepalive:true,mode:'no-cors'});}catch(e){}};"
     . "var send=function(m){var eid='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);var lead=m==='form'||m==='hubspot'||m==='typeform'||m==='calendly';try{window.gtag('event','generate_lead',{method:m});}catch(e){}try{if(window.fbq&&!gpc)fbq('track',lead?'Lead':'Contact',{method:m},{eventID:eid});}catch(e){}beacon(m,eid);};"
     . "var tok=(location.search.match(/[?&]alphaa_test=([A-Za-z0-9._-]{8,80})/)||[])[1];if(tok)setTimeout(function(){var eid='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);try{window.gtag('event','alphaa_test',{debug_mode:true});}catch(e){}try{if(window.fbq&&!gpc)fbq('trackCustom','AlphaaTest',{},{eventID:eid});}catch(e){}beacon('test',eid,tok);},2500);"
     . "if(!c.events)return;"

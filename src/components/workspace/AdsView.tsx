@@ -6,6 +6,7 @@ import { testingPlan, LINKEDIN_MIN_MONTHLY } from "@/lib/ad-strategy/rules"
 import { THRESHOLDS } from "@/lib/ad-strategy/playbook"
 import { askAlphaa, toast } from "@/lib/workspace/events"
 import { Empty, PlanGate, Tabs, useInspector } from "./ui"
+import { RoasCampaigns, RoasKpis, RoasLeads } from "./RoasPanel"
 
 // Ads: show the ads before asking for money. "Your first ads" (from the ad plan) is the default
 // while nothing is live; the limit is a slider that re-splits with the real testingPlan() rules;
@@ -21,6 +22,7 @@ const GUARDRAILS = [
   { rule: "New campaigns are built paused. Nothing spends until it’s turned on through your approval or Autopilot.", where: "Google: createFromPlan · Meta: build" },
   { rule: "On Meta, an ad that spent 2 days of its budget with no result is paused, but never every ad in a campaign.", where: "Meta weekly tune (PAUSE_AFTER_DAYS_OF_BUDGET)" },
   { rule: "On Meta, 20% of the daily budget moves from the weakest campaign to the best when the best gets results for a third less or better.", where: "Meta weekly tune" },
+  { rule: "When real sales are tracked (purchase values, store orders, Google Analytics or leads you marked won), budgets follow return on ad spend instead: 20% moves to the campaign that brings back 1.5x more per dollar, and an ad that spent 4 days of budget with no sale while others sold is paused. My estimate from your customer value never moves money.", where: "Meta weekly tune (decideTuning, lib/roas)" },
   { rule: "On Google, a search costing half a day’s budget (at least 5) with 3+ clicks and no conversion is blocked.", where: "Google weekly tune (decideTuning)" },
   { rule: "On Google, a keyword that cost 3 days’ budget (at least 30) with no conversion is paused, always leaving a few running.", where: "Google weekly tune (decideTuning)" },
   { rule: "Google cuts only happen when conversion tracking is on: without it, “0 conversions” means “not measured”.", where: "Google weekly tune" },
@@ -146,11 +148,12 @@ export function AdsView({ data }: { data: AdsData | null }) {
               <div><button className="ax-btn s sm" type="button" onClick={() => askAlphaa({ topic: "ads", label: "Write fresh hooks for my tired ads" })}>Write fresh hooks</button></div>
             </section>
           )}
-          {data.results.length > 0 && (
+          {(data.results.length > 0 || data.roas) && (
             <div style={{ display: "flex", gap: 6 }} role="group" aria-label="Period">
               {([7, 30] as const).map((d) => <button key={d} type="button" className={`ax-btn sm ${win === d ? "p" : "s"}`} onClick={() => setWin(d)}>Last {d} days</button>)}
             </div>
           )}
+          {data.roas && <RoasKpis roas={data.roas} win={win} />}
           {data.results.map((r) => {
             const w = r.windows?.find((x) => x.days === win)
             const conv = r.platform === "Google Ads" ? "conversion" : "lead"
@@ -177,6 +180,8 @@ export function AdsView({ data }: { data: AdsData | null }) {
             </section>
             )
           })}
+          {data.roas && <RoasCampaigns roas={data.roas} win={win} />}
+          {data.roas && <RoasLeads roas={data.roas} />}
           {!data.sevenDays && (
             <>
               <div className="ax-h2" style={{ marginTop: 6 }}><div><h2>Competitor ads I’m watching</h2><p>Live ads from your competitors, from the public Ad Library. Results fill in after a week of your own spend.</p></div></div>

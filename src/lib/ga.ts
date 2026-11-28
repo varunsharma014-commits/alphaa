@@ -308,3 +308,35 @@ export async function getTrafficSummary(
     return null
   }
 }
+
+/** Purchase revenue by session source / medium and campaign, for ROAS (lib/roas). Last N days, not today. Null on any failure. */
+export type AdRevenueRow = { sourceMedium: string; campaign: string; revenue: number; purchases: number }
+export async function getAdRevenue(
+  integration: StoredIntegration & { gaPropertyId?: string | null },
+  days: 7 | 30,
+): Promise<{ currency: string | null; rows: AdRevenueRow[] } | null> {
+  if (!integration.gaPropertyId) return null
+  try {
+    const auth = await getAuthenticatedClient(integration)
+    const analyticsdata = google.analyticsdata({ version: 'v1beta', auth })
+    const res = await analyticsdata.properties.runReport({
+      property: `properties/${integration.gaPropertyId}`,
+      requestBody: {
+        dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'yesterday' }],
+        dimensions: [{ name: 'sessionSourceMedium' }, { name: 'sessionCampaignName' }],
+        metrics: [{ name: 'purchaseRevenue' }, { name: 'ecommercePurchases' }],
+        limit: '500',
+      },
+    })
+    const rows: AdRevenueRow[] = (res.data.rows ?? []).map((r) => ({
+      sourceMedium: r.dimensionValues?.[0]?.value ?? '',
+      campaign: r.dimensionValues?.[1]?.value ?? '',
+      revenue: Number(r.metricValues?.[0]?.value ?? 0) || 0,
+      purchases: Number(r.metricValues?.[1]?.value ?? 0) || 0,
+    }))
+    return { currency: res.data.metadata?.currencyCode ?? null, rows }
+  } catch (err) {
+    console.error('[GA] getAdRevenue error:', err instanceof Error ? err.message : err)
+    return null
+  }
+}
