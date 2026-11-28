@@ -70,7 +70,7 @@ export async function POST(req: Request) {
 
   const [evidence, activity] = await Promise.all([
     getEngineEvidence({ id: user.id, email: user.email }),
-    db.mockActivity.findMany({ where: { userId: user.id, type: { notIn: ["sandbox_query", "post_revision", "image_source"] } }, orderBy: { createdAt: "desc" }, take: 25 }),
+    db.mockActivity.findMany({ where: { userId: user.id, type: { notIn: ["sandbox_query", "post_revision", "image_source", "topic_clusters"] } }, orderBy: { createdAt: "desc" }, take: 25 }),
   ])
 
   // Only gaps from real competitors (shared gate: lib/competitor-relevance.ts).

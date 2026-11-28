@@ -10,6 +10,8 @@ import { latestQuestionScan } from "@/lib/questions"
 import { ensureVoice, voiceFor, voiceText } from "@/lib/voice"
 import { enforce, finishBlog, finishSocial } from "@/lib/guardrails"
 import { buildBrief, briefNumbersText, type ContentBrief } from "@/lib/content-brief"
+import { nextClusterArticle } from "@/lib/clusters"
+import { withRelated } from "@/lib/cluster-rules"
 import { allowedNumbers, cleanLinks, dropSentencesWith, flagNumbers, numberProblems } from "@/lib/content-check"
 
 const anthropic = claudeFor("blog")
@@ -66,6 +68,8 @@ export type WrittenPost = {
   topic: string
   /** The brief it followed (lib/content-brief.ts), when one was made. */
   briefId?: string | null
+  /** The Topic plan article it was written for ("<mapId>:<articleId>", lib/clusters.ts). */
+  cluster?: string | null
   /** What the checks did: numbers "ok" | "fixed" (retry) | "removed" | "flagged" (left as [check: …]). */
   checks?: { numbers: "ok" | "fixed" | "removed" | "flagged"; unverified: string[]; links: number }
 }
@@ -77,11 +81,19 @@ export type WrittenPost = {
  * Every number must come from the facts or the brief (lib/content-check.ts): one retry with the
  * problems named, then unverified numbers are removed (autopublish) or flagged as [check: …].
  */
-async function writePostUnmetered(user: U, topic?: string, opts: { noPlaceholders?: boolean; brief?: ContentBrief | null; gapId?: string | null; competitor?: string | null } = {}): Promise<WrittenPost> {
+async function writePostUnmetered(user: U, topic?: string, opts: { noPlaceholders?: boolean; brief?: ContentBrief | null; gapId?: string | null; competitor?: string | null; cluster?: string | null } = {}): Promise<WrittenPost> {
   // Write in the owner's chosen voice (learned from their own words the first time).
   const learned = await ensureVoice(user.id).catch(() => null)
   const voice = learned ? voiceText(learned) : null
   let t = topic
+  let cluster = opts.cluster ?? null
+  let gapId = opts.gapId ?? null
+  let competitor = opts.competitor ?? null
+  // My own pick: the next unwritten article in the brand's Topic plan comes first (lib/clusters.ts).
+  if (!t) {
+    const next = await nextClusterArticle(user.id).catch(() => null)
+    if (next) { t = next.title; cluster = next.ref; gapId ??= next.gapId; competitor ??= next.competitor }
+  }
   if (!t) {
     // Prefer a tracked question the AIs didn't name us for; else a content gap.
     const qs = await latestQuestionScan(user.id)
@@ -111,7 +123,7 @@ async function writePostUnmetered(user: U, topic?: string, opts: { noPlaceholder
   }
   let brief = opts.brief
   if (brief === undefined) {
-    brief = await buildBrief(user, { topic: t, gapId: opts.gapId ?? null, competitor: opts.competitor ?? null }).catch((err) => {
+    brief = await buildBrief(user, { topic: t, gapId, competitor, cluster }).catch((err) => {
       console.warn("[content] brief skipped:", err instanceof Error ? err.message : err)
       return null
     })
@@ -128,7 +140,7 @@ Format: first line "TITLE: <title, under 65 characters>", second line "EXCERPT: 
 - Open with a 2-3 sentence paragraph that answers the question directly (answer first, no preamble).
 - Then these sections in this order as "## " headings (with the "### " sub-headings listed), each starting with a sentence that answers its heading directly:
 ${brief.outline.map((s, i) => `  ${i + 1}. ${s.h2}${s.h3.length ? `\n${s.h3.map((h) => `     ### ${h}`).join("\n")}` : ""}`).join("\n")}
-${brief.internalLinks.length ? `- Link to these pages on the business's own site, each exactly once, as Markdown links inside the section named, with this anchor text:\n${brief.internalLinks.map((l) => `  [${l.anchor}](${l.url}) in “${l.section}”`).join("\n")}\n- No other links.` : "- No links."}
+${brief.internalLinks.length ? `- Link to these pages on the business's own site, each exactly once, as Markdown links inside the section named, with this anchor text:\n${brief.internalLinks.map((l) => `  [${l.anchor}](${l.url})${l.section ? ` in “${l.section}”` : " where it fits naturally"}`).join("\n")}\n- No other links.` : "- No links."}${brief.cluster ? `\n- This page is part of the business's topic “${brief.cluster.pillar}”${brief.cluster.isPillar ? " (it is the main guide; the linked pages go deeper)" : " (the main guide is linked above when it's live)"}.` : ""}
 - Short paragraphs. Use "- " bullets, "1." numbered steps or one small Markdown table (| a | b |) only where they help the reader. No images. Bold sparingly.
 - Mention the business naturally once or twice${user.city?.trim() ? `, with its city` : ""}. Write in the business's own voice (HOW TO WRITE below).
 - End with "## Frequently asked questions" and these questions as "### " headings, each answered in 2-3 sentences:
@@ -154,16 +166,21 @@ ${facts}`
   }
   const problemsOf = (p: { title: string; excerpt: string; markdown: string }) => numberProblems(`${p.title}\n${p.excerpt}\n${p.markdown}`, allowed)
   const linked = (md: string) => linkTargets.filter((u) => md.includes(`](${u}`)).length
+  // Topic plan pages (pillar + live siblings) are required, not optional (lib/clusters.ts).
+  const mustLink = brief?.internalLinks.filter((l) => l.cluster) ?? []
+  const missingMust = (md: string) => mustLink.filter((l) => !md.includes(`](${l.url}`))
 
   const first = await anthropic.messages.create({ model: WRITER, max_tokens: brief && brief.wordTarget > 1100 ? 4500 : 3200, messages: [{ role: "user", content: prompt }] })
   let post = parse(text(first))
   let bad = problemsOf(post)
   let numbers: NonNullable<WrittenPost["checks"]>["numbers"] = "ok"
   const missingLinks = linkTargets.length && linked(post.markdown) === 0
-  if (bad.length || missingLinks) {
+  const missingTopic = missingMust(post.markdown)
+  if (bad.length || missingLinks || missingTopic.length) {
     const why = [
       bad.length ? `It uses numbers that aren't in the facts: ${bad.join(", ")}. Remove them or say it without a number.` : "",
       missingLinks ? `It doesn't link to the business's pages. Add these links where they fit: ${brief!.internalLinks.map((l) => `[${l.anchor}](${l.url})`).join(", ")}.` : "",
+      !missingLinks && missingTopic.length ? `It must also link to these pages on the same topic, each once where it fits: ${missingTopic.map((l) => `[${l.anchor}](${l.url})`).join(", ")}.` : "",
     ].filter(Boolean).join(" ")
     const second = await anthropic.messages.create({
       model: WRITER,
@@ -181,7 +198,10 @@ ${facts}`
     if (opts.noPlaceholders) { post = { ...post, markdown: dropSentencesWith(post.markdown, bad), excerpt: dropSentencesWith(post.excerpt, bad), title: post.title }; numbers = "removed" }
     else { post = { ...post, markdown: flagNumbers(post.markdown, bad) }; numbers = "flagged" }
   }
-  return { ...post, topic: t, briefId: brief?.id ?? null, checks: { numbers, unverified: bad, links: linked(post.markdown) } }
+  // Still missing a Topic plan link after the retry: one plain "Related reading" line before the FAQ.
+  const still = missingMust(post.markdown)
+  if (still.length) post = { ...post, markdown: withRelated(post.markdown, still) }
+  return { ...post, topic: t, briefId: brief?.id ?? null, cluster: brief?.cluster?.ref ?? cluster, checks: { numbers, unverified: bad, links: linked(post.markdown) } }
 }
 
 /** writeMeta, counted against the brand's plan quota (content_piece:draft; lib/quotas.ts). Throws a QuotaError when out. */

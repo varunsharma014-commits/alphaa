@@ -10,6 +10,7 @@ import { writePost } from "@/lib/content"
 import { blogCoverFor } from "@/lib/blog-cover"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { publishContent } from "@/lib/connector/publish"
+import { originalityGate } from "@/lib/originality"
 
 // Fresh content on the plan's schedule: Starter 2 posts a month (1st, 15th),
 // Pro / Growth 4 (1st, 8th, 15th, 22nd). Each is a draft waiting for the
@@ -40,6 +41,9 @@ export async function GET(req: Request) {
         const img = await blogCoverFor(u.id, { title: p.title, topic: p.topic })
         const draft = await db.mockActivity.create({ data: { userId: u.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null } } })
         if (auto && !hasPlaceholders(p.markdown)) {
+          // Too close to another page (lib/originality.ts): it stays a draft with the reason.
+          const gate = await originalityGate(u.id, { draftId: draft.id })
+          if (!gate.ok) { console.warn(`[cron/content] held ${u.id}: ${gate.result.reason}`); continue }
           try {
             const r = await publishContent(u.id, { kind: "post", title: p.title, markdown: p.markdown, excerpt: p.excerpt, imageId: img?.id }, `Published “${p.title}” automatically`)
             await db.mockActivity.update({ where: { id: draft.id }, data: { metadata: { ...p, status: "published", auto: true, url: r.url, changeId: r.changeId, imageId: img?.id ?? null } } })

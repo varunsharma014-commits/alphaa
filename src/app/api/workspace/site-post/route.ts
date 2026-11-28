@@ -22,5 +22,5 @@ export async function POST(req: Request) {
   }
   const r = await approveSitePost(user.id, input.draftId)
   if (!r.ok && r.banned) return NextResponse.json({ error: r.error, banned: r.banned, confirmBanned: true }, { status: 409 })
-  return r.ok ? NextResponse.json({ ok: true, url: r.url ?? null }) : NextResponse.json({ error: r.error ?? "Your site didn’t accept it. Nothing changed.", ...(r.quota ? { quota: true, buy: true } : {}) }, { status: r.quota ? 429 : 409 })
+  return r.ok ? NextResponse.json({ ok: true, url: r.url ?? null }) : NextResponse.json({ error: r.error ?? "Your site didn’t accept it. Nothing changed.", ...(r.quota ? { quota: true, buy: true } : {}), ...(r.held ? { held: true } : {}) }, { status: r.quota ? 429 : 409 })
 }

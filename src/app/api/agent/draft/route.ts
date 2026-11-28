@@ -34,6 +34,8 @@ const body = z.object({
   // post: the brief to follow (lib/content-brief.ts) and the Research gap card it came from.
   briefId: z.string().max(40).optional(),
   gapId: z.string().max(80).optional(),
+  // post: a Topic plan article (lib/clusters.ts), stored on the draft as metadata.cluster.
+  cluster: z.string().max(80).optional(),
 })
 
 export async function POST(req: Request) {
@@ -64,7 +66,7 @@ export async function POST(req: Request) {
   const mode = input.mode
   if (mode === "gbp" && !hasPro(user)) return NextResponse.json({ error: "Google listing posts come with the Pro plan." }, { status: 403 })
   if (mode === "post" || mode === "gbp" || mode === "social") {
-    const r = await once(`draft:${user.id}:${mode}:${input.topic.trim().toLowerCase()}`, () => writeDraft(user, mode, input.topic, { briefId: input.briefId, gapId: input.gapId, competitor: input.competitor }))
+    const r = await once(`draft:${user.id}:${mode}:${input.topic.trim().toLowerCase()}`, () => writeDraft(user, mode, input.topic, { briefId: input.briefId, gapId: input.gapId, competitor: input.competitor, cluster: input.cluster }))
     if (r.ok) return NextResponse.json(r.body)
     if (!r.quota && r.rule) return NextResponse.json({ error: r.rule }, { status: 409 })
     return r.quota ? NextResponse.json({ error: r.quota, quota: true, buy: true }, { status: 429 }) : NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
@@ -124,7 +126,7 @@ ${facts}`,
 const RECENT_MS = 15 * 60_000
 type DraftUser = NonNullable<Awaited<ReturnType<typeof db.user.findUnique>>>
 
-async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topic: string, o: { briefId?: string; gapId?: string; competitor?: string } = {}): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false; quota?: string; rule?: string }> {
+async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topic: string, o: { briefId?: string; gapId?: string; competitor?: string; cluster?: string } = {}): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false; quota?: string; rule?: string }> {
   const since = new Date(Date.now() - RECENT_MS)
   try {
     if (mode === "post") {
@@ -135,7 +137,7 @@ async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topi
       }
       // The brief the sheet already showed; else writePost plans one itself (gap card → their real page).
       const brief = o.briefId ? await getBrief(user.id, o.briefId) : undefined
-      const p = await writePost(user, topic === "auto" ? undefined : topic, { brief: brief ?? undefined, gapId: o.gapId ?? null, competitor: o.competitor ?? null })
+      const p = await writePost(user, topic === "auto" ? undefined : topic, { brief: brief ?? undefined, gapId: o.gapId ?? null, competitor: o.competitor ?? null, cluster: o.cluster ?? null })
       const img = await blogCoverFor(user.id, { title: p.title, topic: p.topic })
       const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null, requestTopic: topic } } })
       return { ok: true, body: { title: p.title, text: p.markdown, excerpt: p.excerpt, draftId: row.id, image: img?.url ?? null, imageAlt: img?.alt ?? null, brief: brief ?? (await getBrief(user.id, p.briefId)), checks: p.checks ?? null } }

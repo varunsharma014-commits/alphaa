@@ -14,11 +14,12 @@ import { hasPro } from "@/lib/billing"
 import { markPublished, textToPublish } from "@/lib/draft-versions"
 import { enforce, finishReview } from "@/lib/guardrails"
 import { ownerBannedHit } from "@/lib/owner-edit-check"
+import { originalityGate } from "@/lib/originality"
 
 const anthropic = claudeFor("approvals")
 
 export type ApprovalKind = "review" | "gbp" | "post"
-export type ApprovalResult = { ok: true; url?: string | null } | { ok: false; error: string; /** Out of a plan quota: the dashboard offers "Buy more". */ quota?: boolean; /** The owner's text uses one of their banned words: they confirm, then it's sent again (lib/owner-edit-check.ts). */ banned?: string }
+export type ApprovalResult = { ok: true; url?: string | null } | { ok: false; error: string; /** Out of a plan quota: the dashboard offers "Buy more". */ quota?: boolean; /** The owner's text uses one of their banned words: they confirm, then it's sent again (lib/owner-edit-check.ts). */ banned?: string; /** Held by the originality check (lib/originality.ts): "Rewrite these lines". */ held?: boolean }
 
 /** Review replies are written ahead of time (overnight) and kept here until approved. */
 export const REVIEW_DRAFT = "review_draft"
@@ -143,6 +144,9 @@ export async function approveSitePost(userId: string, draftId: string, text?: st
   if (m.status === "published") return { ok: true, url: m.url ?? null }
   // A refresh / link fix of an existing page: update that page in place (lib/seo/refresh.ts).
   if (m.refresh?.url) {
+    // A refresh is long-form too: it goes through the originality check (a link fix doesn't).
+    const gate = await originalityGate(userId, { draftId })
+    if (!gate.ok) return { ok: false, error: gate.error, held: true }
     const { publishRefreshDraft } = await import("@/lib/seo/refresh")
     const r = await publishRefreshDraft(userId, draftId)
     return r.ok ? { ok: true, url: r.url } : { ok: false, error: r.error, ...(r.quota ? { quota: true } : {}) }
@@ -156,6 +160,9 @@ export async function approveSitePost(userId: string, draftId: string, text?: st
     const hit = await ownerBannedHit(userId, [pub.title, pub.markdown])
     if (hit) return { ok: false, error: hit.message, banned: hit.word }
   }
+  // Too close to another page = held as a draft with the reason (Autopilot and the owner alike).
+  const gate = await originalityGate(userId, { draftId, text: pub.markdown })
+  if (!gate.ok) return { ok: false, error: gate.error, held: true }
   const res = await pushChange(user, { op: "post", title: pub.title, text: pub.markdown, draftId })
   const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string }
   if (!res.ok || !data.url) return { ok: false, error: data.error ?? "Your site didn’t accept it. Nothing changed.", ...(res.status === 429 ? { quota: true } : {}) }

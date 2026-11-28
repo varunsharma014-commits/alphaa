@@ -6,6 +6,8 @@ import { hasPlaceholders } from "@/lib/brackets"
 import { mdToHtml } from "@/lib/markdown"
 import { gradeContent } from "@/lib/content-grade"
 import { GradeCard } from "@/components/editor/GradeCard"
+import { OriginalityCard } from "@/components/editor/OriginalityCard"
+import type { OriginalityResult } from "@/lib/originality-rules"
 import { DRAFT_SAVED_EVENT, type DraftSavedDetail } from "@/components/editor/events"
 import { AI_NOTE, askAlphaa, toast } from "@/lib/workspace/events"
 import type { MoveCard } from "@/lib/workspace/rivals"
@@ -26,7 +28,8 @@ type Draft = { title: string; text: string; excerpt: string | null; draftId: str
 const DraftEditor = dynamic(() => import("@/components/editor/DraftEditor").then((m) => m.DraftEditor), { ssr: false })
 const STEPS = ["Reading what their page covers", "Planning the outline from your site’s facts", "Writing it in your voice", "Checking every number against your facts", "Making the cover image"]
 
-export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: MoveCard; autopilot: boolean; siteConnected: boolean; onClose: () => void }) {
+// `cluster`: a Topic plan article (lib/clusters.ts): the brief links it to its pillar + live siblings.
+export function DraftSheet({ move, autopilot, siteConnected, onClose, cluster = null }: { move: MoveCard; autopilot: boolean; siteConnected: boolean; onClose: () => void; cluster?: { ref: string; pillar: string } | null }) {
   const [draft, setDraft] = useState<Draft | null>(null)
   const [brief, setBrief] = useState<ContentBrief | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -36,6 +39,7 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
   const [done, setDone] = useState<string | null>(null)
   const [editing, setEditing] = useState(false)
   const [live, setLive] = useState(false)
+  const [orig, setOrig] = useState<OriginalityResult | null>(null)
   const started = useRef(false)
   const grade = useMemo(() => (draft ? gradeContent(draft.text) : null), [draft])
   useEffect(() => {
@@ -51,12 +55,13 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
     setError(null)
     setDraft(null)
     setStep(0)
+    const src = { ...(move.id ? { gapId: move.id } : {}), ...(move.rivalHost ? { competitor: move.rivalHost } : {}), ...(cluster ? { cluster: cluster.ref } : {}) }
     const post = (url: string, body: object) => fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).catch(() => null)
     // 1. The brief (best effort: without it the writer still works, just from the topic).
     let b = brief
     if (!b) {
       const t1 = window.setInterval(() => setStep((s) => Math.min(s + 1, 1)), 9000)
-      const r = await post("/api/agent/brief", { topic: move.title, gapId: move.id, competitor: move.rivalHost })
+      const r = await post("/api/agent/brief", { topic: move.title, ...src })
       window.clearInterval(t1)
       b = ((await r?.json().catch(() => null)) as { brief?: ContentBrief } | null)?.brief ?? null
       if (b) setBrief(b)
@@ -64,7 +69,7 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
     setStep(2)
     // 2. The page, from the brief.
     const t2 = window.setInterval(() => setStep((s) => Math.min(s + 1, STEPS.length - 1)), 12000)
-    const res = await post("/api/agent/draft", { topic: move.title, mode: "post", competitor: move.rivalHost, gapId: move.id, ...(b?.id ? { briefId: b.id } : {}) })
+    const res = await post("/api/agent/draft", { topic: move.title, mode: "post", ...src, ...(b?.id ? { briefId: b.id } : {}) })
     window.clearInterval(t2)
     const d = (await res?.json().catch(() => null)) as (Partial<Draft> & { error?: string; brief?: ContentBrief | null }) | null
     if (!res?.ok || !d?.text || !d.draftId) return setError(d?.error ?? "I couldn’t write that just now. Try again in a minute.")
@@ -118,7 +123,7 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
       <div className="ax-bk" onClick={() => { if (!busy) onClose() }} aria-hidden="true" />
       <aside className="ax-insp ax-sheet" role="dialog" aria-modal="true" aria-label={`Draft: ${move.title}`}>
         <header>
-          <div style={{ minWidth: 0 }}><div className="ax-eb">New page for your site · from what {move.rival}’s page really covers</div><h3>{draft?.title ?? move.title}</h3></div>
+          <div style={{ minWidth: 0 }}><div className="ax-eb">{cluster ? `New page for your site · part of your topic plan: ${cluster.pillar}` : move.rival ? `New page for your site · from what ${move.rival}’s page really covers` : "New page for your site"}</div><h3>{draft?.title ?? move.title}</h3></div>
           <button className="ax-x" type="button" aria-label="Close" onClick={onClose} disabled={busy}>✕</button>
         </header>
         <div className="bd">
@@ -148,6 +153,7 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
               {hasPlaceholders(draft.text) && <p className="ax-note" style={{ marginTop: 0 }}>The highlighted [brackets] are facts only you know{draft.checks?.numbers === "flagged" ? ", and [check: …] marks a number I couldn’t find in your facts" : ""}. Fill them in before it goes out.</p>}
               {draft.checks?.numbers === "removed" && <p className="ax-note" style={{ marginTop: 0 }}>I left out {draft.checks.unverified.length === 1 ? "a number" : "some numbers"} I couldn’t find on your site ({draft.checks.unverified.join(", ")}).</p>}
               {grade && !done && <GradeCard g={grade} compact onOpen={() => setEditing(true)} />}
+              {!done && <OriginalityCard key={draft.draftId} draftId={draft.draftId} text={draft.text} compact autoCheck onState={setOrig} onRewritten={(d) => setDraft((cur) => (cur ? { ...cur, title: d.title, text: d.markdown } : cur))} />}
             </>
           )}
           <p className="ax-note" role="note" style={{ marginTop: 0 }}>{AI_NOTE}</p>
@@ -158,6 +164,8 @@ export function DraftSheet({ move, autopilot, siteConnected, onClose }: { move: 
             <><span style={{ flex: 1, fontSize: 13, color: "var(--x-mut)", alignSelf: "center" }}>{done}</span>{live && draft && <RepurposeButton draftId={draft.draftId} small={false} label="Repurpose it" />}<button className="ax-btn s" type="button" onClick={onClose}>Close</button></>
           ) : !draft ? (
             <button className="ax-btn s" type="button" onClick={onClose}>Close</button>
+          ) : orig?.blocked ? (
+            <button className="ax-btn p" type="button" disabled title={orig.reason ?? undefined}>Held: rewrite the matching lines</button>
           ) : hasPlaceholders(draft.text) ? (
             <button className="ax-btn p" type="button" onClick={() => setEditing(true)}>Fill in the facts</button>
           ) : !siteConnected ? (

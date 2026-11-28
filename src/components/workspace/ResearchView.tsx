@@ -10,8 +10,9 @@ import { CopyButton, Empty, Tabs, When, useInspector } from "./ui"
 import { DraftSheet } from "./DraftSheet"
 import { RepurposeButton } from "./RepurposeButton"
 import { ReadySheet, type ReadySource } from "./ReadySheet"
+import { TopicPlan } from "./TopicPlan"
 
-type Tab = "w" | "i" | "g" | "c"
+type Tab = "w" | "t" | "i" | "g" | "c"
 
 export function ResearchView({ data }: { data: ResearchData }) {
   const { node, open } = useInspector()
@@ -63,7 +64,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
   return (
     <>
       <h1 className="ax-h1">Research & Ideas</h1>
-      {tab === "i" ? <p className="ax-sub">From your analytics and AI checks{data.ideasAt ? <> · updated <When at={data.ideasAt} mode="ago" fallback="recently" /></> : null}</p> : tab !== "c" ? <p className="ax-sub">{sub}</p> : (
+      {tab === "t" ? <p className="ax-sub">Your main topics, the pages around each one, and what’s written so far.</p> : tab === "i" ? <p className="ax-sub">From your analytics and AI checks{data.ideasAt ? <> · updated <When at={data.ideasAt} mode="ago" fallback="recently" /></> : null}</p> : tab !== "c" ? <p className="ax-sub">{sub}</p> : (
         <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 8 }}>
           <p className="ax-sub" style={{ margin: 0, flex: 1, minWidth: 220 }}>
             Tracking {comps.length} competitor{comps.length === 1 ? "" : "s"}{data.lastChecked ? <> · last checked <When at={data.lastChecked} mode="ago" fallback="recently" /></> : null}
@@ -100,7 +101,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
             : <button className="ax-btn p" type="button" onClick={() => askAlphaa({ chip: t.card.makeChip })}>Make my version</button> })()}
         </section>
       )}
-      <Tabs<Tab> value={tab} onChange={setTab} tabs={[{ key: "w", label: "What’s working nearby" }, { key: "i", label: "Ideas & hooks" }, { key: "g", label: "Blog & page gaps" }, { key: "c", label: "Competitors" }]} />
+      <Tabs<Tab> value={tab} onChange={setTab} tabs={[{ key: "w", label: "What’s working nearby" }, { key: "t", label: "Topic plan" }, { key: "i", label: "Ideas & hooks" }, { key: "g", label: "Blog & page gaps" }, { key: "c", label: "Competitors" }]} />
 
       {tab === "w" && (
         <>
@@ -160,6 +161,8 @@ export function ResearchView({ data }: { data: ResearchData }) {
           )}
         </>
       )}
+
+      {tab === "t" && <TopicPlan view={data.clusters} autopilot={data.autopilot} siteConnected={data.siteConnected} webPersonEmail={data.webPersonEmail} />}
 
       {tab === "i" && (
         <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 22 }}>

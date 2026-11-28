@@ -19,6 +19,8 @@ import { latestQuestionScan } from "@/lib/questions"
 import { readSiteFacts, type SiteFacts } from "@/lib/site-facts"
 import { hostOf, pickCompetitorPages, readArticle, readSitemap, slugTitle, topicWords, withHttps, type Article } from "@/lib/page-reader"
 import type { GapItem } from "@/lib/content-gaps"
+import { clusterContext } from "@/lib/clusters"
+import { anchorFor } from "@/lib/cluster-rules"
 
 const anthropic = claudeFor("content-brief")
 const MODEL = "claude-sonnet-5-5"
@@ -40,12 +42,15 @@ export type ContentBrief = {
   angle: string
   outline: { h2: string; h3: string[] }[]
   facts: BriefFact[]
-  internalLinks: { url: string; anchor: string; section: string }[]
+  /** `cluster`: the Topic plan's pillar / live sibling pages: the writer must link them. */
+  internalLinks: { url: string; anchor: string; section: string; cluster?: boolean }[]
   competitor: Benchmark | null
   faq: { q: string; source: "ai_question" | "search_console" | "competitor" | "writer" }[]
   wordTarget: number
   at: string
   gapId?: string | null
+  /** A Topic plan article (lib/clusters.ts): its pillar + live sibling pages are forced link targets. */
+  cluster?: { ref: string; pillar: string; isPillar: boolean } | null
 }
 
 export type BriefContext = {
@@ -204,9 +209,11 @@ export async function getBrief(userId: string, id: string | null | undefined): P
 }
 
 /** Gathers the real data, plans the brief and stores it. Reuses a brief for the same topic from the last 14 days. */
-export async function buildBrief(user: User, input: { topic: string; gapId?: string | null; competitor?: string | null; fresh?: boolean }): Promise<ContentBrief> {
+export async function buildBrief(user: User, input: { topic: string; gapId?: string | null; competitor?: string | null; fresh?: boolean; cluster?: string | null }): Promise<ContentBrief> {
   const topic = clean(input.topic).slice(0, 200)
-  const topicKey = key(`${topic}|${input.gapId ?? ""}`)
+  const cl = input.cluster ? await clusterContext(user.id, input.cluster).catch(() => null) : null
+  // The cluster's live pages are part of the key: a sibling that went live since = a new plan with its link.
+  const topicKey = key(`${topic}|${input.gapId ?? ""}${cl ? `|${cl.ref}|${cl.targets.map((t) => t.url).join(",")}` : ""}`)
   if (!input.fresh) {
     const prev = await db.mockActivity.findFirst({ where: { userId: user.id, type: BRIEF_TYPE, createdAt: { gte: new Date(Date.now() - REUSE_MS) }, metadata: { path: ["topicKey"], equals: topicKey } }, orderBy: { createdAt: "desc" } })
     if (prev) return { ...(prev.metadata as unknown as ContentBrief), id: prev.id }
@@ -234,16 +241,28 @@ export async function buildBrief(user: User, input: { topic: string; gapId?: str
   for (const [q] of [...byQuery.entries()].filter(([q]) => overlaps(q) > 0).sort((a, b) => b[1] - a[1]).slice(0, 12)) pushQ(q, "search_console")
   for (const h of competitor?.headings ?? []) if (/\?$/.test(h)) pushQ(h.replace(/^-\s*/, ""), "competitor")
 
+  // Topic plan: the pillar and live sibling pages come first in the pages it may link to.
+  const linkable = cl ? [...cl.targets.map((t) => ({ url: t.url, title: t.title })), ...pages.filter((p) => !cl.targets.some((t) => t.url.replace(/\/+$/, "") === p.url.replace(/\/+$/, "")))] : pages
   const brief = await planBrief({
     topic,
     business: { name: user.businessName ?? hostOf(user.websiteUrl ?? "") ?? "the business", type: user.businessType ?? "business", city: user.city?.trim() ?? "", site },
     facts: factCandidates(user, siteFacts, settings.locations ?? []),
-    pages,
+    pages: linkable,
     questions: questions.slice(0, 30),
     competitor,
     gap: found?.gap ?? null,
   })
   brief.gapId = input.gapId ?? null
+  if (cl) {
+    // Every cluster page links to its pillar (and the pillar to its live pages), whatever the plan picked.
+    const same = (a: string, b: string) => a.replace(/\/+$/, "") === b.replace(/\/+$/, "")
+    for (const l of brief.internalLinks) if (cl.targets.some((t) => same(t.url, l.url))) l.cluster = true
+    for (const t of cl.targets) {
+      if (brief.internalLinks.length >= 6) break
+      if (!brief.internalLinks.some((l) => same(l.url, t.url))) brief.internalLinks.push({ url: t.url, anchor: anchorFor(t.title), section: "", cluster: true })
+    }
+    brief.cluster = { ref: cl.ref, pillar: cl.pillar, isPillar: cl.isPillar }
+  }
   const row = await db.mockActivity.create({ data: { userId: user.id, type: BRIEF_TYPE, title: `Planned a page: “${brief.question.slice(0, 120)}”`, metadata: { ...brief, topicKey } as object } })
   return { ...brief, id: row.id }
 }

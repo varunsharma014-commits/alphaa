@@ -11,7 +11,7 @@ import { When } from "./ui"
 // changed) → Publish update (or Autopilot's "Going out soon"), Undo after; a page the site's
 // connection can't update goes to the web person instead.
 
-type SheetReq = { op: "draft" | "links" | "get"; url?: string; draftId?: string; label: string }
+export type SheetReq = { op: "draft" | "links" | "get"; url?: string; draftId?: string; label: string }
 
 const LINK_KIND: Record<LinkRow["type"], string> = {
   broken_internal_link: "Broken link",
@@ -131,7 +131,7 @@ type View = {
 
 const STEPS = ["Reading the page as it is now", "Checking what people search for and ask AI", "Updating it from your own facts", "Checking every number against your page"]
 
-function RefreshSheet({ req, autopilot, webPersonEmail, onClose }: { req: SheetReq; autopilot: boolean; webPersonEmail: string | null; onClose: (changed: boolean) => void }) {
+export function RefreshSheet({ req, autopilot, webPersonEmail, onClose }: { req: SheetReq; autopilot: boolean; webPersonEmail: string | null; onClose: (changed: boolean) => void }) {
   const [v, setV] = useState<View | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [step, setStep] = useState(0)

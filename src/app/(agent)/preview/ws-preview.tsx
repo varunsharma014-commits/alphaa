@@ -20,6 +20,7 @@ import type { ShellData } from "@/lib/workspace/shell"
 import { ART } from "@/lib/workspace/common"
 import type { AiCard } from "@/lib/workspace/ai-cards"
 import type { MoveCard } from "@/lib/workspace/rivals"
+import { validatePlan, viewOf } from "@/lib/cluster-rules"
 
 const shell: ShellData = { businessName: "Sample Dental (preview)", firstName: "Sam", pro: true, planPro: true, growth: true, autopilot: true, consentStale: false, trackingNeeds: 1, goingOut: 3, socialScheduled: 2, channels: 5, signals: { ok: 4, total: 5 }, doneThisWeek: 6 }
 const AI_EMPTY: AiCard[] = (["chatgpt", "claude", "perplexity", "gemini"] as const).map((e, i) => ({ engine: e, name: ["ChatGPT", "Claude", "Perplexity", "Gemini"][i], mark: ["Ch", "Cl", "Pe", "Ge"][i], state: "unknown", question: null, questionFull: null, names: [], namesFrom: "answer", at: null, answer: null }))
@@ -41,13 +42,27 @@ const SAMPLE_ROAS = {
 } satisfies import("@/lib/workspace/ads-roas").RoasView
 
 const SAMPLE_MOVE: MoveCard = { id: "m1", title: "Sample page title for your site", topic: "Sample", rival: "Sample Rival", rivalHost: "example.com", signals: [{ label: "Quick win · you’re #11 for “sample query”", tone: "g" }, { label: "Buyer intent", tone: "n" }], outline: ["One", "Two"], score: 4, why: "you already show up at #11 on Google for “sample query”" }
+// Topic plan sample: built through the real validation from sample inputs (preview only).
+const SAMPLE_CLUSTERS = viewOf("preview", validatePlan({ clusters: [
+  { pillar: "Sample guide to teeth whitening", pillarSources: ["Q0", "S0"], pillarPage: null, articles: [
+    { title: "How long does sample whitening last?", question: "How long does teeth whitening last?", sources: ["Q0", "K0"], page: null },
+    { title: "Sample whitening at home or in the chair", question: null, sources: ["G0"], page: null },
+    { title: "Sample whitening for sensitive teeth", question: null, sources: ["K1"], page: "P0" },
+  ] },
+] }, {
+  questions: [{ q: "How long does teeth whitening last?", named: 1, asked: 4 }],
+  queries: [{ query: "teeth whitening sample", impressions: 320, clicks: 9, position: 14.2 }, { query: "whitening sensitive teeth sample", impressions: 140, clicks: 3, position: 9.1 }],
+  pages: [{ url: "https://example.com/blog/whitening-sensitive-teeth", title: "whitening sensitive teeth" }],
+  drafts: [], gaps: [{ id: "g1:0", title: "Whitening at home vs in the chair", host: "example.com", url: "https://example.com/whitening" }],
+  services: [{ name: "Teeth whitening", url: null }],
+}), [])
 const soon = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString()
 
 export function WsPreview({ page, empty, dark }: { page: string; empty: boolean; dark: boolean }) {
   const path = page === "briefing" ? "/dashboard" : page === "calendar" ? "/dashboard/social/calendar" : `/dashboard/${page}`
   const body = (() => {
     if (page === "calendar") return <CalendarPreview empty={empty} />
-    if (page === "research") return <ResearchView data={empty ? { summary: "Here’s what I’ve found about your market so far.", nicheOn: true, working: [], trends: [], ideas: [], hooks: [], moves: [], comps: [], compGaps: [], strategyAt: null, hiddenComps: 2, hiddenGaps: 4, lastChecked: null, compared: 0, autopilot: false, siteConnected: false, top: null, island: "", droppedPosts: 0, ideasAt: null, topIdea: null, hasSocialAccounts: false, gmbConnected: false, published: [] } : {
+    if (page === "research") return <ResearchView data={empty ? { summary: "Here’s what I’ve found about your market so far.", nicheOn: true, working: [], trends: [], ideas: [], hooks: [], moves: [], comps: [], compGaps: [], strategyAt: null, hiddenComps: 2, hiddenGaps: 4, lastChecked: null, compared: 0, autopilot: false, siteConnected: false, top: null, island: "", droppedPosts: 0, ideasAt: null, topIdea: null, hasSocialAccounts: false, gmbConnected: false, published: [], clusters: null, webPersonEmail: null } : {
       summary: "I looked at 12 posts on Instagram, TikTok for #sampletag. Here’s what I found, with a link to every source.", nicheOn: true, strategyAt: new Date().toISOString(),
       working: [1, 2, 3, 4, 5].map((k) => ({ id: `w${k}`, where: k % 2 ? "Instagram" : "TikTok", title: `Sample post ${k}: a walk-through of a first visit`, hook: k % 2 ? "Sample opening line of the post, quoted" : null, format: k % 2 ? "Reel" : "Tutorial", thumb: null, duration: k % 2 ? "0:24" : null, badge: `${(1 + k / 2).toFixed(1)}× typical engagement`, why: "Sample why it works.", stats: [{ k: "Views", v: "1,200" }, { k: "Likes", v: "88" }, { k: "Comments", v: "9" }], use: "A short walk-through of your first visit, filmed on a phone.", url: "https://example.com/post", art: ART.social, rows: [["What it is", "Sample"], ["Why it works", "Sample"], ["Source", "https://example.com/post"]] as [string, string][], makeChip: { label: "Make my version", action: { type: "say" as const, text: "preview" } } })),
       trends: [{ title: "Sample trend", why: "Why it matters (sample).", url: "https://example.com/trend", when: "This week" }],
@@ -57,7 +72,7 @@ export function WsPreview({ page, empty, dark }: { page: string; empty: boolean;
       comps: [{ id: "c1", name: "Sample Rival", host: "example.com", site: "https://example.com", favicon: "https://www.google.com/s2/favicons?domain=example.com&sz=64", manual: false, tag: "Direct rival", winning: "Named in 3 AI answers to your customers’ questions", weak: "No structured data on their site, so AI has less to confirm who they are", counter: "I publish “Sample page” to take that search", primary: { label: "Take their gap", move: SAMPLE_MOVE }, adUrl: "https://example.com/ad", detail: [{ k: "What I found on their site", v: "Sample summary." }] },
         { id: "c2", name: "Thin Rival", host: "example.org", site: "https://example.org", favicon: "https://www.google.com/s2/favicons?domain=example.org&sz=64", manual: true, tag: null, winning: null, weak: null, counter: null, primary: null, adUrl: null, detail: [] }],
       compGaps: ["Sample gap."], hiddenComps: 4, hiddenGaps: 2, lastChecked: new Date(Date.now() - 3 * 86_400_000).toISOString(), compared: 1, autopilot: true, siteConnected: true,
-      top: { kind: "move", move: SAMPLE_MOVE }, island: "Found 1 gap worth taking · the best one is ready to draft", droppedPosts: 3, ideasAt: new Date(Date.now() - 86_400_000).toISOString(), topIdea: { kind: "Blog post", text: "Sample comparison page", why: "Sample why.", src: null, url: null, proof: "AIs name Sample Rival 3×, not you", ai: true, format: "blog" }, hasSocialAccounts: true, gmbConnected: true, published: [{ id: "sample-post", title: "Sample published post", url: "https://example.com/blog/sample", at: new Date(Date.now() - 3 * 86_400_000).toISOString(), repurposed: false }],
+      top: { kind: "move", move: SAMPLE_MOVE }, island: "Found 1 gap worth taking · the best one is ready to draft", droppedPosts: 3, ideasAt: new Date(Date.now() - 86_400_000).toISOString(), topIdea: { kind: "Blog post", text: "Sample comparison page", why: "Sample why.", src: null, url: null, proof: "AIs name Sample Rival 3×, not you", ai: true, format: "blog" }, hasSocialAccounts: true, gmbConnected: true, published: [{ id: "sample-post", title: "Sample published post", url: "https://example.com/blog/sample", at: new Date(Date.now() - 3 * 86_400_000).toISOString(), repurposed: false }], clusters: SAMPLE_CLUSTERS, webPersonEmail: null,
     }} />
     if (page === "social") return <SocialView data={{ brandName: "Sample Business", accounts: empty ? [] : [{ id: "a1", name: "Sample Page", platform: "Instagram", ok: true, fix: null, reconnect: null }, { id: "a2", name: "Sample Person", platform: "LinkedIn", ok: false, fix: "LinkedIn stopped letting me post as Sample Person (the login expired). Reconnect it once and I carry on.", reconnect: "#" }], drafting: false, island: "1 post ready for your OK", canConnect: true, auto: false, tabs: empty ? [] : ["Instagram", "Facebook", "LinkedIn"], posts: empty ? [] : [
       { id: "p0", nets: ["Instagram", "Facebook", "LinkedIn"], status: "draft", title: "Sample draft post", text: "Sample caption for a draft. It runs long on purpose so the preview shows where each app cuts the caption and adds its more link, the way a real post with a few sentences would look in the feed.", image: "/blog-covers/about-page-for-ai-search.jpg", when: "Planned for Fri 9 AM", at: null, verb: null, result: null, links: [], error: null },

@@ -100,7 +100,7 @@ Rules:
 - Don't invent facts, prices or statistics. Prefer P pages (read) over S pages.`
 
   try {
-    const msg = await anthropic.messages.parse({ model: MODEL, max_tokens: 3000, output_config: { format: zodOutputFormat(Schema) }, messages: [{ role: "user", content: prompt }] })
+    const msg = await anthropic.messages.parse({ model: MODEL, max_tokens: 8000, output_config: { format: zodOutputFormat(Schema) }, messages: [{ role: "user", content: prompt }] })
     const out = msg.stop_reason === "refusal" ? null : msg.parsed_output
     if (!out) throw new Error("no output")
     const gaps: GapItem[] = []

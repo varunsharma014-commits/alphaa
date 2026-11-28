@@ -64,6 +64,13 @@ const BRACKETS = "Fill in the [bracketed] details first — they’re facts only
 type PushResult = { ok: boolean; id: string; url: string; shadowed?: boolean }
 
 export async function pushChange(user: User, input: PushInput): Promise<NextResponse> {
+  // Long-form posts and pages go through the originality check first (lib/originality.ts; the
+  // saved result is reused while the text is unchanged). Held = 409 with the reason.
+  if (input.op === "post" || input.op === "page") {
+    const { originalityGate } = await import("@/lib/originality")
+    const gate = await originalityGate(user.id, { draftId: input.op === "post" ? input.draftId : null, text: input.text })
+    if (!gate.ok) return NextResponse.json({ error: gate.error, originality: true }, { status: 409 })
+  }
   // A refresh draft is an update of an existing page, never a new post (lib/seo/refresh.ts).
   if (input.op === "post" && input.draftId) {
     const d = await db.mockActivity.findFirst({ where: { id: input.draftId, userId: user.id, type: "post_draft" }, select: { metadata: true } })

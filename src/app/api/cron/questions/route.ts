@@ -6,6 +6,7 @@ import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { activeUsers, authorized } from "@/lib/cron/users"
 import { runQuestionScan } from "@/lib/questions"
+import { refreshClustersIfStale } from "@/lib/clusters"
 
 // The scheduler re-hits this hourly in its catch-up window; one loop at a time per process.
 let running = false
@@ -25,8 +26,9 @@ export async function GET(req: Request) {
     for (const u of users) {
       asUser(u.id)
       const recent = await db.mockActivity.findFirst({ where: { userId: u.id, type: "question_scan", createdAt: { gte: new Date(Date.now() - 5 * 86_400_000) } } })
-      if (recent) continue
-      await runQuestionScan(u.id).catch((err) => console.error(`[cron/questions] ${u.id}`, err instanceof Error ? err.message : err))
+      if (!recent) await runQuestionScan(u.id).catch((err) => console.error(`[cron/questions] ${u.id}`, err instanceof Error ? err.message : err))
+      // Then the Topic plan, from this week's questions (per brand at most once in 6 days, lib/clusters.ts).
+      await refreshClustersIfStale(u.id)
     }
     } finally {
       running = false

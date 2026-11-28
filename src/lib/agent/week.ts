@@ -19,6 +19,7 @@ import { latestInsights, insightsFresh, buildInsights, numbers, type Insights } 
 import { trendsFor, type Trend } from "@/lib/trends"
 import { nicheFacts } from "@/lib/niche-posts"
 import { writePost, writeSocial } from "@/lib/content"
+import { nextClusterArticle } from "@/lib/clusters"
 import { blogCoverFor } from "@/lib/blog-cover"
 import { generateGbpPost, containsPlaceholders } from "@/lib/gbp-poster"
 import { approveSitePost } from "@/lib/approvals"
@@ -52,6 +53,10 @@ export type WeekItem = {
   socialId?: string
   socialStatus?: "draft" | "scheduled"
   socialWhere?: string[]
+  /** Blog: the Topic plan article it is (lib/clusters.ts), and that article's competitor gap. */
+  cluster?: string | null
+  gapId?: string | null
+  competitor?: string | null
 }
 export type WeekRun = {
   status: "running" | "done" | "failed"
@@ -192,6 +197,10 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   // 4. Plan
   await step("Planning your week")
   run.items = await plan(userId, { insights, trends: run.trends, voice: voiceStr, google, social: growth })
+  // The week's blog post = the next unwritten article in the brand's Topic plan, when there is one.
+  const nextC = await nextClusterArticle(userId).catch(() => null)
+  const blogItem = run.items.find((i) => i.kind === "blog")
+  if (nextC && blogItem) Object.assign(blogItem, { title: nextC.title.slice(0, 90), why: `It’s the next page in your topic plan for “${nextC.pillar}”.`, cluster: nextC.ref, gapId: nextC.gapId, competitor: nextC.competitor })
   await done()
   const label: Record<WeekKind, string> = { blog: "the blog post", google: "the Google update", social: "the social post" }
   for (const it of run.items) run.steps.push({ text: `Writing ${label[it.kind]}: “${it.title}”`, done: false })
@@ -206,7 +215,7 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
   const write = async (it: WeekItem) => {
     try {
       if (it.kind === "blog") {
-        const p = await writePost(user, it.title, { noPlaceholders: auto && siteConnected })
+        const p = await writePost(user, it.title, { noPlaceholders: auto && siteConnected, cluster: it.cluster ?? null, gapId: it.gapId ?? null, competitor: it.competitor ?? null })
         const img = await blogCoverFor(userId, { title: p.title, topic: p.topic })
         const row = await db.mockActivity.create({ data: { userId, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null, week: id } } })
         Object.assign(it, { title: p.title, text: p.markdown, image: img?.url ?? null, draftId: row.id, status: "ready" })

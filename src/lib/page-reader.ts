@@ -172,6 +172,21 @@ export async function readArticle(url: string, textCap = 6000): Promise<{ ok: tr
   return { ok: true, page: { url: got.finalUrl, title, description, h1, headings, words, text: body.slice(0, textCap), links: links.slice(0, 200), questions } }
 }
 
+const articleCache = new Map<string, { at: number; p: ReturnType<typeof readArticle> }>()
+
+/** readArticle with a 6-hour in-memory cache per URL + cap (the originality check re-reads brief pages). */
+export function readArticleCached(url: string, textCap = 6000): ReturnType<typeof readArticle> {
+  const key = `${url.replace(/#.*$/, "")}|${textCap}`
+  const hit = articleCache.get(key)
+  if (hit && Date.now() - hit.at < 6 * 3_600_000) return hit.p
+  if (articleCache.size > 300) articleCache.clear()
+  const p = readArticle(url, textCap)
+  articleCache.set(key, { at: Date.now(), p })
+  // A failed read isn't kept: the next check tries again.
+  void p.then((r) => { if (!r.ok) articleCache.delete(key) }, () => articleCache.delete(key))
+  return p
+}
+
 // ── sitemap ─────────────────────────────────────────────────────────────────────────────────
 export type SitemapUrl = { url: string; lastmod?: string }
 

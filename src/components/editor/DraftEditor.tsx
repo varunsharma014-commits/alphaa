@@ -17,6 +17,7 @@ import { gradeContent } from "@/lib/content-grade"
 import { diffStats, diffText } from "@/lib/text-diff"
 import { GradeCard } from "./GradeCard"
 import { OnPageCard } from "./OnPageCard"
+import { OriginalityCard } from "./OriginalityCard"
 import "./editor.css"
 
 import { DRAFT_SAVED_EVENT, type DraftSavedDetail } from "./events"
@@ -479,6 +480,7 @@ export function DraftEditor({ draftId, onClose }: { draftId: string; onClose: (s
                   <div role="tabpanel">
                     <GradeCard g={grade} />
                     <OnPageCard draftId={draftId} markdown={deferred} title={title} locked={locked} onInsert={insertMd} />
+                    {!locked && <OriginalityCard draftId={draftId} text={deferred} beforeAction={() => doSave()} onRewritten={(d) => { takeTheirs(d as Draft); broadcast(d as Draft) }} />}
                   </div>
                 ) : (
                   <div role="tabpanel" className="dx-hist">

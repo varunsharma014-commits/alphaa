@@ -20,6 +20,7 @@ import { getRivals, type AttackCard, type MoveCard } from "./rivals"
 import type { Chip } from "@/lib/agent/types"
 import { ART_CYCLE, n, short } from "./common"
 import { listAccounts } from "@/lib/social/store"
+import { clusterView, type ClusterView } from "@/lib/clusters"
 
 export type WorkingCard = {
   id: string
@@ -87,6 +88,10 @@ export type ResearchData = {
   gmbConnected: boolean
   /** Blog posts already live on the owner's site, for "Repurpose" (lib/repurpose.ts). */
   published: { id: string; title: string; url: string | null; at: string; repurposed: boolean }[]
+  /** Topic plan: pillar topics + supporting articles with their status (lib/clusters.ts). Null = not built yet. */
+  clusters: ClusterView | null
+  /** For "Refresh" on a live Topic plan page (the hand-off to a web person). */
+  webPersonEmail: string | null
 }
 
 
@@ -261,5 +266,7 @@ export async function getResearchData(user: User): Promise<ResearchData> {
     hasSocialAccounts: (await listAccounts(user.id).catch(() => [])).some((a) => a.status === "active"),
     gmbConnected: !!(await db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationId: true } }))?.gmbLocationId,
     published: hasPro(user) ? await repurposablePosts(user.id).catch(() => []) : [],
+    clusters: await clusterView(user.id).catch(() => null),
+    webPersonEmail: settings.webPersonEmail ?? null,
   }
 }

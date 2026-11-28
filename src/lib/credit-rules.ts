@@ -36,6 +36,7 @@ export const BASE_CREDIT_COSTS: Partial<Record<QuotaKind, number>> = {
   "content_piece:review": 0.5,
   ad_plan: 10,
   week_run: 8,
+  topic_plan: 2,
   image_gen: 1,
   sandbox_question: 0.2,
   engine_check: 0.1,

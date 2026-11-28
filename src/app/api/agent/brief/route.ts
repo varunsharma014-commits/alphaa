@@ -16,6 +16,8 @@ const body = z.object({
   gapId: z.string().max(80).optional(),
   competitor: z.string().max(200).optional(),
   fresh: z.boolean().optional(),
+  // A Topic plan article ("<mapId>:<articleId>", lib/clusters.ts): links its pillar + live siblings.
+  cluster: z.string().max(80).optional(),
 })
 
 async function me() {
@@ -41,7 +43,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Bad request" }, { status: 400 })
   }
   try {
-    const brief = await once(`brief:${user.id}:${input.topic.trim().toLowerCase()}:${input.gapId ?? ""}`, () => buildBrief(user, input))
+    const brief = await once(`brief:${user.id}:${input.topic.trim().toLowerCase()}:${input.gapId ?? ""}:${input.cluster ?? ""}`, () => buildBrief(user, input))
     return NextResponse.json({ brief })
   } catch (err) {
     if (isQuotaError(err)) return NextResponse.json(...quotaBody(err))

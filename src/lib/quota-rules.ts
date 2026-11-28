@@ -33,6 +33,7 @@ export const QUOTA_KINDS = [
   "ad_plan",
   "ad_change", // writes to Google Ads / Meta ads accounts
   "week_run",
+  "topic_plan", // a topic cluster map built (lib/clusters.ts): one Sonnet call + page reads
 ] as const
 export type QuotaKind = (typeof QUOTA_KINDS)[number]
 export type Period = "day" | "week" | "month"
@@ -63,6 +64,7 @@ const STARTER: Record<QuotaKind, Limits> = {
   ad_plan: { month: 1 },
   ad_change: { day: 5 },
   week_run: { week: 2, month: 6 },
+  topic_plan: { week: 2, month: 6 }, // weekly refresh + a few on demand
 }
 const PRO: Record<QuotaKind, Limits> = {
   ai_cost_usd: { day: 4, month: 40 },
@@ -85,6 +87,7 @@ const PRO: Record<QuotaKind, Limits> = {
   ad_plan: { month: 2 },
   ad_change: { day: 10 },
   week_run: { week: 3, month: 12 },
+  topic_plan: { week: 3, month: 10 },
 }
 const GROWTH: Record<QuotaKind, Limits> = {
   ...PRO,
@@ -109,6 +112,7 @@ const NONE: Record<QuotaKind, Limits> = {
   "content_piece:draft": { day: 5, month: 10 },
   "publish:site": { day: 1, month: 3 },
   week_run: { week: 1, month: 2 },
+  topic_plan: { week: 1, month: 2 },
 }
 export const BASE_QUOTAS: Table = { none: NONE, starter: STARTER, pro: PRO, growth: GROWTH }
 
@@ -253,6 +257,7 @@ const NOUN: Record<QuotaKind, [string, string]> = {
   ad_plan: ["ad plan", "ad plans"],
   ad_change: ["ad change", "ad changes"],
   week_run: ["weekly plan", "weekly plans"],
+  topic_plan: ["topic plan update", "topic plan updates"],
 }
 
 function reopens(period: Period, now: Date): string {
