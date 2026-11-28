@@ -9,6 +9,9 @@ import { compedEmailWhere } from "@/lib/billing"
 import { runVisibilityScan } from "@/lib/visibility-scan"
 import { logActivity } from "@/lib/activity"
 
+// The scheduler re-hits this hourly in its catch-up window; one run at a time per process.
+let running = false
+
 // Weekly automatic AI-visibility re-scan. Without this, visibility is only
 // measured when a user clicks "scan" — so week-over-week progress can never
 // be shown. Runs the same scan as /api/dashboard/scan for every paying or
@@ -25,6 +28,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   // Platform AI budget (AI_DAILY_BUDGET_USD) reached today: this cron makes new AI work, so it waits (lib/quotas.ts).
   if (!(await cronAllowed("visibility-scan"))) return NextResponse.json({ skipped: "platform AI budget reached for today" })
 
+  if (running) return NextResponse.json({ skipped: "already running" })
+  running = true
+  try {
+    return await scanAll()
+  } finally {
+    running = false
+  }
+}
+
+async function scanAll(): Promise<NextResponse> {
   const now = Date.now()
   const fourteenDaysAgo = new Date(now - 14 * 24 * 60 * 60 * 1000)
   const fiveDaysAgo = new Date(now - 5 * 24 * 60 * 60 * 1000)

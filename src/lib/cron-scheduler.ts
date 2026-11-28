@@ -69,10 +69,14 @@ export function startCron(): void {
     if (dow === 0 && hour === 6) hit("/api/cron/competitors")
     // Sun 08:00 UTC — "What's working in your niche" for Growth brands (Apify, capped per brand)
     if (dow === 0 && hour === 8) hit("/api/cron/niche-posts")
-    // Wed 09:00 UTC — weekly AI visibility re-scan (Anthropic + engine APIs)
-    if (dow === 3 && hour === 9) hit("/api/cron/visibility-scan")
-    // Wed 11:00 UTC — every tracked customer question × 4 AIs + fact check (engine APIs)
-    if (dow === 3 && hour === 11) hit("/api/cron/questions")
+    // Weekly AI jobs get a catch-up window: a deploy restarts this process, which kills a running
+    // loop or misses the exact hour (2026-11-25: deploys at 10:55/11:05/11:08 UTC, no question scan
+    // that week). Both routes skip a brand scanned in the last 5 days and refuse to overlap, so
+    // hitting them every hour until Thursday ends just resumes the unfinished brands.
+    // Wed 09:00 UTC (+ catch-up) — weekly AI visibility re-scan (Anthropic + engine APIs)
+    if ((dow === 3 && hour >= 9) || dow === 4) hit("/api/cron/visibility-scan")
+    // Wed 11:00 UTC (+ catch-up) — every tracked customer question × 4 AIs + fact check (engine APIs)
+    if ((dow === 3 && hour >= 11) || dow === 4) hit("/api/cron/questions")
     // Tue 09:00 UTC — security, profiles, directory details, outside ratings, Bing stats
     if (dow === 2 && hour === 9) hit("/api/cron/checks")
     // Daily 10:00 UTC — blog post drafts on each plan's schedule (Anthropic)
