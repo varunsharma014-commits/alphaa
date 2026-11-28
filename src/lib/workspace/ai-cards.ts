@@ -7,6 +7,8 @@ import { getEngineEvidence, type EngineKey } from "@/lib/engine-evidence"
 import { storedAnswers, type Found } from "@/lib/agent/first-answer"
 import { latestQuestionScan } from "@/lib/questions"
 import { short } from "./common"
+import { engineCitationSummary } from "./citations"
+import type { Tone } from "@/lib/ai-sources"
 
 export type AiCard = {
   engine: EngineKey
@@ -22,6 +24,11 @@ export type AiCard = {
   at: string | null
   /** The full stored answer, for "See the answer". */
   answer: string | null
+  /** Pages this AI cited across my newest weekly questions (null = not recorded yet). */
+  citedPages?: number | null
+  /** How it talks about the owner when it names them (most common across the questions). */
+  tone?: Tone | null
+  toneQuote?: string | null
 }
 
 const CARDS: { engine: EngineKey; name: string; mark: string }[] = [
@@ -32,10 +39,11 @@ const CARDS: { engine: EngineKey; name: string; mark: string }[] = [
 ]
 
 export async function getAiCards(user: User): Promise<AiCard[]> {
-  const [evidence, answers, qs] = await Promise.all([
+  const [evidence, answers, qs, cites] = await Promise.all([
     getEngineEvidence({ id: user.id, email: user.email }).catch(() => null),
     storedAnswers({ id: user.id, email: user.email }).catch((): Found[] => []),
     latestQuestionScan(user.id).catch(() => null),
+    engineCitationSummary(user.id).catch(() => ({} as Awaited<ReturnType<typeof engineCitationSummary>>)),
   ])
   const self = (user.businessName ?? "").trim().toLowerCase()
   const notSelf = (n: string) => {
@@ -54,7 +62,8 @@ export async function getAiCards(user: User): Promise<AiCard[]> {
       state = asked.some((x) => x.r!.appeared) ? "yes" : "no"
       at = qs.at.toISOString()
     }
-    if (state === "unknown") return { engine, name, mark, state, question: null, questionFull: null, names: [], namesFrom: "answer", at: null, answer: null }
+    const cite = cites[engine]
+    if (state === "unknown") return { engine, name, mark, state, question: null, questionFull: null, names: [], namesFrom: "answer", at: null, answer: null, citedPages: cite?.pages ?? null }
 
     // The freshest stored answer from this AI, used only when it agrees with the verdict shown.
     const ans = answers.filter((a) => a.engine === engine).sort((a, b) => b.at.localeCompare(a.at))[0]
@@ -80,6 +89,10 @@ export async function getAiCards(user: User): Promise<AiCard[]> {
       namesFrom,
       at: use?.at ?? at,
       answer: use ? use.answer.slice(0, 6000) : null,
+      citedPages: cite?.pages ?? null,
+      // Only when the card says it names them: a stance on a "Not yet" card would contradict it.
+      tone: state === "yes" ? cite?.tone ?? null : null,
+      toneQuote: state === "yes" ? cite?.quote ?? null : null,
     }
   })
 }

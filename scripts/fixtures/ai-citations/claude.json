@@ -1,0 +1,317 @@
+{
+ "content": [
+  {
+   "type": "text",
+   "text": "I'll search for current information on this, since the AI visibility space changes quickly."
+  },
+  {
+   "type": "server_tool_use",
+   "id": "srvtoolu_01UCgiSfW8iorPAgwAPaeieS",
+   "name": "web_search",
+   "input": {
+    "query": "tools to get small business recommended by ChatGPT AI assistants"
+   }
+  },
+  {
+   "type": "server_tool_use",
+   "id": "srvtoolu_01AUkbn5RiHW5yRce93ndtpD",
+   "name": "web_search",
+   "input": {
+    "query": "generative engine optimization tools comparison 2026"
+   }
+  },
+  {
+   "type": "web_search_tool_result",
+   "tool_use_id": "srvtoolu_01UCgiSfW8iorPAgwAPaeieS",
+   "content": [
+    {
+     "type": "web_search_result",
+     "url": "https://www.entrepreneur.com/growing-a-business/how-to-get-your-business-recommended-by-ai-tools-like/494492",
+     "title": "How to Get Your Business Recommended by AI Tools Like ChatGPT — and Win More Clients"
+    },
+    {
+     "type": "web_search_result",
+     "url": "https://www.nextiva.com/blog/best-ai-tools-for-small-business.html",
+     "title": "Best AI Tools for Small Businesses: 12 Picks for 2026"
+    },
+    {
+     "type": "web_search_result",
+     "url": "https://consultwithkyle.com/resources/digital-marketing/how-to-get-your-small-business-recommended-by-chatgpt-and-other-ai-tools/",
+     "title": "How to Get Your Small Business Recommended by ChatGPT and Other AI Tools - BCK Consulting"
+    },
+    {
+     "type": "web_search_result",
+     "url": "https://vanguardmedia.ca/blog/how-to-get-your-business-recommended-by-chatgpt",
+     "title": "How to Get Your Business Recommended by ChatGPT and Other AI Assistants"
+    },
+    {
+     "type": "web_search_result",
+     "url": "https://spiritt.ai/resources/guides/ai-recommended-business-tools-2026",
+     "title": "Which Tools Do AI Assistants Recommend to Start a Business? 2026"
+    },
+    {
+     "type": "web_search_result",
+     "url": "https://ai-marketinglabs.com/lab-experiments/the-best-ai-visibility-tools-for-small-businesses-right-now",
+     "title": "The Best AI Visibility Tools for Small Businesses Right Now"
+    },
+    {
+     "type": "web_search_result",
+     "url": "https://visibleowl.com/blog/get-recommended-by-chatgpt-ai/",
+     "title": "How to Get Your Business Recommended by ChatGPT (Free Test)"
+    },
+    {
+     "type": "web_search_result",
+     "url": "https://news.ssbcrack.com/best-ai-tools-small-business/",
+     "title": "10 Best AI Tools for Small Businesses in 2026 - SSBCrack News"
+    },
+    {
+     "type": "web_search_result",
+     "url": "https://aitechin.substack.com/p/10-free-ai-tools-that-make-your-small",
+     "title": "10 FREE AI Tools That Make Your Small Business Feel 10x Bigger"
+    }
+   ],
+   "caller": {
+    "type": "direct"
+   }
+  },
+  {
+   "type": "web_search_tool_result",
+   "tool_use_id": "srvtoolu_01AUkbn5RiHW5yRce93ndtpD",
+   "content": {
+    "type": "web_search_tool_result_error",
+    "error_code": "max_uses_exceeded"
+   },
+   "caller": {
+    "type": "direct"
+   }
+  },
+  {
+   "type": "text",
+   "text": "There isn't a single \"best\" tool that guarantees AI recommendations, and most of the value comes from fixing your underlying web presence. Here's how I'd break it down, based on what I found.\n\n**Step 1: Measure where you stand (monitoring tools)**\n\nStart by seeing whether you're being mentioned at all. Options include:\n- **Ahrefs AI visibility checker:** "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "# The Best AI Visibility Tools for Small Businesses Right Now\n## How the Best AI Visibility Tools for Small Businesses Compare\n\n| --- | --- | --- | --...",
+     "url": "https://ai-marketinglabs.com/lab-experiments/the-best-ai-visibility-tools-for-small-businesses-right-now",
+     "title": "The Best AI Visibility Tools for Small Businesses Right Now"
+    }
+   ],
+   "type": "text",
+   "text": "A quick look with no signup; shows a limited preview, the top five results per section"
+  },
+  {
+   "type": "text",
+   "text": ". It's free and a good first check.\n- **Otterly.AI Lite:** a "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "# The Best AI Visibility Tools for Small Businesses Right Now\n## How the Best AI Visibility Tools for Small Businesses Compare\n\n| --- | --- | --- | --...",
+     "url": "https://ai-marketinglabs.com/lab-experiments/the-best-ai-visibility-tools-for-small-businesses-right-now",
+     "title": "The Best AI Visibility Tools for Small Businesses Right Now"
+    }
+   ],
+   "type": "text",
+   "text": "fixed 15-question plan for one location's core jobs"
+  },
+  {
+   "type": "text",
+   "text": ", suited to a local business.\n- **ZipTie Starter:** "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "| Semrush AI Visibility Toolkit | Businesses already working in Semrush | 25 | Names Google AI Mode and ChatGPT | $99/month; no free trial |\n| SE Visi...",
+     "url": "https://ai-marketinglabs.com/lab-experiments/the-best-ai-visibility-tools-for-small-businesses-right-now",
+     "title": "The Best AI Visibility Tools for Small Businesses Right Now"
+    }
+   ],
+   "type": "text",
+   "text": "From $25.65/month; 7-day free trial"
+  },
+  {
+   "type": "text",
+   "text": ", and it lets you pick your own engine mix.\n- **SE Visible Basic:** "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "| Semrush AI Visibility Toolkit | Businesses already working in Semrush | 25 | Names Google AI Mode and ChatGPT | $99/month; no free trial |\n| SE Visi...",
+     "url": "https://ai-marketinglabs.com/lab-experiments/the-best-ai-visibility-tools-for-small-businesses-right-now",
+     "title": "The Best AI Visibility Tools for Small Businesses Right Now"
+    }
+   ],
+   "type": "text",
+   "text": "From $99/month; 10-day free trial"
+  },
+  {
+   "type": "text",
+   "text": ", with a higher question volume.\n- **Semrush AI Visibility Toolkit:** worthwhile mainly if you already use Semrush, at "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "| Semrush AI Visibility Toolkit | Businesses already working in Semrush | 25 | Names Google AI Mode and ChatGPT | $99/month; no free trial |\n| SE Visi...",
+     "url": "https://ai-marketinglabs.com/lab-experiments/the-best-ai-visibility-tools-for-small-businesses-right-now",
+     "title": "The Best AI Visibility Tools for Small Businesses Right Now"
+    }
+   ],
+   "type": "text",
+   "text": "$99/month; no free trial"
+  },
+  {
+   "type": "text",
+   "text": ".\n\nYou can also do a manual test. "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "Open ChatGPT or Perplexity and type:\n\n“Who’s the best [service] provider in [your city]?” or “Which company helps with [pain point] for [industry]?”",
+     "url": "https://www.entrepreneur.com/growing-a-business/how-to-get-your-business-recommended-by-ai-tools-like/494492",
+     "title": "How to Get Your Business Recommended by AI Tools Like ChatGPT — and Win More Clients"
+    }
+   ],
+   "type": "text",
+   "text": "Open ChatGPT or Perplexity and type: \"Who's the best [service] provider in [your city]?\" or \"Which company helps with [pain point] for [industry]?\""
+  },
+  {
+   "type": "text",
+   "text": "\n\n**Step 2: Fix the listings AI pulls from (free, and probably the highest impact)**\n\nAssistants depend on outside sources more than your own site. "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "When ChatGPT browses, it typically pulls results through Bing's index.\n\nGemini leans on Google's index and Google Business Profile data.\n\n",
+     "url": "https://vanguardmedia.ca/blog/how-to-get-your-business-recommended-by-chatgpt",
+     "title": "How to Get Your Business Recommended by ChatGPT and Other AI Assistants"
+    }
+   ],
+   "type": "text",
+   "text": "When ChatGPT browses, it typically pulls results through Bing's index. Gemini leans on Google's index and Google Business Profile data."
+  },
+  {
+   "type": "text",
+   "text": " So:\n- Claim and complete your Google Business Profile.\n- "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "Setting up Bing Webmaster Tools, submitting your sitemap, and claiming Bing Places are quick wins most competitors skip.",
+     "url": "https://vanguardmedia.ca/blog/how-to-get-your-business-recommended-by-chatgpt",
+     "title": "How to Get Your Business Recommended by ChatGPT and Other AI Assistants"
+    }
+   ],
+   "type": "text",
+   "text": "Setting up Bing Webmaster Tools, submitting your sitemap, and claiming Bing Places are quick wins most competitors skip."
+  },
+  {
+   "type": "text",
+   "text": "\n- Keep directory listings consistent. Those include "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "** BBB listings, chamber of commerce rosters, trade association member pages, supplier \"find an installer\" tools.\n\n",
+     "url": "https://vanguardmedia.ca/blog/how-to-get-your-business-recommended-by-chatgpt",
+     "title": "How to Get Your Business Recommended by ChatGPT and Other AI Assistants"
+    }
+   ],
+   "type": "text",
+   "text": "BBB listings, chamber of commerce rosters, trade association member pages"
+  },
+  {
+   "type": "text",
+   "text": ".\n- Collect reviews. Among review sites, "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "Then Yelp and the Better Business Bureau, which outside research links to ChatGPT.\n\n",
+     "url": "https://visibleowl.com/blog/get-recommended-by-chatgpt-ai/",
+     "title": "How to Get Your Business Recommended by ChatGPT (Free Test)"
+    }
+   ],
+   "type": "text",
+   "text": "Yelp and the Better Business Bureau, which outside research links to ChatGPT"
+  },
+  {
+   "type": "text",
+   "text": ", are worth prioritizing.\n\n**Step 3: Make your website readable to AI**\n\n- Make sure AI crawlers can access your site. "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "The ones that matter most for being recommended: GPTBot and OAI-SearchBot (OpenAI), ClaudeBot (Anthropic), PerplexityBot (Perplexity), and Google-Exte...",
+     "url": "https://vanguardmedia.ca/blog/how-to-get-your-business-recommended-by-chatgpt",
+     "title": "How to Get Your Business Recommended by ChatGPT and Other AI Assistants"
+    }
+   ],
+   "type": "text",
+   "text": "The ones that matter most for being recommended: GPTBot and OAI-SearchBot (OpenAI), ClaudeBot (Anthropic), PerplexityBot (Perplexity)"
+  },
+  {
+   "type": "text",
+   "text": ". Check that your robots.txt doesn't block them.\n- Add structured data. Tools like "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "Tools like Merkle’s Schema Generator can help you create the right markup for your services, team, reviews and more. ",
+     "url": "https://www.entrepreneur.com/growing-a-business/how-to-get-your-business-recommended-by-ai-tools-like/494492",
+     "title": "How to Get Your Business Recommended by AI Tools Like ChatGPT — and Win More Clients"
+    }
+   ],
+   "type": "text",
+   "text": "Merkle's Schema Generator can help you create the right markup for your services, team, reviews and more."
+  },
+  {
+   "type": "text",
+   "text": "\n- Publish case studies. "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "** Case studies and project write-ups give assistants concrete evidence.\n\n",
+     "url": "https://vanguardmedia.ca/blog/how-to-get-your-business-recommended-by-chatgpt",
+     "title": "How to Get Your Business Recommended by ChatGPT and Other AI Assistants"
+    }
+   ],
+   "type": "text",
+   "text": "Case studies and project write-ups give assistants concrete evidence."
+  },
+  {
+   "type": "text",
+   "text": "\n\n**Honest caveats**\n\n- Tools measure visibility; they don't create it. Recommendations come from the steps above.\n- AI answers vary a lot between runs and between engines. One of the more useful data points I found: in a test asking AI assistants about business tools, "
+  },
+  {
+   "citations": [
+    {
+     "type": "web_search_result_location",
+     "cited_text": "We Asked ChatGPT, Gemini, Claude, Perplexity and Google AI 100 Times (2026)\n## Most named products overall\n| Product | Answers naming it (of 100) | Ch...",
+     "url": "https://spiritt.ai/resources/guides/ai-recommended-business-tools-2026",
+     "title": "Which Tools Do AI Assistants Recommend to Start a Business? 2026"
+    }
+   ],
+   "type": "text",
+   "text": "Looka was named in 30 of 100 answers"
+  },
+  {
+   "type": "text",
+   "text": ", which shows how inconsistent results can be. Track trends over several weeks rather than trusting a single answer.\n- The tool landscape is changing fast, and some of the pricing I found may be out of date. Check current pricing before you commit.\n\nIf you tell me your industry and location, I can suggest which monitoring tool fits your budget and which listings matter most for you."
+  }
+ ]
+}

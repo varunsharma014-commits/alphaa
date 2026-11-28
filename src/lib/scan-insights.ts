@@ -67,7 +67,7 @@ function textOf(msg: { content: Array<{ type: string; text?: string }> }): strin
 
 // Lowercased, suffix-stripped, alphanumeric-only form of a business name so
 // "Joe's Pizza, LLC" and "joes pizza" compare equal.
-function normalizeName(s: string): string {
+export function normalizeName(s: string): string {
   return s
     .toLowerCase()
     .replace(/\b(llc|inc|co|corp|ltd|the)\b/g, "")

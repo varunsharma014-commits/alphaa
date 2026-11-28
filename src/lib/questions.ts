@@ -6,14 +6,30 @@ import { db } from "@/lib/db"
 import { safeFetch } from "@/lib/safe-fetch"
 import { claudeFor } from "@/lib/claude"
 import { scanAllEngines, type EngineResult } from "@/lib/ai-engines"
-import { extractMentionedBusinesses } from "@/lib/scan-insights"
+import { extractMentionedBusinesses, normalizeName } from "@/lib/scan-insights"
+import { PLATFORM_NAME, rankNames, type CitedSource, type Stance } from "@/lib/ai-sources"
+import { answerStances, checkAiOverviews, type OverviewScan } from "@/lib/ai-citations"
 import { getAgentSettings, saveAgentSettings } from "@/lib/agent/settings"
 import { getLocationInfo } from "@/lib/gmb"
 
 const anthropic = claudeFor("ai-questions")
 
 type Engine = EngineResult["engine"]
-export type QuestionResult = { q: string; engines: Partial<Record<Engine, { appeared: boolean; status: EngineResult["status"]; named: string[] }>> }
+/**
+ * One engine's answer to one question. Since 2026-11-28 also: the pages it cited (`sources`), how it
+ * talks about the brand when it names it (`stance`), the brand's place among the businesses it
+ * named (`rank`, 1 = first) and each rival's (`ranks`). Older rows only have appeared/status/named.
+ */
+export type EngineAnswer = {
+  appeared: boolean
+  status: EngineResult["status"]
+  named: string[]
+  sources?: CitedSource[]
+  stance?: Stance
+  rank?: number | null
+  ranks?: { name: string; rank: number }[]
+}
+export type QuestionResult = { q: string; engines: Partial<Record<Engine, EngineAnswer>>; domains?: Record<string, string> }
 export type FactIssue = { engine: Engine; claim: string; truth: string; severity: "high" | "medium" }
 export type QuestionScan = {
   at: string
@@ -22,6 +38,8 @@ export type QuestionScan = {
   answers: number // answers that came back
   rivals: { name: string; count: number }[]
   facts: { checked: boolean; issues: FactIssue[]; question: string | null }
+  /** Google AI Overviews for the top questions (2026-11-28; absent when off or not checkable). */
+  overviews?: OverviewScan
 }
 
 const SONNET = "claude-sonnet-4-6"
@@ -118,18 +136,34 @@ export async function runQuestionScan(userId: string): Promise<QuestionScan | nu
   const questions = await mapLimit(qs, 2, async (q): Promise<QuestionResult> => {
     const scan = await scanAllEngines(biz, type, city, user.websiteUrl ?? "", q).catch(() => null)
     if (!scan) return { q, engines: {} }
-    const ment = await extractMentionedBusinesses(scan.results, biz, user.websiteUrl ?? "").catch(() => ({ mentioned: {} as Record<string, string[]> }))
+    const [ment, stances] = await Promise.all([
+      extractMentionedBusinesses(scan.results, biz, user.websiteUrl ?? "").catch(() => ({ mentioned: {} as Record<string, string[]>, domains: {} as Record<string, string> })),
+      answerStances(scan.results, biz).catch(() => ({} as Awaited<ReturnType<typeof answerStances>>)),
+    ])
     const engines: QuestionResult["engines"] = {}
+    const domains: Record<string, string> = {}
     for (const r of scan.results) {
       if (r.status === "not_configured") continue
-      engines[r.engine] = { appeared: r.appeared, status: r.status, named: (ment.mentioned[r.engine] ?? []).slice(0, 6) }
+      const named = (ment.mentioned[r.engine] ?? []).slice(0, 6)
+      const { ranks, ownRank } = r.response ? rankNames(r.response, (ment.mentioned[r.engine] ?? []).filter((n) => !PLATFORM_NAME.test(n.trim())), r.appeared ? biz : null) : { ranks: [], ownRank: null }
+      engines[r.engine] = {
+        appeared: r.appeared, status: r.status, named,
+        // Kept small: this row is read on most dashboard loads.
+        ...(r.sources?.length ? { sources: r.sources.slice(0, 6).map((x) => ({ url: x.url.slice(0, 300), title: x.title ? x.title.slice(0, 120) : null, cited: x.cited })) } : {}),
+        ...(stances[r.engine] ? { stance: stances[r.engine] } : {}),
+        ...(r.appeared ? { rank: ownRank } : {}),
+        ...(ranks.length ? { ranks: ranks.slice(0, 8) } : {}),
+      }
+      for (const n of named) { const d = ment.domains?.[normalizeName(n)]; if (d) domains[n] = d }
     }
-    return { q, engines }
+    return { q, engines, ...(Object.keys(domains).length ? { domains } : {}) }
   })
 
   // AI assistants and platforms aren't competitors, even when an answer names them.
-  const PLATFORM = /^(chatgpt|openai|gpt-?\d.*|gemini|google( ai| ai overviews| business profile| my business| maps| search)?|claude|anthropic|perplexity( ai)?|copilot|microsoft copilot|bing|yelp|reddit|facebook|instagram|linkedin|youtube|tiktok|nextdoor|quora)$/i
-  for (const q of questions) for (const e of Object.values(q.engines)) if (e) e.named = e.named.filter((n) => !PLATFORM.test(n.trim()))
+  for (const q of questions) for (const e of Object.values(q.engines)) if (e) {
+    e.named = e.named.filter((n) => !PLATFORM_NAME.test(n.trim()))
+    if (e.ranks) e.ranks = e.ranks.filter((r) => !PLATFORM_NAME.test(r.name.trim()))
+  }
   let named = 0, answers = 0
   const rivalCount = new Map<string, number>()
   for (const q of questions) {
@@ -147,7 +181,13 @@ export async function runQuestionScan(userId: string): Promise<QuestionScan | nu
     return { checked: false, issues: [], question: null }
   })
 
-  const result: QuestionScan = { at: new Date().toISOString(), questions, named, answers, rivals, facts }
+  // Google AI Overviews for the top questions (same search quota as every SERP call; skipped when out).
+  const overviews = await checkAiOverviews(user, biz, qs).catch((err) => {
+    console.error("[questions] overviews", err instanceof Error ? err.message : err)
+    return null
+  })
+
+  const result: QuestionScan = { at: new Date().toISOString(), questions, named, answers, rivals, facts, ...(overviews ? { overviews } : {}) }
   await db.mockActivity.create({
     data: { userId, type: "question_scan", title: `Asked the four AIs ${qs.length} customer questions — named in ${named} of ${answers} answers`, metadata: result as unknown as object },
   })

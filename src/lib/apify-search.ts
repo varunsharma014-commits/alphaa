@@ -66,3 +66,34 @@ export async function googleSearch(
     return []
   }
 }
+
+/**
+ * One SERP page with everything the actor returns (organic results + Google's AI Overview when
+ * one was shown), on the same quota as googleSearch(). Null = not run (no token, quota) or failed,
+ * so callers can tell "no AI Overview" from "couldn't check".
+ */
+export async function googleSerpItem(
+  query: string,
+  opts?: { country?: string; timeoutMs?: number },
+): Promise<Record<string, unknown> | null> {
+  const token = process.env.APIFY_TOKEN
+  if (!token) return null
+  const { quotaHere } = await import("@/lib/quotas")
+  const q = await quotaHere("search")
+  if (!q.allowed) { console.warn("[apify-search] search quota", q.userId, q.period); return null }
+  if (q.userId) void quotaHere("apify_usd", 0.005)
+  try {
+    const res = await fetch(`https://api.apify.com/v2/acts/${ACTOR}/run-sync-get-dataset-items?token=${encodeURIComponent(token)}`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ queries: query, maxPagesPerQuery: 1, resultsPerPage: 10, countryCode: opts?.country ?? "", languageCode: "en", mobileResults: false, saveHtml: false }),
+      signal: AbortSignal.timeout(opts?.timeoutMs ?? 120_000),
+    })
+    if (!res.ok) return null
+    const items = (await res.json()) as unknown
+    const first = Array.isArray(items) ? items[0] : null
+    return first && typeof first === "object" ? (first as Record<string, unknown>) : null
+  } catch {
+    return null
+  }
+}

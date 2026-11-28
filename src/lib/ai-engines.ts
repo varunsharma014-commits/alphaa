@@ -4,6 +4,7 @@ import OpenAI from "openai"
 import { GoogleGenerativeAI, type GenerationConfig, type Tool } from "@google/generative-ai"
 import { installUsageMeter } from "@/lib/usage"
 import { tagClient } from "@/lib/claude"
+import { claudeSources, geminiSources, inlineSources, isGeminiRedirect, openaiSources, perplexitySources, type CitedSource } from "@/lib/ai-sources"
 
 // Search-backed answers take longer than training-weight ones.
 const SEARCH_TIMEOUT_MS = 35000
@@ -16,6 +17,8 @@ export type EngineResult = {
   snippet: string | null
   query: string
   response: string
+  /** Pages the engine cited / read for this answer (lib/ai-sources.ts). Absent on errors. */
+  sources?: CitedSource[]
 }
 
 export type ScanEngineResults = {
@@ -199,6 +202,7 @@ export async function scanClaude(
       .join("\n")
       .trim()
     const { appeared, position, snippet } = checkAppearance(response, businessName)
+    const cited = claudeSources(message.content)
     return {
       engine: "claude",
       status: appeared ? "appeared" : "not_appearing",
@@ -207,6 +211,7 @@ export async function scanClaude(
       snippet,
       query,
       response,
+      sources: cited.length ? cited : inlineSources(response),
     }
   } catch (err) {
     console.error("Claude scan error:", err)
@@ -245,6 +250,7 @@ export async function scanChatGPT(
     // Live web search via the Responses API — what a real ChatGPT user gets.
     // Plain completion is the fallback so a tool outage never blanks the engine.
     let response = ""
+    let sources: CitedSource[] = []
     try {
       const res = await withTimeout(
         client.responses.create({
@@ -256,6 +262,8 @@ export async function scanChatGPT(
         SEARCH_TIMEOUT_MS
       )
       response = (res.output_text ?? "").trim()
+      // url_citation annotations: only present when the model chose to search.
+      sources = openaiSources(res)
     } catch (toolErr) {
       console.warn("ChatGPT web search unavailable, answering without it:", toolErr instanceof Error ? toolErr.message : toolErr)
       const completion = await withTimeout(
@@ -273,6 +281,7 @@ export async function scanChatGPT(
       snippet,
       query,
       response,
+      sources: sources.length ? sources : inlineSources(response),
     }
   } catch (err) {
     console.error("ChatGPT scan error:", err)
@@ -308,6 +317,12 @@ export async function scanGemini(
   }
   try {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+    // Measured 2026-11-28 against the prod key: with thinkingBudget 0, Gemini 3 never runs the
+    // googleSearch tool (no groundingMetadata, 2 of 2 probes), so the "grounded" answer was a
+    // training-weights answer. thinkingLevel "low" grounds (5-14 sources, ~5.4s). Grounded prompts
+    // are billed by Google per search query (Gemini 3: ~4 queries a prompt, beyond the free tier)
+    // and that cost isn't on our AI meter, so it's opt-in: GEMINI_GROUNDING=1.
+    const grounding = process.env.GEMINI_GROUNDING === "1"
     // Verified against the live API (July 2026): gemini-1.5/2.0/2.5-flash all
     // return 404 ("no longer available"). Model names churn — if this engine
     // starts returning "error", re-probe ListModels before assuming a key issue.
@@ -320,12 +335,15 @@ export async function scanGemini(
       // ~90-char stub instead of an answer. Measured, not guessed.
       // Cast: SDK 0.24.1's GenerationConfig type predates thinkingConfig, but the
       // API honours it (verified live against the prod key).
-      generationConfig: { thinkingConfig: { thinkingBudget: 0 }, maxOutputTokens: 600 } as unknown as GenerationConfig,
+      generationConfig: (grounding
+        ? { thinkingConfig: { thinkingLevel: "low" }, maxOutputTokens: 2000 }
+        : { thinkingConfig: { thinkingBudget: 0 }, maxOutputTokens: 600 }) as unknown as GenerationConfig,
     })
     // Google Search grounding. SDK 0.24.1 only types the legacy
     // googleSearchRetrieval tool; Gemini 2+/3 expects `googleSearch: {}` and the
     // API honours it, hence the cast. Ungrounded answer is the fallback.
     let response = ""
+    let sources: CitedSource[] = []
     try {
       const grounded = await withTimeout(
         model.generateContent({
@@ -335,6 +353,8 @@ export async function scanGemini(
         SEARCH_TIMEOUT_MS
       )
       response = grounded.response.text()
+      const cand = grounded.response.candidates?.[0]
+      sources = geminiSources(cand, await resolveGeminiRedirects(cand))
     } catch (toolErr) {
       console.warn("Gemini grounding unavailable, answering without it:", toolErr instanceof Error ? toolErr.message : toolErr)
       const result = await withTimeout(model.generateContent(query), 20000)
@@ -349,6 +369,7 @@ export async function scanGemini(
       snippet,
       query,
       response,
+      sources: sources.length ? sources : inlineSources(response),
     }
   } catch (err) {
     console.error("Gemini scan error:", err)
@@ -398,6 +419,8 @@ export async function scanPerplexity(
     )
     const response = completion.choices[0]?.message?.content ?? ""
     const { appeared, position, snippet } = checkAppearance(response, businessName)
+    // sonar returns search_results [{title, url}] + citations next to choices (not in the SDK types).
+    const cited = perplexitySources(completion as unknown)
     return {
       engine: "perplexity",
       status: appeared ? "appeared" : "not_appearing",
@@ -406,6 +429,7 @@ export async function scanPerplexity(
       snippet,
       query,
       response,
+      sources: cited.length ? cited : inlineSources(response),
     }
   } catch (err) {
     console.error("Perplexity scan error:", err)
@@ -419,6 +443,24 @@ export async function scanPerplexity(
       response: "",
     }
   }
+}
+
+/**
+ * Gemini grounding chunks point at Google redirect URLs; follow each once (no body, 4s) to get the
+ * real page. Unresolved ones fall back to the domain Gemini gives as the chunk title.
+ */
+async function resolveGeminiRedirects(candidate: unknown): Promise<Record<string, string>> {
+  const chunks = (candidate as { groundingMetadata?: { groundingChunks?: { web?: { uri?: string } }[] } } | undefined)?.groundingMetadata?.groundingChunks ?? []
+  const uris = [...new Set(chunks.map((c) => c.web?.uri).filter((u): u is string => !!u && isGeminiRedirect(u)))].slice(0, 8)
+  const out: Record<string, string> = {}
+  await Promise.all(uris.map(async (u) => {
+    try {
+      const r = await fetch(u, { method: "HEAD", redirect: "manual", signal: AbortSignal.timeout(4000) })
+      const loc = r.headers.get("location")
+      if (loc && /^https?:\/\//.test(loc) && !isGeminiRedirect(loc)) out[u] = loc
+    } catch {}
+  }))
+  return out
 }
 
 export async function scanAllEngines(

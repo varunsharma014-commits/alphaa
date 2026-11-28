@@ -8,6 +8,8 @@ import { SocialView } from "@/components/workspace/SocialView"
 import { EmailView } from "@/components/workspace/EmailView"
 import { AdsView } from "@/components/workspace/AdsView"
 import { TrackingView } from "@/components/workspace/TrackingView"
+import { CitationsView } from "@/components/workspace/CitationsView"
+import type { CitationsData } from "@/lib/workspace/citations"
 import type { ShellData } from "@/lib/workspace/shell"
 import { ART } from "@/lib/workspace/common"
 import type { AiCard } from "@/lib/workspace/ai-cards"
@@ -15,7 +17,7 @@ import type { MoveCard } from "@/lib/workspace/rivals"
 
 const shell: ShellData = { businessName: "Sample Dental (preview)", firstName: "Sam", pro: true, planPro: true, growth: true, autopilot: true, consentStale: false, trackingNeeds: 1, goingOut: 3, socialScheduled: 2, channels: 5, signals: { ok: 4, total: 5 }, doneThisWeek: 6 }
 const AI_EMPTY: AiCard[] = (["chatgpt", "claude", "perplexity", "gemini"] as const).map((e, i) => ({ engine: e, name: ["ChatGPT", "Claude", "Perplexity", "Gemini"][i], mark: ["Ch", "Cl", "Pe", "Ge"][i], state: "unknown", question: null, questionFull: null, names: [], namesFrom: "answer", at: null, answer: null }))
-const AI_SAMPLE: AiCard[] = AI_EMPTY.map((c, i) => (i === 3 ? c : { ...c, state: i === 1 ? "yes" : "no", question: "Sample question about a dentist near me?", questionFull: "Sample question about a dentist near me?", names: i === 1 ? [] : ["Sample Rival A", "Sample Rival B"], at: new Date(Date.now() - 2 * 86_400_000).toISOString(), answer: "Sample answer text (preview only)." }))
+const AI_SAMPLE: AiCard[] = AI_EMPTY.map((c, i) => (i === 3 ? c : { ...c, state: i === 1 ? "yes" : "no", question: "Sample question about a dentist near me?", questionFull: "Sample question about a dentist near me?", names: i === 1 ? [] : ["Sample Rival A", "Sample Rival B"], at: new Date(Date.now() - 2 * 86_400_000).toISOString(), answer: "Sample answer text (preview only).", citedPages: 6 + i, tone: i === 1 ? "positive" : null, toneQuote: i === 1 ? "Sample quote (preview only)." : null }))
 const SAMPLE_MOVE: MoveCard = { id: "m1", title: "Sample page title for your site", topic: "Sample", rival: "Sample Rival", rivalHost: "example.com", signals: [{ label: "Quick win · you’re #11 for “sample query”", tone: "g" }, { label: "Buyer intent", tone: "n" }], outline: ["One", "Two"], score: 4, why: "you already show up at #11 on Google for “sample query”" }
 const soon = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString()
 
@@ -47,6 +49,48 @@ export function WsPreview({ page, empty, dark }: { page: string; empty: boolean;
       firstAds: [{ platform: "Facebook & Instagram", headline: "Sample headline", primary: "Sample primary text for the ad.", image: null, audience: "People near Austin, TX" }, { platform: "Google search", headline: "Sample one | Sample two | Sample three", primary: "Sample description line.", image: null, audience: "Searches near Austin, TX" }],
       watching: [{ page: "Sample Rival", text: "Sample competitor ad text.", days: 64, url: "https://example.com", format: "image" }],
       tired: empty ? [] : [{ campaign: "Sample campaign", label: "Ad 1 in “Sample campaign”", headline: "Sample headline", why: "Ad 1 in “Sample campaign”: people have seen it 3.4 times on average, and its click rate fell from 2.1% in its first week to 1.3% this week (38.1% lower).", reason: "ctr" }] }} />
+    if (page === "citations") {
+      const wk = ["2026-10-19", "2026-10-26", "2026-11-02", "2026-11-09", "2026-11-16", "2026-11-23"]
+      const line = (vals: number[]) => vals.map((v, i) => ({ week: wk[i], share: v, count: Math.round(v * 0.4) }))
+      const pg = (url: string, site: string, kind: CitationsData["topSites"][number]["kind"], cited = true) => ({ url, title: `Sample page on ${site}`, site, kind, cited })
+      const data: CitationsData = empty
+        ? { business: "Sample Dental", at: null, scanned: true, sov: null, sovWeeks: 1, topSites: [], kinds: [], ownCited: 0, totalCitations: 0, questions: [], tones: { positive: 0, neutral: 0, negative: 0, mixed: 0 }, overviews: null, overviewsOn: true, perEngine: { chatgpt: { pages: 0, answers: 0 }, claude: { pages: 0, answers: 0 }, gemini: { pages: 0, answers: 0 }, perplexity: { pages: 0, answers: 0 } }, byEngine: [] }
+        : {
+          business: "Sample Dental", at: new Date(Date.now() - 2 * 86_400_000).toISOString(), scanned: true, sovWeeks: 6,
+          sov: { weeks: wk.map((w) => ({ week: w, answers: 40 })), series: [
+            { key: "you", name: "Sample Dental", own: true, points: line([5, 7.5, 7.5, 12.5, 15, 20]) },
+            { key: "a", name: "Rival Clinic A", own: false, points: line([30, 32.5, 27.5, 30, 25, 22.5]) },
+            { key: "b", name: "Rival Clinic B", own: false, points: line([20, 17.5, 22.5, 20, 22.5, 17.5]) },
+            { key: "c", name: "Rival Clinic C", own: false, points: line([10, 12.5, 10, 7.5, 10, 12.5]) },
+            { key: "d", name: "Rival Clinic D", own: false, points: line([5, 5, 7.5, 10, 7.5, 10]) },
+          ] },
+          topSites: [
+            { site: "clinicfinder.example", kind: "directory", kindLabel: "Directory & reviews", answers: 9, engines: ["Perplexity", "Gemini", "Claude"], pages: [{ url: "https://clinicfinder.example/a", title: "Sample directory page" }] },
+            { site: "Google Maps", kind: "directory", kindLabel: "Directory & reviews", answers: 7, engines: ["ChatGPT"], pages: [{ url: "https://www.google.com/maps/search/Sample", title: "Sample listing" }] },
+            { site: "rivala.example", kind: "competitor", kindLabel: "Competitor", answers: 5, engines: ["ChatGPT", "Perplexity"], pages: [{ url: "https://rivala.example/saturday", title: "Saturday hours" }] },
+            { site: "sampledental.example", kind: "own", kindLabel: "Your site", answers: 2, engines: ["Gemini"], pages: [{ url: "https://sampledental.example/", title: "Home" }] },
+          ],
+          kinds: [{ kind: "directory", label: "Directory & reviews", count: 16 }, { kind: "competitor", label: "Competitor", count: 5 }, { kind: "own", label: "Your site", count: 2 }],
+          ownCited: 2, totalCitations: 23, tones: { positive: 3, neutral: 2, negative: 0, mixed: 1 },
+          questions: [{ q: "Which family dentists near me are open on Saturdays?", engines: [
+            { engine: "chatgpt", name: "ChatGPT", state: "not_named", tone: null, quote: null, rank: null, ranks: [{ name: "Rival Clinic A", rank: 1 }], pages: [pg("https://www.google.com/maps/search/Sample", "Google Maps", "directory")] },
+            { engine: "gemini", name: "Gemini", state: "named", tone: "positive", quote: "Sample Dental is known for early Saturday openings.", rank: 2, ranks: [{ name: "Rival Clinic B", rank: 1 }], pages: [pg("https://sampledental.example/", "sampledental.example", "own"), pg("https://clinicfinder.example/a", "clinicfinder.example", "directory")] },
+          ] }],
+          overviews: { at: new Date(Date.now() - 2 * 86_400_000).toISOString(), checks: [
+            { q: "Which family dentists near me are open on Saturdays?", shown: true, cited: false, named: true, sources: [{ url: "https://clinicfinder.example/a", title: "Sample directory page" }], excerpt: "Sample overview text." },
+            { q: "How much is a cleaning without insurance?", shown: false, cited: false, named: false, sources: [], excerpt: null },
+          ] },
+          overviewsOn: true,
+          perEngine: { chatgpt: { pages: 8, answers: 10 }, claude: { pages: 6, answers: 10 }, gemini: { pages: 4, answers: 10 }, perplexity: { pages: 9, answers: 10 } },
+          byEngine: [
+            { engine: "chatgpt", name: "ChatGPT", answers: 10, pages: 8, sites: [{ site: "Google Maps", kind: "directory", kindLabel: "Directory & reviews", count: 7 }] },
+            { engine: "claude", name: "Claude", answers: 10, pages: 6, sites: [{ site: "clinicfinder.example", kind: "directory", kindLabel: "Directory & reviews", count: 3 }] },
+            { engine: "perplexity", name: "Perplexity", answers: 10, pages: 9, sites: [{ site: "rivala.example", kind: "competitor", kindLabel: "Competitor", count: 4 }] },
+            { engine: "gemini", name: "Gemini", answers: 10, pages: 0, sites: [] },
+          ],
+        }
+      return <CitationsView data={data} />
+    }
     if (page === "tracking") return <TrackingView data={{ growth: true, trackingOn: !empty, needs: 1, turnOn: empty ? { platform: "Webflow", auto: false } : null, health: [], signals: empty ? [] : [{ src: "Website", ev: "Form sent × 2", t: "today", at: new Date().toISOString(), tone: "g" }, { src: "AI answers", ev: "Visit on /services · from ChatGPT", t: "2h ago", at: new Date(Date.now() - 7_200_000).toISOString(), tone: "b" }], conns: [
       { key: "gbp", name: "Google Business Profile", state: "ok", sum: "Sample: connected.", detail: "Sample.", verified: { verb: "Reviews synced", at: new Date(Date.now() - 3_600_000).toISOString() } },
       { key: "social", name: "Social accounts", state: "needs", warn: "1 needs attention", sum: "Instagram: Sample · LinkedIn: Sample (login expired)", act: { label: "Reconnect LinkedIn", href: "#" }, detail: "Sample." },

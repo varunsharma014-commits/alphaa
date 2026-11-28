@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import Link from "next/link"
 import { EngineIcon } from "./EngineIcon"
 import type { BriefingData, GoingItem } from "@/lib/workspace/briefing"
 import type { AiCard } from "@/lib/workspace/ai-cards"
@@ -272,7 +273,10 @@ function AiRow({ cards, open, pages }: { cards: AiCard[]; open: (i: Insp | null)
                 <span className="ax-mark" style={{ background: MARK_BG[c.engine] }} aria-hidden="true"><EngineIcon engine={c.engine} /></span>
                 <b style={{ fontSize: 14.5 }}>{c.name}</b>
               </span>
-              {c.state !== "unknown" && <span className={`ax-pill ${c.state === "yes" ? "g" : "n"}`}>{c.state === "yes" ? "Names you" : "Not yet"}</span>}
+              <span style={{ display: "inline-flex", gap: 4, alignItems: "center" }}>
+                {c.state === "yes" && c.tone && <span className={`ax-pill ${c.tone === "positive" ? "g" : c.tone === "negative" ? "a" : "n"}`} title={c.toneQuote ? `“${c.toneQuote}”` : undefined}>{c.tone === "positive" ? "Positive" : c.tone === "negative" ? "Negative" : c.tone === "mixed" ? "Mixed" : "Neutral"}</span>}
+                {c.state !== "unknown" && <span className={`ax-pill ${c.state === "yes" ? "g" : "n"}`}>{c.state === "yes" ? "Names you" : "Not yet"}</span>}
+              </span>
             </div>
             {c.state === "unknown" ? (
               <p className="ax-p" style={{ marginTop: 4 }}>Not checked yet · I’ll check this week.</p>
@@ -287,7 +291,10 @@ function AiRow({ cards, open, pages }: { cards: AiCard[]; open: (i: Insp | null)
                 )}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 4, marginTop: "auto", paddingTop: 6, flexWrap: "wrap" }}>
                   <span className="ax-t11" style={{ whiteSpace: "nowrap" }}>{c.at ? <When at={c.at} mode="ago" prefix="asked " fallback="" /> : ""}</span>
+                  <span style={{ display: "inline-flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+                  {c.citedPages ? <Link className="ax-lnk" href={`/dashboard/citations#${c.engine}`} style={{ fontSize: 12.5, whiteSpace: "nowrap" }}>Cited sources ({c.citedPages})</Link> : null}
                   {c.answer && <button className="ax-lnk" type="button" style={{ fontSize: 12.5, whiteSpace: "nowrap" }} onClick={() => open({ eb: `${c.name} · ${c.state === "yes" ? "names you" : "doesn’t name you yet"}`, title: c.questionFull ?? "The answer", rows: [{ k: "What it answered", v: c.answer ?? "", box: true }, ...(c.names.length ? [{ k: c.state === "yes" ? "Also named" : "Named instead", v: c.names.join(", ") }] : [])], cta: { label: "See every question", topic: "answers" } })}>See the answer</button>}
+                  </span>
                 </div>
               </>
             )}

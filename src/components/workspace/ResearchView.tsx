@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import type { ResearchData } from "@/lib/workspace/research"
 import type { AttackCard, MoveCard } from "@/lib/workspace/rivals"
 import { askAlphaa, ISLAND_EVENT, toast } from "@/lib/workspace/events"
@@ -66,6 +67,7 @@ export function ResearchView({ data }: { data: ResearchData }) {
           <p className="ax-sub" style={{ margin: 0, flex: 1, minWidth: 220 }}>
             Tracking {comps.length} competitor{comps.length === 1 ? "" : "s"}{data.lastChecked ? <> · last checked <When at={data.lastChecked} mode="ago" fallback="recently" /></> : null}
           </p>
+          <Link className="ax-btn s sm" href="/dashboard/citations">AI share of voice & sources →</Link>
           {adding ? (
             <form onSubmit={(e) => { e.preventDefault(); void add() }} style={{ display: "flex", gap: 6 }}>
               <input className="ax-input" autoFocus placeholder="theirsite.com" value={url} onChange={(e) => setUrl(e.target.value)} aria-label="Competitor website" disabled={adding === "busy"} />

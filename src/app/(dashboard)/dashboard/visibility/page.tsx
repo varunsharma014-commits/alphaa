@@ -11,6 +11,9 @@ import { DsCard } from "@/components/dashboard/DsCard"
 import { SectionDivider } from "@/components/dashboard/SectionDivider"
 import RunScanButton from "./RunScanButton"
 import { VisibilityTrend } from "@/components/dashboard/VisibilityTrend"
+import { ShareOfVoiceChart } from "@/components/workspace/ShareOfVoiceChart"
+import { getCitationsData } from "@/lib/workspace/citations"
+import Link from "next/link"
 
 export const metadata = { title: "What AI says about you" }
 
@@ -72,6 +75,8 @@ export default async function VisibilityPage() {
     },
   })
   const audit = audits[0] ?? null
+  // Competitor share of voice from the weekly question scans (null until 2 weeks exist).
+  const cites = await getCitationsData(user).catch(() => null)
   const prevAudit = audits[1] ?? null
 
   const aiStatus: Record<string, string> =
@@ -255,6 +260,21 @@ export default async function VisibilityPage() {
           </DsCard>
         </>
       )}
+
+      {/* Competitor share of voice — weekly question scans, only once 2+ weeks exist */}
+      <SectionDivider>SHARE OF VOICE VS COMPETITORS</SectionDivider>
+      <DsCard>
+        {cites?.sov ? (
+          <ShareOfVoiceChart data={cites.sov} />
+        ) : (
+          <p style={{ fontSize: "13px", color: "var(--ds-text-mute)", lineHeight: 1.6 }}>
+            Your share of voice against competitors appears after two weekly question checks ({cites?.sovWeeks ?? 0} so far).
+          </p>
+        )}
+        <p style={{ fontSize: "12px", marginTop: "10px" }}>
+          <Link href="/dashboard/citations" style={{ color: "var(--ds-accent, #0071e3)" }}>See the pages each AI cites →</Link>
+        </p>
+      </DsCard>
 
       {/* Engine cards */}
       <SectionDivider>WHERE YOU STAND ON EACH AI ENGINE</SectionDivider>

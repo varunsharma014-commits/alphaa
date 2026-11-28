@@ -1,0 +1,80 @@
+{
+ "choices": [
+  {
+   "delta": {
+    "content": "",
+    "role": "assistant"
+   },
+   "finish_reason": "length",
+   "index": 0,
+   "message": {
+    "content": "The best approach is a **stack**, not a single “ChatGPT SEO” tool: use free search and listing tools to make your business accurate and discoverable, then add an AI-visibility tracker to measure whether assistants actually mention it. No tool can guarantee recommendations.[1]\n\n## Best tools by job\n\n| Goal | Best starting tools | What they help with |\n|---|---|---|\n| Check indexing and technical issues | **Google Search Console**, **Bing Webmaster Tools** | Sitemap submission, crawl/indexing problems, search queries, and site health.[2][5] |\n| Improve local business data | **Google Business Profile**, **Bing Places**, major industry directories | Accurate name, address, phone, hours, services, categories, photos, and location signals.[3][5] |\n| Monitor AI recommendations | **Otterly.AI**, **Semrush AI Visibility Toolkit**, **Ahrefs Brand Radar**, **HubSpot AEO** | Track mentions, cited sources, competitors, prompts, and visibility across AI-search systems.[1][8] |\n| Audit SEO and content | **Semrush**, **Ahrefs**, **SE Ranking** | Find ranking, technical, backlink, and content opportunities; useful as supporting tools rather than guarantees.[4][8] |\n| Improve speed and accessibility | **Google PageSpeed Insights**, **GTmetrix** | Identify performance problems that can make sites harder for users and crawlers to use.[2] |\n| Manage reviews and reputation | A reputable **review-management platform** plus native Google/Bing profiles | Collect genuine reviews, respond to them, and keep business information consistent.[3][6] |\n\n## Recommended setup for a small business\n\n1. **Start free:** Set up Google Business Profile, Bing Places, Google Search Console, and Bing Webmaster Tools. Keep your business name, address, phone number, category, hours, services, and description identical everywhere.[5][10]\n\n2. **Create useful website pages:** Clearly explain what you offer, where you serve customers, pricing or service details where appropriate, and answers to common buyer questions. Add accurate LocalBusiness or relevant business structured data.\n\n3. **Build independent proof:** Encourage genuine customer reviews, respond to them, and seek relevant mentions from local organizations, industry publications, chambers of commerce, and reputable directories. AI assistants tend to have more confidence when multiple independent sources describe the business consistently.[5][7]\n\n4. **Track actual visibility:** Ask ChatGPT, Gemini, Perplexity, and Google’s AI search products non-branded questions such as “best [service] in [town].” Use a clean session, repeat tests, and record which businesses are named and which sources are cited.[9][10]\n\n5. **Add paid monitoring only when useful:** For most small businesses, start with manual tracking or a lower-cost service such as Otterly.AI. Consider Semrush or Ahrefs when you need broader",
+    "role": "assistant"
+   }
+  }
+ ],
+ "citations": [
+  "https://citewake.com/editions/2026-10/ai-search-visibility-tools/questions/h19",
+  "https://consultwithkyle.com/resources/digital-marketing/how-to-get-your-small-business-recommended-by-chatgpt-and-other-ai-tools/",
+  "https://reviewtactic.com/resources/guides/get-recommended-by-chatgpt/",
+  "https://theaiincomedesk.com/blog/best-chatgpt-seo-tools/",
+  "https://forelskets.com/blog/how-to-get-recommended-by-chatgpt",
+  "https://promotelabs.com/blog/found-trusted-recommended-ai-visibility/",
+  "https://www.noblewebworks.com/blog/chatgpt-for-businesses-get-recommended-ai",
+  "https://citewake.com/editions/2026-11/ai-search-visibility-tools/questions/h19",
+  "https://everythingdigital.com/check-ai-recommends-your-business/",
+  "https://apnews.com/press-release/getnews/press-release-02ffcbf457a05430a24cfdbb269a7558"
+ ],
+ "search_results": [
+  {
+   "title": "What tools help a business get… (Oct 2026) · Citewake",
+   "url": "https://citewake.com/editions/2026-10/ai-search-visibility-tools/questions/h19",
+   "date": "2026-10-29"
+  },
+  {
+   "title": "How to Get Your Small Business Recommended by ChatGPT and Other AI Tools",
+   "url": "https://consultwithkyle.com/resources/digital-marketing/how-to-get-your-small-business-recommended-by-chatgpt-and-other-ai-tools/",
+   "date": "2026-08-10"
+  },
+  {
+   "title": "How to get recommended by ChatGPT (2026) | ReviewTactic",
+   "url": "https://reviewtactic.com/resources/guides/get-recommended-by-chatgpt/",
+   "date": "2026-11-23"
+  },
+  {
+   "title": "Best ChatGPT SEO Tools for Small Businesses: 9 Picks (2026)",
+   "url": "https://theaiincomedesk.com/blog/best-chatgpt-seo-tools/",
+   "date": "2026-11-23"
+  },
+  {
+   "title": "How to Get Your Business Recommended by ChatGPT",
+   "url": "https://forelskets.com/blog/how-to-get-recommended-by-chatgpt",
+   "date": "2026-10-15"
+  },
+  {
+   "title": "How to Get Recommended by ChatGPT and AI Assistants | PromoteLabs",
+   "url": "https://promotelabs.com/blog/found-trusted-recommended-ai-visibility/",
+   "date": "2026-11-11"
+  },
+  {
+   "title": "ChatGPT for Businesses: How to Get Recommended by AI",
+   "url": "https://www.noblewebworks.com/blog/chatgpt-for-businesses-get-recommended-ai",
+   "date": "2026-09-30"
+  },
+  {
+   "title": "What tools help a business get… (Nov 2026) · Citewake",
+   "url": "https://citewake.com/editions/2026-11/ai-search-visibility-tools/questions/h19",
+   "date": "2026-10-29"
+  },
+  {
+   "title": "Does ChatGPT Recommend Your Business? How to Check",
+   "url": "https://everythingdigital.com/check-ai-recommends-your-business/",
+   "date": "2026-11-19"
+  },
+  {
+   "title": "Why ChatGPT and Other AI Assistants Recommend Some Businesses and Ignore Others",
+   "url": "https://apnews.com/press-release/getnews/press-release-02ffcbf457a05430a24cfdbb269a7558",
+   "date": "2026-11-25"
+  }
+ ]
+}

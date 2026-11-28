@@ -20,7 +20,7 @@ import type { ShellData } from "@/lib/workspace/shell"
 import { Check, Icon, SendArrow, type IconName } from "./icons"
 import { CreditsSheet } from "./CreditsSheet"
 
-const WORKSPACES = ["/dashboard", "/dashboard/research", "/dashboard/social", "/dashboard/email", "/dashboard/ads", "/dashboard/tracking"]
+const WORKSPACES = ["/dashboard", "/dashboard/research", "/dashboard/social", "/dashboard/email", "/dashboard/ads", "/dashboard/tracking", "/dashboard/citations"]
 
 type Suggest = { label: string; say?: string; topic?: string }
 const SUGGEST: Record<string, Suggest[]> = {
@@ -29,6 +29,7 @@ const SUGGEST: Record<string, Suggest[]> = {
   "/dashboard/social": [{ label: "Plan this week’s posts", say: "Run my marketing for this week" }, { label: "My social accounts", topic: "social" }, { label: "How my images look", topic: "voice" }],
   "/dashboard/email": [{ label: "Write an email", topic: "email" }, { label: "Who is on my list?", topic: "email" }, { label: "What I send without asking", topic: "autopilot" }],
   "/dashboard/ads": [{ label: "How are my ads doing?", topic: "ads" }, { label: "Show my ad plan", topic: "adplan" }, { label: "My monthly limit", topic: "autopilot" }],
+  "/dashboard/citations": [{ label: "Every question and answer", topic: "answers" }, { label: "What are my competitors doing?", topic: "competitors" }, { label: "What’s your plan?", topic: "insights" }],
   "/dashboard/tracking": [{ label: "Is everything counting?", topic: "tracking" }, { label: "Finish setting up", topic: "setup" }, { label: "All my channels", topic: "channels" }],
 }
 
@@ -40,7 +41,7 @@ const MORE: { href: string; label: string; topic?: string }[] = [
   { href: "/dashboard/sandbox", label: "Ask the AIs" },
   { href: "/dashboard/vault", label: "What AI reads about you" },
   { href: "/dashboard/visibility", label: "AI search, per AI" },
-  { href: "/dashboard/citations", label: "Pages AI cites" },
+  { href: "/dashboard/citations", label: "Pages AI cites & share of voice" },
   { href: "/dashboard/keywords", label: "Your Google searches" },
   { href: "/dashboard/audit", label: "Website health" },
   { href: "/dashboard/speed", label: "Site speed" },

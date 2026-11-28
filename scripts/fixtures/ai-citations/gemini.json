@@ -1,0 +1,137 @@
+{
+ "candidates": [
+  {
+   "content": {
+    "parts": [
+     {
+      "text": "Several high-rated family dentists in Toronto offer Saturday appointments to accommodate busy schedules. These clinics are known for being family-friendly and many have specialized features like children's play areas, multilingual staff, or evening hours.\n\n### **Top-Rated Family Dentists with Saturday Hours**\n\n| Clinic Name | Location | Saturday Hours | Key Features |\n| :--- | :--- | :--- | :--- |\n| **Waterview Dental** | Harbourfront | 8:00 AM – 2:00 PM | Comprehensive care (pediatric, oral surgery); extended evening hours. |\n| **Dentistry on King** | Downtown | 8:30 AM – 4:00 PM | Voted \"Best Orthodontic Services\" (Toronto Star); offers same-day crowns and Netflix for comfort. |\n| **Atlas Dental** | 2 Bloor St West | 7:30 AM – 10:00 PM | Extremely late hours on both Saturdays and Sundays; highly rated (4.9 stars). |\n| **Infinity Dental Office** | Downtown | Open Saturdays | Focuses on all ages; offers digital X-rays and same-day CEREC crowns. |\n| **Apollo Dental** | Scarborough | 7 Days a Week | Over 30 years experience; features a dedicated children's play area and multilingual staff. |\n| **Smiles Dentistry** | Bloor West Village| 9:00 AM – 3:00 PM | Highly rated (4.9 stars) with over 800 reviews. |\n\n### **Specialized Family & Emergency Options**\n*   **For Extreme Flexibility:** **Atlas Dental** and **Walk-In Dental Clinic** (North York) are open extended hours on Saturdays and Sundays, which is ideal for families needing emergency care or late-evening weekend appointments.\n*   **For Kids and Anxious Patients:** \n    *   **Family Tree Dental** (North York) is noted for its gentle approach with anxious children and seniors.\n    *   **D on D Dental** (East Toronto) offers Saturday hours and is recommended for families seeking a \"judgment-free\" start for children or those who have had long gaps in care.\n*   **Comprehensive Family Care:** **Toronto Family Dental** (Sheppard & Finch) emphasizes a \"stress-free\" environment and is currently accepting new patients for everything from basic hygiene to braces.\n\n### **Tips for Booking Saturday Appointments**\n*   **Book Early:** Saturday is often the busiest day for many clinics; arriving early can result in shorter wait times at walk-in-friendly locations like **ClinicFinder** or **Waterview Dental**.\n*   **Confirm CDCP Coverage:** If you are using the **Canadian Dental Care Plan (CDCP)**, clinics like **Family Dental Centre** (Mount Pleasant) and **Li Family Dental** (Etobicoke) explicitly mention accepting this coverage.\n*   **Direct Billing:** Many of these offices, such as **Apollo Dental** and **AF Dental**, offer direct billing to insurance providers, which can simplify the payment process for families.",
+      "thoughtSignature": "Ep0BCpoBAVjVB3umppqDFVvqmqW7bS8MHTgobE8yNVKjJ72HwHgPtK/LwiwaWBxWeoY23z0Q1RPCMn3IEAzofBtHn4tyyUVb0/xkNwAeGe37sBWdzITgaHj7HsSkW8ODABv+JN0Fx3vo7lB30n8jKM7I/K+C8Bz0PJfEYzcvKWio0q6M2hhb3pjx6/FIcCdLedNrgNr1sF9kKc94IVc4Dw=="
+     }
+    ],
+    "role": "model"
+   },
+   "groundingMetadata": {
+    "groundingChunks": [
+     {
+      "web": {
+       "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFn8DtsCiFLpQyW4b2YLr4-IOCq1BB6-o6AIaD4_MWci_r6aHDQu1r83aoC2TgW_SxS7-ByLD0Golgjt3SGJbpiM7pyVtqIAKj1OJGRguablkEpreGKVnSKWmDaKFs0NZ3LmXXZJelCs3hWxOEt5JjbRjRn_ez30bavAWfhQqFmgQ==",
+       "title": "whatclinic.com"
+      }
+     },
+     {
+      "web": {
+       "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG4SrmzUetKQ_iVl3kFLeRLjluTU5MJv_jKlJUxme0xLpXKw2oH_9t-tRrB7t4O9CoUyz35sF5r9Pkt4GPigOqg2koHbmG6qyTMrpx_nMOhCe8CnHfKQuP1U2u69YSKOac77Vyk_nPfJuIv_B2Smu52",
+       "title": "clinicfinder.ca"
+      }
+     },
+     {
+      "web": {
+       "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE5GsE08StXHb6FvVru_eh7_TYJfH808SmtbLgoevmFgpB7Z4PAyUY-BK_i5g-fgW_CO4dH7fsMHIGndJpN05YApwrG8QbcLFkCED_3VGU5Mqa98nme0OicqhQVfdSUcrUInlNR8qAp9Yqy__tIC8LuMgwpfhmh8247fGkEH8svttCyVCnk",
+       "title": "infinitydentaloffice.com"
+      }
+     },
+     {
+      "web": {
+       "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFwUm_wsyFteHHaWbTvGlr7NwTUytB5MPL0_gxWJiO1lhECMgW1P1LJ7cAbviriQ2aH9LhKOBpSNT2oTHrDYPUT3KCd1RGz9OAhylbHe_caeyNs2IHV92C8F16ri12FT9R70mXnxqXfumNTUEaRk8Gx",
+       "title": "donddental.ca"
+      }
+     },
+     {
+      "web": {
+       "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGWYj32Q_z184_shHCoB5drJweY7HScCWMp7twWNzaBVyYWwMm9T7BzF3lzwbLqFHWcTGQ6WJ96fQotyoQkcIaGILZ-6zUUik74t420XejXQTsY85Xn",
+       "title": "torontofamilydental.ca"
+      }
+     }
+    ],
+    "groundingSupports": [
+     {
+      "segment": {
+       "startIndex": 105,
+       "endIndex": 255,
+       "text": "These clinics are known for being family-friendly and many have specialized features like children's play areas, multilingual staff, or evening hours."
+      },
+      "groundingChunkIndices": [
+       0
+      ]
+     },
+     {
+      "segment": {
+       "startIndex": 257,
+       "endIndex": 310,
+       "text": "### **Top-Rated Family Dentists with Saturday Hours**"
+      },
+      "groundingChunkIndices": [
+       1
+      ]
+     },
+     {
+      "segment": {
+       "startIndex": 692,
+       "endIndex": 833,
+       "text": "|\n| **Atlas Dental** | 2 Bloor St West | 7:30 AM – 10:00 PM | Extremely late hours on both Saturdays and Sundays; highly rated (4.9 stars)."
+      },
+      "groundingChunkIndices": [
+       1
+      ]
+     },
+     {
+      "segment": {
+       "startIndex": 834,
+       "endIndex": 964,
+       "text": "|\n| **Infinity Dental Office** | Downtown | Open Saturdays | Focuses on all ages; offers digital X-rays and same-day CEREC crowns."
+      },
+      "groundingChunkIndices": [
+       2
+      ]
+     },
+     {
+      "segment": {
+       "startIndex": 965,
+       "endIndex": 1110,
+       "text": "|\n| **Apollo Dental** | Scarborough | 7 Days a Week | Over 30 years experience; features a dedicated children's play area and multilingual staff."
+      },
+      "groundingChunkIndices": [
+       0
+      ]
+     },
+     {
+      "segment": {
+       "startIndex": 1111,
+       "endIndex": 1227,
+       "text": "|\n| **Smiles Dentistry** | Bloor West Village| 9:00 AM – 3:00 PM | Highly rated (4.9 stars) with over 800 reviews."
+      },
+      "groundingChunkIndices": [
+       1
+      ]
+     },
+     {
+      "segment": {
+       "startIndex": 1666,
+       "endIndex": 1842,
+       "text": "*   **D on D Dental** (East Toronto) offers Saturday hours and is recommended for families seeking a \"judgment-free\" start for children or those who have had long gaps in care."
+      },
+      "groundingChunkIndices": [
+       3
+      ]
+     },
+     {
+      "segment": {
+       "startIndex": 1843,
+       "endIndex": 2046,
+       "text": "*   **Comprehensive Family Care:** **Toronto Family Dental** (Sheppard & Finch) emphasizes a \"stress-free\" environment and is currently accepting new patients for everything from basic hygiene to braces."
+      },
+      "groundingChunkIndices": [
+       4
+      ]
+     }
+    ],
+    "webSearchQueries": [
+     "best family dentists in Toronto open on Saturdays reviews",
+     "top rated family dentists Toronto Saturday hours",
+     "Toronto family dental clinics open Saturday 2024",
+     "highly recommended family dentists in Toronto with weekend hours"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,87 @@
+{
+ "output": [
+  {
+   "id": "ws_0c65e0e53cf30d78006b0a62c1548087d080b28f017bb70933",
+   "type": "web_search_call",
+   "status": "completed",
+   "action": {
+    "type": "search",
+    "queries": [
+     "best family dentists in Toronto open on Saturdays"
+    ],
+    "query": "best family dentists in Toronto open on Saturdays"
+   }
+  },
+  {
+   "id": "msg_0c65e0e53cf30d78006b0a62c23dbc87d0bd209a5b967f4a44",
+   "type": "message",
+   "status": "completed",
+   "content": [
+    {
+     "type": "output_text",
+     "annotations": [
+      {
+       "type": "url_citation",
+       "end_index": 189,
+       "start_index": 87,
+       "title": "T-Dot Dental",
+       "url": "https://www.google.com/maps/search/T-Dot+Dental%2C+Toronto%2C+Canada?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 455,
+       "start_index": 341,
+       "title": "Pape Dental Centre",
+       "url": "https://www.google.com/maps/search/Pape+Dental+Centre%2C+Toronto%2C+Canada?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 694,
+       "start_index": 564,
+       "title": "Kingsway Family Dentistry",
+       "url": "https://www.google.com/maps/search/Kingsway+Family+Dentistry%2C+Etobicoke%2C+Canada?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 923,
+       "start_index": 793,
+       "title": "Clovedent Family Dentistry",
+       "url": "https://www.google.com/maps/search/Clovedent+Family+Dentistry%2C+Toronto%2C+Canada?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 1152,
+       "start_index": 1036,
+       "title": "Elmwood Park Dental",
+       "url": "https://www.google.com/maps/search/Elmwood+Park+Dental%2C+Toronto%2C+Canada?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 1392,
+       "start_index": 1257,
+       "title": "Humber Summit Family Dental",
+       "url": "https://www.google.com/maps/search/Humber+Summit+Family+Dental%2C+North+York%2C+Canada?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 1618,
+       "start_index": 1492,
+       "title": "Finch Family Dentistry",
+       "url": "https://www.google.com/maps/search/Finch+Family+Dentistry%2C+Scarborough%2C+Canada?utm_source=openai"
+      },
+      {
+       "type": "url_citation",
+       "end_index": 1843,
+       "start_index": 1717,
+       "title": "Skylight Family Dental",
+       "url": "https://www.google.com/maps/search/Skylight+Family+Dental%2C+Scarborough%2C+Canada?utm_source=openai"
+      }
+     ],
+     "logprobs": [],
+     "text": "Here are some family-friendly dental clinics in Toronto that are open on Saturdays:\n\n**[T-Dot Dental](https://www.google.com/maps/search/T-Dot+Dental%2C+Toronto%2C+Canada?utm_source=openai)**\n_Toronto, Canada_\nOffers a boutique dental experience with flexible hours, including Saturday openings. Conveniently located in downtown Toronto.\n\n**[Pape Dental Centre](https://www.google.com/maps/search/Pape+Dental+Centre%2C+Toronto%2C+Canada?utm_source=openai)**\n_Toronto, Canada_\nProvides comprehensive family dental services with Saturday hours from 9 AM to 5 PM.\n\n**[Kingsway Family Dentistry](https://www.google.com/maps/search/Kingsway+Family+Dentistry%2C+Etobicoke%2C+Canada?utm_source=openai)**\n_Etobicoke, Canada_\nOffers a range of dental services with Saturday hours from 9 AM to 3 PM.\n\n**[Clovedent Family Dentistry](https://www.google.com/maps/search/Clovedent+Family+Dentistry%2C+Toronto%2C+Canada?utm_source=openai)**\n_Toronto, Canada_\nSpecializes in orthodontics and general dentistry, open on Saturdays from 10 AM to 3 PM.\n\n**[Elmwood Park Dental](https://www.google.com/maps/search/Elmwood+Park+Dental%2C+Toronto%2C+Canada?utm_source=openai)**\n_Toronto, Canada_\nProvides comprehensive family dental care with Saturday hours from 8 AM to 3 PM.\n\n**[Humber Summit Family Dental](https://www.google.com/maps/search/Humber+Summit+Family+Dental%2C+North+York%2C+Canada?utm_source=openai)**\n_North York, Canada_\nSpecializes in pediatric dentistry, open on Saturdays from 9 AM to 5 PM.\n\n**[Finch Family Dentistry](https://www.google.com/maps/search/Finch+Family+Dentistry%2C+Scarborough%2C+Canada?utm_source=openai)**\n_Scarborough, Canada_\nOffers general dental services with Saturday hours from 10 AM to 3 PM.\n\n**[Skylight Family Dental](https://www.google.com/maps/search/Skylight+Family+Dental%2C+Scarborough%2C+Canada?utm_source=openai)**\n_Scarborough, Canada_\nProvides general dental care with Saturday hours from 9 AM to 4 PM.\n\nPlease note that operating hours may change, so it's advisable to contact the clinics directly to confirm their current schedules and availability. "
+    }
+   ],
+   "role": "assistant"
+  }
+ ]
+}
