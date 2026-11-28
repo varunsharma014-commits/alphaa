@@ -6,7 +6,7 @@ import { getAgentSettings } from "@/lib/agent/settings"
 import { wpCall, pingIndexNow, faqToHtml, mdToHtml, mdFaq } from "@/lib/connector/wordpress"
 import { parseMeta } from "@/lib/content"
 import { imageUrl } from "@/lib/images"
-import { publishContent, updateMetaOnSite, PLATFORM_NAME } from "@/lib/connector/publish"
+import { publishContent, updateMetaOnSite, coverAlt, PLATFORM_NAME } from "@/lib/connector/publish"
 import type { AgentSettings } from "@/lib/agent/settings"
 
 /** Webflow / Shopify / Wix: posts, pages and page titles go through the platform's API. */
@@ -20,7 +20,8 @@ async function viaConnector(userId: string, s: AgentSettings, input: PushInput) 
       if (/^Q:/im.test(text)) text = text.split("\n").map((l) => l.replace(/^Q:\s*/i, "### ").replace(/^A:\s*/i, "")).join("\n")
       const draft = input.draftId ? await db.mockActivity.findFirst({ where: { id: input.draftId, userId, type: "post_draft" } }) : null
       const title = input.title?.trim() || "New post"
-      const r = await publishContent(userId, { kind: input.op, title, markdown: text, imageId: (draft?.metadata as { imageId?: string | null } | null)?.imageId }, `Published “${title}” to your ${name} site`)
+      const dm = draft?.metadata as { imageId?: string | null; excerpt?: string } | null
+      const r = await publishContent(userId, { kind: input.op, title, markdown: text, excerpt: dm?.excerpt || undefined, imageId: dm?.imageId }, `Published “${title}” to your ${name} site`)
       if (draft) await db.mockActivity.update({ where: { id: draft.id }, data: { metadata: { ...(draft.metadata as object), status: "published", url: r.url } } })
       return NextResponse.json({ url: r.url, changeId: r.changeId, indexed: r.indexed, note: r.note })
     }
@@ -37,6 +38,7 @@ async function viaConnector(userId: string, s: AgentSettings, input: PushInput) 
   }
 }
 import { generateLlmsTxt } from "@/lib/llms-txt"
+import { hasPlaceholders } from "@/lib/brackets"
 import type { User } from "@prisma/client"
 
 export type PushInput = z.infer<typeof pushBody>
@@ -54,7 +56,8 @@ export const pushBody = z.object({
 })
 
 const faqLd = (faq: { q: string; a: string }[]) => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) })
-const hasBrackets = (t: string) => /\[[^\]]{2,}\]/.test(t)
+// Markdown links/images/callouts are not placeholders (lib/brackets.ts).
+const hasBrackets = hasPlaceholders
 const BRACKETS = "Fill in the [bracketed] details first — they’re facts only you know. Tap the draft to edit it."
 
 type PushResult = { ok: boolean; id: string; url: string; shadowed?: boolean }
@@ -88,7 +91,7 @@ export async function pushChange(user: User, input: PushInput): Promise<NextResp
       if (hasBrackets(text)) return NextResponse.json({ error: BRACKETS }, { status: 400 })
       let html: string, faq: { q: string; a: string }[]
       if (/^Q:/im.test(text)) ({ html, faq } = faqToHtml(text))
-      else { html = mdToHtml(text); faq = mdFaq(text) }
+      else { html = mdToHtml(text, { siteUrl: s.wp.siteUrl }); faq = mdFaq(text) }
       if (!html.trim()) return NextResponse.json({ error: "That draft is empty." }, { status: 400 })
       const title = input.title?.trim() || faq[0]?.q || "New page"
       const jsonld: object[] = faq.length ? [faqLd(faq)] : []
@@ -114,10 +117,12 @@ export async function pushChange(user: User, input: PushInput): Promise<NextResp
       const jsonld: object[] = [{ "@context": "https://schema.org", "@type": "BlogPosting", headline: title, datePublished: new Date().toISOString(), author: { "@type": "Organization", name: user.businessName ?? undefined }, publisher: { "@type": "Organization", name: user.businessName ?? undefined } }]
       if (faq.length) jsonld.push(faqLd(faq))
       const draft = input.draftId ? await db.mockActivity.findFirst({ where: { id: input.draftId, userId: user.id, type: "post_draft" } }) : null
-      const imageId = (draft?.metadata as { imageId?: string | null } | null)?.imageId
+      const dm = draft?.metadata as { imageId?: string | null; excerpt?: string } | null
+      const imageId = dm?.imageId
       const q = await room()
       if (!q.allowed) return NextResponse.json(...quotaBody(q))
-      result = await wpCall<PushResult>(user.id, s.wp, "post", { title, html: mdToHtml(text), jsonld, ...(imageId ? { image: { url: imageUrl(imageId), alt: title } } : {}) })
+      const alt = imageId ? await coverAlt(user.id, imageId, title) : title
+      result = await wpCall<PushResult>(user.id, s.wp, "post", { title, html: mdToHtml(text, { siteUrl: s.wp.siteUrl }), jsonld, ...(dm?.excerpt ? { excerpt: dm.excerpt } : {}), ...(imageId ? { image: { url: imageUrl(imageId), alt } } : {}) })
       label = `Published the post “${title}”`
       if (input.draftId) {
         const row = await db.mockActivity.findFirst({ where: { id: input.draftId, userId: user.id, type: "post_draft" } })

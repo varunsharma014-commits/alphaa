@@ -19,9 +19,10 @@ import { latestInsights, insightsFresh, buildInsights, numbers, type Insights } 
 import { trendsFor, type Trend } from "@/lib/trends"
 import { nicheFacts } from "@/lib/niche-posts"
 import { writePost, writeSocial } from "@/lib/content"
-import { generatePostImage } from "@/lib/images"
+import { blogCoverFor } from "@/lib/blog-cover"
 import { generateGbpPost, containsPlaceholders } from "@/lib/gbp-poster"
 import { approveSitePost } from "@/lib/approvals"
+import { hasPlaceholders } from "@/lib/brackets"
 import { isQuotaError, requireQuota } from "@/lib/quotas"
 import { GuardrailError } from "@/lib/guardrails"
 import { listAccounts, createPost } from "@/lib/social/store"
@@ -206,10 +207,10 @@ async function runWeek(userId: string, id: string, run: WeekRun): Promise<void> 
     try {
       if (it.kind === "blog") {
         const p = await writePost(user, it.title, { noPlaceholders: auto && siteConnected })
-        const img = await generatePostImage(userId, { title: p.title, businessType: user.businessType, city: user.city })
+        const img = await blogCoverFor(userId, { title: p.title, topic: p.topic })
         const row = await db.mockActivity.create({ data: { userId, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null, week: id } } })
         Object.assign(it, { title: p.title, text: p.markdown, image: img?.url ?? null, draftId: row.id, status: "ready" })
-        if (auto && siteConnected && !containsPlaceholders(p.markdown)) {
+        if (auto && siteConnected && !hasPlaceholders(p.markdown)) {
           const r = await approveSitePost(userId, row.id)
           if (r.ok) Object.assign(it, { status: "published", href: r.url ?? null })
         }

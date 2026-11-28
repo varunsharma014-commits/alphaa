@@ -4,6 +4,7 @@
 // email_campaign scheduledFor (/api/cron/due). Rules in rules.ts: no past times, the Autopilot stop
 // window needs the owner's explicit OK to cut short, and a move is the owner's OK when Autopilot is
 // off or the item was waiting for them.
+import { hasPlaceholders } from "@/lib/brackets" // site posts: Markdown links are not placeholders
 import type { User } from "@prisma/client"
 import { db } from "@/lib/db"
 import { hasPro } from "@/lib/billing"
@@ -81,7 +82,7 @@ export async function moveItem(user: User, kind: CalKind, id: string, atIso: str
     const m = (row.metadata ?? {}) as { status?: string; markdown?: string; scheduledFor?: string; ownerOk?: boolean; stopUntil?: string | null }
     if (m.status === "published") return { ok: false, error: "It’s already live.", status: 409 }
     if (!s.wp && !s.site) return { ok: false, error: "Connect your website first, so I can publish it there.", status: 409 }
-    if (BRACKETS.test(m.markdown ?? "")) return { ok: false, error: "This draft still has [bracketed] facts only you know. Fill them in first.", status: 409 }
+    if (hasPlaceholders(m.markdown ?? "")) return { ok: false, error: "This draft still has [bracketed] facts only you know. Fill them in first.", status: 409 }
     const st = m.status === "scheduled" ? "scheduled" : "draft"
     const d = decide(st, !!m.ownerOk, st === "scheduled" ? windowEndFor(m.stopUntil, row.createdAt) : null, st === "scheduled" && m.scheduledFor ? Date.parse(m.scheduledFor) : null)
     if (!d.ok) return refuse(d)

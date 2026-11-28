@@ -55,16 +55,16 @@ export async function storePostImage(userId: string, jpeg: Buffer, alt: string, 
 }
 
 /** An AI-made background scene. Null without a key, on refusal or timeout. */
-export async function aiScene(input: { topic: string; businessType: string | null; city: string | null; size: ImageSize }): Promise<Buffer | null> {
+export async function aiScene(input: { topic: string; businessType: string | null; city: string | null; size: ImageSize | "wide" }): Promise<Buffer | null> {
   if (!aiImagesAvailable()) return null
   // One picture on the brand's image quota (lib/quotas.ts image_gen); out of room = the text card.
   const q = await quotaHere("image_gen")
   if (!q.allowed) { console.warn("[post-images] quota", q.userId, q.period); return null }
-  const prompt = `A realistic photograph-style scene for a social media post by a ${input.businessType || "local business"}${input.city ? ` in ${input.city}` : ""} about: ${input.topic.slice(0, 160)}. Show the place, objects, tools, food or setting, in natural light, warm and inviting, with calm empty space in the lower half.
+  const prompt = `A realistic photograph-style scene for a ${input.size === "wide" ? "blog post cover" : "social media post"} by a ${input.businessType || "local business"}${input.city ? ` in ${input.city}` : ""} about: ${input.topic.slice(0, 160)}. Show the place, objects, tools, food or setting, in natural light, warm and inviting, with calm empty space in the lower half.
 Strict rules: no people, no faces, no hands, no bodies. No text, letters, numbers or signs. No logos, brand names, trademarks or product packaging from real brands. No watermarks. Not a famous landmark or a real business.`
   try {
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-    const res = await client.images.generate({ model: MODEL, prompt, size: input.size === "portrait" ? "1024x1536" : "1024x1024", quality: "low", output_format: "jpeg", output_compression: 80, n: 1 }, { timeout: 90_000 })
+    const res = await client.images.generate({ model: MODEL, prompt, size: input.size === "portrait" ? "1024x1536" : input.size === "wide" ? "1536x1024" : "1024x1024", quality: "low", output_format: "jpeg", output_compression: 80, n: 1 }, { timeout: 90_000 })
     const b64 = res.data?.[0]?.b64_json
     return b64 ? Buffer.from(b64, "base64") : null
   } catch (err) {

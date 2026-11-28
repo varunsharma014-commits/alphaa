@@ -2,6 +2,7 @@
 // matters for being recommended by AI, where it goes, and how to check it.
 // Shared by the API route and scripts, so a test email is the real email.
 import { db } from "@/lib/db"
+import { hasPlaceholders } from "@/lib/brackets"
 import { generateLlmsTxt } from "@/lib/llms-txt"
 import { faqToHtml, mdToHtml, mdFaq } from "@/lib/connector/wordpress"
 import { parseMeta } from "@/lib/content"
@@ -98,7 +99,7 @@ Referrer-Policy: strict-origin-when-cross-origin`
     check = "Load the page and compare: same address, the new text and links in place, nothing else on the page changed."
   } else if (input.what === "post") {
     const text = input.text ?? ""
-    if (/\[[^\]]{2,}\]/.test(text)) return { error: "Fill in the [bracketed] details first — tap the draft to edit it." }
+    if (hasPlaceholders(text)) return { error: "Fill in the [bracketed] details first — tap the draft to edit it." }
     const faq = mdFaq(text)
     code = `${mdToHtml(text)}${faq.length ? `\n\n<script type="application/ld+json">\n${JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }, null, 2)}\n</script>` : ""}`
     what = "A blog post we approved. Headings are questions and each section opens with the direct answer — that’s what AI assistants quote."
@@ -106,7 +107,7 @@ Referrer-Policy: strict-origin-when-cross-origin`
     check = "Load the post and run it through https://validator.schema.org."
   } else {
     const text = input.text ?? ""
-    if (/\[[^\]]{2,}\]/.test(text)) return { error: "Fill in the [bracketed] details first — tap the draft to edit it." }
+    if (hasPlaceholders(text)) return { error: "Fill in the [bracketed] details first — tap the draft to edit it." }
     if (!/^Q:/im.test(text)) {
       const faq = mdFaq(text)
       code = `${mdToHtml(text)}${faq.length ? `\n\n<script type="application/ld+json">\n${JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }, null, 2)}\n</script>` : ""}`

@@ -6,6 +6,7 @@ import { db } from "@/lib/db"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { wpCall, pingIndexNow, mdToHtml, mdFaq } from "@/lib/connector/wordpress"
 import { imageUrl } from "@/lib/images"
+import { htmlForPlatform } from "@/lib/connector/html-adapt"
 import { bingSubmitUrls, decryptSecret } from "@/lib/checks/bing-webmaster"
 import type { ContentSnapshot, SiteConnector, SiteConnection } from "@/lib/connector/types"
 import { webflow } from "@/lib/connector/webflow"
@@ -37,6 +38,13 @@ export type ContentInput = {
 }
 export type Published = { url: string; changeId: string; platform: keyof typeof PLATFORM_NAME; indexed: boolean; note?: string }
 
+/** The cover's own alt text (what the picture shows), saved with the image; the title only as a fallback. */
+export async function coverAlt(userId: string, imageId: string, fallback: string): Promise<string> {
+  const row = await db.mockActivity.findFirst({ where: { id: imageId, userId, type: "post_image" }, select: { metadata: true } }).catch(() => null)
+  const alt = (row?.metadata as { alt?: string } | null)?.alt?.trim()
+  return (alt || fallback).slice(0, 200)
+}
+
 const faqLd = (faq: { q: string; a: string }[]) => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) })
 
 /** Tell search engines a URL changed: IndexNow via the WP plugin's key, or Bing Webmaster if connected. */
@@ -58,12 +66,12 @@ export async function publishContent(userId: string, input: ContentInput, label:
 async function publishUnmetered(userId: string, input: ContentInput, label: string): Promise<Published> {
   const s = await getAgentSettings(userId)
   const user = await db.user.findUnique({ where: { id: userId } })
-  const html = mdToHtml(input.markdown)
+  const html = mdToHtml(input.markdown, { siteUrl: s.wp?.siteUrl ?? s.site?.siteUrl ?? user?.websiteUrl })
   const faq = mdFaq(input.markdown)
   const jsonld: object[] = [...(input.jsonld ?? [])]
   if (input.kind === "post") jsonld.unshift({ "@context": "https://schema.org", "@type": "BlogPosting", headline: input.title, datePublished: new Date().toISOString(), author: { "@type": "Organization", name: user?.businessName ?? undefined }, publisher: { "@type": "Organization", name: user?.businessName ?? undefined } })
   if (faq.length) jsonld.push(faqLd(faq))
-  const image = input.imageId ? { url: imageUrl(input.imageId), alt: input.title } : undefined
+  const image = input.imageId ? { url: imageUrl(input.imageId), alt: await coverAlt(userId, input.imageId, input.title) } : undefined
 
   let out: Published
   if (s.wp) {
@@ -71,7 +79,8 @@ async function publishUnmetered(userId: string, input: ContentInput, label: stri
     out = { url: r.url, changeId: r.id, platform: "wordpress", indexed: await announce(userId, s.wp.siteUrl, r.url, true) }
   } else if (s.site) {
     const site = s.site
-    const r = await onSite(userId, () => CONNECTORS[site.platform].publish(site, { kind: input.kind, title: input.title, html, excerpt: input.excerpt, jsonld, image }))
+    // Each platform keeps what its rich text supports (tables/code/images, lib/connector/html-adapt.ts).
+    const r = await onSite(userId, () => CONNECTORS[site.platform].publish(site, { kind: input.kind, title: input.title, html: htmlForPlatform(html, site.platform), excerpt: input.excerpt, jsonld, image }))
     out = { url: r.url, changeId: `${s.site.platform}:${r.id}`, platform: s.site.platform, indexed: await announce(userId, s.site.siteUrl, r.url, false), note: r.note }
   } else {
     throw new Error("Your website isn’t connected yet.")

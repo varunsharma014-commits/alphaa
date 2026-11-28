@@ -27,6 +27,8 @@ export type MoveCard = {
   outline: string[]
   score: number
   why: string
+  /** Their real page this gap came from (lib/content-gaps.ts since 2026-11-28; older gaps have none). */
+  source?: { url: string; title: string; words: number | null; headings: string[]; read: boolean } | null
 }
 export type AttackCard = {
   id: string
@@ -149,6 +151,7 @@ export async function getRivals(user: User, ctx: { strategy: AdStrategy | null; 
         id: `${row.id}:${k}`, title, topic: g.topic, rival: rivalName, rivalHost: h!,
         signals: sig.signals, score: sig.score, why: sig.why,
         outline: strs(g.suggestedOutline).slice(0, 6),
+        source: g.sourceUrl ? { url: g.sourceUrl, title: g.sourceTitle ?? "", words: typeof g.sourceWords === "number" ? g.sourceWords : null, headings: strs(g.sourceHeadings).slice(0, 12), read: !!g.read } : null,
       })
     }
   }

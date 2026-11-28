@@ -4,6 +4,8 @@
 // calls an outside service, so the page opens fast; refreshes happen from the chat threads.
 import type { User } from "@prisma/client"
 import { db } from "@/lib/db"
+import { repurposablePosts } from "@/lib/repurpose"
+import { hasPro } from "@/lib/billing"
 import { latestInsights } from "@/lib/insights"
 import { engagementRate, lastReadyNichePosts, median, metricLine, nicheEnabled, PLATFORM_LABEL, type NicheItem } from "@/lib/niche-posts"
 import { nicheFitVerdicts } from "@/lib/niche-fit"
@@ -83,6 +85,8 @@ export type ResearchData = {
   topIdea: IdeaRow | null
   hasSocialAccounts: boolean
   gmbConnected: boolean
+  /** Blog posts already live on the owner's site, for "Repurpose" (lib/repurpose.ts). */
+  published: { id: string; title: string; url: string | null; at: string; repurposed: boolean }[]
 }
 
 
@@ -256,5 +260,6 @@ export async function getResearchData(user: User): Promise<ResearchData> {
     droppedPosts, ideasAt: insights?.at ?? null, topIdea,
     hasSocialAccounts: (await listAccounts(user.id).catch(() => [])).some((a) => a.status === "active"),
     gmbConnected: !!(await db.integration.findUnique({ where: { userId: user.id }, select: { gmbLocationId: true } }))?.gmbLocationId,
+    published: hasPro(user) ? await repurposablePosts(user.id).catch(() => []) : [],
   }
 }

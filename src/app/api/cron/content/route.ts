@@ -1,12 +1,13 @@
 export const dynamic = "force-dynamic"
 
 import { cronAllowed } from "@/lib/quotas"
+import { hasPlaceholders } from "@/lib/brackets"
 import { asUser } from "@/lib/usage"
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { activeUsers, authorized } from "@/lib/cron/users"
 import { writePost } from "@/lib/content"
-import { generatePostImage } from "@/lib/images"
+import { blogCoverFor } from "@/lib/blog-cover"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { publishContent } from "@/lib/connector/publish"
 
@@ -36,9 +37,9 @@ export async function GET(req: Request) {
         // Never leave [placeholders]: the owner approves drafts in one tap from the
         // briefing, so the writer leaves out facts it doesn't have.
         const p = await writePost(user, undefined, { noPlaceholders: true })
-        const img = await generatePostImage(u.id, { title: p.title, businessType: user.businessType, city: user.city })
+        const img = await blogCoverFor(u.id, { title: p.title, topic: p.topic })
         const draft = await db.mockActivity.create({ data: { userId: u.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null } } })
-        if (auto && !/\[[^\]]{2,}\]/.test(p.markdown)) {
+        if (auto && !hasPlaceholders(p.markdown)) {
           try {
             const r = await publishContent(u.id, { kind: "post", title: p.title, markdown: p.markdown, excerpt: p.excerpt, imageId: img?.id }, `Published “${p.title}” automatically`)
             await db.mockActivity.update({ where: { id: draft.id }, data: { metadata: { ...p, status: "published", auto: true, url: r.url, changeId: r.changeId, imageId: img?.id ?? null } } })

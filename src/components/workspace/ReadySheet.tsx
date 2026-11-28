@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { hasPlaceholders } from "@/lib/brackets"
 import { mdToHtml } from "@/lib/markdown"
 import { AI_NOTE, askAlphaa, toast } from "@/lib/workspace/events"
 import type { IdeaRow, WorkingCard } from "@/lib/workspace/research"
@@ -65,7 +66,7 @@ export function ReadySheet({ source, make, flags, onClose }: { source: ReadySour
     if (made.kind === "social" && !made.accounts) return <button className="ax-btn p" type="button" onClick={() => { onClose(); askAlphaa({ topic: "social", label: "Connect a social account" }) }}>Connect an account to post it</button>
     if (made.kind === "gbp" && !flags.gmbConnected) return <a className="ax-btn p" href="/api/integrations/google/connect?go=1">Connect your Google listing</a>
     if (made.kind === "site" && !flags.siteConnected) return <button className="ax-btn p" type="button" onClick={() => { onClose(); askAlphaa({ chip: { label: "Email it to my web person", action: { type: "handoff", what: "post", title: made.title, text: made.text, draftId: made.id ?? undefined } } }) }}>Send it to my web person</button>
-    if (/\[[^\]]{2,}\]/.test(made.text)) return <button className="ax-btn p" type="button" onClick={() => { onClose(); askAlphaa({ topic: made.kind === "social" ? "social" : "content", label: "My drafts" }) }}>Fill in the facts</button>
+    if (hasPlaceholders(made.text)) return <button className="ax-btn p" type="button" onClick={() => { onClose(); askAlphaa({ topic: made.kind === "social" ? "social" : "content", label: "My drafts" }) }}>Fill in the facts</button>
     return flags.autopilot
       ? <button className="ax-btn p" type="button" disabled={busy} onClick={() => void go(true)}>{busy ? "Adding…" : "Add to Going out soon"}</button>
       : <button className="ax-btn p" type="button" disabled={busy} onClick={() => void go(false)}>{busy ? "Scheduling…" : "Schedule"}</button>

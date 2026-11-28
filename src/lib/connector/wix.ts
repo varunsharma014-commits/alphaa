@@ -280,6 +280,7 @@ export type RicosNode = {
   bulletedListData?: { indentation: number }
   orderedListData?: { indentation: number }
   imageData?: Record<string, unknown>
+  blockquoteData?: { indentation: number }
 }
 export type RicosDocument = { nodes: RicosNode[] }
 
@@ -298,7 +299,7 @@ type Run = { text: string; bold: boolean; italic: boolean; link: string | null }
 type Block = { kind: "PARAGRAPH" | "HEADING"; level: number; runs: Run[]; inItem: boolean }
 type List = { kind: "BULLETED_LIST" | "ORDERED_LIST"; items: RicosNode[] }
 
-/** Convert our sanitized article HTML (h1-h6, p, ul/ol/li, strong/b, em/i, a, br) to a Ricos document. */
+/** Convert our sanitized article HTML (h1-h6, p, ul/ol/li, strong/b, em/i, a, br, blockquote, img) to a Ricos document. */
 export function htmlToRicos(html: string): RicosDocument {
   let seq = 0
   const nid = () => `n${(++seq).toString(36)}`
@@ -308,6 +309,9 @@ export function htmlToRicos(html: string): RicosDocument {
   let bold = 0
   let italic = 0
   let link: string | null = null
+  // An open <blockquote>: its paragraphs go inside one BLOCKQUOTE node.
+  let quote: RicosNode | null = null
+  const place = (node: RicosNode) => { if (quote) quote.nodes.push(node); else out.push(node) }
 
   const textNode = (r: Run): RicosNode => {
     const decorations: RicosDecoration[] = []
@@ -336,7 +340,7 @@ export function htmlToRicos(html: string): RicosDocument {
     if (list && (b.inItem || b.kind === "PARAGRAPH")) {
       list.items.push({ type: "LIST_ITEM", id: nid(), nodes: [node.type === "PARAGRAPH" ? node : { ...node, type: "PARAGRAPH", headingData: undefined, paragraphData: {} }] })
     } else {
-      out.push(node)
+      place(node.type === "HEADING" && quote ? { ...node, type: "PARAGRAPH", headingData: undefined, paragraphData: {} } : node)
     }
   }
 
@@ -377,7 +381,24 @@ export function htmlToRicos(html: string): RicosDocument {
     if (/^h[1-6]$/.test(tag)) {
       if (closing) flush()
       else open("HEADING", Number(tag[1]))
-    } else if (tag === "p" || tag === "div" || tag === "blockquote") {
+    } else if (tag === "blockquote") {
+      flush()
+      if (!closing && !quote && !lists.length) quote = { type: "BLOCKQUOTE", id: nid(), nodes: [], blockquoteData: { indentation: 1 } }
+      else if (closing && quote) {
+        const q: RicosNode = quote
+        quote = null
+        if (q.nodes.length) out.push(q)
+      }
+    } else if (tag === "img" && !closing) {
+      // Body images (Markdown ![alt](https://…)): a Ricos IMAGE node, https only.
+      const src = /src\s*=\s*"([^"]*)"/i.exec(attrs)?.[1]
+      const alt = /alt\s*=\s*"([^"]*)"/i.exec(attrs)?.[1] ?? ""
+      const url = src ? decodeEntities(src) : ""
+      if (/^https:\/\//i.test(url)) {
+        flush()
+        place({ type: "IMAGE", id: nid(), nodes: [], imageData: { containerData: { width: { size: "CONTENT" }, alignment: "CENTER" }, image: { src: { url } }, altText: decodeEntities(alt) } })
+      }
+    } else if (tag === "p" || tag === "div" || tag === "figure") {
       if (closing) flush()
       else open("PARAGRAPH", 0, lists.length > 0 && !!block && (block as Block).inItem)
     } else if (tag === "ul" || tag === "ol") {
@@ -419,6 +440,7 @@ export function htmlToRicos(html: string): RicosDocument {
     // Any other tag is ignored; its text still comes through.
   }
   flush()
+  if (quote && (quote as RicosNode).nodes.length) out.push(quote)
   while (lists.length) {
     // Unclosed lists: close them in order.
     const done = lists.pop()!

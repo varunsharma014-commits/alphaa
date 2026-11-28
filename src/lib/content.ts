@@ -9,10 +9,14 @@ import { getAgentSettings, type Location } from "@/lib/agent/settings"
 import { latestQuestionScan } from "@/lib/questions"
 import { ensureVoice, voiceFor, voiceText } from "@/lib/voice"
 import { enforce, finishBlog, finishSocial } from "@/lib/guardrails"
+import { buildBrief, briefNumbersText, type ContentBrief } from "@/lib/content-brief"
+import { allowedNumbers, cleanLinks, dropSentencesWith, flagNumbers, numberProblems } from "@/lib/content-check"
 
 const anthropic = claudeFor("blog")
 
 const SONNET = "claude-sonnet-4-6"
+// The blog writer (2026-11-28): Sonnet 5.5, cheaper than 4.6 per token and better at long briefs.
+const WRITER = "claude-sonnet-5-5"
 const text = (r: { content: { type: string; text?: string }[] }) => r.content.find((c) => c.type === "text")?.text?.trim() ?? ""
 
 type U = NonNullable<Awaited<ReturnType<typeof db.user.findUnique>>>
@@ -49,14 +53,31 @@ Give ONE question a real prospective customer of this specific business would ty
   return q.length > 10 && q.length < 160 ? q : null
 }
 
-/** writePost, counted against the brand's plan quota (content_piece:blog; lib/quotas.ts). Throws a QuotaError when out. */
+/** writePost, counted against the brand's plan quota (content_piece:blog; lib/quotas.ts). Throws a QuotaError when out. The brief's planning call runs inside it (AI ceiling). */
 export function writePost(...args: Parameters<typeof writePostUnmetered>): ReturnType<typeof writePostUnmetered> {
   // Brand guardrails (lib/guardrails.ts): banned words rejected + one retry, blog disclaimer appended.
   return withQuota(args[0], "content_piece:blog", () => enforce(args[0].id, "blog", () => writePostUnmetered(...args), { texts: (p) => [p.title, p.excerpt, p.markdown], finish: (p, g) => ({ ...p, markdown: finishBlog(p.markdown, g) }) }))
 }
 
-/** A blog post answering a real customer question — markdown with ## question headings. */
-async function writePostUnmetered(user: U, topic?: string, opts: { noPlaceholders?: boolean } = {}): Promise<{ title: string; markdown: string; excerpt: string; topic: string }> {
+export type WrittenPost = {
+  title: string
+  markdown: string
+  excerpt: string
+  topic: string
+  /** The brief it followed (lib/content-brief.ts), when one was made. */
+  briefId?: string | null
+  /** What the checks did: numbers "ok" | "fixed" (retry) | "removed" | "flagged" (left as [check: …]). */
+  checks?: { numbers: "ok" | "fixed" | "removed" | "flagged"; unverified: string[]; links: number }
+}
+
+/**
+ * A blog post answering a real customer question — Markdown with ## question headings.
+ * Follows a BRIEF (lib/content-brief.ts): outline, internal links, facts, FAQ, competitor benchmark.
+ * `brief: undefined` = I make one first (best effort); `brief: null` = write without one.
+ * Every number must come from the facts or the brief (lib/content-check.ts): one retry with the
+ * problems named, then unverified numbers are removed (autopublish) or flagged as [check: …].
+ */
+async function writePostUnmetered(user: U, topic?: string, opts: { noPlaceholders?: boolean; brief?: ContentBrief | null; gapId?: string | null; competitor?: string | null } = {}): Promise<WrittenPost> {
   // Write in the owner's chosen voice (learned from their own words the first time).
   const learned = await ensureVoice(user.id).catch(() => null)
   const voice = learned ? voiceText(learned) : null
@@ -88,23 +109,79 @@ async function writePostUnmetered(user: U, topic?: string, opts: { noPlaceholder
     if (!t) t = (await suggestTopic(user, posted.filter((x): x is string => !!x)).catch(() => null)) ?? undefined
     t ??= `What to know before hiring a ${user.businessType ?? "local business"}${user.city ? ` in ${user.city}` : ""}`
   }
-  const res = await anthropic.messages.create({
-    model: SONNET,
-    max_tokens: 2200,
-    messages: [{
-      role: "user",
-      content: `Write a blog post (650–900 words) for this business's website that answers: "${t}". It should be the page an AI assistant quotes when a customer asks this.
-Format: first line "TITLE: <title, under 65 characters>", second line "EXCERPT: <one sentence>", then the body in Markdown: a 2-sentence direct answer paragraph, then 4–6 sections with "## " headings phrased as questions, short paragraphs and "- " bullet lists where useful, ending with a "## Frequently asked questions" section of 3 "### " questions. Mention the business naturally once or twice, with its city. Write in the business's own voice (see HOW TO WRITE below). ${opts.noPlaceholders ? "This will publish automatically: NEVER write [placeholders] — if a fact isn't given, leave it out and write around it." : RULES}
+  let brief = opts.brief
+  if (brief === undefined) {
+    brief = await buildBrief(user, { topic: t, gapId: opts.gapId ?? null, competitor: opts.competitor ?? null }).catch((err) => {
+      console.warn("[content] brief skipped:", err instanceof Error ? err.message : err)
+      return null
+    })
+  }
+  const siteHost = user.websiteUrl ? (() => { try { return new URL(/^https?:\/\//.test(user.websiteUrl!) ? user.websiteUrl! : `https://${user.websiteUrl}`).hostname.replace(/^www\./, "") } catch { return null } })() : null
+  const facts = factsOf(user, voice)
+  const allowed = allowedNumbers([factsOf(user), t, brief ? briefNumbersText(brief) : ""])
+  const placeholderRule = opts.noPlaceholders ? "This will publish automatically: NEVER write [placeholders] — if a fact isn't given, leave it out and write around it." : RULES
+  const numberRule = "Numbers: use ONLY numbers that appear in the facts below (prices, years, percentages, durations, counts of customers or anything else). No statistics or figures from general knowledge. Write around anything you don't have."
+  const prompt = brief ? `Write a blog post for this business's website that answers: "${brief.question}". It should be the page an AI assistant quotes when a customer asks this.
+Search intent: ${brief.intent}. Reader: ${brief.audience}. Main search phrase: "${brief.keyword}" (in the title and the first paragraph, naturally).
+Length: about ${brief.wordTarget} words.
+Format: first line "TITLE: <title, under 65 characters>", second line "EXCERPT: <one sentence>", then the body in Markdown:
+- Open with a 2-3 sentence paragraph that answers the question directly (answer first, no preamble).
+- Then these sections in this order as "## " headings (with the "### " sub-headings listed), each starting with a sentence that answers its heading directly:
+${brief.outline.map((s, i) => `  ${i + 1}. ${s.h2}${s.h3.length ? `\n${s.h3.map((h) => `     ### ${h}`).join("\n")}` : ""}`).join("\n")}
+${brief.internalLinks.length ? `- Link to these pages on the business's own site, each exactly once, as Markdown links inside the section named, with this anchor text:\n${brief.internalLinks.map((l) => `  [${l.anchor}](${l.url}) in “${l.section}”`).join("\n")}\n- No other links.` : "- No links."}
+- Short paragraphs. Use "- " bullets, "1." numbered steps or one small Markdown table (| a | b |) only where they help the reader. No images. Bold sparingly.
+- Mention the business naturally once or twice${user.city?.trim() ? `, with its city` : ""}. Write in the business's own voice (HOW TO WRITE below).
+- End with "## Frequently asked questions" and these questions as "### " headings, each answered in 2-3 sentences:
+${brief.faq.map((f) => `  ### ${f.q}`).join("\n")}
+${brief.competitor ? `- A competitor's page on this (${brief.competitor.words ? `${brief.competitor.words} words, ` : ""}headings: ${brief.competitor.headings.slice(0, 20).join(" | ") || "unknown"}) is what this page must beat: cover everything useful in it from this business's side. ${brief.angle} Never name, quote or link the competitor.` : `- ${brief.angle}`}
+- ${numberRule}
+- ${placeholderRule}
+
+FACTS (the only facts you may state)
+${facts}
+${brief.facts.map((f) => `- ${f.text}`).join("\n")}` : `Write a blog post (650–900 words) for this business's website that answers: "${t}". It should be the page an AI assistant quotes when a customer asks this.
+Format: first line "TITLE: <title, under 65 characters>", second line "EXCERPT: <one sentence>", then the body in Markdown: a 2-sentence direct answer paragraph, then 4–6 sections with "## " headings phrased as questions, short paragraphs and "- " bullet lists where useful, ending with a "## Frequently asked questions" section of 3 "### " questions. Mention the business naturally once or twice, with its city. Write in the business's own voice (see HOW TO WRITE below). No links and no images. ${numberRule} ${placeholderRule}
 
 FACTS
-${factsOf(user, voice)}`,
-    }],
-  })
-  const out = text(res)
-  const title = out.match(/^TITLE:\s*(.+)$/m)?.[1]?.trim() ?? t
-  const excerpt = out.match(/^EXCERPT:\s*(.+)$/m)?.[1]?.trim() ?? ""
-  const markdown = out.replace(/^TITLE:.*$/m, "").replace(/^EXCERPT:.*$/m, "").trim()
-  return { title, markdown, excerpt, topic: t }
+${facts}`
+
+  const linkTargets = brief?.internalLinks.map((l) => l.url) ?? []
+  const parse = (out: string) => {
+    const title = out.match(/^TITLE:\s*(.+)$/m)?.[1]?.trim() ?? t!
+    const excerpt = out.match(/^EXCERPT:\s*(.+)$/m)?.[1]?.trim() ?? ""
+    const markdown = cleanLinks(out.replace(/^TITLE:.*$/m, "").replace(/^EXCERPT:.*$/m, "").trim(), { siteHost, allowed: linkTargets })
+    return { title, excerpt, markdown }
+  }
+  const problemsOf = (p: { title: string; excerpt: string; markdown: string }) => numberProblems(`${p.title}\n${p.excerpt}\n${p.markdown}`, allowed)
+  const linked = (md: string) => linkTargets.filter((u) => md.includes(`](${u}`)).length
+
+  const first = await anthropic.messages.create({ model: WRITER, max_tokens: brief && brief.wordTarget > 1100 ? 4500 : 3200, messages: [{ role: "user", content: prompt }] })
+  let post = parse(text(first))
+  let bad = problemsOf(post)
+  let numbers: NonNullable<WrittenPost["checks"]>["numbers"] = "ok"
+  const missingLinks = linkTargets.length && linked(post.markdown) === 0
+  if (bad.length || missingLinks) {
+    const why = [
+      bad.length ? `It uses numbers that aren't in the facts: ${bad.join(", ")}. Remove them or say it without a number.` : "",
+      missingLinks ? `It doesn't link to the business's pages. Add these links where they fit: ${brief!.internalLinks.map((l) => `[${l.anchor}](${l.url})`).join(", ")}.` : "",
+    ].filter(Boolean).join(" ")
+    const second = await anthropic.messages.create({
+      model: WRITER,
+      max_tokens: brief && brief.wordTarget > 1100 ? 4500 : 3200,
+      messages: [{ role: "user", content: prompt }, { role: "assistant", content: text(first) }, { role: "user", content: `Rewrite the whole post with the same format. ${why} Keep everything else.` }],
+    }).catch(() => null)
+    if (second) {
+      const retry = parse(text(second))
+      const retryBad = problemsOf(retry)
+      if (retry.markdown.length > 400 && retryBad.length <= bad.length) { post = retry; bad = retryBad; numbers = "fixed" }
+    }
+  }
+  if (bad.length) {
+    // Still unverified: autopublish drafts lose those sentences; drafts for the owner get [check: …].
+    if (opts.noPlaceholders) { post = { ...post, markdown: dropSentencesWith(post.markdown, bad), excerpt: dropSentencesWith(post.excerpt, bad), title: post.title }; numbers = "removed" }
+    else { post = { ...post, markdown: flagNumbers(post.markdown, bad) }; numbers = "flagged" }
+  }
+  return { ...post, topic: t, briefId: brief?.id ?? null, checks: { numbers, unverified: bad, links: linked(post.markdown) } }
 }
 
 /** writeMeta, counted against the brand's plan quota (content_piece:draft; lib/quotas.ts). Throws a QuotaError when out. */

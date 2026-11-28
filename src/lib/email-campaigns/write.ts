@@ -38,16 +38,18 @@ export function writeCampaign(...args: Parameters<typeof writeCampaignUnmetered>
   }))
 }
 
-async function writeCampaignUnmetered(userId: string, opts: { topic?: string; avoid?: string[] } = {}): Promise<Omit<Campaign, "v" | "status">> {
+/** `link`: the page this email is about (Repurpose a blog post, lib/repurpose.ts): the button always opens it. `context`: that page's own words (facts the email may use). */
+async function writeCampaignUnmetered(userId: string, opts: { topic?: string; avoid?: string[]; link?: { label: string; url: string }; context?: string; numbersFrom?: string } = {}): Promise<Omit<Campaign, "v" | "status">> {
   const user = await db.user.findUnique({ where: { id: userId }, select: { businessName: true, businessType: true, city: true, state: true, websiteUrl: true, voiceDescription: true } })
   if (!user) throw new Error("no user")
   const biz = user.businessName?.trim() || "our business"
   const links: Link[] = []
+  if (opts.link && /^https:\/\//.test(opts.link.url)) links.push({ label: opts.link.label.slice(0, 140), url: opts.link.url })
   if (user.websiteUrl) links.push({ label: "Your website (homepage)", url: withHttps(user.websiteUrl) })
   const posts = await db.mockActivity.findMany({ where: { userId, type: "post_draft", createdAt: { gte: new Date(Date.now() - 45 * 86_400_000) } }, orderBy: { createdAt: "desc" }, take: 20, select: { title: true, metadata: true } })
   for (const p of posts) {
     const m = p.metadata as { status?: string; url?: string; title?: string } | null
-    if (m?.status === "published" && m.url && /^https:\/\//.test(m.url) && links.length < 5) links.push({ label: `Blog post: ${(m.title ?? p.title).replace(/^Drafted a post:?\s*/i, "").slice(0, 120)}`, url: m.url })
+    if (m?.status === "published" && m.url && /^https:\/\//.test(m.url) && links.length < 5 && !links.some((l) => l.url === m.url)) links.push({ label: `Blog post: ${(m.title ?? p.title).replace(/^Drafted a post:?\s*/i, "").slice(0, 120)}`, url: m.url })
   }
   const voice = await voiceFor(userId).catch(() => null)
   const topic = opts.topic?.trim().slice(0, 600) || undefined
@@ -57,10 +59,12 @@ async function writeCampaignUnmetered(userId: string, opts: { topic?: string; av
     user.city?.trim() ? `CITY: ${user.city.trim()}${user.state?.trim() ? `, ${user.state.trim()}` : ""}` : null,
     user.voiceDescription?.trim() ? `ABOUT (the owner's description): ${user.voiceDescription.trim().slice(0, 800)}` : null,
     topic ? `THE OWNER'S NOTE FOR THIS EMAIL: ${topic}` : null,
+    opts.context?.trim() ? `WHAT THE LINKED PAGE SAYS (its own words, already checked): ${opts.context.trim().slice(0, 1500)}` : null,
     links.length ? `LINKS:\n${links.map((l, i) => `${i}: ${l.label} ${l.url}`).join("\n")}` : null,
   ].filter(Boolean).join("\n")
   const year = new Date().getFullYear()
-  const allowed = new Set([...nums(facts), String(year), String(year + 1), "24/7", "1"])
+  // numbersFrom: the full linked page (already checked against the facts) may lend its numbers too.
+  const allowed = new Set([...nums(facts), ...nums(opts.numbersFrom ?? ""), String(year), String(year + 1), "24/7", "1"])
 
   const prompt = `Write one short email from ${biz} to its own past customers.
 Goal: be genuinely useful or welcome, and give them a reason to come back or get in touch. ${topic ? "Build it around the owner's note." : "Pick one helpful, seasonal or practical angle that fits this kind of business. If a blog post link fits, point to it."}
@@ -100,7 +104,7 @@ ${facts}`
       if (!o) continue
       const why = check(o)
       if (why) { console.warn("[email-campaign] rejected draft:", why); continue }
-      const link = links[o.link] ?? links[0]
+      const link = opts.link && links[0]?.url === opts.link.url ? links[0] : links[o.link] ?? links[0]
       return {
         subject: o.subject.trim().slice(0, 80),
         preview: o.preview.trim().slice(0, 120),

@@ -115,19 +115,24 @@ export type OverlayInput = {
   businessName: string | null
   brand: Pick<BrandKit, "logo" | "primary"> | null | undefined
   size?: ImageSize
+  /** Exact pixel size instead of `size` (the wide 1200×630 blog cover, lib/blog-cover.ts). */
+  dims?: { w: number; h: number }
 }
 
 /** The photo, cropped to fill, with a dark gradient, the headline and the logo. JPEG, or null if the font can't draw the headline. */
 export async function renderPhotoCard(input: OverlayInput): Promise<Buffer | null> {
   const f = await loadFonts()
-  const { w: W, h: H } = SIZE_PX[input.size ?? "square"]
+  const { w: W, h: H } = input.dims ?? SIZE_PX[input.size ?? "square"]
   const PAD = 80
   const headline = input.headline.trim().replace(/\s+/g, " ").slice(0, 80)
   const name = (input.businessName ?? "").trim().slice(0, 40)
   if (!headline || !covered(f.bold, headline)) return null
 
-  let size = 112, lines = wrap(f.bold, headline, size, W - PAD * 2)
-  while ((lines.length > 4 || lines.some((l) => textWidth(f.bold, l, size, -0.03) > W - PAD * 2)) && size > 60) {
+  // A wide cover (1200×630) has less height: smaller type, at most 3 lines.
+  const wide = H < W * 0.7
+  const maxLines = wide ? 3 : 4
+  let size = wide ? 76 : 112, lines = wrap(f.bold, headline, size, W - PAD * 2)
+  while ((lines.length > maxLines || lines.some((l) => textWidth(f.bold, l, size, -0.03) > W - PAD * 2)) && size > (wide ? 44 : 60)) {
     size -= 6
     lines = wrap(f.bold, headline, size, W - PAD * 2)
   }

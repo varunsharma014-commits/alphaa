@@ -4,6 +4,7 @@
 //   website  post_draft rows (scheduled site posts, published by /api/cron/site-posts)
 //   email    email_campaign rows (scheduled sends go out from /api/cron/due)
 // Drafts with no time sit in the "waiting" tray; dropping one on the calendar schedules it.
+import { hasPlaceholders } from "@/lib/brackets" // site posts: Markdown links are not placeholders
 import type { User } from "@prisma/client"
 import { db } from "@/lib/db"
 import { hasPro } from "@/lib/billing"
@@ -128,7 +129,7 @@ export async function calendarItems(user: User, from: Date, to: Date): Promise<C
     const at = done ? m.publishedAt ?? m.scheduledFor ?? r.createdAt.toISOString() : m.status === "scheduled" ? m.scheduledFor ?? null : null
     const status: CalStatus = done ? "published" : m.status === "scheduled" ? "scheduled" : "draft"
     if (at ? !inRange(at) : !(status === "draft" && m.status === "ready" && recent(r.createdAt) && waitingSite++ < 12)) continue
-    const why = done ? "It’s already live." : !site ? "Connect your website first, so I can publish it there." : BRACKETS.test(m.markdown ?? "") ? "This draft still has [bracketed] facts only you know. Fill them in first." : null
+    const why = done ? "It’s already live." : !site ? "Connect your website first, so I can publish it there." : hasPlaceholders(m.markdown ?? "") ? "This draft still has [bracketed] facts only you know. Fill them in first." : null
     out.push({
       key: `site:${r.id}`, kind: "site", id: r.id, channels: ["site"], title: m.title?.trim() || "New post", text: short((m.markdown ?? "").replace(/[#*_>`]/g, ""), 220), image: m.imageId ? imageUrl(m.imageId) : null,
       status, at, movable: !why, why, ownerOk: !!m.ownerOk,

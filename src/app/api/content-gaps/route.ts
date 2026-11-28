@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic"
-export const maxDuration = 60
+export const maxDuration = 120 // reads the competitor's real pages first (lib/content-gaps.ts)
 
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
@@ -32,13 +32,15 @@ export async function POST(req: Request): Promise<NextResponse> {
       )
     }
 
-    const { gaps, summary } = await analyzeContentGaps(
+    const { gaps, summary, read } = await analyzeContentGaps(
       user.websiteUrl,
       competitorUrl,
       user.businessName ?? "Your Business",
       user.businessType ?? "Local Business",
-      user.city ?? "your city"
+      user.city ?? ""
     )
+    // Nothing read or nothing found: say so, and don't store an empty comparison.
+    if (!gaps.length) return NextResponse.json({ error: summary, read }, { status: 422 })
 
     const record = await db.contentGap.create({
       data: {

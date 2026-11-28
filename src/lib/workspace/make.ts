@@ -10,7 +10,7 @@ import { renderSocialCard } from "@/lib/social-card"
 import { ensureBrandKit } from "@/lib/brand-kit"
 import { createPost, listAccounts } from "@/lib/social/store"
 import { generateGbpPost } from "@/lib/gbp-poster"
-import { generatePostImage } from "@/lib/images"
+import { blogCoverFor } from "@/lib/blog-cover"
 import { voiceFor } from "@/lib/voice"
 import { tallyUsage } from "@/lib/usage"
 
@@ -61,7 +61,7 @@ export async function makeFromIdea(user: User, idea: { title: string; format: "b
     return { kind: "gbp", id: post.id, title: "Google listing update", text: g.content, image: null }
   }
   const p = await writePost(user, idea.title)
-  const img = await generatePostImage(user.id, { title: p.title, businessType: user.businessType, city: user.city })
+  const img = await blogCoverFor(user.id, { title: p.title, topic: p.topic })
   const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null, requestTopic: idea.title } } })
   return { kind: "site", id: row.id, title: p.title, text: p.markdown, image: img?.url ?? null, excerpt: p.excerpt }
 }

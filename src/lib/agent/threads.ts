@@ -336,12 +336,22 @@ async function buildThreadInner(topic: Topic, userId: string): Promise<Thread> {
         ], `ct-${d.id}`))
       }
       const autoDone = drafts.filter((d) => { const m = d.metadata as { status?: string; auto?: boolean }; return m?.auto && m.status === "published" }).slice(0, 3)
+      // Repurpose (lib/repurpose.ts): a live post → social, LinkedIn, Google, email and video drafts (Pro and up).
+      const pro = hasPro(user)
+      const reuse = (id: string, m: { repurposed?: unknown }) => (pro ? [{ label: m.repurposed ? "See repurposed drafts" : "Repurpose it", action: { type: "agent-op", endpoint: "repurpose", body: { draftId: id } } } as const] : [])
       for (const d of autoDone) {
-        const m = d.metadata as { title?: string; url?: string; changeId?: string }
+        const m = d.metadata as { title?: string; url?: string; changeId?: string; repurposed?: unknown }
         msgs.push(agent([
           { kind: "text", text: `I published “${m.title}” on my own, as you asked.` },
-          { kind: "chips", items: [...(m.url ? [{ label: "Open it", action: { type: "link", href: m.url } } as const] : []), ...(m.changeId ? [{ label: "Undo", action: { type: "wp-undo", changeId: m.changeId } } as const] : [])] },
+          { kind: "chips", items: [...(m.url ? [{ label: "Open it", action: { type: "link", href: m.url } } as const] : []), ...reuse(d.id, m), ...(m.changeId ? [{ label: "Undo", action: { type: "wp-undo", changeId: m.changeId } } as const] : [])] },
         ], `ct-auto-${d.id}`))
+      }
+      const liveOnes = published.filter((d) => !autoDone.includes(d)).slice(0, 3)
+      if (pro && liveOnes.length) {
+        msgs.push(agent([
+          { kind: "text", text: `Live on your site: ${liveOnes.map((d) => `“${(d.metadata as { title?: string }).title ?? "a post"}”`).join(", ")}. One tap turns a post into a social post, a LinkedIn post, a Google update, an email and a video script, each waiting for your OK.` },
+          { kind: "chips", items: liveOnes.flatMap((d) => { const m = d.metadata as { title?: string; url?: string; repurposed?: unknown }; const short = (m.title ?? "post").slice(0, 32); return [{ label: `${m.repurposed ? "Drafts from" : "Repurpose"} “${short}${(m.title ?? "").length > 32 ? "…" : ""}”`, action: { type: "agent-op", endpoint: "repurpose", body: { draftId: d.id } } } as const] }) },
+        ], "ct-live"))
       }
       msgs.push(agent([{ kind: "chips", items: [{ label: "Write a post now", action: { type: "draft", topic: "auto", mode: "post" }, primary: !ready.length }] }], "ct-more"))
       if (/pro|full|growth/i.test(user.plan)) {

@@ -8,6 +8,7 @@ import type { AttackCard, MoveCard } from "@/lib/workspace/rivals"
 import { askAlphaa, ISLAND_EVENT, toast } from "@/lib/workspace/events"
 import { CopyButton, Empty, Tabs, When, useInspector } from "./ui"
 import { DraftSheet } from "./DraftSheet"
+import { RepurposeButton } from "./RepurposeButton"
 import { ReadySheet, type ReadySource } from "./ReadySheet"
 
 type Tab = "w" | "i" | "g" | "c"
@@ -213,15 +214,35 @@ export function ResearchView({ data }: { data: ResearchData }) {
               <div style={{ flex: 1, minWidth: 240 }}>
                 {m.signals.length > 0 && <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>{m.signals.map((g) => <span key={g.label} className={`ax-pill ${g.tone}`}>{g.label}</span>)}</div>}
                 <div style={{ fontSize: 17, fontWeight: 650, letterSpacing: "-.015em" }}>{m.title}</div>
-                <div className="ax-p" style={{ marginTop: 4 }}>Covers what {m.rival} covers, better · <a className="ax-src mut" href={`https://${m.rivalHost}`} target="_blank" rel="noopener noreferrer">{m.rivalHost} ↗</a></div>
+                <div className="ax-p" style={{ marginTop: 4 }}>
+                  {m.source?.read && m.source.words ? <>{m.rival} has a {m.source.words.toLocaleString("en-US")}-word page on this · </> : `Covers what ${m.rival} covers, better · `}
+                  <a className="ax-src mut" href={m.source?.url ?? `https://${m.rivalHost}`} target="_blank" rel="noopener noreferrer">{m.source?.url ? "their page" : m.rivalHost} ↗</a>
+                </div>
               </div>
               <span style={{ display: "flex", gap: 8 }}>
-                {m.outline.length > 0 && <button className="ax-btn s sm" type="button" onClick={() => open({ eb: "The page I’d write", title: m.title, rows: [...m.outline.map((x, n) => ({ k: `Section ${n + 1}`, v: x, box: true })), { k: "Why", v: m.why ? `Because ${m.why}.` : `${m.rival} has a page on this and you don’t.` }] })}>Outline</button>}
+                {m.outline.length > 0 && <button className="ax-btn s sm" type="button" onClick={() => open({ eb: "The page I’d write", title: m.title, rows: [...m.outline.map((x, n) => ({ k: `Section ${n + 1}`, v: x, box: true })), ...(m.source?.headings.length ? [{ k: "Their page covers", v: m.source.headings.join(" · "), box: true }] : []), { k: "Why", v: m.why ? `Because ${m.why}.` : `${m.rival} has a page on this and you don’t.` }] })}>Outline</button>}
                 <button className="ax-btn p sm" type="button" onClick={() => setSheet(m)}>Draft it</button>
               </span>
             </article>
-          )) : (
+          )) : null}
+          {!moves.length && (
             <Empty title="No page gaps found yet" text={data.hiddenGaps ? "The gaps I had came from sites that aren’t your competitors, so I left them out. Add a real competitor and I’ll compare again." : "I compare your site with a competitor’s and list the pages they have that you don’t."} act={{ label: "Find them", href: "/dashboard/content-gaps", primary: true }} />
+          )}
+          {data.published.length > 0 && (
+            <div style={{ marginTop: 10 }}>
+              <div className="ax-h2"><div><h2>Pages I published</h2><p>Turn any of them into a social post, a LinkedIn post, a Google update, an email and a video script. Each waits for your OK.</p></div></div>
+              <section className="ax-card ax-list" style={{ padding: "2px 22px" }}>
+                {data.published.map((p) => (
+                  <div key={p.id} style={{ display: "flex", gap: 14, alignItems: "center", padding: "14px 0", flexWrap: "wrap" }}>
+                    <div style={{ flex: 1, minWidth: 220 }}>
+                      <div style={{ fontSize: 15.5, fontWeight: 600 }}>{p.title}</div>
+                      <div className="ax-p" style={{ marginTop: 2 }}>Published <When at={p.at} mode="ago" fallback="recently" />{p.url ? <> · <a className="ax-src mut" href={p.url} target="_blank" rel="noopener noreferrer">open ↗</a></> : null}</div>
+                    </div>
+                    <RepurposeButton draftId={p.id} done={p.repurposed} />
+                  </div>
+                ))}
+              </section>
+            </div>
           )}
         </div>
       )}

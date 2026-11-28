@@ -4,6 +4,7 @@
 // (approveSitePost), only while the owner's Autopilot is on and the site is connected.
 // Stop = back to "ready"; nothing else ever reaches this state.
 import { db } from "@/lib/db"
+import { hasPlaceholders } from "@/lib/brackets"
 import { approveSitePost } from "@/lib/approvals"
 import { getAgentSettings } from "@/lib/agent/settings"
 import { consentCurrent } from "@/lib/auto-approve-text"
@@ -24,7 +25,7 @@ export async function scheduleSitePost(userId: string, draftId: string): Promise
   if (!s.wp && !s.site) return { ok: false, error: "Connect your website first, so I can publish it there." }
   const m = row.metadata as Meta
   if (m.status === "published") return { ok: false, error: "It’s already live." }
-  if (/\[[^\]]{2,}\]/.test(m.markdown ?? "")) return { ok: false, error: "This draft still has [bracketed] facts only you know. Fill them in first." }
+  if (hasPlaceholders(m.markdown ?? "")) return { ok: false, error: "This draft still has [bracketed] facts only you know. Fill them in first." }
   // A refresh with numbers I couldn't trace to the page or the owner's facts waits for the owner's own OK.
   const refresh = (row.metadata as { refresh?: { unverified?: string[] } }).refresh
   if (refresh?.unverified?.length) return { ok: false, error: `This refresh has numbers I couldn’t check (${refresh.unverified.slice(0, 3).join(", ")}). Read it and use Publish instead.` }

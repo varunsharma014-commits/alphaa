@@ -265,3 +265,5 @@ async function cardSvg(input: CardInput): Promise<string | null> {
 
 // Shared with the photo and AI-scene images (lib/photo-render.ts): same font, same logo tile.
 export { loadFonts, pathFor, wrap, width as textWidth, covered, logoData }
+// Shared with the wide blog cover (lib/blog-cover.ts): the same palettes and house tones.
+export { palette as cardPalette, houseTone, isHouse, type Palette as CardPalette }

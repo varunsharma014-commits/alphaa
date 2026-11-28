@@ -12,7 +12,9 @@ import { db } from "@/lib/db"
 import { claudeFor } from "@/lib/claude"
 import { writePost, writeMeta, writeLocationPage, writeSocial } from "@/lib/content"
 import { getAgentSettings } from "@/lib/agent/settings"
-import { generatePostImage, imageUrl } from "@/lib/images"
+import { imageUrl } from "@/lib/images"
+import { blogCoverFor } from "@/lib/blog-cover"
+import { getBrief } from "@/lib/content-brief"
 import { generateGbpPost } from "@/lib/gbp-poster"
 import { hasPro } from "@/lib/billing"
 import { once } from "@/lib/draft-dedupe"
@@ -29,6 +31,9 @@ const body = z.object({
   mode: z.enum(["faq", "post", "meta", "location", "gbp", "social"]).optional(),
   url: z.string().url().max(500).optional(),
   locationId: z.string().max(40).optional(),
+  // post: the brief to follow (lib/content-brief.ts) and the Research gap card it came from.
+  briefId: z.string().max(40).optional(),
+  gapId: z.string().max(80).optional(),
 })
 
 export async function POST(req: Request) {
@@ -59,7 +64,7 @@ export async function POST(req: Request) {
   const mode = input.mode
   if (mode === "gbp" && !hasPro(user)) return NextResponse.json({ error: "Google listing posts come with the Pro plan." }, { status: 403 })
   if (mode === "post" || mode === "gbp" || mode === "social") {
-    const r = await once(`draft:${user.id}:${mode}:${input.topic.trim().toLowerCase()}`, () => writeDraft(user, mode, input.topic))
+    const r = await once(`draft:${user.id}:${mode}:${input.topic.trim().toLowerCase()}`, () => writeDraft(user, mode, input.topic, { briefId: input.briefId, gapId: input.gapId, competitor: input.competitor }))
     if (r.ok) return NextResponse.json(r.body)
     if (!r.quota && r.rule) return NextResponse.json({ error: r.rule }, { status: 409 })
     return r.quota ? NextResponse.json({ error: r.quota, quota: true, buy: true }, { status: 429 }) : NextResponse.json({ error: "I couldn’t write that just now. Try again in a minute." }, { status: 502 })
@@ -119,19 +124,21 @@ ${facts}`,
 const RECENT_MS = 15 * 60_000
 type DraftUser = NonNullable<Awaited<ReturnType<typeof db.user.findUnique>>>
 
-async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topic: string): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false; quota?: string; rule?: string }> {
+async function writeDraft(user: DraftUser, mode: "post" | "gbp" | "social", topic: string, o: { briefId?: string; gapId?: string; competitor?: string } = {}): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false; quota?: string; rule?: string }> {
   const since = new Date(Date.now() - RECENT_MS)
   try {
     if (mode === "post") {
       const prev = await db.mockActivity.findFirst({ where: { userId: user.id, type: "post_draft", createdAt: { gte: since }, metadata: { path: ["requestTopic"], equals: topic } }, orderBy: { createdAt: "desc" } })
       if (prev) {
-        const m = prev.metadata as { title?: string; markdown?: string; imageId?: string | null; excerpt?: string }
-        return { ok: true, body: { title: m.title, text: m.markdown, excerpt: m.excerpt ?? null, draftId: prev.id, image: m.imageId ? imageUrl(m.imageId) : null } }
+        const m = prev.metadata as { title?: string; markdown?: string; imageId?: string | null; excerpt?: string; briefId?: string | null; checks?: unknown }
+        return { ok: true, body: { title: m.title, text: m.markdown, excerpt: m.excerpt ?? null, draftId: prev.id, image: m.imageId ? imageUrl(m.imageId) : null, brief: await getBrief(user.id, m.briefId), checks: m.checks ?? null } }
       }
-      const p = await writePost(user, topic === "auto" ? undefined : topic)
-      const img = await generatePostImage(user.id, { title: p.title, businessType: user.businessType, city: user.city })
+      // The brief the sheet already showed; else writePost plans one itself (gap card → their real page).
+      const brief = o.briefId ? await getBrief(user.id, o.briefId) : undefined
+      const p = await writePost(user, topic === "auto" ? undefined : topic, { brief: brief ?? undefined, gapId: o.gapId ?? null, competitor: o.competitor ?? null })
+      const img = await blogCoverFor(user.id, { title: p.title, topic: p.topic })
       const row = await db.mockActivity.create({ data: { userId: user.id, type: "post_draft", title: `Drafted a post: “${p.title}”`, metadata: { ...p, status: "ready", imageId: img?.id ?? null, requestTopic: topic } } })
-      return { ok: true, body: { title: p.title, text: p.markdown, excerpt: p.excerpt, draftId: row.id, image: img?.url ?? null } }
+      return { ok: true, body: { title: p.title, text: p.markdown, excerpt: p.excerpt, draftId: row.id, image: img?.url ?? null, imageAlt: img?.alt ?? null, brief: brief ?? (await getBrief(user.id, p.briefId)), checks: p.checks ?? null } }
     }
     if (mode === "gbp") {
       const prev = await db.mockActivity.findFirst({ where: { userId: user.id, type: "gbp_post_draft", createdAt: { gte: since }, metadata: { path: ["topic"], equals: topic } }, orderBy: { createdAt: "desc" } })

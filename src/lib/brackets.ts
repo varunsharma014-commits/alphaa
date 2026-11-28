@@ -2,7 +2,16 @@
 // publishing refuses while one is left (lib/connector/push.ts). "Publish without them" uses this
 // to drop just the sentences that need those facts, so a post can go live in one tap.
 
-export const hasPlaceholders = (t: string) => /\[[^\]]{2,}\]/.test(t)
+/**
+ * Markdown that uses square brackets but is NOT a placeholder: links [text](url), images
+ * ![alt](url) and callout markers "> [!NOTE]". Blog posts with internal links were refused at
+ * publish because the old check matched "[text](url)" (fixed 2026-11-28).
+ */
+export const stripMarkdownBrackets = (t: string) =>
+  t.replace(/!?\[[^\]\n]*\]\([^)\n]*\)/g, " ").replace(/\[![A-Z]+\]/g, " ")
+
+/** True while a [placeholder] is left. Markdown links, images and callouts don't count. */
+export const hasPlaceholders = (t: string) => /\[[^\]]{2,}\]/.test(stripMarkdownBrackets(t))
 
 const SENTENCE = /(?<=[.!?…])\s+(?=[A-Z0-9"“(])/
 
@@ -13,7 +22,7 @@ export function withoutPlaceholders(markdown: string): string {
     if (!hasPlaceholders(line)) { out.push(line); continue }
     if (/^\s*#{1,6}\s/.test(line)) {
       // A heading keeps its question; just lose the placeholder words.
-      const h = line.replace(/\s*\[[^\]]{2,}\]\s*/g, " ").replace(/\s+([?.,!])/g, "$1").replace(/\s{2,}/g, " ").trimEnd()
+      const h = line.replace(/\s*(?<!!)\[[^\]]{2,}\](?!\()\s*/g, " ").replace(/\s+([?.,!])/g, "$1").replace(/\s{2,}/g, " ").trimEnd()
       if (h.replace(/^\s*#+\s*/, "").trim()) out.push(h)
       continue
     }
